@@ -3,7 +3,12 @@
 import { expect } from 'chai';
 
 import Calculator from '..';
-import { PROPERTY_DOCUMENTS, DOCUMENTS, STEPS } from '../../../api/constants';
+import {
+  PROPERTY_DOCUMENTS,
+  DOCUMENTS,
+  STEPS,
+  PROPERTY_CATEGORY,
+} from '../../../api/constants';
 import { initialDocuments } from '../../../api/properties/propertiesAdditionalDocuments';
 
 describe('PropertyCalculator', () => {
