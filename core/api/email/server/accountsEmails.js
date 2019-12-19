@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
 import { createMeteorAsyncFunction } from 'core/api/helpers/index';
-import getPublicServerFile from 'core/utils/server/getPublicServerFile';
 import { FROM_DEFAULT, EMAIL_IDS, EMAIL_PARTS } from '../emailConstants';
 import EmailService from './EmailService';
 
