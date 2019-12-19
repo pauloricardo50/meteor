@@ -128,24 +128,11 @@ export const getBorrowersAddress = borrowers => {
     ({ sameAddress }) => sameAddress === true,
   );
   if (borrowersHaveSameAddress) {
-    const borrowerWithAddress = borrowers.find(
-      ({ city, zipCode }) => city && zipCode,
-    );
-    const address = [
-      `${borrowerWithAddress.address1},`,
-      borrowerWithAddress.zipCode,
-      borrowerWithAddress.city,
-    ]
-      .filter(x => x)
-      .join(' ');
+    const { address } = borrowers.find(({ city, zipCode }) => city && zipCode);
+
     return borrowers.map(() => address);
   }
-  const zipCodes = getBorrowersSingleInfo(borrowers, 'zipCode');
-  const cities = getBorrowersSingleInfo(borrowers, 'city');
-  const address1 = getBorrowersSingleInfo(borrowers, 'address1');
-  return zipCodes.map(
-    (zipCode, index) => `${address1[index]}, ${zipCode} ${cities[index]}`,
-  );
+  return borrowers.map(({ address }) => address);
 };
 
 export const getBonus = (borrowers, calculator) =>
@@ -175,7 +162,7 @@ const getBorrowersCitizenship = borrowers =>
   borrowers.map(borrower => {
     const { isSwiss, citizenship, residencyPermit } = borrower;
     if (isSwiss) {
-      return 'Suisse';
+      return <T id="Forms.switzerland" />;
     }
 
     return residencyPermit ? (
@@ -184,8 +171,8 @@ const getBorrowersCitizenship = borrowers =>
         <T id={`Forms.residencyPermit.${residencyPermit}`} />)
       </span>
     ) : (
-      citizenship
-    );
+        citizenship
+      );
   });
 
 const getBorrowerCivilStatusAndDate = borrower => {

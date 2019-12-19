@@ -30,51 +30,41 @@ const saveHtmlFile = ({ html, pdfName }) => {
   }
 };
 
+const makeHandlePdf = ({ loan, saveFunc, additionalParams = {} }) => ({
+  anonymous,
+  ...model
+}) => {
+  const { organisationId, structureIds } = model;
+  const { _id: loanId } = loan;
+  const generateBackgroundInfo = makeGenerateBackgroundInfo(loan);
+
+  return generatePDF
+    .run({
+      type: PDF_TYPES.LOAN,
+      params: {
+        loanId,
+        organisationId,
+        structureIds,
+        backgroundInfo: generateBackgroundInfo(model),
+      },
+      options: { anonymous },
+      ...additionalParams,
+    })
+    .then(saveFunc)
+    .catch(error => {
+      import('../../../core/utils/message').then(({ default: message }) => {
+        message.error(error.message, 5);
+      });
+    });
+};
+
 export default compose(
-  withProps(({ loan }) => {
-    const { _id: loanId } = loan;
-    const generateBackgroundInfo = makeGenerateBackgroundInfo(loan);
-
-    return {
-      handlePDF: ({ anonymous, ...model }) => {
-        const { organisationId, structureIds } = model;
-        return generatePDF
-          .run({
-            type: PDF_TYPES.LOAN,
-            params: {
-              loanId,
-              organisationId,
-              structureIds,
-              backgroundInfo: generateBackgroundInfo(model),
-            },
-            options: { anonymous },
-          })
-          .then(savePdf)
-          .catch(error => {
-            import('../../../core/utils/message').then(
-              ({ default: message }) => {
-                message.error(error.message, 5);
-              },
-            );
-          });
-      },
-      handleHTML: ({ anonymous, ...model }) => {
-        const { organisationId, structureIds } = model;
-
-        return generatePDF
-          .run({
-            type: PDF_TYPES.LOAN,
-            params: {
-              loanId,
-              organisationId,
-              structureIds,
-              backgroundInfo: generateBackgroundInfo(model),
-            },
-            options: { anonymous },
-            htmlOnly: true,
-          })
-          .then(saveHtmlFile);
-      },
-    };
-  }),
+  withProps(({ loan }) => ({
+    handlePDF: makeHandlePdf({ loan, saveFunc: savePdf }),
+    handleHTML: makeHandlePdf({
+      loan,
+      saveFunc: saveHtmlFile,
+      additionalParams: { htmlOnly: true },
+    }),
+  })),
 );

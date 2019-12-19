@@ -1900,7 +1900,7 @@ describe('LoanService', function() {
       loanId = LoanService.fullLoanInsert({ userId: 'user' });
     });
 
-    it('reuse user personal information on the first borrower', () => {
+    it('reuses user personal information on the first borrower', () => {
       LoanService.insertBorrowers({ loanId, amount: 1 });
       const { borrowers = [] } = LoanService.get(loanId, {
         borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
