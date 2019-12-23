@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 import cx from 'classnames';
 
+import { PROPERTY_CATEGORY } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
@@ -20,6 +21,18 @@ import T from '../Translation';
 import ConfirmMethod from '../ConfirmMethod';
 import ZipLoan from './ZipLoan';
 import LoanGoogleDrive from './LoanGoogleDrive';
+
+const isPropertyFilesDisabled = (disabled, property) => {
+  if (disabled) {
+    return true;
+  }
+
+  if (Meteor.microservice === 'admin') {
+    return false;
+  }
+
+  return property.category !== PROPERTY_CATEGORY.USER;
+};
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
@@ -106,26 +119,26 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
             },
             ...(!loan.hasPromotion && properties.length > 0
               ? properties.map(property => ({
-                  label: (
-                    <FileTabLabel
-                      id="general.property"
-                      title={property.address1}
-                      progress={Calculator.getPropertyFilesProgress({
-                        property,
-                        loan,
-                      })}
-                    />
-                  ),
-                  content: (
-                    <SingleFileTab
-                      doc={property}
-                      collection="properties"
-                      disabled={disabled}
-                      currentUser={currentUser}
-                      loan={loan}
-                    />
-                  ),
-                }))
+                label: (
+                  <FileTabLabel
+                    id="general.property"
+                    title={property.address1}
+                    progress={Calculator.getPropertyFilesProgress({
+                      property,
+                      loan,
+                    })}
+                  />
+                ),
+                content: (
+                  <SingleFileTab
+                    doc={property}
+                    collection="properties"
+                    disabled={isPropertyFilesDisabled(disabled, property)}
+                    currentUser={currentUser}
+                    loan={loan}
+                  />
+                ),
+              }))
               : []),
             {
               label: (
