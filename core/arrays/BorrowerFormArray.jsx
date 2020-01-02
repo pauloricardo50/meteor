@@ -50,13 +50,11 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'textInput',
       id: 'email',
       placeholder: <T id="Forms.email.placeholder" />,
-      required: false,
     },
     {
       type: 'textInput',
       id: 'phoneNumber',
       placeholder: <T id="Forms.phoneNumber.placeholder" />,
-      required: false,
     },
     {
       id: 'gender',
@@ -168,13 +166,11 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'dateInput',
       id: 'marriedDate',
       condition: isMarried,
-      required: false,
     },
     {
       type: 'dateInput',
       id: 'divorcedDate',
       condition: isDivorced,
-      required: false,
     },
     {
       id: 'addPartner',
@@ -215,6 +211,11 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'textInput',
       number: true,
       condition: isSalaried,
+    },
+    {
+      type: 'dateInput',
+      id: 'selfEmployedSince',
+      condition: isSelfEmployed,
     },
   ];
 };
