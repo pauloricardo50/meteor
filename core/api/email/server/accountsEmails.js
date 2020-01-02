@@ -76,7 +76,9 @@ Accounts.generateOptionsForEmail = (email, user, url, reason) => {
       attachments: [
         {
           filename: 'e-Potek - Guide du financement hypothécaire.pdf',
-          path: `${Meteor.settings.public.subdomains.backend}/files/e-Potek - Guide du financement hypothécaire.pdf`,
+          path: encodeURI(
+            `${Meteor.settings.public.subdomains.backend}/files/e-Potek - Guide du financement hypothécaire.pdf`,
+          ),
         },
       ],
     };
