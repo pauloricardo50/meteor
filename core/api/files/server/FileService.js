@@ -126,9 +126,9 @@ class FileService {
 
     return `${
       Meteor.settings.public.subdomains.backend
-    }/api/zip-loan/?simple-auth-params=${Buffer.from(
-      JSON.stringify(simpleAuthParams),
-    ).toString('base64')}`;
+      }/api/zip-loan/?simple-auth-params=${Buffer.from(
+        JSON.stringify(simpleAuthParams),
+      ).toString('base64')}`;
   };
 
   setAdminName = ({ Key, adminName = '' }) =>
@@ -224,8 +224,8 @@ class FileService {
           keys.length === 1
             ? `${date} ${documentName}.${extension}`
             : `${date} ${documentName} (${index + 1} sur ${
-                keys.length
-              }).${extension}`;
+            keys.length
+            }).${extension}`;
 
         await this.moveFile({
           Key,
