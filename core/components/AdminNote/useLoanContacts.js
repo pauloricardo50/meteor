@@ -25,7 +25,7 @@ const getLoanContacts = ({
       email: user.email,
       title: 'Compte utilisateur',
       icon: collectionIcons[USERS_COLLECTION],
-      phoneNumber: user.phoneNumbers && user.phoneNumbers[0],
+      phoneNumber: user.phoneNumber,
     });
   }
 
@@ -35,8 +35,7 @@ const getLoanContacts = ({
       email: user.referredByUser.email,
       title: "Apporteur d'affaires",
       icon: collectionIcons[USERS_COLLECTION],
-      phoneNumber:
-        user.referredByUser.phoneNumbers && user.referredByUser.phoneNumbers[0],
+      phoneNumber: user.referredByUser.phoneNumber,
       isEmailable: true,
     });
   }
