@@ -206,6 +206,7 @@ module.exports = {
       { order: ['lifecycle', 'static-methods', 'everything-else', 'render'] },
     ],
     'react/jsx-props-no-spreading': 0,
+    'react/prop-types': 0,
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 0,
