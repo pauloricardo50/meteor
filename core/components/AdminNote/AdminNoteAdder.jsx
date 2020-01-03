@@ -20,7 +20,6 @@ const getInsertSchema = contacts =>
   getUpdateSchema().extend({
     notifyPros: {
       type: Array,
-      defaultValue: false,
       condition: ({ isSharedWithPros }) =>
         isSharedWithPros && contacts.length > 0,
       uniforms: {
@@ -59,8 +58,8 @@ const AdminNoteSetter = ({
     () =>
       isInsert
         ? getInsertSchema(
-          contacts.filter(({ isEmailable }) => isEmailable) || [],
-        )
+            contacts.filter(({ isEmailable }) => isEmailable) || [],
+          )
         : getUpdateSchema(),
     [contacts],
   );
@@ -70,7 +69,7 @@ const AdminNoteSetter = ({
       title={isInsert ? 'Ajouter une note' : 'Modifier note'}
       buttonProps={buttonProps}
       schema={schema}
-      onSubmit={({ notifyPros, ...values }) =>
+      onSubmit={({ notifyPros = [], ...values }) =>
         loanSetAdminNote.run({
           loanId,
           adminNoteId: isInsert ? undefined : adminNote.id,
