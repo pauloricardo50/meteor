@@ -14,42 +14,42 @@ const Contact = ({
   icon,
   phoneNumber = '-',
 }) => (
-    <div key={email} className="single-loan-page-contacts-contact">
-      <div className="flex center-align">
-        <Icon type={icon} className="mr-4" />
-        <h4>
-          {name} <small className="secondary">{title}</small>
-        </h4>
-      </div>
-      <div className="flex center-align">
-        <span className="flex center-align mr-8">
-          <Icon
-            className="mr-4"
-            type="mail"
-            style={{ color: colors.borderGrey }}
-          />
-          <a
-            className="color"
-            href={`mailto:${email}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {email}
-          </a>
-        </span>
-        <span className="flex center-align">
-          <Icon
-            className="mr-4"
-            type="phone"
-            style={{ color: colors.borderGrey }}
-          />
-          <a key={phoneNumber} href={`tel:${phoneNumber}`}>
-            <span>{phoneNumber}</span>
-          </a>
-        </span>
-      </div>
+  <div key={email} className="single-loan-page-contacts-contact">
+    <div className="flex center-align">
+      <Icon type={icon} className="mr-4" />
+      <h4>
+        {name} <small className="secondary">{title}</small>
+      </h4>
     </div>
-  );
+    <div className="flex center-align">
+      <span className="flex center-align mr-8">
+        <Icon
+          className="mr-4"
+          type="mail"
+          style={{ color: colors.borderGrey }}
+        />
+        <a
+          className="color"
+          href={`mailto:${email}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {email}
+        </a>
+      </span>
+      <span className="flex center-align">
+        <Icon
+          className="mr-4"
+          type="phone"
+          style={{ color: colors.borderGrey }}
+        />
+        <a key={phoneNumber} href={`tel:${phoneNumber}`}>
+          <span>{phoneNumber}</span>
+        </a>
+      </span>
+    </div>
+  </div>
+);
 
 const SingleLoanPageContacts = ({ loanId }: SingleLoanPageContactsProps) => {
   const { loading, contacts } = useLoanContacts(loanId);
@@ -57,8 +57,10 @@ const SingleLoanPageContacts = ({ loanId }: SingleLoanPageContactsProps) => {
     <div className="single-loan-page-contacts card1 card-top">
       <h3>Contacts</h3>
 
-      {!loading &&
-        contacts.map(contact => <Contact {...contact} key={contact.name} />)}
+      <div className="scroll-wrapper">
+        {!loading &&
+          contacts.map(contact => <Contact {...contact} key={contact.name} />)}
+      </div>
       {!loading && contacts.length === 0 && (
         <h2 className="secondary text-center">Pas de contacts</h2>
       )}

@@ -207,4 +207,9 @@
       margin: 0;
     }
   }
+
+  .scroll-wrapper {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
 }
