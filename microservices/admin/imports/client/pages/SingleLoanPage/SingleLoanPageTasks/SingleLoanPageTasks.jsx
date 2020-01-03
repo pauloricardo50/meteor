@@ -5,14 +5,7 @@ import LoanTaskInserter from './LoanTaskInserter';
 import TasksTable from '../../../components/TasksTable';
 import SingleLoanPageTasksContainer from './SingleLoanPageTasksContainer';
 
-type SingleLoanPageTasksProps = {};
-
-const SingleLoanPageTasks = ({
-  loan,
-  refetch,
-  tasks,
-  ...rest
-}: SingleLoanPageTasksProps) => (
+const SingleLoanPageTasks = ({ loan, refetch, tasks, ...rest }) => (
   <div className="card1 card-top single-loan-page-tasks">
     <div className="flex">
       <h3>Tâches</h3>

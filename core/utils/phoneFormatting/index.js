@@ -31,7 +31,8 @@ const modifyDoc = (doc, fieldName, currentValue, customFunc) => {
 
 const formatNumbersHook = (collection, fieldName, customFunc) => {
   collection.before.update((userId, doc, fieldNames, modifier) => {
-    if (fieldNames.includes(fieldName)) {
+    // Make sure this is a $set operation
+    if (fieldNames.includes(fieldName) && modifier.$set[fieldName]) {
       const updatedValue = modifier.$set[fieldName];
       modifyDoc(modifier.$set, fieldName, updatedValue, customFunc);
     }

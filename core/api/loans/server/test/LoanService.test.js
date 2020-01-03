@@ -1694,7 +1694,7 @@ describe('LoanService', function() {
       ).to.throw('futur');
     });
 
-    it('sends an email to a pro if asked', async () => {
+    it('sends an email to multiple pros if asked', async () => {
       generator({
         loans: {
           _id: 'loanId',
@@ -1722,7 +1722,11 @@ describe('LoanService', function() {
         loanSetAdminNote.run({
           loanId: 'loanId',
           note: { note: 'hello dude', isSharedWithPros: true },
-          notifyPro: true,
+          notifyPros: [
+            { email: 'test@e-potek.ch' },
+            { email: 'test2@e-potek.ch' },
+            { email: 'test3@e-potek.ch' },
+          ],
         }),
       );
 
@@ -1730,12 +1734,12 @@ describe('LoanService', function() {
         {
           address,
           template: {
-            message: { subject, global_merge_vars },
+            message: { subject, global_merge_vars, to },
           },
         },
       ] = await checkEmails(1);
 
-      expect(address).to.equal('pro@e-potek.ch');
+      expect(address).to.equal('test@e-potek.ch');
       expect(subject).to.equal('Nouvelle note pour le dossier de Joe Jackson');
       expect(
         global_merge_vars.find(({ name }) => name === 'TITLE').content,
@@ -1749,75 +1753,9 @@ describe('LoanService', function() {
       expect(
         global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
       ).to.include(Meteor.settings.public.subdomains.pro);
-    });
 
-    it('does not send an email to a pro if there is no referredByUser', async () => {
-      generator({
-        loans: {
-          _id: 'loanId',
-          name: '20-0001',
-          user: {
-            _id: 'userId',
-            firstName: 'Joe',
-            lastName: 'Jackson',
-            assignedEmployee: {
-              _id: 'adminId',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: 'User',
-            },
-          },
-        },
-      });
-
-      await ddpWithUserId('adminId', () =>
-        loanSetAdminNote.run({
-          loanId: 'loanId',
-          note: { note: 'hello dude', isSharedWithPros: true },
-          notifyPro: true,
-        }),
-      );
-
-      const emails = await checkEmails(1, { noExpect: true, timeout: 2000 });
-
-      expect(emails.length).to.equal(0);
-    });
-
-    it('does not send an email to a pro if it is not shared with them', async () => {
-      generator({
-        loans: {
-          _id: 'loanId',
-          name: '20-0001',
-          user: {
-            _id: 'userId',
-            firstName: 'Joe',
-            lastName: 'Jackson',
-            referredByUser: {
-              firstName: 'Pro',
-              lastName: 'User',
-              emails: [{ address: 'pro@e-potek.ch', verified: true }],
-            },
-            assignedEmployee: {
-              _id: 'adminId',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: 'User',
-            },
-          },
-        },
-      });
-
-      await ddpWithUserId('adminId', () =>
-        loanSetAdminNote.run({
-          loanId: 'loanId',
-          note: { note: 'hello dude', isSharedWithPros: false },
-          notifyPro: true,
-        }),
-      );
-
-      const emails = await checkEmails(1, { noExpect: true, timeout: 2000 });
-
-      expect(emails.length).to.equal(0);
+      expect(to.length).to.equal(3);
+      expect(to.every(({ type }) => type === 'bcc')).to.equal(true);
     });
   });
 
