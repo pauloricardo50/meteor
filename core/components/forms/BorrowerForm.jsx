@@ -38,6 +38,7 @@ export const personalFields = [
   'worksInSwitzerlandSince',
   'activityType',
   'selfEmployedSince',
+  'annuitantSince',
 ];
 export const financeFields = [
   'salary',
@@ -141,6 +142,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => {
               'jobStartDate',
               'jobActivityRate',
               'selfEmployedSince',
+              'annuitantSince',
             ],
             Component: Box,
             className: 'grid-col mb-32',

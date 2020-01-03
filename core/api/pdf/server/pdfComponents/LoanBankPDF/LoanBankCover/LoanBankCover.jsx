@@ -78,7 +78,7 @@ const coverContent = ({
       <h2 className="address">{`${address1}, ${zipCode} ${city} (${canton})`}</h2>
       <h3 className="disbursement-date">
         <span>
-          Déblocage prévu des fonds:{' '}
+          Déblocage des fonds prévu le{' '}
           <b>{moment(disbursementDate).format('DD.MM.YYYY')}</b>
         </span>
       </h3>

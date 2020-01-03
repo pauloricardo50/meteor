@@ -60,9 +60,7 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
     },
     {
       label: <T id="PDF.borrowersInfos.activityType" />,
-      data: borrowersInfos.activityType.map(type => (
-        <T id={`Forms.activityType.${type}`} />
-      )),
+      data: borrowersInfos.activityType,
     },
     {
       label: <T id="PDF.borrowersInfos.job" />,
@@ -88,15 +86,15 @@ const BorrowersRecapInfo = ({
   calculator,
   twoBorrowers,
 }: BorrowersRecapInfoProps) => (
-  <PdfTable
-    className={cx('borrowers-recap info', { twoBorrowers })}
-    rows={getBorrowersInfosArray({ borrowers, anonymous, calculator })}
-    columnOptions={[
-      {},
-      { style: { textAlign: 'right' } },
-      { style: { textAlign: 'right' } },
-    ]}
-  />
-);
+    <PdfTable
+      className={cx('borrowers-recap info', { twoBorrowers })}
+      rows={getBorrowersInfosArray({ borrowers, anonymous, calculator })}
+      columnOptions={[
+        {},
+        { style: { textAlign: 'right' } },
+        { style: { textAlign: 'right' } },
+      ]}
+    />
+  );
 
 export default BorrowersRecapInfo;

@@ -42,6 +42,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   address1: 1,
   address2: 1,
   age: 1,
+  annuitantSince: 1,
   bank3A: 1,
   bankFortune: 1,
   birthDate: 1,

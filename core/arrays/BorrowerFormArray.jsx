@@ -35,6 +35,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     b.activityType === constants.BORROWER_ACTIVITY_TYPES.SALARIED;
   const isSelfEmployed =
     b.activityType === constants.BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED;
+  const isAnnuitant =
+    b.activityType === constants.BORROWER_ACTIVITY_TYPES.ANNUITANT;
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -216,6 +218,11 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'dateInput',
       id: 'selfEmployedSince',
       condition: isSelfEmployed,
+    },
+    {
+      type: 'dateInput',
+      id: 'annuitantSince',
+      condition: isAnnuitant,
     },
   ];
 };

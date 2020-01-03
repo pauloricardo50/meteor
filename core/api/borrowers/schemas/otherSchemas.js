@@ -177,6 +177,13 @@ export const personalInfoSchema = {
     condition: ({ activityType }) =>
       activityType === BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED,
   },
+  annuitantSince: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.ANNUITANT,
+  },
 };
 
 const bonusField = {
