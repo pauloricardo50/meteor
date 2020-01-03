@@ -185,7 +185,7 @@ class S3Service {
       this.copyObject({
         Key: key,
         Metadata: { ...oldMetaData, ...newMetadata },
-        CopySource: `/${this.params.Bucket}/${key}`,
+        CopySource: encodeURIComponent(`/${this.params.Bucket}/${key}`),
         MetadataDirective: 'REPLACE',
       }),
     );
@@ -208,7 +208,7 @@ class S3Service {
         this.copyObject({
           Key: newKey,
           Metadata,
-          CopySource: `/${this.params.Bucket}/${oldKey}`,
+          CopySource: encodeURIComponent(`/${this.params.Bucket}/${oldKey}`),
           MetadataDirective: 'REPLACE',
         }),
       )
