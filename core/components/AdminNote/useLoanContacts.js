@@ -7,6 +7,7 @@ import {
   USERS_COLLECTION,
   BORROWERS_COLLECTION,
   CONTACTS_COLLECTION,
+  PROMOTION_USERS_ROLES,
 } from 'core/api/constants';
 
 const getLoanContacts = ({
@@ -63,7 +64,7 @@ const getLoanContacts = ({
     }
   });
 
-  promotions.forEach(({ $metadata: { invitedBy }, users }) => {
+  promotions.forEach(({ $metadata: { invitedBy }, users = [] }) => {
     const invitedByUser = users.find(({ _id }) => _id === invitedBy);
     if (invitedByUser) {
       contactsArray.push({
@@ -75,6 +76,24 @@ const getLoanContacts = ({
         isEmailable: true,
       });
     }
+
+    // TODO: Find out if this could be useful
+    // const promoters = users.filter(({ $metadata }) =>
+    //   $metadata.roles.includes(PROMOTION_USERS_ROLES.PROMOTER),
+    // );
+
+    // if (promoters.length > 0) {
+    //   promoters.forEach(promoter => {
+    //     contactsArray.push({
+    //       name: promoter.name,
+    //       email: promoter.email,
+    //       title: `Promoteur`,
+    //       icon: collectionIcons[USERS_COLLECTION],
+    //       phoneNumber: promoter.phoneNumber,
+    //       isEmailable: true,
+    //     });
+    //   });
+    // }
   });
 
   contacts.forEach(contact => {
