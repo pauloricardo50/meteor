@@ -12,6 +12,7 @@ import FinancingOwnFundsActions from './FinancingOwnFundsActions';
 import FinancingOwnFundsPickerForm from './FinancingOwnFundsPickerForm';
 import OwnFundsCompleter from './OwnFundsCompleter';
 import FinancingOwnFundsPledgeWarning from './FinancingOwnFundsPledgeWarning';
+import FinancingOwnFundsWithdrawWarning from './FinancingOwnFundsWithdrawWarning';
 import { calculateRemainingFunds } from './FinancingOwnFundsPickerHelpers';
 
 type FinancingOwnFundsDialogProps = {};
@@ -50,6 +51,7 @@ const FinancingOwnFundsDialog = (props: FinancingOwnFundsDialogProps) => {
           remaining={remaining}
         />
         <FinancingOwnFundsPledgeWarning {...props} />
+        <FinancingOwnFundsWithdrawWarning {...props} />
       </DialogContent>
       <FinancingOwnFundsActions
         {...props}
