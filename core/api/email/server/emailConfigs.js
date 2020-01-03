@@ -454,10 +454,13 @@ addEmailConfig(EMAIL_IDS.EXPIRE_PROMOTION_RESERVATION_AGREEMENT, {
 addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides(params, strings) {
-    return notificationAndCtaTemplateDefaultOverride.call(this, params, {
-      ...strings,
-      ctaUrl: Meteor.settings.public.subdomains.pro,
-    });
+    return {
+      ...notificationAndCtaTemplateDefaultOverride.call(this, params, {
+        ...strings,
+        ctaUrl: Meteor.settings.public.subdomains.pro,
+      }),
+      bccAddresses: params.bccAddresses,
+    };
   },
 });
 

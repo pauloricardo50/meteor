@@ -306,12 +306,12 @@ addEmailListener({
   method: loanSetAdminNote,
   func: ({ params }) => {
     const {
-      notifyPro,
+      notifyPros,
       note: { isSharedWithPros, note },
       loanId,
     } = params;
 
-    if (!notifyPro || !isSharedWithPros) {
+    if (!notifyPros || notifyPros.length === 0 || !isSharedWithPros) {
       return;
     }
 
@@ -319,30 +319,26 @@ addEmailListener({
       name: loanName,
       user: {
         name: customerName,
-        referredByUser,
         assignedEmployee: { name: adminName } = {},
       } = {},
     } = LoanService.get(loanId, {
       name: 1,
       user: {
         name: 1,
-        referredByUser: { email: 1 },
         assignedEmployee: { name: 1 },
       },
     });
 
-    if (!referredByUser) {
-      return;
-    }
-
     return sendEmailToAddress.serverRun({
       emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
-      address: referredByUser.email,
+      address: notifyPros[0].email,
       params: {
         customerName,
         loanName,
         note,
         adminName: adminName || 'e-Potek',
+        bccAddresses: notifyPros.slice(1),
+        mainRecipientIsBcc: true,
       },
     });
   },

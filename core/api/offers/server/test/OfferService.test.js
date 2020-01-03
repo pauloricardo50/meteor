@@ -59,7 +59,9 @@ describe('OfferService', () => {
         },
       });
 
-      expect(OfferService.get(offerId, { interest1: 1 }).interest1).to.equal(0.0123);
+      expect(OfferService.get(offerId, { interest1: 1 }).interest1).to.equal(
+        0.0123,
+      );
     });
   });
 
@@ -75,7 +77,7 @@ describe('OfferService', () => {
     });
   });
 
-  describe('send feedback', function () {
+  describe('send feedback', function() {
     this.timeout(10000);
 
     it('sends the feedback to the lender', async () => {
@@ -95,7 +97,7 @@ describe('OfferService', () => {
               _id: 'lenderId',
               organisation: { _id: 'orgId' },
               contact: {
-                emails: [{ address: 'john@doe.com' }],
+                emails: [{ address: 'lender@e-potek.com' }],
                 firstName: 'John',
                 lastName: 'Doe',
                 organisations: { _id: 'orgId' },
@@ -125,23 +127,19 @@ describe('OfferService', () => {
           response: { status },
           template: {
             template_name,
-            message: {
-              from_email,
-              subject,
-              global_merge_vars,
-              from_name,
-              bcc_address,
-            },
+            message: { from_email, subject, global_merge_vars, from_name, to },
           },
         },
       ] = await checkEmails(1);
 
+      const bcc = to.find(({ email }) => email === 'dev@e-potek.ch');
+
       expect(status).to.equal('sent');
       expect(emailId).to.equal(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER);
       expect(template_name).to.equal(EMAIL_TEMPLATES.SIMPLE.mandrillId);
-      expect(address).to.equal('john@doe.com');
+      expect(address).to.equal('lender@e-potek.com');
       expect(from_email).to.equal('dev@e-potek.ch');
-      expect(bcc_address).to.equal('dev@e-potek.ch');
+      expect(bcc.type).to.equal('bcc');
       expect(from_name).to.equal('Dev E-Potek');
       expect(subject).to.include('Feedback client sur');
       expect(

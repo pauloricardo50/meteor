@@ -96,7 +96,7 @@ const getEmbody = (overrides, options) =>
     addOptions(body, params);
   };
 
-const getFirewall = (overrides, options) => (userId, params) => {
+const getFirewall = overrides => (userId, params) => {
   params._userId = userId;
   if (!overrides.firewall) {
     Security.checkUserIsAdmin(userId);
@@ -114,9 +114,10 @@ export const exposeQuery = ({
 }) => {
   query.expose({
     ...overrides,
-    firewall: getFirewall(overrides, options),
+    firewall: getFirewall(overrides),
     embody: getEmbody(overrides, options),
     validateParams: getValidateParams(overrides, options),
+    unblock: true,
   });
 
   if (resolver) {
