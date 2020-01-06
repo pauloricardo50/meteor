@@ -8,26 +8,36 @@ import T from '../../../../Translation';
 type FinancingOwnFundsWithdrawWarningProps = {};
 
 const FinancingOwnFundsWithdrawWarning = ({
-    usageType,
-    type,
+  usageType,
+  type,
+  value,
 }: FinancingOwnFundsWithdrawWarningProps) => {
-    // Withdrawals of LPP and 3A are taxable
-    const isWithdrawTaxable =
-        usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW &&
-        Object.values(OWN_FUNDS_TYPES)
-            .filter(x => x !== OWN_FUNDS_TYPES.INSURANCE_3B)
-            .includes(type);
+  // Withdrawals of LPP and 3A are taxable
+  const isWithdrawTaxable =
+    usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW &&
+    [
+      OWN_FUNDS_TYPES.INSURANCE_2,
+      OWN_FUNDS_TYPES.INSURANCE_3A,
+      OWN_FUNDS_TYPES.BANK_3A,
+    ].includes(type);
 
-    if (isWithdrawTaxable) {
-        return (
-            <p className="financing-withdraw-warning primary">
-                <Icon type="info" className="icon" />
-                <T id="FinancingOwnFundsWithdrawWarning.description" />
-            </p>
-        );
-    }
+  const isInsurance2WithdrawTooLow =
+    type === OWN_FUNDS_TYPES.INSURANCE_2 && value < 20000;
 
-    return null;
+  if (isWithdrawTaxable) {
+    return (
+      <p className="financing-withdraw-warning primary">
+        <Icon type="info" className="icon" />
+        {isInsurance2WithdrawTooLow ? (
+          <T id="FinancingOwnFundsWithdrawWarning.insurance2" />
+        ) : (
+          <T id="FinancingOwnFundsWithdrawWarning.description" />
+        )}
+      </p>
+    );
+  }
+
+  return null;
 };
 
 export default FinancingOwnFundsWithdrawWarning;
