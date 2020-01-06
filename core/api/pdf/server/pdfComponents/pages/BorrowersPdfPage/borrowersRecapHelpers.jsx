@@ -9,6 +9,7 @@ import {
   OTHER_INCOME,
   OWN_FUNDS_TYPES,
   CIVIL_STATUS,
+  BORROWER_ACTIVITY_TYPES,
 } from '../../../../../borrowers/borrowerConstants';
 
 const renderWithComments = (value, comments = []) => {
@@ -213,6 +214,30 @@ const getBorrowerJob = borrower => {
     : job;
 };
 
+const getBorrowerActivityType = borrower => {
+  const { activityType, selfEmployedSince, annuitantSince } = borrower;
+
+  if (activityType === BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED) {
+    return (
+      <span>
+        <T id={`Forms.activityType.${activityType}`} />
+        &nbsp;({moment(selfEmployedSince).format('DD.MM.YYYY')})
+      </span>
+    );
+  }
+
+  if (activityType === BORROWER_ACTIVITY_TYPES.ANNUITANT) {
+    return (
+      <span>
+        <T id={`Forms.activityType.${activityType}`} />
+        &nbsp;({moment(annuitantSince).format('DD.MM.YYYY')})
+      </span>
+    );
+  }
+
+  return <T id={`Forms.activityType.${activityType}`} />;
+};
+
 export const getBorrowersInfos = (borrowers, calculator) => ({
   ...getBorrowersSingleInfos(borrowers, [
     'name',
@@ -221,10 +246,10 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'birthDate',
     'childrenCount',
     'civilStatus',
-    'activityType',
     'email',
     'phoneNumber',
   ]),
+  activityType: borrowers.map(getBorrowerActivityType),
   company: borrowers.map(getBorrowerCompany),
   job: borrowers.map(getBorrowerJob),
   civilStatus: borrowers.map(getBorrowerCivilStatusAndDate),

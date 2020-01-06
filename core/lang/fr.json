@@ -1,4 +1,6 @@
 {
+  "Forms.annuitantSince": "Rentier depuis",
+  "Forms.selfEmployedSince": "Indépendant depuis",
   "FinancingOwnFundsWithdrawWarning.description": "Attention, lors des retraits de capitaux de prévoyance (LPP, 3A), vous serez imposé sur l'ensemble des retraits cumulés. Pensez à prévoir des fonds propres supplémentaires pour payer cet impôt.",
   "Forms.switzerland": "Suisse",
   "Forms.expenses.THIRD_PARTY_FORTUNE_REIMBURSEMENT": "Remboursement de prêt",
@@ -6,7 +8,7 @@
   "PDF.borrowersInfos.email": "Email",
   "PDF.borrowersInfos.phoneNumber": "Téléphone",
   "PDF.borrowersInfos.activityType": "Type d'activité",
-  "PDF.borrowersInfos.job": "Poste",
+  "PDF.borrowersInfos.job": "Profession",
   "Forms.askForMaxLoan": "Demander le financement maximum",
   "Forms.includeMissingDocuments": "Inclure la liste des documents manquants",
   "Forms.additionalInfo": "Informations complémentaires",

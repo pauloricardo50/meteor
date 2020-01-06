@@ -14,7 +14,10 @@ type LoanDisbursementDateProps = {
 const schema = new SimpleSchema({
   disbursementDate: {
     type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    uniforms: {
+      type: CUSTOM_AUTOFIELD_TYPES.DATE,
+      style: { minWidth: '300px' },
+    },
   },
 });
 
@@ -22,14 +25,14 @@ const LoanDisbursementDate = ({
   onSubmit,
   model,
 }: LoanDisbursementDateProps) => (
-  <AutoForm
-    schema={schema}
-    model={model}
-    onSubmit={onSubmit}
-    autosave
-    submitFieldProps={{ showSubmitField: false }}
-  />
-);
+    <AutoForm
+      schema={schema}
+      model={model}
+      onSubmit={onSubmit}
+      autosave
+      submitFieldProps={{ showSubmitField: false }}
+    />
+  );
 
 export default withProps(({ loan, onSubmit }) => ({
   onSubmit: ({ disbursementDate }) =>
