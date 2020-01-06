@@ -1,6 +1,7 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
 
+import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
 import { OWN_FUNDS_TYPES } from '../../constants';
 import { moneyField, roundedInteger } from '../../helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
@@ -52,7 +53,7 @@ export const structureSchema = {
       const isInsurance2Withdraw =
         this.siblingField('type').value === OWN_FUNDS_TYPES.INSURANCE_2 &&
         this.siblingField('usageType').value === OWN_FUNDS_USAGE_TYPES.WITHDRAW;
-      if (isInsurance2Withdraw && this.value < 20000) {
+      if (isInsurance2Withdraw && this.value < MIN_INSURANCE2_WITHDRAW) {
         return 'insurance2WithdrawNotEnough';
       }
     },
