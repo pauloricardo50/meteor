@@ -7,6 +7,16 @@ import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants'
 import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
 
+SimpleSchema.setDefaultMessages({
+  initialLanguage: 'fr',
+  messages: {
+    fr: {
+      insurance2WithdrawNotEnough:
+        'Vous devez retirer au minimum CHF 20 000 de LPP',
+    },
+  },
+});
+
 export const structureSchema = {
   amortization: { ...moneyField, defaultValue: 0 },
   amortizationType: {
@@ -35,7 +45,18 @@ export const structureSchema = {
     allowedValues: Object.values(OWN_FUNDS_TYPES),
     optional: true,
   },
-  'ownFunds.$.value': { ...moneyField, optional: false },
+  'ownFunds.$.value': {
+    ...moneyField,
+    optional: false,
+    custom() {
+      const isInsurance2Withdraw =
+        this.siblingField('type').value === OWN_FUNDS_TYPES.INSURANCE_2 &&
+        this.siblingField('usageType').value === OWN_FUNDS_USAGE_TYPES.WITHDRAW;
+      if (isInsurance2Withdraw && this.value < 20000) {
+        return 'insurance2WithdrawNotEnough';
+      }
+    },
+  },
   'ownFunds.$.usageType': {
     type: String,
     optional: true,
