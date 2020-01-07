@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import cx from 'classnames';
 
 import IconButton from 'core/components/IconButton/IconButton';
@@ -20,6 +20,7 @@ const LenderPickerOrganisation = ({
   loan,
 }: LenderPickerOrganisationProps) => {
   const { name, _id: organisationId } = organisation;
+  const [loading, setLoading] = useState(false);
   return (
     <div className="flex center organisation">
       <div className="flex-col">
@@ -29,20 +30,18 @@ const LenderPickerOrganisation = ({
           loan={loan}
         />
       </div>
-      {isActive && (
-        <IconButton
-          className="error remove"
-          onClick={() => removeLender(organisationId)}
-          type="delete"
-        />
-      )}
-      {!isActive && (
-        <IconButton
-          onClick={() => addLender(organisationId)}
-          type="add"
-          className="add"
-        />
-      )}
+      <IconButton
+        className={isActive ? 'error remove' : 'add'}
+        type={isActive ? 'delete' : 'add'}
+        onClick={() => {
+          setLoading(true);
+          const promise = isActive
+            ? removeLender(organisationId)
+            : addLender(organisationId);
+          return promise.finally(() => setLoading(false));
+        }}
+        loading={loading}
+      />
     </div>
   );
 };
