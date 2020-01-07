@@ -29,7 +29,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
             <span>
               <T id="FinancingResultAmortization.total" />
             </span>
-            :
+            :&nbsp;
             <b>
               <Money value={amortizationAmount} />
             </b>
@@ -39,7 +39,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
             <span>
               <T id="FinancingResultAmortization.duration" />
             </span>
-            :
+            :&nbsp;
             <b>
               {amortizationYears} <T id="general.years" />
             </b>
@@ -49,7 +49,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
             <span>
               <T id="FinancingResultAmortization.yearly" />
             </span>
-            :
+            :&nbsp;
             <b>
               <Money value={yearlyAmortization} />
               /
