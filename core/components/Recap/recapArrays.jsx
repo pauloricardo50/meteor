@@ -577,7 +577,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     },
     {
       label: 'Recap.buyersContractAdditionalFees',
-      value: `~${toMoney(buyersContractAdditionalFees)}`,
+      value: `${toMoney(buyersContractAdditionalFees)}`,
       hide: !buyersContractAdditionalFees,
     },
     {
@@ -604,7 +604,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     },
     {
       label: 'Recap.mortgageNoteAdditionalFees',
-      value: `~${toMoney(mortgageNoteAdditionalFees)}`,
+      value: `${toMoney(mortgageNoteAdditionalFees)}`,
       hide: !mortgageNoteAdditionalFees,
     },
     {
