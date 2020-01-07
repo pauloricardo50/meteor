@@ -12,7 +12,7 @@ const ReferredUsersTable = ({
   columnOptions,
   organisationId,
   name: organisationName,
-  users,
+  users = [],
   referredByUserId,
   setReferredByUserId,
 }: ReferredCustomersTableProps) => {
