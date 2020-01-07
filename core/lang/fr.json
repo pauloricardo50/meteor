@@ -663,7 +663,7 @@
   "Forms.permissions.displayCustomerNames.forLotStatus.SOLD": "Vendu",
   "Forms.permissions.displayCustomerNames": "Afficher le nom des clients",
   "Forms.permissions.canSeeCustomers": "Peut voir les clients",
-  "Forms.permissions.canManageDocuments": "Peut gérér les documents de la promotion",
+  "Forms.permissions.canManageDocuments": "Peut gérer les documents de la promotion",
   "Forms.permissions.canModifyPromotion": "Peut modifier la promotion",
   "Forms.permissions.canRemoveLots": "Peut supprimer des lots",
   "Forms.permissions.canModifyLots": "Peut modifier des lots",
