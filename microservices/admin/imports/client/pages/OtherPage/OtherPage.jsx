@@ -8,13 +8,11 @@ import {
   BORROWERS_COLLECTION,
   INTEREST_RATES_COLLECTION,
   PROPERTIES_COLLECTION,
-  TASKS_COLLECTION,
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import collectionIcons from 'core/arrays/collectionIcons';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
-import TasksPage from '../TasksPage/loadable';
 import BorrowersPage from '../BorrowersPage/loadable';
 import PropertiesPage from '../PropertiesPage/loadable';
 import InterestRatesPage from '../InterestRatesPage/loadable';
@@ -25,7 +23,6 @@ const tabs = [
     id: INTEREST_RATES_COLLECTION,
     content: <InterestRatesPage />,
   },
-  { id: TASKS_COLLECTION, content: <TasksPage /> },
   {
     id: BORROWERS_COLLECTION,
     content: <BorrowersPage />,

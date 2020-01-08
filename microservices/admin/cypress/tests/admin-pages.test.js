@@ -64,10 +64,6 @@ const pages = {
       shouldRender: '.interest-rates-page',
     }),
 
-    'Other Tasks Tab': route('/other/tasks', {
-      shouldRender: '.tasks-page',
-    }),
-
     'Other Borrowers Tab': route('/other/borrowers', {
       shouldRender: '.borrowers-page',
     }),

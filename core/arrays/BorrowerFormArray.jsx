@@ -31,9 +31,12 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   const isFirst = borrowers[0]._id === borrowerId;
   const isMarried = b.civilStatus === constants.CIVIL_STATUS.MARRIED;
   const isDivorced = b.civilStatus === constants.CIVIL_STATUS.DIVORCED;
-  const isWorking = Object.values(constants.BORROWER_ACTIVITY_TYPES)
-    .filter(x => x !== constants.BORROWER_ACTIVITY_TYPES.ANNUITANT)
-    .includes(b.activityType);
+  const isSalaried =
+    b.activityType === constants.BORROWER_ACTIVITY_TYPES.SALARIED;
+  const isSelfEmployed =
+    b.activityType === constants.BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED;
+  const isAnnuitant =
+    b.activityType === constants.BORROWER_ACTIVITY_TYPES.ANNUITANT;
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -45,6 +48,16 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   return [
     { id: 'firstName', type: 'textInput' },
     { id: 'lastName', type: 'textInput' },
+    {
+      type: 'textInput',
+      id: 'email',
+      placeholder: <T id="Forms.email.placeholder" />,
+    },
+    {
+      type: 'textInput',
+      id: 'phoneNumber',
+      placeholder: <T id="Forms.phoneNumber.placeholder" />,
+    },
     {
       id: 'gender',
       type: 'radioInput',
@@ -81,11 +94,26 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       noIntl: disableAddress,
     },
     {
+      id: 'zipCode',
+      type: 'textInput',
+      condition: !disableAddress,
+      placeholder: disableAddress && borrowers[0].address1,
+      noIntl: disableAddress,
+      required: addressFieldsAreNecessary,
+    },
+    {
       id: 'city',
       type: 'textInput',
       condition: !disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
+      required: addressFieldsAreNecessary,
+    },
+    {
+      type: 'custom',
+      id: 'canton',
+      component: <CantonField canton={b.canton} />,
+      condition: !disableAddress,
       required: addressFieldsAreNecessary,
     },
     {
@@ -104,33 +132,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
         }
         return countries.getName(code, 'fr');
       },
-    },
-    {
-      id: 'zipCode',
-      type: 'textInput',
-      condition: !disableAddress,
-      placeholder: disableAddress && borrowers[0].address1,
-      noIntl: disableAddress,
-      required: addressFieldsAreNecessary,
-    },
-    {
-      type: 'custom',
-      id: 'canton',
-      component: <CantonField canton={b.canton} />,
-      condition: !disableAddress,
-      required: addressFieldsAreNecessary,
-    },
-    {
-      type: 'textInput',
-      id: 'email',
-      placeholder: <T id="Forms.email.placeholder" />,
-      required: false,
-    },
-    {
-      type: 'textInput',
-      id: 'phoneNumber',
-      placeholder: <T id="Forms.phoneNumber.placeholder" />,
-      required: false,
     },
     {
       type: 'conditionalInput',
@@ -167,13 +168,11 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'dateInput',
       id: 'marriedDate',
       condition: isMarried,
-      required: false,
     },
     {
       type: 'dateInput',
       id: 'divorcedDate',
       condition: isDivorced,
-      required: false,
     },
     {
       id: 'addPartner',
@@ -191,34 +190,39 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     {
       type: 'percent',
       id: 'jobActivityRate',
-      required: false,
-      condition: isWorking,
+      condition: isSalaried,
     },
     {
       id: 'job',
       type: 'textInput',
-      required: false,
-      condition: isWorking,
+      condition: isSalaried || isSelfEmployed,
     },
     {
       id: 'company',
       type: 'textInput',
-      required: false,
       autoComplete: 'organisation',
-      condition: isWorking,
+      condition: isSalaried,
     },
     {
       type: 'dateInput',
       id: 'jobStartDate',
-      required: false,
-      condition: isWorking && !!b.company,
+      condition: isSalaried,
     },
     {
       id: 'worksInSwitzerlandSince',
       type: 'textInput',
-      required: false,
       number: true,
-      condition: isWorking,
+      condition: isSalaried,
+    },
+    {
+      type: 'dateInput',
+      id: 'selfEmployedSince',
+      condition: isSelfEmployed,
+    },
+    {
+      type: 'dateInput',
+      id: 'annuitantSince',
+      condition: isAnnuitant,
     },
   ];
 };

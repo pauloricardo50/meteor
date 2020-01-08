@@ -41,6 +41,7 @@ class IconButton extends Component {
       classes,
       size = 'medium',
       className,
+      loading,
       ...rest
     } = this.props;
 
@@ -53,13 +54,18 @@ class IconButton extends Component {
           {
             [classes[`size${capitalize(size)}`]]: size !== 'medium',
           },
-          className,
+          !loading && className,
         )}
         aria-label={tooltip || undefined}
-        disabled={disabled}
+        disabled={disabled || loading}
         {...rest}
       >
-        <Icon type={type} style={iconStyle} fontSize="inherit" {...iconProps} />
+        <Icon
+          type={loading ? 'loop-spin' : type}
+          style={iconStyle}
+          fontSize="inherit"
+          {...iconProps}
+        />
       </MuiIconButton>
     );
 

@@ -60,7 +60,13 @@ export const personalInfoSchema = {
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
   },
-  ...address,
+  ...Object.keys(address).reduce(
+    (addressObject, key) => ({
+      ...addressObject,
+      [key]: { ...address[key], condition: ({ sameAddress }) => !sameAddress },
+    }),
+    {},
+  ),
   sameAddress: {
     type: Boolean,
     optional: true,
@@ -118,14 +124,28 @@ export const personalInfoSchema = {
     min: 0,
     max: 20,
   },
-  company: { type: String, optional: true },
+  company: {
+    type: String,
+    optional: true,
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.SALARIED,
+  },
   worksInSwitzerlandSince: {
     type: SimpleSchema.Integer,
     optional: true,
     min: 1900,
     max: 2050,
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.SALARIED,
   },
-  job: { type: String, optional: true },
+  job: {
+    type: String,
+    optional: true,
+    condition: ({ activityType }) =>
+      Object.values(BORROWER_ACTIVITY_TYPES)
+        .filter(type => type !== BORROWER_ACTIVITY_TYPES.ANNUITANT)
+        .includes(activityType),
+  },
   email: {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
@@ -136,13 +156,33 @@ export const personalInfoSchema = {
     type: Date,
     optional: true,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.SALARIED,
   },
-  jobActivityRate: percentageField,
+  jobActivityRate: {
+    ...percentageField,
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.SALARIED,
+  },
   activityType: {
     type: String,
     optional: true,
     allowedValues: Object.values(BORROWER_ACTIVITY_TYPES),
     uniforms: { displayEmpty: false },
+  },
+  selfEmployedSince: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED,
+  },
+  annuitantSince: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    condition: ({ activityType }) =>
+      activityType === BORROWER_ACTIVITY_TYPES.ANNUITANT,
   },
 };
 
