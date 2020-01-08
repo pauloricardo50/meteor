@@ -25,6 +25,7 @@ exposeQuery({
     validateParams: {
       fromDate: Match.Maybe(Match.OneOf(null, Date)),
       toDate: Match.Maybe(Match.OneOf(null, Date)),
+      breakdown: Match.Maybe(String),
     },
   },
   resolver: loanStatusChangesResolver,
