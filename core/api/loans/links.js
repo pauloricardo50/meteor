@@ -11,6 +11,7 @@ import {
   Revenues,
   Tasks,
   Users,
+  Organisations,
 } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
@@ -92,6 +93,13 @@ LinkInitializer.directInit(() => {
       metadata: true,
       unique: true,
       collection: Promotions,
+    },
+    // No inversed link
+    selectedLenderOrganisation: {
+      field: 'selectedLenderOrganisationLink',
+      type: 'one',
+      metadata: true,
+      collection: Organisations,
     },
   });
 });

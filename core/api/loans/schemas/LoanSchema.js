@@ -141,6 +141,8 @@ const LoanSchema = new SimpleSchema({
     optional: true,
   },
   disbursementDate: { type: Date, optional: true },
+  selectedLenderOrganisationLink: { type: Object, optional: true },
+  'selectedLenderOrganisationLink._id': { type: String, optional: true },
 });
 
 export default LoanSchema;

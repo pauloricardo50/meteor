@@ -1,3 +1,4 @@
+import LenderService from 'core/api/lenders/server/LenderService';
 import FileService from '../../files/server/FileService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -9,6 +10,7 @@ import Loans from '../loans';
 import formatNumbersHook, {
   formatPhoneNumber,
 } from '../../../utils/phoneFormatting';
+import LoanService from './LoanService';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
@@ -68,4 +70,48 @@ formatNumbersHook(Loans, 'contacts', (oldContacts = []) =>
     ...contact,
     phoneNumber: formatPhoneNumber(phoneNumber),
   })),
+);
+
+Loans.after.update(
+  (
+    userId,
+    {
+      _id: loanId,
+      structures = [],
+      selectedStructure,
+      lendersCache = [],
+      selectedLenderOrganisationLink = {},
+    },
+  ) => {
+    if (selectedStructure) {
+      const { offerId } = structures.find(({ id }) => id === selectedStructure);
+      const selectedLenderOrganisation =
+        lendersCache.find(({ _id: lenderId }) => {
+          const { offers = [] } = LenderService.get(
+            { _id: lenderId, 'loanLink._id': loanId },
+            { offers: { _id: 1 } },
+          );
+          return offers.some(({ _id }) => _id === offerId);
+        }) || {};
+      const {
+        organisationLink: { _id: selectedLenderOrganisationId } = {},
+      } = selectedLenderOrganisation;
+
+      if (selectedLenderOrganisationId) {
+        const {
+          _id: currentselectedLenderOrganisationId,
+        } = selectedLenderOrganisationLink;
+
+        if (
+          selectedLenderOrganisationId !== currentselectedLenderOrganisationId
+        ) {
+          LoanService.addLink({
+            id: loanId,
+            linkName: 'selectedLenderOrganisation',
+            linkId: selectedLenderOrganisationId,
+          });
+        }
+      }
+    }
+  },
 );

@@ -26,6 +26,7 @@ const LoanBoard = ({
 }: LoanBoardProps) => (
   <>
     <div className="loan-board">
+      {console.log('loans', data)}
       <LoanBoardOptions
         options={options}
         dispatch={dispatch}
