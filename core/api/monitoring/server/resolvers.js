@@ -207,6 +207,26 @@ const getFilters = ({ fromDate, toDate }) => {
   return filters;
 };
 
+const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
+  const filters = {};
+
+  if (!loanCreatedAtFrom && !loanCreatedAtTo) {
+    return {};
+  }
+
+  if (loanCreatedAtFrom) {
+    filters['loan.createdAt'] = {};
+    filters['loan.createdAt'].$gte = loanCreatedAtFrom;
+  }
+
+  if (loanCreatedAtTo) {
+    filters['loan.createdAt'] = filters['loan.createdAt'] || {};
+    filters['loan.createdAt'].$lte = loanCreatedAtTo;
+  }
+
+  return filters;
+};
+
 const assigneeBreakdown = filters => [
   {
     $match: getFilters(filters),
@@ -226,9 +246,11 @@ const assigneeBreakdown = filters => [
       'loan._id': 1,
       'loan.name': 1,
       'loan.userCache': 1,
+      'loan.createdAt': 1,
     },
   },
   { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
+  { $match: getLoanFilters(filters) },
   {
     $group: {
       _id: {
@@ -258,10 +280,10 @@ const assigneeBreakdown = filters => [
   {
     $addFields: {
       loanIds: {
-        $map: {
+        $reduce: {
           input: '$loanIds',
-          as: 'loanId',
-          in: { $arrayElemAt: ['$$loanId', 0] },
+          initialValue: [],
+          in: { $concatArrays: ['$$value', '$$this'] },
         },
       },
     },
@@ -271,9 +293,7 @@ const assigneeBreakdown = filters => [
 ];
 
 const loanStatusChangePipeline = filters => [
-  {
-    $match: getFilters(filters),
-  },
+  { $match: getFilters(filters) },
   {
     $group: {
       _id: {

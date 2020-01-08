@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
+import uniq from 'lodash/uniq';
 
 import Table from 'core/components/Table';
+import { Percent } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { LOAN_STATUS_ORDER, LOANS_COLLECTION, ROLES } from 'core/api/constants';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -13,6 +15,7 @@ const statuses = LOAN_STATUS_ORDER.slice(1);
 
 const getColumnOptions = () => [
   { id: 'assignee', label: 'Conseiller' },
+  { id: 'loanCount', label: 'Nb. de dossiers distincts' },
   ...statuses.map(status => ({
     id: status,
     label: (
@@ -29,10 +32,12 @@ const getRows = ({ data, admins }) => {
     const adminData = data.find(({ _id: dataId }) => dataId === _id) || {
       statusChanges: [],
     };
+    const loanCount = uniq(adminData.loanIds).length;
     return {
       id: _id,
       columns: [
         name,
+        loanCount,
         ...statuses.map(status =>
           adminData.statusChanges
             .filter(({ nextStatus }) => nextStatus === status)
@@ -51,15 +56,32 @@ const getRows = ({ data, admins }) => {
       totalColumns[0],
     );
 
-  return [
+  const rawRowData = [
     ...byAdminData,
-    {
-      id: 'total',
-      columns: ['Total', ...total].map((value, index) => (
-        <b key={index}>{value}</b>
-      )),
-    },
+    { id: 'total', columns: ['Total', ...total] },
   ];
+
+  return rawRowData.map(({ columns, ...obj }) => {
+    const [name, loanCount, ...rest] = columns;
+    const [restWithoutLast, last] = [
+      rest.slice(0, rest.length - 1),
+      rest.slice(-1),
+    ];
+
+    return {
+      ...obj,
+      columns: [
+        name,
+        loanCount,
+        ...restWithoutLast.map((num, index) => (
+          <span key={index}>
+            {num} (<Percent value={num / loanCount} />)
+          </span>
+        )),
+        last,
+      ],
+    };
+  });
 };
 
 const MonitoringActivity = ({
@@ -87,7 +109,7 @@ const MonitoringActivity = ({
       <Table
         rows={rows}
         columnOptions={getColumnOptions()}
-        initialOrderBy={9}
+        initialOrderBy={10}
       />
     </div>
   );

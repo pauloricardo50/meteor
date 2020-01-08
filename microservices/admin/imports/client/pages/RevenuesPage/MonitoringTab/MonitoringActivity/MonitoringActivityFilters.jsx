@@ -1,9 +1,13 @@
 // @flow
 import React from 'react';
+import moment from 'moment';
 
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 
 type MonitoringActivityFiltersProps = {};
+
+// Date at which we started enforcing continuous status changes
+const minDate = moment('15/11/2019', 'DD/MM/YYYY');
 
 const MonitoringActivityFilters = ({
   activityRange,
@@ -18,9 +22,7 @@ const MonitoringActivityFilters = ({
         range={activityRange}
         onChange={setActivityRange}
         numberOfMonths={3}
-        enableOutsideDays
         isDayBlocked={() => false}
-        isOutsideRange={() => false}
         id="activityRange"
       />
     </div>
@@ -30,10 +32,9 @@ const MonitoringActivityFilters = ({
         range={createdAtRange}
         onChange={setCreatedAtRange}
         numberOfMonths={3}
-        enableOutsideDays
-        isDayBlocked={() => false}
-        isOutsideRange={() => false}
         id="createdAt"
+        enableOutsideDays={false}
+        isOutsideRange={date => date.isBefore(minDate)}
       />
     </div>
   </div>

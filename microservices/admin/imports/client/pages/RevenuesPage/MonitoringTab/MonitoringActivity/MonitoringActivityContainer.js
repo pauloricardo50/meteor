@@ -19,9 +19,17 @@ export default compose(
   }),
   withSmartQuery({
     query: loanStatusChanges,
-    params: ({ activityRange: { startDate, endDate } }) => ({
-      fromDate: startDate,
-      toDate: endDate,
+    params: ({
+      activityRange: { startDate: fromDate, endDate: toDate },
+      createdAtRange: {
+        startDate: loanCreatedAtFrom,
+        endDate: loanCreatedAtTo,
+      },
+    }) => ({
+      fromDate,
+      toDate,
+      loanCreatedAtFrom,
+      loanCreatedAtTo,
       breakdown: 'assignee',
     }),
     dataName: 'data',
