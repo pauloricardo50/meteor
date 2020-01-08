@@ -36,7 +36,7 @@ describe('LoanChecklist', function() {
         expect(fields.borrowers.length).to.equal(1);
         expect(documents.borrowers.length).to.equal(1);
         expect(fields.borrowers[0].title).to.equal('Emprunteur 1');
-        expect(fields.borrowers[0].labels.length).to.equal(20);
+        expect(fields.borrowers[0].labels.length).to.equal(22);
         expect(documents.borrowers[0].title).to.equal('Emprunteur 1');
         expect(documents.borrowers[0].labels.length).to.equal(1);
       });
@@ -63,11 +63,11 @@ describe('LoanChecklist', function() {
         expect(fields.borrowers.length).to.equal(2);
         expect(documents.borrowers.length).to.equal(2);
         expect(fields.borrowers[0].title).to.equal('Paul');
-        expect(fields.borrowers[0].labels.length).to.equal(20);
+        expect(fields.borrowers[0].labels.length).to.equal(22);
         expect(documents.borrowers[0].title).to.equal('Paul');
         expect(documents.borrowers[0].labels.length).to.equal(1);
         expect(fields.borrowers[1].title).to.equal('Michel');
-        expect(fields.borrowers[1].labels.length).to.equal(20);
+        expect(fields.borrowers[1].labels.length).to.equal(22);
         expect(documents.borrowers[1].title).to.equal('Michel');
         expect(documents.borrowers[1].labels.length).to.equal(0);
       });
@@ -100,11 +100,11 @@ describe('LoanChecklist', function() {
         expect(fields.borrowers.length).to.equal(2);
         expect(documents.borrowers.length).to.equal(2);
         expect(fields.borrowers[0].title).to.equal('Paul');
-        expect(fields.borrowers[0].labels.length).to.equal(20);
+        expect(fields.borrowers[0].labels.length).to.equal(22);
         expect(documents.borrowers[0].title).to.equal('Paul');
         expect(documents.borrowers[0].labels.length).to.equal(1);
         expect(fields.borrowers[1].title).to.equal('Michel');
-        expect(fields.borrowers[1].labels.length).to.equal(20);
+        expect(fields.borrowers[1].labels.length).to.equal(22);
         expect(documents.borrowers[1].title).to.equal('Michel');
         expect(documents.borrowers[1].labels.length).to.equal(0);
       });

@@ -8,11 +8,11 @@ import { expect } from 'chai';
 import SlackService from '../SlackService';
 import UserService from '../../../users/server/UserService';
 import LoanService from '../../../loans/server/LoanService';
-import { fullUser } from '../../../fragments'
+import { fullUser } from '../../../fragments';
 
 const TEST_CHANNEL = 'test';
 
-describe('SlackService', function () {
+describe('SlackService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe('SlackService', function () {
         lastName: 'Doe',
         assignedEmployeeId: yannis._id,
       })._id;
-      const loanId1 = Factory.create('loan', { userId, name: '19-0001' })._id;
+      const loanId1 = Factory.create('loan', { userId, name: '20-0001' })._id;
       const loanId2 = LoanService.fullLoanInsert({ userId });
       const user = UserService.get(userId, fullUser());
 
@@ -56,7 +56,7 @@ describe('SlackService', function () {
         loanId: loanId2,
       }).then(({ attachments, channel }) => {
         expect(attachments[0].title).to.equal(
-          'Upload: file.pdf dans Taxes pour 19-0002.',
+          'Upload: file.pdf dans Taxes pour 20-0002.',
         );
         expect(attachments[0].text).to.equal(
           '*Progrès:* Emprunteurs `0.00%`, Documents: `0.00%`, Bien immo: `0.00%`',

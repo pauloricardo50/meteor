@@ -310,7 +310,7 @@ describe('BorrowerCalculator', () => {
             ],
           },
         }),
-      ).to.be.within(0.13, 0.14);
+      ).to.be.within(0.12, 0.13);
     });
   });
 
@@ -452,12 +452,14 @@ describe('BorrowerCalculator', () => {
       ).to.deep.equal([
         'firstName',
         'lastName',
+        'email',
+        'phoneNumber',
         'gender',
         'address1',
-        'city',
-        'country',
         'zipCode',
+        'city',
         'canton',
+        'country',
         'isSwiss',
         'birthDate',
         'citizenship',
@@ -674,6 +676,14 @@ describe('BorrowerCalculator', () => {
               hasOwnCompany: false,
               ownCompanies: [],
               activityType: BORROWER_ACTIVITY_TYPES.SALARIED,
+              jobActivityRate: 1,
+              jobStartDate: new Date(),
+              email: 'bob',
+              phoneNumber: '1234',
+              marriedDate: new Date(),
+              job: 'Test',
+              company: 'Test',
+              worksInSwitzerlandSince: new Date(),
             },
           ],
         }),
@@ -846,7 +856,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        -1865795269,
+        1539864539,
       );
     });
 
@@ -876,7 +886,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        -1425163193,
+        5386156423,
       );
     });
   });

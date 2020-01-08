@@ -9,7 +9,6 @@ import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
 
 SimpleSchema.setDefaultMessages({
-  initialLanguage: 'fr',
   messages: {
     fr: {
       insurance2WithdrawNotEnough:
