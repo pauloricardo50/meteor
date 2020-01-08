@@ -43,7 +43,7 @@ const ADMIN_ROUTES = {
   },
   REVENUES_PAGE: {
     component: RevenuesPage,
-    path: '/revenues/:tabId?',
+    path: '/revenues/:tabId?/:revenuesTabId?',
   },
   OTHER_PAGE: {
     component: OtherPage,

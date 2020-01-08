@@ -31,6 +31,7 @@ const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
             link
             to={createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, {
               tabId: 'revenues',
+              revenuesTabId: 'list',
             })}
           >
             Résoudre le problème
