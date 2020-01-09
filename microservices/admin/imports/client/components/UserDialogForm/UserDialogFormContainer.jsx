@@ -18,7 +18,7 @@ const userSchema = new SimpleSchema({
   lastName: { type: String, optional: true },
   organisations: {
     type: Array,
-    condition: ({ roles = [] }) => roles.includes(ROLES.PRO),
+    condition: ({ roles = [] }) => !roles.includes(ROLES.USER),
   },
   email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
   phoneNumbers: { type: Array, optional: true },

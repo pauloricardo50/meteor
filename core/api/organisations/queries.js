@@ -8,7 +8,7 @@ import Organisations from '.';
 
 export const adminOrganisations = Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,
-  adminOrganisation(),
+  { ...adminOrganisation(), $options: { sort: { name: 1 } } },
   { scoped: true },
 );
 

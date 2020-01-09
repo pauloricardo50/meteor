@@ -8,7 +8,7 @@ export default compose(
   withRouter,
   withSmartQuery({
     query: adminUsers,
-    params: ({ match }) => ({ _id: match.params.userId }),
+    params: ({ match, userId }) => ({ _id: userId || match.params.userId }),
     queryOptions: { reactive: false, single: true },
     dataName: 'user',
   }),
