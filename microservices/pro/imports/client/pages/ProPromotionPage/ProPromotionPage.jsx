@@ -1,5 +1,6 @@
 // @flow
 import { compose, withProps } from 'recompose';
+import omit from 'lodash/omit';
 
 import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api';
@@ -16,6 +17,7 @@ import {
 } from 'core/api/security/clientSecurityHelpers';
 import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 import PromotionPage from 'core/components/PromotionPage/client';
+import { proPromotion } from 'core/api/fragments';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const makePermissions = props => ({
@@ -47,7 +49,10 @@ const ProPromotionPageContainer = compose(
   withMatchParam('promotionId'),
   withSmartQuery({
     query: proPromotions,
-    params: ({ promotionId }) => ({ _id: promotionId }),
+    params: ({ promotionId }) => ({
+      _id: promotionId,
+      $body: omit(proPromotion(), ['adminNotes']),
+    }),
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
