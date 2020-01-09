@@ -56,4 +56,5 @@ const LoanBoard = ({
     </div>
   </>
 );
+
 export default LoanBoardContainer(LoanBoard);
