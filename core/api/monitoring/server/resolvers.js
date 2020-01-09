@@ -189,51 +189,148 @@ export const loanMonitoring = args => {
   return LoanService.aggregate(pipeline);
 };
 
-export const loanStatusChanges = args => {
-  const { fromDate, toDate } = args;
+const getFilters = ({ fromDate, toDate }) => {
+  const filters = {
+    'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+  };
 
-  if (!fromDate || !toDate) {
-    return [];
+  if (fromDate) {
+    filters.createdAt = { $gte: fromDate };
   }
 
-  const pipeline = [
-    {
-      $match: {
-        'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
-        createdAt: { $gte: fromDate, $lte: toDate },
-      },
+  if (toDate) {
+    filters.createdAt = filters.createdAt || {};
+    filters.createdAt.$lte = toDate;
+  }
+
+  return filters;
+};
+
+const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
+  const filters = {};
+
+  if (!loanCreatedAtFrom && !loanCreatedAtTo) {
+    return {};
+  }
+
+  if (loanCreatedAtFrom) {
+    filters['loan.createdAt'] = { $gte: loanCreatedAtFrom };
+  }
+
+  if (loanCreatedAtTo) {
+    filters['loan.createdAt'] = filters['loan.createdAt'] || {};
+    filters['loan.createdAt'].$lte = loanCreatedAtTo;
+  }
+
+  return filters;
+};
+
+const assigneeBreakdown = filters => [
+  { $match: getFilters(filters) },
+  {
+    $lookup: {
+      from: 'loans',
+      localField: 'loanLink._id',
+      foreignField: '_id',
+      as: 'loan',
     },
-    {
-      $group: {
-        _id: {
-          prevStatus: '$metadata.details.prevStatus',
-          nextStatus: '$metadata.details.nextStatus',
+  },
+  {
+    $project: {
+      _id: 1,
+      metadata: 1,
+      'loan._id': 1,
+      'loan.name': 1,
+      'loan.userCache': 1,
+      'loan.createdAt': 1,
+    },
+  },
+  { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
+  { $match: getLoanFilters(filters) },
+  {
+    $group: {
+      _id: {
+        assignedEmployeeId: '$loan.userCache.assignedEmployeeCache._id',
+        prevStatus: '$metadata.details.prevStatus',
+        nextStatus: '$metadata.details.nextStatus',
+      },
+      activities: { $push: '$$ROOT' },
+      count: { $sum: 1 },
+    },
+  },
+  {
+    $group: {
+      _id: '$_id.assignedEmployeeId',
+      statusChanges: {
+        $push: {
+          prevStatus: '$_id.prevStatus',
+          nextStatus: '$_id.nextStatus',
+          count: '$count',
         },
-        count: { $sum: 1 },
-        loanIds: { $push: '$loanLink._id' },
+      },
+      totalStatusChangeCount: { $sum: '$count' },
+      loanIds: { $push: '$activities.loan._id' },
+    },
+  },
+  // Simple array flattening, as these ids arrive in the form of an array of arrays
+  {
+    $addFields: {
+      loanIds: {
+        $reduce: {
+          input: '$loanIds',
+          initialValue: [],
+          in: { $concatArrays: ['$$value', '$$this'] },
+        },
       },
     },
-  ];
-  const agg = ActivityService.aggregate(pipeline);
-  const sortedResults = agg.sort(({ _id: _idA }, { _id: _idB }) => {
-    if (_idA.prevStatus !== _idB.prevStatus) {
-      return (
-        LOAN_STATUS_ORDER.indexOf(_idA.prevStatus) -
-        LOAN_STATUS_ORDER.indexOf(_idB.prevStatus)
-      );
-    }
+  },
+  // Add this stage for consistency
+  { $sort: { '_id.assignedEmployeeId': 1 } },
+];
 
-    // If the 2 statuses are the same
-    const statusIndex = LOAN_STATUS_ORDER.indexOf(_idA.prevStatus);
-    const secondSort = [
-      ...LOAN_STATUS_ORDER.splice(statusIndex),
-      ...LOAN_STATUS_ORDER.slice(0, statusIndex),
-    ];
+const loanStatusChangePipeline = filters => [
+  { $match: getFilters(filters) },
+  {
+    $group: {
+      _id: {
+        prevStatus: '$metadata.details.prevStatus',
+        nextStatus: '$metadata.details.nextStatus',
+      },
+      count: { $sum: 1 },
+      loanIds: { $push: '$loanLink._id' },
+    },
+  },
+];
 
-    return (
-      secondSort.indexOf(_idA.nextStatus) - secondSort.indexOf(_idB.nextStatus)
-    );
-  });
+export const loanStatusChanges = args => {
+  const { breakdown, ...filters } = args;
 
-  return sortedResults;
+  let pipeline = [];
+
+  if (breakdown === 'assignee') {
+    pipeline = assigneeBreakdown(filters);
+  } else if (breakdown) {
+    throw new Meteor.Error('breakdown property can only be "assignee"');
+  } else {
+    pipeline = loanStatusChangePipeline(filters);
+  }
+
+  const results = ActivityService.aggregate(pipeline);
+
+  if (breakdown === 'assignee') {
+    return results.map(({ statusChanges, ...data }) => ({
+      ...data,
+      statusChanges: statusChanges.sort(
+        ({ prevStatus: prevStatusA }, { prevStatus: prevStatusB }) =>
+          LOAN_STATUS_ORDER.indexOf(prevStatusA) -
+          LOAN_STATUS_ORDER.indexOf(prevStatusB),
+      ),
+    }));
+  }
+
+  return results.sort(
+    ({ _id: _idA }, { _id: _idB }) =>
+      LOAN_STATUS_ORDER.indexOf(_idA.prevStatus) -
+      LOAN_STATUS_ORDER.indexOf(_idB.prevStatus),
+  );
 };

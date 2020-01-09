@@ -339,5 +339,80 @@ describe('monitoring', () => {
         count: 1,
       });
     });
+
+    it('groups status changes, and breaks them down by assignee', async () => {
+      generator({
+        users: [
+          { _id: 'admin1', _factory: 'admin' },
+          { _id: 'admin2', _factory: 'admin' },
+        ],
+        loans: [
+          {
+            _id: 'loan1',
+            user: { assignedEmployee: { _id: 'admin1' } },
+          },
+          {
+            _id: 'loan2',
+            user: { assignedEmployee: { _id: 'admin2' } },
+          },
+        ],
+      });
+      await ddpWithUserId('admin1', () =>
+        loanSetStatus.run({
+          loanId: 'loan1',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      );
+      await ddpWithUserId('admin1', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+      );
+      await ddpWithUserId('admin2', () =>
+        loanSetStatus.run({
+          loanId: 'loan2',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      );
+
+      const result = loanStatusChanges({
+        fromDate: moment()
+          .subtract(1, 'd')
+          .toDate(),
+        toDate: moment()
+          .add(1, 'd')
+          .toDate(),
+        breakdown: 'assignee',
+      });
+
+      expect(result.length).to.equal(2);
+      expect(result[0]).to.deep.equal({
+        _id: 'admin1',
+        totalStatusChangeCount: 2,
+        loanIds: ['loan1', 'loan1'],
+        statusChanges: [
+          {
+            prevStatus: LOAN_STATUS.LEAD,
+            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+            count: 1,
+          },
+          {
+            prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
+            nextStatus: LOAN_STATUS.ONGOING,
+            count: 1,
+          },
+        ],
+      });
+      expect(result[1]).to.deep.equal({
+        _id: 'admin2',
+        totalStatusChangeCount: 1,
+        loanIds: ['loan2'],
+        statusChanges: [
+          {
+            prevStatus: LOAN_STATUS.LEAD,
+            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+            count: 1,
+          },
+        ],
+      });
+    });
   });
 });
