@@ -1,5 +1,6 @@
 import { Match } from 'meteor/check';
 
+import { ROLES } from 'core/api/users/userConstants';
 import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import SecurityService from '../../security';
@@ -100,20 +101,44 @@ exposeQuery({
       body.$postFilter = (promotions = [], params) => {
         const { anonymize = false, userId } = params;
 
-        if (!anonymize) {
-          return promotions;
-        }
-
         const currentUser = UserService.get(userId, {
           promotions: { _id: 1 },
           organisations: { users: { _id: 1 } },
+          roles: 1,
         });
+
+        const isAdmin =
+          currentUser &&
+          currentUser.roles &&
+          currentUser.roles.length &&
+          currentUser.roles.some(role =>
+            [ROLES.ADMIN, ROLES.DEV].includes(role),
+          );
+
+        const promotionsWithFilteredNotes = isAdmin
+          ? promotions
+          : promotions.map(({ promotionLoan, ...promotion }) => {
+              if (!promotionLoan) {
+                return promotion;
+              }
+
+              const { adminNotes, ...rest } = promotionLoan;
+
+              return {
+                promotionLoan: { ...rest },
+                ...promotion,
+              };
+            });
+
+        if (!anonymize) {
+          return promotionsWithFilteredNotes;
+        }
 
         const promotionLotAnonymizer = makePromotionLotAnonymizer({
           currentUser,
         });
 
-        return promotions.map(promotion => {
+        return promotionsWithFilteredNotes.map(promotion => {
           const { promotionLots = [], ...rest } = promotion;
           return {
             promotionLots: promotionLots.map(promotionLotAnonymizer),
