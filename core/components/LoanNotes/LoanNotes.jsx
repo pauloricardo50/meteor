@@ -89,7 +89,7 @@ const LoanNotes = ({
                         size: 'small',
                         className: 'mr-8',
                       }}
-                      adminNote={proNote}
+                      adminNote={shownNote}
                     />
                   )}
                   {isAdmin && isSharedWithPros && (
