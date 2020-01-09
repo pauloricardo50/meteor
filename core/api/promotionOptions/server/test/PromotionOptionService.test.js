@@ -1,8 +1,9 @@
 // @flow
 /* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { Meteor } from 'meteor/meteor';
+import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
 
@@ -61,8 +62,18 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function () {
+describe('PromotionOptionService', function() {
   this.timeout(10000);
+
+  before(function() {
+    // This test causes conflicts between microservices when ran in parallel
+    // since it will remove all files
+    if (Meteor.settings.public.microservice !== 'pro') {
+      this.parent.pending = true;
+      this.skip();
+    }
+  });
+
   beforeEach(() => {
     resetDatabase();
   });
@@ -693,7 +704,9 @@ describe('PromotionOptionService', function () {
         },
       });
 
-      const pO = PromotionOptionService.get('promotionOption', { reservationAgreement: 1 });
+      const pO = PromotionOptionService.get('promotionOption', {
+        reservationAgreement: 1,
+      });
       expect(pO.reservationAgreement.startDate.getHours()).to.equal(0);
       expect(pO.reservationAgreement.startDate.getMinutes()).to.equal(0);
       expect(pO.reservationAgreement.startDate.getSeconds()).to.equal(0);
@@ -861,8 +874,8 @@ describe('PromotionOptionService', function () {
         moment().isoWeekday() <= 5
           ? moment().isoWeekday(5)
           : moment()
-            .add(1, 'weeks')
-            .isoWeekday(5);
+              .add(1, 'weeks')
+              .isoWeekday(5);
 
       const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
 
@@ -1367,7 +1380,9 @@ describe('PromotionOptionService', function () {
 
       expect(result).to.deep.equal({});
 
-      const promotionOption = PromotionOptionService.get('id', { simpleVerification: 1 });
+      const promotionOption = PromotionOptionService.get('id', {
+        simpleVerification: 1,
+      });
 
       expect(promotionOption.simpleVerification.status).to.equal(
         PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE,
