@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import AdminNote from 'core/components/AdminNote';
 import UpdateField from 'core/components/UpdateField';
-// import ProNotes from 'core/components/ProNotes/ProNotes';
 import LoanNotes from 'core/components/LoanNotes/LoanNotes';
 import LotsChart from './LotsChart';
 import LoansChart from './LoansChart';
