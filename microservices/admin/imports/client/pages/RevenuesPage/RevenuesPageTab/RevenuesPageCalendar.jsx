@@ -88,16 +88,16 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
     () =>
       assignee
         ? data.filter(({ loan }) => {
-          if (
-            loan &&
-            loan.userCache &&
-            loan.userCache.assignedEmployeeCache
-          ) {
-            return loan.userCache.assignedEmployeeCache._id === assignee;
-          }
+            if (
+              loan &&
+              loan.userCache &&
+              loan.userCache.assignedEmployeeCache
+            ) {
+              return loan.userCache.assignedEmployeeCache._id === assignee;
+            }
 
-          return false;
-        })
+            return false;
+          })
         : data,
     [assignee, data],
   );
@@ -140,16 +140,16 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
       {loading ? (
         <Loading />
       ) : (
-          <div className="revenues-calendar">
-            {months.map(month => (
-              <RevenuesPageCalendarColumn
-                key={month}
-                month={month}
-                revenues={groupedRevenues[getMonthId(month)]}
-              />
-            ))}
-          </div>
-        )}
+        <div className="revenues-calendar">
+          {months.map(month => (
+            <RevenuesPageCalendarColumn
+              key={month}
+              month={month}
+              revenues={groupedRevenues[getMonthId(month)]}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
