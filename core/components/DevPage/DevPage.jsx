@@ -12,25 +12,41 @@ import ConfirmMethod from '../ConfirmMethod';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
 
-const SharedStuff = () => {
-  return (
-    <>
-      <ConfirmMethod
-        method={cb => migrateToLatest.run().then(cb)}
-        keyword="MIGRATE"
-        label="Migrate to latest"
-        buttonProps={{ error: true, raised: true }}
-      />
-      <ConfirmMethod
-        method={cb => cleanDatabase.run().then(cb)}
-        keyword="CLEAN_DATABASE"
-        label="Clean database"
-        buttonProps={{ error: true, raised: true }}
-      />
-      <ErrorThrower />
-    </>
-  );
-};
+const SharedStuff = () => (
+  <>
+    <ConfirmMethod
+      method={cb => migrateToLatest.run().then(cb)}
+      keyword="MIGRATE"
+      label="Migrate to latest"
+      buttonProps={{ error: true, raised: true }}
+    />
+    <ConfirmMethod
+      method={cb => cleanDatabase.run().then(cb)}
+      keyword="CLEAN_DATABASE"
+      label="Clean database"
+      buttonProps={{ error: true, raised: true }}
+    />
+    <ErrorThrower />
+    <ConfirmMethod
+      method={() =>
+        new Promise((resolve, reject) => {
+          Meteor.call('sendQueuedMandrillItems', (err, res) => {
+            if (err) {
+              console.log('err??', err);
+              reject();
+            } else {
+              console.log(`Sent emails`, res);
+              resolve();
+            }
+          });
+        })
+      }
+      keyword="MANDRILL_SUCKS"
+      label="Send mandrill queue"
+      buttonProps={{ error: true, raised: true }}
+    />
+  </>
+);
 
 class DevPage extends Component {
   constructor(props) {
@@ -78,10 +94,10 @@ class DevPage extends Component {
                 Try to use Delete fake data or Delete personal data instead!
               </h4>
             ) : (
-                <h4 className="success">
-                  You're on a dev environment, do whatever you want! :)
+              <h4 className="success">
+                You're on a dev environment, do whatever you want! :)
               </h4>
-              )}
+            )}
 
             <Tooltip title="Use with extra care!!! You will be deleting EVERYTHING in the database except your personal account!">
               <Button
