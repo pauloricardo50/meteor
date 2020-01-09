@@ -4,10 +4,16 @@ import SecurityService from 'core/api/security/index';
 import { mandrillQueue } from './mandrillSOS';
 import { sendMandrillTemplate } from './mandrill';
 
-const sendAllTemplates = () => {
+const sendAllTemplates = async () => {
   const queued = mandrillQueue.find({}).fetch();
 
-  queued.forEach(sendMandrillTemplate);
+  await Promise.all(
+    queued.map(({ template, emailId, address }) =>
+      sendMandrillTemplate(template).then(response => {
+        this.addEmailActivity({ address, template, emailId, response });
+      }),
+    ),
+  );
 
   console.log('YOOOOOOOOO BITCH');
   console.log('YOOOOOOOOO BITCH');

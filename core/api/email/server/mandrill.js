@@ -84,7 +84,7 @@ export const getMandrillTemplate = ({
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 
-export const sendMandrillTemplate = mandrillTemplate => {
+export const sendMandrillTemplate = (mandrillTemplate, emailId, address) => {
   if (skipEmails) {
     return Promise.resolve();
   }
@@ -99,7 +99,7 @@ export const sendMandrillTemplate = mandrillTemplate => {
           additionalData: ['Mandrill error'],
         });
 
-        mandrillQueue.insert(mandrillTemplate);
+        mandrillQueue.insert({ template: mandrillTemplate, emailId, address });
 
         reject(error);
       }
