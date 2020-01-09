@@ -195,8 +195,7 @@ const getFilters = ({ fromDate, toDate }) => {
   };
 
   if (fromDate) {
-    filters.createdAt = {};
-    filters.createdAt.$gte = fromDate;
+    filters.createdAt = { $gte: fromDate };
   }
 
   if (toDate) {
@@ -215,8 +214,7 @@ const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
   }
 
   if (loanCreatedAtFrom) {
-    filters['loan.createdAt'] = {};
-    filters['loan.createdAt'].$gte = loanCreatedAtFrom;
+    filters['loan.createdAt'] = { $gte: loanCreatedAtFrom };
   }
 
   if (loanCreatedAtTo) {
@@ -228,9 +226,7 @@ const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
 };
 
 const assigneeBreakdown = filters => [
-  {
-    $match: getFilters(filters),
-  },
+  { $match: getFilters(filters) },
   {
     $lookup: {
       from: 'loans',
