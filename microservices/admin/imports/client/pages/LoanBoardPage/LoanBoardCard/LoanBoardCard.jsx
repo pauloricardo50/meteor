@@ -27,6 +27,7 @@ const LoanBoardCard = ({
     selectedStructure,
     structures = [],
     tasksCache: tasks,
+    selectedLenderOrganisation,
   } = loan;
   const structure = structures.find(({ id }) => id === selectedStructure);
   const adminNote = adminNotes[0] && adminNotes[0].note;
@@ -48,7 +49,11 @@ const LoanBoardCard = ({
       </div>
 
       <div className="card-top">
-        <LoanBoardCardDescription structure={structure} adminNote={adminNote} />
+        <LoanBoardCardDescription
+          structure={structure}
+          adminNote={adminNote}
+          selectedLenderOrganisation={selectedLenderOrganisation}
+        />
         <LoanBoardCardTasks
           nextDueTask={nextDueTask}
           renderComplex={renderComplex}

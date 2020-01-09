@@ -32,6 +32,7 @@ const defaultBody = {
   },
   financedPromotionLink: 1,
   userId: 1,
+  selectedLenderOrganisation: { name: 1 },
 };
 
 const noPromotionIsChecked = promotionId =>
