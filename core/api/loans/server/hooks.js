@@ -82,34 +82,54 @@ Loans.after.update(
       lendersCache = [],
       selectedLenderOrganisationLink = {},
     },
+    fieldNames = [],
   ) => {
-    if (selectedStructure) {
-      const { offerId } = structures.find(({ id }) => id === selectedStructure);
-      const selectedLenderOrganisation =
-        lendersCache.find(({ _id: lenderId }) => {
-          const { offers = [] } = LenderService.get(
-            { _id: lenderId, 'loanLink._id': loanId },
-            { offers: { _id: 1 } },
-          );
-          return offers.some(({ _id }) => _id === offerId);
-        }) || {};
-      const {
-        organisationLink: { _id: selectedLenderOrganisationId } = {},
-      } = selectedLenderOrganisation;
+    const fieldsToWatch = ['structures', 'selectedStructure'];
+    if (fieldNames.some(fieldName => fieldsToWatch.includes(fieldName))) {
+      if (selectedStructure) {
+        const { offerId } = structures.find(
+          ({ id }) => id === selectedStructure,
+        );
 
-      if (selectedLenderOrganisationId) {
-        const {
-          _id: currentselectedLenderOrganisationId,
-        } = selectedLenderOrganisationLink;
-
-        if (
-          selectedLenderOrganisationId !== currentselectedLenderOrganisationId
-        ) {
-          LoanService.addLink({
+        // Selected structure has no selected offer
+        if (!offerId && selectedLenderOrganisationLink._id) {
+          return LoanService.removeLink({
             id: loanId,
             linkName: 'selectedLenderOrganisation',
-            linkId: selectedLenderOrganisationId,
+            linkId: selectedLenderOrganisationLink._id,
           });
+        }
+        if (!offerId) {
+          return;
+        }
+
+        const selectedLenderOrganisation =
+          lendersCache.find(({ _id: lenderId }) => {
+            const { offers = [] } = LenderService.get(
+              { _id: lenderId, 'loanLink._id': loanId },
+              { offers: { _id: 1 } },
+            );
+            return offers.some(({ _id }) => _id === offerId);
+          }) || {};
+
+        const {
+          organisationLink: { _id: selectedLenderOrganisationId } = {},
+        } = selectedLenderOrganisation;
+
+        if (selectedLenderOrganisationId) {
+          const {
+            _id: currentselectedLenderOrganisationId,
+          } = selectedLenderOrganisationLink;
+
+          if (
+            selectedLenderOrganisationId !== currentselectedLenderOrganisationId
+          ) {
+            LoanService.addLink({
+              id: loanId,
+              linkName: 'selectedLenderOrganisation',
+              linkId: selectedLenderOrganisationId,
+            });
+          }
         }
       }
     }

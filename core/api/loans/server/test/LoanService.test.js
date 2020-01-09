@@ -1926,4 +1926,182 @@ describe('LoanService', function() {
       });
     });
   });
+
+  describe('selected lender organisation hook', () => {
+    it('adds the link when an offer is selected in the selected structure', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+        },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { structures: [{ id: 'struct', offerId: 'offer' }] },
+      });
+
+      const {
+        selectedLenderOrganisation: selectedLenderOrganisationAfterUpdate,
+      } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisationAfterUpdate).to.deep.include({
+        _id: 'org',
+      });
+    });
+
+    it('updates the link when the new selected structure has an offer from another lender selected', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+              offerId: 'offer',
+            },
+            {
+              id: 'struct2',
+              offerId: 'offer2',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+            {
+              organisation: { _id: 'org2' },
+              offers: [{ _id: 'offer2' }],
+            },
+          ],
+          selectedLenderOrganisation: { _id: 'org' },
+        },
+      });
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { selectedStructure: 'struct2' },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.deep.include({ _id: 'org2' });
+    });
+
+    it('removes the link when the new selected structure has no selected offer and the previous had an offer selected', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+              offerId: 'offer',
+            },
+            {
+              id: 'struct2',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+          selectedLenderOrganisation: { _id: 'org' },
+        },
+      });
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { selectedStructure: 'struct2' },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+
+    it('removes the link when the new selected structure has no selected offer and the previous had no offer selected', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+            },
+            {
+              id: 'struct2',
+            },
+          ],
+          selectedStructure: 'struct',
+        },
+      });
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { selectedStructure: 'struct2' },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+
+    it('removes the link when the the selected offer is removed', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+              offerId: 'offer',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+          selectedLenderOrganisation: { _id: 'org' },
+        },
+      });
+
+      OfferService.remove({ offerId: 'offer' });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+  });
 });

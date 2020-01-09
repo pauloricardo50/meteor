@@ -102,31 +102,31 @@ describe('Migration 30', () => {
 
       expect(loan.selectedLenderOrganisation).to.equal(undefined);
     });
+  });
 
-    describe('down', () => {
-      it('removes lender organisation link on loans', async () => {
-        generator({
-          loans: {
-            _id: 'loan',
-            structures: [{ id: 'struct' }],
-            selectedStructure: 'struct',
-            lenders: [
-              {
-                organisation: { _id: 'org' },
-                offers: [{ _id: 'offer' }],
-              },
-            ],
-          },
-        });
-
-        await up();
-        await down();
-
-        const loan = LoanService.get('loan', {
-          selectedLenderOrganisation: { _id: 1 },
-        });
-        expect(loan.selectedLenderOrganisation).to.equal(undefined);
+  describe('down', () => {
+    it('removes lender organisation link on loans', async () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [{ id: 'struct' }],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+        },
       });
+
+      await up();
+      await down();
+
+      const loan = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+      expect(loan.selectedLenderOrganisation).to.equal(undefined);
     });
   });
 });
