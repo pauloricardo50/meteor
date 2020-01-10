@@ -3,7 +3,12 @@ import React from 'react';
 
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
-import { ERROR, SUCCESS } from '../../../../../constants';
+import {
+  ERROR,
+  SUCCESS,
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../../constants';
 import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type SingleStructureRecapTableProps = {};
@@ -27,7 +32,12 @@ const columnsConfig = [
     value: (calculator, structureId, loan) =>
       toMoney(
         calculator.getCashUsed({ loan, structureId }) +
-          calculator.getInsurance2Used({ loan, structureId }) -
+          calculator.getUsedFundsOfType({
+            loan,
+            type: OWN_FUNDS_TYPES.INSURANCE_2,
+            usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+            structureId,
+          }) -
           calculator.getFees({ loan, structureId }).total,
       ),
   },

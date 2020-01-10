@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
 
-import Percent from 'core/components/Translation/numberComponents/Percent';
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/loans/loanConstants';
-import T, { Money } from '../../../../../../components/Translation';
+import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';
+import T, { Money, Percent } from '../../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
 
@@ -21,7 +20,12 @@ const getCostLines = ({ loan, structureId, calculator }) => {
     } = {},
   } = fees;
   const cashUsed = calculator.getCashUsed({ loan, structureId }) - totalFees;
-  const insurance2Used = calculator.getInsurance2Used({ loan, structureId });
+  const insurance2Used = calculator.getUsedFundsOfType({
+    loan,
+    type: OWN_FUNDS_TYPES.INSURANCE_2,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    structureId,
+  });
   const finalBuyersContractFees = totalBuyersContractFees
     ? totalBuyersContractFees - buyersContractDeductions
     : 0;
@@ -163,7 +167,12 @@ const CostsBalanceSheet = ({
         currency={false}
         value={
           calculator.getCashUsed({ loan, structureId }) +
-          calculator.getInsurance2Used({ loan, structureId })
+          calculator.getUsedFundsOfType({
+            loan,
+            type: OWN_FUNDS_TYPES.INSURANCE_2,
+            usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+            structureId,
+          })
         }
         key="0"
       />,

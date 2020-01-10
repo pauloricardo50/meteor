@@ -90,7 +90,6 @@ const getPages = ({
 const LoanBankPDF = (props: LoanBankPDFProps) => {
   const { pdfName } = props;
   const pages = getPages(props);
-  console.log('pages:', pages);
   return <Pdf stylesheet={stylesheet} pages={pages} pdfName={pdfName} />;
 };
 

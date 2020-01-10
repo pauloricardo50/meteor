@@ -466,20 +466,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
       });
 
-      const insurance2Ratio = insurance2Used / propAndWork;
-      return insurance2Ratio;
-    }
-
-    getInsurance2Used({ loan, structureId }) {
-      const { ownFunds } = this.selectStructure({ loan, structureId });
-
-      return ownFunds
-        .filter(
-          ({ type, usageType }) =>
-            type === OWN_FUNDS_TYPES.INSURANCE_2 &&
-            usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-        )
-        .reduce((sum, { value }) => sum + value, 0);
+      return insurance2Used / propAndWork;
     }
 
     hasEnoughCash({ loan, structureId }) {

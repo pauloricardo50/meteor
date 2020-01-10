@@ -13,6 +13,9 @@ export const TEMPLATES = {
         gender: 1,
         zipCode: { $or: 'sameAddress' },
         city: { $or: 'sameAddress' },
+        email: 1,
+        phoneNumber: 1,
+        activityType: 1,
       },
     ],
     structure: {

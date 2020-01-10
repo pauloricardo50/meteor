@@ -33,9 +33,17 @@ const borrowersNames = borrowers => (
 const getPropertyType = ({ propertyType, houseType, flatType }) => {
   switch (propertyType) {
     case PROPERTY_TYPE.HOUSE:
-      return <T id={`Forms.houseType.${houseType}`} />;
+      return houseType ? (
+        <T id={`Forms.houseType.${houseType}`} />
+      ) : (
+        <T id="Forms.propertyType.HOUSE" />
+      );
     case PROPERTY_TYPE.FLAT:
-      return <T id={`Forms.flatType.${flatType}`} />;
+      return flatType ? (
+        <T id={`Forms.flatType.${flatType}`} />
+      ) : (
+        <T id="Forms.propertyType.FLAT" />
+      );
     default:
       return <T id={`Forms.propertyType.${propertyType}`} />;
   }
@@ -104,22 +112,22 @@ const LoanBankCover = ({
   structureIds,
   backgroundInfo,
 }: LoanBankCoverProps) => (
-    <PdfPage
-      className="cover-page"
-      fullHeight
-      pageNb={pageNb}
-      pageCount={pageCount}
-    >
-      <LoanBankCoverHeader loanName={loan.name} />
-      {coverContent({
-        loan,
-        anonymous: options && options.anonymous,
-        organisation,
-        structureIds,
-        backgroundInfo,
-      })}
-      {footer(loan.user.assignedEmployee)}
-    </PdfPage>
-  );
+  <PdfPage
+    className="cover-page"
+    fullHeight
+    pageNb={pageNb}
+    pageCount={pageCount}
+  >
+    <LoanBankCoverHeader loanName={loan.name} />
+    {coverContent({
+      loan,
+      anonymous: options && options.anonymous,
+      organisation,
+      structureIds,
+      backgroundInfo,
+    })}
+    {footer(loan.user.assignedEmployee)}
+  </PdfPage>
+);
 
 export default LoanBankCover;

@@ -2,6 +2,7 @@
 import React from 'react';
 
 import Percent from 'core/components/Translation/numberComponents/Percent';
+import { OWN_FUNDS_TYPES, OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import T, { Money } from '../../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
@@ -41,7 +42,12 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
   });
   const fees = calculator.getFees({ loan, structureId }).total;
   const cashUsed = calculator.getCashUsed({ loan, structureId }) - fees;
-  const insurance2Used = calculator.getInsurance2Used({ loan, structureId });
+  const insurance2Used = calculator.getUsedFundsOfType({
+    loan,
+    type: OWN_FUNDS_TYPES.INSURANCE_2,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    structureId,
+  });
 
   return [
     {
