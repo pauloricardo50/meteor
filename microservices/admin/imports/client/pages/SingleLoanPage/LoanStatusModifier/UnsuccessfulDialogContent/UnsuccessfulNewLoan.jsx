@@ -40,10 +40,10 @@ const UnsuccessfulNewLoan = ({
           <Button
             secondary
             raised
-            icon={<FontAwesomeIcon icon={faSearchDollar} />}
-            label={<T id="Forms.status.QUALIFIED_LEAD" />}
-            key="qualified"
-            onClick={insertQualifiedLeadLoan}
+            icon={<FontAwesomeIcon icon={faHourglassHalf} />}
+            label={<T id="Forms.status.PENDING" />}
+            key="pending"
+            onClick={insertPendingLoan}
           />
           <Button
             secondary
@@ -56,10 +56,10 @@ const UnsuccessfulNewLoan = ({
           <Button
             secondary
             raised
-            icon={<FontAwesomeIcon icon={faHourglassHalf} />}
-            label={<T id="Forms.status.PENDING" />}
-            key="pending"
-            onClick={insertPendingLoan}
+            icon={<FontAwesomeIcon icon={faSearchDollar} />}
+            label={<T id="Forms.status.QUALIFIED_LEAD" />}
+            key="qualified"
+            onClick={insertQualifiedLeadLoan}
           />
         </div>,
         <Button
