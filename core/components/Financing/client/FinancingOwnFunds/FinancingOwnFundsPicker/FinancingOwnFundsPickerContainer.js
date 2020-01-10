@@ -63,18 +63,22 @@ const addState = withStateHandlers(getInitialState, {
 });
 
 const withDisableSubmit = withProps(
-  ({ type, borrowerId, value, usageType }) => ({
-    disableSubmit:
-      !(
-        type &&
-        borrowerId &&
-        value >= 0 &&
-        (!shouldAskForUsageType(type) || usageType)
-      ) ||
-      (type === OWN_FUNDS_TYPES.INSURANCE_2 &&
-        usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW &&
-        value < MIN_INSURANCE2_WITHDRAW),
-  }),
+  ({ type, borrowerId, value, usageType }) => {
+    const pickedOwnFundIsInvalid = !(
+      type &&
+      borrowerId &&
+      value >= 0 &&
+      (!shouldAskForUsageType(type) || usageType)
+    );
+    const insurance2WithdrawIsTooLow =
+      type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+      usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW &&
+      value < MIN_INSURANCE2_WITHDRAW;
+
+    return {
+      disableSubmit: pickedOwnFundIsInvalid || insurance2WithdrawIsTooLow,
+    };
+  },
 );
 
 const withStructureUpdate = withProps(
