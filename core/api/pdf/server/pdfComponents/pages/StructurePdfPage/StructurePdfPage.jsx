@@ -6,9 +6,11 @@ import T from '../../../../../../components/Translation';
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
 import { ERROR, SUCCESS } from '../../../../../constants';
 import PdfPage from '../../PdfPage';
-import BalanceSheet from './BalanceSheet';
+import ProjectBalanceSheet from './ProjectBalanceSheet';
+import CostsBalanceSheet from './CostsBalanceSheet';
 import IncomeAndExpenses from './IncomeAndExpenses';
 import RemainingOwnFundsTable from './RemainingOwnFundsTable';
+import SingleStructureRecapTable from './SingleStructureRecapTable';
 
 type StructurePdfPageProps = {};
 
@@ -39,23 +41,19 @@ const StructurePdfPage = ({
       pageNb={pageNb}
       pageCount={pageCount}
     >
-      <h3 className="finma-ratio">
-        Taux d'avance:&nbsp;
-        <span>
-          <PercentWithStatus
-            value={borrowRatio}
-            status={borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
-          />
-        </span>
-      </h3>
-      <h3 className="wanted-loan">
-        Prêt hypothécaire demandé:&nbsp;
-        <b>
-          <Money value={wantedLoan} />
-        </b>
-      </h3>
+      <SingleStructureRecapTable
+        loan={loan}
+        structureId={structureId}
+        calculator={calculator}
+      />
 
-      <BalanceSheet
+      <ProjectBalanceSheet
+        loan={loan}
+        structureId={structureId}
+        calculator={calculator}
+      />
+
+      <CostsBalanceSheet
         loan={loan}
         structureId={structureId}
         calculator={calculator}
