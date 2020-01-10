@@ -1,4 +1,5 @@
 {
+  "PDF.title.structureAppendix": "Plan financier - {name} - Annexe",
   "FinancingOwnFundsWithdrawWarning.insurance2": "Attention, vous devez retirer au minimum CHF {minWithdraw} de LPP",
   "Forms.annuitantSince": "Rentier depuis",
   "Forms.selfEmployedSince": "Indépendant depuis",
