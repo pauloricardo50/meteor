@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import Percent from 'core/components/Translation/numberComponents/Percent';
 import T from '../../../../../../components/Translation';
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
 import { ERROR, SUCCESS } from '../../../../../constants';
@@ -24,6 +25,9 @@ const StructureAppendixPdfPage = ({
     structureId,
   });
   const pageName = `${structureName || structureIndex + 1}`;
+  const totalExpenses =
+    calculator.getTheoreticalMonthly({ loan, structureId }) * 12;
+  const totalIncome = calculator.getTotalIncome({ loan, structureId });
   return (
     <PdfPage
       className="property-page"
@@ -38,7 +42,7 @@ const StructureAppendixPdfPage = ({
         calculator={calculator}
       />
       <h3 className="finma-ratio">
-        Taux d'effort*:&nbsp;
+        Taux d'effort*&nbsp;
         <span>
           <PercentWithStatus
             value={incomeRatio}
@@ -51,6 +55,11 @@ const StructureAppendixPdfPage = ({
         structureId={structureId}
         calculator={calculator}
       />
+      <i>
+        * Le taux d'effort se calcule en divisant les charges par les
+        reveus:&nbsp;{Math.round(totalExpenses)} / {Math.round(totalIncome)} ={' '}
+        <Percent value={incomeRatio} />
+      </i>
     </PdfPage>
   );
 };

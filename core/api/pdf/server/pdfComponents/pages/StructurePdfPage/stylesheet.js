@@ -63,6 +63,7 @@ export default `
     }
 
     .remaining-own-funds-table {
+        margin-top: 40px;
         width: 100%;
     }
 
