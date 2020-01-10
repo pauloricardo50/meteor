@@ -576,7 +576,10 @@ export const adminOrganisation = () => ({
 // // PromotionLot fragments
 // //
 export const proPromotionLot = () => ({
-  attributedTo: { user: { name: 1 }, promotions: { _id: 1 } },
+  attributedTo: {
+    user: { name: 1, phoneNumbers: 1, email: 1 },
+    promotions: { _id: 1 },
+  },
   createdAt: 1,
   documents: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
