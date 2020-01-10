@@ -17,7 +17,10 @@ import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
-import { MAX_BORROW_RATIO_INVESTMENT_PROPERTY } from '../../config/financeConstants';
+import {
+  MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
+  MIN_INSURANCE2_WITHDRAW,
+} from '../../config/financeConstants';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -464,6 +467,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     structureIsValid({ loan, structureId }) {
       const incomeRatio = this.getIncomeRatio({ loan, structureId });
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
+      const withdrawInsurance2 = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'ownFunds',
+      }).filter(
+        ({ type, usageType }) =>
+          type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+          usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+      );
 
       if (
         incomeRatio > this.maxIncomeRatio ||
@@ -475,6 +487,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       if (
         !this.allowPledge &&
         this.getPledgedOwnFunds({ loan, structureId }) > 0
+      ) {
+        return false;
+      }
+
+      if (
+        withdrawInsurance2.some(({ value }) => value < MIN_INSURANCE2_WITHDRAW)
       ) {
         return false;
       }
