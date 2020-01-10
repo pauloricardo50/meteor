@@ -10,6 +10,7 @@ import LenderRulesPdfPage from '../pages/LenderRulesPdfPage';
 import BorrowersPdfPage from '../pages/BorrowersPdfPage';
 import stylesheet from './stylesheet';
 import LoanBankCover from './LoanBankCover';
+import StructureAppendixPdfPage from '../pages/StructureAppendixPdfPage/StructureAppendixPdfPage';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -41,15 +42,36 @@ const getPages = ({
         backgroundInfo,
       },
     },
-    ...finalStructureIds.map((structureId, index) => {
-      const calculator = new Calculator({ loan, structureId, lenderRules });
+    ...finalStructureIds
+      .map((structureId, index) => {
+        const calculator = new Calculator({ loan, structureId, lenderRules });
 
-      return {
-        id: structureId,
-        Component: StructurePdfPage,
-        data: { loan, structureId, structureIndex: index, options, calculator },
-      };
-    }),
+        return [
+          {
+            id: structureId,
+            Component: StructurePdfPage,
+            data: {
+              loan,
+              structureId,
+              structureIndex: index,
+              options,
+              calculator,
+            },
+          },
+          {
+            id: `${structureId}-appendix`,
+            Component: StructureAppendixPdfPage,
+            data: {
+              loan,
+              structureId,
+              structureIndex: index,
+              options,
+              calculator,
+            },
+          },
+        ];
+      })
+      .reduce((pages, page) => [...pages, ...page], []),
     {
       id: 'borrowers',
       Component: BorrowersPdfPage,
@@ -68,6 +90,7 @@ const getPages = ({
 const LoanBankPDF = (props: LoanBankPDFProps) => {
   const { pdfName } = props;
   const pages = getPages(props);
+  console.log('pages:', pages);
   return <Pdf stylesheet={stylesheet} pages={pages} pdfName={pdfName} />;
 };
 

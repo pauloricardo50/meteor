@@ -65,4 +65,9 @@ export default `
     .remaining-own-funds-table {
         width: 100%;
     }
+
+    .pledge-table {
+        width: 100%;
+        margin-bottom: 40px;
+    }
 `;
