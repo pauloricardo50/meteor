@@ -97,7 +97,7 @@ const SingleStructureRecapTable = ({
   structureId,
   calculator,
 }: SingleStructureRecapTableProps) => (
-  <table className="pdf-table structure-recap-table">
+  <table className="pdf-table structure-recap-table single-structure-recap-table">
     {getRows({ loan, structureId, calculator })}
   </table>
 );

@@ -71,4 +71,8 @@ export default `
         width: 100%;
         margin-bottom: 40px;
     }
+
+    .single-structure-recap-table {
+        margin-top: 40px;
+    }
 `;
