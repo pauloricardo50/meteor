@@ -1441,8 +1441,8 @@ describe('LoanService', function() {
       expect(moment(date).format('YYYY-MM-DD')).to.equal(
         moment().format('YYYY-MM-DD'),
       );
-      expect(main.min.borrowRatio).to.equal(0.65);
-      expect(main.min.propertyValue).to.equal(1496000);
+      expect(main.min.borrowRatio).to.equal(0.635);
+      expect(main.min.propertyValue).to.equal(1443000);
       expect(main.max.borrowRatio).to.equal(0.835);
       expect(main.max.propertyValue).to.equal(2761000);
       expect(second.min.borrowRatio).to.equal(0.5);
