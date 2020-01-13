@@ -34,10 +34,11 @@ exposeQuery({
           _id,
           assignedEmployeeId,
           category,
+          createdAt,
           hasPromotion,
-          noPromotion,
           lenderId,
           name,
+          noPromotion,
           owned,
           promotionId,
           relevantOnly,
@@ -59,6 +60,10 @@ exposeQuery({
 
         if (assignedEmployeeId) {
           filters['userCache.assignedEmployeeCache._id'] = assignedEmployeeId;
+        }
+
+        if (createdAt) {
+          filters.createdAt = createdAt;
         }
 
         if (relevantOnly) {
@@ -109,6 +114,7 @@ exposeQuery({
       _id: Match.Maybe(String),
       assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
       category: Match.Maybe(Match.OneOf(Object, String)),
+      createdAt: Match.Maybe(Object),
       hasPromotion: Match.Maybe(Boolean),
       lenderId: Match.Maybe(Match.OneOf(Object, String)),
       name: Match.Maybe(String),

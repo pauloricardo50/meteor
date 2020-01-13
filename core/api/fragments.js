@@ -388,6 +388,7 @@ export const adminLoan = ({ withSort } = {}) => ({
     isPrivate: 1,
     assigneeLink: 1,
   },
+  userCache: 1,
   user: adminUser(),
   selectedLenderOrganisation: { name: 1 },
 });
