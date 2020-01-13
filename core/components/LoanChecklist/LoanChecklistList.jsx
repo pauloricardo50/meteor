@@ -16,9 +16,26 @@ const LoanChecklistList = ({ labels, title }: LoanChecklistListProps) => (
         <StatusIcon status={SUCCESS} />
       </span>
     )}
-    {labels.map(label => (
-      <span key={label}>{label}</span>
-    ))}
+    {labels.map(l => {
+      let label = l;
+      let tooltip;
+
+      if (typeof l === 'object') {
+        label = l.label;
+        tooltip = l.tooltip;
+      }
+      return (
+        <span key={label}>
+          {label}
+          {tooltip && (
+            <>
+              <br />
+              <span className="secondary">{tooltip}</span>
+            </>
+          )}
+        </span>
+      );
+    })}
   </span>
 );
 

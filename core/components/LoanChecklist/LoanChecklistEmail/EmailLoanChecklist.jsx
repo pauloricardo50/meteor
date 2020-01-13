@@ -29,22 +29,43 @@ const EmailLoanChecklist = ({ labels, title }: EmailLoanChecklistProps) => (
         ]}
       />
     )}
-    {labels.map(label => (
-      <LoanChecklistEmailTable
-        key={label}
-        columns={[
-          {
-            el: (
-              <div className="bullet">
-                <div>&nbsp;</div>
-              </div>
-            ),
-            style: { width: '15px' },
-          },
-          label,
-        ]}
-      />
-    ))}
+    {labels.map(l => {
+      let label = l;
+      let tooltip;
+
+      if (typeof l === 'object') {
+        label = l.label;
+        tooltip = l.tooltip;
+      }
+      return (
+        <LoanChecklistEmailTable
+          key={label}
+          columns={[
+            {
+              el: (
+                <div className="bullet">
+                  <div>&nbsp;</div>
+                </div>
+              ),
+              style: { width: '15px' },
+            },
+            {
+              el: (
+                <span>
+                  {label}
+                  {tooltip && (
+                    <>
+                      <br />
+                      <span className="secondary">{tooltip}</span>
+                    </>
+                  )}
+                </span>
+              ),
+            },
+          ]}
+        />
+      );
+    })}
   </>
 );
 

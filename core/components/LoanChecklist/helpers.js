@@ -1,4 +1,4 @@
-import { PROPERTY_CATEGORY } from '../../api/constants';
+import { PROPERTY_CATEGORY, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 
 const shouldDisplayPropertyChecklist = props => {
@@ -29,6 +29,29 @@ const formatFileTitle = ({ doc, formatMessage }) => file => {
   const label = labelOverrider(file);
 
   return label || formatMessage({ id: `files.${file}` });
+};
+
+const makeTooltipOverrider = doc => id => {
+  const additionalDocument = doc.additionalDocuments.find(
+    ({ id: documentId }) => documentId === id,
+  );
+
+  if (additionalDocument) {
+    return additionalDocument.tooltip;
+  }
+
+  return false;
+};
+
+const formatFileTooltip = ({ doc, formatMessage }) => file => {
+  const tooltipOverrider = makeTooltipOverrider(doc);
+  const tooltip = tooltipOverrider(file);
+
+  return (
+    tooltip ||
+    (DOCUMENTS_WITH_TOOLTIP.includes(file) &&
+      formatMessage({ id: `files.${file}.tooltip` }))
+  );
 };
 
 const getPropertyMissingFields = (props, formatMessage) => {
@@ -66,7 +89,12 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
               formatMessage({ id: 'general.property' }),
             labels: Calculator.getMissingPropertyDocuments({
               loan,
-            }).map(formatFileTitle({ doc: property, formatMessage })),
+            }).map(file => ({
+              label: formatFileTitle({ doc: property, formatMessage })(file),
+              tooltip: formatFileTooltip({ doc: property, formatMessage })(
+                file,
+              ),
+            })),
           },
         }
       : {}),
@@ -97,18 +125,24 @@ const getBorrowersMissingDocuments = (props, formatMessage) => {
   const { borrowers = [] } = loan;
 
   return {
-    borrowers: borrowers.map((borrower, index) => ({
-      title:
-        borrower.name ||
-        formatMessage(
-          { id: 'general.borrowerWithIndex' },
-          { index: index + 1 },
-        ),
-      labels: Calculator.getMissingBorrowerDocuments({
+    borrowers: borrowers.map((borrower, index) => {
+      const missingDocuments = Calculator.getMissingBorrowerDocuments({
         loan,
         borrowers: borrower,
-      }).map(formatFileTitle({ doc: borrower, formatMessage })),
-    })),
+      });
+      return {
+        title:
+          borrower.name ||
+          formatMessage(
+            { id: 'general.borrowerWithIndex' },
+            { index: index + 1 },
+          ),
+        labels: missingDocuments.map(file => ({
+          label: formatFileTitle({ doc: borrower, formatMessage })(file),
+          tooltip: formatFileTooltip({ doc: borrower, formatMessage })(file),
+        })),
+      };
+    }),
   };
 };
 
