@@ -47,7 +47,7 @@ const EmailLoanChecklist = ({ labels, title }: EmailLoanChecklistProps) => (
                   <div>&nbsp;</div>
                 </div>
               ),
-              style: { width: '15px' },
+              style: { width: '15px', valign: 'top' },
             },
             {
               el: (
@@ -61,6 +61,7 @@ const EmailLoanChecklist = ({ labels, title }: EmailLoanChecklistProps) => (
                   )}
                 </span>
               ),
+              style: { valign: 'top' },
             },
           ]}
         />

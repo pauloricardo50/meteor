@@ -16,6 +16,7 @@ const styles = `
     height: 14px;
     border-radius: 50%;
     border: 1px solid #2F5DE1;
+    margin-top: 3px;
 }
 
 .bullet div {
@@ -32,6 +33,10 @@ const styles = `
 
  td {
      padding: 9px;
+ }
+
+ .label {
+     margin: 0;
  }
 
  .secondary {

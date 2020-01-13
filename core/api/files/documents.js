@@ -1,4 +1,5 @@
-import { formatMessage } from 'core/utils/intl';
+import { Meteor } from 'meteor/meteor';
+import intl, { formatMessage } from 'core/utils/intl';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
@@ -11,9 +12,24 @@ import {
   LOAN_DOCUMENTS,
 } from './fileConstants';
 
-export const documentHasTooltip = documentId =>
-  formatMessage({ id: `files.${documentId}.tooltip` }) !==
-  `files.${documentId}.tooltip`;
+export const documentHasTooltip = documentId => {
+  if (Meteor.isServer) {
+    // email checklist is called on server
+    // can't make an async function that conditionally awaits server intl import
+    // because this function would always return a promise, which makes the refactor too complicated
+    const messagesFR = require('core/lang/fr.json');
+    intl.init(messagesFR);
+    const serverFormatMessage = intl.formatMessage.bind(intl);
+    return (
+      serverFormatMessage({ id: `files.${documentId}.tooltip` }) !==
+      `files.${documentId}.tooltip`
+    );
+  }
+  return (
+    formatMessage({ id: `files.${documentId}.tooltip` }) !==
+    `files.${documentId}.tooltip`
+  );
+};
 
 const makeAllObjectDocuments = documents =>
   Object.values(documents).map(id => ({
