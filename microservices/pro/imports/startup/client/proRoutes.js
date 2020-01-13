@@ -44,7 +44,11 @@ const PRO_ROUTES = {
   // Other
   ACCOUNT_PAGE: { component: AccountPage, path: '/account' },
   DEV_PAGE: { component: DevPage, path: '/dev' },
-  IMPERSONATE_PAGE: { component: ImpersonatePage, path: IMPERSONATE_ROUTE },
+  IMPERSONATE_PAGE: {
+    component: ImpersonatePage,
+    path: IMPERSONATE_ROUTE,
+    logoutOnMount: true,
+  },
   PRO_DASHBOARD_PAGE: {
     component: ProDashboardPage,
     path: '/:tabId?',
