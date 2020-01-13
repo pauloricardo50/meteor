@@ -1,4 +1,5 @@
-import { PROPERTY_CATEGORY, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
+import { documentHasTooltip } from 'core/api/files/documents';
+import { PROPERTY_CATEGORY } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 
 const shouldDisplayPropertyChecklist = props => {
@@ -49,8 +50,7 @@ const formatFileTooltip = ({ doc, formatMessage }) => file => {
 
   return (
     tooltip ||
-    (DOCUMENTS_WITH_TOOLTIP.includes(file) &&
-      formatMessage({ id: `files.${file}.tooltip` }))
+    (documentHasTooltip(file) && formatMessage({ id: `files.${file}.tooltip` }))
   );
 };
 

@@ -1,3 +1,4 @@
+import { formatMessage } from 'core/utils/intl';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
@@ -5,14 +6,14 @@ import {
 } from '../constants';
 import {
   DOCUMENTS,
-  DOCUMENTS_WITH_TOOLTIP,
   BORROWER_DOCUMENTS,
   PROPERTY_DOCUMENTS,
   LOAN_DOCUMENTS,
 } from './fileConstants';
 
 export const documentHasTooltip = documentId =>
-  !DOCUMENTS_WITH_TOOLTIP.some(id => documentId === id);
+  formatMessage({ id: `files.${documentId}.tooltip` }) !==
+  `files.${documentId}.tooltip`;
 
 const makeAllObjectDocuments = documents =>
   Object.values(documents).map(id => ({
