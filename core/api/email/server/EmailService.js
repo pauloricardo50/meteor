@@ -27,7 +27,7 @@ class EmailService {
       params,
     });
     const template = getMandrillTemplate(templateOptions);
-    return sendMandrillTemplate(template, emailId, address).then(response => {
+    return sendMandrillTemplate(template).then(response => {
       this.emailLogger({ emailId, address, template, response });
       this.addEmailActivity({ address, template, emailId, response });
     });
