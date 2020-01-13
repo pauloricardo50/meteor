@@ -92,7 +92,7 @@ export default compose(
         .run({ userId: user._id, object })
         .then(
           () =>
-            user.roles.includes(ROLES.PRO) &&
+            !user.roles.includes(ROLES.USER) &&
             updateOrganisations({ userId: user._id, organisations }),
         );
     },
