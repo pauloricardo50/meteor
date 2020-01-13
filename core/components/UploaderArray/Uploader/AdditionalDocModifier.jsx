@@ -43,6 +43,14 @@ export const getAdditionalDocSchema = collection => {
         placeholder: null,
       },
     },
+    tooltip: {
+      type: String,
+      uniforms: {
+        label: 'Description du document',
+        placeholder: null,
+      },
+      optional: true,
+    },
     category: {
       type: String,
       allowedValues,

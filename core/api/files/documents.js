@@ -18,7 +18,7 @@ export const documentHasTooltip = documentId =>
 const makeAllObjectDocuments = documents =>
   Object.values(documents).map(id => ({
     id,
-    noTooltips: documentHasTooltip(id),
+    noTooltips: !documentHasTooltip(id),
   }));
 
 export const allDocuments = ({ doc, collection }) => {
@@ -63,7 +63,7 @@ const requiredByAdminOnly = ({ requiredByAdmin }) => requiredByAdmin !== false;
 const formatAdditionalDoc = additionalDoc => ({
   ...additionalDoc,
   required: true,
-  noTooltips: documentHasTooltip(additionalDoc.id),
+  noTooltips: !documentHasTooltip(additionalDoc.id),
 });
 
 const makeGetDocuments = collection => ({ loan, id }, options = {}) => {

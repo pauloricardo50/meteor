@@ -17,7 +17,7 @@ export const Uploader = ({
   const {
     collection,
     docId,
-    fileMeta: { id, requiredByAdmin, category },
+    fileMeta: { id, requiredByAdmin, category, tooltip },
   } = rest;
 
   return (
@@ -32,6 +32,7 @@ export const Uploader = ({
               additionalDocId: id,
               requiredByAdmin: event.target.checked,
               category,
+              tooltip,
             });
           }}
           id={id}
