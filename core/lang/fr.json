@@ -1,4 +1,7 @@
 {
+  "Forms.type.ASSET_MANAGER": "Gérant de fortune",
+  "Forms.type.INTERNATIONAL_ORGANISATION": "Organisation internationale",
+  "Forms.type.ASSOCIATION": "Association",
   "PDF.title.structureAppendix": "Plan financier - {name} - Annexe",
   "FinancingOwnFundsWithdrawWarning.insurance2": "Attention, vous devez retirer au minimum CHF {minWithdraw} de LPP",
   "Forms.annuitantSince": "Rentier depuis",
