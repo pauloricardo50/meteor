@@ -13,7 +13,7 @@ import {
 } from './fileConstants';
 
 export const documentHasTooltip = documentId => {
-  if (Meteor.isServer) {
+  if (Meteor.isServer || Meteor.isTest) {
     // email checklist is called on server
     // can't make an async function that conditionally awaits server intl import
     // because this function would always return a promise, which makes the refactor too complicated
