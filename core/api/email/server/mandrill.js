@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import { logError } from 'core/api/methods/index';
 import { getEmailFooter } from './emailHelpers';
 import { isEmailTestEnv, skipEmails } from './EmailService';
-import { mandrillQueue } from './mandrillSOS';
 
 export const setupMandrill = () => {
   let key = '';
@@ -84,7 +83,7 @@ export const getMandrillTemplate = ({
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 
-export const sendMandrillTemplate = (mandrillTemplate, emailId, address) => {
+export const sendMandrillTemplate = mandrillTemplate => {
   if (skipEmails) {
     return Promise.resolve();
   }
@@ -98,9 +97,6 @@ export const sendMandrillTemplate = (mandrillTemplate, emailId, address) => {
           ),
           additionalData: ['Mandrill error'],
         });
-
-        mandrillQueue.insert({ template: mandrillTemplate, emailId, address });
-
         reject(error);
       }
       resolve(result.data[0]);
