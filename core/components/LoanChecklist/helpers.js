@@ -13,7 +13,7 @@ const shouldDisplayPropertyChecklist = props => {
   );
 };
 
-const makeLabelOverrider = doc => id => {
+const labelOverrider = (doc, id) => {
   const additionalDocument = doc.additionalDocuments.find(
     ({ id: documentId }) => documentId === id,
   );
@@ -25,14 +25,13 @@ const makeLabelOverrider = doc => id => {
   return false;
 };
 
-const formatFileTitle = ({ doc, formatMessage }) => file => {
-  const labelOverrider = makeLabelOverrider(doc);
-  const label = labelOverrider(file);
+const formatFileTitle = ({ doc, formatMessage, file }) => {
+  const label = labelOverrider(doc, file);
 
   return label || formatMessage({ id: `files.${file}` });
 };
 
-const makeTooltipOverrider = doc => id => {
+const tooltipOverrider = (doc, id) => {
   const additionalDocument = doc.additionalDocuments.find(
     ({ id: documentId }) => documentId === id,
   );
@@ -44,9 +43,8 @@ const makeTooltipOverrider = doc => id => {
   return false;
 };
 
-const formatFileTooltip = ({ doc, formatMessage }) => file => {
-  const tooltipOverrider = makeTooltipOverrider(doc);
-  const tooltip = tooltipOverrider(file);
+const formatFileTooltip = ({ doc, formatMessage, file }) => {
+  const tooltip = tooltipOverrider(doc, file);
 
   return (
     tooltip ||
@@ -90,10 +88,12 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
             labels: Calculator.getMissingPropertyDocuments({
               loan,
             }).map(file => ({
-              label: formatFileTitle({ doc: property, formatMessage })(file),
-              tooltip: formatFileTooltip({ doc: property, formatMessage })(
+              label: formatFileTitle({ doc: property, formatMessage, file }),
+              tooltip: formatFileTooltip({
+                doc: property,
+                formatMessage,
                 file,
-              ),
+              }),
             })),
           },
         }
@@ -138,8 +138,8 @@ const getBorrowersMissingDocuments = (props, formatMessage) => {
             { index: index + 1 },
           ),
         labels: missingDocuments.map(file => ({
-          label: formatFileTitle({ doc: borrower, formatMessage })(file),
-          tooltip: formatFileTooltip({ doc: borrower, formatMessage })(file),
+          label: formatFileTitle({ doc: borrower, formatMessage, file }),
+          tooltip: formatFileTooltip({ doc: borrower, formatMessage, file }),
         })),
       };
     }),
