@@ -21,6 +21,7 @@ const schema = new SimpleSchema({
     condition: ({ to = [] }) => to.length > 1,
   },
   'to.$.email': { type: String, optional: false },
+  basicDocumentsOnly: { type: Boolean, optional: true },
   customMessage: {
     type: String,
     optional: true,
@@ -59,7 +60,7 @@ const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
 };
 
 export default withProps(({ loan: { _id: loanId } }) => ({
-  onSubmit: ({ to, customMessage, addTask }) => {
+  onSubmit: ({ to, customMessage, addTask, basicDocumentsOnly }) => {
     const [mainRecipient, ...otherRecipients] = to;
     const bccAddresses = otherRecipients
       .filter(({ bcc }) => bcc)
@@ -72,6 +73,7 @@ export default withProps(({ loan: { _id: loanId } }) => ({
       .run({
         address: mainRecipient.email,
         loanId,
+        basicDocumentsOnly,
         emailParams: {
           customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
           bccAddresses,

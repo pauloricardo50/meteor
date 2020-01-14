@@ -293,7 +293,7 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });
 
-sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams }) => {
+sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams, basicDocumentsOnly }) => {
   SecurityService.checkUserIsAdmin(userId);
   const { email: assigneeAddress, name: assigneeName } = UserService.get(
     userId,
@@ -303,7 +303,7 @@ sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams }) => {
   return sendEmailToAddress.serverRun({
     address,
     emailId: EMAIL_IDS.LOAN_CHECKLIST,
-    params: { ...emailParams, loan, assigneeAddress, assigneeName },
+    params: { ...emailParams, loan, assigneeAddress, assigneeName, basicDocumentsOnly },
   });
 });
 

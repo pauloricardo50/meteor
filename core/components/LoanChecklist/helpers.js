@@ -4,6 +4,7 @@ import Calculator from '../../utils/Calculator';
 
 const shouldDisplayPropertyChecklist = props => {
   const { loan = {} } = props;
+
   const property = Calculator.selectProperty({ loan });
   return (
     !loan.hasPromotion &&
@@ -74,7 +75,7 @@ const getPropertyMissingFields = (props, formatMessage) => {
 };
 
 const getPropertyMissingDocuments = (props, formatMessage) => {
-  const { loan = {} } = props;
+  const { loan = {}, basicDocumentsOnly } = props;
   const displayPropertyChecklist = shouldDisplayPropertyChecklist(props);
   const property = Calculator.selectProperty({ loan });
 
@@ -87,6 +88,7 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
               formatMessage({ id: 'general.property' }),
             labels: Calculator.getMissingPropertyDocuments({
               loan,
+              basicDocumentsOnly,
             }).map(file => ({
               label: formatFileTitle({ doc: property, formatMessage, file }),
               tooltip: formatFileTooltip({
@@ -121,7 +123,7 @@ const getBorrowersMissingFields = (props, formatMessage) => {
 };
 
 const getBorrowersMissingDocuments = (props, formatMessage) => {
-  const { loan = {} } = props;
+  const { loan = {}, basicDocumentsOnly } = props;
   const { borrowers = [] } = loan;
 
   return {
@@ -129,6 +131,7 @@ const getBorrowersMissingDocuments = (props, formatMessage) => {
       const missingDocuments = Calculator.getMissingBorrowerDocuments({
         loan,
         borrowers: borrower,
+        basicDocumentsOnly,
       });
       return {
         title:
@@ -167,6 +170,7 @@ export const getChecklistMissingInformations = (...args) => ({
     ...getPropertyMissingFields(...args),
     ...getBorrowersMissingFields(...args),
   },
+
   documents: {
     ...getPropertyMissingDocuments(...args),
     ...getBorrowersMissingDocuments(...args),
