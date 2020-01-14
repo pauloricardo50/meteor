@@ -2,7 +2,10 @@
 import React from 'react';
 
 import { formatMessage } from 'core/utils/server/intl';
-import { getChecklistMissingInformations } from '../helpers';
+import {
+  getChecklistMissingInformations,
+  isAnyBasicDocumentRequested,
+} from '../helpers';
 import LoanChecklistEmailSection from './LoanChecklistEmailSection';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
@@ -28,6 +31,14 @@ const LoanChecklistEmail = (props: LoanChecklistEmailProps) => {
         missingInformations={documents}
         label={formatMessage({ id: 'LoanChecklist.missingDocuments' })}
       />
+      {isAnyBasicDocumentRequested(documents) && (
+        <>
+          <div className="separator">
+            <span className="basic">*&nbsp;</span>Documents essentiels pour la
+            constitution du dossier
+          </div>
+        </>
+      )}
     </>
   );
 };

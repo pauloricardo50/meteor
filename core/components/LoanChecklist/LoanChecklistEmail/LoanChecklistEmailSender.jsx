@@ -21,7 +21,7 @@ const schema = new SimpleSchema({
     condition: ({ to = [] }) => to.length > 1,
   },
   'to.$.email': { type: String, optional: false },
-  basicDocumentsOnly: { type: Boolean, optional: true },
+  basicDocumentsOnly: { type: Boolean, optional: true, defaultValue: false },
   customMessage: {
     type: String,
     optional: true,

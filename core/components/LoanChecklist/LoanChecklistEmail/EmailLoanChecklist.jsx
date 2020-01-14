@@ -30,6 +30,7 @@ const EmailLoanChecklist = ({ labels, title }: EmailLoanChecklistProps) => (
       />
     )}
     {labels.map(l => {
+      const { basic } = l;
       let label = l;
       let tooltip;
 
@@ -53,6 +54,7 @@ const EmailLoanChecklist = ({ labels, title }: EmailLoanChecklistProps) => (
               el: (
                 <span>
                   {label}
+                  {basic && <span className="basic">&nbsp;*</span>}
                   {tooltip && (
                     <>
                       <br />

@@ -55,6 +55,10 @@ const styles = `
  .separator {
      margin: 8px;
  }
+
+ .basic {
+     color: #e01076;
+ }
 `;
 
 export default styles;

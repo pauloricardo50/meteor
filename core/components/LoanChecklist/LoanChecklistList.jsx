@@ -17,6 +17,7 @@ const LoanChecklistList = ({ labels, title }: LoanChecklistListProps) => (
       </span>
     )}
     {labels.map(l => {
+      const { basic } = l;
       let label = l;
       let tooltip;
 
@@ -27,6 +28,7 @@ const LoanChecklistList = ({ labels, title }: LoanChecklistListProps) => (
       return (
         <span key={label}>
           {label}
+          {basic && <span className="error">&nbsp;*</span>}
           {tooltip && (
             <>
               <br />

@@ -14,9 +14,9 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-// export const skipEmails =
-//   (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
-export const skipEmails = false;
+export const skipEmails =
+  (Meteor.isDevelopment || Meteor.isDevEnvironment) && !isEmailTestEnv;
+// export const skipEmails = false;
 
 class EmailService {
   sendEmail = async ({ emailId, address, name, params }) => {
