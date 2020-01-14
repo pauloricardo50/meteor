@@ -7,7 +7,7 @@ import IconButton from 'core/components/IconButton';
 import FileStatusIcon from './FileStatusIcon';
 
 const Title = ({
-  fileMeta: { id, label, noTooltips, tooltipSuffix, required },
+  fileMeta: { id, label, noTooltips, tooltipSuffix, required, tooltip },
   doubleTooltip,
   currentValue,
   displayFull,
@@ -16,7 +16,7 @@ const Title = ({
 }) => {
   // Construct the custom toocanModifyltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
-  const hasTooltip = !noTooltips;
+  const hasTooltip = !!tooltip || !noTooltips;
 
   return (
     <div className="title">
@@ -52,7 +52,7 @@ const Title = ({
 
       {hasTooltip && (
         <small className="title-bottom">
-          <T id={tooltipId} />
+          {tooltip || <T id={tooltipId} />}
         </small>
       )}
     </div>

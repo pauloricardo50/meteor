@@ -12,13 +12,14 @@ import {
 } from '../../api/constants';
 
 export default withProps(({ docId, collection }) => ({
-  onSubmit: ({ label, category }) => {
+  onSubmit: ({ label, category, tooltip }) => {
     const object = {
       additionalDocuments: {
         id: Random.id(),
         label,
         category,
         requiredByAdmin: true,
+        tooltip,
       },
     };
     if (collection === PROPERTIES_COLLECTION) {

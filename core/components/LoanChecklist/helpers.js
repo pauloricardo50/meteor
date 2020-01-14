@@ -1,3 +1,4 @@
+import { documentHasTooltip } from 'core/api/files/documents';
 import { PROPERTY_CATEGORY } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 
@@ -12,7 +13,7 @@ const shouldDisplayPropertyChecklist = props => {
   );
 };
 
-const makeLabelOverrider = doc => id => {
+const labelOverrider = (doc, id) => {
   const additionalDocument = doc.additionalDocuments.find(
     ({ id: documentId }) => documentId === id,
   );
@@ -24,11 +25,31 @@ const makeLabelOverrider = doc => id => {
   return false;
 };
 
-const formatFileTitle = ({ doc, formatMessage }) => file => {
-  const labelOverrider = makeLabelOverrider(doc);
-  const label = labelOverrider(file);
+const formatFileTitle = ({ doc, formatMessage, file }) => {
+  const label = labelOverrider(doc, file);
 
   return label || formatMessage({ id: `files.${file}` });
+};
+
+const tooltipOverrider = (doc, id) => {
+  const additionalDocument = doc.additionalDocuments.find(
+    ({ id: documentId }) => documentId === id,
+  );
+
+  if (additionalDocument) {
+    return additionalDocument.tooltip;
+  }
+
+  return false;
+};
+
+const formatFileTooltip = ({ doc, formatMessage, file }) => {
+  const tooltip = tooltipOverrider(doc, file);
+
+  return (
+    tooltip ||
+    (documentHasTooltip(file) && formatMessage({ id: `files.${file}.tooltip` }))
+  );
 };
 
 const getPropertyMissingFields = (props, formatMessage) => {
@@ -66,7 +87,14 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
               formatMessage({ id: 'general.property' }),
             labels: Calculator.getMissingPropertyDocuments({
               loan,
-            }).map(formatFileTitle({ doc: property, formatMessage })),
+            }).map(file => ({
+              label: formatFileTitle({ doc: property, formatMessage, file }),
+              tooltip: formatFileTooltip({
+                doc: property,
+                formatMessage,
+                file,
+              }),
+            })),
           },
         }
       : {}),
@@ -97,18 +125,24 @@ const getBorrowersMissingDocuments = (props, formatMessage) => {
   const { borrowers = [] } = loan;
 
   return {
-    borrowers: borrowers.map((borrower, index) => ({
-      title:
-        borrower.name ||
-        formatMessage(
-          { id: 'general.borrowerWithIndex' },
-          { index: index + 1 },
-        ),
-      labels: Calculator.getMissingBorrowerDocuments({
+    borrowers: borrowers.map((borrower, index) => {
+      const missingDocuments = Calculator.getMissingBorrowerDocuments({
         loan,
         borrowers: borrower,
-      }).map(formatFileTitle({ doc: borrower, formatMessage })),
-    })),
+      });
+      return {
+        title:
+          borrower.name ||
+          formatMessage(
+            { id: 'general.borrowerWithIndex' },
+            { index: index + 1 },
+          ),
+        labels: missingDocuments.map(file => ({
+          label: formatFileTitle({ doc: borrower, formatMessage, file }),
+          tooltip: formatFileTooltip({ doc: borrower, formatMessage, file }),
+        })),
+      };
+    }),
   };
 };
 

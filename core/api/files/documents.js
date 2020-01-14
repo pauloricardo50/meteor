@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import intl, { formatMessage as clientFormatMessage } from 'core/utils/intl';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
@@ -5,19 +7,29 @@ import {
 } from '../constants';
 import {
   DOCUMENTS,
-  DOCUMENTS_WITH_TOOLTIP,
   BORROWER_DOCUMENTS,
   PROPERTY_DOCUMENTS,
   LOAN_DOCUMENTS,
 } from './fileConstants';
 
-export const documentHasTooltip = documentId =>
-  !DOCUMENTS_WITH_TOOLTIP.some(id => documentId === id);
+export const documentHasTooltip = documentId => {
+  let formatMessage = clientFormatMessage;
+  if (Meteor.isServer || Meteor.isTest) {
+    // email checklist is called on server and needs messages
+    const messagesFR = require('core/lang/fr.json');
+    intl.init(messagesFR);
+    formatMessage = intl.formatMessage.bind(intl);
+  }
+  return (
+    formatMessage({ id: `files.${documentId}.tooltip` }) !==
+    `files.${documentId}.tooltip`
+  );
+};
 
 const makeAllObjectDocuments = documents =>
   Object.values(documents).map(id => ({
     id,
-    noTooltips: documentHasTooltip(id),
+    noTooltips: !documentHasTooltip(id),
   }));
 
 export const allDocuments = ({ doc, collection }) => {
@@ -62,7 +74,7 @@ const requiredByAdminOnly = ({ requiredByAdmin }) => requiredByAdmin !== false;
 const formatAdditionalDoc = additionalDoc => ({
   ...additionalDoc,
   required: true,
-  noTooltips: documentHasTooltip(additionalDoc.id),
+  noTooltips: !documentHasTooltip(additionalDoc.id),
 });
 
 const makeGetDocuments = collection => ({ loan, id }, options = {}) => {

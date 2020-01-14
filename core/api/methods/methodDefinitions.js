@@ -54,6 +54,7 @@ export const setAdditionalDoc = new Method({
     requiredByAdmin: Boolean,
     label: Match.Optional(String),
     category: Match.Optional(String),
+    tooltip: Match.Optional(String),
   },
 });
 

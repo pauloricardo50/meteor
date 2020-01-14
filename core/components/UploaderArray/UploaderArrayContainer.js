@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
-import { DOCUMENTS, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
+import { documentHasTooltip } from 'core/api/files/documents';
+import { DOCUMENTS } from '../../api/constants';
 
 const getFileMetadata = (documentArray = [], id) => {
   const { metadata = {} } =
@@ -16,7 +17,7 @@ const makeGetFileMeta = documentArray => ({
   const metadata = getFileMetadata(documentArray, id);
   return (
     additionalDocuments.find(document => document.id === id) && {
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
+      noTooltips: !documentHasTooltip(id),
       ...additionalDocuments.find(document => document.id === id),
       ...metadata,
     }
