@@ -33,6 +33,7 @@ const defaultBody = {
   financedPromotion: { name: 1, status: 1 },
   userId: 1,
   selectedLenderOrganisation: { name: 1 },
+  revenues: { _id: 1, status: 1 },
 };
 
 const noPromotionIsChecked = promotionId =>
