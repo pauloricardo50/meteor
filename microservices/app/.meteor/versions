@@ -20,7 +20,7 @@ check@1.3.1
 coffeescript@2.4.1
 coffeescript-compiler@2.4.1
 cultofcoders:grapher@1.3.19
-cultofcoders:grapher-react@0.1.5
+cultofcoders:grapher-react@0.1.6
 cultofcoders:mutations@0.1.1
 cultofcoders:redis-oplog@1.2.9
 dburles:factory@1.1.0
@@ -41,7 +41,7 @@ ecmascript-runtime-server@0.9.0
 edgee:slingshot@0.7.1
 ejson@1.1.1
 email@1.2.3
-epotek:accounts-ui@1.5.2
+epotek:accounts-ui@1.5.3
 epotek:google-maps@2.0.2
 es5-shim@4.8.0
 fetch@0.1.1
@@ -68,9 +68,9 @@ matb33:collection-hooks@0.9.1
 meteor@1.9.3
 meteor-base@1.4.0
 meteorhacks:inject-initial@1.0.4
-meteortesting:browser-tests@1.3.1
-meteortesting:mocha@1.1.4
-meteortesting:mocha-core@7.0.0
+meteortesting:browser-tests@1.3.0
+meteortesting:mocha@1.1.3
+meteortesting:mocha-core@6.2.2
 meteortoys:allthings@7.0.1
 meteortoys:authenticate@4.0.0
 meteortoys:autopub@4.0.0
@@ -112,7 +112,7 @@ qualia:one@0.1.0
 raix:eventemitter@1.0.0
 random@1.1.0
 rate-limit@1.0.9
-react-meteor-data@0.2.16
+react-meteor-data@2.0.1
 reactive-dict@1.3.0
 reactive-var@1.0.11
 reload@1.3.0
