@@ -172,7 +172,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       };
     }
 
-    getMissingPropertyDocuments({ loan, structureId, property }) {
+    getMissingPropertyDocuments({ loan, structureId, property, basicDocumentsOnly }) {
       const selectedProperty = this.selectProperty({ loan, structureId });
       const propertyToCalculateWith = property || selectedProperty;
 
@@ -182,6 +182,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
           loan,
           id: propertyToCalculateWith._id,
         }),
+        basicDocumentsOnly,
       });
     }
 

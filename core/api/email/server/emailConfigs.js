@@ -287,6 +287,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   createOverrides(
     {
       loan,
+      basicDocumentsOnly,
       customMessage = '',
       assigneeName = 'e-Potek',
       assigneeAddress = 'info@e-potek.ch',
@@ -311,7 +312,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
         {
           name: 'body-content-1',
           content: ReactDOMServer.renderToStaticMarkup(
-            LoanChecklistEmail({ loan }),
+            LoanChecklistEmail({ loan, basicDocumentsOnly }),
           ),
         },
       ],

@@ -10,6 +10,7 @@ import {
   BORROWER_DOCUMENTS,
   PROPERTY_DOCUMENTS,
   LOAN_DOCUMENTS,
+  BASIC_DOCUMENTS_LIST,
 } from './fileConstants';
 
 export const documentHasTooltip = documentId => {
@@ -25,6 +26,9 @@ export const documentHasTooltip = documentId => {
     `files.${documentId}.tooltip`
   );
 };
+
+export const documentIsBasic = documentId =>
+  BASIC_DOCUMENTS_LIST.includes(documentId);
 
 const makeAllObjectDocuments = documents =>
   Object.values(documents).map(id => ({

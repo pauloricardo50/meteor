@@ -294,13 +294,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       };
     }
 
-    getMissingBorrowerDocuments({ loan, borrowers }) {
+    getMissingBorrowerDocuments({ loan, borrowers, basicDocumentsOnly }) {
       return borrowers.reduce(
         (missingIds, borrower) => [
           ...missingIds,
           ...getMissingDocumentIds({
             doc: borrower,
             fileArray: getBorrowerDocuments({ loan, id: borrower._id }, this),
+            basicDocumentsOnly,
           }),
         ],
         [],

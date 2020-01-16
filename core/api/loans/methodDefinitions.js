@@ -222,6 +222,7 @@ export const sendLoanChecklist = new Method({
     loanId: String,
     address: String,
     emailParams: Object,
+    basicDocumentsOnly: Match.Optional(Boolean),
   },
 });
 
