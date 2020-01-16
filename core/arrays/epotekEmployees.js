@@ -32,7 +32,7 @@ const employees = [
     email: 'elise@e-potek.ch',
     src: '/img/team/elise.jpg',
     name: 'Élise Juanola',
-    title: 'Conseilère en financement',
+    title: 'Conseillère en financement',
     phoneNumber: '+41 22 566 82 98',
     _id: 'gTB7r7E5j5YGiseoF',
     gender: 'F',
