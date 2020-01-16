@@ -13,7 +13,15 @@ const getOrgIds = () => OrganisationService.fetch({}).map(({ _id }) => _id);
 
 export const createFakeOffer = loanId => {
   const loan = LoanService.get(loanId, { ...adminLoan(), propertyIds: 1 });
-  const property = PropertyService.get(loan.propertyIds[0], adminProperty());
+  const property =
+    loan.propertyIds &&
+    loan.propertyIds.length &&
+    PropertyService.get(loan.propertyIds[0], adminProperty());
+
+  if (!property) {
+    return;
+  }
+
   const offer = getRandomOffer(
     { loan: { ...loan, _id: loan._id }, property },
     true,
@@ -25,7 +33,7 @@ export const createFakeOffer = loanId => {
     allOrganisationIds = getOrgIds();
   }
 
-  const randomOrganisationId = shuffle(allOrganisationIds)[0];
+  const [randomOrganisationId] = shuffle(allOrganisationIds);
   let lenderId;
 
   const lender = LenderService.get(

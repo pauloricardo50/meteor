@@ -30,7 +30,7 @@ const stylesheet = `
 
 
     html {
-        font-size: 12px;
+        font-size: 10px;
         font-family: 'Eina04', sans-serif;
     }
 

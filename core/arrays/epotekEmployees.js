@@ -29,6 +29,15 @@ const employees = [
     gender: 'M',
   },
   {
+    email: 'elise@e-potek.ch',
+    src: '/img/team/elise.jpg',
+    name: 'Élise Juanola',
+    title: 'Conseillère en financement',
+    phoneNumber: '+41 22 566 82 98',
+    _id: 'gTB7r7E5j5YGiseoF',
+    gender: 'F',
+  },
+  {
     email: 'yannis@e-potek.ch',
     src: '/img/team/yannis.jpg',
     name: 'Yannis Eggert',

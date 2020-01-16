@@ -7,6 +7,8 @@ import {
   INTEREST_RATES,
   EXPENSES,
   OWN_FUNDS_TYPES,
+  RESIDENCE_TYPE,
+  PROPERTY_CATEGORY,
 } from '../../../api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
@@ -257,8 +259,6 @@ describe('LoanCalculator', () => {
       ).to.be.above(0);
     });
 
-    it('should amortize faster if borrowers are old');
-
     it('gets amortization from the offer if it is defined', () => {
       expect(
         Calculator.getAmortization({
@@ -417,6 +417,38 @@ describe('LoanCalculator', () => {
           structureId: 'asdf',
         }),
       ).to.be.within(1666, 1667);
+    });
+
+    it('should amortize faster if borrowers are old', () => {
+      // I.e. amortize in 5 years
+      expect(
+        Calculator.getAmortization({
+          loan: {
+            structure: {
+              wantedLoan: 960000,
+              propertyWork: 0,
+              property: { value: 1200000 },
+            },
+            borrowers: [{ age: 60 }],
+          },
+        }),
+      ).to.equal(3000);
+    });
+
+    it('amortizes investment properties faster', () => {
+      // I.e. amortize in 10 years
+      expect(
+        Calculator.getAmortization({
+          loan: {
+            structure: {
+              wantedLoan: 960000,
+              propertyWork: 0,
+              property: { value: 1200000 },
+            },
+            residenceType: RESIDENCE_TYPE.INVESTMENT,
+          },
+        }),
+      ).to.equal(1500);
     });
   });
 
@@ -652,6 +684,32 @@ describe('LoanCalculator', () => {
         calc.getMaxBorrowRatio({
           loan: {
             structures: [{ id: 'struct1' }],
+          },
+          structureId: 'struct1',
+        }),
+      ).to.equal(0.5);
+    });
+
+    it('returns the maximum legal value for investment properties', () => {
+      const calc = new CalculatorClass({ maxBorrowRatio: 0.8 });
+
+      expect(
+        calc.getMaxBorrowRatio({
+          loan: {
+            structures: [{ id: 'struct1' }],
+            residenceType: RESIDENCE_TYPE.INVESTMENT,
+          },
+          structureId: 'struct1',
+        }),
+      ).to.equal(0.75);
+
+      const calc2 = new CalculatorClass({ maxBorrowRatio: 0.5 });
+
+      expect(
+        calc2.getMaxBorrowRatio({
+          loan: {
+            structures: [{ id: 'struct1' }],
+            residenceType: RESIDENCE_TYPE.INVESTMENT,
           },
           structureId: 'struct1',
         }),
@@ -1355,6 +1413,47 @@ describe('LoanCalculator', () => {
           );
         },
       );
+    });
+  });
+
+  describe('getPropertyValidFieldsRatio', () => {
+    it('returns the ratio of valid fields', () => {
+      const property = { address1: 'yo', category: PROPERTY_CATEGORY.USER };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.deep.equal({ valid: 1, required: 14 });
+    });
+
+    it('returns the ratio of valid fields', () => {
+      const property = {
+        address1: 'yo',
+        zipCode: 1400,
+        category: PROPERTY_CATEGORY.USER,
+      };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.deep.equal({ valid: 2, required: 14 });
+    });
+
+    it('does not count fields if it is a pro property, because Pros are responsible for it', () => {
+      const property = { address1: 'yo', category: PROPERTY_CATEGORY.PRO };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.equal(null);
+    });
+
+    it('does not count fields if it is a promotion property, because Pros are responsible for it', () => {
+      const property = {
+        address1: 'yo',
+        category: PROPERTY_CATEGORY.PROMOTION,
+      };
+      const ratio = Calculator.getPropertyValidFieldsRatio({
+        loan: { structure: { property }, properties: [property] },
+      });
+      expect(ratio).to.equal(null);
     });
   });
 });

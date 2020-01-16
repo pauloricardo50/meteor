@@ -9,6 +9,7 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import {
   loanSetStatus,
   setLoanStep,
@@ -37,8 +38,11 @@ import { generateOrganisationsWithLenderRules } from '../../../organisations/ser
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { generateDisbursedSoonLoansTasks } from '../methods';
+import TaskService from '../../../tasks/server/TaskService';
+import SlackService from '../../../slack/server/SlackService';
 
-describe('LoanService', function () {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -496,54 +500,54 @@ describe('LoanService', function () {
   });
 
   describe('getNewLoanName', () => {
-    it('returns 19-0001 for the very first loan', () => {
+    it('returns 20-0001 for the very first loan', () => {
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('19-0001');
+      expect(name).to.equal('20-0001');
     });
 
-    it('returns 19-0002 for the second loan', () => {
+    it('returns 20-0002 for the second loan', () => {
       loanId = LoanService.insert({ loan: {} });
       loan = LoanService.get(loanId, { name: 1 });
-      expect(loan.name).to.equal('19-0001');
+      expect(loan.name).to.equal('20-0001');
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('19-0002');
+      expect(name).to.equal('20-0002');
     });
 
     it('sorts loans properly 1', () => {
-      Factory.create('loan', { name: '19-0009' });
-      Factory.create('loan', { name: '19-0010' });
+      Factory.create('loan', { name: '20-0009' });
+      Factory.create('loan', { name: '20-0010' });
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('19-0011');
+      expect(name).to.equal('20-0011');
     });
 
     it('sorts loans properly even if created in different order', () => {
-      Factory.create('loan', { name: '19-0955' });
-      Factory.create('loan', { name: '19-0153' });
-      Factory.create('loan', { name: '19-0001' });
+      Factory.create('loan', { name: '20-0955' });
+      Factory.create('loan', { name: '20-0153' });
+      Factory.create('loan', { name: '10-0001' });
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('19-0956');
+      expect(name).to.equal('20-0956');
     });
 
-    it('returns 19-1234 for the nth loan', () => {
-      Factory.create('loan', { name: '19-1233' });
+    it('returns 20-1234 for the nth loan', () => {
+      Factory.create('loan', { name: '20-1233' });
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('19-1234');
+      expect(name).to.equal('20-1234');
     });
 
     it('does not break if a 10000th loan is added', () => {
-      Factory.create('loan', { name: '19-9999' });
+      Factory.create('loan', { name: '20-9999' });
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('19-10000');
+      expect(name).to.equal('20-10000');
     });
 
     it('handles new year properly', () => {
-      Factory.create('loan', { name: '19-0003' });
-      const name = LoanService.getNewLoanName(new Date(2020, 1, 1));
-      expect(name).to.equal('20-0001');
+      Factory.create('loan', { name: '20-0003' });
+      const name = LoanService.getNewLoanName(new Date(2021, 1, 1));
+      expect(name).to.equal('21-0001');
     });
   });
 
@@ -1397,7 +1401,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1437,8 +1441,8 @@ describe('LoanService', function () {
       expect(moment(date).format('YYYY-MM-DD')).to.equal(
         moment().format('YYYY-MM-DD'),
       );
-      expect(main.min.borrowRatio).to.equal(0.65);
-      expect(main.min.propertyValue).to.equal(1496000);
+      expect(main.min.borrowRatio).to.equal(0.635);
+      expect(main.min.propertyValue).to.equal(1443000);
       expect(main.max.borrowRatio).to.equal(0.835);
       expect(main.max.propertyValue).to.equal(2761000);
       expect(second.min.borrowRatio).to.equal(0.5);
@@ -1690,7 +1694,7 @@ describe('LoanService', function () {
       ).to.throw('futur');
     });
 
-    it('sends an email to a pro if asked', async () => {
+    it('sends an email to multiple pros if asked', async () => {
       generator({
         loans: {
           _id: 'loanId',
@@ -1718,7 +1722,11 @@ describe('LoanService', function () {
         loanSetAdminNote.run({
           loanId: 'loanId',
           note: { note: 'hello dude', isSharedWithPros: true },
-          notifyPro: true,
+          notifyPros: [
+            { email: 'test@e-potek.ch' },
+            { email: 'test2@e-potek.ch' },
+            { email: 'test3@e-potek.ch' },
+          ],
         }),
       );
 
@@ -1726,12 +1734,12 @@ describe('LoanService', function () {
         {
           address,
           template: {
-            message: { subject, global_merge_vars },
+            message: { subject, global_merge_vars, to },
           },
         },
       ] = await checkEmails(1);
 
-      expect(address).to.equal('pro@e-potek.ch');
+      expect(address).to.equal('test@e-potek.ch');
       expect(subject).to.equal('Nouvelle note pour le dossier de Joe Jackson');
       expect(
         global_merge_vars.find(({ name }) => name === 'TITLE').content,
@@ -1745,75 +1753,9 @@ describe('LoanService', function () {
       expect(
         global_merge_vars.find(({ name }) => name === 'CTA_URL').content,
       ).to.include(Meteor.settings.public.subdomains.pro);
-    });
 
-    it('does not send an email to a pro if there is no referredByUser', async () => {
-      generator({
-        loans: {
-          _id: 'loanId',
-          name: '20-0001',
-          user: {
-            _id: 'userId',
-            firstName: 'Joe',
-            lastName: 'Jackson',
-            assignedEmployee: {
-              _id: 'adminId',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: 'User',
-            },
-          },
-        },
-      });
-
-      await ddpWithUserId('adminId', () =>
-        loanSetAdminNote.run({
-          loanId: 'loanId',
-          note: { note: 'hello dude', isSharedWithPros: true },
-          notifyPro: true,
-        }),
-      );
-
-      const emails = await checkEmails(1, { noExpect: true, timeout: 2000 });
-
-      expect(emails.length).to.equal(0);
-    });
-
-    it('does not send an email to a pro if it is not shared with them', async () => {
-      generator({
-        loans: {
-          _id: 'loanId',
-          name: '20-0001',
-          user: {
-            _id: 'userId',
-            firstName: 'Joe',
-            lastName: 'Jackson',
-            referredByUser: {
-              firstName: 'Pro',
-              lastName: 'User',
-              emails: [{ address: 'pro@e-potek.ch', verified: true }],
-            },
-            assignedEmployee: {
-              _id: 'adminId',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: 'User',
-            },
-          },
-        },
-      });
-
-      await ddpWithUserId('adminId', () =>
-        loanSetAdminNote.run({
-          loanId: 'loanId',
-          note: { note: 'hello dude', isSharedWithPros: false },
-          notifyPro: true,
-        }),
-      );
-
-      const emails = await checkEmails(1, { noExpect: true, timeout: 2000 });
-
-      expect(emails.length).to.equal(0);
+      expect(to.length).to.equal(3);
+      expect(to.every(({ type }) => type === 'bcc')).to.equal(true);
     });
   });
 
@@ -1877,6 +1819,289 @@ describe('LoanService', function () {
       const { proNote: removed } = LoanService.get('loanId', { proNote: 1 });
 
       expect(removed).to.equal(undefined);
+    });
+  });
+
+  describe('insertBorrowers', () => {
+    beforeEach(() => {
+      generator({
+        users: {
+          _id: 'user',
+          _factory: 'user',
+          firstName: 'Bob',
+          lastName: 'Dylan',
+          phoneNumbers: ['12345'],
+          emails: [{ address: 'bob.dylan@example.com', verified: true }],
+        },
+      });
+
+      loanId = LoanService.fullLoanInsert({ userId: 'user' });
+    });
+
+    it('reuses user personal information on the first borrower', () => {
+      LoanService.insertBorrowers({ loanId, amount: 1 });
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
+      });
+      const [borrower] = borrowers;
+      expect(borrower).to.deep.include({
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        email: 'bob.dylan@example.com',
+        phoneNumber: '+41 12345',
+      });
+    });
+
+    it('does not reuse user personal information when second borrower', () => {
+      LoanService.insertBorrowers({ loanId, amount: 2 });
+      const { borrowers = [] } = LoanService.get(loanId, {
+        borrowers: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 },
+      });
+      const [borrower1, borrower2] = borrowers;
+      expect(borrower1).to.deep.include({
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        email: 'bob.dylan@example.com',
+        phoneNumber: '+41 12345',
+      });
+      expect(borrower2.firstName).to.equal(undefined);
+      expect(borrower2.lastName).to.equal(undefined);
+      expect(borrower2.phoneNumber).to.equal(undefined);
+      expect(borrower2.email).to.equal(undefined);
+    });
+  });
+
+  describe('generateDisbursedSoonLoansTasks', () => {
+    const generateDisbursedLoans = (today, loansConfig) =>
+      loansConfig.map(({ offset }, index) => ({
+        _id: `l${index + 1}`,
+        _factory: 'loan',
+        name: `20-000${index + 1}`,
+        user: {
+          _id: `u${index + 1}`,
+          _factory: 'user',
+          assignedEmployeeId: 'admin',
+        },
+        disbursementDate: moment(today)
+          .add(offset, 'days')
+          .toDate(),
+      }));
+
+    afterEach(() => {
+      SlackService.send.restore();
+    });
+
+    let today;
+    let spy;
+
+    beforeEach(async () => {
+      today = new Date();
+      generator({
+        users: { _id: 'admin', _factory: 'admin' },
+        loans: generateDisbursedLoans(today, [
+          { offset: 0 },
+          { offset: 5 },
+          { offset: 9 },
+          { offset: 10 },
+          { offset: 11 },
+          { offset: 10 },
+        ]),
+      });
+      spy = sinon.spy();
+      sinon.stub(SlackService, 'send').callsFake(spy);
+      await generateDisbursedSoonLoansTasks.serverRun({});
+    });
+
+    it('generates the tasks for the loans disbursed in 10 days', async () => {
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
+
+      expect(tasks.length).to.equal(2);
+      tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
+        expect(title).to.include(
+          moment(today)
+            .add(10, 'days')
+            .format('DD.MM.YYYY'),
+        );
+        expect(adminId).to.equal('admin');
+      });
+    });
+  });
+
+  describe('selected lender organisation hook', () => {
+    it('adds the link when an offer is selected in the selected structure', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+        },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { structures: [{ id: 'struct', offerId: 'offer' }] },
+      });
+
+      const {
+        selectedLenderOrganisation: selectedLenderOrganisationAfterUpdate,
+      } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisationAfterUpdate).to.deep.include({
+        _id: 'org',
+      });
+    });
+
+    it('updates the link when the new selected structure has an offer from another lender selected', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+              offerId: 'offer',
+            },
+            {
+              id: 'struct2',
+              offerId: 'offer2',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+            {
+              organisation: { _id: 'org2' },
+              offers: [{ _id: 'offer2' }],
+            },
+          ],
+          selectedLenderOrganisation: { _id: 'org' },
+        },
+      });
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { selectedStructure: 'struct2' },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.deep.include({ _id: 'org2' });
+    });
+
+    it('removes the link when the new selected structure has no selected offer and the previous had an offer selected', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+              offerId: 'offer',
+            },
+            {
+              id: 'struct2',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+          selectedLenderOrganisation: { _id: 'org' },
+        },
+      });
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { selectedStructure: 'struct2' },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+
+    it('removes the link when the new selected structure has no selected offer and the previous had no offer selected', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+            },
+            {
+              id: 'struct2',
+            },
+          ],
+          selectedStructure: 'struct',
+        },
+      });
+
+      LoanService.update({
+        loanId: 'loan',
+        object: { selectedStructure: 'struct2' },
+      });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+
+    it('removes the link when the the selected offer is removed', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          structures: [
+            {
+              id: 'struct',
+              offerId: 'offer',
+            },
+          ],
+          selectedStructure: 'struct',
+          lenders: [
+            {
+              organisation: { _id: 'org' },
+              offers: [{ _id: 'offer' }],
+            },
+          ],
+          selectedLenderOrganisation: { _id: 'org' },
+        },
+      });
+
+      OfferService.remove({ offerId: 'offer' });
+
+      const { selectedLenderOrganisation } = LoanService.get('loan', {
+        selectedLenderOrganisation: { _id: 1 },
+      });
+
+      expect(selectedLenderOrganisation).to.equal(undefined);
     });
   });
 });

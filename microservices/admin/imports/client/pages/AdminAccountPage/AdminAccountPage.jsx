@@ -10,10 +10,10 @@ const AdminAccountPage = props => {
     <>
       <SingleUserPage
         {...props}
-        match={{ params: { userId: currentUser._id } }}
+        userId={currentUser._id}
         className="admin-account-page"
       >
-        <br />
+        <div className="mb-16" />
         <PasswordChange />
       </SingleUserPage>
     </>

@@ -18,7 +18,7 @@ const userSchema = new SimpleSchema({
   lastName: { type: String, optional: true },
   organisations: {
     type: Array,
-    condition: ({ roles = [] }) => roles.includes(ROLES.PRO),
+    condition: ({ roles = [] }) => !roles.includes(ROLES.USER),
   },
   email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
   phoneNumbers: { type: Array, optional: true },
@@ -92,7 +92,7 @@ export default compose(
         .run({ userId: user._id, object })
         .then(
           () =>
-            user.roles.includes(ROLES.PRO) &&
+            !user.roles.includes(ROLES.USER) &&
             updateOrganisations({ userId: user._id, organisations }),
         );
     },

@@ -1,10 +1,15 @@
 import React from 'react';
+import moment from 'moment';
+
 import { toMoney } from 'core/utils/conversionFunctions';
+import T from 'core/components/Translation';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
 import { EXPENSE_TYPES } from '../../../../../lenderRules/lenderRulesConstants';
 import {
   OTHER_INCOME,
   OWN_FUNDS_TYPES,
+  CIVIL_STATUS,
+  BORROWER_ACTIVITY_TYPES,
 } from '../../../../../borrowers/borrowerConstants';
 
 const renderWithComments = (value, comments = []) => {
@@ -108,7 +113,12 @@ export const getBorrowersOwnFunds = (borrowers, types) =>
       [type]: borrowers.map(
         borrower =>
           borrower[type] &&
-          borrower[type].reduce((sum, ownFund) => sum + ownFund.value, 0),
+          renderWithComments(
+            borrower[type].reduce((sum, ownFund) => sum + ownFund.value, 0),
+            borrower[type].map(
+              ({ description, value }) => `${description} (${toMoney(value)})`,
+            ),
+          ),
       ),
     }),
     {},
@@ -119,18 +129,11 @@ export const getBorrowersAddress = borrowers => {
     ({ sameAddress }) => sameAddress === true,
   );
   if (borrowersHaveSameAddress) {
-    const borrowerWithAddress = borrowers.find(
-      ({ city, zipCode }) => city && zipCode,
-    );
-    const address = [
-      borrowerWithAddress.zipCode,
-      borrowerWithAddress.city,
-    ].join(' ');
+    const { address } = borrowers.find(({ city, zipCode }) => city && zipCode);
+
     return borrowers.map(() => address);
   }
-  const zipCodes = getBorrowersSingleInfo(borrowers, 'zipCode');
-  const cities = getBorrowersSingleInfo(borrowers, 'city');
-  return zipCodes.map((zipCode, index) => `${zipCode} ${cities[index]}`);
+  return borrowers.map(({ address }) => address);
 };
 
 export const getBonus = (borrowers, calculator) =>
@@ -156,6 +159,85 @@ export const getBonus = (borrowers, calculator) =>
     return renderWithComments(bonus, comments);
   });
 
+const getBorrowersCitizenship = borrowers =>
+  borrowers.map(borrower => {
+    const { isSwiss, citizenship, residencyPermit } = borrower;
+    if (isSwiss) {
+      return <T id="Forms.switzerland" />;
+    }
+
+    return residencyPermit ? (
+      <span>
+        {citizenship}&nbsp;(
+        <T id={`Forms.residencyPermit.${residencyPermit}`} />)
+      </span>
+    ) : (
+        citizenship
+      );
+  });
+
+const getBorrowerCivilStatusAndDate = borrower => {
+  const { civilStatus, marriedDate, divorcedDate } = borrower;
+  if (civilStatus === CIVIL_STATUS.MARRIED) {
+    return (
+      <span>
+        <T id={`PDF.borrowersInfos.civilStatus.${civilStatus}`} />
+        {marriedDate ? ` (${moment(marriedDate).format('DD.MM.YYYY')})` : ''}
+      </span>
+    );
+  }
+  if (civilStatus === CIVIL_STATUS.DIVORCED) {
+    return (
+      <span>
+        <T id={`PDF.borrowersInfos.civilStatus.${civilStatus}`} />
+        {divorcedDate ? ` (${moment(divorcedDate).format('DD.MM.YYYY')})` : ''}
+      </span>
+    );
+  }
+
+  return <T id={`PDF.borrowersInfos.civilStatus.${civilStatus}`} />;
+};
+
+const getBorrowerCompany = borrower => {
+  const { company, jobStartDate } = borrower;
+
+  return jobStartDate
+    ? `${company} (${moment(jobStartDate).format('DD.MM.YYYY')})`
+    : company;
+};
+
+const getBorrowerJob = borrower => {
+  const { job, jobActivityRate } = borrower;
+
+  return jobActivityRate
+    ? `${job} (${Math.round(100 * jobActivityRate)}%)`
+    : job;
+};
+
+const getBorrowerActivityType = borrower => {
+  const { activityType, selfEmployedSince, annuitantSince } = borrower;
+
+  if (activityType === BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED) {
+    return (
+      <span>
+        <T id={`Forms.activityType.${activityType}`} />
+        &nbsp;({moment(selfEmployedSince).format('DD.MM.YYYY')})
+      </span>
+    );
+  }
+
+  if (activityType === BORROWER_ACTIVITY_TYPES.ANNUITANT) {
+    return (
+      <span>
+        <T id={`Forms.activityType.${activityType}`} />
+        &nbsp;({moment(annuitantSince).format('DD.MM.YYYY')})
+      </span>
+    );
+  }
+
+  return <T id={`Forms.activityType.${activityType}`} />;
+};
+
 export const getBorrowersInfos = (borrowers, calculator) => ({
   ...getBorrowersSingleInfos(borrowers, [
     'name',
@@ -163,9 +245,14 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'age',
     'birthDate',
     'childrenCount',
-    'company',
     'civilStatus',
+    'email',
+    'phoneNumber',
   ]),
+  activityType: borrowers.map(getBorrowerActivityType),
+  company: borrowers.map(getBorrowerCompany),
+  job: borrowers.map(getBorrowerJob),
+  civilStatus: borrowers.map(getBorrowerCivilStatusAndDate),
   realEstateIncome: borrowers.map(borrower =>
     calculator.getRealEstateIncomeTotal({ borrowers: borrower }),
   ),
@@ -173,6 +260,7 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     calculator.getSalary({ borrowers: borrower }),
   ),
   address: getBorrowersAddress(borrowers),
+  citizenship: getBorrowersCitizenship(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(
       borrowers,

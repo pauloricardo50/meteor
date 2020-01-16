@@ -1,7 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import { createMeteorAsyncFunction } from 'core/api/helpers/index';
 import { FROM_DEFAULT, EMAIL_IDS, EMAIL_PARTS } from '../emailConstants';
 import EmailService from './EmailService';
@@ -59,3 +59,30 @@ Accounts.emailTemplates.resetPassword = createAccountsEmailConfig(
 Accounts.emailTemplates.enrollAccount = createAccountsEmailConfig(
   EMAIL_IDS.ENROLL_ACCOUNT,
 );
+
+// Hack Meteor accounts functions to allow adding attachments meteor emails
+const defaultGenerateOptionsForEmail = Accounts.generateOptionsForEmail;
+Accounts.generateOptionsForEmail = (email, user, url, reason) => {
+  const defaultOptions = defaultGenerateOptionsForEmail(
+    email,
+    user,
+    url,
+    reason,
+  );
+
+  if (reason === 'enrollAccount') {
+    return {
+      ...defaultOptions,
+      attachments: [
+        {
+          filename: 'e-Potek - Guide du financement hypothécaire.pdf',
+          path: encodeURI(
+            `${Meteor.settings.public.subdomains.backend}/files/e-Potek - Guide du financement hypothécaire.pdf`,
+          ),
+        },
+      ],
+    };
+  }
+
+  return defaultOptions;
+};

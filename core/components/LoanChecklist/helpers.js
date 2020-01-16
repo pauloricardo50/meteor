@@ -1,8 +1,10 @@
+import { documentHasTooltip, documentIsBasic } from 'core/api/files/documents';
 import { PROPERTY_CATEGORY } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 
 const shouldDisplayPropertyChecklist = props => {
   const { loan = {} } = props;
+
   const property = Calculator.selectProperty({ loan });
   return (
     !loan.hasPromotion &&
@@ -12,7 +14,7 @@ const shouldDisplayPropertyChecklist = props => {
   );
 };
 
-const makeLabelOverrider = doc => id => {
+const labelOverrider = (doc, id) => {
   const additionalDocument = doc.additionalDocuments.find(
     ({ id: documentId }) => documentId === id,
   );
@@ -24,11 +26,31 @@ const makeLabelOverrider = doc => id => {
   return false;
 };
 
-const formatFileTitle = ({ doc, formatMessage }) => file => {
-  const labelOverrider = makeLabelOverrider(doc);
-  const label = labelOverrider(file);
+const formatFileTitle = ({ doc, formatMessage, file }) => {
+  const label = labelOverrider(doc, file);
 
   return label || formatMessage({ id: `files.${file}` });
+};
+
+const tooltipOverrider = (doc, id) => {
+  const additionalDocument = doc.additionalDocuments.find(
+    ({ id: documentId }) => documentId === id,
+  );
+
+  if (additionalDocument) {
+    return additionalDocument.tooltip;
+  }
+
+  return false;
+};
+
+const formatFileTooltip = ({ doc, formatMessage, file }) => {
+  const tooltip = tooltipOverrider(doc, file);
+
+  return (
+    tooltip ||
+    (documentHasTooltip(file) && formatMessage({ id: `files.${file}.tooltip` }))
+  );
 };
 
 const getPropertyMissingFields = (props, formatMessage) => {
@@ -53,7 +75,7 @@ const getPropertyMissingFields = (props, formatMessage) => {
 };
 
 const getPropertyMissingDocuments = (props, formatMessage) => {
-  const { loan = {} } = props;
+  const { loan = {}, basicDocumentsOnly } = props;
   const displayPropertyChecklist = shouldDisplayPropertyChecklist(props);
   const property = Calculator.selectProperty({ loan });
 
@@ -66,7 +88,16 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
               formatMessage({ id: 'general.property' }),
             labels: Calculator.getMissingPropertyDocuments({
               loan,
-            }).map(formatFileTitle({ doc: property, formatMessage })),
+              basicDocumentsOnly,
+            }).map(file => ({
+              label: formatFileTitle({ doc: property, formatMessage, file }),
+              tooltip: formatFileTooltip({
+                doc: property,
+                formatMessage,
+                file,
+              }),
+              basic: documentIsBasic(file),
+            })),
           },
         }
       : {}),
@@ -93,22 +124,30 @@ const getBorrowersMissingFields = (props, formatMessage) => {
 };
 
 const getBorrowersMissingDocuments = (props, formatMessage) => {
-  const { loan = {} } = props;
+  const { loan = {}, basicDocumentsOnly } = props;
   const { borrowers = [] } = loan;
 
   return {
-    borrowers: borrowers.map((borrower, index) => ({
-      title:
-        borrower.name ||
-        formatMessage(
-          { id: 'general.borrowerWithIndex' },
-          { index: index + 1 },
-        ),
-      labels: Calculator.getMissingBorrowerDocuments({
+    borrowers: borrowers.map((borrower, index) => {
+      const missingDocuments = Calculator.getMissingBorrowerDocuments({
         loan,
         borrowers: borrower,
-      }).map(formatFileTitle({ doc: borrower, formatMessage })),
-    })),
+        basicDocumentsOnly,
+      });
+      return {
+        title:
+          borrower.name ||
+          formatMessage(
+            { id: 'general.borrowerWithIndex' },
+            { index: index + 1 },
+          ),
+        labels: missingDocuments.map(file => ({
+          label: formatFileTitle({ doc: borrower, formatMessage, file }),
+          tooltip: formatFileTooltip({ doc: borrower, formatMessage, file }),
+          basic: documentIsBasic(file),
+        })),
+      };
+    }),
   };
 };
 
@@ -133,8 +172,22 @@ export const getChecklistMissingInformations = (...args) => ({
     ...getPropertyMissingFields(...args),
     ...getBorrowersMissingFields(...args),
   },
+
   documents: {
     ...getPropertyMissingDocuments(...args),
     ...getBorrowersMissingDocuments(...args),
   },
 });
+
+export const isAnyBasicDocumentRequested = documents => {
+  const {
+    property: { labels: propertyLabels = [] } = {},
+    borrowers = [],
+  } = documents;
+  return (
+    propertyLabels.some(({ basic }) => basic) ||
+    borrowers.some(({ labels: borrowerLabels = [] }) =>
+      borrowerLabels.some(({ basic }) => basic),
+    )
+  );
+};

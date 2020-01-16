@@ -6,7 +6,11 @@ import StickyPopover from 'core/components/StickyPopover';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import RadioButtons from 'core/components/RadioButtons';
-import { STEP_ORDER, LOAN_STATUS_ORDER } from 'core/api/constants';
+import {
+  STEP_ORDER,
+  LOAN_STATUS_ORDER,
+  PROMOTION_STATUS,
+} from 'core/api/constants';
 import { LOAN_CATEGORIES, ROLES } from 'imports/core/api/constants';
 import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
@@ -41,9 +45,7 @@ const makeOnChange = (filterName, dispatch) => (prev, next) => {
 const LoanBoardOptionsContent = ({
   options,
   dispatch,
-  admins,
   devAndAdmins,
-  intl: { formatMessage: f },
   promotions,
   lenders,
   refetchLoans,
@@ -58,11 +60,13 @@ const LoanBoardOptionsContent = ({
     promotionId,
     lenderId,
     category,
+    promotionStatus,
   } = options;
   const assignedEmployeeValue = assignedEmployeeId
     ? assignedEmployeeId.$in
     : [null];
   const statusValue = status ? status.$in : [null];
+  const promotionStatusValue = promotionStatus ? promotionStatus.$in : [null];
   const categoryValue = category ? category.$in : [null];
   const stepValue = step ? step.$in : [null];
   const promotionIdValue = promotionId ? promotionId.$in : [null];
@@ -110,6 +114,13 @@ const LoanBoardOptionsContent = ({
   const lenderOptions = [
     { id: null, label: 'Tous' },
     ...lenders.map(({ _id, name }) => ({ id: _id, label: name })),
+  ];
+  const promotionStatusOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(PROMOTION_STATUS).map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
   ];
 
   return (
@@ -168,6 +179,18 @@ const LoanBoardOptionsContent = ({
           }
         />
 
+        <LoanBoardOptionsCheckboxes
+          label="Statut de la promotion"
+          value={promotionStatusValue}
+          options={promotionStatusOptions}
+          onChange={next =>
+            makeOnChange('promotionStatus', dispatch)(
+              promotionStatusValue,
+              next,
+            )
+          }
+        />
+
         <div>
           <StickyPopover
             component={
@@ -207,4 +230,5 @@ const LoanBoardOptionsContent = ({
     </>
   );
 };
+
 export default LoanBoardOptionsContent;

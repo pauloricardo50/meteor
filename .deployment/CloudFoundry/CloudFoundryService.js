@@ -1,8 +1,5 @@
 import { executeCommand, logError } from '../utils/helpers';
-import {
-  CLOUDFOUNDRY_MARKETPLACE,
-  cloudFoundryCommands,
-} from './cloudFoundryConstants';
+import { cloudFoundryCommands } from './cloudFoundryConstants';
 import {
   slackLogError,
   slackNotifyAppRestart,
@@ -10,15 +7,13 @@ import {
 } from '../utils/slackNotification';
 
 class CloudFoundryService {
-  selectSpace = space => {
-    return executeCommand(cloudFoundryCommands.selectSpace(space));
-  };
+  selectSpace = space =>
+    executeCommand(cloudFoundryCommands.selectSpace(space));
 
-  getScaleApplicationCommand = ({ space, applicationName, config }) => {
-    return this.selectSpace(space).then(() =>
+  getScaleApplicationCommand = ({ space, applicationName, config }) =>
+    this.selectSpace(space).then(() =>
       cloudFoundryCommands.scale({ appName: applicationName, ...config }),
     );
-  };
 
   pushApplication = buildDirectory =>
     executeCommand(cloudFoundryCommands.push(buildDirectory));

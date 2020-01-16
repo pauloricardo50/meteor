@@ -1,3 +1,4 @@
+import LenderService from 'core/api/lenders/server/LenderService';
 import FileService from '../../files/server/FileService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -6,6 +7,10 @@ import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
 import { ROLES, PROPERTY_CATEGORY } from '../../constants';
 import Loans from '../loans';
+import formatNumbersHook, {
+  formatPhoneNumber,
+} from '../../../utils/phoneFormatting';
+import LoanService from './LoanService';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
@@ -58,4 +63,75 @@ Loans.after.insert((userId, doc) =>
     loanLink: { _id: doc._id },
     title: 'Dossier créé',
   }),
+);
+
+formatNumbersHook(Loans, 'contacts', (oldContacts = []) =>
+  oldContacts.map(({ phoneNumber, ...contact }) => ({
+    ...contact,
+    phoneNumber: formatPhoneNumber(phoneNumber),
+  })),
+);
+
+Loans.after.update(
+  (
+    userId,
+    {
+      _id: loanId,
+      structures = [],
+      selectedStructure,
+      lendersCache = [],
+      selectedLenderOrganisationLink = {},
+    },
+    fieldNames = [],
+  ) => {
+    const fieldsToWatch = ['structures', 'selectedStructure'];
+    if (fieldNames.some(fieldName => fieldsToWatch.includes(fieldName))) {
+      if (selectedStructure) {
+        const { offerId } = structures.find(
+          ({ id }) => id === selectedStructure,
+        );
+
+        // Selected structure has no selected offer
+        if (!offerId && selectedLenderOrganisationLink._id) {
+          return LoanService.removeLink({
+            id: loanId,
+            linkName: 'selectedLenderOrganisation',
+            linkId: selectedLenderOrganisationLink._id,
+          });
+        }
+        if (!offerId) {
+          return;
+        }
+
+        const selectedLenderOrganisation =
+          lendersCache.find(({ _id: lenderId }) => {
+            const { offers = [] } = LenderService.get(
+              { _id: lenderId, 'loanLink._id': loanId },
+              { offers: { _id: 1 } },
+            );
+            return offers.some(({ _id }) => _id === offerId);
+          }) || {};
+
+        const {
+          organisationLink: { _id: selectedLenderOrganisationId } = {},
+        } = selectedLenderOrganisation;
+
+        if (selectedLenderOrganisationId) {
+          const {
+            _id: currentselectedLenderOrganisationId,
+          } = selectedLenderOrganisationLink;
+
+          if (
+            selectedLenderOrganisationId !== currentselectedLenderOrganisationId
+          ) {
+            LoanService.addLink({
+              id: loanId,
+              linkName: 'selectedLenderOrganisation',
+              linkId: selectedLenderOrganisationId,
+            });
+          }
+        }
+      }
+    }
+  },
 );

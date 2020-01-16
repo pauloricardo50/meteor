@@ -54,37 +54,32 @@ export const getMandrillTemplate = ({
   bccAddresses = [],
   ccAddresses = [],
   attachments = [],
-}) => {
-  const [firstBcc, ...otherBccs] = bccAddresses;
-  return {
-    template_name: templateName,
-    template_content: [
-      { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
-      ...templateContent,
+}) => ({
+  template_name: templateName,
+  template_content: [
+    { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
+    ...templateContent,
+  ],
+  message: {
+    from_email: senderAddress,
+    from_name: senderName,
+    subject,
+    to: [
+      {
+        email: recipientAddress,
+        name: recipientName,
+        type: mainRecipientIsBcc ? 'bcc' : 'to',
+      },
+      ...ccAddresses.map(cc => ({ ...cc, type: 'cc' })),
+      ...bccAddresses.map(bcc => ({ ...bcc, type: 'bcc' })),
     ],
-    message: {
-      from_email: senderAddress,
-      from_name: senderName,
-      subject,
-      to: [
-        {
-          email: recipientAddress,
-          name: recipientName,
-          type: mainRecipientIsBcc ? 'bcc' : 'to',
-        },
-        ...ccAddresses.map(cc => ({ ...cc, type: 'cc' })),
-        ...otherBccs.map(bcc => ({ ...bcc, type: 'bcc' })),
-      ],
-      global_merge_vars: variables,
-      headers: { 'Reply-To': replyTo || senderAddress },
-      bcc_address: firstBcc && firstBcc.email,
-      preserve_recipients: true,
-      attachments: attachments.length ? attachments : undefined,
-    },
-    send_at: sendAt ? sendAt.toISOString() : undefined,
-  };
-};
-
+    global_merge_vars: variables,
+    headers: { 'Reply-To': replyTo || senderAddress },
+    preserve_recipients: true,
+    attachments: attachments.length ? attachments : undefined,
+  },
+  send_at: sendAt ? sendAt.toISOString() : undefined,
+});
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 

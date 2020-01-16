@@ -10,6 +10,8 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import RealRevenuesDialogContent from './RealRevenuesDialogContent';
 import UnsucessfulFeedback from './UnsuccessfulDialogContent/UnsucessfulFeedback';
 import UnsuccessfulNewLoan from './UnsuccessfulDialogContent/UnsuccessfulNewLoan';
+import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
+import UnsuccessfulLoanRevenuesAndTasks from './UnsuccessfulDialogContent/UnsuccessfulLoanRevenuesAndTasks';
 
 const requiresRevenueStatus = status =>
   [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(
@@ -38,6 +40,26 @@ const closeButton = (reject, closeAll) => (
 
 const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
   switch (status) {
+    case LOAN_STATUS.ONGOING: {
+      return new Promise((resolve, reject) => {
+        openModal({
+          title: getTitle(status),
+          description:
+            'Veuillez entrer une date approximative pour le décaissement des fonds',
+          content: ({ closeAll }) => (
+            <LoanDisbursementDate
+              loan={loan}
+              onSubmit={() => {
+                closeAll();
+                resolve();
+              }}
+            />
+          ),
+          actions: ({ closeAll }) => closeButton(reject, closeAll),
+          important: true,
+        });
+      });
+    }
     case LOAN_STATUS.UNSUCCESSFUL: {
       return new Promise((resolve, reject) => {
         openModal([
@@ -71,7 +93,7 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
 
           {
             title: getTitle(status),
-            content: ({ closeModal, returnValue, closeAll }) => (
+            content: ({ closeModal, returnValue }) => (
               <UnsucessfulFeedback
                 loan={loan}
                 closeModal={closeModal}
@@ -83,7 +105,32 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
           },
           {
             title: getTitle(status),
-            content: ({ closeModal, returnValue, closeAll }) => (
+            description:
+              'Attention: ce dossier a des tâches actives et/ou des revenus !',
+            content: ({ closeModal, returnValue }) => (
+              <UnsuccessfulLoanRevenuesAndTasks
+                loan={loan}
+                closeModal={closeModal}
+                returnValue={returnValue}
+              />
+            ),
+            actions: ({ closeAll, closeModal, returnValue }) => [
+              closeButton(reject, closeAll),
+              <Button
+                key="ok"
+                primary
+                raised
+                label={<T id="general.ok" />}
+                onClick={() => closeModal({ ...returnValue })}
+              />,
+            ],
+            important: true,
+            maxWidth: 'xl',
+            fullWidth: true,
+          },
+          {
+            title: getTitle(status),
+            content: ({ closeModal, returnValue }) => (
               <UnsuccessfulNewLoan
                 loan={loan}
                 closeModal={closeModal}

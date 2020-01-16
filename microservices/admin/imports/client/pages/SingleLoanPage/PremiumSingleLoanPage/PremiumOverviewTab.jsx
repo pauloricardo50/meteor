@@ -4,9 +4,10 @@ import React from 'react';
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
 import { LOANS_COLLECTION } from 'core/api/constants';
+import LoanNotes from 'core/components/LoanNotes';
 import LoanTimeline from '../LoanTabs/OverviewTab/LoanTimeline';
 import StructureForm from './StructureForm';
-import LoanAdminNotes from '../LoanTabs/OverviewTab/LoanAdminNotes'
+import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
 
 type PremiumOverviewTabProps = {};
 
@@ -26,11 +27,11 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
           fields={['residenceType']}
           collection={LOANS_COLLECTION}
         />
+        <LoanDisbursementDate loan={loan} />
       </div>
 
       <LoanTimeline loanId={loanId} />
-
-      <LoanAdminNotes loan={loan} />
+      <LoanNotes loan={loan} />
 
       <div className="structure-form">
         <StructureForm {...props} />

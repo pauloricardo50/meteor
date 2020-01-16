@@ -9,13 +9,14 @@ import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklis
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
+import LoanNotes from 'core/components/LoanNotes';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
 import BorrowerAge from '../BorrowerAge';
-import LoanAdminNotes from './LoanAdminNotes';
+import LoanDisbursementDate from './LoanDisbursementDate';
 
 const OverviewTab = props => {
   const {
@@ -54,6 +55,7 @@ const OverviewTab = props => {
             collection={LOANS_COLLECTION}
           />
           <LoanStepSetter loan={loan} />
+          <LoanDisbursementDate loan={loan} />
         </div>
 
         <div className="card-bottom">
@@ -67,7 +69,7 @@ const OverviewTab = props => {
 
       <LoanTimeline loanId={loanId} />
 
-      <LoanAdminNotes loan={loan} />
+      <LoanNotes loan={loan} />
 
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />

@@ -10,7 +10,7 @@ import Users from '.';
 
 export const adminUsers = Users.createQuery(
   USER_QUERIES.ADMIN_USERS,
-  adminUser(),
+  { ...adminUser(), $options: { sort: { lastName: 1 } } },
   { scoped: true },
 );
 

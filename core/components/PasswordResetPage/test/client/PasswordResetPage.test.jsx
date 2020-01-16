@@ -35,7 +35,7 @@ describe('PasswordResetPage', () => {
     return resetDatabase();
   });
 
-  it('renders the name', async () => {
+  it.skip('renders the name', async () => {
     const { email, token } = props;
     const firstName = 'John';
     const lastName = 'Doe';

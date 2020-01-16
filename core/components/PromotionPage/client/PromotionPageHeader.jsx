@@ -3,7 +3,11 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
 
-import { PROMOTIONS_COLLECTION } from '../../../api/constants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import {
+  PROMOTIONS_COLLECTION,
+  LOANS_COLLECTION,
+} from '../../../api/constants';
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
 import ImageCarrousel from '../../ImageCarrousel';
 import { LightTheme } from '../../Themes';
@@ -27,6 +31,7 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
     city,
     status,
     promotionLots = [],
+    promotionLoan,
   } = promotion;
   const {
     permissions: {
@@ -69,6 +74,15 @@ const PromotionPageHeader = ({ promotion }: PromotionPageHeaderProps) => {
               {canLinkLender && <PromotionLender promotion={promotion} />}
             </LightTheme>
           </div>
+          {Meteor.microservice === 'admin' && promotionLoan && (
+            <div className="promotion-page-header-promotion-loan">
+              <h4>Dossier de développement:</h4>
+              <CollectionIconLink
+                key={promotionLoan._id}
+                relatedDoc={{ ...promotionLoan, collection: LOANS_COLLECTION }}
+              />
+            </div>
+          )}
         </div>
         {Meteor.microservice !== 'app' && (
           <div className="promotion-page-header-actions">

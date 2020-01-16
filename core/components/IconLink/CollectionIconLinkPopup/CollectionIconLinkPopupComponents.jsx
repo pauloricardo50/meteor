@@ -76,8 +76,11 @@ export const titles = {
       )}
     </span>
   ),
-  [USERS_COLLECTION]: ({ name, roles }) => (
+  [USERS_COLLECTION]: ({ name, roles, isDisabled }) => (
     <span>
+      {isDisabled && (
+        <p className="flex center error-box m-0 mb-8">Désactivé</p>
+      )}
       {name}
       &nbsp;
       <Roles className="secondary" roles={roles} />
@@ -114,12 +117,12 @@ export const titles = {
       organisation: { name: orgName, logo },
     },
   }) => (
-      <span>
-        {orgName}
-        &nbsp;pour
+    <span>
+      {orgName}
+      &nbsp;pour
       {name}
-      </span>
-    ),
+    </span>
+  ),
   [PROMOTIONS_COLLECTION]: ({ name, status }) => (
     <span>
       {name}
@@ -337,59 +340,59 @@ export const components = {
     salary = 0,
     bankFortune = [],
   }) => (
-      <div>
-        {children}
-        <Information
-          label="Salaire brut"
-          value={<Money value={salary} />}
-          isEmpty={salary === 0}
-        />
+    <div>
+      {children}
+      <Information
+        label="Salaire brut"
+        value={<Money value={salary} />}
+        isEmpty={salary === 0}
+      />
 
-        <Information
-          label="Fortune bancaire"
-          value={
-            <Money
-              value={bankFortune.reduce((total, { value }) => total + value, 0)}
-            />
-          }
-          isEmpty={
-            bankFortune.reduce((total, { value }) => total + value, 0) === 0
-          }
-        />
+      <Information
+        label="Fortune bancaire"
+        value={
+          <Money
+            value={bankFortune.reduce((total, { value }) => total + value, 0)}
+          />
+        }
+        isEmpty={
+          bankFortune.reduce((total, { value }) => total + value, 0) === 0
+        }
+      />
 
+      <Information
+        label="Compte"
+        value={
+          <CollectionIconLink
+            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+          />
+        }
+        isEmpty={!user}
+        emptyText="Sans compte"
+      />
+
+      {!!user && (
         <Information
-          label="Compte"
+          label="Conseiller"
           value={
             <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+              relatedDoc={{
+                ...user.assignedEmployee,
+                collection: USERS_COLLECTION,
+              }}
             />
           }
-          isEmpty={!user}
-          emptyText="Sans compte"
+          isEmpty={!(user && user.assignedEmployee)}
         />
+      )}
 
-        {!!user && (
-          <Information
-            label="Conseiller"
-            value={
-              <CollectionIconLink
-                relatedDoc={{
-                  ...user.assignedEmployee,
-                  collection: USERS_COLLECTION,
-                }}
-              />
-            }
-            isEmpty={!(user && user.assignedEmployee)}
-          />
-        )}
-
-        <Information
-          label="Dossiers"
-          value={<LinkList docs={loans} collection={LOANS_COLLECTION} />}
-          isEmpty={loans.length === 0}
-        />
-      </div>
-    ),
+      <Information
+        label="Dossiers"
+        value={<LinkList docs={loans} collection={LOANS_COLLECTION} />}
+        isEmpty={loans.length === 0}
+      />
+    </div>
+  ),
   [PROPERTIES_COLLECTION]: ({
     totalValue,
     children,
@@ -468,33 +471,33 @@ export const components = {
     children,
     signingDate,
   }) => (
-      <div>
-        {children}
-        <Information
-          label="Prêteur"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...lenderOrganisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          }
-          isEmpty={!lenderOrganisation}
-          emptyText="Pas choisi"
-        />
+    <div>
+      {children}
+      <Information
+        label="Prêteur"
+        value={
+          <CollectionIconLink
+            relatedDoc={{
+              ...lenderOrganisation,
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+          />
+        }
+        isEmpty={!lenderOrganisation}
+        emptyText="Pas choisi"
+      />
 
-        <Information label="Lots dispo" value={availablePromotionLots.length} />
-        <Information label="Lots réservés" value={reservedPromotionLots.length} />
-        <Information label="Lots vendus" value={soldPromotionLots.length} />
+      <Information label="Lots dispo" value={availablePromotionLots.length} />
+      <Information label="Lots réservés" value={reservedPromotionLots.length} />
+      <Information label="Lots vendus" value={soldPromotionLots.length} />
 
-        <Information
-          label={<T id="Forms.signingDate" />}
-          value={moment(signingDate).format('DD.MM.YYYY')}
-          isEmpty={!signingDate}
-        />
-      </div>
-    ),
+      <Information
+        label={<T id="Forms.signingDate" />}
+        value={moment(signingDate).format('DD.MM.YYYY')}
+        isEmpty={!signingDate}
+      />
+    </div>
+  ),
   [ORGANISATIONS_COLLECTION]: ({
     logo,
     offerCount,
@@ -504,102 +507,102 @@ export const components = {
     referredCustomers = [],
     contacts = [],
   }) => (
-      <div>
-        {children}
+    <div>
+      {children}
 
-        <Information
-          value={
-            <div style={{ width: 100, height: 50 }}>
-              <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
-            </div>
-          }
-          shouldDisplay={!!logo}
-        />
+      <Information
+        value={
+          <div style={{ width: 100, height: 50 }}>
+            <img src={logo} style={{ maxWidth: 100, maxHeight: 50 }} />
+          </div>
+        }
+        shouldDisplay={!!logo}
+      />
 
-        <Information
-          label="Comptes"
-          value={<LinkList docs={users} collection={USERS_COLLECTION} />}
-          shouldDisplay={users.length > 0}
-        />
+      <Information
+        label="Comptes"
+        value={<LinkList docs={users} collection={USERS_COLLECTION} />}
+        shouldDisplay={users.length > 0}
+      />
 
-        <Information
-          label="Contacts"
-          value={<LinkList docs={contacts} collection={CONTACTS_COLLECTION} />}
-          shouldDisplay={contacts.length > 0}
-        />
+      <Information
+        label="Contacts"
+        value={<LinkList docs={contacts} collection={CONTACTS_COLLECTION} />}
+        shouldDisplay={contacts.length > 0}
+      />
 
-        <Information
-          label="Clients référés"
-          value={referredCustomers.length}
-          shouldDisplay={features.includes(ORGANISATION_FEATURES.PRO)}
-        />
+      <Information
+        label="Clients référés"
+        value={referredCustomers.length}
+        shouldDisplay={features.includes(ORGANISATION_FEATURES.PRO)}
+      />
 
-        <Information
-          label="Offres faites"
-          value={offerCount}
-          shouldDisplay={features.includes(ORGANISATION_FEATURES.LENDER)}
-        />
-      </div>
-    ),
+      <Information
+        label="Offres faites"
+        value={offerCount}
+        shouldDisplay={features.includes(ORGANISATION_FEATURES.LENDER)}
+      />
+    </div>
+  ),
   [CONTACTS_COLLECTION]: ({
     organisations = [],
     email,
     phoneNumbers = [],
     children,
   }) => (
-      <div>
-        {children}
+    <div>
+      {children}
 
-        <Information
-          label="Organisation"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...organisations[0],
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          }
-          isEmpty={organisations.length === 0}
-        />
+      <Information
+        label="Organisation"
+        value={
+          <CollectionIconLink
+            relatedDoc={{
+              ...organisations[0],
+              collection: ORGANISATIONS_COLLECTION,
+            }}
+          />
+        }
+        isEmpty={organisations.length === 0}
+      />
 
-        <Information
-          label="Rôle"
-          value={organisations[0] && organisations[0].$metadata.title}
-          shouldDisplay={organisations.length > 0}
-        />
+      <Information
+        label="Rôle"
+        value={organisations[0] && organisations[0].$metadata.title}
+        shouldDisplay={organisations.length > 0}
+      />
 
-        <Information
-          label="Email"
-          value={
-            <a
-              className="color"
-              href={`mailto:${email}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {email}
-            </a>
-          }
-        />
+      <Information
+        label="Email"
+        value={
+          <a
+            className="color"
+            href={`mailto:${email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {email}
+          </a>
+        }
+      />
 
-        <Information
-          label="Tél"
-          value={
-            <TooltipArray
-              title="Numéros de téléphone"
-              items={phoneNumbers.map(number => (
-                <a key={number} href={`tel:${number}`}>
-                  <span>
-                    {number}
-                    &nbsp;
+      <Information
+        label="Tél"
+        value={
+          <TooltipArray
+            title="Numéros de téléphone"
+            items={phoneNumbers.map(number => (
+              <a key={number} href={`tel:${number}`}>
+                <span>
+                  {number}
+                  &nbsp;
                 </span>
-                </a>
-              ))}
-            />
-          }
-          isEmpty={phoneNumbers.length === 0}
-        />
-      </div>
-    ),
+              </a>
+            ))}
+          />
+        }
+        isEmpty={phoneNumbers.length === 0}
+      />
+    </div>
+  ),
 };

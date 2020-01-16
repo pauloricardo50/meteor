@@ -5,6 +5,8 @@ import {
   WARNING,
   ERROR,
   OWN_FUNDS_USAGE_TYPES,
+  RESIDENCE_TYPE,
+  PROPERTY_CATEGORY,
 } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
@@ -15,6 +17,10 @@ import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
+import {
+  MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
+  MIN_INSURANCE2_WITHDRAW,
+} from '../../config/financeConstants';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -293,6 +299,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return Math.min(maxBorrowRatio, 1);
       }
 
+      const { residenceType } = loan;
+
+      if (residenceType === RESIDENCE_TYPE.INVESTMENT) {
+        return Math.min(
+          this.maxBorrowRatio,
+          MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
+        );
+      }
+
       return this.maxBorrowRatio;
     }
 
@@ -433,6 +448,30 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return cashRatio;
     }
 
+    getInsurance2Ratio({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const insurance2Used = this.getUsedFundsOfType({
+        loan,
+        type: OWN_FUNDS_TYPES.INSURANCE_2,
+        structureId,
+      });
+
+      const insurance2Ratio = insurance2Used / propAndWork;
+      return insurance2Ratio;
+    }
+
+    getInsurance2WithdrawRatio({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const insurance2Used = this.getUsedFundsOfType({
+        loan,
+        type: OWN_FUNDS_TYPES.INSURANCE_2,
+        structureId,
+        usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+      });
+
+      return insurance2Used / propAndWork;
+    }
+
     hasEnoughCash({ loan, structureId }) {
       return this.getCashRatio({ loan, structureId }) >= this.minCash;
     }
@@ -440,6 +479,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     structureIsValid({ loan, structureId }) {
       const incomeRatio = this.getIncomeRatio({ loan, structureId });
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
+      const withdrawInsurance2 = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'ownFunds',
+      }).filter(
+        ({ type, usageType }) =>
+          type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+          usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+      );
 
       if (
         incomeRatio > this.maxIncomeRatio ||
@@ -451,6 +499,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       if (
         !this.allowPledge &&
         this.getPledgedOwnFunds({ loan, structureId }) > 0
+      ) {
+        return false;
+      }
+
+      if (
+        withdrawInsurance2.some(({ value }) => value < MIN_INSURANCE2_WITHDRAW)
       ) {
         return false;
       }
@@ -692,9 +746,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyValidFieldsRatio({ loan }) {
-      const { hasProProperty, hasPromotion, properties = [] } = loan;
+      const { hasPromotion, properties = [] } = loan;
 
-      if (hasProProperty || hasPromotion || properties.length === 0) {
+      if (
+        !this.isUserProperty({ loan }) ||
+        hasPromotion ||
+        properties.length === 0
+      ) {
         return null;
       }
 
@@ -713,15 +771,17 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyValidDocumentsRatio({ loan }) {
-      const { hasProProperty, hasPromotion, properties = [] } = loan;
+      const { hasPromotion, properties = [] } = loan;
 
-      if (hasProProperty || hasPromotion || properties.length === 0) {
+      if (
+        !this.isUserProperty({ loan }) ||
+        hasPromotion ||
+        properties.length === 0
+      ) {
         return null;
       }
 
-      return this.getValidPropertyDocumentsRatio({
-        loan,
-      });
+      return this.getValidPropertyDocumentsRatio({ loan });
     }
 
     getValidFieldsRatio({ loan }) {

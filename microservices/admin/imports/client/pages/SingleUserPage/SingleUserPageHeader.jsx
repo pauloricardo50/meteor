@@ -48,11 +48,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
   const allowAssign =
     currentUserRoles.includes(ROLES.DEV) ||
     (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
-
   const emailVerified = !!emails.length && emails[0].verified;
-  const toggleUserAccount = () => {
-    toggleAccount.run({ userId });
-  };
+  const toggleUserAccount = () => toggleAccount.run({ userId });
+
   return (
     <div className="single-user-page-header">
       <Helmet>

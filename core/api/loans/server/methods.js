@@ -42,9 +42,11 @@ import {
   sendLoanChecklist,
   loanSetAdminNote,
   loanRemoveAdminNote,
+  loanSetDisbursementDate,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
+import { Method } from '../../methods/methods';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -291,7 +293,7 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });
 
-sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams }) => {
+sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams, basicDocumentsOnly }) => {
   SecurityService.checkUserIsAdmin(userId);
   const { email: assigneeAddress, name: assigneeName } = UserService.get(
     userId,
@@ -301,7 +303,7 @@ sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams }) => {
   return sendEmailToAddress.serverRun({
     address,
     emailId: EMAIL_IDS.LOAN_CHECKLIST,
-    params: { ...emailParams, loan, assigneeAddress, assigneeName },
+    params: { ...emailParams, loan, assigneeAddress, assigneeName, basicDocumentsOnly },
   });
 });
 
@@ -313,4 +315,19 @@ loanSetAdminNote.setHandler(({ userId }, params) => {
 loanRemoveAdminNote.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.removeAdminNote(params);
+});
+
+loanSetDisbursementDate.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.setDisbursementDate(params);
+});
+
+export const generateDisbursedSoonLoansTasks = new Method({
+  name: 'generateDisbursedSoonLoansTasks',
+  params: {},
+});
+
+generateDisbursedSoonLoansTasks.setHandler(context => {
+  SecurityService.checkIsInternalCall(context);
+  return LoanService.getDisbursedSoonLoans();
 });

@@ -37,9 +37,9 @@ const SinglePropertyPage = props => {
     );
   }
 
-  const { address1, zipCode, city } = property;
+  const { address1, address, zipCode, city } = property;
 
-  const title = address1 || <T id="SinglePropertyPage.title" />;
+  const title = address || <T id="SinglePropertyPage.title" />;
 
   return (
     <PageApp

@@ -104,6 +104,19 @@
         }
       }
     }
+
+    &-promotion-loan {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+
+      .icon-link {
+        margin-left: 8px;
+        color: white;
+      }
+
+    }
   }
 
   &-tabs {

@@ -17,3 +17,6 @@ process.on('uncaughtException', error => {
 process.on('unhandledRejection', error => {
   console.log('unhandledRejection error', error);
 });
+
+// Do this so that code accessing the backend still works during tests
+Meteor.settings.public.subdomains.backend = 'http://localhost:5505';

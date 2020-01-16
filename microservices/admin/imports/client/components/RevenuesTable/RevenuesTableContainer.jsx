@@ -159,6 +159,11 @@ export default compose(
     params: ({ filterRevenues, ...props }) => filterRevenues(props),
     dataName: 'revenues',
   }),
+  withProps(({ revenues, postFilter }) => {
+    if (postFilter) {
+      return { revenues: postFilter(revenues) };
+    }
+  }),
   withProps(
     ({
       revenues = [],

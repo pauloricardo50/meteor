@@ -6,8 +6,10 @@ export const INTERESTS_FINMA = 0.05; // Percent
 export const APPROXIMATE_LPP_FEES = 0.1; // Percent
 export const DEFAULT_AMORTIZATION = 0.01; // Percent of property value
 export const AMORTIZATION_YEARS = 15; // Years
+export const AMORTIZATION_YEARS_INVESTMENT = 10; // Years
 export const DEFAULT_INTEREST_RATE = 0.015; // Percent, use 1.5% by default
 export const MAX_BORROW_RATIO_PRIMARY_PROPERTY = 0.8; // Percent
+export const MAX_BORROW_RATIO_INVESTMENT_PROPERTY = 0.75; // Percent
 export const MAX_BORROW_RATIO_OTHER = 0.7; // Percent
 export const MAX_BORROW_RATIO_WITH_PLEDGE = 0.9; // Percent
 export const MAX_INCOME_RATIO = 1 / 3; // Percent
@@ -33,6 +35,7 @@ export const FORTUNE_RETURNS_RATIO = 0;
 export const ESTIMATED_COMMISSION = 0.01;
 export const REFERRAL_COMMISSION = 0.25;
 export const REFERRAL_COMMISSION_SPLIT = 0.5;
+export const MIN_INSURANCE2_WITHDRAW = 20000;
 // Add extra 1 so that rounding errors don't break the comparison
 // f.ex: ???
 export const OWN_FUNDS_ROUNDING_AMOUNT = 1001;

@@ -44,6 +44,13 @@ export default `
         font-weight: normal;
     }
 
+    .wanted-loan {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: normal;
+    }
+
     .finma-ratio span {
         display: flex;
         align-items: center;
@@ -56,6 +63,16 @@ export default `
     }
 
     .remaining-own-funds-table {
+        margin-top: 40px;
         width: 100%;
+    }
+
+    .pledge-table {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .single-structure-recap-table {
+        margin-top: 40px;
     }
 `;

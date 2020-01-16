@@ -3,7 +3,10 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 
 import T from '../Translation';
-import { getChecklistMissingInformations } from './helpers';
+import {
+  getChecklistMissingInformations,
+  isAnyBasicDocumentRequested,
+} from './helpers';
 import LoanChecklistSection from './LoanChecklistSection';
 import LoanChecklistList from './LoanChecklistList';
 
@@ -41,6 +44,12 @@ const LoanChecklist = ({
           Component={LoanChecklistList}
         />
       </div>
+      {isAnyBasicDocumentRequested(documents) && (
+        <div>
+          <span className="error">*&nbsp;</span>Documents essentiels pour la
+          constitution du dossier
+        </div>
+      )}
     </div>
   );
 };

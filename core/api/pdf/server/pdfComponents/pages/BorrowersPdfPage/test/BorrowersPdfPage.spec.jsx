@@ -49,7 +49,7 @@ describe('BorrowersPdfPage', () => {
           .find('table')
           .at(0)
           .find('tr').length,
-      ).to.equal(3);
+      ).to.equal(6);
 
       props.loan.borrowers = [
         { expenses: [], childrenCount: 2, company: 'e-Potek' },
@@ -60,7 +60,7 @@ describe('BorrowersPdfPage', () => {
           .find('table')
           .at(0)
           .find('tr').length,
-      ).to.equal(5);
+      ).to.equal(8);
     });
   });
 

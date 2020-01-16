@@ -44,14 +44,10 @@ addBorrower.setHandler((context, { loanId, borrower }) => {
     throw new Meteor.Error('Vous ne pouvez pas avoir plus de 2 emprunteurs');
   }
 
-  const newBorrowerId = BorrowerService.insert({
+  return BorrowerService.insert({
     borrower,
     userId: loan.userId,
-  });
-
-  return LoanService.pushValue({
     loanId,
-    object: { borrowerIds: newBorrowerId },
   });
 });
 

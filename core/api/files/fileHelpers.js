@@ -1,6 +1,7 @@
 // @flow
 import { getPercent } from '../../utils/general';
-import { FILE_STATUS } from './fileConstants';
+import { FILE_STATUS, BASIC_DOCUMENTS_LIST } from './fileConstants';
+import { documentIsBasic } from './documents';
 
 const documentIsRequired = required => required !== false;
 
@@ -69,14 +70,25 @@ export const filesPercent = ({ fileArray, doc, checkValidity }) => {
 const documentExists = (doc, id) =>
   doc && doc.documents && doc.documents[id] && doc.documents[id].length > 0;
 
-export const getMissingDocumentIds = ({ fileArray, doc }) => {
+export const getMissingDocumentIds = ({
+  fileArray,
+  doc,
+  basicDocumentsOnly,
+}) => {
   const ids = fileArray
     .filter(
       ({ required, id }) =>
         (documentIsRequired(required) && !documentExists(doc, id)) ||
         documentIsInvalid(doc, id),
     )
-    .map(({ id }) => id);
+    .map(({ id }) => id)
+    .filter(id => {
+      if (basicDocumentsOnly) {
+        return documentIsBasic(id);
+      }
+
+      return true;
+    });
   return ids;
 };
 

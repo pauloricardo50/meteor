@@ -44,6 +44,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.label': { type: String, optional: true },
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
   'additionalDocuments.$.category': { type: String, optional: true },
+  'additionalDocuments.$.tooltip': { type: String, optional: true },
 });
 
 export const address = {

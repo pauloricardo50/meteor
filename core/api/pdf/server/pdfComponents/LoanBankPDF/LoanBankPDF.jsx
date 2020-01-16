@@ -10,6 +10,7 @@ import LenderRulesPdfPage from '../pages/LenderRulesPdfPage';
 import BorrowersPdfPage from '../pages/BorrowersPdfPage';
 import stylesheet from './stylesheet';
 import LoanBankCover from './LoanBankCover';
+import StructureAppendixPdfPage from '../pages/StructureAppendixPdfPage/StructureAppendixPdfPage';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -18,7 +19,13 @@ type LoanBankPDFProps = {
   pdfName: String,
 };
 
-const getPages = ({ loan, organisation, structureIds, options }) => {
+const getPages = ({
+  loan,
+  organisation,
+  structureIds,
+  backgroundInfo,
+  options,
+}) => {
   const { lenderRules } = organisation || {};
   const finalStructureIds = structureIds || loan.structures.map(({ id }) => id);
   const defaultCalculator = new Calculator({ loan, lenderRules });
@@ -32,17 +39,39 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
         organisation,
         structureIds: finalStructureIds,
         calculator: defaultCalculator,
+        backgroundInfo,
       },
     },
-    ...finalStructureIds.map((structureId, index) => {
-      const calculator = new Calculator({ loan, structureId, lenderRules });
+    ...finalStructureIds
+      .map((structureId, index) => {
+        const calculator = new Calculator({ loan, structureId, lenderRules });
 
-      return {
-        id: structureId,
-        Component: StructurePdfPage,
-        data: { loan, structureId, structureIndex: index, options, calculator },
-      };
-    }),
+        return [
+          {
+            id: structureId,
+            Component: StructurePdfPage,
+            data: {
+              loan,
+              structureId,
+              structureIndex: index,
+              options,
+              calculator,
+            },
+          },
+          {
+            id: `${structureId}-appendix`,
+            Component: StructureAppendixPdfPage,
+            data: {
+              loan,
+              structureId,
+              structureIndex: index,
+              options,
+              calculator,
+            },
+          },
+        ];
+      })
+      .reduce((pages, page) => [...pages, ...page], []),
     {
       id: 'borrowers',
       Component: BorrowersPdfPage,

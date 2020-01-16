@@ -9,7 +9,6 @@ import Button from '../../Button';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
-  LOANS_COLLECTION,
 } from '../../../api/constants';
 
 type AdditionalDocModifierProps = {
@@ -27,6 +26,7 @@ export const getAdditionalDocSchema = collection => {
     allowedValues = [
       'PERSONAL_DOCUMENTS',
       'INCOMES_AND_EXPENSES',
+      'INSURANCE',
       'FORTUNE_AND_OWN_FUNDS',
       'RETIREMENT',
       'OTHER',
@@ -42,6 +42,14 @@ export const getAdditionalDocSchema = collection => {
         label: 'Nom du document supplémentaire',
         placeholder: null,
       },
+    },
+    tooltip: {
+      type: String,
+      uniforms: {
+        label: 'Description du document',
+        placeholder: null,
+      },
+      optional: true,
     },
     category: {
       type: String,

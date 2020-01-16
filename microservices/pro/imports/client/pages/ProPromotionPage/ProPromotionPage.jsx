@@ -47,7 +47,9 @@ const ProPromotionPageContainer = compose(
   withMatchParam('promotionId'),
   withSmartQuery({
     query: proPromotions,
-    params: ({ promotionId }) => ({ _id: promotionId }),
+    params: ({ promotionId }) => ({
+      _id: promotionId,
+    }),
     queryOptions: { single: true },
     dataName: 'promotion',
   }),

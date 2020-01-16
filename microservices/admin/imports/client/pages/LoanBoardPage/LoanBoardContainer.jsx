@@ -7,7 +7,7 @@ import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
 import { userCache } from 'core/api/loans/links';
-import { groupLoans } from './loanBoardHelpers';
+import { groupLoans, makeClientSideFilter } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
@@ -19,7 +19,7 @@ const defaultBody = {
   customName: 1,
   name: 1,
   nextDueTask: 1,
-  promotions: { name: 1 },
+  promotions: { name: 1, status: 1 },
   selectedStructure: 1,
   status: 1,
   structures: { wantedLoan: 1, id: 1, propertyId: 1 },
@@ -30,8 +30,10 @@ const defaultBody = {
     // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here
     assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
   },
-  financedPromotionLink: 1,
+  financedPromotion: { name: 1, status: 1 },
   userId: 1,
+  selectedLenderOrganisation: { name: 1 },
+  revenues: { _id: 1, status: 1 },
 };
 
 const noPromotionIsChecked = promotionId =>
@@ -70,6 +72,9 @@ export default compose(
     dataName: 'loans',
     queryOptions: { pollingMs: 5000 },
   }),
+  withProps(({ loans, ...props }) => ({
+    loans: loans.filter(makeClientSideFilter(props)),
+  })),
   withProps(({ refetch }) => ({ refetchLoans: refetch })),
   withSmartQuery({
     query: adminUsers,

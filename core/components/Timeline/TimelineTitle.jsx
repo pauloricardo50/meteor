@@ -7,11 +7,11 @@ import Tooltip from '../Material/Tooltip';
 
 type TimelineTitleProps = {};
 
-const TimelineTitle = ({ title, icon, date, children }: TimelineTitleProps) => (
+const TimelineTitle = ({ title, icon, date, children, iconStyle }: TimelineTitleProps) => (
   <div className="timeline-title">
     {children}
     <h4 className="title">
-      <Icon className="icon secondary" fontSize="small" type={icon} />
+      <Icon className="icon secondary" fontSize="small" type={icon} style={iconStyle} />
       <Tooltip title={title} placement="top-start">
         <span className="text">{title}</span>
       </Tooltip>

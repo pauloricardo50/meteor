@@ -4,6 +4,7 @@ import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import Intl from 'core/utils/server/intl';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { fullUser } from 'core/api/fragments';
+import { loanSetDisbursementDate } from 'core/api/loans/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   removeLoanFromPromotion,
@@ -20,12 +21,13 @@ import {
   loanSetStatus,
   sendLoanChecklist,
 } from '../../methods';
-import { ACTIVITY_EVENT_METADATA } from '../activityConstants';
+import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
 import PromotionService from '../../promotions/server/PromotionService';
 import ActivityService from './ActivityService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+import LoanService from '../../loans/server/LoanService';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
 
@@ -383,5 +385,36 @@ ServerEventService.addAfterMethodListener(
       description: `Par ${email}`,
       createdBy: userId,
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  loanSetDisbursementDate,
+  ({ params: { loanId, disbursementDate } }) => {
+    const { activities = [] } = LoanService.get(loanId, {
+      activities: { type: 1, metadata: 1 },
+    });
+    const disbursementDateActivity = activities.find(
+      ({ type, metadata }) =>
+        type === ACTIVITY_TYPES.EVENT &&
+        metadata.event === ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
+    );
+
+    if (disbursementDateActivity) {
+      const { _id: activityId } = disbursementDateActivity;
+      ActivityService.rawCollection.update(
+        { _id: activityId },
+        { $set: { date: disbursementDate } },
+      );
+    } else {
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.LOAN_DISBURSEMENT_DATE,
+        isServerGenerated: true,
+        loanLink: { _id: loanId },
+        title: 'Décaissement des fonds',
+        date: disbursementDate,
+        isImportant: true,
+      });
+    }
   },
 );

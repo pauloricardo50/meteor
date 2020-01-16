@@ -2,7 +2,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
+import {
+  STEPS,
+  GENDER,
+  EXPENSES,
+  BORROWER_ACTIVITY_TYPES,
+} from 'core/api/constants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
@@ -305,7 +310,7 @@ describe('BorrowerCalculator', () => {
             ],
           },
         }),
-      ).to.be.within(0.13, 0.14);
+      ).to.be.within(0.12, 0.13);
     });
   });
 
@@ -375,7 +380,10 @@ describe('BorrowerCalculator', () => {
     it('sums bankFortunes if given multiple borrowers', () => {
       expect(
         Calculator.getFortune({
-          borrowers: [{ bankFortune: [{ value: 1 }] }, { bankFortune: [{ value: 2 }] }],
+          borrowers: [
+            { bankFortune: [{ value: 1 }] },
+            { bankFortune: [{ value: 2 }] },
+          ],
         }),
       ).to.equal(3);
     });
@@ -444,18 +452,21 @@ describe('BorrowerCalculator', () => {
       ).to.deep.equal([
         'firstName',
         'lastName',
+        'email',
+        'phoneNumber',
         'gender',
         'address1',
-        'city',
-        'country',
         'zipCode',
+        'city',
         'canton',
+        'country',
         'isSwiss',
         'birthDate',
         'citizenship',
         'isUSPerson',
         'civilStatus',
         'childrenCount',
+        'activityType',
         'salary',
         'netSalary',
         'bonusExists',
@@ -664,6 +675,15 @@ describe('BorrowerCalculator', () => {
               bankFortune: [{ value: 1000 }],
               hasOwnCompany: false,
               ownCompanies: [],
+              activityType: BORROWER_ACTIVITY_TYPES.SALARIED,
+              jobActivityRate: 1,
+              jobStartDate: new Date(),
+              email: 'bob',
+              phoneNumber: '1234',
+              marriedDate: new Date(),
+              job: 'Test',
+              company: 'Test',
+              worksInSwitzerlandSince: new Date(),
             },
           ],
         }),
@@ -733,7 +753,9 @@ describe('BorrowerCalculator', () => {
     it('returns some revenue if the constant is set', () => {
       const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
       expect(
-        calc.getFortuneReturns({ borrowers: [{ bankFortune: [{ value: 100 }] }] }),
+        calc.getFortuneReturns({
+          borrowers: [{ bankFortune: [{ value: 100 }] }],
+        }),
       ).to.equal(1);
     });
   });
@@ -834,7 +856,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        1452524844,
+        1539864539,
       );
     });
 
@@ -864,7 +886,7 @@ describe('BorrowerCalculator', () => {
       ];
 
       expect(Calculator.getBorrowerFormHash({ borrowers })).to.equal(
-        5211477033,
+        5386156423,
       );
     });
   });

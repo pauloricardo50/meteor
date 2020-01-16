@@ -61,10 +61,8 @@ describe('App onboarding', () => {
           .find('button')
           .first()
           .click();
-        cy.get('.borrowers-card').contains('0%');
+        cy.get('.borrowers-card').contains('29%');
 
-        cy.get('input#firstName').type('Test');
-        cy.get('input#lastName').type('User');
         cy.get('input#birthDate').type('01/03/2018');
         cy.get('input#salary').type('180000');
         cy.get('input#netSalary').type('150000');

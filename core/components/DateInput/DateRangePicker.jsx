@@ -17,7 +17,6 @@ const DateRangePicker = ({
   return (
     <DefaultDateRangePicker
       {...defaultDatePickerProps}
-      {...rest}
       startDate={startDate && moment(startDate)}
       startDateId="your_unique_start_date_id"
       endDate={endDate && moment(endDate)}
@@ -34,6 +33,7 @@ const DateRangePicker = ({
       showClearDates
       enableOutsideDays
       isOutsideRange={() => false}
+      {...rest}
     />
   );
 };

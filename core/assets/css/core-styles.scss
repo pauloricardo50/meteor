@@ -1,13 +1,13 @@
 // This @import must be at top of file, otherwise the custom fonts will not work
-@import url('//hello.myfonts.net/count/36c4a4');
+@import url("//hello.myfonts.net/count/36c4a4");
 
-@import '{}/node_modules/normalize-scss/sass/normalize';
+@import "{}/node_modules/normalize-scss/sass/normalize";
 @include normalize();
 
-@import './variables.scss';
-@import './mixins.scss';
-@import './core-components.scss';
-@import './typography.scss';
+@import "./variables.scss";
+@import "./mixins.scss";
+@import "./core-components.scss";
+@import "./typography.scss";
 
 body,
 html,
@@ -27,7 +27,7 @@ body {
 
 // Nicer styling for a tags, removes horrible blue color
 // And avoid it if this is a button
-a:not([role='button']) {
+a:not([role="button"]) {
   cursor: pointer;
 
   color: inherit;
@@ -336,6 +336,10 @@ p.description,
   margin-bottom: 8px;
 }
 
+.m-0 {
+  margin: 0px;
+}
+
 .m-8 {
   margin: 8px;
 }
@@ -353,6 +357,10 @@ p.description,
   margin-bottom: 0;
 }
 
+.mt-4 {
+  margin-top: 4px;
+
+}
 .mt-16 {
   margin-top: 16px;
 }
@@ -381,12 +389,20 @@ p.description,
   z-index: 1401 !important;
 }
 
+.mr-4 {
+  margin-right: 4px;
+}
+
 .mr-8 {
   margin-right: 8px;
 }
 
 .mr-16 {
   margin-right: 16px;
+}
+
+.ml-4 {
+  margin-left: 4px;
 }
 
 .ml-8 {

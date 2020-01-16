@@ -6,6 +6,7 @@ import { REVENUES_COLLECTION } from 'core/api/constants';
 import Icon from 'core/components/Icon/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
 import Tabs from 'core/components/Tabs';
+import { createRoute } from 'core/utils/routerUtils';
 import RevenueAdder from '../../../components/RevenuesTable/RevenueAdder';
 import RevenuesPageTable from './RevenuesPageTable';
 import RevenuesPageCalendar from './RevenuesPageCalendar';
@@ -43,7 +44,13 @@ const RevenuesPageTab = (props: RevenuesPageTabProps) => {
             content: <RevenuesPageCalendar />,
           },
           { id: 'list', label: 'Liste', content: <RevenuesPageTable /> },
-        ]}
+        ].map(tab => ({
+          ...tab,
+          to: createRoute('/revenues/revenues/:revenuesTabId?', {
+            revenuesTabId: tab.id,
+          }),
+        }))}
+        routerParamName="revenuesTabId"
       />
     </div>
   );

@@ -7,11 +7,15 @@ export const TEMPLATES = {
     name: 1,
     purchaseType: 1,
     residenceType: 1,
+    disbursementDate: 1,
     borrowers: [
       {
         gender: 1,
         zipCode: { $or: 'sameAddress' },
         city: { $or: 'sameAddress' },
+        email: 1,
+        phoneNumber: 1,
+        activityType: 1,
       },
     ],
     structure: {

@@ -45,29 +45,6 @@
       width: 400px;
     }
   }
-
-  .admin-notes {
-    margin-top: 40px;
-
-    h2 {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    &-note {
-      white-space: pre-line;
-
-      &.shared {
-        padding-left: 8px;
-
-        border-left: 2px solid $primary;
-      }
-    }
-
-    .pro-note {
-      white-space: pre-line;
-    }
-  }
 }
 
 .overview-tab .solvency {

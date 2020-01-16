@@ -90,7 +90,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
     // Keep the promotionLoan at the top of the column
     sorters = [
       item => {
-        if (item.financedPromotionLink && item.financedPromotionLink._id) {
+        if (item.financedPromotion && item.financedPromotion._id) {
           return 1;
         }
 
@@ -109,7 +109,7 @@ export const groupByFunc = groupBy => {
     // When grouping by promotion, also group promotionLoan
     return loan =>
       get(loan, groupBy) ||
-      (loan.financedPromotionLink && loan.financedPromotionLink._id);
+      (loan.financedPromotion && loan.financedPromotion._id);
   }
 
   return groupBy;
@@ -118,7 +118,7 @@ export const groupByFunc = groupBy => {
 export const makeFormatData = ({ groupBy }) => data => {
   if (groupBy === GROUP_BY.PROMOTION) {
     return data.map(item => {
-      if (item.financedPromotionLink && item.financedPromotionLink._id) {
+      if (item.financedPromotion && item.financedPromotion._id) {
         return {
           ...item,
           boardItemOptions: {
@@ -180,6 +180,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   promotionId: undefined,
   lenderId: undefined,
   loanId: '',
+  promotionStatus: undefined,
 });
 
 export const filterReducer = (state, { type, payload }) => {
@@ -231,4 +232,22 @@ export const filterReducer = (state, { type, payload }) => {
     default:
       throw new Error('Unknown action type');
   }
+};
+
+// This filter can't easily be done on the server, so we add a filtering layer
+// here on the client for convenience
+export const makeClientSideFilter = ({ options }) => {
+  const { promotionStatus } = options;
+  const statuses = promotionStatus ? promotionStatus.$in : [];
+
+  if (!statuses.length) {
+    return () => true;
+  }
+
+  return loan =>
+    (loan.promotions &&
+      loan.promotions.length > 0 &&
+      statuses.includes(loan.promotions[0].status)) ||
+    (loan.financedPromotion &&
+      statuses.includes(loan.financedPromotion.status));
 };

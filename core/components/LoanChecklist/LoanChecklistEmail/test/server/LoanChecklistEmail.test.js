@@ -36,7 +36,7 @@ describe('LoanChecklist', function() {
         expect(fields.borrowers.length).to.equal(1);
         expect(documents.borrowers.length).to.equal(1);
         expect(fields.borrowers[0].title).to.equal('Emprunteur 1');
-        expect(fields.borrowers[0].labels.length).to.equal(19);
+        expect(fields.borrowers[0].labels.length).to.equal(22);
         expect(documents.borrowers[0].title).to.equal('Emprunteur 1');
         expect(documents.borrowers[0].labels.length).to.equal(1);
       });
@@ -63,11 +63,11 @@ describe('LoanChecklist', function() {
         expect(fields.borrowers.length).to.equal(2);
         expect(documents.borrowers.length).to.equal(2);
         expect(fields.borrowers[0].title).to.equal('Paul');
-        expect(fields.borrowers[0].labels.length).to.equal(19);
+        expect(fields.borrowers[0].labels.length).to.equal(22);
         expect(documents.borrowers[0].title).to.equal('Paul');
         expect(documents.borrowers[0].labels.length).to.equal(1);
         expect(fields.borrowers[1].title).to.equal('Michel');
-        expect(fields.borrowers[1].labels.length).to.equal(19);
+        expect(fields.borrowers[1].labels.length).to.equal(22);
         expect(documents.borrowers[1].title).to.equal('Michel');
         expect(documents.borrowers[1].labels.length).to.equal(0);
       });
@@ -100,11 +100,11 @@ describe('LoanChecklist', function() {
         expect(fields.borrowers.length).to.equal(2);
         expect(documents.borrowers.length).to.equal(2);
         expect(fields.borrowers[0].title).to.equal('Paul');
-        expect(fields.borrowers[0].labels.length).to.equal(19);
+        expect(fields.borrowers[0].labels.length).to.equal(22);
         expect(documents.borrowers[0].title).to.equal('Paul');
         expect(documents.borrowers[0].labels.length).to.equal(1);
         expect(fields.borrowers[1].title).to.equal('Michel');
-        expect(fields.borrowers[1].labels.length).to.equal(19);
+        expect(fields.borrowers[1].labels.length).to.equal(22);
         expect(documents.borrowers[1].title).to.equal('Michel');
         expect(documents.borrowers[1].labels.length).to.equal(0);
       });
@@ -126,10 +126,8 @@ describe('LoanChecklist', function() {
     await ddpWithUserId('adminId', () =>
       sendLoanChecklist.run({
         loanId: 'loanId',
-        address: 'dev@e-potek.ch',
-        emailParams: {
-          customMessage: 'Hello mah dude',
-        },
+        address: 'user@e-potek.ch',
+        emailParams: { customMessage: 'Hello mah dude' },
       }),
     );
 
@@ -139,26 +137,23 @@ describe('LoanChecklist', function() {
       address,
       template: {
         template_content,
-        message: {
-          from_email,
-          from_name,
-          subject,
-          to,
-          bcc_address,
-          global_merge_vars,
-        },
+        message: { from_email, from_name, subject, to, global_merge_vars },
       },
     } = email;
 
     expect(emailId).to.equal(EMAIL_IDS.LOAN_CHECKLIST);
-    expect(address).to.equal('dev@e-potek.ch');
+    expect(address).to.equal('user@e-potek.ch');
     expect(from_email).to.equal('admin@e-potek.ch');
     expect(from_name).to.equal('Admin User');
     expect(subject).to.equal('Invitation à compléter votre dossier');
-    expect(to).to.deep.equal([{ email: 'dev@e-potek.ch', type: 'to' }]);
-
-    // Should always put the sender in bcc
-    expect(bcc_address).to.equal('admin@e-potek.ch');
+    expect(to).to.deep.equal([
+      { email: 'user@e-potek.ch', type: 'to' },
+      {
+        email: 'admin@e-potek.ch',
+        name: 'Admin User',
+        type: 'bcc',
+      },
+    ]);
 
     const css = global_merge_vars.find(({ name }) => name === 'CSS').content;
     const body = global_merge_vars.find(({ name }) => name === 'BODY').content;
@@ -175,7 +170,11 @@ describe('LoanChecklist', function() {
 
   it('should put multiple people in bcc and/or cc', async () => {
     generator({
-      users: { _id: 'adminId', _factory: 'admin' },
+      users: {
+        _id: 'adminId',
+        _factory: 'admin',
+        emails: [{ address: 'admin@e-potek.ch', verified: true }],
+      },
       loans: { _id: 'loanId' },
     });
 
@@ -208,6 +207,11 @@ describe('LoanChecklist', function() {
       {
         email: 'cc1@e-potek.ch',
         type: 'cc',
+      },
+      {
+        email: 'admin@e-potek.ch',
+        name: 'TestFirstName TestLastName',
+        type: 'bcc',
       },
       {
         email: 'bcc1@e-potek.ch',

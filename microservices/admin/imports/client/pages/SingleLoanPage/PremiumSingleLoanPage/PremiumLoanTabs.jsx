@@ -1,8 +1,12 @@
 // @flow
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
+import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES, REVENUES_COLLECTION } from 'core/api/constants';
 import FileTabs from 'core/components/FileTabs/loadable';
+import collectionIcons from 'core/arrays/collectionIcons';
 import ActionsTab from '../LoanTabs/ActionsTab/loadable';
 import DevTab from '../LoanTabs/DevTab/loadable';
 import LendersTab from '../LoanTabs/LendersTab/loadable';
@@ -15,14 +19,27 @@ type PremiumLoanTabsProps = {};
 const getTabs = props => {
   const { currentUser } = props;
   return [
-    { id: 'overview', Component: PremiumOverviewTab },
-    { id: 'lenders', Component: LendersTab },
-    { id: 'files', Component: FileTabs },
-    { id: 'revenues', Component: RevenuesTab },
-    { id: 'actions', Component: ActionsTab },
+    { id: 'overview', Component: PremiumOverviewTab, icon: 'info' },
+    {
+      id: 'lenders',
+      Component: LendersTab,
+      icon: <FontAwesomeIcon icon={faUniversity} />,
+    },
+    {
+      id: 'files',
+      Component: FileTabs,
+      icon: <FontAwesomeIcon icon={faFolderOpen} />,
+    },
+    {
+      id: 'revenues',
+      Component: RevenuesTab,
+      icon: collectionIcons[REVENUES_COLLECTION],
+    },
+    { id: 'actions', Component: ActionsTab, icon: 'settings' },
     currentUser.roles.includes(ROLES.DEV) && {
       id: 'dev',
       Component: DevTab,
+      icon: 'developerMode',
     },
   ];
 };

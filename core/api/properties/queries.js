@@ -9,7 +9,7 @@ import {
 
 export const adminProperties = Properties.createQuery(
   PROPERTY_QUERIES.ADMIN_PROPERTIES,
-  adminProperty(),
+  { ...adminProperty(), $options: { sort: { name: 1 } } },
 );
 
 export const anonymousProperty = Properties.createQuery(
@@ -35,7 +35,7 @@ export const propertySearch = Properties.createQuery(
     style: 1,
     totalValue: 1,
     zipCode: 1,
-    $options: { limit: 5 },
+    $options: { sort: { name: 1 }, limit: 5 },
   },
 );
 

@@ -3,7 +3,6 @@ import React from 'react';
 
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
-import IconButton from 'core/components/IconButton/IconButton';
 import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import { ORGANISATION_TAGS } from 'core/api/constants';
 import LenderPickerContainer from './LenderPickerContainer';
@@ -19,8 +18,6 @@ type LenderPickerProps = {
   filterOrganisations: Function,
 };
 
-const addAllLendersOfType = ({ organisations, type, addLender }) => () =>
-  organisations[type].forEach(({ _id }) => addLender(_id));
 const isActive = ({ loan, org }) =>
   loan.lenders.find(
     ({ organisation }) => organisation && organisation._id === org._id,
@@ -64,18 +61,6 @@ const LenderPicker = ({
             <h3>
               <T id={`Forms.type.${type}`} />
             </h3>
-            {organisations[type].every(org => !isActive({ loan, org })) && (
-              <IconButton
-                tooltip="Tout choisir"
-                className="success"
-                type="add"
-                onClick={addAllLendersOfType({
-                  organisations,
-                  type,
-                  addLender,
-                })}
-              />
-            )}
           </div>
           {organisations[type].map(org => (
             <LenderPickerOrganisation

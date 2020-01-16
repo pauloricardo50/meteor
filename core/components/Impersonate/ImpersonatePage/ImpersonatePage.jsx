@@ -6,23 +6,37 @@ import PropTypes from 'prop-types';
 import { impersonateUser } from '../../../api/methods';
 import impersonateNotification from './impersonateNotification';
 
-export const impersonate = ({ userId, authToken, history, adminId }) => {
-  impersonateUser
-    .run({ userId, authToken, adminId })
-    .then(({ emails }) => {
-      Meteor.connection.setUserId(userId);
-      impersonateNotification(emails);
-      if (history) {
-        history.push('/');
-      }
-    })
-    .then(() => {
-      if (Meteor.isDevelopment) {
-        sessionStorage.setItem('dev_impersonate_adminId', adminId);
-        sessionStorage.setItem('dev_impersonate_userId', userId);
-        sessionStorage.setItem('dev_impersonate_authToken', authToken);
-      }
-    });
+export const impersonate = async ({
+  userId,
+  authToken,
+  history,
+  adminId,
+  logoutOnMount,
+}) => {
+  if (logoutOnMount && Meteor.userId()) {
+    await new Promise((resolve, reject) =>
+      Meteor.logout(err => {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+      }),
+    );
+  }
+
+  const { emails } = await impersonateUser.run({ userId, authToken, adminId });
+  Meteor.connection.setUserId(userId);
+  impersonateNotification(emails);
+
+  if (history) {
+    history.push('/');
+  }
+
+  if (Meteor.isDevelopment) {
+    sessionStorage.setItem('dev_impersonate_adminId', adminId);
+    sessionStorage.setItem('dev_impersonate_userId', userId);
+    sessionStorage.setItem('dev_impersonate_authToken', authToken);
+  }
 };
 
 class ImpersonatePage extends Component {
@@ -32,13 +46,13 @@ class ImpersonatePage extends Component {
   };
 
   componentDidMount = () => {
-    const { location, history } = this.props;
+    const { location, history, logoutOnMount } = this.props;
     const paramsQuery = new URLSearchParams(location.search);
     const userId = paramsQuery.get('userId');
     const authToken = paramsQuery.get('authToken');
     const adminId = paramsQuery.get('adminId');
 
-    impersonate({ userId, authToken, history, adminId });
+    impersonate({ userId, authToken, history, adminId, logoutOnMount });
   };
 
   render() {

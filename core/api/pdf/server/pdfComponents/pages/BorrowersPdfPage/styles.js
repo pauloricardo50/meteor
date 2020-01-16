@@ -6,7 +6,11 @@ const stylesheet = `
         width: 100%;
     }
 
-    .borrowers-recap:not(:first-child) {
+    .borrowers-recap .info {
+        margin-top: 0px;
+    }
+
+    .borrowers-recap .finance {
         margin-top: 30px;
     }
 

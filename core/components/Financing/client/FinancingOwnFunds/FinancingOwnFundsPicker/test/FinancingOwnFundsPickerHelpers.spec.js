@@ -325,7 +325,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
       ).to.equal(900000);
     });
 
-    it('does not exceed maxBorrowRatio if not a main residence', () => {
+    it('never exceeds 75% for INVESTMENT properties', () => {
       expect(
         getNewWantedLoanAfterPledge({
           loan: {
@@ -345,7 +345,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
           value: 150000,
         }),
-      ).to.equal(800000);
+      ).to.equal(750000);
     });
 
     it('counts other pledged own funds', () => {

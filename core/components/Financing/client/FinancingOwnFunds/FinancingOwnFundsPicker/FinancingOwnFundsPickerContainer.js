@@ -6,6 +6,7 @@ import {
   lifecycle,
 } from 'recompose';
 
+import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
 import {
   borrowerUpdate,
   pushBorrowerValue,
@@ -14,6 +15,7 @@ import {
 import {
   OWN_FUNDS_USAGE_TYPES,
   RESIDENCE_TYPE,
+  OWN_FUNDS_TYPES,
 } from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
@@ -61,14 +63,22 @@ const addState = withStateHandlers(getInitialState, {
 });
 
 const withDisableSubmit = withProps(
-  ({ type, borrowerId, value, usageType }) => ({
-    disableSubmit: !(
+  ({ type, borrowerId, value, usageType }) => {
+    const pickedOwnFundIsInvalid = !(
       type &&
       borrowerId &&
       value >= 0 &&
       (!shouldAskForUsageType(type) || usageType)
-    ),
-  }),
+    );
+    const insurance2WithdrawIsTooLow =
+      type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+      usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW &&
+      value < MIN_INSURANCE2_WITHDRAW;
+
+    return {
+      disableSubmit: pickedOwnFundIsInvalid || insurance2WithdrawIsTooLow,
+    };
+  },
 );
 
 const withStructureUpdate = withProps(

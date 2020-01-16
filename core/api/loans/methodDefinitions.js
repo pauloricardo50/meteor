@@ -222,6 +222,7 @@ export const sendLoanChecklist = new Method({
     loanId: String,
     address: String,
     emailParams: Object,
+    basicDocumentsOnly: Match.Optional(Boolean),
   },
 });
 
@@ -231,7 +232,7 @@ export const loanSetAdminNote = new Method({
     loanId: String,
     adminNoteId: Match.Maybe(String),
     note: Object,
-    notifyPro: Match.Maybe(Boolean),
+    notifyPros: Match.Maybe(Array),
   },
 });
 
@@ -241,4 +242,9 @@ export const loanRemoveAdminNote = new Method({
     loanId: String,
     adminNoteId: String,
   },
+});
+
+export const loanSetDisbursementDate = new Method({
+  name: 'loanSetDisbursementDate',
+  params: { loanId: String, disbursementDate: Date },
 });

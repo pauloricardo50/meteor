@@ -43,8 +43,8 @@ const LoanBoardCardActions = ({
           onClick: () => setOpenTask(true),
         },
         {
-          id: 'event',
-          label: 'Ajouter événement',
+          id: 'activity',
+          label: 'Ajouter activité',
           onClick: () => setOpenActivity(true),
         },
       ]}

@@ -94,8 +94,6 @@ const MonitoringChart = ({
               dataLabels: {
                 formatter() {
                   if (value === 'revenues') {
-                    console.log('this', this);
-
                     return `${Math.round(this.y / 1000)}k`;
                   }
                   if (value === 'loanValue') {

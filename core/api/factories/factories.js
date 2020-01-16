@@ -46,7 +46,7 @@ const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
-const getRandomLoanName = () => `19-0${Math.floor(Math.random() * 899 + 100)}`;
+const getRandomLoanName = () => `20-0${Math.floor(Math.random() * 899 + 100)}`;
 
 Factory.define('user', Users, {
   roles: [ROLES.USER],

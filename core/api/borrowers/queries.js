@@ -4,7 +4,7 @@ import Borrowers from '.';
 
 export const adminBorrowers = Borrowers.createQuery(
   BORROWER_QUERIES.ADMIN_BORROWERS,
-  adminBorrower(),
+  { ...adminBorrower(), $options: { sort: { lastName: 1 } } },
   { scoped: true },
 );
 

@@ -30,16 +30,13 @@ const stylesheet = `
     .cover-content .title {
         margin-top: 120px;
         margin-bottom: 0;
-    }
-
-    .cover-content .loan-name {
-        margin-top: 8px;
-        margin-bottom: 80px;
-        font-weight: normal;
+        display: flex;
+        justify-content: center;
     }
 
     .cover-content .loan-type {
         margin: 0;
+        font-weight: normal;
     }
     
     .cover-content .address {
@@ -51,11 +48,47 @@ const stylesheet = `
     .cover-content .property-value {
         margin-top: 8px;
         font-weight: normal;
-        margin-bottom: 120px;
+    }
+
+    .cover-content .property-type {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-weight: normal;
+    }
+
+    .cover-content .disbursement-date {
+        margin: 0;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        font-weight: normal;
     }
 
     .cover-content .borrowers {
         margin: 0;
+        margin-top: 8px;
+        margin-bottom: 32px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cover-content .loan-background-info {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cover-content .loan-background-info h5 {
+        margin: 0;
+        margin-bottom: 4px;
+    }
+
+    .cover-content .loan-background-info p {
+        margin: 0;
+        border: 1px solid ${BORDER_BLUE};
+        padding: 4px;
+        white-space: pre-line;
+        font-size: 10px;
     }
 
     .cover-page .cover-footer {
@@ -91,12 +124,26 @@ const stylesheet = `
         border-bottom: 1px solid ${BORDER_BLUE};
     }
 
+    .cover-header >* {
+        flex-basis: 33%;
+        flex-grow: 1;
+    }
+
     .cover-header h1 {
         display: flex;
         align-items: center;
         justify-content: flex-start;
         margin: 0;
         color: ${BORDER_BLUE};
+        font-weight: normal;
+    }
+
+    .cover-header h3 {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin: 0;
         font-weight: normal;
     }
 
@@ -120,7 +167,7 @@ const stylesheet = `
     }
 
     .structure-recap-table {
-        margin-top: 100px;
+        margin-bottom: 30px;
         width: 100%;
     }
 

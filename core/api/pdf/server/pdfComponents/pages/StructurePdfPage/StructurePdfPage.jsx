@@ -2,12 +2,11 @@
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
-import PercentWithStatus from '../../../../../../components/PercentWithStatus';
-import { ERROR, SUCCESS } from '../../../../../constants';
 import PdfPage from '../../PdfPage';
-import BalanceSheet from './BalanceSheet';
-import IncomeAndExpenses from './IncomeAndExpenses';
-import RemainingOwnFundsTable from './RemainingOwnFundsTable';
+import ProjectBalanceSheet from './ProjectBalanceSheet';
+import CostsBalanceSheet from './CostsBalanceSheet';
+import SingleStructureRecapTable from './SingleStructureRecapTable';
+import PledgeTable from './PledgeTable';
 
 type StructurePdfPageProps = {};
 
@@ -19,9 +18,10 @@ const StructurePdfPage = ({
   pageCount,
   calculator,
 }: StructurePdfPageProps) => {
-  const structureName = calculator.selectStructure({ loan, structureId }).name;
-  const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
-  const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
+  const { name: structureName } = calculator.selectStructure({
+    loan,
+    structureId,
+  });
   return (
     <PdfPage
       className="property-page"
@@ -35,38 +35,25 @@ const StructurePdfPage = ({
       pageNb={pageNb}
       pageCount={pageCount}
     >
-      <h3 className="finma-ratio">
-        Taux d'avance:&nbsp;
-        <span>
-          <PercentWithStatus
-            value={borrowRatio}
-            status={borrowRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
-          />
-        </span>
-      </h3>
-
-      <BalanceSheet
+      <SingleStructureRecapTable
         loan={loan}
         structureId={structureId}
         calculator={calculator}
       />
 
-      <h3 className="finma-ratio">
-        Taux d'effort:&nbsp;
-        <span>
-          <PercentWithStatus
-            value={incomeRatio}
-            status={incomeRatio > calculator.maxIncomeRatio ? ERROR : SUCCESS}
-          />
-        </span>
-      </h3>
-
-      <IncomeAndExpenses
+      <ProjectBalanceSheet
         loan={loan}
         structureId={structureId}
         calculator={calculator}
       />
-      <RemainingOwnFundsTable
+
+      <PledgeTable
+        loan={loan}
+        structureId={structureId}
+        calculator={calculator}
+      />
+
+      <CostsBalanceSheet
         loan={loan}
         structureId={structureId}
         calculator={calculator}

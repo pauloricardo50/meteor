@@ -97,6 +97,7 @@ export default {
     path: IMPERSONATE_ROUTE,
     component: ImpersonatePage,
     exact: true,
+    logoutOnMount: true,
   },
   NOT_FOUND: {
     component: NotFound,

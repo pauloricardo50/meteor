@@ -287,6 +287,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   createOverrides(
     {
       loan,
+      basicDocumentsOnly,
       customMessage = '',
       assigneeName = 'e-Potek',
       assigneeAddress = 'info@e-potek.ch',
@@ -311,7 +312,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
         {
           name: 'body-content-1',
           content: ReactDOMServer.renderToStaticMarkup(
-            LoanChecklistEmail({ loan }),
+            LoanChecklistEmail({ loan, basicDocumentsOnly }),
           ),
         },
       ],
@@ -454,10 +455,13 @@ addEmailConfig(EMAIL_IDS.EXPIRE_PROMOTION_RESERVATION_AGREEMENT, {
 addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides(params, strings) {
-    return notificationAndCtaTemplateDefaultOverride.call(this, params, {
-      ...strings,
-      ctaUrl: Meteor.settings.public.subdomains.pro,
-    });
+    return {
+      ...notificationAndCtaTemplateDefaultOverride.call(this, params, {
+        ...strings,
+        ctaUrl: Meteor.settings.public.subdomains.pro,
+      }),
+      bccAddresses: params.bccAddresses,
+    };
   },
 });
 
