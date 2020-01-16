@@ -35,7 +35,10 @@ const keysToOmit = [
   'user.properties',
   'revenues',
 ];
-const fullLoanFragment = omit(adminLoan({ withSort: true }), keysToOmit);
+const fullLoanFragment = {
+  ...omit(adminLoan({ withSort: true }), keysToOmit),
+  revenues: { _id: 1, status: 1 },
+};
 
 export default compose(
   updateForProps(['match.params.loanId']),
