@@ -75,7 +75,7 @@ $borrowers-item-width: 600px;
   }
 
   &-subtitle {
-     > span {
+    > span {
       display: flex;
       align-items: center;
     }
@@ -85,7 +85,7 @@ $borrowers-item-width: 600px;
     align-items: stretch !important;
     flex-direction: column;
 
-     > * {
+    > * {
       justify-content: space-between;
     }
   }

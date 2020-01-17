@@ -65,15 +65,14 @@ export const SPACES = {
   [ENVIRONMENT.DEV]: 'Dev',
 };
 
-export const APP_BUILDPACK =
-  'https://github.com/cloudfoundry/nodejs-buildpack#v1.7.8';
+export const APP_BUILDPACK = 'https://github.com/cloudfoundry/nodejs-buildpack';
 export const APP_DEPENDENCIES = {
   cfenv: '1.0.4',
   '@babel/core': '7.1.2',
   '@babel/node': '7.0.0',
   '@babel/preset-env': '7.1.0',
 };
-export const APP_ENGINES = { node: '8.16.2' };
+export const APP_ENGINES = { node: '12.14.0' };
 export const APP_LAUNCHER = 'launcher.js';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
 export const APP_PACKAGE_JSON_FILE = 'package.json';
