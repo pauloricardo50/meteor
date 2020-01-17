@@ -1,8 +1,8 @@
-@import "./LoanTabs/ActionsTab/ActionsTab.scss";
-@import "./LoanTabs/LendersTab/LendersTab.scss";
-@import "./LoanTabs/OffersTab/OffersTab.scss";
-@import "./LoanTabs/OverviewTab/OverviewTab.scss";
-@import "./SingleLoanPageTasks/LoanTaskInserter/LoanTaskInserter.scss";
+@import './LoanTabs/ActionsTab/ActionsTab.scss';
+@import './LoanTabs/LendersTab/LendersTab.scss';
+@import './LoanTabs/OffersTab/OffersTab.scss';
+@import './LoanTabs/OverviewTab/OverviewTab.scss';
+@import './SingleLoanPageTasks/LoanTaskInserter/LoanTaskInserter.scss';
 
 .single-loan-page {
   &-tasks {
@@ -106,9 +106,9 @@
   align-items: center;
   flex-wrap: nowrap;
 
-  white-space: nowrap;
-
   margin: 0 4px;
+
+  white-space: nowrap;
 
   svg {
     width: 20px !important;
@@ -209,7 +209,8 @@
   }
 
   .scroll-wrapper {
-    max-height: 300px;
     overflow-y: scroll;
+
+    max-height: 300px;
   }
 }

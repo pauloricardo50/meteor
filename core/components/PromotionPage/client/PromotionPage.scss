@@ -62,7 +62,7 @@
     &-actions {
       margin-bottom: 8px;
 
-       > *:last-child {
+      > *:last-child {
         margin-left: 8px;
       }
     }
@@ -83,7 +83,7 @@
       display: flex;
       align-items: center;
 
-       > * {
+      > * {
         margin-left: 4px;
       }
     }
@@ -95,7 +95,7 @@
 
       width: 100%;
 
-       > * {
+      > * {
         min-width: 200px;
         margin-right: 8px;
 
@@ -107,15 +107,15 @@
 
     &-promotion-loan {
       display: flex;
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
       justify-content: flex-start;
 
       .icon-link {
         margin-left: 8px;
+
         color: white;
       }
-
     }
   }
 
@@ -143,7 +143,7 @@
       color: $primary;
     }
 
-     > * {
+    > * {
       flex-grow: 1;
     }
   }
@@ -153,13 +153,13 @@
     align-items: flex-start;
     flex-direction: column;
 
-     > .card1 {
+    > .card1 {
       align-self: stretch;
 
       margin: 16px 0;
     }
 
-     > button,
+    > button,
     .mui-table {
       margin-top: 24px;
     }
@@ -252,7 +252,7 @@
     display: flex;
     align-items: center;
 
-     > * {
+    > * {
       margin-left: 4px;
     }
   }
@@ -269,7 +269,7 @@
 .priority-order {
   display: flex;
 
-   > * {
+  > * {
     margin-right: 4px;
   }
 
@@ -314,7 +314,7 @@
   display: flex;
   align-items: center;
 
-   > * {
+  > * {
     margin-right: 8px;
   }
 }
@@ -323,7 +323,7 @@
   display: flex;
   align-items: center;
 
-   > * {
+  > * {
     margin-right: 4px;
   }
 }
@@ -339,11 +339,11 @@
 
     width: 100%;
 
-     > * {
+    > * {
       width: 200px;
     }
 
-     > *:first-child {
+    > *:first-child {
       margin-right: 8px;
     }
   }
