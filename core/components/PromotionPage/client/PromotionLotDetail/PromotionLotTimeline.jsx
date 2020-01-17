@@ -6,6 +6,7 @@ import T, { Money } from '../../../Translation';
 import ConstructionTimeline, {
   ConstructionTimelineItem,
 } from '../../../ConstructionTimeline';
+import { getItemDate } from '../PromotionTimeline';
 
 type PromotionLotTimelineProps = {};
 
@@ -18,6 +19,13 @@ const PromotionLotTimeline = ({
   const [
     { landValue = 0, constructionValue, additionalMargin = 0 },
   ] = properties;
+
+  const startDate = signingDate ? (
+    moment(signingDate).format('MMM YYYY')
+  ) : (
+    <T id="PromotionTimelineHeader.undetermined" />
+  );
+
   const columns = [
     {
       id: 'root1',
@@ -38,7 +46,7 @@ const PromotionLotTimeline = ({
           Header: () => (
             <ConstructionTimelineItem
               description={<T id="Forms.landValue" />}
-              date={moment(signingDate).format('MMM YYYY')}
+              date={startDate}
               value={landValue}
             />
           ),
@@ -49,7 +57,7 @@ const PromotionLotTimeline = ({
           Header: () => (
             <ConstructionTimelineItem
               description={<T id="Forms.additionalMargin" />}
-              date={moment(signingDate).format('MMM YYYY')}
+              date={startDate}
               value={additionalMargin}
             />
           ),
@@ -78,9 +86,7 @@ const PromotionLotTimeline = ({
             <ConstructionTimelineItem
               description={`${index + 1}. ${description}`}
               percent={percent}
-              date={moment(signingDate)
-                .add(prevDuration, 'months')
-                .format('MMM YYYY')}
+              date={getItemDate({ signingDate, prevDuration, index })}
               isLast={index + 1 === constructionTimeline.length}
               value={percent * constructionValue}
             />

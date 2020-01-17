@@ -9,6 +9,22 @@ import ConstructionTimeline, {
 
 type PromotionTimelineProps = {};
 
+const getMonthDelta = count => `+${count} mois`;
+
+export const getItemDate = ({ signingDate, prevDuration, index }) => {
+  if (signingDate) {
+    return moment(signingDate)
+      .add(prevDuration, 'months')
+      .format('MMM YYYY');
+  }
+
+  if (index === 0) {
+    return <T id="PromotionTimelineHeader.undetermined" />;
+  }
+
+  return getMonthDelta(prevDuration);
+};
+
 const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
   const monthCount = constructionTimeline.reduce(
     (tot, { duration }) => tot + duration,
@@ -19,7 +35,17 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
       <div>
         <T
           id="PromotionTimelineHeader.start"
-          values={{ date: <b>{moment(signingDate).format('MMM YYYY')}</b> }}
+          values={{
+            date: (
+              <b>
+                {signingDate ? (
+                  moment(signingDate).format('MMM YYYY')
+                ) : (
+                  <T id="PromotionTimelineHeader.undetermined" />
+                )}
+              </b>
+            ),
+          }}
         />
       </div>
       <div>
@@ -28,9 +54,11 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
           values={{
             date: (
               <b>
-                {moment(signingDate)
-                  .add(monthCount, 'months')
-                  .format('MMM YYYY')}
+                {signingDate
+                  ? moment(signingDate)
+                      .add(monthCount, 'months')
+                      .format('MMM YYYY')
+                  : getMonthDelta(monthCount)}
               </b>
             ),
           }}
@@ -63,9 +91,7 @@ const PromotionTimeline = ({
             <ConstructionTimelineItem
               description={`${index + 1}. ${description}`}
               percent={percent}
-              date={moment(signingDate)
-                .add(prevDuration, 'months')
-                .format('MMM YYYY')}
+              date={getItemDate({ signingDate, index, prevDuration })}
               isLast={index + 1 === constructionTimeline.length}
             />
           ),
