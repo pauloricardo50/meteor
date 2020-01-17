@@ -65,8 +65,7 @@ export const SPACES = {
   [ENVIRONMENT.DEV]: 'Dev',
 };
 
-export const APP_BUILDPACK =
-  'https://github.com/cloudfoundry/nodejs-buildpack#v1.7.8';
+export const APP_BUILDPACK = 'https://github.com/cloudfoundry/nodejs-buildpack';
 export const APP_DEPENDENCIES = {
   cfenv: '1.0.4',
   '@babel/core': '7.1.2',
