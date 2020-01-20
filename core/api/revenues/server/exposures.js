@@ -20,6 +20,7 @@ exposeQuery({
           sourceOrganisationId,
           status,
           type,
+          secondaryType,
         },
       }) => {
         if (_id) {
@@ -32,6 +33,10 @@ exposeQuery({
 
         if (type) {
           filters.type = type;
+        }
+
+        if (secondaryType) {
+          filters.secondaryType = secondaryType;
         }
 
         if (loanId) {
@@ -76,6 +81,7 @@ exposeQuery({
       sourceOrganisationId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),
+      secondaryType: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
 });

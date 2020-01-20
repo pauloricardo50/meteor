@@ -8,7 +8,11 @@ import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
 import { adminRevenues } from 'core/api/revenues/queries';
-import { REVENUE_STATUS, REVENUE_TYPES } from 'core/api/constants';
+import {
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+  REVENUE_SECONDARY_TYPES,
+} from 'core/api/constants';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import employees from 'core/arrays/epotekEmployees';
@@ -65,6 +69,7 @@ const groupRevenues = revenues =>
 
 const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
   const [type, setType] = useState();
+  const [secondaryType, setSecondaryType] = useState();
   const [assignee, setAssignee] = useState(null);
   const [referrer, setReferrer] = useState(null);
   const [revenueDateRange, setRevenueDateRange] = useState({
@@ -86,19 +91,21 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
       params: {
         date: { $gte: months[0], $lte: months[months.length - 1] },
         type,
+        secondaryType,
         $body: {
           status: 1,
           expectedAt: 1,
           paidAt: 1,
           amount: 1,
           type: 1,
+          secondaryType: 1,
           description: 1,
           loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
           sourceOrganisation: { name: 1 },
         },
       },
     },
-    [revenueDateRange.startDate, revenueDateRange.endDate, type],
+    [revenueDateRange.startDate, revenueDateRange.endDate, type, secondaryType],
   );
 
   const filteredRevenues = useMemo(
@@ -136,6 +143,16 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
           label={<T id="Forms.type" />}
           className="mr-8"
         />
+        {type && type.$in && type.$in.includes(REVENUE_TYPES.INSURANCE) && (
+          <MongoSelect
+            value={secondaryType}
+            onChange={setSecondaryType}
+            options={REVENUE_SECONDARY_TYPES}
+            id="secondaryType"
+            label={<T id="Forms.secondaryType" />}
+            className="mr-8"
+          />
+        )}
         <Select
           value={assignee}
           onChange={setAssignee}
