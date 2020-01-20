@@ -1,26 +1,21 @@
-import curryRight from 'lodash/curryRight';
 import EVENTS from '../events';
-
-const curryPick = curryRight((obj, keys) =>
-  keys.reduce((o, k) => ({ ...o, [k]: obj[k] }), {}),
-);
 
 export const EVENTS_CONFIG = {
   [EVENTS.USER_CREATED]: {
     name: 'User Created',
-    transform: curryPick([
+    properties: [
       'userId',
-      'userName',
-      'userEmail',
-      'referringUserId',
-      'referringUserName',
-      'referringOrganisationId',
-      'referringOrganisationName',
+      { name: 'userName', optional: true },
+      { name: 'userEmail', optional: true },
+      { name: 'referringUserId', optional: true },
+      { name: 'referringUserName', optional: true },
+      { name: 'referringOrganisationId', optional: true },
+      { name: 'referringOrganisationName', optional: true },
       'assigneeId',
       'assigneeName',
       'origin',
-      'ctaId',
-    ]),
+      { name: 'ctaId', optional: true },
+    ],
   },
   [EVENTS.USER_LOGGED_IN]: {
     name: 'User Logged in',
@@ -30,49 +25,55 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED]: {
     name: 'Loan Anonymous loan claimed',
-    transform: curryPick(['loanId', 'loanName']),
+    properties: ['loanId', 'loanName'],
   },
   [EVENTS.API_CALLED]: {
     name: 'Api Called',
-    transform: curryPick([
+    properties: [
       'endpoint',
-      'result',
+      { name: 'result', optional: true },
       'startTime',
       'endTime',
       'duration',
       'authenticationType',
       'endpointName',
-    ]),
+    ],
   },
   [EVENTS.LOAN_CREATED]: {
     name: 'Loan Created',
-    transform: curryPick([
+    properties: [
       'loanId',
       'loanName',
-      'propertyId',
-      'promotionId',
-      'referralId',
-      'anonymous',
-    ]),
+      { name: 'propertyId', optional: true },
+      { name: 'promotionId', optional: true },
+      { name: 'referralId', optional: true },
+      { name: 'anonymous', optional: true },
+    ],
   },
   [EVENTS.LOAN_STATUS_CHANGED]: {
     name: 'Loan Status changed',
   },
   [EVENTS.CTA_CLICKED]: {
     name: 'CTA clicked',
-    transform: curryPick(['name', 'url', 'route', 'path', 'referrer']),
+    properties: [
+      'name',
+      'url',
+      'route',
+      'path',
+      { name: 'referrer', optional: true },
+    ],
   },
   [EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED]: {
     name: 'Loan Max property value calculated',
-    transform: curryPick([
+    properties: [
       'loanId',
       'loanName',
       'canton',
       'type',
-      'anonymous',
-      'proProperty',
-      'proPropertyValue',
-      'proPropertyAddress',
+      { name: 'anonymous', optional: true },
+      { name: 'proProperty', optional: true },
+      { name: 'proPropertyValue', optional: true },
+      { name: 'proPropertyAddress', optional: true },
       'mainMinBorrowRatio',
       'mainMaxBorrowRatio',
       'mainMinPropertyValue',
@@ -85,71 +86,71 @@ export const EVENTS_CONFIG = {
       'secondMaxPropertyValue',
       'secondMinOrganisationName',
       'secondMaxOrganisationName',
-      'promotionId',
-      'promotionName',
-    ]),
+      { name: 'promotionId', optional: true },
+      { name: 'promotionName', optional: true },
+    ],
   },
   [EVENTS.LOAN_BORROWERS_INSERTED]: {
     name: 'Loan Borrowers inserted',
-    transform: curryPick([
+    properties: [
       'loanId',
       'loanName',
       'amount',
-      'anonymous',
-      'proPropertyId',
-      'proPropertyAddress',
-      'promotionId',
-      'promotionName',
-    ]),
+      { name: 'anonymous', optional: true },
+      { name: 'proPropertyId', optional: true },
+      { name: 'proPropertyAddress', optional: true },
+      { name: 'promotionId', optional: true },
+      { name: 'promotionName', optional: true },
+    ],
   },
   [EVENTS.USER_FOLLOWED_IMPERSONATING_ADMIN]: {
     name: 'User Followed impersonating admin',
-    transform: curryPick(['adminName', 'adminId']),
+    properties: ['adminName', 'adminId'],
   },
   [EVENTS.PRO_INVITED_CUSTOMER]: {
     name: 'Pro Invited customer',
-    transform: curryPick([
+    properties: [
       'customerId',
       'customerName',
       'customerEmail',
-      'propertyId',
-      'propertyAddress',
-      'promotionId',
-      'promotionName',
-      'promotionLotIds',
-      'showAllLots',
-      'referOnly',
+      { name: 'propertyId', optional: true },
+      { name: 'propertyAddress', optional: true },
+      { name: 'promotionId', optional: true },
+      { name: 'promotionName', optional: true },
+      { name: 'promotionLotIds', optional: true },
+      { name: 'showAllLots', optional: true },
+      { name: 'referOnly', optional: true },
       'referringUserId',
       'referringUserName',
       'referringOrganisationId',
       'referringOrganisationName',
       'assigneeId',
       'assigneeName',
-    ]),
+    ],
   },
   [EVENTS.PRO_INVITED_PRO]: {
     name: 'Pro Invited pro',
-    transform: curryPick([
+    properties: [
       'proId',
       'proName',
       'proEmail',
       'organisationId',
       'organisationName',
-    ]),
+    ],
   },
   [EVENTS.ADMIN_INVITED_USER]: {
     name: 'Admin Invited user',
-    transform: curryPick([
+    properties: [
       'userId',
       'userName',
       'userEmail',
-      'referringUserId',
-      'referringUserName',
-      'referringOrganisationId',
-      'referringOrganisationName',
+      { name: 'referringUserId', optional: true },
+      { name: 'referringUserName', optional: true },
+      { name: 'referringOrganisationId', optional: true },
+      { name: 'referringOrganisationName', optional: true },
       'assigneeId',
       'assigneeName',
-    ]),
+    ],
   },
 };
 
