@@ -39,7 +39,7 @@ const getProjection = () => ({
   },
 });
 
-const getRevenues = ({ value }) => {
+const getRevenues = ({ value, revenueFilters }) => {
   if (value === 'revenues') {
     return [
       {
@@ -51,6 +51,7 @@ const getRevenues = ({ value }) => {
         },
       },
       { $unwind: '$revenues' },
+      revenueFilters && { $match: revenueFilters },
       {
         $addFields: {
           revenueDate: {
@@ -173,11 +174,11 @@ const getSort = ({ groupBy }) => {
   }
 };
 
-const buildPipeline = ({ filters, groupBy, value }) =>
+const buildPipeline = ({ filters, groupBy, value, revenueFilters }) =>
   [
     getPredicate(filters),
     getProjection(),
-    getRevenues({ value }),
+    getRevenues({ value, revenueFilters }),
     getGrouping({ groupBy, value }),
     getSort({ groupBy }),
   ]

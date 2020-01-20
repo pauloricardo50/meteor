@@ -2,6 +2,7 @@ import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
 import { adminRevenues } from '../queries';
+import { REVENUE_STATUS } from '../revenueConstants';
 
 exposeQuery({
   query: adminRevenues,
@@ -11,12 +12,13 @@ exposeQuery({
         filters,
         params: {
           _id,
-          status,
-          loanId,
-          sourceOrganisationId,
-          organisationId,
           commissionStatus,
+          date,
           expectedAt,
+          loanId,
+          organisationId,
+          sourceOrganisationId,
+          status,
           type,
         },
       }) => {
@@ -52,6 +54,13 @@ exposeQuery({
           }
         }
 
+        if (date) {
+          filters.$or = [
+            { status: REVENUE_STATUS.EXPECTED, expectedAt: date },
+            { status: REVENUE_STATUS.PAID, paidAt: date },
+          ];
+        }
+
         if (expectedAt) {
           filters.expectedAt = expectedAt;
         }
@@ -59,13 +68,14 @@ exposeQuery({
     },
     validateParams: {
       _id: Match.Maybe(String),
+      commissionStatus: Match.Maybe(Match.OneOf(Object, String)),
+      date: Match.Maybe(Match.OneOf(Object, Date)),
+      expectedAt: Match.Maybe(Match.OneOf(Object, Date)),
       loanId: Match.Maybe(String),
-      sourceOrganisationId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
+      sourceOrganisationId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),
-      commissionStatus: Match.Maybe(Match.OneOf(Object, String)),
-      expectedAt: Match.Maybe(Match.OneOf(Object, Date)),
     },
   },
 });

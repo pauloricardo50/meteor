@@ -20,16 +20,10 @@ const makeFilter = ({ param, field, filters }) => {
 exposeQuery({
   query: adminOrganisations,
   overrides: {
-    validateParams: {
-      features: Match.Maybe(Match.OneOf(String, [String])),
-      tags: Match.Maybe(Match.OneOf(String, [String])),
-      type: Match.Maybe(Match.OneOf(String, [String])),
-      hasRules: Match.Maybe(Boolean),
-    },
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { features, tags, type, _id, hasRules },
+        params: { features, tags, type, _id, hasRules, hasReferredUsers },
       }) => {
         if (_id) {
           filters._id = _id;
@@ -40,11 +34,22 @@ exposeQuery({
           filters.lenderRulesCount = { $gte: 1 };
         }
 
+        if (hasReferredUsers) {
+          filters.referredUsersCount = { $gte: 1 };
+        }
+
         makeFilter({ param: features, field: 'features', filters });
         makeFilter({ param: tags, field: 'tags', filters });
         makeFilter({ param: type, field: 'type', filters });
       };
       body.$options = { sort: { name: 1 } };
+    },
+    validateParams: {
+      features: Match.Maybe(Match.OneOf(String, [String])),
+      tags: Match.Maybe(Match.OneOf(String, [String])),
+      type: Match.Maybe(Match.OneOf(String, [String])),
+      hasRules: Match.Maybe(Boolean),
+      hasReferredUsers: Match.Maybe(Boolean),
     },
   },
   options: { allowFilterById: true },

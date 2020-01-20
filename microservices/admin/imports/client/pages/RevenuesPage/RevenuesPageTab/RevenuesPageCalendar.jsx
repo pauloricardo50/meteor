@@ -20,14 +20,27 @@ const getMonths = ({ startDate, endDate }) => {
   const clonedStartDate = moment(startDate);
   const clonedEndDate = moment(endDate);
   const result = [];
-
+  let i = 0;
   if (clonedEndDate.isBefore(clonedStartDate)) {
-    throw 'End date must be greated than start date.';
+    throw 'End date must be greater than start date.';
   }
 
   while (clonedStartDate.isBefore(clonedEndDate)) {
-    result.push(clonedStartDate.toDate());
+    if (i === 0) {
+      result.push(
+        moment(clonedStartDate)
+          .startOf('month')
+          .toDate(),
+      );
+    } else {
+      result.push(
+        moment(clonedStartDate)
+          .endOf('month')
+          .toDate(),
+      );
+    }
     clonedStartDate.add(1, 'month');
+    i += 1;
   }
 
   return result;
@@ -68,7 +81,7 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
     {
       query: adminRevenues,
       params: {
-        expectedAt: { $gte: months[0], $lte: months[months.length - 1] },
+        date: { $gte: months[0], $lte: months[months.length - 1] },
         type,
         $body: {
           status: 1,

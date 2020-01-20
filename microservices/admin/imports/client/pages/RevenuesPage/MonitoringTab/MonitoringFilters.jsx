@@ -4,7 +4,7 @@ import React from 'react';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import { LOAN_CATEGORIES } from 'imports/core/api/constants';
-import { LOAN_STATUS } from 'core/api/constants';
+import { LOAN_STATUS, REVENUE_TYPES } from 'core/api/constants';
 
 type MonitoringFiltersProps = {};
 
@@ -16,6 +16,12 @@ const MonitoringFilters = ({
   makeSetState,
   allowedGroupBy,
   filters,
+  assignedEmployeeId,
+  admins,
+  referringOrganisations,
+  referringOrganisationId,
+  revenueType,
+  additionalFilters = [],
 }: MonitoringFiltersProps) => (
   <div className="flex">
     <div className="flex-col mr-16">
@@ -62,6 +68,37 @@ const MonitoringFilters = ({
           ]}
           className="mr-8"
         />
+        <MongoSelect
+          value={assignedEmployeeId}
+          onChange={makeSetState('assignedEmployeeId')}
+          options={admins.map(admin => ({ id: admin._id, label: admin.name }))}
+          id="assignedEmployee"
+          label="Conseiller"
+          className="mr-8"
+        />
+        <MongoSelect
+          value={referringOrganisationId}
+          onChange={makeSetState('referringOrganisationId')}
+          options={referringOrganisations.map(org => ({
+            id: org._id,
+            label: org.name,
+          }))}
+          id="referringOrganisationId"
+          label="Organisation référante"
+          className="mr-8"
+          error="N'inclut pas les anonymes"
+          style={{ minWidth: 200 }}
+        />
+        {additionalFilters.includes('revenueType') && (
+          <MongoSelect
+            value={revenueType}
+            onChange={makeSetState('revenueType')}
+            options={REVENUE_TYPES}
+            id="type"
+            label="Type de revenus"
+            className="mr-8"
+          />
+        )}
         {filters}
       </div>
     </div>
