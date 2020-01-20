@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
 import { loansWithoutRevenues } from 'core/api/stats/queries';
@@ -10,6 +10,7 @@ import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { USERS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 import { getUserDisplayName } from 'core/utils/userFunctions';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
 type LoansWithoutRevenuesProps = {};
@@ -79,14 +80,21 @@ const LoansTable = ({ loans }) => (
     })}
   />
 );
-
 const LoansWithoutRevenues = ({ loans }: LoansWithoutRevenuesProps) => {
   const isOk = loans.length === 0;
+  const currentUser = useContext(CurrentUserContext);
+
+  const ownLoans = loans.filter(
+    ({ userCache }) =>
+      userCache &&
+      userCache.assignedEmployeeCache &&
+      userCache.assignedEmployeeCache._id === currentUser._id,
+  );
 
   return (
     <StatItem
       value={<CountUp end={loans.length} preserveValue separator=" " />}
-      positive={isOk}
+      positive={ownLoans.length === 0}
       title="Dossiers sans revenus"
       top={
         isOk ? (
@@ -106,6 +114,7 @@ const LoansWithoutRevenues = ({ loans }: LoansWithoutRevenuesProps) => {
           </DialogSimple>
         )
       }
+      increment={`Dont ${ownLoans.length} à moi`}
     />
   );
 };

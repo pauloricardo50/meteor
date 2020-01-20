@@ -32,4 +32,5 @@ const StatItem = ({
     </div>
   );
 };
+
 export default StatItem;
