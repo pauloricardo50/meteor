@@ -6,18 +6,30 @@ import Select from 'core/components/Select';
 import { REVENUE_STATUS, REVENUE_TYPES } from 'core/api/constants';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import employees from 'core/arrays/epotekEmployees';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesTable from '../../../components/RevenuesTable';
+import { revenuesFilter } from './revenuePageHelpers';
 
 type RevenuesPageTableProps = {};
 
 const RevenuesPageTable = (props: RevenuesPageTableProps) => {
   const [type, setType] = useState();
   const [assignee, setAssignee] = useState(null);
+  const [referrer, setReferrer] = useState(null);
   const [status, setStatus] = useState({ $in: [REVENUE_STATUS.EXPECTED] });
   const options = Object.values(REVENUE_STATUS).map(s => ({
     id: s,
     label: <T id={`Forms.status.${s}`} />,
   }));
+
+  const {
+    data: referringOrganisations,
+    loading: orgLoading,
+  } = useStaticMeteorData({
+    query: adminOrganisations,
+    params: { hasReferredUsers: true, $body: { name: 1 } },
+  });
 
   return (
     <>
@@ -50,7 +62,25 @@ const RevenuesPageTable = (props: RevenuesPageTableProps) => {
           ]}
           label="Conseiller"
           displayEmpty
+          className="mr-8"
+          style={{ minWidth: 160 }}
         />
+        {!orgLoading && (
+          <Select
+            value={referrer}
+            onChange={setReferrer}
+            options={[
+              { id: null, label: 'Tous' },
+              ...referringOrganisations
+                .filter(({ _id }) => !!_id)
+                .map(({ _id, name }) => ({ id: _id, label: name })),
+            ]}
+            label="Organisation référante"
+            displayEmpty
+            style={{ minWidth: 240 }}
+            className="mr-8"
+          />
+        )}
       </div>
       <RevenuesTable
         displayLoan
@@ -58,19 +88,7 @@ const RevenuesPageTable = (props: RevenuesPageTableProps) => {
         filterRevenues={() => ({ status, type })}
         initialOrderBy={2}
         postFilter={revenues =>
-          assignee
-            ? revenues.filter(({ loan }) => {
-                if (
-                  loan &&
-                  loan.userCache &&
-                  loan.userCache.assignedEmployeeCache
-                ) {
-                  return loan.userCache.assignedEmployeeCache._id === assignee;
-                }
-
-                return false;
-              })
-            : revenues
+          revenuesFilter({ assignee, referrer, revenues })
         }
       />
     </>

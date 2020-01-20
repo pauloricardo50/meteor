@@ -12,7 +12,9 @@ import { REVENUE_STATUS, REVENUE_TYPES } from 'core/api/constants';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import employees from 'core/arrays/epotekEmployees';
+import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
+import { revenuesFilter } from './revenuePageHelpers';
 
 type RevenuesPageCalendarProps = {};
 
@@ -64,6 +66,7 @@ const groupRevenues = revenues =>
 const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
   const [type, setType] = useState();
   const [assignee, setAssignee] = useState(null);
+  const [referrer, setReferrer] = useState(null);
   const [revenueDateRange, setRevenueDateRange] = useState({
     startDate: moment()
       .subtract(1, 'M')
@@ -77,7 +80,7 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
 
   const months = getMonths(revenueDateRange);
 
-  const { data, loading } = useStaticMeteorData(
+  const { data: revenues, loading } = useStaticMeteorData(
     {
       query: adminRevenues,
       params: {
@@ -98,26 +101,22 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
   );
 
   const filteredRevenues = useMemo(
-    () =>
-      assignee
-        ? data.filter(({ loan }) => {
-            if (
-              loan &&
-              loan.userCache &&
-              loan.userCache.assignedEmployeeCache
-            ) {
-              return loan.userCache.assignedEmployeeCache._id === assignee;
-            }
-
-            return false;
-          })
-        : data,
-    [assignee, data],
+    () => revenues && revenuesFilter({ assignee, revenues, referrer }),
+    [assignee, revenues, referrer],
   );
+
   const groupedRevenues = useMemo(
     () => filteredRevenues && groupRevenues(filteredRevenues, months),
     [filteredRevenues],
   );
+
+  const {
+    data: referringOrganisations,
+    loading: orgLoading,
+  } = useStaticMeteorData({
+    query: adminOrganisations,
+    params: { hasReferredUsers: true, $body: { name: 1 } },
+  });
 
   return (
     <div>
@@ -147,7 +146,25 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
           ]}
           label="Conseiller"
           displayEmpty
+          className="mr-8"
+          style={{ minWidth: 160 }}
         />
+        {!orgLoading && (
+          <Select
+            value={referrer}
+            onChange={setReferrer}
+            options={[
+              { id: null, label: 'Tous' },
+              ...referringOrganisations
+                .filter(({ _id }) => !!_id)
+                .map(({ _id, name }) => ({ id: _id, label: name })),
+            ]}
+            label="Organisation référante"
+            displayEmpty
+            style={{ minWidth: 240 }}
+            className="mr-8"
+          />
+        )}
       </div>
 
       {loading ? (
