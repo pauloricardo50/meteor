@@ -14,6 +14,7 @@ exposeQuery({
       groupBy: String,
       value: String,
       filters: Match.Maybe(Object),
+      revenueFilters: Match.Maybe(Object),
     },
   },
   resolver: loanMonitoringResolver,

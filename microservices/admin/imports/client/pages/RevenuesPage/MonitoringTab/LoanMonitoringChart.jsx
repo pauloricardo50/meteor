@@ -22,6 +22,12 @@ const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
     allowedGroupBy,
     filters,
     postProcess = ({ data }) => data,
+    admins,
+    referringOrganisations,
+    assignedEmployeeId,
+    referringOrganisationId,
+    revenueType,
+    additionalFilters,
   } = props;
 
   return (
@@ -34,6 +40,12 @@ const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
         withAnonymous={withAnonymous}
         allowedGroupBy={allowedGroupBy}
         filters={filters}
+        admins={admins}
+        referringOrganisations={referringOrganisations}
+        assignedEmployeeId={assignedEmployeeId}
+        referringOrganisationId={referringOrganisationId}
+        revenueType={revenueType}
+        additionalFilters={additionalFilters}
       />
       <MonitoringChart
         data={postProcess(props)}
@@ -53,6 +65,9 @@ export default compose(
       groupBy: initialGroupBy,
       value: initialValue,
       withAnonymous: false,
+      assignedEmployeeId: null,
+      referringOrganisationId: null,
+      revenueType: null,
     }),
     { setState: () => newState => newState },
   ),
@@ -61,10 +76,29 @@ export default compose(
   })),
   withSmartQuery({
     query: loanMonitoring,
-    params: ({ groupBy, value, category, status, withAnonymous }) => ({
+    params: ({
       groupBy,
       value,
-      filters: { category, status, anonymous: getAnonymous(withAnonymous) },
+      category,
+      status,
+      withAnonymous,
+      assignedEmployeeId,
+      referringOrganisationId,
+      revenueType,
+    }) => ({
+      groupBy,
+      value,
+      filters: {
+        category,
+        status,
+        anonymous: getAnonymous(withAnonymous),
+        'userCache.assignedEmployeeCache._id': assignedEmployeeId || undefined,
+        'userCache.referredByOrganisationLink':
+          referringOrganisationId || undefined,
+      },
+      revenueFilters: revenueType
+        ? { 'revenues.type': revenueType }
+        : undefined,
     }),
     dataName: 'data',
   }),
