@@ -360,15 +360,22 @@ addAnalyticsListener({
     result: userId,
   }) => {
     const user = UserService.get(userId, {
-      referredByUser: { _id: 1 },
-      referredByOrganisation: { _id: 1 },
-      assignedEmployee: { _id: 1 },
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
     });
 
     const {
-      referredByUser: { _id: proId } = {},
-      referredByOrganisation: { _id: orgId } = {},
-      assignedEmployee: { _id: adminId } = {},
+      name: userName,
+      email: userEmail,
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
+      referredByOrganisation: {
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
+      } = {},
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
 
     analytics.identify(trackingId);
@@ -376,10 +383,15 @@ addAnalyticsListener({
       EVENTS.USER_CREATED,
       {
         userId,
+        userName,
+        userEmail,
+        referringUserId,
+        referringUserName,
+        referringOrganisationId,
+        referringOrganisationName,
+        assigneeId,
+        assigneeName,
         origin: 'user',
-        referralId: proId,
-        orgReferralId: orgId,
-        adminId,
         ctaId,
       },
       trackingId,
