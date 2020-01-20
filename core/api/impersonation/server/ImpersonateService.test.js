@@ -39,14 +39,13 @@ describe('ImpersonateService', () => {
       context: {
         setUserId(impersonateId) {
           expect(userId).to.equal(impersonateId);
+          Users.remove({ _id: { $in: [adminId, userId] } });
           done();
         },
       },
       authToken: FICTIONAL_TOKEN,
       userIdToImpersonate: userId,
     });
-
-    Users.remove({ _id: { $in: [adminId, userId] } });
   });
 
   it('Should not allow impersonation of a user that is non-dev or non-admin', () => {

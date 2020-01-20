@@ -1,4 +1,7 @@
-import { CLOUDFOUNDRY_MEMORY_LIMIT } from '../CloudFoundry/cloudFoundryConstants';
+import {
+  CLOUDFOUNDRY_MEMORY_LIMIT,
+  CLOUDFOUNDRY_DISK_LIMIT,
+} from '../CloudFoundry/cloudFoundryConstants';
 
 export const ENVIRONMENT = {
   STAGING: 'staging',
@@ -21,15 +24,51 @@ export const SERVICES = {
 };
 
 export const APP_CONFIGS = {
-  MB64_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB64, instances: 1 },
-  MB256_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB256, instances: 1 },
-  MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
-  MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
-  MB1024_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 1 },
-  MB1024_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 2 },
-  MB1536_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1536, instances: 2 },
-  MB2048_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048, instances: 1 },
-  MB2048_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048, instances: 2 },
+  MB64_1i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB64,
+    instances: 1,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB256_1i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB256,
+    instances: 1,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB512_1i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512,
+    instances: 1,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB512_2i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512,
+    instances: 2,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB1024_1i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024,
+    instances: 1,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB1024_2i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024,
+    instances: 2,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB1536_2i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1536,
+    instances: 2,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB2048_1i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048,
+    instances: 1,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
+  MB2048_2i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048,
+    instances: 2,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
 };
 
 export const ENVIRONMENT_CONFIG = {
@@ -65,15 +104,14 @@ export const SPACES = {
   [ENVIRONMENT.DEV]: 'Dev',
 };
 
-export const APP_BUILDPACK =
-  'https://github.com/cloudfoundry/nodejs-buildpack#v1.7.8';
+export const APP_BUILDPACK = 'https://github.com/cloudfoundry/nodejs-buildpack';
 export const APP_DEPENDENCIES = {
   cfenv: '1.0.4',
   '@babel/core': '7.1.2',
   '@babel/node': '7.0.0',
   '@babel/preset-env': '7.1.0',
 };
-export const APP_ENGINES = { node: '8.16.2' };
+export const APP_ENGINES = { node: '12.14.0' };
 export const APP_LAUNCHER = 'launcher.js';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
 export const APP_PACKAGE_JSON_FILE = 'package.json';
