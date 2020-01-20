@@ -94,6 +94,7 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
           type: 1,
           description: 1,
           loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
+          sourceOrganisation: { name: 1 },
         },
       },
     },

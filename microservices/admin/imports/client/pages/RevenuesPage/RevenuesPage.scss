@@ -47,5 +47,10 @@
   &-item {
     margin: 4px 0;
     padding: 8px;
+
+    .source-organisation {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }

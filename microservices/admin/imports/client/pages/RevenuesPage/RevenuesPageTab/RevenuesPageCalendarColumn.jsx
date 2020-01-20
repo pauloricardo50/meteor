@@ -4,7 +4,11 @@ import moment from 'moment';
 
 import Tooltip from 'core/components/Material/Tooltip';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { REVENUE_STATUS, LOANS_COLLECTION } from 'core/api/constants';
+import {
+  REVENUE_STATUS,
+  LOANS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+} from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Icon from 'core/components/Icon';
 
@@ -68,7 +72,7 @@ const RevenuesPageCalendarColumn = ({
       </div>
 
       {revenues.map(revenue => {
-        const { _id, amount, loan, description } = revenue;
+        const { _id, amount, loan, description, sourceOrganisation } = revenue;
         return (
           <div className="revenues-calendar-item card1 card-top" key={_id}>
             <div className="flex sb">
@@ -81,6 +85,16 @@ const RevenuesPageCalendarColumn = ({
               </div>
             </div>
             <div>{description}</div>
+            {sourceOrganisation && (
+              <div className="source-organisation">
+                <CollectionIconLink
+                  relatedDoc={{
+                    ...sourceOrganisation,
+                    collection: ORGANISATIONS_COLLECTION,
+                  }}
+                />
+              </div>
+            )}
           </div>
         );
       })}
