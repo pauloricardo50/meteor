@@ -118,6 +118,7 @@ const LoansWithoutRevenues = ({ loans }: LoansWithoutRevenuesProps) => {
     />
   );
 };
+
 export default withSmartQuery({
   query: loansWithoutRevenues,
   dataName: 'loans',

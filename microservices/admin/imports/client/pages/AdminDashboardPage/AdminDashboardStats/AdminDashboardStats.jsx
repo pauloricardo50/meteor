@@ -6,6 +6,7 @@ import NewUsersStat from './NewUsersStat';
 import LastSeenUsers from './LastSeenUsers';
 import OutdatedRevenues from './OutdatedRevenues';
 import LoansWithoutRevenues from './LoansWithoutRevenues';
+import CustomersWithoutAssignees from './CustomersWithoutAssignees';
 
 type AdminDashboardStatsProps = {};
 
@@ -23,6 +24,7 @@ const AdminDashboardStats = ({
     <LastSeenUsers />
     <OutdatedRevenues />
     <LoansWithoutRevenues />
+    <CustomersWithoutAssignees />
   </div>
 );
 
