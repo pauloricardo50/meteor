@@ -1,5 +1,5 @@
-// flow-typed signature: 42cd985d609a75af5a0ecb60336a3881
-// flow-typed version: 97c2f195ef/antd_v3.x.x/flow_>=v0.104.x
+// flow-typed signature: 162bac79ee7440ebe599f94fe5774a16
+// flow-typed version: 1e72bc6880/antd_v3.x.x/flow_>=v0.104.x
 
 declare module "antd" {
   import type { Node, Component } from "react";
@@ -186,8 +186,6 @@ declare module "antd" {
   declare export class Collapse extends React$Component<CollapseProps> {
     static Panel: typeof CollapsePanel;
   }
-
-  declare export class DatePicker extends React$Component<{...}> {}
 
   declare export class Dropdown extends React$Component<{...}> {}
 
