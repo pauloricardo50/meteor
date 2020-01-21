@@ -22,11 +22,17 @@ type CollectionSearchProps = {
   onFocus: Function,
 };
 
-const renderResult = (renderItem, onClickItem = () => {}, hideResults) => (
-  result,
-  index,
-) => (
-  <MenuItem key={index} onClick={() => onClickItem(result)}>
+const renderResult = (
+  renderItem,
+  onClickItem = () => {},
+  hideResults,
+  disableItem = () => false,
+) => (result, index) => (
+  <MenuItem
+    key={index}
+    onClick={() => onClickItem(result)}
+    disabled={disableItem(result)}
+  >
     {renderItem(result, hideResults)}
   </MenuItem>
 );
@@ -41,6 +47,9 @@ const CollectionSearch = ({
   onClickItem,
   hideResults,
   onFocus,
+  placeholder,
+  description,
+  disableItem,
 }: CollectionSearchProps) => {
   const inputEl = useRef(null);
   const results = searchResults[searchQuery];
@@ -51,13 +60,14 @@ const CollectionSearch = ({
     <div className="collection-search-container" ref={inputEl}>
       <label htmlFor="collection-search">{title}</label>
       <input style={{ display: 'none' }} name="collection-search" />
+      {description && <p className="description">{description}</p>}
       <Input
         name="collection-search"
         className="collection-search-input"
         type="text"
         value={searchQuery}
         onChange={onSearch}
-        placeholder="Rechercher..."
+        placeholder={placeholder || 'Rechercher...'}
         onFocus={onFocus}
         autoComplete="off"
       />
@@ -87,7 +97,12 @@ const CollectionSearch = ({
             ) : (
               <MenuList>
                 {results.map(
-                  renderResult(renderItem, onClickItem, hideResults),
+                  renderResult(
+                    renderItem,
+                    onClickItem,
+                    hideResults,
+                    disableItem,
+                  ),
                 )}
               </MenuList>
             )}
