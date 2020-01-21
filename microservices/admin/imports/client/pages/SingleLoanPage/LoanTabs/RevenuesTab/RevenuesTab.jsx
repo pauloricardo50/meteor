@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import RevenuesTable from '../../../../components/RevenuesTable';
 import RevenueSuggestions from './RevenueSuggestions';
+import LoanAssigneeManager from './LoanAssigneeManager';
 
 const RevenuesTab = ({ loan }) => {
   const [revenueSuggestion, setRevenueSuggestion] = useState();
@@ -30,6 +31,7 @@ const RevenuesTab = ({ loan }) => {
           setOpen={setOpen}
         />
       </div>
+      <LoanAssigneeManager loan={loan} />
       <RevenueSuggestions loan={loan} suggestRevenue={suggestRevenue} />
       <RevenuesTable
         displayActions

@@ -370,6 +370,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   adminNotes: 1,
+  assigneeLinks: 1,
   category: 1,
   financedPromotion: { name: 1, status: 1 },
   financedPromotionLink: 1,
