@@ -20,6 +20,7 @@ exposeQuery({
           sourceOrganisationId,
           status,
           type,
+          filters: extraFilters,
         },
       }) => {
         if (_id) {
@@ -64,6 +65,10 @@ exposeQuery({
         if (expectedAt) {
           filters.expectedAt = expectedAt;
         }
+
+        if (extraFilters) {
+          Object.assign(filters, extraFilters);
+        }
       };
     },
     validateParams: {
@@ -75,6 +80,7 @@ exposeQuery({
       organisationId: Match.Maybe(String),
       sourceOrganisationId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(Object, String)),
+      filters: Match.Maybe(Match.OneOf(Object)),
       type: Match.Maybe(Match.OneOf(Object, String)),
     },
   },

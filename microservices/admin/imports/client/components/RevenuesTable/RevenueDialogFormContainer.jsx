@@ -98,7 +98,7 @@ const revenueFormLayout = [
     Component: Box,
     title: <h4>Responsable</h4>,
     className: 'mb-32 grid-2',
-    fields: ['assigneeLink'],
+    fields: ['assigneeLink._id'],
   },
   {
     Component: Box,
