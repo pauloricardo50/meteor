@@ -4,7 +4,7 @@ import { Random } from 'meteor/random';
 import DefaultNodeAnalytics from 'analytics-node';
 import curryRight from 'lodash/curryRight';
 
-import { SlackService } from 'core/api/slack/server/SlackService';
+import SlackService from 'core/api/slack/server/SlackService';
 import { getClientHost } from '../../../utils/server/getClientUrl';
 import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import UserService from '../../users/server/UserService';
@@ -196,7 +196,7 @@ class Analytics {
 
     properties.forEach(property => {
       const name = property.name || property;
-      const optional = typeof property === 'object' ? property.optional : true;
+      const optional = typeof property === 'object' ? property.optional : false;
 
       if (!optional && pickedProperties[name] === undefined) {
         SlackService.sendError({
@@ -300,5 +300,37 @@ class Analytics {
     });
   }
 }
+
+export const checkEventsConfig = (events = EVENTS_CONFIG) => {
+  Object.keys(events).forEach(event => {
+    const { name, properties = [] } = events[event];
+
+    if (!name) {
+      throw new Meteor.Error(`No name for event ${event}`);
+    }
+
+    if (properties.length) {
+      properties.forEach(property => {
+        if (!property) {
+          throw new Meteor.Error(
+            `Falsy property ${property} for event ${event}`,
+          );
+        }
+
+        if (typeof property === 'object' && !property.name) {
+          throw new Meteor.Error(
+            `No property name in ${JSON.stringify(
+              property,
+              null,
+              2,
+            )} for event ${event}`,
+          );
+        }
+      });
+    }
+  });
+};
+
+Meteor.startup(() => checkEventsConfig(EVENTS_CONFIG));
 
 export default Analytics;
