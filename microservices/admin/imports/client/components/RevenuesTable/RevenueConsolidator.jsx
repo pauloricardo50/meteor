@@ -28,6 +28,7 @@ const schema = new SimpleSchema({
 
 const RevenueConsolidator = ({
   revenue: { amount, _id: revenueId, sourceOrganisation, description, paidAt },
+  onSubmitted = () => null,
 }: RevenueConsolidatorProps) => (
   <AutoFormDialog
     title="Confirmer paiement de"
@@ -54,7 +55,9 @@ const RevenueConsolidator = ({
     }
     schema={schema}
     model={{ amount, paidAt: moment(paidAt).format('YYYY-MM-DD') }}
-    onSubmit={values => consolidateRevenue.run({ revenueId, ...values })}
+    onSubmit={values =>
+      consolidateRevenue.run({ revenueId, ...values }).finally(onSubmitted)
+    }
     triggerComponent={handleOpen => (
       <IconButton
         onClick={handleOpen}

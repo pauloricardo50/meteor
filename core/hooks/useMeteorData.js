@@ -19,7 +19,7 @@ export const useStaticMeteorData = (
   const [data, setData] = useState();
   const [error, setError] = useState();
 
-  useEffect(() => {
+  const refetch = () => {
     setLoading(true);
     query.clone(params)[getStaticFunction(type)]((err, res) => {
       if (err) {
@@ -31,9 +31,11 @@ export const useStaticMeteorData = (
       }
       setLoading(false);
     });
-  }, deps);
+  };
 
-  return { loading, data, error };
+  useEffect(refetch, deps);
+
+  return { loading, data, error, refetch };
 };
 
 export const useReactiveMeteorData = (
