@@ -1,24 +1,18 @@
 // @flow
 import React from 'react';
 
-import List, {
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-} from 'core/components/List';
+import { ListItemText, ListItemSecondaryAction } from 'core/components/List';
 import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button/Button';
 import T from 'core/components/Translation';
 import TextField from 'imports/core/components/Material/TextField';
+import { userSearch } from 'core/api/users/queries';
+import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
+import { ROLES } from 'core/api/constants';
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';
 
 type OrganisationUserAdderProps = {
   organisation: Object,
-  searchQuery: String,
-  onSearch: Function,
-  setSearchQuery: Function,
-  searchResults: Array<Object>,
-  setSearchResults: Function,
   addUser: Function,
   userId: String,
   setUserId: Function,
@@ -27,46 +21,27 @@ type OrganisationUserAdderProps = {
   resetState: Function,
 };
 
-const renderUserSearcher = ({
-  searchQuery,
-  setSearchQuery,
-  onSearch,
-  searchResults,
-  organisation,
-  setUserId,
-}) => (
-  <>
-    <form onSubmit={onSearch}>
-      <TextField
-        key="user"
-        value={searchQuery}
-        onChange={event => setSearchQuery(event.target.value)}
-        placeholder="Rechercher..."
-        style={{ width: '100%', marginBottom: '16px' }}
-      />
-    </form>
-    <List className="flex-col" style={{ width: '250px' }}>
-      {searchResults &&
-        searchResults.map(user => (
-          <ListItem key={user._id} className="user">
-            <ListItemText primary={user.name} />
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => setUserId(user._id)}
-                primary
-                disabled={
-                  organisation.users &&
-                  organisation.users.map(({ _id }) => _id).includes(user._id)
-                }
-              >
-                Ajouter
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-    </List>
-    {searchResults.length === 0 && <p>Aucun compte trouvé</p>}
-  </>
+const renderUserSearcher = ({ organisation, setUserId }) => (
+  <CollectionSearch
+    query={userSearch}
+    queryParams={{ roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV] }}
+    title="Rechercher un utilisateur"
+    renderItem={user => (
+      <>
+        <ListItemText primary={user.name} />
+        <ListItemSecondaryAction>
+          <Button onClick={() => setUserId(user._id)} primary>
+            Ajouter
+          </Button>
+        </ListItemSecondaryAction>
+      </>
+    )}
+    disableItem={user =>
+      organisation.users &&
+      organisation.users.map(({ _id }) => _id).includes(user._id)
+    }
+    type="list"
+  />
 );
 
 const renderTitleSetter = ({
@@ -102,14 +77,7 @@ const renderTitleSetter = ({
 );
 
 const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
-  const {
-    setSearchQuery,
-    setTitle,
-    setSearchResults,
-    setUserId,
-    userId,
-    resetState,
-  } = props;
+  const { resetState, userId } = props;
 
   return (
     <DialogSimple
