@@ -20,6 +20,7 @@ import {
   userVerifyEmail,
   loanSetStatus,
   sendLoanChecklist,
+  loanSetAssignees,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -416,5 +417,27 @@ ServerEventService.addAfterMethodListener(
         isImportant: true,
       });
     }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  loanSetAssignees,
+  ({ context, params: { loanId, assignees, note } }) => {
+    context.unblock();
+    const { userId } = context;
+
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.NEW_LOAN_ASSIGNEES,
+      isServerGenerated: true,
+      loanLink: { _id: loanId },
+      title: `Nouvelle répartition des conseillers`,
+      description: `Répartition: ${assignees
+        .map(({ _id, percent }) => {
+          const assignee = UserService.get(_id, { firstName: 1 });
+          return assignee && `${assignee.firstName} (${percent}%)`;
+        })
+        .join(', ')}\nNote: "${note}"`,
+      createdBy: userId,
+    });
   },
 );

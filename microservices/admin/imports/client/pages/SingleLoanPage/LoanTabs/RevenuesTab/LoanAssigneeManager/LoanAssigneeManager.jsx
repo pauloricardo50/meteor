@@ -42,6 +42,10 @@ const schema = new SimpleSchema({
     defaultValue: false,
     uniforms: { label: 'Conseiller principal' },
   },
+  note: {
+    type: String,
+    uniforms: { placeholder: 'Expliquer la raison de la nouvelle répartition' },
+  },
 });
 
 const LoanAssigneeManager = ({
@@ -55,8 +59,13 @@ const LoanAssigneeManager = ({
         model={{ assigneeLinks }}
         schema={schema}
         title="Répartition des conseillers"
+        description="Ajoutera une activité sur ce dossier visible pour tous"
         onSubmit={values =>
-          loanSetAssignees.run({ loanId, assignees: values.assigneeLinks })
+          loanSetAssignees.run({
+            loanId,
+            assignees: values.assigneeLinks,
+            note: values.note,
+          })
         }
       />
     </div>

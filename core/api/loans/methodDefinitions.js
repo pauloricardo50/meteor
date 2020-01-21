@@ -251,5 +251,5 @@ export const loanSetDisbursementDate = new Method({
 
 export const loanSetAssignees = new Method({
   name: 'loanSetAssignees',
-  params: { loanId: String, assignees: Array },
+  params: { loanId: String, assignees: Array, note: String },
 });
