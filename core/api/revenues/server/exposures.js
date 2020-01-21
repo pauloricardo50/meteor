@@ -78,7 +78,7 @@ exposeQuery({
       expectedAt: Match.Maybe(Match.OneOf(Object, Date)),
       loanId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
-      sourceOrganisationId: Match.Maybe(String),
+      sourceOrganisationId: Match.Maybe(Match.OneOf(Object, String)),
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),
       secondaryType: Match.Maybe(Match.OneOf(Object, String)),

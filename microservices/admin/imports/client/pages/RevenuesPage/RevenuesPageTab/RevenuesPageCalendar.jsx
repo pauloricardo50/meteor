@@ -72,6 +72,7 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
   const [secondaryType, setSecondaryType] = useState();
   const [assignee, setAssignee] = useState(null);
   const [referrer, setReferrer] = useState(null);
+  const [sourceOrganisationId, setSourceOrganisationId] = useState();
   const [revenueDateRange, setRevenueDateRange] = useState({
     startDate: moment()
       .subtract(1, 'M')
@@ -92,6 +93,7 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
         date: { $gte: months[0], $lte: months[months.length - 1] },
         type,
         secondaryType,
+        sourceOrganisationId,
         $body: {
           status: 1,
           expectedAt: 1,
@@ -105,7 +107,13 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
         },
       },
     },
-    [revenueDateRange.startDate, revenueDateRange.endDate, type, secondaryType],
+    [
+      revenueDateRange.startDate,
+      revenueDateRange.endDate,
+      type,
+      secondaryType,
+      sourceOrganisationId,
+    ],
   );
 
   const filteredRevenues = useMemo(
@@ -124,6 +132,14 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
   } = useStaticMeteorData({
     query: adminOrganisations,
     params: { hasReferredUsers: true, $body: { name: 1 } },
+  });
+
+  const {
+    data: sourceOrganisations,
+    loading: sourceOrgLoading,
+  } = useStaticMeteorData({
+    query: adminOrganisations,
+    params: { $body: { name: 1 } },
   });
 
   return (
@@ -181,6 +197,19 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
             displayEmpty
             style={{ minWidth: 240 }}
             className="mr-8"
+          />
+        )}
+        {!sourceOrgLoading && (
+          <MongoSelect
+            value={sourceOrganisationId}
+            onChange={setSourceOrganisationId}
+            options={sourceOrganisations
+              .filter(({ _id }) => !!_id)
+              .map(({ _id, name }) => ({ id: _id, label: name }))}
+            id="sourceOrganisation"
+            label={<T id="Forms.sourceOrganisation" />}
+            className="mr-8"
+            style={{ minWidth: 240 }}
           />
         )}
       </div>
