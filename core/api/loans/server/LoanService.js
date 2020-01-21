@@ -1071,6 +1071,30 @@ class LoanService extends CollectionService {
 
     return disbursedIn10Days.map(({ _id }) => _id);
   }
+
+  setAssignees({ loanId, assignees }) {
+    if (assignees.length < 1 || assignees.length > 3) {
+      throw new Meteor.Error(
+        'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
+      );
+    }
+
+    const total = assignees.reduce((t, v) => t + v.percent, 0);
+
+    if (total !== 100) {
+      throw new Meteor.Error('Les pourcentages doivent faire 100%');
+    }
+
+    const main = assignees.filter(a => a.isMain);
+
+    if (main.length !== 1) {
+      throw new Meteor.Error(
+        "Il ne peut y avoir qu'un seul conseiller principal",
+      );
+    }
+
+    return this.update({ loanId, object: { assigneeLinks: assignees } });
+  }
 }
 
 export default new LoanService({});

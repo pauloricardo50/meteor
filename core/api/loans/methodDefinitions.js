@@ -248,3 +248,8 @@ export const loanSetDisbursementDate = new Method({
   name: 'loanSetDisbursementDate',
   params: { loanId: String, disbursementDate: Date },
 });
+
+export const loanSetAssignees = new Method({
+  name: 'loanSetAssignees',
+  params: { loanId: String, assignees: Array },
+});

@@ -146,7 +146,14 @@ const LoanSchema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true },
   'assigneeLinks.$': Object,
   'assigneeLinks.$._id': String,
-  'assigneeLinks.$.isMain': Boolean,
+  'assigneeLinks.$.isMain': {
+    type: Boolean,
+    autoValue() {
+      if (!this.value) {
+        return false;
+      }
+    },
+  },
   'assigneeLinks.$.percent': {
     type: SimpleSchema.Integer,
     min: 10,
