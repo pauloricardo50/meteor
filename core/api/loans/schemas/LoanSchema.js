@@ -143,6 +143,16 @@ const LoanSchema = new SimpleSchema({
   disbursementDate: { type: Date, optional: true },
   selectedLenderOrganisationLink: { type: Object, optional: true },
   'selectedLenderOrganisationLink._id': { type: String, optional: true },
+  assigneeLinks: { type: Array, optional: true },
+  'assigneeLinks.$': Object,
+  'assigneeLinks.$._id': String,
+  'assigneeLinks.$.isMain': Boolean,
+  'assigneeLinks.$.percent': {
+    type: SimpleSchema.Integer,
+    min: 10,
+    max: 100,
+    defaultValue: 100,
+  },
 });
 
 export default LoanSchema;

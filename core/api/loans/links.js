@@ -101,6 +101,12 @@ LinkInitializer.directInit(() => {
       metadata: true,
       collection: Organisations,
     },
+    assignees: {
+      field: 'assigneeLinks',
+      collection: Users,
+      type: 'many',
+      metadata: true,
+    },
   });
 });
 
