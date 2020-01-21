@@ -31,6 +31,8 @@ const getIconConfig = ({ status, expectedAt, paidAt }) => {
 const RevenuesPageCalendarColumn = ({
   month,
   revenues = [],
+  setRevenueToModify,
+  setOpenModifier,
 }: RevenuesPageCalendarColumnProps) => {
   const { openAmount, closedAmount, totalAmount } = revenues.reduce(
     (obj, { status, amount }) => {
@@ -74,7 +76,14 @@ const RevenuesPageCalendarColumn = ({
       {revenues.map(revenue => {
         const { _id, amount, loan, description, sourceOrganisation } = revenue;
         return (
-          <div className="revenues-calendar-item card1 card-top" key={_id}>
+          <div
+            className="revenues-calendar-item card1 card-top"
+            key={_id}
+            onClick={() => {
+              setRevenueToModify(revenue);
+              setOpenModifier(true);
+            }}
+          >
             <div className="flex sb">
               <CollectionIconLink
                 relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}

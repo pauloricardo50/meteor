@@ -19,6 +19,7 @@ import employees from 'core/arrays/epotekEmployees';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 import { revenuesFilter } from './revenuePageHelpers';
+import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
 
 type RevenuesPageCalendarProps = {};
 
@@ -83,10 +84,12 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
       .add(3, 'M')
       .toDate(),
   });
+  const [openModifier, setOpenModifier] = useState(false);
+  const [revenueToModify, setRevenueToModify] = useState(null);
 
   const months = getMonths(revenueDateRange);
 
-  const { data: revenues, loading } = useStaticMeteorData(
+  const { data: revenues, loading, error, refetch } = useStaticMeteorData(
     {
       query: adminRevenues,
       params: {
@@ -103,7 +106,9 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
           secondaryType: 1,
           description: 1,
           loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
+          sourceOrganisationLink: 1,
           sourceOrganisation: { name: 1 },
+          organisationLinks: { _id: 1, commissionRate: 1 },
         },
       },
     },
@@ -218,11 +223,20 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
         <Loading />
       ) : (
         <div className="revenues-calendar">
+          <RevenueModifier
+            loan={revenueToModify && revenueToModify.loan}
+            revenue={revenueToModify}
+            open={openModifier}
+            setOpen={setOpenModifier}
+            onSubmitted={refetch}
+          />
           {months.map(month => (
             <RevenuesPageCalendarColumn
               key={month}
               month={month}
               revenues={groupedRevenues[getMonthId(month)]}
+              setRevenueToModify={setRevenueToModify}
+              setOpenModifier={setOpenModifier}
             />
           ))}
         </div>
