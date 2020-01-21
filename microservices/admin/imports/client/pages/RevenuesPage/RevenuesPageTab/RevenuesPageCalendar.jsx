@@ -237,6 +237,7 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
               revenues={groupedRevenues[getMonthId(month)]}
               setRevenueToModify={setRevenueToModify}
               setOpenModifier={setOpenModifier}
+              refetch={refetch}
             />
           ))}
         </div>

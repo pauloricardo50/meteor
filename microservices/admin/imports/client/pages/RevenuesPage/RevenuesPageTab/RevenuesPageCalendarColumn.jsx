@@ -11,6 +11,7 @@ import {
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Icon from 'core/components/Icon';
+import RevenueConsolidator from '../../../components/RevenuesTable/RevenueConsolidator';
 
 type RevenuesPageCalendarColumnProps = {};
 
@@ -18,7 +19,7 @@ const now = new Date();
 
 const getIconConfig = ({ status, expectedAt, paidAt }) => {
   if (status === REVENUE_STATUS.CLOSED) {
-    return { type: 'check', color: 'success', tooltip: 'Payé' };
+    return { type: 'checkCircle', color: 'success', tooltip: 'Payé' };
   }
 
   if (expectedAt.getTime() < now.getTime()) {
@@ -33,6 +34,7 @@ const RevenuesPageCalendarColumn = ({
   revenues = [],
   setRevenueToModify,
   setOpenModifier,
+  refetch,
 }: RevenuesPageCalendarColumnProps) => {
   const { openAmount, closedAmount, totalAmount } = revenues.reduce(
     (obj, { status, amount }) => {
@@ -91,6 +93,12 @@ const RevenuesPageCalendarColumn = ({
               <div className="flex center-align">
                 <span className="mr-8">{toMoney(amount)}</span>
                 <Icon {...getIconConfig(revenue)} />
+                {revenue.status === REVENUE_STATUS.EXPECTED && (
+                  <RevenueConsolidator
+                    revenue={revenue}
+                    onSubmitted={refetch}
+                  />
+                )}
               </div>
             </div>
             <div>{description}</div>
