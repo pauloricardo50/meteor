@@ -63,10 +63,10 @@ const referCustomer = ({
   });
 };
 
-describe('REST: referCustomer', function () {
+describe('REST: referCustomer', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -274,11 +274,11 @@ describe('REST: referCustomer', function () {
         },
       });
 
-      expect(spy.calledOnce).to.equal(true);
-      expect(spy.args[0][0].username).to.equal(
+      expect(spy.called).to.equal(true);
+      expect(spy.lastCall.args[0].username).to.equal(
         'TestFirstName TestLastName (Org 3, API Org 1)',
       );
-      expect(spy.args[0][0].attachments[0].title).to.equal(
+      expect(spy.lastCall.args[0].attachments[0].title).to.equal(
         'Test User a été invité sur e-Potek en referral uniquement',
       );
     });

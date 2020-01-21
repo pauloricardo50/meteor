@@ -5,7 +5,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import SessionService from 'core/api/sessions/server/SessionService';
-import Analytics from '../Analytics';
+import SlackService from 'core/api/slack/server/SlackService';
+import Analytics, { checkEventsConfig } from '../Analytics';
 import EVENTS from '../../events';
 import TestAnalytics from '../TestAnalytics';
 
@@ -14,40 +15,111 @@ describe('Analytics', () => {
     resetDatabase();
   });
 
-  afterEach(() => {
-    TestAnalytics.prototype.track.restore();
-  });
+  context('Analytics', () => {
+    let analyticsSpy;
 
-  it('should track events', async () => {
-    const spy = sinon.spy(TestAnalytics.prototype, 'track');
-    const connectionId = Random.id();
-
-    await SessionService.insert({
-      connectionId,
-      ip: '127.0.0.1',
+    beforeEach(async () => {
+      analyticsSpy = sinon.spy(TestAnalytics.prototype, 'track');
     });
 
-    const analytics = new Analytics({ connection: { id: connectionId } });
-
-    analytics.track(EVENTS.USER_LOGGED_IN);
-
-    expect(spy.callCount).to.equal(1);
-  });
-
-  it('should not track events when impersonating users', async () => {
-    const spy = sinon.spy(TestAnalytics.prototype, 'track');
-    const connectionId = Random.id();
-
-    await SessionService.insert({
-      connectionId,
-      isImpersonate: true,
-      ip: '127.0.0.1',
+    afterEach(() => {
+      TestAnalytics.prototype.track.restore();
     });
 
-    const analytics = new Analytics({ connection: { id: connectionId } });
+    it('should track events', async () => {
+      const connectionId = Random.id();
 
-    analytics.track(EVENTS.USER_LOGGED_IN);
+      await SessionService.insert({
+        connectionId,
+        ip: '127.0.0.1',
+      });
 
-    expect(spy.callCount).to.equal(0);
+      const analytics = new Analytics({ connection: { id: connectionId } });
+
+      analytics.track(EVENTS.USER_LOGGED_IN);
+
+      expect(analyticsSpy.callCount).to.equal(1);
+    });
+
+    it('should not track events when impersonating users', async () => {
+      const connectionId = Random.id();
+
+      await SessionService.insert({
+        connectionId,
+        isImpersonate: true,
+        ip: '127.0.0.1',
+      });
+
+      const analytics = new Analytics({ connection: { id: connectionId } });
+
+      analytics.track(EVENTS.USER_LOGGED_IN);
+
+      expect(analyticsSpy.callCount).to.equal(0);
+    });
+
+    it('should send a slack notification when a required property is not given to an event', async () => {
+      const slackSpy = sinon.spy();
+      sinon.stub(SlackService, 'sendError').callsFake(slackSpy);
+      const connectionId = Random.id();
+
+      await SessionService.insert({
+        connectionId,
+        ip: '127.0.0.1',
+      });
+
+      const analytics = new Analytics({ connection: { id: connectionId } });
+      const data = {
+        url: 'url',
+        route: 'route',
+        path: 'path',
+      };
+
+      analytics.track(EVENTS.CTA_CLICKED, data);
+
+      expect(slackSpy.firstCall.args[0].error.error).to.include(
+        'Property name in event CTA clicked is required',
+      );
+      expect(slackSpy.firstCall.args[0].additionalData[0]).to.deep.include({
+        event: EVENTS.CTA_CLICKED,
+        data,
+        pickedProperties: { name: undefined, ...data, referrer: undefined },
+      });
+      expect(analyticsSpy.callCount).to.equal(1);
+      SlackService.sendError.restore();
+    });
+  });
+
+  context('checkEventsConfig', () => {
+    it('should not throw when checking default events config', () => {
+      expect(checkEventsConfig).to.not.throw();
+    });
+
+    it('should throw when an event has no name in events config', () => {
+      expect(() => {
+        const events = { testEvent: {} };
+        checkEventsConfig(events);
+      }).to.throw('No name for event testEvent');
+    });
+
+    it('should throw when an event has a falsy property', () => {
+      expect(() => {
+        const events = {
+          testEvent: { name: 'This is a test event', properties: [''] },
+        };
+        checkEventsConfig(events);
+      }).to.throw('Falsy property');
+    });
+
+    it('should throw when an event has a nameless property', () => {
+      expect(() => {
+        const events = {
+          testEvent: {
+            name: 'This is a test event',
+            properties: [{ name: '' }],
+          },
+        };
+        checkEventsConfig(events);
+      }).to.throw('No property name');
+    });
   });
 });
