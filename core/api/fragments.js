@@ -1065,7 +1065,13 @@ export const adminRevenue = () => ({
   createdAt: 1,
   description: 1,
   expectedAt: 1,
-  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 }, userCache: 1 },
+  loan: {
+    name: 1,
+    borrowers: { name: 1 },
+    user: { name: 1 },
+    userCache: 1,
+    assigneeLinks: 1,
+  },
   // Keep these in the right order
   organisationLinks: 1,
   organisations: { name: 1 },
