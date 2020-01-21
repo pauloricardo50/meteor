@@ -19,7 +19,7 @@ export const up = () => {
           { _id },
           {
             $set: {
-              assigneeLink: [{ _id: loan.userCache.assignedEmployeeCache._id }],
+              assigneeLink: { _id: loan.userCache.assignedEmployeeCache._id },
             },
           },
         );
