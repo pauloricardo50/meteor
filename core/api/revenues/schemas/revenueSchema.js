@@ -71,6 +71,8 @@ const RevenueSchema = new SimpleSchema({
   // https://github.com/Herteby/denormalize/issues/17
   loanCache: { type: Array, optional: true },
   'loanCache.$': cacheField,
+  assigneeLink: { type: Object, optional: true },
+  'assigneeLink._id': { type: String },
 });
 
 export default RevenueSchema;

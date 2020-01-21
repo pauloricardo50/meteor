@@ -1059,6 +1059,7 @@ export const proUser = () => ({
 // //
 export const adminRevenue = () => ({
   amount: 1,
+  assignee: { name: 1 },
   createdAt: 1,
   description: 1,
   expectedAt: 1,
@@ -1067,8 +1068,8 @@ export const adminRevenue = () => ({
   organisations: { name: 1 },
   paidAt: 1,
   secondaryType: 1,
-  sourceOrganisationLink: 1,
   sourceOrganisation: { name: 1 },
+  sourceOrganisationLink: 1,
   status: 1,
   type: 1,
 });

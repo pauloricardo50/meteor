@@ -30,6 +30,8 @@ import './27';
 import './28';
 import './29';
 import './30';
+import './31';
+import './32';
 
 // To migrate to a specific version
 // Migrations.migrateTo(2);
