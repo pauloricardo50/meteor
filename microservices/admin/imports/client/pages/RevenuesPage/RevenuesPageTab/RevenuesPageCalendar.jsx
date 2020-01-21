@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import moment from 'moment';
 
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -130,6 +130,12 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
     () => filteredRevenues && groupRevenues(filteredRevenues, months),
     [filteredRevenues],
   );
+
+  useEffect(() => {
+    if (!type || !type.$in || !type.$in.includes(REVENUE_TYPES.INSURANCE)) {
+      setSecondaryType(undefined);
+    }
+  }, [type]);
 
   const {
     data: referringOrganisations,
