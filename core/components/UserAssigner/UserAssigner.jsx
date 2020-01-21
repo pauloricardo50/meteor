@@ -4,7 +4,6 @@ import React from 'react';
 import { userSearch } from 'core/api/users/queries';
 import DialogSimple from '../DialogSimple';
 import { ListItemText } from '../List';
-import UserAssignerContainer from './UserAssignerContainer';
 import CollectionSearch from '../CollectionSearch/CollectionSearch';
 
 type UserAssignerProps = {
@@ -43,4 +42,4 @@ const UserAssigner = ({
   </DialogSimple>
 );
 
-export default UserAssignerContainer(UserAssigner);
+export default UserAssigner;
