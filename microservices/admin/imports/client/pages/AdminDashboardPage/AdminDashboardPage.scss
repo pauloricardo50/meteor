@@ -6,9 +6,7 @@
 
 .admin-stats {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-
+  flex-direction: column;
   margin-bottom: 40px;
 
   .stat-item {

@@ -29,7 +29,7 @@ const RevenuesWithoutAssignees = (props: RevenuesWithoutAssigneesProps) => {
 
   return (
     <StatItem
-      title={<span>Revenus sans conseiller</span>}
+      title="Revenus sans conseiller"
       value={!loading && revenues.length}
       top={
         isOk ? (
@@ -37,13 +37,13 @@ const RevenuesWithoutAssignees = (props: RevenuesWithoutAssigneesProps) => {
         ) : (
           <DialogSimple
             buttonProps={{
-              label: 'Afficher clients concernés',
+              label: 'Afficher revenus concernés',
               raised: false,
               primary: true,
             }}
             closeOnly
             maxWidth="lg"
-            title="Clients sans conseiller"
+            title="Revenus sans conseiller"
           >
             <div className="flex-col">
               {!loading &&

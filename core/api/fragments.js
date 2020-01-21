@@ -1068,7 +1068,7 @@ export const adminRevenue = () => ({
   loan: {
     name: 1,
     borrowers: { name: 1 },
-    user: { name: 1 },
+    user: { name: 1, referredByOrganisation: { name: 1 } },
     userCache: 1,
     assigneeLinks: 1,
   },

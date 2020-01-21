@@ -8,6 +8,7 @@ import OutdatedRevenues from './OutdatedRevenues';
 import LoansWithoutRevenues from './LoansWithoutRevenues';
 import CustomersWithoutAssignees from './CustomersWithoutAssignees';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
+import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
 
 type AdminDashboardStatsProps = {};
 
@@ -20,13 +21,25 @@ const AdminDashboardStats = ({
   loanHistogram,
 }: AdminDashboardStatsProps) => (
   <div className="admin-stats">
-    <NewUsersStat />
-    <NewLoansStat />
-    <LastSeenUsers />
-    <OutdatedRevenues />
-    <LoansWithoutRevenues />
-    <CustomersWithoutAssignees />
-    <RevenuesWithoutAssignees />
+    <div>
+      <h2>Stats</h2>
+      <div className="flex wrap sa">
+        <NewUsersStat />
+        <NewLoansStat />
+        <LastSeenUsers />
+      </div>
+    </div>
+
+    <div>
+      <h2>Santé de la base de donnée</h2>
+      <div className="flex wrap sa">
+        <OutdatedRevenues />
+        <LoansWithoutRevenues />
+        <CustomersWithoutAssignees />
+        <RevenuesWithoutAssignees />
+        <RevenuesWithoutCommissions />
+      </div>
+    </div>
   </div>
 );
 

@@ -223,6 +223,10 @@ p.description,
   &.sb {
     justify-content: space-between;
   }
+
+  &.sa {
+    justify-content: space-around;
+  }
 }
 
 .flex-col {

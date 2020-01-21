@@ -156,7 +156,28 @@ export default compose(
   withState('revenueToModify', 'setRevenueToModify', null),
   withSmartQuery({
     query: adminRevenues,
-    params: ({ filterRevenues, ...props }) => filterRevenues(props),
+    params: ({ filterRevenues, ...props }) => ({
+      ...filterRevenues(props),
+      $body: {
+        _id: 1,
+        expectedAt: 1,
+        paidAt: 1,
+        amount: 1,
+        type: 1,
+        secondaryType: 1,
+        description: 1,
+        status: 1,
+        organisations: { name: 1 },
+        sourceOrganisation: { name: 1 },
+        loan: {
+          name: 1,
+          borrowers: { name: 1 },
+          user: { name: 1 },
+          userCache: 1,
+          assigneeLinks: 1,
+        },
+      },
+    }),
     dataName: 'revenues',
   }),
   withProps(({ revenues, postFilter }) => {

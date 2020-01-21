@@ -44,6 +44,10 @@ const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
 
 export default withSmartQuery({
   query: adminRevenues,
-  params: { status: REVENUE_STATUS.EXPECTED, expectedAt: { $lte: new Date() } },
+  params: {
+    status: REVENUE_STATUS.EXPECTED,
+    expectedAt: { $lte: new Date() },
+    $body: { amount: 1 },
+  },
   dataName: 'revenues',
 })(OutdatedRevenues);
