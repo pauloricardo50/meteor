@@ -470,10 +470,7 @@ addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION_NO_CTA, {
   footerType: FOOTER_TYPES.VISITOR,
   createOverrides(params, strings) {
     return {
-      ...notificationTemplateDefaultOverride.call(this, params, {
-        ...strings,
-        // ctaUrl: Meteor.settings.public.subdomains.pro,
-      }),
+      ...notificationTemplateDefaultOverride.call(this, params, strings),
       bccAddresses: params.bccAddresses,
     };
   },
