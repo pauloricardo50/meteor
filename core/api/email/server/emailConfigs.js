@@ -465,6 +465,20 @@ addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION, {
   },
 });
 
+addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION_NO_CTA, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createOverrides(params, strings) {
+    return {
+      ...notificationTemplateDefaultOverride.call(this, params, {
+        ...strings,
+        // ctaUrl: Meteor.settings.public.subdomains.pro,
+      }),
+      bccAddresses: params.bccAddresses,
+    };
+  },
+});
+
 const checkAllEmailAreDefined = () => {
   const undefinedEmailIds = [];
   Object.values(EMAIL_IDS).forEach(emailId => {
