@@ -74,7 +74,10 @@ const AdminNoteSetter = ({
           loanId,
           adminNoteId: isInsert ? undefined : adminNote.id,
           note: values,
-          notifyPros: notifyPros.map(email => ({ email })),
+          notifyPros: notifyPros.map(email => ({
+            email,
+            withCta: contacts.find(contact => email === contact.email).withCta,
+          })),
         })
       }
       model={adminNote}

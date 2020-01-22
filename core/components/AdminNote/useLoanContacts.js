@@ -38,6 +38,7 @@ const getLoanContacts = ({
       icon: collectionIcons[USERS_COLLECTION],
       phoneNumber: user.referredByUser.phoneNumber,
       isEmailable: true,
+      withCta: true,
     });
   }
 
@@ -52,6 +53,7 @@ const getLoanContacts = ({
         title: "Apporteur d'affaires",
         icon: collectionIcons[ORGANISATIONS_COLLECTION],
         isEmailable: true,
+        withCta: false,
       }),
     );
   }
@@ -75,6 +77,7 @@ const getLoanContacts = ({
         icon: collectionIcons[CONTACTS_COLLECTION],
         phoneNumber: contact.phoneNumber,
         isEmailable: true,
+        withCta: false,
       });
     }
   });
@@ -89,6 +92,7 @@ const getLoanContacts = ({
         icon: collectionIcons[CONTACTS_COLLECTION],
         phoneNumber: invitedByUser.phoneNumber,
         isEmailable: true,
+        withCta: true,
       });
     }
 

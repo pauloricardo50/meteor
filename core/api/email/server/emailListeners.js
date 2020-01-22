@@ -329,17 +329,37 @@ addEmailListener({
       },
     });
 
-    return sendEmailToAddress.serverRun({
-      emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
-      address: notifyPros[0].email,
-      params: {
-        customerName,
-        loanName,
-        note,
-        adminName: adminName || 'e-Potek',
-        bccAddresses: notifyPros.slice(1),
-        mainRecipientIsBcc: true,
-      },
-    });
+    const notifyWithCta = notifyPros.filter(({ withCta }) => withCta);
+    const notifyWithoutCta = notifyPros.filter(({ withCta }) => !withCta);
+
+    if (notifyWithCta.length) {
+      sendEmailToAddress.serverRun({
+        emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION,
+        address: notifyWithCta[0].email,
+        params: {
+          customerName,
+          loanName,
+          note,
+          adminName: adminName || 'e-Potek',
+          bccAddresses: notifyWithCta.slice(1),
+          mainRecipientIsBcc: true,
+        },
+      });
+    }
+
+    if (notifyWithoutCta.length) {
+      sendEmailToAddress.serverRun({
+        emailId: EMAIL_IDS.PRO_NOTE_NOTIFICATION_NO_CTA,
+        address: notifyWithoutCta[0].email,
+        params: {
+          customerName,
+          loanName,
+          note,
+          adminName: adminName || 'e-Potek',
+          bccAddresses: notifyWithoutCta.slice(1),
+          mainRecipientIsBcc: true,
+        },
+      });
+    }
   },
 });
