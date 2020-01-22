@@ -70,6 +70,8 @@ export const OrganisationSchema = new SimpleSchema({
   lenderRulesCount: { type: Number, optional: true },
   referredUsersCount: { type: Number, optional: true },
   adminNote: { type: String, optional: true },
+  emails: { type: Array, defaultValue: [] },
+  'emails.$': String,
 });
 
 Organisations.attachSchema(OrganisationSchema);
