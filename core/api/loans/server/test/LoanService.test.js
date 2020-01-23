@@ -680,7 +680,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('assignLoanToUser', () => {
+  describe.only('assignLoanToUser', () => {
     it('assigns all properties and borrowers to the new user', () => {
       const userId = Factory.create('user')._id;
       const borrowerId1 = Factory.create('borrower')._id;
@@ -832,6 +832,57 @@ describe('LoanService', function() {
         _id: 'userId',
         referredByUserLink: 'proId1',
       });
+    });
+
+    it('sets the assignee on a loan if there was none', () => {
+      generator({
+        loans: { _id: 'loanId' },
+        users: { _id: 'userId', assignedEmployee: { _id: 'adminId' } },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      loan = LoanService.get('loanId', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'adminId', percent: 100, isMain: true },
+      ]);
+    });
+
+    it('sets the assignee on a loan if there was none and user changes', () => {
+      generator({
+        loans: { _id: 'loanId', user: { _id: 'user1' } },
+        users: { _id: 'user2', assignedEmployee: { _id: 'adminId' } },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'user2' });
+
+      loan = LoanService.get('loanId', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'adminId', percent: 100, isMain: true },
+      ]);
+    });
+
+    it('does not set a new assignee if there was already one', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          assignees: {
+            _id: 'admin1',
+            $metadata: { percent: 100, isMain: true },
+          },
+        },
+        users: { _id: 'userId', assignedEmployee: { _id: 'admin2' } },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      loan = LoanService.get('loanId', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'admin1', percent: 100, isMain: true },
+      ]);
     });
   });
 
