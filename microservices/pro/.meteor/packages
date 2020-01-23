@@ -55,7 +55,6 @@ meteorhacks:inject-initial
 force-ssl@1.1.0                      # Automatically route users to https
 dynamic-import@0.5.1
 accounts-password@1.5.2
-wylio:mandrill
 epotek:google-maps
 tmeasday:acceptance-test-driver
 underscore@1.0.10

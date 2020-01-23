@@ -114,7 +114,6 @@ underscore@1.0.10
 url@1.2.0
 webapp@1.8.1
 webapp-hashing@1.0.9
-wylio:mandrill@1.0.1
 xolvio:cleaner@0.3.3
 zodern:caching-minifier@0.1.1
 zodern:minifier-js@3.0.0

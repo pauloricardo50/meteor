@@ -61,7 +61,6 @@ epotek:google-maps
 
 
 # Other
-wylio:mandrill
 underscore@1.0.10
 matb33:collection-hooks
 littledata:synced-cron
