@@ -52,7 +52,7 @@ const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
       $body: {
         loan: {
           name: 1,
-          user: { referredByOrganisation: { name: 1 } },
+          user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
           borrowers: { name: 1 },
         },
         organisationLinks: 1,
@@ -78,7 +78,10 @@ const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
         referredByOrganisation.name &&
         (!organisationLinks || organisationLinks.length === 0)
       ) {
-        return true;
+        return (
+          referredByOrganisation.commissionRates &&
+          referredByOrganisation.commissionRates.length > 0
+        );
       }
       return false;
     },

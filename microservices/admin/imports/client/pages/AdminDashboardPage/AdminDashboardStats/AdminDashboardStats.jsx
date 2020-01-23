@@ -31,7 +31,7 @@ const AdminDashboardStats = ({
     </div>
 
     <div>
-      <h2>Santé de la base de donnée</h2>
+      <h2>Santé de la base de données</h2>
       <div className="flex wrap sa">
         <OutdatedRevenues />
         <LoansWithoutRevenues />

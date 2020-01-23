@@ -25,7 +25,6 @@ const schema = new SimpleSchema({
     },
     uniforms: {
       transform: user => (user ? user.name : ''),
-      // labelProps: { shrink: true },
       label: 'Conseiller',
       placeholder: null,
     },
