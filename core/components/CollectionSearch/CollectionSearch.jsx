@@ -1,16 +1,9 @@
 // @flow
 import React, { useRef } from 'react';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
-
-import List, { ListItem } from '../List';
 
 import Input from '../Material/Input';
 import CollectionSearchContainer from './CollectionSearchContainer';
-import Loading from '../Loading/Loading';
+import CollectionSearchResults from './CollectionSearchResults';
 
 type CollectionSearchProps = {
   searchQuery: String,
@@ -22,99 +15,6 @@ type CollectionSearchProps = {
   onClickItem?: Function,
   hideResults: Function,
   onFocus: Function,
-};
-
-const renderItemsPopper = ({
-  showResults,
-  inputEl,
-  hideResults,
-  isLoading,
-  isEmpty,
-  results,
-  renderItem,
-  onClickItem = () => {},
-  disableItem = () => false,
-}) => (
-  <Popper
-    open={showResults}
-    placement="bottom-start"
-    anchorEl={inputEl.current}
-    style={{ zIndex: 1400 }} // Above modals
-  >
-    <ClickAwayListener
-      mouseEvent="onMouseUp"
-      onClickAway={() => {
-        // When clicking back in the input, don't hide the results
-        if (
-          document.activeElement.getAttribute('name') !== 'collection-search'
-        ) {
-          hideResults();
-        }
-      }}
-    >
-      <Paper>
-        {isLoading ? (
-          <Loading small />
-        ) : isEmpty ? (
-          <MenuItem>Aucun résultat</MenuItem>
-        ) : (
-          <MenuList>
-            {results.map((result, index) => (
-              <MenuItem
-                key={index}
-                onClick={() => onClickItem(result)}
-                disabled={disableItem(result)}
-              >
-                {renderItem(result, hideResults)}
-              </MenuItem>
-            ))}
-          </MenuList>
-        )}
-      </Paper>
-    </ClickAwayListener>
-  </Popper>
-);
-
-const renderItemsList = ({
-  showResults,
-  hideResults,
-  isLoading,
-  isEmpty,
-  results,
-  onClickItem = () => {},
-  disableItem = () => false,
-  renderItem,
-}) =>
-  showResults ? (
-    <List className="flex-col">
-      {isLoading ? (
-        <Loading small />
-      ) : isEmpty ? (
-        <ListItem>Aucun résultat</ListItem>
-      ) : (
-        results.map((result, index) => (
-          <ListItem
-            key={index}
-            onClick={() => onClickItem(result)}
-            button
-            disabled={disableItem(result)}
-          >
-            {renderItem(result, hideResults)}
-          </ListItem>
-        ))
-      )}
-    </List>
-  ) : null;
-
-const renderResults = ({ type, ...props }) => {
-  switch (type) {
-    case 'popper':
-      return renderItemsPopper(props);
-    case 'list':
-      return renderItemsList(props);
-    default:
-      return null;
-  }
 };
 
 const CollectionSearch = ({
@@ -152,18 +52,18 @@ const CollectionSearch = ({
         onFocus={onFocus}
         autoComplete="off"
       />
-      {renderResults({
-        type,
-        showResults,
-        inputEl,
-        hideResults,
-        isLoading,
-        isEmpty,
-        results,
-        renderItem,
-        onClickItem,
-        disableItem,
-      })}
+      <CollectionSearchResults
+        type={type}
+        showResults={showResults}
+        inputEl={inputEl}
+        hideResults={hideResults}
+        isLoading={isLoading}
+        isEmpty={isEmpty}
+        results={results}
+        renderItem={renderItem}
+        onClickItem={onClickItem}
+        disableItem={disableItem}
+      />
     </div>
   );
 };
