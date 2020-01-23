@@ -52,8 +52,13 @@ const LoanAssigneeManager = ({
   <div>
     <div className="flex center-align">
       <h4 className="mr-8">Répartition des conseillers</h4>
+    </div>
+    <div className="flex center-align">
+      <div className="mr-8">
+        <LoanAssignees assigneeLinks={assigneeLinks} />
+      </div>
       <AutoFormDialog
-        buttonProps={{ label: 'Modifier', color: 'primary' }}
+        buttonProps={{ label: 'Modifier', color: 'primary', size: 'small' }}
         model={{ assigneeLinks }}
         schema={schema}
         title="Répartition des conseillers"
@@ -67,8 +72,6 @@ const LoanAssigneeManager = ({
         }
       />
     </div>
-
-    <LoanAssignees assigneeLinks={assigneeLinks} />
   </div>
 );
 

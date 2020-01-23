@@ -17,7 +17,7 @@ const LoanAssignees = ({ assigneeLinks }: LoanAssigneesProps) => {
       {assigneeLinks
         .sort(({ percent: p1 }, { percent: p2 }) => p2 - p1)
         .map(({ _id, percent, isMain }) => (
-          <div key={_id} className="mr-16">
+          <div key={_id} className="mr-8">
             <Tooltip
               title={
                 <div>
@@ -33,7 +33,7 @@ const LoanAssignees = ({ assigneeLinks }: LoanAssigneesProps) => {
               <img
                 src={employeesById[_id].src}
                 alt={employeesById[_id].name}
-                style={{ width: 20, height: 20, borderRadius: '50%' }}
+                style={{ width: 24, height: 24, borderRadius: '50%' }}
               />
             </Tooltip>
           </div>
