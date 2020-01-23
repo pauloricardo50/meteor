@@ -72,10 +72,10 @@ const inviteCustomerToProProperties = ({
   });
 };
 
-describe('REST: inviteCustomerToProProperties', function () {
+describe('REST: inviteCustomerToProProperties', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -500,7 +500,10 @@ describe('REST: inviteCustomerToProProperties', function () {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"myId\"`,
       },
     }).then(() => {
-      const property = PropertyService.get({ externalId: 'myId' }, { status: 1 });
+      const property = PropertyService.get(
+        { externalId: 'myId' },
+        { status: 1 },
+      );
       expect(property.status).to.equal(PROPERTY_STATUS.FOR_SALE);
     });
   });
@@ -533,14 +536,13 @@ describe('REST: inviteCustomerToProProperties', function () {
       },
     });
 
-    expect(spy.calledOnce).to.equal(true);
-    expect(spy.args[0][0].username).to.equal(
+    expect(spy.called).to.equal(true);
+    expect(spy.lastCall.args[0].username).to.equal(
       'TestFirstName TestLastName (Main Org, API Main Org)',
     );
-    expect(spy.args[0][0].attachments[0].title).to.equal(
+    expect(spy.lastCall.args[0].attachments[0].title).to.equal(
       'Test User a été invité au bien immo "Rue du parc 3"',
     );
-
     SlackService.send.restore();
   });
 });

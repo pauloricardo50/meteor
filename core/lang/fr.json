@@ -1,4 +1,9 @@
 {
+  "emails.PRO_NOTE_NOTIFICATION_NO_CTA.SUBJECT": "Nouvelle note pour le dossier de {customerName}",
+  "emails.PRO_NOTE_NOTIFICATION_NO_CTA.TITLE": "Nouvelle note pour le dossier {loanName} de {customerName}",
+  "emails.PRO_NOTE_NOTIFICATION_NO_CTA.BODY": "Par {adminName}:{verticalSpace}{note}",
+  "Forms.emails.placeholder": "info@e-potek.ch",
+  "Forms.sourceOrganisation": "Origine des revenus",
   "PromotionTimelineHeader.undetermined": "À déterminer",
   "Forms.basicDocumentsOnly": "Demander les documents essentiels",
   "Forms.type.ASSET_MANAGER": "Gérant de fortune",

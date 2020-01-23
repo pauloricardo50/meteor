@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import moment from 'moment';
 
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -8,13 +8,18 @@ import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
 import { adminRevenues } from 'core/api/revenues/queries';
-import { REVENUE_STATUS, REVENUE_TYPES } from 'core/api/constants';
+import {
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+  REVENUE_SECONDARY_TYPES,
+} from 'core/api/constants';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import employees from 'core/arrays/epotekEmployees';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 import { revenuesFilter } from './revenuePageHelpers';
+import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
 
 type RevenuesPageCalendarProps = {};
 
@@ -65,8 +70,10 @@ const groupRevenues = revenues =>
 
 const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
   const [type, setType] = useState();
+  const [secondaryType, setSecondaryType] = useState();
   const [assignee, setAssignee] = useState(null);
   const [referrer, setReferrer] = useState(null);
+  const [sourceOrganisationId, setSourceOrganisationId] = useState();
   const [revenueDateRange, setRevenueDateRange] = useState({
     startDate: moment()
       .subtract(1, 'M')
@@ -77,27 +84,41 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
       .add(3, 'M')
       .toDate(),
   });
+  const [openModifier, setOpenModifier] = useState(false);
+  const [revenueToModify, setRevenueToModify] = useState(null);
 
   const months = getMonths(revenueDateRange);
 
-  const { data: revenues, loading } = useStaticMeteorData(
+  const { data: revenues, loading, error, refetch } = useStaticMeteorData(
     {
       query: adminRevenues,
       params: {
         date: { $gte: months[0], $lte: months[months.length - 1] },
         type,
+        secondaryType,
+        sourceOrganisationId,
         $body: {
           status: 1,
           expectedAt: 1,
           paidAt: 1,
           amount: 1,
           type: 1,
+          secondaryType: 1,
           description: 1,
           loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
+          sourceOrganisationLink: 1,
+          sourceOrganisation: { name: 1 },
+          organisationLinks: { _id: 1, commissionRate: 1 },
         },
       },
     },
-    [revenueDateRange.startDate, revenueDateRange.endDate, type],
+    [
+      revenueDateRange.startDate,
+      revenueDateRange.endDate,
+      type,
+      secondaryType,
+      sourceOrganisationId,
+    ],
   );
 
   const filteredRevenues = useMemo(
@@ -110,12 +131,26 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
     [filteredRevenues],
   );
 
+  useEffect(() => {
+    if (!type || !type.$in || !type.$in.includes(REVENUE_TYPES.INSURANCE)) {
+      setSecondaryType(undefined);
+    }
+  }, [type]);
+
   const {
     data: referringOrganisations,
     loading: orgLoading,
   } = useStaticMeteorData({
     query: adminOrganisations,
     params: { hasReferredUsers: true, $body: { name: 1 } },
+  });
+
+  const {
+    data: sourceOrganisations,
+    loading: sourceOrgLoading,
+  } = useStaticMeteorData({
+    query: adminOrganisations,
+    params: { $body: { name: 1 } },
   });
 
   return (
@@ -135,6 +170,16 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
           label={<T id="Forms.type" />}
           className="mr-8"
         />
+        {type && type.$in && type.$in.includes(REVENUE_TYPES.INSURANCE) && (
+          <MongoSelect
+            value={secondaryType}
+            onChange={setSecondaryType}
+            options={REVENUE_SECONDARY_TYPES}
+            id="secondaryType"
+            label={<T id="Forms.secondaryType" />}
+            className="mr-8"
+          />
+        )}
         <Select
           value={assignee}
           onChange={setAssignee}
@@ -165,17 +210,40 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
             className="mr-8"
           />
         )}
+        {!sourceOrgLoading && (
+          <MongoSelect
+            value={sourceOrganisationId}
+            onChange={setSourceOrganisationId}
+            options={sourceOrganisations
+              .filter(({ _id }) => !!_id)
+              .map(({ _id, name }) => ({ id: _id, label: name }))}
+            id="sourceOrganisation"
+            label={<T id="Forms.sourceOrganisation" />}
+            className="mr-8"
+            style={{ minWidth: 240 }}
+          />
+        )}
       </div>
 
       {loading ? (
         <Loading />
       ) : (
         <div className="revenues-calendar">
+          <RevenueModifier
+            loan={revenueToModify && revenueToModify.loan}
+            revenue={revenueToModify}
+            open={openModifier}
+            setOpen={setOpenModifier}
+            onSubmitted={refetch}
+          />
           {months.map(month => (
             <RevenuesPageCalendarColumn
               key={month}
               month={month}
               revenues={groupedRevenues[getMonthId(month)]}
+              setRevenueToModify={setRevenueToModify}
+              setOpenModifier={setOpenModifier}
+              refetch={refetch}
             />
           ))}
         </div>

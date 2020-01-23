@@ -1774,9 +1774,9 @@ describe('LoanService', function() {
           loanId: 'loanId',
           note: { note: 'hello dude', isSharedWithPros: true },
           notifyPros: [
-            { email: 'test@e-potek.ch' },
-            { email: 'test2@e-potek.ch' },
-            { email: 'test3@e-potek.ch' },
+            { email: 'test@e-potek.ch', withCta: true },
+            { email: 'test2@e-potek.ch', withCta: true },
+            { email: 'test3@e-potek.ch', withCta: true },
           ],
         }),
       );

@@ -8,6 +8,7 @@ import {
   BORROWERS_COLLECTION,
   CONTACTS_COLLECTION,
   PROMOTION_USERS_ROLES,
+  ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 
 const getLoanContacts = ({
@@ -37,7 +38,24 @@ const getLoanContacts = ({
       icon: collectionIcons[USERS_COLLECTION],
       phoneNumber: user.referredByUser.phoneNumber,
       isEmailable: true,
+      withCta: true,
     });
+  }
+
+  if (user && !user.referredByUser && user.referredByOrganisation) {
+    const {
+      referredByOrganisation: { emails: orgEmails = [], name },
+    } = user;
+    orgEmails.forEach(email =>
+      contactsArray.push({
+        name: `${name} (${email.split('@')[0]})`,
+        email,
+        title: "Apporteur d'affaires",
+        icon: collectionIcons[ORGANISATIONS_COLLECTION],
+        isEmailable: true,
+        withCta: false,
+      }),
+    );
   }
 
   borrowers.forEach((borrower, index) => {
@@ -59,6 +77,7 @@ const getLoanContacts = ({
         icon: collectionIcons[CONTACTS_COLLECTION],
         phoneNumber: contact.phoneNumber,
         isEmailable: true,
+        withCta: false,
       });
     }
   });
@@ -73,6 +92,7 @@ const getLoanContacts = ({
         icon: collectionIcons[CONTACTS_COLLECTION],
         phoneNumber: invitedByUser.phoneNumber,
         isEmailable: true,
+        withCta: true,
       });
     }
 
@@ -122,6 +142,7 @@ const useLoanContacts = loanId => {
           phoneNumber: 1,
           name: 1,
           referredByUser: { email: 1, phoneNumber: 1, name: 1 },
+          referredByOrganisation: { name: 1, emails: 1 },
         },
         borrowers: { email: 1, phoneNumber: 1, name: 1 },
         promotions: { _id: 1, users: { name: 1, email: 1, phoneNumber: 1 } },

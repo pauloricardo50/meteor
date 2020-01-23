@@ -544,6 +544,7 @@ export const baseOrganisation = () => ({
   tags: 1,
   users: { _id: 1 },
   country: 1,
+  emails: 1,
 });
 
 export const fullOrganisation = () => ({
@@ -1016,7 +1017,7 @@ export const adminUser = () => ({
     email: 1,
     phoneNumber: 1,
   },
-  referredByOrganisation: { name: 1 },
+  referredByOrganisation: { name: 1, emails: 1 },
   referredByOrganisationLink: 1,
 });
 

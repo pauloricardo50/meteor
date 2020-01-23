@@ -2,7 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import DefaultNodeAnalytics from 'analytics-node';
+import curryRight from 'lodash/curryRight';
 
+import SlackService from 'core/api/slack/server/SlackService';
 import { getClientHost } from '../../../utils/server/getClientUrl';
 import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import UserService from '../../users/server/UserService';
@@ -14,6 +16,10 @@ import EVENTS from '../events';
 import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
 import { impersonateMiddleware } from './analyticsHelpers';
 import TestAnalytics from './TestAnalytics';
+
+const curryPick = curryRight((obj, keys) =>
+  keys.reduce((o, k) => ({ ...o, [k]: obj[k] }), {}),
+);
 
 class NodeAnalytics extends DefaultNodeAnalytics {
   constructor(...args) {
@@ -44,6 +50,7 @@ class Analytics {
 
   init(context) {
     this.events = EVENTS_CONFIG;
+    this.checkEventsConfig();
     if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
       this.analytics = new TestAnalytics();
     } else {
@@ -51,6 +58,36 @@ class Analytics {
     }
 
     this.context(context);
+  }
+
+  checkEventsConfig() {
+    Object.keys(this.events).forEach(event => {
+      const { name, properties = [] } = this.events[event];
+
+      if (!name) {
+        throw new Meteor.Error(`No name for event ${event}`);
+      }
+
+      if (properties.length) {
+        properties.forEach(property => {
+          if (!property) {
+            throw new Meteor.Error(
+              `Falsy property ${property} for event ${event}`,
+            );
+          }
+
+          if (typeof property === 'object' && !property.name) {
+            throw new Meteor.Error(
+              `No property name in ${JSON.stringify(
+                property,
+                null,
+                2,
+              )} for event ${event}`,
+            );
+          }
+        });
+      }
+    });
   }
 
   context(context) {
@@ -135,9 +172,11 @@ class Analytics {
 
   getEventProperties(event, data) {
     const eventConfig = this.events[event];
-    const { name, transform } = eventConfig;
+    const { name, properties } = eventConfig;
 
-    const eventProperties = transform ? transform(data) : data;
+    const eventProperties = properties
+      ? this.checkEventProperties(event, data)
+      : data;
 
     return {
       name,
@@ -146,6 +185,30 @@ class Analytics {
         trackingOrigin: this.getTrackingOrigin(),
       },
     };
+  }
+
+  checkEventProperties(event, data) {
+    const eventConfig = this.events[event];
+    const { name: eventName, properties = [] } = eventConfig;
+
+    const propertyNames = properties.map(property => property.name || property);
+    const pickedProperties = curryPick(propertyNames)(data);
+
+    properties.forEach(property => {
+      const name = property.name || property;
+      const optional = typeof property === 'object' ? property.optional : false;
+
+      if (!optional && pickedProperties[name] === undefined) {
+        SlackService.sendError({
+          error: new Meteor.Error(
+            `Property ${name} in event ${eventName} is required !`,
+          ),
+          additionalData: [{ event, data, pickedProperties }],
+        });
+      }
+    });
+
+    return pickedProperties;
   }
 
   track(event, data, trackingId = getClientTrackingId()) {
@@ -237,5 +300,37 @@ class Analytics {
     });
   }
 }
+
+export const checkEventsConfig = (events = EVENTS_CONFIG) => {
+  Object.keys(events).forEach(event => {
+    const { name, properties = [] } = events[event];
+
+    if (!name) {
+      throw new Meteor.Error(`No name for event ${event}`);
+    }
+
+    if (properties.length) {
+      properties.forEach(property => {
+        if (!property) {
+          throw new Meteor.Error(
+            `Falsy property ${property} for event ${event}`,
+          );
+        }
+
+        if (typeof property === 'object' && !property.name) {
+          throw new Meteor.Error(
+            `No property name in ${JSON.stringify(
+              property,
+              null,
+              2,
+            )} for event ${event}`,
+          );
+        }
+      });
+    }
+  });
+};
+
+Meteor.startup(() => checkEventsConfig(EVENTS_CONFIG));
 
 export default Analytics;

@@ -47,5 +47,14 @@
   &-item {
     margin: 4px 0;
     padding: 8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .source-organisation {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }

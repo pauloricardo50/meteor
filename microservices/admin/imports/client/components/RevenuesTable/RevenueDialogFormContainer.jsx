@@ -115,43 +115,49 @@ const revenueFormLayout = [
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ loan, revenue, setSubmitting, setOpen }) => {
-    const currentUser = useContext(CurrentUserContext);
-    const schema = useMemo(() => getSchema(currentUser), [currentUser]);
+  withProps(
+    ({ loan, revenue, setSubmitting, setOpen, onSubmitted = () => null }) => {
+      const currentUser = useContext(CurrentUserContext);
+      const schema = useMemo(() => getSchema(currentUser), [currentUser]);
 
-    return {
-      schema,
-      model: revenue,
-      insertRevenue: model =>
-        revenueInsert
-          .run({ revenue: model, loanId: loan && loan._id })
-          .then(() => setOpen && setOpen(false)),
-      modifyRevenue: ({ _id: revenueId, ...object }) => {
-        setSubmitting(true);
-        return revenueUpdate
-          .run({ revenueId, object })
-          .then(() => setOpen(false))
-          .finally(() => setSubmitting(false));
-      },
-      deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
-        setSubmitting(true);
-        setDisableActions(true);
-        const confirm = window.confirm('Êtes-vous sûr ?');
-        if (confirm) {
-          return revenueRemove
-            .run({ revenueId })
-            .then(closeDialog)
+      return {
+        schema,
+        model: revenue,
+        insertRevenue: model =>
+          revenueInsert
+            .run({ revenue: model, loanId: loan && loan._id })
+            .then(() => setOpen && setOpen(false)),
+        modifyRevenue: ({ _id: revenueId, ...object }) => {
+          setSubmitting(true);
+          return revenueUpdate
+            .run({ revenueId, object })
+            .then(() => setOpen(false))
             .finally(() => {
-              setDisableActions(false);
               setSubmitting(false);
+              onSubmitted();
             });
-        }
+        },
+        deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
+          setSubmitting(true);
+          setDisableActions(true);
+          const confirm = window.confirm('Êtes-vous sûr ?');
+          if (confirm) {
+            return revenueRemove
+              .run({ revenueId })
+              .then(closeDialog)
+              .finally(() => {
+                setDisableActions(false);
+                setSubmitting(false);
+                onSubmitted();
+              });
+          }
 
-        setDisableActions(false);
-        setSubmitting(false);
-        return Promise.resolve();
-      },
-      layout: revenueFormLayout,
-    };
-  }),
+          setDisableActions(false);
+          setSubmitting(false);
+          return Promise.resolve();
+        },
+        layout: revenueFormLayout,
+      };
+    },
+  ),
 );

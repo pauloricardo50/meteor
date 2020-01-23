@@ -22,6 +22,7 @@ exposeQuery({
           status,
           type,
           filters: extraFilters,
+          secondaryType,
         },
       }) => {
         if (_id) {
@@ -34,6 +35,10 @@ exposeQuery({
 
         if (type) {
           filters.type = type;
+        }
+
+        if (secondaryType) {
+          filters.secondaryType = secondaryType;
         }
 
         if (loanId) {
@@ -85,9 +90,10 @@ exposeQuery({
       loanId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
       paidAt: Match.Maybe(Match.OneOf(Object, Date)),
-      sourceOrganisationId: Match.Maybe(String),
+      sourceOrganisationId: Match.Maybe(Match.OneOf(Object, String)),
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),
+      secondaryType: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
 });
