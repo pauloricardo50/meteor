@@ -151,6 +151,7 @@ const LoanSchema = new SimpleSchema({
     min: 10,
     max: 100,
     defaultValue: 100,
+    allowedValues: [...Array(10)].map((_, i) => 10 * (i + 1)),
   },
   'assigneeLinks.$.isMain': {
     type: Boolean,

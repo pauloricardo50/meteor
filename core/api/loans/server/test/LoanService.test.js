@@ -2214,5 +2214,22 @@ describe('LoanService', function() {
         }),
       ).to.throw('un seul');
     });
+
+    it('does not allow non multiples of 10', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 25, isMain: true },
+            { _id: 'admin2', percent: 75 },
+          ],
+        }),
+      ).to.throw('25 is not an allowed');
+    });
   });
 });
