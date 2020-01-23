@@ -108,6 +108,8 @@ const RevenuesDistribution = (props: RevenuesDistributionProps) => {
         />
       </div>
 
+      <h4>Total: {!loading && <Money value={total} />}</h4>
+
       <div className="flex-col">
         {!loading &&
           mapped.map(({ _id, name, amount, ratio }) => (
