@@ -1,14 +1,9 @@
 // @flow
 import React, { useRef } from 'react';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
 
 import Input from '../Material/Input';
 import CollectionSearchContainer from './CollectionSearchContainer';
-import Loading from '../Loading/Loading';
+import CollectionSearchResults from './CollectionSearchResults';
 
 type CollectionSearchProps = {
   searchQuery: String,
@@ -22,15 +17,6 @@ type CollectionSearchProps = {
   onFocus: Function,
 };
 
-const renderResult = (renderItem, onClickItem = () => {}, hideResults) => (
-  result,
-  index,
-) => (
-  <MenuItem key={index} onClick={() => onClickItem(result)}>
-    {renderItem(result, hideResults)}
-  </MenuItem>
-);
-
 const CollectionSearch = ({
   searchQuery,
   onSearch,
@@ -41,6 +27,10 @@ const CollectionSearch = ({
   onClickItem,
   hideResults,
   onFocus,
+  placeholder,
+  description,
+  disableItem,
+  type = 'popper',
 }: CollectionSearchProps) => {
   const inputEl = useRef(null);
   const results = searchResults[searchQuery];
@@ -51,49 +41,29 @@ const CollectionSearch = ({
     <div className="collection-search-container" ref={inputEl}>
       <label htmlFor="collection-search">{title}</label>
       <input style={{ display: 'none' }} name="collection-search" />
+      {description && <p className="description">{description}</p>}
       <Input
         name="collection-search"
         className="collection-search-input"
         type="text"
         value={searchQuery}
         onChange={onSearch}
-        placeholder="Rechercher..."
+        placeholder={placeholder || 'Rechercher...'}
         onFocus={onFocus}
         autoComplete="off"
       />
-      <Popper
-        open={showResults}
-        placement="bottom-start"
-        anchorEl={inputEl.current}
-        style={{ zIndex: 1400 }} // Above modals
-      >
-        <ClickAwayListener
-          mouseEvent="onMouseUp"
-          onClickAway={() => {
-            // When clicking back in the input, don't hide the results
-            if (
-              document.activeElement.getAttribute('name') !==
-              'collection-search'
-            ) {
-              hideResults();
-            }
-          }}
-        >
-          <Paper>
-            {isLoading ? (
-              <Loading small />
-            ) : isEmpty ? (
-              <MenuItem>Aucun résultat</MenuItem>
-            ) : (
-              <MenuList>
-                {results.map(
-                  renderResult(renderItem, onClickItem, hideResults),
-                )}
-              </MenuList>
-            )}
-          </Paper>
-        </ClickAwayListener>
-      </Popper>
+      <CollectionSearchResults
+        type={type}
+        showResults={showResults}
+        inputEl={inputEl}
+        hideResults={hideResults}
+        isLoading={isLoading}
+        isEmpty={isEmpty}
+        results={results}
+        renderItem={renderItem}
+        onClickItem={onClickItem}
+        disableItem={disableItem}
+      />
     </div>
   );
 };

@@ -1,18 +1,13 @@
 // @flow
 import React from 'react';
 
-import Input from '../Material/Input';
+import { userSearch } from 'core/api/users/queries';
 import DialogSimple from '../DialogSimple';
-import T from '../Translation';
-import List, { ListItem, ListItemText } from '../List';
-import UserAssignerContainer from './UserAssignerContainer';
+import { ListItemText } from '../List';
+import CollectionSearch from '../CollectionSearch/CollectionSearch';
 
 type UserAssignerProps = {
   userId: String,
-  searchQuery: String,
-  onSearch: Function,
-  setSearchQuery: Function,
-  searchResults: Array<Object>,
   onUserSelect: Function,
   onUserDeselect: Function,
   title: any,
@@ -25,47 +20,26 @@ const UserAssigner = ({
   onUserDeselect,
   title,
   buttonLabel,
-  searchQuery,
-  setSearchQuery,
-  onSearch,
-  searchResults,
 }: UserAssignerProps) => (
   <DialogSimple primary raised label={buttonLabel} title={title}>
-    <div className="flex-col">
-      <form onSubmit={onSearch}>
-        <Input
-          type="text"
-          value={searchQuery}
-          onChange={event => setSearchQuery(event.target.value)}
-          placeholder="Chercher..."
-          style={{ width: '100%', marginBottom: '16px' }}
+    <CollectionSearch
+      query={userSearch}
+      title="Rechercher un compte"
+      onClickItem={user =>
+        user._id === userId ? onUserDeselect() : onUserSelect(user._id)
+      }
+      renderItem={user => (
+        <ListItemText
+          primaryTypographyProps={
+            user._id === userId ? { color: 'primary' } : {}
+          }
+          primary={user.name}
+          secondary={user.email}
         />
-      </form>
-      <List className="flex-col">
-        {searchResults &&
-          searchResults.map(user => (
-            <ListItem
-              key={user._id}
-              onClick={() =>
-                user._id === userId ? onUserDeselect() : onUserSelect(user._id)
-              }
-              button
-            >
-              <ListItemText
-                primaryTypographyProps={
-                  user._id === userId ? { color: 'primary' } : {}
-                }
-                primary={user.name}
-                secondary={user.email}
-              />
-            </ListItem>
-          ))}
-      </List>
-      {searchResults && searchResults.length === 0 && (
-        <p>Pas de compte trouvé</p>
       )}
-    </div>
+      type="list"
+    />
   </DialogSimple>
 );
 
-export default UserAssignerContainer(UserAssigner);
+export default UserAssigner;

@@ -1,84 +1,58 @@
 // @flow
 import React from 'react';
 
-import Input from 'core/components/Material/Input';
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
-import ProPropertyProUserAdderContainer from './ProPropertyProUserAdderContainer';
-import UsersList from './UsersList';
+import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
+import { userSearch } from 'core/api/users/queries';
+import { ROLES } from 'core/api/constants';
+import { addProUserToProperty, getUserByEmail } from 'core/api';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
+import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
+import { ProPropertyPageContext } from '../../ProPropertyPageContext';
 
 type ProPropertyProUserAdderProps = {
   property: Object,
-  searchQuery: String,
-  onSearch: Function,
-  setSearchQuery: Function,
-  searchResult: Object,
-  addUser: Function,
-  organisation: Object,
-};
-
-const showUsers = ({ users, searchResult, property, addUser, isAdmin }) => {
-  if (searchResult) {
-    if (searchResult.error) {
-      return <p>{searchResult.error}</p>;
-    }
-
-    return (
-      <UsersList users={searchResult} property={property} addUser={addUser} />
-    );
-  }
-
-  if (users.length) {
-    return <UsersList users={users} property={property} addUser={addUser} />;
-  }
-
-  return (
-    <p>
-      {isAdmin ? (
-        <T id="ProPropertyPage.proUserAdder.notFound" />
-      ) : (
-        <T id="ProPropertyPage.proUserAdder.notFoundInOrg" />
-      )}
-    </p>
-  );
+  permissions: Object,
 };
 
 const ProPropertyProUserAdder = ({
-  searchQuery,
-  setSearchQuery,
-  onSearch,
-  searchResult,
-  setSearchResult,
-  addUser,
   property,
-  organisation: { users = [] } = {},
   permissions: { isAdmin },
-}: ProPropertyProUserAdderProps) => (
-  <DialogSimple
-    primary
-    raised
-    label={<T id="ProPropertyPage.addUser.label" />}
-    title={<T id="ProPropertyPage.addUser.title" />}
-    text={<T id="ProPropertyPage.addUser.description" />}
-    closeOnly
-    onClose={() => {
-      setSearchQuery(null);
-      setSearchResult(null);
-    }}
-  >
-    <div className="flex-col">
-      <form onSubmit={onSearch}>
-        <Input
-          type="text"
-          value={searchQuery}
-          onChange={event => setSearchQuery(event.target.value)}
-          placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}
-          style={{ width: '100%', margin: '16px 0' }}
-        />
-      </form>
-      {showUsers({ users, searchResult, property, addUser, isAdmin })}
-    </div>
-  </DialogSimple>
-);
+}: ProPropertyProUserAdderProps) => {
+  const { users: proUsers = [] } = property;
+  return (
+    <DialogSimple
+      primary
+      raised
+      label={<T id="ProPropertyPage.addUser.label" />}
+      title={<T id="ProPropertyPage.addUser.title" />}
+      text={<T id="ProPropertyPage.addUser.description" />}
+    >
+      <CollectionSearch
+        query={isAdmin && userSearch}
+        title="Rechercher un compte Pro"
+        queryParams={{ roles: [ROLES.PRO] }}
+        method={!isAdmin && getUserByEmail}
+        methodParams={({ searchQuery }) => ({ email: searchQuery })}
+        placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}
+        resultsFilter={(results = []) =>
+          results.filter(
+            user => !proUsers.map(({ _id }) => _id).includes(user._id),
+          )
+        }
+        renderItem={user => <span>{getUserNameAndOrganisation({ user })}</span>}
+        onClickItem={({ _id: userId }) =>
+          addProUserToProperty.run({ propertyId: property._id, userId })
+        }
+        disableItem={({ _id: userId }) =>
+          proUsers.map(({ _id }) => _id).includes(userId)
+        }
+      />
+    </DialogSimple>
+  );
+};
 
-export default ProPropertyProUserAdderContainer(ProPropertyProUserAdder);
+export default withContextConsumer({ Context: ProPropertyPageContext })(
+  ProPropertyProUserAdder,
+);
