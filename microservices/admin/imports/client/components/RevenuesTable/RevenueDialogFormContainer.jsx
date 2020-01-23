@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import { compose, withProps, withState } from 'recompose';
 import merge from 'lodash/merge';
 
@@ -9,61 +9,80 @@ import {
   revenueRemove,
 } from 'core/api/revenues/index';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
-import { COMMISSION_STATUS } from 'core/api/constants';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 import Box from 'core/components/Box';
+import { ROLES } from 'core/api/users/userConstants';
+import CurrentUserContext from 'core/containers/CurrentUserContext';
 
-const schema = RevenueSchema.omit(
-  'createdAt',
-  'updatedAt',
-  'organisationLinks',
-  'sourceOrganisationLink',
-  'loanCache',
-  'status',
-  'paidAt',
-).extend({
-  sourceOrganisationLink: { type: Object, optional: true },
-  'sourceOrganisationLink._id': {
-    optional: true,
-    type: String,
-    customAllowedValues: {
-      query: adminOrganisations,
-      params: () => ({ $body: { name: 1 } }),
+const getSchema = currentUser =>
+  RevenueSchema.omit(
+    'assigneeLink',
+    'createdAt',
+    'loanCache',
+    'organisationLinks',
+    'paidAt',
+    'sourceOrganisationLink',
+    'status',
+    'updatedAt',
+  ).extend({
+    assigneeLink: { type: Object, optional: true, uniforms: { label: ' ' } },
+    'assigneeLink._id': {
+      type: String,
+      defaultValue: currentUser && currentUser._id,
+      customAllowedValues: {
+        query: adminUsers,
+        params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
+      },
+      uniforms: {
+        transform: ({ name }) => name,
+        labelProps: { shrink: true },
+        label: 'Responsable du revenu',
+        displayEmtpy: false,
+        placeholder: '',
+      },
     },
-    uniforms: {
-      transform: ({ name }) => name,
-      labelProps: { shrink: true },
-      label: <T id="Forms.organisationName" />,
-      displayEmtpy: false,
-      placeholder: '',
+    sourceOrganisationLink: { type: Object, optional: true },
+    'sourceOrganisationLink._id': {
+      optional: true,
+      type: String,
+      customAllowedValues: {
+        query: adminOrganisations,
+        params: () => ({ $body: { name: 1 } }),
+      },
+      uniforms: {
+        transform: ({ name }) => name,
+        labelProps: { shrink: true },
+        label: <T id="Forms.organisationName" />,
+        displayEmtpy: false,
+        placeholder: '',
+      },
     },
-  },
-  organisationLinks: {
-    type: Array,
-    defaultValue: [],
-    uniforms: { label: null },
-  },
-  'organisationLinks.$': Object,
-  'organisationLinks.$._id': {
-    type: String,
-    customAllowedValues: {
-      query: adminOrganisations,
-      params: () => ({ $body: { name: 1 } }),
+    organisationLinks: {
+      type: Array,
+      defaultValue: [],
+      uniforms: { label: null },
     },
-    uniforms: {
-      transform: ({ name }) => name,
-      displayEmpty: false,
-      labelProps: { shrink: true },
-      placeholder: '',
+    'organisationLinks.$': Object,
+    'organisationLinks.$._id': {
+      type: String,
+      customAllowedValues: {
+        query: adminOrganisations,
+        params: () => ({ $body: { name: 1 } }),
+      },
+      uniforms: {
+        transform: ({ name }) => name,
+        displayEmpty: false,
+        labelProps: { shrink: true },
+        placeholder: '',
+      },
     },
-  },
-  'organisationLinks.$.commissionRate': merge({}, percentageField, {
-    uniforms: { labelProps: { shrink: true } },
-    optional: false,
-  }),
-});
+    'organisationLinks.$.commissionRate': merge({}, percentageField, {
+      uniforms: { labelProps: { shrink: true } },
+      optional: false,
+    }),
+  });
 
 const revenueFormLayout = [
   {
@@ -74,6 +93,12 @@ const revenueFormLayout = [
       { className: 'grid-col', fields: ['amount', 'type', 'secondaryType'] },
       'description',
     ],
+  },
+  {
+    Component: Box,
+    title: <h4>Responsable</h4>,
+    className: 'mb-32 grid-2',
+    fields: ['assigneeLink._id'],
   },
   {
     Component: Box,
@@ -91,43 +116,48 @@ const revenueFormLayout = [
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(
-    ({ loan, revenue, setSubmitting, setOpen, onSubmitted = () => null }) => ({
-      schema,
-      model: revenue,
-      insertRevenue: model =>
-        revenueInsert
-          .run({ revenue: model, loanId: loan && loan._id })
-          .then(() => setOpen && setOpen(false)),
-      modifyRevenue: ({ _id: revenueId, ...object }) => {
-        setSubmitting(true);
-        return revenueUpdate
-          .run({ revenueId, object })
-          .then(() => setOpen(false))
-          .finally(() => {
-            setSubmitting(false);
-            onSubmitted();
-          });
-      },
-      deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
-        setSubmitting(true);
-        setDisableActions(true);
-        const confirm = window.confirm('Êtes-vous sûr ?');
-        if (confirm) {
-          return revenueRemove
-            .run({ revenueId })
-            .then(closeDialog)
+    ({ loan, revenue, setSubmitting, setOpen, onSubmitted = () => null }) => {
+      const currentUser = useContext(CurrentUserContext);
+      const schema = useMemo(() => getSchema(currentUser), [currentUser]);
+
+      return {
+        schema,
+        model: revenue,
+        insertRevenue: model =>
+          revenueInsert
+            .run({ revenue: model, loanId: loan && loan._id })
+            .then(() => setOpen && setOpen(false)),
+        modifyRevenue: ({ _id: revenueId, ...object }) => {
+          setSubmitting(true);
+          return revenueUpdate
+            .run({ revenueId, object })
+            .then(() => setOpen(false))
             .finally(() => {
-              setDisableActions(false);
               setSubmitting(false);
               onSubmitted();
             });
-        }
+        },
+        deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
+          setSubmitting(true);
+          setDisableActions(true);
+          const confirm = window.confirm('Êtes-vous sûr ?');
+          if (confirm) {
+            return revenueRemove
+              .run({ revenueId })
+              .then(closeDialog)
+              .finally(() => {
+                setDisableActions(false);
+                setSubmitting(false);
+                onSubmitted();
+              });
+          }
 
-        setDisableActions(false);
-        setSubmitting(false);
-        return Promise.resolve();
-      },
-      layout: revenueFormLayout,
-    }),
+          setDisableActions(false);
+          setSubmitting(false);
+          return Promise.resolve();
+        },
+        layout: revenueFormLayout,
+      };
+    },
   ),
 );

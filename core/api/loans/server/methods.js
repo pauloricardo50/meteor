@@ -43,6 +43,7 @@ import {
   loanSetAdminNote,
   loanRemoveAdminNote,
   loanSetDisbursementDate,
+  loanSetAssignees,
 } from '../methodDefinitions';
 import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
@@ -293,19 +294,27 @@ loanUpdateCreatedAt.setHandler(({ userId }, params) => {
   return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });
 
-sendLoanChecklist.setHandler(({ userId }, { loanId, address, emailParams, basicDocumentsOnly }) => {
-  SecurityService.checkUserIsAdmin(userId);
-  const { email: assigneeAddress, name: assigneeName } = UserService.get(
-    userId,
-    { email: 1, name: 1 },
-  );
-  const loan = LoanService.get(loanId, adminLoan());
-  return sendEmailToAddress.serverRun({
-    address,
-    emailId: EMAIL_IDS.LOAN_CHECKLIST,
-    params: { ...emailParams, loan, assigneeAddress, assigneeName, basicDocumentsOnly },
-  });
-});
+sendLoanChecklist.setHandler(
+  ({ userId }, { loanId, address, emailParams, basicDocumentsOnly }) => {
+    SecurityService.checkUserIsAdmin(userId);
+    const {
+      email: assigneeAddress,
+      name: assigneeName,
+    } = UserService.get(userId, { email: 1, name: 1 });
+    const loan = LoanService.get(loanId, adminLoan());
+    return sendEmailToAddress.serverRun({
+      address,
+      emailId: EMAIL_IDS.LOAN_CHECKLIST,
+      params: {
+        ...emailParams,
+        loan,
+        assigneeAddress,
+        assigneeName,
+        basicDocumentsOnly,
+      },
+    });
+  },
+);
 
 loanSetAdminNote.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
@@ -330,4 +339,9 @@ export const generateDisbursedSoonLoansTasks = new Method({
 generateDisbursedSoonLoansTasks.setHandler(context => {
   SecurityService.checkIsInternalCall(context);
   return LoanService.getDisbursedSoonLoans();
+});
+
+loanSetAssignees.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.setAssignees(params);
 });

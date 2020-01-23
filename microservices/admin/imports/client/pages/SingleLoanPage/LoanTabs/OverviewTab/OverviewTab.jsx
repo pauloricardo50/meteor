@@ -11,11 +11,12 @@ import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import LoanNotes from 'core/components/LoanNotes';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
+import LoanAssigneeManager from '../../../../components/LoanAssigneeManager/LoanAssigneeManager';
+import BorrowerAge from '../BorrowerAge';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
-import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
 
 const OverviewTab = props => {
@@ -56,6 +57,7 @@ const OverviewTab = props => {
           />
           <LoanStepSetter loan={loan} />
           <LoanDisbursementDate loan={loan} />
+          <LoanAssigneeManager loan={loan} />
         </div>
 
         <div className="card-bottom">

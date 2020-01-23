@@ -10,6 +10,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import RevenueAdder from '../../../components/RevenuesTable/RevenueAdder';
 import RevenuesPageTable from './RevenuesPageTable';
 import RevenuesPageCalendar from './RevenuesPageCalendar';
+import RevenuesDistribution from './RevenuesDistribution';
 
 type RevenuesPageTabProps = {};
 
@@ -44,6 +45,11 @@ const RevenuesPageTab = (props: RevenuesPageTabProps) => {
             content: <RevenuesPageCalendar />,
           },
           { id: 'list', label: 'Liste', content: <RevenuesPageTable /> },
+          {
+            id: 'distribution',
+            label: 'Répartition entre conseillers',
+            content: <RevenuesDistribution />,
+          },
         ].map(tab => ({
           ...tab,
           to: createRoute('/revenues/revenues/:revenuesTabId?', {

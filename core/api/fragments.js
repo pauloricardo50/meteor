@@ -370,6 +370,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   adminNotes: 1,
+  assigneeLinks: 1,
   category: 1,
   financedPromotion: { name: 1, status: 1 },
   financedPromotionLink: 1,
@@ -1059,14 +1060,25 @@ export const proUser = () => ({
 // //
 export const adminRevenue = () => ({
   amount: 1,
+  // Keep these in the right order
+  assigneeLink: 1,
+  assignee: { name: 1 },
   createdAt: 1,
   description: 1,
   expectedAt: 1,
-  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 }, userCache: 1 },
+  loan: {
+    name: 1,
+    borrowers: { name: 1 },
+    user: { name: 1, referredByOrganisation: { name: 1, commissionRates: 1 } },
+    userCache: 1,
+    assigneeLinks: 1,
+  },
+  // Keep these in the right order
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
   secondaryType: 1,
+  // Keep these in the right order
   sourceOrganisationLink: 1,
   sourceOrganisation: { name: 1 },
   status: 1,

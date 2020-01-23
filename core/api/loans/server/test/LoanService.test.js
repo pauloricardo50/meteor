@@ -680,7 +680,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('assignLoanToUser', () => {
+  describe.only('assignLoanToUser', () => {
     it('assigns all properties and borrowers to the new user', () => {
       const userId = Factory.create('user')._id;
       const borrowerId1 = Factory.create('borrower')._id;
@@ -832,6 +832,57 @@ describe('LoanService', function() {
         _id: 'userId',
         referredByUserLink: 'proId1',
       });
+    });
+
+    it('sets the assignee on a loan if there was none', () => {
+      generator({
+        loans: { _id: 'loanId' },
+        users: { _id: 'userId', assignedEmployee: { _id: 'adminId' } },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      loan = LoanService.get('loanId', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'adminId', percent: 100, isMain: true },
+      ]);
+    });
+
+    it('sets the assignee on a loan if there was none and user changes', () => {
+      generator({
+        loans: { _id: 'loanId', user: { _id: 'user1' } },
+        users: { _id: 'user2', assignedEmployee: { _id: 'adminId' } },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'user2' });
+
+      loan = LoanService.get('loanId', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'adminId', percent: 100, isMain: true },
+      ]);
+    });
+
+    it('does not set a new assignee if there was already one', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          assignees: {
+            _id: 'admin1',
+            $metadata: { percent: 100, isMain: true },
+          },
+        },
+        users: { _id: 'userId', assignedEmployee: { _id: 'admin2' } },
+      });
+
+      LoanService.assignLoanToUser({ loanId: 'loanId', userId: 'userId' });
+
+      loan = LoanService.get('loanId', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'admin1', percent: 100, isMain: true },
+      ]);
     });
   });
 
@@ -2102,6 +2153,134 @@ describe('LoanService', function() {
       });
 
       expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+  });
+
+  describe('setAssignees', () => {
+    it('throws if no assignees are set', () => {
+      generator({ loans: { _id: 'id' } });
+
+      expect(() =>
+        LoanService.setAssignees({ loanId: 'id', assignees: [] }),
+      ).to.throw('entre 1 et 3');
+
+      expect(() =>
+        LoanService.setAssignees({ loanId: 'id', assignees: [{}, {}, {}, {}] }),
+      ).to.throw('entre 1 et 3');
+    });
+
+    it('throws if the total percentages is not 100', () => {
+      generator({ loans: { _id: 'id' } });
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [{ percent: 80 }],
+        }),
+      ).to.throw('100%');
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [{ percent: 80 }, { percent: 30 }],
+        }),
+      ).to.throw('100%');
+    });
+
+    it('throws if a decimal value is used for percent', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 79.5, isMain: true },
+            { _id: 'admin2', percent: 20.5 },
+          ],
+        }),
+      ).to.throw('integer');
+    });
+
+    it('throws if a percentage less than 10 is used', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 8, isMain: true },
+            { _id: 'admin2', percent: 92 },
+          ],
+        }),
+      ).to.throw('at least 10');
+    });
+
+    it('forces isMain to a boolean', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      LoanService.setAssignees({
+        loanId: 'id',
+        assignees: [
+          { _id: 'admin1', percent: 10, isMain: true },
+          { _id: 'admin2', percent: 90 },
+        ],
+      });
+
+      expect(
+        LoanService.get('id', { assigneeLinks: 1 }).assigneeLinks,
+      ).to.deep.equal([
+        {
+          _id: 'admin1',
+          isMain: true,
+          percent: 10,
+        },
+        { _id: 'admin2', isMain: false, percent: 90 },
+      ]);
+    });
+
+    it('throws if there is more or less than 1 main assignee', () => {
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [{ percent: 100 }],
+        }),
+      ).to.throw('un seul');
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [
+            { percent: 80, isMain: true },
+            { percent: 20, isMain: true },
+          ],
+        }),
+      ).to.throw('un seul');
+    });
+
+    it('does not allow non multiples of 10', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        LoanService.setAssignees({
+          loanId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 25, isMain: true },
+            { _id: 'admin2', percent: 75 },
+          ],
+        }),
+      ).to.throw('25 is not an allowed');
     });
   });
 });

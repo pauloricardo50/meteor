@@ -60,7 +60,22 @@ class LoanService extends CollectionService {
 
   insert = ({ loan = {}, userId }) => {
     const name = this.getNewLoanName();
-    return super.insert({ ...loan, name, userId });
+    const loanId = super.insert({ ...loan, name, userId });
+
+    if (userId) {
+      const user = UserService.get(userId, { assignedEmployee: { _id: 1 } });
+
+      if (user && user.assignedEmployee && user.assignedEmployee._id) {
+        this.setAssignees({
+          loanId,
+          assignees: [
+            { _id: user.assignedEmployee._id, percent: 100, isMain: true },
+          ],
+        });
+      }
+    }
+
+    return loanId;
   };
 
   insertAnonymousLoan = ({ proPropertyId, referralId }) => {
@@ -416,15 +431,27 @@ class LoanService extends CollectionService {
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const { properties = [], borrowers = [], referralId, anonymous } = this.get(
-      loanId,
-      {
-        referralId: 1,
-        properties: { loans: { _id: 1 }, address1: 1, category: 1 },
-        borrowers: { loans: { _id: 1 }, name: 1 },
-        anonymous: 1,
-      },
-    );
+    const {
+      properties = [],
+      borrowers = [],
+      referralId,
+      anonymous,
+      assigneeLinks,
+    } = this.get(loanId, {
+      referralId: 1,
+      properties: { loans: { _id: 1 }, address1: 1, category: 1 },
+      borrowers: { loans: { _id: 1 }, name: 1 },
+      anonymous: 1,
+      assigneeLinks: 1,
+    });
+    const user = UserService.get(userId, { assignedEmployee: { name: 1 } });
+
+    let newAssignee;
+
+    // Only assign someone new to this loan if there are no current assignees
+    if (!assigneeLinks || assigneeLinks.length === 0) {
+      newAssignee = user && user.assignedEmployee && user.assignedEmployee._id;
+    }
 
     borrowers.forEach(({ loans = [], name }) => {
       if (loans.length > 1) {
@@ -451,6 +478,13 @@ class LoanService extends CollectionService {
       },
     });
     this.update({ loanId, object: { referralId: true }, operator: '$unset' });
+
+    if (newAssignee) {
+      this.setAssignees({
+        loanId,
+        assignees: [{ _id: newAssignee, percent: 100, isMain: true }],
+      });
+    }
 
     borrowers.forEach(({ _id: borrowerId }) => {
       BorrowerService.update({ borrowerId, object: { userId } });
@@ -1070,6 +1104,30 @@ class LoanService extends CollectionService {
     });
 
     return disbursedIn10Days.map(({ _id }) => _id);
+  }
+
+  setAssignees({ loanId, assignees }) {
+    if (assignees.length < 1 || assignees.length > 3) {
+      throw new Meteor.Error(
+        'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
+      );
+    }
+
+    const total = assignees.reduce((t, v) => t + v.percent, 0);
+
+    if (total !== 100) {
+      throw new Meteor.Error('Les pourcentages doivent faire 100%');
+    }
+
+    const main = assignees.filter(a => a.isMain);
+
+    if (main.length !== 1) {
+      throw new Meteor.Error(
+        "Il ne peut y avoir qu'un seul conseiller principal",
+      );
+    }
+
+    return this.update({ loanId, object: { assigneeLinks: assignees } });
   }
 }
 

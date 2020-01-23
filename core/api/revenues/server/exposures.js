@@ -17,9 +17,11 @@ exposeQuery({
           expectedAt,
           loanId,
           organisationId,
+          paidAt,
           sourceOrganisationId,
           status,
           type,
+          filters: extraFilters,
           secondaryType,
         },
       }) => {
@@ -69,6 +71,14 @@ exposeQuery({
         if (expectedAt) {
           filters.expectedAt = expectedAt;
         }
+
+        if (paidAt) {
+          filters.paidAt = paidAt;
+        }
+
+        if (extraFilters) {
+          Object.assign(filters, extraFilters);
+        }
       };
     },
     validateParams: {
@@ -76,8 +86,10 @@ exposeQuery({
       commissionStatus: Match.Maybe(Match.OneOf(Object, String)),
       date: Match.Maybe(Match.OneOf(Object, Date)),
       expectedAt: Match.Maybe(Match.OneOf(Object, Date)),
+      filters: Match.Maybe(Match.OneOf(Object)),
       loanId: Match.Maybe(String),
       organisationId: Match.Maybe(String),
+      paidAt: Match.Maybe(Match.OneOf(Object, Date)),
       sourceOrganisationId: Match.Maybe(Match.OneOf(Object, String)),
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),

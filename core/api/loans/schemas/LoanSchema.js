@@ -143,6 +143,24 @@ const LoanSchema = new SimpleSchema({
   disbursementDate: { type: Date, optional: true },
   selectedLenderOrganisationLink: { type: Object, optional: true },
   'selectedLenderOrganisationLink._id': { type: String, optional: true },
+  assigneeLinks: { type: Array, optional: true },
+  'assigneeLinks.$': Object,
+  'assigneeLinks.$._id': String,
+  'assigneeLinks.$.percent': {
+    type: SimpleSchema.Integer,
+    min: 10,
+    max: 100,
+    defaultValue: 100,
+    allowedValues: [...Array(10)].map((_, i) => 10 * (i + 1)),
+  },
+  'assigneeLinks.$.isMain': {
+    type: Boolean,
+    autoValue() {
+      if (!this.value) {
+        return false;
+      }
+    },
+  },
 });
 
 export default LoanSchema;

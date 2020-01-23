@@ -37,6 +37,10 @@ Users.addLinks({
     collection: Users,
     inversedBy: 'assignedEmployee',
   },
+  assignedLoans: {
+    collection: Loans,
+    inversedBy: 'assignees',
+  },
   assignedPromotions: {
     collection: Promotions,
     inversedBy: 'assignedEmployee',
