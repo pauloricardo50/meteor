@@ -2,12 +2,11 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { employeesById } from 'core/arrays/epotekEmployees';
-import { Percent } from 'core/components/Translation';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 import { loanSetAssignees } from 'core/api/loans/index';
+import LoanAssignees from './LoanAssignees';
 
 type LoanAssigneeManagerProps = {};
 
@@ -52,7 +51,7 @@ const LoanAssigneeManager = ({
 }: LoanAssigneeManagerProps) => (
   <div>
     <div className="flex center-align">
-      <h3 className="mr-8">Répartition des conseillers</h3>
+      <h4 className="mr-8">Répartition des conseillers</h4>
       <AutoFormDialog
         buttonProps={{ label: 'Modifier', color: 'primary' }}
         model={{ assigneeLinks }}
@@ -69,25 +68,7 @@ const LoanAssigneeManager = ({
       />
     </div>
 
-    {assigneeLinks.length === 0 && 'Pas encore de répartition'}
-    <div className="flex">
-      {assigneeLinks.length > 0 &&
-        assigneeLinks
-          .sort(({ percent: p1 }, { percent: p2 }) => p2 - p1)
-          .map(({ _id, percent, isMain }) => (
-            <div key={_id} className="mr-16">
-              <h4>
-                <span className="mr-8">{employeesById[_id].name}</span>
-                {isMain && (
-                  <small className="secondary">Conseiller principal</small>
-                )}
-              </h4>
-              <i>
-                <Percent value={percent / 100} />
-              </i>
-            </div>
-          ))}
-    </div>
+    <LoanAssignees assigneeLinks={assigneeLinks} />
   </div>
 );
 

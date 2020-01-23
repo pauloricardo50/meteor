@@ -8,6 +8,7 @@ import LoanNotes from 'core/components/LoanNotes';
 import LoanTimeline from '../LoanTabs/OverviewTab/LoanTimeline';
 import StructureForm from './StructureForm';
 import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
+import LoanAssigneeManager from '../../../components/LoanAssigneeManager';
 
 type PremiumOverviewTabProps = {};
 
@@ -28,6 +29,7 @@ const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
           collection={LOANS_COLLECTION}
         />
         <LoanDisbursementDate loan={loan} />
+        <LoanAssigneeManager loan={loan} />
       </div>
 
       <LoanTimeline loanId={loanId} />

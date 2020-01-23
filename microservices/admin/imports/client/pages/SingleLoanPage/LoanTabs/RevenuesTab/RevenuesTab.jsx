@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import RevenuesTable from '../../../../components/RevenuesTable';
+import LoanAssigneeManager from '../../../../components/LoanAssigneeManager';
 import RevenueSuggestions from './RevenueSuggestions';
-import LoanAssigneeManager from './LoanAssigneeManager';
 
 const RevenuesTab = ({ loan }) => {
   const [revenueSuggestion, setRevenueSuggestion] = useState();
