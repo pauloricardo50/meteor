@@ -79,7 +79,7 @@ const RevenuesPageCalendarColumn = ({
         const { _id, amount, loan, description, sourceOrganisation } = revenue;
         return (
           <div
-            className="revenues-calendar-item card1 card-top"
+            className="revenues-calendar-item card1 card-top card-hover"
             key={_id}
             onClick={() => {
               setRevenueToModify(revenue);
