@@ -1,9 +1,9 @@
-import { Mandrill } from 'meteor/wylio:mandrill';
 import { Meteor } from 'meteor/meteor';
 
 import { logError } from 'core/api/methods/index';
 import { getEmailFooter } from './emailHelpers';
 import { isEmailTestEnv, skipEmails } from './EmailService';
+import { Mandrill } from './MandrillService';
 
 export const setupMandrill = () => {
   let key = '';
