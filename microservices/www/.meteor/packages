@@ -40,7 +40,6 @@ accounts-password@1.5.2
 
 # Production
 force-ssl@1.1.0                      # Automatically route users to https
-# wylio:mandrill
 edgee:slingshot
 epotek:google-maps
 tmeasday:acceptance-test-driver

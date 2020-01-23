@@ -42,7 +42,6 @@ cultofcoders:mutations
 ddp-rate-limiter@1.0.7
 meteorhacks:inject-initial
 
-# wylio:mandrill
 edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
