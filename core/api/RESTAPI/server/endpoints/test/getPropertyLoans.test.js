@@ -47,7 +47,26 @@ const makeCustomers = count =>
     _id: `user${index}`,
     referredByUserLink: 'pro',
     referredByOrganisationLink: 'org',
-    loans: [{ _id: `loan${index}`, propertyIds: ['property'] }],
+    loans: [
+      {
+        _id: `loan${index}`,
+        propertyIds: ['property'],
+        adminNotes: [
+          {
+            id: '1',
+            isSharedWithPros: false,
+            note: 'Test1',
+            updatedBy: 'admin',
+          },
+          {
+            id: '2',
+            isSharedWithPros: true,
+            note: 'Test2',
+            updatedBy: 'admin',
+          },
+        ],
+      },
+    ],
   }));
 
 describe('REST: getPropertyLoans', function() {
@@ -112,6 +131,7 @@ describe('REST: getPropertyLoans', function() {
     }).then(loans => {
       expect(loans.length).to.equal(5);
       expect(loans.every(({ solvent }) => !!solvent)).to.equal(true);
+      expect(loans.every(({ proNotes = [] }) => proNotes.length === 1));
     });
   });
 

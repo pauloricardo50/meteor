@@ -426,6 +426,7 @@ export const proLoans = () => ({
     value: 1,
   },
   proNote: 1,
+  proNotes: 1,
   properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
   referralId: 1,
   referredByText: 1,

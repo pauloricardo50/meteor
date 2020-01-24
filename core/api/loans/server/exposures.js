@@ -201,12 +201,8 @@ exposeQuery({
       anonymous: Match.Maybe(Object),
     },
   },
-  resolver: ({ userId, propertyId, anonymous }) =>
-    proPropertyLoansResolver({
-      calledByUserId: userId,
-      propertyId,
-      anonymous,
-    }),
+  resolver: ({ userId, ...params }) =>
+    proPropertyLoansResolver({ calledByUserId: userId, ...params }),
 });
 
 exposeQuery({
