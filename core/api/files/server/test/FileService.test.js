@@ -199,7 +199,7 @@ describe('FileService', function() {
 
       expect(files.length).to.equal(1);
       expect(files[0]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité.pdf`,
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité en cours de validité.pdf`,
       });
     });
 
@@ -218,10 +218,10 @@ describe('FileService', function() {
 
       expect(files.length).to.equal(2);
       expect(files[0]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité (1 sur 2).pdf`,
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité en cours de validité (1 sur 2).pdf`,
       });
       expect(files[1]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité (2 sur 2).pdf`,
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité en cours de validité (2 sur 2).pdf`,
       });
     });
 
@@ -245,10 +245,10 @@ describe('FileService', function() {
 
       expect(files.length).to.equal(2);
       expect(files[0]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${yesterday} Pièce d'identité (1 sur 2).pdf`,
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${yesterday} Pièce d'identité en cours de validité (1 sur 2).pdf`,
       });
       expect(files[1]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité (2 sur 2).pdf`,
+        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité en cours de validité (2 sur 2).pdf`,
       });
     });
   });
