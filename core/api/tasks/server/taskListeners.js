@@ -106,7 +106,7 @@ ServerEventService.addAfterMethodListener(
         addresses.length === 1
           ? 'le bien immobilier: '
           : 'les biens immobiliers: '
-        } ${formattedAddresses}`;
+      } ${formattedAddresses}`;
     }
 
     if (promotions.length) {
@@ -117,11 +117,11 @@ ServerEventService.addAfterMethodListener(
 
       taskDescription = `${taskDescription}. Invité sur ${
         promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
-        } ${formattedPromotions}`;
+      } ${formattedPromotions}`;
     }
 
     if (invitationNote) {
-      taskDescription = `${taskDescription}. Note du referral: ${invitationNote}`;
+      taskDescription = `${taskDescription}. \nNote du referral:\n${invitationNote}`;
     }
 
     if (isNewUser) {
