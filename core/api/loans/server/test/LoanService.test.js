@@ -680,7 +680,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe.only('assignLoanToUser', () => {
+  describe('assignLoanToUser', () => {
     it('assigns all properties and borrowers to the new user', () => {
       const userId = Factory.create('user')._id;
       const borrowerId1 = Factory.create('borrower')._id;

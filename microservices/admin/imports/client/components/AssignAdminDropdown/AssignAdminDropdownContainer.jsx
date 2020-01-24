@@ -6,13 +6,13 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
   const oldAdmin = relatedDoc.assignedEmployee
     ? relatedDoc.assignedEmployee._id
     : undefined;
-  const options = admins.map(admin => {
+  const options = [{ _id: null }, ...admins].map(admin => {
     const { _id } = admin;
 
     return {
       id: _id,
       show: _id !== oldAdmin,
-      label: admin.name,
+      label: admin.name || 'Personne',
       link: false,
       onClick: () => onAdminSelectHandler({ newAdmin: admin, relatedDoc }),
     };

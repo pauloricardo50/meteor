@@ -20,7 +20,7 @@ export const assignAdminToUser = new Method({
   name: 'assignAdminToUser',
   params: {
     userId: String,
-    adminId: String,
+    adminId: Match.Maybe(Match.OneOf(String, null)),
   },
 });
 

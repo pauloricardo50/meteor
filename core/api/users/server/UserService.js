@@ -139,14 +139,22 @@ export class UserServiceClass extends CollectionService {
     this.allowUpdate({ object }) && Users.update(userId, { $set: object });
 
   assignAdminToUser = ({ userId, adminId }) => {
+    const { assignedEmployee: oldAssignee = {} } =
+      this.get(userId, { assignedEmployee: { name: 1 } }) || {};
+
     if (adminId) {
-      const { assignedEmployee: oldAssignee = {} } =
-        this.get(userId, { assignedEmployee: { name: 1 } }) || {};
       const newAssignee = this.get(adminId, { name: 1 }) || {};
 
       this.update({ userId, object: { assignedEmployeeId: adminId } });
       return { oldAssignee, newAssignee };
     }
+
+    this._update({
+      id: userId,
+      object: { assignedEmployeeId: true },
+      operator: '$unset',
+    });
+    return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
