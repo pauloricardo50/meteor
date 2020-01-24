@@ -1,4 +1,6 @@
 // @flow
+import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
+
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
@@ -136,7 +138,11 @@ export const proPropertyLoansResolver = ({
   status,
   anonymous,
   referredByUserId,
+  $body,
 }) => {
+  const fragment = $body
+    ? intersectDeep(proLoansFragment, $body)
+    : proLoansFragment;
   const loans = LoanService.fetch({
     $filters: {
       propertyIds: propertyId,
@@ -144,7 +150,7 @@ export const proPropertyLoansResolver = ({
       anonymous,
       'userCache.referredByUserLink': referredByUserId,
     },
-    ...proLoansFragment,
+    ...fragment,
     loanProgress: 0,
   });
 

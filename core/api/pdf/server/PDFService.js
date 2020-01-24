@@ -109,7 +109,9 @@ class PDFService {
 
   getBase64String = path => {
     const file = fs.readFileSync(path);
-    fs.unlink(path); // Async delete
+    fs.unlink(path, error => {
+      throw new Meteor.Error(error);
+    }); // Async delete
     const base64 = new Buffer(file).toString('base64');
     return base64;
   };
