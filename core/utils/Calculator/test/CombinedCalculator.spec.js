@@ -36,8 +36,8 @@ describe('CombinedCalculator', () => {
           step: STEPS.SOLVENCY,
         },
       });
-      expect(progress.percent).to.be.within(0.15, 0.16);
-      expect(progress.count).to.equal(19);
+      expect(progress.percent).to.be.within(0.17, 0.18);
+      expect(progress.count).to.equal(17);
     });
 
     it('skips the property if there is none', () => {
@@ -62,8 +62,8 @@ describe('CombinedCalculator', () => {
           step: STEPS.SOLVENCY,
         },
       });
-      expect(progress.percent).to.be.within(0.23, 0.24);
-      expect(progress.count).to.equal(13);
+      expect(progress.percent).to.be.within(0.27, 0.28);
+      expect(progress.count).to.equal(11);
     });
   });
 });

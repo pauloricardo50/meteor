@@ -310,7 +310,7 @@ describe('BorrowerCalculator', () => {
             ],
           },
         }),
-      ).to.be.within(0.12, 0.13);
+      ).to.be.within(0.14, 0.15);
     });
   });
 
@@ -328,7 +328,7 @@ describe('BorrowerCalculator', () => {
             ],
           },
         }),
-      ).to.deep.equal({ percent: 0, count: 6 });
+      ).to.deep.equal({ percent: 0, count: 5 });
     });
 
     it('returns 0 when no documents are present', () => {
@@ -354,7 +354,7 @@ describe('BorrowerCalculator', () => {
             ],
           },
         }),
-      ).to.deep.equal({ percent: 1 / 6, count: 6 });
+      ).to.deep.equal({ percent: 1 / 5, count: 5 });
     });
   });
 
