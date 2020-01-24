@@ -52,7 +52,18 @@ const makeCustomers = count =>
         _id: `loan${index}`,
         propertyIds: ['property'],
         adminNotes: [
-          { id: '1', isSharedWithPros: true, note: 'Test', updatedBy: 'admin' },
+          {
+            id: '1',
+            isSharedWithPros: false,
+            note: 'Test1',
+            updatedBy: 'admin',
+          },
+          {
+            id: '2',
+            isSharedWithPros: true,
+            note: 'Test2',
+            updatedBy: 'admin',
+          },
         ],
       },
     ],

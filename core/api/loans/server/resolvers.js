@@ -1,6 +1,8 @@
 // @flow
 import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
 
+import merge from 'lodash/merge';
+
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
@@ -14,6 +16,13 @@ import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyS
 import LoanService from './LoanService';
 
 const proLoansFragment = proLoans();
+// These fields are required to get the solvency right
+const requiredData = {
+  residenceType: 1,
+  shareSolvency: 1,
+  maxPropertyValue: 1,
+  property: { totalValue: 1 },
+};
 
 const isSolventForProProperty = ({
   isAdmin,
@@ -150,7 +159,7 @@ export const proPropertyLoansResolver = ({
       anonymous,
       'userCache.referredByUserLink': referredByUserId,
     },
-    ...fragment,
+    ...merge({}, fragment, requiredData),
     loanProgress: 0,
   });
 

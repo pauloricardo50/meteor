@@ -56,9 +56,7 @@ const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
         maxPropertyValue: 1,
       },
     })
-    .fetch({
-      userId: proId || userId,
-    });
+    .fetch({ userId: proId || userId });
 
   return loans.map(({ properties, maxPropertyValue, userCache, ...loan }) => {
     const property = properties.find(({ _id }) => _id === propertyId) || {};
