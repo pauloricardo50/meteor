@@ -100,7 +100,7 @@ describe('zipLoan', () => {
         const name = getFileName(file);
 
         expect(name).to.equal(
-          "PREFIX_Pièce d'identité en cours de validité.pdf",
+          "PREFIX_Pièce d'identité valable.pdf",
         );
       });
 
@@ -122,10 +122,10 @@ describe('zipLoan', () => {
         const name2 = getFileName(file2);
 
         expect(name1).to.equal(
-          "PREFIX_Pièce d'identité en cours de validité (1 sur 2).pdf",
+          "PREFIX_Pièce d'identité valable (1 sur 2).pdf",
         );
         expect(name2).to.equal(
-          "PREFIX_Pièce d'identité en cours de validité (2 sur 2).pdf",
+          "PREFIX_Pièce d'identité valable (2 sur 2).pdf",
         );
       });
 
@@ -169,11 +169,11 @@ describe('zipLoan', () => {
         const name3 = getFileName(file3);
 
         expect(name1).to.equal(
-          "PREFIX_Pièce d'identité en cours de validité (1 sur 2).pdf",
+          "PREFIX_Pièce d'identité valable (1 sur 2).pdf",
         );
         expect(name2).to.equal('PREFIX_adminName.pdf');
         expect(name3).to.equal(
-          "PREFIX_Pièce d'identité en cours de validité (2 sur 2).pdf",
+          "PREFIX_Pièce d'identité valable (2 sur 2).pdf",
         );
       });
     });
@@ -324,7 +324,7 @@ describe('zipLoan', () => {
 
       expect(zip.getZip()).to.deep.equal([
         'LOAN/requiredByAdmin.pdf',
-        "Bob Dylan/BD Pièce d'identité en cours de validité.pdf",
+        "Bob Dylan/BD Pièce d'identité valable.pdf",
         'Bob Dylan/BD 3 dernières fiches de salaire (1 sur 2).pdf',
         'Bob Dylan/BD 3 dernières fiches de salaire (2 sur 2).pdf',
         'Bob Dylan/BD Carte de légitimation (1 sur 2).pdf',
@@ -332,7 +332,7 @@ describe('zipLoan', () => {
         'Bob Dylan/BD Carte de légitimation (2 sur 2).pdf',
         'Bob Dylan/BD borrowerOtherDocName.pdf',
         'Bob Dylan/BD Other doc.pdf',
-        "Barbra Streisand/BS Pièce d'identité en cours de validité.pdf",
+        "Barbra Streisand/BS Pièce d'identité valable.pdf",
         'propertyAddress/propertyAddress Extrait du registre foncier.pdf',
         'propertyAddress/propertyAddress Calcul du cube SIA.pdf',
       ]);
@@ -500,7 +500,7 @@ describe('zipLoan', () => {
 
       expect(zip.getZip()).to.deep.equal([
         'LOAN/DECK_1/requiredByAdmin.pdf',
-        "Bob Dylan/DECK_1/BD Pièce d'identité en cours de validité.pdf",
+        "Bob Dylan/DECK_1/BD Pièce d'identité valable.pdf",
         'Bob Dylan/DECK_2/BD 3 dernières fiches de salaire (1 sur 2).pdf',
         'Bob Dylan/DECK_2/BD 3 dernières fiches de salaire (2 sur 2).pdf',
         'Bob Dylan/DECK_1/BD Carte de légitimation (1 sur 2).pdf',
@@ -508,7 +508,7 @@ describe('zipLoan', () => {
         'Bob Dylan/DECK_1/BD Carte de légitimation (2 sur 2).pdf',
         'Bob Dylan/DECK_3/BD borrowerOtherDocName.pdf',
         'Bob Dylan/DECK_2/BD Other doc.pdf',
-        "Barbra Streisand/DECK_1/BS Pièce d'identité en cours de validité.pdf",
+        "Barbra Streisand/DECK_1/BS Pièce d'identité valable.pdf",
         'propertyAddress/DECK_1/propertyAddress Extrait du registre foncier.pdf',
         'propertyAddress/DECK_1/propertyAddress Calcul du cube SIA.pdf',
       ]);
