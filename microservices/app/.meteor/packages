@@ -55,7 +55,7 @@ dynamic-import@0.5.1
 accounts-password@1.5.2
 wylio:mandrill
 epotek:google-maps
-lmachens:kadira
+montiapm:agent
 tmeasday:acceptance-test-driver
 epotek:accounts-ui
 underscore@1.0.10
