@@ -21,14 +21,22 @@ export const getAdditionalDocSchema = collection => {
   let allowedValues = [];
 
   if (collection === PROPERTIES_COLLECTION) {
-    allowedValues = ['HOUSING', 'SHARE', 'OTHER'];
+    allowedValues = [
+      'PROPERTY',
+      'COPROPERTY',
+      'INVESTMENT_BUILDING',
+      'TAKEOVER',
+      'SHARE',
+      'OTHER',
+    ];
   } else if (collection === BORROWERS_COLLECTION) {
     allowedValues = [
       'PERSONAL_DOCUMENTS',
-      'INCOMES_AND_EXPENSES',
+      'PROFESSION',
+      'INCOMES',
+      'EXPENSES',
       'INSURANCE',
-      'FORTUNE_AND_OWN_FUNDS',
-      'RETIREMENT',
+      'OWN_FUNDS',
       'OTHER',
     ];
   } else {
