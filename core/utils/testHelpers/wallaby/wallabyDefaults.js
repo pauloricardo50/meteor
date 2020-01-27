@@ -30,7 +30,7 @@ function setWallabyConfig(name, overrides = {}) {
             plugins: [
               '@babel/plugin-transform-modules-commonjs',
               '@babel/plugin-proposal-class-properties',
-              'meteor-babel/plugins/dynamic-import',
+              // 'meteor-babel/plugins/dynamic-import',
               [
                 'module-resolver',
                 {
@@ -63,6 +63,8 @@ function setWallabyConfig(name, overrides = {}) {
           // Do this for react-use, which uses the global variable "history"
           // Follow this issue: https://github.com/streamich/react-use/issues/73
           global.history = {};
+          global.HTMLAnchorElement = { prototype: {} }; // To support the file-saver library.
+          // global.window.HTMLAnchorElement = {}; // To support the file-saver library.
 
           require('uniforms-bridge-simple-schema-2');
           const SimpleSchema = require('simpl-schema').default;
