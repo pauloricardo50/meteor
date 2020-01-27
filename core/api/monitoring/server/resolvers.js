@@ -244,6 +244,7 @@ const assigneeBreakdown = filters => [
       'loan.name': 1,
       'loan.userCache': 1,
       'loan.createdAt': 1,
+      'loan.status': 1,
     },
   },
   { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
@@ -270,15 +271,15 @@ const assigneeBreakdown = filters => [
         },
       },
       totalStatusChangeCount: { $sum: '$count' },
-      loanIds: { $push: '$activities.loan._id' },
+      loans: { $push: '$activities.loan' },
     },
   },
   // Simple array flattening, as these ids arrive in the form of an array of arrays
   {
     $addFields: {
-      loanIds: {
+      loans: {
         $reduce: {
-          input: '$loanIds',
+          input: '$loans',
           initialValue: [],
           in: { $concatArrays: ['$$value', '$$this'] },
         },
