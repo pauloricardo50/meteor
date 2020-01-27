@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import Button from 'core/components/Button';
+import Box from 'core/components/Box';
 
 type MonitoringActivityFiltersProps = {};
 
@@ -16,22 +17,20 @@ const MonitoringActivityFilters = ({
   createdAtRange,
   setCreatedAtRange,
 }: MonitoringActivityFiltersProps) => (
-  <div className="flex-col">
-    <div className="flex mb-8">
-      <Button
-        raised
-        primary
-        className="mr-8"
-        onClick={() => {
-          setActivityRange({ startDate: null, endDate: null });
-          setCreatedAtRange({
-            startDate: moment(minDate).toDate(),
-            endDate: moment().toDate(),
-          });
-        }}
-      >
-        Performance totale des conseillers
-      </Button>
+  <div className="flex">
+    <Box className="mr-8" title={"Date de l'activité"}>
+      <div className="flex-col mb-8">
+        <DateRangePicker
+          range={activityRange}
+          onChange={(...args) => {
+            setActivityRange(...args);
+          }}
+          numberOfMonths={3}
+          isDayBlocked={() => false}
+          id="activityRange"
+        />
+      </div>
+
       <Button
         raised
         primary
@@ -50,24 +49,9 @@ const MonitoringActivityFilters = ({
       >
         Activité dans les 30 derniers jours
       </Button>
-    </div>
-
-    <div className="flex">
-      <div className="flex-col mr-16">
-        <label htmlFor="activityRange">Date de l'activité</label>
-        <DateRangePicker
-          range={activityRange}
-          onChange={(...args) => {
-            console.log(args);
-            setActivityRange(...args);
-          }}
-          numberOfMonths={3}
-          isDayBlocked={() => false}
-          id="activityRange"
-        />
-      </div>
-      <div className="flex-col">
-        <label htmlFor="createdAt">Date de création du dossier</label>
+    </Box>
+    <Box title="Date de création du dossier">
+      <div className="flex-col mb-8">
         <DateRangePicker
           range={createdAtRange}
           onChange={setCreatedAtRange}
@@ -77,7 +61,22 @@ const MonitoringActivityFilters = ({
           isOutsideRange={date => date && date.isBefore(minDate)}
         />
       </div>
-    </div>
+
+      <Button
+        raised
+        primary
+        className="mr-8"
+        onClick={() => {
+          setActivityRange({ startDate: null, endDate: null });
+          setCreatedAtRange({
+            startDate: moment(minDate).toDate(),
+            endDate: moment().toDate(),
+          });
+        }}
+      >
+        Performance totale des conseillers
+      </Button>
+    </Box>
   </div>
 );
 

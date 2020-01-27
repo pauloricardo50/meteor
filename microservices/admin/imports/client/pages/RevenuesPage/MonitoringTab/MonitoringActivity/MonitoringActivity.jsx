@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
-import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
 
-import Table from 'core/components/Table';
 import { Percent } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
+import { CollectionIconLink } from 'core/components/IconLink';
 import {
   LOAN_STATUS_ORDER,
   LOANS_COLLECTION,
@@ -14,6 +15,7 @@ import {
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { adminUsers } from 'core/api/users/queries';
 import { adminLoans } from 'core/api/loans/queries';
+import TableWithModal from 'core/components/Table/TableWithModal';
 import MonitoringActivityFilters from './MonitoringActivityFilters';
 import MonitoringActivityContainer from './MonitoringActivityContainer';
 
@@ -52,11 +54,15 @@ const getColumnsForAdminRow = ({ hasCreatedAtRange, loans, data }) => ({
   const adminData = data.find(({ _id: dataId }) => dataId === _id) || {
     statusChanges: [],
   };
-  const loanCount = hasCreatedAtRange
-    ? loansByAdmin.length
-    : uniq(adminData.loanIds).length;
+  const loansToShow = hasCreatedAtRange
+    ? loansByAdmin
+    : uniqBy(adminData.loans, '_id');
+
+  const loanCount = loansToShow.length;
   return {
     id: _id,
+    loans: loansToShow,
+    name,
     columns: [
       name,
       loanCount,
@@ -142,7 +148,7 @@ const MonitoringActivity = ({
           $gte: createdAtRange.startDate,
           $lte: createdAtRange.endDate,
         },
-        $body: { userCache: 1, status: 1 },
+        $body: { userCache: 1, status: 1, name: 1, createdAt: 1 },
       },
     },
     [createdAtRange],
@@ -164,10 +170,56 @@ const MonitoringActivity = ({
         setCreatedAtRange={setCreatedAtRange}
       />
 
-      <Table
+      <TableWithModal
+        modalType="dialog"
         rows={rows}
         columnOptions={getColumnOptions({ hasCreatedAtRange })}
         initialOrderBy={1}
+        getModalProps={({ row: { loans: ls, name } }) => {
+          const groups = groupBy(ls, 'status');
+          return {
+            title: name,
+            children: (
+              <div className="flex-col">
+                {LOAN_STATUS_ORDER.map(status => {
+                  const value = groups[status];
+
+                  return (
+                    <div key={status}>
+                      <h2>
+                        <StatusLabel
+                          status={status}
+                          collection={LOANS_COLLECTION}
+                        />
+                      </h2>
+                      <div className="flex-col">
+                        {value
+                          ? value
+                              .sort(
+                                (
+                                  { createdAt: createdAt1 },
+                                  { createdAt: createdAt2 },
+                                ) =>
+                                  createdAt1.getTime() - createdAt2.getTime(),
+                              )
+                              .map(l => (
+                                <CollectionIconLink
+                                  key={l._id}
+                                  relatedDoc={{
+                                    ...l,
+                                    collection: LOANS_COLLECTION,
+                                  }}
+                                />
+                              ))
+                          : '-'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ),
+          };
+        }}
       />
     </div>
   );
