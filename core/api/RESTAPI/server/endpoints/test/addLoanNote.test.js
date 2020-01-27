@@ -46,7 +46,7 @@ const addNote = ({
   });
 };
 
-describe('REST: addLoanNtte', function() {
+describe('REST: addLoanNote', function() {
   this.timeout(10000);
 
   before(function() {
