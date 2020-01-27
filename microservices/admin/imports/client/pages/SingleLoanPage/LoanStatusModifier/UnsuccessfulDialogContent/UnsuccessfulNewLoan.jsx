@@ -16,9 +16,7 @@ type UnsuccessfulNewLoanProps = {};
 
 const UnsuccessfulNewLoan = ({
   insertLeadLoan,
-  insertPendingLoan,
   setUnsuccessfulOnly,
-  insertQualifiedLeadLoan,
 }: UnsuccessfulNewLoanProps) => (
   <div className="loan-status-modifier-dialog-content animated fadeIn">
     <DialogContentSection
@@ -40,26 +38,10 @@ const UnsuccessfulNewLoan = ({
           <Button
             secondary
             raised
-            icon={<FontAwesomeIcon icon={faHourglassHalf} />}
-            label={<T id="Forms.status.PENDING" />}
-            key="pending"
-            onClick={insertPendingLoan}
-          />
-          <Button
-            secondary
-            raised
             icon={<FontAwesomeIcon icon={faSearch} />}
             label={<T id="Forms.status.LEAD" />}
             key="lead"
             onClick={insertLeadLoan}
-          />
-          <Button
-            secondary
-            raised
-            icon={<FontAwesomeIcon icon={faSearchDollar} />}
-            label={<T id="Forms.status.QUALIFIED_LEAD" />}
-            key="qualified"
-            onClick={insertQualifiedLeadLoan}
           />
         </div>,
         <Button
