@@ -18,6 +18,7 @@ import {
   zipLoanAPI,
   setPropertyUserPermissionsAPI,
   addProUserToPropertyAPI,
+  addLoanNoteAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -133,6 +134,11 @@ api.addEndpoint(
   addProUserToPropertyAPI,
   { rsaAuth: true, endpointName: 'Add pro to property' },
 );
+api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
+  rsaAuth: true,
+  endpointName: 'Add note to a loan',
+});
+
 Meteor.startup(() => {
   makeFileUploadDir();
   flushFileUploadDir();

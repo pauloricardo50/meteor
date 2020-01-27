@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import UserService from '../../../users/server/UserService';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const anyOrganisationMatches = ({
   userOrganisations = [],
@@ -60,7 +61,7 @@ export const checkQuery = ({ query, schema }) => {
   return cleanQuery;
 };
 
-export const checkAccessToUser = ({ user, proId }) => {
+export const checkAccessToUser = ({ user, proId, errorMessage }) => {
   const { organisations = [] } = UserService.get(proId, {
     organisations: { users: { _id: 1 } },
   });
@@ -72,7 +73,9 @@ export const checkAccessToUser = ({ user, proId }) => {
     )
   ) {
     throw new Meteor.Error(
-      `User with email "${user.emails[0].address}" not found, or you don't have access to it.`,
+      HTTP_STATUS_CODES.NOT_FOUND,
+      errorMessage ||
+        `User with email "${user.emails[0].address}" not found, or you don't have access to it.`,
     );
   }
 };

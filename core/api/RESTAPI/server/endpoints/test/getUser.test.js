@@ -188,7 +188,7 @@ describe('REST: getUser', function() {
       userId: 'pro3',
     });
 
-    expect(response.status).to.equal(400);
+    expect(response.status).to.equal(404);
     expect(response.message).to.include('"user1@test.com"');
   });
 
@@ -198,7 +198,7 @@ describe('REST: getUser', function() {
       userId: 'pro',
     });
 
-    expect(response.status).to.equal(400);
+    expect(response.status).to.equal(404);
     expect(response.message).to.include('"user3@test.com"');
   });
 });
