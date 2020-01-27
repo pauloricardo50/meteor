@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { getImpersonateUserId, checkQuery, checkAccessToUser } from './helpers';
 import UserService from '../../../users/server/UserService';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
 
 const querySchema = new SimpleSchema({
   email: { type: String, optional: false },
@@ -24,6 +25,7 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
 
   if (!user) {
     throw new Meteor.Error(
+      HTTP_STATUS_CODES.NOT_FOUND,
       `User with email "${email}" not found, or you don't have access to it.`,
     );
   }
