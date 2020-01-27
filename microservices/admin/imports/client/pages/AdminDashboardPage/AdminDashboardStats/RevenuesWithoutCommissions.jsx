@@ -54,6 +54,7 @@ const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
           name: 1,
           user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
           borrowers: { name: 1 },
+          hasPromotion: 1,
         },
         organisationLinks: 1,
         amount: 1,
@@ -71,12 +72,13 @@ const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
   const filteredRevenues = revenues.filter(
     ({
       organisationLinks,
-      loan: { user: { referredByOrganisation } = {} } = {},
+      loan: { user: { referredByOrganisation } = {}, hasPromotion } = {},
     }) => {
       if (
         referredByOrganisation &&
         referredByOrganisation.name &&
-        (!organisationLinks || organisationLinks.length === 0)
+        (!organisationLinks || organisationLinks.length === 0) &&
+        !hasPromotion
       ) {
         return (
           referredByOrganisation.commissionRates &&

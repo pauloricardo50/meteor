@@ -1073,6 +1073,7 @@ export const adminRevenue = () => ({
     user: { name: 1, referredByOrganisation: { name: 1, commissionRates: 1 } },
     userCache: 1,
     assigneeLinks: 1,
+    hasPromotion: 1,
   },
   // Keep these in the right order
   organisationLinks: 1,
