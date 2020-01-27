@@ -142,9 +142,10 @@ export const personalInfoSchema = {
     type: String,
     optional: true,
     condition: ({ activityType }) =>
-      Object.values(BORROWER_ACTIVITY_TYPES)
-        .filter(type => type !== BORROWER_ACTIVITY_TYPES.ANNUITANT)
-        .includes(activityType),
+      [
+        BORROWER_ACTIVITY_TYPES.SALARIED,
+        BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED,
+      ].includes(activityType),
   },
   email: {
     type: String,
