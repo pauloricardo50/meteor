@@ -5,13 +5,13 @@ import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
 import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
+import { fullUser } from 'core/api/fragments';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
 import { fullLoan } from '../../loans/queries';
 import Calculator from '../../../utils/Calculator';
 import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
-import { fullUser } from 'core/api/fragments';
 
 const LOGO_URL =
   'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
@@ -91,7 +91,11 @@ export class SlackService {
     }
 
     if (!user && userId) {
-      user = UserService.get(userId, fullUser());
+      user = UserService.get(userId, {
+        name: 1,
+        roles: 1,
+        organisations: { name: 1 },
+      });
     }
 
     const attachments = [
@@ -215,8 +219,8 @@ export class SlackService {
       const referral = referralUser
         ? `(ref ${referralUser} - ${referralOrg})`
         : referralOrg
-          ? `(ref ${referralOrg})`
-          : undefined;
+        ? `(ref ${referralOrg})`
+        : undefined;
       return [username, referral].filter(x => x).join(' ');
     }
 
