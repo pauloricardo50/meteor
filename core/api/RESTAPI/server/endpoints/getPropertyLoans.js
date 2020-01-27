@@ -1,4 +1,3 @@
-import pick from 'lodash/pick';
 import SimpleSchema from 'simpl-schema';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
@@ -37,23 +36,26 @@ const getPropertyLoansAPI = ({ user: { _id: userId }, params, query }) => {
     .clone({
       propertyId,
       $body: {
-        user: {
-          name: 1,
-          phoneNumbers: 1,
-          email: 1,
-          referredByUser: { name: 1 },
-          referredByOrganisation: { name: 1 },
-        },
-        createdAt: 1,
-        name: 1,
-        status: 1,
-        properties: { category: 1 },
-        proNotes: 1,
-        residenceType: 1,
         anonymous: 1,
-        shareSolvency: 1,
+        createdAt: 1,
         // Used for the property solvency calculation
         maxPropertyValue: 1,
+        name: 1,
+        proNotes: 1,
+        properties: { category: 1 },
+        residenceType: 1,
+        shareSolvency: 1,
+        status: 1,
+        user: {
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          name: 1,
+          phoneNumbers: 1,
+          referredByOrganisation: { name: 1 },
+          referredByUser: { name: 1 },
+          roles: 1,
+        },
       },
     })
     .fetch({ userId: proId || userId });
