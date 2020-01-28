@@ -27,7 +27,10 @@ const makeDocumentsForCategoryObject = ({
 const getOtherDocuments = documents =>
   documents.filter(({ id, category: docCategory }) => {
     if (docCategory) {
-      return docCategory === 'OTHER';
+      return (
+        docCategory === 'OTHER' ||
+        !Object.keys(DOCUMENTS_CATEGORIES).includes(docCategory)
+      );
     }
 
     const docIsInList = Object.keys(DOCUMENTS_CATEGORIES).some(category =>
