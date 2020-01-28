@@ -384,10 +384,9 @@ describe('monitoring', () => {
       });
 
       expect(result.length).to.equal(2);
-      expect(result[0]).to.deep.equal({
+      expect(result[0]).to.deep.include({
         _id: 'admin1',
         totalStatusChangeCount: 2,
-        loanIds: ['loan1', 'loan1'],
         statusChanges: [
           {
             prevStatus: LOAN_STATUS.LEAD,
@@ -401,10 +400,13 @@ describe('monitoring', () => {
           },
         ],
       });
-      expect(result[1]).to.deep.equal({
+      expect(result[0].loans.length).to.equal(2);
+      expect(result[0].loans[0]._id).to.equal('loan1');
+      expect(result[0].loans[1]._id).to.equal('loan1');
+
+      expect(result[1]).to.deep.include({
         _id: 'admin2',
         totalStatusChangeCount: 1,
-        loanIds: ['loan2'],
         statusChanges: [
           {
             prevStatus: LOAN_STATUS.LEAD,
@@ -413,6 +415,8 @@ describe('monitoring', () => {
           },
         ],
       });
+      expect(result[1].loans.length).to.equal(1);
+      expect(result[1].loans[0]._id).to.equal('loan2');
     });
   });
 });
