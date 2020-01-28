@@ -6,9 +6,11 @@ export const getOpenGraphMeta = url => {
   return ogs(options)
     .then(results => results.data)
     .catch(error => {
-      SlackService.sendError({
-        error,
-        additionalData: ['getOpenGraphMeta error', url, options],
-      });
+      if (error) {
+        SlackService.sendError({
+          error,
+          additionalData: ['getOpenGraphMeta error', url, options],
+        });
+      }
     });
 };
