@@ -17,6 +17,8 @@ import { CONTACTS_COLLECTION } from './contacts/contactsConstants';
 import { LENDERS_COLLECTION } from './lenders/lenderConstants';
 import { LENDER_RULES_COLLECTION } from './lenderRules/lenderRulesConstants';
 import { REVENUES_COLLECTION } from './revenues/revenueConstants';
+import { SESSIONS_COLLECTION } from './sessions/sessionConstants';
+import { UPDATE_WATCHERS_COLLECTION } from './updateWatchers/updateWatcherConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './contacts/contactsConstants';
@@ -42,6 +44,7 @@ export * from './security/constants';
 export * from './tasks/taskConstants';
 export * from './updateWatchers/updateWatcherConstants';
 export * from './users/userConstants';
+export * from './sessions/sessionConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -68,4 +71,6 @@ export const COLLECTIONS = {
   LENDERS_COLLECTION,
   LENDER_RULES_COLLECTION,
   REVENUES_COLLECTION,
+  SESSIONS_COLLECTION,
+  UPDATE_WATCHERS_COLLECTION,
 };

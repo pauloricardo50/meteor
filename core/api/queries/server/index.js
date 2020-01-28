@@ -22,3 +22,4 @@ import '../../stats/server/exposures';
 import '../../tasks/server/exposures';
 import '../../users/server/exposures';
 import './exposures';
+import './globalExposures';
