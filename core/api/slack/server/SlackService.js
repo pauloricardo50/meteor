@@ -5,7 +5,6 @@ import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
 import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
-import { fullUser } from 'core/api/fragments';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
 import { fullLoan } from '../../loans/queries';

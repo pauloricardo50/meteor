@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import omit from 'lodash/omit';
 
 import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
@@ -11,28 +11,8 @@ import PromotionReservationDetail from '../PromotionReservations/PromotionReserv
 
 type PromotionOptionsTableProps = {};
 
-const PromotionOptionsTable = ({
-  status,
-  setStatus,
-  rows,
-  columnOptions,
-  className,
-}: PromotionOptionsTableProps) => (
-  <div className={className}>
-    <div className="flex center-align">
-      <h3 className="text-center mr-8">Réservations</h3>
-      <MongoSelect
-        value={status}
-        onChange={setStatus}
-        options={omit(
-          PROMOTION_OPTION_STATUS,
-          PROMOTION_OPTION_STATUS.INTERESTED,
-        )}
-        id="status"
-        label="Statut"
-      />
-    </div>
-
+const PromotionOptionsTableComponent = PromotionOptionsTableContainer(
+  ({ rows, columnOptions }) => (
     <TableWithModal
       rows={rows}
       columnOptions={columnOptions}
@@ -59,7 +39,38 @@ const PromotionOptionsTable = ({
         };
       }}
     />
-  </div>
+  ),
 );
 
-export default PromotionOptionsTableContainer(PromotionOptionsTable);
+const PromotionOptionsTable = ({ promotion }: PromotionOptionsTableProps) => {
+  const [status, setStatus] = useState({
+    $in: [
+      PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+      PROMOTION_OPTION_STATUS.RESERVED,
+      PROMOTION_OPTION_STATUS.SOLD,
+    ],
+  });
+
+  return (
+    <div className="card1 card-top">
+      <div className="flex center-align">
+        <h3 className="text-center mr-8">Réservations</h3>
+        <MongoSelect
+          value={status}
+          onChange={setStatus}
+          options={omit(
+            PROMOTION_OPTION_STATUS,
+            PROMOTION_OPTION_STATUS.INTERESTED,
+          )}
+          id="status"
+          label="Statut"
+        />
+      </div>
+
+      <PromotionOptionsTableComponent status={status} promotion={promotion} />
+    </div>
+  );
+};
+
+export default PromotionOptionsTable;

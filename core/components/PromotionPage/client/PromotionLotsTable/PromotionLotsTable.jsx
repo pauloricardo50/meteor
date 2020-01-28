@@ -54,7 +54,7 @@ const PromotionLotsTable = ({
           maxWidth: false,
           title: (
             <div className="modal-promotion-lot-title">
-              <span>{promotionLot && promotionLot.name}</span>
+              <span>Lot {promotionLot && promotionLot.name}</span>
               <div>
                 {canModifyLots && (
                   <PromotionLotModifier

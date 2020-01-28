@@ -47,10 +47,7 @@ const PromotionPageOverview = ({
         <AppPromotionPageOverview loan={loan} promotion={promotion} />
       ) : (
         <>
-          <PromotionOptionsTable
-            promotion={promotion}
-            className="card1 card-top"
-          />
+          <PromotionOptionsTable promotion={promotion} />
           <ProPromotionLotsTable
             promotion={promotion}
             className="card1 card-top"
