@@ -1,7 +1,9 @@
 import { Mongo } from 'meteor/mongo';
+import { COLLECTIONS } from '../constants';
 
 export const createCollection = (collectionName, schema) => {
   const Collection = new Mongo.Collection(collectionName);
+  COLLECTIONS[collectionName] = collectionName;
 
   Collection.deny({
     insert: () => true,
