@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -77,14 +77,6 @@ const makeMapPromotionOption = ({ promotion }) => promotionOption => {
 };
 
 export default compose(
-  withState('status', 'setStatus', {
-    $in: [
-      PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-      PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
-      PROMOTION_OPTION_STATUS.RESERVED,
-      PROMOTION_OPTION_STATUS.SOLD,
-    ],
-  }),
   withSmartQuery({
     query: proPromotionOptions,
     params: ({ status, promotion: { _id: promotionId } }) => ({
