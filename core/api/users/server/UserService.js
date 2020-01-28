@@ -368,7 +368,7 @@ export class UserServiceClass extends CollectionService {
           sendEnrollmentEmail: sendInvitation && !pro && Meteor.isProduction,
           firstName,
           lastName,
-          phoneNumbers: [phoneNumber],
+          phoneNumber,
         },
         adminId: admin && admin._id,
       });
