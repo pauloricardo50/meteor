@@ -31,7 +31,7 @@ describe('Migration 28', () => {
 
       await up();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
 
       expect(loan.adminNotes.length).to.equal(2);
       expect(loan.adminNotes[0].note).to.equal('yo');
@@ -43,7 +43,7 @@ describe('Migration 28', () => {
 
       await up();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
 
       expect(loan.adminNotes.length).to.equal(2);
       expect(loan.adminNotes[0].note).to.equal('yo');
@@ -61,7 +61,7 @@ describe('Migration 28', () => {
 
       await up();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
       expect(loan.adminNotes[0].updatedBy).to.equal('admin1');
     });
 
@@ -70,7 +70,7 @@ describe('Migration 28', () => {
 
       await up();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
       expect(loan.adminNotes[0].updatedBy).to.equal(
         employeesByEmail['yannis@e-potek.ch']._id,
       );
@@ -86,7 +86,7 @@ describe('Migration 28', () => {
 
       await up();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
       expect(loan.adminNotes[0].updatedBy).to.equal(
         employeesByEmail['yannis@e-potek.ch']._id,
       );
@@ -103,7 +103,7 @@ describe('Migration 28', () => {
 
       await down();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
 
       expect(loan.adminNote).to.equal('yo');
     });
@@ -113,7 +113,7 @@ describe('Migration 28', () => {
 
       await down();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
 
       expect(loan.adminNote).to.equal(undefined);
     });
@@ -131,7 +131,7 @@ describe('Migration 28', () => {
 
       await down();
 
-      const loan = LoanService.findOne();
+      const loan = LoanService.findOne({});
 
       expect(loan.adminNote).to.equal('yo\nmah\ndude');
     });

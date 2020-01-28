@@ -3,7 +3,12 @@ import { COLLECTIONS } from '../constants';
 
 export const createCollection = (collectionName, schema) => {
   const Collection = new Mongo.Collection(collectionName);
-  COLLECTIONS[collectionName] = collectionName;
+
+  if (Object.values(COLLECTIONS).indexOf(collectionName) === -1) {
+    throw new Error(
+      `No collection "${collectionName}" found in 'COLLECTIONS' constant`,
+    );
+  }
 
   Collection.deny({
     insert: () => true,
