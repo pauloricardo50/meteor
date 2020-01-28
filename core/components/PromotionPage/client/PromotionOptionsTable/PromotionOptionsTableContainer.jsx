@@ -77,7 +77,14 @@ const makeMapPromotionOption = ({ promotion }) => promotionOption => {
 };
 
 export default compose(
-  withState('status', 'setStatus', undefined),
+  withState('status', 'setStatus', {
+    $in: [
+      PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+      PROMOTION_OPTION_STATUS.RESERVED,
+      PROMOTION_OPTION_STATUS.SOLD,
+    ],
+  }),
   withSmartQuery({
     query: proPromotionOptions,
     params: ({ status, promotion: { _id: promotionId } }) => ({
