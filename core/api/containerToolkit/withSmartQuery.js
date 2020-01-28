@@ -1,5 +1,7 @@
 // @flow
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
+import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
+
 import {
   mapProps,
   compose,
@@ -113,6 +115,9 @@ const withSmartQuery = ({
 
   if (typeof query === 'function') {
     completeQuery = props => query(props).clone(calculateParams(params, props));
+  } else if (typeof query === 'string') {
+    completeQuery = props =>
+      createQuery({ [query]: calculateParams(params, props) });
   } else {
     completeQuery = props => query.clone(calculateParams(params, props));
   }
