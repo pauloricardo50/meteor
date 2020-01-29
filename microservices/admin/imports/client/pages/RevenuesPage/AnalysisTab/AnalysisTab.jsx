@@ -9,12 +9,12 @@ import Plot from 'react-plotly.js';
 import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
 import { injectIntl } from 'react-intl';
 import omit from 'lodash/omit';
+import SimpleSchema from 'simpl-schema';
 
 import Loading from 'core/components/Loading';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
-import SimpleSchema from 'simpl-schema';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { useAnalysisData } from './AnalysisTabContainer';
 import SavedAnalyses from './SavedAnalyses';

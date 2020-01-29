@@ -16,4 +16,8 @@ Meteor.methods({
     SecurityService.checkUserIsAdmin(this.userId);
     return AnalysisReports.remove(_id);
   },
+  updateAnalysisReport({ _id, name }) {
+    SecurityService.checkUserIsAdmin(this.userId);
+    return AnalysisReports.update(_id, { $set: { name } });
+  },
 });

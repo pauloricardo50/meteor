@@ -17,7 +17,7 @@ export const analysisCollections = [
   BORROWERS_COLLECTION,
 ];
 
-const formatDate = date =>
+const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
 
 const collectionMaps = {
@@ -25,18 +25,19 @@ const collectionMaps = {
     category: { id: 'Forms.category' },
     status: {
       id: 'Forms.status',
-      format: status => `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
+      format: ({ status }) =>
+        `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
     },
     residenceType: { id: 'Forms.residenceType' },
     'user.roles': { id: 'Forms.roles' },
     createdAt: [
       {
         label: 'Création Mois-Année',
-        format: formatDate,
+        format: makeFormatDate('createdAt'),
       },
       {
         label: 'Création Année',
-        format: date => date && date.getFullYear(),
+        format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
       },
     ],
     anonymous: { id: 'Forms.anonymous', defaultValue: { true: true } },
@@ -46,13 +47,12 @@ const collectionMaps = {
       {
         id: 'collections.revenues',
         fragment: { amount: 1, status: 1 },
-        format: (revenues = []) =>
+        format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
       },
       {
         label: 'Revenus encaissés',
-        fragment: { amount: 1, status: 1 },
-        format: (revenues = []) =>
+        format: ({ revenues = [] }) =>
           revenues
             .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
             .reduce((t, { amount }) => t + amount, 0),
@@ -67,20 +67,45 @@ const collectionMaps = {
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
     paidAt: {
       label: 'Payé Mois-Année',
-      format: formatDate,
+      format: makeFormatDate('paidAt'),
     },
     expectedAt: {
       label: 'Attendu Mois-Année',
-      format: formatDate,
+      format: makeFormatDate('expectedAt'),
     },
     'assignee.name': { label: 'Responsable' },
+    organisations: [
+      {
+        fragment: { name: 1 },
+        label: 'Commission %',
+        format: ({ organisations = [] }) =>
+          organisations.reduce(
+            (t, { $metadata: { commissionRate } }) => t + commissionRate,
+            0,
+          ),
+      },
+      {
+        label: 'Commission payée à',
+        format: ({ organisations = [] }) =>
+          organisations.map(({ name }) => name),
+      },
+      {
+        label: 'Commission à payer',
+        format: ({ organisations = [], amount }) =>
+          organisations.reduce(
+            (t, { $metadata: { commissionRate } }) =>
+              t + commissionRate * amount,
+            0,
+          ),
+      },
+    ],
   },
   [USERS_COLLECTION]: {
     roles: { id: 'Forms.roles' },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
     createdAt: {
       label: 'Création Mois-Année',
-      format: formatDate,
+      format: makeFormatDate('createdAt'),
     },
     'assignedEmployee.name': { label: 'Conseiller' },
   },
@@ -91,14 +116,14 @@ const collectionMaps = {
     civilStatus: { id: 'Forms.civilStatus' },
     createdAt: {
       label: 'Création Mois-Année',
-      format: formatDate,
+      format: makeFormatDate('createdAt'),
     },
     netSalary: { id: 'Forms.netSalary' },
     salary: { id: 'Forms.salary' },
   },
 };
 
-const createBodyFromMap = map => {
+export const createBodyFromMap = map => {
   const body = {};
 
   Object.keys(map).forEach(path => {
@@ -109,6 +134,13 @@ const createBodyFromMap = map => {
       fragment = config.fragment;
     } else if (Array.isArray(config) && config[0].fragment) {
       fragment = config[0].fragment;
+    }
+
+    if (
+      Array.isArray(config) &&
+      config.slice(1).some(({ fragment: f }) => !!f)
+    ) {
+      throw new Error('Can only have one fragment in array description');
     }
 
     set(body, path, fragment);
@@ -129,16 +161,19 @@ const applyTransformToData = ({
   const rawValue = get(obj, key);
 
   if (format) {
-    newObj[translatedKey] = format(rawValue);
+    newObj[translatedKey] = format(obj);
   } else {
     newObj[translatedKey] = rawValue;
   }
 };
 
-export const mapData = ({ data, collection, formatMessage }) => {
-  const map = collectionMaps[collection];
-
-  return data.map(obj => {
+export const mapData = ({
+  data,
+  collection,
+  formatMessage,
+  map = collectionMaps[collection],
+}) =>
+  data.map(obj => {
     const newObj = {};
 
     Object.keys(map).forEach(key => {
@@ -167,7 +202,6 @@ export const mapData = ({ data, collection, formatMessage }) => {
 
     return newObj;
   });
-};
 
 export const analysisBodies = {
   [LOANS_COLLECTION]: {
