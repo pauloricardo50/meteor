@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 
+import { formatMessage } from 'core/utils/intl';
 import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
@@ -71,10 +72,16 @@ export default Component => {
     };
 
     formatOption = option => {
-      const { allowedValuesIntlId, intlId, name } = this.props;
-      return (
-        <T id={`Forms.${allowedValuesIntlId || intlId || name}.${option}`} />
-      );
+      const { allowedValuesIntlId, intlId, name, withCustomOther } = this.props;
+
+      const id = `Forms.${allowedValuesIntlId || intlId || name}.${option}`;
+
+      if (withCustomOther) {
+        const label = formatMessage({ id });
+        return label === id ? option : label;
+      }
+
+      return <T id={id} />;
     };
 
     renderValue = value => {

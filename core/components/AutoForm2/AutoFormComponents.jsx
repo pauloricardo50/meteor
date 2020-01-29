@@ -11,6 +11,7 @@ import {
   CUSTOM_AUTOFIELD_TYPES,
   COMPONENT_TYPES,
   FIELDS_TO_IGNORE,
+  OTHER_ALLOWED_VALUE,
 } from './constants';
 import CustomSelectField from './CustomSelectField';
 import { OptimizedListField } from './CustomListField';
@@ -39,7 +40,9 @@ const determineComponentFromProps = ({
     return {
       Component: CustomSelectField,
       type: COMPONENT_TYPES.SELECT,
-      props: { variant: 'outlined' },
+      props: {
+        variant: 'outlined',
+      },
     };
   }
 
@@ -141,10 +144,23 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
+    const { allowedValues, field, fieldType, margin = 'normal' } = props;
+    const { uniforms: { withCustomOther } = {} } = field;
+
+    if (withCustomOther) {
+      schema.schema.extend({
+        [props.name]: {
+          ...schema.getField(props.name),
+          allowedValues: false,
+          customAllowedValues: () => [...allowedValues, OTHER_ALLOWED_VALUE],
+        },
+      });
+    }
+
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
       props.name,
     );
-    const { allowedValues, field, fieldType, margin = 'normal' } = props;
+
     let { Component, type, props: additionalProps = {} } = useMemo(
       () =>
         determineComponentFromProps({
