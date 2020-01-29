@@ -47,7 +47,7 @@ import SlackService from '../slack/server/SlackService';
 import LenderRulesService from '../lenderRules/server/LenderRulesService';
 import RevenueService from '../revenues/server/RevenueService';
 import OrganisationService from '../organisations/server/OrganisationService';
-import '../liveSync';
+import './serverCollections';
 
 process.on('uncaughtException', error => {
   if (!Meteor.isProduction) {

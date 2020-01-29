@@ -1,16 +1,21 @@
 // @flow
-import React, { useState } from 'react';
+import { Meteor } from 'meteor/meteor';
+
+import React, { useState, useEffect } from 'react';
 import PivotTableUI from 'react-pivottable/PivotTableUI';
 import 'react-pivottable/pivottable.css';
 import TableRenderers from 'react-pivottable/TableRenderers';
 import Plot from 'react-plotly.js';
 import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
 import { injectIntl } from 'react-intl';
+import omit from 'lodash/omit';
 
 import Loading from 'core/components/Loading';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
+import SimpleSchema from 'simpl-schema';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import { useAnalysisData } from './AnalysisTabContainer';
 import SavedAnalyses from './SavedAnalyses';
 import { analysisCollections } from './analysisHelpers';
@@ -19,10 +24,20 @@ type AnalysisTabProps = {};
 
 const PlotlyRenderers = createPlotlyRenderers(Plot);
 
+const schema = new SimpleSchema({ name: String });
+
 const AnalysisTab = ({ intl: { formatMessage } }: AnalysisTabProps) => {
   const [state, setState] = useState();
+  const [queuedState, setQueuedState] = useState();
   const [collection, setCollection] = useState();
   const { data, loading } = useAnalysisData({ collection, formatMessage });
+
+  useEffect(() => {
+    if (!loading && queuedState) {
+      setState(queuedState);
+      setQueuedState();
+    }
+  }, [loading, queuedState]);
 
   return (
     <div>
@@ -37,9 +52,38 @@ const AnalysisTab = ({ intl: { formatMessage } }: AnalysisTabProps) => {
           onChange={setCollection}
           className="mr-16"
         />
-        <Button raised primary onClick={() => setState()}>
+        <Button raised primary onClick={() => setState()} className="mr-16">
           Reset
         </Button>
+        <AutoFormDialog
+          buttonProps={{
+            label: 'Enregistrer rapport',
+            raised: true,
+            primary: true,
+          }}
+          schema={schema}
+          title="Enregistrer rapport"
+          onSubmit={({ name }) =>
+            new Promise((resolve, reject) => {
+              Meteor.call(
+                'insertAnalysisReport',
+                {
+                  name,
+                  payload: {
+                    ...omit(state, [
+                      'data',
+                      'renderers',
+                      'onChange',
+                      'tableColorScaleGenerator',
+                    ]),
+                    collection,
+                  },
+                },
+                (error, result) => (error ? reject(error) : resolve(result)),
+              );
+            })
+          }
+        />
       </div>
 
       <div className="flex sb">
@@ -53,7 +97,10 @@ const AnalysisTab = ({ intl: { formatMessage } }: AnalysisTabProps) => {
         ) : (
           <Loading />
         )}
-        <SavedAnalyses setState={setState} />
+        <SavedAnalyses
+          setState={setQueuedState}
+          setCollection={setCollection}
+        />
       </div>
     </div>
   );

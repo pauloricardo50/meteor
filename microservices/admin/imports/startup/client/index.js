@@ -7,6 +7,9 @@ import { render } from 'react-dom';
 import 'core/api/api';
 import 'core/api/client/api';
 
+// Put admin-only collections here for them to work on the client in queries
+import 'core/api/analysisReports';
+
 import 'core/startup/accounts-config';
 import './css';
 import 'react-dates/initialize'; // Fix issue #750
