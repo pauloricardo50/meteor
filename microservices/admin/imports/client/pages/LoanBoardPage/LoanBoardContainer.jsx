@@ -1,11 +1,15 @@
 import { compose, mapProps, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { adminLoans } from 'core/api/loans/queries';
 import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
+import {
+  ORGANISATION_FEATURES,
+  ROLES,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+} from 'core/api/constants';
 import { userCache } from 'core/api/loans/links';
 import { groupLoans, makeClientSideFilter } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
@@ -46,7 +50,7 @@ export default compose(
   addLiveSync,
   withLiveSync,
   withSmartQuery({
-    query: adminLoans,
+    query: LOANS_COLLECTION,
     params: ({
       options: {
         assignedEmployeeId,
@@ -57,18 +61,47 @@ export default compose(
         lenderId,
         category,
       },
-    }) => ({
-      $body: defaultBody,
-      assignedEmployeeId,
-      step,
-      relevantOnly: true,
-      hasPromotion: groupBy === GROUP_BY.PROMOTION,
-      status,
-      promotionId: getPromotionId(promotionId),
-      lenderId,
-      category,
-      noPromotion: noPromotionIsChecked(promotionId),
-    }),
+    }) => {
+      const $or = [];
+
+      if (groupBy === GROUP_BY.PROMOTION) {
+        $or.push({ 'promotionLinks.0._id': { $exists: true } });
+        $or.push({ 'financedPromotionLink._id': { $exists: true } });
+      }
+
+      if (promotionId) {
+        $or.push({ 'promotionLinks.0._id': promotionId });
+        $or.push({ 'financedPromotionLink._id': promotionId });
+      }
+
+      return {
+        $filters: {
+          assigneeLinks: {
+            $elemMatch: { _id: assignedEmployeeId, isMain: true },
+          },
+          step,
+          $or: $or.length ? $or : undefined,
+          anonymous: { $ne: true },
+          status: {
+            $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
+            ...status,
+          },
+          lenderId,
+          ...(lenderId
+            ? {
+                lendersCache: {
+                  $elemMatch: { 'organisationLink._id': lenderId },
+                },
+              }
+            : {}),
+          category,
+          ...(noPromotionIsChecked(promotionId)
+            ? { promotionLinks: { $in: [[], null] } }
+            : {}),
+        },
+        ...defaultBody,
+      };
+    },
     dataName: 'loans',
     queryOptions: { pollingMs: 5000 },
   }),
