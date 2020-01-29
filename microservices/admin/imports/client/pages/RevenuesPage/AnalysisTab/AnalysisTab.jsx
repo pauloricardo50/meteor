@@ -33,6 +33,9 @@ const AnalysisTab = ({ intl: { formatMessage } }: AnalysisTabProps) => {
   const { data, loading } = useAnalysisData({ collection, formatMessage });
 
   useEffect(() => {
+    // The PivotTable needs to have the data before we can set the filters
+    // and display options, so first wait for the data to come back, and then
+    // set the report's payload to the pivotTable state
     if (!loading && queuedState) {
       setState(queuedState);
       setQueuedState();
@@ -49,7 +52,11 @@ const AnalysisTab = ({ intl: { formatMessage } }: AnalysisTabProps) => {
             id: v,
             label: <T id={`collections.${v}`} />,
           }))}
-          onChange={setCollection}
+          onChange={newValue => {
+            setCollection(newValue);
+            // Reset all pivotTable state on collection change
+            setState();
+          }}
           className="mr-16"
         />
         <Button raised primary onClick={() => setState()} className="mr-16">

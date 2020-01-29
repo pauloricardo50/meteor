@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 import { createBodyFromMap, mapData } from '../analysisHelpers';
 
-describe.only('analysisHelpers', () => {
+describe('analysisHelpers', () => {
   describe('createBodyFromMap', () => {
     it('creates a query body from a map', () => {
       const body = createBodyFromMap({
