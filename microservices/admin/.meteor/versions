@@ -61,7 +61,6 @@ lai:collection-extensions@0.2.1_1
 lamhieu:meteorx@2.1.1
 littledata:synced-cron@1.5.1
 livedata@1.0.18
-lmachens:kadira@2.31.0
 lmieulet:meteor-coverage@3.2.0
 localstorage@1.2.0
 logging@1.1.20
@@ -99,6 +98,7 @@ mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
 mongo-livedata@1.0.12
+montiapm:agent@2.38.1
 msavin:jetsetter@4.0.0
 msavin:mongol@7.0.1
 npm-bcrypt@0.9.3

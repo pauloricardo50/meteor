@@ -57,13 +57,11 @@ meteorhacks:inject-initial
 force-ssl@1.1.0                     # Automatically route users to https
 dynamic-import@0.5.1
 epotek:google-maps
-# lmachens:kadira
-
 
 # Other
 underscore@1.0.10
 matb33:collection-hooks
 littledata:synced-cron
 cultofcoders:grapher-react
-lmachens:kadira
+montiapm:agent
 zodern:standard-minifier-js@4.0.0-beta.2

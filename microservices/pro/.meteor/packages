@@ -62,7 +62,7 @@ aldeed:schema-index
 aldeed:schema-deny
 service-configuration@1.0.11
 epotek:accounts-ui
-lmachens:kadira
+montiapm:agent
 percolate:migrations
 cultofcoders:grapher-react
 qualia:one

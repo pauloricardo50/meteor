@@ -45,7 +45,7 @@ meteorhacks:inject-initial
 edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
-lmachens:kadira
+montiapm:agent
 okgrow:analytics
 aldeed:schema-index
 aldeed:schema-deny

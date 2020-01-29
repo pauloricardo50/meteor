@@ -63,7 +63,6 @@ lamhieu:meteorx@2.0.1
 launch-screen@1.1.1
 littledata:synced-cron@1.5.1
 livedata@1.0.18
-lmachens:kadira@2.31.0
 lmieulet:meteor-coverage@3.2.0
 localstorage@1.2.0
 logging@1.1.20
@@ -86,6 +85,7 @@ mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
 mongo-livedata@1.0.12
+montiapm:agent@2.38.0
 npm-bcrypt@0.9.3
 npm-mongo@3.3.0
 observe-sequence@1.0.16
