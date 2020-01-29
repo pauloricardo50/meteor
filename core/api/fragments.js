@@ -1020,6 +1020,7 @@ export const adminUser = () => ({
   },
   referredByOrganisation: { name: 1, emails: 1 },
   referredByOrganisationLink: 1,
+  acquisitionChannel: 1,
 });
 
 export const appUser = () => ({

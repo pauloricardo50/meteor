@@ -4,6 +4,7 @@ import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
+import SimpleSchema from 'simpl-schema';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
@@ -152,7 +153,16 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         [props.name]: {
           ...schema.getField(props.name),
           allowedValues: false,
-          customAllowedValues: () => [...allowedValues, OTHER_ALLOWED_VALUE],
+          customAllowedValues: () => [
+            ...(allowedValues || []),
+            OTHER_ALLOWED_VALUE,
+          ],
+          custom() {
+            if (this.value === OTHER_ALLOWED_VALUE) {
+              return 'noOther';
+            }
+            return undefined;
+          },
         },
       });
     }
