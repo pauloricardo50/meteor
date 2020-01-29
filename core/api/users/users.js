@@ -105,7 +105,7 @@ export const UserSchema = new SimpleSchema({
   referredByUserLink: { type: String, optional: true },
   referredByOrganisationLink: { type: String, optional: true },
   assignedEmployeeCache: cacheField,
-  acquisitionChannel: String,
+  acquisitionChannel: { type: String, optional: true },
 });
 
 Meteor.users.attachSchema(UserSchema);
