@@ -4,6 +4,7 @@ import { formatMessage } from 'core/utils/intl';
 import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
+import { OTHER_ALLOWED_VALUE } from './constants';
 
 export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
@@ -34,8 +35,30 @@ export default Component => {
     }
 
     getAllowedValues = props => {
-      const { customAllowedValues, model, parent } = props;
+      const {
+        customAllowedValues,
+        model,
+        parent,
+        recommendedValues,
+        withCustomOther,
+        value,
+      } = props;
       const { values } = this.state;
+
+      const filteredRecommendValues = [
+        ...recommendedValues,
+        !withCustomOther && value,
+      ]
+        .filter((val, index, array) => array.indexOf(val) === index)
+        .filter(x => x);
+
+      if (recommendedValues) {
+        return this.setState({
+          values: withCustomOther
+            ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
+            : filteredRecommendValues,
+        });
+      }
 
       if (customAllowedValues) {
         this.setState({ loading: !values || !values.length });
@@ -72,16 +95,16 @@ export default Component => {
     };
 
     formatOption = option => {
-      const { allowedValuesIntlId, intlId, name, withCustomOther } = this.props;
+      const { allowedValuesIntlId, intlId, name } = this.props;
 
       const id = `Forms.${allowedValuesIntlId || intlId || name}.${option}`;
 
-      if (withCustomOther) {
-        const label = formatMessage({ id });
-        return label === id ? option : label;
-      }
+      const label = formatMessage({ id });
+      // if (withCustomOther) {
+      //   return label === id ? option : label;
+      // }
 
-      return <T id={id} />;
+      return label === id ? option : <T id={id} />;
     };
 
     renderValue = value => {

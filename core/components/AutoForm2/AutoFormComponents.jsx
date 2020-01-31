@@ -4,7 +4,6 @@ import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
-import SimpleSchema from 'simpl-schema';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
@@ -12,7 +11,6 @@ import {
   CUSTOM_AUTOFIELD_TYPES,
   COMPONENT_TYPES,
   FIELDS_TO_IGNORE,
-  OTHER_ALLOWED_VALUE,
 } from './constants';
 import CustomSelectField from './CustomSelectField';
 import { OptimizedListField } from './CustomListField';
@@ -37,7 +35,11 @@ const determineComponentFromProps = ({
   field: { uniforms },
   fieldType,
 }) => {
-  if (allowedValues || customAllowedValues) {
+  if (
+    allowedValues ||
+    customAllowedValues ||
+    (uniforms && uniforms.recommendedValues)
+  ) {
     return {
       Component: CustomSelectField,
       type: COMPONENT_TYPES.SELECT,
@@ -146,26 +148,6 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
-    const { uniforms: { withCustomOther } = {} } = field;
-
-    if (withCustomOther) {
-      schema.schema.extend({
-        [props.name]: {
-          ...schema.getField(props.name),
-          allowedValues: false,
-          customAllowedValues: () => [
-            ...(allowedValues || []),
-            OTHER_ALLOWED_VALUE,
-          ],
-          custom() {
-            if (this.value === OTHER_ALLOWED_VALUE) {
-              return 'noOther';
-            }
-            return undefined;
-          },
-        },
-      });
-    }
 
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
       props.name,
