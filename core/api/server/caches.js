@@ -48,7 +48,7 @@ Meteor.startup(() => {
   // migrate('organisations', 'lenderRulesCount', {
   //   loanCount: { $exists: false },
   // });
-  migrate('organisations', 'referredUsersCount', {
-    referredUsersCount: { $exists: false },
-  });
+  // migrate('organisations', 'referredUsersCount', {
+  //   referredUsersCount: { $exists: false },
+  // });
 });

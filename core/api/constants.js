@@ -19,6 +19,7 @@ import { LENDER_RULES_COLLECTION } from './lenderRules/lenderRulesConstants';
 import { REVENUES_COLLECTION } from './revenues/revenueConstants';
 import { SESSIONS_COLLECTION } from './sessions/sessionConstants';
 import { UPDATE_WATCHERS_COLLECTION } from './updateWatchers/updateWatcherConstants';
+import { ANALYSIS_REPORTS_COLLECTION } from './analysisReports/analysisReportConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './contacts/contactsConstants';
@@ -73,4 +74,5 @@ export const COLLECTIONS = {
   REVENUES_COLLECTION,
   SESSIONS_COLLECTION,
   UPDATE_WATCHERS_COLLECTION,
+  ANALYSIS_REPORTS_COLLECTION,
 };

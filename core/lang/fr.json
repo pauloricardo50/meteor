@@ -1,4 +1,6 @@
 {
+  "Forms.anonymous": "Anonyme",
+  "collections.revenues": "Revenus",
   "Forms.activityType.WITHOUT_ACTIVITY": "Sans activité",
   "files.category.INVESTMENT_BUILDING": "Immeuble de rendement",
   "files.category.COPROPERTY": "Copropriété",
