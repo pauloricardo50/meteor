@@ -115,6 +115,21 @@ const collectionMaps = {
           ),
       },
     ],
+    loan: [
+      {
+        label: 'Catégorie du dossier',
+        fragment: { category: 1, status: 1 },
+        format: ({ loan }) => loan && loan.category,
+      },
+      {
+        label: 'Statut du dossier',
+        fragment: { category: 1, status: 1 },
+        format: ({ loan: { status } = {} }) =>
+          status
+            ? `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`
+            : undefined,
+      },
+    ],
   },
   [USERS_COLLECTION]: {
     roles: { id: 'Forms.roles' },
