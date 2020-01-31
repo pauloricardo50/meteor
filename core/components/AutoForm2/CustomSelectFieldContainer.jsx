@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 
-import { formatMessage } from 'core/utils/intl';
 import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
@@ -45,14 +44,14 @@ export default Component => {
       } = props;
       const { values } = this.state;
 
-      const filteredRecommendValues = [
-        ...recommendedValues,
-        !withCustomOther && value,
-      ]
-        .filter((val, index, array) => array.indexOf(val) === index)
-        .filter(x => x);
-
       if (recommendedValues) {
+        const filteredRecommendValues = [
+          ...recommendedValues,
+          !withCustomOther && value,
+        ]
+          .filter((val, index, array) => array.indexOf(val) === index)
+          .filter(x => x);
+
         return this.setState({
           values: withCustomOther
             ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
@@ -95,14 +94,16 @@ export default Component => {
     };
 
     formatOption = option => {
-      const { allowedValuesIntlId, intlId, name } = this.props;
+      const {
+        allowedValuesIntlId,
+        intlId,
+        name,
+        intl: { formatMessage } = {},
+      } = this.props;
 
       const id = `Forms.${allowedValuesIntlId || intlId || name}.${option}`;
 
       const label = formatMessage({ id });
-      // if (withCustomOther) {
-      //   return label === id ? option : label;
-      // }
 
       return label === id ? option : <T id={id} />;
     };
