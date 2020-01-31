@@ -9,6 +9,7 @@ import LoansWithoutRevenues from './LoansWithoutRevenues';
 import CustomersWithoutAssignees from './CustomersWithoutAssignees';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
+import UnpaidCommissions from './UnpaidCommissions';
 
 type AdminDashboardStatsProps = {};
 
@@ -38,6 +39,7 @@ const AdminDashboardStats = ({
         <CustomersWithoutAssignees />
         <RevenuesWithoutAssignees />
         <RevenuesWithoutCommissions />
+        <UnpaidCommissions />
       </div>
     </div>
   </div>
