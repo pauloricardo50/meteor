@@ -7,16 +7,11 @@ import {
   USERS_COLLECTION,
   BORROWERS_COLLECTION,
   ACTIVITIES_COLLECTION,
+  TASKS_COLLECTION,
 } from 'core/api/constants';
 import analysisConfig from './analysisConfig';
 
-export const analysisCollections = [
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  ACTIVITIES_COLLECTION,
-];
+export const analysisCollections = Object.keys(analysisConfig);
 
 export const createBodyFromMap = map => {
   const body = {};
@@ -105,9 +100,12 @@ export const analysisBodies = {
   [BORROWERS_COLLECTION]: createBodyFromMap(
     analysisConfig[BORROWERS_COLLECTION],
   ),
-  [ACTIVITIES_COLLECTION]: {
-    ...createBodyFromMap(analysisConfig[ACTIVITIES_COLLECTION]),
-    // $options: { limit: 5 },
+  [ACTIVITIES_COLLECTION]: createBodyFromMap(
+    analysisConfig[ACTIVITIES_COLLECTION],
+  ),
+  [TASKS_COLLECTION]: {
+    ...createBodyFromMap(analysisConfig[TASKS_COLLECTION]),
+    // $options: { limit: 10 },
   },
 };
 

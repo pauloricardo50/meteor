@@ -6,6 +6,7 @@ import {
   BORROWERS_COLLECTION,
   REVENUE_STATUS,
   ACTIVITIES_COLLECTION,
+  TASKS_COLLECTION,
   ACTIVITY_TYPES,
 } from 'core/api/constants';
 
@@ -172,6 +173,26 @@ const analysisConfig = {
         format: ({ loan }) => loan?.category,
       },
     ],
+  },
+  [TASKS_COLLECTION]: {
+    createdAt: {
+      label: 'Création Mois-Année',
+      format: makeFormatDate('createdAt'),
+    },
+    updatedAt: {
+      label: 'Mis à jour Mois-Année',
+      format: makeFormatDate('updatedAt'),
+    },
+    dueAt: {
+      label: 'Échéance Mois-Année',
+      format: makeFormatDate('dueAt'),
+    },
+    status: { id: 'Forms.status' },
+    assignee: {
+      fragment: { name: 1 },
+      id: 'Forms.assignedTo',
+      format: ({ assignee }) => assignee?.name,
+    },
   },
 };
 
