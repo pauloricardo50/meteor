@@ -41,7 +41,23 @@ const collectionMaps = {
       },
     ],
     anonymous: { id: 'Forms.anonymous' },
-    'user.assignedEmployee.name': { label: 'Conseiller' },
+    assignees: [
+      {
+        fragment: { name: 1 },
+        label: 'Conseiller',
+        format: ({ assignees }) => {
+          if (!assignees || assignees.length === 0) {
+            return 'Personne';
+          }
+
+          return assignees.find(({ $metadata }) => $metadata.isMain).name;
+        },
+      },
+      {
+        label: 'Nb. de conseillers',
+        format: ({ assignees = [] }) => assignees.length,
+      },
+    ],
     'structure.wantedLoan': { id: 'Forms.wantedLoan' },
     revenues: [
       {
