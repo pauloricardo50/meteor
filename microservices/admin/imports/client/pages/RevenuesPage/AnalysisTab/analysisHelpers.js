@@ -40,7 +40,7 @@ const collectionMaps = {
         format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
       },
     ],
-    anonymous: { id: 'Forms.anonymous', defaultValue: { true: true } },
+    anonymous: { id: 'Forms.anonymous' },
     'user.assignedEmployee.name': { label: 'Conseiller' },
     'structure.wantedLoan': { id: 'Forms.wantedLoan' },
     revenues: [
@@ -204,23 +204,12 @@ export const mapData = ({
   });
 
 export const analysisBodies = {
-  [LOANS_COLLECTION]: {
-    ...createBodyFromMap(collectionMaps[LOANS_COLLECTION]),
-    // $filters: { status: 'FINALIZED' },
-    // $options: { limit: 10 },
-  },
-  [REVENUES_COLLECTION]: {
-    ...createBodyFromMap(collectionMaps[REVENUES_COLLECTION]),
-    // $options: { limit: 10 },
-  },
-  [USERS_COLLECTION]: {
-    ...createBodyFromMap(collectionMaps[USERS_COLLECTION]),
-    // $options: { limit: 10 },
-  },
-  [BORROWERS_COLLECTION]: {
-    ...createBodyFromMap(collectionMaps[BORROWERS_COLLECTION]),
-    // $options: { limit: 10 },
-  },
+  [LOANS_COLLECTION]: createBodyFromMap(collectionMaps[LOANS_COLLECTION]),
+  [REVENUES_COLLECTION]: createBodyFromMap(collectionMaps[REVENUES_COLLECTION]),
+  [USERS_COLLECTION]: createBodyFromMap(collectionMaps[USERS_COLLECTION]),
+  [BORROWERS_COLLECTION]: createBodyFromMap(
+    collectionMaps[BORROWERS_COLLECTION],
+  ),
 };
 
 // FIXME: Not working yet, bug in react-pivottable
