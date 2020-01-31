@@ -19,4 +19,8 @@ Activities.addLinks({
     field: 'userLink',
     metadata: true,
   },
+  createdByUser: {
+    collection: Users,
+    field: 'createdBy',
+  },
 });

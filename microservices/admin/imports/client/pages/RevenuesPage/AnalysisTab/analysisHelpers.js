@@ -5,154 +5,18 @@ import {
   LOANS_COLLECTION,
   REVENUES_COLLECTION,
   USERS_COLLECTION,
-  LOAN_STATUS_ORDER,
   BORROWERS_COLLECTION,
-  REVENUE_STATUS,
+  ACTIVITIES_COLLECTION,
 } from 'core/api/constants';
+import analysisConfig from './analysisConfig';
 
 export const analysisCollections = [
   LOANS_COLLECTION,
   REVENUES_COLLECTION,
   USERS_COLLECTION,
   BORROWERS_COLLECTION,
+  ACTIVITIES_COLLECTION,
 ];
-
-const makeFormatDate = key => ({ [key]: date }) =>
-  date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
-
-const collectionMaps = {
-  [LOANS_COLLECTION]: {
-    category: { id: 'Forms.category' },
-    status: {
-      id: 'Forms.status',
-      format: ({ status }) =>
-        `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
-    },
-    residenceType: { id: 'Forms.residenceType' },
-    'user.roles': { id: 'Forms.roles' },
-    createdAt: [
-      {
-        label: 'Création Mois-Année',
-        format: makeFormatDate('createdAt'),
-      },
-      {
-        label: 'Création Année',
-        format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
-      },
-    ],
-    anonymous: { id: 'Forms.anonymous' },
-    assignees: [
-      {
-        fragment: { name: 1 },
-        label: 'Conseiller',
-        format: ({ assignees }) => {
-          if (!assignees || assignees.length === 0) {
-            return 'Personne';
-          }
-
-          return assignees.find(({ $metadata }) => $metadata.isMain).name;
-        },
-      },
-      {
-        label: 'Nb. de conseillers',
-        format: ({ assignees = [] }) => assignees.length,
-      },
-    ],
-    'structure.wantedLoan': { id: 'Forms.wantedLoan' },
-    revenues: [
-      {
-        id: 'collections.revenues',
-        fragment: { amount: 1, status: 1 },
-        format: ({ revenues = [] }) =>
-          revenues.reduce((t, { amount }) => t + amount, 0),
-      },
-      {
-        label: 'Revenus encaissés',
-        format: ({ revenues = [] }) =>
-          revenues
-            .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
-            .reduce((t, { amount }) => t + amount, 0),
-      },
-    ],
-  },
-  [REVENUES_COLLECTION]: {
-    amount: { id: 'Forms.amount' },
-    type: { id: 'Forms.type' },
-    secondaryType: { id: 'Forms.secondaryType' },
-    status: { id: 'Forms.status' },
-    'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
-    paidAt: {
-      label: 'Payé Mois-Année',
-      format: makeFormatDate('paidAt'),
-    },
-    expectedAt: {
-      label: 'Attendu Mois-Année',
-      format: makeFormatDate('expectedAt'),
-    },
-    'assignee.name': { label: 'Responsable' },
-    organisations: [
-      {
-        fragment: { name: 1 },
-        label: 'Commission %',
-        format: ({ organisations = [] }) =>
-          organisations.reduce(
-            (t, { $metadata: { commissionRate } }) => t + commissionRate,
-            0,
-          ),
-      },
-      {
-        label: 'Commission payée à',
-        format: ({ organisations = [] }) =>
-          organisations.map(({ name }) => name),
-      },
-      {
-        label: 'Commission à payer',
-        format: ({ organisations = [], amount }) =>
-          organisations.reduce(
-            (t, { $metadata: { commissionRate } }) =>
-              t + commissionRate * amount,
-            0,
-          ),
-      },
-    ],
-    loan: [
-      {
-        label: 'Catégorie du dossier',
-        fragment: { category: 1, status: 1 },
-        format: ({ loan }) => loan && loan.category,
-      },
-      {
-        label: 'Statut du dossier',
-        fragment: { category: 1, status: 1 },
-        format: ({ loan: { status } = {} }) =>
-          status
-            ? `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`
-            : undefined,
-      },
-    ],
-  },
-  [USERS_COLLECTION]: {
-    roles: { id: 'Forms.roles' },
-    'referredByOrganisation.name': { id: 'Forms.referredBy' },
-    createdAt: {
-      label: 'Création Mois-Année',
-      format: makeFormatDate('createdAt'),
-    },
-    'assignedEmployee.name': { label: 'Conseiller' },
-  },
-  [BORROWERS_COLLECTION]: {
-    age: { id: 'Forms.age' },
-    gender: { id: 'Forms.gender' },
-    isSwiss: { id: 'Forms.isSwiss' },
-    civilStatus: { id: 'Forms.civilStatus' },
-    createdAt: {
-      label: 'Création Mois-Année',
-      format: makeFormatDate('createdAt'),
-    },
-    netSalary: { id: 'Forms.netSalary' },
-    salary: { id: 'Forms.salary' },
-  },
-};
 
 export const createBodyFromMap = map => {
   const body = {};
@@ -202,7 +66,7 @@ export const mapData = ({
   data,
   collection,
   formatMessage,
-  map = collectionMaps[collection],
+  map = analysisConfig[collection],
 }) =>
   data.map(obj => {
     const newObj = {};
@@ -235,12 +99,16 @@ export const mapData = ({
   });
 
 export const analysisBodies = {
-  [LOANS_COLLECTION]: createBodyFromMap(collectionMaps[LOANS_COLLECTION]),
-  [REVENUES_COLLECTION]: createBodyFromMap(collectionMaps[REVENUES_COLLECTION]),
-  [USERS_COLLECTION]: createBodyFromMap(collectionMaps[USERS_COLLECTION]),
+  [LOANS_COLLECTION]: createBodyFromMap(analysisConfig[LOANS_COLLECTION]),
+  [REVENUES_COLLECTION]: createBodyFromMap(analysisConfig[REVENUES_COLLECTION]),
+  [USERS_COLLECTION]: createBodyFromMap(analysisConfig[USERS_COLLECTION]),
   [BORROWERS_COLLECTION]: createBodyFromMap(
-    collectionMaps[BORROWERS_COLLECTION],
+    analysisConfig[BORROWERS_COLLECTION],
   ),
+  [ACTIVITIES_COLLECTION]: {
+    ...createBodyFromMap(analysisConfig[ACTIVITIES_COLLECTION]),
+    // $options: { limit: 5 },
+  },
 };
 
 // FIXME: Not working yet, bug in react-pivottable
@@ -256,7 +124,7 @@ export const getDefaultSettingsForCollection = ({
     return;
   }
 
-  const map = collectionMaps[collection];
+  const map = analysisConfig[collection];
 
   const defaultFilters = Object.values(map)
     .filter(config => !!config.defaultValue)
