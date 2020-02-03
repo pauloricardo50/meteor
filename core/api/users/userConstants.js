@@ -37,6 +37,6 @@ export const ACQUISITION_CHANNELS = {
   ADVERTISING: 'ADVERTISING',
   SOCIAL_MEDIA: 'SOCIAL_MEDIA',
   PAPER_ARTICLE: 'PAPER_ARTICLE',
-  "Tout l'immobilier": "Tout l'immobilier",
+  "tout l'immobilier": "tout l'immobilier",
   WEBSITE: 'WEBSITE',
 };

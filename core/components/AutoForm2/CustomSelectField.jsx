@@ -205,8 +205,7 @@ const CustomSelectField = ({
   onChange,
   ...props
 }) => {
-  const isCustomOther =
-    withCustomOther && values.length && !values.includes(value);
+  const isCustomOther = withCustomOther && !values.includes(value);
   const [customOther, setCustomOther] = useState(
     isCustomOther ? value : undefined,
   );

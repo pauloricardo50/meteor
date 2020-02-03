@@ -173,6 +173,10 @@ export default Component => {
         return <Loading small />;
       }
 
+      if (!values || !values.length) {
+        return null;
+      }
+
       return (
         <Component
           {...rest}
