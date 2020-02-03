@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import HighchartsExporting from 'highcharts-exporting';
+import HighchartsExportData from 'highcharts-export-data';
 
 import Chart from 'core/components/charts/Chart';
 import { injectIntl } from 'react-intl';
@@ -107,6 +109,10 @@ const MonitoringChart = ({
           },
         }}
         series={series}
+        highchartsWrappers={{
+          HighchartsExporting,
+          HighchartsExportData,
+        }}
       />
     </div>
   );
