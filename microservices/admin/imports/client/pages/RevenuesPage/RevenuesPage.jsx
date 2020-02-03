@@ -6,6 +6,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import RevenuesPageTab from './RevenuesPageTab';
 import CommissionsTab from './CommissionsTab';
 import MonitoringTab from './MonitoringTab';
+import AnalysisTab from './AnalysisTab/loadable';
 
 type RevenuesPageProps = {};
 
@@ -24,6 +25,11 @@ const tabs = [
     id: 'commissions',
     label: 'Commissions',
     content: <CommissionsTab />,
+  },
+  {
+    id: 'analysis',
+    label: 'Analyse',
+    content: <AnalysisTab />,
   },
 ].map(tab => ({
   ...tab,

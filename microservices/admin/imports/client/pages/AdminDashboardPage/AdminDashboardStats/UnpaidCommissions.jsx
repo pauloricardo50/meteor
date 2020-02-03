@@ -2,19 +2,35 @@
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { adminRevenues } from 'core/api/revenues/queries';
-import { REVENUE_STATUS } from 'core/api/constants';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import {
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+  COMMISSION_STATUS,
+} from 'core/api/constants';
+import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import CurrentUserContext from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-type OutdatedRevenuesProps = {};
+type UnpaidCommissionsProps = {};
 
-const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
+const UnpaidCommissions = (props: UnpaidCommissionsProps) => {
   const currentUser = useContext(CurrentUserContext);
+  const { data: revenues = [], loading } = useStaticMeteorData({
+    query: REVENUES_COLLECTION,
+    params: {
+      $filters: {
+        status: REVENUE_STATUS.CLOSED,
+        'organisationLinks.status': COMMISSION_STATUS.TO_BE_PAID,
+      },
+      amount: 1,
+      organisationLinks: 1,
+      loan: { name: 1 },
+      assigneeLink: 1,
+    },
+  });
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(
     ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,
@@ -26,7 +42,7 @@ const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
       value={<CountUp end={total} prefix="CHF " preserveValue separator=" " />}
       increment={`Dont ${myRevenues.length} à moi`}
       positive={isOk}
-      title="Revenus en retard"
+      title="Commissions à payer"
       top={
         isOk ? (
           <p>Tout est bon!</p>
@@ -35,8 +51,7 @@ const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
             primary
             link
             to={createRoute(ADMIN_ROUTES.REVENUES_PAGE.path, {
-              tabId: 'revenues',
-              revenuesTabId: 'list',
+              tabId: 'commissions',
             })}
           >
             Résoudre le problème
@@ -47,12 +62,4 @@ const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
   );
 };
 
-export default withSmartQuery({
-  query: adminRevenues,
-  params: {
-    status: REVENUE_STATUS.EXPECTED,
-    expectedAt: { $lte: new Date() },
-    $body: { amount: 1, assigneeLink: 1 },
-  },
-  dataName: 'revenues',
-})(OutdatedRevenues);
+export default UnpaidCommissions;

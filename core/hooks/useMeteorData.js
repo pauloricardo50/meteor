@@ -2,6 +2,17 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { useState, useEffect } from 'react';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
+const getQuery = (query, params) => {
+  if (!query) {
+    return;
+  }
+
+  if (typeof query === 'string') {
+    return createQuery({ [query]: params });
+  }
+  return query.clone(params);
+};
+
 const getStaticFunction = type =>
   ({
     single: 'fetchOne',
@@ -20,15 +31,15 @@ export const useStaticMeteorData = (
   const [data, setData] = useState();
   const [error, setError] = useState();
 
-  let finalQuery;
-
-  if (typeof query === 'string') {
-    finalQuery = createQuery({ [query]: params });
-  } else {
-    finalQuery = query.clone(params);
-  }
+  const finalQuery = getQuery(query, params);
 
   const refetch = () => {
+    if (!finalQuery) {
+      setLoading(false);
+      setData(null);
+      return;
+    }
+
     setLoading(true);
 
     finalQuery[getStaticFunction(type)]((err, res) => {
@@ -52,13 +63,7 @@ export const useReactiveMeteorData = (
   { query, params, type = 'many' },
   deps = [],
 ) => {
-  let finalQuery;
-
-  if (typeof query === 'string') {
-    finalQuery = createQuery({ [query]: params });
-  } else {
-    finalQuery = query.clone(params);
-  }
+  const finalQuery = getQuery(query, params);
 
   const { loading, subscribedQuery } = useTracker(() => {
     const handle = finalQuery[getSubscriptionFunction(type)]();
