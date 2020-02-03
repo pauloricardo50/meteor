@@ -16,7 +16,7 @@ import { compose } from 'recompose';
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 import { ignoreProps } from '../../containers/updateForProps';
 import { OTHER_ALLOWED_VALUE } from './constants';
-import TextInput from '../TextInput/TextInput';
+import TextInput from '../TextInput';
 
 type CustomSelectFieldProps = {
   transform: Function,
@@ -205,7 +205,8 @@ const CustomSelectField = ({
   onChange,
   ...props
 }) => {
-  const isCustomOther = withCustomOther && !values.includes(value);
+  const isCustomOther =
+    withCustomOther && values.length && !values.includes(value);
   const [customOther, setCustomOther] = useState(
     isCustomOther ? value : undefined,
   );
@@ -236,7 +237,7 @@ const CustomSelectField = ({
             value={customOther}
             onChange={val => {
               setCustomOther(val);
-              onChange(val, props.name);
+              onChange(val, props.key);
             }}
             label="Préciser"
             className="mb-8"

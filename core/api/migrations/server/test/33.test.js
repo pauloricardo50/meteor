@@ -5,6 +5,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import generator from 'core/api/factories/index';
 import { ACQUISITION_CHANNELS } from 'core/api/users/userConstants';
+import ActivityService from 'core/api/activities/server/ActivityService';
 import { up, down } from '../33';
 import UserService from '../../../users/server/UserService';
 
@@ -60,7 +61,7 @@ describe('Migration 33', () => {
       );
     });
 
-    it('adds REFERRAL_PRO acquisition channel when user is referred by am organisation', async () => {
+    it('adds REFERRAL_PRO acquisition channel when user is referred by an organisation', async () => {
       generator({
         organisations: { _id: 'org' },
         users: [
@@ -83,7 +84,37 @@ describe('Migration 33', () => {
       );
     });
 
-    it('does not add acquisition channel when user not referred', async () => {
+    it('adds REFERRAL_API acquisition channel when user is referred via API', async () => {
+      generator({
+        users: [
+          { _id: 'pro', _factory: 'pro' },
+          {
+            _id: 'user',
+            _factory: 'user',
+            referredByUserLink: 'pro',
+          },
+        ],
+      });
+
+      ActivityService.addCreatedAtActivity({
+        createdAt: new Date(),
+        description: 'Référé par Pro, API Realforce',
+        title: 'Compte créé',
+        userLink: { _id: 'user' },
+      });
+
+      await up();
+
+      const user = UserService.get('user', {
+        acquisitionChannel: 1,
+      });
+
+      expect(user.acquisitionChannel).to.equal(
+        ACQUISITION_CHANNELS.REFERRAL_API,
+      );
+    });
+
+    it('does not add acquisition channel when user is not referred', async () => {
       generator({
         users: [
           {

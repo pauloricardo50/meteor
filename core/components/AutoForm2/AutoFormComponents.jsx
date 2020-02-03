@@ -43,9 +43,7 @@ const determineComponentFromProps = ({
     return {
       Component: CustomSelectField,
       type: COMPONENT_TYPES.SELECT,
-      props: {
-        variant: 'outlined',
-      },
+      props: { variant: 'outlined' },
     };
   }
 

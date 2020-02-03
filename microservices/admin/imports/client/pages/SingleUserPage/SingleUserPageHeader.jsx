@@ -170,12 +170,6 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
                 collection={USERS_COLLECTION}
                 doc={user}
                 fields={['acquisitionChannel']}
-                // extendSchema={{
-                //   acquisitionChannel: {
-                //     allowedValues: Object.values(ACQUISITION_CHANNELS),
-                //     uniforms: { withCustomOther: true },
-                //   },
-                // }}
                 autosaveDelay={250}
                 style={{ maxWidth: 250 }}
               />

@@ -1,5 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
+import ActivityService from 'core/api/activities/server/ActivityService';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import UserService from '../../users/server/UserService';
 import { ROLES, ACQUISITION_CHANNELS } from '../../users/userConstants';
 
@@ -17,6 +19,25 @@ export const up = () => {
 
   return Promise.all(
     users.map(({ _id, referredByUser, referredByOrganisation }) => {
+      const { description = '' } =
+        ActivityService.get(
+          {
+            'userLink._id': _id,
+            'metadata.event': ACTIVITY_EVENT_METADATA.CREATED,
+          },
+          { description: 1 },
+        ) || {};
+
+      if (description && description.includes(' API ')) {
+        return UserService.rawCollection.update(
+          { _id },
+          {
+            $set: {
+              acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_API,
+            },
+          },
+        );
+      }
       if (referredByUser) {
         return UserService.rawCollection.update(
           { _id },
