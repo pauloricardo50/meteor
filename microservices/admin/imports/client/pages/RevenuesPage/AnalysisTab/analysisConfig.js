@@ -131,6 +131,7 @@ const analysisConfig = {
       format: makeFormatDate('createdAt'),
     },
     'assignedEmployee.name': { label: 'Conseiller' },
+    acquisitionChannel: { id: 'Forms.acquisitionChannel' },
   },
   [BORROWERS_COLLECTION]: {
     age: { id: 'Forms.age' },

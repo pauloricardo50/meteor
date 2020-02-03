@@ -19,11 +19,12 @@ const UpdateField = ({
   onSuccess,
   onSubmit = makeOnSubmit({ collection, doc, fields, onSuccess }),
   onSubmitCallback = () => ({}),
+  extendSchema = {},
   ...props
 }: UpdateFieldProps) => (
   <AutoForm
     autosave
-    schema={schemas[collection].pick(...fields)}
+    schema={schemas[collection].pick(...fields).extend(extendSchema)}
     model={doc}
     onSubmit={values => onSubmit(values).then(onSubmitCallback)}
     className="update-field"

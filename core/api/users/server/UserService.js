@@ -12,9 +12,10 @@ import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
-import { ROLES } from '../userConstants';
+import { ROLES, ACQUISITION_CHANNELS } from '../userConstants';
 import Users from '../users';
 import roundRobinAdvisors from './roundRobinAdvisors';
+import { getAPIUser } from '../../RESTAPI/server/helpers';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
@@ -75,6 +76,31 @@ export class UserServiceClass extends CollectionService {
       this.setReferredByOrganisation({
         userId: newUserId,
         organisationId: referredByOrganisation._id,
+      });
+    }
+
+    const APIUser = getAPIUser();
+
+    if (APIUser) {
+      this.update({
+        userId: newUserId,
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_API },
+      });
+    } else if (referredByUserId || referredByOrganisation) {
+      const userReferral =
+        referredByUserId && this.get(referredByUserId, { roles: 1 });
+      const isReferralAdmin =
+        userReferral &&
+        (Roles.userIsInRole(userReferral, ROLES.ADMIN) ||
+          Roles.userIsInRole(userReferral, ROLES.DEV));
+
+      this.update({
+        userId: newUserId,
+        object: {
+          acquisitionChannel: isReferralAdmin
+            ? ACQUISITION_CHANNELS.REFERRAL_ADMIN
+            : ACQUISITION_CHANNELS.REFERRAL_PRO,
+        },
       });
     }
 

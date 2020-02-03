@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import T from '../Translation';
 import Chip from '../Material/Chip';
 import Loading from '../Loading';
+import { OTHER_ALLOWED_VALUE } from './constants';
 
 export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
@@ -33,8 +34,30 @@ export default Component => {
     }
 
     getAllowedValues = props => {
-      const { customAllowedValues, model, parent } = props;
+      const {
+        customAllowedValues,
+        model,
+        parent,
+        recommendedValues,
+        withCustomOther,
+        value,
+      } = props;
       const { values } = this.state;
+
+      if (recommendedValues) {
+        const filteredRecommendValues = [
+          ...recommendedValues,
+          !withCustomOther && value,
+        ]
+          .filter((val, index, array) => array.indexOf(val) === index)
+          .filter(x => x);
+
+        return this.setState({
+          values: withCustomOther
+            ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
+            : filteredRecommendValues,
+        });
+      }
 
       if (customAllowedValues) {
         this.setState({ loading: !values || !values.length });
@@ -71,10 +94,18 @@ export default Component => {
     };
 
     formatOption = option => {
-      const { allowedValuesIntlId, intlId, name } = this.props;
-      return (
-        <T id={`Forms.${allowedValuesIntlId || intlId || name}.${option}`} />
-      );
+      const {
+        allowedValuesIntlId,
+        intlId,
+        name,
+        intl: { formatMessage } = {},
+      } = this.props;
+
+      const id = `Forms.${allowedValuesIntlId || intlId || name}.${option}`;
+
+      const label = formatMessage({ id });
+
+      return label === id ? option : <T id={id} />;
     };
 
     renderValue = value => {
@@ -140,6 +171,10 @@ export default Component => {
 
       if (loading) {
         return <Loading small />;
+      }
+
+      if (!values || !values.length) {
+        return null;
       }
 
       return (

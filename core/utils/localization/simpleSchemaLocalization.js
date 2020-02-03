@@ -50,6 +50,7 @@ const translateSimpleSchema = () => {
               return "Le format n'est pas valide";
           }
         },
+        noOther: 'Veuillez préciser',
       },
     },
   });
