@@ -1,0 +1,108 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  align-items: stretch;
+  flex-grow: 1;
+  justify-content: center;
+
+  height: 100%;
+  min-height: 800px;
+
+  @include screen(med) {
+    flex-direction: column;
+  }
+  @include screen(med) {
+    .right .content {
+      margin-top: 0;
+    }
+  }
+
+  .login-input {
+    input {
+      font-family: Eina04-Regular, Helvetica !important;
+      font-size: 16px !important;
+    }
+  }
+
+  .right,
+  .left {
+    display: flex;
+    align-items: center;
+    flex-basis: 50%;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+
+    padding: 32px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .left {
+    color: white;
+    background-color: $primary;
+
+    h1 {
+      color: white;
+    }
+
+    .content {
+      flex-grow: 1;
+      justify-content: flex-start;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 16px;
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: center;
+
+      margin-bottom: 80px;
+
+      @include screen(med) {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .right .content {
+    margin-top: 100px;
+  }
+
+  .divider {
+    width: 50px;
+    height: 4px;
+    margin: 8px 0;
+
+    background-color: white;
+  }
+
+  a {
+    color: $primary !important;
+  }
+
+  .login-fields {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login-field {
+    margin-bottom: 16px;
+  }
+
+  .no-account {
+    margin-bottom: 16px;
+  }
+}

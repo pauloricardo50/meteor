@@ -1,0 +1,48 @@
+.widget1-inputs {	
+  position: relative;	
+
+  display: flex;	
+  flex-direction: column;	
+
+  &-list {	
+    display: flex;	
+    align-items: stretch;	
+    flex-direction: column;	
+    flex-grow: 1;	
+    justify-content: space-between;	
+  }	
+
+  .widget1-single-input {	
+    padding: 8px 0;	
+
+    &:last-child {	
+      padding-bottom: 0;	
+    }	
+  }	
+}	
+
+.widget1-inputs .widget1-single-inputs-overdrive {	
+  display: flex;	
+  flex-grow: 1;	
+
+  width: 100%;	
+}	
+
+.widget1-inputs .card-bottom {	
+  display: flex;	
+  align-items: center;	
+
+  .icon {	
+    margin-right: 8px;	
+  }	
+
+  p {	
+    margin: 0;	
+  }	
+}	
+
+.widget1-inputs-reset {	
+  position: absolute;	
+  top: 8px;	
+  right: 8px;	
+}

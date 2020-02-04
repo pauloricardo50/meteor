@@ -1,0 +1,19 @@
+.tranche-picker {	
+  display: flex;	
+  align-items: center;	
+  flex-direction: column;	
+
+  .tranche {	
+    display: flex;	
+
+    margin-bottom: 16px;	
+
+    .select {	
+      margin: 0 8px;	
+    }	
+
+    .value {	
+      width: 100px;	
+    }	
+  }	
+}

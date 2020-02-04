@@ -1,0 +1,71 @@
+.own-funds-picker-form {
+  display: flex;
+  flex-direction: column;
+
+  .form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .mui-select,
+  .money-input {
+    flex-basis: 180px;
+    flex-shrink: 0;
+
+    margin-bottom: 4px;
+  }
+}
+
+.own-funds-completer {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 8px;
+
+  > :last-child {
+    margin-left: 16px;
+  }
+}
+
+.current-own-funds {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+  margin-bottom: 8px;
+  padding: 8px;
+
+  border: 2px solid $border-grey;
+  border-radius: 4px;
+
+  &:hover {
+    cursor: pointer;
+
+    border-color: $primary;
+  }
+
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  p {
+    align-self: center;
+
+    margin: 0;
+    margin-top: 0;
+  }
+}
+
+.financing-pledge-warning,
+.financing-withdraw-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    padding: 8px;
+  }
+}

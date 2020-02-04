@@ -1,0 +1,26 @@
+.widget1-monthly .card-bottom {	
+  display: flex;	
+  flex-direction: column;	
+  flex-grow: 0;	
+  justify-content: center;	
+
+  .widget1-montly-interests {	
+    margin-bottom: 16px;	
+  }	
+}	
+
+.widget1-monthly .widget1-monthly-chart {	
+  display: flex;	
+  align-items: center;	
+  flex-grow: 1;	
+  justify-content: center;	
+}	
+
+.widget1-monthly .widget1-monthly-chart div {	
+  display: flex;	
+  justify-content: center;	
+}	
+
+.widget1-monthly .highcharts-container {	
+  width: 100%;	
+}

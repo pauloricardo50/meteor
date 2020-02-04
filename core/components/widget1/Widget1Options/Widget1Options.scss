@@ -1,0 +1,55 @@
+.widget1-options {	
+  display: inline-flex;	
+  align-items: center;	
+  flex-direction: column;	
+}	
+
+.widget1-options .usage-type,	
+.widget1-options .purchase-type {	
+  margin: 16px;	
+
+  border-radius: 4px;	
+
+  .widget1-option {	
+    height: unset;	
+    margin: 16px;	
+
+    transition: color 200ms $bezier, background-color 200ms $bezier,	
+    border 200ms $bezier;	
+
+    border-radius: 4px;	
+
+    &:hover {	
+      cursor: pointer;	
+    }	
+
+    &[aria-selected='true'] {	
+      color: white;	
+      background-color: $primary;	
+
+      h4 {	
+        color: white;	
+      }	
+
+      .label img {	
+        filter: none;	
+      }	
+    }	
+
+    .label {	
+      img {	
+        margin: 8px 0;	
+
+        filter: invert(1);	
+      }	
+
+      h4 {	
+        margin: 0;	
+      }	
+    }	
+  }	
+
+  > div > div > span {	
+    height: 0;	
+  }	
+}

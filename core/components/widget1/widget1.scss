@@ -1,0 +1,148 @@
+// Keep these 2 SCSS files outside, as they're also used on the home page	
+@import './Widget1SingleInputForm/Widget1SingleInputForm.scss';	
+@import './Widget1SingleInput/Widget1SingleInput.scss';	
+
+.widget1-page {	
+  @import './Widget1Nav/Widget1Nav.scss';	
+  @import './Widget1Recap/Widget1Recap.scss';	
+  @import './Widget1Monthly/Widget1Monthly.scss';	
+  @import './Widget1Inputs/Widget1Inputs.scss';	
+  @import './Widget1Options/Widget1Options.scss';	
+}	
+
+.widget1-page {	
+  display: flex;	
+  flex-direction: column;	
+  justify-content: flex-start;	
+}	
+
+.widget1-page .widget1-page-content {	
+  display: flex;	
+  align-items: center;	
+  flex-direction: column;	
+  justify-content: center;	
+
+  box-sizing: border-box;	
+  padding: 8px;	
+
+  @include screen(wide, min) {	
+    padding-bottom: 32px;	
+  }	
+}	
+
+.widget1-page .widget1-part-1 {	
+  display: flex;	
+  align-items: flex-start;	
+  flex-direction: row;	
+  flex-wrap: wrap;	
+  justify-content: center;	
+
+  width: 100%;	
+}	
+
+.widget1-page .input-form-placeholder {	
+  display: flex;	
+  align-self: stretch;	
+  flex-grow: 1;	
+
+  width: 100%;	
+  max-width: 364px;	
+  margin: 16px;	
+  padding: 32px;	
+
+  @include screen(wide) {	
+    padding: 16px;	
+  }	
+}	
+
+.widget1-page .widget1-part-2 {	
+  display: flex;	
+  align-items: stretch;	
+  flex-direction: row;	
+  flex-shrink: 0;	
+  flex-wrap: wrap;	
+  justify-content: space-around;	
+
+  width: 100%;	
+  max-width: 1200px;	
+}	
+
+.widget1-page .widget1-part-2 .card1 {	
+  display: flex;	
+  align-items: stretch;	
+  flex-basis: 364px;	
+  flex-direction: column;	
+  flex-grow: 1;	
+
+  max-width: 364px;	
+  margin: 16px;	
+
+  @include screen(xwide) {	
+    margin: 8px;	
+  }	
+
+  .card-top {	
+    display: flex;	
+    align-items: stretch;	
+    flex-direction: column;	
+    flex-grow: 1;	
+
+    padding: 32px;	
+
+    @include screen(xwide) {	
+      padding: 16px;	
+    }	
+  }	
+}	
+
+.widget1-page .widget1-part-2 .card1 h3 {	
+  margin: 0;	
+
+  text-align: center;	
+
+  color: $primary;	
+
+  font-size: 1.4em;	
+
+  @include screen(med) {	
+    margin-bottom: 8px;	
+  }	
+}	
+
+.widget1-page .widget1-part-2 .card1 .card-bottom {	
+  padding: 32px;	
+
+  border-bottom-right-radius: $border-radius;	
+  border-bottom-left-radius: $border-radius;	
+
+  @include screen(xwide) {	
+    padding: 16px;	
+  }	
+}	
+
+.widget1-page .cta {	
+  align-self: center;	
+
+  margin: 16px;	
+  padding: 16px 64px;	
+
+  @include screen(med) {	
+    align-self: stretch;	
+  }	
+}	
+
+.widget1-page-disclaimer {	
+  display: flex;	
+  flex-shrink: 0;	
+  justify-content: center;	
+
+  box-sizing: border-box;	
+  width: 100%;	
+  padding: 16px;	
+
+  text-align: center;	
+
+  .description {	
+    max-width: 600px;	
+  }	
+}

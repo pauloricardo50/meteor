@@ -1,0 +1,56 @@
+.borrower-admin-form,	
+.property-admin-form {	
+  display: flex;	
+  align-self: stretch;	
+  flex-direction: column;	
+
+  h3 {	
+    margin-top: 64px;	
+  }	
+
+  .autofields {	
+    flex-direction: row;	
+    flex-wrap: wrap;	
+  }	
+
+  .grid-col {	
+    grid-auto-flow: unset;	
+    grid-template-columns: repeat(4, minmax(200px, 1fr));	
+  }	
+}	
+
+.admin-mortgage-note-form {	
+  margin-top: 64px;	
+
+  &-title {	
+    display: flex;	
+    align-items: center;	
+
+    h3 {	
+      margin-top: 0;	
+      margin-bottom: 0;	
+    }	
+  }	
+
+  .list {	
+    display: flex;	
+    align-items: flex-start;	
+    flex-direction: row;	
+    flex-wrap: wrap;	
+  }	
+
+  &-single {	
+    display: flex;	
+    align-items: stretch;	
+    flex-direction: column;	
+
+    max-width: 300px;	
+    margin-right: 16px;	
+
+    .autofields > * {	
+      flex-basis: unset;	
+
+      margin-right: 0;	
+    }	
+  }	
+}

@@ -1,0 +1,522 @@
+@import './PromotionCustomers/PromotionCustomers.scss';
+@import './PromotionLotDetail/PromotionLotDetail.scss';
+@import './UserReservation/UserReservation.scss';
+@import './UserPromotionOptionsTable/RequestReservation.scss';
+
+.promotion-page {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  flex-grow: 1;
+
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  &-header {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+
+    height: 50vw;
+    min-height: 200px;
+    max-height: 500px;
+    padding: 32px;
+
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+    @include screen(med) {
+      padding: 16px;
+    }
+
+    .decrement {
+      top: unset;
+      bottom: 8px;
+      left: 8px;
+    }
+
+    .increment {
+      top: unset;
+      bottom: 8px;
+      left: 72px;
+    }
+
+    &-top {
+      display: flex;
+      flex-wrap: wrap-reverse;
+      justify-content: space-between;
+    }
+
+    &-text {
+      padding: 8px;
+
+      border-radius: 4px;
+      background-color: rgba($color: #000, $alpha: 0.4);
+    }
+
+    &-title {
+      margin: 12px 0;
+    }
+
+    &-actions {
+      margin-bottom: 8px;
+
+      > *:last-child {
+        margin-left: 8px;
+      }
+    }
+
+    h1,
+    h3,
+    h4 {
+      margin: 0;
+
+      color: white;
+    }
+
+    h1 {
+      margin-right: 8px;
+    }
+
+    .priority-setter {
+      display: flex;
+      align-items: center;
+
+      > * {
+        margin-left: 4px;
+      }
+    }
+
+    &-linkers {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      width: 100%;
+
+      > * {
+        min-width: 200px;
+        margin-right: 8px;
+
+        @include screen(med) {
+          min-width: 200px;
+        }
+      }
+    }
+
+    &-promotion-loan {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-start;
+
+      .icon-link {
+        margin-left: 8px;
+
+        color: white;
+      }
+    }
+  }
+
+  &-tabs {
+    &.core-tabs-top {
+      margin: 0;
+    }
+  }
+
+  .residence-type-setter {
+    display: flex;
+    align-items: center;
+    align-self: center !important;
+    // On very small screens	
+
+    min-width: 224px;
+    margin: 16px 0;
+    padding: 16px;
+
+    .icon {
+      width: 80px;
+      height: 80px;
+      padding: 8px 24px 8px 16px;
+
+      color: $primary;
+    }
+
+    > * {
+      flex-grow: 1;
+    }
+  }
+
+  &-overview {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    > .card1 {
+      align-self: stretch;
+
+      margin: 16px 0;
+    }
+
+    > button,
+    .mui-table {
+      margin-top: 24px;
+    }
+
+    .promotion-timeline {
+      overflow-x: scroll;
+      align-self: stretch;
+    }
+
+    .mui-table,
+    .additional-lots-table {
+      align-self: stretch;
+    }
+
+    .additional-lots-table {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .promotion-partners {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .contacts,
+    .logos {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      margin-top: 32px;
+    }
+
+    .contacts {
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .contact {
+      display: flex;
+      flex-direction: column;
+
+      margin-right: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      margin: 16px;
+      padding: 32px;
+
+      &-wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+
+        max-width: 200px;
+        height: 120px;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+    }
+  }
+
+  &-map {
+    flex-grow: 1;
+
+    width: 100%;
+    min-height: 500px;
+
+    .map {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+    }
+  }
+
+  .priority-setter {
+    display: flex;
+    align-items: center;
+
+    > * {
+      margin-left: 4px;
+    }
+  }
+}
+
+.modal-promotion-lot-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.priority-order {
+  display: flex;
+
+  > * {
+    margin-right: 4px;
+  }
+
+  .primary {
+    color: white;
+    background-color: $primary;
+  }
+
+  .success {
+    color: white;
+    background-color: $success;
+
+    &:hover {
+      background-color: $success-dark;
+    }
+  }
+
+  .error {
+    color: white;
+    background-color: $error;
+
+    &:hover {
+      background-color: $error-dark;
+    }
+  }
+
+  .icon {
+    color: white;
+  }
+}
+
+.reserve-client-infos {
+  display: flex;
+  flex-direction: column;
+
+  &-table {
+    border-spacing: 16px;
+  }
+}
+
+.promotion-progress {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 8px;
+  }
+}
+
+.promotion-lot-attributer {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 4px;
+  }
+}
+
+.promotion-management {
+  margin-top: 16px;
+
+  &-statuses form {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 100%;
+
+    > * {
+      width: 200px;
+    }
+
+    > *:first-child {
+      margin-right: 8px;
+    }
+  }
+
+  .promotion-recap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+  }
+
+  &-charts {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    padding: 16px;
+
+    .chart {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 600px;
+      height: 400px;
+      padding: 8px;
+
+      @include screen(med) {
+        transform: scale(0.8);
+      }
+
+      .empty {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+
+        .icon {
+          width: 200px;
+          height: 200px;
+
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}
+
+.promotion-reservation-progress {
+  .status-date-form {
+    // Sometimes the form does not stretch properly when opening a	
+    // select field	
+    width: 100%;
+  }
+
+  &.editing &-icons {
+    display: block;
+
+    width: 100%;
+
+    .icon {
+      display: block;
+
+      span {
+        margin-right: 16px;
+      }
+
+      &::after,
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &.full &-icons {
+    display: block;
+
+    .icon {
+      position: relative;
+
+      display: block;
+
+      p {
+        width: 100%;
+      }
+
+      span {
+        margin-right: 16px;
+      }
+
+      &::after {
+        position: absolute;
+        left: 12px;
+
+        height: 24px;
+
+        content: '';
+
+        border-bottom: unset;
+        border-left: 1px solid black;
+      }
+
+      &::after {
+        top: 32px;
+      }
+
+      &::before {
+        display: none;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
+
+  &-icons {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    margin-right: 8px;
+
+    .icon {
+      position: relative;
+
+      display: flex;
+
+      margin-right: 8px;
+
+      &::before,
+      &::after {
+        position: absolute;
+        top: 50%;
+
+        width: 8px;
+
+        content: '';
+
+        border-bottom: 1px solid black;
+      }
+
+      &::after {
+        left: 100%;
+      }
+
+      &::before {
+        right: 100%;
+      }
+
+      &:first-of-type::before,
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
+
+  .reservation-progress-item-modify:hover {
+    cursor: pointer;
+    transition: background-color 0.3s $bezier;
+
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.promotion-reservation-progress-item-tooltip {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  white-space: pre-line;
+}

@@ -1,0 +1,167 @@
+@import './FileDropper.scss';	
+
+.uploader {	
+  .file {	
+    display: flex;	
+    align-items: center;	
+    justify-content: space-between;	
+
+    padding: 4px 0;	
+
+    border-top: 1px solid $light-grey;	
+
+    &-name {	
+      display: block;	
+      overflow: hidden;	
+
+      max-width: 300px;	
+      margin: 0;	
+
+      white-space: nowrap;	
+      text-overflow: ellipsis;	
+    }	
+
+    .actions {	
+      flex-wrap: nowrap;	
+    }	
+
+    .VALID {	
+      color: $success;	
+    }	
+
+    .ERROR {	
+      color: $error;	
+    }	
+
+    .UNVERIFIED {	
+      opacity: 0.6;	
+      color: #000;	
+    }	
+  }	
+}	
+
+.uploader.normal {	
+  display: flex;	
+  flex-direction: column;	
+
+  box-sizing: border-box;	
+  width: 100%;	
+  max-width: 600px;	
+  margin-bottom: 16px;	
+  padding: 16px;	
+
+  border: 1px solid $light-grey;	
+  border-radius: 4px;	
+
+  .title {	
+    display: flex;	
+    flex-direction: column;	
+  }	
+
+  .title-top {	
+    display: flex;	
+    align-items: center;	
+
+    padding-bottom: 8px;	
+
+    .text {	
+      display: flex;	
+      align-items: flex-end;	
+      flex-grow: 1;	
+      flex-wrap: wrap;	
+    }	
+
+    h4,	
+    h5 {	
+      margin: 0;	
+    }	
+  }	
+}	
+
+.uploader.simple {	
+  display: flex;	
+  flex-direction: column;	
+
+  box-sizing: content-box;	
+  padding: 8px;	
+
+  border: 1px solid rgba($color: #000, $alpha: 0);	
+  border-radius: 4px;	
+
+  .file-status-icon,	
+  .display-toggle {	
+    display: none;	
+  }	
+
+  .title {	
+    display: flex;	
+    flex-direction: column;	
+  }	
+
+  .title-top,	
+  .title-top .text {	
+    display: flex;	
+    align-items: center;	
+
+    h4,	
+    h5 {	
+      margin: 0;	
+    }	
+  }	
+}	
+
+.temp-file {	
+  .file {	
+    justify-content: flex-start;	
+
+    height: 48px;	
+  }	
+
+  .uploading-progress {	
+    flex-grow: 1;	
+
+    padding-left: 16px;	
+  }	
+
+  .waiting-loader {	
+    padding-left: 16px;	
+  }	
+}	
+
+.additional-doc-deleter {	
+  margin-left: 8px;	
+}	
+
+.uploader-admin {	
+  display: flex;	
+  align-items: center;	
+  flex-direction: row;	
+
+  width: 100%;	
+  max-width: 600px;	
+
+  .uploader {	
+    flex-grow: 1;	
+  }	
+}	
+
+.file-status-setter {	
+  padding: 4px;	
+
+  border-radius: 4px;	
+
+  &:hover {	
+    cursor: pointer;	
+
+    background-color: $light-grey;	
+  }	
+}	
+
+.file-error {	
+  margin: 0;	
+
+  button {	
+    padding: 0;	
+    padding-left: 8px;	
+  }	
+}

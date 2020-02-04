@@ -1,0 +1,27 @@
+.icon-link {
+  display: inline-block;
+  overflow: hidden;
+
+  max-width: 200px;
+  padding: 2px 4px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  border-radius: 4px;
+
+  > * {
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  &:hover,
+  &:focus {
+    color: white !important;
+    background-color: $primary;
+  }
+
+  .collection-icon {
+    margin-right: 8px;
+  }
+}

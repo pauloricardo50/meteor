@@ -1,0 +1,16 @@
+.autofields {
+  display: flex;
+  flex-direction: column;
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  ul > li > div {
+    margin: 0;
+  }
+}
+
+.list-add-field {
+  flex: 0 0 auto;
+}

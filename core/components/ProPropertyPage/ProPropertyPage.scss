@@ -1,0 +1,67 @@
+@import './ProPropertyPageCustomers/ProPropertyPublicLinkGenerator/PublicLink.scss';
+
+.pro-property-page {
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    h1,
+    h3 {
+      margin: 0 8px;
+    }
+
+    > * {
+      margin-right: 8px !important;
+    }
+
+    &-buttons > * {
+      margin-right: 8px !important;
+    }
+  }
+
+  > * {
+    margin-bottom: 16px;
+  }
+
+  .customers-table {
+    .customers-table-header {
+      align-items: center;
+      justify-content: space-between;
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+    }
+
+    &-solvency {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+
+  .users-table {
+    .users-table-header {
+      align-items: center;
+      justify-content: space-between;
+
+
+      h2 {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.user-list {
+  width: 500px;
+  .user {
+    width: 100%;
+  }
+}
