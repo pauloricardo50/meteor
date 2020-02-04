@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { compose, withState, lifecycle } from 'recompose';
 import cx from 'classnames';
@@ -9,7 +9,7 @@ import ClientEventService from '../../../../api/events/ClientEventService';
 import FinancingSectionSummary from './FinancingSectionSummary';
 import FinancingSectionDetails from './FinancingSectionDetails';
 
-type FinancingSectionExpansionPanelProps = {};
+                                              
 
 const styles = {
   container: {
@@ -40,7 +40,7 @@ const FinancingSectionExpansionPanel = ({
   changeExpanded,
   sectionProps,
   sectionItemProps,
-}: FinancingSectionExpansionPanelProps) => (
+}                                     ) => (
   <ExpansionPanel
     className={cx('financing-structures-section', className, { expanded })}
     CollapseProps={{ classes: { container, entered } }}

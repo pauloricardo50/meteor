@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Loading from '../Loading';
 import GoogleMapsAutocompleteSuggestion from './GoogleMapsAutocompleteSuggestion';
 
-type GoogleMapsAutocompleteResultsProps = {};
+                                             
 
 const styles = theme => ({
   paper: {
@@ -24,7 +24,7 @@ const GoogleMapsAutocompleteResults = ({
   loading,
   getSuggestionItemProps,
   classes: { paper },
-}: GoogleMapsAutocompleteResultsProps) => {
+}                                    ) => {
   if (!loading && !suggestions) {
     return null;
   }

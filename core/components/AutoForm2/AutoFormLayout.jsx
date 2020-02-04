@@ -1,7 +1,7 @@
-// @flow
+//      
 import React from 'react';
 
-type AutoFormLayoutProps = {};
+                              
 
 const renderLayout = ({ layout, renderLayoutItem, renderField, AutoField }) => {
   if (!layout) {
@@ -24,7 +24,7 @@ const AutoFormLayout = ({
   layout,
   schemaKeys,
   automaticFocus,
-}: AutoFormLayoutProps) => {
+}                     ) => {
   let fieldCount = 0;
   const renderedMap = {};
 

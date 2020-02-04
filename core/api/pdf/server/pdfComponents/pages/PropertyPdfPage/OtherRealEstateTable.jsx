@@ -1,15 +1,15 @@
-// @flow
+//      
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
 
-type OtherRealEstateTableProps = {};
+                                    
 
 const OtherRealEstateTable = ({
   loan: { borrowers },
-}: OtherRealEstateTableProps) => {
+}                           ) => {
   const realEstateArray = borrowers.reduce(
     (arr, { realEstate }) => [...arr, ...realEstate],
     [],

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -8,9 +8,9 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import { sendLoanChecklist, taskInsert } from '../../../api';
 import { AutoFormDialog } from '../../AutoForm2';
 
-type LoanChecklistEmailSenderProps = {
-  loan: Object,
-};
+                                      
+               
+  
 
 const schema = new SimpleSchema({
   to: Array,
@@ -34,7 +34,7 @@ const schema = new SimpleSchema({
   },
 });
 
-const LoanChecklistEmailSender = (props: LoanChecklistEmailSenderProps) => {
+const LoanChecklistEmailSender = (props                               ) => {
   const {
     loan,
     onSubmit,

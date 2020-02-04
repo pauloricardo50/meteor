@@ -1,13 +1,13 @@
-// @flow
+//      
 
 const INFINITY = 100000000000000;
 
-type degressiveArgs = {
-  amount: number,
-  brackets: Array<{ rate: number, max: number }>,
-  maxTax?: number,
-  minTax?: number,
-};
+                       
+                 
+                                                 
+                  
+                  
+  
 
 // Calculates the degressive tax on an amount, based on brackets with varying rates
 const degressive = ({
@@ -15,7 +15,7 @@ const degressive = ({
   brackets = [],
   maxTax,
   minTax,
-}: degressiveArgs): number => {
+}                )         => {
   if (amount <= 0) {
     return 0;
   }

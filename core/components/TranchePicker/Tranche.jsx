@@ -1,17 +1,17 @@
-// @flow
+//      
 import React from 'react';
 import Button from '../Button';
 import Select from '../Select';
 import PercentInput from '../PercentInput';
 
-type TrancheProps = {
-  value: number,
-  type: string,
-  removeTranche: Function,
-  setValue: Function,
-  setType: Function,
-  options: Array<Object>,
-};
+                     
+                
+               
+                          
+                     
+                    
+                         
+  
 
 const Tranche = ({
   value,
@@ -20,7 +20,7 @@ const Tranche = ({
   setValue,
   setType,
   options,
-}: TrancheProps) => (
+}              ) => (
   <span className="tranche">
     <PercentInput value={value} onChange={setValue} className="value" />
     <Select

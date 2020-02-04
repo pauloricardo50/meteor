@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import Fab from '@material-ui/core/Fab';
 import { Meteor } from 'meteor/meteor';
@@ -11,9 +11,9 @@ import { ContactButtonContext } from './ContactButtonContext';
 import AdminImpersonateNotification from './AdminImpersonateNotification';
 import UserImpersonateNotification from './UserImpersonateNotification';
 
-type ContactButtonProps = {};
+                             
 
-export const ContactButton = (props: ContactButtonProps) => {
+export const ContactButton = (props                    ) => {
   const { openContact, toggleOpenContact } = useContext(ContactButtonContext);
   const { impersonatedSession } = props;
 

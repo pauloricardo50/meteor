@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { AutoFormDialog } from '../../../../AutoForm2/AutoFormDialog';
@@ -7,14 +7,14 @@ import Button from '../../../../Button';
 import Dialog from '../../../../Material/Dialog';
 import T from '../../../../Translation';
 
-type StatusDateDialogFormProps = {};
+                                    
 
 const StatusDateDialogForm = ({
   openConfirmDialog,
   confirmDialogActions,
   confirmDialogProps,
   ...props
-}: StatusDateDialogFormProps) => (
+}                           ) => (
   <>
     <AutoFormDialog {...props} noButton />
     <Dialog

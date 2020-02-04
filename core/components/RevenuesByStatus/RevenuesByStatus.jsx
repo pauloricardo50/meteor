@@ -1,12 +1,12 @@
-// @flow
+//      
 import React from 'react';
 
 import Table from '../Table';
 import RevenuesByStatusContainer from './RevenuesByStatusContainer';
 
-type RevenuesByStatusProps = {};
+                                
 
-const RevenuesByStatus = ({ rows, columnOptions }: RevenuesByStatusProps) => (
+const RevenuesByStatus = ({ rows, columnOptions }                       ) => (
   <Table
     className="revenues-by-status"
     rows={rows}

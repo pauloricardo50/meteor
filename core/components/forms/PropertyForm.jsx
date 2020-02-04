@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import omit from 'lodash/omit';
 
@@ -8,7 +8,7 @@ import AutoForm from '../AutoForm2';
 import Box from '../Box';
 import MortgageNotesForm from './MortgageNotesForm';
 
-type PropertyFormProps = {};
+                            
 
 const baseFields = [
   'status',
@@ -104,7 +104,7 @@ const insertMortgageNote = propertyId => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const PropertyForm = ({ property }: PropertyFormProps) => {
+const PropertyForm = ({ property }                   ) => {
   const { _id: propertyId, mortgageNotes } = property;
   return (
     <div className="property-admin-form">

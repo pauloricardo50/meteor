@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react';
 
 import Loading from '../../Loading';
@@ -6,19 +6,19 @@ import StickyPopover from '../../StickyPopover';
 import queries from './queries';
 import { titles, components } from './CollectionIconLinkPopupComponents';
 
-type CollectionIconLinkPopupProps = {
-  _id: string,
-  children: any,
-  collection: string,
-};
-type CollectionIconLinkPopupState = {
-  data?: Object,
-};
+                                     
+              
+                
+                     
+  
+                                     
+                
+  
 
-export default class CollectionIconLinkPopup extends Component<
-  CollectionIconLinkPopupProps,
-  CollectionIconLinkPopupState,
-> {
+export default class CollectionIconLinkPopup extends Component 
+                               
+                               
+  {
   constructor(props) {
     super(props);
     this.state = { data: null };

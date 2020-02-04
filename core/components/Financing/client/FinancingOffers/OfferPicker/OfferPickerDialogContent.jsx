@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import T, { Percent, Money } from '../../../../Translation';
@@ -6,9 +6,9 @@ import { RecapSimple } from '../../../../Recap';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import { getProperty } from '../../FinancingCalculator';
 
-type OfferPickerDialogContentProps = {};
+                                        
 
-const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
+const OfferPickerDialogContent = (props                               ) => {
   const { offer } = props;
   const property = getProperty(props);
   const {

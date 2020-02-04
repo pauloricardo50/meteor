@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { OWN_FUNDS_USAGE_TYPES } from 'core/api/loans/loanConstants';
@@ -7,7 +7,7 @@ import { toMoney } from '../../../../../../utils/conversionFunctions';
 import PdfTable from '../../PdfTable';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
-type PledgeTableProps = {};
+                           
 
 const getBorrowerNameSuffix = ({ borrowers = [], borrowerId }) => {
   if (borrowers.length === 1) {
@@ -72,7 +72,7 @@ const getPledgeRows = ({ loan, structureId, calculator }) => {
   ];
 };
 
-const PledgeTable = ({ loan, structureId, calculator }: PledgeTableProps) => {
+const PledgeTable = ({ loan, structureId, calculator }                  ) => {
   const totalPledged = calculator.getTotalPledged({ loan, structureId });
   return totalPledged ? (
     <PdfTable

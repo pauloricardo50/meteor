@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
@@ -8,7 +8,7 @@ import { ROLES, PROPERTIES_COLLECTION } from 'core/api/constants';
 import { pullPropertyValue, pullBorrowerValue } from 'core/api';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 
-type AdditionalDocDeleterProps = {};
+                                    
 
 const AdditionalDocDeleter = ({
   isAdditionalDoc,
@@ -16,7 +16,7 @@ const AdditionalDocDeleter = ({
   label: keyword,
   collection,
   docId,
-}: AdditionalDocDeleterProps) => {
+}                           ) => {
   const userIsAdmin =
     Roles.userIsInRole(Meteor.user(), ROLES.DEV) ||
     Roles.userIsInRole(Meteor.user(), ROLES.ADMIN);

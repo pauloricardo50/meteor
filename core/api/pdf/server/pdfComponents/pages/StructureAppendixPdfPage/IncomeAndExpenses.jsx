@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Percent from 'core/components/Translation/numberComponents/Percent';
@@ -7,7 +7,7 @@ import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
 
-type IncomeAndExpensesProps = {};
+                                 
 
 const renderExpenses = expenses =>
   Object.keys(expenses).map(expenseType => {
@@ -133,7 +133,7 @@ const IncomeAndExpenses = ({
   loan,
   structureId,
   calculator,
-}: IncomeAndExpensesProps) => (
+}                        ) => (
   <BalanceSheetTable
     titles={['Charges', 'Revenus']}
     leftRows={getExpenseRows({ loan, structureId, calculator })}

@@ -1,4 +1,4 @@
-// @flow
+//      
 // Sorting basics:
 // If the return value is positive, sort a higher up than b
 import moment from 'moment';

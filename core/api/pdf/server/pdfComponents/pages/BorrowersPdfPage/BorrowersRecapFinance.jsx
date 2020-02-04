@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
@@ -18,7 +18,7 @@ import {
   shouldRenderArray,
 } from './borrowersRecapHelpers';
 
-type BorrowersRecapFinanceProps = {};
+                                     
 
 const renderExpenses = (expenses, addTableMoneyLine) =>
   Object.values(EXPENSE_TYPES).map(expense => {
@@ -143,7 +143,7 @@ const BorrowersRecapFinance = ({
   borrowers,
   calculator,
   twoBorrowers,
-}: BorrowersRecapFinanceProps) => (
+}                            ) => (
   <PdfTable
     className={cx('borrowers-recap finance', { twoBorrowers })}
     rows={getBorrowersFinanceArray({ borrowers, anonymous, calculator })}

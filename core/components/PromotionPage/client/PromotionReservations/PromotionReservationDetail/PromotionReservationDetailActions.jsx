@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import colors from '../../../../../config/colors';
@@ -8,22 +8,22 @@ import Button from '../../../../Button';
 import T from '../../../../Translation';
 import PromotionReservationDetailActionsContainer from './PromotionReservationDetailActionsContainer';
 
-type PromotionReservationDetailActionsProps = {
-  promotionOption: Object,
-  agreementDuration: Number,
-  canUploadReservationAgreement: Boolean,
-  canReactivateReservation: Boolean,
-  canCancelReservation: Boolean,
-  canConfirmReservation: Boolean,
-  canSellLot: Boolean,
-  confirmReservationIsDisabled: Boolean,
-  canAddToWaitList: Boolean,
-  cancelReservation: Function,
-  reactivateReservation: Function,
-  addToWaitList: Function,
-  confirmReservation: Function,
-  sellPromotionLot: Function,
-};
+                                               
+                          
+                            
+                                         
+                                    
+                                
+                                 
+                      
+                                        
+                            
+                              
+                                  
+                          
+                               
+                             
+  
 
 const PromotionReservationDetailActions = ({
   promotionOption,
@@ -40,7 +40,7 @@ const PromotionReservationDetailActions = ({
   addToWaitList,
   confirmReservation,
   sellPromotionLot,
-}: PromotionReservationDetailActionsProps) => (
+}                                        ) => (
   <div className="flex center mt-16">
     {canUploadReservationAgreement && (
       <PromotionLotReservationForm

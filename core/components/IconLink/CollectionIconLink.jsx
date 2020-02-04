@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Roles } from 'meteor/alanning:roles';
@@ -21,12 +21,12 @@ import collectionIcons from '../../arrays/collectionIcons';
 import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
 import { getLoanLinkTitle } from './collectionIconLinkHelpers';
 
-type CollectionIconLinkProps = {
-  relatedDoc: Object,
-  stopPropagation?: Boolean,
-  iconClassName?: string,
-  showIcon?: Boolean,
-};
+                                
+                     
+                            
+                         
+                     
+  
 
 const showPopups = Meteor.microservice === 'admin';
 
@@ -152,7 +152,7 @@ const CollectionIconLink = ({
   iconStyle,
   children,
   onClick,
-}: CollectionIconLinkProps) => {
+}                         ) => {
   const { collection, _id: docId } = relatedDoc;
 
   if (!docId) {

@@ -1,4 +1,4 @@
-// @flow
+//      
 import { ACTIVITIES_COLLECTION } from './activities/activityConstants';
 import { ANALYSIS_REPORTS_COLLECTION } from './analysisReports/analysisReportConstants';
 import { BORROWERS_COLLECTION } from './borrowers/borrowerConstants';

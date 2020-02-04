@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -11,12 +11,12 @@ import { AutoFormDialog } from '../../../AutoForm2';
 import Button from '../../../Button';
 import { promotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 
-type ProPromotionLotModifierProps = {
-  promotionLot: Object,
-  updateProperty: Function,
-  submitting: boolean,
-  deletePromotionLot: Function,
-};
+                                     
+                       
+                           
+                      
+                               
+  
 
 const disableModification = promotionLotStatus => {
   const isAdmin = Meteor.microservice === 'admin';
@@ -31,7 +31,7 @@ const ProPromotionLotModifier = ({
   submitting,
   deletePromotionLot,
   className,
-}: ProPromotionLotModifierProps) => {
+}                              ) => {
   const model =
     promotionLot.properties &&
     promotionLot.properties.length > 0 &&

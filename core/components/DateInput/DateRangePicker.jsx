@@ -1,16 +1,16 @@
-// @flow
+//      
 import React, { useState } from 'react';
 import DefaultDateRangePicker from 'react-dates/lib/components/DateRangePicker';
 import moment from 'moment';
 import { defaultDatePickerProps } from './dateInputConstants';
 
-type DateRangePickerProps = {};
+                               
 
 const DateRangePicker = ({
   range,
   onChange,
   ...rest
-}: DateRangePickerProps) => {
+}                      ) => {
   const { startDate, endDate } = range;
   const [focusedInput, onFocusChange] = useState(null);
 

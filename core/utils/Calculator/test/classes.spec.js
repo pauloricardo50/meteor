@@ -1,4 +1,4 @@
-// @flow
+//      
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { compose } from 'recompose';
@@ -12,7 +12,7 @@ class RootCalculator {
     this.initializer = 2;
   }
 
-  add(a: number, b: number): number {
+  add(a        , b        )         {
     return a + b;
   }
 
@@ -20,7 +20,7 @@ class RootCalculator {
     return this.var;
   }
 
-  return2(): number {
+  return2()         {
     return 2;
   }
 
@@ -42,11 +42,11 @@ const withCalc2 = (SuperClass = class {}) =>
       this.initializer = this.initializer * 2;
     }
 
-    increment(a: number): number {
+    increment(a        )         {
       return a + 1;
     }
 
-    setVar(value): void {
+    setVar(value)       {
       this.var = value;
     }
   };
@@ -58,15 +58,15 @@ const withCalc3 = SuperClass =>
       this.initializer = this.initializer + 1;
     }
 
-    multiply(a: number, b: number): number {
+    multiply(a        , b        )         {
       return a * b;
     }
 
-    returnVarChild(): void {
+    returnVarChild()       {
       return this.var;
     }
 
-    return2(): number {
+    return2()         {
       return -2;
     }
 
@@ -173,7 +173,7 @@ describe('Class composition', () => {
 
   it('shows the right types with flow-type', () => {
     class MyClass extends UberClass {
-      return2(): string {
+      return2()         {
         return '2';
       }
 
@@ -197,7 +197,7 @@ describe('Class composition', () => {
         super(props);
       }
 
-      return2(): string {
+      return2()         {
         return '2';
       }
 

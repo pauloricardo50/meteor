@@ -1,4 +1,4 @@
-// @flow
+//      
 import * as React from 'react';
 import cx from 'classnames';
 
@@ -15,13 +15,13 @@ const schema = PropertySchema.pick(
   'value',
 );
 
-type PropertyFormProps = {
-  formTitleId: String,
-  formDescriptionId: String,
-  buttonLabelId: String,
-  className?: string,
-  disabled?: Boolean,
-};
+                          
+                      
+                            
+                        
+                     
+                     
+  
 
 const PropertyForm = ({
   formTitleId,
@@ -30,7 +30,7 @@ const PropertyForm = ({
   className = '',
   disabled,
   ...props
-}: PropertyFormProps) => (
+}                   ) => (
   <div
     className={cx('property-form', className)}
     onClick={event => {

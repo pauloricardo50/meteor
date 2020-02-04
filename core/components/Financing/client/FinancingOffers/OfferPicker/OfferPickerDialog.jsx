@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { lifecycle } from 'recompose';
@@ -7,9 +7,9 @@ import T from '../../../../Translation';
 import Button from '../../../../Button';
 import OfferPickerDialogContent from './OfferPickerDialogContent';
 
-type OfferPickerDialogProps = {};
+                                 
 
-const OfferPickerDialog = (props: OfferPickerDialogProps) => {
+const OfferPickerDialog = (props                        ) => {
   const {
     open,
     handleClose,

@@ -1,13 +1,13 @@
-// @flow
+//      
 import React from 'react';
 import ReactCountUp from 'react-countup';
 
-type CountUpProps = {
-  start?: number,
-  value: number,
-  duration?: number,
-  money?: boolean,
-};
+                     
+                 
+                
+                    
+                  
+  
 
 const CountUp = ({
   start = 0,
@@ -15,7 +15,7 @@ const CountUp = ({
   duration = 2,
   money = false,
   ...otherProps
-}: CountUpProps) => (
+}              ) => (
   <ReactCountUp
     start={start}
     end={value}

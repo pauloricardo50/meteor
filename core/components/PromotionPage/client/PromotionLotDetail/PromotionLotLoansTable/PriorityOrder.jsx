@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -6,7 +6,7 @@ import { createRoute } from '../../../../../utils/routerUtils';
 import Chip from '../../../../Material/Chip';
 import Link from '../../../../Link';
 
-type PriorityOrderProps = {};
+                             
 
 const getChipColor = ({ currentId, userId, promotionLots }) => {
   const attributedTo =
@@ -45,7 +45,7 @@ const PriorityOrder = ({
   promotionOptions = [],
   currentId,
   userId,
-}: PriorityOrderProps) => {
+}                    ) => {
   const { priorityOrder = [] } = promotion.$metadata;
   const options = priorityOrder.map(promotionOptionId =>
     promotionOptions.find(({ _id }) => _id === promotionOptionId),

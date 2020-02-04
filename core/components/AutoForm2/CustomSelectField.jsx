@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -18,12 +18,12 @@ import { ignoreProps } from '../../containers/updateForProps';
 import { OTHER_ALLOWED_VALUE } from './constants';
 import TextInput from '../TextInput';
 
-type CustomSelectFieldProps = {
-  transform: Function,
-  allowedValues: Array,
-  customAllowedValues: Function,
-  model: Object,
-};
+                               
+                      
+                       
+                                
+                
+  
 
 const xor = (item, array) => {
   const index = array.indexOf(item);

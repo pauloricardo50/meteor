@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
@@ -11,14 +11,14 @@ import SingleStructureContainer from '../../containers/SingleStructureContainer'
 import OwnFundsAdder from './OwnFundsAdder';
 import CurrentOwnFunds from './CurrentOwnFunds';
 
-type FinancingOwnFundsPickerProps = {};
+                                       
 
 const FinancingOwnFundsPicker = ({
   structureId,
   structure,
   history,
   ...data
-}: FinancingOwnFundsPickerProps) => {
+}                              ) => {
   const {
     borrowers = [],
     loan: { _id: loanId },

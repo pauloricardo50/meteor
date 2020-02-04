@@ -1,13 +1,13 @@
-// @flow
+//      
 import React from 'react';
 
 import MapWithMarkerWrapper from '../../../maps/MapWithMarkerWrapper';
 
-type PromotionMapProps = {};
+                            
 
 const PromotionMap = ({
   promotion: { address1, city, zipCode },
-}: PromotionMapProps) => (
+}                   ) => (
   <div className="promotion-page-map">
     <MapWithMarkerWrapper
       address1={address1}

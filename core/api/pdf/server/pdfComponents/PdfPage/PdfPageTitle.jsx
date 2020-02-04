@@ -1,9 +1,9 @@
-// @flow
+//      
 import React from 'react';
 
-type PdfPageTitleProps = {};
+                            
 
-const PdfPageTitle = ({ title, subtitle }: PdfPageTitleProps) => {
+const PdfPageTitle = ({ title, subtitle }                   ) => {
   if (!title && !subtitle) {
     return null;
   }

@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -12,13 +12,13 @@ import Icon from '../Icon';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 import MaxPropertyValueSharing from './MaxPropertyValueSharing';
 
-type MaxPropertyValueResultsProps = {
-  loan: Object,
-  recalculate: Function,
-  state: String,
-  residenceType: String,
-  setResidenceType: Function,
-};
+                                     
+               
+                        
+                
+                        
+                             
+  
 
 const getPropertyOrganisation = loan => {
   if (loan.hasProProperty && loan.properties.length === 1) {
@@ -36,7 +36,7 @@ const MaxPropertyValueResults = ({
   recalculate,
   cantonOptions,
   showSecondButton = true,
-}: MaxPropertyValueResultsProps) => {
+}                              ) => {
   const {
     maxPropertyValue: { main, second, borrowerHash, canton },
     hasProProperty,

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
@@ -7,14 +7,14 @@ import T from '../../../Translation';
 import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
 import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';
 
-type UserReservationProps = {};
+                               
 
 const UserReservation = ({
   promotionOption,
   className,
   progressVariant,
   loan,
-}: UserReservationProps) => {
+}                      ) => {
   const {
     reservationAgreement: { expirationDate, startDate },
     promotionLots,

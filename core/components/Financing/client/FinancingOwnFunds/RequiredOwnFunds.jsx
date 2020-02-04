@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { CalculatedValue } from '../FinancingSection';
@@ -6,9 +6,9 @@ import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 import Calculator from '../../../../utils/Calculator';
 import RequiredOwnFundsBody from './RequiredOwnFundsBody';
 
-type RequiredOwnFundsProps = {};
+                                
 
-const RequiredOwnFunds = (props: RequiredOwnFundsProps) => {
+const RequiredOwnFunds = (props                       ) => {
   const {
     updateStructure,
     loan,

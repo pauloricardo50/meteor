@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,9 +11,9 @@ import Icon from '../Icon';
 import { styles } from './fabStyles';
 import T from '../Translation';
 
-type UserImpersonateNotificationProps = {
-  impersonatedSession: Object,
-};
+                                         
+                              
+  
 
 const useStyles = makeStyles(styles);
 
@@ -112,7 +112,7 @@ const getDialog = ({
 
 const UserImpersonateNotification = ({
   impersonatedSession,
-}: UserImpersonateNotificationProps) => {
+}                                  ) => {
   const {
     connectionId,
     lastPageVisited,

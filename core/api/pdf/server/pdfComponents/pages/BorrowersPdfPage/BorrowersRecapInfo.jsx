@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
@@ -8,7 +8,7 @@ import PdfTable from '../../PdfTable';
 import { getBorrowersInfos, shouldRenderArray } from './borrowersRecapHelpers';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
-type BorrowersRecapInfoProps = {};
+                                  
 
 const getBorrowersInfosArray = ({ borrowers, calculator }) => {
   const borrowersInfos = getBorrowersInfos(borrowers, calculator);
@@ -85,7 +85,7 @@ const BorrowersRecapInfo = ({
   borrowers,
   calculator,
   twoBorrowers,
-}: BorrowersRecapInfoProps) => (
+}                         ) => (
     <PdfTable
       className={cx('borrowers-recap info', { twoBorrowers })}
       rows={getBorrowersInfosArray({ borrowers, anonymous, calculator })}

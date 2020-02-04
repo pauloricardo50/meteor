@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 import { Element } from 'react-scroll';
@@ -11,7 +11,7 @@ import TableModifier from '../../../TableModifier';
 import { lotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 import PromotionMetadataContext from '../PromotionMetadata';
 
-type LotsTableProps = {};
+                         
 
 const additionalLotModifierSchema = ({ promotionLots = [], formatMessage }) =>
   lotSchema.extend(
@@ -42,7 +42,7 @@ const LotsTable = ({
   promotion: { promotionLots },
   intl: { formatMessage },
   ...props
-}: LotsTableProps) => {
+}                ) => {
   const {
     permissions: { canModifyLots },
   } = useContext(PromotionMetadataContext);

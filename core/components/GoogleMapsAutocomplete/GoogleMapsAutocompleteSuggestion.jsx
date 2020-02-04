@@ -1,14 +1,14 @@
-// @flow
+//      
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-type GoogleMapsAutocompleteSuggestionProps = {};
+                                                
 
 const GoogleMapsAutocompleteSuggestion = ({
   suggestion,
   getSuggestionItemProps,
-}: GoogleMapsAutocompleteSuggestionProps) => {
+}                                       ) => {
   const {
     description,
     active,

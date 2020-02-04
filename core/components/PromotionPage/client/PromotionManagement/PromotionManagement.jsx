@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 
@@ -12,9 +12,9 @@ import PromotionMetadataContext from '../PromotionMetadata';
 import LotsValueChart from './LotsValueChart';
 import PromotionRecap from './PromotionRecap';
 
-type PromotionManagementProps = {};
+                                   
 
-const PromotionManagement = ({ promotion }: PromotionManagementProps) => {
+const PromotionManagement = ({ promotion }                          ) => {
   const {
     permissions: { canModifyAdminNote },
   } = useContext(PromotionMetadataContext);

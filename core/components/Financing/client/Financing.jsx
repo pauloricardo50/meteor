@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -6,7 +6,7 @@ import { ScrollSync } from 'react-scroll-sync';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 
-import type { userLoan } from '../../../api';
+                                             
 import { PURCHASE_TYPE, LOANS_COLLECTION } from '../../../api/constants';
 import Loading from '../../Loading';
 import UpdateField from '../../UpdateField';
@@ -22,11 +22,11 @@ import FinancingRefinancing from './FinancingRefinancing';
 import FinancingLenders from './FinancingLenders';
 import FinancingDetails from './FinancingDetails';
 
-type FinancingProps = {
-  loan: userLoan,
-};
+                       
+                 
+  
 
-const Financing = ({ loan }: FinancingProps) => {
+const Financing = ({ loan }                ) => {
   if (!loan.structures.length) {
     return <Loading />;
   }

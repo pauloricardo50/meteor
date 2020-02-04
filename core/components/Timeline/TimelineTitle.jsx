@@ -1,13 +1,13 @@
-// @flow
+//      
 import React from 'react';
 import moment from 'moment';
 
 import Icon from '../Icon';
 import Tooltip from '../Material/Tooltip';
 
-type TimelineTitleProps = {};
+                             
 
-const TimelineTitle = ({ title, icon, date, children, iconStyle }: TimelineTitleProps) => (
+const TimelineTitle = ({ title, icon, date, children, iconStyle }                    ) => (
   <div className="timeline-title">
     {children}
     <h4 className="title">

@@ -1,15 +1,15 @@
-// @flow
+//      
 import React from 'react';
 
 import DropdonwMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
 import FinancingHeaderActionsContainer from './FinancingHeaderActionsContainer';
 
-type FinancingHeaderActionsProps = {
-  options: Array<{ onClick: Function, label: React.Node }>,
-};
+                                    
+                                                           
+  
 
-const FinancingHeaderActions = ({ options }: FinancingHeaderActionsProps) => (
+const FinancingHeaderActions = ({ options }                             ) => (
   <DropdonwMenu
     iconType="more"
     className="financing-structures-header-actions"

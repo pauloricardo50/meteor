@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
@@ -11,7 +11,7 @@ import cx from 'classnames';
 import Button from '../Button';
 import Icon from '../Icon';
 
-type DisconnectNotificationProps = {};
+                                      
 
 const useStyles = makeStyles(theme => ({
   errorSnackbar: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 export const DisconnectNotification = ({
   status: { connected },
   timeout = 5000,
-}: DisconnectNotificationProps) => {
+}                             ) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [timer, setTimer] = useState(null);

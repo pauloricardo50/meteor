@@ -1,4 +1,4 @@
-// @flow
+//      
 // @flow
 import React from 'react';
 import { withProps, withState, compose } from 'recompose';
@@ -9,15 +9,15 @@ import T from '../Translation';
 import Button from '../Button';
 import { CIVIL_STATUS } from '../../api/constants';
 
-type BorrowerAddPartnerProps = {
-  handleClick: Function,
-  isLoading: boolean,
-};
+                                
+                        
+                     
+  
 
 const BorrowerAddPartner = ({
   handleClick,
   isLoading,
-}: BorrowerAddPartnerProps) => (
+}                         ) => (
   <div className="borrower-add-partner">
     <Button
       onClick={handleClick}

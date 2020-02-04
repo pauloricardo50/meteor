@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react';
 import cx from 'classnames';
 
@@ -7,15 +7,15 @@ import Input from '../Material/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 import T from '../Translation';
 
-type ClickToEditFieldProps = {
-  isEditing: boolean,
-  toggleEdit: Function,
-  value: string,
-  placeholder?: string,
-  onSubmit: Function,
-};
+                              
+                     
+                       
+                
+                       
+                     
+  
 
-class ClickToEditField extends Component<ClickToEditFieldProps> {
+class ClickToEditField extends Component                        {
   constructor(props) {
     super(props);
     this.input = React.createRef();

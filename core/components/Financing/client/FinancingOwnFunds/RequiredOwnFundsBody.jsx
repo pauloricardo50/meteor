@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagic } from '@fortawesome/pro-light-svg-icons/faMagic';
@@ -10,7 +10,7 @@ import IconButton from '../../../IconButton';
 import { getLabel as getRawLabel } from './financingOwnFundsHelpers';
 import { getBorrowRatioStatus } from '../FinancingResult/financingResultHelpers';
 
-type RequiredOwnFundsBodyProps = {};
+                                    
 
 const getLabel = props => {
   const { value } = props;
@@ -70,7 +70,7 @@ const getLabel = props => {
   );
 };
 
-const RequiredOwnFundsBody = (props: RequiredOwnFundsBodyProps) => {
+const RequiredOwnFundsBody = (props                           ) => {
   const {
     value,
     suggestStructure,

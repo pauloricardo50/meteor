@@ -1,8 +1,8 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
-type BoxProps = {};
+                   
 
 const Box = ({
   title,
@@ -10,7 +10,7 @@ const Box = ({
   className,
   children,
   ...props
-}: BoxProps) => (
+}          ) => (
   <Tag {...props} className={cx('box', className)}>
     {title && <span className="box-title">{title}</span>}
     {children}

@@ -1,4 +1,4 @@
-// @flow
+//      
 import { INTEREST_RATES, SOLVENCY_TYPE, CANTONS } from '../../constants';
 import { moneyField, percentageField } from '../../helpers/sharedSchemas';
 
@@ -47,10 +47,10 @@ export const previousLoanTranchesSchema = {
   },
 };
 
-export type loanTranchesType = Array<{
-  type: string,
-  value: number,
-}>;
+                                      
+               
+                
+   
 
 export const propertyIdsSchema = {
   propertyIds: { type: Array, defaultValue: [], maxCount: 5 },

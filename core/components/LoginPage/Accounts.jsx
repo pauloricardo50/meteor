@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
 import Snackbar from '@material-ui/core/Snackbar';

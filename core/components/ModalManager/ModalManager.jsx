@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useReducer } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 
@@ -32,7 +32,7 @@ import DialogComponents from './DialogComponents';
 //   Open modal
 // </Button>
 
-type ModalManagerProps = {};
+                            
 
 const initialState = { activeModal: null };
 
@@ -106,7 +106,7 @@ const reducer = (state, action) => {
   }
 };
 
-const ModalManager = ({ children }: ModalManagerProps) => {
+const ModalManager = ({ children }                   ) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { activeModal } = state;
   const {

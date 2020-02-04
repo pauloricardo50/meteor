@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -7,9 +7,9 @@ import Icon from '../Icon/Icon';
 import Button from '../Button';
 import { styles } from './fabStyles';
 
-type AdminImpersonateNotificationProps = {
-  impersonatedSession: Object,
-};
+                                          
+                              
+  
 
 const getIcon = ({ followed, shared, userIsConnected }) => {
   if (userIsConnected && !shared) {
@@ -43,7 +43,7 @@ const useStyles = makeStyles(styles);
 
 const AdminImpersonateNotification = ({
   impersonatedSession,
-}: AdminImpersonateNotificationProps) => {
+}                                   ) => {
   const { shared, userIsConnected, followed } = impersonatedSession;
 
   const classes = useStyles();

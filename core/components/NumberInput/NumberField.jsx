@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import FormHelperText from '../Material/FormHelperText';
@@ -6,12 +6,12 @@ import FormControl from '../Material/FormControl';
 import InputLabel, { useInputLabelWidth } from '../Material/Input';
 import NumberInput from './NumberInput';
 
-type NumberFieldProps = {
-  fullWidth?: boolean,
-  label?: React.Node,
-  helperText?: React.Node,
-  required?: boolean,
-};
+                         
+                      
+                     
+                          
+                     
+  
 
 const NumberField = ({
   fullWidth = true,
@@ -19,7 +19,7 @@ const NumberField = ({
   label,
   required,
   ...props
-}: NumberFieldProps) => {
+}                  ) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
 
   return (

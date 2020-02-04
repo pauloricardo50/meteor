@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
@@ -7,9 +7,9 @@ import { COLLECTIONS } from 'core/api/constants';
 import UpdateField from '../UpdateField';
 import T from '../Translation';
 
-type ResidenceTypeSetterProps = {
-  loan: Object,
-};
+                                 
+               
+  
 
 const ResidenceTypeSetter = ({
   loan,
@@ -17,7 +17,7 @@ const ResidenceTypeSetter = ({
   onSubmitCallback,
   noIcon = false,
   text = <T id="Forms.propertyPage.residenceTypeSetter.text" />
-}: ResidenceTypeSetterProps) => {
+}                          ) => {
   const { residenceType } = loan;
   return (
     <div className="card1 residence-type-setter">

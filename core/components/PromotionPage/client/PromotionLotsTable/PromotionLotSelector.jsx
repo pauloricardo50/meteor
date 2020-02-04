@@ -1,11 +1,11 @@
-// @flow
+//      
 import React from 'react';
 import { withProps, compose, withState } from 'recompose';
 
 import { promotionOptionRemove, promotionOptionInsert } from 'core/api';
 import Checkbox from '../../../Checkbox';
 
-type PromotionLotSelectorProps = {};
+                                    
 
 export const PromotionLotSelector = ({
   promotionLotIsSelected,
@@ -13,7 +13,7 @@ export const PromotionLotSelector = ({
   isLoading,
   onChange,
   disabled,
-}: PromotionLotSelectorProps) => (
+}                           ) => (
   <Checkbox
     onChange={event => {
       event.preventDefault();

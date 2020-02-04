@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
@@ -7,7 +7,7 @@ import MaxPropertyValueEmptyState from './MaxPropertyValueEmptyState';
 import MaxPropertyValueResults from './MaxPropertyValueResults';
 import MaxPropertyValueLoading from './MaxPropertyValueLoading';
 
-type MaxPropertyValueProps = {};
+                                
 
 const renderState = props => {
   const { state, loading, loan } = props;
@@ -23,7 +23,7 @@ const renderState = props => {
   return <MaxPropertyValueResults {...props} />;
 };
 
-const MaxPropertyValue = ({ blue, ...props }: MaxPropertyValueProps) => (
+const MaxPropertyValue = ({ blue, ...props }                       ) => (
   <div className="flex-row center">
     <div className={cx('card1 max-property-value', { blue })}>
       {renderState(props)}

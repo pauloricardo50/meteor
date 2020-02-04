@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Calculator from '../../../../utils/Calculator';
@@ -7,7 +7,7 @@ import Icon from '../../../Icon';
 import { CalculatedValue } from '../FinancingSection/components';
 import { getInterestRates } from '../FinancingCalculator';
 
-type FinancingResultInterestsProps = {};
+                                        
 
 const getTooltipTitle = ({ structure, loan, structureId }) => {
   const { offerId } = structure;
@@ -57,7 +57,7 @@ const InterestsTooltip = props => {
 const FinancingResultInterests = ({
   className,
   ...props
-}: FinancingResultInterestsProps) => (
+}                               ) => (
   <div className={className}>
     <CalculatedValue {...props} />
     <Icon

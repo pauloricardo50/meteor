@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -8,7 +8,7 @@ import {
   reducePriorityOrder,
 } from '../../../../api/methods';
 
-type PrioritySetterProps = {};
+                              
 
 const PrioritySetter = ({
   index,
@@ -17,7 +17,7 @@ const PrioritySetter = ({
   onReduce,
   isLoading,
   allowChange,
-}: PrioritySetterProps) => (
+}                     ) => (
   <div className="priority-setter">
     {index + 1}
     {allowChange && (

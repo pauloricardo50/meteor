@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -14,7 +14,7 @@ import PromotionReservationProgressEditor from './PromotionReservationProgressEd
 import PromotionReservationDeadline from '../PromotionReservationDeadline';
 import PromotionReservationDetailActions from './PromotionReservationDetailActions';
 
-type PromotionReservationDetailProps = {};
+                                          
 
 const promotionReservationsArray = [
   {
@@ -26,7 +26,7 @@ const promotionReservationsArray = [
 const PromotionReservationDetail = ({
   promotionOption,
   loan,
-}: PromotionReservationDetailProps) => {
+}                                 ) => {
   const {
     _id: promotionOptionId,
     reservationAgreement: {

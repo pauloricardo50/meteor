@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Select from '../../Select';
@@ -8,7 +8,7 @@ import PropertyCustomerAdder from '../PropertyCustomerAdder';
 import T from '../../Translation';
 import ProPropertyPublicLinkGenerator from './ProPropertyPublicLinkGenerator';
 
-type ProPropertyPageCustomersProps = {};
+                                        
 
 const ProPropertyPageCustomers = ({
   rows,
@@ -18,7 +18,7 @@ const ProPropertyPageCustomers = ({
   loans,
   withAnonymous,
   setWithAnonymous,
-}: ProPropertyPageCustomersProps) => (
+}                               ) => (
   <div className="card1 card-top customers-table">
     <span className="flex customers-table-header">
       <h2>

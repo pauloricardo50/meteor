@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState } from 'react';
 import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';
@@ -12,9 +12,9 @@ import T from '../../Translation';
 import Icon from '../../Icon';
 import { AutoFormDialog } from '../../AutoForm2';
 
-type CustomerAdderProps = {
-  promotion: Object,
-};
+                           
+                    
+  
 
 SimpleSchema.setDefaultMessages({
   messages: {
@@ -89,7 +89,7 @@ const CustomerAdder = ({
   model,
   openOnMount = false,
   resetForm,
-}: CustomerAdderProps) => {
+}                    ) => {
   const { _id: promotionId, status } = promotion;
   const disabled = status !== PROMOTION_STATUS.OPEN;
   const history = useHistory();

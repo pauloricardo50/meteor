@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import merge from 'lodash/merge';
 
@@ -16,7 +16,7 @@ const getConfig = ({ data, name, title, subtitle, config }) =>
     ...config,
   });
 
-type HistogramProps = {};
+                         
 
 const Histogram = ({
   data,
@@ -24,7 +24,7 @@ const Histogram = ({
   subtitle,
   name,
   ...config
-}: HistogramProps) => (
+}                ) => (
   <BaseChart
     config={getConfig({ data, title, subtitle, name, config })}
     data={data}

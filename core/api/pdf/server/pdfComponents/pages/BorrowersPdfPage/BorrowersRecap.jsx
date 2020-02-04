@@ -1,14 +1,14 @@
-// @flow
+//      
 import React from 'react';
 
 import BorrowersRecapInfo from './BorrowersRecapInfo';
 import BorrowersRecapFinance from './BorrowersRecapFinance';
 
-type BorrowersRecapProps = {
-  borrowers: Array<Object>,
-};
+                            
+                           
+  
 
-const BorrowersRecap = (props: BorrowersRecapProps) => (
+const BorrowersRecap = (props                     ) => (
   <div className="borrowers-recap">
     <BorrowersRecapInfo {...props} />
     <BorrowersRecapFinance {...props} />

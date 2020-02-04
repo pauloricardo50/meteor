@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
@@ -7,14 +7,14 @@ import ProPropertyheader from './ProPropertyHeader';
 import DocumentDownloadList from '../DocumentDownloadList';
 import ProPropertyContainer from './ProPropertyContainer';
 
-type ProPropertyProps = {};
+                           
 
 const ProProperty = ({
   property,
   simple,
   loan,
   documents,
-}: ProPropertyProps) => {
+}                  ) => {
   const { address1, city, zipCode } = property;
 
   return (

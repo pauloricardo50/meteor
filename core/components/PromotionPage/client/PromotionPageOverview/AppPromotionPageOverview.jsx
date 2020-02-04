@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import T from '../../../Translation';
@@ -8,12 +8,12 @@ import UserReservation from '../UserReservation';
 import { AppPromotionLotsTable } from '../PromotionLotsTable';
 import ResidenceTypeSetter from '../../../ResidenceTypeSetter';
 
-type AppPromotionPageOverviewProps = {};
+                                        
 
 const AppPromotionPageOverview = ({
   loan,
   promotion,
-}: AppPromotionPageOverviewProps) => {
+}                               ) => {
   const { residenceType, promotionOptions } = loan;
   const activePromotionOptions = Calculator.getActivePromotionOptions({ loan });
 

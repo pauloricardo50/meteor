@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import T from '../../../../Translation';
@@ -6,9 +6,9 @@ import T from '../../../../Translation';
 import OwnFundsCompleterContainer from './OwnFundsCompleterContainer';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 
-type OwnFundsCompleterProps = {};
+                                 
 
-const OwnFundsCompleter = ({ required, current }: OwnFundsCompleterProps) => (
+const OwnFundsCompleter = ({ required, current }                        ) => (
   <div className="own-funds-completer">
     <h4>
       <T

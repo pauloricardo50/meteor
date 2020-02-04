@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
@@ -7,10 +7,10 @@ import { PROMOTION_USERS_ROLES } from 'core/api/constants';
 import { updatePromotionUserRoles } from 'core/api/promotions/methodDefinitions';
 import AutoForm from 'core/components/AutoForm2';
 
-type PromotionUserRolesModifierProps = {
-  model: Object,
-  onSubmit: Function,
-};
+                                        
+                
+                     
+  
 
 const schema = new SimpleSchema({
   roles: { type: Array },
@@ -23,7 +23,7 @@ const schema = new SimpleSchema({
 const PromotionUserRolesModifier = ({
   model,
   onSubmit,
-}: PromotionUserRolesModifierProps) => (
+}                                 ) => (
   <AutoForm
     schema={schema}
     model={model}

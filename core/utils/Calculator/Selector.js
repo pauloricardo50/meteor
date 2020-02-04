@@ -1,4 +1,4 @@
-// @flow
+//      
 import { createSelector } from 'reselect';
 
 import { EMPTY_STRUCTURE } from '../../api/loans/loanConstants';
@@ -70,7 +70,7 @@ export const withSelector = (SuperClass = class {}) =>
       return offers.find(({ _id }) => _id === offerId);
     }
 
-    selectStructure({ loan, structureId } = {}): {} {
+    selectStructure({ loan, structureId } = {})     {
       if (structureId) {
         return loan.structures.find(({ id }) => id === structureId);
       }
@@ -82,7 +82,7 @@ export const withSelector = (SuperClass = class {}) =>
       );
     }
 
-    makeSelectPropertyKey(key: string): Function {
+    makeSelectPropertyKey(key        )           {
       return createSelector(
         this.selectProperty,
         property => property && property[key],
@@ -97,7 +97,7 @@ export const withSelector = (SuperClass = class {}) =>
       return this.makeSelectPropertyKey(key)({ loan, structureId });
     }
 
-    makeSelectStructureKey(key: string): Function {
+    makeSelectStructureKey(key        )           {
       return createSelector(
         this.selectStructure,
         structure => structure && structure[key],
@@ -107,7 +107,7 @@ export const withSelector = (SuperClass = class {}) =>
     selectPropertyValue({
       loan,
       structureId,
-    }: { loan: userLoan } = {}): number {
+    }                     = {})         {
       const structurePropertyValue = this.selectStructureKey({
         key: 'propertyValue',
         loan,
@@ -121,7 +121,7 @@ export const withSelector = (SuperClass = class {}) =>
       );
     }
 
-    selectPropertyWork({ loan, structureId } = {}): number {
+    selectPropertyWork({ loan, structureId } = {})         {
       return this.selectStructureKey({
         loan,
         structureId,
@@ -129,7 +129,7 @@ export const withSelector = (SuperClass = class {}) =>
       });
     }
 
-    selectLoanValue({ loan, structureId } = {}): number {
+    selectLoanValue({ loan, structureId } = {})         {
       return this.selectStructureKey({ loan, structureId, key: 'wantedLoan' });
     }
 

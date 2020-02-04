@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';
@@ -6,7 +6,7 @@ import T, { Money, Percent } from '../../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
 
-type CostsBalanceSheetTableProps = {};
+                                      
 
 const getCostLines = ({ loan, structureId, calculator }) => {
   const fees = calculator.getFees({ loan, structureId });
@@ -156,7 +156,7 @@ const CostsBalanceSheet = ({
   loan,
   structureId,
   calculator,
-}: CostsBalanceSheetTableProps) => (
+}                             ) => (
   <BalanceSheetTable
     titles={["Coût de l'opération", 'Répartition des fonds propres']}
     leftRows={getCostLines({ loan, structureId, calculator })}

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
@@ -11,11 +11,11 @@ import T from '../Translation';
 import { STATE } from './MaxPropertyValueContainer';
 import Icon from '../Icon';
 
-type MaxPropertyValueEmptyStateProps = {
-  loan: Object,
-  state: String,
-  calculateSolvency: Function,
-};
+                                        
+               
+                
+                              
+  
 
 export const getReadyToCalculateTitle = props => {
   const { loan, lockCanton, canton } = props;
@@ -103,7 +103,7 @@ export const MaxPropertyValueEmptyStateReady = ({
   </>
 );
 
-const MaxPropertyValueEmptyState = (props: MaxPropertyValueEmptyStateProps) => {
+const MaxPropertyValueEmptyState = (props                                 ) => {
   const { loan, state } = props;
   return (
     <div className="max-property-value-empty-state animated fadeIn">

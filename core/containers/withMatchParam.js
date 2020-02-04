@@ -1,4 +1,4 @@
-// @flow
+//      
 import { withRouter, matchPath } from 'react-router-dom';
 import isArray from 'lodash/isArray';
 import { compose, mapProps } from 'recompose';
@@ -7,7 +7,7 @@ import { compose, mapProps } from 'recompose';
 // them as simple props from react-router, instead of drilling down
 // match.params.paramName
 export default (
-  paramName: string | string[] | (() => string),
+  paramName                                    ,
   path,
   { passProps } = {},
 ) =>

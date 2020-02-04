@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState, useMemo } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
@@ -7,7 +7,7 @@ import Table from '.';
 import Button from '../Button';
 import T from '../Translation';
 
-type TableWithModalProps = {};
+                              
 
 const getModal = ({
   modalType,
@@ -55,7 +55,7 @@ const TableWithModal = ({
   modalProps,
   rows,
   ...rest
-}: TableWithModalProps) => {
+}                     ) => {
   const [open, setOpen] = useState(false);
   const [activeRowId, setActiveRowId] = useState(null);
   const mappedRows = useMemo(

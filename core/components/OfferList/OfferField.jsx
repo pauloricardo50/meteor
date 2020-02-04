@@ -1,14 +1,14 @@
-// @flow
+//      
 import React from 'react';
 
 import { T, IntlNumber } from '../Translation';
 
-type OfferFieldProps = {};
+                          
 
 const OfferField = ({
   offer,
   offerValue: { key, component, format, value, id },
-}: OfferFieldProps) => {
+}                 ) => {
   if (component) {
     return <div className="offer-list-item-value">{component}</div>;
   }

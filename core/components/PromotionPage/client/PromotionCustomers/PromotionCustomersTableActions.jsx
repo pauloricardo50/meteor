@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { isAllowedToRemoveCustomerFromPromotion } from '../../../../api/security/clientSecurityHelpers';
@@ -8,7 +8,7 @@ import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import PromotionCustomersTableActionsContainer from './PromotionCustomersTableActionsContainer';
 import { CustomerAdderUserSchema } from '../CustomerAdder';
 
-type PromotionCustomersTableActionsProps = {};
+                                              
 
 const PromotionCustomersTableActions = ({
   promotion,
@@ -21,7 +21,7 @@ const PromotionCustomersTableActions = ({
   loan,
   loading,
   currentUser,
-}: PromotionCustomersTableActionsProps) => {
+}                                     ) => {
   const { user = {}, promotionOptions = [], isAnonymized } = loan;
   const options = [];
   const isAllowedToRemove = isAllowedToRemoveCustomerFromPromotion({

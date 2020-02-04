@@ -1,4 +1,4 @@
-// @flow
+//      
 import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,

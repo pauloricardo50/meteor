@@ -1,7 +1,7 @@
-// @flow
+//      
 import React from 'react';
 
-type LoanChecklistEmailTableProps = {};
+                                       
 
 const displayColumn = (column, index = 0) => {
   if (column.el) {
@@ -17,7 +17,7 @@ const displayColumn = (column, index = 0) => {
 
 const LoanChecklistEmailTable = ({
   columns = [],
-}: LoanChecklistEmailTableProps) => (
+}                              ) => (
   <table align="center" cellPadding="0" cellSpacing="0">
     <tbody>
       <tr>{columns.map(displayColumn)}</tr>

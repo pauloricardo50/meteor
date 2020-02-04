@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -6,7 +6,7 @@ import queryString from 'query-string';
 
 import Calculator from '../../../../../../utils/Calculator';
 
-type PdfGoogleMapProps = {};
+                            
 
 const makeGoogleMapsUrl = property => {
   const { address1, city } = property;
@@ -30,7 +30,7 @@ const makeGoogleMapsUrl = property => {
   return url;
 };
 
-const PdfGoogleMap = ({ loan }: PdfGoogleMapProps) => {
+const PdfGoogleMap = ({ loan }                   ) => {
   const property = Calculator.selectProperty({ loan });
   return (
     <div

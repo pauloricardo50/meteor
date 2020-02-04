@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
@@ -20,7 +20,7 @@ import Dialog from '../../../Material/Dialog';
 import PromotionAdministrationContainer from './PromotionAdministrationContainer';
 import PromotionLoanLinker from '../PromotionLoanLinker';
 
-type PromotionAdministrationProps = {};
+                                       
 
 const PromotionAdministration = ({
   promotion,
@@ -32,7 +32,7 @@ const PromotionAdministration = ({
   setOpenProInvitationModal,
   openLinkLoanModal,
   setOpenLinkLoanModal,
-}: PromotionAdministrationProps) => {
+}                              ) => {
   const currentUser = useContext(CurrentUserContext);
 
   const { _id: promotionId } = promotion;

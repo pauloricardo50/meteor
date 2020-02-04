@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
@@ -7,7 +7,7 @@ import { OWN_FUNDS_TYPES } from '../../../../../borrowers/borrowerConstants';
 import PdfTable from '../../PdfTable';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
-type RemainingOwnFundsTableProps = {};
+                                      
 
 const oneBorrowerHasOwnFunds = ({ borrowers }, type) =>
   borrowers.filter(borrower => {
@@ -67,7 +67,7 @@ const RemainingOwnFundsTable = ({
   loan,
   structureId,
   calculator,
-}: RemainingOwnFundsTableProps) => (
+}                             ) => (
   <PdfTable
     className="remaining-own-funds-table"
     rows={getRemainingOwnFundsRows({ loan, structureId, calculator })}

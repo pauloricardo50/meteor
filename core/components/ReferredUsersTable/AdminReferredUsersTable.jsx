@@ -1,10 +1,10 @@
-// @flow
+//      
 import React from 'react';
 import ReferredUsersTable from './ReferredUsersTable';
 
-type AdminReferredUsersTableProps = {};
+                                       
 
-const AdminReferredUsersTable = (props: AdminReferredUsersTableProps) => (
+const AdminReferredUsersTable = (props                              ) => (
     <ReferredUsersTable
         {...props}
         fixedOrganisationId={props.organisationId}

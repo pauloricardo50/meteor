@@ -1,8 +1,8 @@
-// @flow
+//      
 import React from 'react';
 import Checkbox from './Checkbox';
 
-type CheckboxListProps = {};
+                            
 
 const CheckboxList = ({
   options,
@@ -10,7 +10,7 @@ const CheckboxList = ({
   onChange,
   label,
   className,
-}: CheckboxListProps) => (
+}                   ) => (
   <div className={className}>
     <b>{label}</b>
 

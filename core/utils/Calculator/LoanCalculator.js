@@ -1,4 +1,4 @@
-// @flow
+//      
 import {
   OWN_FUNDS_TYPES,
   SUCCESS,
@@ -55,7 +55,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         .reduce((sum, { value }) => sum + value, 0);
     }
 
-    getFees({ loan, structureId }): number {
+    getFees({ loan, structureId })         {
       const notaryFees = this.selectStructureKey({
         loan,
         structureId,

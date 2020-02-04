@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -12,15 +12,15 @@ import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 import Button from '../Button';
 import T from '../Translation';
 
-type DialogFormProps = {
-  closeModal: Function,
-  closeAll: Function,
-  title: String,
-  model: Object,
-  schema: Object,
-  description: String,
-  onSubmit?: Function,
-};
+                        
+                       
+                     
+                
+                
+                 
+                      
+                      
+  
 
 const makeOnSubmit = (onSubmit, closeModal) => {
   if (onSubmit) {
@@ -39,7 +39,7 @@ const DialogForm = ({
   description,
   onSubmit,
   children,
-}: DialogFormProps) => (
+}                 ) => (
   <>
     {title && <DialogTitle>{title}</DialogTitle>}
     <AutoForm

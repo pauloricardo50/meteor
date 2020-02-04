@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -7,22 +7,22 @@ import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import ContactButtonContent from './ContactButtonContent';
 
-type ContactButtonOverlayProps = {
-  staff: {
-    name: string,
-    email: string,
-    phoneNumber: string,
-    src: string,
-  },
-  openContact: boolean,
-  handleCloseContact: Function,
-};
+                                  
+          
+                 
+                  
+                        
+                
+    
+                       
+                               
+  
 
 const ContactButtonOverlay = ({
   staff: { src, name, phoneNumber, email, gender } = {},
   openContact,
   handleCloseContact,
-}: ContactButtonOverlayProps) => {
+}                           ) => {
   return (
     <ClickAwayListener
       onClickAway={openContact ? handleCloseContact : () => { }}

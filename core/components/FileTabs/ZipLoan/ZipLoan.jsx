@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import { withProps } from 'recompose';
 
@@ -7,12 +7,12 @@ import Calculator from 'core/utils/Calculator';
 import Button from '../../Button';
 import ZipLoanModal from './ZipLoanModal';
 
-type ZipLoanProps = {
-  loan: Object,
-  shouldDisableButton: Function,
-};
+                     
+               
+                                
+  
 
-const ZipLoan = ({ shouldDisableButton, loan }: ZipLoanProps) => {
+const ZipLoan = ({ shouldDisableButton, loan }              ) => {
   const disabled = shouldDisableButton();
   const { openModal } = useContext(ModalManagerContext);
 

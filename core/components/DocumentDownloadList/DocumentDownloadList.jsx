@@ -1,10 +1,10 @@
-// @flow
+//      
 import React from 'react';
 
 import Icon from '../Icon';
 import Downloader from '../Downloader';
 
-type DocumentDownloadListProps = {};
+                                    
 
 const getIconForFileType = key => {
   const extension = key.split('.').slice(-1)[0];
@@ -21,7 +21,7 @@ const getIconForFileType = key => {
   }
 };
 
-const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => {
+const DocumentDownloadList = ({ files }                           ) => {
   if (!files) {
     return null;
   }

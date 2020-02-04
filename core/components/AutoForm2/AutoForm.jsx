@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useMemo } from 'react';
 import { AutoForm } from 'uniforms-material';
 import pickBy from 'lodash/pickBy';
@@ -11,17 +11,17 @@ import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
 import AutoFormLayout from './AutoFormLayout';
 
-type CustomAutoFormProps = {
-  autoFieldProps?: Object,
-  children?: React.Node,
-  layout?: any,
-  model: Object,
-  omitFields?: Array<String>,
-  placeholder?: Boolean,
-  schemaKeys: Array<String>,
-  submitFieldProps?: Object,
-  submitting?: Boolean,
-};
+                            
+                          
+                        
+               
+                
+                             
+                        
+                            
+                            
+                       
+  
 
 const CustomAutoForm = ({
   autoFieldProps,
@@ -36,7 +36,7 @@ const CustomAutoForm = ({
   schemaKeys,
   submitFieldProps,
   ...props
-}: CustomAutoFormProps) => {
+}                     ) => {
   const handleSubmit = (...args) =>
     Promise.resolve(onSubmit(...args)).then(() =>
       import('../../utils/message').then(({ default: message }) => {

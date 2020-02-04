@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 
 import Table from '../../../Table';
@@ -7,17 +7,17 @@ import PromotionProUserAdder from './PromotionProUserAdder';
 import PromotionUsersContainer from './PromotionUsersContainer';
 import PromotionMetadataContext from '../PromotionMetadata';
 
-type PromotionUsersProps = {
-  promotion: Object,
-  rows: Array<Object>,
-  columnOptions: Array<Object>,
-};
+                            
+                    
+                      
+                               
+  
 
 const PromotionUsers = ({
   promotion,
   rows,
   columnOptions,
-}: PromotionUsersProps) => {
+}                     ) => {
   const {
     permissions: { canManageProUsers },
   } = useContext(PromotionMetadataContext);

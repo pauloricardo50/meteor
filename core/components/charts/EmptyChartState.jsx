@@ -1,10 +1,10 @@
-// @flow
+//      
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-type EmptyChartStateProps = {};
+                               
 
-const EmptyChartState = ({ icon, text }: EmptyChartStateProps) => (
+const EmptyChartState = ({ icon, text }                      ) => (
   <div className="empty">
     <FontAwesomeIcon icon={icon} className="icon" />
     <h2 className="secondary">Aucune donnée</h2>

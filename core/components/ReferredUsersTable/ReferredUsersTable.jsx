@@ -1,11 +1,11 @@
-// @flow
+//      
 import React from 'react';
 
 import Table from '../Table';
 import Select from '../Select';
 import ReferredUsersTableContainer from './ReferredUsersTableContainer';
 
-type ReferredCustomersTableProps = {};
+                                      
 
 const ReferredUsersTable = ({
   rows,
@@ -15,7 +15,7 @@ const ReferredUsersTable = ({
   users = [],
   referredByUserId,
   setReferredByUserId,
-}: ReferredCustomersTableProps) => {
+}                             ) => {
   const verified = rows.filter(({ user }) => user.emails[0].verified);
   return (
     <>

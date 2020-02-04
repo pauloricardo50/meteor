@@ -1,15 +1,15 @@
-// @flow
+//      
 import React from 'react';
 
 import { Calculator } from '../../../../utils/Calculator';
 
-type FinancingLendersHeaderProps = {};
+                                      
 
 const FinancingLendersHeader = ({
   organisations,
   loan,
   structureId,
-}: FinancingLendersHeaderProps) => {
+}                             ) => {
   const interestedLenders = organisations
     .filter(({ lenderRules }) => lenderRules && lenderRules.length > 0)
     .filter(({ lenderRules }) => {

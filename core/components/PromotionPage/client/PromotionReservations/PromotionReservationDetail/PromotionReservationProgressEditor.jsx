@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState } from 'react';
@@ -7,12 +7,12 @@ import T from '../../../../Translation';
 import Button from '../../../../Button';
 import PromotionReservationProgress from '../PromotionReservationProgress';
 
-type PromotionReservationProgressEditorProps = {};
+                                                  
 
 const PromotionReservationProgressEditor = ({
   promotionOption,
   loan,
-}: PromotionReservationProgressEditorProps) => {
+}                                         ) => {
   const isAdmin = Meteor.microservice === 'admin';
 
   return (
