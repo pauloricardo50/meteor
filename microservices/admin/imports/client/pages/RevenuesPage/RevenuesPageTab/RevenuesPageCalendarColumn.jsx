@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import moment from 'moment';
 
@@ -13,7 +13,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import Icon from 'core/components/Icon';
 import RevenueConsolidator from '../../../components/RevenuesTable/RevenueConsolidator';
 
-type RevenuesPageCalendarColumnProps = {};
+                                          
 
 const now = new Date();
 
@@ -35,7 +35,7 @@ const RevenuesPageCalendarColumn = ({
   setRevenueToModify,
   setOpenModifier,
   refetch,
-}: RevenuesPageCalendarColumnProps) => {
+}                                 ) => {
   const { openAmount, closedAmount, totalAmount } = revenues.reduce(
     (obj, { status, amount }) => {
       if (status === REVENUE_STATUS.CLOSED) {

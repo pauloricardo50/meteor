@@ -1,9 +1,9 @@
-// @flow
+//      
 import React from 'react';
 
 import LoanBoard from './LoanBoard';
 
-type LoanBoardPageProps = {};
+                             
 
 const LoanBoardPage = ({
   currentUser,
@@ -11,7 +11,7 @@ const LoanBoardPage = ({
   loanBoardDispatch,
   activateLoanBoardSync,
   setActivateLoanBoardSync,
-}: LoanBoardPageProps) => (
+}                    ) => (
   <LoanBoard
     currentUser={currentUser}
     options={loanBoardOptions}

@@ -1,17 +1,17 @@
-// @flow
+//      
 import React from 'react';
 
 import { TASK_PRIORITIES } from 'core/api/constants';
 import Table from 'core/components/Table';
 
-type TasksTablePriorityProps = {};
+                                  
 
 const TasksTablePriority = ({
   columnOptions,
   rows,
   initialOrderBy,
   initialOrder,
-}: TasksTablePriorityProps) => {
+}                         ) => {
   const defaultPriority = rows.filter(
     ({ priority }) => priority === TASK_PRIORITIES.DEFAULT,
   );

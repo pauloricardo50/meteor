@@ -1,21 +1,21 @@
-// @flow
+//      
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import ContactDialogFormContainer from './ContactDialogFormContainer';
 
-type InsertContactDialogFormProps = {
-  schema: Object,
-  model: Object,
-  insertContact: Function,
-};
+                                     
+                 
+                
+                          
+  
 
 const InsertContactDialogForm = ({
   schema,
   insertContact,
   model,
-}: InsertContactDialogFormProps) => (
+}                              ) => (
   <AutoFormDialog
     schema={schema}
     model={model}

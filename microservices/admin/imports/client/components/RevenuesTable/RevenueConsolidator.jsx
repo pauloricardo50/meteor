@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
@@ -12,7 +12,7 @@ import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 
-type RevenueConsolidatorProps = {};
+                                   
 
 const schema = new SimpleSchema({
   amount: {
@@ -29,7 +29,7 @@ const schema = new SimpleSchema({
 const RevenueConsolidator = ({
   revenue: { amount, _id: revenueId, sourceOrganisation, description, paidAt },
   onSubmitted = () => null,
-}: RevenueConsolidatorProps) => (
+}                          ) => (
   <AutoFormDialog
     title="Confirmer paiement de"
     description={

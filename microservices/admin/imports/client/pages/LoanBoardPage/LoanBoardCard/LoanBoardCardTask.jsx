@@ -1,16 +1,16 @@
-// @flow
+//      
 import React, { useState } from 'react';
 
 import IconButton from 'core/components/IconButton';
 import { taskComplete, taskChangeStatus } from 'core/api/tasks/index';
 import { TASK_STATUS } from 'core/api/constants';
 
-type LoanBoardCardTaskProps = {};
+                                 
 
 const LoanBoardCardTask = ({
   title = 'Tâche sans titre',
   _id,
-}: LoanBoardCardTaskProps) => {
+}                        ) => {
   const [showButtons, setShowButtons] = useState(false);
   return (
     <span

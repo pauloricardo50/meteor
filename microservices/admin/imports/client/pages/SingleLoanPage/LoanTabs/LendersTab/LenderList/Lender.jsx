@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import {
@@ -10,11 +10,11 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import AdminNote from 'core/components/AdminNote';
 import LenderContact from './LenderContact';
 
-type LenderProps = {
-  lender: Object,
-};
+                    
+                 
+  
 
-const Lender = ({ lender }: LenderProps) => {
+const Lender = ({ lender }             ) => {
   const {
     organisation,
     status,

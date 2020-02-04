@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -7,7 +7,7 @@ import { LENDER_RULES_VARIABLES } from 'core/api/constants';
 import LenderRulesFormValue from './LenderRulesFormValue';
 import LenderRulesFormOperator from './LenderRulesFormOperator';
 
-type LenderRulesFormProps = {};
+                               
 
 const shouldRenderAdditionalFields = (model, index) =>
   model.rules && model.rules[index] && model.rules[index].variable;
@@ -42,7 +42,7 @@ const LenderRulesForm = ({
   onSubmit,
   buttonProps = {},
   ...otherProps
-}: LenderRulesFormProps) => (
+}                      ) => (
   <AutoFormDialog
     model={model}
     onSubmit={onSubmit}

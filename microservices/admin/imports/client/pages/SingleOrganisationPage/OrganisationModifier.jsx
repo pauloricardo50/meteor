@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { ORGANISATIONS_COLLECTION, S3_ACLS, ONE_KB } from 'core/api/constants';
@@ -7,17 +7,17 @@ import { Uploader } from 'core/components/UploaderArray';
 import Box from 'core/components/Box';
 import OrganisationModifierContainer from './OrganisationModifierContainer';
 
-type OrganisationModifierProps = {
-  schema: Object,
-  organisation: Object,
-  updateOrganisation: Function,
-};
+                                  
+                 
+                       
+                               
+  
 
 const OrganisationModifier = ({
   schema,
   organisation,
   updateOrganisation,
-}: OrganisationModifierProps) => {
+}                           ) => {
   const { _id, documents } = organisation;
   return (
     <AutoFormDialog

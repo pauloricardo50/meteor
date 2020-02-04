@@ -1,20 +1,20 @@
-// @flow
+//      
 import React from 'react';
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import InterestRatesDialogFormContainer from './InterestRatesDialogFormContainer';
 
-type ModifyInterestRatesDialogFormProps = {
-  schema: Object,
-  modifyInterestRates: Function,
-  removeInterestRates: Function,
-  fields: Array<Object>,
-  open: boolean,
-  setOpen: Function,
-  interestRatesToModify: Object,
-  submitting: boolean,
-};
+                                           
+                 
+                                
+                                
+                        
+                
+                    
+                                
+                      
+  
 
 const ModifyInterestRatesDialogForm = ({
   schema,
@@ -25,7 +25,7 @@ const ModifyInterestRatesDialogForm = ({
   setOpen,
   interestRatesToModify,
   submitting,
-}: ModifyInterestRatesDialogFormProps) => (
+}                                    ) => (
   <AutoFormDialog
     emptyDialog
     noButton

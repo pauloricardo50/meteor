@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 
 import StatusLabel from 'core/components/StatusLabel';
@@ -7,16 +7,16 @@ import { ModalManagerContext } from 'core/components/ModalManager';
 import { loanSetStatus } from 'imports/core/api/methods/index';
 import LoanStatusModifierContainer from './LoanStatusModifierContainer';
 
-type LoanStatusModifierProps = {
-  loan: Object,
-  additionalActions: Function,
-};
+                                
+               
+                              
+  
 
 const LoanStatusModifier = ({
   loan,
   additionalActions,
   ...props
-}: LoanStatusModifierProps) => {
+}                         ) => {
   const { openModal } = useContext(ModalManagerContext);
 
   return (

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
@@ -13,7 +13,7 @@ import IconButton from 'core/components/IconButton';
 import DialogSimple from 'core/components/DialogSimple';
 import StatItem from './StatItem';
 
-type NewLoansStatProps = {};
+                            
 
 const formatDate = date =>
   moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
@@ -27,7 +27,7 @@ const NewLoansStat = ({
   loanHistogram,
   withAnonymous,
   setWithAnonymous,
-}: NewLoansStatProps) => (
+}                   ) => (
   <StatItem
     value={<CountUp end={newLoans.count} />}
     increment={<Percent showPlus value={newLoans.change} />}

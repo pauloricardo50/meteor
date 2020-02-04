@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -18,9 +18,9 @@ import CommissionEditor from './CommissionEditor';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
 
-type SingleOrganisationPageProps = {
-  organisation: Object,
-};
+                                    
+                       
+  
 
 const tabs = ({ organisation, currentUser }) =>
   [
@@ -73,7 +73,7 @@ const tabs = ({ organisation, currentUser }) =>
 const SingleOrganisationPage = ({
   organisation,
   currentUser,
-}: SingleOrganisationPageProps) => (
+}                             ) => (
     <div className="card1 card-top single-organisation-page">
       <Helmet>
         <title>{organisation.name}</title>

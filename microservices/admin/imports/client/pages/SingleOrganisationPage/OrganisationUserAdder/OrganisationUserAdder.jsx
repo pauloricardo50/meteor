@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { ListItemText, ListItemSecondaryAction } from 'core/components/List';
@@ -11,15 +11,15 @@ import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch'
 import { ROLES } from 'core/api/constants';
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';
 
-type OrganisationUserAdderProps = {
-  organisation: Object,
-  addUser: Function,
-  userId: String,
-  setUserId: Function,
-  setTitle: Function,
-  title: String,
-  resetState: Function,
-};
+                                   
+                       
+                    
+                 
+                      
+                     
+                
+                       
+  
 
 const renderUserSearcher = ({ organisation, setUserId }) => (
   <CollectionSearch
@@ -76,7 +76,7 @@ const renderTitleSetter = ({
   </form>
 );
 
-const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
+const OrganisationUserAdder = (props                            ) => {
   const { resetState, userId } = props;
 
   return (

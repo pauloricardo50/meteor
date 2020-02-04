@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { Percent, Money } from 'core/components/Translation';
@@ -6,7 +6,7 @@ import { REVENUE_TYPES } from 'core/api/constants';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 
-type RevenueSuggestionsProps = {};
+                                  
 
 const getLastDateinXMonths = offset => {
   const inXMonths = new Date();
@@ -20,7 +20,7 @@ const RevenueSuggestions = ({
   loan,
   suggestRevenue,
   referralOrganisation,
-}: RevenueSuggestionsProps) => {
+}                         ) => {
   const { lenders, structure, revenues } = loan;
   const { wantedLoan } = structure;
   const hasReferral = !!referralOrganisation;

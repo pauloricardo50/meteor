@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -8,9 +8,9 @@ import SingleContactPageHeader from './SingleContactPageHeader';
 import SingleContactPageInfos from './SingleContactPageInfos';
 import OffersTable from '../SingleOrganisationPage/OffersTable/OffersTable';
 
-type SingleContactPageProps = {
-  contact: Object,
-};
+                               
+                  
+  
 
 const tabs = props =>
   [
@@ -30,7 +30,7 @@ const tabs = props =>
     condition,
   }));
 
-const SingleContactPage = ({ contact }: SingleContactPageProps) => (
+const SingleContactPage = ({ contact }                        ) => (
   <div className="card1 card-top">
     <SingleContactPageHeader contact={contact} />
     <SingleContactPageInfos contact={contact} />

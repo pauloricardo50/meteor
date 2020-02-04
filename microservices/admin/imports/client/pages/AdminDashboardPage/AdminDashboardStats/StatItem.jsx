@@ -1,8 +1,8 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
-type StatItemProps = {};
+                        
 
 const StatItem = ({
   value,
@@ -11,7 +11,7 @@ const StatItem = ({
   title,
   children,
   top,
-}: StatItemProps) => {
+}               ) => {
   if (children) {
     return (
       <div className="stat-item card1 card-top">

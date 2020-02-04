@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState } from 'react';
 
 import { REVENUE_STATUS, COMMISSION_STATUS } from 'core/api/constants';
@@ -8,11 +8,11 @@ import MongoSelect from 'core/components/Select/MongoSelect';
 import CommissionsTableContainer from './CommissionsTableContainer';
 import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
 
-type CommissionsTableProps = {};
+                                
 
 const WrappedRevenuesTable = CommissionsTableContainer(RevenuesTable);
 
-const CommissionsTable = (props: CommissionsTableProps) => {
+const CommissionsTable = (props                       ) => {
   const [status, setStatus] = useState(undefined);
   const [commissionStatus, setCommissionStatus] = useState([
     COMMISSION_STATUS.TO_BE_PAID,

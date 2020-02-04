@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
@@ -6,11 +6,11 @@ import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { adminLoans } from 'core/api/loans/queries';
 import { loanUpdate } from 'core/api';
 
-type LoanRenamerProps = {
-  loan: Object,
-};
+                         
+               
+  
 
-const LoanRenamer = ({ loan }: LoanRenamerProps) => (
+const LoanRenamer = ({ loan }                  ) => (
   <AutoFormDialog
     schema={LoanSchema.pick('name')}
     model={{ name: loan.name }}

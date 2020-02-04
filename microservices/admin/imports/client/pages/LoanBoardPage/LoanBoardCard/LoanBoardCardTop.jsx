@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import { compose, lifecycle } from 'recompose';
 
@@ -12,7 +12,7 @@ import LoanBoardCardTitle from './LoanBoardCardTitle';
 import LoanBoardCardAssignee from './LoanBoardCardAssignee';
 import LoanStatusModifierContainer from '../../SingleLoanPage/LoanStatusModifier/LoanStatusModifierContainer';
 
-type LoanBoardCardTopProps = {};
+                                
 
 const LoanBoardCardTop = ({
   admins,
@@ -20,7 +20,7 @@ const LoanBoardCardTop = ({
   renderComplex,
   additionalActions,
   loan,
-}: LoanBoardCardTopProps) => {
+}                       ) => {
   const { borrowers, _id: loanId, name, status, user } = loan;
   const userId = user && user._id;
   const hasUser = !!userId;

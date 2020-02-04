@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -8,11 +8,11 @@ import { CONTACTS_COLLECTION } from 'core/api/constants';
 import ContactsPageContainer from './ContactsPageContainer';
 import ContactsTable from './ContactsTable/ContactsTable';
 
-type ContactsPageProps = {
-  contacts: Array<Object>,
-};
+                          
+                          
+  
 
-const ContactsPage = ({ contacts }: ContactsPageProps) => (
+const ContactsPage = ({ contacts }                   ) => (
   <div className="contacts-page">
     <Helmet>
       <title>Contacts</title>

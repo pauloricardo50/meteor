@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -12,9 +12,9 @@ import RevenuesPageTable from './RevenuesPageTable';
 import RevenuesPageCalendar from './RevenuesPageCalendar';
 import RevenuesDistribution from './RevenuesDistribution';
 
-type RevenuesPageTabProps = {};
+                               
 
-const RevenuesPageTab = (props: RevenuesPageTabProps) => {
+const RevenuesPageTab = (props                      ) => {
   const [open, setOpen] = useState(false);
 
   return (

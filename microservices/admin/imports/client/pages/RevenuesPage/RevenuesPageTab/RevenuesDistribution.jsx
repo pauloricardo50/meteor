@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState } from 'react';
 import moment from 'moment';
 
@@ -9,7 +9,7 @@ import { adminRevenues } from 'core/api/revenues/queries';
 import IconButton from 'core/components/IconButton';
 import Tooltip from 'core/components/Material/Tooltip';
 
-type RevenuesDistributionProps = {};
+                                    
 
 const groupRevenues = revenues =>
   revenues.reduce((obj, { amount, loan: { assigneeLinks = [] } = {} }) => {
@@ -20,7 +20,7 @@ const groupRevenues = revenues =>
     return obj;
   }, {});
 
-const RevenuesDistribution = (props: RevenuesDistributionProps) => {
+const RevenuesDistribution = (props                           ) => {
   const [dateRange, setDateRange] = useState({
     startDate: moment()
       .quarter(moment().quarter())

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useEffect } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -12,7 +12,7 @@ import LoanTimelineContainer, {
 } from './LoanTimelineContainer';
 import LoanTimelineTitle from './LoanTimelineTitle';
 
-type LoanTimelineProps = {};
+                            
 
 const now = new Date();
 
@@ -21,7 +21,7 @@ const LoanTimeline = ({
   activities = [],
   type,
   setType,
-}: LoanTimelineProps) => {
+}                   ) => {
   useEffect(() => {
     const el = document.getElementsByClassName('loan-timeline-timeline')[0];
     el.scrollLeft = el.scrollWidth;

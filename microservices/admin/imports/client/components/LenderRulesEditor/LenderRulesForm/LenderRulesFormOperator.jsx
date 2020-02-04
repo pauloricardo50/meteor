@@ -1,12 +1,12 @@
-// @flow
+//      
 import React from 'react';
 import { LENDER_RULES_VARIABLES } from 'core/api/constants';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
 import { LENDER_RULES_OPERATORS } from 'imports/core/api/constants';
 
-type LenderRulesFormOperatorProps = {};
+                                       
 
-const LenderRulesFormOperator = (props: LenderRulesFormOperatorProps) => {
+const LenderRulesFormOperator = (props                              ) => {
   const { model, parent } = props;
   const index = Number(parent.name.slice(-1));
   const { variable } = model.rules[index];

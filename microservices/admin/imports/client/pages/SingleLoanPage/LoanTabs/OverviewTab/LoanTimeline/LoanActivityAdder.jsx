@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
@@ -15,7 +15,7 @@ import {
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 
-type LoanActivityAdderProps = {};
+                                 
 
 export const ActivitySchema = new SimpleSchema({
   title: String,
@@ -47,7 +47,7 @@ export const LoanActivityForm = ({
   iconType,
   className = '',
   ...rest
-}: LoanActivityAdderProps) => (
+}                        ) => (
   <AutoFormDialog
     schema={ActivitySchema}
     model={model}

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -7,9 +7,9 @@ import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
 import Calculator from 'core/utils/Calculator';
 import SinglePropertyPage from '../../../SinglePropertyPage';
 
-type PropertiesTabProps = {
-  loan: Object,
-};
+                           
+               
+  
 
 const propertiesTabLabel = (loan, property, index) => {
   const progress = Calculator.propertyPercent({ loan, property });
@@ -26,7 +26,7 @@ const propertiesTabLabel = (loan, property, index) => {
   );
 };
 
-const PropertiesTab = ({ loan }: PropertiesTabProps) => {
+const PropertiesTab = ({ loan }                    ) => {
   const { properties, userId, _id: loanId, hasPromotion } = loan;
   return (
     <div className="properties-tab">

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -7,9 +7,9 @@ import collectionIcons from 'core/arrays/collectionIcons';
 import { REVENUES_COLLECTION } from 'core/api/constants';
 import CommissionsTable from './CommissionsTable';
 
-type CommissionsTabProps = {};
+                              
 
-const CommissionsTab = (props: CommissionsTabProps) => (
+const CommissionsTab = (props                     ) => (
   <div>
     <Helmet>
       <title>Commissions</title>

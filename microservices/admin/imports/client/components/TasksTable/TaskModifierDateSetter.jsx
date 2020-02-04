@@ -1,16 +1,16 @@
-// @flow
+//      
 import React from 'react';
 import { connectField } from 'uniforms';
 
 import Button from 'core/components/Button';
 
-type TaskModifierDateSetterProps = {};
+                                      
 
 const TaskModifierDateSetter = ({
   funcs,
   uniforms: { onChange },
   buttonProps,
-}: TaskModifierDateSetterProps) => (
+}                             ) => (
     <div>
       <label htmlFor="">Échéance rapide</label>
       <div className="task-modifier-date-setter">

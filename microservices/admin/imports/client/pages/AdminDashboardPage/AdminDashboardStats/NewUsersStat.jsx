@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
@@ -14,7 +14,7 @@ import DialogSimple from 'core/components/DialogSimple';
 import { ROLES } from 'imports/core/api/constants';
 import StatItem from './StatItem';
 
-type NewLoansStatProps = {};
+                            
 
 const formatDate = date =>
   moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
@@ -28,7 +28,7 @@ const NewUsersStat = ({
   userHistogram,
   verified,
   setVerified,
-}: NewLoansStatProps) => (
+}                   ) => (
   <StatItem
     value={<CountUp end={newUsers.count} />}
     increment={<Percent showPlus value={newUsers.change} />}

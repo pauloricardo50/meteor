@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import Chip from '@material-ui/core/Chip';
 
@@ -7,14 +7,14 @@ import getFilterOptions, {
   getFilterOptionFromValue,
 } from './DetailSideNavFilters/filterOptions';
 
-type CurrentFiltersProps = {};
+                              
 
 const CurrentFilters = ({
   filterArray,
   setFilters,
   filters,
   ...props
-}: CurrentFiltersProps) => {
+}                     ) => {
   if (filterArray.length > 0) {
     return (
       <div className="filter-value">

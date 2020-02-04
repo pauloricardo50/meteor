@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -13,13 +13,13 @@ import T from 'core/components/Translation';
 import TaskModifierDateSetter from './TaskModifierDateSetter';
 import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
 
-type TaskModifierProps = {
-  task: Object,
-  updateTask: Function,
-  open: boolean,
-  setOpen: Function,
-  submitting: boolean,
-};
+                          
+               
+                       
+                
+                    
+                      
+  
 
 const taskPlaceholders = [
   'Faire la vaisselle',
@@ -151,7 +151,7 @@ const TaskModifier = ({
   open,
   setOpen,
   submitting,
-}: TaskModifierProps) => {
+}                   ) => {
   const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog

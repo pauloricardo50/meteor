@@ -1,17 +1,17 @@
-// @flow
+//      
 import React from 'react';
 
 import DefaultCalculator, { Calculator } from 'core/utils/Calculator';
 import { Money, Percent } from 'core/components/Translation';
 
-type LenderSolvencyProps = {};
+                              
 
 const LenderSolvency = ({
   organisation: { lenderRules },
   loan,
   residenceType,
   canton,
-}: LenderSolvencyProps) => {
+}                     ) => {
   const loanObject = DefaultCalculator.createLoanObject({
     residenceType,
     borrowers: loan.borrowers,

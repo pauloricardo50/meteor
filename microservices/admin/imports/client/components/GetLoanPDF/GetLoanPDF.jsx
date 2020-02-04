@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -10,13 +10,13 @@ import Icon from 'core/components/Icon/Icon';
 import GetLoanPDFContainer from './GetLoanPDFContainer';
 import PdfDownloadDialog from './PdfDownloadDialog';
 
-type GetLoanPDFProps = {
-  loan: Object,
-  handlePDF: Function,
-  handleHTML: Function,
-};
+                        
+               
+                      
+                       
+  
 
-const GetLoanPDF = ({ handlePDF, handleHTML, loan }: GetLoanPDFProps) => (
+const GetLoanPDF = ({ handlePDF, handleHTML, loan }                 ) => (
   <>
     <PdfDownloadDialog
       onSubmit={values => handlePDF(values)}

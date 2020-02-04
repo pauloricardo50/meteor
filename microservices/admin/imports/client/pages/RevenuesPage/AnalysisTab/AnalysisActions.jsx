@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -11,7 +11,7 @@ import Select from 'core/components/Select';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { analysisCollections } from './analysisHelpers';
 
-type AnalysisActionsProps = {};
+                               
 
 const schema = new SimpleSchema({ name: String });
 
@@ -20,7 +20,7 @@ const AnalysisActions = ({
   setState,
   collection,
   setCollection,
-}: AnalysisActionsProps) => (
+}                      ) => (
   <>
     <Select
       value={collection}

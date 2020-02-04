@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';

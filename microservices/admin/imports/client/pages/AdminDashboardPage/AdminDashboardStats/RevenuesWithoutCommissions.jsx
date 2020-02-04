@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
@@ -11,7 +11,7 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-type RevenuesWithoutCommissionsProps = {};
+                                          
 
 const OrgItem = ({ orgName, revenues }) => (
   <div key={orgName} className="flex center-align sb mb-16">
@@ -44,7 +44,7 @@ const OrgItem = ({ orgName, revenues }) => (
   </div>
 );
 
-const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
+const RevenuesWithoutCommissions = (props                                 ) => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: adminRevenues,

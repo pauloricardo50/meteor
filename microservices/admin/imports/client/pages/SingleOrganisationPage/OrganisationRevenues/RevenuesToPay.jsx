@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useState } from 'react';
 
 import { REVENUE_STATUS } from 'core/api/constants';
@@ -6,9 +6,9 @@ import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 import RevenuesTable from '../../../components/RevenuesTable';
 
-type RevenuesToPayProps = {};
+                             
 
-const RevenuesToPay = ({ _id: organisationId }: RevenuesToPayProps) => {
+const RevenuesToPay = ({ _id: organisationId }                    ) => {
   const [status, setStatus] = useState({ $in: [REVENUE_STATUS.EXPECTED] });
   const options = Object.values(REVENUE_STATUS).map(s => ({
     id: s,

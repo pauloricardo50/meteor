@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -8,7 +8,7 @@ import { ROLES } from 'core/api/constants';
 import { loanSetAssignees } from 'core/api/loans/index';
 import LoanAssignees from './LoanAssignees';
 
-type LoanAssigneeManagerProps = {};
+                                   
 
 const schema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
@@ -48,7 +48,7 @@ const schema = new SimpleSchema({
 
 const LoanAssigneeManager = ({
   loan: { _id: loanId, assigneeLinks = [] },
-}: LoanAssigneeManagerProps) => (
+}                          ) => (
   <div>
     <div className="flex center-align">
       <h4 className="mr-8">Répartition des conseillers</h4>

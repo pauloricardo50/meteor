@@ -1,15 +1,15 @@
-// @flow
+//      
 import React from 'react';
 
 import { Money } from 'core/components/Translation';
 
-type LoanBoardCardDescriptionProps = {};
+                                        
 
 const LoanBoardCardDescription = ({
   structure,
   adminNote,
   selectedLenderOrganisation: { name: selectedLenderOrganisationName } = {},
-}: LoanBoardCardDescriptionProps) => (
+}                               ) => (
   <>
     <div className="admin-note">
       {adminNote ? (

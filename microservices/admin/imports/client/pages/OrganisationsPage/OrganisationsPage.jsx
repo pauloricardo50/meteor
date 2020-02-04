@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -14,19 +14,19 @@ import OrganisationAdder from './OrganisationAdder';
 import OrganisationFilters from './OrganisationFilters';
 import OrganisationsByFeature from './OrganisationsByFeature';
 
-type OrganisationsPageProps = {
-  insertOrganisation: Function,
-  organisations: Array<Object>,
-  filters: Object,
-  setFilters: Function,
-};
+                               
+                               
+                               
+                  
+                       
+  
 
 const OrganisationsPage = ({
   insertOrganisation,
   organisations,
   filters,
   setFilters,
-}: OrganisationsPageProps) => (
+}                        ) => (
   <div className="card1 card-top organisations-page">
     <Helmet>
       <title>Organisations</title>

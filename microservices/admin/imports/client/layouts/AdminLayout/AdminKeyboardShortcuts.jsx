@@ -1,8 +1,8 @@
-// @flow
+//      
 import React from 'react';
 import { GlobalHotKeys } from 'react-hotkeys';
 
-type AdminKeyboardShortcutsProps = {};
+                                      
 
 const keyMap = {
   SEARCH: 'space',
@@ -18,7 +18,7 @@ const makeHandlers = ({ setOpenSearch }) => ({
 
 const AdminKeyboardShortcuts = ({
   setOpenSearch,
-}: AdminKeyboardShortcutsProps) => (
+}                             ) => (
   <GlobalHotKeys keyMap={keyMap} handlers={makeHandlers({ setOpenSearch })} />
 );
 

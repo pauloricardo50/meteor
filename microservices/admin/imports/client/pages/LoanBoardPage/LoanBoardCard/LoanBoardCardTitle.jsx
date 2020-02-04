@@ -1,11 +1,11 @@
-// @flow
+//      
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { CollectionIconLink } from 'core/components/IconLink';
 import { USERS_COLLECTION } from 'core/api/constants';
 
-type LoanBoardCardTitleProps = {};
+                                  
 
 const LoanBoardCardTitle = ({
   borrowers = [],
@@ -13,7 +13,7 @@ const LoanBoardCardTitle = ({
   name,
   title,
   user,
-}: LoanBoardCardTitleProps) => {
+}                         ) => {
   const borrowersToDisplay = borrowers.filter(
     ({ name: borrowerName }) => borrowerName,
   );

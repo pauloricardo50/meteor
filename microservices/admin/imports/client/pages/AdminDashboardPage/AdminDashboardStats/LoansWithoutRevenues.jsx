@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
@@ -13,7 +13,7 @@ import { getUserDisplayName } from 'core/utils/userFunctions';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-type LoansWithoutRevenuesProps = {};
+                                    
 
 const LoansTable = ({ loans }) => (
   <Table
@@ -80,7 +80,7 @@ const LoansTable = ({ loans }) => (
     })}
   />
 );
-const LoansWithoutRevenues = ({ loans }: LoansWithoutRevenuesProps) => {
+const LoansWithoutRevenues = ({ loans }                           ) => {
   const isOk = loans.length === 0;
   const currentUser = useContext(CurrentUserContext);
 

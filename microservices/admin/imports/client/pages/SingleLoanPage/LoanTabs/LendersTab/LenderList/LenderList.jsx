@@ -1,11 +1,11 @@
-// @flow
+//      
 import React from 'react';
 
 import Lender from './Lender';
 
-type LenderListProps = {};
+                          
 
-const LenderList = ({ loan: { lenders = [] } }: LenderListProps) => {
+const LenderList = ({ loan: { lenders = [] } }                 ) => {
   if (lenders.length === 0) {
     return <h3 className="secondary text-center">Pas encore de prêteurs</h3>;
   }

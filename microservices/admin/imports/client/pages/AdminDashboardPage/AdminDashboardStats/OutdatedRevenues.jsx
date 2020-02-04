@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
@@ -11,9 +11,9 @@ import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import CurrentUserContext from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-type OutdatedRevenuesProps = {};
+                                
 
-const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
+const OutdatedRevenues = ({ revenues }                       ) => {
   const currentUser = useContext(CurrentUserContext);
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(
