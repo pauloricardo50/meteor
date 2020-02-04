@@ -1,0 +1,70 @@
+.faq-page-content {	
+  display: flex;	
+  flex-direction: column;	
+
+  padding: 32px;	
+
+  @include screen(med) {	
+    padding: 16px;	
+  }	
+
+  h1 {	
+    align-self: center;	
+
+    margin-top: 0;	
+
+    color: $primary;	
+  }	
+
+  > p {	
+    align-self: center;	
+
+    text-align: center;	
+  }	
+}	
+
+.faq-page-list {	
+  display: flex;	
+  align-self: center;	
+  flex-direction: column;	
+
+  box-sizing: border-box;	
+  width: 100%;	
+  max-width: 800px;	
+
+  .faq-page-list-category {	
+    margin-bottom: 40px;	
+
+    &:last-child {	
+      margin-bottom: 0;	
+    }	
+  }	
+
+  h2 {	
+    margin: 32px 0;	
+
+    color: $primary;	
+  }	
+
+  .faq-page-faqs-expand-icon {	
+    color: $primary;	
+  }	
+
+  p.description {	
+    max-width: unset;	
+
+    text-align: left;	
+  }	
+
+  a {	
+    text-decoration: none;	
+
+    color: $primary;	
+
+    &:hover {	
+      text-decoration: underline;	
+
+      color: $primary;	
+    }	
+  }	
+}

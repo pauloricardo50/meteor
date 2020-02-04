@@ -1,0 +1,21 @@
+@import './WwwFooter/WwwFooter.scss';	
+@import './WwwTopNav/WwwTopNav.scss';	
+
+.www-layout {	
+  display: flex;	
+  flex-direction: column;	
+  justify-content: space-between;	
+
+  box-sizing: border-box;	
+  width: 100%;	
+  height: 100%;	
+  padding-top: 80px;	
+}	
+
+
+.www-main {	
+  flex-grow: 1;	
+  flex-shrink: 0;	
+
+  width: 100%;	
+}
