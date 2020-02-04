@@ -1,12 +1,12 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import countries from 'i18n-iso-countries';
+
+import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/constants';
 import {
   getSortedCountriesCodes,
   COMMON_COUNTRIES,
-} from 'core/utils/countriesUtils';
+} from '../../utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 

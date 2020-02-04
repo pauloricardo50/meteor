@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-import IconButton from 'core/components/IconButton';
-
+import T from '../../Translation';
+import IconButton from '../../IconButton';
 import FileStatusIcon from './FileStatusIcon';
 
 const Title = ({

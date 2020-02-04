@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
-import { ROLES } from 'core/api/users/userConstants';
+
+import { ROLES } from '../../users/userConstants';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 
 const SessionSchema = new SimpleSchema({
