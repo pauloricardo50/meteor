@@ -1,0 +1,12 @@
+.interest-rates-data {	
+  display: flex;	
+  align-items: center;	
+  flex-direction: row;	
+  justify-content: space-between;	
+
+  max-width: 150px;	
+
+  > * {	
+    padding: 0 1px;	
+  }	
+}

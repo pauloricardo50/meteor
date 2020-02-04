@@ -1,0 +1,60 @@
+.organisations-page {	
+  display: flex;	
+  align-items: flex-start;	
+  flex-direction: column;	
+
+  .organisations-by-feature {	
+    display: flex;	
+    flex-direction: column;	
+
+    width: 100%;	
+    margin-bottom: 16px;	
+    h3 {	
+      align-self: center;	
+    }	
+  }	
+
+  .organisations {	
+    display: flex;	
+    flex-wrap: wrap;	
+
+    margin-top: 16px;	
+
+    .organisation {	
+      display: flex;	
+      flex-direction: column;	
+
+      width: 150px;	
+      height: 150px;	
+      margin: 8px;	
+
+      .card-top {	
+        flex-grow: 1;	
+
+        background-repeat: no-repeat;	
+        background-position: center;	
+        background-size: contain;	
+      }	
+
+      .card-bottom {	
+        flex-grow: 0;	
+
+        padding: 8px;	
+      }	
+    }	
+  }	
+
+  .filters-form {	
+    margin-top: 40px;	
+
+    .filters {	
+      display: flex;	
+      flex-direction: row;	
+
+      > * {	
+        min-width: 200px;	
+        margin-right: 8px;	
+      }	
+    }	
+  }	
+}

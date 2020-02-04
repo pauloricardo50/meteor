@@ -1,0 +1,52 @@
+.lender-rules-editor {	
+  &-filter {	
+    display: flex;	
+    flex-direction: column;	
+
+    margin-top: 40px;	
+
+    .filter-title {	
+      display: flex;	
+      align-items: flex-start;	
+      flex-grow: 1;	
+      justify-content: space-between;	
+    }	
+
+    &-details {	
+      display: flex;	
+      flex-direction: column;	
+    }	
+  }	
+
+  form {	
+    align-self: center;	
+
+    width: 100%;	
+    max-width: 500px;	
+
+    > * {	
+      width: 100%;	
+    }	
+
+    button {	
+      margin-top: 16px;	
+    }	
+  }	
+
+  .lender-rules-title-with-name {	
+    h3 {	
+      margin-bottom: 0;	
+    }	
+    h4 {	
+      margin-top: 0;	
+    }	
+  }	
+
+  .rule-operator {	
+    padding: 4px;	
+
+    color: white;	
+    border-radius: 50%;	
+    background-color: $primary;	
+  }	
+}

@@ -1,0 +1,30 @@
+.single-contact-page-header {	
+  display: flex;	
+  align-items: flex-start;	
+  flex-direction: row;	
+  justify-content: space-between;	
+
+  width: 100%;	
+}	
+
+.single-contact-page-infos {	
+  > * {	
+    padding: 8px;	
+  }	
+  .organisations {	
+    display: flex;	
+    align-items: center;	
+    flex-direction: row;	
+    > * {	
+      padding: 8px;	
+    }	
+  }	
+
+  .contact-details {	
+    display: flex;	
+    align-items: flex-start;	
+    flex-direction: column;	
+
+    margin-top: 16px;	
+  }	
+}

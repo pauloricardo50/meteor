@@ -1,0 +1,25 @@
+ol.mix-event-list {	
+  display: flex;	
+  flex-direction: column;	
+
+  list-style-type: none;	
+}	
+
+ol.mix-event-list li.events-day h3 {	
+  padding: 8px;	
+
+  border-bottom: 1px solid $border-grey;	
+}	
+
+ol.mix-event-list li.events-day ol {	
+  list-style-type: none;	
+}	
+
+ol.mix-event-list li.events-day ol li.event {	
+  padding: 8px;	
+}	
+
+ol.mix-event-list li.events-day ol li.event .details {	
+  display: flex;	
+  flex-direction: column;	
+}

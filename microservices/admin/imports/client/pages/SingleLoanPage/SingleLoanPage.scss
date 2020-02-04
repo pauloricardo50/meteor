@@ -1,0 +1,216 @@
+@import './LoanTabs/ActionsTab/ActionsTab.scss';	
+@import './LoanTabs/LendersTab/LendersTab.scss';	
+@import './LoanTabs/OffersTab/OffersTab.scss';	
+@import './LoanTabs/OverviewTab/OverviewTab.scss';	
+@import './SingleLoanPageTasks/LoanTaskInserter/LoanTaskInserter.scss';	
+
+.single-loan-page {	
+  &-tasks {	
+    margin-bottom: 16px;	
+  }	
+
+  .google-map {	
+    position: relative;	
+
+    display: flex;	
+    flex: 1;	
+
+    width: 100%;	
+    min-height: 400px;	
+
+    .map {	
+      flex: 1;	
+    }	
+  }	
+
+  &-header {	
+    display: flex;	
+    align-items: center;	
+    justify-content: space-between;	
+
+    h1 {	
+      vertical-align: middle;	
+
+      > * {	
+        margin-right: 4px;	
+      }	
+    }	
+
+    .left {	
+      display: flex;	
+      align-items: flex-start;	
+      flex-direction: column;	
+      flex-grow: 1;	
+
+      &-top {	
+        display: flex;	
+        align-items: center;	
+        flex-wrap: wrap;	
+      }	
+    }	
+
+    .status-label-dropdown {	
+      display: inline-flex;	
+      align-items: center;	
+
+      margin-left: 8px;	
+
+      vertical-align: middle;	
+    }	
+
+    form > * {	
+      margin-top: 0;	
+    }	
+
+    .single-loan-date-modifiers {	
+      display: flex;	
+      flex-direction: row;	
+      justify-content: flex-start;	
+
+      width: 100%;	
+
+      > * {	
+        margin-right: 8px;	
+        padding: 8px;	
+      }	
+    }	
+
+    .impersonate-link {	
+      margin-right: 8px;	
+    }	
+  }	
+
+  &-sub-header {	
+    display: flex;	
+
+    .single-loan-page-tasks {	
+      flex-basis: 75%;	
+    }	
+
+    .single-loan-page-contacts {	
+      flex-basis: 25%;	
+    }	
+  }	
+}	
+
+.single-loan-page-tabs > .core-tabs-top {	
+  position: sticky;	
+  z-index: 9;	
+  top: 65px;	
+
+  background: #fff;	
+}	
+
+.single-loan-page-tabs-label {	
+  display: flex;	
+  align-items: center;	
+  flex-wrap: nowrap;	
+
+  margin: 0 4px;	
+
+  white-space: nowrap;	
+
+  svg {	
+    width: 20px !important;	
+    height: 20px !important;	
+  }	
+}	
+
+.properties-tab .buttons {	
+  display: flex;	
+  justify-content: center;	
+
+  margin: 32px;	
+
+  > * {	
+    flex-grow: 0;	
+
+    margin-left: 8px;	
+  }	
+}	
+
+.single-borrower-tab {	
+  display: flex;	
+  align-items: center;	
+  flex-direction: column;	
+
+  .recap {	
+    align-self: center;	
+
+    margin: 40px 0;	
+  }	
+}	
+
+.refinancing-tab {	
+  form {	
+    max-width: 400px;	
+  }	
+}	
+
+.single-loan-page.premium {	
+  .single-loan-page-header h1 {	
+    margin-bottom: 0;	
+  }	
+}	
+
+.premium-overview {	
+  display: flex;	
+  flex-direction: column;	
+
+  .top {	
+    display: flex;	
+    flex-wrap: wrap;	
+    justify-content: space-around;	
+
+    margin-bottom: 40px;	
+    padding: 16px;	
+
+    .update-field {	
+      min-width: 200px;	
+    }	
+
+    > * {	
+      margin-right: 8px;	
+    }	
+  }	
+
+  .structure-form {	
+    display: flex;	
+    align-items: flex-start;	
+    flex-wrap: wrap;	
+    justify-content: space-around;	
+
+    width: 100%;	
+    margin-top: 40px;	
+  }	
+
+  .admin-note {	
+    margin-top: 40px;	
+    h2 {	
+      margin: 0;	
+    }	
+  }	
+}	
+
+.single-loan-page-contacts {	
+  margin-bottom: 16px;	
+  margin-left: 16px;	
+
+  h3 {	
+    margin: 0;	
+    margin-bottom: 8px;	
+  }	
+
+  &-contact {	
+    margin-bottom: 8px;	
+    h4 {	
+      margin: 0;	
+    }	
+  }	
+
+  .scroll-wrapper {	
+    overflow-y: scroll;	
+
+    max-height: 300px;	
+  }	
+}
