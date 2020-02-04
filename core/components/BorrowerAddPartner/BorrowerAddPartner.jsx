@@ -1,23 +1,12 @@
-//      
-// @flow
 import React from 'react';
 import { withProps, withState, compose } from 'recompose';
 
-import RadioButtons from 'core/components/RadioButtons';
-import { addBorrower } from 'core/api';
+import { addBorrower } from '../../api/methods';
 import T from '../Translation';
 import Button from '../Button';
 import { CIVIL_STATUS } from '../../api/constants';
 
-                                
-                        
-                     
-  
-
-const BorrowerAddPartner = ({
-  handleClick,
-  isLoading,
-}                         ) => (
+const BorrowerAddPartner = ({ handleClick, isLoading }) => (
   <div className="borrower-add-partner">
     <Button
       onClick={handleClick}
