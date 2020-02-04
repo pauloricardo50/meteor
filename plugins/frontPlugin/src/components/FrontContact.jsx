@@ -15,15 +15,43 @@ const fragment = {
   zipCode: 1,
 };
 
-const FrontContact = ({ contact: { handle, display_name } }) => {
+const getContactSubtitle = ({ collection, epotekContact, contact }) => {
+  if (!epotekContact) {
+    const { source } = contact;
+    return source.charAt(0).toUpperCase() + source.slice(1);
+  }
+
+  const { roles } = epotekContact;
+
+  if (collection === 'contacts') {
+    return 'Contact e-Potek';
+  }
+
+  switch (roles[0]) {
+    case 'user':
+      return 'Client(e) e-Potek';
+    case 'dev':
+      return 'Dev e-Potek';
+    case 'admin':
+      return 'Admin e-Potek';
+    case 'pro':
+      return 'Pro e-Potek';
+
+    default:
+      return '';
+  }
+};
+
+const FrontContact = ({ contact }) => {
+  const { handle, display_name } = contact;
   const [loading, setLoading] = useState(true);
   const [epotekContact, setEpotekContact] = useState();
   const [collection, setCollection] = useState();
-  let contact = epotekContact;
+  let finalContact = epotekContact;
 
   useEffect(() => {
     EpotekFrontApi.queryOne('users', {
-      $filters: { 'emails.0.address': handle },
+      $filters: { 'emails.0.address': handle.toLowerCase() },
       assignedEmployee: { name: 1 },
       roles: 1,
       ...fragment,
@@ -34,7 +62,7 @@ const FrontContact = ({ contact: { handle, display_name } }) => {
           setCollection('users');
         } else {
           return EpotekFrontApi.queryOne('contacts', {
-            $filters: { 'emails.0.address': handle },
+            $filters: { 'emails.0.address': handle.toLowerCase() },
             ...fragment,
           }).then(result2 => {
             if (result2._id) {
@@ -56,13 +84,14 @@ const FrontContact = ({ contact: { handle, display_name } }) => {
   }
 
   if (!epotekContact) {
-    contact = { name: display_name || handle };
+    finalContact = { name: display_name || handle };
   }
 
   return (
-    <div>
-      <h3
-        className={cx('text-center', { link: !!epotekContact })}
+    <div className="text-center">
+      <div
+        className={cx('flex', { link: !!epotekContact })}
+        style={{ justifyContent: 'center' }}
         onClick={() => {
           if (epotekContact) {
             Front.openUrl(
@@ -71,9 +100,17 @@ const FrontContact = ({ contact: { handle, display_name } }) => {
           }
         }}
       >
-        {contact.name}
-      </h3>
-      <span className="secondary" />
+        {!!epotekContact && (
+          <img
+            src="https://backend.e-potek.ch/img/logo_square_black.svg"
+            style={{ width: 24, height: 24, marginRight: 8 }}
+          />
+        )}
+        <h3 style={{ margin: 0, marginBottom: 8 }}>{finalContact.name}</h3>
+      </div>
+      <span className="secondary">
+        {getContactSubtitle({ collection, contact, epotekContact })}
+      </span>
     </div>
   );
 };
