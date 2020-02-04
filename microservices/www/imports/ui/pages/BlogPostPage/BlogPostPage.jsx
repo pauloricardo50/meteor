@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { compose, lifecycle } from 'recompose';
 
@@ -13,12 +13,12 @@ import BlogPostPageContent from './BlogPostPageContent';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
-type BlogPostPageProps = {
-  loading: boolean,
-  post?: Object,
-};
+                          
+                   
+                
+  
 
-const BlogPostPage = ({ loading = true, post }: BlogPostPageProps) => {
+const BlogPostPage = ({ loading = true, post }                   ) => {
   if (post && post.error) {
     return <NotFound />;
   }
