@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Table from 'core/components/Table';
@@ -7,7 +7,7 @@ import Icon from 'core/components/Icon';
 import ProOrganisationUserAdder from 'core/components/ProOrganisationUserAdder';
 import ProOrganisationUsersTableContainer from './ProOrganisationUsersTableContainer';
 
-type ProOrganisationUsersTableProps = {};
+                                         
 
 const ProOrganisationUsersTable = ({
   rows,
@@ -15,7 +15,7 @@ const ProOrganisationUsersTable = ({
   currentUser,
   name,
   _id: organisationId,
-}: ProOrganisationUsersTableProps) => (
+}                                ) => (
     <>
       <ProOrganisationUserAdder
         organisationId={organisationId}

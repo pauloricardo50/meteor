@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -9,7 +9,7 @@ import collectionIcons from 'core/arrays/collectionIcons';
 import ProPromotionsTable from './ProPromotionsTable';
 import ProPropertiesTable from './ProPropertiesTable';
 
-type ProDashboardPageTabsProps = {};
+                                    
 
 const getTabs = ({ currentUser }) => {
   const { organisations = [] } = currentUser;
@@ -48,7 +48,7 @@ const getTabs = ({ currentUser }) => {
   }));
 };
 
-const ProDashboardPageTabs = ({ currentUser }: ProDashboardPageTabsProps) => {
+const ProDashboardPageTabs = ({ currentUser }                           ) => {
   const tabs = getTabs({ currentUser });
   return (
     <Tabs

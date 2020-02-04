@@ -1,13 +1,13 @@
-// @flow
+//      
 import React from 'react';
 
 import T from 'core/components/Translation';
 import ProOrganisationPageTabs from './ProOrganisationPageTabs';
 import ShareCustomersToggle from './ShareCustomersToggle';
 
-type ProOrganisationPageProps = {};
+                                   
 
-const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
+const ProOrganisationPage = ({ currentUser }                          ) => {
   const { organisations } = currentUser;
 
   if (!organisations || organisations.length === 0) {

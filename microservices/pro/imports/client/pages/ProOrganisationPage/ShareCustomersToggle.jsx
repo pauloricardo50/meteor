@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import Toggle from 'core/components/Toggle';
@@ -7,14 +7,14 @@ import Dialog from 'core/components/Material/Dialog';
 import T from 'core/components/Translation';
 import ShareCustomersToggleContainer from './ShareCustomersToggleContainer';
 
-type ShareCustomersToggleProps = {
-  organisation: Object,
-  handleToggle: Function,
-  openDialog: boolean,
-  setOpenDialog: Function,
-  loading: boolean,
-  handleSubmit: Function,
-};
+                                  
+                       
+                         
+                      
+                          
+                   
+                         
+  
 
 const ShareCustomersToggle = ({
   organisation,
@@ -23,7 +23,7 @@ const ShareCustomersToggle = ({
   setOpenDialog,
   loading,
   handleSubmit,
-}: ShareCustomersToggleProps) => {
+}                           ) => {
   const {
     $metadata: { shareCustomers = true } = {},
     name: organisationName,
