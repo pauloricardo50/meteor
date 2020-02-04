@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import {
@@ -10,11 +10,11 @@ import PropertyCard from './PropertyCard';
 import PromotionCard from './PropertyCard/PromotionCard';
 import PropertyCardSubtitle from './PropertyCard/PropertyCardSubtitle';
 
-type PropertiesProps = {
-  loan: Object,
-};
+                        
+               
+  
 
-const Properties = ({ loan }: PropertiesProps) => {
+const Properties = ({ loan }                 ) => {
   const {
     properties = [],
     promotions = [],

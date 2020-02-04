@@ -1,13 +1,13 @@
-// @flow
+//      
 import React from 'react';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 import UserCreatorContainer from './UserCreatorContainer';
 
-type UserCreatorProps = {};
+                           
 
-const UserCreator = ({ schema, buttonProps, onSubmit }: UserCreatorProps) => (
+const UserCreator = ({ schema, buttonProps, onSubmit }                  ) => (
   <AutoFormDialog
     title={<T id="UserCreator.title" />}
     description={

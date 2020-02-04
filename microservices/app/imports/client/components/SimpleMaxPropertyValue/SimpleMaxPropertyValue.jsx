@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import cx from 'classnames';
 
@@ -10,7 +10,7 @@ import MaxPropertyValueContainer, {
 import SimpleMaxPropertyValueSignup from './SimpleMaxPropertyValueSignup';
 import SimpleMaxPropertyValueEmptyState from './SimpleMaxPropertyValueEmptyState';
 
-type SimpleMaxPropertyValueProps = {};
+                                      
 
 const getContent = props => {
   const { state, loading, loan } = props;
@@ -35,7 +35,7 @@ const getContent = props => {
   );
 };
 
-export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
+export const SimpleMaxPropertyValue = (props                             ) => {
   const { blue, noPadding } = props;
 
   return (

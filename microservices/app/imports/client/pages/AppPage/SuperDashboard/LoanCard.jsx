@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withState, compose } from 'recompose';
@@ -7,12 +7,12 @@ import { createRoute } from 'core/utils/routerUtils';
 import LoanCardHeader from './LoanCardHeader';
 import LoanCardBody from './LoanCardBody';
 
-type LoanCardProps = {
-  loan: Object,
-  disableLink: Function,
-  linkDisabled: Boolean,
-  history: OBject,
-};
+                      
+               
+                        
+                        
+                  
+  
 
 const handleCardClick = ({ history, linkDisabled, loanId }) => () => {
   if (!linkDisabled) {
@@ -25,7 +25,7 @@ const LoanCard = ({
   disableLink,
   linkDisabled,
   history,
-}: LoanCardProps) => {
+}               ) => {
   const { _id: loanId } = loan;
 
   return (

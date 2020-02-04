@@ -1,13 +1,13 @@
-// @flow
+//      
 import React from 'react';
 
 import { APPLICATION_TYPES } from 'core/api/constants';
 import DashboardProgressBar from 'imports/client/pages/DashboardPage/DashboardProgress/DashboardProgressBar';
 import SimpleDashboardPageCTAs from 'imports/client/pages/SimpleDashboardPage/SimpleDashboardPageCTAs';
 
-type SimpleAppPageProps = {};
+                             
 
-const withSimpleAppPage = Component => (props: SimpleAppPageProps) => {
+const withSimpleAppPage = Component => (props                    ) => {
   const { loan, children, currentUser } = props;
   const { maxPropertyValue } = loan;
 

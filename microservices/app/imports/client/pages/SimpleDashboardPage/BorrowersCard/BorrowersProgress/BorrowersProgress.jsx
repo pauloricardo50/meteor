@@ -1,17 +1,17 @@
-// @flow
+//      
 import React from 'react';
 
 import T from 'core/components/Translation';
 import BorrowersProgressRecap from './BorrowersProgressRecap';
 import BorrowersProgressSignup from './BorrowersProgressSignup';
 
-type BorrowersProgressProps = {};
+                                 
 
 const BorrowersProgress = ({
   loan,
   progress,
   setOpenBorrowersForm,
-}: BorrowersProgressProps) => {
+}                        ) => {
   const { borrowers } = loan;
 
   return (

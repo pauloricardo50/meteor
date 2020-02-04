@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import Link from 'core/components/Link';
 import cx from 'classnames';
@@ -8,12 +8,12 @@ import StatusLabel from 'core/components/StatusLabel';
 import { PROMOTIONS_COLLECTION, PROMOTION_STATUS } from 'core/api/constants';
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
-type PromotionCardProps = {
-  promotion: Object,
-  loanId: string,
-};
+                           
+                    
+                 
+  
 
-const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
+const PromotionCard = ({ promotion, loanId }                    ) => {
   const { name, documents, status } = promotion;
   const { promotionImage = [] } = documents || {};
 

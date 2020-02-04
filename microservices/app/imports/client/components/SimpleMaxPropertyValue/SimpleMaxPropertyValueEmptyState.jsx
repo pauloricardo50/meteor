@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
@@ -7,10 +7,10 @@ import { STATE } from 'core/components/MaxPropertyValue/MaxPropertyValueContaine
 import { MaxPropertyValueEmptyStateReady } from 'core/components/MaxPropertyValue/MaxPropertyValueEmptyState';
 import T from 'core/components/Translation';
 
-type SimpleMaxPropertyValueEmptyStateProps = {};
+                                                
 
 const SimpleMaxPropertyValueEmptyState = (
-  props: SimpleMaxPropertyValueEmptyStateProps,
+  props                                       ,
 ) => {
   const { state } = props;
 

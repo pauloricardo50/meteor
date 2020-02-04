@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext } from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
@@ -11,7 +11,7 @@ import useMedia from 'core/hooks/useMedia';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import UserCreator from '../../components/UserCreator';
 
-type AppTopNavProps = {};
+                         
 
 const blacklist = ['/signup/', '/enroll-account/'];
 
@@ -36,7 +36,7 @@ const AppTopNav = ({
   shouldShowSideNav,
   history,
   children,
-}: AppTopNavProps) => {
+}                ) => {
   const currentUser = useContext(CurrentUserContext);
   const isMobile = useMedia({ maxWidth: 768 });
 

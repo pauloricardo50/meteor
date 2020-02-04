@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 import Progress from './Progress';
 
-type BorrowerHeaderDetailsProps = {};
+                                     
 
 const BorrowerHeaderDetails = ({
   borrower,
@@ -16,7 +16,7 @@ const BorrowerHeaderDetails = ({
   borrowerCount,
   tabId = 'personal',
   loanId,
-}: BorrowerHeaderDetailsProps) => (
+}                            ) => (
   <div
     className="col--50 flex-col borrower-header__info flex--helper"
     key={borrower._id}

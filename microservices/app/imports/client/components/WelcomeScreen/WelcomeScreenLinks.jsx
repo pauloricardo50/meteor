@@ -1,4 +1,4 @@
-// @flow
+//      
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
@@ -12,7 +12,7 @@ import { faLanguage } from '@fortawesome/pro-light-svg-icons/faLanguage';
 import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import T from 'core/components/Translation';
 
-type WelcomeScreenLinksProps = {};
+                                  
 
 const getLinks = ({ handleContact }) => [
   {
@@ -75,7 +75,7 @@ const getLinks = ({ handleContact }) => [
   },
 ];
 
-const WelcomeScreenLinks = ({ handleContact }: WelcomeScreenLinksProps) => {
+const WelcomeScreenLinks = ({ handleContact }                         ) => {
   const { toggleOpenContact } = useContext(ContactButtonContext);
 
   return (

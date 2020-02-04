@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react';
 
 import { getBorrowerSimpleArray } from 'core/arrays/BorrowerFormArray';
@@ -10,14 +10,14 @@ const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
   gender: doc.gender,
 }))(AutoForm);
 
-type BorrowerFormProps = {};
+                            
 
 const BorrowerForm = ({
   borrowerId,
   userFormsEnabled,
   loan,
   overrides = {},
-}: BorrowerFormProps) => {
+}                   ) => {
   const { _id: loanId, borrowers } = loan;
   const borrower = borrowers.find(({ _id }) => _id === borrowerId);
   const { simpleBorrowersForm: simple = true } = loan;

@@ -1,15 +1,15 @@
-// @flow
+//      
 import React from 'react';
 
 import T from 'core/components/Translation';
 import PromotionDetail from './PromotionDetail';
 import PromotionOptionDetail from './PromotionOptionDetail';
 
-type PropertiesPagePromotionsProps = {};
+                                        
 
 const PropertiesPagePromotions = ({
   loan: { _id: loanId, promotions, promotionOptions },
-}: PropertiesPagePromotionsProps) => (
+}                               ) => (
   <div className="promotions">
     <div className="promotion-cards">
       {promotions &&
