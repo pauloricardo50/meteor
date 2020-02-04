@@ -41,7 +41,7 @@ const promotionLotFilters = ({
     filters.status = status;
   }
 
-  if (!showAllLots) {
+  if (showAllLots === false) {
     filters._id = { $in: promotionLotIds };
   }
 };
