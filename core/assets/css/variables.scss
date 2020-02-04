@@ -1,0 +1,50 @@
+// Screen sizes
+$xsmall: 340px;
+$small: 480px;
+$med: 768px;
+$large: 992px;
+$wide: 1200px;
+$xwide: 1600px;
+$hd: 1920px;
+
+// Font sizes
+$font-size-xs: 14px;
+$font-size-s: 16px;
+$font-size-m: 18px;
+$font-size-l: 20px;
+
+// App colors
+$primary: #005bea;
+$secondary: #00c6ff;
+$primary-light: $secondary;
+$tertiary: #001a8f;
+$primary-dark: $tertiary;
+$success: #21d3b5;
+$success-dark: #1aa890;
+$warning: #f3af50;
+$error: #e01076;
+$error-dark: #b30c5e;
+
+// Helper colors
+$grey1: #d8d8d8;
+$grey2: #eee;
+$grey3: #f8f8f8;
+$grey4: #aaa;
+$border-grey: #dee2e6;
+$light-grey: #eee;
+$icon: #444;
+$icon-hover: #888;
+$background-color: #f8f8f8;
+
+// Font variables
+$bold: 600;
+$body-text: rgba(#000, 0.6);
+$title-text: rgba(#000, 0.74);
+
+// Other
+$top-nav-height: 64px;
+$bezier: cubic-bezier(0.02, 0.01, 0.47, 1);
+$z-nav: 100;
+$shadow-level-1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
+$shadow-level-2: 0 2px 30px 5px rgba(0, 0, 0, 0.2);
+$border-radius: 8px;

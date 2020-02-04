@@ -1,0 +1,490 @@
+// This @import must be at top of file, otherwise the custom fonts will not work
+@import url('//hello.myfonts.net/count/36c4a4');
+
+@import '{}/node_modules/normalize-scss/sass/normalize';
+@include normalize();
+
+@import './variables.scss';
+@import './mixins.scss';
+@import './core-components.scss';
+@import './typography.scss';
+
+body,
+html,
+#react-root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  background-color: $background-color;
+}
+
+// Nicer styling for a tags, removes horrible blue color
+// And avoid it if this is a button
+a:not([role='button']) {
+  cursor: pointer;
+
+  color: inherit;
+  &.color,
+  &.color > * {
+    transition: color 200ms $bezier;
+
+    color: $primary !important;
+
+    &:hover {
+      color: $success !important;
+    }
+  }
+  &:hover {
+    color: inherit;
+  }
+}
+
+// Don't mix these 2 together, or they cancel each other on firefox
+a:-webkit-any-link {
+  text-decoration: none;
+}
+a {
+  text-decoration: none;
+}
+
+hr {
+  height: 1px;
+
+  border: none;
+  background-color: $border-grey;
+}
+
+// White backgrounds with shadows to put things on
+.card1 {
+  border-radius: $border-radius;
+  background: #fff;
+  box-shadow: $shadow-level-1;
+}
+
+.card-top {
+  padding: 16px;
+}
+
+.card-header {
+  flex-grow: 1;
+
+  padding: 16px;
+
+  border-bottom: 1px solid $border-grey;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  background-color: #fafafa;
+}
+
+.card-bottom {
+  flex-grow: 1;
+
+  padding: 16px;
+
+  border-top: 1px solid $border-grey;
+  border-bottom-right-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+  background-color: #fafafa;
+}
+
+.card-hover {
+  transition: box-shadow 200ms $bezier;
+}
+
+:not(.card1).card-hover {
+  box-sizing: border-box;
+  padding: 16px;
+
+  &:hover {
+    border-radius: 4px;
+    box-shadow: $shadow-level-2;
+  }
+}
+
+.card1.shadow-2,
+.card1.card-hover:hover {
+  border-radius: 4px;
+  box-shadow: $shadow-level-2;
+}
+
+// Classes to color text according to our theme colors
+.primary {
+  color: $primary;
+}
+
+.success {
+  color: $success;
+}
+
+.error {
+  color: $error;
+}
+
+.error-box {
+  padding: 2px;
+
+  color: white;
+  border-radius: 2px;
+  background-color: $error;
+}
+
+.warning {
+  color: $warning;
+}
+
+.warning-box {
+  padding: 2px;
+
+  color: white;
+  border-radius: 2px;
+  background-color: $warning;
+}
+
+// A pretty heart-beat animation on anything
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.97);
+  }
+  35% {
+    transform: scale(0.9);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+  55% {
+    transform: scale(0.9);
+  }
+  65% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-beat {
+  animation-name: heartBeat;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+// A .description <p /> is a nice styled paragraph optimized for reading
+p.description,
+.description p {
+  max-width: 600px;
+
+  text-align: left;
+  white-space: pre-wrap;
+
+  line-height: 1.8em;
+}
+
+.description > p,
+.description > h4 {
+  max-width: 600px;
+
+  text-align: left;
+}
+
+// Flex helper classes
+.flex,
+.flex-row,
+.flex-col {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &.center {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+
+  &.center-align {
+    align-items: center;
+  }
+
+  &.sb {
+    justify-content: space-between;
+  }
+
+  &.sa {
+    justify-content: space-around;
+  }
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+// Helper classes to change opacity on things
+.normal {
+  opacity: 1;
+}
+
+.secondary {
+  opacity: 0.5;
+
+  &.not-secondary {
+    opacity: 1;
+  }
+}
+
+// This also adds the right cursor on disabled elements
+.disabled {
+  cursor: not-allowed;
+
+  opacity: 0.25;
+}
+
+// Change it from the material-ui default inline-flex, which makes them take full width
+.mui-text-input,
+.mui-radio-group {
+  display: flex;
+}
+
+.mui-select {
+  min-width: 120px;
+}
+
+// To display choices with proper hover effects
+.choice {
+  display: flex;
+
+  box-sizing: content-box;
+  margin-bottom: 16px;
+  padding: 16px;
+
+  border: solid 1px $grey1;
+  border-radius: 4px;
+}
+
+.choice:hover {
+  cursor: pointer;
+
+  border: solid 1px $primary;
+}
+
+.choice.chosen {
+  border: solid 2px $primary;
+}
+
+.choice.chosen.disabled {
+  border: solid 2px $success;
+}
+
+.choice.disabled {
+  cursor: default !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.logo-home {
+  transform: none;
+
+  &:hover {
+    animation-name: icon-animate;
+    animation-duration: 600ms;
+    animation-timing-function: $bezier;
+  }
+}
+
+@keyframes icon-animate {
+  25% {
+    transform: rotate(10deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@mixin delays($n, $step) {
+  @for $i from 1 to $n {
+    &-#{$step*$i} {
+      animation-delay: #{$step * $i}ms;
+    }
+  }
+}
+
+.delay {
+  @include delays(20, 50);
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.space-children > * {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.m-8 {
+  margin: 8px;
+}
+.m-16 {
+  margin: 16px;
+}
+.p-8 {
+  padding: 8px;
+}
+.p-16 {
+  padding: 16px;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+.mt-16 {
+  margin-top: 16px;
+}
+
+.mb-8 {
+  margin-bottom: 8px;
+}
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+.a {
+  text-decoration: underline !important;
+
+  &:hover {
+    color: $primary !important;
+  }
+}
+
+// Allow popovers to show above material-ui modals
+.popover {
+  z-index: 1401 !important;
+}
+
+.mr-4 {
+  margin-right: 4px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mr-16 {
+  margin-right: 16px;
+}
+
+.ml-4 {
+  margin-left: 4px;
+}
+
+.ml-8 {
+  margin-left: 8px;
+}
+
+.ml-16 {
+  margin-left: 16px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+
+.mt-32 {
+  margin-top: 32px;
+}
+
+.fb-50 > * {
+  flex-basis: 50%;
+}
+
+.flex--sb {
+  justify-content: space-between;
+}
+
+.grid {
+  &-2 {
+    display: grid;
+
+    column-gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &-3 {
+    display: grid;
+
+    column-gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grid-col {
+  display: grid;
+
+  grid-auto-flow: column;
+  grid-gap: 8px;
+  justify-items: stretch;
+}
+
+.grid-row {
+  display: grid;
+
+  grid-auto-flow: row;
+  grid-gap: 8px;
+  justify-items: stretch;
+}
+
+.markdown {
+  table {
+    border-spacing: 0;
+
+    thead {
+      color: $title-text;
+
+      font-weight: bold;
+    }
+
+    td,
+    th {
+      padding: 8px 12px 8px 12px;
+    }
+
+    th {
+      border-bottom: 1px solid $border-grey;
+    }
+  }
+}
