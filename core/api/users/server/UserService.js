@@ -399,13 +399,10 @@ export class UserServiceClass extends CollectionService {
           firstName,
           lastName,
           phoneNumber,
+          referredByUserId: proUserId,
         },
         adminId: admin && admin._id,
       });
-
-      if (pro) {
-        this.setReferredBy({ userId, proId: proUserId });
-      }
     } else {
       const {
         _id: existingUserId,
