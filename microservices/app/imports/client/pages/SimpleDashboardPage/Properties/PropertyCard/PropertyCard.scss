@@ -1,0 +1,92 @@
+$borrowers-item-width: 600px;	
+
+.property-card {	
+  display: flex;	
+  align-items: stretch;	
+  align-self: center;	
+  flex-direction: column;	
+
+  box-sizing: border-box;	
+  width: 100%;	
+  max-width: calc(#{$borrowers-item-width} * 2);	
+  margin-top: 16px;	
+  padding: 32px;	
+
+  @include screen(small) {	
+    padding: 16px;	
+  }	
+
+  hr {	
+    width: 100%;	
+  }	
+
+  .top {	
+    display: flex;	
+    flex-direction: column;	
+    justify-content: space-between;	
+
+    @include screen(wide) {	
+      align-items: center;	
+      flex-direction: row;	
+    }	
+    @include screen(custom, max, 700) {	
+      flex-wrap: wrap;	
+    }	
+
+    .property-card-actions {	
+      align-self: center;	
+
+      margin-top: 16px;	
+    }	
+  }	
+
+  &-infos {	
+    display: flex;	
+    align-items: center;	
+    flex-direction: row;	
+
+    img,	
+    .icon {	
+      width: 120px;	
+      height: 120px;	
+      margin-right: 32px;	
+
+      @include screen(med) {	
+        width: 100px;	
+        height: 100px;	
+        margin-right: 16px;	
+      }	
+    }	
+
+    img {	
+      object-fit: cover;	
+    }	
+
+    .icon {	
+      color: $primary;	
+    }	
+
+    &-description {	
+      h3,	
+      p {	
+        margin-right: 8px;	
+      }	
+    }	
+  }	
+
+  &-subtitle {	
+    > span {	
+      display: flex;	
+      align-items: center;	
+    }	
+  }	
+
+  .promotion-reservation-progress {	
+    align-items: stretch !important;	
+    flex-direction: column;	
+
+    > * {	
+      justify-content: space-between;	
+    }	
+  }	
+}

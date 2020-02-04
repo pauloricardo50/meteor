@@ -1,0 +1,32 @@
+@import './DashboardRecapFinance/DashboardRecapFinance.scss';	
+@import './DashboardRecapProperty/DashboardRecapProperty.scss';	
+@import './DashboardRecapPromotion/DashboardRecapPromotion.scss';	
+
+.dashboard-recap {	
+  display: flex;	
+  flex-direction: column;	
+  flex-wrap: wrap;	
+
+  h2 {	
+    align-self: center;	
+  }	
+
+  .validator {	
+    max-width: unset;	
+  }	
+}	
+
+.dashboard-recap .cards {	
+  display: flex;	
+  align-items: stretch;	
+
+  white-space: nowrap;	
+
+  @include screen(med) {	
+    flex-wrap: wrap;	
+  }	
+
+  & > * {	
+    margin: 8px;	
+  }	
+}

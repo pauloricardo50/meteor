@@ -1,0 +1,79 @@
+@import './DashboardInfoInterests/DashboardInfoInterests.scss';	
+
+.dashboard-info {	
+  display: flex;	
+  align-items: center;	
+  flex-direction: column;	
+
+  .cards {	
+    display: flex;	
+    align-items: flex-start;	
+    flex-wrap: wrap;	
+
+    width: 100%;	
+  }	
+
+  .cards > * {	
+    flex-basis: 0;	
+    flex-grow: 1;	
+
+    max-width: 50%;	
+    margin: 8px;	
+  }	
+}	
+
+.dashboard-info-team {	
+  display: flex;	
+  flex-direction: column;	
+
+  .card-top {	
+    flex-grow: 1;	
+  }	
+
+  .card-bottom {	
+    display: flex;	
+    align-items: center;	
+    flex-direction: column;	
+    flex-grow: 0;	
+  }	
+}	
+
+.dashboard-info-team-company-member {	
+  display: flex;	
+  align-items: center;	
+
+  margin: 16px 0;	
+
+  img {	
+    width: 64px;	
+    height: 64px;	
+    margin-right: 16px;	
+
+    border-radius: 50%;	
+  }	
+
+  .person {	
+    display: flex;	
+    flex-direction: column;	
+    flex-grow: 1;	
+
+    > * {	
+      margin: 0;	
+    }	
+  }	
+
+  .contact {	
+    display: flex;	
+    flex-wrap: nowrap;	
+  }	
+}	
+
+.dashboard-info-team-external {	
+  hr {	
+    height: 1px;	
+    margin: 40px -16px;	
+
+    border: none;	
+    background-color: $border-grey;	
+  }	
+}

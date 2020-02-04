@@ -1,0 +1,126 @@
+.app-root .navs {	
+  display: flex;	
+
+  width: 100%;	
+}	
+
+.app-root {	
+  display: flex;	
+  flex-direction: column;	
+  flex-grow: 1;	
+
+  width: 100%;	
+  min-width: 1200px;	
+  height: 100%;	
+
+  @include screen(med) {	
+    min-width: 800px;	
+  }	
+
+  &.mobile {	
+    min-width: unset;	
+  }	
+}	
+
+.app-layout {	
+  display: flex;	
+  flex-direction: column;	
+  flex-grow: 1;	
+
+  box-sizing: border-box;	
+  height: auto;	
+  min-height: 100%;	
+  padding: 16px;	
+  padding-top: 80px;	
+  padding-bottom: 16px;	
+  padding-left: 266px; /* side-nav width + 16px  */	
+
+  @include screen(med) {	
+    padding-left: 16px;	
+  }	
+}	
+
+.app-layout.no-nav {	
+  padding-left: 16px;	
+}	
+
+.app-layout.always-side-nav {	
+  padding-left: 266px;	
+}	
+
+.app-layout .wrapper {	
+  display: flex;	
+  align-items: stretch;	
+  align-self: stretch;	
+  flex-direction: column;	
+  flex-grow: 1;	
+}	
+
+.app-layout .wrapper .page {	
+  box-sizing: border-box;	
+  width: 100%;	
+  max-width: 1000px;	
+  margin: 0 auto;	
+}	
+
+.app-layout .wrapper .page.full-width {	
+  box-sizing: border-box;	
+  max-width: 100%;	
+}	
+
+.app-layout .transition-wrapper {	
+  position: absolute;	
+
+  width: calc(100% - 32px);	
+  margin: auto;	
+}	
+
+.app-layout .transition-wrapper {	
+  width: calc(100% - 250px - 32px);	
+
+  @include screen(med) {	
+    width: calc(100% - 32px);	
+  }	
+}	
+
+.layout-error {	
+  display: flex;	
+  align-items: center;	
+  justify-content: center;	
+
+  width: 100%;	
+  height: 100%;	
+}	
+
+.full-screen {	
+  width: 100%;	
+  min-height: 100%;	
+}	
+
+.mobile-warning {	
+  position: absolute;	
+  z-index: 99999;	
+  top: 0;	
+  left: 0;	
+
+  display: flex;	
+  align-items: center;	
+  flex-direction: column;	
+  justify-content: center;	
+
+  box-sizing: border-box;	
+  width: 100%;	
+  height: 100%;	
+  padding: 16px;	
+
+  background-color: white;	
+
+  @include screen(med, min) {	
+    display: none;	
+  }	
+
+  .title,	
+  p {	
+    max-width: 400px;	
+  }	
+}
