@@ -1,4 +1,4 @@
-//      
+//
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { compose } from 'recompose';
@@ -12,7 +12,7 @@ class RootCalculator {
     this.initializer = 2;
   }
 
-  add(a        , b        )         {
+  add(a, b) {
     return a + b;
   }
 
@@ -20,7 +20,7 @@ class RootCalculator {
     return this.var;
   }
 
-  return2()         {
+  return2() {
     return 2;
   }
 
@@ -39,14 +39,14 @@ const withCalc2 = (SuperClass = class {}) =>
   class extends SuperClass {
     constructor() {
       super();
-      this.initializer = this.initializer * 2;
+      this.initializer *= 2;
     }
 
-    increment(a        )         {
+    increment(a) {
       return a + 1;
     }
 
-    setVar(value)       {
+    setVar(value) {
       this.var = value;
     }
   };
@@ -55,18 +55,18 @@ const withCalc3 = SuperClass =>
   class extends SuperClass {
     constructor() {
       super();
-      this.initializer = this.initializer + 1;
+      this.initializer += 1;
     }
 
-    multiply(a        , b        )         {
+    multiply(a, b) {
       return a * b;
     }
 
-    returnVarChild()       {
+    returnVarChild() {
       return this.var;
     }
 
-    return2()         {
+    return2() {
       return -2;
     }
 
@@ -171,22 +171,6 @@ describe('Class composition', () => {
     expect(new MyClass().increment(2)).to.equal(2);
   });
 
-  it('shows the right types with flow-type', () => {
-    class MyClass extends UberClass {
-      return2()         {
-        return '2';
-      }
-
-      returnNumber() {
-        return super.return2();
-      }
-    }
-
-    // Inspect types here to make sure they are correct
-    expect(new MyClass().return2()).to.equal('2');
-    expect(new MyClass().returnNumber()).to.equal(-2);
-  });
-
   it('parent can call child funcs', () => {
     expect(new UberClass().parentFunc()).to.equal('it works');
   });
@@ -197,7 +181,7 @@ describe('Class composition', () => {
         super(props);
       }
 
-      return2()         {
+      return2() {
         return '2';
       }
 
