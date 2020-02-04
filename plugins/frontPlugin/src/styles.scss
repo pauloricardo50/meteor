@@ -1,0 +1,31 @@
+@import "../node_modules/normalize-scss/sass/normalize/import-now";
+
+h1,h2,h3,h4,h5 {
+  color: #444;
+}
+
+body {
+  color: #888;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.front-plugin {
+  display: flex;
+  flex-direction: column;
+  align-items:stretch;
+  width: 100%;
+  padding: 8px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.link {
+  text-decoration: underline;
+
+  &:hover {
+    color: blue;
+    cursor: pointer;
+  }
+}

@@ -19,6 +19,7 @@ import {
   setPropertyUserPermissionsAPI,
   addProUserToPropertyAPI,
   addLoanNoteAPI,
+  frontAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -137,6 +138,10 @@ api.addEndpoint(
 api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
   rsaAuth: true,
   endpointName: 'Add note to a loan',
+});
+api.addEndpoint('/frontapp', 'POST', frontAPI, {
+  noAuth: true,
+  endpointName: 'Front API',
 });
 
 Meteor.startup(() => {
