@@ -4,8 +4,8 @@ import cx from 'classnames';
 
 const { Front } = window;
 
-const getContactSubtitle = ({ collection, isEpotekContact, contact }) => {
-  if (!isEpotekContact) {
+const getContactSubtitle = ({ collection, isEpotekResource, contact }) => {
+  if (!isEpotekResource) {
     const { source } = contact;
     return source.charAt(0).toUpperCase() + source.slice(1);
   }
@@ -31,45 +31,78 @@ const getContactSubtitle = ({ collection, isEpotekContact, contact }) => {
   }
 };
 
-const FrontContactHeader = ({ collection, contact, isEpotekContact }) => (
-  <div className="text-center">
-    <div
-      className={cx('flex', { link: isEpotekContact })}
-      style={{ justifyContent: 'center' }}
-      onClick={() => {
-        if (isEpotekContact) {
-          Front.openUrl(
-            `https://admin.e-potek.ch/${collection}/${contact._id}`,
-          );
-        }
-      }}
-    >
-      {isEpotekContact && (
-        <img
-          src="https://backend.e-potek.ch/img/logo_square_black.svg"
-          style={{ width: 24, height: 24, marginRight: 8 }}
-          alt="logo"
-        />
-      )}
-      <h3 style={{ margin: 0, marginBottom: 8 }}>{contact.name}</h3>
-    </div>
-    <span className="secondary">
-      <span>
-        {getContactSubtitle({ collection, contact, isEpotekContact })}
-      </span>
-      {isEpotekContact && (
-        <span>
-          {' '}
-          depuis{' '}
-          {
-            moment(contact.createdAt)
-              .fromNow()
-              .split('il y a')[1]
-          }
+const FrontContactHeader = ({ collection, contact, isEpotekResource }) => {
+  const { assignedEmployee, referredByUser, referredByOrganisation } = contact;
+  return (
+    <div className="mb-32">
+      <div className="text-center mb-16">
+        <div
+          className={cx('flex', { link: isEpotekResource })}
+          style={{ justifyContent: 'center' }}
+          onClick={() => {
+            if (isEpotekResource) {
+              Front.openUrl(
+                `https://admin.e-potek.ch/${collection}/${contact._id}`,
+              );
+            }
+          }}
+        >
+          {isEpotekResource && (
+            <img
+              src="https://backend.e-potek.ch/img/logo_square_black.svg"
+              style={{ width: 24, height: 24, marginRight: 8 }}
+              alt="logo"
+            />
+          )}
+          <h3 style={{ margin: 0, marginBottom: 8 }}>{contact.name}</h3>
+        </div>
+        <span className="secondary">
+          <span>
+            {getContactSubtitle({ collection, contact, isEpotekResource })}
+          </span>
+          {isEpotekResource && (
+            <span>
+              {' '}
+              depuis{' '}
+              {
+                moment(contact.createdAt)
+                  .fromNow()
+                  .split('il y a')[1]
+              }
+            </span>
+          )}
         </span>
+      </div>
+
+      {(!!assignedEmployee || !!referredByUser || !!referredByOrganisation) && (
+        <div>
+          <div className="flex fb-50 mb-8">
+            {!!assignedEmployee && (
+              <div className="mr-8">
+                <b>Conseiller:</b>&nbsp;
+                <span>{assignedEmployee.name}</span>
+              </div>
+            )}
+
+            {!!referredByUser && (
+              <div>
+                <b>Référé par:</b>&nbsp;
+                <span>{referredByUser.name}</span>
+              </div>
+            )}
+          </div>
+          <div>
+            {!!referredByOrganisation && (
+              <div>
+                <b>Référé par Orga:</b>&nbsp;
+                <span>{referredByOrganisation.name}</span>
+              </div>
+            )}
+          </div>
+        </div>
       )}
-    </span>
-  </div>
-);
+    </div>
+  );
+};
 
 export default FrontContactHeader;

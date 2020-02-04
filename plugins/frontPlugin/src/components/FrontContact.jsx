@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import EpotekFrontApi from '../EpotekFrontApi';
 import FrontContactHeader from './FrontContactHeader';
+import FrontContactLoans from './FrontContactLoans';
 
-const fragment = {
+const contactFragment = email => ({
+  $filters: { 'emails.0.address': { $in: [email, email.toLowerCase()] } },
   address1: 1,
   address2: 1,
   city: 1,
@@ -12,6 +14,13 @@ const fragment = {
   name: 1,
   phoneNumbers: 1,
   zipCode: 1,
+});
+
+const taskFragment = {
+  $filters: { status: 'ACTIVE' },
+  title: 1,
+  dueAt: 1,
+  assignee: { name: 1 },
 };
 
 const FrontContact = ({ contact }) => {
@@ -19,25 +28,32 @@ const FrontContact = ({ contact }) => {
   const [loading, setLoading] = useState(true);
   const [epotekContact, setEpotekContact] = useState();
   const [collection, setCollection] = useState();
-  const isEpotekContact = !!epotekContact;
+  const isEpotekResource = !!epotekContact;
   let finalContact = epotekContact;
 
   useEffect(() => {
     EpotekFrontApi.queryOne('users', {
-      $filters: { 'emails.0.address': handle.toLowerCase() },
+      ...contactFragment(handle),
       assignedEmployee: { name: 1 },
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      loans: {
+        name: 1,
+        status: 1,
+        tasks: taskFragment,
+      },
+      tasks: taskFragment,
       roles: 1,
-      ...fragment,
     })
       .then(result => {
         if (result._id) {
           setEpotekContact(result);
           setCollection('users');
         } else {
-          return EpotekFrontApi.queryOne('contacts', {
-            $filters: { 'emails.0.address': handle.toLowerCase() },
-            ...fragment,
-          }).then(result2 => {
+          return EpotekFrontApi.queryOne(
+            'contacts',
+            contactFragment(handle),
+          ).then(result2 => {
             if (result2._id) {
               setEpotekContact(result2);
               setCollection('contacts');
@@ -45,7 +61,8 @@ const FrontContact = ({ contact }) => {
           });
         }
       })
-      .finally(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(() => setLoading(false));
   }, []);
 
   if (loading) {
@@ -56,16 +73,23 @@ const FrontContact = ({ contact }) => {
     );
   }
 
-  if (!isEpotekContact) {
+  if (!isEpotekResource) {
     finalContact = { ...contact, name: display_name || handle };
   }
+  console.log('finalContact:', finalContact);
 
   return (
-    <FrontContactHeader
-      isEpotekContact={isEpotekContact}
-      contact={finalContact}
-      collection={collection}
-    />
+    <div>
+      <FrontContactHeader
+        isEpotekResource={isEpotekResource}
+        contact={finalContact}
+        collection={collection}
+      />
+
+      {isEpotekResource && collection === 'users' && (
+        <FrontContactLoans loans={finalContact.loans} />
+      )}
+    </div>
   );
 };
 
