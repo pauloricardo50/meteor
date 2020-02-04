@@ -1,0 +1,26 @@
+.pro-dashboard-page {	
+  display: flex;	
+  flex-direction: column;	
+
+  padding: 16px;	
+
+  h3 {	
+    margin-top: 24px;	
+  }	
+
+  .buttons {	
+    display: flex;	
+
+    > * {	
+      margin-right: 8px;	
+    }	
+  }	
+
+  .table-filter {	
+    align-self: flex-start;	
+  }	
+
+  &-tabs {	
+    margin-top: 32px;	
+  }	
+}
