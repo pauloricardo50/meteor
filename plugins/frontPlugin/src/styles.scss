@@ -1,6 +1,10 @@
 @import "../node_modules/normalize-scss/sass/normalize/import-now";
 
-$primary: #005bea;
+@import './core/assets/css/variables.scss';
+@import './core/assets/css/core-styles.scss';
+
+@import './core/components/StatusLabel/StatusLabel.scss';
+
 
 body {
   color: #888;

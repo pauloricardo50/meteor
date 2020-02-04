@@ -1,4 +1,6 @@
 import React from 'react';
+import StatusLabel from '../core/components/StatusLabel';
+import { LOANS_COLLECTION } from '../core/api/loans/loanConstants';
 
 const { Front } = window;
 
@@ -12,17 +14,20 @@ const FrontContactLoans = ({ loans = [] }) => (
       </div>
     )}
 
-    {loans.map(({ _id, name }) => (
+    {loans.map(({ _id, name, status }) => (
       <div key={_id}>
-        <h3
-          style={{ marginTop: 0 }}
-          className="link"
-          onClick={() => {
-            Front.openUrl(`https://admin.e-potek.ch/loans/${_id}`);
-          }}
-        >
-          {name}
-        </h3>
+        <div className="flex center-align mb-8">
+          <h3
+            style={{ margin: 0, marginRight: 8 }}
+            className="link"
+            onClick={() => {
+              Front.openUrl(`https://admin.e-potek.ch/loans/${_id}`);
+            }}
+          >
+            {name}
+          </h3>
+          <StatusLabel status={status} collection={LOANS_COLLECTION} />
+        </div>
       </div>
     ))}
   </div>

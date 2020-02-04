@@ -1,8 +1,8 @@
 import IntlMessageFormat from 'intl-messageformat';
 import ReactDOMServer from 'react-dom/server';
 
-import { getUserLocale } from 'core/utils/localization';
-import defaultIntlValues from 'core/components/Translation/defaultIntlValues';
+import defaultIntlValues from '../components/Translation/defaultIntlValues';
+import { getUserLocale } from './localization';
 
 const defaultValues = Object.keys(defaultIntlValues).reduce((obj, key) => {
   const value = defaultIntlValues[key];

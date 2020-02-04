@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import FrontContact from './FrontContact';
+import LibraryWrappers from '../core/components/BaseRouter/LibraryWrappers';
+import {
+  getFormats,
+  localizationStartup,
+  getUserLocale,
+} from '../core/utils/localization';
+import messages from '../core/lang/fr.json';
 
 const { Front } = window;
 console.log('Front:', Front);
+localizationStartup({ setupAccounts: false, setupCountries: false, messages });
 
 const FrontPlugin = () => {
   const [data, setData] = useState(null);
@@ -31,9 +39,13 @@ const FrontPlugin = () => {
   const { conversation, contact, message, otherMessages } = data;
 
   return (
-    <div className="front-plugin">
-      <FrontContact contact={contact} key={conversation.id} />
-    </div>
+    <LibraryWrappers
+      i18n={{ messages, formats: getFormats(), locale: getUserLocale() }}
+    >
+      <div className="front-plugin">
+        <FrontContact contact={contact} key={conversation.id} />
+      </div>
+    </LibraryWrappers>
   );
 };
 

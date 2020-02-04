@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/index.js',
@@ -17,23 +18,37 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
-          'sass-loader',
-        ],
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },
   resolve: {
     extensions: ['*', '.js', '.jsx'],
+    symlinks: false,
   },
   mode: 'development',
   watchOptions: {
     ignored: /node_modules/,
     aggregateTimeout: 600,
+  },
+  plugins: [
+    // These 2 ignore conditional requires in api/methods/methods
+    new webpack.IgnorePlugin(/^.+getClientUrl/),
+    new webpack.IgnorePlugin(/^.+getClientTrackingId/),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
+    }),
+    // Replace any meteor module with our meteor mock
+    new webpack.NormalModuleReplacementPlugin(/^meteor.*$/, resource => {
+      resource.request = './src/meteor';
+      resource.context = `${
+        resource.context.split('/frontPlugin')[0]
+      }/frontPlugin`;
+    }),
+  ],
+  stats: {
+    modulesSort: '!size',
   },
 };

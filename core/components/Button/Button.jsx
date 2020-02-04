@@ -9,7 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
 
-import Icon from 'core/components/Icon';
+import Icon from '../Icon';
 import Link from '../Link';
 
 const styles = theme => ({

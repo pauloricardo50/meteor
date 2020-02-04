@@ -1,4 +1,4 @@
-import { BONUS_ALGORITHMS } from 'core/config/financeConstants';
+import { BONUS_ALGORITHMS } from '../../config/financeConstants';
 import { RESIDENCE_TYPE } from '../properties/propertyConstants';
 import { EXPENSES } from '../borrowers/borrowerConstants';
 
