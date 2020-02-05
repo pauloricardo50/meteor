@@ -36,6 +36,7 @@ const isPropertyFilesDisabled = (disabled, property) => {
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
+  console.log('properties:', properties);
   const isAdmin = Meteor.microservice === 'admin';
 
   return (
@@ -118,27 +119,32 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
               ),
             },
             ...(!loan.hasPromotion && properties.length > 0
-              ? properties.map(property => ({
-                label: (
-                  <FileTabLabel
-                    id="general.property"
-                    title={property.address1}
-                    progress={Calculator.getPropertyFilesProgress({
-                      property,
-                      loan,
-                    })}
-                  />
-                ),
-                content: (
-                  <SingleFileTab
-                    doc={property}
-                    collection="properties"
-                    disabled={isPropertyFilesDisabled(disabled, property)}
-                    currentUser={currentUser}
-                    loan={loan}
-                  />
-                ),
-              }))
+              ? properties
+                  .filter(
+                    ({ category }) =>
+                      isAdmin || category !== PROPERTY_CATEGORY.PRO,
+                  )
+                  .map(property => ({
+                    label: (
+                      <FileTabLabel
+                        id="general.property"
+                        title={property.address1}
+                        progress={Calculator.getPropertyFilesProgress({
+                          property,
+                          loan,
+                        })}
+                      />
+                    ),
+                    content: (
+                      <SingleFileTab
+                        doc={property}
+                        collection="properties"
+                        disabled={isPropertyFilesDisabled(disabled, property)}
+                        currentUser={currentUser}
+                        loan={loan}
+                      />
+                    ),
+                  }))
               : []),
             {
               label: (
