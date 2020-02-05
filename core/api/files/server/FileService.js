@@ -71,15 +71,15 @@ class FileService {
     return { ...file, name: fileName };
   };
 
-  uploadFileAPI = ({ file, docId, id, collection }) => {
+  uploadFileAPI = ({ file, docId, id, collection, proOnly }) => {
     const { originalFilename, path } = file;
     const key = this.getS3FileKey({ name: originalFilename }, { docId, id });
 
     return S3Service.putObject(
       readFileBuffer(path),
       key,
-      {},
-      S3_ACLS.PUBLIC_READ_WRITE,
+      { proonly: proOnly },
+      proOnly === 'true' ? S3_ACLS.PRIVATE : S3_ACLS.PUBLIC_READ,
     )
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))
@@ -88,6 +88,9 @@ class FileService {
         return { files };
       });
   };
+
+  setProOnly = ({ Key, proOnly = false }) =>
+    S3Service.updateMetadata(Key, { proonly: proOnly ? 'true' : 'false' });
 
   deleteFileAPI = ({ docId, collection, key }) =>
     this.listFilesForDoc(docId)
@@ -126,9 +129,9 @@ class FileService {
 
     return `${
       Meteor.settings.public.subdomains.backend
-      }/api/zip-loan/?simple-auth-params=${Buffer.from(
-        JSON.stringify(simpleAuthParams),
-      ).toString('base64')}`;
+    }/api/zip-loan/?simple-auth-params=${Buffer.from(
+      JSON.stringify(simpleAuthParams),
+    ).toString('base64')}`;
   };
 
   setAdminName = ({ Key, adminName = '' }) =>
@@ -224,8 +227,8 @@ class FileService {
           keys.length === 1
             ? `${date} ${documentName}.${extension}`
             : `${date} ${documentName} (${index + 1} sur ${
-            keys.length
-            }).${extension}`;
+                keys.length
+              }).${extension}`;
 
         await this.moveFile({
           Key,

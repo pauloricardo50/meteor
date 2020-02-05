@@ -93,6 +93,32 @@ describe('REST: uploadFile', function() {
       expect(files[0].url).to.equal(
         `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
       );
+      expect(files[0].proonly).to.equal('false');
+    });
+  });
+
+  it('uploads a proOnly file', () => {
+    PropertyService.setProUserPermissions({
+      propertyId,
+      userId: 'pro',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
+    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
+    appendFileSync(filePath, 'Hello');
+    return uploadFile({
+      filePath,
+      userId: 'pro',
+      url: '/files',
+      propertyId,
+      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
+      proOnly: 'true',
+    }).then(res => {
+      const { files } = res;
+      expect(files.length).to.equal(1);
+      expect(files[0].url).to.equal(
+        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+      );
+      expect(files[0].proonly).to.equal('true');
     });
   });
 

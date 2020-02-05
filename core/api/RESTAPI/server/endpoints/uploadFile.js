@@ -23,6 +23,12 @@ const bodySchema = new SimpleSchema({
       }
     },
   },
+  proOnly: {
+    type: String,
+    defaultValue: 'false',
+    optional: true,
+    allowedValues: ['true', 'false'],
+  },
 });
 
 const uploadFileAPI = req => {
@@ -44,7 +50,7 @@ const uploadFileAPI = req => {
     throw new Meteor.Error(error);
   }
 
-  const { category } = cleanBody;
+  const { category, proOnly } = cleanBody;
   let { propertyId } = cleanBody;
 
   const exists = PropertyService.exists(propertyId);
@@ -87,6 +93,7 @@ const uploadFileAPI = req => {
       docId: propertyId,
       id: category,
       collection: PROPERTIES_COLLECTION,
+      proOnly,
     });
   });
 };

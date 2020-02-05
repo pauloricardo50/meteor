@@ -11,6 +11,7 @@ import {
   moveFile,
   deleteTempFile,
   autoRenameFile,
+  setFileProOnly,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -126,4 +127,14 @@ deleteTempFile.setHandler(({ userId }, { fileKey }) => {
 autoRenameFile.setHandler(({ userId }, { key, collection }) => {
   S3Service.isAllowedToAccess({ userId, key });
   return FileService.autoRenameFile(key, collection);
+});
+
+setFileProOnly.setHandler(({ userId }, { docId, collection, Key, proOnly }) => {
+  SecurityService.isAllowedToModifyFiles({
+    collection,
+    docId,
+    fileKey: Key,
+    userId,
+  });
+  return FileService.setProOnly({ Key, proOnly });
 });
