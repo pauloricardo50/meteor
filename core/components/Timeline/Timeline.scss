@@ -1,155 +1,155 @@
-$dot-size: 8px;	
-$dot-size-total: 10px;	
-$dot-offset: 4px;	
+$dot-size: 8px;
+$dot-size-total: 10px;
+$dot-offset: 4px;
 
-.timeline.vertical {	
-  width: 250px;	
-  margin: 0;	
+.timeline.vertical {
+  width: 250px;
+  margin: 0;
 
-  list-style: none;	
+  list-style: none;
 
-  li:last-of-type {	
-    padding-bottom: 0;	
-  }	
+  li:last-of-type {
+    padding-bottom: 0;
+  }
 
-  li {	
-    position: relative;	
+  li {
+    position: relative;
 
-    max-width: 250px;	
-    padding-bottom: 16px;	
-    padding-left: 2em;	
+    max-width: 250px;
+    padding-bottom: 16px;
+    padding-left: 2em;
 
-    color: $icon;	
+    color: $icon;
 
-    .secondary-label {	
-      position: absolute;	
-      left: 0;	
+    .secondary-label {
+      position: absolute;
+      left: 0;
 
-      padding-right: 16px;	
+      padding-right: 16px;
 
-      transform: translate(-100%, 0);	
-      text-align: right;	
-      white-space: nowrap;	
-    }	
+      transform: translate(-100%, 0);
+      text-align: right;
+      white-space: nowrap;
+    }
 
-    &:before {	
-      position: absolute;	
-      z-index: 2;	
-      top: $dot-offset;	
-      left: 0;	
+    &:before {
+      position: absolute;
+      z-index: 2;
+      top: $dot-offset;
+      left: 0;
 
-      width: $dot-size;	
-      height: $dot-size;	
+      width: $dot-size;
+      height: $dot-size;
 
-      content: '';	
+      content: '';
 
-      border: 2px solid $icon;	
-      border-radius: 50%;	
-    }	
+      border: 2px solid $icon;
+      border-radius: 50%;
+    }
 
-    &:not(:last-of-type):after {	
-      position: absolute;	
-      z-index: 1;	
-      top: calc(#{$dot-size-total} + #{$dot-offset});	
-      left: 5px;	
+    &:not(:last-of-type):after {
+      position: absolute;
+      z-index: 1;
+      top: calc(#{$dot-size-total} + #{$dot-offset});
+      left: 5px;
 
-      width: 2px;	
-      height: calc(100% - #{$dot-size-total});	
+      width: 2px;
+      height: calc(100% - #{$dot-size-total});
 
-      content: '';	
+      content: '';
 
-      background-color: $icon;	
-    }	
+      background-color: $icon;
+    }
 
-    &.complete {	
-      color: $grey4;	
-    }	
+    &.complete {
+      color: $grey4;
+    }
 
-    &.complete:before,	
-    &.complete:after {	
-      background-color: $grey4;	
-    }	
+    &.complete:before,
+    &.complete:after {
+      background-color: $grey4;
+    }
 
-    &.complete:before {	
-      border: 2px solid $grey4;	
-    }	
-  }	
-}	
+    &.complete:before {
+      border: 2px solid $grey4;
+    }
+  }
+}
 
-.timeline.horizontal {	
-  display: flex;	
+.timeline.horizontal {
+  display: flex;
 
-  margin: 0;	
-  padding: 0;	
+  margin: 0;
+  padding: 0;
 
-  list-style: none;	
+  list-style: none;
 
-  li {	
-    display: flex;	
-    flex-direction: column;	
+  li {
+    display: flex;
+    flex-direction: column;
 
-    .main-label {	
-      position: relative;	
+    .main-label {
+      position: relative;
 
-      border-bottom: 2px solid $icon;	
-    }	
+      border-bottom: 2px solid $icon;
+    }
 
-    &:last-of-type .main-label {	
-      border-bottom: none;	
-    }	
+    &:last-of-type .main-label {
+      border-bottom: none;
+    }
 
-    .main-label:before {	
-      position: absolute;	
-      z-index: 2;	
-      bottom: -7px;	
-      left: 0;	
+    .main-label:before {
+      position: absolute;
+      z-index: 2;
+      bottom: -7px;
+      left: 0;
 
-      width: $dot-size;	
-      height: $dot-size;	
+      width: $dot-size;
+      height: $dot-size;
 
-      content: '';	
+      content: '';
 
-      border: 2px solid $icon;	
-      border-radius: 50%;	
-      background-color: white;	
-    }	
+      border: 2px solid $icon;
+      border-radius: 50%;
+      background-color: white;
+    }
 
-    .main-label,	
-    .secondary-label {	
-      padding: 8px 16px 8px 0;	
-    }	
-  }	
-}	
+    .main-label,
+    .secondary-label {
+      padding: 8px 16px 8px 0;
+    }
+  }
+}
 
-.timeline-title {	
-  position: relative;	
+.timeline-title {
+  position: relative;
 
-  h4 {	
-    display: flex;	
-    align-items: center;	
+  h4 {
+    display: flex;
+    align-items: center;
 
-    margin: 0;	
-    margin: 0;	
+    margin: 0;
+    margin: 0;
 
-    white-space: nowrap;	
-    text-overflow: ellipsis;	
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
-    &.title {	
-      margin-left: -4px;	
+    &.title {
+      margin-left: -4px;
 
-      .text {	
-        overflow: hidden;	
+      .text {
+        overflow: hidden;
 
-        max-width: 250px;	
+        max-width: 250px;
 
-        vertical-align: middle;	
-        white-space: nowrap;	
-        text-overflow: ellipsis;	
-      }	
-    }	
+        vertical-align: middle;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
 
-    .icon {	
-      margin-right: 4px;	
-    }	
-  }	
+    .icon {
+      margin-right: 4px;
+    }
+  }
 }

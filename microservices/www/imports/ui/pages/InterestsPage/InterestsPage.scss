@@ -1,68 +1,68 @@
-.interests-page {	
-  display: flex;	
-  flex: 1;	
-  flex-direction: column;	
+.interests-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 
-  h1 {	
-    color: $primary;	
-  }	
+  h1 {
+    color: $primary;
+  }
 
-  p {	
-    text-align: center;	
-  }	
+  p {
+    text-align: center;
+  }
 
-  .interests-page-content {	
-    display: flex;	
-    align-items: center;	
-    flex-direction: column;	
+  .interests-page-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-    box-sizing: border-box;	
-    width: 100%;	
-    padding: 32px;	
-    padding-top: 0;	
-    padding-bottom: 80px;	
+    box-sizing: border-box;
+    width: 100%;
+    padding: 32px;
+    padding-top: 0;
+    padding-bottom: 80px;
 
-    @include screen(med) {	
-      padding-right: 16px;	
-      padding-left: 16px;	
-    }	
-  }	
-}	
+    @include screen(med) {
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+  }
+}
 
-.interests-page-table {	
-  display: flex;	
-  flex-direction: column;	
+.interests-page-table {
+  display: flex;
+  flex-direction: column;
 
-  margin: 80px 32px 0 32px;	
+  margin: 80px 32px 0 32px;
 
-  transform: scale(1.25);	
+  transform: scale(1.25);
 
-  @include screen(med) {	
-    align-self: center;	
+  @include screen(med) {
+    align-self: center;
 
-    width: 100%;	
-    max-width: 80%;	
-    margin: 0;	
-    margin-top: 80px;	
-    padding: 0 16px;	
-  }	
-  @include screen(large, min) {	
-    width: $med;	
-  }	
-}	
+    width: 100%;
+    max-width: 80%;
+    margin: 0;
+    margin-top: 80px;
+    padding: 0 16px;
+  }
+  @include screen(large, min) {
+    width: $med;
+  }
+}
 
-.interests-table-trend {	
-  &.UP {	
-    color: $error;	
-  }	
+.interests-table-trend {
+  &.UP {
+    color: $error;
+  }
 
-  &.DOWN {	
-    color: $success;	
-  }	
-}	
+  &.DOWN {
+    color: $success;
+  }
+}
 
-.interests-table-date {	
-  align-self: flex-end;	
+.interests-table-date {
+  align-self: flex-end;
 
-  margin-top: 16px;	
+  margin-top: 16px;
 }

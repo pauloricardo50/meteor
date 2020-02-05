@@ -1,150 +1,150 @@
-.side-nav-user {	
-  position: fixed;	
-  z-index: 15;	
-  top: 0;	
-  left: 0;	
+.side-nav-user {
+  position: fixed;
+  z-index: 15;
+  top: 0;
+  left: 0;
 
-  display: flex;	
-  align-items: center;	
-  flex-direction: column;	
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-  width: 250px;	
-  min-height: calc(100% - 64px);	
+  width: 250px;
+  min-height: calc(100% - 64px);
 
-  transition: background-color 300ms $bezier, color 300ms $bezier;	
+  transition: background-color 300ms $bezier, color 300ms $bezier;
 
-  background-color: #fff;	
-}	
+  background-color: #fff;
+}
 
-.side-nav-user .scrollable {	
-  display: flex;	
-  overflow-x: hidden;	
-  overflow-y: scroll;	
-  align-items: center;	
-  flex-direction: column;	
-  flex-shrink: 0;	
+.side-nav-user .scrollable {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  align-items: center;
+  flex-direction: column;
+  flex-shrink: 0;
 
-  width: 100%;	
-  height: calc(100vh - 64px);	
-}	
+  width: 100%;
+  height: calc(100vh - 64px);
+}
 
-.side-nav-user .top-bar {	
-  position: relative;	
-}	
+.side-nav-user .top-bar {
+  position: relative;
+}
 
-.side-nav-user [aria-haspopup='true'] {	
-  padding-right: 23px;	
+.side-nav-user [aria-haspopup='true'] {
+  padding-right: 23px;
 
-  svg:first-child {	
-    margin: 0;	
-  }	
-}	
+  svg:first-child {
+    margin: 0;
+  }
+}
 
-.side-nav-user .link {	
-  display: flex;	
-  align-items: center;	
-  justify-content: center;	
+.side-nav-user .link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  width: 100%;	
-  height: 64px;	
+  width: 100%;
+  height: 64px;
 
-  border-bottom: 1px solid $border-grey;	
-}	
+  border-bottom: 1px solid $border-grey;
+}
 
-.side-nav-user .top-bar {	
-  border-bottom: 1px solid $border-grey;	
-}	
+.side-nav-user .top-bar {
+  border-bottom: 1px solid $border-grey;
+}
 
-.side-nav-user .top-bar img,	
-.side-nav-user .top-bar a {	
-  height: 64px;	
+.side-nav-user .top-bar img,
+.side-nav-user .top-bar a {
+  height: 64px;
 
-  @include screen(med, min) {	
-    height: 64px;	
-  }	
-}	
+  @include screen(med, min) {
+    height: 64px;
+  }
+}
 
-.loan-side-nav {	
-  display: flex;	
-  flex-direction: column;	
+.loan-side-nav {
+  display: flex;
+  flex-direction: column;
 
-  width: 100%;	
-  padding-left: 0;	
+  width: 100%;
+  padding-left: 0;
 
-  list-style: none;	
+  list-style: none;
 
-  &-link {	
-    display: flex;	
-    align-items: center;	
+  &-link {
+    display: flex;
+    align-items: center;
 
-    padding: 16px 0;	
-    padding-right: 16px;	
+    padding: 16px 0;
+    padding-right: 16px;
 
-    text-decoration: none;	
+    text-decoration: none;
 
-    .icon {	
-      width: 20px;	
-      height: 20px;	
-      padding: 0 16px;	
-    }	
+    .icon {
+      width: 20px;
+      height: 20px;
+      padding: 0 16px;
+    }
 
-    &:hover {	
-      font-family: 'Eina04-Bold';	
-    }	
+    &:hover {
+      font-family: 'Eina04-Bold';
+    }
 
-    &.active {	
-      background-color: #f5f7f9;	
+    &.active {
+      background-color: #f5f7f9;
 
-      font-family: 'Eina04-Bold';	
-    }	
-  }	
+      font-family: 'Eina04-Bold';
+    }
+  }
 
-  .divider {	
-    margin: 8px 0;	
-  }	
+  .divider {
+    margin: 8px 0;
+  }
 
-  .text {	
-    display: flex;	
-    flex-direction: column;	
+  .text {
+    display: flex;
+    flex-direction: column;
 
-    .progress {	
-      display: flex;	
-      align-items: center;	
+    .progress {
+      display: flex;
+      align-items: center;
 
-      opacity: 0.5;	
+      opacity: 0.5;
 
-      .icon {	
-        padding: 0;	
-      }	
-    }	
-  }	
-}	
+      .icon {
+        padding: 0;
+      }
+    }
+  }
+}
 
-.loan-selector {	
-  box-sizing: border-box;	
-  width: 100%;	
-  margin: 16px 0;	
-  padding: 0 16px;	
+.loan-selector {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 16px 0;
+  padding: 0 16px;
 
-  > * {	
-    width: 100%;	
-  }	
-}	
+  > * {
+    width: 100%;
+  }
+}
 
-.side-nav-header {	
-  display: flex;	
-  align-items: center;	
-  justify-content: center;	
+.side-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  box-sizing: border-box;	
-  width: 100%;	
-  padding: 0 8px;	
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 8px;
 
-  border-bottom: 1px solid $border-grey;	
+  border-bottom: 1px solid $border-grey;
 
-  .drawer-toggle {	
-    position: absolute;	
-    top: 8px;	
-    left: 8px;	
-  }	
+  .drawer-toggle {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
 }

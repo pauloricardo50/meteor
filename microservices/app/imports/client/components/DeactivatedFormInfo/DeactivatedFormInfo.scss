@@ -1,21 +1,21 @@
-.deactivated-form-info {	
-  display: flex;	
-  justify-content: center;	
+.deactivated-form-info {
+  display: flex;
+  justify-content: center;
 
-  &-box {	
-    display: flex;	
-    align-items: center;	
+  &-box {
+    display: flex;
+    align-items: center;
 
-    max-width: 400px;	
-    padding: 16px;	
+    max-width: 400px;
+    padding: 16px;
 
-    border: 1px solid $error;	
-    border-radius: $border-radius;	
+    border: 1px solid $error;
+    border-radius: $border-radius;
 
-    .icon {	
-      margin-right: 8px;	
+    .icon {
+      margin-right: 8px;
 
-      color: $error;	
-    }	
-  }	
+      color: $error;
+    }
+  }
 }

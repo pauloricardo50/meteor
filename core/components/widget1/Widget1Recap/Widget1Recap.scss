@@ -1,64 +1,64 @@
-.widget1-recap {	
-  display: flex;	
-  align-items: stretch;	
-  flex-direction: column;	
+.widget1-recap {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
 
-  .recap-wrapper {	
-    display: flex;	
-    align-items: center;	
-    flex-grow: 1;	
-    justify-content: stretch;	
-  }	
-}	
+  .recap-wrapper {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: stretch;
+  }
+}
 
-.widget1-recap .recap {	
-  display: flex;	
-  flex-direction: column;	
+.widget1-recap .recap {
+  display: flex;
+  flex-direction: column;
 
-  width: 100%;	
-  padding-bottom: 16px;	
-}	
+  width: 100%;
+  padding-bottom: 16px;
+}
 
-.widget1-recap .card-bottom {	
-  flex-grow: 0;	
-}	
+.widget1-recap .card-bottom {
+  flex-grow: 0;
+}
 
-.widget1-recap .recap .recap-item {	
-  display: flex;	
-  align-items: center;	
-  flex-direction: row;	
-  justify-content: space-between;	
+.widget1-recap .recap .recap-item {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
 
-  padding: 4px 0;	
-  p {	
-    margin: 0;	
-  }	
-}	
+  padding: 4px 0;
+  p {
+    margin: 0;
+  }
+}
 
-.widget1-recap .widget1-finma p,	
-.widget1-recap .widget1-finma h4 {	
-  margin-top: 0;	
-}	
+.widget1-recap .widget1-finma p,
+.widget1-recap .widget1-finma h4 {
+  margin-top: 0;
+}
 
-.widget1-recap .widget1-finma-line {	
-  display: flex;	
-  align-items: center;	
-}	
+.widget1-recap .widget1-finma-line {
+  display: flex;
+  align-items: center;
+}
 
-.widget1-recap .widget1-finma-line .label {	
-  flex: 1;	
-}	
+.widget1-recap .widget1-finma-line .label {
+  flex: 1;
+}
 
-.widget1-recap .widget1-finma-line .icon {	
-  padding-left: 4px;	
-}	
+.widget1-recap .widget1-finma-line .icon {
+  padding-left: 4px;
+}
 
-.widget1-lender-count {	
-  display: flex;	
-  align-items: center;	
-  justify-content: space-between;	
-}	
+.widget1-lender-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-.widget1-lender-count-divider {	
-  margin: 16px 0;	
+.widget1-lender-count-divider {
+  margin: 16px 0;
 }

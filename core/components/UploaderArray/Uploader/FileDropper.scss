@@ -1,11 +1,11 @@
-.uploader {	
-  position: relative;	
+.uploader {
+  position: relative;
 
-  cursor: auto;	
-}	
+  cursor: auto;
+}
 
-.uploader.dragging {	
-  cursor: copy;	
+.uploader.dragging {
+  cursor: copy;
 
-  border: 1px solid $primary !important;	
+  border: 1px solid $primary !important;
 }

@@ -1,70 +1,70 @@
-.faq-page-content {	
-  display: flex;	
-  flex-direction: column;	
+.faq-page-content {
+  display: flex;
+  flex-direction: column;
 
-  padding: 32px;	
+  padding: 32px;
 
-  @include screen(med) {	
-    padding: 16px;	
-  }	
+  @include screen(med) {
+    padding: 16px;
+  }
 
-  h1 {	
-    align-self: center;	
+  h1 {
+    align-self: center;
 
-    margin-top: 0;	
+    margin-top: 0;
 
-    color: $primary;	
-  }	
+    color: $primary;
+  }
 
-  > p {	
-    align-self: center;	
+  > p {
+    align-self: center;
 
-    text-align: center;	
-  }	
-}	
+    text-align: center;
+  }
+}
 
-.faq-page-list {	
-  display: flex;	
-  align-self: center;	
-  flex-direction: column;	
+.faq-page-list {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
 
-  box-sizing: border-box;	
-  width: 100%;	
-  max-width: 800px;	
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
 
-  .faq-page-list-category {	
-    margin-bottom: 40px;	
+  .faq-page-list-category {
+    margin-bottom: 40px;
 
-    &:last-child {	
-      margin-bottom: 0;	
-    }	
-  }	
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
-  h2 {	
-    margin: 32px 0;	
+  h2 {
+    margin: 32px 0;
 
-    color: $primary;	
-  }	
+    color: $primary;
+  }
 
-  .faq-page-faqs-expand-icon {	
-    color: $primary;	
-  }	
+  .faq-page-faqs-expand-icon {
+    color: $primary;
+  }
 
-  p.description {	
-    max-width: unset;	
+  p.description {
+    max-width: unset;
 
-    text-align: left;	
-  }	
+    text-align: left;
+  }
 
-  a {	
-    text-decoration: none;	
+  a {
+    text-decoration: none;
 
-    color: $primary;	
+    color: $primary;
 
-    &:hover {	
-      text-decoration: underline;	
+    &:hover {
+      text-decoration: underline;
 
-      color: $primary;	
-    }	
-  }	
+      color: $primary;
+    }
+  }
 }

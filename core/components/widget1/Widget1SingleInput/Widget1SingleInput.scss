@@ -1,81 +1,81 @@
-.widget1-single-input {	
-  width: 100%;	
+.widget1-single-input {
+  width: 100%;
 
-  &-box {	
-    display: flex;	
-    flex-direction: column;	
-    justify-content: space-between;	
+  &-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    border-radius: 4px;	
-    background-color: rgb(244, 247, 249);	
+    border-radius: 4px;
+    background-color: rgb(244, 247, 249);
 
-    label {	
-      margin: 0;	
-      padding: 8px 12px;	
-      padding-bottom: 0;	
-    }	
+    label {
+      margin: 0;
+      padding: 8px 12px;
+      padding-bottom: 0;
+    }
 
-    &-content {	
-      margin: 4px;	
-      padding: 0 8px;	
+    &-content {
+      margin: 4px;
+      padding: 0 8px;
 
-      border-radius: 4px;	
-      background-color: white;	
-    }	
-  }	
-}	
+      border-radius: 4px;
+      background-color: white;
+    }
+  }
+}
 
-.widget1-single-input .widget1-input {	
-  > * {	
-    display: flex;	
-    align-items: center;	
+.widget1-single-input .widget1-input {
+  > * {
+    display: flex;
+    align-items: center;
 
-    color: $primary;	
+    color: $primary;
 
-    & > div {	
-      flex-grow: 0;	
-      flex-shrink: 0;	
-    }	
-  }	
+    & > div {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  }
 
-  .widget1-input-currency {	
-    color: $primary;	
-  }	
-}	
+  .widget1-input-currency {
+    color: $primary;
+  }
+}
 
-.widget1-single-input .widget1-input input {	
-  width: 100%;	
+.widget1-single-input .widget1-input input {
+  width: 100%;
 
-  color: $primary;	
+  color: $primary;
 
-  font-size: 32px;	
+  font-size: 32px;
 
-  @include screen(xwide) {	
-    font-size: 24px;	
-  }	
-}	
+  @include screen(xwide) {
+    font-size: 24px;
+  }
+}
 
-.widget1-single-input .widget1-slider {	
-  display: flex;	
-  align-items: center;	
-  flex-direction: row;	
+.widget1-single-input .widget1-slider {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 
-  margin-top: -4px;	
-  padding-left: 8px;	
+  margin-top: -4px;
+  padding-left: 8px;
 
-  .slider {	
-    margin-right: 12px;	
-  }	
-}	
+  .slider {
+    margin-right: 12px;
+  }
+}
 
-.widget1-single-input .widget1-slider .button-placeholder {	
-  flex-shrink: 0;	
+.widget1-single-input .widget1-slider .button-placeholder {
+  flex-shrink: 0;
 
-  width: 28.5px;	
-  height: 28.5px;	
-}	
+  width: 28.5px;
+  height: 28.5px;
+}
 
-.widget1-single-input .widget1-input.auto input,	
-.widget1-single-input .widget1-input.auto .currency {	
-  opacity: 0.5;	
+.widget1-single-input .widget1-input.auto input,
+.widget1-single-input .widget1-input.auto .currency {
+  opacity: 0.5;
 }

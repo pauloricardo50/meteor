@@ -1,36 +1,36 @@
-.status-label {	
-  display: inline;	
-  flex-grow: 0;	
+.status-label {
+  display: inline;
+  flex-grow: 0;
 
-  padding: 4px 4px;	
+  padding: 4px 4px;
 
-  white-space: nowrap;	
+  white-space: nowrap;
 
-  color: white;	
-  border-radius: 4px;	
+  color: white;
+  border-radius: 4px;
 
-  font-size: 12px;	
-  line-height: initial;	
-}	
+  font-size: 12px;
+  line-height: initial;
+}
 
-.status-label-dot {	
-  display: block;	
+.status-label-dot {
+  display: block;
 
-  padding: 4px;	
+  padding: 4px;
 
-  > span {	
-    display: block;	
+  > span {
+    display: block;
 
-    width: 12px;	
-    height: 12px;	
+    width: 12px;
+    height: 12px;
 
-    border-radius: 50%;	
-  }	
-}	
+    border-radius: 50%;
+  }
+}
 
-.status-label,	
-.status-label-dot {	
-  &.allowModify {	
-    cursor: pointer;	
-  }	
+.status-label,
+.status-label-dot {
+  &.allowModify {
+    cursor: pointer;
+  }
 }

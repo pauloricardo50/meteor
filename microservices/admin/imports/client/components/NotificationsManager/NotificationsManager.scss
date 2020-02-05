@@ -1,22 +1,22 @@
-.notification-list {	
-  display: flex;	
-  align-items: stretch;	
-  flex-direction: column;	
+.notification-list {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
 
-  min-width: 200px;	
+  min-width: 200px;
 
-  hr {	
-    width: 100%;	
-  }	
+  hr {
+    width: 100%;
+  }
 
-  &-item {	
-    display: flex;	
-    align-items: center;	
-    justify-content: space-between;	
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    div.buttons {	
-      display: flex;	
-      flex-wrap: nowrap;	
-    }	
-  }	
+    div.buttons {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
 }

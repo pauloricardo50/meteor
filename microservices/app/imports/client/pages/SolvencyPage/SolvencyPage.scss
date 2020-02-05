@@ -1,12 +1,12 @@
-.solvency-page {	
-  display: flex;	
-  flex-direction: column;	
+.solvency-page {
+  display: flex;
+  flex-direction: column;
 
-  .max-property-value {	
-    min-width: 400px;	
+  .max-property-value {
+    min-width: 400px;
 
-    @include screen(small) {	
-      min-width: unset;	
-    }	
-  }	
+    @include screen(small) {
+      min-width: unset;
+    }
+  }
 }

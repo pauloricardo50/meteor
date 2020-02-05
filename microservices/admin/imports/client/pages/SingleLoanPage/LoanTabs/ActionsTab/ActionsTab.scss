@@ -1,22 +1,22 @@
-.actions-tab {	
-  display: flex;	
-  align-items: center;	
-  flex-direction: column;	
+.actions-tab {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-  > * {	
-    margin-bottom: 8px;	
-  }	
+  > * {
+    margin-bottom: 8px;
+  }
 
-  .name-form {	
-    position: relative;	
+  .name-form {
+    position: relative;
 
-    display: flex;	
-    align-items: center;	
+    display: flex;
+    align-items: center;
 
-    margin-bottom: 24px;	
+    margin-bottom: 24px;
 
-    > * {	
-      margin-right: 8px;	
-    }	
-  }	
+    > * {
+      margin-right: 8px;
+    }
+  }
 }

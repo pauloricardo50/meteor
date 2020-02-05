@@ -1,42 +1,42 @@
-.single-organisation-page {	
-  > *:not(:last-child) {	
-    margin-bottom: 32px;	
-  }	
+.single-organisation-page {
+  > *:not(:last-child) {
+    margin-bottom: 32px;
+  }
 
-  &-header {	
-    display: flex;	
-    align-items: flex-start;	
-    flex-direction: row;	
-    justify-content: space-between;	
+  &-header {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
 
-    img {	
-      width: 200px;	
-    }	
+    img {
+      width: 200px;
+    }
 
-    &-type {	
-      display: flex;	
-      align-items: flex-start;	
-      flex-direction: column;	
-      justify-content: flex-start;	
+    &-type {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-start;
 
-      margin-left: 32px;	
+      margin-left: 32px;
 
-      > * {	
-        margin: 0;	
-        margin-bottom: 8px;	
-      }	
-    }	
-  }	
+      > * {
+        margin: 0;
+        margin-bottom: 8px;
+      }
+    }
+  }
 
-  .user {	
-    display: flex;	
-    align-items: center;	
-    flex-direction: row;	
-    justify-content: space-between;	
+  .user {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 
-    width: 100%;	
-    > * {	
-      padding: 8px;	
-    }	
-  }	
+    width: 100%;
+    > * {
+      padding: 8px;
+    }
+  }
 }

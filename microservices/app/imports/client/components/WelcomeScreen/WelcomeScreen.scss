@@ -1,190 +1,190 @@
-.welcome-screen {	
-  display: flex;	
-  flex-direction: column;	
+.welcome-screen {
+  display: flex;
+  flex-direction: column;
 
-  .waves {	
-    top: -200px;	
+  .waves {
+    top: -200px;
 
-    &-wrapper {	
-      overflow: hidden;	
-    }	
-  }	
+    &-wrapper {
+      overflow: hidden;
+    }
+  }
 
-  &-top {	
-    display: flex;	
-    overflow: hidden;	
+  &-top {
+    display: flex;
+    overflow: hidden;
 
-    box-sizing: border-box;	
-    width: 100%;	
-    max-width: 1200px;	
-    margin: auto;	
-    margin-top: 64px;	
-    margin-bottom: 64px;	
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 64px;
+    margin-bottom: 64px;
 
-    @include screen(med) {	
-      align-items: center;	
-      flex-direction: column;	
-    }	
+    @include screen(med) {
+      align-items: center;
+      flex-direction: column;
+    }
 
-    > * {	
-      flex-basis: 50%;	
-    }	
+    > * {
+      flex-basis: 50%;
+    }
 
-    &-text {	
-      display: flex;	
-      align-items: flex-start;	
-      flex-direction: column;	
+    &-text {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
 
-      padding: 80px;	
+      padding: 80px;
 
-      @include screen(med) {	
-        align-items: center;	
+      @include screen(med) {
+        align-items: center;
 
-        padding: 32px;	
+        padding: 32px;
 
-        > * {	
-          text-align: center !important;	
-        }	
-      }	
-      @include screen(small) {	
-        padding: 16px;	
-      }	
+        > * {
+          text-align: center !important;
+        }
+      }
+      @include screen(small) {
+        padding: 16px;
+      }
 
-      h1 {	
-        margin-bottom: 0;	
-      }	
+      h1 {
+        margin-bottom: 0;
+      }
 
-      p {	
-        margin: 32px 0;	
-      }	
-    }	
+      p {
+        margin: 32px 0;
+      }
+    }
 
-    &-img {	
-      position: relative;	
+    &-img {
+      position: relative;
 
-      display: flex;	
-      align-items: center;	
-      flex-direction: column;	
-      justify-content: flex-end;	
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: flex-end;
 
-      @include screen(med) {	
-        width: 100%;	
-        height: 400px;	
-      }	
+      @include screen(med) {
+        width: 100%;
+        height: 400px;
+      }
 
-      img {	
-        position: absolute;	
+      img {
+        position: absolute;
         // top: -40%;	
-        bottom: 0;	
-        left: -30%;	
+        bottom: 0;
+        left: -30%;
 
-        width: 900px;	
+        width: 900px;
         // width: 200%;	
         // height: 200%;	
 
-        @include screen(med) {	
-          position: relative;	
-          left: unset;	
+        @include screen(med) {
+          position: relative;
+          left: unset;
 
-          width: 800px;	
-        }	
-      }	
-    }	
+          width: 800px;
+        }
+      }
+    }
 
-    &-img-override {	
-      background-repeat: no-repeat;	
-      background-position: center center;	
-      background-size: cover;	
+    &-img-override {
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
 
-      @include screen(med) {	
-        flex-basis: unset;	
+      @include screen(med) {
+        flex-basis: unset;
 
-        width: 100%;	
-        height: 400px;	
-      }	
-    }	
-  }	
+        width: 100%;
+        height: 400px;
+      }
+    }
+  }
 
-  &-ctas {	
-    display: flex;	
-    align-items: flex-start;	
-    flex-direction: column;	
+  &-ctas {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 
-    @include screen(med) {	
-      align-items: stretch;	
-      flex-direction: column;	
-    }	
-    @include screen(small) {	
-      align-self: stretch;	
-    }	
+    @include screen(med) {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    @include screen(small) {
+      align-self: stretch;
+    }
 
-    button,	
-    a {	
-      min-width: 200px;	
-    }	
-  }	
+    button,
+    a {
+      min-width: 200px;
+    }
+  }
 
-  &-cta {	
-    padding: 12px 40px;	
+  &-cta {
+    padding: 12px 40px;
 
-    @include screen(small) {	
-      align-self: stretch;	
-    }	
-  }	
+    @include screen(small) {
+      align-self: stretch;
+    }
+  }
 
-  &-links {	
-    display: flex;	
-    align-items: flex-start;	
-    justify-content: space-between;	
+  &-links {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
 
-    width: 100%;	
-    max-width: 1200px;	
-    margin: auto;	
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
 
-    @include screen(med) {	
-      align-items: center;	
-      flex-direction: column;	
-      justify-content: flex-start;	
-    }	
+    @include screen(med) {
+      align-items: center;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
 
-    h4 {	
-      text-align: center;	
-    }	
+    h4 {
+      text-align: center;
+    }
 
-    &-link {	
-      display: flex;	
-      align-items: center;	
-      flex-direction: column;	
+    &-link {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
 
-      padding: 8px;	
+      padding: 8px;
 
-      .icon {	
-        width: 64px;	
-        height: 64px;	
-        margin-bottom: 16px;	
+      .icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
 
-        opacity: 0.7;	
-      }	
+        opacity: 0.7;
+      }
 
-      &-items {	
-        display: flex;	
-        align-items: center;	
-        flex-direction: column;	
-      }	
+      &-items {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
 
-      a {	
-        margin-bottom: 8px;	
+      a {
+        margin-bottom: 8px;
 
-        text-align: center;	
+        text-align: center;
 
-        color: $primary;	
+        color: $primary;
 
-        font-size: 0.9em;	
+        font-size: 0.9em;
 
-        &:hover {	
-          opacity: 0.6;	
-        }	
-      }	
-    }	
-  }	
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
 }

@@ -1,49 +1,49 @@
-.file-viewer {	
-  position: relative;	
+.file-viewer {
+  position: relative;
 
-  overflow-y: scroll;	
-  flex-shrink: 0;	
+  overflow-y: scroll;
+  flex-shrink: 0;
 
-  height: 100%;	
-  max-height: 100%;	
+  height: 100%;
+  max-height: 100%;
 
-  &-wrapper {	
-    position: fixed;	
-    top: 64px;	
-    right: 0;	
+  &-wrapper {
+    position: fixed;
+    top: 64px;
+    right: 0;
 
-    height: calc(100% - 64px);	
-  }	
+    height: calc(100% - 64px);
+  }
 
-  canvas {	
-    width: 100%;	
-  }	
+  canvas {
+    width: 100%;
+  }
 
-  .pg-viewer-wrapper,	
-  .pg-viewer {	
-    width: 100%;	
+  .pg-viewer-wrapper,
+  .pg-viewer {
+    width: 100%;
 
-    > * {	
-      width: 100% !important;	
-    }	
-  }	
+    > * {
+      width: 100% !important;
+    }
+  }
 
-  &-closer {	
-    position: absolute;	
-    z-index: 1;	
-    top: 16px;	
-    right: 16px;	
-  }	
+  &-closer {
+    position: absolute;
+    z-index: 1;
+    top: 16px;
+    right: 16px;
+  }
 
-  &-resizer {	
-    position: absolute;	
-    z-index: 1;	
-    top: 50%;	
-    left: -24px;	
+  &-resizer {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: -24px;
 
-    transform: rotate(90deg);	
+    transform: rotate(90deg);
 
-    color: white;	
-    background-color: $primary;	
-  }	
+    color: white;
+    background-color: $primary;
+  }
 }

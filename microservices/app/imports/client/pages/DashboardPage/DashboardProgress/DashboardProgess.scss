@@ -1,66 +1,66 @@
 // $step-circle-size: 25px;	
 
-.dashboard-progress {	
-  box-sizing: border-box;	
-  width: calc(100% + 32px);	
-  margin-top: -16px;	
-  margin-bottom: 16px;	
-  margin-left: -16px;	
-  padding: 24px;	
+.dashboard-progress {
+  box-sizing: border-box;
+  width: calc(100% + 32px);
+  margin-top: -16px;
+  margin-bottom: 16px;
+  margin-left: -16px;
+  padding: 24px;
 
-  color: white;	
-  background-color: $primary;	
+  color: white;
+  background-color: $primary;
 
-  .title {	
-    margin-bottom: 16px;	
-  }	
+  .title {
+    margin-bottom: 16px;
+  }
 
-  .loan-checklist-dialog {	
-    margin-top: 16px;	
-  }	
-}	
+  .loan-checklist-dialog {
+    margin-top: 16px;
+  }
+}
 
-.dashboard-progress .dashboard-progress-info {	
-  display: flex;	
-  align-items: flex-start;	
-  flex-direction: column;	
+.dashboard-progress .dashboard-progress-info {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 
-  padding-top: 16px;	
+  padding-top: 16px;
 
-  .todo {	
-    display: flex;	
-    align-items: center;	
+  .todo {
+    display: flex;
+    align-items: center;
 
-    margin: 8px 0;	
+    margin: 8px 0;
 
-    &.link:not(.isDone) {	
-      cursor: pointer;	
-    }	
+    &.link:not(.isDone) {
+      cursor: pointer;
+    }
 
-    &.isDone {	
-      opacity: 0.5;	
-    }	
+    &.isDone {
+      opacity: 0.5;
+    }
 
-    p {	
-      margin: 0;	
-    }	
+    p {
+      margin: 0;
+    }
 
-    .icon {	
-      margin-right: 16px;	
-    }	
+    .icon {
+      margin-right: 16px;
+    }
 
-    .icon-arrow {	
-      margin-left: 8px;	
+    .icon-arrow {
+      margin-left: 8px;
 
-      transition: margin-left 200ms $bezier;	
+      transition: margin-left 200ms $bezier;
 
-      color: white;	
-    }	
+      color: white;
+    }
 
-    &:hover {	
-      .icon-arrow {	
-        margin-left: 16px;	
-      }	
-    }	
-  }	
+    &:hover {
+      .icon-arrow {
+        margin-left: 16px;
+      }
+    }
+  }
 }
