@@ -8,8 +8,13 @@ const writePullDBTmuxinator = ({
   mongoPort,
   environment,
   sshId,
+  downloadOnly,
   toLocalPort = '5501',
 }) => {
+  const additionalDumpOptions = downloadOnly
+    ? `--archive=/tmp/e-potek.archive --gzip`
+    : '-o /tmp';
+
   return writeYAML({
     file: `${__dirname}/ssh-tunnel-${sshId}.yml`,
     data: {
@@ -35,14 +40,18 @@ const writePullDBTmuxinator = ({
 
                   `${__dirname}/../../scripts/box_out.sh 'Mongo shell. Press CTRL-B + D to close the tunnel and kill the app.' ' ' 'If you want to connect with a GUI, use the following credentials:' ' ' 'host: localhost:${mongoPort +
                     PORT_OFFSET}' 'database: ${database}' 'username: ${username}' 'password: ${password}'`,
-
+                  'rm -f /tmp/e-potek.archive /tmp/e-potek-db-name || true',
                   `mongodump -h localhost:${mongoPort +
-                    PORT_OFFSET} -d ${database} -u ${username} -p ${password} -o /tmp`,
+                    PORT_OFFSET} -d ${database} -u ${username} -p ${password} ${additionalDumpOptions}`,
 
-                  `mongorestore --drop -h localhost:${toLocalPort} -d meteor /tmp/${database}`,
+                  downloadOnly
+                    ? ''
+                    : `mongorestore --drop -h localhost:${toLocalPort} -d meteor /tmp/${database}`,
 
-                  `rm -rf /tmp/${database}`,
-
+                  downloadOnly ? '' : `rm -rf /tmp/${database}`,
+                  downloadOnly
+                    ? `echo "${database}" > /tmp/e-potek-db-name`
+                    : '',
                   `tmux kill-session -t restore-db-${sshId}`,
                 ],
               },
@@ -55,8 +64,6 @@ const writePullDBTmuxinator = ({
 };
 
 const main = () =>
-  openSSHTunnel().then(credentials => {
-    return writePullDBTmuxinator(credentials);
-  });
+  openSSHTunnel().then(credentials => writePullDBTmuxinator(credentials));
 
 main();
