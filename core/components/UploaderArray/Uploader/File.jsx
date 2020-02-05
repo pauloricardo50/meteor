@@ -61,15 +61,18 @@ const makeOnDragStart = ({ draggable, ...dragProps }) => {
 
 const File = props => {
   const {
-    file: { name, Key, status, message, url, adminname: adminName },
+    file: { name, Key, status, message, url, adminname: adminName, proonly },
     disabled,
     handleRemove,
     dragProps,
     handleRenameFile,
     handleChangeError,
+    handleToggleProOnly,
     draggable,
     handleChangeFileStatus,
+    allowToggleProOnly,
   } = props;
+  const proOnly = proonly === 'true';
   const { displayFile } = useContext(FileViewerContext) || {};
   const { openModal } = useContext(ModalManagerContext);
   const [deleting, setDeleting] = useState(false);
@@ -102,6 +105,7 @@ const File = props => {
           })}
         >
           {getDisplayName(name, adminName)}
+          {Meteor.microservice === 'admin' && proOnly && ' (document pro)'}
         </h5>
         <div className="actions flex center">
           {handleChangeFileStatus && (
@@ -135,6 +139,21 @@ const File = props => {
                     }
                   />,
                 );
+              }}
+              size="small"
+            />
+          )}
+          {allowToggleProOnly && (
+            <IconButton
+              type={proOnly ? 'lock' : 'lockOpen'}
+              tooltip={
+                proOnly
+                  ? 'Rendre public'
+                  : 'Rendre accessible aux Pros uniquement'
+              }
+              onClick={event => {
+                event.preventDefault();
+                return handleToggleProOnly(Key, proOnly);
               }}
               size="small"
             />

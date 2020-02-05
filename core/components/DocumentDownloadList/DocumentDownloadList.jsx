@@ -1,4 +1,5 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import Icon from '../Icon';
@@ -22,13 +23,21 @@ const getIconForFileType = key => {
 };
 
 const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => {
-  if (!files) {
+  const filteredFiles = files.filter(({ proonly }) => {
+    if (Meteor.microservice === 'app') {
+      return proonly !== 'true';
+    }
+
+    return true;
+  });
+
+  if (!filteredFiles) {
     return null;
   }
 
   return (
     <div className="document-download-list">
-      {files.map(({ Key, name }) => (
+      {filteredFiles.map(({ Key, name }) => (
         <Downloader key={Key} fileKey={Key} fileName={name}>
           {({ downloading, handleDownload }) => (
             <div

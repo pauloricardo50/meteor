@@ -94,3 +94,13 @@ export const autoRenameFile = new Method({
     collection: String,
   },
 });
+
+export const setFileProOnly = new Method({
+  name: 'setFileProOnly',
+  params: {
+    Key: String,
+    proOnly: Boolean,
+    docId: String,
+    collection: String,
+  },
+});

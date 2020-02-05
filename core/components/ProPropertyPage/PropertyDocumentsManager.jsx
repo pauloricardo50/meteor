@@ -28,6 +28,7 @@ const propertyDocuments = property =>
 
 const PropertyDocumentsManager = ({
   property,
+  canModifyProperty,
 }: PropertyDocumentsManagerProps) => (
   <DialogSimple
     primary
@@ -40,6 +41,7 @@ const PropertyDocumentsManager = ({
       collection={PROPERTIES_COLLECTION}
       documentArray={propertyDocuments(property)}
       allowRequireByAdmin={false}
+      allowToggleProOnly={canModifyProperty}
     />
   </DialogSimple>
 );
