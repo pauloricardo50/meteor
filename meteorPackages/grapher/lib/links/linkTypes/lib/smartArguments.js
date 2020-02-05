@@ -5,17 +5,15 @@
  */
 export default new (class {
   getIds(what, options) {
-        if (_.isArray(what)) {
-            return _.map(what, (subWhat) => {
-                return this.getId(subWhat, options)
-            })
-        } 
-            return [this.getId(what, options)];
-        
-
-        throw new Meteor.Error('invalid-type', `Unrecognized type: ${typeof what} for managing links`);
+    if (_.isArray(what)) {
+      return _.map(what, subWhat => this.getId(subWhat, options));
     }
+    return [this.getId(what, options)];
 
+    throw new Meteor.Error(
+      'invalid-type',
+      `Unrecognized type: ${typeof what} for managing links`,
+    );
   }
 
   getId(what, options) {
