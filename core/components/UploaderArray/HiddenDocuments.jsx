@@ -1,11 +1,9 @@
-//      
+//
 import React from 'react';
 import withHider from 'core/containers/withHider';
 import UploaderArray from './UploaderArray';
 
-                               
-
-const HiddenDocuments = (props                      ) => (
+const HiddenDocuments = props => (
   <UploaderArray {...props} isDocumentToHide canModify />
 );
 

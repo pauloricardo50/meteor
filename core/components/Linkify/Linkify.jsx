@@ -1,8 +1,6 @@
-//      
+//
 import React from 'react';
 import DefaultLinkify from 'react-linkify';
-
-                       
 
 const makeComponentDecorator = props => (href, text, key) => {
   const { newTab = true, textTransform, style = {} } = props;
@@ -24,7 +22,7 @@ const makeComponentDecorator = props => (href, text, key) => {
   );
 };
 
-const Linkify = ({ children, ...props }              ) => (
+const Linkify = ({ children, ...props }) => (
   <DefaultLinkify componentDecorator={makeComponentDecorator(props)}>
     {children}
   </DefaultLinkify>

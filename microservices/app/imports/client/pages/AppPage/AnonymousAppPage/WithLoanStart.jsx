@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import moment from 'moment';
 
@@ -8,11 +8,9 @@ import T, { Money } from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 
-                             
-
 const WithLoanStart = ({
   anonymousLoan: { _id: loanId, name, updatedAt, borrowers = [], properties },
-}                    ) => {
+}) => {
   const mostRecentDate = Math.max.apply(null, [
     updatedAt,
     ...borrowers.map(({ updatedAt: u }) => u),

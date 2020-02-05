@@ -1,15 +1,10 @@
-//      
+//
 import React from 'react';
-
-                                  
-                              
-                        
-  
 
 const LoanChecklistSection = ({
   missingInformations: { property = {}, borrowers = [] } = {},
   Component,
-}                           ) => (
+}) => (
   <>
     {!!Object.keys(property).length && (
       <Component title={property.title} labels={property.labels} />

@@ -1,16 +1,10 @@
-//      
+//
 import React from 'react';
 import moment from 'moment';
 
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
 import OfferFeedbackContainer from './OfferFeedbackContainer';
 import HtmlPreview from '../HtmlPreview';
-
-                           
-                
-                 
-                     
-  
 
 const getButtonOtherProps = ({ offer }) => {
   let otherProps = {};
@@ -85,7 +79,7 @@ const getButtonOtherProps = ({ offer }) => {
   return otherProps;
 };
 
-const OfferFeedback = ({ onSubmit, schema, offer }                    ) => {
+const OfferFeedback = ({ onSubmit, schema, offer }) => {
   const { feedback = {} } = offer;
   const { message, date } = feedback;
   return (

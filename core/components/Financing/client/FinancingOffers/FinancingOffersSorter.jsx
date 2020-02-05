@@ -1,18 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import FinancingOffersSorterContainer from './FinancingOffersSorterContainer';
 
-                                     
-
-const FinancingOffersSorter = ({
-  options,
-  sortBy,
-  setSort,
-  ...props
-}                            ) => (
+const FinancingOffersSorter = ({ options, sortBy, setSort, ...props }) => (
   <div>
     <p>
       <T id="Financing.offerId" />

@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import ProOrganisationPageTabs from './ProOrganisationPageTabs';
 import ShareCustomersToggle from './ShareCustomersToggle';
 
-                                   
-
-const ProOrganisationPage = ({ currentUser }                          ) => {
+const ProOrganisationPage = ({ currentUser }) => {
   const { organisations } = currentUser;
 
   if (!organisations || organisations.length === 0) {

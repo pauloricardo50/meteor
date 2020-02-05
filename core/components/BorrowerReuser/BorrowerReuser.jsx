@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,17 +8,7 @@ import T from '../Translation';
 import BorrowerReuserContainer from './BorrowerReuserContainer';
 import DialogSimple from '../DialogSimple';
 
-                            
-                           
-                           
-                      
-  
-
-const BorrowerReuser = ({
-  borrowers,
-  switchBorrower,
-  isLastLoan,
-}                     ) => {
+const BorrowerReuser = ({ borrowers, switchBorrower, isLastLoan }) => {
   if (!borrowers || borrowers.length === 0) {
     return null;
   }

@@ -1,11 +1,9 @@
-//      
+//
 import React, { useEffect, useRef } from 'react';
 
 import useDebouncedInput from '../../hooks/useDebouncedInput';
 import MuiSlider from '../Material/Slider';
 import Tooltip from '../Material/Tooltip';
-
-                      
 
 const ValueLabelComponent = props => {
   const { children, value, open, valueLabelDisplay } = props;
@@ -43,7 +41,7 @@ const Slider = ({
   valueLabelFormat,
   debounce,
   ...rest
-}             ) => {
+}) => {
   const [debouncedValue, debouncedOnChange] = useDebouncedInput({
     value,
     onChange,

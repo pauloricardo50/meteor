@@ -1,4 +1,4 @@
-//      
+//
 /* eslint-env mocha */
 import React, { useContext } from 'react';
 import { expect } from 'chai';

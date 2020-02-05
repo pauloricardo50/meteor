@@ -1,4 +1,4 @@
-//      
+//
 import SimpleSchema from 'simpl-schema';
 
 import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
@@ -72,19 +72,5 @@ export const structureSchema = {
   },
   ...loanTranchesSchema,
 };
-
-                             
-             
-                       
-                           
-                      
-               
-                  
-                     
-                       
-                       
-                     
-                          
-  
 
 export default new SimpleSchema(structureSchema);

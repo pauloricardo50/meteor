@@ -1,17 +1,10 @@
-//      
+//
 import React from 'react';
 
 import FormHelperText from '../Material/FormHelperText';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 import FormControl from '../Material/FormControl';
 import PercentInput from './PercentInput';
-
-                          
-                      
-                     
-                          
-                     
-  
 
 // A hack for number inputs because material-ui can't be sure of the initial
 // shrink value: https://material-ui.com/components/text-fields/#floating-label
@@ -24,7 +17,7 @@ const PercentField = ({
   required,
   margin,
   ...props
-}                   ) => {
+}) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
 
   return (

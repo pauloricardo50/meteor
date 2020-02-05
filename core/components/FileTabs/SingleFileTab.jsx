@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -18,15 +18,6 @@ import {
 } from '../../api/files/documents';
 
 import UploaderCategories from './UploaderCategories';
-
-                           
-                    
-              
-                    
-                               
-                      
-               
-  
 
 const documentsToDisplay = ({ collection, loan, id }) => {
   switch (collection) {
@@ -50,7 +41,7 @@ const documentsToHide = ({ doc, collection, loan, id }) => {
   );
 };
 
-const SingleFileTab = ({ documentArray, ...props }                    ) => {
+const SingleFileTab = ({ documentArray, ...props }) => {
   const {
     collection,
     loan,

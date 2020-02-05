@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import useDebouncedInput from '../../hooks/useDebouncedInput';
 import TextInput from '../TextInput';
 import Icon from '../Icon';
 
-                           
-
-const TableSearch = ({ search, onChange, ...props }                  ) => {
+const TableSearch = ({ search, onChange, ...props }) => {
   const [debouncedValue, debouncedOnChange] = useDebouncedInput({
     value: search,
     onChange,

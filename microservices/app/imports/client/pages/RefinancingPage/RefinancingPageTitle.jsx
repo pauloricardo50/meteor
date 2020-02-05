@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -6,9 +6,7 @@ import PercentWithStatus from 'core/components/PercentWithStatus';
 import Calculator from 'core/utils/Calculator';
 import { SUCCESS } from 'core/api/constants';
 
-                                    
-
-const RefinancingPageTitle = ({ loan }                           ) => {
+const RefinancingPageTitle = ({ loan }) => {
   const value = Calculator.refinancingPercent({ loan });
 
   return (

@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from 'core/components/Button';
@@ -16,19 +16,12 @@ import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
-                                 
-                          
-                       
-               
-                      
-  
-
 export const AppPromotionLotPage = ({
   promotionOption,
   promotionLot,
   loan: { _id: loanId },
   promotionId,
-}                          ) => {
+}) => {
   const {
     name,
     reducedStatus,

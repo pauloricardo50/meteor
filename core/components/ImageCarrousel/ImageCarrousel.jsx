@@ -1,11 +1,9 @@
-//      
+//
 import React, { useReducer } from 'react';
 import cx from 'classnames';
 import Fab from '@material-ui/core/Fab';
 
 import Icon from '../Icon';
-
-                              
 
 const initialState = { index: 0 };
 
@@ -24,11 +22,7 @@ const makeReducer = maxLength => (state, action) => {
   }
 };
 
-const ImageCarrousel = ({
-  images,
-  className,
-  children,
-}                     ) => {
+const ImageCarrousel = ({ images, className, children }) => {
   const hasMultipleImages = images.length > 1;
   const [state, dispatch] = useReducer(
     makeReducer(images.length),

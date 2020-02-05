@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Calculator from '../../../../utils/Calculator';
@@ -6,8 +6,6 @@ import T, { Percent } from '../../../Translation';
 import Icon from '../../../Icon';
 import { CalculatedValue } from '../FinancingSection/components';
 import { getInterestRates } from '../FinancingCalculator';
-
-                                        
 
 const getTooltipTitle = ({ structure, loan, structureId }) => {
   const { offerId } = structure;
@@ -54,10 +52,7 @@ const InterestsTooltip = props => {
   );
 };
 
-const FinancingResultInterests = ({
-  className,
-  ...props
-}                               ) => (
+const FinancingResultInterests = ({ className, ...props }) => (
   <div className={className}>
     <CalculatedValue {...props} />
     <Icon

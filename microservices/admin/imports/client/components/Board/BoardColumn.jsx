@@ -1,7 +1,5 @@
-//      
+//
 import React from 'react';
-
-                           
 
 const BoardColumn = ({
   columnHeader: ColumnHeader,
@@ -9,7 +7,7 @@ const BoardColumn = ({
   columnItem: ColumnItem,
   columnItemProps,
   columnData: { data = [], id },
-}                  ) => (
+}) => (
   <div className="board-column card1 card-top">
     <ColumnHeader id={id} count={data.length} {...columnHeaderProps} />
 

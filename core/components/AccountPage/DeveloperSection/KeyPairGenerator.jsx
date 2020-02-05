@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 
@@ -6,17 +6,7 @@ import Button from 'core/components/Button';
 import { generateApiKeyPair } from 'core/api';
 import T from 'core/components/Translation';
 
-                              
-                   
-                            
-                  
-  
-
-const KeyPairGenerator = ({
-  loading,
-  generateKeyPair,
-  keyPair = {},
-}                       ) => (
+const KeyPairGenerator = ({ loading, generateKeyPair, keyPair = {} }) => (
   <Button
     onClick={generateKeyPair}
     loading={loading}

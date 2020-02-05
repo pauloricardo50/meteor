@@ -1,21 +1,9 @@
-//      
+//
 import React, { useRef } from 'react';
 
 import Input from '../Material/Input';
 import CollectionSearchContainer from './CollectionSearchContainer';
 import CollectionSearchResults from './CollectionSearchResults';
-
-                              
-                      
-                     
-                               
-                
-                       
-                       
-                         
-                        
-                    
-  
 
 const CollectionSearch = ({
   searchQuery,
@@ -31,7 +19,7 @@ const CollectionSearch = ({
   description,
   disableItem,
   type = 'popper',
-}                       ) => {
+}) => {
   const inputEl = useRef(null);
   const results = searchResults[searchQuery];
   const isLoading = !results;

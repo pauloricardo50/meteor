@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Table, { ORDER } from '../../../Table';
@@ -8,14 +8,12 @@ import MongoSelect from '../../../Select/MongoSelect';
 import T from '../../../Translation';
 import PromotionCustomersTableContainer from './PromotionCustomersTableContainer';
 
-                                   
-
 const PromotionCustomersTable = ({
   rows,
   columnOptions,
   status,
   setStatus,
-}                          ) => (
+}) => (
   <>
     <MongoSelect
       value={status}

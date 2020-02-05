@@ -1,17 +1,9 @@
-//      
+//
 import React from 'react';
 
 import { Percent } from '../Translation';
 import StatusIcon from '../StatusIcon';
 import { SUCCESS, ERROR } from '../../api/constants';
-
-                               
-                
-                  
-                   
-              
-                    
-  
 
 const PercentWithStatus = ({
   value,
@@ -19,7 +11,7 @@ const PercentWithStatus = ({
   id,
   tooltip,
   rounded,
-}                        ) => (
+}) => (
   <>
     {Number.isNaN(value) ? '-' : <Percent value={value} rounded={rounded} />}
     {!Number.isNaN(value) && (

@@ -1,13 +1,11 @@
-//      
+//
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
 import MixpanelService from 'core/utils/mixpanel';
 import Loading from 'core/components/Loading';
 
-                        
-
-const LastSeen = ({ userId }               ) => {
+const LastSeen = ({ userId }) => {
   const [lastSeen, setLastSeen] = useState(null);
 
   useEffect(() => {

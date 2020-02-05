@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState } from 'react';
 
 import Button from 'core/components/Button';
@@ -11,8 +11,6 @@ import SolvencyContainer from './SolvencyContainer';
 import SolvencyResults from './SolvencyResults';
 import LenderSolvency from './LenderSolvency/LenderSolvency';
 
-                        
-
 const Solvency = ({
   loan,
   organisations,
@@ -24,7 +22,7 @@ const Solvency = ({
   setResidenceType,
   canton,
   setCanton,
-}               ) => {
+}) => {
   const [showResults, setShowResults] = useState(false);
   const [maxBorrowRatio, setMaxborrowRatio] = useState(0.8);
 

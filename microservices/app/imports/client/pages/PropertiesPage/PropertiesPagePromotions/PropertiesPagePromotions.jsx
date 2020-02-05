@@ -1,15 +1,13 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import PromotionDetail from './PromotionDetail';
 import PromotionOptionDetail from './PromotionOptionDetail';
 
-                                        
-
 const PropertiesPagePromotions = ({
   loan: { _id: loanId, promotions, promotionOptions },
-}                               ) => (
+}) => (
   <div className="promotions">
     <div className="promotion-cards">
       {promotions &&

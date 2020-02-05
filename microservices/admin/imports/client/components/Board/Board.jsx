@@ -1,9 +1,7 @@
-//      
+//
 import React from 'react';
 
 import BoardColumn from './BoardColumn';
-
-                     
 
 const Board = ({
   data = [],
@@ -11,7 +9,7 @@ const Board = ({
   columnHeaderProps,
   columnItem,
   columnItemProps,
-}            ) => (
+}) => (
   <div className="board">
     {data.map(columnData => (
       <BoardColumn

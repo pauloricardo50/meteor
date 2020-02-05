@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
@@ -11,14 +11,12 @@ import SingleStructureContainer from '../../containers/SingleStructureContainer'
 import OwnFundsAdder from './OwnFundsAdder';
 import CurrentOwnFunds from './CurrentOwnFunds';
 
-                                       
-
 const FinancingOwnFundsPicker = ({
   structureId,
   structure,
   history,
   ...data
-}                              ) => {
+}) => {
   const {
     borrowers = [],
     loan: { _id: loanId },

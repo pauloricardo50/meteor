@@ -1,13 +1,11 @@
-//      
+//
 import React, { useState } from 'react';
 
 import ClientEventService from '../../../../api/events/ClientEventService';
 import Button from '../../../Button';
 import T from '../../../Translation';
 
-                                  
-
-const FinancingCollapser = ({ Calculator, loan }                         ) => {
+const FinancingCollapser = ({ Calculator, loan }) => {
   const [shouldExpand, setShouldExpand] = useState(() =>
     Calculator.hasCompleteStructure({ loan }),
   );

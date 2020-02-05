@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from 'core/components/Button';
@@ -7,14 +7,12 @@ import LenderRulesEditorSingle from './LenderRulesEditorSingle';
 import LenderRulesSorter from './LenderRulesSorter/LenderRulesSorter';
 import LenderRulesAdder from './LenderRulesForm/LenderRulesAdder';
 
-                                 
-
 const LenderRulesEditor = ({
   initializeLenderRules,
   lenderRules,
   makeUpdateLenderRules,
   organisationId,
-}                        ) => {
+}) => {
   if (!lenderRules || lenderRules.length === 0) {
     return (
       <Button raised primary onClick={initializeLenderRules}>

@@ -1,10 +1,8 @@
-//      
+//
 import React from 'react';
 import AutoFormTextInput from './AutoFormTextInput';
 
-                                    
-
-const AutoFormPercentInput = (props                           ) => {
+const AutoFormPercentInput = props => {
   const { inputProps } = props;
 
   return (

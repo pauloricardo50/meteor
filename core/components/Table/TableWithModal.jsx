@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState, useMemo } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
@@ -6,8 +6,6 @@ import Dialog from '../Material/Dialog';
 import Table from '.';
 import Button from '../Button';
 import T from '../Translation';
-
-                              
 
 const getModal = ({
   modalType,
@@ -33,11 +31,11 @@ const getModal = ({
   if (modalType === 'dialog') {
     return (
       <Dialog
-        actions={(
+        actions={
           <Button onClick={() => setOpen(false)}>
             <T id="general.close" />
           </Button>
-        )}
+        }
         {...modalProps}
         {...props}
         open={open}
@@ -55,14 +53,14 @@ const TableWithModal = ({
   modalProps,
   rows,
   ...rest
-}                     ) => {
+}) => {
   const [open, setOpen] = useState(false);
   const [activeRowId, setActiveRowId] = useState(null);
   const mappedRows = useMemo(
     () =>
       rows.map(row => ({
         ...row,
-        handleClick: (event) => {
+        handleClick: event => {
           if (row.handleClick) {
             row.handleClick();
           }

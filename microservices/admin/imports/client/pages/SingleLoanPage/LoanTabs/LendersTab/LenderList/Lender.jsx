@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import {
@@ -10,11 +10,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import AdminNote from 'core/components/AdminNote';
 import LenderContact from './LenderContact';
 
-                    
-                 
-  
-
-const Lender = ({ lender }             ) => {
+const Lender = ({ lender }) => {
   const {
     organisation,
     status,

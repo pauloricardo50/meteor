@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { withState, withProps, compose } from 'recompose';
@@ -15,9 +15,7 @@ import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
 import BorrowersCard from './BorrowersCard/BorrowersCard';
 import SimpleMaxPropertyValueSticky from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueSticky';
 
-                                   
-
-const SimpleDashboardPage = (props                          ) => {
+const SimpleDashboardPage = props => {
   const { loan, currentUser, openBorrowersForm, progress } = props;
   const { _id: loanId, name, customName, maxPropertyValue } = loan;
 

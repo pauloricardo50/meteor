@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Table from '../Table';
@@ -9,8 +9,6 @@ import MongoRange from '../Slider/MongoRange';
 import { toMoney } from '../../utils/conversionFunctions';
 import TableSearch from '../Table/TableSearch';
 
-                               
-
 export const PropertiesTable = ({
   fetchOrganisationProperties,
   setFetchOrganisationProperties,
@@ -19,7 +17,7 @@ export const PropertiesTable = ({
   search,
   setSearch,
   ...props
-}                      ) => (
+}) => (
   <div>
     <div className="flex wrap">
       <TableSearch search={search} onChange={setSearch} className="mr-16" />

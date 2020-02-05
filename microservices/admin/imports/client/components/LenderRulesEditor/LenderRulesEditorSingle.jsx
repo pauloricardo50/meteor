@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -24,14 +24,12 @@ const getInitialFormKeys = ({ lenderRules }) =>
     return val !== undefined || val !== '';
   });
 
-                                       
-
 const LenderRulesEditorSingle = ({
   lenderRules: { _id: lenderRulesId, filter, name, order, ...rules },
   updateLenderRules,
   formKeys,
   setFormKeys,
-}                              ) => (
+}) => (
   <ExpansionPanel className="card1 card-top lender-rules-editor-filter">
     <ExpansionPanelSummary>
       <div className="filter-title">

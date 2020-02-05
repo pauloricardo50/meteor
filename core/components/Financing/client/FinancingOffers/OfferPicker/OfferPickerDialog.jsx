@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { lifecycle } from 'recompose';
@@ -7,9 +7,7 @@ import T from '../../../../Translation';
 import Button from '../../../../Button';
 import OfferPickerDialogContent from './OfferPickerDialogContent';
 
-                                 
-
-const OfferPickerDialog = (props                        ) => {
+const OfferPickerDialog = props => {
   const {
     open,
     handleClose,

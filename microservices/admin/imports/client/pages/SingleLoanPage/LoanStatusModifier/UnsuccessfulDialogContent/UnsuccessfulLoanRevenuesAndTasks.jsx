@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { TASK_STATUS, REVENUE_STATUS } from 'core/api/constants';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
@@ -6,13 +6,11 @@ import { tasks as tasksQuery } from 'core/api/tasks/queries';
 import TasksTable from '../../../../components/TasksTable';
 import RevenuesTable from '../../../../components/RevenuesTable';
 
-                                                
-
 const UnsuccessfulLoanRevenuesAndTasks = ({
   loan,
   returnValue,
   closeModal,
-}                                       ) => {
+}) => {
   const { _id: loanId, tasksCache = [], revenues = [] } = loan;
   const activeTasks = tasksCache.filter(
     ({ status }) => status === TASK_STATUS.ACTIVE,

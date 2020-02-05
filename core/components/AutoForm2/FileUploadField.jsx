@@ -1,4 +1,4 @@
-//      
+//
 import { Random } from 'meteor/random';
 
 import React, { useState, useEffect } from 'react';

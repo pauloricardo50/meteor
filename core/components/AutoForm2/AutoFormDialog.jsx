@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react';
 import { compose, withProps, withState } from 'recompose';
 import pick from 'lodash/pick';
@@ -10,23 +10,6 @@ import AutoForm from './AutoForm';
 import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
 import AutoFormDialogContent from './AutoFormDialogContent';
 import AutoFormDialogActions from './AutoFormDialogActions';
-
-                            
-                 
-                 
-                     
-                      
-                    
-                           
-                     
-                      
-                          
-                                     
-                        
-                              
-                        
-                     
-  
 
 const getAutoFormProps = props =>
   pick(props, [
@@ -40,7 +23,7 @@ const getAutoFormProps = props =>
     'onChangeModel',
   ]);
 
-export class AutoFormDialog extends Component                      {
+export class AutoFormDialog extends Component {
   constructor(props) {
     super(props);
     const { autoFieldProps } = props;

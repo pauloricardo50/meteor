@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
+import { fullUser } from 'core/api/fragments';
 import { notifyAssignee, logError, notifyOfUpload } from '../methodDefinitions';
 import UserService from '../../users/server/UserService';
 import SlackService from './SlackService';
 import SecurityService from '../../security';
-import { fullUser } from 'core/api/fragments';
 
 notifyAssignee.setHandler((context, { message, title }) => {
   context.unblock();

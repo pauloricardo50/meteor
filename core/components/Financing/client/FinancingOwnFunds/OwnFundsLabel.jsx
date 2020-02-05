@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
-                             
-
-const OwnFundsLabel = ({ id, labelValue, ...data }                    ) => {
+const OwnFundsLabel = ({ id, labelValue, ...data }) => {
   const availableAmount = labelValue(data);
   return (
     <div className="own-funds-label">

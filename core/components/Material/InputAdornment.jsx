@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import InputAdornment from '@material-ui/core/InputAdornment';
 

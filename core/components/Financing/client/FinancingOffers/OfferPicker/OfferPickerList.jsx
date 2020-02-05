@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 import { withState, compose } from 'recompose';
 import FlipMove from 'react-flip-move';
 
 import OfferPickerListItem from './OfferPickerListItem';
 import OfferPickerDialog from './OfferPickerDialog';
-
-                               
 
 const OfferPickerList = ({
   offers,
@@ -17,7 +15,7 @@ const OfferPickerList = ({
   hovering,
   setHovering,
   ...data
-}                      ) => (
+}) => (
   <div
     className="offer-picker-list"
     onMouseEnter={() => setHovering(true)}

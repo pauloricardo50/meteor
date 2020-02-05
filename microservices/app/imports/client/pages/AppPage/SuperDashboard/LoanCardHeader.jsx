@@ -1,14 +1,9 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import { PROPERTY_DOCUMENTS } from 'core/api/constants';
 import LoanRenamer from '../LoanRenamer';
-
-                            
-               
-                        
-  
 
 const getLoanTitle = (name, customName) => {
   if (customName) {
@@ -44,7 +39,7 @@ const getImage = ({ promotions, properties, hasPromotion, hasProProperty }) => {
   return null;
 };
 
-const LoanCardHeader = ({ loan, disableLink }                     ) => {
+const LoanCardHeader = ({ loan, disableLink }) => {
   const {
     _id: loanId,
     customName,

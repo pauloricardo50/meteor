@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { createRoute } from '../../../../../utils/routerUtils';
@@ -9,9 +9,7 @@ import { getProperty } from '../../FinancingCalculator';
 import Link from '../../../../Link';
 import MortgageNotesPickerList from './MortgageNotesPickerList';
 
-                                         
-
-const MortgageNotesPickerDialog = (props                                ) => {
+const MortgageNotesPickerDialog = props => {
   const {
     borrowerMortgageNotes,
     currentMortgageNotes,

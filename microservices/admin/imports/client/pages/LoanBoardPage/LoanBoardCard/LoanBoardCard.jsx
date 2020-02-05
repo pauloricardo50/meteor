@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState } from 'react';
 
 import { Meteor } from 'meteor/meteor';
@@ -7,14 +7,7 @@ import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
 import LoanBoardCardBottom from './LoanBoardCardBottom';
 
-                             
-
-const LoanBoardCard = ({
-  data: loan,
-  setLoanId,
-  style,
-  admins,
-}                    ) => {
+const LoanBoardCard = ({ data: loan, setLoanId, style, admins }) => {
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,

@@ -1,21 +1,9 @@
-//      
+//
 
 const INFINITY = 100000000000000;
 
-                       
-                 
-                                                 
-                  
-                  
-  
-
 // Calculates the degressive tax on an amount, based on brackets with varying rates
-const degressive = ({
-  amount,
-  brackets = [],
-  maxTax,
-  minTax,
-}                )         => {
+const degressive = ({ amount, brackets = [], maxTax, minTax }) => {
   if (amount <= 0) {
     return 0;
   }

@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
@@ -13,8 +13,6 @@ import LendersTab from '../LoanTabs/LendersTab/loadable';
 import RevenuesTab from '../LoanTabs/RevenuesTab/loadable';
 import LoanTabs from '../LoanTabs';
 import PremiumOverviewTab from './PremiumOverviewTab';
-
-                               
 
 const getTabs = props => {
   const { currentUser } = props;
@@ -44,7 +42,7 @@ const getTabs = props => {
   ];
 };
 
-const PremiumLoanTabs = (props                      ) => {
+const PremiumLoanTabs = props => {
   const tabs = getTabs(props);
 
   return <LoanTabs {...props} tabs={tabs} />;

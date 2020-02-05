@@ -1,15 +1,13 @@
-//      
+//
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../../../lang/fr.json';
 
-                   
-
 export const LastPageContext = React.createContext();
 
-const Pdf = ({ stylesheet, pages, pdfName }          ) => (
+const Pdf = ({ stylesheet, pages, pdfName }) => (
   <IntlProvider
     locale={getUserLocale()}
     messages={messagesFR}

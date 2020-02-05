@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 import { withState } from 'recompose';
 
 import Button from '../Button';
 import { throwDevError } from '../../api';
 
-                            
-
-const ErrorThrower = ({ fuckedUp, fuckShitUp }                   ) => (
+const ErrorThrower = ({ fuckedUp, fuckShitUp }) => (
   <div className="error-thrower">
     <span>Client</span>
     <Button raised error onClick={() => fuckShitUp(true)}>

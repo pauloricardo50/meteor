@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { compose } from 'recompose';
 
@@ -9,8 +9,6 @@ import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { getIncomeRatio, getMaxIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator from '../FinancingCalculator';
-
-                                     
 
 export const ERROR_TYPES = {
   BREAKING: 'BREAKING',
@@ -83,7 +81,7 @@ const getError = props =>
     undefined,
   );
 
-export const FinancingResultErrors = (props                            ) => {
+export const FinancingResultErrors = props => {
   const error = getError(props);
 
   if (error.type === ERROR_TYPES.BREAKING) {

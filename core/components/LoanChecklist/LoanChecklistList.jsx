@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from '../Translation';
 import StatusIcon from '../StatusIcon';
 import { SUCCESS } from '../../api/constants';
 
-                                 
-
-const LoanChecklistList = ({ labels, title }                        ) => (
+const LoanChecklistList = ({ labels, title }) => (
   <span className="loan-checklist-list">
     <h4>{title}</h4>
     {labels.length === 0 && (

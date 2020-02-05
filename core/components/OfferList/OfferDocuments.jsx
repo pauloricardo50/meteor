@@ -1,15 +1,13 @@
-//      
+//
 import React from 'react';
 
 import { OFFERS_COLLECTION } from '../../api/constants';
 import DialogSimple from '../DialogSimple';
 import UploaderArray from '../UploaderArray';
 
-                              
-
 const offerDocumentsArray = [{ id: 'OTHER', noTooltips: true }];
 
-const OfferDocuments = ({ offer }                     ) => {
+const OfferDocuments = ({ offer }) => {
   const currentUser = {};
   const documentsCount = Object.keys(offer.documents || {}).reduce(
     (tot, key) => {

@@ -1,18 +1,10 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import Organisation from './Organisation';
 
-                                    
-                  
-                               
-  
-
-const OrganisationsByFeature = ({
-  organisations = [],
-  feature,
-}                             ) => {
+const OrganisationsByFeature = ({ organisations = [], feature }) => {
   const filteredOrganisations = organisations
     .filter(({ features = [] }) =>
       feature ? features.includes(feature) : features.length === 0,

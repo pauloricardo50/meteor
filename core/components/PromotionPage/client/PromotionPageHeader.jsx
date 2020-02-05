@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
@@ -19,9 +19,7 @@ import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
 
-                                   
-
-const PromotionPageHeader = ({ promotion }                          ) => {
+const PromotionPageHeader = ({ promotion }) => {
   const {
     _id: promotionId,
     documents: { promotionImage = [{ url: '/img/placeholder.png' }] } = {},

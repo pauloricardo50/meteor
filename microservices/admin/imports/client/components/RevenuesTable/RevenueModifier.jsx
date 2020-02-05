@@ -1,15 +1,9 @@
-//      
+//
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Button from 'core/components/Button/Button';
 import RevenueDialogFormContainer from './RevenueDialogFormContainer';
-
-                             
-                 
-                
-                          
-  
 
 const RevenueModifier = ({
   schema,
@@ -21,7 +15,7 @@ const RevenueModifier = ({
   deleteRevenue,
   layout,
   description,
-}                      ) => (
+}) => (
   <AutoFormDialog
     noButton
     schema={schema}

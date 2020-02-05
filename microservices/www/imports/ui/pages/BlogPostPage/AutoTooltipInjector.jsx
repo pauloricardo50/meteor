@@ -1,10 +1,8 @@
-//      
+//
 import React from 'react';
 import htmlParse from 'html-parse-stringify';
 
 import { autoTooltipParser } from 'core/components/tooltips/AutoTooltip';
-
-                                   
 
 const htmlDecode = input => {
   const e = document.createElement('div');
@@ -42,7 +40,7 @@ const formatTags = array =>
     },
   );
 
-const AutoTooltipInjector = ({ html }                          ) => {
+const AutoTooltipInjector = ({ html }) => {
   const parsedHtml = htmlParse.parse(html);
 
   return formatTags(parsedHtml);

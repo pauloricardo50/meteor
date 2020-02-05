@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Paper from '@material-ui/core/Paper';
@@ -8,19 +8,6 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 import List, { ListItem } from '../List';
 import Loading from '../Loading/Loading';
-
-                                     
-               
-                       
-                         
-                       
-                     
-                   
-                 
-                       
-                        
-                        
-  
 
 const ItemsPopper = ({
   showResults,
@@ -104,10 +91,7 @@ const ItemsList = ({
     </List>
   ) : null;
 
-const CollectionSearchResults = ({
-  type,
-  ...props
-}                              ) => {
+const CollectionSearchResults = ({ type, ...props }) => {
   switch (type) {
     case 'popper':
       return <ItemsPopper {...props} />;

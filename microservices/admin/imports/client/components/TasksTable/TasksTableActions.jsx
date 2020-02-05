@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
@@ -10,9 +10,7 @@ import {
   taskUpdate,
 } from 'core/api/tasks/index';
 
-                                 
-
-const TasksTableActions = ({ taskId, priority }                        ) => (
+const TasksTableActions = ({ taskId, priority }) => (
   <div className="flex space-children">
     <IconButton
       onClick={e => {

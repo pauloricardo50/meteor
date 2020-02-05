@@ -1,17 +1,15 @@
-//      
+//
 import React from 'react';
 
 import AutoForm from 'core/components/AutoForm2/AutoForm';
 import UserCreatorContainer from './UserCreatorContainer';
-
-                               
 
 const UserCreatorForm = ({
   schema,
   buttonProps,
   onSubmit,
   submitFieldProps,
-}                  ) => (
+}) => (
   <AutoForm
     schema={schema}
     onSubmit={onSubmit}

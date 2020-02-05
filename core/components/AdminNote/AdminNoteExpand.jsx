@@ -1,18 +1,11 @@
-//      
+//
 import React from 'react';
 import { withState } from 'recompose';
 
 import Button from '../Button';
 import AdminNote from './AdminNote';
 
-                               
-
-const AdminNoteExpand = ({
-  showAll,
-  setShowAll,
-  adminNote,
-  ...props
-}                      ) => (
+const AdminNoteExpand = ({ showAll, setShowAll, adminNote, ...props }) => (
   <>
     <AdminNote
       {...props}

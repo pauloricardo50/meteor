@@ -1,7 +1,5 @@
-//      
+//
 import React from 'react';
-
-                              
 
 const renderLayout = ({ layout, renderLayoutItem, renderField, AutoField }) => {
   if (!layout) {
@@ -19,12 +17,7 @@ const renderLayout = ({ layout, renderLayoutItem, renderField, AutoField }) => {
   return renderLayoutItem(layout);
 };
 
-const AutoFormLayout = ({
-  AutoField,
-  layout,
-  schemaKeys,
-  automaticFocus,
-}                     ) => {
+const AutoFormLayout = ({ AutoField, layout, schemaKeys, automaticFocus }) => {
   let fieldCount = 0;
   const renderedMap = {};
 

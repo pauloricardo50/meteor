@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import CommissionRatesViewer from 'core/components/CommissionRatesViewer';

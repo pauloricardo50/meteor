@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
@@ -12,17 +12,12 @@ import Chip from 'core/components/Material/Chip';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import OrganisationModifier from './OrganisationModifier';
 
-                                          
-                       
-                  
-  
-
 const SingleOrganisationPage = ({
   organisation,
   history,
   intl: { formatMessage },
   currentUser,
-}                                   ) => {
+}) => {
   const {
     _id: organisationId,
     logo,

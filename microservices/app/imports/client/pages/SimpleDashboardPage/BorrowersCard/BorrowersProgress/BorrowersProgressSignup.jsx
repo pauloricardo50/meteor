@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -9,9 +9,7 @@ import Box from 'core/components/Box';
 import T from 'core/components/Translation';
 import UserCreator from '../../../../components/UserCreator';
 
-                                       
-
-const BorrowersProgressSignup = (props                              ) => {
+const BorrowersProgressSignup = props => {
   if (Meteor.user()) {
     return null;
   }

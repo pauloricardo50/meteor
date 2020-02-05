@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
@@ -6,8 +6,6 @@ import PdfPageTitle from './PdfPageTitle';
 import PdfPageHeader from './PdfPageHeader';
 import PdfPageFooter from './PdfPageFooter';
 import { LastPageContext } from '../Pdf/Pdf';
-
-                       
 
 const PdfPage = ({
   className,
@@ -19,7 +17,7 @@ const PdfPage = ({
   withFooter,
   pageNb,
   pageCount,
-}              ) => (
+}) => (
   <LastPageContext.Consumer>
     {isLast => (
       <>

@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import DialogSimple from 'core/components/DialogSimple';
@@ -12,8 +12,6 @@ import {
 } from 'core/api/constants';
 import { getPropertyDocuments } from 'core/api/files/documents';
 
-                                        
-
 const propertyDocuments = property =>
   getPropertyDocuments({ id: property._id }, { doc: property }).map(doc => ({
     ...doc,
@@ -26,9 +24,7 @@ const propertyDocuments = property =>
     },
   }));
 
-const PropertyDocumentsManager = ({
-  property,
-}                               ) => (
+const PropertyDocumentsManager = ({ property }) => (
   <DialogSimple
     primary
     raised

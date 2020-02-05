@@ -107,7 +107,8 @@ export default function startChrome({ stdout, stderr, done }) {
     )
     .then(() =>
       // Empty the logs one last time
-      passThroughLogs())
+      passThroughLogs(),
+    )
     .then(() => driver.executeScript('return window.testFailures'))
     .then(failures => {
       testFailures = failures;

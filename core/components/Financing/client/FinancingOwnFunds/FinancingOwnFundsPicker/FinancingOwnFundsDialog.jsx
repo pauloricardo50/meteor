@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -15,9 +15,7 @@ import FinancingOwnFundsPledgeWarning from './FinancingOwnFundsPledgeWarning';
 import FinancingOwnFundsWithdrawWarning from './FinancingOwnFundsWithdrawWarning';
 import { calculateRemainingFunds } from './FinancingOwnFundsPickerHelpers';
 
-                                       
-
-const FinancingOwnFundsDialog = (props                              ) => {
+const FinancingOwnFundsDialog = props => {
   const {
     handleClose,
     open,

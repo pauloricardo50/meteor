@@ -1,11 +1,9 @@
-//      
+//
 import React from 'react';
 
 import LenderListItem from './LenderListItem';
 
-                          
-
-const LenderList = ({ organisations, loan, structureId }                 ) => (
+const LenderList = ({ organisations, loan, structureId }) => (
   <div className="lender-list">
     {organisations
       .filter(({ lenderRules }) => lenderRules && lenderRules.length > 0)

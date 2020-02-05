@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import T from 'core/components/Translation';
 
-                                   
-
-const BorrowersCardHeader = ({ progress }                          ) => (
+const BorrowersCardHeader = ({ progress }) => (
   <div className="borrowers-card-header">
     <div style={{ width: '100%' }}>
       <div className="flex-row title">

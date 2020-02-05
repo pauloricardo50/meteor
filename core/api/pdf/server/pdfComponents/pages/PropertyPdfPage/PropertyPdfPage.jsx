@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
@@ -8,9 +8,7 @@ import PdfPropertyDetails from './PdfPropertyDetails';
 import Calculator from '../../../../../../utils/Calculator';
 import OtherRealEstateTable from './OtherRealEstateTable';
 
-                               
-
-const PropertyPdfPage = ({ loan, pageNb, pageCount }                      ) => {
+const PropertyPdfPage = ({ loan, pageNb, pageCount }) => {
   const realEstateExists = Calculator.getRealEstateValue({ loan }) > 0;
 
   return (

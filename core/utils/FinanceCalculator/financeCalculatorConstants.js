@@ -1,2 +1,2 @@
-//      
+//
 export const NO_INTEREST_RATE_ERROR = 'NO_INTEREST_RATE_ERROR';

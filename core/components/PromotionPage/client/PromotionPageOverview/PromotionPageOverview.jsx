@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
@@ -13,12 +13,7 @@ import PromotionTimeline from '../PromotionTimeline';
 import PromotionOptionsTable from '../PromotionOptionsTable';
 import AppPromotionPageOverview from './AppPromotionPageOverview';
 
-                                     
-
-const PromotionPageOverview = ({
-  promotion,
-  loan,
-}                            ) => {
+const PromotionPageOverview = ({ promotion, loan }) => {
   const {
     permissions: { canChangeTimeline },
   } = useContext(PromotionMetadataContext);

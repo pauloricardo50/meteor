@@ -1,4 +1,4 @@
-//      
+//
 
 import Loans from './loans';
 import {

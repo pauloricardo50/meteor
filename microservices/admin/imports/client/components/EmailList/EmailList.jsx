@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import moment from 'moment';
 import { compose } from 'recompose';
@@ -8,9 +8,7 @@ import { withSmartQuery } from 'core/api/containerToolkit';
 import withHider from 'core/containers/withHider';
 import Table from 'core/components/Table';
 
-                         
-
-const EmailList = ({ user: { sentEmails } }                ) => (
+const EmailList = ({ user: { sentEmails } }) => (
   <div style={{ marginTop: 40 }}>
     <h3>Emails automatiques envoyés</h3>
     <p>Seulement pendant les 30 derniers jours. Peut prendre 10-30 secondes.</p>

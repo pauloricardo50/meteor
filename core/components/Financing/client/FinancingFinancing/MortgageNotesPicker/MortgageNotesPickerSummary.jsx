@@ -1,15 +1,8 @@
-//      
+//
 import React from 'react';
 
 import T from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
-
-                                        
-                                       
-                                      
-                       
-                     
-  
 
 const MortgageNotesPickerSummary = ({
   borrowerMortgageNotes,
@@ -17,7 +10,7 @@ const MortgageNotesPickerSummary = ({
   handleOpen,
   wantedLoan,
   disabled,
-}                                 ) => {
+}) => {
   const allNotes = [...borrowerMortgageNotes, ...currentMortgageNotes];
   const currentMortgageNotesValue = allNotes.reduce(
     (total, { value = 0 }) => total + value,

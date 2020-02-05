@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { AutoFormDialog } from '../AutoForm2';
@@ -7,9 +7,7 @@ import Button from '../Button';
 import OfferModiferContainer from './OfferModifierContainer';
 import { offerDelete } from '../../api';
 
-                             
-
-const OfferModifier = ({ onSubmit, offer, schema }                    ) => (
+const OfferModifier = ({ onSubmit, offer, schema }) => (
   <AutoFormDialog
     onSubmit={onSubmit}
     model={offer}

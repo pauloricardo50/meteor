@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { adminOrganisations } from '../../../api/organisations/queries';
 import { promotionUpdate } from '../../../api';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
-
-                               
 
 const schema = new SimpleSchema({
   lenderOrganisationLink: Object,
@@ -27,7 +25,7 @@ const schema = new SimpleSchema({
   },
 });
 
-const PromotionLender = ({ promotion }                      ) => (
+const PromotionLender = ({ promotion }) => (
   <AutoForm
     autosave
     schema={schema}

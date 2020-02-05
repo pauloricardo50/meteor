@@ -1,15 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import DeveloperSectionContainer from './DeveloperSectionContainer';
 import GenerateApiKeyPair from './GenerateApiKeyPair';
 
-                              
-               
-  
-
-const DeveloperSection = ({ user }                       ) => (
+const DeveloperSection = ({ user }) => (
   <div className="developper-section animated fadeIn">
     <h2>
       <T id="AccountPage.DevelopperSection.title" />

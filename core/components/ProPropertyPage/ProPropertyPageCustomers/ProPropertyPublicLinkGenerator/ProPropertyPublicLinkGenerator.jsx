@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 
 import { ModalManagerContext } from 'core/components/ModalManager';
@@ -8,16 +8,11 @@ import Button from 'core/components/Button';
 import ProPropertyPublicLinkGeneratorContainer from './ProPropertyPublicLinkGeneratorContainer';
 import PublicLink from './PublicLink';
 
-                                            
-                 
-                               
-  
-
 const ProPropertyPublicLinkGenerator = ({
   schema,
   generatePublicLink,
   makeDescription,
-}                                     ) => {
+}) => {
   const { openModal } = useContext(ModalManagerContext);
 
   return (

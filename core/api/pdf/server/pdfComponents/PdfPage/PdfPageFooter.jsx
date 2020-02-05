@@ -1,9 +1,7 @@
-//      
+//
 import React from 'react';
 
-                             
-
-const PdfPageFooter = ({ pageNb, pageCount }                    ) => (
+const PdfPageFooter = ({ pageNb, pageCount }) => (
   <div className="pdf-page-footer">
     <div>
       <span className="bold">e-Potek SA</span>

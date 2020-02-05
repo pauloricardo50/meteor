@@ -1,4 +1,4 @@
-//      
+//
 import queryString from 'query-string';
 
 const formatReplacerObject = replacers =>
@@ -11,10 +11,10 @@ const formatReplacerObject = replacers =>
   );
 
 export const createRoute = (
-  wildcardPath        ,
-  replacers                       = {},
+  wildcardPath,
+  replacers = {},
   searchParams = {},
-)         => {
+) => {
   if (!replacers) {
     return wildcardPath;
   }

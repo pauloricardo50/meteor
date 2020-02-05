@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react';
 
 import Loading from '../../Loading';
@@ -6,19 +6,7 @@ import StickyPopover from '../../StickyPopover';
 import queries from './queries';
 import { titles, components } from './CollectionIconLinkPopupComponents';
 
-                                     
-              
-                
-                     
-  
-                                     
-                
-  
-
-export default class CollectionIconLinkPopup extends Component 
-                               
-                               
-  {
+export default class CollectionIconLinkPopup extends Component {
   constructor(props) {
     super(props);
     this.state = { data: null };

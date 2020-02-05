@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import colors from '../../../../../config/colors';
@@ -7,23 +7,6 @@ import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLo
 import Button from '../../../../Button';
 import T from '../../../../Translation';
 import PromotionReservationDetailActionsContainer from './PromotionReservationDetailActionsContainer';
-
-                                               
-                          
-                            
-                                         
-                                    
-                                
-                                 
-                      
-                                        
-                            
-                              
-                                  
-                          
-                               
-                             
-  
 
 const PromotionReservationDetailActions = ({
   promotionOption,
@@ -40,7 +23,7 @@ const PromotionReservationDetailActions = ({
   addToWaitList,
   confirmReservation,
   sellPromotionLot,
-}                                        ) => (
+}) => (
   <div className="flex center mt-16">
     {canUploadReservationAgreement && (
       <PromotionLotReservationForm

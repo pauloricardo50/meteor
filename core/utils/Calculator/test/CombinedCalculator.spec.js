@@ -1,4 +1,4 @@
-//      
+//
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { DOCUMENTS, STEPS } from 'core/api/constants';

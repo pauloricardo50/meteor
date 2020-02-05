@@ -1,16 +1,14 @@
-//      
+//
 import React from 'react';
 
 import T, { Percent } from '../../../../Translation';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 
-                                            
-
 const OfferPickerListItemInterests = ({
   offer,
   structure: { loanTranches },
   displayDetail,
-}                                   ) => {
+}) => {
   if (offer.hasInvalidInterestRates) {
     return (
       <OfferPickerListItemValue

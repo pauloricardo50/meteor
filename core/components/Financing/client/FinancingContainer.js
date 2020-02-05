@@ -1,4 +1,4 @@
-//      
+//
 import { compose, lifecycle } from 'recompose';
 import { addNewStructure } from 'core/api';
 

@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';

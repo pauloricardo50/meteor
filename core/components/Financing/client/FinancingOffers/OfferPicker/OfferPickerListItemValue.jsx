@@ -1,14 +1,12 @@
-//      
+//
 import React from 'react';
-
-                                        
 
 const OfferPickerListItemValue = ({
   label,
   value,
   valueProps = {},
   labelProps = {},
-}                               ) => (
+}) => (
   <>
     <p className="secondary" {...labelProps}>
       {label}

@@ -1,14 +1,12 @@
-//      
+//
 import React from 'react';
 
 import { T, IntlNumber } from '../Translation';
 
-                          
-
 const OfferField = ({
   offer,
   offerValue: { key, component, format, value, id },
-}                 ) => {
+}) => {
   if (component) {
     return <div className="offer-list-item-value">{component}</div>;
   }

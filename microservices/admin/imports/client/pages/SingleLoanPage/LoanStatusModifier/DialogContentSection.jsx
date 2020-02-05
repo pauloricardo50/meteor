@@ -1,12 +1,5 @@
-//      
+//
 import React from 'react';
-
-                                  
-                
-                      
-                 
-                       
-  
 
 const DialogContentSection = ({
   title,
@@ -14,7 +7,7 @@ const DialogContentSection = ({
   buttons,
   children,
   styles: { buttons: buttonsStyle = {} } = {},
-}                           ) => (
+}) => (
   <div className="loan-status-modifier-dialog-content-section">
     {title && <h4>{title}</h4>}
     {description && <p className="description">{description}</p>}

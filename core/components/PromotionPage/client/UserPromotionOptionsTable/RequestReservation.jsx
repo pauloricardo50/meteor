@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
@@ -11,17 +11,7 @@ import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import colors from 'core/config/colors';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 
-                                
-                          
-                           
-                 
-  
-
-const RequestReservation = ({
-  promotionOption,
-  promotionLotName,
-  status,
-}                         ) => {
+const RequestReservation = ({ promotionOption, promotionLotName, status }) => {
   const {
     _id: promotionOptionId,
     loan: { promotions = [] },

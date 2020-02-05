@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
@@ -7,9 +7,7 @@ import PremiumLoanTabs from './PremiumLoanTabs';
 import SingleLoanPageTasks from '../SingleLoanPageTasks';
 import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
 
-                                     
-
-const PremiumSingleLoanPage = (props                            ) => {
+const PremiumSingleLoanPage = props => {
   const { loan } = props;
   return (
     <div className="single-loan-page premium">

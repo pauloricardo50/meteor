@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -6,9 +6,7 @@ import React from 'react';
 import { USERS_COLLECTION } from '../../api/users/userConstants';
 import { CollectionIconLink } from '../IconLink';
 
-                           
-
-const ProCustomer = ({ user, invitedByUser }                  ) => {
+const ProCustomer = ({ user, invitedByUser }) => {
   const { _id, name, phoneNumbers = ['-'], email, assignedEmployee } = user;
   const isPro = Meteor.microservice === 'pro';
   const assigneeNumber =

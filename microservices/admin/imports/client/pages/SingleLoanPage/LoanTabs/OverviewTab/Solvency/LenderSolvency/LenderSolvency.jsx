@@ -1,17 +1,15 @@
-//      
+//
 import React from 'react';
 
 import DefaultCalculator, { Calculator } from 'core/utils/Calculator';
 import { Money, Percent } from 'core/components/Translation';
-
-                              
 
 const LenderSolvency = ({
   organisation: { lenderRules },
   loan,
   residenceType,
   canton,
-}                     ) => {
+}) => {
   const loanObject = DefaultCalculator.createLoanObject({
     residenceType,
     borrowers: loan.borrowers,

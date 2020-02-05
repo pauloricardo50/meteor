@@ -1,11 +1,9 @@
-//      
+//
 import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import Button from '../../../../Button';
 import T from '../../../../Translation';
-
-                                        
 
 const FinancingOwnFundsActions = ({
   displayWarning,
@@ -17,7 +15,7 @@ const FinancingOwnFundsActions = ({
   handleCancelUpdateBorrower,
   disableSubmit,
   disableDelete,
-}                               ) => {
+}) => {
   const defaultActions = [
     <Button disabled={loading} key="cancel" onClick={handleClose}>
       <T id="general.cancel" />

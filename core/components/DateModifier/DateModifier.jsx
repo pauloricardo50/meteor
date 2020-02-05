@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
@@ -8,19 +8,7 @@ import { updateDocument } from '../../api';
 import T from '../Translation';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
-                          
-                 
-                
-                     
-                
-  
-
-const DateModifier = ({
-  schema,
-  model,
-  onSubmit,
-  field,
-}                   ) => (
+const DateModifier = ({ schema, model, onSubmit, field }) => (
   <AutoForm
     schema={schema}
     model={model}

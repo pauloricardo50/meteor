@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -7,9 +7,7 @@ import collectionIcons from 'core/arrays/collectionIcons';
 import { REVENUES_COLLECTION } from 'core/api/constants';
 import CommissionsTable from './CommissionsTable';
 
-                              
-
-const CommissionsTab = (props                     ) => (
+const CommissionsTab = props => (
   <div>
     <Helmet>
       <title>Commissions</title>

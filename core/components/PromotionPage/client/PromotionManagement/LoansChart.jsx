@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
 
@@ -6,12 +6,7 @@ import BaseChart from 'core/components/charts/BaseChart';
 import EmptyChartState from 'core/components/charts/EmptyChartState';
 import LoansChartContainer from './LoansChartContainer';
 
-                        
-                 
-              
-  
-
-const LoansChart = ({ config, data }                 ) => (
+const LoansChart = ({ config, data }) => (
   <div className="chart">
     {data.length ? (
       <BaseChart config={config} data={data} />

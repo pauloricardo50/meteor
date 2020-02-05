@@ -1,4 +1,4 @@
-//      
+//
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
@@ -8,17 +8,7 @@ import { getMountedComponent } from '../../../../utils/testHelpers';
 import { makeFeedback, FEEDBACK_OPTIONS } from '../../feedbackHelpers';
 import HtmlPreview from '../../../HtmlPreview/HtmlPreview';
 
-                            
-               
-                
-                
-  
-
-const DummyComponent = ({
-  intl: { formatMessage },
-  model,
-  offer,
-}                     ) => (
+const DummyComponent = ({ intl: { formatMessage }, model, offer }) => (
   <HtmlPreview value={makeFeedback({ model, offer, formatMessage })} />
 );
 

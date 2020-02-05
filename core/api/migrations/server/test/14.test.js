@@ -1,11 +1,11 @@
-//      
+//
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Properties } from '../../..';
 import { up, down } from '../14';
-import PropertyService from '../../../properties/server/PropertyService'
+import PropertyService from '../../../properties/server/PropertyService';
 
 describe('Migration 14', () => {
   beforeEach(() => {
@@ -23,16 +23,18 @@ describe('Migration 14', () => {
       });
       await up();
 
-      expect(PropertyService.get('test', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(1200);
-      expect(PropertyService.get('test', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(
-        undefined,
-      );
-      expect(PropertyService.get('test2', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(
-        undefined,
-      );
-      expect(PropertyService.get('test2', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(
-        undefined,
-      );
+      expect(
+        PropertyService.get('test', { yearlyExpenses: 1 }).yearlyExpenses,
+      ).to.equal(1200);
+      expect(
+        PropertyService.get('test', { monthlyExpenses: 1 }).monthlyExpenses,
+      ).to.equal(undefined);
+      expect(
+        PropertyService.get('test2', { yearlyExpenses: 1 }).yearlyExpenses,
+      ).to.equal(undefined);
+      expect(
+        PropertyService.get('test2', { monthlyExpenses: 1 }).monthlyExpenses,
+      ).to.equal(undefined);
     });
   });
 
@@ -48,16 +50,18 @@ describe('Migration 14', () => {
 
       await down();
 
-      expect(PropertyService.get('test', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(
-        undefined,
-      );
-      expect(PropertyService.get('test', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(83);
-      expect(PropertyService.get('test2', { yearlyExpenses: 1 }).yearlyExpenses).to.equal(
-        undefined,
-      );
-      expect(PropertyService.get('test2', { monthlyExpenses: 1 }).monthlyExpenses).to.equal(
-        undefined,
-      );
+      expect(
+        PropertyService.get('test', { yearlyExpenses: 1 }).yearlyExpenses,
+      ).to.equal(undefined);
+      expect(
+        PropertyService.get('test', { monthlyExpenses: 1 }).monthlyExpenses,
+      ).to.equal(83);
+      expect(
+        PropertyService.get('test2', { yearlyExpenses: 1 }).yearlyExpenses,
+      ).to.equal(undefined);
+      expect(
+        PropertyService.get('test2', { monthlyExpenses: 1 }).monthlyExpenses,
+      ).to.equal(undefined);
     });
   });
 });

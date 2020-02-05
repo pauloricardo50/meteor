@@ -1,10 +1,8 @@
-//      
+//
 import React, { useState } from 'react';
 import { updateDocument, updateDocumentUnset } from 'core/api/methods/index';
 
-                          
-
-const UpdateForm = ({ id, collection }                 ) => {
+const UpdateForm = ({ id, collection }) => {
   const [$set, setSet] = useState('');
   const [$unset, setUnset] = useState('');
   return (

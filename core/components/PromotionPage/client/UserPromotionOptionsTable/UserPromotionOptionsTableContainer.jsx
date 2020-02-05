@@ -106,8 +106,8 @@ const columnOptions = ({
         isDashboardTable && id === 'priorityOrder' ? (
           '#'
         ) : (
-            <T id={`PromotionPage.lots.${id}`} />
-          ),
+          <T id={`PromotionPage.lots.${id}`} />
+        ),
       ...(isDashboardTable &&
         id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));

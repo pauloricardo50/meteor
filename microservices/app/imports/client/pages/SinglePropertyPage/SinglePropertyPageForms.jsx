@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import AutoForm from 'core/components/AutoForm';
@@ -10,13 +10,7 @@ import {
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 import DeactivatedFormInfo from '../../components/DeactivatedFormInfo';
 
-                                       
-
-const SinglePropertyPageForms = ({
-  loan,
-  borrowers,
-  property,
-}                              ) => {
+const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
   const { userFormsEnabled } = loan;
   const { mortgageNotes, _id: propertyId } = property;
 

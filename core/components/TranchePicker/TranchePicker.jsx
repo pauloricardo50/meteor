@@ -1,18 +1,9 @@
-//      
+//
 import React from 'react';
 import TranchePickerContainer from './TranchePickerContainer';
 import Button from '../Button';
 import Tranche from './Tranche';
 import { INTEREST_RATES } from '../../api/constants';
-
-                           
-                                                   
-                       
-                          
-                     
-                    
-                         
-  
 
 const interestRatesOrder = Object.values(INTEREST_RATES);
 
@@ -40,7 +31,7 @@ export const TranchePicker = ({
   setValue,
   setType,
   options,
-}                    ) => (
+}) => (
   <div className="tranche-picker">
     {tranches.map(({ value, type }) => (
       <Tranche

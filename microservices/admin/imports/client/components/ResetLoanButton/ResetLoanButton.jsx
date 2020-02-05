@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { withProps, withState, compose } from 'recompose';
 
@@ -6,13 +6,7 @@ import Button from 'core/components/Button';
 import { adminLoanReset } from 'core/api/methods/index';
 import { LOAN_STATUS } from 'core/api/constants';
 
-                               
-
-const ResetLoanButton = ({
-  loan: { status },
-  loading,
-  onClick,
-}                      ) => (
+const ResetLoanButton = ({ loan: { status }, loading, onClick }) => (
   <Button
     onClick={onClick}
     outlined

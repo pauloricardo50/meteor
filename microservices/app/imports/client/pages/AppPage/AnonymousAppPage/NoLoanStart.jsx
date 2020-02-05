@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { withState } from 'recompose';
 
@@ -6,13 +6,7 @@ import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { WelcomeScreen } from '../../../components/WelcomeScreen/WelcomeScreen';
 
-                           
-
-const NoLoanStart = ({
-  insertAnonymousLoan,
-  loading,
-  setLoading,
-}                  ) => (
+const NoLoanStart = ({ insertAnonymousLoan, loading, setLoading }) => (
   <WelcomeScreen
     displayCheckbox={false}
     handleClick={() => {

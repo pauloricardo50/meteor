@@ -1,15 +1,9 @@
-//      
+//
 import React from 'react';
 
 import { Calculator } from '../../../../utils/Calculator';
 
-                                      
-
-const FinancingLendersHeader = ({
-  organisations,
-  loan,
-  structureId,
-}                             ) => {
+const FinancingLendersHeader = ({ organisations, loan, structureId }) => {
   const interestedLenders = organisations
     .filter(({ lenderRules }) => lenderRules && lenderRules.length > 0)
     .filter(({ lenderRules }) => {

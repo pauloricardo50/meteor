@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 
 import Table from 'core/components/Table';
 import { Money } from 'core/components/Translation';
 import RevenuesTableContainer from './RevenuesTableContainer';
 import RevenueModifier from './RevenueModifier';
-
-                             
 
 export const RevenuesTable = ({
   loan,
@@ -16,7 +14,7 @@ export const RevenuesTable = ({
   openModifier,
   setOpenModifier,
   initialOrderBy = 1,
-}                    ) => (
+}) => (
   <>
     <RevenueModifier
       loan={loan}

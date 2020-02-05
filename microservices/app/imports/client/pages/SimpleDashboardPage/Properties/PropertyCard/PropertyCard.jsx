@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Link from 'core/components/Link';
@@ -9,16 +9,7 @@ import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 import PropertyCardInfos from './PropertyCardInfos';
 import PropertyCardContainer from './PropertyCardContainer';
 
-                          
-                      
-                
-               
-                  
-                          
-                    
-  
-
-const PropertyCard = (props                   ) => {
+const PropertyCard = props => {
   const { loan, route } = props;
   const { promotionOptions } = loan;
 

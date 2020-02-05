@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from '../../../Button';
@@ -7,13 +7,7 @@ import FinancingLendersHeader from './FinancingLendersHeader';
 import LenderList from './LenderList';
 import FinancingLendersContainer from './FinancingLendersContainer';
 
-                                
-
-const FinancingLenders = ({
-  showAllLenders,
-  setShowAllLenders,
-  ...props
-}                       ) => (
+const FinancingLenders = ({ showAllLenders, setShowAllLenders, ...props }) => (
   <>
     <Button primary raised onClick={() => setShowAllLenders(!showAllLenders)}>
       {showAllLenders ? 'Prêteurs seulement' : 'Afficher tous'}

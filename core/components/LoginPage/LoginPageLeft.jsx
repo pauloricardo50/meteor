@@ -1,13 +1,11 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
 import T from '../Translation';
 
-                             
-
-const LoginPageLeft = (props                    ) => (
+const LoginPageLeft = props => (
   <div className="left">
     <span className="content">
       <a href={`${Meteor.settings.public.subdomains.www}`} className="logo">

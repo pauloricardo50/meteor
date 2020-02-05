@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import omit from 'lodash/omit';
 
@@ -7,8 +7,6 @@ import { borrowerUpdate, mortgageNoteInsert } from 'core/api';
 import AutoForm from '../AutoForm2';
 import MortgageNotesForm from './MortgageNotesForm';
 import Box from '../Box';
-
-                            
 
 export const personalFields = [
   'firstName',
@@ -114,7 +112,7 @@ const insertMortgageNote = borrowerId => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const BorrowerForm = ({ borrower }                   ) => {
+const BorrowerForm = ({ borrower }) => {
   const { mortgageNotes, _id: borrowerId } = borrower;
   return (
     <div className="borrower-admin-form">

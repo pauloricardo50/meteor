@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { removeLotLink } from '../../../../api';
@@ -7,13 +7,11 @@ import Chip from '../../../Material/Chip';
 import Tooltip from '../../../Material/Tooltip';
 import { toMoney } from '../../../../utils/conversionFunctions';
 
-                       
-
 const LotChip = ({
   lot: { type, _id, name, value },
   promotionLotId,
   allowDelete,
-}              ) => (
+}) => (
   <Tooltip
     title={
       <>

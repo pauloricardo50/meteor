@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
@@ -10,15 +10,7 @@ import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { PROMOTION_STATUS } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 
-                                     
-               
-                    
-  
-
-const DashboardRecapPromotion = ({
-  loan,
-  promotion,
-}                              ) => {
+const DashboardRecapPromotion = ({ loan, promotion }) => {
   const { status } = promotion;
   const { promotionImage = [] } = promotion.documents || {};
 

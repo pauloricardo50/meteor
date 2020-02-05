@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import UpdateField from 'core/components/UpdateField';
@@ -6,9 +6,7 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import { setLoanStep } from 'core/api/methods';
 import { shouldSendStepNotification } from 'core/utils/loanFunctions';
 
-                              
-
-const LoanStepSetter = ({ loan }                     ) => {
+const LoanStepSetter = ({ loan }) => {
   const { _id: loanId, step } = loan;
 
   return (

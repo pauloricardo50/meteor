@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { injectIntl } from 'react-intl';
 
@@ -10,12 +10,7 @@ import {
 import LoanChecklistSection from './LoanChecklistSection';
 import LoanChecklistList from './LoanChecklistList';
 
-                             
-
-const LoanChecklist = ({
-  intl: { formatMessage },
-  ...props
-}                    ) => {
+const LoanChecklist = ({ intl: { formatMessage }, ...props }) => {
   const { fields, documents } = getChecklistMissingInformations(
     props,
     formatMessage,

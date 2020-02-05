@@ -1,11 +1,7 @@
-//      
+//
 import React from 'react';
 
 import ProgressCircle from '../ProgressCircle';
-
-                          
-                       
-  
 
 const getPercent = ({ valid, required }) => {
   if (valid === 0 || required === 0) {
@@ -17,9 +13,7 @@ const getPercent = ({ valid, required }) => {
 
 const getRatio = ({ valid, required }) => ({ value: valid, target: required });
 
-const LoanProgress = ({
-  loanProgress: { info, documents },
-}                   ) => (
+const LoanProgress = ({ loanProgress: { info, documents } }) => (
   <div className="promotion-progress">
     <ProgressCircle
       percent={getPercent(info)}

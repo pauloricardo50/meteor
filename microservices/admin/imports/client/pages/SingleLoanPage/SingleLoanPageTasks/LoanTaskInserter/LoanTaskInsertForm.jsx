@@ -1,15 +1,8 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-
-                                
-                      
-                            
-                        
-                 
-  
 
 const LoanTaskInsertForm = ({
   formTitleId,
@@ -17,7 +10,7 @@ const LoanTaskInsertForm = ({
   buttonLabelId,
   schema,
   ...props
-}                         ) => (
+}) => (
   <div className="loan-task-insert-form">
     <AutoFormDialog
       schema={schema}

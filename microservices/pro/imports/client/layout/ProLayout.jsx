@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
@@ -9,9 +9,7 @@ import ProLayoutContainer from './ProLayoutContainer';
 import ProTopNav from './ProTopNav';
 import ProSideNav from './ProSideNav';
 
-                         
-
-const ProLayout = ({ children, redirect, ...props }                ) => {
+const ProLayout = ({ children, redirect, ...props }) => {
   const currentUser = useContext(CurrentUserContext);
 
   if (redirect) {

@@ -1,7 +1,7 @@
-//      
+//
 import isArray from 'lodash/isArray';
 
-export const makeArgumentMapper = (mappings                             ) =>
+export const makeArgumentMapper = mappings =>
   Object.keys(mappings).reduce(
     (mapper, key) => ({
       ...mapper,

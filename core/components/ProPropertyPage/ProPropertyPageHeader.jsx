@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -11,14 +11,7 @@ import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION, ROLES } from '../../api/constants';
 import ConfirmMethod from '../ConfirmMethod';
 
-                                   
-                   
-  
-
-const ProPropertyPageHeader = ({
-  property,
-  permissions,
-}                            ) => {
+const ProPropertyPageHeader = ({ property, permissions }) => {
   const { address, totalValue, _id: propertyId, status } = property;
   const { canModifyProperty } = permissions;
   const isDev = Meteor.user().roles.includes(ROLES.DEV);

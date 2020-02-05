@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Dialog from '../Material/Dialog';
@@ -7,17 +7,7 @@ import T from '../Translation';
 import OfferRecapDialogContainer from './OfferRecapDialogContainer';
 import OfferRecapDialogContent from './OfferRecapDialogContent';
 
-                              
-                
-                        
-                      
-  
-
-const OfferRecapDialog = ({
-  open,
-  handleClose,
-  offerDialog,
-}                       ) => (
+const OfferRecapDialog = ({ open, handleClose, offerDialog }) => (
   <Dialog
     open={open}
     onClose={handleClose}

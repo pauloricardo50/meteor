@@ -1,13 +1,8 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 import PdfTableTooltips from './PdfTableTooltips';
 import PdfTableRow from './PdfTableRow';
-
-                      
-              
-                    
-  
 
 export const ROW_TYPES = {
   TITLE: 'TITLE',
@@ -32,12 +27,7 @@ export const classes = {
 export const shouldRenderRow = condition =>
   condition === undefined || condition;
 
-const PdfTable = ({
-  rows,
-  className,
-  columnOptions = [],
-  style = {},
-}               ) => (
+const PdfTable = ({ rows, className, columnOptions = [], style = {} }) => (
   <table className={cx('pdf-table', className)} style={style}>
     {rows.map((rowData, index) => {
       if (!shouldRenderRow(rowData.condition)) {

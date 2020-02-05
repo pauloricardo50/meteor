@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
@@ -9,8 +9,6 @@ import Loading from 'core/components/Loading';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import MixpanelService from 'core/utils/mixpanel';
-
-                             
 
 const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
   <div key={id} className="flex center-align flex--sb">
@@ -25,7 +23,7 @@ const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
   </div>
 );
 
-const LastSeenUsers = (props                    ) => {
+const LastSeenUsers = props => {
   const [role, setRole] = useState(ROLES.USER);
   const [lastSeenUsers, setLastSeenUsers] = useState(null);
   useEffect(() => {

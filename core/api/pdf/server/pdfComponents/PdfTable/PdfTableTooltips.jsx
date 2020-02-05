@@ -1,15 +1,9 @@
-//      
+//
 import React from 'react';
 import { ROW_TYPES } from './PdfTable';
 import PdfTableRow from './PdfTableRow';
 
-                              
-                          
-                          
-                     
-  
-
-const PdfTableTooltips = ({ tooltips, startIndex }                       ) =>
+const PdfTableTooltips = ({ tooltips, startIndex }) =>
   tooltips.map(({ tooltip }, index) => (
     <PdfTableRow
       key={index}

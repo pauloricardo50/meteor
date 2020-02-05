@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import omit from 'lodash/omit';
 
@@ -7,8 +7,6 @@ import { propertyUpdate, mortgageNoteInsert } from '../../api/methods';
 import AutoForm from '../AutoForm2';
 import Box from '../Box';
 import MortgageNotesForm from './MortgageNotesForm';
-
-                            
 
 const baseFields = [
   'status',
@@ -104,7 +102,7 @@ const insertMortgageNote = propertyId => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const PropertyForm = ({ property }                   ) => {
+const PropertyForm = ({ property }) => {
   const { _id: propertyId, mortgageNotes } = property;
   return (
     <div className="property-admin-form">

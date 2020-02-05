@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -8,19 +8,7 @@ import cx from 'classnames';
 import T from 'core/components/Translation';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 
-                          
-                
-                            
-                                                
-                    
-  
-
-const RadioButtons = ({
-  value,
-  updateStructure,
-  options,
-  className,
-}                   ) => (
+const RadioButtons = ({ value, updateStructure, options, className }) => (
   <RadioGroup
     aria-label="Gender"
     value={value}

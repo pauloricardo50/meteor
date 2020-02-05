@@ -1,17 +1,15 @@
-//      
+//
 import React from 'react';
 
 import { TASK_PRIORITIES } from 'core/api/constants';
 import Table from 'core/components/Table';
-
-                                  
 
 const TasksTablePriority = ({
   columnOptions,
   rows,
   initialOrderBy,
   initialOrder,
-}                         ) => {
+}) => {
   const defaultPriority = rows.filter(
     ({ priority }) => priority === TASK_PRIORITIES.DEFAULT,
   );

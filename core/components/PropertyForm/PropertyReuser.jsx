@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,13 +9,7 @@ import T, { Money } from '../Translation';
 import Icon from '../Icon';
 import PropertyReuserContainer from './PropertyReuserContainer';
 
-                              
-
-const PropertyReuser = ({
-  properties,
-  handleSelectProperty,
-  disabled,
-}                     ) => (
+const PropertyReuser = ({ properties, handleSelectProperty, disabled }) => (
   <DialogSimple
     buttonProps={{
       raised: true,

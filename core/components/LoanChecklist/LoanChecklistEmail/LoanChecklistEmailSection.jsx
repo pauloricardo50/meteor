@@ -1,16 +1,11 @@
-//      
+//
 import React from 'react';
 
 import LoanChecklistSection from '../LoanChecklistSection';
 import EmailLoanChecklist from './EmailLoanChecklist';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
-                                       
-                              
-                
-  
-
-const LoanChecklistEmailSection = (props                                ) => {
+const LoanChecklistEmailSection = props => {
   const { missingInformations = {}, label } = props;
 
   return (

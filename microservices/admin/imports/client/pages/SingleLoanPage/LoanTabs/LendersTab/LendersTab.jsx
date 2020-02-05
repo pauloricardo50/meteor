@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import OfferAdder from 'core/components/OfferAdder';
@@ -9,10 +9,6 @@ import LenderList from './LenderList';
 import LenderPicker from './LenderPicker';
 import LendersTabEmptyState from './LendersTabEmptyState';
 
-                        
-               
-  
-
 const shouldRenderTab = ({ status, lenders = [] }) => {
   const statusIndex = LOAN_STATUS_ORDER.indexOf(status);
   return (
@@ -21,7 +17,7 @@ const shouldRenderTab = ({ status, lenders = [] }) => {
   );
 };
 
-const LendersTab = (props                 ) => {
+const LendersTab = props => {
   const {
     loan: {
       _id: loanId,

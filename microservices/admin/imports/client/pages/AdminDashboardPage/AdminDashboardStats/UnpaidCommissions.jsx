@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
@@ -14,9 +14,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import CurrentUserContext from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-                                 
-
-const UnpaidCommissions = (props                        ) => {
+const UnpaidCommissions = props => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,

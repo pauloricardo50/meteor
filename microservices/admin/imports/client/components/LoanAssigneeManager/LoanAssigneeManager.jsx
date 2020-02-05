@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -7,8 +7,6 @@ import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 import { loanSetAssignees } from 'core/api/loans/index';
 import LoanAssignees from './LoanAssignees';
-
-                                   
 
 const schema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
@@ -46,9 +44,7 @@ const schema = new SimpleSchema({
   },
 });
 
-const LoanAssigneeManager = ({
-  loan: { _id: loanId, assigneeLinks = [] },
-}                          ) => (
+const LoanAssigneeManager = ({ loan: { _id: loanId, assigneeLinks = [] } }) => (
   <div>
     <div className="flex center-align">
       <h4 className="mr-8">Répartition des conseillers</h4>

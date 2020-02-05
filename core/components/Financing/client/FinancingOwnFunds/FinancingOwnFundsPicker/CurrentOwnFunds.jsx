@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import T from '../../../../Translation';
@@ -9,8 +9,6 @@ import {
   getOwnFundsOfTypeAndBorrower,
   getAvailableFundsOfTypeAndBorrower,
 } from './FinancingOwnFundsPickerHelpers';
-
-                               
 
 const hasEnoughFundsOfType = ({ structure, type, borrowerId, borrowers }) =>
   getAvailableFundsOfTypeAndBorrower({
@@ -28,7 +26,7 @@ export const CurrentOwnFunds = ({
   handleOpen,
   structureId,
   ownFundsIndex,
-}                      ) => (
+}) => (
   <>
     <div
       className="current-own-funds"

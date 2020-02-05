@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
@@ -9,9 +9,7 @@ import PromotionAdder from './PromotionAdder';
 import ExternalPropertyAdder from './ExternalPropertyAdder';
 import ProDashboardPageTabs from './ProDashboardPageTabs';
 
-                                
-
-const ProDashboardPage = (props                       ) => {
+const ProDashboardPage = props => {
   const currentUser = useContext(CurrentUserContext);
 
   return (

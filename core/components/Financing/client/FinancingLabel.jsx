@@ -1,18 +1,7 @@
-//      
+//
 import React, { Component } from 'react';
 
-                            
-                       
-              
-  
-                            
-                 
-  
-
-export default class FinancingLabel extends Component 
-                      
-                      
-  {
+export default class FinancingLabel extends Component {
   constructor(props) {
     super(props);
     this.state = { height: 0 };

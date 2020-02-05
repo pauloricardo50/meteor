@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
@@ -10,14 +10,7 @@ import Recap from '../../../Recap';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import Calculator from '../../../../utils/Calculator';
 
-                                  
-                    
-  
-
-const FinancingProjectFees = ({
-  className,
-  ...props
-}                           ) => {
+const FinancingProjectFees = ({ className, ...props }) => {
   const { loan, structureId } = props;
   const canton = Calculator.selectPropertyKey({
     loan,

@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Percent from 'core/components/Translation/numberComponents/Percent';
@@ -6,8 +6,6 @@ import T, { Money } from '../../../../../../components/Translation';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
-
-                                 
 
 const renderExpenses = expenses =>
   Object.keys(expenses).map(expenseType => {
@@ -129,11 +127,7 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
   ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
-const IncomeAndExpenses = ({
-  loan,
-  structureId,
-  calculator,
-}                        ) => (
+const IncomeAndExpenses = ({ loan, structureId, calculator }) => (
   <BalanceSheetTable
     titles={['Charges', 'Revenus']}
     leftRows={getExpenseRows({ loan, structureId, calculator })}

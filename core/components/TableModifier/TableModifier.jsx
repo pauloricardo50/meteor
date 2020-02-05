@@ -1,12 +1,10 @@
-//      
+//
 import React, { useState } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
 import Table from '../Table';
 import Button from '../Button';
 import T from '../Translation';
-
-                             
 
 const TableModifier = ({
   rows,
@@ -18,7 +16,7 @@ const TableModifier = ({
   description,
   allow,
   ...props
-}                    ) => {
+}) => {
   const [deleting, setDeleting] = useState(false);
   const [open, setOpen] = useState(false);
   const [model, setModel] = useState({});

@@ -1,12 +1,5 @@
-//      
+//
 import React, { Component } from 'react';
-
-                             
-                       
-             
-             
-                         
-  
 
 const getOffset = el => {
   let _y = 0;
@@ -104,7 +97,7 @@ const pollForChild = className => {
   });
 };
 
-class VerticalAligner extends Component                       {
+class VerticalAligner extends Component {
   async componentDidMount() {
     const { defaultMargin, id } = this.props;
     const className = this.getClassName();

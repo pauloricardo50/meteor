@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 // import Calculator from '../../../../utils/Calculator';
@@ -65,12 +65,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
   );
 };
 
-                                           
-
-const FinancingResultAmortization = ({
-  className,
-  ...props
-}                                  ) => (
+const FinancingResultAmortization = ({ className, ...props }) => (
   <div className={className}>
     <CalculatedValue {...props} />
     <Icon

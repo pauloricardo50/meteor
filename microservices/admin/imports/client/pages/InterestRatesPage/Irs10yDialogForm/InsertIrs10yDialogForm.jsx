@@ -1,18 +1,10 @@
-//      
+//
 import React from 'react';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'imports/core/components/Translation/';
 import Irs10yDialogFormContainer from './Irs10yDialogFormContainer';
 
-                                    
-                 
-                         
-  
-
-const InsertIrs10yDialogForm = ({
-  schema,
-  insertIrs10y,
-}                             ) => (
+const InsertIrs10yDialogForm = ({ schema, insertIrs10y }) => (
   <AutoFormDialog
     schema={schema}
     model={{ date: new Date() }}

@@ -1,14 +1,10 @@
-//      
+//
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import ModifyContactFormDialog from '../ContactsPage/ContactDialogForm/ModifyContactFormDialog';
 
-                                     
-                  
-  
-
-const SingleContactPageHeader = ({ contact }                              ) => {
+const SingleContactPageHeader = ({ contact }) => {
   const { name, organisations = [] } = contact;
   return (
     <div className="single-contact-page-header">

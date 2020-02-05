@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Icon from '../../../../Icon';
@@ -8,13 +8,11 @@ import { ERROR, SUCCESS } from '../../../../../api/constants';
 import StatusIcon from '../../../../StatusIcon';
 import colors from '../../../../../config/colors';
 
-                                   
-
 const LenderListItemRules = ({
   organisation: { lenderRules, name },
   loan,
   structureId,
-}                          ) => {
+}) => {
   const calc = new Calculator({ loan, structureId, lenderRules });
   const incomeRatio = calc.getIncomeRatio({ loan, structureId });
   const borrowRatio = calc.getBorrowRatio({ loan, structureId });

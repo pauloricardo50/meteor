@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 
 import Table from '../Table';
 import RevenuesByStatusContainer from './RevenuesByStatusContainer';
 
-                                
-
-const RevenuesByStatus = ({ rows, columnOptions }                       ) => (
+const RevenuesByStatus = ({ rows, columnOptions }) => (
   <Table
     className="revenues-by-status"
     rows={rows}

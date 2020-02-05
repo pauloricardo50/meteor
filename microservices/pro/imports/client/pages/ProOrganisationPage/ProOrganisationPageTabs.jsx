@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -8,11 +8,6 @@ import { createRoute } from 'core/utils/routerUtils';
 import ReferredUsersTable from 'core/components/ReferredUsersTable';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 import ProOrganisationUsersTable from './ProOrganisationUsersTable';
-
-                                     
-                       
-                      
-  
 
 const getTabs = ({ organisation, currentUser }) => {
   const { contacts, commissionRates } = organisation;
@@ -48,11 +43,8 @@ const getTabs = ({ organisation, currentUser }) => {
   });
 };
 
-const ProOrganisationPageTabs = ({
-  organisation,
-  currentUser,
-}                              ) => (
-    <Tabs tabs={getTabs({ organisation, currentUser })} routerParamName="tabId" />
-  );
+const ProOrganisationPageTabs = ({ organisation, currentUser }) => (
+  <Tabs tabs={getTabs({ organisation, currentUser })} routerParamName="tabId" />
+);
 
 export default ProOrganisationPageTabs;

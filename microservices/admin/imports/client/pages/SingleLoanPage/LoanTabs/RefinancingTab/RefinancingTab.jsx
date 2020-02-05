@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 import omit from 'lodash/omit';
 
 import AutoForm from 'core/components/AutoForm2';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { loanUpdate } from 'core/api/loans/index';
-
-                              
 
 const grapherLinks = [
   'user',
@@ -34,7 +32,7 @@ const handleSubmit = loanId => doc => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const RefinancingTab = ({ loan }                     ) => (
+const RefinancingTab = ({ loan }) => (
   <div className="refinancing-tab">
     <h1>Refinancement</h1>
     <AutoForm

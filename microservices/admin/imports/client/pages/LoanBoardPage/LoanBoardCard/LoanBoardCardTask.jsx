@@ -1,16 +1,11 @@
-//      
+//
 import React, { useState } from 'react';
 
 import IconButton from 'core/components/IconButton';
 import { taskComplete, taskChangeStatus } from 'core/api/tasks/index';
 import { TASK_STATUS } from 'core/api/constants';
 
-                                 
-
-const LoanBoardCardTask = ({
-  title = 'Tâche sans titre',
-  _id,
-}                        ) => {
+const LoanBoardCardTask = ({ title = 'Tâche sans titre', _id }) => {
   const [showButtons, setShowButtons] = useState(false);
   return (
     <span

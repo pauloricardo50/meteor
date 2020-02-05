@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
@@ -6,8 +6,6 @@ import cx from 'classnames';
 import Icon from '../../../../Icon';
 import T from '../../../../Translation';
 import StatusDateDialogForm from './StatusDateDialogForm';
-
-                                                
 
 const isAdmin = Meteor.microservice === 'admin';
 
@@ -39,7 +37,7 @@ const PromotionReservationProgressItem = ({
   placeholder,
   component,
   loanId,
-}                                       ) => {
+}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const allowModify = allowModification(id);
 

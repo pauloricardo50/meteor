@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { withProps } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
@@ -48,18 +48,12 @@ const makeSendNegativeFeedbackToAllLenders = (
   }
 };
 
-                                 
-                                     
-                       
-                      
-  
-
 const UnsucessfulFeedback = ({
   sendFeedbackToAllLenders,
   closeModal,
   returnValue,
   enableFeedbackButton,
-}                          ) => (
+}) => (
   <div className="loan-status-modifier-dialog-content animated fadeIn">
     <DialogContentSection
       title="Envoyer un feedback à tous les prêteurs"

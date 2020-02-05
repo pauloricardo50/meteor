@@ -1,27 +1,10 @@
-//      
+//
 import React from 'react';
 
 import { ScrollSyncPane } from 'react-scroll-sync';
 
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import FinancingSectionExpansionPanel from './FinancingSectionExpansionPanel';
-
-                          
-                             
-             
-                     
-                   
-                           
-   
-
-                              
-               
-                             
-                            
-                     
-                    
-                           
-  
 
 const FinancingSection = ({
   detailConfig,
@@ -30,7 +13,7 @@ const FinancingSection = ({
   className,
   sectionItemProps,
   ...sectionProps
-}                       ) => (
+}) => (
   <ScrollSyncPane>
     <FinancingSectionExpansionPanel
       noWrapper={noWrapper}

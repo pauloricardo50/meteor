@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import OfferPickerList from './OfferPickerList';
 import OfferPickerContainer from './OfferPickerContainer';
 import OfferListDialog from '../OfferListDialog';
 
-                           
-
-const OfferPicker = (props                  ) => (
+const OfferPicker = props => (
   <div className="offerId">
     <OfferListDialog offers={props.offers} />
 

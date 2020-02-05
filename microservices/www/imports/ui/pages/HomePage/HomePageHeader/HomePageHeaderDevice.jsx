@@ -1,9 +1,7 @@
-//      
+//
 import React from 'react';
 
-                                    
-
-const HomePageHeaderDevice = (props                           ) => (
+const HomePageHeaderDevice = props => (
   <div className="marvel-device iphone-x">
     <div className="notch">
       <div className="camera" />

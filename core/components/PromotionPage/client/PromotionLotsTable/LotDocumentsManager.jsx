@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { S3_ACLS, PROPERTIES_COLLECTION } from '../../../../api/constants';
@@ -14,13 +14,7 @@ const promotionPropertyDocuments = [
   },
 ];
 
-                                   
-
-const LotDocumentsManager = ({
-  property,
-  currentUser,
-  documents,
-}                          ) => (
+const LotDocumentsManager = ({ property, currentUser, documents }) => (
   <>
     <DialogSimple
       primary

@@ -1,9 +1,7 @@
-//      
+//
 import React from 'react';
 
-                                   
-
-const LoanBankCoverHeader = ({ loanName }                          ) => (
+const LoanBankCoverHeader = ({ loanName }) => (
   <div className="cover-header">
     <h1>
       <img

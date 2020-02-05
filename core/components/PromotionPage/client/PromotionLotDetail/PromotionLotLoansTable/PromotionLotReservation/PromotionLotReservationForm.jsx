@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
@@ -38,13 +38,11 @@ const getSchema = (agreementDuration = 0) =>
     'agreementFileKeys.$': String,
   });
 
-                                           
-
 const PromotionLotReservationForm = ({
   agreementDuration,
   promotionOption,
   buttonProps,
-}                                  ) => {
+}) => {
   const [schema] = useState(getSchema(agreementDuration));
   const [today] = useState(new Date());
   return (

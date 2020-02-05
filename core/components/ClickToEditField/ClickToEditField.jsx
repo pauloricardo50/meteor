@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react';
 import cx from 'classnames';
 
@@ -7,15 +7,7 @@ import Input from '../Material/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 import T from '../Translation';
 
-                              
-                     
-                       
-                
-                       
-                     
-  
-
-class ClickToEditField extends Component                        {
+class ClickToEditField extends Component {
   constructor(props) {
     super(props);
     this.input = React.createRef();

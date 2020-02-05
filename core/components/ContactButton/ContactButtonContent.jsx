@@ -1,20 +1,8 @@
-//      
+//
 import React from 'react';
 import T from 'core/components/Translation';
 
-                                  
-                  
-                   
-               
-                
-  
-
-const ContactButtonContent = ({
-  titleId,
-  icon,
-  href,
-  label,
-}                           ) => (
+const ContactButtonContent = ({ titleId, icon, href, label }) => (
   <a href={href} className="contact-button-content primary">
     <div className="iconDiv">{icon}</div>
     <div className="text">

@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { CalculatedValue } from '../FinancingSection';
@@ -6,9 +6,7 @@ import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 import Calculator from '../../../../utils/Calculator';
 import RequiredOwnFundsBody from './RequiredOwnFundsBody';
 
-                                
-
-const RequiredOwnFunds = (props                       ) => {
+const RequiredOwnFunds = props => {
   const {
     updateStructure,
     loan,

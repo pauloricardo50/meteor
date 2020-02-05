@@ -1,4 +1,4 @@
-//      
+//
 export const LOANS_COLLECTION = 'loans';
 
 export const LOAN_STATUS = {

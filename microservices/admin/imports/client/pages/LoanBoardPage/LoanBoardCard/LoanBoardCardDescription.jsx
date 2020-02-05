@@ -1,15 +1,13 @@
-//      
+//
 import React from 'react';
 
 import { Money } from 'core/components/Translation';
-
-                                        
 
 const LoanBoardCardDescription = ({
   structure,
   adminNote,
   selectedLenderOrganisation: { name: selectedLenderOrganisationName } = {},
-}                               ) => (
+}) => (
   <>
     <div className="admin-note">
       {adminNote ? (

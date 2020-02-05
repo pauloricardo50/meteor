@@ -1,4 +1,4 @@
-//      
+//
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
@@ -100,8 +100,14 @@ describe('Migration 20', () => {
 
       await down();
 
-      const borrower1 = BorrowerService.get('b1', { donation: 1, thirdPartyFortune: 1 });
-      const borrower2 = BorrowerService.get('b2', { donation: 1, thirdPartyFortune: 1 });
+      const borrower1 = BorrowerService.get('b1', {
+        donation: 1,
+        thirdPartyFortune: 1,
+      });
+      const borrower2 = BorrowerService.get('b2', {
+        donation: 1,
+        thirdPartyFortune: 1,
+      });
 
       expect(borrower1.donation).to.equal(undefined);
       expect(borrower1.thirdPartyFortune).to.equal(1500);

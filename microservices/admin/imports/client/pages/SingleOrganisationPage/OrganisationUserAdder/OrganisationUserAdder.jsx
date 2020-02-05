@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { ListItemText, ListItemSecondaryAction } from 'core/components/List';
@@ -10,16 +10,6 @@ import { userSearch } from 'core/api/users/queries';
 import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
 import { ROLES } from 'core/api/constants';
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';
-
-                                   
-                       
-                    
-                 
-                      
-                     
-                
-                       
-  
 
 const renderUserSearcher = ({ organisation, setUserId }) => (
   <CollectionSearch
@@ -76,7 +66,7 @@ const renderTitleSetter = ({
   </form>
 );
 
-const OrganisationUserAdder = (props                            ) => {
+const OrganisationUserAdder = props => {
   const { resetState, userId } = props;
 
   return (

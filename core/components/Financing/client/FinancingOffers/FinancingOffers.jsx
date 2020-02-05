@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -13,9 +13,7 @@ import OfferPicker from './OfferPicker';
 import FinancingOffersSorter from './FinancingOffersSorter';
 import FinancingOffersContainer from './FinancingOffersContainer';
 
-                               
-
-const FinancingOffers = ({ loan }                      ) => {
+const FinancingOffers = ({ loan }) => {
   const { offers = [] } = loan;
 
   return (

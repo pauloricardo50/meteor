@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import LoanTaskInserter from './LoanTaskInserter';

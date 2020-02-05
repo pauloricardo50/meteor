@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -47,9 +47,7 @@ const getTabs = ({
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));
 
-                             
-
-const PromotionPage = ({ promotion, route, ...props }                    ) => {
+const PromotionPage = ({ promotion, route, ...props }) => {
   const { name } = promotion;
   const { permissions } = useContext(PromotionMetadataContext);
   const tabs = getTabs({ permissions, promotion });

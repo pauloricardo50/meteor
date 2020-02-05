@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
 import WelcomeScreen from '../../components/WelcomeScreen';
 
-                           
-
-const WelcomePage = (props                  ) => {
+const WelcomePage = props => {
   const { loan } = props;
   const progress = Calculator.personalInfoPercentSimple({ loan });
 

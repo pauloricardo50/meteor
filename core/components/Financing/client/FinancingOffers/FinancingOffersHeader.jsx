@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { compose } from 'recompose';
 
@@ -6,9 +6,7 @@ import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
-                                     
-
-const FinancingOffersHeader = (props                            ) => {
+const FinancingOffersHeader = props => {
   const {
     structure: { offerId },
     offers,

@@ -1,4 +1,4 @@
-//      
+//
 import { compose } from 'recompose';
 import isArray from 'lodash/isArray';
 import difference from 'lodash/difference';
@@ -17,13 +17,10 @@ const CLASS_METHODS_TO_EXCLUDE = [
   '__lookupSetter__',
 ];
 
-                                                 
-                                                   
-
 // Careful, methods starting with "_" will not be wrapped by middleware,
 // except if you use a middlewareObject
 class MiddlewareManager {
-  constructor(target        , middlewareObjects                       ) {
+  constructor(target, middlewareObjects) {
     let instance = middlewareManagerHash.find(key => key._target === target);
     // a target can only has one MiddlewareManager instance
     if (instance === undefined) {
@@ -41,7 +38,7 @@ class MiddlewareManager {
     return instance;
   }
 
-  applyToAllMethods(_middlewares                , omit) {
+  applyToAllMethods(_middlewares, omit) {
     const middlewares = this.arrayify(_middlewares);
     const methods = this.getAllMethodNames(this._target);
 
@@ -57,7 +54,7 @@ class MiddlewareManager {
     return this;
   }
 
-  getAllMethodNames(obj         = {}, stop       ) {
+  getAllMethodNames(obj = {}, stop) {
     const methodNames = [];
     let proto = Object.getPrototypeOf(obj);
     while (proto && proto !== stop) {
@@ -73,12 +70,12 @@ class MiddlewareManager {
     return difference(methodNames, CLASS_METHODS_TO_EXCLUDE);
   }
 
-  hasMethod(obj        , name        ) {
+  hasMethod(obj, name) {
     const desc = Object.getOwnPropertyDescriptor(obj, name);
     return !!desc && typeof desc.value === 'function';
   }
 
-  applyToMethod(methodName        , _middlewares                ) {
+  applyToMethod(methodName, _middlewares) {
     const middlewares = this.arrayify(_middlewares);
 
     if (
@@ -110,11 +107,11 @@ class MiddlewareManager {
     return this;
   }
 
-  stringStartsWithUnderscore(string        ) {
+  stringStartsWithUnderscore(string) {
     return /^_+|_+$/g.test(string);
   }
 
-  useObjectMiddleware(_objectMiddlewares                      ) {
+  useObjectMiddleware(_objectMiddlewares) {
     const objectMiddlewares = this.arrayify(_objectMiddlewares);
 
     Array.prototype.slice.call(objectMiddlewares).forEach(arg => {
@@ -131,7 +128,7 @@ class MiddlewareManager {
     return this;
   }
 
-  arrayify(maybeArray               )                           {
+  arrayify(maybeArray) {
     return isArray(maybeArray) ? maybeArray : [maybeArray];
   }
 }

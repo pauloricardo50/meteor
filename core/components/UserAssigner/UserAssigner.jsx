@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { userSearch } from 'core/api/users/queries';
@@ -6,21 +6,13 @@ import DialogSimple from '../DialogSimple';
 import { ListItemText } from '../List';
 import CollectionSearch from '../CollectionSearch/CollectionSearch';
 
-                          
-                 
-                         
-                           
-             
-                   
-  
-
 const UserAssigner = ({
   userId,
   onUserSelect,
   onUserDeselect,
   title,
   buttonLabel,
-}                   ) => (
+}) => (
   <DialogSimple primary raised label={buttonLabel} title={title}>
     <CollectionSearch
       query={userSearch}

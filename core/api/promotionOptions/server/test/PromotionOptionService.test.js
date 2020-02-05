@@ -1,4 +1,4 @@
-//      
+//
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';

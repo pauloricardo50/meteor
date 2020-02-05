@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
@@ -8,8 +8,6 @@ import CostsBalanceSheet from './CostsBalanceSheet';
 import SingleStructureRecapTable from './SingleStructureRecapTable';
 import PledgeTable from './PledgeTable';
 
-                                
-
 const StructurePdfPage = ({
   loan,
   structureId,
@@ -17,7 +15,7 @@ const StructurePdfPage = ({
   pageNb,
   pageCount,
   calculator,
-}                       ) => {
+}) => {
   const { name: structureName } = calculator.selectStructure({
     loan,
     structureId,

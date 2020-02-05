@@ -1,11 +1,7 @@
-//      
+//
 import React from 'react';
 
-                                 
-
-const LendersActivation = ({
-  loan: { enableOffers },
-}                        ) => (
+const LendersActivation = ({ loan: { enableOffers } }) => (
   <div className="flex">
     <span>
       Offres{' '}

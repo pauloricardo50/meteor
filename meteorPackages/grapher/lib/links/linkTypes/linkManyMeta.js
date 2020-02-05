@@ -2,142 +2,159 @@ import Link from './base.js';
 import SmartArgs from './lib/smartArguments.js';
 
 export default class LinkManyMeta extends Link {
-    clean() {
-        if (!this.object[this.linkStorageField]) {
-            this.object[this.linkStorageField] = [];
-        }
+  clean() {
+    if (!this.object[this.linkStorageField]) {
+      this.object[this.linkStorageField] = [];
+    }
+  }
+
+  /**
+   * @param what
+   * @param metadata
+   */
+  add(what, metadata = {}) {
+    this._checkWhat(what);
+
+    if (this.isVirtual) {
+      this._virtualAction('add', what, metadata);
+      return this;
     }
 
-    /**
-     * @param what
-     * @param metadata
-     */
-    add(what, metadata = {}) {
-        this._checkWhat(what);
+    const _ids = this.identifyIds(what, true);
+    this._validateIds(_ids);
 
-        if (this.isVirtual) {
-            this._virtualAction('add', what, metadata);
-            return this;
-        }
+    const field = this.linkStorageField;
 
-        const _ids = this.identifyIds(what, true);
-        this._validateIds(_ids);
+    this.object[field] = this.object[field] || [];
+    const metadatas = [];
 
-        let field = this.linkStorageField;
+    _.each(_ids, _id => {
+      const localMetadata = _.clone(metadata);
+      localMetadata._id = _id;
 
-        this.object[field] = this.object[field] || [];
-        let metadatas = [];
+      this.object[field].push(localMetadata);
+      metadatas.push(localMetadata);
+    });
 
-        _.each(_ids, _id => {
-            let localMetadata = _.clone(metadata);
-            localMetadata._id = _id;
+    const modifier = {
+      $addToSet: {
+        [field]: { $each: metadatas },
+      },
+    };
 
-            this.object[field].push(localMetadata);
-            metadatas.push(localMetadata);
-        });
+    this.linker.mainCollection.update(this.object._id, modifier);
 
-        let modifier = {
-            $addToSet: {
-                [field]: {$each: metadatas}
-            }
-        };
+    return this;
+  }
 
-        this.linker.mainCollection.update(this.object._id, modifier);
+  /**
+   * @param what
+   * @param extendMetadata
+   */
+  metadata(what, extendMetadata) {
+    if (this.isVirtual) {
+      this._virtualAction('metadata', what, extendMetadata);
 
-        return this;
+      return this;
     }
 
-    /**
-     * @param what
-     * @param extendMetadata
-     */
-    metadata(what, extendMetadata) {
-        if (this.isVirtual) {
-            this._virtualAction('metadata', what, extendMetadata);
+    const field = this.linkStorageField;
 
-            return this;
-        }
-
-        let field = this.linkStorageField;
-
-        if (what === undefined) {
-            return this.object[field];
-        }
-
-        if (_.isArray(what)) {
-            throw new Meteor.Error('not-allowed', 'Metadata updates should be made for one entity only, not multiple');
-        }
-
-        const _id = this.identifyId(what);
-
-        let existingMetadata = _.find(this.object[field], metadata => metadata._id == _id);
-        if (extendMetadata === undefined) {
-            return existingMetadata;
-        } else {
-            _.extend(existingMetadata, extendMetadata);
-            let subfield = field + '._id';
-            let subfieldUpdate = field + '.$';
-
-            this.linker.mainCollection.update({
-                _id: this.object._id,
-                [subfield]: _id
-            }, {
-               $set: {
-                   [subfieldUpdate]: existingMetadata
-               }
-            });
-        }
-
-        return this;
+    if (what === undefined) {
+      return this.object[field];
     }
 
-    remove(what) {
-        this._checkWhat(what);
-
-        if (this.isVirtual) {
-            this._virtualAction('remove', what);
-            return this;
-        }
-
-        const _ids = this.identifyIds(what);
-        let field = this.linkStorageField;
-
-        this.object[field] = _.filter(this.object[field], link => !_.contains(_ids, link._id));
-
-        let modifier = {
-            $pull: {
-                [field]: {
-                    _id: {
-                        $in: _ids
-                    }
-                }
-            }
-        };
-
-        this.linker.mainCollection.update(this.object._id, modifier);
-
-        return this;
+    if (_.isArray(what)) {
+      throw new Meteor.Error(
+        'not-allowed',
+        'Metadata updates should be made for one entity only, not multiple',
+      );
     }
 
-    set(what, metadata) {
-        this._checkWhat(what);
+    const _id = this.identifyId(what);
 
-        if (this.isVirtual) {
-            this._virtualAction('set', what, metadata);
-            return this;
-        }
+    const existingMetadata = _.find(
+      this.object[field],
+      metadata => metadata._id == _id,
+    );
+    if (extendMetadata === undefined) {
+      return existingMetadata;
+    }
+    _.extend(existingMetadata, extendMetadata);
+    const subfield = `${field}._id`;
+    const subfieldUpdate = `${field}.$`;
 
-        throw new Meteor.Error('invalid-command', 'You are trying to *set* in a relationship that is single. Please use add/remove for *many* relationships');
+    this.linker.mainCollection.update(
+      {
+        _id: this.object._id,
+        [subfield]: _id,
+      },
+      {
+        $set: {
+          [subfieldUpdate]: existingMetadata,
+        },
+      },
+    );
+
+    return this;
+  }
+
+  remove(what) {
+    this._checkWhat(what);
+
+    if (this.isVirtual) {
+      this._virtualAction('remove', what);
+      return this;
     }
 
-    unset(what) {
-        this._checkWhat(what);
+    const _ids = this.identifyIds(what);
+    const field = this.linkStorageField;
 
-        if (this.isVirtual) {
-            this._virtualAction('unset', what);
-            return this;
-        }
+    this.object[field] = _.filter(
+      this.object[field],
+      link => !_.contains(_ids, link._id),
+    );
 
-        throw new Meteor.Error('invalid-command', 'You are trying to *unset* in a relationship that is single. Please use add/remove for *many* relationships');
+    const modifier = {
+      $pull: {
+        [field]: {
+          _id: {
+            $in: _ids,
+          },
+        },
+      },
+    };
+
+    this.linker.mainCollection.update(this.object._id, modifier);
+
+    return this;
+  }
+
+  set(what, metadata) {
+    this._checkWhat(what);
+
+    if (this.isVirtual) {
+      this._virtualAction('set', what, metadata);
+      return this;
     }
+
+    throw new Meteor.Error(
+      'invalid-command',
+      'You are trying to *set* in a relationship that is single. Please use add/remove for *many* relationships',
+    );
+  }
+
+  unset(what) {
+    this._checkWhat(what);
+
+    if (this.isVirtual) {
+      this._virtualAction('unset', what);
+      return this;
+    }
+
+    throw new Meteor.Error(
+      'invalid-command',
+      'You are trying to *unset* in a relationship that is single. Please use add/remove for *many* relationships',
+    );
+  }
 }

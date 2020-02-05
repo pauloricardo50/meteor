@@ -1,7 +1,5 @@
-//      
+//
 import areInputsEqual from './areInputsEqual';
-
-                                                                          
 
 // <ResultFn: (...any[]) => mixed>
 // The purpose of this typing is to ensure that the returned memoized
@@ -9,17 +7,14 @@ import areInputsEqual from './areInputsEqual';
 // ResultFn:        Generic type (which is the same as the resultFn).
 // (...any[]): Accepts any length of arguments - and they are not checked
 // mixed:           The result can be anything but needs to be checked before usage
-const memoizeOne = function                               (
-  resultFn          ,
-  isEqual              = areInputsEqual,
-)           {
-  let lastThis       ;
-  let lastArgs          = [];
-  let lastResult       ;
-  let calledOnce          = false;
+const memoizeOne = function(resultFn, isEqual = areInputsEqual) {
+  let lastThis;
+  let lastArgs = [];
+  let lastResult;
+  let calledOnce = false;
 
   // breaking cache when context (this) or arguments change
-  const result = function(...newArgs         ) {
+  const result = function(...newArgs) {
     if (calledOnce && lastThis === this && isEqual(newArgs, lastArgs)) {
       return lastResult;
     }
@@ -34,7 +29,7 @@ const memoizeOne = function                               (
     return lastResult;
   };
 
-  return (result     );
+  return result;
 };
 
 export default memoizeOne;

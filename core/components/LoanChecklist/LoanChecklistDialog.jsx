@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import T from '../Translation';
@@ -7,9 +7,7 @@ import LoanChecklist from '.';
 import { getChecklistValidInformationsRatio } from './helpers';
 import Icon from '../Icon/Icon';
 
-                                   
-
-const LoanChecklistDialog = ({ loan }                          ) => {
+const LoanChecklistDialog = ({ loan }) => {
   const { valid, required } = getChecklistValidInformationsRatio({ loan });
   let ratio = `(${valid}/${required})`;
   if (valid === required && required !== 0) {

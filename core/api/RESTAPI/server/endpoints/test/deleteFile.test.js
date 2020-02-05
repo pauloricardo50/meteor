@@ -60,10 +60,10 @@ const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
   });
 };
 
-describe('REST: deleteFile', function () {
+describe('REST: deleteFile', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

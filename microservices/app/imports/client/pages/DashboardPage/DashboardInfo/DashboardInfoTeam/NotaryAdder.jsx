@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import notaries from 'core/arrays/notaries';
-
-                           
 
 const findNotary = contacts =>
   contacts.some(
@@ -52,7 +50,7 @@ const getSchema = canton =>
     },
   });
 
-const NotaryAdder = ({ contacts, property, addContact }                  ) => {
+const NotaryAdder = ({ contacts, property, addContact }) => {
   const hasNotary = findNotary(contacts);
 
   if (!property.canton) {

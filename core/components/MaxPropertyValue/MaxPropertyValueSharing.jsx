@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from '../Button';
@@ -7,8 +7,6 @@ import Icon from '../Icon';
 import T from '../Translation';
 import MaxPropertyValueSharingContainer from './MaxPropertyValueSharingContainer';
 import Dialog from '../Material/Dialog';
-
-                                       
 
 const getTrigger = ({
   shareSolvency,
@@ -67,7 +65,7 @@ const MaxPropertyValueSharing = ({
   handleSubmit,
   handleDisable,
   propertyOrganisation,
-}                              ) => {
+}) => {
   if (!hasProProperty && !hasPromotion) {
     return null;
   }

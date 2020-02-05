@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchDollar } from '@fortawesome/pro-light-svg-icons/faSearchDollar';
@@ -12,12 +12,7 @@ import T from 'core/components/Translation';
 import DialogContentSection from '../DialogContentSection';
 import UnsuccessfulNewLoanContainer from './UnsuccessfulNewLoanContainer';
 
-                                   
-
-const UnsuccessfulNewLoan = ({
-  insertLeadLoan,
-  setUnsuccessfulOnly,
-}                          ) => (
+const UnsuccessfulNewLoan = ({ insertLeadLoan, setUnsuccessfulOnly }) => (
   <div className="loan-status-modifier-dialog-content animated fadeIn">
     <DialogContentSection
       title="Ouvrir un nouveau dossier"

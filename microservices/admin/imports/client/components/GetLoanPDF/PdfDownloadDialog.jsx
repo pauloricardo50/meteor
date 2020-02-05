@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,8 +6,6 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import Box from 'core/components/Box';
 import { makeGenerateBackgroundInfo, BACKGROUND_INFO_TYPE } from './helpers';
-
-                                 
 
 const makeSchema = loan =>
   new SimpleSchema({
@@ -109,7 +107,7 @@ const PdfDownloadDialog = ({
   buttonLabel,
   icon,
   dialogTitle,
-}                        ) => (
+}) => (
   <AutoFormDialog
     title={dialogTitle}
     schema={makeSchema(loan)}

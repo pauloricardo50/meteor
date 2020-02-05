@@ -1,10 +1,6 @@
-//      
+//
 import React from 'react';
 import Button from 'core/components/Button/Button';
-
-                        
-               
-  
 
 const copyLinkToClipboard = link => {
   navigator.clipboard
@@ -15,7 +11,7 @@ const copyLinkToClipboard = link => {
     });
 };
 
-const PublicLink = ({ link }                 ) => (
+const PublicLink = ({ link }) => (
   <div className="public-link">
     <a className="public-link-value" href={link}>
       {link}

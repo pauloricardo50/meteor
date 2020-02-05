@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import {
@@ -10,11 +10,7 @@ import PropertyCard from './PropertyCard';
 import PromotionCard from './PropertyCard/PromotionCard';
 import PropertyCardSubtitle from './PropertyCard/PropertyCardSubtitle';
 
-                        
-               
-  
-
-const Properties = ({ loan }                 ) => {
+const Properties = ({ loan }) => {
   const {
     properties = [],
     promotions = [],

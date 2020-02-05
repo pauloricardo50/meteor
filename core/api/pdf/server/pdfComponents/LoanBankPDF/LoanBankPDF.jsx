@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { Calculator } from '../../../../../utils/Calculator';
@@ -11,13 +11,6 @@ import BorrowersPdfPage from '../pages/BorrowersPdfPage';
 import stylesheet from './stylesheet';
 import LoanBankCover from './LoanBankCover';
 import StructureAppendixPdfPage from '../pages/StructureAppendixPdfPage/StructureAppendixPdfPage';
-
-                         
-               
-                        
-                   
-                  
-  
 
 const getPages = ({
   loan,
@@ -87,7 +80,7 @@ const getPages = ({
   ].filter(x => x);
 };
 
-const LoanBankPDF = (props                  ) => {
+const LoanBankPDF = props => {
   const { pdfName } = props;
   const pages = getPages(props);
   return <Pdf stylesheet={stylesheet} pages={pages} pdfName={pdfName} />;

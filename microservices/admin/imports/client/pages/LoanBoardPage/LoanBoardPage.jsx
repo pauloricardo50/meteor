@@ -1,9 +1,7 @@
-//      
+//
 import React from 'react';
 
 import LoanBoard from './LoanBoard';
-
-                             
 
 const LoanBoardPage = ({
   currentUser,
@@ -11,7 +9,7 @@ const LoanBoardPage = ({
   loanBoardDispatch,
   activateLoanBoardSync,
   setActivateLoanBoardSync,
-}                    ) => (
+}) => (
   <LoanBoard
     currentUser={currentUser}
     options={loanBoardOptions}

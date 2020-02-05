@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
@@ -9,9 +9,7 @@ import { promotionInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
-                              
-
-const PromotionAdder = ({ history }                     ) => (
+const PromotionAdder = ({ history }) => (
   <AutoFormDialog
     title={<T id="ProDashboardPage.addPromotion" />}
     buttonProps={{

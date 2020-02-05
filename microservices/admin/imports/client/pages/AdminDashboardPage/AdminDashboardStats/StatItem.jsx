@@ -1,17 +1,8 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
-                        
-
-const StatItem = ({
-  value,
-  increment,
-  positive,
-  title,
-  children,
-  top,
-}               ) => {
+const StatItem = ({ value, increment, positive, title, children, top }) => {
   if (children) {
     return (
       <div className="stat-item card1 card-top">

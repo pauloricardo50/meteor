@@ -1,4 +1,4 @@
-//      
+//
 import React, { useEffect } from 'react';
 
 import Timeline from 'core/components/Timeline';
@@ -6,11 +6,7 @@ import TimelineDescription from 'core/components/Timeline/TimelineDescription';
 import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import UserActivitiesContainer from './UserActivitiesContainer';
 
-                            
-                    
-  
-
-const UserActivities = ({ activities = [] }                     ) => {
+const UserActivities = ({ activities = [] }) => {
   useEffect(() => {
     const el = document.getElementsByClassName('user-activities-timeline')[0];
     el.scrollLeft = el.scrollWidth;

@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
@@ -8,9 +8,7 @@ import Button from '../Button';
 import T from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 
-                             
-
-const TopNavButtons = ({ children, history }                    ) => {
+const TopNavButtons = ({ children, history }) => {
   const currentUser = useContext(CurrentUserContext);
   const { name, organisations } = currentUser || {};
   const isMobile = useMedia({ maxWidth: 768 });

@@ -1,10 +1,8 @@
-//      
+//
 import React from 'react';
 
 import Icon from '../Icon';
 import Downloader from '../Downloader';
-
-                                    
 
 const getIconForFileType = key => {
   const extension = key.split('.').slice(-1)[0];
@@ -21,7 +19,7 @@ const getIconForFileType = key => {
   }
 };
 
-const DocumentDownloadList = ({ files }                           ) => {
+const DocumentDownloadList = ({ files }) => {
   if (!files) {
     return null;
   }

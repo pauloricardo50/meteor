@@ -1,13 +1,9 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import BorrowersRecap from './BorrowersRecap';
 import PdfPage from '../../PdfPage';
-
-                              
-                           
-  
 
 const BorrowersPdfPage = ({
   loan: { borrowers },
@@ -15,7 +11,7 @@ const BorrowersPdfPage = ({
   pageNb,
   pageCount,
   options,
-}                       ) => (
+}) => (
   <PdfPage
     className="borrowers-page"
     title={<T id="PDF.title.borrowers" />}

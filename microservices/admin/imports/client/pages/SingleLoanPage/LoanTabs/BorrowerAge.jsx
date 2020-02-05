@@ -1,15 +1,11 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
-                         
-                   
-  
-
-const BorrowerAge = ({ borrower }                  ) => {
+const BorrowerAge = ({ borrower }) => {
   const { age } = borrower;
   const isNearRetirement = age > 49;
 

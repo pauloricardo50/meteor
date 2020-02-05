@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import Link from 'core/components/Link';
 import cx from 'classnames';
@@ -10,10 +10,6 @@ import {
   promotionTodoList,
   defaultTodoList,
 } from './dashboardTodos';
-
-                                   
-               
-  
 
 const getTodos = loan => {
   let list = defaultTodoList;
@@ -36,7 +32,7 @@ const getTodos = loan => {
   return max4Todos;
 };
 
-const DashboardProgressInfo = ({ loan }                            ) => {
+const DashboardProgressInfo = ({ loan }) => {
   const todos = getTodos(loan);
 
   return (

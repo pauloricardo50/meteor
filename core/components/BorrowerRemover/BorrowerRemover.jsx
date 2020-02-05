@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -7,14 +7,7 @@ import T from '../Translation';
 import ConfirmMethod from '../ConfirmMethod';
 import Icon from '../Icon';
 
-                             
-                        
-  
-
-const BorrowerRemover = ({
-  handleClick,
-  simple = false,
-}                      ) => (
+const BorrowerRemover = ({ handleClick, simple = false }) => (
   <div className="borrower-remover">
     <ConfirmMethod
       method={handleClick}

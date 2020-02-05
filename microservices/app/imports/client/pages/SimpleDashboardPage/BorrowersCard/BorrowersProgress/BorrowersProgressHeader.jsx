@@ -1,17 +1,15 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import Button from 'core/components/Button';
 
-                                       
-
 const BorrowersProgressHeader = ({
   loanId,
   progress,
   setOpenBorrowersForm,
-}                              ) => (
+}) => (
   <div className="borrowers-progress-cta">
     <span className="secondary">
       <T

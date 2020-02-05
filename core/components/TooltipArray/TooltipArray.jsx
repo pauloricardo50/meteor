@@ -1,21 +1,9 @@
-//      
+//
 import React from 'react';
 
 import StickyPopover from '../StickyPopover';
 
-                          
-                       
-                       
-                
-                     
-  
-
-const TooltipArray = ({
-  items = [],
-  displayLimit = 1,
-  title,
-  className,
-}                   ) => {
+const TooltipArray = ({ items = [], displayLimit = 1, title, className }) => {
   const firstItems = items.slice(0, displayLimit);
   const remainingItems = items.slice(displayLimit);
 

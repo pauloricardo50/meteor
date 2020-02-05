@@ -1,9 +1,7 @@
-//      
+//
 import React from 'react';
 
-                            
-
-const PdfPageTitle = ({ title, subtitle }                   ) => {
+const PdfPageTitle = ({ title, subtitle }) => {
   if (!title && !subtitle) {
     return null;
   }

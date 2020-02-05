@@ -1,13 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import Loading from 'core/components/Loading';
 import Link from 'core/components/Link';
 
-                        
-
-const BlogList = ({ posts }               ) => {
+const BlogList = ({ posts }) => {
   if (!posts) {
     return <Loading />;
   }

@@ -1,4 +1,4 @@
-//      
+//
 import React, { useMemo } from 'react';
 import { AutoForm } from 'uniforms-material';
 import pickBy from 'lodash/pickBy';
@@ -10,18 +10,6 @@ import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
 import AutoFormLayout from './AutoFormLayout';
-
-                            
-                          
-                        
-               
-                
-                             
-                        
-                            
-                            
-                       
-  
 
 const CustomAutoForm = ({
   autoFieldProps,
@@ -36,7 +24,7 @@ const CustomAutoForm = ({
   schemaKeys,
   submitFieldProps,
   ...props
-}                     ) => {
+}) => {
   const handleSubmit = (...args) =>
     Promise.resolve(onSubmit(...args)).then(() =>
       import('../../utils/message').then(({ default: message }) => {

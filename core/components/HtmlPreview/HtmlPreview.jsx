@@ -1,11 +1,7 @@
-//      
+//
 import React from 'react';
 
-                         
-                
-  
-
-const HtmlPreview = ({ value }                  ) => {
+const HtmlPreview = ({ value }) => {
   if (typeof value === 'string') {
     return <div dangerouslySetInnerHTML={{ __html: value }} />;
   }

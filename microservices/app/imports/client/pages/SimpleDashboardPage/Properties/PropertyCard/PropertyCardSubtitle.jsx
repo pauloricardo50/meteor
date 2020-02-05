@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -8,13 +8,11 @@ import T, { Money } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import { PROPERTY_CATEGORY } from 'imports/core/api/constants';
 
-                                    
-
 const PropertyCardSubtitle = ({
   maxPropertyValue,
   property,
   residenceType,
-}                           ) => {
+}) => {
   let isSolvent;
 
   if (

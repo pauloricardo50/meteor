@@ -1,12 +1,8 @@
-//      
+//
 import React from 'react';
 
 import { PROPERTY_TYPE } from 'core/api/constants';
 import T from '../Translation';
-
-                              
-                   
-  
 
 const INFOS_TO_DISPLAY = {
   roomCount: { type: 'number' },
@@ -31,7 +27,7 @@ const formatInfo = ({ property, key }) => {
   }
 };
 
-const ProPropertyRecap = ({ property }                       ) => {
+const ProPropertyRecap = ({ property }) => {
   const { propertyType, flatType, houseType } = property;
   return (
     <div className="pro-property-recap">

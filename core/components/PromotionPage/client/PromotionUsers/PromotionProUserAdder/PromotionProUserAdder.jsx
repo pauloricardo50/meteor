@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { userSearch } from '../../../../../api/users/queries';
@@ -10,15 +10,7 @@ import CollectionSearch from '../../../../CollectionSearch';
 import { CollectionIconLink } from '../../../../IconLink';
 import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 
-                                   
-                    
-                    
-  
-
-const PromotionProUserAdder = ({
-  addUser,
-  promotion,
-}                            ) => (
+const PromotionProUserAdder = ({ addUser, promotion }) => (
   <DialogSimple
     primary
     raised

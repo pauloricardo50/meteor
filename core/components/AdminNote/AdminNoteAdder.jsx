@@ -1,4 +1,4 @@
-//      
+//
 import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 

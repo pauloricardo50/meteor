@@ -1,10 +1,8 @@
-//      
+//
 import React from 'react';
 import { useTable } from 'react-table';
 
 import { Money } from '../Translation';
-
-                                    
 
 export const ConstructionTimelineItem = ({
   description,
@@ -22,7 +20,7 @@ export const ConstructionTimelineItem = ({
   </div>
 );
 
-const ConstructionTimeline = ({ columns }                           ) => {
+const ConstructionTimeline = ({ columns }) => {
   const { headerGroups } = useTable({
     columns,
     data: [],

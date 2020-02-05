@@ -1,16 +1,9 @@
-//      
+//
 import React from 'react';
 import AutoForm from 'core/components/AutoForm2';
 import UpdateForm from './UpdateForm';
 
-                            
-
-const SingleDevTab = ({
-  doc,
-  schema,
-  onSubmit,
-  collection,
-}                   ) => (
+const SingleDevTab = ({ doc, schema, onSubmit, collection }) => (
   <div>
     <h1>
       _id:

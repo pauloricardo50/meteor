@@ -1,4 +1,4 @@
-//      
+//
 import { compose, withProps } from 'recompose';
 
 import SingleStructureContainer from './SingleStructureContainer';

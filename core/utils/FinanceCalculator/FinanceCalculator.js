@@ -1,4 +1,4 @@
-//      
+//
 import {
   GENDER,
   SUCCESS,
@@ -42,15 +42,9 @@ import { precisionMiddleware } from './financeCalculatorMiddlewares';
 import { memoizeMiddleware } from '../Calculator/middleware';
 
 export class FinanceCalculator {
-  constructor(settings         ) {
+  constructor(settings) {
     this.initFinanceCalculator(settings);
   }
-
-                     
-
-                               
-
-                           
 
   initFinanceCalculator({
     allowPledge = true,
@@ -121,7 +115,7 @@ export class FinanceCalculator {
     this.setMiddleware(middlewares, middlewareObject);
   }
 
-  setMiddleware = (middlewares                  , middlewareObject) => {
+  setMiddleware = (middlewares, middlewareObject) => {
     const middlewareManager = new MiddlewareManager(this, middlewareObject);
     middlewareManager.applyToAllMethods([
       precisionMiddleware,
@@ -136,12 +130,7 @@ export class FinanceCalculator {
     fortune,
     pledgedValue = 0,
     fees = this.getFeesBase({ propertyValue, propertyWork }),
-  }   
-                          
-                    
-                          
-                  
-   ) {
+  }) {
     return propertyValue + propertyWork + fees + pledgedValue - fortune;
   }
 
@@ -149,50 +138,26 @@ export class FinanceCalculator {
     return propertyValue + propertyWork;
   }
 
-  getBorrowRatio({
-    propertyValue,
-    loan = 0,
-  }   
-                          
-                 
-   ) {
+  getBorrowRatio({ propertyValue, loan = 0 }) {
     return loan / propertyValue;
   }
 
-  getLoanFromBorrowRatio({
-    propertyValue,
-    borrowRatio,
-  }   
-                          
-                        
-   ) {
+  getLoanFromBorrowRatio({ propertyValue, borrowRatio }) {
     return borrowRatio * propertyValue;
   }
 
-  getBorrowRatioWithoutLoan({
-    propertyValue,
-    fortune,
-  }   
-                          
-                    
-   ) {
+  getBorrowRatioWithoutLoan({ propertyValue, fortune }) {
     return this.getBorrowRatio({
       propertyValue,
       loan: this.getLoanValue({ propertyValue, fortune }),
     });
   }
 
-  getRetirementForGender({ gender = GENDER.M }                      = {}) {
+  getRetirementForGender({ gender = GENDER.M } = {}) {
     return gender === GENDER.F ? 64 : 65;
   }
 
-  getIncomeRatio({
-    monthlyIncome,
-    monthlyPayment = 0,
-  }   
-                          
-                           
-   ) {
+  getIncomeRatio({ monthlyIncome, monthlyPayment = 0 }) {
     return monthlyPayment / monthlyIncome;
   }
 
@@ -208,27 +173,11 @@ export class FinanceCalculator {
     return ERROR;
   }
 
-  getLoanCost({
-    maintenance = 0,
-    interests = 0,
-    amortization = 0,
-  }   
-                         
-                       
-                          
-    = {}) {
+  getLoanCost({ maintenance = 0, interests = 0, amortization = 0 } = {}) {
     return maintenance + interests + amortization;
   }
 
-  getLoanCostWithParts({
-    maintenance,
-    interests,
-    amortization,
-  }   
-                        
-                      
-                          
-   ) {
+  getLoanCostWithParts({ maintenance, interests, amortization }) {
     return {
       maintenance,
       interests,
@@ -237,13 +186,7 @@ export class FinanceCalculator {
     };
   }
 
-  checkInterestsAndTranches({
-    tranches = [],
-    interestRates,
-  }   
-                                                     
-                          
-   ) {
+  checkInterestsAndTranches({ tranches = [], interestRates }) {
     return tranches.reduce((invalidRate, { type }) => {
       if (invalidRate) {
         return invalidRate;
@@ -255,13 +198,7 @@ export class FinanceCalculator {
     }, undefined);
   }
 
-  getInterestsWithTranches({
-    tranches = [],
-    interestRates,
-  }   
-                                                     
-                          
-    = {}) {
+  getInterestsWithTranches({ tranches = [], interestRates } = {}) {
     return tranches.reduce((acc, { type, value }) => {
       const rate = interestRates[type];
 
@@ -280,7 +217,7 @@ export class FinanceCalculator {
   getAmortizationRateBase({
     borrowRatio = 0,
     amortizationYears = this.amortizationYears,
-  }                                                     = {}) {
+  } = {}) {
     let amortizationRate = 0;
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
@@ -310,12 +247,7 @@ export class FinanceCalculator {
     pledgedAmount = 0,
     residenceType,
     maxBorrowRatio = this.maxBorrowRatio,
-  }   
-                          
-                         
-                          
-                          
-    = {})         {
+  } = {}) {
     if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
       return Math.min(
         (propertyValue + propertyWork) * maxBorrowRatio + pledgedAmount,
@@ -326,17 +258,7 @@ export class FinanceCalculator {
     return (propertyValue + propertyWork) * maxBorrowRatio;
   }
 
-  getYearsToRetirement = ({
-    age1,
-    age2,
-    gender1,
-    gender2,
-  }   
-                  
-                  
-                        
-                        
-    = {}) => {
+  getYearsToRetirement = ({ age1, age2, gender1, gender2 } = {}) => {
     const retirement1 = this.getRetirementForGender({ gender: gender1 });
     let retirement2 = null;
     if (gender2) {

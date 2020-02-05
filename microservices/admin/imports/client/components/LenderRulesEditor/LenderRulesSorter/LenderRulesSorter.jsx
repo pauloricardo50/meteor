@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,8 +6,6 @@ import IconButton from 'core/components/IconButton';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import LenderRulesSorterContainer from './LenderRulesSorterContainer';
 import LenderRulesEditorTitle from '../LenderRulesEditorTitle';
-
-                                 
 
 const emptySchema = new SimpleSchema({});
 
@@ -17,7 +15,7 @@ const LenderRulesSorter = ({
   orders,
   increaseOrder,
   decreaseOrder,
-}                        ) => {
+}) => {
   const sortedLenderRules = lenderRules.sort(
     ({ _id: idA }, { _id: idB }) => orders[idA] - orders[idB],
   );

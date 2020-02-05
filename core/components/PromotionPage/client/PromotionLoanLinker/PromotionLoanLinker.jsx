@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from 'core/components/Button';
@@ -8,19 +8,12 @@ import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch'
 import { loanSearch } from 'core/api/loans/queries';
 import PromotionLoanLinkerContainer from './PromotionLoanLinkerContainer';
 
-                                 
-                    
-                              
-                                
-                                
-  
-
 const PromotionLoanLinker = ({
   promotion,
   unlinkPromotionLoan,
   insertPromotionLoan,
   linkPromotionLoan,
-}                          ) => (
+}) => (
   <div className="flex-col">
     <div className="flex-row center space-children">
       {promotion.promotionLoan ? (

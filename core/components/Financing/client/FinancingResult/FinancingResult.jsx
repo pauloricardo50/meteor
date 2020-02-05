@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import T from '../../../Translation';
@@ -25,9 +25,7 @@ import FinancingResultInterests from './FinancingResultInterests';
 import FinancingResultAmortization from './FinancingResultAmortization';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 
-                               
-
-const FinancingResult = ({ error }                      ) =>
+const FinancingResult = ({ error }) =>
   error ? (
     <h3 className="error">{error.message}</h3>
   ) : (

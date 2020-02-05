@@ -1,12 +1,10 @@
-//      
+//
 import React from 'react';
 import moment from 'moment';
 
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import Button from 'core/components/Button';
 import Box from 'core/components/Box';
-
-                                         
 
 // Date at which we started enforcing continuous status changes
 const minDate = moment('15/11/2019', 'DD/MM/YYYY');
@@ -16,7 +14,7 @@ const MonitoringActivityFilters = ({
   setActivityRange,
   createdAtRange,
   setCreatedAtRange,
-}                                ) => (
+}) => (
   <div className="flex">
     <Box className="mr-8" title={"Date de l'activité"}>
       <div className="flex-col mb-8">

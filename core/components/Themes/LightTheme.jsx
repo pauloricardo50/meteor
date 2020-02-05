@@ -1,18 +1,16 @@
-//      
+//
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import createTheme from '../../config/muiCustom';
 import colors from '../../config/colors';
 
-                          
-
 const defaultTheme = createTheme();
 
 const borderColor = 'rgba(255,255,255,1.0)';
 const borderColorDim = 'rgba(255,255,255,0.6)';
 
-const LightTheme = ({ children }                 ) => (
+const LightTheme = ({ children }) => (
   <MuiThemeProvider
     theme={{
       ...defaultTheme,

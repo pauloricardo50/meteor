@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { compose, lifecycle } from 'recompose';
 
@@ -13,12 +13,7 @@ import BlogPostPageContent from './BlogPostPageContent';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
-                          
-                   
-                
-  
-
-const BlogPostPage = ({ loading = true, post }                   ) => {
+const BlogPostPage = ({ loading = true, post }) => {
   if (post && post.error) {
     return <NotFound />;
   }

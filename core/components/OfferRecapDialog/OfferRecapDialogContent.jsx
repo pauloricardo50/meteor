@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import pick from 'lodash/pick';
@@ -7,13 +7,7 @@ import moment from 'moment';
 import T, { Money, Percent } from '../Translation';
 import { INTEREST_RATES } from '../../api/constants';
 
-                                     
-                
-  
-
-const OfferRecapDialogContent = ({
-  offer = {},
-}                              ) => {
+const OfferRecapDialogContent = ({ offer = {} }) => {
   const {
     createdAt,
     maxAmount,

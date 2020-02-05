@@ -1,16 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T from '../../../Translation';
 import DialogSimple from '../../../DialogSimple';
 import OfferList from '../../../OfferList/OfferList';
 
-                             
-                        
-                     
-  
-
-const OfferListDialog = ({ offers, disabled }                      ) => (
+const OfferListDialog = ({ offers, disabled }) => (
   <DialogSimple
     label={<T id="FinancingOffers.showAll" />}
     buttonProps={{ style: { marginBottom: 8 }, disabled }}

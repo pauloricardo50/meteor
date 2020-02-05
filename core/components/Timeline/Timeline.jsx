@@ -1,14 +1,7 @@
-//      
+//
 
 import React, { Component } from 'react';
 import cx from 'classnames';
-
-                      
-                   
-                        
-                     
-             
-  
 
 const makeFormatEvent = variant => (
   { complete = false, mainLabel = '', secondaryLabel, children },
@@ -48,7 +41,7 @@ const getLongestSecondaryLabelLength = id => {
   return Math.max(...widths);
 };
 
-class Timeline extends Component                {
+class Timeline extends Component {
   componentDidMount() {
     this.setPadding();
   }

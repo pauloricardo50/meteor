@@ -1,16 +1,11 @@
-//      
+//
 import React from 'react';
 
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
 
-                                     
-
-const PromotionOptionDetail = ({
-  promotionOption,
-  loanId,
-}                            ) => {
+const PromotionOptionDetail = ({ promotionOption, loanId }) => {
   const {
     _id: promotionOptionId,
     name,

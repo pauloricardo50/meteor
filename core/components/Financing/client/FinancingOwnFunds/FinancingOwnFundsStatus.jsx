@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
@@ -15,14 +15,7 @@ import StatusIcon from '../../../StatusIcon';
 import { SUCCESS, WARNING } from '../../../../api/constants';
 import { getBorrowRatioStatus } from '../FinancingResult/financingResultHelpers';
 
-                                     
-                
-  
-
-const FinancingOwnFundsStatus = ({
-  value,
-  ...props
-}                              ) => {
+const FinancingOwnFundsStatus = ({ value, ...props }) => {
   const {
     status: borrowRatioStatus,
     tooltip: borrowRatioTooltip,

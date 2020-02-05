@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -11,9 +11,7 @@ import AccountPageHeader from './AccountPageHeader';
 import AccountModifier from './AccountModifier';
 import TooltipArray from '../TooltipArray';
 
-                               
-
-const AccountPageBare = ({ currentUser }                      ) => {
+const AccountPageBare = ({ currentUser }) => {
   const { email, _id: userId, phoneNumbers = [] } = currentUser;
 
   return (

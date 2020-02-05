@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Toggle from 'core/components/Toggle';
@@ -7,15 +7,6 @@ import Dialog from 'core/components/Material/Dialog';
 import T from 'core/components/Translation';
 import ShareCustomersToggleContainer from './ShareCustomersToggleContainer';
 
-                                  
-                       
-                         
-                      
-                          
-                   
-                         
-  
-
 const ShareCustomersToggle = ({
   organisation,
   handleToggle,
@@ -23,7 +14,7 @@ const ShareCustomersToggle = ({
   setOpenDialog,
   loading,
   handleSubmit,
-}                           ) => {
+}) => {
   const {
     $metadata: { shareCustomers = true } = {},
     name: organisationName,

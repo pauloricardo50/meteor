@@ -1,12 +1,8 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 
 import Button from 'core/components/Button';
-
-                          
-                  
-  
 
 const ButtonSwitch = ({
   active,
@@ -15,7 +11,7 @@ const ButtonSwitch = ({
   activeOnClick = () => {},
   inactiveOnClick = () => {},
   reverse = false,
-}                   ) => (
+}) => (
   <div className={cx('button-switch', { reverse })}>
     <Button
       onClick={inactiveOnClick}

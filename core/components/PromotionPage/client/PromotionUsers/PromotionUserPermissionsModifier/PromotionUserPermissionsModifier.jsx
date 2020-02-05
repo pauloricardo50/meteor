@@ -1,15 +1,8 @@
-//      
+//
 import React from 'react';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import PromotionUserPermissionsModifierContainer from './PromotionUserPermissionsModifierContainer';
-
-                                   
-                      
-               
-                 
-                
-  
 
 const PromotionUserModifier = ({
   promotionId,
@@ -18,7 +11,7 @@ const PromotionUserModifier = ({
   model,
   onSubmit,
   canModify,
-}                            ) => (
+}) => (
   <AutoFormDialog
     schema={schema}
     model={model}

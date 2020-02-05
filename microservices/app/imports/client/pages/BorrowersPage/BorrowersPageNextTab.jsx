@@ -1,16 +1,11 @@
-//      
+//
 import React from 'react';
 
 import Button from '../../../core/components/Button';
 import Icon from '../../../core/components/Icon';
 import T from '../../../core/components/Translation';
 
-                                    
-
-const BorrowersPageNextTab = ({
-  tabId,
-  makeLink,
-}                           ) => {
+const BorrowersPageNextTab = ({ tabId, makeLink }) => {
   const isFinance = tabId === 'finance';
   const nextTab = isFinance ? 'personal' : 'finance';
   return (

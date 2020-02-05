@@ -1,13 +1,6 @@
-//      
+//
 import React from 'react';
 import ReactCountUp from 'react-countup';
-
-                     
-                 
-                
-                    
-                  
-  
 
 const CountUp = ({
   start = 0,
@@ -15,7 +8,7 @@ const CountUp = ({
   duration = 2,
   money = false,
   ...otherProps
-}              ) => (
+}) => (
   <ReactCountUp
     start={start}
     end={value}

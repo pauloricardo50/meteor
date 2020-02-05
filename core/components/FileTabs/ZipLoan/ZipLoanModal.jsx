@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import AutoForm from 'core/components/AutoForm2';
@@ -7,21 +7,7 @@ import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import ZipLoanModalContainer from './ZipLoanModalContainer';
 
-                          
-                       
-                 
-                
-                          
-                     
-  
-
-const ZipLoanModal = ({
-  closeModal,
-  schema,
-  model,
-  fields,
-  onSubmit,
-}                   ) => (
+const ZipLoanModal = ({ closeModal, schema, model, fields, onSubmit }) => (
   <AutoForm schema={schema} model={model} onSubmit={onSubmit}>
     <>
       {fields}

@@ -1,4 +1,4 @@
-//      
+//
 import React, { useContext } from 'react';
 import { withState, compose } from 'recompose';
 
@@ -9,9 +9,7 @@ import { proPromotionLoans } from '../../../../api/loans/queries';
 import T from '../../../Translation';
 import PromotionCustomersTable from './PromotionCustomersTable';
 
-                                  
-
-const PromotionCustomers = (props                         ) => {
+const PromotionCustomers = props => {
   const currentUser = useContext(CurrentUserContext);
   const { loans = [] } = props;
 

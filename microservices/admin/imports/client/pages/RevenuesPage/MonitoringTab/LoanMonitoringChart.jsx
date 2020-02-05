@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { compose, withStateHandlers, withProps } from 'recompose';
 
@@ -8,9 +8,7 @@ import { loanMonitoring } from 'core/api/monitoring/queries';
 import MonitoringFilters from './MonitoringFilters';
 import MonitoringChart from './MonitoringChart';
 
-                                   
-
-const LoanMonitoringChart = (props                          ) => {
+const LoanMonitoringChart = props => {
   const {
     category,
     status,

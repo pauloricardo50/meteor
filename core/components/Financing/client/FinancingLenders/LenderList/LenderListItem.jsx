@@ -1,15 +1,9 @@
-//      
+//
 import React from 'react';
 
 import LenderListItemRules from './LenderListItemRules';
 
-                              
-
-const LenderListItem = ({
-  organisation,
-  loan,
-  structureId,
-}                     ) => {
+const LenderListItem = ({ organisation, loan, structureId }) => {
   const { name } = organisation;
   return (
     <div className="lender-list-item">

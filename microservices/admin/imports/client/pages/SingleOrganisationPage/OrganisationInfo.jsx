@@ -1,20 +1,13 @@
-//      
+//
 import React from 'react';
 
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import UploaderArray from 'core/components/UploaderArray';
 import AdminNote from 'core/components/AdminNote';
 
-                                
-
 const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];
 
-const OrganisationInfo = ({
-  currentUser,
-  adminNote,
-  _id,
-  documents,
-}                       ) => (
+const OrganisationInfo = ({ currentUser, adminNote, _id, documents }) => (
   <div>
     <AdminNote
       adminNote={adminNote}

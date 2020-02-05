@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
@@ -9,14 +9,6 @@ import Button from '../Button';
 import CustomSubmitField from './CustomSubmitField';
 import T from '../Translation';
 
-                                   
-                        
-                     
-                                    
-                          
-                              
-  
-
 const AutoFormDialogActions = (
   {
     handleClose,
@@ -24,7 +16,7 @@ const AutoFormDialogActions = (
     renderAdditionalActions,
     disableActions,
     setDisableActions,
-  }                            ,
+  },
   {
     uniforms: {
       state: { submitting },

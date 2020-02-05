@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import { lifecycle } from 'recompose';
 
@@ -9,9 +9,7 @@ import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 import BlogList from './BlogList';
 
-                        
-
-const BlogPage = ({ posts }               ) => (
+const BlogPage = ({ posts }) => (
   <WwwLayout className="blog-page">
     <PageHead titleId="BlogPage.title" descriptionId="BlogPage.description" />
     <WwwLayout.TopNav variant={VARIANTS.GREY} />

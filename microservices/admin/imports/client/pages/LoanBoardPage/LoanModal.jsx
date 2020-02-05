@@ -1,11 +1,9 @@
-//      
+//
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import SingleLoanPage from '../SingleLoanPage';
 
-                         
-
-const LoanModal = ({ loanId, closeModal, currentUser }                ) => (
+const LoanModal = ({ loanId, closeModal, currentUser }) => (
   <Dialog
     open={!!loanId}
     onEscapeKeyDown={closeModal}

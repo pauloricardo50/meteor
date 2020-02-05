@@ -99,9 +99,7 @@ describe('zipLoan', () => {
         };
         const name = getFileName(file);
 
-        expect(name).to.equal(
-          "PREFIX_Pièce d'identité valable.pdf",
-        );
+        expect(name).to.equal("PREFIX_Pièce d'identité valable.pdf");
       });
 
       it('two files in same document', () => {
@@ -121,12 +119,8 @@ describe('zipLoan', () => {
         const name1 = getFileName(file1);
         const name2 = getFileName(file2);
 
-        expect(name1).to.equal(
-          "PREFIX_Pièce d'identité valable (1 sur 2).pdf",
-        );
-        expect(name2).to.equal(
-          "PREFIX_Pièce d'identité valable (2 sur 2).pdf",
-        );
+        expect(name1).to.equal("PREFIX_Pièce d'identité valable (1 sur 2).pdf");
+        expect(name2).to.equal("PREFIX_Pièce d'identité valable (2 sur 2).pdf");
       });
 
       it('one file with adminName', () => {
@@ -168,13 +162,9 @@ describe('zipLoan', () => {
         const name2 = getFileName(file2);
         const name3 = getFileName(file3);
 
-        expect(name1).to.equal(
-          "PREFIX_Pièce d'identité valable (1 sur 2).pdf",
-        );
+        expect(name1).to.equal("PREFIX_Pièce d'identité valable (1 sur 2).pdf");
         expect(name2).to.equal('PREFIX_adminName.pdf');
-        expect(name3).to.equal(
-          "PREFIX_Pièce d'identité valable (2 sur 2).pdf",
-        );
+        expect(name3).to.equal("PREFIX_Pièce d'identité valable (2 sur 2).pdf");
       });
     });
   });

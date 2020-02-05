@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 import { AutoForm } from 'uniforms-material';
@@ -12,13 +12,6 @@ import { toMoney } from '../../../../../utils/conversionFunctions';
 
 import InputAndSliderField from './InputAndSliderField';
 
-                            
-                
-                            
-               
-                    
-  
-
 export const InputAndSlider = ({
   className,
   id,
@@ -26,7 +19,7 @@ export const InputAndSlider = ({
   value,
   updateStructure,
   ...props
-}                     ) => (
+}) => (
   <div className={cx('input-and-slider', className)}>
     <AutoForm
       onSubmit={updateStructure}

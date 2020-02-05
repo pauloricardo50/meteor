@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from 'core/components/Button';
@@ -8,9 +8,7 @@ import AnonymousAppPageContainer from './AnonymousAppPageContainer';
 import NoLoanStart from './NoLoanStart';
 import WithLoanStart from './WithLoanStart';
 
-                                
-
-const AnonymousAppPage = (props                       ) => {
+const AnonymousAppPage = props => {
   const { anonymousLoan, insertAnonymousLoan } = props;
 
   return (

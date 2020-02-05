@@ -1,4 +1,4 @@
-//      
+//
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
@@ -11,14 +11,12 @@ import T from '../../Translation';
 import DropdownMenu from '../../DropdownMenu';
 import { ModalManagerContext } from '../../ModalManager';
 
-                                
-
 const FileStatusSetter = ({
   status = FILE_STATUS.UNVERIFIED,
   fileKey,
   handleChangeFileStatus,
   error: currentError,
-}                       ) => {
+}) => {
   const { openModal } = useContext(ModalManagerContext);
 
   const user = Meteor.user();

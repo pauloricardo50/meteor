@@ -54,10 +54,10 @@ const updateProperty = ({
   });
 };
 
-describe('REST: updateProperty', function () {
+describe('REST: updateProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

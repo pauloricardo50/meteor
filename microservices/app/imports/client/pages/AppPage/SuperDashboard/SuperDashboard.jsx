@@ -1,14 +1,10 @@
-//      
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import LoanCards from './LoanCards';
 
-                            
-                      
-  
-
-const SuperDashboard = ({ currentUser = {} }                     ) => {
+const SuperDashboard = ({ currentUser = {} }) => {
   const { name, loans = [] } = currentUser;
   return (
     <div className="super-dashboard">

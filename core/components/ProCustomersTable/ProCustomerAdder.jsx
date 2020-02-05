@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
@@ -6,9 +6,7 @@ import ProCustomerAdderContainer from './ProCustomerAdderContainer';
 import T from '../Translation';
 import Icon from '../Icon';
 
-                                
-
-const ProCustomerAdder = ({ schema, onSubmit }                       ) => (
+const ProCustomerAdder = ({ schema, onSubmit }) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={onSubmit}

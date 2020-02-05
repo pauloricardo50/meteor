@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -17,13 +17,6 @@ import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 import { ignoreProps } from '../../containers/updateForProps';
 import { OTHER_ALLOWED_VALUE } from './constants';
 import TextInput from '../TextInput';
-
-                               
-                      
-                       
-                                
-                
-  
 
 const xor = (item, array) => {
   const index = array.indexOf(item);

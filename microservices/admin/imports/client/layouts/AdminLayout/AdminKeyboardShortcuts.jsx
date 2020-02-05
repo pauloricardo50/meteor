@@ -1,8 +1,6 @@
-//      
+//
 import React from 'react';
 import { GlobalHotKeys } from 'react-hotkeys';
-
-                                      
 
 const keyMap = {
   SEARCH: 'space',
@@ -16,9 +14,7 @@ const makeHandlers = ({ setOpenSearch }) => ({
   },
 });
 
-const AdminKeyboardShortcuts = ({
-  setOpenSearch,
-}                             ) => (
+const AdminKeyboardShortcuts = ({ setOpenSearch }) => (
   <GlobalHotKeys keyMap={keyMap} handlers={makeHandlers({ setOpenSearch })} />
 );
 

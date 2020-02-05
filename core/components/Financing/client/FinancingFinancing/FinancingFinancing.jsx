@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
@@ -54,9 +54,7 @@ const enableOffers = ({ loan }) => loan.enableOffers;
 const oneStructureHasLoan = ({ loan: { structures } }) =>
   structures.some(({ wantedLoan }) => wantedLoan);
 
-                                  
-
-const FinancingFinancing = (props                         ) => (
+const FinancingFinancing = props => (
   <FinancingSection
     summaryConfig={[
       {

@@ -1,11 +1,9 @@
-//      
+//
 import React from 'react';
 
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import Button from 'core/components/Button';
 import SolvencyItem from './SolvencyItem';
-
-                               
 
 const SolvencyResults = ({
   loan,
@@ -13,7 +11,7 @@ const SolvencyResults = ({
   organisations,
   showAll,
   setShowAll,
-}                      ) => (
+}) => (
   <>
     <Button primary onClick={() => setShowAll(!showAll)}>
       {showAll ? 'Afficher top 3' : 'Afficher tous'}

@@ -1,26 +1,18 @@
-//      
+//
 import React from 'react';
 import { ScrollSyncPane } from 'react-scroll-sync';
 
-                                         
 import FinancingLabels from '../FinancingLabels';
 import FinancingSingleHeader from './FinancingSingleHeader';
 import FinancingHeaderAdder from './FinancingHeaderAdder';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-
-                             
-                            
-                 
-                            
-                                  
-  
 
 const FinancingHeader = ({
   selectedStructure,
   loan,
   handleEditTitle,
   handleEditDescription,
-}                      ) => {
+}) => {
   const { structures, _id: loanId } = loan;
   return (
     <ScrollSyncPane>

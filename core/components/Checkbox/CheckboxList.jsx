@@ -1,16 +1,8 @@
-//      
+//
 import React from 'react';
 import Checkbox from './Checkbox';
 
-                            
-
-const CheckboxList = ({
-  options,
-  value,
-  onChange,
-  label,
-  className,
-}                   ) => (
+const CheckboxList = ({ options, value, onChange, label, className }) => (
   <div className={className}>
     <b>{label}</b>
 

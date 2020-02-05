@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { insertExternalProperty } from 'core/api/methods';
@@ -28,9 +28,7 @@ const schema = PropertySchema.pick(
   'externalId',
 );
 
-                                     
-
-const ExternalPropertyAdder = (props                            ) => (
+const ExternalPropertyAdder = props => (
   <AutoFormDialog
     schema={schema}
     onSubmit={property => insertExternalProperty.run({ property })}

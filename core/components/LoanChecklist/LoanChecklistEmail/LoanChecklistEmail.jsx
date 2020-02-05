@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import { formatMessage } from 'core/utils/server/intl';
@@ -9,9 +9,7 @@ import {
 import LoanChecklistEmailSection from './LoanChecklistEmailSection';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
-                                  
-
-const LoanChecklistEmail = (props                         ) => {
+const LoanChecklistEmail = props => {
   const { fields, documents } = getChecklistMissingInformations(
     props,
     formatMessage,

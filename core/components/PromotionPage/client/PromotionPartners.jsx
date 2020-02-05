@@ -1,7 +1,5 @@
-//      
+//
 import React from 'react';
-
-                                 
 
 const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
   if (!Object.keys(invitedByUser).length) {
@@ -30,7 +28,7 @@ const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
 const PromotionPartners = ({
   promotion: { documents: { logos = [] } = {}, contacts = [] },
   invitedByUser,
-}                        ) => {
+}) => {
   const mergedContacts = mergeInvitedByWithContacts({
     contacts,
     invitedByUser,

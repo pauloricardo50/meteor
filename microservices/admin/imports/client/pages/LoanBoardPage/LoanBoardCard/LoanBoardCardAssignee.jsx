@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -6,13 +6,7 @@ import { assignAdminToUser } from 'core/api/methods';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { employeesById } from 'core/arrays/epotekEmployees';
 
-                                     
-
-const LoanBoardCardAssignee = ({
-  admins,
-  renderComplex,
-  user,
-}                            ) => {
+const LoanBoardCardAssignee = ({ admins, renderComplex, user }) => {
   const { assignedEmployeeCache: assignee } = user || {};
   const img =
     (assignee && employeesById[assignee._id].src) || '/img/placeholder.png';

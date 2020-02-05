@@ -1,14 +1,9 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import { ORGANISATION_TAGS, ORGANISATION_TYPES } from 'core/api/constants';
-
-                                 
-                  
-                       
-  
 
 const filtersSchema = new SimpleSchema({
   tags: {
@@ -28,10 +23,7 @@ const filtersSchema = new SimpleSchema({
   },
 });
 
-const OrganisationFilters = ({
-  filters,
-  setFilters,
-}                          ) => (
+const OrganisationFilters = ({ filters, setFilters }) => (
   <AutoForm
     schema={filtersSchema}
     model={filters}

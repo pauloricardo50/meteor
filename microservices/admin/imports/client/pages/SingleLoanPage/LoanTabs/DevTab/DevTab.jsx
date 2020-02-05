@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import omit from 'lodash/omit';
 
@@ -17,9 +17,7 @@ import {
 } from 'core/api/constants';
 import SingleDevTab from './SingleDevTab';
 
-                      
-
-const DevTab = ({ loan }             ) => {
+const DevTab = ({ loan }) => {
   const { properties = [], borrowers = [], offers = [] } = loan;
 
   return (

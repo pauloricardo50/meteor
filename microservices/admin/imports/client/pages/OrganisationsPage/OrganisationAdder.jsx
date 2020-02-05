@@ -1,15 +1,11 @@
-//      
+//
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import Box from 'core/components/Box';
 import { OrganisationSchema } from 'core/api/organisations/organisations';
 
-                               
-                               
-  
-
-const OrganisationAdder = ({ insertOrganisation }                        ) => (
+const OrganisationAdder = ({ insertOrganisation }) => (
   <AutoFormDialog
     schema={OrganisationSchema.omit(
       'logo',

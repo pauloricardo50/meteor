@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Button from '../../../../Button';
@@ -6,10 +6,6 @@ import Icon from '../../../../Icon';
 import T from '../../../../Translation';
 import FinancingHeaderAdderContainer from './FinancingHeaderAdderContainer';
 import FinancingHeaderAdderDropdown from './FinancingHeaderAdderDropdown';
-
-                                  
-                      
-  
 
 const FinancingHeaderAdder = ({
   handleAdd,
@@ -19,7 +15,7 @@ const FinancingHeaderAdder = ({
   loan,
   openDialog,
   setDialogOpen,
-}                           ) => (
+}) => (
   <div className="financing-structures-single-header structure structure-adder">
     {/* Add a span to absorb all CSS styles applied to direct children of .structure */}
     <span>

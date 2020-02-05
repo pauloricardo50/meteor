@@ -8,8 +8,8 @@ const writeConnectToDBTmuxinator = ({
   mongoPort,
   sshId,
   environment,
-}) => {
-  return writeYAML({
+}) =>
+  writeYAML({
     file: `${__dirname}/ssh-tunnel-${sshId}.yml`,
     data: {
       name: `ssh-tunnel-${sshId}`,
@@ -44,12 +44,8 @@ const writeConnectToDBTmuxinator = ({
       ],
     },
   });
-};
 
-const main = () => {
-  return openSSHTunnel().then(credentials => {
-    return writeConnectToDBTmuxinator(credentials);
-  });
-};
+const main = () =>
+  openSSHTunnel().then(credentials => writeConnectToDBTmuxinator(credentials));
 
 main();

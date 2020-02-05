@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withState } from 'recompose';
@@ -9,8 +9,6 @@ import { proReferredByUsers } from 'core/api/users/queries';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { AutoFormDialog } from '../AutoForm2';
 import T from '../Translation';
-
-                                     
 
 const customerSchema = new SimpleSchema({
   email: String,
@@ -57,7 +55,7 @@ const PropertyCustomerAdder = ({
   model,
   setModel,
   loans = [],
-}                            ) => (
+}) => (
   <AutoFormDialog
     schema={customerSchema}
     model={model}

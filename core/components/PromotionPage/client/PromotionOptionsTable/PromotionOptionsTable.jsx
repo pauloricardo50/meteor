@@ -1,4 +1,4 @@
-//      
+//
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
 
@@ -8,8 +8,6 @@ import T from 'core/components/Translation';
 import TableWithModal from 'core/components/Table/TableWithModal';
 import PromotionOptionsTableContainer from './PromotionOptionsTableContainer';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
-
-                                     
 
 const PromotionOptionsTableComponent = PromotionOptionsTableContainer(
   ({ rows, columnOptions }) => (
@@ -42,7 +40,7 @@ const PromotionOptionsTableComponent = PromotionOptionsTableContainer(
   ),
 );
 
-const PromotionOptionsTable = ({ promotion }                            ) => {
+const PromotionOptionsTable = ({ promotion }) => {
   const [status, setStatus] = useState({
     $in: [
       PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,

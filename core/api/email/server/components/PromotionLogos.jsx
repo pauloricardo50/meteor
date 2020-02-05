@@ -1,9 +1,5 @@
-//      
+//
 import React from 'react';
-
-                            
-                  
-  
 
 // This component expects to be put inside a tbody:
 
@@ -19,7 +15,7 @@ import React from 'react';
     <tbody mc:edit="logos" />
   </table>; */
 
-const PromotionLogos = ({ logoUrls }                     ) => (
+const PromotionLogos = ({ logoUrls }) => (
   <>
     {logoUrls.map((url, index) => (
       <tr key={url}>

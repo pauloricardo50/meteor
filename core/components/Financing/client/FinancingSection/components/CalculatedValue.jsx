@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 import cx from 'classnames';
 import { compose } from 'recompose';
@@ -7,14 +7,6 @@ import { toMoney } from '../../../../../utils/conversionFunctions';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import { Percent } from '../../../../Translation';
-
-                             
-                
-                  
-                    
-                      
-                          
-  
 
 export const FORMATS = {
   MONEY: 'MONEY',
@@ -40,7 +32,7 @@ const CalculatedValue = ({
   children,
   rightElement,
   ...props
-}                      ) => {
+}) => {
   const displayValue = typeof value === 'function' ? value(props) : value;
 
   return (

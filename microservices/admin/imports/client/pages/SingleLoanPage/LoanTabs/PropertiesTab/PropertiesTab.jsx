@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -6,10 +6,6 @@ import PercentWithStatus from 'core/components/PercentWithStatus';
 import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
 import Calculator from 'core/utils/Calculator';
 import SinglePropertyPage from '../../../SinglePropertyPage';
-
-                           
-               
-  
 
 const propertiesTabLabel = (loan, property, index) => {
   const progress = Calculator.propertyPercent({ loan, property });
@@ -26,7 +22,7 @@ const propertiesTabLabel = (loan, property, index) => {
   );
 };
 
-const PropertiesTab = ({ loan }                    ) => {
+const PropertiesTab = ({ loan }) => {
   const { properties, userId, _id: loanId, hasPromotion } = loan;
   return (
     <div className="properties-tab">
