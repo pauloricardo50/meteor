@@ -27,7 +27,7 @@ async function updateForGroup(name) {
     servers[serverName] = {
       host: external,
       username: 'mup',
-      pem: '../id_rsa',
+      pem: '~/.ssh/epotek',
     };
   }
 
