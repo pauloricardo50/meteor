@@ -1,12 +1,8 @@
-// @flow
+//
 import React from 'react';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import Icon from 'core/components/Icon';
-
-type SingleContactPageInfosProps = {
-  contact: Object,
-};
 
 const getAddress = ({ address, organisations }) => {
   const { address: organisationAddress } =
@@ -14,7 +10,7 @@ const getAddress = ({ address, organisations }) => {
   return organisationAddress || address;
 };
 
-const SingleContactPageInfos = ({ contact }: SingleContactPageInfosProps) => {
+const SingleContactPageInfos = ({ contact }) => {
   const { organisations = [], email, phoneNumbers } = contact;
   return (
     <div className="single-contact-page-infos">

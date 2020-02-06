@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 import { TranchePicker } from './TranchePicker';
 import DialogSimple from '../DialogSimple';
 import Button from '../Button';
 import TranchePickerContainer from './TranchePickerContainer';
-
-type TranchePickerDialogProps = {};
 
 const tranchesAreValid = tranches => {
   const sum = tranches.reduce((total, { value }) => total + value, 0);
@@ -21,7 +19,7 @@ const TranchePickerDialog = ({
   handleSave,
   disabled,
   ...props
-}: TranchePickerDialogProps) => (
+}) => (
   <DialogSimple
     title={title}
     actions={handleClose => [

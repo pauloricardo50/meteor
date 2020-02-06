@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose } from 'recompose';
@@ -12,13 +12,6 @@ import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api';
 import UserDialogFormContainer from './UserDialogFormContainer';
-
-type UserAdderProps = {
-  schema: Object,
-  currentUser: Object,
-  createUser: Function,
-  labels: Array<Object>,
-};
 
 export const userFormLayout = [
   {
@@ -47,7 +40,7 @@ const UserAdder = ({
   createUser,
   labels,
   organisations = [],
-}: UserAdderProps) => (
+}) => (
   <AutoFormDialog
     title={<T id="UserAdder.buttonLabel" />}
     schema={schema.extend(

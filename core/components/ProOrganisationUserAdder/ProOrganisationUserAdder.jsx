@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,8 +6,6 @@ import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import IconButton from 'core/components/IconButton';
 import { proInviteUserToOrganisation } from 'core/api/methods';
 import T from '../Translation';
-
-type ProOrganisationUserAdderProps = {};
 
 const schema = new SimpleSchema({
   email: String,
@@ -28,7 +26,7 @@ const ProOrganisationUserAdder = ({
   organisationId,
   organisationName,
   trigger,
-}: ProOrganisationUserAdderProps) => (
+}) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={onSubmit({ organisationId })}

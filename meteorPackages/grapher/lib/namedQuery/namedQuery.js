@@ -4,9 +4,9 @@ import NamedQueryServer from './namedQuery.server';
 let NamedQuery;
 
 if (Meteor.isServer) {
-    NamedQuery = NamedQueryServer;
+  NamedQuery = NamedQueryServer;
 } else {
-    NamedQuery = NamedQueryClient;
+  NamedQuery = NamedQueryClient;
 }
 
 export default NamedQuery;

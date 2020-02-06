@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import DropdownMenu from 'core/components/DropdownMenu';
@@ -6,12 +6,7 @@ import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { USERS_COLLECTION } from 'core/api/constants';
 import ReferredByAssignDropdownContainer from './ReferredByAssignDropdownContainer';
 
-type ReferredByAssignDropdownProps = {};
-
-const ReferredByAssignDropdown = ({
-  options,
-  referredByUser,
-}: ReferredByAssignDropdownProps) => (
+const ReferredByAssignDropdown = ({ options, referredByUser }) => (
   <div className="flex-row center space-children">
     <span className="flex-row center space-children">
       Référé par&nbsp;

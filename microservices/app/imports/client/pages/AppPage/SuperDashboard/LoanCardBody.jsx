@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import { createRoute } from 'core/utils/routerUtils';
@@ -7,12 +7,7 @@ import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import LoanProgress from './LoanProgress';
 
-type LoanCardBodyProps = {
-  loan: Object,
-  history: Object,
-};
-
-const LoanCardBody = ({ loan, history }: LoanCardBodyProps) => {
+const LoanCardBody = ({ loan, history }) => {
   const { _id: loanId, borrowers = [], step } = loan;
   return (
     <div className="loan-card-body">

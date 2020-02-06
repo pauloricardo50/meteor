@@ -1,13 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 
-type PromotionsTabProps = {};
-
-const PromotionsTab = ({ loan }: PromotionsTabProps) => {
+const PromotionsTab = ({ loan }) => {
   const [promotion] = loan.promotions;
 
   return (

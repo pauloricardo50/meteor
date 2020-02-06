@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
 import useLoanContacts from 'core/components/AdminNote/useLoanContacts';
-
-type SingleLoanPageContactsProps = {};
 
 const Contact = ({
   name,
@@ -51,7 +49,7 @@ const Contact = ({
   </div>
 );
 
-const SingleLoanPageContacts = ({ loanId }: SingleLoanPageContactsProps) => {
+const SingleLoanPageContacts = ({ loanId }) => {
   const { loading, contacts } = useLoanContacts(loanId);
   return (
     <div className="single-loan-page-contacts card1 card-top">

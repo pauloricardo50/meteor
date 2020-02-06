@@ -1,4 +1,4 @@
-// @flow
+//
 
 import React, { useState, useMemo, useEffect } from 'react';
 import moment from 'moment';
@@ -20,8 +20,6 @@ import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 import { revenuesFilter } from './revenuePageHelpers';
 import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
-
-type RevenuesPageCalendarProps = {};
 
 const getMonths = ({ startDate, endDate }) => {
   const clonedStartDate = moment(startDate);
@@ -68,7 +66,7 @@ const groupRevenues = revenues =>
     return { ...obj, [id]: [revenue] };
   }, {});
 
-const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
+const RevenuesPageCalendar = props => {
   const [type, setType] = useState();
   const [secondaryType, setSecondaryType] = useState();
   const [assignee, setAssignee] = useState(null);

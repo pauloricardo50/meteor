@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 import pick from 'lodash/pick';
 
 import AutoForm, { CustomAutoField } from '../AutoForm2';
 import { updateDocument, schemas } from '../../api';
-
-type UpdateFieldProps = {};
 
 const makeOnSubmit = ({ collection, doc, fields, onSuccess }) => values =>
   updateDocument
@@ -21,7 +19,7 @@ const UpdateField = ({
   onSubmitCallback = () => ({}),
   extendSchema = {},
   ...props
-}: UpdateFieldProps) => (
+}) => (
   <AutoForm
     autosave
     schema={schemas[collection].pick(...fields).extend(extendSchema)}

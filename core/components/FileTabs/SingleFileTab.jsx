@@ -1,4 +1,4 @@
-// @flow
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -18,15 +18,6 @@ import {
 } from '../../api/files/documents';
 
 import UploaderCategories from './UploaderCategories';
-
-type SingleFileTabProps = {
-  collection: Sring,
-  doc: Object,
-  disabled: Boolean,
-  documentArray: Array<Object>,
-  currentUser: Object,
-  loan: Object,
-};
 
 const documentsToDisplay = ({ collection, loan, id }) => {
   switch (collection) {
@@ -50,7 +41,7 @@ const documentsToHide = ({ doc, collection, loan, id }) => {
   );
 };
 
-const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
+const SingleFileTab = ({ documentArray, ...props }) => {
   const {
     collection,
     loan,

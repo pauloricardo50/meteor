@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -27,14 +27,6 @@ import {
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
 import { updateDocument } from '../../api/methods/methodDefinitions';
-
-type StatusLabelProps = {
-  status: string,
-  collection: string,
-  suffix?: string,
-  label: React.Node,
-  color: string,
-};
 
 export const getStatuses = collection => {
   switch (collection) {
@@ -177,7 +169,7 @@ const StatusLabel = ({
   showTooltip = true,
   method,
   className,
-}: StatusLabelProps) => {
+}) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
     allowModify,

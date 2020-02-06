@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import { promotionOptionRemove } from 'core/api/methods';
@@ -7,15 +7,13 @@ import Checkbox from '../../../Checkbox';
 import PromotionLotDetail from '../PromotionLotDetail';
 import RequestReservation from './RequestReservation';
 
-type PromotionOptionDialogProps = {};
-
 const PromotionOptionDialog = ({
   open,
   promotionOption = { promotionLots: [{}] },
   handleClose,
   promotion,
   loan,
-}: PromotionOptionDialogProps) => {
+}) => {
   const { promotionLots } = promotionOption;
   const [promotionLot] = promotionLots;
   const { name } = promotionLot;

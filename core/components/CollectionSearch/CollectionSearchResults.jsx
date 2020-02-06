@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Paper from '@material-ui/core/Paper';
@@ -8,19 +8,6 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 import List, { ListItem } from '../List';
 import Loading from '../Loading/Loading';
-
-type CollectionSearchResultsProps = {
-  type: String,
-  showResults: Boolean,
-  inputEl: React.Element,
-  hideResults: Boolean,
-  isLoading: Boolean,
-  isEmpty: Boolean,
-  results: Array,
-  renderItem: Function,
-  onClickItem: Function,
-  disableitem: Function,
-};
 
 const ItemsPopper = ({
   showResults,
@@ -104,10 +91,7 @@ const ItemsList = ({
     </List>
   ) : null;
 
-const CollectionSearchResults = ({
-  type,
-  ...props
-}: CollectionSearchResultsProps) => {
+const CollectionSearchResults = ({ type, ...props }) => {
   switch (type) {
     case 'popper':
       return <ItemsPopper {...props} />;

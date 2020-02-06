@@ -1,13 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import StatusLabel from 'core/components/StatusLabel';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 
-type PromotionListProps = {};
-
-const PromotionList = ({ promotions }: PromotionListProps) => (
+const PromotionList = ({ promotions }) => (
   <div className="promotion-list">
     <h3>Promotions</h3>
     {promotions.map(({ name, status, _id }) => (

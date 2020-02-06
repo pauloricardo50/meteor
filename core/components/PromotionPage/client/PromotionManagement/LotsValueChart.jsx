@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { faChartPie } from '@fortawesome/pro-light-svg-icons/faChartPie';
 
@@ -6,9 +6,7 @@ import BaseChart from 'core/components/charts/BaseChart';
 import EmptyChartState from 'core/components/charts/EmptyChartState';
 import LotsValueChartContainer from './LotsValueChartContainer';
 
-type LotsValueChartProps = { config: Object, data: Array };
-
-const LotsValueChart = ({ config, data = [] }: LotsValueChartProps) => (
+const LotsValueChart = ({ config, data = [] }) => (
   <div className="chart">
     {data.length ? (
       <BaseChart config={config} data={data} />

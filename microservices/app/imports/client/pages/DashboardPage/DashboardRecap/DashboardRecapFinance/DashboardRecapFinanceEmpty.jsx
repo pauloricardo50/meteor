@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
@@ -8,11 +8,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
 import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
-type DashboardRecapFinanceEmptyProps = {};
-
-const DashboardRecapFinanceEmpty = ({
-  loan,
-}: DashboardRecapFinanceEmptyProps) => (
+const DashboardRecapFinanceEmpty = ({ loan }) => (
   <div className="dashboard-recap-finance card1 dashboard-recap-finance-empty">
     <FontAwesomeIcon icon={faChartBar} className="icon" />
     <h3>

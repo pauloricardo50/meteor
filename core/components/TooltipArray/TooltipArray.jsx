@@ -1,21 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import StickyPopover from '../StickyPopover';
 
-type TooltipArrayProps = {
-  items: Array<String>,
-  displayLimit: Number,
-  title: String,
-  className?: String,
-};
-
-const TooltipArray = ({
-  items = [],
-  displayLimit = 1,
-  title,
-  className,
-}: TooltipArrayProps) => {
+const TooltipArray = ({ items = [], displayLimit = 1, title, className }) => {
   const firstItems = items.slice(0, displayLimit);
   const remainingItems = items.slice(displayLimit);
 

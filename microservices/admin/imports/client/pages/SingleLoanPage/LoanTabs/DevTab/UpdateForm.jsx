@@ -1,10 +1,8 @@
-// @flow
+//
 import React, { useState } from 'react';
 import { updateDocument, updateDocumentUnset } from 'core/api/methods/index';
 
-type UpdateFormProps = {};
-
-const UpdateForm = ({ id, collection }: UpdateFormProps) => {
+const UpdateForm = ({ id, collection }) => {
   const [$set, setSet] = useState('');
   const [$unset, setUnset] = useState('');
   return (

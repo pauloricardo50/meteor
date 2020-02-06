@@ -1,4 +1,4 @@
-// @flow
+//
 import { withRouter, matchPath } from 'react-router-dom';
 import isArray from 'lodash/isArray';
 import { compose, mapProps } from 'recompose';
@@ -6,11 +6,7 @@ import { compose, mapProps } from 'recompose';
 // Lets you pass a param as a string, or an array of params, and you will get
 // them as simple props from react-router, instead of drilling down
 // match.params.paramName
-export default (
-  paramName: string | string[] | (() => string),
-  path,
-  { passProps } = {},
-) =>
+export default (paramName, path, { passProps } = {}) =>
   compose(
     withRouter,
     mapProps(({ match, history, location, ...rest }) => {

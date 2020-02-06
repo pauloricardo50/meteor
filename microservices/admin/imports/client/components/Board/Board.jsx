@@ -1,9 +1,7 @@
-// @flow
+//
 import React from 'react';
 
 import BoardColumn from './BoardColumn';
-
-type BoardProps = {};
 
 const Board = ({
   data = [],
@@ -11,7 +9,7 @@ const Board = ({
   columnHeaderProps,
   columnItem,
   columnItemProps,
-}: BoardProps) => (
+}) => (
   <div className="board">
     {data.map(columnData => (
       <BoardColumn

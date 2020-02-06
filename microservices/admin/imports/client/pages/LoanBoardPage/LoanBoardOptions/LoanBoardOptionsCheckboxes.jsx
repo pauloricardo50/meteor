@@ -1,10 +1,8 @@
-// @flow
+//
 import React from 'react';
 
 import StickyPopover from 'core/components/StickyPopover';
 import CheckboxList from 'core/components/Checkbox/CheckboxList';
-
-type LoanBoardOptionsCheckboxesProps = {};
 
 const renderCheckboxValue = (values, options) =>
   values.map(i => {
@@ -12,12 +10,7 @@ const renderCheckboxValue = (values, options) =>
     return <div key={i}>{value.label}</div>;
   });
 
-const LoanBoardOptionsCheckboxes = ({
-  label,
-  options,
-  value,
-  onChange,
-}: LoanBoardOptionsCheckboxesProps) => {
+const LoanBoardOptionsCheckboxes = ({ label, options, value, onChange }) => {
   const optionsToDisplay = options.filter(
     ({ hide, id }) => !hide || value.includes(id),
   );

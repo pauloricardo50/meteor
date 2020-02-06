@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,8 +6,6 @@ import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 import { RESIDENCE_TYPE, CANTONS } from 'core/api/constants';
 import DropdownMenu from '../../../../DropdownMenu';
-
-type FinancingHeaderAdderDropdownProps = {};
 
 const getSchema = ({ residenceType }) =>
   new SimpleSchema({
@@ -31,7 +29,7 @@ const FinancingHeaderAdderDropdown = ({
   loan,
   openDialog,
   setDialogOpen,
-}: FinancingHeaderAdderDropdownProps) => (
+}) => (
   <>
     <DropdownMenu
       iconType={isLoading ? 'loop-spin' : 'more'}

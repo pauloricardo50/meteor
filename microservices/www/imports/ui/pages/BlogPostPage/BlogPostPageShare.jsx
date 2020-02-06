@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import FacebookShareButton from 'react-share/lib/FacebookShareButton';
 import LinkedinShareButton from 'react-share/lib/LinkedinShareButton';
@@ -9,9 +9,7 @@ import LinkedinIcon from 'react-share/lib/LinkedinIcon';
 import WhatsappIcon from 'react-share/lib/WhatsappIcon';
 import EmailIcon from 'react-share/lib/EmailIcon';
 
-type BlogPostPageShareProps = {};
-
-const BlogPostPageShare = ({ title }: BlogPostPageShareProps) => {
+const BlogPostPageShare = ({ title }) => {
   const url = window.location.href;
   return (
     <>

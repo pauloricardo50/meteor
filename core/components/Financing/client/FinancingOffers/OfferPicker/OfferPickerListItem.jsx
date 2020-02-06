@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 import { toClass } from 'recompose';
@@ -9,9 +9,7 @@ import CounterpartsOfferIcon from '../../../../CounterpartsOfferIcon';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 import OfferPickerListItemInterests from './OfferPickerListItemInterests';
 
-type OfferPickerListItemProps = {};
-
-const OfferPickerListItem = (props: OfferPickerListItemProps) => {
+const OfferPickerListItem = props => {
   const { offer, selected, structure, handleClick, displayDetail } = props;
   const {
     organisation: { name, logo },

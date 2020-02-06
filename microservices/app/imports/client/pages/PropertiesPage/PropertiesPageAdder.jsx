@@ -1,12 +1,10 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
 
-type PropertiesPageAdderProps = {};
-
-const PropertiesPageAdder = ({ loanId }: PropertiesPageAdderProps) => (
+const PropertiesPageAdder = ({ loanId }) => (
   <div className="properties-page-detail property-adder card1 card-hover">
     <PropertyAdder
       loanId={loanId}

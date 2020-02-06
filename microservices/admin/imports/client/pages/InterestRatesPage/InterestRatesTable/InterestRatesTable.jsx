@@ -1,15 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import Table, { ORDER } from 'core/components/Table';
 import InterestRatesTableContainer from './InterestRatesTableContainer';
 import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
-
-type InterestRatesTableProps = {
-  rows: Array<Object>,
-  columnOptions: Array<Object>,
-  currentInterestRates: Array<Object>,
-};
 
 const InterestRatesTable = ({
   rows,
@@ -17,7 +11,7 @@ const InterestRatesTable = ({
   showDialog,
   setShowDialog,
   interestRatesToModify,
-}: InterestRatesTableProps) => (
+}) => (
   <>
     <Table
       columnOptions={columnOptions}

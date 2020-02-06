@@ -1,4 +1,4 @@
-// @flow
+//
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
 import {
@@ -172,7 +172,12 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       };
     }
 
-    getMissingPropertyDocuments({ loan, structureId, property, basicDocumentsOnly }) {
+    getMissingPropertyDocuments({
+      loan,
+      structureId,
+      property,
+      basicDocumentsOnly,
+    }) {
       const selectedProperty = this.selectProperty({ loan, structureId });
       const propertyToCalculateWith = property || selectedProperty;
 

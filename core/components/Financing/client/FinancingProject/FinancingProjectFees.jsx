@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 
@@ -10,14 +10,7 @@ import Recap from '../../../Recap';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import Calculator from '../../../../utils/Calculator';
 
-type FinancingProjectFeesProps = {
-  classname: string,
-};
-
-const FinancingProjectFees = ({
-  className,
-  ...props
-}: FinancingProjectFeesProps) => {
+const FinancingProjectFees = ({ className, ...props }) => {
   const { loan, structureId } = props;
   const canton = Calculator.selectPropertyKey({
     loan,

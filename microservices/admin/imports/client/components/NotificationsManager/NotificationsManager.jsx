@@ -1,4 +1,4 @@
-// @flow
+//
 import React, { Component } from 'react';
 
 import Icon from 'core/components/Icon';
@@ -6,8 +6,6 @@ import StickyPopover from 'core/components/StickyPopover';
 import { adminNotifications } from 'core/api/notifications/queries';
 import NotificationsManagerContainer from './NotificationsManagerContainer';
 import NotificationList from './NotificationList';
-
-type NotificationsManagerProps = {};
 
 class NotificationsManager extends Component {
   constructor(props) {

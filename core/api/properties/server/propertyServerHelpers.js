@@ -80,14 +80,14 @@ export const makeProPropertyLoanAnonymizer = ({
     const shouldAnonymizeUser =
       anonymize === undefined
         ? propertiesPermissionsAndStatus
-          .map(({ permissions, status: propertyStatus }) =>
-            clientShouldAnonymize({
-              customerOwnerType,
-              permissions,
-              propertyStatus,
-            }),
-          )
-          .every(anonymizeForProperty => anonymizeForProperty)
+            .map(({ permissions, status: propertyStatus }) =>
+              clientShouldAnonymize({
+                customerOwnerType,
+                permissions,
+                propertyStatus,
+              }),
+            )
+            .every(anonymizeForProperty => anonymizeForProperty)
         : anonymize;
 
     return anonymizeLoan({ loan, shouldAnonymize: shouldAnonymizeUser });

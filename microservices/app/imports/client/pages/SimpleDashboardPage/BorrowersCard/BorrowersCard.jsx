@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -10,9 +10,7 @@ import BorrowersForm from './BorrowersForm/BorrowersForm';
 import BorrowersCardHeader from './BorrowersCardHeader';
 import { shouldHighlightNextStep } from '../SimpleDashboardPageCTAs';
 
-type BorrowersCardProps = {};
-
-const BorrowersCard = (props: BorrowersCardProps) => {
+const BorrowersCard = props => {
   const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;
   const { borrowers = [], maxPropertyValue } = loan;
   const canHighlightCTA = !shouldHighlightNextStep(maxPropertyValue);

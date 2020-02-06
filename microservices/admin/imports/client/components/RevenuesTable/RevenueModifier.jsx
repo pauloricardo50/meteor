@@ -1,15 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Button from 'core/components/Button/Button';
 import RevenueDialogFormContainer from './RevenueDialogFormContainer';
-
-type RevenueModifierProps = {
-  schema: Object,
-  model: Object,
-  modifyRevenue: Function,
-};
 
 const RevenueModifier = ({
   schema,
@@ -21,7 +15,7 @@ const RevenueModifier = ({
   deleteRevenue,
   layout,
   description,
-}: RevenueModifierProps) => (
+}) => (
   <AutoFormDialog
     noButton
     schema={schema}

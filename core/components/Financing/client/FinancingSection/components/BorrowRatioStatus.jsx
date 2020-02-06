@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { toMoney } from 'core/utils/conversionFunctions';
 import {
@@ -7,8 +7,6 @@ import {
 } from '../../FinancingResult/financingResultHelpers';
 import T from '../../../../Translation';
 import { FinmaRatio } from '.';
-
-type BorrowRatioStatusProps = {};
 
 const formatValues = values => {
   if (!values) {
@@ -31,7 +29,7 @@ const formatValues = values => {
   };
 };
 
-const BorrowRatioStatus = (props: BorrowRatioStatusProps) => {
+const BorrowRatioStatus = props => {
   const borrowRatio = getBorrowRatio(props);
   const {
     status,

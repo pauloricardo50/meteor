@@ -1,18 +1,7 @@
-// @flow
+//
 import React, { Component } from 'react';
 
-type FinancingLabelProps = {
-  children: React.Node,
-  id?: string,
-};
-type FinancingLabelState = {
-  height: number,
-};
-
-export default class FinancingLabel extends Component<
-  FinancingLabelProps,
-  FinancingLabelState,
-> {
+export default class FinancingLabel extends Component {
   constructor(props) {
     super(props);
     this.state = { height: 0 };

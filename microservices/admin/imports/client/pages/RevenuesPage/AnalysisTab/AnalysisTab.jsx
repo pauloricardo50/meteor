@@ -1,4 +1,4 @@
-// @flow
+//
 
 import React, { useState, useEffect } from 'react';
 import PivotTableUI from 'react-pivottable/PivotTableUI';
@@ -14,11 +14,9 @@ import { useAnalysisData } from './AnalysisTabContainer';
 import SavedAnalyses from './SavedAnalyses';
 import AnalysisActions from './AnalysisActions';
 
-type AnalysisTabProps = {};
-
 const PlotlyRenderers = createPlotlyRenderers(Plot);
 
-const AnalysisTab = ({ intl: { formatMessage } }: AnalysisTabProps) => {
+const AnalysisTab = ({ intl: { formatMessage } }) => {
   const [state, setState] = useState();
   const [queuedState, setQueuedState] = useState();
   const [collection, setCollection] = useState();

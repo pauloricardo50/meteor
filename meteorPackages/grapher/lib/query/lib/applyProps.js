@@ -1,17 +1,17 @@
 const restrictOptions = [
-    'disableOplog',
-    'pollingIntervalMs',
-    'pollingThrottleMs'
+  'disableOplog',
+  'pollingIntervalMs',
+  'pollingThrottleMs',
 ];
 
 export default function applyProps(node) {
-    let filters = Object.assign({}, node.props.$filters);
-    let options = Object.assign({}, node.props.$options);
+  const filters = { ...node.props.$filters };
+  let options = { ...node.props.$options };
 
-    options = _.omit(options, ...restrictOptions);
-    options.fields = options.fields || {};
+  options = _.omit(options, ...restrictOptions);
+  options.fields = options.fields || {};
 
-    node.applyFields(filters, options);
-    
-    return {filters, options};
+  node.applyFields(filters, options);
+
+  return { filters, options };
 }

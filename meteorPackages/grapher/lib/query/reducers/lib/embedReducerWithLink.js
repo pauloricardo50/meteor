@@ -1,8 +1,8 @@
 import {
   handleAddField,
   handleAddElement,
-  handleAddReducer
-} from "./createReducers";
+  handleAddReducer,
+} from './createReducers';
 
 /**
  * Embeds the reducer body with a collection body
@@ -12,10 +12,10 @@ import {
 export default function embedReducerWithLink(
   reducerNode,
   reducerBody,
-  collectionNode
+  collectionNode,
 ) {
   _.each(reducerBody, (value, key) => {
-    const collection = collectionNode.collection;
+    const { collection } = collectionNode;
 
     if (_.isObject(value)) {
       // nested field or link
@@ -36,7 +36,7 @@ export default function embedReducerWithLink(
             embedReducerWithLink(
               reducerNode,
               value,
-              collectionNode.getCollectionNode(key)
+              collectionNode.getCollectionNode(key),
             );
           }
           return;

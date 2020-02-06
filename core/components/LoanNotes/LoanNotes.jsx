@@ -1,4 +1,4 @@
-// @flow
+//
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import moment from 'moment';
@@ -7,10 +7,6 @@ import cx from 'classnames';
 import { employeesById } from '../../arrays/epotekEmployees';
 import AdminNoteAdder from '../AdminNote/AdminNoteAdder';
 import Button from '../Button';
-
-type LoanNotesProps = {
-  loan: Object,
-};
 
 const isAdmin = Meteor.microservice === 'admin';
 
@@ -23,7 +19,7 @@ const LoanNotes = ({
     user: { referredByUser } = {},
   },
   title = 'Notes',
-}: LoanNotesProps) => {
+}) => {
   const [showAll, setShowAll] = useState(false);
   const notes = isAdmin ? adminNotes : proNotes;
   const shownNotes = notes.slice(0, showAll ? undefined : 2);

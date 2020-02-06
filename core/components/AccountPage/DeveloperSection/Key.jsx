@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { withState } from 'recompose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,14 +8,6 @@ import moment from 'moment';
 import Button from '../../Button';
 import T from '../../Translation';
 import RsaKey from './RsaKey';
-
-type KeyProps = {
-  keyValue: String,
-  createdAt: Date,
-  type: String,
-  hideKey: boolean,
-  setHideKey: Function,
-};
 
 const copyKeyToClipboard = key => {
   const dummyInput = document.createElement('textarea');
@@ -39,7 +31,7 @@ const formatKey = keyValue => {
   return `${header}\n${key.match(/.{1,45}/g).join('\n')}\n${footer}`;
 };
 
-const Key = ({ keyValue, createdAt, type, hideKey, setHideKey }: KeyProps) => (
+const Key = ({ keyValue, createdAt, type, hideKey, setHideKey }) => (
   <>
     <div className="key">
       <FontAwesomeIcon icon={faKey} className={`solid icon ${type}-key-icon`} />

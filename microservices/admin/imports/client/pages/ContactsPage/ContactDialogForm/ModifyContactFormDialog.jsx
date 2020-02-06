@@ -1,17 +1,10 @@
-// @flow
+//
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import ContactDialogFormContainer from './ContactDialogFormContainer';
-
-type ModifyContactDialogFormProps = {
-  contact: Object,
-  removeContact: Function,
-  modifyContact: Function,
-  schema: Object,
-};
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {
   const { _id: organisationId } =
@@ -24,7 +17,7 @@ const ModifyContactDialogForm = ({
   removeContact,
   modifyContact,
   schema,
-}: ModifyContactDialogFormProps) => (
+}) => (
   <AutoFormDialog
     schema={schema}
     model={{

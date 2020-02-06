@@ -1,12 +1,10 @@
-// @flow
+//
 import React from 'react';
 
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import { LOAN_CATEGORIES } from 'imports/core/api/constants';
 import { LOAN_STATUS, REVENUE_TYPES } from 'core/api/constants';
-
-type MonitoringFiltersProps = {};
 
 const MonitoringFilters = ({
   category,
@@ -22,7 +20,7 @@ const MonitoringFilters = ({
   referringOrganisationId,
   revenueType,
   additionalFilters = [],
-}: MonitoringFiltersProps) => (
+}) => (
   <div className="flex">
     <div className="flex-col mr-16">
       <h4>Affichage</h4>

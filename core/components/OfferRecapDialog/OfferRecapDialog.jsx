@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Dialog from '../Material/Dialog';
@@ -7,17 +7,7 @@ import T from '../Translation';
 import OfferRecapDialogContainer from './OfferRecapDialogContainer';
 import OfferRecapDialogContent from './OfferRecapDialogContent';
 
-type OfferRecapDialogProps = {
-  open: Boolean,
-  handleClose: Function,
-  offerDialog: Object,
-};
-
-const OfferRecapDialog = ({
-  open,
-  handleClose,
-  offerDialog,
-}: OfferRecapDialogProps) => (
+const OfferRecapDialog = ({ open, handleClose, offerDialog }) => (
   <Dialog
     open={open}
     onClose={handleClose}

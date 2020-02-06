@@ -1,4 +1,4 @@
-// @flow
+//
 import { useContext } from 'react';
 import {
   compose,

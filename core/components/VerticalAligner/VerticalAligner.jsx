@@ -1,12 +1,5 @@
-// @flow
+//
 import React, { Component } from 'react';
-
-type VerticalAlignerProps = {
-  children: React.Node,
-  id: String,
-  nb: Number,
-  defaultMargin?: Number,
-};
 
 const getOffset = el => {
   let _y = 0;
@@ -104,7 +97,7 @@ const pollForChild = className => {
   });
 };
 
-class VerticalAligner extends Component<VerticalAlignerProps> {
+class VerticalAligner extends Component {
   async componentDidMount() {
     const { defaultMargin, id } = this.props;
     const className = this.getClassName();

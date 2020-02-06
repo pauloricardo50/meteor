@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Calculator from '../../../../../../utils/Calculator';
@@ -9,8 +9,6 @@ import {
 } from '../../../../../properties/propertyConstants';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
-
-type PdfPropertyDetailsProps = {};
 
 const getPropertyRows = loan => {
   const {
@@ -160,7 +158,7 @@ const getPropertyRows = loan => {
   ];
 };
 
-const PdfPropertyDetails = ({ loan, style }: PdfPropertyDetailsProps) => (
+const PdfPropertyDetails = ({ loan, style }) => (
   <PdfTable
     style={style}
     rows={getPropertyRows(loan)}

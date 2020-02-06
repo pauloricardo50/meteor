@@ -1,13 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { ROLES } from 'core/api/constants';
 import { removeUser } from 'core/api';
 
-type UserDeleterProps = {};
-
-const UserDeleter = ({ currentUser, user }: UserDeleterProps) => {
+const UserDeleter = ({ currentUser, user }) => {
   if (!currentUser || !currentUser.roles.includes(ROLES.DEV)) {
     return null;
   }

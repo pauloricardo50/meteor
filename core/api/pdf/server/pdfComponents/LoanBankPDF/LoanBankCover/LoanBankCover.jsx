@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import moment from 'moment';
 
@@ -8,10 +8,6 @@ import Calculator from '../../../../../../utils/Calculator';
 import PdfPage from '../../PdfPage';
 import LoanBankCoverHeader from './LoanBankCoverHeader';
 import StructureRecapTable from './StructureRecapTable';
-
-type LoanBankCoverProps = {
-  loan: Object,
-};
 
 const footer = ({ name, email, phoneNumbers }) => (
   <div className="cover-footer">
@@ -111,7 +107,7 @@ const LoanBankCover = ({
   organisation,
   structureIds,
   backgroundInfo,
-}: LoanBankCoverProps) => (
+}) => (
   <PdfPage
     className="cover-page"
     fullHeight

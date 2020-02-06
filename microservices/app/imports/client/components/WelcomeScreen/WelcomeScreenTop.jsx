@@ -1,4 +1,4 @@
-// @flow
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -6,8 +6,6 @@ import React from 'react';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import Checkbox from 'core/components/Checkbox';
-
-type WelcomeScreenTopProps = {};
 
 const WelcomeScreenTop = ({
   handleClick,
@@ -17,7 +15,7 @@ const WelcomeScreenTop = ({
   buttonProps,
   cta,
   img,
-}: WelcomeScreenTopProps) => (
+}) => (
   <div className="card1 welcome-screen-top">
     <div className="welcome-screen-top-text">
       <h1 className="text-center">

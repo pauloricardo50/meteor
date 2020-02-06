@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import Box from '../../../Box';
 import Recap from '../../../Recap';
 import T, { MetricArea, Money } from '../../../Translation';
-
-type PromotionLotDetailRecapsProps = {};
 
 const getPromotionLotValueRecapArray = promotionLot => {
   const { lots = [], properties } = promotionLot;
@@ -117,9 +115,7 @@ const getPromotionLotRecapArray = promotionLot => {
   ];
 };
 
-const PromotionLotDetailRecaps = ({
-  promotionLot,
-}: PromotionLotDetailRecapsProps) => (
+const PromotionLotDetailRecaps = ({ promotionLot }) => (
   <>
     <Box>
       <Recap array={getPromotionLotValueRecapArray(promotionLot)} />

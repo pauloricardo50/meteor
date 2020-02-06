@@ -1,12 +1,10 @@
-// @flow
+//
 import React from 'react';
 
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';
 import { Money } from 'core/components/Translation';
-
-type SolvencyItemProps = {};
 
 const SolvencyItem = ({
   loan,
@@ -15,7 +13,7 @@ const SolvencyItem = ({
   maxBorrowRatio,
   organisations,
   showAll,
-}: SolvencyItemProps) => {
+}) => {
   const defaultSolvency = Calculator.getMaxPropertyValueForLoan({
     loan,
     maxBorrowRatio,

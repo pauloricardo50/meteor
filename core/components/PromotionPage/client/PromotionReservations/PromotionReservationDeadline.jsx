@@ -1,4 +1,4 @@
-// @flow
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -17,14 +17,12 @@ import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
 import IconButton from '../../../IconButton';
 
-type PromotionReservationDeadlineProps = {};
-
 const PromotionReservationDeadline = ({
   startDate,
   expirationDate,
   status,
   promotionOption,
-}: PromotionReservationDeadlineProps) => {
+}) => {
   const inThreeDays = moment().add(3, 'd');
   const momentDate = moment(expirationDate);
   const isTight = inThreeDays.isAfter(momentDate);

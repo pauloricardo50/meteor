@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 
@@ -9,8 +9,6 @@ import MaxPropertyValueContainer, {
 } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import SimpleMaxPropertyValueSignup from './SimpleMaxPropertyValueSignup';
 import SimpleMaxPropertyValueEmptyState from './SimpleMaxPropertyValueEmptyState';
-
-type SimpleMaxPropertyValueProps = {};
 
 const getContent = props => {
   const { state, loading, loan } = props;
@@ -28,14 +26,11 @@ const getContent = props => {
   }
 
   return (
-    <MaxPropertyValueResults
-      showSecondButton={!loan.hasPromotion}
-      {...props}
-    />
+    <MaxPropertyValueResults showSecondButton={!loan.hasPromotion} {...props} />
   );
 };
 
-export const SimpleMaxPropertyValue = (props: SimpleMaxPropertyValueProps) => {
+export const SimpleMaxPropertyValue = props => {
   const { blue, noPadding } = props;
 
   return (

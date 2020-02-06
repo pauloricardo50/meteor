@@ -56,7 +56,9 @@ class ProgressCircle extends Component {
   getTooltipTitle() {
     if (this.ratio) {
       const { value, target } = this.ratio;
-      return `${this.tooltipPrefix} ${value}/${target} (${Math.round(this.targetPercent * 100)}%)`;
+      return `${this.tooltipPrefix} ${value}/${target} (${Math.round(
+        this.targetPercent * 100,
+      )}%)`;
     }
 
     return `${this.tooltipPrefix} ${Math.round(this.targetPercent * 100)}%`;

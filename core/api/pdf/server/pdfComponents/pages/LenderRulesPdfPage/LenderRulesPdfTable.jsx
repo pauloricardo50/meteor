@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
 
-type LenderRulesPdfTableProps = {};
-
-const LenderRulesPdfTable = ({ rows }: LenderRulesPdfTableProps) => (
+const LenderRulesPdfTable = ({ rows }) => (
   <table className="pdf-table lender-rules-table">
     <tr className={classes[ROW_TYPES.TITLE]}>
       <td>Type</td>

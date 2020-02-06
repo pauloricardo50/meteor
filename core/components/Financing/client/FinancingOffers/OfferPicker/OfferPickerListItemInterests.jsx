@@ -1,16 +1,14 @@
-// @flow
+//
 import React from 'react';
 
 import T, { Percent } from '../../../../Translation';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 
-type OfferPickerListItemInterestsProps = {};
-
 const OfferPickerListItemInterests = ({
   offer,
   structure: { loanTranches },
   displayDetail,
-}: OfferPickerListItemInterestsProps) => {
+}) => {
   if (offer.hasInvalidInterestRates) {
     return (
       <OfferPickerListItemValue

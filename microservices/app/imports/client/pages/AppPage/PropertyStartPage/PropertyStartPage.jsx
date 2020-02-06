@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
@@ -7,12 +7,7 @@ import Button from 'core/components/Button';
 import { WelcomeScreen } from '../../../components/WelcomeScreen/WelcomeScreen';
 import PropertyStartPageContainer from './PropertyStartPageContainer';
 
-type PropertyStartPageProps = {};
-
-const PropertyStartPage = ({
-  anonymousProperty,
-  insertLoan,
-}: PropertyStartPageProps) => {
+const PropertyStartPage = ({ anonymousProperty, insertLoan }) => {
   if (!anonymousProperty) {
     return <Redirect to="/" />;
   }

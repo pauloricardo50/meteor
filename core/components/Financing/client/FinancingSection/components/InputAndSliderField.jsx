@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 import { connectField } from 'uniforms';
 import Slider from 'core/components/Slider';
 
 import MoneyInput from '../../../../MoneyInput';
-
-type InputAndSliderFieldProps = {};
 
 const valueIsNotDefined = value =>
   value === '' || value === undefined || value === null;
@@ -34,7 +32,7 @@ const setValue = (value, allowUndefined, forceUndefined) => {
   return value || 0;
 };
 
-export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
+export const InputAndSliderField = props => {
   const {
     value,
     onChange,

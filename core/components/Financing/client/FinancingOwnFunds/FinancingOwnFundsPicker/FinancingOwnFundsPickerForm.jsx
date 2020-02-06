@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import { toMoney } from '../../../../../utils/conversionFunctions';
@@ -10,8 +10,6 @@ import { FIELDS } from './FinancingOwnFundsPickerContainer';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 import { shouldAskForUsageType } from './FinancingOwnFundsPickerHelpers';
 import FinancingOwnFundsWarning from './FinancingOwnFundsWarning';
-
-type FinancingOwnFundsPickerFormProps = {};
 
 const FinancingOwnFundsPickerForm = ({
   handleSubmit,
@@ -27,7 +25,7 @@ const FinancingOwnFundsPickerForm = ({
   otherValueOfTypeAndBorrower,
   allowPledge,
   handleUpdateBorrower,
-}: FinancingOwnFundsPickerFormProps) => (
+}) => (
   <form
     onSubmit={displayWarning ? handleUpdateBorrower : handleSubmit}
     className="own-funds-picker-form"

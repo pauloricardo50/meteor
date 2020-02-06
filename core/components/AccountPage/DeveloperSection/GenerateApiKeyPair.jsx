@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { withState } from 'recompose';
 import cx from 'classnames';
@@ -6,17 +6,7 @@ import cx from 'classnames';
 import Keys from './Keys';
 import KeyPairGenerator from './KeyPairGenerator';
 
-type GenerateApiKeyPairProps = {
-  keyPair: Object,
-  user: Object,
-  setKeyPair: Function,
-};
-
-const GenerateApiKeyPair = ({
-  keyPair = {},
-  user,
-  setKeyPair,
-}: GenerateApiKeyPairProps) => (
+const GenerateApiKeyPair = ({ keyPair = {}, user, setKeyPair }) => (
   <div className="api-keyPair-generator">
     <div
       className={cx('card1 flex-col', {

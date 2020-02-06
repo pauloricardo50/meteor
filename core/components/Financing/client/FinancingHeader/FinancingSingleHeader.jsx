@@ -1,4 +1,4 @@
-// @flow
+//
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import cx from 'classnames';
@@ -9,15 +9,6 @@ import T from '../../../Translation';
 import FinancingHeaderActions from './FinancingHeaderActions';
 import FinancingSingleHeaderContainer from './FinancingSingleHeaderContainer';
 
-type FinancingSingleHeaderProps = {
-  structure: Object,
-  index: number,
-  handleEditTitle: Function,
-  handleEditDescription: Function,
-  loanId: string,
-  selected: boolean,
-};
-
 const FinancingSingleHeader = ({
   structure,
   index,
@@ -25,7 +16,7 @@ const FinancingSingleHeader = ({
   handleEditDescription,
   loanId,
   selected,
-}: FinancingSingleHeaderProps) => (
+}) => (
   <div
     className={cx(
       'financing-structures-single-header structure animated zoomIn',

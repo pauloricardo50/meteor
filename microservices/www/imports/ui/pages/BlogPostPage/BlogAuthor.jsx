@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 
-type BlogAuthorProps = {};
-
-const BlogAuthor = ({ author: { name, avatar_URL } }: BlogAuthorProps) => (
+const BlogAuthor = ({ author: { name, avatar_URL } }) => (
   <div className="blog-author">
     <img src={avatar_URL} alt={name} />
     <h5>

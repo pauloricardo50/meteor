@@ -4,7 +4,7 @@ import { fullUser } from 'core/api/fragments';
 import Users from '../../users';
 import Security from '../../security';
 import SessionService from '../../sessions/server/SessionService';
-import UserService from '../../users/server/UserService'
+import UserService from '../../users/server/UserService';
 
 class ImpersonateService {
   /**

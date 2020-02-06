@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import NewLoansStat from './NewLoansStat';
@@ -11,8 +11,6 @@ import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
 
-type AdminDashboardStatsProps = {};
-
 const AdminDashboardStats = ({
   newLoans,
   setPeriod,
@@ -20,7 +18,7 @@ const AdminDashboardStats = ({
   showChart,
   setShowChart,
   loanHistogram,
-}: AdminDashboardStatsProps) => (
+}) => (
   <div className="admin-stats">
     <div>
       <h2>Stats</h2>

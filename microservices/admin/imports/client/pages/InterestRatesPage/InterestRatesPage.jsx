@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -13,17 +13,11 @@ import InterestRatesTable from './InterestRatesTable';
 import InterestRatesPageContainer from './InterestRatesPageContainer';
 import { InsertInterestRatesDialogForm } from './InterestRatesDialogForm';
 
-type InterestRatesPageProps = {
-  interestRates: Array<Object>,
-  irs10y: Array<Object>,
-  currentInterestRates: Object,
-};
-
 const InterestRatesPage = ({
   interestRates,
   irs10y,
   currentInterestRates: { rates: currentRates },
-}: InterestRatesPageProps) => (
+}) => (
   <div className="interest-rates-page">
     <Helmet>
       <title>Taux d'intérêt</title>

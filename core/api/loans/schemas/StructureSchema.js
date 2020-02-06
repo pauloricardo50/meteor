@@ -1,4 +1,4 @@
-// @flow
+//
 import SimpleSchema from 'simpl-schema';
 
 import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
@@ -71,20 +71,6 @@ export const structureSchema = {
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
   ...loanTranchesSchema,
-};
-
-export type structureType = {
-  id: string,
-  amortization: number,
-  amortizationType: string,
-  description: string,
-  name: string,
-  offerId: string,
-  propertyId: string,
-  propertyWork: number,
-  sortOffersBy: string,
-  wantedLoan: number,
-  ownFunds: Array<Object>,
 };
 
 export default new SimpleSchema(structureSchema);

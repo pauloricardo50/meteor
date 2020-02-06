@@ -1,10 +1,8 @@
-// @flow
+//
 import React from 'react';
 
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import T from '../../../../Translation';
-
-type FinancingOwnFundsWarningProps = {};
 
 const FinancingOwnFundsWarning = ({
   borrower: { firstName },
@@ -12,7 +10,7 @@ const FinancingOwnFundsWarning = ({
   type,
   value,
   otherValueOfTypeAndBorrower,
-}: FinancingOwnFundsWarningProps) => (
+}) => (
   <p>
     <T
       id="FinancingOwnFundsPickerForm.warning"

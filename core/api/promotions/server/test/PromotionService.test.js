@@ -1,4 +1,4 @@
-// @flow
+//
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
@@ -17,7 +17,7 @@ import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
 import { PROMOTION_TYPES } from '../../promotionConstants';
 
-describe('PromotionService', function () {
+describe('PromotionService', function() {
   this.timeout(10000);
 
   beforeEach(() => {

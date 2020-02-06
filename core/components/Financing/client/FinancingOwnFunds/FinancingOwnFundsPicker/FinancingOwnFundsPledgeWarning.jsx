@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
@@ -7,11 +7,7 @@ import T from '../../../../Translation';
 import { getMaxPledge } from './FinancingOwnFundsPickerHelpers';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 
-type FinancingOwnFundsPledgeWarningProps = {};
-
-const FinancingOwnFundsPledgeWarning = (
-  props: FinancingOwnFundsPledgeWarningProps,
-) => {
+const FinancingOwnFundsPledgeWarning = props => {
   if (props.usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE) {
     const maxPledge = getMaxPledge(props);
     return (

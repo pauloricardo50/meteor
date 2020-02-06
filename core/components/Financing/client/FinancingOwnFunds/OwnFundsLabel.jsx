@@ -1,13 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
-type OwnFundsLabelProps = {};
-
-const OwnFundsLabel = ({ id, labelValue, ...data }: OwnFundsLabelProps) => {
+const OwnFundsLabel = ({ id, labelValue, ...data }) => {
   const availableAmount = labelValue(data);
   return (
     <div className="own-funds-label">

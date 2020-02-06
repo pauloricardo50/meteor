@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import { getCurrentRate } from '../../api/organisations/helpers';
@@ -6,12 +6,10 @@ import T, { Percent, Money } from '../Translation';
 import CommissionRatesViewerList from './CommissionRatesViewerList';
 import CommissionRatesViewerContainer from './CommissionRatesViewerContainer';
 
-type CommissionRatesViewerProps = {};
-
 const CommissionRatesViewer = ({
   commissionRates = [],
   generatedRevenues = 0,
-}: CommissionRatesViewerProps) => {
+}) => {
   const currentRate = getCurrentRate(commissionRates, generatedRevenues);
 
   return (

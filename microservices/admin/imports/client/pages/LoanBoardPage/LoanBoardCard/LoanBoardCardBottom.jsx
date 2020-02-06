@@ -1,10 +1,8 @@
-// @flow
+//
 import React from 'react';
 
 import Icon from 'core/components/Icon';
 import { LOAN_CATEGORIES } from 'core/api/constants';
-
-type LoanBoardCardBottomProps = {};
 
 const LoanBoardCardBottom = ({
   category,
@@ -13,7 +11,7 @@ const LoanBoardCardBottom = ({
   customName,
   structure,
   renderComplex,
-}: LoanBoardCardBottomProps) => {
+}) => {
   const promotion = promotions[0] && promotions[0].name;
   const showPremium = category === LOAN_CATEGORIES.PREMIUM;
 

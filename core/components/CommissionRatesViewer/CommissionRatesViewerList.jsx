@@ -1,13 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import T, { Percent, Money } from '../Translation';
 
-type CommissionRatesViewerListProps = {};
-
-const CommissionRatesViewerList = ({
-  commissionRates,
-}: CommissionRatesViewerListProps) => (
+const CommissionRatesViewerList = ({ commissionRates }) => (
   <div>
     <h3 className="secondary">
       <T id="CommissionRatesViewer.commissionRatesList" />

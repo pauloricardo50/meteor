@@ -1,4 +1,4 @@
-// @flow
+//
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -8,9 +8,7 @@ import Accounts from './Accounts';
 import Link from '../Link';
 import T from '../Translation';
 
-type LoginPageRightProps = {};
-
-const LoginPageRight = ({ path, push }: LoginPageRightProps) => {
+const LoginPageRight = ({ path, push }) => {
   const isApp = Meteor.microservice === 'app';
   return (
     <div className="right">

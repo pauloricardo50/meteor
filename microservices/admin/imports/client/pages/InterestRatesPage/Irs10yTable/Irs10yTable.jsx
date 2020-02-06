@@ -1,14 +1,9 @@
-// @flow
+//
 import React from 'react';
 import Table, { ORDER } from 'core/components/Table';
 import Irs10yTableContainer from './Irs10yTableContainer';
 import { ModifyIrs10yDialogForm } from '../Irs10yDialogForm';
 // import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
-
-type Irs10yTableProps = {
-  rows: Array<Object>,
-  columnOptions: Array<Object>,
-};
 
 const Irs10yTable = ({
   rows,
@@ -16,7 +11,7 @@ const Irs10yTable = ({
   showDialog,
   setShowDialog,
   irs10yToModify,
-}: Irs10yTableProps) => (
+}) => (
   <>
     <Table
       columnOptions={columnOptions}

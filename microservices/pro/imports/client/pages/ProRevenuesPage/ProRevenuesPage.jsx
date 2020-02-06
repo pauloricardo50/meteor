@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -6,8 +6,6 @@ import RevenuesByStatus from 'core/components/RevenuesByStatus';
 import Select from 'core/components/Select';
 import ProRevenuesPageContainer from './ProRevenuesPageContainer';
 import ProRevenuesPageExplained from './ProRevenuesExplained';
-
-type ProRevenuesPageProps = {};
 
 const ProRevenuesPage = ({
   loans = [],
@@ -21,7 +19,7 @@ const ProRevenuesPage = ({
   setWithAnonymous,
   referredByUserId,
   setReferredByUserId,
-}: ProRevenuesPageProps) => {
+}) => {
   const anonymousLoans = loans.filter(({ anonymous }) => anonymous);
   const claimedLoans = loans.filter(({ anonymous }) => !anonymous);
 

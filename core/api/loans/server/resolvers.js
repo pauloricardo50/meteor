@@ -1,4 +1,4 @@
-// @flow
+//
 import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
 
 import merge from 'lodash/merge';

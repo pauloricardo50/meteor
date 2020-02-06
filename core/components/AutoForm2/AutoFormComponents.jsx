@@ -1,4 +1,4 @@
-// @flow
+//
 import React, { useMemo } from 'react';
 import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';

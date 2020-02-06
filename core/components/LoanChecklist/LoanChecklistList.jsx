@@ -1,13 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import T from '../Translation';
 import StatusIcon from '../StatusIcon';
 import { SUCCESS } from '../../api/constants';
 
-type LoanChecklistListProps = {};
-
-const LoanChecklistList = ({ labels, title }: LoanChecklistListProps) => (
+const LoanChecklistList = ({ labels, title }) => (
   <span className="loan-checklist-list">
     <h4>{title}</h4>
     {labels.length === 0 && (

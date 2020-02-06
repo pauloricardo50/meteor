@@ -1,21 +1,9 @@
-// @flow
+//
 import React, { useRef } from 'react';
 
 import Input from '../Material/Input';
 import CollectionSearchContainer from './CollectionSearchContainer';
 import CollectionSearchResults from './CollectionSearchResults';
-
-type CollectionSearchProps = {
-  searchQuery: String,
-  onSearch: Function,
-  searchResults: Array<Object>,
-  title: String,
-  showResults: Boolean,
-  renderItem: Function,
-  onClickItem?: Function,
-  hideResults: Function,
-  onFocus: Function,
-};
 
 const CollectionSearch = ({
   searchQuery,
@@ -31,7 +19,7 @@ const CollectionSearch = ({
   description,
   disableItem,
   type = 'popper',
-}: CollectionSearchProps) => {
+}) => {
   const inputEl = useRef(null);
   const results = searchResults[searchQuery];
   const isLoading = !results;

@@ -1,17 +1,15 @@
-// @flow
+//
 import React from 'react';
 
 import AutoForm from 'core/components/AutoForm2/AutoForm';
 import UserCreatorContainer from './UserCreatorContainer';
-
-type UserCreatorFormProps = {};
 
 const UserCreatorForm = ({
   schema,
   buttonProps,
   onSubmit,
   submitFieldProps,
-}: UserCreatorProps) => (
+}) => (
   <AutoForm
     schema={schema}
     onSubmit={onSubmit}

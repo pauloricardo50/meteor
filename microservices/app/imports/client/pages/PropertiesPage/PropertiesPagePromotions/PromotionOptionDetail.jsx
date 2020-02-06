@@ -1,16 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
 
-type PromotionOptionDetailProps = {};
-
-const PromotionOptionDetail = ({
-  promotionOption,
-  loanId,
-}: PromotionOptionDetailProps) => {
+const PromotionOptionDetail = ({ promotionOption, loanId }) => {
   const {
     _id: promotionOptionId,
     name,

@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -10,8 +10,6 @@ import FinancingPropertyPicker from './FinancingPropertyPicker';
 import FinancingProjectFees from './FinancingProjectFees';
 import Calculator from '../../../../utils/Calculator';
 
-type FinancingProjectProps = {};
-
 const MAX_NOTARY_FEES_RATE = 0.1;
 
 const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
@@ -20,7 +18,7 @@ const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
   MAX_NOTARY_FEES_RATE;
 
-const FinancingProject = (props: FinancingProjectProps) => (
+const FinancingProject = props => (
   <FinancingSection
     summaryConfig={[
       {

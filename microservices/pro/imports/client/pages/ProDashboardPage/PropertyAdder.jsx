@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
@@ -11,8 +11,6 @@ import { PROPERTY_CATEGORY } from 'core/api/constants';
 import { moneyField, address } from 'core/api/helpers/sharedSchemas';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
-type PropertyAdderProps = {};
-
 export const proPropertySchema = new SimpleSchema({
   address1: String,
   address2: { type: String, optional: true },
@@ -21,10 +19,7 @@ export const proPropertySchema = new SimpleSchema({
   value: { ...moneyField, optional: false },
 });
 
-const PropertyAdder = ({
-  history,
-  currentUser: { _id: userId },
-}: PropertyAdderProps) => (
+const PropertyAdder = ({ history, currentUser: { _id: userId } }) => (
   <AutoFormDialog
     title={<T id="ProDashboardPage.addProperty" />}
     buttonProps={{

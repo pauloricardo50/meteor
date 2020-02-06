@@ -1,15 +1,11 @@
-// @flow
+//
 import React from 'react';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { loanInsertBorrowers } from 'core/api/methods';
 
-type BorrowersAdderProps = {
-  loanId: String,
-};
-
-const BorrowersAdder = ({ loanId }: BorrowersAdderProps) => (
+const BorrowersAdder = ({ loanId }) => (
   <div className="borrowers-adder animated fadeIn">
     <h3>
       <T id="BorrowersPage.BorrowerAdder.title" />

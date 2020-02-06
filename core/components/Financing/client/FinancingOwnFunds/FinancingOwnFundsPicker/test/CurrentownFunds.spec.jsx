@@ -1,4 +1,4 @@
-// @flow
+//
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
@@ -62,7 +62,9 @@ describe('CurrentOwnFunds', () => {
   });
 
   it('displays an error message if funds have changed to be lower than used', () => {
-    props.borrowers = [{ firstName: 'joe', _id: 'id1', bankFortune: [{ value: 20 }] }];
+    props.borrowers = [
+      { firstName: 'joe', _id: 'id1', bankFortune: [{ value: 20 }] },
+    ];
     props.ownFunds = [
       {
         borrowerId: 'id1',
@@ -79,7 +81,9 @@ describe('CurrentOwnFunds', () => {
   });
 
   it('displays an error message if funds have changed to be lower than used', () => {
-    props.borrowers = [{ firstName: 'joe', _id: 'id1', bankFortune: [{ value: 150 }] }];
+    props.borrowers = [
+      { firstName: 'joe', _id: 'id1', bankFortune: [{ value: 150 }] },
+    ];
     props.ownFunds = {
       borrowerId: 'id1',
       value: 80,

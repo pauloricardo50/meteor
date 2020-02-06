@@ -1,14 +1,10 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import LoanCards from './LoanCards';
 
-type SuperDashboardProps = {
-  currentUser: Object,
-};
-
-const SuperDashboard = ({ currentUser = {} }: SuperDashboardProps) => {
+const SuperDashboard = ({ currentUser = {} }) => {
   const { name, loans = [] } = currentUser;
   return (
     <div className="super-dashboard">

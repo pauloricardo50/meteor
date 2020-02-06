@@ -1,9 +1,7 @@
-// @flow
+//
 import React from 'react';
 
-type PdfPageHeaderProps = {};
-
-const PdfPageHeader = (props: PdfPageHeaderProps) => (
+const PdfPageHeader = props => (
   <div className="pdf-page-header">Hello from PdfPageHeader</div>
 );
 

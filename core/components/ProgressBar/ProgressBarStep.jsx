@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 
 import useMedia from '../../hooks/useMedia';
 import Tooltip from '../Material/Tooltip';
-
-type ProgressBarStepProps = {};
 
 const ProgressBarStep = ({
   isDone,
@@ -14,7 +12,7 @@ const ProgressBarStep = ({
   tooltip,
   stepCount,
   isCurrentIndex,
-}: ProgressBarStepProps) => {
+}) => {
   const isSmallMobile = useMedia({ maxWidth: 400 });
 
   const step = (

@@ -1,12 +1,8 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 
 import Button from 'core/components/Button';
-
-type ButtonSwitchProps = {
-  active: Boolean,
-};
 
 const ButtonSwitch = ({
   active,
@@ -15,7 +11,7 @@ const ButtonSwitch = ({
   activeOnClick = () => {},
   inactiveOnClick = () => {},
   reverse = false,
-}: ButtonSwitchProps) => (
+}) => (
   <div className={cx('button-switch', { reverse })}>
     <Button
       onClick={inactiveOnClick}

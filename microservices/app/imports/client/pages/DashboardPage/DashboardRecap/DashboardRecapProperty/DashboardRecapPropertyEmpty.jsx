@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
@@ -8,13 +8,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
 import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
-type DashboardRecapPropertyEmptyProps = {
-  loanId: string,
-};
-
-const DashboardRecapPropertyEmpty = ({
-  loanId,
-}: DashboardRecapPropertyEmptyProps) => (
+const DashboardRecapPropertyEmpty = ({ loanId }) => (
   <div className="dashboard-recap-property card1 dashboard-recap-property-empty">
     <FontAwesomeIcon icon={faHome} className="icon" />
     <h3>

@@ -1,17 +1,8 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 
-type StatItemProps = {};
-
-const StatItem = ({
-  value,
-  increment,
-  positive,
-  title,
-  children,
-  top,
-}: StatItemProps) => {
+const StatItem = ({ value, increment, positive, title, children, top }) => {
   if (children) {
     return (
       <div className="stat-item card1 card-top">

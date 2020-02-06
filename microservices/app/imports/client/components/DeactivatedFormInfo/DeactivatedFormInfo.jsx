@@ -1,16 +1,11 @@
-// @flow
+//
 import React, { useContext } from 'react';
 
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 
-type DeactivatedFormInfoProps = {};
-
-const DeactivatedFormInfo = ({
-  loan: { userFormsEnabled },
-  style,
-}: DeactivatedFormInfoProps) => {
+const DeactivatedFormInfo = ({ loan: { userFormsEnabled }, style }) => {
   const { toggleOpenContact } = useContext(ContactButtonContext);
   if (userFormsEnabled) {
     return null;

@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Recap from 'core/components/Recap';
@@ -10,9 +10,7 @@ import StructureForm from './StructureForm';
 import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
 import LoanAssigneeManager from '../../../components/LoanAssigneeManager';
 
-type PremiumOverviewTabProps = {};
-
-const PremiumOverviewTab = (props: PremiumOverviewTabProps) => {
+const PremiumOverviewTab = props => {
   const { loan } = props;
   const { _id: loanId } = loan;
   return (

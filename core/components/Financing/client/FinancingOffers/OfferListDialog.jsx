@@ -1,16 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import T from '../../../Translation';
 import DialogSimple from '../../../DialogSimple';
 import OfferList from '../../../OfferList/OfferList';
 
-type OfferListDialogProps = {
-  offers: Array<Object>,
-  disabled?: boolean,
-};
-
-const OfferListDialog = ({ offers, disabled }: OfferListDialogProps) => (
+const OfferListDialog = ({ offers, disabled }) => (
   <DialogSimple
     label={<T id="FinancingOffers.showAll" />}
     buttonProps={{ style: { marginBottom: 8 }, disabled }}

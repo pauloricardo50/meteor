@@ -1,16 +1,10 @@
-// @flow
+//
 import React from 'react';
 import { PROPERTY_CATEGORY } from 'imports/core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 
-type PropertyRelatedDocProps = {};
-
-const PropertyRelatedDoc = ({
-  loans = [],
-  promotion,
-  category,
-}: PropertyRelatedDocProps) => {
+const PropertyRelatedDoc = ({ loans = [], promotion, category }) => {
   if (category === PROPERTY_CATEGORY.PROMOTION) {
     return (
       <CollectionIconLink

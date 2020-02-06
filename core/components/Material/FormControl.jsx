@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import FormControl from '@material-ui/core/FormControl';
 

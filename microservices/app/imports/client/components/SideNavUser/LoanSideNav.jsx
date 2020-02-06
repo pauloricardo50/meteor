@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
@@ -34,16 +34,7 @@ const isOnProProperty = loan => {
   );
 };
 
-type linksType = Array<{|
-  id: string,
-  to?: string,
-  exact?: boolean,
-  icon?: Object,
-  Component?: React.Node,
-  percent?: Function,
-|}>;
-
-const sideNavLinks: linksType = [
+const sideNavLinks = [
   {
     id: 'DashboardPage',
     to: APP_ROUTES.DASHBOARD_PAGE.path,
@@ -84,14 +75,7 @@ const sideNavLinks: linksType = [
   },
 ];
 
-export const LoanSideNav = ({
-  loan,
-  links,
-  closeDrawer,
-}: {
-  loan: any,
-  links: linksType,
-}) => (
+export const LoanSideNav = ({ loan, links, closeDrawer }) => (
   <ul className="loan-side-nav">
     {links
       .filter(({ condition }) => (condition ? condition(loan) : true))

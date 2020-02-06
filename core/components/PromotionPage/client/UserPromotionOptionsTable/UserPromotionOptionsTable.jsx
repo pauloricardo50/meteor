@@ -1,12 +1,10 @@
-// @flow
+//
 import React from 'react';
 
 import T from '../../../Translation';
 import TableWithModal from '../../../Table/TableWithModal';
 import UserPromotionOptionsTableContainer from './UserPromotionOptionsTableContainer';
 import PromotionOptionDialog from './PromotionOptionDialog';
-
-type UserPromotionOptionsTableProps = {};
 
 const UserPromotionOptionsTable = ({
   rows,
@@ -17,7 +15,7 @@ const UserPromotionOptionsTable = ({
   setCustom,
   loan,
   ...props
-}: UserPromotionOptionsTableProps) => (
+}) => (
   <>
     <h3>
       <T id="collections.promotionOptions" />

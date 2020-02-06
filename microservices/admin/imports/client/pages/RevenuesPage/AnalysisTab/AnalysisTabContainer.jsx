@@ -1,4 +1,4 @@
-// @flow
+//
 import { useMemo, useState, useEffect } from 'react';
 
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';

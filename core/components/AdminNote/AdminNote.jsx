@@ -1,12 +1,10 @@
-// @flow
+//
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
 import ClickToEditField from '../ClickToEditField';
 import Icon from '../Icon';
 import { updateDocument } from '../../api/methods/index';
-
-type AdminNoteProps = {};
 
 const tutorial =
   '# Un titre - ## Un sous-titre - * liste - **En gras** - *En italique* -- "CMD + Enter" pour enregistrer';
@@ -19,7 +17,7 @@ const AdminNote = ({
   style,
   allowEditing,
   ...rest
-}: AdminNoteProps) => (
+}) => (
   <ClickToEditField
     value={adminNote}
     onSubmit={value =>

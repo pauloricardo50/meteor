@@ -1,15 +1,11 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
 import DeveloperSectionContainer from './DeveloperSectionContainer';
 import GenerateApiKeyPair from './GenerateApiKeyPair';
 
-type DeveloperSectionProps = {
-  user: Object,
-};
-
-const DeveloperSection = ({ user }: DeveloperSectionProps) => (
+const DeveloperSection = ({ user }) => (
   <div className="developper-section animated fadeIn">
     <h2>
       <T id="AccountPage.DevelopperSection.title" />

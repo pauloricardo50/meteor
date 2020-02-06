@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
@@ -12,17 +12,12 @@ import Chip from 'core/components/Material/Chip';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import OrganisationModifier from './OrganisationModifier';
 
-type SingleOrganisationPageHeaderProps = {
-  organisation: Object,
-  history: Object,
-};
-
 const SingleOrganisationPage = ({
   organisation,
   history,
   intl: { formatMessage },
   currentUser,
-}: SingleOrganisationPageHeaderProps) => {
+}) => {
   const {
     _id: organisationId,
     logo,

@@ -1,4 +1,4 @@
-// @flow
+//
 import React, { useContext } from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
@@ -10,8 +10,6 @@ import IconButton from 'core/components/IconButton';
 import useMedia from 'core/hooks/useMedia';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import UserCreator from '../../components/UserCreator';
-
-type AppTopNavProps = {};
 
 const blacklist = ['/signup/', '/enroll-account/'];
 
@@ -31,12 +29,7 @@ const renderButtons = ({ location: { pathname, search } }) => {
   return blacklist.every(route => !pathname.startsWith(route));
 };
 
-const AppTopNav = ({
-  toggleDrawer,
-  shouldShowSideNav,
-  history,
-  children,
-}: AppTopNavProps) => {
+const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
   const currentUser = useContext(CurrentUserContext);
   const isMobile = useMedia({ maxWidth: 768 });
 

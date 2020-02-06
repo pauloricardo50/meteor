@@ -1,4 +1,4 @@
-// @flow
+//
 import React, { useMemo } from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';
@@ -20,8 +20,6 @@ import {
   getRatio,
 } from './PromotionReservationProgressHelpers';
 
-type PromotionReservationProgressProps = {};
-
 const getAnimationDelay = (index, offset = 0) => (index + offset) * 50;
 
 const getAnimation = (variant, index, offset) =>
@@ -35,7 +33,7 @@ const PromotionReservationProgressComponent = ({
   variant = 'icon',
   className,
   loanProgress = {},
-}: PromotionReservationProgressProps) => {
+}) => {
   const {
     _id: promotionOptionId,
     simpleVerification,

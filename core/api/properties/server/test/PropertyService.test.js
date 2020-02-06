@@ -9,7 +9,7 @@ import UserService from '../../../users/server/UserService';
 import generator from '../../../factories';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
 
-describe('PropertyService', function () {
+describe('PropertyService', function() {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -66,11 +66,15 @@ describe('PropertyService', function () {
       ).to.equal(1);
 
       expect(PropertyService.find({}).fetch().length).to.equal(1);
-      expect(LoanService.get('loan', { propertyIds: 1 }).propertyIds).to.deep.equal([]);
-      expect(LoanService.get('loan', { structures: 1 }).structures[0].propertyId).to.equal(
-        null,
-      );
-      expect(LoanService.get('loan2', { propertyIds: 1 }).propertyIds).to.deep.equal(['prop']);
+      expect(
+        LoanService.get('loan', { propertyIds: 1 }).propertyIds,
+      ).to.deep.equal([]);
+      expect(
+        LoanService.get('loan', { structures: 1 }).structures[0].propertyId,
+      ).to.equal(null);
+      expect(
+        LoanService.get('loan2', { propertyIds: 1 }).propertyIds,
+      ).to.deep.equal(['prop']);
     });
   });
 

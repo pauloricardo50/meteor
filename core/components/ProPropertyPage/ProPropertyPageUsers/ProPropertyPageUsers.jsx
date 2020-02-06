@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import withHider from 'core/containers/withHider';
@@ -6,8 +6,6 @@ import Table from 'core/components/Table';
 import ProPropertyPageUsersContainer from './ProPropertyPageUsersContainer';
 import ProPropertyProUserAdder from './ProPropertyProUserAdder/ProPropertyProUserAdder';
 import T from '../../Translation';
-
-type ProPropertyPageUsersProps = {};
 
 const HiddenUsers = withHider(hide => ({
   label: hide ? 'Afficher les comptes Pro' : 'Masquer les comptes Pro',
@@ -20,7 +18,7 @@ const ProPropertyPageUsers = ({
   rows,
   columnOptions,
   permissions,
-}: ProPropertyPageUsersProps) => (
+}) => (
   <div className="card1 card-top users-table">
     <span className="flex users-table-header">
       <h2>

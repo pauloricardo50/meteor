@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Button from 'core/components/Button';
@@ -16,19 +16,12 @@ import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
-type AppPromotionLotPageProps = {
-  promotionOption: Object,
-  promotionLot: Object,
-  loan: Object,
-  promotionId: String,
-};
-
 export const AppPromotionLotPage = ({
   promotionOption,
   promotionLot,
   loan: { _id: loanId },
   promotionId,
-}: AppPromotionLotPageProps) => {
+}) => {
   const {
     name,
     reducedStatus,

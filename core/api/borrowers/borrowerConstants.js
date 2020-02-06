@@ -1,4 +1,4 @@
-// @flow
+//
 export const BORROWERS_COLLECTION = 'borrowers';
 
 export const RESIDENCY_PERMIT = {

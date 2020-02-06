@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import T from '../../../../Translation';
@@ -9,8 +9,6 @@ import {
   getOwnFundsOfTypeAndBorrower,
   getAvailableFundsOfTypeAndBorrower,
 } from './FinancingOwnFundsPickerHelpers';
-
-type CurrentOwnFundsProps = {};
 
 const hasEnoughFundsOfType = ({ structure, type, borrowerId, borrowers }) =>
   getAvailableFundsOfTypeAndBorrower({
@@ -28,7 +26,7 @@ export const CurrentOwnFunds = ({
   handleOpen,
   structureId,
   ownFundsIndex,
-}: CurrentOwnFundsProps) => (
+}) => (
   <>
     <div
       className="current-own-funds"

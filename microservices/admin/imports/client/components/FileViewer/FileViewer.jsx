@@ -1,4 +1,4 @@
-// @flow
+//
 import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
 
@@ -9,8 +9,6 @@ import { withFileViewerContext } from 'core/containers/FileViewerContext';
 // import ReactFileViewer from 'react-file-viewer';
 
 const ReactFileViewer = Loadable({ loader: () => import('react-file-viewer') });
-
-type FileViewerProps = {};
 
 const minWidth = 300;
 

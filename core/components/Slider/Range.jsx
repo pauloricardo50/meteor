@@ -1,11 +1,9 @@
-// @flow
+//
 import React from 'react';
 
 import Slider from './Slider';
 
-type RangeProps = {};
-
-const Range = ({ defaultValue = [0], ...rest }: RangeProps) => (
+const Range = ({ defaultValue = [0], ...rest }) => (
   <Slider defaultValue={defaultValue} {...rest} />
 );
 

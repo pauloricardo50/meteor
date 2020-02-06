@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -15,8 +15,6 @@ import { LOAN_CATEGORIES, ROLES } from 'imports/core/api/constants';
 import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
 import { LiveQueryMonitor } from '../liveSync';
-
-type LoanBoardOptionsContentProps = {};
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {
@@ -51,7 +49,7 @@ const LoanBoardOptionsContent = ({
   refetchLoans,
   activateLoanBoardSync,
   setActivateLoanBoardSync,
-}: LoanBoardOptionsContentProps) => {
+}) => {
   const {
     assignedEmployeeId,
     step,

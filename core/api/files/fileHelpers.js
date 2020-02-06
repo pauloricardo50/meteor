@@ -1,4 +1,4 @@
-// @flow
+//
 import { getPercent } from '../../utils/general';
 import { FILE_STATUS, BASIC_DOCUMENTS_LIST } from './fileConstants';
 import { documentIsBasic } from './documents';
@@ -12,11 +12,7 @@ const documentIsInvalid = (doc, id) =>
   doc.documents[id].length > 0 &&
   doc.documents[id].some(({ status }) => status === FILE_STATUS.ERROR);
 
-const getDocumentsToCount = (
-  documentArray: Array<Object>,
-  doc: Object,
-  checkDocumentStatus?: boolean,
-): Array<Object> => {
+const getDocumentsToCount = (documentArray, doc, checkDocumentStatus) => {
   if (!doc || !doc.documents) {
     return [undefined];
   }

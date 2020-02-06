@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -10,12 +10,6 @@ import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
 } from '../../../api/constants';
-
-type AdditionalDocModifierProps = {
-  additionalDoc: Object,
-  docId: String,
-  collection: String,
-};
 
 export const getAdditionalDocSchema = collection => {
   let allowedValues = [];
@@ -73,11 +67,7 @@ export const getAdditionalDocSchema = collection => {
   });
 };
 
-const AdditionalDocModifier = ({
-  additionalDoc,
-  docId,
-  collection,
-}: AdditionalDocModifierProps) =>
+const AdditionalDocModifier = ({ additionalDoc, docId, collection }) =>
   additionalDoc.label ? (
     <AutoFormDialog
       buttonProps={{ primary: true, label: <T id="general.modify" /> }}

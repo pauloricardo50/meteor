@@ -79,10 +79,10 @@ const testEndpoint = ({
   });
 };
 
-describe('REST: testEndpoint', function () {
+describe('REST: testEndpoint', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

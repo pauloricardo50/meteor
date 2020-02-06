@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Button from 'core/components/Button';
@@ -8,19 +8,12 @@ import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch'
 import { loanSearch } from 'core/api/loans/queries';
 import PromotionLoanLinkerContainer from './PromotionLoanLinkerContainer';
 
-type PromotionLoanLinkerProps = {
-  promotion: Object,
-  linkPromotionLoan: Function,
-  unlinkPromotionLoan: Function,
-  insertPromotionLoan: Function,
-};
-
 const PromotionLoanLinker = ({
   promotion,
   unlinkPromotionLoan,
   insertPromotionLoan,
   linkPromotionLoan,
-}: PromotionLoanLinkerProps) => (
+}) => (
   <div className="flex-col">
     <div className="flex-row center space-children">
       {promotion.promotionLoan ? (

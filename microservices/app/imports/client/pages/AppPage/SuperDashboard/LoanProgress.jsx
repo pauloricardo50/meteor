@@ -1,13 +1,9 @@
-// @flow
+//
 import React from 'react';
 import cx from 'classnames';
 
 import { STEP_ORDER } from 'core/api/constants';
 import T from 'core/components/Translation';
-
-type LoanProgressProps = {
-  step: String,
-};
 
 const isDone = (currentStep, step) => {
   const currentStepIndex = STEP_ORDER.indexOf(currentStep);
@@ -16,7 +12,7 @@ const isDone = (currentStep, step) => {
   return currentStepIndex >= stepIndex;
 };
 
-const LoanProgress = ({ step: currentStep }: LoanProgressProps) => (
+const LoanProgress = ({ step: currentStep }) => (
   <div className="loan-progress">
     <h4 className="secondary">
       <T id={`Forms.step.${currentStep}`} />

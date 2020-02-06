@@ -16,7 +16,7 @@ import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
 import { proInviteUser } from '../../methodDefinitions';
 
-describe('UserService', function () {
+describe('UserService', function() {
   this.timeout(10000);
 
   const firstName = 'TestFirstName';
@@ -27,7 +27,7 @@ describe('UserService', function () {
     resetDatabase();
 
     user = Factory.create('user', { firstName, lastName });
-    sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => { });
+    sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
   });
 
   afterEach(() => {
@@ -695,7 +695,10 @@ describe('UserService', function () {
       );
 
       const userCreated = UserService.getByEmail(userToInvite.email);
-      const loan = LoanService.get({ userId: userCreated._id }, { propertyIds: 1 });
+      const loan = LoanService.get(
+        { userId: userCreated._id },
+        { propertyIds: 1 },
+      );
 
       expect(userCreated.assignedEmployeeId).to.equal('adminId');
       expect(userCreated.referredByUserLink).to.equal('proId');
@@ -744,7 +747,10 @@ describe('UserService', function () {
         proUserId: 'proId',
       }).then(() => {
         const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.get({ userId: userCreated._id }, { propertyIds: 1 });
+        const loan = LoanService.get(
+          { userId: userCreated._id },
+          { propertyIds: 1 },
+        );
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');

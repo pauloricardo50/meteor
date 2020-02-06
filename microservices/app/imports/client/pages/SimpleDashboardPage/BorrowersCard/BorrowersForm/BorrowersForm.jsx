@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -6,9 +6,7 @@ import BorrowersAdder from '../../../../components/BorrowersAdder';
 import BorrowersFormContainer from './BorrowersFormContainer';
 import SimpleFormSwitch from '../SimpleFormSwitch';
 
-type BorrowersFormProps = {};
-
-const BorrowersForm = (props: BorrowersFormProps) => {
+const BorrowersForm = props => {
   const { loan, tabs, openBorrowersForm } = props;
   const { borrowers = [], _id: loanId, simpleBorrowersForm } = loan;
 

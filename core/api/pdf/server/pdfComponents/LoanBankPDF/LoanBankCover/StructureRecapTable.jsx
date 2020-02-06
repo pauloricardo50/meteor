@@ -1,4 +1,4 @@
-// @flow
+//
 import React from 'react';
 
 import { Calculator } from '../../../../../../utils/Calculator';
@@ -6,8 +6,6 @@ import { toMoney } from '../../../../../../utils/conversionFunctions';
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
 import { ERROR, SUCCESS } from '../../../../../constants';
 import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
-
-type StructureRecapTableProps = {};
 
 const columnsConfig = [
   {
@@ -104,11 +102,7 @@ const getRows = ({ loan, structureIds, organisation }) => {
   ];
 };
 
-const StructureRecapTable = ({
-  loan,
-  structureIds,
-  organisation,
-}: StructureRecapTableProps) => (
+const StructureRecapTable = ({ loan, structureIds, organisation }) => (
   <table className="pdf-table structure-recap-table">
     {getRows({ loan, structureIds, organisation })}
   </table>
