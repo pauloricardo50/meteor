@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import StatusLabel from 'core/components/StatusLabel';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { withProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';

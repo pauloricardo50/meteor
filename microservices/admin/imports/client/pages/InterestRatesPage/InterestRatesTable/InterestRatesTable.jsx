@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import Table, { ORDER } from 'core/components/Table';

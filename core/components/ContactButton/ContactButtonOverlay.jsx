@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import cx from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';

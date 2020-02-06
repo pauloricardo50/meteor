@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import htmlParse from 'html-parse-stringify';
 

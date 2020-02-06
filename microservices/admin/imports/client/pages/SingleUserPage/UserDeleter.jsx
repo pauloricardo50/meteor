@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';

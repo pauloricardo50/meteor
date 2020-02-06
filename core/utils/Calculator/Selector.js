@@ -1,4 +1,3 @@
-//
 import { createSelector } from 'reselect';
 
 import { EMPTY_STRUCTURE } from '../../api/loans/loanConstants';

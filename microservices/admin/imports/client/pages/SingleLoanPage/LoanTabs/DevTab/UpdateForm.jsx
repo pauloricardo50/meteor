@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 import { updateDocument, updateDocumentUnset } from 'core/api/methods/index';
 

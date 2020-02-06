@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';

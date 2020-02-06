@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { ListItemText, ListItemSecondaryAction } from 'core/components/List';

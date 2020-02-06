@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { RESIDENCE_TYPE } from 'core/api/constants';

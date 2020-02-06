@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { withSmartQuery } from 'core/api/containerToolkit';

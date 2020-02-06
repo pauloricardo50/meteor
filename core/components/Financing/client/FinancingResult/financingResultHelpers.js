@@ -1,4 +1,3 @@
-//
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';

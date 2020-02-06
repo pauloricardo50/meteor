@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import intersection from 'lodash/intersection';
 

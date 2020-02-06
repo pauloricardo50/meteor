@@ -1,4 +1,3 @@
-//
 import {
   OWN_FUNDS_TYPES,
   SUCCESS,

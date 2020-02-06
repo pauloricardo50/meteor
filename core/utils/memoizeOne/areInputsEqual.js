@@ -1,4 +1,3 @@
-//
 
 const inputHasChanged = (next, prev) =>
   next.some((newInput, index) => newInput !== prev[index]);

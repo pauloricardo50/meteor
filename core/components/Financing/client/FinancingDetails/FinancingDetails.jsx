@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { LOANS_COLLECTION } from 'core/api/constants';

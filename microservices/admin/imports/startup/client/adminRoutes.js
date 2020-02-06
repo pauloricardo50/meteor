@@ -1,4 +1,3 @@
-//
 import NotFound from 'core/components/NotFound/loadable';
 import DevPage from 'core/components/DevPage/loadable';
 

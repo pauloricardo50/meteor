@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 import DefaultDateRangePicker from 'react-dates/lib/components/DateRangePicker';
 import moment from 'moment';

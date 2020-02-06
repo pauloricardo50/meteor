@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import OfferAdder from 'core/components/OfferAdder';

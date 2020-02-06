@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';

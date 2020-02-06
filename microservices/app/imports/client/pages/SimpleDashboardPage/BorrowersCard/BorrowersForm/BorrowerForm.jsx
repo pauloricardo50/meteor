@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { getBorrowerSimpleArray } from 'core/arrays/BorrowerFormArray';

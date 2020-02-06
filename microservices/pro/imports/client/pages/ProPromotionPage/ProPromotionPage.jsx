@@ -1,4 +1,3 @@
-//
 import { compose, withProps } from 'recompose';
 
 import { proPromotions } from 'core/api/promotions/queries';

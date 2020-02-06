@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';

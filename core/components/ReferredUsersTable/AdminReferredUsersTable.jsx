@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import ReferredUsersTable from './ReferredUsersTable';
 

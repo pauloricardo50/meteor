@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { withState, compose } from 'recompose';
 import FlipMove from 'react-flip-move';

@@ -1,4 +1,3 @@
-//
 import { withRouter, matchPath } from 'react-router-dom';
 import isArray from 'lodash/isArray';
 import { compose, mapProps } from 'recompose';

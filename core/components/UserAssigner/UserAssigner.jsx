@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { userSearch } from 'core/api/users/queries';

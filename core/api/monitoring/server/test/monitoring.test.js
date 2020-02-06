@@ -1,4 +1,3 @@
-//
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 

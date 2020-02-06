@@ -1,4 +1,3 @@
-//
 import get from 'lodash/get';
 
 import { arrayify, simpleHash } from './general';

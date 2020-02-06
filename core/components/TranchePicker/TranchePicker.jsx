@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import TranchePickerContainer from './TranchePickerContainer';
 import Button from '../Button';

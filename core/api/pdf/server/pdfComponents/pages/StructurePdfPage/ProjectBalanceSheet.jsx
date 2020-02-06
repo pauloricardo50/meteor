@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import Percent from 'core/components/Translation/numberComponents/Percent';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { LENDER_RULES_OPERATORS } from 'core/api/constants';

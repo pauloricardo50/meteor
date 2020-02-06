@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { T, IntlNumber } from '../Translation';

@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
 

@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 
 import Button from 'core/components/Button';

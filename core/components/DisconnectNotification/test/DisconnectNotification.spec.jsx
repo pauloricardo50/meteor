@@ -1,4 +1,3 @@
-//
 /* eslint-env mocha */
 import { expect } from 'chai';
 import Snackbar from '@material-ui/core/Snackbar';

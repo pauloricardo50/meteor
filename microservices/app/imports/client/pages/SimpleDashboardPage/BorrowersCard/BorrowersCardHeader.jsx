@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import PercentWithStatus from 'core/components/PercentWithStatus';

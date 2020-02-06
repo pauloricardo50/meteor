@@ -1,4 +1,3 @@
-//
 import React, { useContext } from 'react';
 import Fab from '@material-ui/core/Fab';
 import { Meteor } from 'meteor/meteor';

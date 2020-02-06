@@ -1,4 +1,3 @@
-//
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 

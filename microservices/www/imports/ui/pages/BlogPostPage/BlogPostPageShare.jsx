@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import FacebookShareButton from 'react-share/lib/FacebookShareButton';
 import LinkedinShareButton from 'react-share/lib/LinkedinShareButton';

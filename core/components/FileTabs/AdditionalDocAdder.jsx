@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { AutoFormDialog } from '../AutoForm2';

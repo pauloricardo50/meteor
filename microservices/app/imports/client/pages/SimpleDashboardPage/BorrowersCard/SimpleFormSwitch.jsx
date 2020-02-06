@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import ButtonSwitch from 'core/components/ButtonSwitch';

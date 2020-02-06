@@ -1,4 +1,3 @@
-//
 import { getAggregatePercent } from '../general';
 
 export const withCombinedCalculator = (SuperClass = class {}) =>

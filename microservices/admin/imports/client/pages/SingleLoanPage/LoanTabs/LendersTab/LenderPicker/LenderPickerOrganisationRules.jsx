@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import LenderListItemRules from 'core/components/Financing/client/FinancingLenders/LenderList/LenderListItemRules';

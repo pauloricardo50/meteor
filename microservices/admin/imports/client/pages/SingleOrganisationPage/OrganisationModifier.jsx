@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { ORGANISATIONS_COLLECTION, S3_ACLS, ONE_KB } from 'core/api/constants';

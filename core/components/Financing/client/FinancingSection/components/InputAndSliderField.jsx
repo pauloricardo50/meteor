@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { connectField } from 'uniforms';
 import Slider from 'core/components/Slider';

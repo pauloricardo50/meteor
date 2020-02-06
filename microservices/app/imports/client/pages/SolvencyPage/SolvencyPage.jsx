@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import MaxPropertyValue from 'core/components/MaxPropertyValue';

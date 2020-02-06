@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 
 import ClientEventService from '../../../../api/events/ClientEventService';

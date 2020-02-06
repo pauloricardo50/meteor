@@ -1,4 +1,3 @@
-//
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import Calculator from 'core/utils/Calculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { PROPERTY_CATEGORY } from 'imports/core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';

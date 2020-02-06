@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { employeesById } from 'core/arrays/epotekEmployees';

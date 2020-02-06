@@ -1,4 +1,3 @@
-//
 import React, { Component } from 'react';
 import { compose, withProps, withState } from 'recompose';
 import pick from 'lodash/pick';

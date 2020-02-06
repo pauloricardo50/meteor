@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import DefaultLinkify from 'react-linkify';
 

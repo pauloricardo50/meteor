@@ -1,4 +1,3 @@
-//
 import SimpleSchema from 'simpl-schema';
 
 import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';

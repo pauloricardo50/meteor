@@ -1,4 +1,3 @@
-//
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 import { Element } from 'react-scroll';

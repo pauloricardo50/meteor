@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import cx from 'classnames';
 import { classes, ROW_TYPES } from './PdfTable';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import UpdateField from 'core/components/UpdateField';

@@ -1,4 +1,3 @@
-//
 import { Link as DefaultLink } from 'react-router-dom';
 import { withProps } from 'recompose';
 

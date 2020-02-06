@@ -1,4 +1,3 @@
-//
 import React, { useContext } from 'react';
 import { withState, compose } from 'recompose';
 

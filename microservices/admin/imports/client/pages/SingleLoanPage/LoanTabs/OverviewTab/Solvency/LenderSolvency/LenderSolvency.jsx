@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import DefaultCalculator, { Calculator } from 'core/utils/Calculator';

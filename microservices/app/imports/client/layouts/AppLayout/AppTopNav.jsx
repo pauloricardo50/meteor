@@ -1,4 +1,3 @@
-//
 import React, { useContext } from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';

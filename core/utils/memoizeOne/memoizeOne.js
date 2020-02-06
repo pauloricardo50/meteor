@@ -1,4 +1,3 @@
-//
 import areInputsEqual from './areInputsEqual';
 
 // <ResultFn: (...any[]) => mixed>

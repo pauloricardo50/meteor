@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { TASK_STATUS, REVENUE_STATUS } from 'core/api/constants';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';

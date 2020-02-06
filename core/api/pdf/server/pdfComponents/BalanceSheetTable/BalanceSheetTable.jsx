@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { classes, ROW_TYPES } from '../PdfTable/PdfTable';
 import { toMoney } from '../../../../../utils/conversionFunctions';

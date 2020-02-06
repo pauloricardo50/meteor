@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { createRoute } from 'core/utils/routerUtils';

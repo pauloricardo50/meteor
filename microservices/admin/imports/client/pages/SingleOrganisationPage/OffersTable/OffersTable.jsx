@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import Table from 'core/components/Table';
 import OfferRecapDialog from 'core/components/OfferRecapDialog';

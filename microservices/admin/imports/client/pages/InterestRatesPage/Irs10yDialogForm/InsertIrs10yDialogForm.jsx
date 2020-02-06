@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'imports/core/components/Translation/';

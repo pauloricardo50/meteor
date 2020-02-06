@@ -1,4 +1,3 @@
-//
 import queryString from 'query-string';
 
 const formatReplacerObject = replacers =>

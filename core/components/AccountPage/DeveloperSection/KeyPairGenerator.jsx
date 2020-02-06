@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 

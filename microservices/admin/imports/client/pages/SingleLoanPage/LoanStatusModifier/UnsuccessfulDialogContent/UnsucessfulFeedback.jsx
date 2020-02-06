@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { withProps } from 'recompose';
 import uniqBy from 'lodash/uniqBy';

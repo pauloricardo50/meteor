@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { S3_ACLS, PROPERTIES_COLLECTION } from '../../../../api/constants';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { ScrollSyncPane } from 'react-scroll-sync';
 

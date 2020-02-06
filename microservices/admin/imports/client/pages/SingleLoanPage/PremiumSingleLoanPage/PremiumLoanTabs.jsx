@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';

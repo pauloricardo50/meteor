@@ -1,6 +1,5 @@
-//
 import { getPercent } from '../../utils/general';
-import { FILE_STATUS, BASIC_DOCUMENTS_LIST } from './fileConstants';
+import { FILE_STATUS } from './fileConstants';
 import { documentIsBasic } from './documents';
 
 const documentIsRequired = required => required !== false;

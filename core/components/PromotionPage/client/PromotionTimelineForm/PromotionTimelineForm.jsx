@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { withProps } from 'recompose';
 import moment from 'moment';

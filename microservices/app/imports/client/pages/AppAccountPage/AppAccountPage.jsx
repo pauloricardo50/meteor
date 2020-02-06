@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import AccountPageBare from 'core/components/AccountPage/AccountPageBare';

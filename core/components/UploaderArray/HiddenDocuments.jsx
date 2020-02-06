@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import withHider from 'core/containers/withHider';
 import UploaderArray from './UploaderArray';

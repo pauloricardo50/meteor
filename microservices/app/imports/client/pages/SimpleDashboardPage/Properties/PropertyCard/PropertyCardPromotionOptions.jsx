@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';

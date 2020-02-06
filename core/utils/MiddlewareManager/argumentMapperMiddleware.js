@@ -1,4 +1,3 @@
-//
 import isArray from 'lodash/isArray';
 
 export const makeArgumentMapper = mappings =>

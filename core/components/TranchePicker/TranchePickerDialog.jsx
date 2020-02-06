@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { TranchePicker } from './TranchePicker';
 import DialogSimple from '../DialogSimple';

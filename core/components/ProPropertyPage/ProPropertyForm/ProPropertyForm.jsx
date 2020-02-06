@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';

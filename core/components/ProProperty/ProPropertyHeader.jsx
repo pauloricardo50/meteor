@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { PROPERTY_DOCUMENTS, COLLECTIONS } from 'core/api/constants';

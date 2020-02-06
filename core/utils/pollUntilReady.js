@@ -1,4 +1,3 @@
-//
 const TEST_TIMEOUT = 2000;
 const INTERVAL = 50;
 

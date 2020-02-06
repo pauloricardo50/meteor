@@ -1,4 +1,3 @@
-//
 import { INTEREST_RATES } from 'core/api/constants';
 
 export const TRENDS = {

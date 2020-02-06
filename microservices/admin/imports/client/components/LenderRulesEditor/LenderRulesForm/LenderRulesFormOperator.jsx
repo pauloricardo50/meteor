@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { LENDER_RULES_VARIABLES } from 'core/api/constants';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';

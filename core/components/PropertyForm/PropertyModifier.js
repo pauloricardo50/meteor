@@ -1,4 +1,3 @@
-//
 import { withProps } from 'recompose';
 import { propertyUpdate } from 'core/api';
 import PropertyForm from './PropertyForm';

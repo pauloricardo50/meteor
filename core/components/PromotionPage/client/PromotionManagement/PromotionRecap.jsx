@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import Recap from 'core/components/Recap/Recap';
 import PromotionRecapContainer from './PromotionRecapContainer';

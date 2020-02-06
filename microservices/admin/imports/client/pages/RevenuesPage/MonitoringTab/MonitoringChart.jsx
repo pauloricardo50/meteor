@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
 import HighchartsExportData from 'highcharts-export-data';

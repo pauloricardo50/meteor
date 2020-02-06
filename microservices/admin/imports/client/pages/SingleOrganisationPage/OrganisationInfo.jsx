@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';

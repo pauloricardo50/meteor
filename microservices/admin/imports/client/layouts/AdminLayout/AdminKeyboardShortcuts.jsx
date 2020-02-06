@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { GlobalHotKeys } from 'react-hotkeys';
 

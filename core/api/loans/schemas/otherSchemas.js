@@ -1,4 +1,3 @@
-//
 import { INTEREST_RATES, SOLVENCY_TYPE, CANTONS } from '../../constants';
 import { moneyField, percentageField } from '../../helpers/sharedSchemas';
 

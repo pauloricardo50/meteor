@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';

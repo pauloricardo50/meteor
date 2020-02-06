@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import ProPropertyPageHeader from './ProPropertyPageHeader';
 import ProPropertyPageUsers from './ProPropertyPageUsers';

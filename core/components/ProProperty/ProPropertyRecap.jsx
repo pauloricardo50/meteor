@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { PROPERTY_TYPE } from 'core/api/constants';

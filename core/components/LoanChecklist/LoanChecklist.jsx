@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { injectIntl } from 'react-intl';
 

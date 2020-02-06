@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { isAllowedToRemoveCustomerFromPromotion } from '../../../../api/security/clientSecurityHelpers';

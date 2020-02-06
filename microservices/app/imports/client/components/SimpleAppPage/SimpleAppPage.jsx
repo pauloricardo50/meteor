@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { APPLICATION_TYPES } from 'core/api/constants';

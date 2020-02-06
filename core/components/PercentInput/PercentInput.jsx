@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import MaskedInput from 'react-text-mask';
 

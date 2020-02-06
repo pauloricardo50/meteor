@@ -1,4 +1,3 @@
-//
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

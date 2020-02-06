@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { TASK_PRIORITIES } from 'core/api/constants';

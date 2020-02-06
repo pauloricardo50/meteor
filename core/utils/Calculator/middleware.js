@@ -1,4 +1,3 @@
-//
 
 // Map loan onto FinanceCalculator
 

@@ -1,4 +1,3 @@
-//
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 

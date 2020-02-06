@@ -1,4 +1,3 @@
-//
 import React, { useEffect } from 'react';
 
 import Timeline from 'core/components/Timeline';

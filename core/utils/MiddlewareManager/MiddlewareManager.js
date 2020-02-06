@@ -1,4 +1,3 @@
-//
 import { compose } from 'recompose';
 import isArray from 'lodash/isArray';
 import difference from 'lodash/difference';

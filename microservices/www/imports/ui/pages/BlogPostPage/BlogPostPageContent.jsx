@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';

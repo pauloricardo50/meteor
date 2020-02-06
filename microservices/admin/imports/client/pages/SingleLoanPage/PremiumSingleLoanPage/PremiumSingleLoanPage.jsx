@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';

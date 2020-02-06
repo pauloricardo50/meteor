@@ -1,4 +1,3 @@
-//
 import React, { useMemo } from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { toMoney } from 'core/utils/conversionFunctions';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { adminRevenues } from 'core/api/revenues/queries';

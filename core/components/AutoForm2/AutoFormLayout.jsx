@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 const renderLayout = ({ layout, renderLayoutItem, renderField, AutoField }) => {

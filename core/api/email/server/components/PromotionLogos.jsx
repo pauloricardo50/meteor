@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 // This component expects to be put inside a tbody:

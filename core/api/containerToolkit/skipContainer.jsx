@@ -1,4 +1,3 @@
-//
 import React, { Component } from 'react';
 
 // Determine whether to skip adding an HOC `container` based on a `skip`

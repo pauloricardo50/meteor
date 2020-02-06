@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';

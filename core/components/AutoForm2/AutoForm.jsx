@@ -1,4 +1,3 @@
-//
 import React, { useMemo } from 'react';
 import { AutoForm } from 'uniforms-material';
 import pickBy from 'lodash/pickBy';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import ClickToEditField from 'core/components/ClickToEditField';

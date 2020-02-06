@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { Percent, Money } from 'core/components/Translation';

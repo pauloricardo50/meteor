@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
 

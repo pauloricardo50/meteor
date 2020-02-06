@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import T, { Money } from 'core/components/Translation';

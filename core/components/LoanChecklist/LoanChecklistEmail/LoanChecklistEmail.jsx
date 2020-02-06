@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { formatMessage } from 'core/utils/server/intl';

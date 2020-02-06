@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import MapWithMarkerWrapper from '../../../maps/MapWithMarkerWrapper';

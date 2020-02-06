@@ -1,4 +1,3 @@
-//
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState, useEffect } from 'react';

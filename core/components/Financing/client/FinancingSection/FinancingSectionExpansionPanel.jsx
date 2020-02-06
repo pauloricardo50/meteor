@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { compose, withState, lifecycle } from 'recompose';
 import cx from 'classnames';

@@ -1,4 +1,3 @@
-//
 import React from 'react';
 import { withState } from 'recompose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

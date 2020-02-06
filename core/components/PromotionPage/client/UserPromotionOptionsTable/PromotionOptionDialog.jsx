@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { promotionOptionRemove } from 'core/api/methods';

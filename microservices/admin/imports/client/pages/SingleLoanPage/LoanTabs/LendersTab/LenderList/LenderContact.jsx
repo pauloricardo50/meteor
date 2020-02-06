@@ -1,4 +1,3 @@
-//
 import React from 'react';
 
 import { CONTACTS_COLLECTION } from 'core/api/constants';

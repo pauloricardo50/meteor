@@ -1,4 +1,3 @@
-//
 import React, { useState } from 'react';
 import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';

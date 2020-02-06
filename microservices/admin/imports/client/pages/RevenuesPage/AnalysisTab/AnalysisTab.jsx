@@ -1,4 +1,3 @@
-//
 
 import React, { useState, useEffect } from 'react';
 import PivotTableUI from 'react-pivottable/PivotTableUI';
