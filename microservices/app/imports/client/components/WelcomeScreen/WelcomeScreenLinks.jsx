@@ -73,7 +73,7 @@ const getLinks = ({ handleContact }) => [
   },
 ];
 
-const WelcomeScreenLinks = ({ handleContact }) => {
+const WelcomeScreenLinks = () => {
   const { toggleOpenContact } = useContext(ContactButtonContext);
 
   return (

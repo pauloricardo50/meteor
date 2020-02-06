@@ -12,7 +12,13 @@ const ContactButtonOverlay = ({
   openContact,
   handleCloseContact,
 }) => (
-  <ClickAwayListener onClickAway={openContact ? handleCloseContact : () => {}}>
+  <ClickAwayListener
+    onClickAway={handleCloseContact}
+    // Disable the listener if the contact is closed
+    // That way opening it from elsewhere won't trigger this listener
+    mouseEvent={openContact ? undefined : false}
+    touchEvent={openContact ? undefined : false}
+  >
     <div
       className={cx('card1 shadow-2 card-top contact-button-overlay', {
         closed: !openContact,
