@@ -63,6 +63,7 @@ export default class ConfirmMethod extends Component {
       description,
       type = 'popover',
       method,
+      TriggerComponent = Button,
       ...rest
     } = this.props;
     const { open, text, loading, anchorEl } = this.state;
@@ -138,7 +139,7 @@ export default class ConfirmMethod extends Component {
 
     return (
       <>
-        <Button
+        <TriggerComponent
           label={label}
           onClick={this.handleOpen}
           style={style}

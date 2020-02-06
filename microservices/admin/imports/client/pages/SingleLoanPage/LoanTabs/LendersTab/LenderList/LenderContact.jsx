@@ -17,6 +17,7 @@ const LenderContact = ({ contact, contacts, lenderId }: LenderContactProps) => (
     )}
     <DropdownMenu
       iconType="edit"
+      buttonProps={{ size: 'small' }}
       options={[...contacts, { _id: null, name: 'Pas de contact' }].map(
         orgContact => ({
           label: orgContact.name,
