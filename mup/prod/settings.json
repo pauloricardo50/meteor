@@ -1,0 +1,61 @@
+{
+  "public": {
+    "environment": "staging",
+    "features": {
+      "LITE_VERSION": true,
+      "NOT_PRODUCTION_READY": false
+    },
+    "analyticsSettings": {
+      "Segment": {
+        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
+      }
+    },
+    "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
+    "subdomains": {
+      "admin": "http://34.65.110.175:4300",
+      "app": "http://34.65.110.175:4100",
+      "pro": "http://34.65.110.175:4700",
+      "www": "http://34.65.110.175:4000",
+      "backend": "https://backend.staging.e-potek.ch"
+    }
+  },
+  "mandrill": {
+    "MANDRILL_LOGIN": "florian@e-potek.ch",
+    "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
+    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  },
+  "Monti": {
+    "www": {
+      "appId": "Su5rr3RvoqvdioEGA",
+      "appSecret": "30d6be86-49fc-4306-afa6-2c741a4203b3"
+    },
+    "admin": {
+      "appId": "8rPFk9ifZJ8ijnQGm",
+      "appSecret": "505c0621-817d-4dcc-af34-1afeb2656255"
+    },
+    "app": {
+      "appId": "kJtRiGYhASx9MBEBB",
+      "appSecret": "1be61fbc-aceb-4d99-99ba-2f74589810d4"
+    },
+    "pro": {
+      "appId": "DhH42zgf8TDgNQXyW",
+      "appSecret": "37f5bd49-d33a-462d-92c2-6473ba7b2d73"
+    },
+    "backend": {
+      "appId": "Ta9aik2yB8PrgXd53",
+      "appSecret": "348114db-4ace-4472-bd78-b274917e255d"
+    }
+  },
+  "storage": {
+    "bucketName": "e-potek-staging-files"
+  },
+  "exoscale": {
+    "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
+    "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
+  },
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I",
+  "mixpanel": {
+    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
+    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  }
+}
