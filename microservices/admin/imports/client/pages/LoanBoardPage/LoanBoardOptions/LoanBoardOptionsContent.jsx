@@ -14,6 +14,7 @@ import { LOAN_CATEGORIES, ROLES } from 'imports/core/api/constants';
 import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
 import { LiveQueryMonitor } from '../liveSync';
+import { additionalLoanBoardFields } from '../loanBoardHelpers';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {
@@ -58,6 +59,7 @@ const LoanBoardOptionsContent = ({
     lenderId,
     category,
     promotionStatus,
+    additionalFields,
   } = options;
   const assignedEmployeeValue = assignedEmployeeId
     ? assignedEmployeeId.$in
@@ -119,6 +121,9 @@ const LoanBoardOptionsContent = ({
       label: <T id={`Forms.status.${s}`} />,
     })),
   ];
+  const additionalFieldOptions = additionalLoanBoardFields.map(
+    ({ id, label, labelId }) => ({ id, label: label || <T id={labelId} /> }),
+  );
 
   return (
     <>
@@ -185,6 +190,18 @@ const LoanBoardOptionsContent = ({
               promotionStatusValue,
               next,
             )
+          }
+        />
+
+        <LoanBoardOptionsCheckboxes
+          label="Infos supplémentaires"
+          value={additionalFields}
+          options={additionalFieldOptions}
+          onChange={next =>
+            dispatch({
+              type: ACTIONS.SET_FILTER,
+              payload: { name: 'additionalFields', value: next },
+            })
           }
         />
 

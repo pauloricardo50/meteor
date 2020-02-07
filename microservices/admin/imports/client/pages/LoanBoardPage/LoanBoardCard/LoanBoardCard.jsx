@@ -5,8 +5,15 @@ import LoanBoardCardTop from './LoanBoardCardTop';
 import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
 import LoanBoardCardBottom from './LoanBoardCardBottom';
+import LoanBoardCardAdditionalInfo from './LoanBoardCardAdditionalInfo';
 
-const LoanBoardCard = ({ data: loan, setLoanId, style, admins }) => {
+const LoanBoardCard = ({
+  data: loan,
+  setLoanId,
+  style,
+  admins,
+  additionalFields,
+}) => {
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,
@@ -53,6 +60,10 @@ const LoanBoardCard = ({ data: loan, setLoanId, style, admins }) => {
             ({ isPrivate = false, assigneeLink: { _id: assigneeId } = {} }) =>
               isPrivate && assigneeId ? assigneeId === Meteor.userId() : true,
           )}
+        />
+        <LoanBoardCardAdditionalInfo
+          loan={loan}
+          additionalFields={additionalFields}
         />
       </div>
 

@@ -43,6 +43,7 @@ const LoanBoard = ({
           setLoanId: loanId =>
             dispatch({ type: ACTIONS.SET_LOAN_ID, payload: loanId }),
           admins,
+          additionalFields: options.additionalFields,
         }}
       />
       <LoanModal
