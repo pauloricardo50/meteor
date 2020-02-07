@@ -95,11 +95,11 @@ export const autoRenameFile = new Method({
   },
 });
 
-export const setFileProOnly = new Method({
-  name: 'setFileProOnly',
+export const setFileRoles = new Method({
+  name: 'setFileRoles',
   params: {
     Key: String,
-    proOnly: Boolean,
+    roles: Array,
     docId: String,
     collection: String,
   },

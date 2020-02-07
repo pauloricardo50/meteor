@@ -13,6 +13,12 @@ import { PROPERTY_CATEGORY } from '../../../constants';
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
 
+const uploadFile = (key, metadata = {}) => {
+  const json = { hello: 'world' };
+  const binaryData = Buffer.from(JSON.stringify(json), 'utf-8');
+  return S3Service.putObject(binaryData, key, metadata);
+};
+
 describe('S3Service', function() {
   this.timeout(10000);
 
@@ -193,6 +199,7 @@ describe('S3Service', function() {
 
     beforeEach(() => {
       resetDatabase();
+      clearBucket();
       user = Factory.create('user');
       userId = user._id;
       sinon.stub(Meteor, 'user').callsFake(() => user);
@@ -204,71 +211,170 @@ describe('S3Service', function() {
       Meteor.userId.restore();
     });
 
-    it('should return true if the user is dev', () => {
+    it('should return true if the user is dev', async () => {
       Meteor.users.update(userId, { $set: { roles: ['dev'] } });
+      await uploadFile('test/hello.json');
+      const isAllowed = await S3Service.isAllowedToAccess({
+        key: 'test/hello.json',
+        userId,
+      });
 
-      expect(S3Service.isAllowedToAccess({ key: '', userId })).to.equal(true);
+      expect(isAllowed).to.equal(true);
     });
 
-    it('should return true if the user is admin', () => {
+    it('should return true if the user is admin', async () => {
       Meteor.users.update(userId, { $set: { roles: 'admin' } });
+      await uploadFile('test/hello.json');
+      const isAllowed = await S3Service.isAllowedToAccess({
+        key: 'test/hello.json',
+        userId,
+      });
 
-      expect(S3Service.isAllowedToAccess({ key: '', userId })).to.equal(true);
+      expect(isAllowed).to.equal(true);
     });
 
-    it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowedToAccess({ key: '', userId })).to.throw(
-        'Unauthorized download',
-      );
+    it('should throw if file is admin only and user is user', async () => {
+      await uploadFile('test/hello.json', { roles: 'admin' });
+      try {
+        await S3Service.isAllowedToAccess({ key: 'test/hello.json', userId });
+        expect(1).to.equal(0, 'Should throw');
+      } catch (error) {
+        expect(error.message).to.include('Unauthorized download');
+      }
     });
 
-    it('should return true if this user has the loan', () => {
+    it('should throw if file is admin only and user is pro', async () => {
+      Meteor.users.update(userId, { $set: { roles: 'pro' } });
+      await uploadFile('test/hello.json', { roles: 'admin' });
+      try {
+        await S3Service.isAllowedToAccess({ key: 'test/hello.json', userId });
+        expect(1).to.equal(0, 'Should throw');
+      } catch (error) {
+        expect(error.message).to.include('Unauthorized download');
+      }
+    });
+
+    it('should throw if no loan or borrower is associated to this account', async () => {
+      await uploadFile('test/hello.json');
+      try {
+        await S3Service.isAllowedToAccess({ key: 'test/hello.json', userId });
+        expect(1).to.equal(0, 'Should throw');
+      } catch (error) {
+        expect(error.message).to.include('Unauthorized download');
+      }
+    });
+
+    it('should return true if this user has the loan', async () => {
       const loan = Factory.create('loan', { userId });
+      const key = `${loan._id}/hello.json`;
 
-      expect(
-        S3Service.isAllowedToAccess({ key: `${loan._id}/`, userId }),
-      ).to.equal(true);
+      await uploadFile(key);
+      const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+      expect(isAllowed).to.equal(true);
       Loans.remove(loan._id);
     });
 
-    it('should return true if this user has the borrower', () => {
+    it('should return true if this user has the borrower', async () => {
       const borrower = Factory.create('borrower', { userId });
+      const key = `${borrower._id}/hello.json`;
 
-      expect(
-        S3Service.isAllowedToAccess({ key: `${borrower._id}/`, userId }),
-      ).to.equal(true);
+      await uploadFile(key);
+      const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+      expect(isAllowed).to.equal(true);
       Borrowers.remove(borrower._id);
     });
 
-    it('should return true if this user has the property', () => {
+    it('should return true if this user has the property', async () => {
       const property = Factory.create('property', { userId });
+      const key = `${property._id}/hello.json`;
 
-      expect(
-        S3Service.isAllowedToAccess({ key: `${property._id}/`, userId }),
-      ).to.equal(true);
+      await uploadFile(key);
+      const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+      expect(isAllowed).to.equal(true);
       Properties.remove(property._id);
     });
 
-    it('should return true if the property is pro and the user exists', () => {
-      const property = Factory.create('property', {
-        category: PROPERTY_CATEGORY.PRO,
+    describe('with a pro property', () => {
+      let property;
+      let key;
+
+      beforeEach(() => {
+        property = Factory.create('property', {
+          category: PROPERTY_CATEGORY.PRO,
+        });
+        key = `${property._id}/hello.json`;
       });
 
-      expect(
-        S3Service.isAllowedToAccess({ key: `${property._id}/`, userId }),
-      ).to.equal(true);
-      Properties.remove(property._id);
+      afterEach(() => Properties.remove(property._id));
+
+      it('should return true when the file is public', async () => {
+        await uploadFile(key);
+        const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+        expect(isAllowed).to.equal(true);
+      });
+
+      it('should return true when the file is pro only with a pro user', async () => {
+        Meteor.users.update(userId, { $set: { roles: 'pro' } });
+
+        await uploadFile(key, { roles: 'pro' });
+        const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+        expect(isAllowed).to.equal(true);
+      });
+
+      it('should throw when the file is pro only with a user', async () => {
+        await uploadFile(key, { roles: 'pro' });
+
+        try {
+          await S3Service.isAllowedToAccess({ key, userId });
+          expect(1).to.equal(0, 'Should throw');
+        } catch (error) {
+          expect(error.message).to.include('Unauthorized download');
+        }
+      });
     });
 
-    it('should return true for a promotion and the user exists', () => {
-      const promotion = Factory.create('promotion', {
-        userLinks: [{ _id: userId, permissions: { canManageDocuments: true } }],
+    describe('with a promotion', () => {
+      let promotion;
+      let key;
+
+      beforeEach(() => {
+        promotion = Factory.create('promotion');
+        key = `${promotion._id}/hello.json`;
       });
 
-      expect(
-        S3Service.isAllowedToAccess({ key: `${promotion._id}/`, userId }),
-      ).to.equal(true);
-      Promotions.remove(promotion._id);
+      afterEach(() => Promotions.remove(promotion._id));
+
+      it('should return true when the file is public', async () => {
+        await uploadFile(key);
+        const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+        expect(isAllowed).to.equal(true);
+      });
+
+      it('should return true when the file is pro only with a pro user', async () => {
+        Meteor.users.update(userId, { $set: { roles: 'pro' } });
+
+        await uploadFile(key, { roles: 'pro' });
+        const isAllowed = await S3Service.isAllowedToAccess({ key, userId });
+
+        expect(isAllowed).to.equal(true);
+      });
+
+      it('should throw when the file is pro only with a user', async () => {
+        await uploadFile(key, { roles: 'pro' });
+
+        try {
+          await S3Service.isAllowedToAccess({ key, userId });
+          expect(1).to.equal(0, 'Should throw');
+        } catch (error) {
+          expect(error.message).to.include('Unauthorized download');
+        }
+      });
     });
   });
 

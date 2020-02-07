@@ -17,12 +17,12 @@ const UploaderBottom = ({
   handleUploadComplete,
   handleUploadFailed,
   handleChangeFileStatus,
-  handleToggleProOnly,
   tempFiles,
   uploadDirective,
   uploadDirectiveProps,
   disableUpload,
-  allowToggleProOnly,
+  handleSetRoles,
+  allowSetRoles,
 }) => (
   <>
     {currentValue.map((f, i) => (
@@ -36,8 +36,8 @@ const UploaderBottom = ({
         handleRenameFile={handleRenameFile}
         handleChangeError={handleChangeError}
         handleChangeFileStatus={handleChangeFileStatus}
-        handleToggleProOnly={handleToggleProOnly}
-        allowToggleProOnly={allowToggleProOnly}
+        allowSetRoles={allowSetRoles}
+        handleSetRoles={handleSetRoles}
       />
     ))}
 

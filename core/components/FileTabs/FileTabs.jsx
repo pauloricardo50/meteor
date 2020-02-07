@@ -36,7 +36,6 @@ const isPropertyFilesDisabled = (disabled, property) => {
 
 const FileTabs = ({ loan, disabled, currentUser }) => {
   const { borrowers, properties } = loan;
-  console.log('properties:', properties);
   const isAdmin = Meteor.microservice === 'admin';
 
   return (

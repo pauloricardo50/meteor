@@ -93,7 +93,7 @@ describe('REST: uploadFile', function() {
       expect(files[0].url).to.equal(
         `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
       );
-      expect(files[0].proonly).to.equal('false');
+      expect(files[0].roles).to.equal('');
     });
   });
 
@@ -118,7 +118,7 @@ describe('REST: uploadFile', function() {
       expect(files[0].url).to.equal(
         `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
       );
-      expect(files[0].proonly).to.equal('true');
+      expect(files[0].roles).to.equal('pro');
     });
   });
 

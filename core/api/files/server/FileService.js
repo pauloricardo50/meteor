@@ -8,7 +8,7 @@ import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
 import Intl from 'core/utils/server/intl';
 import { asyncForEach } from 'core/api/helpers/index';
-import { FILE_STATUS, S3_ACLS } from '../fileConstants';
+import { FILE_STATUS, S3_ACLS, FILE_ROLES } from '../fileConstants';
 import S3Service from './S3Service';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
@@ -78,8 +78,8 @@ class FileService {
     return S3Service.putObject(
       readFileBuffer(path),
       key,
-      { proonly: proOnly },
-      proOnly === 'true' ? S3_ACLS.PRIVATE : S3_ACLS.PUBLIC_READ,
+      { roles: proOnly ? FILE_ROLES.PRO : '' },
+      proOnly ? S3_ACLS.PRIVATE : S3_ACLS.PUBLIC_READ,
     )
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))
@@ -89,8 +89,10 @@ class FileService {
       });
   };
 
-  setProOnly = ({ Key, proOnly = false }) =>
-    S3Service.updateMetadata(Key, { proonly: proOnly ? 'true' : 'false' });
+  setFileRoles = ({ Key, roles = [] }) =>
+    S3Service.updateMetadata(Key, {
+      roles: roles.length ? roles.join(',') : '',
+    });
 
   deleteFileAPI = ({ docId, collection, key }) =>
     this.listFilesForDoc(docId)

@@ -1,7 +1,7 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
+import { shouldDisplayFile } from 'core/api/files/fileHelpers';
 import Icon from '../Icon';
 import Downloader from '../Downloader';
 
@@ -23,13 +23,7 @@ const getIconForFileType = key => {
 };
 
 const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => {
-  const filteredFiles = files.filter(({ proonly }) => {
-    if (Meteor.microservice === 'app') {
-      return proonly !== 'true';
-    }
-
-    return true;
-  });
+  const filteredFiles = files.filter(shouldDisplayFile);
 
   if (!filteredFiles) {
     return null;

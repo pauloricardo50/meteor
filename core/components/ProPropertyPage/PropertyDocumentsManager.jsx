@@ -41,7 +41,7 @@ const PropertyDocumentsManager = ({
       collection={PROPERTIES_COLLECTION}
       documentArray={propertyDocuments(property)}
       allowRequireByAdmin={false}
-      allowToggleProOnly={canModifyProperty}
+      allowSetRoles={canModifyProperty}
     />
   </DialogSimple>
 );

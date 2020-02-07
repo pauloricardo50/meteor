@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
 
 import DialogForm from 'core/components/ModalManager/DialogForm';
+import { shouldDisplayFile } from 'core/api/files/fileHelpers';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';
@@ -16,6 +17,7 @@ import IconButton from '../../IconButton';
 import Downloader from '../../Downloader';
 import FileStatusSetter from './FileStatusSetter';
 import Button from '../../Button';
+import FileRolesSetter from './FileRolesSetter';
 
 const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();
@@ -61,21 +63,24 @@ const makeOnDragStart = ({ draggable, ...dragProps }) => {
 
 const File = props => {
   const {
-    file: { name, Key, status, message, url, adminname: adminName, proonly },
+    file: { name, Key, status, message, url, adminname: adminName, roles },
     disabled,
     handleRemove,
     dragProps,
     handleRenameFile,
     handleChangeError,
-    handleToggleProOnly,
     draggable,
     handleChangeFileStatus,
-    allowToggleProOnly,
+    allowSetRoles,
+    handleSetRoles,
   } = props;
-  const proOnly = proonly === 'true';
   const { displayFile } = useContext(FileViewerContext) || {};
   const { openModal } = useContext(ModalManagerContext);
   const [deleting, setDeleting] = useState(false);
+
+  if (!shouldDisplayFile({ roles })) {
+    return null;
+  }
 
   return (
     <div className="flex-col">
@@ -105,7 +110,6 @@ const File = props => {
           })}
         >
           {getDisplayName(name, adminName)}
-          {Meteor.microservice === 'admin' && proOnly && ' (document pro)'}
         </h5>
         <div className="actions flex center">
           {handleChangeFileStatus && (
@@ -143,21 +147,13 @@ const File = props => {
               size="small"
             />
           )}
-          {allowToggleProOnly && (
-            <IconButton
-              type={proOnly ? 'lock' : 'lockOpen'}
-              tooltip={
-                proOnly
-                  ? 'Rendre public'
-                  : 'Rendre accessible aux Pros uniquement'
-              }
-              onClick={event => {
-                event.preventDefault();
-                return handleToggleProOnly(Key, proOnly);
-              }}
-              size="small"
-            />
-          )}
+          <FileRolesSetter
+            roles={roles}
+            Key={Key}
+            allowSetRoles={allowSetRoles}
+            handleSetRoles={handleSetRoles}
+            name={name}
+          />
 
           {isAllowedToDelete(disabled, status) && (
             <IconButton

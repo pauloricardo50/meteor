@@ -1,4 +1,13 @@
 {
+  "File.roles.public": "Document public",
+  "File.roles.public.tooltip": "Rendre le document public",
+  "File.roles.public.confirm": "Êtes-vous sûr de vouloir rendre le document {file} accessible publiquement ?",
+  "File.roles.pro": "Document accessible uniquement aux Pros",
+  "File.roles.pro.tooltip": "Restreindre l'accès aux Pros",
+  "File.roles.pro.confirm": "Êtes-vous sûr de vouloir rendre le document {file} accessible uniquement aux Pros ? Les clients n'y auront plus accès.",
+  "File.roles.admin": "Document accessible uniquement aux Admins",
+  "File.roles.admin.tooltip": "Restreindre l'accès aux Admins",
+  "File.roles.admin.confirm": "Êtes-vous sûr de vouloir rendre le document {file} accessible uniquement aux Admins ? {withWarning, select, true {Vous et les clients n'y aurez plus accès.} other {Les clients et les Pros n'y auront plus accès.}}",
   "Forms.acquisitionChannel": "Canal d'acquisition",
   "Forms.acquisitionChannel.other": "Autre",
   "Forms.acquisitionChannel.REFERRAL_PRO": "Referral Pro",

@@ -93,7 +93,7 @@ const uploadFileAPI = req => {
       docId: propertyId,
       id: category,
       collection: PROPERTIES_COLLECTION,
-      proOnly,
+      proOnly: proOnly === 'true',
     });
   });
 };

@@ -12,6 +12,7 @@ import {
   TEST_BUCKET_NAME,
   S3_ENDPOINT,
   OBJECT_STORAGE_PATH,
+  FILE_ROLES,
 } from '../fileConstants';
 import { PROPERTY_CATEGORY } from '../../constants';
 import FileService from './FileService';
@@ -46,12 +47,30 @@ class S3Service {
 
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
-  isAllowedToAccess = ({ userId, key }) => {
-    if (
-      Roles.userIsInRole(userId, 'admin') ||
-      Roles.userIsInRole(userId, 'dev')
-    ) {
+  isAllowedToAccess = async ({ userId, key }) => {
+    const isAdmin = Roles.userIsInRole(userId, 'admin');
+    const isDev = Roles.userIsInRole(userId, 'dev');
+    const isPro = Roles.userIsInRole(userId, 'pro');
+
+    if (isAdmin || isDev) {
       return true;
+    }
+
+    const {
+      Metadata: { roles: rolesString = '' },
+    } = await this.headObject(key);
+
+    const roles = rolesString.split(',').filter(x => x);
+
+    const hasNoRole = !roles.length;
+
+    // Admin only
+    if (roles.length === 1 && roles[0] === FILE_ROLES.ADMIN) {
+      if (isAdmin || isDev) {
+        return true;
+      }
+
+      throw new Meteor.Error('Unauthorized download');
     }
 
     // Check if this user is the owner of the document
@@ -90,13 +109,20 @@ class S3Service {
         throw new Meteor.Error('Unauthorized download');
       }
 
-      return true;
+      if (hasNoRole || (isPro && roles.includes(FILE_ROLES.PRO))) {
+        return true;
+      }
+
+      throw new Meteor.Error('Unauthorized download');
     }
 
     const promotionFound = !!PromotionService.get(keyId, { _id: 1 });
 
     if (promotionFound) {
-      return true;
+      if (hasNoRole || (isPro && roles.includes(FILE_ROLES.PRO))) {
+        return true;
+      }
+      throw new Meteor.Error('Unauthorized download');
     }
 
     const promotionOption = PromotionOptionService.get(keyId, { _id: 1 });
@@ -107,7 +133,12 @@ class S3Service {
           promotionOptionId: promotionOption._id,
           userId,
         });
-        return true;
+
+        if (hasNoRole || (isPro && roles.includes('pro'))) {
+          return true;
+        }
+
+        throw 'unauthorized';
       } catch (error) {
         throw new Meteor.Error('Unauthorized download');
       }
