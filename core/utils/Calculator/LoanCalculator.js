@@ -5,7 +5,6 @@ import {
   ERROR,
   OWN_FUNDS_USAGE_TYPES,
   RESIDENCE_TYPE,
-  PROPERTY_CATEGORY,
 } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
