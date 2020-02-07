@@ -1,7 +1,7 @@
 import React from 'react';
 
 const LoanChecklistSection = ({
-  missingInformations: { property = {}, borrowers = [] } = {},
+  missingInformations: { property = {}, borrowers = [], loan = {} } = {},
   Component,
 }) => (
   <>
@@ -15,6 +15,9 @@ const LoanChecklistSection = ({
         labels={borrower.labels}
       />
     ))}
+    {!!loan.labels?.length && (
+      <Component title={loan.title} labels={loan.labels} />
+    )}
   </>
 );
 
