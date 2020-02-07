@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import DialogSimple from 'core/components/DialogSimple';
@@ -7,16 +6,6 @@ import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import { ORGANISATION_TAGS } from 'core/api/constants';
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
-
-type LenderPickerProps = {
-  organisations: Array<Object>,
-  count: Number,
-  loan: Object,
-  addLender: Function,
-  removeLender: Function,
-  tagPickerSchema: Object,
-  filterOrganisations: Function,
-};
 
 const isActive = ({ loan, org }) =>
   loan.lenders.find(
@@ -31,7 +20,7 @@ const LenderPicker = ({
   removeLender,
   tagPickerSchema,
   filterOrganisations,
-}: LenderPickerProps) => (
+}) => (
   <DialogSimple
     label="Choisir prêteurs"
     closeOnly

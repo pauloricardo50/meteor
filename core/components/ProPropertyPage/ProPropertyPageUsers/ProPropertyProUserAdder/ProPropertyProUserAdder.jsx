@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import DialogSimple from 'core/components/DialogSimple';
@@ -11,15 +10,7 @@ import { getUserNameAndOrganisation } from 'core/api/helpers';
 import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
 import { ProPropertyPageContext } from '../../ProPropertyPageContext';
 
-type ProPropertyProUserAdderProps = {
-  property: Object,
-  permissions: Object,
-};
-
-const ProPropertyProUserAdder = ({
-  property,
-  permissions: { isAdmin },
-}: ProPropertyProUserAdderProps) => {
+const ProPropertyProUserAdder = ({ property, permissions: { isAdmin } }) => {
   const { users: proUsers = [] } = property;
   return (
     <DialogSimple

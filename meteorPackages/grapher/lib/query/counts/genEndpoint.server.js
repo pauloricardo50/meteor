@@ -15,72 +15,70 @@ const collection = new Mongo.Collection(null);
  * @param {Function} getSession - Takes the subscribe method's argument as its parameter. Should enforce any necessary security constraints. The return value of this function is stored in the session document.
  */
 export default (name, { getCursor, getSession }) => {
-    Meteor.methods({
-        [name + '.count.subscribe'](paramsOrBody) {
-            const session = getSession.call(this, paramsOrBody);
-            const sessionId = JSON.stringify(session);
+  Meteor.methods({
+    [`${name}.count.subscribe`](paramsOrBody) {
+      const session = getSession.call(this, paramsOrBody);
+      const sessionId = JSON.stringify(session);
 
-            const existingSession = collection.findOne({
-                session: sessionId,
-                userId: this.userId,
-            });
+      const existingSession = collection.findOne({
+        session: sessionId,
+        userId: this.userId,
+      });
 
-            // Try to reuse sessions if the user subscribes multiple times with the same data
-            if (existingSession) {
-                return existingSession._id;
-            }
+      // Try to reuse sessions if the user subscribes multiple times with the same data
+      if (existingSession) {
+        return existingSession._id;
+      }
 
-            const token = collection.insert({
-                session: sessionId,
-                query: name,
-                userId: this.userId,
-            });
+      const token = collection.insert({
+        session: sessionId,
+        query: name,
+        userId: this.userId,
+      });
 
-            return token;
-        },
+      return token;
+    },
+  });
+
+  Meteor.publish(`${name}.count`, function(token) {
+    check(token, String);
+    const self = this;
+    const request = collection.findOne({ _id: token, userId: self.userId });
+
+    if (!request) {
+      throw new Error(
+        'no-request',
+        `You must acquire a request token via the "${name}.count.subscribe" method first.`,
+      );
+    }
+
+    request.session = JSON.parse(request.session);
+    const cursor = getCursor.call(this, request);
+
+    // Start counting
+    let count = 0;
+
+    let isReady = false;
+    const handle = cursor.observe({
+      added() {
+        count++;
+        isReady && self.changed(COUNTS_COLLECTION_CLIENT, token, { count });
+      },
+
+      removed() {
+        count--;
+        isReady && self.changed(COUNTS_COLLECTION_CLIENT, token, { count });
+      },
     });
 
-    Meteor.publish(name + '.count', function(token) {
-        check(token, String);
-        const self = this;
-        const request = collection.findOne({ _id: token, userId: self.userId });
+    isReady = true;
+    self.added(COUNTS_COLLECTION_CLIENT, token, { count });
 
-        if (!request) {
-            throw new Error(
-                'no-request',
-                `You must acquire a request token via the "${name}.count.subscribe" method first.`
-            );
-        }
-
-        request.session = JSON.parse(request.session);
-        const cursor = getCursor.call(this, request);
-
-        // Start counting
-        let count = 0;
-
-        let isReady = false;
-        const handle = cursor.observe({
-            added() {
-                count++;
-                isReady &&
-                    self.changed(COUNTS_COLLECTION_CLIENT, token, { count });
-            },
-
-            removed() {
-                count--;
-                isReady &&
-                    self.changed(COUNTS_COLLECTION_CLIENT, token, { count });
-            },
-        });
-
-        isReady = true;
-        self.added(COUNTS_COLLECTION_CLIENT, token, { count });
-
-        self.onStop(() => {
-            handle.stop();
-            collection.remove(token);
-        });
-
-        self.ready();
+    self.onStop(() => {
+      handle.stop();
+      collection.remove(token);
     });
+
+    self.ready();
+  });
 };

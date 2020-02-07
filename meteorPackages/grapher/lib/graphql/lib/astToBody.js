@@ -3,7 +3,7 @@ export const Symbols = {
 };
 
 export default function astToBody(ast) {
-  const fieldNodes = ast.fieldNodes;
+  const { fieldNodes } = ast;
 
   const body = extractSelectionSet(ast.fieldNodes[0].selectionSet);
 
@@ -11,14 +11,14 @@ export default function astToBody(ast) {
 }
 
 function extractSelectionSet(set) {
-  let body = {};
+  const body = {};
   set.selections.forEach(el => {
     if (!el.selectionSet) {
       body[el.name.value] = 1;
     } else {
       body[el.name.value] = extractSelectionSet(el.selectionSet);
       if (el.arguments.length) {
-        let argumentMap = {};
+        const argumentMap = {};
         el.arguments.forEach(arg => {
           argumentMap[arg.name.value] = arg.value.value;
         });

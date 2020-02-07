@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import jsonLogic from 'json-logic-js';

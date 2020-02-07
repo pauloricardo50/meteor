@@ -1,4 +1,3 @@
-// @flow
 import React, { useMemo } from 'react';
 import { intlShape } from 'react-intl';
 import { compose, getContext } from 'recompose';
@@ -35,7 +34,11 @@ const determineComponentFromProps = ({
   field: { uniforms },
   fieldType,
 }) => {
-  if (allowedValues || customAllowedValues) {
+  if (
+    allowedValues ||
+    customAllowedValues ||
+    (uniforms && uniforms.recommendedValues)
+  ) {
     return {
       Component: CustomSelectField,
       type: COMPONENT_TYPES.SELECT,
@@ -141,10 +144,12 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
+    const { allowedValues, field, fieldType, margin = 'normal' } = props;
+
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
       props.name,
     );
-    const { allowedValues, field, fieldType, margin = 'normal' } = props;
+
     let { Component, type, props: additionalProps = {} } = useMemo(
       () =>
         determineComponentFromProps({

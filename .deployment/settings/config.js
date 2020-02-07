@@ -69,6 +69,11 @@ export const APP_CONFIGS = {
     instances: 2,
     disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
   },
+  MB2048_3i: {
+    memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB2048,
+    instances: 3,
+    disk_quota: CLOUDFOUNDRY_DISK_LIMIT.GB2,
+  },
 };
 
 export const ENVIRONMENT_CONFIG = {
@@ -86,7 +91,7 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.BACKEND]: { appConfig: APP_CONFIGS.MB2048_2i },
+    [APPLICATIONS.BACKEND]: { appConfig: APP_CONFIGS.MB2048_3i },
   },
   [ENVIRONMENT.DEV]: {
     services: [SERVICES.MONGODB],

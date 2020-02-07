@@ -5,21 +5,21 @@ const DemoLink = new Mongo.Collection('demo_link');
 export const DemoRestrictedLink = new Mongo.Collection('DemoRestrictedLink');
 
 Demo.addLinks({
-    children: {
-        collection: DemoLink,
-        type: 'many'
-    },
-    restrictedLink: {
-        collection: DemoRestrictedLink,
-        type: 'one'
-    }
+  children: {
+    collection: DemoLink,
+    type: 'many',
+  },
+  restrictedLink: {
+    collection: DemoRestrictedLink,
+    type: 'one',
+  },
 });
 
 DemoLink.addLinks({
-    myself: {
-        type: 'one',
-        collection: DemoLink
-    }
+  myself: {
+    type: 'one',
+    collection: DemoLink,
+  },
 });
 
 export const DemoPublication = new Mongo.Collection('DemoPublication');

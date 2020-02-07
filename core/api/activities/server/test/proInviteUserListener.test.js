@@ -16,7 +16,7 @@ import {
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import ActivityService from '../ActivityService';
 
-describe('proInviteUserListener', function () {
+describe('proInviteUserListener', function() {
   this.timeout(10000);
 
   beforeEach(() => {

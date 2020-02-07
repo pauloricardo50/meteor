@@ -1,12 +1,9 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState, useEffect } from 'react';
 import { injectIntl } from 'react-intl';
 
-type EmailListProps = {};
-
-const EmailList = ({ intl: { formatMessage: f } }: EmailListProps) => {
+const EmailList = ({ intl: { formatMessage: f } }) => {
   const [listenerData, setListeners] = useState([]);
 
   useEffect(() => {

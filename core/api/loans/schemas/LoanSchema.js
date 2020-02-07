@@ -1,4 +1,3 @@
-// @flow
 import SimpleSchema from 'simpl-schema';
 
 import {

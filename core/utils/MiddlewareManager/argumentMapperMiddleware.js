@@ -1,7 +1,6 @@
-// @flow
 import isArray from 'lodash/isArray';
 
-export const makeArgumentMapper = (mappings: { [key: string]: Function }) =>
+export const makeArgumentMapper = mappings =>
   Object.keys(mappings).reduce(
     (mapper, key) => ({
       ...mapper,

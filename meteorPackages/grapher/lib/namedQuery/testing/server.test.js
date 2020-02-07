@@ -1,178 +1,176 @@
 import { assert } from 'chai';
-import {
-    postList,
-    postListCached,
-    postListResolver,
-    postListResolverCached,
-    postListParamsCheck,
-    postListParamsCheckServer,
-} from './bootstrap/queries';
 import { createQuery, NamedQuery } from 'meteor/cultofcoders:grapher';
+import {
+  postList,
+  postListCached,
+  postListResolver,
+  postListResolverCached,
+  postListParamsCheck,
+  postListParamsCheckServer,
+} from './bootstrap/queries';
 
-describe('Named Query', function () {
-    it('Should return the proper values', function () {
-        const createdQuery = createQuery({
-            postList: {
-                title: 'User Post - 3'
-            }
-        });
-
-        const directQuery = postList.clone({
-            title: 'User Post - 3'
-        });
-
-        _.each([createdQuery, directQuery], (query) => {
-            const data = query.fetch();
-
-            assert.isTrue(data.length > 1);
-
-            _.each(data, post => {
-                assert.equal(post.title, 'User Post - 3');
-                assert.isObject(post.author);
-                assert.isObject(post.group);
-            })
-        })
+describe('Named Query', function() {
+  it('Should return the proper values', function() {
+    const createdQuery = createQuery({
+      postList: {
+        title: 'User Post - 3',
+      },
     });
 
-    it('Exposure embodyment should work properly', function () {
-        const query = createQuery({
-            postListExposure: {
-                title: 'User Post - 3'
-            }
-        });
-
-        const data = query.fetch();
-
-        assert.isTrue(data.length > 1);
-
-        _.each(data, post => {
-            assert.equal(post.title, 'User Post - 3');
-            assert.isObject(post.author);
-            assert.isObject(post.group);
-        })
+    const directQuery = postList.clone({
+      title: 'User Post - 3',
     });
 
-    it('Should properly cache the values', function (done) {
-        const posts = postListCached.fetch();
-        const postsCount = postListCached.getCount();
+    _.each([createdQuery, directQuery], query => {
+      const data = query.fetch();
 
-        const Posts = Mongo.Collection.get('posts');
-        const postId = Posts.insert({title: 'Hello Cacher!'});
+      assert.isTrue(data.length > 1);
 
-        assert.equal(posts.length, postListCached.fetch().length);
-        assert.equal(postsCount, postListCached.getCount());
+      _.each(data, post => {
+        assert.equal(post.title, 'User Post - 3');
+        assert.isObject(post.author);
+        assert.isObject(post.group);
+      });
+    });
+  });
 
-        Meteor.setTimeout(function () {
-            const newPosts = postListCached.fetch();
-            const newCount = postListCached.getCount();
-
-            Posts.remove(postId);
-
-            assert.isArray(newPosts);
-            assert.isNumber(newCount);
-
-            assert.equal(posts.length + 1, newPosts.length);
-            assert.equal(postsCount + 1, newCount);
-
-            done();
-        }, 400)
+  it('Exposure embodyment should work properly', function() {
+    const query = createQuery({
+      postListExposure: {
+        title: 'User Post - 3',
+      },
     });
 
-    it('Should allow to securely fetch a subbody of a namedQuery including embodiment', function () {
-        const query = createQuery({
-            postListExposure: {
-                limit: 5,
-                title: 'User Post - 3',
-                $body: {
-                    title: 1,
-                    createdAt: 1, // should fail
-                    group: {
-                        name: 1,
-                        createdAt: 1, // should fail
-                    }
-                }
-            }
-        });
+    const data = query.fetch();
 
-        const data = query.fetch();
+    assert.isTrue(data.length > 1);
 
-        assert.isTrue(data.length > 0);
+    _.each(data, post => {
+      assert.equal(post.title, 'User Post - 3');
+      assert.isObject(post.author);
+      assert.isObject(post.group);
+    });
+  });
 
-        _.each(data, post => {
-            assert.equal(post.title, 'User Post - 3');
-            assert.isUndefined(post.createdAt);
-            assert.isUndefined(post.author);
-            assert.isObject(post.group);
-            assert.isUndefined(post.group.createdAt);
-        })
+  it('Should properly cache the values', function(done) {
+    const posts = postListCached.fetch();
+    const postsCount = postListCached.getCount();
+
+    const Posts = Mongo.Collection.get('posts');
+    const postId = Posts.insert({ title: 'Hello Cacher!' });
+
+    assert.equal(posts.length, postListCached.fetch().length);
+    assert.equal(postsCount, postListCached.getCount());
+
+    Meteor.setTimeout(function() {
+      const newPosts = postListCached.fetch();
+      const newCount = postListCached.getCount();
+
+      Posts.remove(postId);
+
+      assert.isArray(newPosts);
+      assert.isNumber(newCount);
+
+      assert.equal(posts.length + 1, newPosts.length);
+      assert.equal(postsCount + 1, newCount);
+
+      done();
+    }, 400);
+  });
+
+  it('Should allow to securely fetch a subbody of a namedQuery including embodiment', function() {
+    const query = createQuery({
+      postListExposure: {
+        limit: 5,
+        title: 'User Post - 3',
+        $body: {
+          title: 1,
+          createdAt: 1, // should fail
+          group: {
+            name: 1,
+            createdAt: 1, // should fail
+          },
+        },
+      },
     });
 
-    it('Should work with resolver() queries with params', function () {
-        const title = 'User Post - 3';
-        const createdQuery = createQuery({
-            postListResolver: {
-                title
-            }
-        });
+    const data = query.fetch();
 
-        const directQuery = postListResolver.clone({
-            title
-        });
+    assert.isTrue(data.length > 0);
 
-        let data = createdQuery.fetch();
-        assert.isArray(data);
-        assert.equal(title, data[0]);
+    _.each(data, post => {
+      assert.equal(post.title, 'User Post - 3');
+      assert.isUndefined(post.createdAt);
+      assert.isUndefined(post.author);
+      assert.isObject(post.group);
+      assert.isUndefined(post.group.createdAt);
+    });
+  });
 
-
-        data = directQuery.fetch();
-        assert.isArray(data);
-        assert.equal(title, data[0]);
+  it('Should work with resolver() queries with params', function() {
+    const title = 'User Post - 3';
+    const createdQuery = createQuery({
+      postListResolver: {
+        title,
+      },
     });
 
-    it('Should work with resolver() that is cached', function () {
-        const title = 'User Post - 3';
-        let data = postListResolverCached.clone({title}).fetch();
-
-        assert.isArray(data);
-        assert.equal(title, data[0]);
-
-        data = postListResolverCached.clone({title}).fetch();
-
-        assert.isArray(data);
-        assert.equal(title, data[0]);
+    const directQuery = postListResolver.clone({
+      title,
     });
 
-    it('Should work with resolver() that has params validation', function (done) {
-        try {
-            postListParamsCheck.clone({}).fetch();
-        } catch (e) {
-            assert.isObject(e);
-            done();
-        }
-    });
+    let data = createdQuery.fetch();
+    assert.isArray(data);
+    assert.equal(title, data[0]);
 
-    it('Should work with resolver() that has params server-side validation', function (done) {
-        try {
-            postListParamsCheckServer.clone({}).fetch();
-        } catch (e) {
-            assert.isObject(e);
-            done();
-        }
-    });
+    data = directQuery.fetch();
+    assert.isArray(data);
+    assert.equal(title, data[0]);
+  });
 
-    it('Should respect config set by NamedQuery.setConfig', () => {
-        NamedQuery.setConfig({scoped: true});
-        try {
-            const query = createQuery('_namedQuery', {
-                posts: {
-                    title: 1,
-                },
-            });
+  it('Should work with resolver() that is cached', function() {
+    const title = 'User Post - 3';
+    let data = postListResolverCached.clone({ title }).fetch();
 
-            assert.isTrue(query.options.scoped);
-        }
-        finally {
-            NamedQuery.setConfig({});
-        }
-    });
+    assert.isArray(data);
+    assert.equal(title, data[0]);
+
+    data = postListResolverCached.clone({ title }).fetch();
+
+    assert.isArray(data);
+    assert.equal(title, data[0]);
+  });
+
+  it('Should work with resolver() that has params validation', function(done) {
+    try {
+      postListParamsCheck.clone({}).fetch();
+    } catch (e) {
+      assert.isObject(e);
+      done();
+    }
+  });
+
+  it('Should work with resolver() that has params server-side validation', function(done) {
+    try {
+      postListParamsCheckServer.clone({}).fetch();
+    } catch (e) {
+      assert.isObject(e);
+      done();
+    }
+  });
+
+  it('Should respect config set by NamedQuery.setConfig', () => {
+    NamedQuery.setConfig({ scoped: true });
+    try {
+      const query = createQuery('_namedQuery', {
+        posts: {
+          title: 1,
+        },
+      });
+
+      assert.isTrue(query.options.scoped);
+    } finally {
+      NamedQuery.setConfig({});
+    }
+  });
 });

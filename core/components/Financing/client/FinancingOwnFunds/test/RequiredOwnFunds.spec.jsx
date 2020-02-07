@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';

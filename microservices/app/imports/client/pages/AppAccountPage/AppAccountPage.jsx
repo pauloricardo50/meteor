@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 
 import AccountPageBare from 'core/components/AccountPage/AccountPageBare';
 import PageApp from '../../components/PageApp';
 
-type AppAccountPageProps = {};
-
-const AppAccountPage = (props: AppAccountPageProps) => (
+const AppAccountPage = props => (
   <PageApp id="AccountPage">
     <AccountPageBare {...props} />
   </PageApp>

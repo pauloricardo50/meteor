@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { adminRevenues } from 'core/api/revenues/queries';
@@ -8,9 +7,7 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-type RevenuesWithoutAssigneesProps = {};
-
-const RevenuesWithoutAssignees = (props: RevenuesWithoutAssigneesProps) => {
+const RevenuesWithoutAssignees = props => {
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: adminRevenues,
     params: {

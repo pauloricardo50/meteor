@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { injectIntl } from 'react-intl';
 
@@ -10,12 +9,7 @@ import {
 import LoanChecklistSection from './LoanChecklistSection';
 import LoanChecklistList from './LoanChecklistList';
 
-type LoanChecklistProps = {};
-
-const LoanChecklist = ({
-  intl: { formatMessage },
-  ...props
-}: LoanChecklistProps) => {
+const LoanChecklist = ({ intl: { formatMessage }, ...props }) => {
   const { fields, documents } = getChecklistMissingInformations(
     props,
     formatMessage,

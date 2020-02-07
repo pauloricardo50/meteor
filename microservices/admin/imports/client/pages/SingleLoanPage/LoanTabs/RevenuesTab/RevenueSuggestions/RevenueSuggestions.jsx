@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 
 import { Percent, Money } from 'core/components/Translation';
 import { REVENUE_TYPES } from 'core/api/constants';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-
-type RevenueSuggestionsProps = {};
 
 const getLastDateinXMonths = offset => {
   const inXMonths = new Date();
@@ -16,11 +13,7 @@ const getLastDateinXMonths = offset => {
 
 const toPercentString = value => `${value * 100}%`;
 
-const RevenueSuggestions = ({
-  loan,
-  suggestRevenue,
-  referralOrganisation,
-}: RevenueSuggestionsProps) => {
+const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
   const { lenders, structure, revenues } = loan;
   const { wantedLoan } = structure;
   const hasReferral = !!referralOrganisation;
@@ -56,11 +49,11 @@ const RevenueSuggestions = ({
                   sourceOrganisationLink: { _id: lender.organisation._id },
                   organisationLinks: hasReferral
                     ? [
-                      {
-                        _id: referralOrganisation._id,
-                        commissionRate: referralOrganisation.commissionRate,
-                      },
-                    ]
+                        {
+                          _id: referralOrganisation._id,
+                          commissionRate: referralOrganisation.commissionRate,
+                        },
+                      ]
                     : [],
                 })
               }

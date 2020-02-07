@@ -1,20 +1,12 @@
-// @flow
 import React from 'react';
 
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import UploaderArray from 'core/components/UploaderArray';
 import AdminNote from 'core/components/AdminNote';
 
-type OrganisationInfoProps = {};
-
 const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];
 
-const OrganisationInfo = ({
-  currentUser,
-  adminNote,
-  _id,
-  documents,
-}: OrganisationInfoProps) => (
+const OrganisationInfo = ({ currentUser, adminNote, _id, documents }) => (
   <div>
     <AdminNote
       adminNote={adminNote}

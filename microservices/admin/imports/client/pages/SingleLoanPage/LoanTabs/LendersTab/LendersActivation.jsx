@@ -1,11 +1,6 @@
-// @flow
 import React from 'react';
 
-type LendersActivationProps = {};
-
-const LendersActivation = ({
-  loan: { enableOffers },
-}: LendersActivationProps) => (
+const LendersActivation = ({ loan: { enableOffers } }) => (
   <div className="flex">
     <span>
       Offres{' '}

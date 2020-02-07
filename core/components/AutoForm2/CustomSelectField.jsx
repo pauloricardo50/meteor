@@ -1,5 +1,4 @@
-// @flow
-import React from 'react';
+import React, { useState } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -15,13 +14,8 @@ import { compose } from 'recompose';
 
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 import { ignoreProps } from '../../containers/updateForProps';
-
-type CustomSelectFieldProps = {
-  transform: Function,
-  allowedValues: Array,
-  customAllowedValues: Function,
-  model: Object,
-};
+import { OTHER_ALLOWED_VALUE } from './constants';
+import TextInput from '../TextInput';
 
 const xor = (item, array) => {
   const index = array.indexOf(item);
@@ -198,16 +192,52 @@ const CustomSelectField = ({
   transform,
   values = [],
   renderValue,
+  withCustomOther,
+  value,
+  onChange,
   ...props
-}) => (
-  <SelectField
-    {...props}
-    allowedValues={values}
-    transform={transform}
-    renderValue={renderValue}
-    labelProps={{ shrink: true }}
-  />
-);
+}) => {
+  const isCustomOther = withCustomOther && !values.includes(value);
+  const [customOther, setCustomOther] = useState(
+    isCustomOther ? value : undefined,
+  );
+  const [displayCustomOther, setDisplayCustomOther] = useState(isCustomOther);
+
+  return (
+    <>
+      <SelectField
+        {...props}
+        value={customOther ? OTHER_ALLOWED_VALUE : value}
+        allowedValues={values}
+        transform={transform}
+        renderValue={renderValue}
+        labelProps={{ shrink: true }}
+        onChange={(val, key) => {
+          if (withCustomOther && val === OTHER_ALLOWED_VALUE) {
+            setDisplayCustomOther(true);
+            return onChange(customOther || val, key);
+          }
+          setCustomOther();
+          setDisplayCustomOther(false);
+          return onChange(val, key);
+        }}
+      />
+      {withCustomOther && displayCustomOther && (
+        <>
+          <TextInput
+            value={customOther}
+            onChange={val => {
+              setCustomOther(val);
+              onChange(val, props.key);
+            }}
+            label="Préciser"
+            className="mb-8"
+          />
+        </>
+      )}
+    </>
+  );
+};
 
 export default compose(
   CustomSelectFieldContainer,

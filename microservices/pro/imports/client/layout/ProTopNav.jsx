@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import TopNav from 'core/components/TopNav';

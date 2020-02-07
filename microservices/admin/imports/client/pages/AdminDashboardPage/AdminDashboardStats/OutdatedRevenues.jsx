@@ -1,5 +1,4 @@
-// @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
@@ -8,18 +7,21 @@ import { REVENUE_STATUS } from 'core/api/constants';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
+import CurrentUserContext from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-type OutdatedRevenuesProps = {};
-
-const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
+const OutdatedRevenues = ({ revenues }) => {
+  const currentUser = useContext(CurrentUserContext);
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
-  const isOk = revenues.length === 0;
+  const myRevenues = revenues.filter(
+    ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,
+  );
+  const isOk = myRevenues.length === 0;
 
   return (
     <StatItem
       value={<CountUp end={total} prefix="CHF " preserveValue separator=" " />}
-      increment={`${revenues.length} revenus`}
+      increment={`Dont ${myRevenues.length} à moi`}
       positive={isOk}
       title="Revenus en retard"
       top={
@@ -47,7 +49,7 @@ export default withSmartQuery({
   params: {
     status: REVENUE_STATUS.EXPECTED,
     expectedAt: { $lte: new Date() },
-    $body: { amount: 1 },
+    $body: { amount: 1, assigneeLink: 1 },
   },
   dataName: 'revenues',
 })(OutdatedRevenues);

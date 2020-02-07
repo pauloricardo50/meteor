@@ -1,4 +1,3 @@
-// @flow
 import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 

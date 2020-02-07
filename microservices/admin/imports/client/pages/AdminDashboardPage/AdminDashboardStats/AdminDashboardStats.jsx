@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import NewLoansStat from './NewLoansStat';
@@ -9,8 +8,7 @@ import LoansWithoutRevenues from './LoansWithoutRevenues';
 import CustomersWithoutAssignees from './CustomersWithoutAssignees';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
-
-type AdminDashboardStatsProps = {};
+import UnpaidCommissions from './UnpaidCommissions';
 
 const AdminDashboardStats = ({
   newLoans,
@@ -19,7 +17,7 @@ const AdminDashboardStats = ({
   showChart,
   setShowChart,
   loanHistogram,
-}: AdminDashboardStatsProps) => (
+}) => (
   <div className="admin-stats">
     <div>
       <h2>Stats</h2>
@@ -38,6 +36,7 @@ const AdminDashboardStats = ({
         <CustomersWithoutAssignees />
         <RevenuesWithoutAssignees />
         <RevenuesWithoutCommissions />
+        <UnpaidCommissions />
       </div>
     </div>
   </div>

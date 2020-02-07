@@ -1,4 +1,3 @@
-// @flow
 export const PROPERTIES_COLLECTION = 'properties';
 
 export const PROPERTY_STATUS = {

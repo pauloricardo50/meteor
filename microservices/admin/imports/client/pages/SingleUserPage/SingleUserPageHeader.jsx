@@ -20,9 +20,11 @@ import {
   ROLES,
   USERS_COLLECTION,
   ORGANISATIONS_COLLECTION,
+  ACQUISITION_CHANNELS,
 } from 'core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import EmailModifier from 'core/components/EmailModifier';
+import UpdateField from 'core/components/UpdateField';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import { UserModifier } from '../../components/UserDialogForm';
@@ -162,6 +164,15 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             </div>
             <div className="assigned-employee space-children">
               <ReferredByOrganisationAssignDropdown user={user} />
+            </div>
+            <div>
+              <UpdateField
+                collection={USERS_COLLECTION}
+                doc={user}
+                fields={['acquisitionChannel']}
+                autosaveDelay={250}
+                style={{ maxWidth: 250 }}
+              />
             </div>
           </div>
         )}

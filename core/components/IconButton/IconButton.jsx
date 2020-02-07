@@ -51,9 +51,7 @@ class IconButton extends Component {
         style={style}
         className={cx(
           'icon-button',
-          {
-            [classes[`size${capitalize(size)}`]]: size !== 'medium',
-          },
+          { [classes[`size${capitalize(size)}`]]: size !== 'medium' },
           !loading && className,
         )}
         aria-label={tooltip || undefined}

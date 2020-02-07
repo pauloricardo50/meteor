@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
@@ -6,9 +5,7 @@ import ProCustomerAdderContainer from './ProCustomerAdderContainer';
 import T from '../Translation';
 import Icon from '../Icon';
 
-type ProCustomerAdderProps = {};
-
-const ProCustomerAdder = ({ schema, onSubmit }: ProCustomerAdderProps) => (
+const ProCustomerAdder = ({ schema, onSubmit }) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={onSubmit}

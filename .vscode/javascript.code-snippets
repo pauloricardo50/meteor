@@ -2,7 +2,6 @@
   "Meteor tests": {
     "prefix": "testmeteor",
     "body": [
-      "// @flow",
       "/* eslint-env mocha */",
       "import { expect } from 'chai';",
       "import { Factory } from 'meteor/dburles:factory';",
@@ -25,7 +24,6 @@
   "Testing JSX": {
     "prefix": "testjsx",
     "body": [
-      "// @flow",
       "/* eslint-env mocha */",
       "import React from 'react';",
       "import { expect } from 'chai';",

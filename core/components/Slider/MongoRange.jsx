@@ -1,15 +1,8 @@
-// @flow
 import React from 'react';
 
 import Range from './Range';
 
-type MongoRangeProps = {};
-
-const MongoRange = ({
-  value: { $lte, $gte },
-  onChange,
-  ...rest
-}: MongoRangeProps) => (
+const MongoRange = ({ value: { $lte, $gte }, onChange, ...rest }) => (
   <Range
     value={[$gte, $lte]}
     onChange={([low, high]) => onChange({ $gte: low, $lte: high })}

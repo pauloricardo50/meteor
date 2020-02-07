@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import {
@@ -9,13 +8,8 @@ import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import AdminNote from 'core/components/AdminNote';
 import LenderContact from './LenderContact';
-import LenderOffer from './LenderOffer';
 
-type LenderProps = {
-  lender: Object,
-};
-
-const Lender = ({ lender }: LenderProps) => {
+const Lender = ({ lender }) => {
   const {
     organisation,
     status,
@@ -62,23 +56,6 @@ const Lender = ({ lender }: LenderProps) => {
         placeholder="#### Ajouter un commentaire"
         allowEditing
       />
-      {/* <ClickToEditField
-        placeholder="Ajouter un commentaire"
-        value={comment}
-        onSubmit={setComment}
-        className="comment-edit"
-        inputProps={{
-          multiline: true,
-          disableUnderline: true,
-          fullWidth: true,
-        }}
-      /> */}
-
-      <div className="offers">
-        {offers.map(offer => (
-          <LenderOffer offer={offer} key={offer._id} />
-        ))}
-      </div>
     </div>
   );
 };

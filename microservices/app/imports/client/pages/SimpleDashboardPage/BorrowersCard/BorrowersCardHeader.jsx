@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import T from 'core/components/Translation';
 
-type BorrowersCardHeaderProps = {};
-
-const BorrowersCardHeader = ({ progress }: BorrowersCardHeaderProps) => (
+const BorrowersCardHeader = ({ progress }) => (
   <div className="borrowers-card-header">
     <div style={{ width: '100%' }}>
       <div className="flex-row title">

@@ -27,14 +27,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function () {
+        'reservationAgreement.startDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function () {
+        'reservationAgreement.expirationDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')

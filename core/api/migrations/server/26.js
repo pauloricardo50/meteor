@@ -17,11 +17,11 @@ const handleUpPromotionPermissions = async () => {
   const promotions = PromotionService.fetch({ users: { _id: 1 } });
 
   const handlePermissions = async () => {
-    await asyncForEach(promotions, async (promotion) => {
+    await asyncForEach(promotions, async promotion => {
       const { users = [], _id: promotionId } = promotion;
 
       const handleUsersPermissions = async () => {
-        await asyncForEach(users, async (user) => {
+        await asyncForEach(users, async user => {
           const {
             $metadata: {
               permissions: {
@@ -73,11 +73,11 @@ const handleUpPropertiesPermissions = async () => {
   const properties = PropertyService.fetch({ users: { _id: 1 } });
 
   const handlePermissions = async () => {
-    await asyncForEach(properties, async (property) => {
+    await asyncForEach(properties, async property => {
       const { users = [], _id: propertyId } = property;
 
       const handleUsersPermissions = async () => {
-        await asyncForEach(users, async (user) => {
+        await asyncForEach(users, async user => {
           const {
             $metadata: {
               permissions: {
@@ -129,10 +129,10 @@ const handleDownPromotionPermissions = async () => {
   const promotions = PromotionService.find().fetch();
 
   const handlePermissions = async () => {
-    await asyncForEach(promotions, async (promotion) => {
+    await asyncForEach(promotions, async promotion => {
       const { userLinks = [], _id: promotionId } = promotion;
 
-      const newUserLinks = userLinks.map((user) => {
+      const newUserLinks = userLinks.map(user => {
         const {
           permissions: {
             canReserveLots = false,
@@ -150,7 +150,9 @@ const handleDownPromotionPermissions = async () => {
           const { forLotStatus = [] } = displayCustomerNames;
           if (forLotStatus.includes(PROMOTION_LOT_STATUS.RESERVED)) {
             newDisplayCustomerNames.forLotStatus = [
-              ...forLotStatus.filter(status => status !== PROMOTION_LOT_STATUS.RESERVED),
+              ...forLotStatus.filter(
+                status => status !== PROMOTION_LOT_STATUS.RESERVED,
+              ),
               'BOOKED',
             ];
           }
@@ -180,10 +182,10 @@ const handleDownPropertiesPermissions = async () => {
   const properties = PropertyService.find().fetch();
 
   const handlePermissions = async () => {
-    await asyncForEach(properties, async (property) => {
+    await asyncForEach(properties, async property => {
       const { userLinks = [], _id: propertyId } = property;
 
-      const newUserLinks = userLinks.map((user) => {
+      const newUserLinks = userLinks.map(user => {
         const {
           permissions: {
             canReserveProperty = false,
@@ -201,7 +203,9 @@ const handleDownPropertiesPermissions = async () => {
           const { forPropertyStatus = [] } = displayCustomerNames;
           if (forPropertyStatus.includes(PROPERTY_STATUS.RESERVED)) {
             newDisplayCustomerNames.forPropertyStatus = [
-              ...forPropertyStatus.filter(status => status !== PROPERTY_STATUS.RESERVED),
+              ...forPropertyStatus.filter(
+                status => status !== PROPERTY_STATUS.RESERVED,
+              ),
               'BOOKED',
             ];
           }

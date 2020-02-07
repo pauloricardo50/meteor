@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -11,11 +10,6 @@ import Calculator from '../../utils/Calculator';
 import Toggle from '../Toggle';
 import Button from '../Button';
 import T, { Money } from '../Translation';
-
-type MaxPropertyValueResultsTableProps = {
-  min: Object,
-  max: Object,
-};
 
 const MaxPropertyValueResultsToggle = ({
   showBest,
@@ -64,7 +58,7 @@ const MaxPropertyValueResultsTable = ({
   canton,
   showBest,
   setShowBest,
-}: MaxPropertyValueResultsTableProps) => {
+}) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
   const {

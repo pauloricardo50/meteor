@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
@@ -6,8 +5,6 @@ import DropdownMenu from 'core/components/DropdownMenu';
 import { taskFormLayout } from '../../../components/TasksTable/TaskModifier';
 import LoanBoardCardActionsContainer from './LoanBoardCardActionsContainer';
 import { activityFormLayout } from '../../SingleLoanPage/LoanTabs/OverviewTab/LoanTimeline/LoanActivityAdder';
-
-type LoanBoardCardActionsProps = {};
 
 const handleKeyDown = e => {
   if (e.keyCode === 13 && e.metaKey) {
@@ -27,7 +24,7 @@ const LoanBoardCardActions = ({
   setOpenActivity,
   setOpenTask,
   taskSchema,
-}: LoanBoardCardActionsProps) => (
+}) => (
   <>
     <DropdownMenu
       iconType="more"

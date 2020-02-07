@@ -290,7 +290,9 @@ describe('Admin promotion', () => {
         cy.reload();
       });
 
-      cy.contains('2.01').click();
+      cy.get('.promotion-lots-table')
+        .contains('2.01')
+        .click();
 
       cy.contains('Modifier').click();
       cy.get('input[name=landValue]').type('{backspace}500000');

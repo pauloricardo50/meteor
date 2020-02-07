@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -8,15 +7,13 @@ import DropdownMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
 import LotChip from '../PromotionLotsTable/LotChip';
 
-type PromotionLotsManagerProps = {};
-
 const PromotionLotsManager = ({
   lots = [],
   promotionLotId,
   status,
   options,
   canModifyLots,
-}: PromotionLotsManagerProps) => {
+}) => {
   const allowEdit = canModifyLots && status === PROMOTION_LOT_STATUS.AVAILABLE;
 
   if (!allowEdit && lots.length === 0) {

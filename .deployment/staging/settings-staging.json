@@ -24,27 +24,26 @@
     "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
     "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
   },
-  "Kadira": {
-    "endpoint": "https://kadira-engine.e-potek.ch:22022",
+  "Monti": {
     "www": {
-      "appId": "57ah6JnZRywQTp7y2", 
-      "appSecret": "34ca2045-d2cd-4a99-a15d-bebbabdf1926" 
+      "appId": "Su5rr3RvoqvdioEGA", 
+      "appSecret": "30d6be86-49fc-4306-afa6-2c741a4203b3" 
     },
     "admin": {
-      "appId": "qPxhPAXimwqmKWHQ8", 
-      "appSecret": "0a072c40-17a7-4ed4-83a3-5212c388865e" 
+      "appId": "8rPFk9ifZJ8ijnQGm", 
+      "appSecret": "505c0621-817d-4dcc-af34-1afeb2656255" 
     },
     "app": {
-      "appId": "e4p8nzzMeN5qfCEPW", 
-      "appSecret": "afee013d-e32f-49ad-b705-05ebab7de073" 
+      "appId": "kJtRiGYhASx9MBEBB", 
+      "appSecret": "1be61fbc-aceb-4d99-99ba-2f74589810d4" 
     },
     "pro": {
-      "appId": "PqGxnwRWTbfsLufGw",
-      "appSecret": "e08c8e98-d23f-43ff-8b22-021ed4aafabe"
+      "appId": "DhH42zgf8TDgNQXyW",
+      "appSecret": "37f5bd49-d33a-462d-92c2-6473ba7b2d73"
     },
     "backend": {
-      "appId": "Ta9aik2yB8PrgXd53",
-      "appSecret": "348114db-4ace-4472-bd78-b274917e255d"
+      "appId": "LFp3bR83mwWCChkGH",
+      "appSecret": "828aeb0a-da22-4052-82b7-fc9171d24829"
     }
   },
   "storage": {

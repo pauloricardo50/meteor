@@ -1,4 +1,3 @@
-// @flow
 import { compose, withProps } from 'recompose';
 
 import { appPromotion } from 'core/api/promotions/queries';

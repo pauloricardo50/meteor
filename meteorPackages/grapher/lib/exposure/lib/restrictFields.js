@@ -10,12 +10,15 @@ const deepFilterFieldsObject = ['$not'];
  * @param restrictedFields Array
  */
 export default function restrictFields(filters, options, restrictedFields) {
-    if (!_.isArray(restrictedFields)) {
-        throw new Meteor.Error('invalid-parameters', 'Please specify an array of restricted fields.');
-    }
+  if (!_.isArray(restrictedFields)) {
+    throw new Meteor.Error(
+      'invalid-parameters',
+      'Please specify an array of restricted fields.',
+    );
+  }
 
-    cleanFilters(filters, restrictedFields);
-    cleanOptions(options, restrictedFields)
+  cleanFilters(filters, restrictedFields);
+  cleanOptions(options, restrictedFields);
 }
 
 /**
@@ -25,21 +28,23 @@ export default function restrictFields(filters, options, restrictedFields) {
  * @param restrictedFields
  */
 function cleanFilters(filters, restrictedFields) {
-    if (filters) {
-        cleanObject(filters, restrictedFields);
+  if (filters) {
+    cleanObject(filters, restrictedFields);
+  }
+
+  deepFilterFieldsArray.forEach(field => {
+    if (filters[field]) {
+      filters[field].forEach(element =>
+        cleanFilters(element, restrictedFields),
+      );
     }
+  });
 
-    deepFilterFieldsArray.forEach(field => {
-        if (filters[field]) {
-            filters[field].forEach(element => cleanFilters(element, restrictedFields));
-        }
-    });
-
-    deepFilterFieldsObject.forEach(field => {
-        if (filters[field]) {
-            cleanFilters(filters[field], restrictedFields);
-        }
-    });
+  deepFilterFieldsObject.forEach(field => {
+    if (filters[field]) {
+      cleanFilters(filters[field], restrictedFields);
+    }
+  });
 }
 
 /**
@@ -49,19 +54,19 @@ function cleanFilters(filters, restrictedFields) {
  * @param restrictedFields
  */
 function cleanOptions(options, restrictedFields) {
-    if (options.fields) {
-        cleanObject(options.fields, restrictedFields);
+  if (options.fields) {
+    cleanObject(options.fields, restrictedFields);
 
-        if (_.keys(options.fields).length === 0) {
-            _.extend(options.fields, {_id: 1})
-        }
-    } else {
-        options.fields = {_id: 1};
+    if (_.keys(options.fields).length === 0) {
+      _.extend(options.fields, { _id: 1 });
     }
+  } else {
+    options.fields = { _id: 1 };
+  }
 
-    if (options.sort) {
-        cleanObject(options.sort, restrictedFields);
-    }
+  if (options.sort) {
+    cleanObject(options.sort, restrictedFields);
+  }
 }
 
 /**
@@ -71,13 +76,13 @@ function cleanOptions(options, restrictedFields) {
  * @param restrictedFields
  */
 function cleanObject(object, restrictedFields) {
-    _.each(object, (value, key) => {
-        restrictedFields.forEach((restrictedField) => {
-            if (matching(restrictedField, key)) {
-                delete object[key];
-            }
-        })
+  _.each(object, (value, key) => {
+    restrictedFields.forEach(restrictedField => {
+      if (matching(restrictedField, key)) {
+        delete object[key];
+      }
     });
+  });
 }
 
 /**
@@ -88,9 +93,9 @@ function cleanObject(object, restrictedFields) {
  * @returns {boolean}
  */
 function matching(field, subfield) {
-    if (field === subfield) {
-        return true;
-    }
+  if (field === subfield) {
+    return true;
+  }
 
-    return subfield.slice(0, field.length + 1) === field + '.';
+  return subfield.slice(0, field.length + 1) === `${field}.`;
 }

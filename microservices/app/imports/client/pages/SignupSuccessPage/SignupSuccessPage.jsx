@@ -1,13 +1,10 @@
-// @flow
 import React from 'react';
 
 import withMatchParam from 'core/containers/withMatchParam';
 import T from 'core/components/Translation';
 import AnimatedSuccess from 'core/components/AnimatedSuccess';
 
-type SignupSuccessPageProps = {};
-
-const SignupSuccessPage = ({ email }: SignupSuccessPageProps) => (
+const SignupSuccessPage = ({ email }) => (
   <div className="signup-success animated fadeIn">
     <div className="card1 card-top">
       <AnimatedSuccess />

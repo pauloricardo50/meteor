@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 
 import ProgressBarStep from './ProgressBarStep';
 
-type ProgressBarProps = {};
-
-const ProgressBar = ({ steps, className, currentIndex }: ProgressBarProps) => (
+const ProgressBar = ({ steps, className, currentIndex }) => (
   <div className={cx('progress-bar-v2', className)}>
     <div className="steps">
       {steps.map((step, index) => (

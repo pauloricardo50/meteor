@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,9 +7,7 @@ import Tooltip from '../Material/Tooltip';
 
 import T from '../Translation';
 
-type LoanProgressHeaderProps = {};
-
-const LoanProgressHeader = (props: LoanProgressHeaderProps) => (
+const LoanProgressHeader = props => (
   <div className="loan-progress-header">
     <T id="PromotionLotLoansTable.loanProgress" />
     <div className="icons">

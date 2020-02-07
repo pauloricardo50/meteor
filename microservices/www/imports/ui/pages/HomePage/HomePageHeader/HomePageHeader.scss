@@ -7,7 +7,7 @@
   overflow: hidden;
   align-items: flex-start;
   flex-direction: row;
-  justify-content: space-around; // Fallback for IE
+  justify-content: space-around; // Fallback for IE	
   justify-content: space-evenly;
 
   min-height: 600px;
@@ -68,7 +68,7 @@
   .iphone-x {
     margin-bottom: -250px;
     margin-left: 100px;
-    // height of iphone is 864
+    // height of iphone is 864	
 
     transform: scale(0.7);
     transform-origin: top center;

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Board from '../../components/Board';
@@ -8,8 +7,6 @@ import LoanBoardColumnHeader from './LoanBoardColumnHeader';
 import LoanBoardCard from './LoanBoardCard';
 import LoanModal from './LoanModal';
 import { ACTIONS } from './loanBoardConstants';
-
-type LoanBoardProps = {};
 
 const LoanBoard = ({
   dispatch,
@@ -23,7 +20,7 @@ const LoanBoard = ({
   activateLoanBoardSync,
   setActivateLoanBoardSync,
   options,
-}: LoanBoardProps) => (
+}) => (
   <>
     <div className="loan-board">
       <LoanBoardOptions

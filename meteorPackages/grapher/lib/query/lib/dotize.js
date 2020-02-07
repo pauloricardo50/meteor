@@ -2,84 +2,79 @@
 export default dotize = {};
 
 dotize.convert = function(obj, prefix) {
-    if ((!obj || typeof obj != "object") && !Array.isArray(obj)) {
-        if (prefix) {
-            var newObj = {};
-            newObj[prefix] = obj;
-            return newObj;
+  if ((!obj || typeof obj !== 'object') && !Array.isArray(obj)) {
+    if (prefix) {
+      var newObj = {};
+      newObj[prefix] = obj;
+      return newObj;
+    }
+    return obj;
+  }
+
+  var newObj = {};
+
+  function recurse(o, p, isArrayItem) {
+    for (const f in o) {
+      if (o[f] && typeof o[f] === 'object') {
+        if (Array.isArray(o[f])) {
+          if (isEmptyArray(o[f])) {
+            newObj[getFieldName(f, p, true)] = o[f]; // empty array
+          } else {
+            newObj = recurse(o[f], getFieldName(f, p, false, true), true); // array
+          }
+        } else if (isArrayItem) {
+          if (isEmptyObj(o[f])) {
+            newObj[getFieldName(f, p, true)] = o[f]; // empty object
+          } else {
+            newObj = recurse(o[f], getFieldName(f, p, true)); // array item object
+          }
+        } else if (isEmptyObj(o[f])) {
+          newObj[getFieldName(f, p)] = o[f]; // empty object
         } else {
-            return obj;
+          newObj = recurse(o[f], getFieldName(f, p)); // object
         }
+      } else if (isArrayItem || isNumber(f)) {
+        newObj[getFieldName(f, p, true)] = o[f]; // array item primitive
+      } else {
+        newObj[getFieldName(f, p)] = o[f]; // primitive
+      }
     }
 
-    var newObj = {};
-
-    function recurse(o, p, isArrayItem) {
-        for (var f in o) {
-            if (o[f] && typeof o[f] === "object") {
-                if (Array.isArray(o[f])) {
-                    if (isEmptyArray(o[f])) {
-                        newObj[getFieldName(f, p, true)] = o[f]; // empty array
-                    } else {
-                        newObj = recurse(o[f], getFieldName(f, p, false, true), true); // array
-                    }
-                } else {
-                    if (isArrayItem) {
-                        if (isEmptyObj(o[f])) {
-                            newObj[getFieldName(f, p, true)] = o[f]; // empty object
-                        } else {
-                            newObj = recurse(o[f], getFieldName(f, p, true)); // array item object
-                        }
-                    } else {
-                        if (isEmptyObj(o[f])) {
-                            newObj[getFieldName(f, p)] = o[f]; // empty object
-                        } else {
-                            newObj = recurse(o[f], getFieldName(f, p)); // object
-                        }
-                    }
-                }
-            } else {
-                if (isArrayItem || isNumber(f)) {
-                    newObj[getFieldName(f, p, true)] = o[f]; // array item primitive
-                } else {
-                    newObj[getFieldName(f, p)] = o[f]; // primitive
-                }
-            }
-        }
-
-        if (isEmptyObj(newObj))
-            return obj;
-
-        return newObj;
+    if (isEmptyObj(newObj)) {
+      return obj;
     }
 
-    function isNumber(f) {
-        return !isNaN(parseInt(f));
-    }
+    return newObj;
+  }
 
-    function isEmptyObj(obj) {
-        for (var prop in obj) {
-            if (Object.hasOwnProperty.call(obj, prop))
-                return false;
-        }
+  function isNumber(f) {
+    return !isNaN(parseInt(f));
+  }
 
-        return true;
-    }
-
-    function isEmptyArray(o) {
-        if (Array.isArray(o) && o.length == 0)
-            return true;
+  function isEmptyObj(obj) {
+    for (const prop in obj) {
+      if (Object.hasOwnProperty.call(obj, prop)) {
         return false;
+      }
     }
 
-    function getFieldName(field, prefix, isArrayItem, isArray) {
-        if (isArray)
-            return (prefix ? prefix : "") + (isNumber(field) ? "[" + field + "]" : "." + field);
-        else if (isArrayItem)
-            return (prefix ? prefix : "") + "[" + field + "]";
-        else
-            return (prefix ? prefix + "." : "") + field;
-    }
+    return true;
+  }
 
-    return recurse(obj, prefix, Array.isArray(obj));
+  function isEmptyArray(o) {
+    if (Array.isArray(o) && o.length == 0) {
+      return true;
+    }
+    return false;
+  }
+
+  function getFieldName(field, prefix, isArrayItem, isArray) {
+    if (isArray) {
+      return (prefix || '') + (isNumber(field) ? `[${field}]` : `.${field}`);
+    }
+    if (isArrayItem) return `${prefix || ''}[${field}]`;
+    return (prefix ? `${prefix}.` : '') + field;
+  }
+
+  return recurse(obj, prefix, Array.isArray(obj));
 };

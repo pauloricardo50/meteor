@@ -1,18 +1,10 @@
-// @flow
 import React from 'react';
 import { withState } from 'recompose';
 
 import Button from '../Button';
 import AdminNote from './AdminNote';
 
-type AdminNoteExpandProps = {};
-
-const AdminNoteExpand = ({
-  showAll,
-  setShowAll,
-  adminNote,
-  ...props
-}: AdminNoteExpandProps) => (
+const AdminNoteExpand = ({ showAll, setShowAll, adminNote, ...props }) => (
   <>
     <AdminNote
       {...props}

@@ -1,16 +1,10 @@
-// @flow
 import React from 'react';
 
 import LoanChecklistSection from '../LoanChecklistSection';
 import EmailLoanChecklist from './EmailLoanChecklist';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
 
-type LoanChecklistEmailSectionProps = {
-  missingInformations: Object,
-  label: String,
-};
-
-const LoanChecklistEmailSection = (props: LoanChecklistEmailSectionProps) => {
+const LoanChecklistEmailSection = props => {
   const { missingInformations = {}, label } = props;
 
   return (

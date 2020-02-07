@@ -40,7 +40,7 @@ export const PROMOTION_PERMISSIONS = {
 };
 
 export const PROMOTION_PERMISSIONS_BUNDLES = {
-  INVITATION: (settings) => ({
+  INVITATION: settings => ({
     canInviteCustomers: true,
     displayCustomerNames: {
       forLotStatus: Object.values(
@@ -59,7 +59,7 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
       displayCustomerNames: { forLotStatus, invitedBy },
     };
   },
-  MODIFICATION: (settings) => ({
+  MODIFICATION: settings => ({
     canAddLots: true,
     canModifyLots: true,
     canRemoveLots: true,
@@ -67,7 +67,7 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
     canManageDocuments: true,
     canSeeManagement: true,
   }),
-  RESERVATION: (settings) => ({ canReserveLots: true }),
+  RESERVATION: settings => ({ canReserveLots: true }),
 };
 
 export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {

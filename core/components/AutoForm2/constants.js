@@ -33,3 +33,5 @@ export const FIELDS_TO_IGNORE = [
   'model',
   'changedMap',
 ];
+
+export const OTHER_ALLOWED_VALUE = 'other';

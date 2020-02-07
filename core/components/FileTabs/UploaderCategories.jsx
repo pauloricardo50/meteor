@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
@@ -6,10 +5,6 @@ import UploaderCategoriesContainer from './UploaderCategoriesContainer';
 import UploaderArray from '../UploaderArray/UploaderArray';
 import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 import T from '../Translation';
-
-type UploaderCategoriesProps = {
-  categories: Object,
-};
 
 const filterDocumentsForMicroservice = categories => category =>
   Meteor.microservice === 'admin'
@@ -19,7 +14,7 @@ const filterDocumentsForMicroservice = categories => category =>
       )
     : categories[category].documentsToDisplay.length > 0;
 
-const UploaderCategories = (props: UploaderCategoriesProps) => {
+const UploaderCategories = props => {
   const { categories } = props;
   return Object.keys(categories)
     .filter(filterDocumentsForMicroservice(categories))

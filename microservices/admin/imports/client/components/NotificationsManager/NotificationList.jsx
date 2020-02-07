@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 
@@ -9,8 +8,6 @@ import {
   readNotification,
   snoozeNotification,
 } from 'core/api/notifications/methodDefinitions';
-
-type NotificationListProps = {};
 
 const getNotificationTitle = (title, createdAt) => (
   <>
@@ -53,10 +50,7 @@ const Notification = ({
   </div>
 );
 
-const NotificationList = ({
-  notifications,
-  refetch,
-}: NotificationListProps) => {
+const NotificationList = ({ notifications, refetch }) => {
   if (!notifications) {
     return <Loading />;
   }

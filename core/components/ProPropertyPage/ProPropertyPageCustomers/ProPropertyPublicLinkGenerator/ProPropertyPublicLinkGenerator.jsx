@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 
 import { ModalManagerContext } from 'core/components/ModalManager';
@@ -8,16 +7,11 @@ import Button from 'core/components/Button';
 import ProPropertyPublicLinkGeneratorContainer from './ProPropertyPublicLinkGeneratorContainer';
 import PublicLink from './PublicLink';
 
-type ProPropertyPublicLinkGeneratorProps = {
-  schema: Object,
-  generatePublicLink: Function,
-};
-
 const ProPropertyPublicLinkGenerator = ({
   schema,
   generatePublicLink,
   makeDescription,
-}: ProPropertyPublicLinkGeneratorProps) => {
+}) => {
   const { openModal } = useContext(ModalManagerContext);
 
   return (

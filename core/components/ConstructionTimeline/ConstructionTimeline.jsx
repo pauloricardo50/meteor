@@ -1,10 +1,7 @@
-// @flow
 import React from 'react';
 import { useTable } from 'react-table';
 
 import { Money } from '../Translation';
-
-type ConstructionTimelineProps = {};
 
 export const ConstructionTimelineItem = ({
   description,
@@ -22,7 +19,7 @@ export const ConstructionTimelineItem = ({
   </div>
 );
 
-const ConstructionTimeline = ({ columns }: ConstructionTimelineProps) => {
+const ConstructionTimeline = ({ columns }) => {
   const { headerGroups } = useTable({
     columns,
     data: [],

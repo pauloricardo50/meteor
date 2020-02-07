@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 
 import T from 'core/components/Translation';
@@ -11,9 +10,7 @@ import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesTable from '../../../components/RevenuesTable';
 import { revenuesFilter } from './revenuePageHelpers';
 
-type RevenuesPageTableProps = {};
-
-const RevenuesPageTable = (props: RevenuesPageTableProps) => {
+const RevenuesPageTable = props => {
   const [type, setType] = useState();
   const [assignee, setAssignee] = useState(null);
   const [referrer, setReferrer] = useState(null);
