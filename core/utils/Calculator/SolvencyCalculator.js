@@ -183,6 +183,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           const { type, value } = ownFund;
 
           if (delta <= 0 || type === OWN_FUNDS_TYPES.INSURANCE_2) {
+            // Iterate through all the non-insurance-2 ownFunds until delta is
+            // brought down to 0, i.e. the missing insurance2 has been compensated
+            // by removing other own funds
             return;
           }
 
