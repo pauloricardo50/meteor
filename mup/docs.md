@@ -29,11 +29,6 @@ There are 3 zones in the europe-west6 region. Unfortionately, their [Nodejs clie
 
 - Disk: `30GB`
 - OS: Ubuntu 18 LTS
-- Memory: Building the docker image uses a large amount of ram due to the size of the bundles. The 
-
-## SSH Access
-
-You can add your public ssh key by going to the `Compute Engine` section > `Metadata` > `SSH Keys` tab.
 
 # Load balancing and SSL termination
 
