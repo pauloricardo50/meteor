@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -15,8 +14,6 @@ import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 import LoanStatusModifier from './LoanStatusModifier/LoanStatusModifier';
-
-type SingleLoanPageHeaderProps = {};
 
 const getUserName = ({ anonymous, user, category }) => {
   if (anonymous) {
@@ -42,7 +39,7 @@ const SingleLoanPageHeader = ({
   loan,
   withPdf = true,
   withCustomName = true,
-}: SingleLoanPageHeaderProps) => {
+}) => {
   const { user, status, name } = loan;
   const userName = getUserName(loan);
   const loanValue = Calculator.selectLoanValue({ loan });

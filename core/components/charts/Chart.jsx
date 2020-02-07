@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import merge from 'lodash/merge';
 
@@ -13,9 +12,7 @@ const getConfig = ({ series, title, subtitle, config }) =>
     ...config,
   });
 
-type ChartProps = {};
-
-const Chart = ({ series, title, subtitle, config, ...props }: ChartProps) => {
+const Chart = ({ series, title, subtitle, config, ...props }) => {
   const finalConfig = getConfig({ series, title, subtitle, config });
   return <BaseChart config={finalConfig} data={series} {...props} />;
 };

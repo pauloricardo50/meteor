@@ -1,13 +1,7 @@
-// @flow
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import RevenueDialogFormContainer from './RevenueDialogFormContainer';
-
-type RevenueAdderProps = {
-  schema: Object,
-  insertRevenue: Function,
-};
 
 const RevenueAdder = ({
   schema,
@@ -17,7 +11,7 @@ const RevenueAdder = ({
   open,
   setOpen,
   model,
-}: RevenueAdderProps) => (
+}) => (
   <AutoFormDialog
     schema={schema}
     model={model}

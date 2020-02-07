@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose, withStateHandlers, withProps } from 'recompose';
 
@@ -8,9 +7,7 @@ import { loanMonitoring } from 'core/api/monitoring/queries';
 import MonitoringFilters from './MonitoringFilters';
 import MonitoringChart from './MonitoringChart';
 
-type LoanMonitoringChartProps = {};
-
-const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
+const LoanMonitoringChart = props => {
   const {
     category,
     status,

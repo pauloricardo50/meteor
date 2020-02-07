@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState } from 'react';
@@ -12,8 +11,6 @@ import TextInput from 'core/components/TextInput';
 import IconButton from 'core/components/IconButton';
 import { generateMatchAllWordsRegexp } from 'core/api/helpers/mongoHelpers';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-
-type SavedAnalysesProps = {};
 
 const schema = new SimpleSchema({ name: String });
 
@@ -88,7 +85,7 @@ const SavedAnalysis = ({ setCollection, setState, report }) => {
     </div>
   );
 };
-const SavedAnalyses = ({ setState, setCollection }: SavedAnalysesProps) => {
+const SavedAnalyses = ({ setState, setCollection }) => {
   const [search, setSearch] = useState('');
   const { data = [], loading } = useReactiveMeteorData(
     {

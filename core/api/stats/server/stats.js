@@ -20,40 +20,36 @@ const getFilter = ({ gte, lte }) => {
   return filter;
 };
 
-const makeCountResolver = service => {
-  return ({ period, filters } = {}) => {
-    const end1 = dateInPast(period);
-    const end2 = dateInPast(period * 2);
-    const period1 = service.count({
-      $filters: { ...getFilter({ gte: end1 }), ...filters },
-    });
-    const period2 = service.count({
-      $filters: { ...getFilter({ gte: end2, lte: end1 }), ...filters },
-    });
+const makeCountResolver = service => ({ period, filters } = {}) => {
+  const end1 = dateInPast(period);
+  const end2 = dateInPast(period * 2);
+  const period1 = service.count({
+    $filters: { ...getFilter({ gte: end1 }), ...filters },
+  });
+  const period2 = service.count({
+    $filters: { ...getFilter({ gte: end2, lte: end1 }), ...filters },
+  });
 
-    const change = period2 === 0 ? 1 : (period1 - period2) / period2;
+  const change = period2 === 0 ? 1 : (period1 - period2) / period2;
 
-    return { count: period1, change };
-  };
+  return { count: period1, change };
 };
 
-const makeHistogramResolver = service => {
-  return ({ period, filters }) => {
-    const match = { ...getFilter({ gte: dateInPast(period) }), ...filters };
+const makeHistogramResolver = service => ({ period, filters }) => {
+  const match = { ...getFilter({ gte: dateInPast(period) }), ...filters };
 
-    const aggregation = service.aggregate([
-      { $match: match },
-      {
-        $project: {
-          // Filter out time of day
-          date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
-        },
+  const aggregation = service.aggregate([
+    { $match: match },
+    {
+      $project: {
+        // Filter out time of day
+        date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
       },
-      { $group: { _id: '$date', count: { $sum: 1 } } },
-      { $sort: { _id: 1 } },
-    ]);
-    return aggregation;
-  };
+    },
+    { $group: { _id: '$date', count: { $sum: 1 } } },
+    { $sort: { _id: 1 } },
+  ]);
+  return aggregation;
 };
 
 export const newLoansResolver = ({ period, withAnonymous } = {}) => {

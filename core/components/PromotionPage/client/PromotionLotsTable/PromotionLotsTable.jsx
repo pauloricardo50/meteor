@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 import cx from 'classnames';
 
@@ -16,8 +15,6 @@ import PromotionLotModifier from './PromotionLotModifier';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotDetail from '../PromotionLotDetail';
 
-type PromotionLotsTableProps = {};
-
 const PromotionLotsTable = ({
   rows,
   columnOptions,
@@ -27,7 +24,7 @@ const PromotionLotsTable = ({
   promotion,
   className,
   ...props
-}: PromotionLotsTableProps) => {
+}) => {
   const currentUser = useContext(CurrentUserContext);
   const {
     permissions: { canModifyLots, canManageDocuments },

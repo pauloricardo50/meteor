@@ -1,15 +1,7 @@
-// @flow
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
-
-type PropertyCardInfosProps = {
-  image: String,
-  name: String,
-  title: String,
-  subtitle: String,
-};
 
 const PropertyCardInfos = ({
   image,
@@ -19,7 +11,7 @@ const PropertyCardInfos = ({
   isMobile,
   onClick,
   buttonLabel,
-}: PropertyCardInfosProps) => (
+}) => (
   <div className="property-card-infos">
     {image ? (
       <img src={image} alt={name} />

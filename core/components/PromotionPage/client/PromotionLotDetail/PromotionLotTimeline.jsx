@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 
@@ -8,13 +7,11 @@ import ConstructionTimeline, {
 } from '../../../ConstructionTimeline';
 import { getItemDate } from '../PromotionTimeline';
 
-type PromotionLotTimelineProps = {};
-
 const PromotionLotTimeline = ({
   constructionTimeline,
   signingDate,
   promotionLot,
-}: PromotionLotTimelineProps) => {
+}) => {
   const { properties } = promotionLot;
   const [
     { landValue = 0, constructionValue, additionalMargin = 0 },

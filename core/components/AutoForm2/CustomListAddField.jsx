@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -6,9 +5,7 @@ import { ListAddField } from 'uniforms-material';
 
 import { iconMap as IconMap } from '../Icon/Icon';
 
-type CustomListAddFieldProps = {};
-
-const CustomListAddField = (props: CustomListAddFieldProps) => (
+const CustomListAddField = props => (
   <ListAddField
     color="primary"
     className="list-add-field"

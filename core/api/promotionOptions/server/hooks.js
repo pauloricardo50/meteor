@@ -25,4 +25,5 @@ PromotionOptions.before.remove((userId, { _id: promotionOptionId }) => {
 });
 
 PromotionOptions.after.remove((userId, { _id }) =>
-  FileService.deleteAllFilesForDoc(_id));
+  FileService.deleteAllFilesForDoc(_id),
+);

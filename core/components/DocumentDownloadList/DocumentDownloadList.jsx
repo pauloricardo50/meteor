@@ -1,11 +1,8 @@
-// @flow
 import React from 'react';
 
 import { shouldDisplayFile } from 'core/api/files/fileHelpers';
 import Icon from '../Icon';
 import Downloader from '../Downloader';
-
-type DocumentDownloadListProps = {};
 
 const getIconForFileType = key => {
   const extension = key.split('.').slice(-1)[0];
@@ -22,7 +19,7 @@ const getIconForFileType = key => {
   }
 };
 
-const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => {
+const DocumentDownloadList = ({ files }) => {
   const filteredFiles = files.filter(shouldDisplayFile);
 
   if (!filteredFiles) {

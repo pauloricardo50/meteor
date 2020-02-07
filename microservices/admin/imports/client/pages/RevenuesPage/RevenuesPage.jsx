@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
@@ -7,8 +6,6 @@ import RevenuesPageTab from './RevenuesPageTab';
 import CommissionsTab from './CommissionsTab';
 import MonitoringTab from './MonitoringTab';
 import AnalysisTab from './AnalysisTab/loadable';
-
-type RevenuesPageProps = {};
 
 const tabs = [
   {
@@ -37,8 +34,6 @@ const tabs = [
   to: createRoute('/revenues/:tabId?', { tabId: tab.id }),
 }));
 
-const RevenuesPage = (props: RevenuesPageProps) => (
-  <Tabs tabs={tabs} routerParamName="tabId" />
-);
+const RevenuesPage = props => <Tabs tabs={tabs} routerParamName="tabId" />;
 
 export default RevenuesPage;

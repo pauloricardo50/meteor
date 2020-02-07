@@ -2,92 +2,97 @@ import Link from './base.js';
 import SmartArgs from './lib/smartArguments.js';
 
 export default class LinkOneMeta extends Link {
-    set(what, metadata = {}) {
-        this._checkWhat(what);
+  set(what, metadata = {}) {
+    this._checkWhat(what);
 
-        metadata = Object.assign({}, metadata);
-        
-        if (this.isVirtual) {
-            this._virtualAction('set', what, metadata);
-            return this;
-        }
+    metadata = { ...metadata };
 
-        let field = this.linkStorageField;
-        metadata._id = this.identifyId(what, true);
-        this._validateIds([metadata._id]);
-
-        this.object[field] = metadata;
-
-        this.linker.mainCollection.update(this.object._id, {
-            $set: {
-                [field]: metadata
-            }
-        });
-
-        return this;
+    if (this.isVirtual) {
+      this._virtualAction('set', what, metadata);
+      return this;
     }
 
-    metadata(extendMetadata) {
-        if (this.isVirtual) {
-            this._virtualAction('metadata', undefined, extendMetadata);
+    const field = this.linkStorageField;
+    metadata._id = this.identifyId(what, true);
+    this._validateIds([metadata._id]);
 
-            return this;
-        }
+    this.object[field] = metadata;
 
-        let field = this.linkStorageField;
+    this.linker.mainCollection.update(this.object._id, {
+      $set: {
+        [field]: metadata,
+      },
+    });
 
-        if (!extendMetadata) {
-            return this.object[field];
-        } else {
-            _.extend(this.object[field], extendMetadata);
+    return this;
+  }
 
-            this.linker.mainCollection.update(this.object._id, {
-                $set: {
-                    [field]: this.object[field]
-                }
-            });
-        }
+  metadata(extendMetadata) {
+    if (this.isVirtual) {
+      this._virtualAction('metadata', undefined, extendMetadata);
 
-        return this;
+      return this;
     }
 
-    unset() {
-        if (this.isVirtual) {
-            this._virtualAction('unset');
-            return this;
-        }
+    const field = this.linkStorageField;
 
-        let field = this.linkStorageField;
-        this.object[field] = {};
+    if (!extendMetadata) {
+      return this.object[field];
+    }
+    _.extend(this.object[field], extendMetadata);
 
-        this.linker.mainCollection.update(this.object._id, {
-            $set: {
-                [field]: {}
-            }
-        });
+    this.linker.mainCollection.update(this.object._id, {
+      $set: {
+        [field]: this.object[field],
+      },
+    });
 
-        return this;
+    return this;
+  }
+
+  unset() {
+    if (this.isVirtual) {
+      this._virtualAction('unset');
+      return this;
     }
 
-    add(what, metadata) {
-        this._checkWhat(what);
+    const field = this.linkStorageField;
+    this.object[field] = {};
 
-        if (this.isVirtual) {
-            this._virtualAction('add', what, metadata);
-            return this;
-        }
+    this.linker.mainCollection.update(this.object._id, {
+      $set: {
+        [field]: {},
+      },
+    });
 
-        throw new Meteor.Error('invalid-command', 'You are trying to *add* in a relationship that is single. Please use set/unset for *single* relationships');
+    return this;
+  }
+
+  add(what, metadata) {
+    this._checkWhat(what);
+
+    if (this.isVirtual) {
+      this._virtualAction('add', what, metadata);
+      return this;
     }
 
-    remove(what) {
-        this._checkWhat(what);
+    throw new Meteor.Error(
+      'invalid-command',
+      'You are trying to *add* in a relationship that is single. Please use set/unset for *single* relationships',
+    );
+  }
 
-        if (this.isVirtual) {
-            this._virtualAction('remove', what);
-            return this;
-        }
+  remove(what) {
+    this._checkWhat(what);
 
-        throw new Meteor.Error('invalid-command', 'You are trying to *remove* in a relationship that is single. Please use set/unset for *single* relationships');
+    if (this.isVirtual) {
+      this._virtualAction('remove', what);
+      return this;
     }
+
+    throw new Meteor.Error(
+      'invalid-command',
+      'You are trying to *remove* in a relationship that is single. Please use set/unset for *single* relationships',
+    );
+  }
 }

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { S3_ACLS, PROPERTIES_COLLECTION } from '../../../../api/constants';
@@ -14,13 +13,7 @@ const promotionPropertyDocuments = [
   },
 ];
 
-type LotDocumentsManagerProps = {};
-
-const LotDocumentsManager = ({
-  property,
-  currentUser,
-  documents,
-}: LotDocumentsManagerProps) => (
+const LotDocumentsManager = ({ property, currentUser, documents }) => (
   <>
     <DialogSimple
       primary

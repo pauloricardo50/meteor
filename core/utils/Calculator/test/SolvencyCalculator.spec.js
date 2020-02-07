@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 
@@ -182,7 +181,11 @@ describe('SolvencyCalculator', () => {
         Calculator.suggestStructureForLoan({
           loan: {
             borrowers: [
-              { bankFortune: [{ value: 500000 }], salary: 180000, _id: 'borrower1' },
+              {
+                bankFortune: [{ value: 500000 }],
+                salary: 180000,
+                _id: 'borrower1',
+              },
             ],
             structures: [
               { id: 'struct1', propertyValue: 900000, propertyWork: 100000 },

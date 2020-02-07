@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
@@ -11,14 +10,7 @@ import {
   getCutOffCriteriaRules,
 } from './lenderRulesArrays';
 
-type LenderRulesPdfPageProps = {};
-
-const LenderRulesPdfPage = ({
-  pageNb,
-  pageCount,
-  organisation,
-  loan,
-}: LenderRulesPdfPageProps) => {
+const LenderRulesPdfPage = ({ pageNb, pageCount, organisation, loan }) => {
   const { lenderRules } = organisation || {};
   const calculator = new Calculator({ loan, lenderRules });
   return (

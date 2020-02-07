@@ -1,19 +1,15 @@
-import {createQuery} from 'meteor/cultofcoders:grapher';
+import { createQuery } from 'meteor/cultofcoders:grapher';
 
 const postList = createQuery('postListResolverParamsCheck', () => {}, {
-    validateParams: {
-        title: String,
-    }
+  validateParams: {
+    title: String,
+  },
 });
 
 if (Meteor.isServer) {
-    postList.expose({});
+  postList.expose({});
 
-    postList.resolve(params => {
-        return [
-            params.title
-        ];
-    })
+  postList.resolve(params => [params.title]);
 }
 
 export default postList;

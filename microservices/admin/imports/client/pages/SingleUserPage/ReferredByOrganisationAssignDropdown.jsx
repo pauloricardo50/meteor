@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import DropdownMenu from 'core/components/DropdownMenu';
@@ -6,12 +5,10 @@ import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import ReferredByOrganisationAssignDropdownContainer from './ReferredByOrganisationAssignDropdownContainer';
 
-type ReferredByOrganisationAssignDropdownProps = {};
-
 const ReferredByOrganisationAssignDropdown = ({
   options,
   referredByOrganisation,
-}: ReferredByOrganisationAssignDropdownProps) => (
+}) => (
   <div className="flex-row center space-children">
     {referredByOrganisation ? (
       <span className="flex-row center space-children">

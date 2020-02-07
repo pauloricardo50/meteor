@@ -1,4 +1,3 @@
-// @flow
 import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../config/financeConstants';
 import {
   OWN_FUNDS_TYPES,

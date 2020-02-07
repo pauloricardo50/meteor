@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Percent from 'core/components/Translation/numberComponents/Percent';
@@ -6,8 +5,6 @@ import { OWN_FUNDS_TYPES, OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import T, { Money } from '../../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
-
-type ProjectBalanceSheetTableProps = {};
 
 const getCostLines = ({ loan, structureId, calculator }) => {
   const propertyValue = calculator.selectPropertyValue({ loan, structureId });
@@ -90,11 +87,7 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
   ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
-const ProjectBalanceSheet = ({
-  loan,
-  structureId,
-  calculator,
-}: ProjectBalanceSheetTableProps) => (
+const ProjectBalanceSheet = ({ loan, structureId, calculator }) => (
   <BalanceSheetTable
     titles={['Projet', 'Financement']}
     leftRows={getCostLines({ loan, structureId, calculator })}

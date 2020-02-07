@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { withProps } from 'recompose';
 import moment from 'moment';
@@ -8,8 +7,6 @@ import PromotionSchema from 'core/api/promotions/schemas/PromotionSchema';
 import { promotionUpdate } from 'core/api/methods';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/constants';
 import PromotionTimelinePicker from './PromotionTimelinePicker';
-
-type PromotionTimelineFormProps = {};
 
 const schema = PromotionSchema.pick(
   'signingDate',
@@ -40,10 +37,7 @@ const schema = PromotionSchema.pick(
   },
 });
 
-const PromotionTimelineForm = ({
-  promotion,
-  onSubmit,
-}: PromotionTimelineFormProps) => (
+const PromotionTimelineForm = ({ promotion, onSubmit }) => (
   <AutoFormDialog
     title="Répartition du financement"
     model={promotion}

@@ -1,4 +1,3 @@
-// @flow
 import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
 import EmailVerificationPage from 'core/components/EmailVerificationPage/loadable';
 import AccountPage from 'core/components/AccountPage/loadable';

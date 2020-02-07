@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -7,14 +6,7 @@ import T from 'core/components/Translation';
 import { UserSchema } from 'core/api/users/users';
 import { updateUser } from 'core/api/users/index';
 
-type AccountModifierProps = {};
-
-const AccountModifier = ({
-  schema,
-  onSubmit,
-  buttonProps,
-  currentUser,
-}: AccountModifierProps) => (
+const AccountModifier = ({ schema, onSubmit, buttonProps, currentUser }) => (
   <AutoFormDialog
     title={<T id="AccountPage.updateUser" />}
     schema={schema}

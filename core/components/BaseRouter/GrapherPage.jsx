@@ -1,10 +1,8 @@
 import { GrapherLive } from 'meteor/cultofcoders:grapher-live';
 
-// @flow
+//
 import React from 'react';
 
-type GrapherPageProps = {};
-
-const GrapherPage = (props: GrapherPageProps) => <div />;
+const GrapherPage = props => <div />;
 
 export default GrapherPage;

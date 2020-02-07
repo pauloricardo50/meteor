@@ -1,10 +1,5 @@
-// @flow
 import React from 'react';
 import Button from 'core/components/Button/Button';
-
-type PublicLinkProps = {
-  link: String,
-};
 
 const copyLinkToClipboard = link => {
   navigator.clipboard
@@ -15,7 +10,7 @@ const copyLinkToClipboard = link => {
     });
 };
 
-const PublicLink = ({ link }: PublicLinkProps) => (
+const PublicLink = ({ link }) => (
   <div className="public-link">
     <a className="public-link-value" href={link}>
       {link}

@@ -1,14 +1,9 @@
-// @flow
 import React from 'react';
 
 import T from 'core/components/Translation';
 import Key from './Key';
 
-type KeysProps = {
-  keyPair: Object,
-};
-
-const Keys = ({ keyPair = {} }: KeysProps) => {
+const Keys = ({ keyPair = {} }) => {
   const { publicKey, privateKey, createdAt } = keyPair;
   if (!publicKey) {
     return (

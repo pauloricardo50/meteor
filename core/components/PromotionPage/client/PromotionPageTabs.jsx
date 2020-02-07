@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
@@ -7,16 +6,9 @@ import Tabs from 'core/components/Tabs';
 import { createRoute } from 'core/utils/routerUtils';
 import withMatchParam from 'core/containers/withMatchParam';
 
-type PromotionPageTabsProps = {};
-
 const useStyles = makeStyles({ root: { backgroundColor: 'white' } });
 
-const PromotionPageTabs = ({
-  promotion,
-  route,
-  tabId,
-  tabs = [],
-}: PromotionPageTabsProps) => {
+const PromotionPageTabs = ({ promotion, route, tabId, tabs = [] }) => {
   const { _id: promotionId } = promotion;
   const classes = useStyles();
 

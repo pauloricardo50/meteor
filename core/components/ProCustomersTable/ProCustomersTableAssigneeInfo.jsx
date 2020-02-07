@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
@@ -8,8 +7,6 @@ import IconButton from 'core/components/IconButton';
 import { employeesById } from 'core/arrays/epotekEmployees';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { proAddLoanTask } from 'core/api/tasks/methodDefinitions';
-
-type ProCustomersTableAssigneeInfoProps = {};
 
 const schema = new SimpleSchema({
   note: {
@@ -27,7 +24,7 @@ const ProCustomersTableAssigneeInfo = ({
   user,
   loanId,
   anonymous,
-}: ProCustomersTableAssigneeInfoProps) => {
+}) => {
   const { date, note, updatedBy } = proNote;
   const noteUpdatedBy = updatedBy && employeesById[updatedBy];
   const hasProNote = !!note;
@@ -45,8 +42,8 @@ const ProCustomersTableAssigneeInfo = ({
       <div style={{ whiteSpace: 'pre-line' }}>{note}</div>
     </div>
   ) : (
-      'Pas de commentaire'
-    );
+    'Pas de commentaire'
+  );
 
   const toWhom =
     user && user.assignedEmployee

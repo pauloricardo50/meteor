@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { useWindowScroll } from 'react-use';
@@ -6,9 +5,7 @@ import cx from 'classnames';
 
 import LoanBoardOptionsContent from './LoanBoardOptionsContent';
 
-type LoanBoardOptionsProps = {};
-
-const LoanBoardOptions = (props: LoanBoardOptionsProps) => {
+const LoanBoardOptions = props => {
   const { y } = useWindowScroll();
   return (
     <div className={cx('loan-board-options', { fixed: y > 68 })}>

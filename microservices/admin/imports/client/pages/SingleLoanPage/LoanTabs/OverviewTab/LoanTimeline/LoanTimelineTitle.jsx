@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import colors from 'core/config/colors';
 import { LoanActivityModifier } from './LoanActivityAdder';
-
-type LoanTimelineTitleProps = {};
 
 const icons = {
   [ACTIVITY_TYPES.EMAIL]: 'mail',
@@ -31,7 +28,7 @@ const getIcon = (type, isServerGenerated, isImportant) => {
 const allowModify = (type, isServerGenerated) =>
   !isServerGenerated && type !== 'task';
 
-const LoanTimelineTitle = ({ activity }: LoanTimelineTitleProps) => {
+const LoanTimelineTitle = ({ activity }) => {
   const { date, title, type, isServerGenerated, isImportant } = activity;
 
   return (

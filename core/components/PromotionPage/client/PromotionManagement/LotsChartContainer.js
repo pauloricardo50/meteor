@@ -6,7 +6,9 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import { getTotalValueByStatus, getGroupedLots } from './helpers';
 
 const getData = (promotionLots = []) => {
-  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(
+    promotionLots,
+  );
   return [
     {
       name: PROMOTION_LOT_STATUS.SOLD,
@@ -24,7 +26,9 @@ const getData = (promotionLots = []) => {
 };
 
 const getSubtitle = (promotionLots = [], formatMessage) => {
-  const { availableLots, reservedLots, soldLots } = getGroupedLots(promotionLots);
+  const { availableLots, reservedLots, soldLots } = getGroupedLots(
+    promotionLots,
+  );
   const totalValue = getTotalValueByStatus(promotionLots, 'ALL');
   const availableLotsLabel = formatMessage({
     id: `Forms.status.${PROMOTION_LOT_STATUS.AVAILABLE}`,

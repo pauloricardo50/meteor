@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 
@@ -8,8 +7,6 @@ import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 import { ACTIONS, SORT_ORDER, GROUP_BY, SORT_BY } from './loanBoardConstants';
-
-type LoanBoardColumnHeaderProps = {};
 
 const getTitle = ({ id, groupBy, admins, promotions }) => {
   switch (groupBy) {
@@ -70,7 +67,7 @@ const LoanBoardColumnHeader = ({
   count,
   admins,
   promotions,
-}: LoanBoardColumnHeaderProps) => {
+}) => {
   const { groupBy } = options;
 
   return (

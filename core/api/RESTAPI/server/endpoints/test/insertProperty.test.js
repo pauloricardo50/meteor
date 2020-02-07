@@ -15,7 +15,10 @@ import RESTAPI from '../../RESTAPI';
 import insertPropertyAPI from '../insertProperty';
 
 const api = new RESTAPI();
-api.addEndpoint('/properties', 'POST', insertPropertyAPI, { rsaAuth: true, endpointName: 'Insert property' });
+api.addEndpoint('/properties', 'POST', insertPropertyAPI, {
+  rsaAuth: true,
+  endpointName: 'Insert property',
+});
 
 const insertProperty = ({
   body,
@@ -47,10 +50,10 @@ const insertProperty = ({
   });
 };
 
-describe('REST: insertProperty', function () {
+describe('REST: insertProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -87,7 +90,10 @@ describe('REST: insertProperty', function () {
       body: property,
     }).then(({ message }) => {
       const propertyId = message.split('"')[1];
-      const insertedProperty = PropertyService.get(propertyId, { value: 1, externalId: 1 });
+      const insertedProperty = PropertyService.get(propertyId, {
+        value: 1,
+        externalId: 1,
+      });
       expect(insertedProperty.value).to.equal(property.value);
       expect(insertedProperty.externalId).to.equal(property.externalId);
     });
@@ -109,7 +115,10 @@ describe('REST: insertProperty', function () {
       impersonateUser: 'pro@org.com',
     }).then(({ message }) => {
       const propertyId = message.split('"')[1];
-      const insertedProperty = PropertyService.get(propertyId, { value: 1, externalId: 1 });
+      const insertedProperty = PropertyService.get(propertyId, {
+        value: 1,
+        externalId: 1,
+      });
       expect(insertedProperty.value).to.equal(property.value);
       expect(insertedProperty.externalId).to.equal(property.externalId);
     });

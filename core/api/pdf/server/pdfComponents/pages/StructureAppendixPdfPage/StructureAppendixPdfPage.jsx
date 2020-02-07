@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { toMoney } from 'core/utils/conversionFunctions';
@@ -9,8 +8,6 @@ import PdfPage from '../../PdfPage';
 import IncomeAndExpenses from './IncomeAndExpenses';
 import RemainingOwnFundsTable from './RemainingOwnFundsTable';
 
-type StructureAppendixPdfPageProps = {};
-
 const StructureAppendixPdfPage = ({
   loan,
   structureId,
@@ -18,7 +15,7 @@ const StructureAppendixPdfPage = ({
   pageNb,
   pageCount,
   calculator,
-}: StructureAppendixPdfPageProps) => {
+}) => {
   const { name: structureName } = calculator.selectStructure({
     loan,
     structureId,

@@ -1,17 +1,10 @@
-// @flow
 
 import React from 'react';
 
 import { getUserNameAndOrganisation } from '../../../api/helpers';
 import ProCustomer from '../../ProCustomer';
 
-type PromotionCustomerProps = {};
-
-const PromotionCustomer = ({
-  user,
-  invitedBy,
-  promotionUsers,
-}: PromotionCustomerProps) => {
+const PromotionCustomer = ({ user, invitedBy, promotionUsers }) => {
   const { _id, name, phoneNumbers = ['-'], email } = user;
   const invitedByUser =
     invitedBy &&

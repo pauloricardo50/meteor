@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 import { withProps, compose, withState } from 'recompose';
@@ -14,15 +13,13 @@ import { createRoute } from 'core/utils/routerUtils';
 import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { withAnonymousLoan } from '../../../pages/AppPage/AnonymousAppPage/AnonymousAppPageContainer';
 
-type AnonymousLoanClaimerProps = {};
-
 const AnonymousLoanClaimer = ({
   anonymousLoan: { _id: loanId, name, updatedAt, borrowers = [] } = {},
   open,
   loading,
   claimLoan,
   removeAnonymousLoan,
-}: AnonymousLoanClaimerProps) => {
+}) => {
   const mostRecentDate = Math.max.apply(null, [
     updatedAt,
     ...borrowers.map(({ updatedAt: u }) => u),

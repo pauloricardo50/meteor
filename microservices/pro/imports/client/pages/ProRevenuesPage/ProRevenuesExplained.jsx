@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import T from 'core/components/Translation';

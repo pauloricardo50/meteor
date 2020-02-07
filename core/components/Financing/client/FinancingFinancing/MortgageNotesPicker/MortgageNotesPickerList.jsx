@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Icon from 'core/components/Icon/Icon';
@@ -11,13 +10,11 @@ import List, {
 import T from '../../../../Translation';
 import IconButton from '../../../../IconButton';
 
-type MortgageNotesPickerListProps = {};
-
 const MortgageNotesPickerList = ({
   mortgageNotes,
   removeMortgageNote,
   canton,
-}: MortgageNotesPickerListProps) => (
+}) => (
   <List>
     {mortgageNotes.map(
       ({

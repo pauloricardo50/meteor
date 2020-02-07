@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
@@ -7,17 +6,11 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import IconButton from 'core/components/IconButton';
 import { loanUpdate } from 'core/api/methods';
 
-type LoanRenamerProps = {};
-
 const schema = new SimpleSchema({
   customName: { type: String, optional: true },
 });
 
-const LoanRenamer = ({
-  customName,
-  updateLoanName,
-  ...props
-}: LoanRenamerProps) => (
+const LoanRenamer = ({ customName, updateLoanName, ...props }) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={updateLoanName}

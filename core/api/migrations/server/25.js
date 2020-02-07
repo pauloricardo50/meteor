@@ -10,11 +10,14 @@ export const up = () => {
     },
   });
 
-  return Promise.all(allPromotionOptions.map(({ _id, promotionLots = [] }) =>
-    PromotionOptionService.rawCollection.update(
-      { _id },
-      { $set: { promotionLink: { _id: promotionLots[0].promotion._id } } },
-    )));
+  return Promise.all(
+    allPromotionOptions.map(({ _id, promotionLots = [] }) =>
+      PromotionOptionService.rawCollection.update(
+        { _id },
+        { $set: { promotionLink: { _id: promotionLots[0].promotion._id } } },
+      ),
+    ),
+  );
 };
 
 export const down = () => {
@@ -23,11 +26,14 @@ export const down = () => {
     promotion: 1,
   });
 
-  return Promise.all(allPromotionOptions.map(({ _id }) =>
-    PromotionOptionService.rawCollection.update(
-      { _id },
-      { $unset: { promotionLink: 1 } },
-    )));
+  return Promise.all(
+    allPromotionOptions.map(({ _id }) =>
+      PromotionOptionService.rawCollection.update(
+        { _id },
+        { $unset: { promotionLink: 1 } },
+      ),
+    ),
+  );
 };
 
 Migrations.add({

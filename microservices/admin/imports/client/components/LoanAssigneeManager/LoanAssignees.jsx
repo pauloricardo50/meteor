@@ -1,13 +1,10 @@
-// @flow
 import React from 'react';
 
 import { employeesById } from 'core/arrays/epotekEmployees';
 import { Percent } from 'core/components/Translation';
 import Tooltip from 'core/components/Material/Tooltip';
 
-type LoanAssigneesProps = {};
-
-const LoanAssignees = ({ assigneeLinks }: LoanAssigneesProps) => {
+const LoanAssignees = ({ assigneeLinks }) => {
   if (!assigneeLinks || assigneeLinks.length === 0) {
     return <div>Pas encore de répartition</div>;
   }

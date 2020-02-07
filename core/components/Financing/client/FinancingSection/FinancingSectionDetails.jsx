@@ -1,4 +1,3 @@
-// @flow
 import React, { PureComponent } from 'react';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 

@@ -1,13 +1,13 @@
-import {Projects} from './collection';
-import {Files} from '../files/collection';
+import { Projects } from './collection';
+import { Files } from '../files/collection';
 
 Projects.addLinks({
-    files: {
-        collection: Files,
-        inversedBy: 'project',
-    },
-    filesMany: {
-        collection: Files,
-        inversedBy: 'projects',
-    },
+  files: {
+    collection: Files,
+    inversedBy: 'project',
+  },
+  filesMany: {
+    collection: Files,
+    inversedBy: 'projects',
+  },
 });
