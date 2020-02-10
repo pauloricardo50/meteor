@@ -4,9 +4,9 @@ import moment from 'moment';
 import { Money, Percent } from 'core/components/Translation';
 import { employeesById } from 'core/arrays/epotekEmployees';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { adminRevenues } from 'core/api/revenues/queries';
 import IconButton from 'core/components/IconButton';
 import Tooltip from 'core/components/Material/Tooltip';
+import { REVENUES_COLLECTION } from 'core/api/constants';
 
 const groupRevenues = revenues =>
   revenues.reduce((obj, { amount, loan: { assigneeLinks = [] } = {} }) => {
@@ -31,10 +31,13 @@ const RevenuesDistribution = props => {
 
   const { data: revenues = [], loading } = useStaticMeteorData(
     {
-      query: adminRevenues,
+      query: REVENUES_COLLECTION,
       params: {
-        paidAt: { $gte: dateRange.startDate, $lte: dateRange.endDate },
-        $body: { amount: 1, loan: { assigneeLinks: 1 } },
+        $filters: {
+          paidAt: { $gte: dateRange.startDate, $lte: dateRange.endDate },
+        },
+        amount: 1,
+        loan: { assigneeLinks: 1 },
       },
     },
     [dateRange],
