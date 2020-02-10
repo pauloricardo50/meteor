@@ -1,4 +1,6 @@
 {
+  "Forms.acquisitionChannel.FACEBOOK": "Facebook",
+  "Forms.acquisitionChannel.LINKEDIN": "LinkedIn",
   "Forms.acquisitionChannel": "Canal d'acquisition",
   "Forms.acquisitionChannel.other": "Autre",
   "Forms.acquisitionChannel.REFERRAL_PRO": "Referral Pro",
@@ -8,7 +10,6 @@
   "Forms.acquisitionChannel.NEWSLETTER": "Newsletter",
   "Forms.acquisitionChannel.FRIENDS": "Amis / connaissances",
   "Forms.acquisitionChannel.ADVERTISING": "Publicités",
-  "Forms.acquisitionChannel.SOCIAL_MEDIA": "Réseaux sociaux",
   "Forms.acquisitionChannel.PAPER_ARTICLE": "Article de journal",
   "Forms.acquisitionChannel.tout l'immobilier": "tout l'immobilier",
   "Forms.acquisitionChannel.WEBSITE": "Site web e-Potek",
