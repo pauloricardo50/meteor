@@ -41,6 +41,12 @@ const schema = new SimpleSchema({
     type: String,
     uniforms: { placeholder: 'Expliquer la raison de la nouvelle répartition' },
   },
+  updateUserAssignee: {
+    type: Boolean,
+    defaultValue: false,
+    optional: true,
+    uniforms: { label: "Assigner le conseiller principal à l'utilisateur" },
+  },
 });
 
 const LoanAssigneeManager = ({ loan: { _id: loanId, assigneeLinks = [] } }) => (
@@ -63,6 +69,7 @@ const LoanAssigneeManager = ({ loan: { _id: loanId, assigneeLinks = [] } }) => (
             loanId,
             assignees: values.assigneeLinks,
             note: values.note,
+            updateUserAssignee: values.updateUserAssignee,
           })
         }
       />
