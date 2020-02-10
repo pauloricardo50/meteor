@@ -11,6 +11,15 @@ const employees = [
     gender: 'F',
   },
   {
+    email: 'badr@e-potek.ch',
+    src: '/img/team/badr.jpg',
+    name: 'Badr Berbar',
+    title: 'Head of Business Development',
+    phoneNumber: '+41 22 566 01 10',
+    _id: 'gxpj4pn2Rzs4trdy9',
+    gender: 'M',
+  },
+  {
     email: 'florian@e-potek.ch',
     src: '/img/team/florian.jpg',
     name: 'Florian Bienefelt',
@@ -56,13 +65,6 @@ const employees = [
     appTitle: 'Planification & Prévoyance',
     phoneNumber: '+41 22 566 82 94',
     _id: 'efe2jpwvRh8J4z4p8',
-    gender: 'M',
-  },
-  {
-    email: '',
-    src: '/img/team/tarik.jpg',
-    name: 'Tarik Lamkarfed',
-    title: 'Marketing & Communications',
     gender: 'M',
   },
   {
