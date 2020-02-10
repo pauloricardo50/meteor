@@ -13,7 +13,7 @@ const MonitoringFilters = ({
   makeSetState,
   allowedGroupBy,
   filters,
-  assignedEmployeeId,
+  assigneeLinkId,
   admins,
   referringOrganisations,
   referringOrganisationId,
@@ -66,12 +66,13 @@ const MonitoringFilters = ({
           className="mr-8"
         />
         <MongoSelect
-          value={assignedEmployeeId}
-          onChange={makeSetState('assignedEmployeeId')}
+          value={assigneeLinkId}
+          onChange={makeSetState('assigneeLinkId')}
           options={admins.map(admin => ({ id: admin._id, label: admin.name }))}
-          id="assignedEmployee"
-          label="Conseiller"
+          id="assigneeLinkId"
+          label="Conseiller principal du dossier"
           className="mr-8"
+          style={{ minWidth: 260 }}
         />
         <MongoSelect
           value={referringOrganisationId}
@@ -94,6 +95,7 @@ const MonitoringFilters = ({
             id="type"
             label="Type de revenus"
             className="mr-8"
+            style={{ minWidth: 150 }}
           />
         )}
         {filters}
