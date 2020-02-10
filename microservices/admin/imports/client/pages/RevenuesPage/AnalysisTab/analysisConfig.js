@@ -67,6 +67,20 @@ const analysisConfig = {
             .reduce((t, { amount }) => t + amount, 0),
       },
     ],
+    promotions: [
+      {
+        fragment: { name: 1 },
+        label: 'Promotion',
+        format: ({ promotions = [] }) => {
+          const [promotion] = promotions;
+          if (!promotion) {
+            return 'Aucune';
+          }
+
+          return promotion.name;
+        },
+      },
+    ],
   },
   [REVENUES_COLLECTION]: {
     amount: { id: 'Forms.amount' },
@@ -111,7 +125,7 @@ const analysisConfig = {
     loan: [
       {
         label: 'Catégorie du dossier',
-        fragment: { category: 1, status: 1 },
+        fragment: { category: 1, status: 1, promotions: { name: 1 } },
         format: ({ loan }) => loan && loan.category,
       },
       {
@@ -120,6 +134,17 @@ const analysisConfig = {
           status
             ? `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`
             : undefined,
+      },
+      {
+        label: 'Promotion',
+        format: ({ loan: { promotions = [] } = {} }) => {
+          const [promotion] = promotions;
+          if (!promotion) {
+            return 'Aucune';
+          }
+
+          return promotion.name;
+        },
       },
     ],
   },
