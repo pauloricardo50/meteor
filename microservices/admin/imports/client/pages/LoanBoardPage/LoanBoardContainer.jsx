@@ -1,4 +1,5 @@
 import { compose, mapProps, withProps } from 'recompose';
+import merge from 'lodash/merge';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminLoans } from 'core/api/loans/queries';
@@ -7,7 +8,11 @@ import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
 import { userCache } from 'core/api/loans/links';
-import { groupLoans, makeClientSideFilter } from './loanBoardHelpers';
+import {
+  groupLoans,
+  makeClientSideFilter,
+  additionalLoanBoardFields,
+} from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
@@ -36,6 +41,17 @@ const defaultBody = {
   revenues: { _id: 1, status: 1 },
 };
 
+const getQueryBody = additionalFields => {
+  const addedFields = additionalLoanBoardFields.filter(({ id }) =>
+    additionalFields.includes(id),
+  );
+
+  return addedFields.reduce(
+    (newBody, { fragment }) => merge({}, newBody, fragment),
+    defaultBody,
+  );
+};
+
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
@@ -56,9 +72,10 @@ export default compose(
         promotionId,
         lenderId,
         category,
+        additionalFields,
       },
     }) => ({
-      $body: defaultBody,
+      $body: getQueryBody(additionalFields),
       assignedEmployeeId,
       step,
       relevantOnly: true,
