@@ -309,8 +309,8 @@ export const additionalLoanBoardFields = [
 
       return (
         <div className="flex-col">
-          <span>{referredByUser?.name}</span>
-          <span>{referredByOrganisation?.name}</span>
+          {referredByUser && <span>{referredByUser.name}</span>}
+          {referredByOrganisation && <span>{referredByOrganisation.name}</span>}
         </div>
       );
     },
