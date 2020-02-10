@@ -71,15 +71,15 @@ class FileService {
     return { ...file, name: fileName };
   };
 
-  uploadFileAPI = ({ file, docId, id, collection, proOnly }) => {
+  uploadFileAPI = ({ file, docId, id, collection, roles = 'public' }) => {
     const { originalFilename, path } = file;
     const key = this.getS3FileKey({ name: originalFilename }, { docId, id });
 
     return S3Service.putObject(
       readFileBuffer(path),
       key,
-      { roles: proOnly ? FILE_ROLES.PRO : '' },
-      proOnly ? S3_ACLS.PRIVATE : S3_ACLS.PUBLIC_READ,
+      { roles },
+      S3_ACLS.PUBLIC_READ,
     )
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))

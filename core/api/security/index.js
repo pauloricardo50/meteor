@@ -6,6 +6,7 @@ import {
   PropertySecurity,
   UserSecurity,
   PromotionSecurity,
+  FileSecurity,
 } from './collections';
 
 class SecurityService extends Security {
@@ -31,6 +32,10 @@ class SecurityService extends Security {
 
   static get promotions() {
     return PromotionSecurity;
+  }
+
+  static get files() {
+    return FileSecurity;
   }
 }
 

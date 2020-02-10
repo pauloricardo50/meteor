@@ -101,7 +101,7 @@ export const getFileRolesArray = file => {
 export const shouldDisplayFile = file => {
   const roles = getFileRolesArray(file);
 
-  if (!roles.length) {
+  if (!roles.length || roles.includes(FILE_ROLES.PUBLIC)) {
     return true;
   }
 
@@ -110,10 +110,10 @@ export const shouldDisplayFile = file => {
   }
 
   if (Meteor.microservice === 'app') {
-    return !roles.includes(FILE_ROLES.ADMIN) && !roles.includes(FILE_ROLES.PRO);
+    return roles.includes(FILE_ROLES.USER);
   }
 
   if (Meteor.microservice === 'pro') {
-    return !roles.includes(FILE_ROLES.ADMIN);
+    return roles.includes(FILE_ROLES.PRO);
   }
 };

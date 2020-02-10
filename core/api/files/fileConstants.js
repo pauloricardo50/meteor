@@ -272,6 +272,8 @@ export const BASIC_DOCUMENTS_LIST = [
 ];
 
 export const FILE_ROLES = {
+  PUBLIC: 'public',
+  USER: 'user',
   PRO: 'pro',
   ADMIN: 'admin',
 };

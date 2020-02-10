@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
-import { PROPERTY_DOCUMENTS } from '../../../files/fileConstants';
+import { PROPERTY_DOCUMENTS, FILE_ROLES } from '../../../files/fileConstants';
 import FileService from '../../../files/server/FileService';
 import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
@@ -9,6 +9,7 @@ import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
 import { withMeteorUserId } from '../helpers';
 import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { getFileRolesArray } from '../../../files/fileHelpers';
 
 const bodySchema = new SimpleSchema({
   propertyId: String,
@@ -23,13 +24,32 @@ const bodySchema = new SimpleSchema({
       }
     },
   },
-  proOnly: {
+  roles: {
     type: String,
-    defaultValue: 'false',
+    defaultValue: 'public',
     optional: true,
-    allowedValues: ['true', 'false'],
   },
 });
+
+const checkRoles = roles => {
+  const rolesArray = getFileRolesArray({ roles });
+  let invalidRole;
+
+  rolesArray.some(role => {
+    if (
+      Object.values(FILE_ROLES)
+        // API should not allow user files
+        .filter(r => r !== FILE_ROLES.USER)
+        .includes(role)
+    ) {
+      return false;
+    }
+    invalidRole = role;
+    return true;
+  });
+
+  return invalidRole;
+};
 
 const uploadFileAPI = req => {
   const {
@@ -50,7 +70,7 @@ const uploadFileAPI = req => {
     throw new Meteor.Error(error);
   }
 
-  const { category, proOnly } = cleanBody;
+  const { category, roles } = cleanBody;
   let { propertyId } = cleanBody;
 
   const exists = PropertyService.exists(propertyId);
@@ -73,6 +93,18 @@ const uploadFileAPI = req => {
   if (!file) {
     throw new Meteor.Error('No file uploaded');
   }
+
+  const invalidRole = checkRoles(roles);
+  if (invalidRole) {
+    throw new Meteor.Error(
+      HTTP_STATUS_CODES.BAD_REQUEST,
+      `Role "${invalidRole}" is invalid. Please provide any of [${Object.values(
+        FILE_ROLES,
+      )
+        .map(role => `'${role}'`)
+        .join(', ')}] roles, separated by a comma`,
+    );
+  }
   return withMeteorUserId({ userId, impersonateUser }, () => {
     let impersonateUserId;
     if (impersonateUser) {
@@ -93,7 +125,7 @@ const uploadFileAPI = req => {
       docId: propertyId,
       id: category,
       collection: PROPERTIES_COLLECTION,
-      proOnly: proOnly === 'true',
+      roles,
     });
   });
 };

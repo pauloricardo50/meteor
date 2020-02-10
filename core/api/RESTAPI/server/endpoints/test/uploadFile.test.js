@@ -93,11 +93,11 @@ describe('REST: uploadFile', function() {
       expect(files[0].url).to.equal(
         `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
       );
-      expect(files[0].roles).to.equal('');
+      expect(files[0].roles).to.equal('public');
     });
   });
 
-  it('uploads a proOnly file', () => {
+  it('uploads a file with roles', () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro',
@@ -111,14 +111,36 @@ describe('REST: uploadFile', function() {
       url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-      proOnly: 'true',
+      roles: 'pro,admin',
     }).then(res => {
       const { files } = res;
       expect(files.length).to.equal(1);
       expect(files[0].url).to.equal(
         `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
       );
-      expect(files[0].roles).to.equal('pro');
+      expect(files[0].roles).to.equal('pro,admin');
+    });
+  });
+
+  it('returns an error if any role is invalid', () => {
+    PropertyService.setProUserPermissions({
+      propertyId,
+      userId: 'pro',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
+    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
+    appendFileSync(filePath, 'Hello');
+    return uploadFile({
+      filePath,
+      userId: 'pro',
+      url: '/files',
+      propertyId,
+      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
+      roles: 'pro,admin,test',
+    }).then(res => {
+      const { message, status } = res;
+      expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
+      expect(message).to.include('"test" is invalid');
     });
   });
 
