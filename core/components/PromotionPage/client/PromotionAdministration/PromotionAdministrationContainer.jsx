@@ -218,5 +218,6 @@ export default withProps(({ promotion }) => {
     setOpenProInvitationModal,
     openLinkLoanModal,
     setOpenLinkLoanModal,
+    permissions: metadata.permissions,
   };
 });

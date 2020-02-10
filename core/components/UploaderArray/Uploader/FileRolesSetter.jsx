@@ -26,7 +26,16 @@ const getIconProps = roles => {
     };
   }
 
-  return { type: 'lockOpen', tooltip: <T id="Files.roles.public" /> };
+  return { type: 'lockOpen', tooltip: <T id="File.roles.public" /> };
+};
+
+const getOptions = roles => {
+  const hasNoRole = !roles.length;
+  const authorizedRoles = hasNoRole
+    ? [FILE_ROLES.PRO, FILE_ROLES.ADMIN]
+    : [FILE_ROLES.PUBLIC, FILE_ROLES.PRO, FILE_ROLES.ADMIN];
+
+  return authorizedRoles.filter(role => !roles.includes(role));
 };
 
 const FileRolesSetter = ({
@@ -54,7 +63,7 @@ const FileRolesSetter = ({
           onClick={handleOpen}
         />
       )}
-      options={[roles.length && 'public', ...Object.values(FILE_ROLES)]
+      options={getOptions(roles)
         .filter(x => x)
         .map(role => ({
           id: role,
@@ -62,9 +71,7 @@ const FileRolesSetter = ({
           onClick: () => {
             openModal(
               <ConfirmModal
-                func={() =>
-                  handleSetRoles(Key, [role === 'public' ? '' : role])
-                }
+                func={() => handleSetRoles(Key, [role])}
                 description={
                   <T
                     id={`File.roles.${role}.confirm`}
