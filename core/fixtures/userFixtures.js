@@ -3,6 +3,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import faker from 'faker/locale/fr';
 
+import { ADMIN_EMAIL } from 'core/cypress/server/e2eConstants';
 import OrganisationService from '../api/organisations/server/OrganisationService';
 import { ORGANISATION_TYPES } from '../api/constants';
 import UserService from '../api/users/server/UserService';
@@ -115,6 +116,11 @@ export const createAdmins = () => {
       email: 'jeanluc@e-potek.ch',
       firstName: 'Jean-luc',
       lastName: 'Kringel',
+    },
+    {
+      email: ADMIN_EMAIL,
+      firstName: 'Admin',
+      lastName: 'e-Potek',
     },
   ];
   return devs
