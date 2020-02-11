@@ -3,8 +3,10 @@ import { Roles } from 'meteor/alanning:roles';
 
 import faker from 'faker/locale/fr';
 
-import { USER_PASSWORD } from './fixtureConstants';
+import OrganisationService from '../api/organisations/server/OrganisationService';
+import { ORGANISATION_TYPES } from '../api/constants';
 import UserService from '../api/users/server/UserService';
+import { USER_PASSWORD } from './fixtureConstants';
 
 export const createUser = (email, role, password) => {
   const userId = Accounts.createUser({
@@ -36,7 +38,13 @@ export const createFakeUsers = (count, role, currentUserEmail = '') => {
   return insertedUsers;
 };
 
-export const addUser = ({ email, role, password = USER_PASSWORD, ...data }) => {
+export const addUser = ({
+  email,
+  role,
+  password = USER_PASSWORD,
+  orgId,
+  ...data
+}) => {
   const newUserId = createUser(email, role, password);
   UserService.update({
     userId: newUserId,
@@ -46,10 +54,31 @@ export const addUser = ({ email, role, password = USER_PASSWORD, ...data }) => {
       'emails.0.verified': true,
     },
   });
+
+  if (orgId) {
+    UserService.updateOrganisations({
+      userId: newUserId,
+      newOrganisations: [{ _id: orgId, metadata: { isMain: true } }],
+    });
+  }
+
   return newUserId;
 };
 
+const createEpotek = () => {
+  const existingOrg = OrganisationService.get({ name: 'e-Potek' }, { _id: 1 });
+  if (existingOrg) {
+    return existingOrg;
+  }
+
+  return OrganisationService.insert({
+    name: 'e-Potek',
+    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+  });
+};
+
 export const createDevs = currentEmail => {
+  const orgId = createEpotek();
   const devs = [
     {
       email: 'florian@e-potek.ch',
@@ -65,10 +94,12 @@ export const createDevs = currentEmail => {
   return devs
     .filter(({ email }) => email !== currentEmail)
     .map(obj => ({ ...obj, role: 'dev' }))
-    .map(addUser);
+    .map(args => addUser({ ...args, orgId }));
 };
 
 export const createAdmins = () => {
+  const orgId = createEpotek();
+
   const devs = [
     {
       email: 'lydia@e-potek.ch',
@@ -86,7 +117,9 @@ export const createAdmins = () => {
       lastName: 'Kringel',
     },
   ];
-  return devs.map(obj => ({ ...obj, role: 'admin' })).map(addUser);
+  return devs
+    .map(obj => ({ ...obj, role: 'admin' }))
+    .map(args => addUser({ ...args, orgId }));
 };
 
 export const getFakeUsersIds = () => {

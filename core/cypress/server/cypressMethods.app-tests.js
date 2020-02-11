@@ -21,8 +21,7 @@ import OrganisationService from 'core/api/organisations/server/OrganisationServi
 import LoanService from 'core/api/loans/server/LoanService';
 import PropertyService from 'core/api/properties/server/PropertyService';
 import Loans from 'core/api/loans/loans';
-import { loanBase, adminLoan, fullUser } from 'core/api/fragments';
-import Users from 'core/api/users/users';
+import { loanBase, adminLoan } from 'core/api/fragments';
 import {
   createLoginToken,
   createEmailVerificationToken,
@@ -31,7 +30,6 @@ import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
 import { Services } from 'core/api/server/index';
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
-import { createUser } from 'core/fixtures/userFixtures';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -151,21 +149,15 @@ Meteor.methods({
   },
   addProUsersToPromotion() {
     const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
+      { 'emails.address': PRO_EMAIL },
       { _id: 1 },
     );
     const { _id: userId2 } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL_2,
-      },
+      { 'emails.address': PRO_EMAIL_2 },
       { _id: 1 },
     );
     const { _id: userId3 } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL_3,
-      },
+      { 'emails.address': PRO_EMAIL_3 },
       { _id: 1 },
     );
     const promotions =
@@ -180,9 +172,7 @@ Meteor.methods({
   },
   setInvitedBy({ email }) {
     const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
+      { 'emails.address': PRO_EMAIL },
       { _id: 1 },
     );
     const { _id: invitedBy } = UserService.get(
@@ -424,8 +414,6 @@ Meteor.methods({
     }
   },
   isLoggedIn() {
-    console.log('isLoggedIn???', this.userId);
-
     return this.userId;
   },
   resetDatabase,
