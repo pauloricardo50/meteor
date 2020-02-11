@@ -1,15 +1,14 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+
+import { expect } from 'chai';
 import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import {
   loanSetStatus,
   setLoanStep,
@@ -1066,8 +1065,8 @@ describe('LoanService', function() {
           step: STEPS.SOLVENCY,
           user: {
             emails: [{ address: 'john@doe.com', verified: false }],
-            assignedEmployeeId: 'admin',
           },
+          assignees: { _id: 'admin', $metadata: { isMain: true } },
         },
       });
 
@@ -1112,8 +1111,8 @@ describe('LoanService', function() {
           step: STEPS.REQUEST,
           user: {
             emails: [{ address: 'john@doe.com', verified: false }],
-            assignedEmployeeId: 'admin',
           },
+          assignees: { _id: 'admin', $metadata: { isMain: true } },
         },
       });
 
@@ -1759,12 +1758,13 @@ describe('LoanService', function() {
               lastName: 'User',
               emails: [{ address: 'pro@e-potek.ch', verified: true }],
             },
-            assignedEmployee: {
-              _id: 'adminId',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: 'User',
-            },
+          },
+          assignees: {
+            _id: 'adminId',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: 'User',
+            $metadata: { isMain: true },
           },
         },
       });

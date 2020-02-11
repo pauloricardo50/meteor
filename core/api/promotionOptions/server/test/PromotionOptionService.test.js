@@ -504,6 +504,71 @@ describe('PromotionOptionService', function() {
   });
 
   describe('uploadAgreement', () => {
+    it('uploads the agreement', async () => {
+      generator({
+        properties: { _id: 'propId' },
+        promotions: {
+          _id: 'promo',
+          agreementDuration: 14,
+          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
+          promotionLots: {
+            _id: 'pL1',
+            status: PROMOTION_LOT_STATUS.AVAILABLE,
+            propertyLinks: [{ _id: 'prop1' }],
+            promotionOptions: [
+              {
+                _id: 'pO2',
+                loan: { _id: 'loan2' },
+                promotion: { _id: 'promo' },
+              },
+            ],
+          },
+        },
+      });
+
+      const file = Buffer.from('hello1', 'utf-8');
+      const key = FileService.getTempS3FileKey(
+        'adminId',
+        { name: 'agreement1.pdf' },
+        { id: 'agreement1' },
+      );
+
+      await S3Service.putObject(file, key);
+
+      const startDate = moment()
+        .startOf('day')
+        .toDate();
+
+      await PromotionOptionService.uploadAgreement({
+        agreementFileKeys: [key],
+        startDate,
+        promotionOptionId: 'pO2',
+      });
+
+      const promotionOption = PromotionOptionService.get('pO2', {
+        reservationDeposit: 1,
+        promotionLink: 1,
+        reservationAgreement: 1,
+      });
+
+      expect(promotionOption).to.deep.include({
+        reservationDeposit: {
+          date: startDate,
+          status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
+        },
+        promotionLink: { _id: 'promo' },
+        reservationAgreement: {
+          expirationDate: moment(startDate)
+            .add(14, 'days')
+            .endOf('day')
+            .toDate(),
+          startDate,
+          date: startDate,
+          status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+        },
+      });
+    });
+
     it('throws if no reservation agreement has been uploaded', () => {
       generator({
         properties: { _id: 'propId' },
@@ -565,70 +630,6 @@ describe('PromotionOptionService', function() {
           expect(error).to.not.equal(undefined);
           expect(error.message).to.include('Aucune convention');
         });
-    });
-
-    it('uploads the agreement', async () => {
-      generator({
-        properties: { _id: 'propId' },
-        promotions: {
-          _id: 'promo',
-          agreementDuration: 14,
-          loans: [{ _id: 'loan1' }, { _id: 'loan2' }],
-          promotionLots: {
-            _id: 'pL1',
-            status: PROMOTION_LOT_STATUS.AVAILABLE,
-            propertyLinks: [{ _id: 'prop1' }],
-            promotionOptions: [
-              {
-                _id: 'pO2',
-                loan: { _id: 'loan2' },
-                promotion: { _id: 'promo' },
-              },
-            ],
-          },
-        },
-      });
-
-      const file = Buffer.from('hello1', 'utf-8');
-      const key = FileService.getTempS3FileKey(
-        'adminId',
-        { name: 'agreement1.pdf' },
-        { id: 'agreement1' },
-      );
-
-      await S3Service.putObject(file, key);
-
-      const startDate = moment()
-        .startOf('day')
-        .toDate();
-
-      return PromotionOptionService.uploadAgreement({
-        agreementFileKeys: [key],
-        startDate,
-        promotionOptionId: 'pO2',
-      }).then(() => {
-        const promotionOption = PromotionOptionService.get('pO2', {
-          reservationDeposit: 1,
-          promotionLink: 1,
-          reservationAgreement: 1,
-        });
-        expect(promotionOption).to.deep.include({
-          reservationDeposit: {
-            date: startDate,
-            status: PROMOTION_OPTION_DEPOSIT_STATUS.WAITING,
-          },
-          promotionLink: { _id: 'promo' },
-          reservationAgreement: {
-            expirationDate: moment(startDate)
-              .add(14, 'days')
-              .endOf('day')
-              .toDate(),
-            startDate,
-            date: startDate,
-            status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
-          },
-        });
-      });
     });
   });
 
@@ -1060,8 +1061,9 @@ describe('PromotionOptionService', function() {
         firstName: 'Customer',
         lastName: `No${id}`,
         emails: [{ address: `customer${id}@test.com`, verified: true }],
-        assignedEmployeeId: 'admin',
+        // assignedEmployeeId: 'admin',
       },
+      assignees: { _id: 'admin', $metadata: { isMain: true } },
       $metadata: { invitedBy },
     });
 

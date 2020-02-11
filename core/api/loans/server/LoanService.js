@@ -5,10 +5,7 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import {
-  ACTIVITY_EVENT_METADATA,
-  ACTIVITY_TYPES,
-} from 'core/api/activities/activityConstants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
 import { assignAdminToUser } from '../../methods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';

@@ -187,29 +187,7 @@ export class UserServiceClass extends CollectionService {
     return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
-  getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
-
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
-
-  getUserById = ({ userId }) =>
-    this.get(userId, {
-      createdAt: 1,
-      updatedAt: 1,
-      emails: 1,
-      firstName: 1,
-      lastName: 1,
-      isDisabled: 1,
-      phoneNumbers: 1,
-      roles: 1,
-      username: 1,
-      assignedEmployeeId: 1,
-      services: 1,
-      heartbeat: 1,
-      apiPublicKey: 1,
-      referredByUserLink: 1,
-      referredByOrganisationLink: 1,
-      assignedEmployeeCache: 1,
-    });
 
   getUserByPasswordResetToken = ({ token }) =>
     this.get(
