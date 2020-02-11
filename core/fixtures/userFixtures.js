@@ -65,7 +65,7 @@ export const addUser = ({
   return newUserId;
 };
 
-const createEpotek = () => {
+export const createEpotek = () => {
   const existingOrg = OrganisationService.get({ name: 'e-Potek' }, { _id: 1 });
   if (existingOrg) {
     return existingOrg;

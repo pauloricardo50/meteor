@@ -14,6 +14,7 @@ describe('Public onboarding', () => {
 
   beforeEach(() => {
     cy.callMethod('resetDatabase');
+    cy.callMethod('generateProFixtures');
     cy.visit('/');
   });
 
@@ -145,7 +146,7 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getLoginToken').then(loginToken => {
+    cy.callMethod('getLoginToken', 'dev@e-potek.ch').then(loginToken => {
       cy.visit(`/enroll-account/${loginToken}`);
     });
 
@@ -202,6 +203,7 @@ describe('Public onboarding', () => {
 
   it('should create a loan based on a PRO property', () => {
     cy.callMethod('addProProperty').then(propertyId => {
+      console.log('propertyId:', propertyId);
       cy.wrap(propertyId).as('propertyId');
     });
 

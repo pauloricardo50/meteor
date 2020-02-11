@@ -30,6 +30,7 @@ import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
 import { Services } from 'core/api/server/index';
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
+import { createAdmins, createEpotek } from 'core/fixtures/userFixtures';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
 import {
   PRO_EMAIL,
@@ -62,6 +63,9 @@ const userLoansE2E = Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
 });
 
 Meteor.methods({
+  createAdmins() {
+    createAdmins();
+  },
   generateProFixtures() {
     const userId = Accounts.createUser({
       email: PRO_EMAIL,
@@ -79,11 +83,16 @@ Meteor.methods({
     });
     UserService.update({ userId: userId3, object: { roles: [ROLES.PRO] } });
 
+    const orgId = createEpotek();
     const adminId = Accounts.createUser({
       email: ADMIN_EMAIL,
       password: PRO_PASSWORD,
     });
     UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+    UserService.updateOrganisations({
+      userId: adminId,
+      newOrganisations: [{ _id: orgId, metadata: { isMain: true } }],
+    });
 
     OrganisationService.insert({
       name: ORG_NAME,
@@ -377,14 +386,17 @@ Meteor.methods({
     return loginToken;
   },
   addProProperty() {
-    const userId = UserService.adminCreateUser({
-      options: {
-        email: PRO_EMAIL,
-        firstName: 'Pro',
-        lastName: 'Test User',
-      },
-      role: ROLES.PRO,
-    });
+    let userId = UserService.getByEmail(PRO_EMAIL);
+    if (!userId) {
+      userId = UserService.adminCreateUser({
+        options: {
+          email: PRO_EMAIL,
+          firstName: 'Pro',
+          lastName: 'Test User',
+        },
+        role: ROLES.PRO,
+      });
+    }
     const propertyId = PropertyService.proPropertyInsert({
       property: {
         address1: 'Chemin Auguste-Vilbert 14',
