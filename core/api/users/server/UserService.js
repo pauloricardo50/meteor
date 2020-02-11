@@ -713,30 +713,42 @@ export class UserServiceClass extends CollectionService {
     let newAssignee;
 
     if (roles.includes(ROLES.USER)) {
-      const lastCreatedUser = this.get(
-        {
-          roles: ROLES.USER,
-          assignedEmployeeId: { $in: this.employees },
-        },
-        {
-          $options: { sort: { createdAt: -1 } },
-          assignedEmployeeId: 1,
-          createdAt: 1,
-        },
-      );
-
-      if (lastCreatedUser && lastCreatedUser.assignedEmployeeId) {
-        const index = this.employees.indexOf(
-          lastCreatedUser.assignedEmployeeId,
+      if (!this.employees.length) {
+        // In tests or if there are no roundrobin advisors, use any admin
+        // in the db and assign it to the user
+        // this avoids issues with analytics, that expects all users to have
+        // an assignee
+        const anyAdmin = this.get(
+          { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
+          { _id: 1 },
         );
-        if (index >= this.employees.length - 1) {
-          newAssignee = this.employees[0];
-        } else {
-          newAssignee = this.employees[index + 1];
-        }
+        newAssignee = anyAdmin && anyAdmin._id;
       } else {
-        // Assign the very first user
-        newAssignee = this.employees[0];
+        const lastCreatedUser = this.get(
+          {
+            roles: ROLES.USER,
+            assignedEmployeeId: { $in: this.employees },
+          },
+          {
+            $options: { sort: { createdAt: -1 } },
+            assignedEmployeeId: 1,
+            createdAt: 1,
+          },
+        );
+
+        if (lastCreatedUser?.assignedEmployeeId) {
+          const index = this.employees.indexOf(
+            lastCreatedUser.assignedEmployeeId,
+          );
+          if (index >= this.employees.length - 1) {
+            newAssignee = this.employees[0];
+          } else {
+            newAssignee = this.employees[index + 1];
+          }
+        } else {
+          // Assign the very first user
+          newAssignee = this.employees[0];
+        }
       }
     }
 

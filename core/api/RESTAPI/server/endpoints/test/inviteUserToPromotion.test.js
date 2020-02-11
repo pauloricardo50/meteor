@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 
-import PromotionLotService from 'core/api/promotionLots/server/PromotionLotService';
+import PromotionLotService from '../../../../promotionLots/server/PromotionLotService';
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
@@ -16,6 +16,7 @@ import {
   makeHeaders,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
+import generator from '../../../../factories/index';
 
 let user;
 let promotionId;
@@ -92,11 +93,16 @@ describe('REST: inviteUserToPromotion', function() {
 
   beforeEach(() => {
     resetDatabase();
-    user = Factory.create('pro');
-    const promotionLotId = Factory.create('promotionLot')._id;
-    promotionId = Factory.create('promotion', {
-      promotionLotLinks: [{ _id: promotionLotId }],
-    })._id;
+    generator({
+      users: { _id: 'pro', _factory: 'pro', organisations: {} },
+      promotions: {
+        _id: 'promotionId',
+        _factory: 'promotion',
+        promotionLots: { _factory: 'promotionLot' },
+      },
+    });
+    user = UserService.findOne('pro');
+    promotionId = 'promotionId';
   });
 
   it('invites a user to promotion', () => {
