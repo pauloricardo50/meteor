@@ -130,7 +130,7 @@ class FileService {
     };
 
     return `${
-      Meteor.settings.public.subdomains.backend
+      Meteor.settings.public.subdomains.api
     }/api/zip-loan/?simple-auth-params=${Buffer.from(
       JSON.stringify(simpleAuthParams),
     ).toString('base64')}`;
