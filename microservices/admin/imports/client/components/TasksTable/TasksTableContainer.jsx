@@ -65,9 +65,7 @@ const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
     { id: 'actions', label: 'Actions', style: { width: 96 } },
   ].filter(x => x);
 
-const getRelatedDoc = task => {
-  const { user, loan, promotion, organisation, lender } = task;
-
+const getRelatedDoc = ({ user, loan, promotion, organisation, lender }) => {
   if (user) {
     return { ...user, collection: USERS_COLLECTION };
   }
