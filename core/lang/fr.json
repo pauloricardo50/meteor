@@ -1,4 +1,8 @@
 {
+  "OrganisationTab.tasks": "Tâches",
+  "OrganisationTaskInsertForm.label": "Ajouter tâche",
+  "OrganisationTaskInsertForm.dialogTitle": "Nouvelle tâche",
+  "OrganisationTaskInsertForm.dialogDescription": "Cette tâche sera liée à cette organisation",
   "UserTaskInsertForm.label": "Ajouter tâche",
   "UserTaskInsertForm.dialogTitle": "Nouvelle tâche",
   "UserTaskInsertForm.dialogDescription": "Cette tâche sera liée à ce compte",

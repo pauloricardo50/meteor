@@ -8,7 +8,7 @@ const SingleUserPageTasks = ({ user, refetch, tasks, ...rest }) => (
   <div>
     <div className="flex">
       <h3>Tâches</h3>
-      <UserTaskInserter loan={user} refetch={refetch} />
+      <UserTaskInserter user={user} refetch={refetch} />
     </div>
     <TasksTable tasks={tasks} relatedTo={false} {...rest} />
   </div>

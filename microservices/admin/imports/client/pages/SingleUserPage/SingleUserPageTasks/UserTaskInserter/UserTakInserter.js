@@ -9,23 +9,23 @@ import {
   taskFormLayout,
 } from '../../../../components/TasksTable/TaskModifier';
 
-const UserTaskInserter = withProps(({ loan: { _id: loanId, user } }) => ({
-  onSubmit: values =>
-    taskInsert.run({
-      object: { docId: loanId, collection: USERS_COLLECTION, ...values },
-    }),
-  schema: schema.omit('status'),
-  model: {
-    assigneeLink: {
-      _id:
-        (user && user.assignedEmployee && user.assignedEmployee._id) ||
-        Meteor.userId(),
+const UserTaskInserter = withProps(
+  ({ user: { _id: userId, assignedEmployee } }) => ({
+    onSubmit: values =>
+      taskInsert.run({
+        object: { docId: userId, collection: USERS_COLLECTION, ...values },
+      }),
+    schema: schema.omit('status'),
+    model: {
+      assigneeLink: {
+        _id: (assignedEmployee && assignedEmployee._id) || Meteor.userId(),
+      },
     },
-  },
-  buttonLabelId: 'UserTaskInsertForm.label',
-  formTitleId: 'UserTaskInsertForm.dialogTitle',
-  formDescriptionId: 'UserTaskInsertForm.dialogDescription',
-  layout: taskFormLayout,
-}));
+    buttonLabelId: 'UserTaskInsertForm.label',
+    formTitleId: 'UserTaskInsertForm.dialogTitle',
+    formDescriptionId: 'UserTaskInsertForm.dialogDescription',
+    layout: taskFormLayout,
+  }),
+);
 
 export default UserTaskInserter(UserTaskInsertForm);

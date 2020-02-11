@@ -14,9 +14,8 @@ export default compose(
   withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
   withSmartQuery({
     query: tasks,
-    params: ({ user: { _id: userId }, assignee, status }) => ({
-      userId,
-      assignee,
+    params: ({ organisationId, status }) => ({
+      organisationId,
       status,
     }),
     queryOptions: { reactive: false },

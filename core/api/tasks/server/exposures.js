@@ -29,7 +29,7 @@ exposeQuery({
     embody: (body, params) => {
       body.$filter = ({
         filters,
-        params: { assignee, loanId, status, uptoDate, userId },
+        params: { assignee, loanId, status, uptoDate, userId, organisationId },
       }) => {
         if (assignee) {
           filters['assigneeLink._id'] = assignee;
@@ -52,6 +52,10 @@ exposeQuery({
 
         if (userId) {
           filters['userLink._id'] = userId;
+        }
+
+        if (organisationId) {
+          filters['organisationLink._id'] = organisationId;
         }
       };
       body.$postFilter = (results, postFilterParams) => {
@@ -77,6 +81,7 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(Object, String)),
       uptoDate: Match.Maybe(String),
       userId: Match.Maybe(String),
+      organisationId: Match.Maybe(String),
     },
   },
   options: { allowFilterById: true },
