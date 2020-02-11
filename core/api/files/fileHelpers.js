@@ -1,5 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import { getPercent } from '../../utils/general';
-import { FILE_STATUS } from './fileConstants';
+import { FILE_STATUS, FILE_ROLES } from './fileConstants';
 import { documentIsBasic } from './documents';
 
 const documentIsRequired = required => required !== false;
@@ -91,3 +92,28 @@ export const getRequiredDocumentIds = fileArray =>
   fileArray
     .filter(({ required }) => documentIsRequired(required))
     .map(({ id }) => id);
+
+export const getFileRolesArray = file => {
+  const { roles = '' } = file;
+  return roles.split(',').filter(x => x);
+};
+
+export const shouldDisplayFile = file => {
+  const roles = getFileRolesArray(file);
+
+  if (!roles.length || roles.includes(FILE_ROLES.PUBLIC)) {
+    return true;
+  }
+
+  if (Meteor.microservice === 'admin') {
+    return true;
+  }
+
+  if (Meteor.microservice === 'app') {
+    return roles.includes(FILE_ROLES.USER);
+  }
+
+  if (Meteor.microservice === 'pro') {
+    return roles.includes(FILE_ROLES.PRO);
+  }
+};

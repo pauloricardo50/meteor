@@ -11,6 +11,7 @@ import {
   moveFile,
   deleteTempFile,
   autoRenameFile,
+  setFileRoles,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -47,7 +48,7 @@ setFileError.setHandler((context, { fileKey, error }) => {
 downloadFile.setHandler((context, { key }) => {
   context.unblock();
   const { userId } = context;
-  S3Service.isAllowedToAccess({ userId, key });
+  SecurityService.files.isAllowedToAccess({ userId, key });
   return S3Service.getObject(key);
 });
 
@@ -124,6 +125,16 @@ deleteTempFile.setHandler(({ userId }, { fileKey }) => {
 });
 
 autoRenameFile.setHandler(({ userId }, { key, collection }) => {
-  S3Service.isAllowedToAccess({ userId, key });
+  SecurityService.files.isAllowedToAccess({ userId, key });
   return FileService.autoRenameFile(key, collection);
+});
+
+setFileRoles.setHandler(({ userId }, { docId, collection, Key, roles }) => {
+  SecurityService.isAllowedToModifyFiles({
+    collection,
+    docId,
+    fileKey: Key,
+    userId,
+  });
+  return FileService.setFileRoles({ Key, roles });
 });

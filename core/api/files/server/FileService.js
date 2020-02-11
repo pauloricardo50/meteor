@@ -8,7 +8,7 @@ import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
 import Intl from 'core/utils/server/intl';
 import { asyncForEach } from 'core/api/helpers/index';
-import { FILE_STATUS, S3_ACLS } from '../fileConstants';
+import { FILE_STATUS, S3_ACLS, FILE_ROLES } from '../fileConstants';
 import S3Service from './S3Service';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
@@ -71,15 +71,15 @@ class FileService {
     return { ...file, name: fileName };
   };
 
-  uploadFileAPI = ({ file, docId, id, collection }) => {
+  uploadFileAPI = ({ file, docId, id, collection, roles = 'public' }) => {
     const { originalFilename, path } = file;
     const key = this.getS3FileKey({ name: originalFilename }, { docId, id });
 
     return S3Service.putObject(
       readFileBuffer(path),
       key,
-      {},
-      S3_ACLS.PUBLIC_READ_WRITE,
+      { roles },
+      S3_ACLS.PUBLIC_READ,
     )
       .then(() => this.updateDocumentsCache({ docId, collection }))
       .then(() => this.listFilesForDoc(docId))
@@ -88,6 +88,11 @@ class FileService {
         return { files };
       });
   };
+
+  setFileRoles = ({ Key, roles = [] }) =>
+    S3Service.updateMetadata(Key, {
+      roles: roles.join(','),
+    });
 
   deleteFileAPI = ({ docId, collection, key }) =>
     this.listFilesForDoc(docId)

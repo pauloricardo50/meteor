@@ -47,7 +47,10 @@ const ProPropertyPageHeader = ({ property, permissions }) => {
               />
             )}
             <ProPropertyModifier property={property} />
-            <PropertyDocumentsManager property={property} />
+            <PropertyDocumentsManager
+              property={property}
+              canModifyProperty={canModifyProperty}
+            />
           </>
         )}
       </div>

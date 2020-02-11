@@ -94,3 +94,13 @@ export const autoRenameFile = new Method({
     collection: String,
   },
 });
+
+export const setFileRoles = new Method({
+  name: 'setFileRoles',
+  params: {
+    Key: String,
+    roles: Array,
+    docId: String,
+    collection: String,
+  },
+});

@@ -73,7 +73,7 @@ describe('REST: uploadFile', function() {
     });
   });
 
-  it('uploads a file', () => {
+  it('uploads a file', async () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro',
@@ -81,22 +81,65 @@ describe('REST: uploadFile', function() {
     });
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { files } = await uploadFile({
       filePath,
       userId: 'pro',
       url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then(res => {
-      const { files } = res;
-      expect(files.length).to.equal(1);
-      expect(files[0].url).to.equal(
-        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
-      );
     });
+
+    expect(files.length).to.equal(1);
+    expect(files[0].url).to.equal(
+      `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+    );
+    expect(files[0].roles).to.equal('public');
   });
 
-  it('uploads two files', () => {
+  it('uploads a file with roles', async () => {
+    PropertyService.setProUserPermissions({
+      propertyId,
+      userId: 'pro',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
+    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
+    appendFileSync(filePath, 'Hello');
+    const { files } = await uploadFile({
+      filePath,
+      userId: 'pro',
+      url: '/files',
+      propertyId,
+      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
+      roles: 'pro,admin',
+    });
+    expect(files.length).to.equal(1);
+    expect(files[0].url).to.equal(
+      `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+    );
+    expect(files[0].roles).to.equal('pro,admin');
+  });
+
+  it('returns an error if any role is invalid', async () => {
+    PropertyService.setProUserPermissions({
+      propertyId,
+      userId: 'pro',
+      permissions: PROPERTY_PERMISSIONS_FULL_ACCESS,
+    });
+    const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
+    appendFileSync(filePath, 'Hello');
+    const { message, status } = await uploadFile({
+      filePath,
+      userId: 'pro',
+      url: '/files',
+      propertyId,
+      category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
+      roles: 'pro,admin,test',
+    });
+    expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
+    expect(message).to.include('"test" is invalid');
+  });
+
+  it('uploads two files', async () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro',
@@ -106,51 +149,45 @@ describe('REST: uploadFile', function() {
     const filePath2 = `${FILE_UPLOAD_DIR}/myFile2.txt`;
     appendFileSync(filePath1, 'Hello');
     appendFileSync(filePath2, 'Hello');
-    return uploadFile({
+    await uploadFile({
       filePath: filePath1,
       userId: 'pro',
       url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    })
-      .then(() =>
-        uploadFile({
-          filePath: filePath2,
-          userId: 'pro',
-          url: '/files',
-          propertyId,
-          category: PROPERTY_DOCUMENTS.PROPERTY_PLANS,
-        }),
-      )
-      .then(res => {
-        const { files } = res;
-        expect(files.length).to.equal(2);
-        expect(files[0].url).to.equal(
-          `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`,
-        );
-        expect(files[1].url).to.equal(
-          `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`,
-        );
-      });
+    });
+
+    const { files } = await uploadFile({
+      filePath: filePath2,
+      userId: 'pro',
+      url: '/files',
+      propertyId,
+      category: PROPERTY_DOCUMENTS.PROPERTY_PLANS,
+    });
+    expect(files.length).to.equal(2);
+    expect(files[0].url).to.equal(
+      `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile1.txt`,
+    );
+    expect(files[1].url).to.equal(
+      `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PLANS}/myFile2.txt`,
+    );
   });
 
-  it('does not allow to upload file when user does not have permissions', () => {
+  it('does not allow to upload file when user does not have permissions', async () => {
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { status, message } = await uploadFile({
       filePath,
       userId: 'pro2',
       url: '/files',
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then(res => {
-      const { status, message } = res;
-      expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
-      expect(message).to.include('[NOT_AUTHORIZED]');
     });
+    expect(status).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
+    expect(message).to.include('[NOT_AUTHORIZED]');
   });
 
-  it('works when impersonating', () => {
+  it('works when impersonating', async () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro',
@@ -158,70 +195,62 @@ describe('REST: uploadFile', function() {
     });
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { files } = await uploadFile({
       filePath,
       userId: 'pro2',
       url: '/files',
       query: { 'impersonate-user': 'pro@org.com' },
       propertyId,
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then(res => {
-      const { files } = res;
-      expect(files.length).to.equal(1);
-      expect(files[0].url).to.equal(
-        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
-      );
     });
+    expect(files.length).to.equal(1);
+    expect(files[0].url).to.equal(
+      `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+    );
   });
 
-  it('fails with a wrong propertyId', () => {
+  it('fails with a wrong propertyId', async () => {
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { status, message } = await uploadFile({
       filePath,
       userId: 'pro2',
       url: '/files',
       propertyId: 'property',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then(res => {
-      const { status, message } = res;
-      expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
-      expect(message).to.include('No property found');
     });
+    expect(status).to.equal(HTTP_STATUS_CODES.NOT_FOUND);
+    expect(message).to.include('No property found');
   });
 
-  it('fails when no propertyId is given', () => {
+  it('fails when no propertyId is given', async () => {
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { status, message } = await uploadFile({
       filePath,
       userId: 'pro2',
       url: '/files',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then(res => {
-      const { status, message } = res;
-      expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
-      expect(message).to.include('Property ID is required');
     });
+    expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
+    expect(message).to.include('Property ID is required');
   });
 
-  it('fails when category is wrong', () => {
+  it('fails when category is wrong', async () => {
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { status, message } = await uploadFile({
       filePath,
       userId: 'pro2',
       url: '/files',
       propertyId,
       category: 'wrong',
-    }).then(res => {
-      const { status, message } = res;
-      expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
-      expect(message).to.include('wrong is not an allowed value');
     });
+    expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
+    expect(message).to.include('wrong is not an allowed value');
   });
 
-  it('works with an external id', () => {
+  it('works with an external id', async () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro',
@@ -229,18 +258,16 @@ describe('REST: uploadFile', function() {
     });
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
-    return uploadFile({
+    const { files } = await uploadFile({
       filePath,
       userId: 'pro',
       url: '/files',
       propertyId: 'extId',
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
-    }).then(res => {
-      const { files } = res;
-      expect(files.length).to.equal(1);
-      expect(files[0].url).to.equal(
-        `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
-      );
     });
+    expect(files.length).to.equal(1);
+    expect(files[0].url).to.equal(
+      `${OBJECT_STORAGE_PATH}/${propertyId}/${PROPERTY_DOCUMENTS.PROPERTY_PICTURES}/myFile.txt`,
+    );
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { shouldDisplayFile } from 'core/api/files/fileHelpers';
 import Icon from '../Icon';
 import Downloader from '../Downloader';
 
@@ -19,13 +20,15 @@ const getIconForFileType = key => {
 };
 
 const DocumentDownloadList = ({ files }) => {
-  if (!files) {
+  const filteredFiles = files.filter(shouldDisplayFile);
+
+  if (!filteredFiles) {
     return null;
   }
 
   return (
     <div className="document-download-list">
-      {files.map(({ Key, name }) => (
+      {filteredFiles.map(({ Key, name }) => (
         <Downloader key={Key} fileKey={Key} fileName={name}>
           {({ downloading, handleDownload }) => (
             <div

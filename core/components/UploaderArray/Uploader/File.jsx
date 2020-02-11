@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
 
 import DialogForm from 'core/components/ModalManager/DialogForm';
+import { shouldDisplayFile } from 'core/api/files/fileHelpers';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';
@@ -16,6 +17,7 @@ import IconButton from '../../IconButton';
 import Downloader from '../../Downloader';
 import FileStatusSetter from './FileStatusSetter';
 import Button from '../../Button';
+import FileRolesSetter from './FileRolesSetter';
 
 const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();
@@ -61,7 +63,7 @@ const makeOnDragStart = ({ draggable, ...dragProps }) => {
 
 const File = props => {
   const {
-    file: { name, Key, status, message, url, adminname: adminName },
+    file: { name, Key, status, message, url, adminname: adminName, roles },
     disabled,
     handleRemove,
     dragProps,
@@ -69,10 +71,16 @@ const File = props => {
     handleChangeError,
     draggable,
     handleChangeFileStatus,
+    allowSetRoles,
+    handleSetRoles,
   } = props;
   const { displayFile } = useContext(FileViewerContext) || {};
   const { openModal } = useContext(ModalManagerContext);
   const [deleting, setDeleting] = useState(false);
+
+  if (!shouldDisplayFile({ roles })) {
+    return null;
+  }
 
   return (
     <div className="flex-col">
@@ -139,6 +147,13 @@ const File = props => {
               size="small"
             />
           )}
+          <FileRolesSetter
+            roles={roles}
+            Key={Key}
+            allowSetRoles={allowSetRoles}
+            handleSetRoles={handleSetRoles}
+            name={name}
+          />
 
           {isAllowedToDelete(disabled, status) && (
             <IconButton

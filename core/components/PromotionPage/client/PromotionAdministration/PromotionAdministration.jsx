@@ -29,8 +29,10 @@ const PromotionAdministration = ({
   setOpenProInvitationModal,
   openLinkLoanModal,
   setOpenLinkLoanModal,
+  permissions = {},
 }) => {
   const currentUser = useContext(CurrentUserContext);
+  const { canManageDocuments } = permissions;
 
   const { _id: promotionId } = promotion;
 
@@ -59,6 +61,7 @@ const PromotionAdministration = ({
           documentArray={promotionDocuments}
           currentUser={currentUser}
           allowRequireByAdmin={false}
+          allowSetRoles={canManageDocuments}
         />
       </Dialog>
 

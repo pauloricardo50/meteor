@@ -23,7 +23,7 @@ const propertyDocuments = property =>
     },
   }));
 
-const PropertyDocumentsManager = ({ property }) => (
+const PropertyDocumentsManager = ({ property, canModifyProperty }) => (
   <DialogSimple
     primary
     raised
@@ -35,6 +35,7 @@ const PropertyDocumentsManager = ({ property }) => (
       collection={PROPERTIES_COLLECTION}
       documentArray={propertyDocuments(property)}
       allowRequireByAdmin={false}
+      allowSetRoles={canModifyProperty}
     />
   </DialogSimple>
 );
