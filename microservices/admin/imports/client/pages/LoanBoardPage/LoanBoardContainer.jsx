@@ -55,63 +55,61 @@ const getQueryBody = additionalFields => {
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
+const getQueryFilters = ({
+  assignedEmployeeId,
+  step,
+  groupBy,
+  status,
+  promotionId,
+  lenderId,
+  category,
+}) => {
+  const $or = [];
+
+  if (groupBy === GROUP_BY.PROMOTION) {
+    $or.push({ 'promotionLinks.0._id': { $exists: true } });
+    $or.push({ 'financedPromotionLink._id': { $exists: true } });
+  }
+
+  if (promotionId) {
+    $or.push({ 'promotionLinks.0._id': promotionId });
+    $or.push({ 'financedPromotionLink._id': promotionId });
+  }
+
+  return {
+    assigneeLinks: {
+      $elemMatch: { _id: assignedEmployeeId, isMain: true },
+    },
+    step,
+    $or: $or.length ? $or : undefined,
+    anonymous: { $ne: true },
+    status: {
+      $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
+      ...status,
+    },
+    ...(lenderId
+      ? {
+          lendersCache: {
+            $elemMatch: { 'organisationLink._id': lenderId },
+          },
+        }
+      : {}),
+    category,
+    ...(noPromotionIsChecked(promotionId)
+      ? { promotionLinks: { $in: [[], null] } }
+      : {}),
+  };
+};
+
 export default compose(
   addLiveSync,
   withLiveSync,
   withSmartQuery({
     query: LOANS_COLLECTION,
-    params: ({
-      options: {
-        assignedEmployeeId,
-        step,
-        groupBy,
-        status,
-        promotionId,
-        lenderId,
-        category,
-        additionalFields,
-      },
-    }) => {
-      const $or = [];
-
-      if (groupBy === GROUP_BY.PROMOTION) {
-        $or.push({ 'promotionLinks.0._id': { $exists: true } });
-        $or.push({ 'financedPromotionLink._id': { $exists: true } });
-      }
-
-      if (promotionId) {
-        $or.push({ 'promotionLinks.0._id': promotionId });
-        $or.push({ 'financedPromotionLink._id': promotionId });
-      }
-
-      return {
-        $filters: {
-          assigneeLinks: {
-            $elemMatch: { _id: assignedEmployeeId, isMain: true },
-          },
-          step,
-          $or: $or.length ? $or : undefined,
-          anonymous: { $ne: true },
-          status: {
-            $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
-            ...status,
-          },
-          lenderId,
-          ...(lenderId
-            ? {
-                lendersCache: {
-                  $elemMatch: { 'organisationLink._id': lenderId },
-                },
-              }
-            : {}),
-          category,
-          ...(noPromotionIsChecked(promotionId)
-            ? { promotionLinks: { $in: [[], null] } }
-            : {}),
-        },
-        ...getQueryBody(additionalFields),
-      };
-    },
+    params: ({ options }) => ({
+      $filters: getQueryFilters(options),
+      ...getQueryBody(options.additionalFields),
+    }),
     dataName: 'loans',
     queryOptions: { pollingMs: 5000 },
   }),
