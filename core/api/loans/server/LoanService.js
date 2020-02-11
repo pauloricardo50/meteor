@@ -65,7 +65,7 @@ class LoanService extends CollectionService {
     if (userId) {
       const user = UserService.get(userId, { assignedEmployee: { _id: 1 } });
 
-      if (user && user.assignedEmployee && user.assignedEmployee._id) {
+      if (user?.assignedEmployee?._id) {
         this.setAssignees({
           loanId,
           assignees: [
@@ -132,15 +132,15 @@ class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, user } = this.get(loanId, {
+    const { step, mainAssignee, userId } = this.get(loanId, {
       step: 1,
       userId: 1,
-      user: { assignedEmployee: { name: 1 } },
+      mainAssignee: 1,
     });
 
     this.update({ loanId, object: { step: nextStep } });
 
-    return { step, nextStep, user };
+    return { step, nextStep, mainAssignee, userId };
   }
 
   verifyStatusChange({ loanId, status }) {

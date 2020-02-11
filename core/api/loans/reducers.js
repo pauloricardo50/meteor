@@ -71,4 +71,9 @@ Loans.addReducers({
     reduce: ({ adminNotes }) =>
       adminNotes.filter(({ isSharedWithPros }) => isSharedWithPros),
   },
+  mainAssignee: {
+    body: { assignees: { name: 1, email: 1 } },
+    reduce: ({ assignees = [] }) =>
+      assignees.find(({ $metadata: { isMain } }) => isMain),
+  },
 });
