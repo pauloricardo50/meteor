@@ -10,13 +10,13 @@ import {
   LOANS_COLLECTION,
   LOAN_STATUS,
 } from 'core/api/constants';
-import { userCache } from 'core/api/loans/links';
 import { groupLoans, makeClientSideFilter } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
   adminNotes: 1,
+  assigneeLinks: 1,
   borrowers: { name: 1 },
   category: 1,
   createdAt: 1,
@@ -29,11 +29,7 @@ const defaultBody = {
   structures: { wantedLoan: 1, id: 1, propertyId: 1 },
   properties: { address1: 1 },
   tasksCache: 1,
-  user: {
-    ...userCache,
-    // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here
-    assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
-  },
+  user: { name: 1 },
   financedPromotion: { name: 1, status: 1 },
   userId: 1,
   selectedLenderOrganisation: { name: 1 },
@@ -42,9 +38,6 @@ const defaultBody = {
 
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
-
-const getPromotionId = promotionId =>
-  noPromotionIsChecked(promotionId) ? undefined : promotionId;
 
 export default compose(
   addLiveSync,

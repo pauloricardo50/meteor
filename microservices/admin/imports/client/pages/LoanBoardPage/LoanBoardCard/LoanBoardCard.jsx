@@ -6,7 +6,7 @@ import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
 import LoanBoardCardBottom from './LoanBoardCardBottom';
 
-const LoanBoardCard = ({ data: loan, setLoanId, style, admins }) => {
+const LoanBoardCard = ({ data: loan, setLoanId, style }) => {
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,
@@ -33,11 +33,7 @@ const LoanBoardCard = ({ data: loan, setLoanId, style, admins }) => {
       onMouseLeave={() => setRenderComplex(false)}
     >
       <div className="card-header">
-        <LoanBoardCardTop
-          admins={admins}
-          renderComplex={renderComplex}
-          loan={loan}
-        />
+        <LoanBoardCardTop renderComplex={renderComplex} loan={loan} />
       </div>
 
       <div className="card-top">
