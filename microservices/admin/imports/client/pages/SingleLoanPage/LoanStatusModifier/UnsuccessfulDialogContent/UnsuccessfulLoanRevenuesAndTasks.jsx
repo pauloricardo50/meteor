@@ -1,8 +1,12 @@
 import React from 'react';
-import { TASK_STATUS, REVENUE_STATUS } from 'core/api/constants';
+import {
+  TASK_STATUS,
+  REVENUE_STATUS,
+  TASKS_COLLECTION,
+} from 'core/api/constants';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
-import { tasks as tasksQuery } from 'core/api/tasks/queries';
 import TasksTable from '../../../../components/TasksTable';
+import { taskTableFragment } from '../../../../components/TasksTable/TasksTable';
 import RevenuesTable from '../../../../components/RevenuesTable';
 
 const UnsuccessfulLoanRevenuesAndTasks = ({
@@ -27,8 +31,11 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
 
   if (activeTasks.length) {
     const { loading, data } = useReactiveMeteorData({
-      query: tasksQuery,
-      params: { loanId, status: TASK_STATUS.ACTIVE },
+      query: TASKS_COLLECTION,
+      params: {
+        $filters: { 'loanLink._id': loanId, status: TASK_STATUS.ACTIVE },
+        ...taskTableFragment,
+      },
     });
 
     tasks = !loading ? data : [];

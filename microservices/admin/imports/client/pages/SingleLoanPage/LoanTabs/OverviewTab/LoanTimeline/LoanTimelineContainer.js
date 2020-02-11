@@ -2,7 +2,6 @@ import { compose, withState, mapProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
 import { adminActivities } from 'core/api/activities/queries';
-import { tasks } from 'core/api/tasks/queries';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import {
   taskInsert,
@@ -10,7 +9,7 @@ import {
   taskChangeStatus,
   taskComplete,
 } from 'core/api/methods';
-import { TASK_STATUS } from 'core/api/constants';
+import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
 
 const formatType = type => {
   if (type.$in && type.$in.includes('COMMUNICATION')) {
@@ -34,8 +33,12 @@ export default compose(
     dataName: 'activities',
   }),
   withSmartQuery({
-    query: tasks,
-    params: ({ loanId }) => ({ loanId, status: TASK_STATUS.COMPLETED }),
+    query: TASKS_COLLECTION,
+    params: ({ loanId }) => ({
+      $filters: { 'loanLink._id': loanId, status: TASK_STATUS.COMPLETED },
+      completedAt: 1,
+      title: 1,
+    }),
     queryOptions: { reactive: false },
     dataName: 'completedTasks',
     refetchOnMethodCall: [

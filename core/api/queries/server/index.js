@@ -19,7 +19,6 @@ import '../../properties/server/exposures';
 import '../../revenues/server/exposures';
 import '../../sessions/server/exposures';
 import '../../stats/server/exposures';
-import '../../tasks/server/exposures';
 import '../../users/server/exposures';
 import './exposures';
 import './globalExposures';
