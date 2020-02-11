@@ -3,7 +3,6 @@ import pick from 'lodash/pick';
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import Intl from 'core/utils/server/intl';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { fullUser } from 'core/api/fragments';
 import { loanSetDisbursementDate } from 'core/api/loans/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
@@ -75,8 +74,7 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, params: { referralId }, context }) => {
     context.unblock();
 
-    const currentUser = UserService.get(userId, fullUser());
-    const { createdAt } = currentUser;
+    const { createdAt } = UserService.get(userId, { createdAt: 1 });
 
     let referredBy;
     let referredByOrg;
@@ -162,7 +160,7 @@ ServerEventService.addAfterMethodListener(
     } = currentUser;
 
     let description = '';
-    const referredBy = UserService.get(referredByUserLink, fullUser());
+    const referredBy = UserService.get(referredByUserLink, { name: 1 });
     const referredByOrg = OrganisationService.get(referredByOrganisationLink, {
       name: 1,
     });
@@ -211,8 +209,7 @@ ServerEventService.addAfterMethodListener(
   ({ result: userId, context }) => {
     context.unblock();
     const { userId: adminId } = context;
-    const currentUser = UserService.get(userId, fullUser());
-    const { createdAt } = currentUser;
+    const { createdAt } = UserService.get(userId, { createdAt: 1 });
     const admin = UserService.get(adminId, { name: 1 }) || {};
     const { name: adminName } = admin;
 

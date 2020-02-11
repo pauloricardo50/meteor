@@ -193,7 +193,7 @@ addEmailListener({
 
       let invitedBy;
 
-      if (pro && pro._id) {
+      if (pro?._id) {
         invitedBy = getUserNameAndOrganisation({
           user: UserService.get(pro._id, {
             name: 1,

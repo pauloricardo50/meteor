@@ -391,7 +391,7 @@ export class UserServiceClass extends CollectionService {
     let admin;
 
     if (isNewUser) {
-      admin = this.get(assignedEmployeeId, fullUser());
+      admin = this.get(assignedEmployeeId, { name: 1 });
       userId = this.adminCreateUser({
         options: {
           email,
@@ -409,7 +409,7 @@ export class UserServiceClass extends CollectionService {
         assignedEmployeeId: existingAssignedEmployeeId,
       } = this.getByEmail(email);
 
-      admin = this.get(existingAssignedEmployeeId, fullUser());
+      admin = this.get(existingAssignedEmployeeId, { name: 1 });
       userId = existingUserId;
     }
 
@@ -451,10 +451,7 @@ export class UserServiceClass extends CollectionService {
         ...promises,
         PropertyService.inviteUser({
           propertyIds,
-          admin,
-          pro,
           userId,
-          isNewUser,
           shareSolvency,
         }),
       ];
@@ -466,8 +463,8 @@ export class UserServiceClass extends CollectionService {
           PromotionService.inviteUser({
             promotionId,
             userId,
-            pro,
             isNewUser,
+            pro,
             promotionLotIds: user.promotionLotIds,
             showAllLots: user.showAllLots,
             shareSolvency,
@@ -504,10 +501,7 @@ export class UserServiceClass extends CollectionService {
         ...promises,
         PropertyService.inviteUser({
           propertyIds: internalPropertyIds,
-          admin,
-          pro,
           userId,
-          isNewUser,
           shareSolvency,
         }),
       ];
@@ -788,21 +782,8 @@ export class UserServiceClass extends CollectionService {
     return { organisation: referredByOrganisation || {}, user: {} };
   }
 
-  // May be we can replace one of our existing method or keep this one here?
-  getUserDetails(userId) {
-    if (typeof userId === 'string') {
-      const user = this.get(userId, fullUser());
-      if (!(user && typeof user)) {
-        throw new Meteor.Error('Utilisateur non trouvé');
-      }
-      return user;
-    }
-    throw new Meteor.Error('Valeur invalide');
-  }
-
   toggleAccount({ userId }) {
-    const userDetails = this.getUserDetails(userId);
-    const { isDisabled } = userDetails;
+    const { isDisabled } = this.get(userId, { isDisabled: 1 });
     const nextValue = !isDisabled;
     this.update({
       userId,

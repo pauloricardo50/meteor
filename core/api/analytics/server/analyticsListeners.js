@@ -17,9 +17,7 @@ import {
 import { followImpersonatedSession } from '../../sessions/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
-import ServerEventService from '../../events/server/ServerEventService';
 import EVENTS from '../events';
-import Analytics from './Analytics';
 import {
   analyticsLogin,
   analyticsPage,

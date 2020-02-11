@@ -24,9 +24,9 @@ export const impersonate = async ({
     );
   }
 
-  const { emails } = await impersonateUser.run({ userId, authToken, adminId });
+  const { email } = await impersonateUser.run({ userId, authToken, adminId });
   Meteor.connection.setUserId(userId);
-  impersonateNotification(emails);
+  impersonateNotification(email);
 
   if (history) {
     history.push('/');

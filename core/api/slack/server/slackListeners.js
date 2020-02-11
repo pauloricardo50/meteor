@@ -1,7 +1,6 @@
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import { promotionOptionUploadAgreement } from 'core/api/methods/index';
-import { fullUser } from 'core/api/fragments';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   reservePromotionLot,
@@ -27,7 +26,7 @@ import {
 import { sendPropertyInvitations } from './slackNotificationHelpers';
 import PromotionService from '../../promotions/server/PromotionService';
 
-const slackCurrentUserFragment = {
+export const slackCurrentUserFragment = {
   name: 1,
   roles: 1,
   assignedEmployee: { name: 1, email: 1 },
@@ -137,14 +136,14 @@ ServerEventService.addAfterMethodListener(
       referredByUserLink,
       referredByOrganisationLink,
     } = currentUser;
-    const referredBy = UserService.get(referredByUserLink, fullUser());
+    const referredBy = UserService.get(referredByUserLink, { name: 1 });
     const referredByOrg = OrganisationService.get(referredByOrganisationLink, {
       name: 1,
     });
 
     const suffix = [
-      referredBy && referredBy.name,
-      referredByOrg && referredByOrg.name,
+      referredBy?.name,
+      referredByOrg?.name,
       loans?.[0]?.properties?.[0]?.category === PROPERTY_CATEGORY.PRO &&
         (loans?.[0]?.properties?.[0]?.address1 ||
           loans?.[0]?.properties?.[0]?.name),

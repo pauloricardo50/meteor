@@ -467,7 +467,7 @@ Meteor.methods({
       borrowers: [borrower],
     } = loan;
 
-    const user = UserService.get(loan.userId, fullUser());
+    const user = UserService.get(loan.userId, { _id: 1 });
 
     return { loan, user, property: properties[0], borrower };
   },
