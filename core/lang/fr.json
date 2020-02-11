@@ -1,4 +1,7 @@
 {
+  "UserTaskInsertForm.label": "Ajouter tâche",
+  "UserTaskInsertForm.dialogTitle": "Nouvelle tâche",
+  "UserTaskInsertForm.dialogDescription": "Cette tâche sera liée à ce compte",
   "Forms.acquisitionChannel.FACEBOOK": "Facebook",
   "Forms.acquisitionChannel.LINKEDIN": "LinkedIn",
   "Forms.acquisitionChannel": "Canal d'acquisition",
