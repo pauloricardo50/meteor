@@ -33,9 +33,11 @@ const assigneeReducer = (body = {}, getUserId) => ({
         return UserService.get(assigneeLink._id, fragment);
       }
 
-      if (assigneeLinks && assigneeLinks.length > 0) {
+      if (assigneeLinks?.length) {
         // Loans collection
         const main = assigneeLinks.find(({ isMain }) => isMain);
+
+        // For anonymous loans, no assignee
         if (main) {
           return UserService.get(main._id, fragment);
         }
@@ -46,17 +48,17 @@ const assigneeReducer = (body = {}, getUserId) => ({
         return UserService.get(assignedEmployeeId, fragment);
       }
 
-      if (promotion && promotion.userLinks) {
+      if (promotion?.userLinks) {
         // promotionLots, promotionOptions collections
         users = promotion.userLinks;
       }
 
-      if (promotions && promotions.length > 0) {
+      if (promotions?.length) {
         // Loans collection fallback
         users = promotions[0].userLinks;
       }
 
-      if (!userToFind && users && users.length > 0) {
+      if (!userToFind && users?.length) {
         // If this document has a list of users assigned to it, pick the first
         // one and use his assignee
         userToFind = users[0]._id;

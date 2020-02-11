@@ -9,7 +9,5 @@ const makeReferrerFilter = referrer => ({ loan }) => {
 export const revenuesFilter = ({ referrer, revenues }) => {
   const referrerFilter = makeReferrerFilter(referrer);
 
-  return revenues.filter(
-    revenue => true && (!referrer || referrerFilter(revenue)),
-  );
+  return revenues.filter(revenue => !!(!referrer || referrerFilter(revenue)));
 };

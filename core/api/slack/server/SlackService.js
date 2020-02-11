@@ -202,7 +202,7 @@ export class SlackService {
       return LoanService.getMainAssignee({ loanId });
     }
 
-    return currentUser && currentUser.assignedEmployee;
+    return currentUser?.assignedEmployee;
   }
 
   getNotificationOrigin = currentUser => {

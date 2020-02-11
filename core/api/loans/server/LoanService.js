@@ -1150,9 +1150,7 @@ class LoanService extends CollectionService {
       assignees: { email: 1, name: 1 },
     });
 
-    return assignees.length
-      ? assignees.find(({ $metadata: { isMain } }) => isMain)
-      : undefined;
+    return assignees.find(({ $metadata: { isMain } }) => isMain);
   }
 }
 

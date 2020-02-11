@@ -18,7 +18,7 @@ const LoanBoardCardTop = ({
   loan,
 }) => {
   const { borrowers, _id: loanId, name, status, user, assigneeLinks } = loan;
-  const userId = user && user._id;
+  const userId = user?._id;
   const hasUser = !!userId;
   const title = getLoanLinkTitle({ user, name, borrowers });
   const { openModal } = useContext(ModalManagerContext);
