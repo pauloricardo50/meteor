@@ -5,12 +5,12 @@ import {
   ERROR,
   OWN_FUNDS_USAGE_TYPES,
   RESIDENCE_TYPE,
-  PROPERTY_CATEGORY,
 } from 'core/api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
+  getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
@@ -767,6 +767,22 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         loan,
         borrowers,
       });
+    }
+
+    getLoanValidDocumentsRatio({ loan }) {
+      const requiredDocuments = this.getRequiredLoanDocumentIds({
+        loan,
+      });
+      const missingDocuments = this.getMissingLoanDocuments({ loan });
+
+      return {
+        valid: requiredDocuments.length - missingDocuments.length,
+        required: requiredDocuments.length,
+      };
+    }
+
+    getRequiredLoanDocumentIds({ loan }) {
+      return getRequiredDocumentIds(getLoanDocuments({ loan }, this));
     }
 
     getPropertyValidDocumentsRatio({ loan }) {

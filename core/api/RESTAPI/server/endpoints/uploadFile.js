@@ -11,27 +11,7 @@ import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
 import { getFileRolesArray } from '../../../files/fileHelpers';
 
-const bodySchema = new SimpleSchema({
-  propertyId: String,
-  category: {
-    type: String,
-    allowedValues: [...Object.values(PROPERTY_DOCUMENTS)],
-    custom() {
-      if (this.field('propertyId')) {
-        return Object.values(PROPERTY_DOCUMENTS).includes(this.value)
-          ? undefined
-          : 'invalidCategory';
-      }
-    },
-  },
-  roles: {
-    type: String,
-    defaultValue: 'public',
-    optional: true,
-  },
-});
-
-const checkRoles = roles => {
+const getInvalidRole = roles => {
   const rolesArray = getFileRolesArray({ roles });
   let invalidRole;
 
@@ -50,6 +30,47 @@ const checkRoles = roles => {
 
   return invalidRole;
 };
+
+const getErrorMessage = ({ value }) => {
+  const invalidRole = getInvalidRole(value);
+  return `Role "${invalidRole}" is invalid. Please provide any of [${Object.values(
+    FILE_ROLES,
+  )
+    .filter(role => role !== FILE_ROLES.USER)
+    .map(role => `'${role}'`)
+    .join(', ')}] roles, separated by a comma`;
+};
+
+SimpleSchema.setDefaultMessages({
+  messages: {
+    en: {
+      invalidRole: getErrorMessage,
+    },
+  },
+});
+
+const bodySchema = new SimpleSchema({
+  propertyId: String,
+  category: {
+    type: String,
+    allowedValues: [...Object.values(PROPERTY_DOCUMENTS)],
+    custom() {
+      if (this.field('propertyId')) {
+        return Object.values(PROPERTY_DOCUMENTS).includes(this.value)
+          ? undefined
+          : 'invalidCategory';
+      }
+    },
+  },
+  roles: {
+    type: String,
+    defaultValue: 'public',
+    optional: true,
+    custom() {
+      return getInvalidRole(this.value) ? 'invalidRole' : undefined;
+    },
+  },
+});
 
 const uploadFileAPI = req => {
   const {
@@ -94,17 +115,6 @@ const uploadFileAPI = req => {
     throw new Meteor.Error('No file uploaded');
   }
 
-  const invalidRole = checkRoles(roles);
-  if (invalidRole) {
-    throw new Meteor.Error(
-      HTTP_STATUS_CODES.BAD_REQUEST,
-      `Role "${invalidRole}" is invalid. Please provide any of [${Object.values(
-        FILE_ROLES,
-      )
-        .map(role => `'${role}'`)
-        .join(', ')}] roles, separated by a comma`,
-    );
-  }
   return withMeteorUserId({ userId, impersonateUser }, () => {
     let impersonateUserId;
     if (impersonateUser) {

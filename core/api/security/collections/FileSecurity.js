@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
+import UserService from 'core/api/users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -25,122 +26,119 @@ class FileSecurity {
   };
 
   static getUserRoles = userId => {
-    const isAdmin = Roles.userIsInRole(userId, 'admin');
-    const isDev = Roles.userIsInRole(userId, 'dev');
-    const isPro = Roles.userIsInRole(userId, 'pro');
-    const isUser = Roles.userIsInRole(userId, 'user');
+    const user = UserService.get(userId, { roles: 1 });
+    const isAdmin = Roles.userIsInRole(user, 'admin');
+    const isDev = Roles.userIsInRole(user, 'dev');
+    const isPro = Roles.userIsInRole(user, 'pro');
+    const isUser = Roles.userIsInRole(user, 'user');
 
     return { isAdmin, isDev, isPro, isUser };
   };
 
-  static handleProPropertyFile = ({ key, roles, userRoles }) => {
-    const { docId: keyId } = FileService.getKeyParts(key);
-    const { hasNoRole, hasPublicRole, hasUserRole, hasProRole } = roles;
-    const { isUser, isPro } = userRoles;
-
-    const property = PropertyService.get(keyId, { category: 1, userId: 1 });
-
-    if (
-      property &&
-      (property.category === PROPERTY_CATEGORY.PRO ||
-        property.category === PROPERTY_CATEGORY.PROMOTION)
-    ) {
-      return (
-        hasNoRole ||
-        hasPublicRole ||
-        (isPro && hasProRole) ||
-        (isUser && hasUserRole)
-      );
-    }
-
-    return false;
-  };
-
-  static handlePromotionFile = ({ key, roles, userRoles }) => {
-    const { docId: keyId } = FileService.getKeyParts(key);
-    const { hasNoRole, hasPublicRole, hasUserRole, hasProRole } = roles;
-    const { isUser, isPro } = userRoles;
-
-    const promotionFound = !!PromotionService.get(keyId, { _id: 1 });
-
-    if (promotionFound) {
-      return (
-        hasNoRole ||
-        hasPublicRole ||
-        (isPro && hasProRole) ||
-        (isUser && hasUserRole)
-      );
-    }
-
-    return false;
-  };
-
-  static handlePromotionOptionFile = ({ key, roles, userRoles, userId }) => {
-    const { docId: keyId } = FileService.getKeyParts(key);
-    const { hasNoRole, hasPublicRole, hasUserRole, hasProRole } = roles;
-    const { isUser, isPro } = userRoles;
-
-    const promotionOption = PromotionOptionService.get(keyId, { _id: 1 });
-
-    if (promotionOption) {
-      try {
-        Security.promotions.isAllowedToManagePromotionReservation({
-          promotionOptionId: promotionOption._id,
-          userId,
-        });
-
-        return (
-          hasNoRole ||
-          hasPublicRole ||
-          (isPro && hasProRole) ||
-          (isUser && hasUserRole)
-        );
-      } catch (error) {
-        return false;
+  static checkDocumentExists = ({ collection, filters }) => {
+    switch (collection) {
+      case 'properties': {
+        return PropertyService.exists(filters);
       }
+      case 'loans': {
+        return LoanService.exists(filters);
+      }
+      case 'borrowers': {
+        return BorrowerService.exists(filters);
+      }
+      case 'promotionOptions': {
+        return PromotionOptionService.exists(filters);
+      }
+      case 'promotions': {
+        return PromotionService.exists(filters);
+      }
+      default:
+        return false;
     }
-
-    return false;
   };
 
-  static handleOwnerFile = ({ key, userId }) => {
-    const { docId: keyId } = FileService.getKeyParts(key);
-    const loanFound = !!LoanService.get(
-      {
-        _id: keyId,
-        userId,
-      },
-      { _id: 1 },
-    );
+  static checkHasAccessToFileFromCollection = ({
+    key,
+    collection,
+    roles,
+    userRoles,
+    filters = {},
+    options = {},
+    userId,
+  }) => {
+    const { docId } = FileService.getKeyParts(key);
 
-    if (loanFound) {
-      return true;
+    const documentExists = this.checkDocumentExists({
+      collection,
+      filters: { _id: docId, ...filters },
+    });
+
+    if (!documentExists) {
+      return false;
+    }
+    const { checkExistsOnly } = options;
+
+    if (checkExistsOnly) {
+      return documentExists;
     }
 
-    const borrowerFound = !!BorrowerService.get(
-      {
-        _id: keyId,
-        userId,
-      },
-      { _id: 1 },
-    );
+    const { hasNoRole, hasPublicRole, hasUserRole, hasProRole } = roles;
+    const { isUser, isPro } = userRoles;
 
-    if (borrowerFound) {
-      return true;
+    const defaultReturn =
+      hasNoRole ||
+      hasPublicRole ||
+      (isPro && hasProRole) ||
+      (isUser && hasUserRole);
+
+    switch (collection) {
+      case 'promotionOptions': {
+        try {
+          Security.promotions.isAllowedToManagePromotionReservation({
+            promotionOptionId: docId,
+            userId,
+          });
+
+          return defaultReturn;
+        } catch (error) {
+          return false;
+        }
+      }
+      default:
+        return defaultReturn;
     }
-
-    const property = PropertyService.get(keyId, { category: 1, userId: 1 });
-
-    if (
-      property &&
-      (!property.category || property.category === PROPERTY_CATEGORY.USER) &&
-      property.userId === userId
-    ) {
-      return true;
-    }
-
-    return false;
   };
+
+  static getCollectionsFileAccessParams = userId => [
+    {
+      collection: 'loans',
+      filters: { userId },
+      options: { checkExistsOnly: true },
+    },
+    {
+      collection: 'borrowers',
+      filters: { userId },
+      options: { checkExistsOnly: true },
+    },
+    {
+      collection: 'properties',
+      filters: {
+        userId,
+        category: PROPERTY_CATEGORY.USER,
+      },
+      options: { checkExistsOnly: true },
+    },
+    {
+      collection: 'properties',
+      filters: {
+        category: {
+          $in: [PROPERTY_CATEGORY.PRO, PROPERTY_CATEGORY.PROMOTION],
+        },
+      },
+    },
+    { collection: 'promotions' },
+    { collection: 'promotionOptions' },
+  ];
 
   static isAllowedToAccess = async ({ userId, key }) => {
     const userRoles = this.getUserRoles(userId);
@@ -161,19 +159,17 @@ class FileSecurity {
       return true;
     }
 
-    if (this.handleOwnerFile({ key, userId })) {
-      return true;
-    }
-
-    if (this.handleProPropertyFile({ key, roles, userRoles })) {
-      return true;
-    }
-
-    if (this.handlePromotionFile({ key, roles, userRoles })) {
-      return true;
-    }
-
-    if (this.handlePromotionOptionFile({ key, roles, userRoles, userId })) {
+    if (
+      this.getCollectionsFileAccessParams(userId).some(params =>
+        this.checkHasAccessToFileFromCollection({
+          userId,
+          key,
+          roles,
+          userRoles,
+          ...params,
+        }),
+      )
+    ) {
       return true;
     }
 

@@ -91,7 +91,7 @@ class FileService {
 
   setFileRoles = ({ Key, roles = [] }) =>
     S3Service.updateMetadata(Key, {
-      roles: roles.length ? roles.join(',') : '',
+      roles: roles.join(','),
     });
 
   deleteFileAPI = ({ docId, collection, key }) =>

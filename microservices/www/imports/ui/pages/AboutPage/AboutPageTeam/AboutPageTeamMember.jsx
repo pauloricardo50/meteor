@@ -20,6 +20,7 @@ const AboutPageTeamMember = ({ name, src, title }) => (
       <span className="about-page-team-member-contact">
         <a href={getMailTo(name)} className="email">
           <IconButton
+            size="small"
             type="mail"
             tooltip={
               <T
@@ -31,6 +32,7 @@ const AboutPageTeamMember = ({ name, src, title }) => (
         </a>
         <a href="tel:+41225660110">
           <IconButton
+            size="small"
             type="phone"
             tooltip={
               <T
