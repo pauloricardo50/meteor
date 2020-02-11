@@ -13,6 +13,7 @@ import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConsta
 import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
 import { task as taskFragment } from '../../fragments';
 import UserService from '../../users/server/UserService';
+import LoanService from '../../loans/server/LoanService';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -122,6 +123,10 @@ class TaskService extends CollectionService {
   };
 
   getAssigneeForDoc = (docId, collection) => {
+    if (collection === LOANS_COLLECTION) {
+      return LoanService.getMainAssignee({ loanId: docId });
+    }
+
     const doc = Mongo.Collection.get(collection)
       .createQuery({ $filters: { _id: docId }, assignee: 1 })
       .fetchOne();

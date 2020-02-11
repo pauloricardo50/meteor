@@ -1129,6 +1129,14 @@ class LoanService extends CollectionService {
 
     return this.update({ loanId, object: { assigneeLinks: assignees } });
   }
+
+  getMainAssignee({ loanId }) {
+    const { assigneeLinks = [] } = this.get(loanId, { assigneeLinks: 1 });
+
+    return assigneeLinks.length
+      ? assigneeLinks.find(({ isMain }) => isMain)._id
+      : undefined;
+  }
 }
 
 export default new LoanService({});
