@@ -5,6 +5,7 @@ import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
 import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
+import LoanService from 'core/api/loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
 import { fullLoan } from '../../loans/queries';
@@ -160,6 +161,7 @@ export class SlackService {
     link,
     assignee,
     notifyAlways,
+    loanId,
   }) => {
     const isAdmin =
       currentUser &&
@@ -170,7 +172,7 @@ export class SlackService {
       return false;
     }
 
-    const admin = assignee || (currentUser && currentUser.assignedEmployee);
+    const admin = this.getAssigneeForMessage({ assignee, currentUser, loanId });
     const channel = this.getChannelForAdmin(admin);
 
     const slackPayload = {
@@ -190,6 +192,18 @@ export class SlackService {
 
     return this.sendAttachments(slackPayload);
   };
+
+  getAssigneeForMessage({ currentUser, assignee, loanId }) {
+    if (assignee) {
+      return assignee;
+    }
+
+    if (loanId) {
+      return LoanService.getMainAssignee({ loanId });
+    }
+
+    return currentUser && currentUser.assignedEmployee;
+  }
 
   getNotificationOrigin = currentUser => {
     const APIUser = getAPIUser();
@@ -261,7 +275,7 @@ export class SlackService {
       link = `${Meteor.settings.public.subdomains.admin}/loans/${loan._id}`;
     }
 
-    return this.notifyAssignee({ currentUser, message, title, link });
+    return this.notifyAssignee({ currentUser, message, title, link, loanId });
   };
 }
 

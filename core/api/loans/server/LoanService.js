@@ -1131,10 +1131,12 @@ class LoanService extends CollectionService {
   }
 
   getMainAssignee({ loanId }) {
-    const { assigneeLinks = [] } = this.get(loanId, { assigneeLinks: 1 });
+    const { assignees = [] } = this.get(loanId, {
+      assignees: { email: 1, name: 1 },
+    });
 
-    return assigneeLinks.length
-      ? assigneeLinks.find(({ isMain }) => isMain)._id
+    return assignees.length
+      ? assignees.find(({ $metadata: { isMain } }) => isMain)
       : undefined;
   }
 }

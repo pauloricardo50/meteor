@@ -124,14 +124,17 @@ class TaskService extends CollectionService {
 
   getAssigneeForDoc = (docId, collection) => {
     if (collection === LOANS_COLLECTION) {
-      return LoanService.getMainAssignee({ loanId: docId });
+      const mainAssignee = LoanService.getMainAssignee({ loanId: docId });
+      if (mainAssignee) {
+        return mainAssignee?._id;
+      }
     }
 
     const doc = Mongo.Collection.get(collection)
       .createQuery({ $filters: { _id: docId }, assignee: 1 })
       .fetchOne();
 
-    return doc && doc.assignee ? doc.assignee._id : null;
+    return doc?.assignee?._id;
   };
 
   proAddLoanTask = ({ userId, loanId, note }) => {
