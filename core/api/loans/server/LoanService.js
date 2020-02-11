@@ -10,6 +10,7 @@ import {
   ACTIVITY_TYPES,
 } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
+import { assignAdminToUser } from '../../methods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Intl from '../../../utils/server/intl';
 import {
@@ -1106,7 +1107,7 @@ class LoanService extends CollectionService {
     return disbursedIn10Days.map(({ _id }) => _id);
   }
 
-  setAssignees({ loanId, assignees }) {
+  setAssignees({ loanId, assignees, updateUserAssignee }) {
     if (assignees.length < 1 || assignees.length > 3) {
       throw new Meteor.Error(
         'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
@@ -1127,7 +1128,21 @@ class LoanService extends CollectionService {
       );
     }
 
-    return this.update({ loanId, object: { assigneeLinks: assignees } });
+    const response = this.update({
+      loanId,
+      object: { assigneeLinks: assignees },
+    });
+
+    if (updateUserAssignee) {
+      const { user: { _id: userId } = {} } = this.get(loanId, {
+        user: { _id: 1 },
+      });
+      if (userId) {
+        assignAdminToUser.run({ userId, adminId: main[0]._id });
+      }
+    }
+
+    return response;
   }
 
   getMainAssignee({ loanId }) {

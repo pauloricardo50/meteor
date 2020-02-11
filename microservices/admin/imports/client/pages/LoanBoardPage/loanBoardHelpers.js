@@ -4,7 +4,9 @@ import React from 'react';
 import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
+import moment from 'moment';
 
+import Calculator from 'core/utils/Calculator';
 import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
 import { GROUP_BY, SORT_BY, ACTIONS, SORT_ORDER } from './loanBoardConstants';
 
@@ -181,6 +183,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   lenderId: undefined,
   loanId: '',
   promotionStatus: undefined,
+  additionalFields: [],
 });
 
 export const filterReducer = (state, { type, payload }) => {
@@ -251,3 +254,65 @@ export const makeClientSideFilter = ({ options }) => {
     (loan.financedPromotion &&
       statuses.includes(loan.financedPromotion.status));
 };
+
+export const additionalLoanBoardFields = [
+  {
+    id: 'createdAt',
+    fragment: { createdAt: 1 },
+    labelId: 'Forms.createdAt',
+    format: ({ createdAt }) => moment(createdAt).format('D MMMM YYYY'),
+  },
+  {
+    id: 'lender',
+    fragment: {
+      structures: { offerId: 1 },
+      lenders: { organisation: { name: 1 }, offers: { _id: 1 } },
+      structureId: 1,
+    },
+    label: 'Prêteur',
+    format: loan => {
+      const { lenders = [] } = loan;
+      const { offerId } = Calculator.selectStructure({ loan });
+      if (!offerId) {
+        return null;
+      }
+      const lender = lenders.find(({ offers = [] }) =>
+        offers.find(({ _id }) => _id === offerId),
+      );
+
+      if (!lender) {
+        return null;
+      }
+
+      return lender.organisation.name;
+    },
+  },
+  {
+    id: 'referrer',
+    label: 'Apporteur',
+    fragment: {
+      user: {
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+      },
+    },
+    format: ({ user }) => {
+      if (!user) {
+        return null;
+      }
+
+      const { referredByUser, referredByOrganisation } = user;
+
+      if (!referredByUser && !referredByOrganisation) {
+        return null;
+      }
+
+      return (
+        <div className="flex-col">
+          {referredByUser && <span>{referredByUser.name}</span>}
+          {referredByOrganisation && <span>{referredByOrganisation.name}</span>}
+        </div>
+      );
+    },
+  },
+];

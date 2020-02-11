@@ -42,6 +42,7 @@ const LoanBoard = ({
         columnItemProps={{
           setLoanId: loanId =>
             dispatch({ type: ACTIONS.SET_LOAN_ID, payload: loanId }),
+          additionalFields: options.additionalFields,
         }}
       />
       <LoanModal

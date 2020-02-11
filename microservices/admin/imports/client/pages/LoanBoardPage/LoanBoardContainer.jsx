@@ -1,4 +1,5 @@
 import { compose, mapProps, withProps } from 'recompose';
+import merge from 'lodash/merge';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { adminUsers } from 'core/api/users/queries';
@@ -10,7 +11,11 @@ import {
   LOANS_COLLECTION,
   LOAN_STATUS,
 } from 'core/api/constants';
-import { groupLoans, makeClientSideFilter } from './loanBoardHelpers';
+import {
+  groupLoans,
+  makeClientSideFilter,
+  additionalLoanBoardFields,
+} from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
@@ -36,6 +41,17 @@ const defaultBody = {
   revenues: { _id: 1, status: 1 },
 };
 
+const getQueryBody = additionalFields => {
+  const addedFields = additionalLoanBoardFields.filter(({ id }) =>
+    additionalFields.includes(id),
+  );
+
+  return addedFields.reduce(
+    (newBody, { fragment }) => merge({}, newBody, fragment),
+    defaultBody,
+  );
+};
+
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
@@ -53,6 +69,7 @@ export default compose(
         promotionId,
         lenderId,
         category,
+        additionalFields,
       },
     }) => {
       const $or = [];
@@ -92,7 +109,7 @@ export default compose(
             ? { promotionLinks: { $in: [[], null] } }
             : {}),
         },
-        ...defaultBody,
+        ...getQueryBody(additionalFields),
       };
     },
     dataName: 'loans',
