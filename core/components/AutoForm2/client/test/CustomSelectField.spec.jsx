@@ -62,12 +62,13 @@ describe('CustomSelectField', () => {
         .at(0);
 
       expect(SelectField).to.not.equal(undefined);
-      SelectField.find('[role="button"]').simulate('click');
+      SelectField.find('[role="button"]').simulate('mousedown', { button: 0 });
 
       const items = component()
         .find(CustomSelectField)
         .find(MenuItem)
         .find('li');
+      expect(items.length).to.equal(2);
 
       items.forEach(item => {
         expect(item.text()).to.equal(transform(item.prop('data-value')));
@@ -91,7 +92,7 @@ describe('CustomSelectField', () => {
         .at(0);
 
       expect(SelectField).to.not.equal(undefined);
-      SelectField.find('[role="button"]').simulate('mousedown');
+      SelectField.find('[role="button"]').simulate('mousedown', { button: 0 });
 
       const items = component()
         .find(CustomSelectField)
@@ -140,7 +141,9 @@ describe('CustomSelectField', () => {
           .find('[role="button"]');
 
         expect(SelectField).to.not.equal(undefined);
-        SelectField.find('[role="button"]').simulate('mousedown');
+        SelectField.find('[role="button"]').simulate('mousedown', {
+          button: 0,
+        });
 
         const items = component()
           .find(CustomSelectField)
@@ -315,7 +318,9 @@ describe('CustomSelectField', () => {
           .find('[role="button"]');
 
         expect(SelectField).to.not.equal(undefined);
-        SelectField.find('[role="button"]').simulate('mousedown');
+        SelectField.find('[role="button"]').simulate('mousedown', {
+          button: 0,
+        });
 
         const items = component()
           .find(CustomSelectField)

@@ -32,7 +32,7 @@ export default function startPuppeteer({ stdout, stderr, done }) {
     // console message args come in as handles, use this to evaluate them all
     page.on('console', async msg => console[msg._type](
         ...(await Promise.all(msg.args().map((arg) => arg.jsonValue()))),
-      ));
+      ),);
 
     await page.goto(process.env.ROOT_URL);
 

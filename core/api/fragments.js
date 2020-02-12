@@ -246,6 +246,7 @@ export const loan = () => ({
   additionalDocuments: 1,
   applicationType: 1,
   anonymous: 1,
+  assignees: { name: 1, phoneNumber: 1, email: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   canton: 1,

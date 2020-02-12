@@ -192,10 +192,28 @@ export const ProPromotionLotsTableContainer = compose(
 export const AppPromotionLotsTableContainer = compose(
   withSmartQuery({
     query: appPromotionLots,
-    params: ({ promotion: { _id: promotionId }, status }) => ({
-      promotionId,
+    params: ({
+      promotion: { _id: promotionId },
       status,
-    }),
+      loan: { promotions = [], promotionOptions = [] } = {},
+    }) => {
+      const [promotion] = promotions || {};
+      const { $metadata: { showAllLots = false } = {} } = promotion;
+      const promotionLotIds = promotionOptions.reduce(
+        (ids, promotionOption) => {
+          const { promotionLots = [] } = promotionOption;
+          return [...ids, ...promotionLots.map(({ _id }) => _id)];
+        },
+        [],
+      );
+
+      return {
+        promotionId,
+        status,
+        showAllLots,
+        promotionLotIds,
+      };
+    },
     dataName: 'promotionLots',
   }),
   withProps(

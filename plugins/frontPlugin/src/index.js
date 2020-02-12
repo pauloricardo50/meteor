@@ -2,6 +2,8 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import moment from 'moment';
 
+import './initialization.js';
+
 import FrontPlugin from './components/FrontPlugin.jsx';
 import './styles.scss';
 

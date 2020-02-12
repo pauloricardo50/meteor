@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 
@@ -10,6 +9,7 @@ import {
   DEFAULT_SECONDARY_RESIDENCE_RULES,
   INCOME_CONSIDERATION_TYPES,
 } from '../../../api/constants';
+import { MIN_INSURANCE2_WITHDRAW } from '../../../config/financeConstants';
 
 describe('SolvencyCalculator', () => {
   describe('suggestStructure', () => {
@@ -182,7 +182,11 @@ describe('SolvencyCalculator', () => {
         Calculator.suggestStructureForLoan({
           loan: {
             borrowers: [
-              { bankFortune: [{ value: 500000 }], salary: 180000, _id: 'borrower1' },
+              {
+                bankFortune: [{ value: 500000 }],
+                salary: 180000,
+                _id: 'borrower1',
+              },
             ],
             structures: [
               { id: 'struct1', propertyValue: 900000, propertyWork: 100000 },
@@ -193,6 +197,38 @@ describe('SolvencyCalculator', () => {
       ).to.deep.equal([
         { type: 'bankFortune', value: 245000, borrowerId: 'borrower1' },
       ]);
+    });
+
+    it('suggests a structure that uses at least 20k of insurance2 if it can', () => {
+      const structure = Calculator.suggestStructureForLoan({
+        loan: {
+          borrowers: [
+            {
+              salary: 120700,
+              bankFortune: [{ value: 122000 }],
+              // insurance3A: [{ value: 61220 }],
+              insurance2: [{ value: 155200 }],
+            },
+          ],
+          structures: [
+            {
+              id: 'struct1',
+              propertyValue: 480000,
+              propertyWork: 0,
+              notaryFees: 50000,
+              wantedLoan: 400000,
+            },
+          ],
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        },
+        structureId: 'struct1',
+      });
+
+      const insurance2Suggestion = structure.find(
+        ({ type }) => type === OWN_FUNDS_TYPES.INSURANCE_2,
+      );
+
+      expect(insurance2Suggestion.value).to.equal(MIN_INSURANCE2_WITHDRAW);
     });
   });
 
@@ -372,6 +408,26 @@ describe('SolvencyCalculator', () => {
 
       expect(results.borrowRatio).to.equal(0.5);
       expect(results.propertyValue).to.equal(232000);
+    });
+
+    it('recommends a good value for a special case', () => {
+      // This case helped us develop the "adjustInsurance2Withdrawal" function
+      // it locked the user in a local maxima where he had to use less than
+      // MIN_INSURANCE2_WITHDRAW while iterating, which resulted in a bad
+      // structure, and capped the iteration at that propertyValue
+      const result = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+        canton: 'VD',
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        borrowers: [
+          {
+            salary: 120700,
+            bankFortune: [{ value: 61000 }],
+            insurance3A: [{ value: 61220 }],
+            insurance2: [{ value: 155200 }],
+          },
+        ],
+      });
+      expect(result.propertyValue).to.equal(818000);
     });
   });
 });

@@ -270,3 +270,10 @@ export const BASIC_DOCUMENTS_LIST = [
   BORROWER_DOCUMENTS.SALARY_CERTIFICATE,
   BORROWER_DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT,
 ];
+
+export const FILE_ROLES = {
+  PUBLIC: 'public',
+  USER: 'user',
+  PRO: 'pro',
+  ADMIN: 'admin',
+};

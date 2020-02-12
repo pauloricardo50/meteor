@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { toMoney } from '../../../../../../utils/conversionFunctions';
@@ -10,8 +9,6 @@ import {
   OWN_FUNDS_USAGE_TYPES,
 } from '../../../../../constants';
 import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
-
-type SingleStructureRecapTableProps = {};
 
 const columnsConfig = [
   {
@@ -102,11 +99,7 @@ const getRows = ({ loan, structureId, calculator }) => [
   </tr>,
 ];
 
-const SingleStructureRecapTable = ({
-  loan,
-  structureId,
-  calculator,
-}: SingleStructureRecapTableProps) => (
+const SingleStructureRecapTable = ({ loan, structureId, calculator }) => (
   <table className="pdf-table structure-recap-table single-structure-recap-table">
     {getRows({ loan, structureId, calculator })}
   </table>

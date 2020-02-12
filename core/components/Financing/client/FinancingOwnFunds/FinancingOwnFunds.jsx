@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -11,8 +10,6 @@ import FinancingOwnFundsPicker from './FinancingOwnFundsPicker';
 import Calculator from '../../../../utils/Calculator';
 import FinancingOwnFundsStatus from './FinancingOwnFundsStatus';
 import { FORMATS } from '../FinancingSection/components/CalculatedValue';
-
-type FinancingOwnFundsProps = {};
 
 const feesTooltip = props => {
   const value = Calculator.getNotaryFeesTooltipValue(props);
@@ -28,7 +25,7 @@ const feesTooltip = props => {
   return null;
 };
 
-const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
+const FinancingOwnFunds = props => (
   <FinancingSection
     summaryConfig={[
       {

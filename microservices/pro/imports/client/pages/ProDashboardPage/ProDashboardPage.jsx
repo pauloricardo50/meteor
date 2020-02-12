@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
@@ -9,9 +8,7 @@ import PromotionAdder from './PromotionAdder';
 import ExternalPropertyAdder from './ExternalPropertyAdder';
 import ProDashboardPageTabs from './ProDashboardPageTabs';
 
-type ProDashboardPageProps = {};
-
-const ProDashboardPage = (props: ProDashboardPageProps) => {
+const ProDashboardPage = props => {
   const currentUser = useContext(CurrentUserContext);
 
   return (

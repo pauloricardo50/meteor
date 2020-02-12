@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { PROPERTY_DOCUMENTS, COLLECTIONS } from 'core/api/constants';
@@ -7,8 +6,6 @@ import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
 import ProPropertyRecap from './ProPropertyRecap';
 import UpdateField from '../UpdateField';
-
-type ProPropertyheaderProps = {};
 
 const getImages = (documents = {}, imageUrls = []) => {
   let images = [];
@@ -33,7 +30,7 @@ const getImages = (documents = {}, imageUrls = []) => {
   return images;
 };
 
-const ProPropertyheader = ({ property, loan }: ProPropertyheaderProps) => {
+const ProPropertyheader = ({ property, loan }) => {
   const {
     address1,
     totalValue,

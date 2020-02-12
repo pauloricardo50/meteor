@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { userSearch } from '../../../../../api/users/queries';
@@ -10,15 +9,7 @@ import CollectionSearch from '../../../../CollectionSearch';
 import { CollectionIconLink } from '../../../../IconLink';
 import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 
-type PromotionProUserAdderProps = {
-  promotion: Object,
-  addUser: Function,
-};
-
-const PromotionProUserAdder = ({
-  addUser,
-  promotion,
-}: PromotionProUserAdderProps) => (
+const PromotionProUserAdder = ({ addUser, promotion }) => (
   <DialogSimple
     primary
     raised

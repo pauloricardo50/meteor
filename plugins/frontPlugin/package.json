@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build-production": "npx webpack --mode production",
-    "build-watch": "npx webpack --watch"
+    "build-watch": "npx webpack --watch --progress"
   },
   "keywords": [],
   "author": "",
@@ -25,10 +25,13 @@
   },
   "private": true,
   "dependencies": {
+    "@babel/polyfill": "^7.8.3",
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
     "antd": "^3.26.8",
     "classnames": "^2.2.6",
+    "file-saver": "^2.0.2",
+    "i18n-iso-countries": "^4.3.1",
     "moment": "^2.24.0",
     "normalize-scss": "^7.0.1",
     "react": "^16.12.0",

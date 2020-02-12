@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import Link from 'core/components/Link';
 import cx from 'classnames';
@@ -10,10 +9,6 @@ import {
   promotionTodoList,
   defaultTodoList,
 } from './dashboardTodos';
-
-type DashboardProgressInfoProps = {
-  loan: Object,
-};
 
 const getTodos = loan => {
   let list = defaultTodoList;
@@ -36,7 +31,7 @@ const getTodos = loan => {
   return max4Todos;
 };
 
-const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
+const DashboardProgressInfo = ({ loan }) => {
   const todos = getTodos(loan);
 
   return (

@@ -58,11 +58,11 @@ const getOwnerOptions = ({ borrowers }) =>
 
       return isFirst || isSecond
         ? {
-          id: isFirst ? 0 : 1,
-          intlValues: {
-            name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
-          },
-        }
+            id: isFirst ? 0 : 1,
+            intlValues: {
+              name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
+            },
+          }
         : value;
     });
 

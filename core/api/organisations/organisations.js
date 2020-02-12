@@ -69,6 +69,7 @@ export const OrganisationSchema = new SimpleSchema({
   documents: documentsField,
   lenderRulesCount: { type: Number, optional: true },
   referredUsersCount: { type: Number, optional: true },
+  revenuesCount: { type: Number, optional: true },
   adminNote: { type: String, optional: true },
   emails: { type: Array, defaultValue: [] },
   'emails.$': String,

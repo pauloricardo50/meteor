@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { compose, withProps } from 'recompose';
 import { injectIntl } from 'react-intl';
@@ -9,6 +10,7 @@ import {
   setFileError,
   setFileStatus,
   autoRenameFile,
+  setFileRoles,
 } from 'core/api/methods/index';
 import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/constants';
 import ClientEventService, {
@@ -43,6 +45,7 @@ const addMeteorProps = withProps(
     collection,
     canModify,
     autoRenameFiles = false,
+    allowSetRoles = false,
   }) => ({
     handleSuccess: async (file, url) => {
       ClientEventService.emit(MODIFIED_FILES_EVENT);
@@ -86,8 +89,13 @@ const addMeteorProps = withProps(
       setFileStatus
         .run({ fileKey: Key, newStatus })
         .then(() => updateDocumentsCache.run({ docId, collection })),
+    handleSetRoles: (Key, roles = []) =>
+      setFileRoles
+        .run({ Key, roles, docId, collection })
+        .then(() => updateDocumentsCache.run({ docId, collection })),
     draggable: true,
     allowStatusChange: true,
+    allowSetRoles,
     dragProps: { collection },
     uploaderTopRight: canModify && (
       <AdditionalDocModifier

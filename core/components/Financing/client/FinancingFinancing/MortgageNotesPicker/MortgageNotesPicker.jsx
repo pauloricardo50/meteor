@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import DialogSimple from '../../../../DialogSimple';
@@ -6,9 +5,7 @@ import MortgageNotesPickerSummary from './MortgageNotesPickerSummary';
 import MortgageNotesPickerContainer from './MortgageNotesPickerContainer';
 import MortgageNotesPickerDialog from './MortgageNotesPickerDialog';
 
-type MortgageNotesPickerProps = {};
-
-const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
+const MortgageNotesPicker = props => {
   const {
     borrowerMortgageNotes,
     currentMortgageNotes,

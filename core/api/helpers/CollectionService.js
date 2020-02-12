@@ -131,8 +131,8 @@ class CollectionService {
     return this.collection.rawCollection();
   }
 
-  exists(_id) {
-    return !!(_id && this.get(_id, { _id: 1 }));
+  exists(filters) {
+    return !!(filters && this.find(filters, { _id: 1 }).count());
   }
 
   aggregate(pipeline, options) {
@@ -202,12 +202,6 @@ class CollectionService {
       default:
         return null;
     }
-  }
-
-  getAssignedEmployee({ id }) {
-    const { assignee } = this.get(id, { assignee: 1 });
-
-    return assignee;
   }
 
   getAdditionalDocLabel({ label, additionalDoc }) {

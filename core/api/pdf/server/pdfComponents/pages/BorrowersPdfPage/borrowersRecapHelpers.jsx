@@ -172,8 +172,8 @@ const getBorrowersCitizenship = borrowers =>
         <T id={`Forms.residencyPermit.${residencyPermit}`} />)
       </span>
     ) : (
-        citizenship
-      );
+      citizenship
+    );
   });
 
 const getBorrowerCivilStatusAndDate = borrower => {

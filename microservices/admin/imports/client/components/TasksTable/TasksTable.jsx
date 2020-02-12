@@ -7,6 +7,23 @@ import TaskModifier from './TaskModifier';
 import TaskTableFilters from './TaskTableFilters';
 import TasksTablePriority from './TasksTablePriority';
 
+export const taskTableFragment = {
+  assigneeLink: 1,
+  assignee: { name: 1, roles: 1 },
+  createdAt: 1,
+  description: 1,
+  dueAt: 1,
+  lender: { organisation: { name: 1 } },
+  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
+  organisation: { name: 1 },
+  priority: 1,
+  promotion: { name: 1 },
+  status: 1,
+  title: 1,
+  user: { name: 1, roles: 1, organisations: { name: 1 } },
+  isPrivate: 1,
+};
+
 const TasksTable = ({
   children,
   hideIfNoData,

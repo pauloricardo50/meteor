@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -7,8 +6,6 @@ import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 import { loanSetAssignees } from 'core/api/loans/index';
 import LoanAssignees from './LoanAssignees';
-
-type LoanAssigneeManagerProps = {};
 
 const schema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
@@ -44,11 +41,15 @@ const schema = new SimpleSchema({
     type: String,
     uniforms: { placeholder: 'Expliquer la raison de la nouvelle répartition' },
   },
+  updateUserAssignee: {
+    type: Boolean,
+    defaultValue: false,
+    optional: true,
+    uniforms: { label: "Assigner le conseiller principal à l'utilisateur" },
+  },
 });
 
-const LoanAssigneeManager = ({
-  loan: { _id: loanId, assigneeLinks = [] },
-}: LoanAssigneeManagerProps) => (
+const LoanAssigneeManager = ({ loan: { _id: loanId, assigneeLinks = [] } }) => (
   <div>
     <div className="flex center-align">
       <h4 className="mr-8">Répartition des conseillers</h4>
@@ -68,6 +69,7 @@ const LoanAssigneeManager = ({
             loanId,
             assignees: values.assigneeLinks,
             note: values.note,
+            updateUserAssignee: values.updateUserAssignee,
           })
         }
       />

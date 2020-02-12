@@ -1,9 +1,6 @@
-// @flow
 import React from 'react';
 
-type HomePageHeaderDeviceProps = {};
-
-const HomePageHeaderDevice = (props: HomePageHeaderDeviceProps) => (
+const HomePageHeaderDevice = props => (
   <div className="marvel-device iphone-x">
     <div className="notch">
       <div className="camera" />

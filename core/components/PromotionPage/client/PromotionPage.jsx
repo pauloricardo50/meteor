@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -9,9 +8,7 @@ import PromotionPageContent from './PromotionPageContent';
 import PromotionMetadataContext from './PromotionMetadata';
 
 const shouldDisplayFilesTab = documents =>
-  documents &&
-  ((documents.promotionDocuments && documents.promotionDocuments.length > 0) ||
-    (documents.proDocuments && documents.proDocuments.length > 0));
+  documents?.promotionDocuments?.length;
 
 const getTabs = ({
   permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
@@ -47,9 +44,7 @@ const getTabs = ({
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));
 
-type PromotionPageProps = {};
-
-const PromotionPage = ({ promotion, route, ...props }: PromotionPageProps) => {
+const PromotionPage = ({ promotion, route, ...props }) => {
   const { name } = promotion;
   const { permissions } = useContext(PromotionMetadataContext);
   const tabs = getTabs({ permissions, promotion });

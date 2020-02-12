@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 
@@ -6,8 +5,6 @@ import T from '../../Translation';
 import ConstructionTimeline, {
   ConstructionTimelineItem,
 } from '../../ConstructionTimeline';
-
-type PromotionTimelineProps = {};
 
 const getMonthDelta = count => `+${count} mois`;
 
@@ -68,10 +65,7 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
   );
 };
 
-const PromotionTimeline = ({
-  constructionTimeline,
-  signingDate,
-}: PromotionTimelineProps) => {
+const PromotionTimeline = ({ constructionTimeline, signingDate }) => {
   const columns = [
     {
       Header: () => (

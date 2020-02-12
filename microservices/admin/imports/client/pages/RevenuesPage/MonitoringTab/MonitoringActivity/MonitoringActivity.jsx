@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
@@ -23,7 +22,7 @@ const statuses = LOAN_STATUS_ORDER.slice(1);
 
 const getColumnOptions = ({ hasCreatedAtRange }) =>
   [
-    { id: 'assignee', label: 'Conseiller' },
+    { id: 'assignee', label: 'Conseiller principal' },
     { id: 'loanCount', label: 'Nb. de dossiers distincts' },
     hasCreatedAtRange && {
       id: 'lead',

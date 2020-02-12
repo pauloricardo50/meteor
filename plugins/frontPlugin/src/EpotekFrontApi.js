@@ -1,3 +1,5 @@
+import { HTTP_STATUS_CODES } from '../../../core/api/RESTAPI/server/restApiConstants';
+
 const { Front } = window;
 
 class EpotekFrontApi {
@@ -27,7 +29,20 @@ class EpotekFrontApi {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
-    }).then(result => result.json());
+    })
+      .then(result => result.json())
+      .then(result => {
+        const { status, message, errorName } = result;
+        if (
+          status &&
+          typeof status === 'number' &&
+          status !== HTTP_STATUS_CODES.OK
+        ) {
+          throw new Error(errorName, message);
+        }
+
+        return result;
+      });
   }
 
   query(collectionName, query) {

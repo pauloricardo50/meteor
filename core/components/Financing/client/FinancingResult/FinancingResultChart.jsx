@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose } from 'recompose';
 import cx from 'classnames';
@@ -13,12 +12,7 @@ import {
   getInterests,
 } from './financingResultHelpers';
 
-type FinancingResultChartProps = {};
-
-const FinancingResultChart = ({
-  className,
-  ...props
-}: FinancingResultChartProps) => {
+const FinancingResultChart = ({ className, ...props }) => {
   const interests = getInterests(props);
   const amortization = getAmortization(props);
   const propertyExpenses = getPropertyExpenses(props);

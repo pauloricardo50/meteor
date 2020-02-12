@@ -1,4 +1,3 @@
-// @flow
 
 // Map loan onto FinanceCalculator
 

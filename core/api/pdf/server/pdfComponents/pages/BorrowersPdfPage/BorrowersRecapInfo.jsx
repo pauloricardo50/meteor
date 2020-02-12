@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
@@ -7,8 +6,6 @@ import T from 'core/components/Translation';
 import PdfTable from '../../PdfTable';
 import { getBorrowersInfos, shouldRenderArray } from './borrowersRecapHelpers';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
-
-type BorrowersRecapInfoProps = {};
 
 const getBorrowersInfosArray = ({ borrowers, calculator }) => {
   const borrowersInfos = getBorrowersInfos(borrowers, calculator);
@@ -85,16 +82,16 @@ const BorrowersRecapInfo = ({
   borrowers,
   calculator,
   twoBorrowers,
-}: BorrowersRecapInfoProps) => (
-    <PdfTable
-      className={cx('borrowers-recap info', { twoBorrowers })}
-      rows={getBorrowersInfosArray({ borrowers, anonymous, calculator })}
-      columnOptions={[
-        {},
-        { style: { textAlign: 'right' } },
-        { style: { textAlign: 'right' } },
-      ]}
-    />
-  );
+}) => (
+  <PdfTable
+    className={cx('borrowers-recap info', { twoBorrowers })}
+    rows={getBorrowersInfosArray({ borrowers, anonymous, calculator })}
+    columnOptions={[
+      {},
+      { style: { textAlign: 'right' } },
+      { style: { textAlign: 'right' } },
+    ]}
+  />
+);
 
 export default BorrowersRecapInfo;

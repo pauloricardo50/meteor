@@ -1,9 +1,4 @@
-// @flow
 import React from 'react';
-
-type PromotionLogosProps = {
-  logoUrls: Array,
-};
 
 // This component expects to be put inside a tbody:
 
@@ -19,7 +14,7 @@ type PromotionLogosProps = {
     <tbody mc:edit="logos" />
   </table>; */
 
-const PromotionLogos = ({ logoUrls }: PromotionLogosProps) => (
+const PromotionLogos = ({ logoUrls }) => (
   <>
     {logoUrls.map((url, index) => (
       <tr key={url}>

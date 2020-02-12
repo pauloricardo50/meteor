@@ -1,4 +1,4 @@
-let defaults = {};
+const defaults = {};
 
 export default defaults;
 

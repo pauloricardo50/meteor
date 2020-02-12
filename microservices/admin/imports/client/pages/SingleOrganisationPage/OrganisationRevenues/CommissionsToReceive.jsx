@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 
 import T from 'core/components/Translation';
@@ -7,11 +6,9 @@ import { REVENUE_STATUS } from 'core/api/constants';
 import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
 import CommissionsToReceiveContainer from './CommissionsToReceiveContainer';
 
-type CommissionsToReceiveProps = {};
-
 const WrappedRevenuesTable = CommissionsToReceiveContainer(RevenuesTable);
 
-const CommissionsToReceive = (props: CommissionsToReceiveProps) => {
+const CommissionsToReceive = props => {
   const { _id: organisationId } = props;
   const [status, setStatus] = useState({ $in: [REVENUE_STATUS.EXPECTED] });
   const options = Object.values(REVENUE_STATUS).map(s => ({

@@ -1,19 +1,15 @@
-// @flow
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { adminRevenues } from 'core/api/revenues/queries';
-import { REVENUE_STATUS } from 'core/api/constants';
+import { REVENUE_STATUS, REVENUES_COLLECTION } from 'core/api/constants';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import CurrentUserContext from 'core/containers/CurrentUserContext';
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
-type OutdatedRevenuesProps = {};
-
-const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
+const OutdatedRevenues = ({ revenues }) => {
   const currentUser = useContext(CurrentUserContext);
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(
@@ -48,11 +44,14 @@ const OutdatedRevenues = ({ revenues }: OutdatedRevenuesProps) => {
 };
 
 export default withSmartQuery({
-  query: adminRevenues,
+  query: REVENUES_COLLECTION,
   params: {
-    status: REVENUE_STATUS.EXPECTED,
-    expectedAt: { $lte: new Date() },
-    $body: { amount: 1, assigneeLink: 1 },
+    $filters: {
+      status: REVENUE_STATUS.EXPECTED,
+      expectedAt: { $lte: new Date() },
+    },
+    amount: 1,
+    assigneeLink: 1,
   },
   dataName: 'revenues',
 })(OutdatedRevenues);

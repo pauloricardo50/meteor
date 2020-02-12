@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { getUserDisplayName } from '../../utils/userFunctions';

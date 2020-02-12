@@ -19,6 +19,7 @@
     },
     "google_maps_key": "AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8",
     "subdomains": {
+      "api": "https://api.dev.e-potek.ch",
       "admin": "https://admin.dev.e-potek.ch",
       "app": "https://app.dev.e-potek.ch",
       "pro": "https://pro.dev.e-potek.ch",

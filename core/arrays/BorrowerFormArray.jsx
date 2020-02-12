@@ -341,31 +341,31 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
           Component: ({
             inputProps: { currentValue, label, itemValue = {} },
           }) => (
-              <div className="flex-col" style={{ paddingLeft: 12 }}>
-                <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
-                  {label}
-                </label>
-                <b>
-                  <Money
-                    id="theoreticalExpenses"
-                    value={
-                      currentValue || Calculator.getRealEstateCost(itemValue)
-                    }
-                    tooltip={
-                      currentValue ? (
-                        undefined
-                      ) : (
-                          <T id="Forms.theoreticalExpenses.tooltip" />
-                        )
-                    }
-                  />
-                  <span>
-                    &nbsp;/
+            <div className="flex-col" style={{ paddingLeft: 12 }}>
+              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                {label}
+              </label>
+              <b>
+                <Money
+                  id="theoreticalExpenses"
+                  value={
+                    currentValue || Calculator.getRealEstateCost(itemValue)
+                  }
+                  tooltip={
+                    currentValue ? (
+                      undefined
+                    ) : (
+                      <T id="Forms.theoreticalExpenses.tooltip" />
+                    )
+                  }
+                />
+                <span>
+                  &nbsp;/
                   <T id="general.month" />
-                  </span>
-                </b>
-              </div>
-            ),
+                </span>
+              </b>
+            </div>
+          ),
         },
       ],
     },

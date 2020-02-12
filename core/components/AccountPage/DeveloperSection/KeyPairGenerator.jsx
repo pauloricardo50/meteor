@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 
@@ -6,17 +5,7 @@ import Button from 'core/components/Button';
 import { generateApiKeyPair } from 'core/api';
 import T from 'core/components/Translation';
 
-type KeyPairGeneratorProps = {
-  loading: boolean,
-  generateKeyPair: Function,
-  keyPair: Object,
-};
-
-const KeyPairGenerator = ({
-  loading,
-  generateKeyPair,
-  keyPair = {},
-}: KeyPairGeneratorProps) => (
+const KeyPairGenerator = ({ loading, generateKeyPair, keyPair = {} }) => (
   <Button
     onClick={generateKeyPair}
     loading={loading}

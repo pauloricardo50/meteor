@@ -1,9 +1,9 @@
 import moment from 'moment';
 
+import { userSession } from 'core/api/fragments';
 import Sessions from '../sessions';
 import CollectionService from '../../helpers/CollectionService';
 import UserService from '../../users/server/UserService';
-import { userSession } from 'core/api/fragments';
 
 class SessionService extends CollectionService {
   constructor() {

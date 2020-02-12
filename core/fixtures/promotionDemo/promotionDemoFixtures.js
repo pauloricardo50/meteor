@@ -5,6 +5,7 @@ import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
+import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import LoanService from '../../api/loans/server/LoanService';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';
@@ -17,6 +18,7 @@ import {
   PROMOTION_STATUS,
   ROLES,
   PROMOTION_USERS_ROLES,
+  ORGANISATION_TYPES,
 } from '../../api/constants';
 import { properties } from './data';
 import { addUser } from '../userFixtures';
@@ -161,10 +163,25 @@ const addPromotionPros = ({ promotionId }) => {
     { email: 'notary1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.NOTARY] },
   ];
 
+  const org1 = OrganisationService.insert({
+    name: 'Promo org 1',
+    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+  });
+  const org2 = OrganisationService.insert({
+    name: 'Promo org 2',
+    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+  });
+
   return users.map(({ email, roles }) => {
     const userId = addUser({ email, role: ROLES.PRO });
     PromotionService.addProUser({ promotionId, userId });
     PromotionService.updateUserRoles({ promotionId, userId, roles });
+    UserService.updateOrganisations({
+      userId,
+      newOrganisations: [
+        { _id: email.includes('1') ? org1 : org2, metadata: { isMain: true } },
+      ],
+    });
     return userId;
   });
 };

@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
@@ -20,8 +19,6 @@ import Dialog from '../../../Material/Dialog';
 import PromotionAdministrationContainer from './PromotionAdministrationContainer';
 import PromotionLoanLinker from '../PromotionLoanLinker';
 
-type PromotionAdministrationProps = {};
-
 const PromotionAdministration = ({
   promotion,
   options,
@@ -32,8 +29,10 @@ const PromotionAdministration = ({
   setOpenProInvitationModal,
   openLinkLoanModal,
   setOpenLinkLoanModal,
-}: PromotionAdministrationProps) => {
+  permissions = {},
+}) => {
   const currentUser = useContext(CurrentUserContext);
+  const { canManageDocuments } = permissions;
 
   const { _id: promotionId } = promotion;
 
@@ -62,6 +61,7 @@ const PromotionAdministration = ({
           documentArray={promotionDocuments}
           currentUser={currentUser}
           allowRequireByAdmin={false}
+          allowSetRoles={canManageDocuments}
         />
       </Dialog>
 

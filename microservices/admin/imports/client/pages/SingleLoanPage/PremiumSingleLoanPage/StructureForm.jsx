@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import pick from 'lodash/pick';
@@ -7,8 +6,6 @@ import merge from 'lodash/merge';
 import { structureSchema } from 'core/api/loans/schemas/StructureSchema';
 import AutoForm from 'core/components/AutoForm2';
 import { updateStructure } from 'imports/core/api/methods/index';
-
-type StructureFormProps = {};
 
 const schema = new SimpleSchema(
   merge(
@@ -37,7 +34,7 @@ const schema = new SimpleSchema(
   ),
 );
 
-const StructureForm = ({ loan }: StructureFormProps) => {
+const StructureForm = ({ loan }) => {
   const { structure, _id, selectedStructure, borrowers } = loan;
   return (
     <div>

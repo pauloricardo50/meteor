@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -8,9 +7,7 @@ import { withProps } from 'recompose';
 import { taskInsert } from 'core/api/tasks/index';
 import { schema, taskFormLayout } from './TaskModifier';
 
-type TaskAdderProps = {};
-
-const TaskAdder = ({ insertTask, label = 'Ajouter tâche' }: TaskAdderProps) => (
+const TaskAdder = ({ insertTask, label = 'Ajouter tâche' }) => (
   <AutoFormDialog
     schema={schema.omit('status')}
     model={{ assigneeLink: { _id: Meteor.userId() } }}

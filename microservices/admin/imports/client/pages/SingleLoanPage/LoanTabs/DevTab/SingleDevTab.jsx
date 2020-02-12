@@ -1,16 +1,8 @@
-// @flow
 import React from 'react';
 import AutoForm from 'core/components/AutoForm2';
 import UpdateForm from './UpdateForm';
 
-type SingleDevTabProps = {};
-
-const SingleDevTab = ({
-  doc,
-  schema,
-  onSubmit,
-  collection,
-}: SingleDevTabProps) => (
+const SingleDevTab = ({ doc, schema, onSubmit, collection }) => (
   <div>
     <h1>
       _id:

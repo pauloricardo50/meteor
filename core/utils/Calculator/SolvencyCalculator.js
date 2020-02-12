@@ -1,5 +1,7 @@
-// @flow
-import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../config/financeConstants';
+import {
+  OWN_FUNDS_ROUNDING_AMOUNT,
+  MIN_INSURANCE2_WITHDRAW,
+} from '../../config/financeConstants';
 import {
   OWN_FUNDS_TYPES,
   RESIDENCE_TYPE,
@@ -49,13 +51,21 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     makeOwnFunds({ borrowers, type, usageType, max }) {
       return arrayify(borrowers)
         .map(borrower => {
+          const availableFunds = this.getFunds({ borrowers: borrower, type });
           const ownFundsObject = {
             type,
-            value: Math.ceil(
-              Math.min(max, this.getFunds({ borrowers: borrower, type })),
-            ),
+            value: Math.ceil(Math.min(max, availableFunds)),
             borrowerId: borrower._id,
           };
+
+          // Make sure we never suggest the usage of insurance2 if the borrower
+          // has less than MIN_INSURANCE2_WITHDRAW
+          if (
+            type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+            availableFunds < MIN_INSURANCE2_WITHDRAW
+          ) {
+            return { value: 0 };
+          }
 
           if (!usageType && this.ownFundTypeRequiresUsageType({ type })) {
             return {
@@ -127,7 +137,91 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         });
       });
 
+      const insurance2Suggestions = ownFunds.filter(
+        ({ type }) => type === OWN_FUNDS_TYPES.INSURANCE_2,
+      );
+
+      // If one of the recommended insurance2 withdrawals is too low, try to increase
+      // it by increasing another value
+      if (
+        insurance2Suggestions.length &&
+        insurance2Suggestions.some(
+          ({ value }) => value < MIN_INSURANCE2_WITHDRAW,
+        )
+      ) {
+        ownFunds = this.adjustInsurance2Withdrawal({ ownFunds });
+      }
+
       return ownFunds;
+    }
+
+    adjustInsurance2Withdrawal({ ownFunds }) {
+      // Reverse ownFunds to start from the last suggested ownFunds,
+      // and progressively increase those if possible.
+      // In getAllowedOwnFundsTypes we use up all the funds in that order
+      // so we're most likely to find available funds in the last ones
+      const newOwnFunds = ownFunds.slice(0).reverse();
+      let insurance2Value = ownFunds.find(
+        ({ type, value }) =>
+          type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+          value < MIN_INSURANCE2_WITHDRAW,
+      );
+
+      const totalWithoutInsurance2 = ownFunds
+        .filter(({ type }) => type !== OWN_FUNDS_TYPES.INSURANCE_2)
+        .reduce((tot, { value: v }) => tot + v, 0);
+
+      while (insurance2Value && insurance2Value.value) {
+        let delta = MIN_INSURANCE2_WITHDRAW - insurance2Value.value;
+        if (totalWithoutInsurance2 < delta) {
+          // There's nothing that can be done to adjust this structure's insurance2,
+          // just break and let this suggestion fail
+          break;
+        }
+
+        newOwnFunds.forEach((ownFund, index) => {
+          const { type, value } = ownFund;
+
+          if (delta <= 0 || type === OWN_FUNDS_TYPES.INSURANCE_2) {
+            // Iterate through all the non-insurance-2 ownFunds until delta is
+            // brought down to 0, i.e. the missing insurance2 has been compensated
+            // by removing other own funds
+            return;
+          }
+
+          const amountToRemove = Math.min(value, delta);
+
+          // Reduce another ownFund
+          newOwnFunds[index] = {
+            ...ownFund,
+            value: value - amountToRemove,
+          };
+
+          delta -= amountToRemove;
+
+          const insurance2Index = newOwnFunds.findIndex(
+            ({ type: t, value: v }) =>
+              t === OWN_FUNDS_TYPES.INSURANCE_2 && v < MIN_INSURANCE2_WITHDRAW,
+          );
+
+          // increase this ownFund
+          newOwnFunds[insurance2Index] = {
+            ...newOwnFunds[insurance2Index],
+            value: newOwnFunds[insurance2Index].value + amountToRemove,
+          };
+        });
+
+        // In the super rare (or even impossible) case where insurance2 of multiple borrowers is
+        // below MIN_INSURANCE2_WITHDRAW
+        insurance2Value = newOwnFunds.find(
+          ({ type, value }) =>
+            type === OWN_FUNDS_TYPES.INSURANCE_2 &&
+            value < MIN_INSURANCE2_WITHDRAW,
+        );
+      }
+
+      // filter out potential ownFund values brought to 0
+      return [...newOwnFunds.reverse()].filter(({ value }) => value > 0);
     }
 
     createLoanObject({

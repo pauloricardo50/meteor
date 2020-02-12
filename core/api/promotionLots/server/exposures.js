@@ -26,13 +26,23 @@ const promotionLotSecurity = ({ _id, userId, promotionId }) => {
   }
 };
 
-const promotionLotFilters = ({ filters, promotionId, status }) => {
+const promotionLotFilters = ({
+  filters,
+  promotionId,
+  status,
+  showAllLots,
+  promotionLotIds,
+}) => {
   if (promotionId) {
     filters.promotionCache = { $elemMatch: { _id: promotionId } };
   }
 
   if (status) {
     filters.status = status;
+  }
+
+  if (showAllLots === false) {
+    filters._id = { $in: promotionLotIds };
   }
 };
 
@@ -43,13 +53,24 @@ exposeQuery({
       promotionLotSecurity({ _id, userId, promotionId });
     },
     embody: body => {
-      body.$filter = ({ filters, params: { promotionId, status } }) => {
-        promotionLotFilters({ filters, promotionId, status });
+      body.$filter = ({
+        filters,
+        params: { promotionId, status, showAllLots, promotionLotIds },
+      }) => {
+        promotionLotFilters({
+          filters,
+          promotionId,
+          status,
+          showAllLots,
+          promotionLotIds,
+        });
       };
     },
     validateParams: {
       promotionId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
+      showAllLots: Match.Maybe(Match.OneOf(Boolean, undefined)),
+      promotionLotIds: Match.Maybe(Match.OneOf(Array, undefined)),
     },
   },
 });

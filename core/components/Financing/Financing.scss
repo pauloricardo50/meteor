@@ -70,7 +70,7 @@ $result-section-negative-offset: -32px;
     justify-content: center;
 
     min-height: $item-height;
-    // Use padding on both sides to allow labels to center properly
+    // Use padding on both sides to allow labels to center properly	
     padding: 8px 0;
   }
 
@@ -86,7 +86,7 @@ $result-section-negative-offset: -32px;
     justify-content: flex-start;
 
     color: $primary;
-    // To match material-ui input size
+    // To match material-ui input size	
 
     font-size: calc((16 / 14) * 1rem);
   }

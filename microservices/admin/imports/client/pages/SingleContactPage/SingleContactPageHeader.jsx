@@ -1,14 +1,9 @@
-// @flow
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import ModifyContactFormDialog from '../ContactsPage/ContactDialogForm/ModifyContactFormDialog';
 
-type SingleContactPageHeaderProps = {
-  contact: Object,
-};
-
-const SingleContactPageHeader = ({ contact }: SingleContactPageHeaderProps) => {
+const SingleContactPageHeader = ({ contact }) => {
   const { name, organisations = [] } = contact;
   return (
     <div className="single-contact-page-header">

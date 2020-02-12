@@ -9,8 +9,8 @@ const writePullDBTmuxinator = ({
   environment,
   sshId,
   toLocalPort = '5501',
-}) => {
-  return writeYAML({
+}) =>
+  writeYAML({
     file: `${__dirname}/ssh-tunnel-${sshId}.yml`,
     data: {
       name: `restore-db-${sshId}`,
@@ -52,11 +52,8 @@ const writePullDBTmuxinator = ({
       ],
     },
   });
-};
 
 const main = () =>
-  openSSHTunnel().then(credentials => {
-    return writePullDBTmuxinator(credentials);
-  });
+  openSSHTunnel().then(credentials => writePullDBTmuxinator(credentials));
 
 main();

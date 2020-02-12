@@ -1,10 +1,12 @@
 /* eslint-env mocha */
-import { expect } from 'chai';
-import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
+
+import { expect } from 'chai';
+import sinon from 'sinon';
+
 import { checkEmails } from '../../../../utils/testHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
@@ -16,7 +18,7 @@ import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
 import { proInviteUser } from '../../methodDefinitions';
 
-describe('UserService', function () {
+describe('UserService', function() {
   this.timeout(10000);
 
   const firstName = 'TestFirstName';
@@ -27,7 +29,7 @@ describe('UserService', function () {
     resetDatabase();
 
     user = Factory.create('user', { firstName, lastName });
-    sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => { });
+    sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
   });
 
   afterEach(() => {
@@ -38,7 +40,7 @@ describe('UserService', function () {
     it('creates a user with a USER role by default', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.roles).to.deep.equal([ROLES.USER]);
     });
@@ -46,7 +48,7 @@ describe('UserService', function () {
     it('creates a user with a PRO role', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options, role: ROLES.PRO });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.roles).to.deep.equal([ROLES.PRO]);
     });
@@ -54,7 +56,7 @@ describe('UserService', function () {
     it('uses all options to create the user', () => {
       const options = { email: 'test@test.com', username: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.emails[0].address).to.equal(options.email);
       expect(user.username).to.equal(options.username);
@@ -63,7 +65,7 @@ describe('UserService', function () {
     it('does not set additional stuff', () => {
       const options = { email: 'test@test.com', firstName: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.firstName).to.equal(undefined);
     });
@@ -73,7 +75,7 @@ describe('UserService', function () {
     it('creates a user', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(!!user).to.equal(true);
     });
@@ -81,7 +83,7 @@ describe('UserService', function () {
     it('adds any additional info on options to the user', () => {
       const options = { email: 'test@test.com', firstName: 'Dude' };
       const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.firstName).to.equal(options.firstName);
     });
@@ -116,7 +118,7 @@ describe('UserService', function () {
         role: ROLES.USER,
         adminId,
       });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.assignedEmployeeId).to.equal(adminId);
     });
@@ -129,7 +131,7 @@ describe('UserService', function () {
         role: ROLES.ADMIN,
         adminId,
       });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.assignedEmployeeId).to.equal(undefined);
     });
@@ -142,37 +144,21 @@ describe('UserService', function () {
         role: ROLES.ADMIN,
         adminId,
       });
-      user = UserService.getUserById({ userId });
+      user = UserService.findOne(userId);
 
       expect(user.assignedEmployeeId).to.equal(undefined);
-    });
-  });
-
-  describe('getUserById', () => {
-    it('returns a user', () => {
-      expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
-    });
-
-    it('returns undefined if no user exists', () => {
-      expect(UserService.getUserById({ userId: 'unknownId' })).to.equal(
-        undefined,
-      );
     });
   });
 
   describe('update', () => {
     it('updates a user', () => {
       const newFirstName = 'Joe';
-      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(
-        firstName,
-      );
+      expect(UserService.findOne(user._id).firstName).to.equal(firstName);
       UserService.update({
         userId: user._id,
         object: { firstName: newFirstName },
       });
-      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(
-        newFirstName,
-      );
+      expect(UserService.findOne(user._id).firstName).to.equal(newFirstName);
     });
     it('updates a user: check the sentence case', () => {
       const newFirstName = 'jon';
@@ -180,45 +166,40 @@ describe('UserService', function () {
         userId: user._id,
         object: { firstName: newFirstName },
       });
-      expect(UserService.getUserById({ userId: user._id }).firstName).to.equal(
-        'Jon',
-      );
+      expect(UserService.findOne(user._id).firstName).to.equal('Jon');
     });
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
-      expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
+      expect(UserService.findOne(user._id)).to.deep.equal(user);
     });
 
     it('does not do anything if object empty', () => {
       UserService.update({ userId: user._id, object: {} });
-      expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
+      expect(UserService.findOne(user._id)).to.deep.equal(user);
     });
   });
 
   describe('toggle account', () => {
-    it('toggle account', () => {
-      UserService.toggleAccount({
-        userId: user._id,
-      });
-      expect(
-        UserService.getUserById({ userId: user._id }).isDisabled,
-      ).to.not.equal(user.isDisabled);
-    });
-    it('Throw error if userId is not defined', () => {
-      expect(() => UserService.toggleAccount({})).to.throw('Valeur invalide');
-    });
-    it('Throw error if user not found', () => {
-      expect(() =>
-        UserService.toggleAccount({ userId: 'yqweuqwheiqweqiwei' }),
-      ).to.throw('Utilisateur non trouvé');
+    it('toggles the account', () => {
+      UserService.toggleAccount({ userId: user._id });
+
+      expect(UserService.findOne(user._id).isDisabled).to.not.equal(
+        user.isDisabled,
+      );
+
+      UserService.toggleAccount({ userId: user._id });
+
+      expect(UserService.findOne(user._id).isDisabled).to.equal(
+        user.isDisabled,
+      );
     });
   });
 
   describe('remove', () => {
     it('removes a user', () => {
-      expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
+      expect(UserService.findOne(user._id)).to.deep.equal(user);
       UserService.remove({ userId: user._id });
-      expect(UserService.getUserById({ userId: user._id })).to.equal(undefined);
+      expect(UserService.findOne(user._id)).to.equal(undefined);
     });
 
     it('autoremoves all loans, properties and borrowers', () => {
@@ -229,7 +210,7 @@ describe('UserService', function () {
       Factory.create('property', { userId: user._id });
       Factory.create('property', { userId: user._id });
       UserService.remove({ userId: user._id });
-      expect(UserService.getUserById({ userId: user._id })).to.equal(undefined);
+      expect(UserService.findOne(user._id)).to.equal(undefined);
       expect(LoanService.countAll()).to.equal(0);
       expect(BorrowerService.countAll()).to.equal(0);
       expect(PropertyService.countAll()).to.equal(0);
@@ -280,51 +261,33 @@ describe('UserService', function () {
   describe('assignAdminToUser', () => {
     it('assigns an admin to a user', () => {
       const adminId = 'my dude';
-      expect(
-        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
-      ).to.equal(undefined);
+      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
+        undefined,
+      );
       UserService.assignAdminToUser({ userId: user._id, adminId });
-      expect(
-        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
-      ).to.equal(adminId);
+      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
+        adminId,
+      );
     });
 
     it('does not fail if adminId is undefined', () => {
       const adminId = undefined;
-      expect(
-        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
-      ).to.equal(undefined);
+      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
+        undefined,
+      );
       UserService.assignAdminToUser({ userId: user._id, adminId });
-      expect(
-        UserService.getUserById({ userId: user._id }).assignedEmployeeId,
-      ).to.equal(adminId);
-    });
-  });
-
-  describe('getUsersByRole', () => {
-    it('gets all users for a role', () => {
-      Factory.create('admin', { firstName, lastName });
-      Factory.create('admin', { firstName, lastName });
-      Factory.create('dev', { firstName, lastName });
-      Factory.create('dev', { firstName, lastName });
-      Factory.create('dev', { firstName, lastName });
-
-      expect(UserService.getUsersByRole(ROLES.USER).length).to.equal(1);
-      expect(UserService.getUsersByRole(ROLES.ADMIN).length).to.equal(2);
-      expect(UserService.getUsersByRole(ROLES.DEV).length).to.equal(3);
+      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
+        adminId,
+      );
     });
   });
 
   describe('setRole', () => {
     it('changes the role of a user', () => {
       const newRole = ROLES.DEV;
-      expect(
-        UserService.getUserById({ userId: user._id }).roles,
-      ).to.deep.equal([ROLES.USER]);
+      expect(UserService.findOne(user._id).roles).to.deep.equal([ROLES.USER]);
       UserService.setRole({ userId: user._id, role: newRole });
-      expect(
-        UserService.getUserById({ userId: user._id }).roles,
-      ).to.deep.equal([newRole]);
+      expect(UserService.findOne(user._id).roles).to.deep.equal([newRole]);
     });
 
     it('throws if an unauthorized role is set', () => {
@@ -341,9 +304,7 @@ describe('UserService', function () {
 
     beforeEach(() => {
       email = 'yep@yop.com';
-      Factory.create('user', {
-        emails: [{ address: email, verified: false }],
-      });
+      Factory.create('user', { emails: [{ address: email, verified: false }] });
     });
 
     it('finds an existing user', () => {
@@ -372,9 +333,7 @@ describe('UserService', function () {
     it('returns a user if found', () => {
       const token = 'testToken';
       const userId = UserService.testCreateUser({
-        user: {
-          services: { password: { reset: { token } } },
-        },
+        user: { services: { password: { reset: { token } } } },
       });
       expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(
         true,
@@ -385,9 +344,7 @@ describe('UserService', function () {
       it('returns a user if found', () => {
         const token = 'testToken';
         UserService.testCreateUser({
-          user: {
-            services: { password: { reset: { token } } },
-          },
+          user: { services: { password: { reset: { token } } } },
         });
         expect(!!UserService.getUserByPasswordResetToken({ token })).to.equal(
           true,
@@ -424,8 +381,7 @@ describe('UserService', function () {
     it('returns undefined if no user is found', () => {
       expect(
         !!UserService.getUserByPasswordResetToken({
-          token: 'some unknown token',
-        }),
+          token: 'some unknown token',}),
       ).to.equal(false);
     });
   });
@@ -695,7 +651,10 @@ describe('UserService', function () {
       );
 
       const userCreated = UserService.getByEmail(userToInvite.email);
-      const loan = LoanService.get({ userId: userCreated._id }, { propertyIds: 1 });
+      const loan = LoanService.get(
+        { userId: userCreated._id },
+        { propertyIds: 1 },
+      );
 
       expect(userCreated.assignedEmployeeId).to.equal('adminId');
       expect(userCreated.referredByUserLink).to.equal('proId');
@@ -744,7 +703,10 @@ describe('UserService', function () {
         proUserId: 'proId',
       }).then(() => {
         const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.get({ userId: userCreated._id }, { propertyIds: 1 });
+        const loan = LoanService.get(
+          { userId: userCreated._id },
+          { propertyIds: 1 },
+        );
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
         expect(userCreated.referredByUserLink).to.equal('proId');

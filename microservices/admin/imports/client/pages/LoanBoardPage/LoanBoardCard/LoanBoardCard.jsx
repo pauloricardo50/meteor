@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 
 import { Meteor } from 'meteor/meteor';
@@ -6,15 +5,9 @@ import LoanBoardCardTop from './LoanBoardCardTop';
 import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardDescription from './LoanBoardCardDescription';
 import LoanBoardCardBottom from './LoanBoardCardBottom';
+import LoanBoardCardAdditionalInfo from './LoanBoardCardAdditionalInfo';
 
-type LoanBoardCardProps = {};
-
-const LoanBoardCard = ({
-  data: loan,
-  setLoanId,
-  style,
-  admins,
-}: LoanBoardCardProps) => {
+const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
   const [renderComplex, setRenderComplex] = useState(false);
   const {
     _id: loanId,
@@ -41,11 +34,7 @@ const LoanBoardCard = ({
       onMouseLeave={() => setRenderComplex(false)}
     >
       <div className="card-header">
-        <LoanBoardCardTop
-          admins={admins}
-          renderComplex={renderComplex}
-          loan={loan}
-        />
+        <LoanBoardCardTop renderComplex={renderComplex} loan={loan} />
       </div>
 
       <div className="card-top">
@@ -61,6 +50,10 @@ const LoanBoardCard = ({
             ({ isPrivate = false, assigneeLink: { _id: assigneeId } = {} }) =>
               isPrivate && assigneeId ? assigneeId === Meteor.userId() : true,
           )}
+        />
+        <LoanBoardCardAdditionalInfo
+          loan={loan}
+          additionalFields={additionalFields}
         />
       </div>
 

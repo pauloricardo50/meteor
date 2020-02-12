@@ -1,14 +1,6 @@
-// @flow
 
 import React, { Component } from 'react';
 import cx from 'classnames';
-
-type TimelineProps = {
-  variant?: String,
-  events: Array<Object>,
-  className?: string,
-  id: string,
-};
 
 const makeFormatEvent = variant => (
   { complete = false, mainLabel = '', secondaryLabel, children },
@@ -48,7 +40,7 @@ const getLongestSecondaryLabelLength = id => {
   return Math.max(...widths);
 };
 
-class Timeline extends Component<TimelineProps> {
+class Timeline extends Component {
   componentDidMount() {
     this.setPadding();
   }

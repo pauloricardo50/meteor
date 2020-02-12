@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 
 import Input from '../Material/Input';
 import { numberFormatters } from '../../utils/formHelpers';
 
-type NumberInputProps = {};
-
-const NumberInput = ({ onChange, value, ...props }: NumberInputProps) => (
+const NumberInput = ({ onChange, value, ...props }) => (
   <Input
     onChange={event => {
       onChange(numberFormatters.parse(event.target.value));

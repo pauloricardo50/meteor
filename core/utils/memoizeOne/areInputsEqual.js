@@ -1,12 +1,8 @@
-// @flow
 
 const inputHasChanged = (next, prev) =>
   next.some((newInput, index) => newInput !== prev[index]);
 
-export default function areInputsEqual(
-  newInputs: mixed[],
-  lastInputs: mixed[],
-) {
+export default function areInputsEqual(newInputs, lastInputs) {
   // no checks needed if the inputs length has changed
   if (newInputs.length !== lastInputs.length) {
     return false;

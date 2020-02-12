@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 import cx from 'classnames';
@@ -7,8 +6,6 @@ import StickyPopover from 'core/components/StickyPopover';
 import Timeline from 'core/components/Timeline';
 import { TASK_STATUS } from 'imports/core/api/constants';
 import LoanBoardCardTask from './LoanBoardCardTask';
-
-type LoanBoardCardTasksProps = {};
 
 const sortTasks = ({ dueAt: dueA }, { dueAt: dueB }) => {
   if (!dueA) {
@@ -21,11 +18,7 @@ const sortTasks = ({ dueAt: dueA }, { dueAt: dueB }) => {
   return dueA - dueB;
 };
 
-const LoanBoardCardTasks = ({
-  nextDueTask,
-  tasks,
-  renderComplex,
-}: LoanBoardCardTasksProps) => {
+const LoanBoardCardTasks = ({ nextDueTask, tasks, renderComplex }) => {
   if (!nextDueTask._id) {
     return null;
   }

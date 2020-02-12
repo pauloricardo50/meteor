@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
@@ -14,15 +13,9 @@ import PromotionReservationDetail from '../../../PromotionReservations/Promotion
 import PromotionReservationProgress from '../../../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
-type PromotionLotReservationProps = {};
-
 const isAdmin = Meteor.microservice === 'admin';
 
-const PromotionLotReservation = ({
-  loan,
-  promotion,
-  promotionOption,
-}: PromotionLotReservationProps) => {
+const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
   const currentUser = useContext(CurrentUserContext);
   const { status, promotionLots } = promotionOption;
   const { users = [] } = promotion;

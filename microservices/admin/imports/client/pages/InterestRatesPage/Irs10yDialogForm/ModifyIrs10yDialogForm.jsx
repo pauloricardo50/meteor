@@ -1,19 +1,8 @@
-// @flow
 import React from 'react';
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import Irs10yDialogFormContainer from './Irs10yDialogFormContainer';
-
-type ModifyIrs10yDialogFormProps = {
-  schema: Object,
-  modifyIrs10y: Function,
-  removeIrs10y: Function,
-  open: boolean,
-  setOpen: Function,
-  irs10yToModify: Object,
-  submitting: boolean,
-};
 
 const ModifyIrs10ytRatesDialogForm = ({
   schema,
@@ -23,7 +12,7 @@ const ModifyIrs10ytRatesDialogForm = ({
   setOpen,
   irs10yToModify,
   submitting,
-}: ModifyIrs10yDialogFormProps) => (
+}) => (
   <AutoFormDialog
     noButton
     schema={schema}

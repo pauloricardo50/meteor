@@ -1,4 +1,3 @@
-// @flow
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
@@ -19,7 +18,7 @@ import {
 import makeSkipContainer from './skipContainer';
 
 // render the missing doc component only when we want to
-const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
+const makeRenderMissingDocIfNoData = (render = false, { single }) => {
   let renderFunc;
   if (typeof render === 'function') {
     renderFunc = props =>
@@ -84,15 +83,6 @@ const withGlobalQueryManager = (
   });
 };
 
-type withSmartQueryArgs = {
-  query: () => mixed,
-  params: (props: Object) => Object,
-  queryOptions?: { single: boolean },
-  dataName?: string,
-  renderMissingDoc?: boolean | Function,
-  smallLoader?: boolean,
-};
-
 const calculateParams = (params, props) => {
   if (typeof params === 'function') {
     return params(props);
@@ -110,7 +100,7 @@ const withSmartQuery = ({
   smallLoader = false,
   refetchOnMethodCall = 'all',
   skip,
-}: withSmartQueryArgs) => {
+}) => {
   let completeQuery;
 
   if (typeof query === 'function') {

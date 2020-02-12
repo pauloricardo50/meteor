@@ -1,4 +1,3 @@
-// @flow
 import queryString from 'query-string';
 
 const formatReplacerObject = replacers =>
@@ -11,10 +10,10 @@ const formatReplacerObject = replacers =>
   );
 
 export const createRoute = (
-  wildcardPath: string,
-  replacers: { [string]: string } = {},
+  wildcardPath,
+  replacers = {},
   searchParams = {},
-): string => {
+) => {
   if (!replacers) {
     return wildcardPath;
   }

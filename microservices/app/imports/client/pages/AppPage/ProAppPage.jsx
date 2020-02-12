@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -11,9 +10,7 @@ import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 import { DASHBOARD_PAGE } from '../../../startup/client/appRoutes';
 
-type ProAppPageProps = {};
-
-const ProAppPage = ({ loans, history, insertLoan }: ProAppPageProps) => (
+const ProAppPage = ({ loans, history, insertLoan }) => (
   <div className="flex center space-children">
     <div className="card1 card-top flex-col center" style={{ padding: 40 }}>
       <FontAwesomeIcon

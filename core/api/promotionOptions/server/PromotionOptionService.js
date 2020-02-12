@@ -27,14 +27,14 @@ export class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function () {
+        'reservationAgreement.startDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .startOf('day')
               .toDate();
           }
         },
-        'reservationAgreement.expirationDate': function () {
+        'reservationAgreement.expirationDate': function() {
           if (this.isSet && this.value) {
             return moment(this.value)
               .endOf('day')
@@ -512,10 +512,8 @@ export class PromotionOptionService extends CollectionService {
   getEmailRecipients({ promotionOptionId }) {
     const promotionOption = this.get(promotionOptionId, {
       loan: {
-        user: {
-          email: 1,
-          assignedEmployee: { email: 1 },
-        },
+        user: { email: 1 },
+        mainAssignee: 1,
         promotions: { _id: 1 },
       },
       promotion: { users: { email: 1 } },
@@ -525,11 +523,8 @@ export class PromotionOptionService extends CollectionService {
     const {
       loan: {
         _id: loanId,
-        user: {
-          _id: customerId,
-          email: userEmail,
-          assignedEmployee: { email: adminEmail, _id: adminId } = {},
-        },
+        user: { _id: customerId, email: userEmail },
+        mainAssignee: { email: adminEmail, _id: adminId } = {},
         promotions = [],
       },
       promotion: { _id: promotionId, users: promotionUsers = [] },

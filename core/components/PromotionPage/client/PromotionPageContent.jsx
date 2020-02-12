@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { createRoute } from '../../../utils/routerUtils';
@@ -42,13 +41,7 @@ const getRoutes = ({ tabs, route, props }) => {
   ];
 };
 
-type PromotionPageContentProps = {};
-
-const PromotionPageContent = ({
-  route,
-  tabs,
-  ...props
-}: PromotionPageContentProps) => (
+const PromotionPageContent = ({ route, tabs, ...props }) => (
   <Switch>{getRoutes({ tabs, route, props })}</Switch>
 );
 export default PromotionPageContent;

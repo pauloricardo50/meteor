@@ -1,14 +1,8 @@
-// @flow
 import React from 'react';
 
 import LenderListItemRules from 'core/components/Financing/client/FinancingLenders/LenderList/LenderListItemRules';
 
-type LenderPickerOrganisationRulesProps = {};
-
-const LenderPickerOrganisationRules = ({
-  organisation,
-  loan,
-}: LenderPickerOrganisationRulesProps) => {
+const LenderPickerOrganisationRules = ({ organisation, loan }) => {
   const { lenderRules } = organisation;
   if (!lenderRules || !lenderRules.length) {
     return null;

@@ -1,10 +1,7 @@
-// @flow
 import React from 'react';
 import moment from 'moment';
 
-type GoogleDriveListProps = {};
-
-const GoogleDriveList = ({ files }: GoogleDriveListProps) => (
+const GoogleDriveList = ({ files }) => (
   <div className="google-drive-list">
     {files
       .map(({ id, name, webViewLink, createdTime, modifiedTime, iconLink }) => (

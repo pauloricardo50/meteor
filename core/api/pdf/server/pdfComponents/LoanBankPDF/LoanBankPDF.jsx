@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { Calculator } from '../../../../../utils/Calculator';
@@ -11,13 +10,6 @@ import BorrowersPdfPage from '../pages/BorrowersPdfPage';
 import stylesheet from './stylesheet';
 import LoanBankCover from './LoanBankCover';
 import StructureAppendixPdfPage from '../pages/StructureAppendixPdfPage/StructureAppendixPdfPage';
-
-type LoanBankPDFProps = {
-  loan: Object,
-  organisation?: Object,
-  options?: Object,
-  pdfName: String,
-};
 
 const getPages = ({
   loan,
@@ -87,7 +79,7 @@ const getPages = ({
   ].filter(x => x);
 };
 
-const LoanBankPDF = (props: LoanBankPDFProps) => {
+const LoanBankPDF = props => {
   const { pdfName } = props;
   const pages = getPages(props);
   return <Pdf stylesheet={stylesheet} pages={pages} pdfName={pdfName} />;

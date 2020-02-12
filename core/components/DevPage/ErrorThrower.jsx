@@ -1,13 +1,10 @@
-// @flow
 import React from 'react';
 import { withState } from 'recompose';
 
 import Button from '../Button';
 import { throwDevError } from '../../api';
 
-type ErrorThrowerProps = {};
-
-const ErrorThrower = ({ fuckedUp, fuckShitUp }: ErrorThrowerProps) => (
+const ErrorThrower = ({ fuckedUp, fuckShitUp }) => (
   <div className="error-thrower">
     <span>Client</span>
     <Button raised error onClick={() => fuckShitUp(true)}>

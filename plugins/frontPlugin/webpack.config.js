@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     filename: 'index.js',
     path: path.resolve(
@@ -47,8 +47,8 @@ module.exports = {
         resource.context.split('/frontPlugin')[0]
       }/frontPlugin`;
     }),
-    new webpack.IgnorePlugin(/file-saver/),
-    new webpack.IgnorePlugin(/i18n-iso-countries/),
+    // new webpack.IgnorePlugin(/file-saver/),
+    // new webpack.IgnorePlugin(/i18n-iso-countries/),
   ],
   stats: {
     modulesSort: '!size',

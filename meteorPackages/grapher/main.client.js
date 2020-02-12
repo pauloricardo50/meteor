@@ -4,9 +4,7 @@ import './lib/query/reducers/extension.js';
 
 export { default as createQuery } from './lib/createQuery.js';
 
-export {
-    default as prepareForProcess,
-} from './lib/query/lib/prepareForProcess';
+export { default as prepareForProcess } from './lib/query/lib/prepareForProcess';
 
 export { default as Query } from './lib/query/query.client';
 

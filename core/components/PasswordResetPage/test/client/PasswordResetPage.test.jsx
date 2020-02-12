@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { Random } from 'meteor/random';
 

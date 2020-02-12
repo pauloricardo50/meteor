@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose, withStateHandlers, withProps } from 'recompose';
 
@@ -8,9 +7,7 @@ import { loanMonitoring } from 'core/api/monitoring/queries';
 import MonitoringFilters from './MonitoringFilters';
 import MonitoringChart from './MonitoringChart';
 
-type LoanMonitoringChartProps = {};
-
-const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
+const LoanMonitoringChart = props => {
   const {
     category,
     status,
@@ -24,7 +21,7 @@ const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
     postProcess = ({ data }) => data,
     admins,
     referringOrganisations,
-    assignedEmployeeId,
+    assigneeLinkId,
     referringOrganisationId,
     revenueType,
     additionalFilters,
@@ -42,7 +39,7 @@ const LoanMonitoringChart = (props: LoanMonitoringChartProps) => {
         filters={filters}
         admins={admins}
         referringOrganisations={referringOrganisations}
-        assignedEmployeeId={assignedEmployeeId}
+        assigneeLinkId={assigneeLinkId}
         referringOrganisationId={referringOrganisationId}
         revenueType={revenueType}
         additionalFilters={additionalFilters}
@@ -65,7 +62,7 @@ export default compose(
       groupBy: initialGroupBy,
       value: initialValue,
       withAnonymous: false,
-      assignedEmployeeId: null,
+      assigneeLinkId: null,
       referringOrganisationId: null,
       revenueType: null,
     }),
@@ -82,7 +79,7 @@ export default compose(
       category,
       status,
       withAnonymous,
-      assignedEmployeeId,
+      assigneeLinkId,
       referringOrganisationId,
       revenueType,
     }) => ({
@@ -92,7 +89,9 @@ export default compose(
         category,
         status,
         anonymous: getAnonymous(withAnonymous),
-        'userCache.assignedEmployeeCache._id': assignedEmployeeId || undefined,
+        assigneeLinks: assigneeLinkId
+          ? { $elemMatch: { _id: assigneeLinkId, isMain: true } }
+          : undefined,
         'userCache.referredByOrganisationLink':
           referringOrganisationId || undefined,
       },

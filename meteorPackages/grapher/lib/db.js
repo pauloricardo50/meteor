@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 const db = new Proxy(
   {},
   {
-    get: function(obj, prop) {
+    get(obj, prop) {
       if (typeof prop === 'symbol') {
         return obj[prop];
       }
@@ -17,7 +17,7 @@ const db = new Proxy(
 
       return collection;
     },
-  }
+  },
 );
 
 export default db;

@@ -1,13 +1,6 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 import { classes, ROW_TYPES } from './PdfTable';
-
-type PdfTableRowProps = {
-  rowData: Object,
-  index: Number,
-  columnOptions: Array,
-};
 
 const multiColumn = (data, style, columnOptions = []) =>
   data.map((x, index) => {
@@ -47,7 +40,7 @@ const PdfTableRow = ({
   },
   index,
   columnOptions = [],
-}: PdfTableRowProps) => {
+}) => {
   if (colspan > 1) {
     const { className: columnClassName = '', style: columnStyle = {} } =
       columnOptions[0] || {};

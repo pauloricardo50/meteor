@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
 

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -8,9 +7,7 @@ import getRefinancingFormArray from 'core/arrays/RefinancingFormArray';
 import PageApp from '../../components/PageApp';
 import RefinancingPageTitle from './RefinancingPageTitle';
 
-type RefinancingPageProps = {};
-
-const RefinancingPage = ({ loan }: RefinancingPageProps) => {
+const RefinancingPage = ({ loan }) => {
   const { userFormsEnabled } = loan;
   return (
     <PageApp id="RefinancingPage" title={<RefinancingPageTitle loan={loan} />}>

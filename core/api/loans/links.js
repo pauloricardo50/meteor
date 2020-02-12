@@ -1,4 +1,3 @@
-// @flow
 
 import Loans from './loans';
 import {

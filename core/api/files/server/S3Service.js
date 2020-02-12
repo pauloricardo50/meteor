@@ -12,6 +12,7 @@ import {
   TEST_BUCKET_NAME,
   S3_ENDPOINT,
   OBJECT_STORAGE_PATH,
+  FILE_ROLES,
 } from '../fileConstants';
 import { PROPERTY_CATEGORY } from '../../constants';
 import FileService from './FileService';
@@ -45,76 +46,6 @@ class S3Service {
   };
 
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
-
-  isAllowedToAccess = ({ userId, key }) => {
-    if (
-      Roles.userIsInRole(userId, 'admin') ||
-      Roles.userIsInRole(userId, 'dev')
-    ) {
-      return true;
-    }
-
-    // Check if this user is the owner of the document
-    const { docId: keyId } = FileService.getKeyParts(key);
-    const loanFound = !!LoanService.get(
-      {
-        _id: keyId,
-        userId,
-      },
-      { _id: 1 },
-    );
-
-    if (loanFound) {
-      return true;
-    }
-
-    const borrowerFound = !!BorrowerService.get(
-      {
-        _id: keyId,
-        userId,
-      },
-      { _id: 1 },
-    );
-
-    if (borrowerFound) {
-      return true;
-    }
-
-    const property = PropertyService.get(keyId, { category: 1, userId: 1 });
-
-    if (property) {
-      if (!property.category || property.category === PROPERTY_CATEGORY.USER) {
-        if (property.userId === userId) {
-          return true;
-        }
-        throw new Meteor.Error('Unauthorized download');
-      }
-
-      return true;
-    }
-
-    const promotionFound = !!PromotionService.get(keyId, { _id: 1 });
-
-    if (promotionFound) {
-      return true;
-    }
-
-    const promotionOption = PromotionOptionService.get(keyId, { _id: 1 });
-
-    if (promotionOption) {
-      try {
-        SecurityService.promotions.isAllowedToManagePromotionReservation({
-          promotionOptionId: promotionOption._id,
-          userId,
-        });
-        return true;
-      } catch (error) {
-        throw new Meteor.Error('Unauthorized download');
-      }
-    }
-
-    throw new Meteor.Error('Unauthorized download');
-  };
 
   putObject = (binaryData, Key, Metadata, ACL = 'bucket-owner-full-control') =>
     this.callS3Method('putObject', {

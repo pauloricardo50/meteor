@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
 import HighchartsExportData from 'highcharts-export-data';
@@ -6,8 +5,6 @@ import HighchartsExportData from 'highcharts-export-data';
 import Chart from 'core/components/charts/Chart';
 import { injectIntl } from 'react-intl';
 import colors from 'core/config/colors';
-
-type MonitoringChartProps = {};
 
 const getX = ({ data, groupBy, f }) => {
   switch (groupBy) {
@@ -79,7 +76,7 @@ const MonitoringChart = ({
   groupBy,
   value,
   intl: { formatMessage: f },
-}: MonitoringChartProps) => {
+}) => {
   const categories = getX({ data, groupBy, f });
   const series = getSeries({ data, value });
 

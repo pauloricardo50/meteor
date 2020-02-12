@@ -31,7 +31,9 @@ const LoanSummary = ({ loan }) => {
   } = loan;
   const loanName = getLoanName({ name, customName });
 
-  const proProperties = properties.filter(({ category }) => category === PROPERTY_CATEGORY.PRO);
+  const proProperties = properties.filter(
+    ({ category }) => category === PROPERTY_CATEGORY.PRO,
+  );
 
   return (
     <Link

@@ -1,10 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { fullUser } from 'core/api/fragments';
-import Users from '../../users';
 import Security from '../../security';
 import SessionService from '../../sessions/server/SessionService';
-import UserService from '../../users/server/UserService'
+import UserService from '../../users/server/UserService';
 
 class ImpersonateService {
   /**
@@ -26,7 +24,7 @@ class ImpersonateService {
     SessionService.setIsImpersonate(connectionId, true);
 
     context.setUserId(userIdToImpersonate);
-    return UserService.get(userIdToImpersonate, fullUser());
+    return UserService.get(userIdToImpersonate, { email: 1 });
   }
 
   _throwNotAuthorized() {

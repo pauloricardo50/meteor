@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 
@@ -12,8 +11,6 @@ import { createRoute } from 'core/utils/routerUtils';
 import pollUntilReady from 'core/utils/pollUntilReady';
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import UserCreator from '../../components/UserCreator/UserCreator';
-
-type SimpleDashboardPageCTAsProps = {};
 
 // On some slow connections/devices, the new UI is not reloaded properly, this forces
 // it to appear
@@ -51,7 +48,7 @@ const SimpleDashboardPageCTAs = ({
   currentUser,
   withReturnToDashboard = true,
   maxPropertyValue,
-}: SimpleDashboardPageCTAsProps) => {
+}) => {
   const highlightNextStep = shouldHighlightNextStep(maxPropertyValue);
   const buttonProps = {
     primary: !highlightNextStep,

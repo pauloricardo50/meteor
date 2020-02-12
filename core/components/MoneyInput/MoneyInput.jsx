@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import MaskedInput from 'react-text-mask';
 
@@ -14,16 +13,6 @@ import {
 } from '../../utils/textMasks';
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 
-type MoneyInputProps = {
-  fullWidth?: boolean,
-  helperText?: React.Node,
-  label?: React.Node,
-  margin?: string,
-  onChange: Function,
-  required?: boolean,
-  value: number,
-};
-
 const MoneyInput = ({
   fullWidth = true,
   helperText,
@@ -34,7 +23,7 @@ const MoneyInput = ({
   decimal = false,
   negative = false,
   ...props
-}: MoneyInputProps) => {
+}) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
   const parse = decimal ? toDecimalNumber : toNumber;
 

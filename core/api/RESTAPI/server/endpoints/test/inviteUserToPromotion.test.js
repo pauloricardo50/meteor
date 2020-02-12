@@ -1,10 +1,8 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 
-import PromotionLotService from 'core/api/promotionLots/server/PromotionLotService';
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
@@ -16,6 +14,8 @@ import {
   makeHeaders,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
+import generator from '../../../../factories/index';
+import { checkEmails } from '../../../../../utils/testHelpers';
 
 let user;
 let promotionId;
@@ -74,10 +74,10 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function () {
+describe('REST: inviteUserToPromotion', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -92,64 +92,73 @@ describe('REST: inviteUserToPromotion', function () {
 
   beforeEach(() => {
     resetDatabase();
-    user = Factory.create('pro');
-    const promotionLotId = Factory.create('promotionLot')._id;
-    promotionId = Factory.create('promotion', {
-      promotionLotLinks: [{ _id: promotionLotId }],
-    })._id;
+    generator({
+      users: { _id: 'pro', _factory: 'pro', organisations: {} },
+      promotions: {
+        _id: 'promotionId',
+        _factory: 'promotion',
+        promotionLots: { _factory: 'promotionLot' },
+      },
+    });
+    user = UserService.findOne('pro');
+    promotionId = 'promotionId';
   });
 
-  it('invites a user to promotion', () => {
+  it('invites a user to promotion', async () => {
     setupPromotion();
 
-    return inviteUser({
+    await inviteUser({
       userData: userToInvite,
       expectedResponse: {
         message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
-    }).then(() => {
-      const invitedUser = UserService.get(
-        { 'emails.address': { $in: [userToInvite.email] } },
-        {
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-        },
-      );
-
-      expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
     });
+
+    const invitedUser = UserService.get(
+      { 'emails.address': { $in: [userToInvite.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      },
+    );
+
+    expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
+
+    await checkEmails(2);
   });
 
-  it('invites a user to promotion with solvency sharing', () => {
+  it('invites a user to promotion with solvency sharing', async () => {
     setupPromotion();
 
-    return inviteUser({
+    await inviteUser({
       userData: userToInvite,
       shareSolvency: true,
       expectedResponse: {
         message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
-    }).then(() => {
-      const invitedUser = UserService.get(
-        { 'emails.address': { $in: [userToInvite.email] } },
-        {
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-        },
-      );
-
-      expect(invitedUser.loans[0].shareSolvency).to.equal(true);
     });
+
+    const invitedUser = UserService.get(
+      { 'emails.address': { $in: [userToInvite.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      },
+    );
+
+    expect(invitedUser.loans[0].shareSolvency).to.equal(true);
+
+    await checkEmails(2);
   });
 
-  it('invites a user to promotion with invitation note', () => {
+  it('invites a user to promotion with invitation note', async () => {
     setupPromotion();
 
-    return inviteUser({
+    await inviteUser({
       userData: userToInvite,
       shareSolvency: true,
       invitationNote: 'testNote',
@@ -157,56 +166,56 @@ describe('REST: inviteUserToPromotion', function () {
         message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
       },
       status: HTTP_STATUS_CODES.OK,
-    })
-      .then(() => {
-        const invitedUser = UserService.get(
-          { 'emails.address': { $in: [userToInvite.email] } },
-          {
-            referredByUserLink: 1,
-            referredByOrganisationLink: 1,
-            loans: { shareSolvency: 1 },
-            tasks: { description: 1 },
-          },
-        );
+    });
 
-        expect(invitedUser.loans[0].shareSolvency).to.equal(true);
+    const invitedUser = UserService.get(
+      { 'emails.address': { $in: [userToInvite.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+        tasks: { description: 1 },
+      },
+    );
 
-        let { tasks = [] } = invitedUser;
-        let intervalCount = 0;
+    expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
-        return new Promise((resolve, reject) => {
-          const interval = Meteor.setInterval(() => {
-            if (tasks.length === 0 && intervalCount < 10) {
-              tasks =
-                UserService.get(
-                  {
-                    'emails.address': { $in: [userToInvite.email] },
-                  },
-                  {
-                    tasks: { description: 1 },
-                  },
-                ).tasks || [];
-              intervalCount++;
-            } else {
-              Meteor.clearInterval(interval);
-              if (intervalCount >= 10) {
-                reject('Fetch tasks timeout');
-              }
-              resolve(tasks);
-            }
-          }, 100);
-        });
-      })
-      .then(tasks => {
-        expect(tasks.length).to.equal(1);
-        expect(tasks[0].description).to.contain('TestFirstName TestLastName');
-        expect(tasks[0].description).to.contain('testNote');
-      });
+    let { tasks = [] } = invitedUser;
+    let intervalCount = 0;
+
+    tasks = await new Promise((resolve, reject) => {
+      const interval = Meteor.setInterval(() => {
+        if (tasks.length === 0 && intervalCount < 10) {
+          tasks =
+            UserService.get(
+              {
+                'emails.address': { $in: [userToInvite.email] },
+              },
+              {
+                tasks: { description: 1 },
+              },
+            ).tasks || [];
+          intervalCount++;
+        } else {
+          Meteor.clearInterval(interval);
+          if (intervalCount >= 10) {
+            reject('Fetch tasks timeout');
+          }
+          resolve(tasks);
+        }
+      }, 100);
+    });
+
+    expect(tasks.length).to.equal(1);
+    expect(tasks[0].description).to.contain('TestFirstName TestLastName');
+    expect(tasks[0].description).to.contain('testNote');
+
+    await checkEmails(2);
   });
 
   context('returns an error when', () => {
-    it('promotion does not exist', () =>
-      inviteUser({
+    it('promotion does not exist', async () => {
+      await inviteUser({
         userData: userToInvite,
         expectedResponse: {
           status: 400,
@@ -214,19 +223,21 @@ describe('REST: inviteUserToPromotion', function () {
             '[Could not find object with filters "{"_id":"12345"}" in collection "promotions"]',
         },
         id: '12345',
-      }));
+      });
+    });
 
-    it('user does not own the promotion', () =>
-      inviteUser({
+    it('user does not own the promotion', async () => {
+      await inviteUser({
         userData: userToInvite,
         expectedResponse: {
           message:
             'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
           status: 400,
         },
-      }));
+      });
+    });
 
-    it('user is not allowed to invite customers to the promotion', () => {
+    it('user is not allowed to invite customers to the promotion', async () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       PromotionService.setUserPermissions({
         promotionId,
@@ -234,7 +245,7 @@ describe('REST: inviteUserToPromotion', function () {
         permissions: { canInviteCustomers: false },
       });
 
-      return inviteUser({
+      await inviteUser({
         userData: userToInvite,
         expectedResponse: {
           status: 400,
@@ -244,7 +255,7 @@ describe('REST: inviteUserToPromotion', function () {
       });
     });
 
-    it('promotion is not open', () => {
+    it('promotion is not open', async () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       PromotionService.setUserPermissions({
         promotionId,
@@ -252,7 +263,7 @@ describe('REST: inviteUserToPromotion', function () {
         permissions: { canInviteCustomers: true },
       });
 
-      return inviteUser({
+      await inviteUser({
         userData: userToInvite,
         status: HTTP_STATUS_CODES.FORBIDDEN,
         expectedResponse: {
@@ -263,13 +274,13 @@ describe('REST: inviteUserToPromotion', function () {
       });
     });
 
-    it('fails if the body is incorrect', () => {
+    it('fails if the body is incorrect', async () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       setupPromotion();
 
       promotionId = undefined;
 
-      return inviteUser({
+      await inviteUser({
         userData: userToInvite,
         expectedResponse: {
           status: 400,
@@ -278,24 +289,24 @@ describe('REST: inviteUserToPromotion', function () {
       });
     });
 
-    it('user is already invited to promotion', () => {
+    it('user is already invited to promotion', async () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       setupPromotion();
 
-      return inviteUser({
+      await inviteUser({
         userData: userToInvite,
         expectedResponse: {
           message: `Successfully invited user "${userToInvite.email}" to promotion id "${promotionId}"`,
         },
-      }).then(() =>
-        inviteUser({
-          userData: userToInvite,
-          expectedResponse: {
-            status: HTTP_STATUS_CODES.CONFLICT,
-            message: 'Ce client est déjà invité à cette promotion [409]',
-          },
-        }),
-      );
+      });
+
+      await inviteUser({
+        userData: userToInvite,
+        expectedResponse: {
+          status: HTTP_STATUS_CODES.CONFLICT,
+          message: 'Ce client est déjà invité à cette promotion [409]',
+        },
+      });
     });
   });
 });

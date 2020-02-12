@@ -1,7 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { migrate } from 'meteor/herteby:denormalize';
 
-import { Organisations, LenderRules, Properties, Loans, Users } from '..';
+import {
+  Organisations,
+  LenderRules,
+  Properties,
+  Loans,
+  Users,
+  Revenues,
+} from '..';
 
 Organisations.cacheCount({
   collection: LenderRules,
@@ -13,6 +20,12 @@ Organisations.cacheCount({
   collection: Users,
   referenceField: 'referredByOrganisationLink',
   cacheField: 'referredUsersCount',
+});
+
+Organisations.cacheCount({
+  collection: Revenues,
+  referenceField: 'sourceOrganisationLink._id',
+  cacheField: 'revenuesCount',
 });
 
 Properties.cacheCount({
@@ -51,4 +64,7 @@ Meteor.startup(() => {
   // migrate('organisations', 'referredUsersCount', {
   //   referredUsersCount: { $exists: false },
   // });
+  migrate('organisations', 'revenuesCount', {
+    revenuesCount: { $exists: false },
+  });
 });

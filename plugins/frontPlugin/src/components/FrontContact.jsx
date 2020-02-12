@@ -25,6 +25,7 @@ const taskFragment = {
 
 const FrontContact = ({ contact }) => {
   const { handle, display_name } = contact;
+  const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [epotekContact, setEpotekContact] = useState();
   const [collection, setCollection] = useState();
@@ -62,13 +63,25 @@ const FrontContact = ({ contact }) => {
         }
       })
       .then(() => setLoading(false))
-      .catch(() => setLoading(false));
+      .catch(e => {
+        setLoading(false);
+        setError(e);
+      });
   }, []);
 
   if (loading) {
     return (
       <div className="text-center">
         <i>Loading...</i>
+      </div>
+    );
+  }
+
+  if (error) {
+    console.log(error);
+    return (
+      <div className="text-center">
+        <i>Error...</i>
       </div>
     );
   }

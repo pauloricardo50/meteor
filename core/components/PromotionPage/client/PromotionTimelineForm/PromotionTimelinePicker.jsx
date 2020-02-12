@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Button from '../../../Button';
@@ -6,14 +5,12 @@ import DropdownMenu from '../../../DropdownMenu';
 import { reuseConstructionTimeline, withSmartQuery } from '../../../../api';
 import { adminPromotions } from '../../../../api/promotions/queries';
 
-type PromotionTimelinePickerProps = {};
-
 const PromotionTimelinePicker = ({
   handleOpen,
   hasTimeline,
   promotions = [],
   promotionId,
-}: PromotionTimelinePickerProps) => {
+}) => {
   if (hasTimeline) {
     return (
       <Button primary raised onClick={handleOpen}>

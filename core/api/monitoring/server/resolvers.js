@@ -243,6 +243,7 @@ const assigneeBreakdown = filters => [
       'loan._id': 1,
       'loan.name': 1,
       'loan.userCache': 1,
+      'loan.assigneeLinks': 1,
       'loan.createdAt': 1,
       'loan.status': 1,
     },
@@ -252,7 +253,20 @@ const assigneeBreakdown = filters => [
   {
     $group: {
       _id: {
-        assignedEmployeeId: '$loan.userCache.assignedEmployeeCache._id',
+        // Extract the main assignee
+        assigneeId: {
+          $reduce: {
+            input: '$loan.assigneeLinks',
+            initialValue: '',
+            in: {
+              $cond: {
+                if: { $eq: ['$$this.isMain', true] },
+                then: '$$this._id',
+                else: '',
+              },
+            },
+          },
+        },
         prevStatus: '$metadata.details.prevStatus',
         nextStatus: '$metadata.details.nextStatus',
       },
@@ -262,7 +276,7 @@ const assigneeBreakdown = filters => [
   },
   {
     $group: {
-      _id: '$_id.assignedEmployeeId',
+      _id: '$_id.assigneeId',
       statusChanges: {
         $push: {
           prevStatus: '$_id.prevStatus',
@@ -287,7 +301,7 @@ const assigneeBreakdown = filters => [
     },
   },
   // Add this stage for consistency
-  { $sort: { '_id.assignedEmployeeId': 1 } },
+  { $sort: { '_id.assigneeId': 1 } },
 ];
 
 const loanStatusChangePipeline = filters => [

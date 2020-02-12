@@ -1,18 +1,9 @@
-// @flow
 import React from 'react';
 
 import T from 'core/components/Translation';
 import Organisation from './Organisation';
 
-type OrganisationsByFeatureProps = {
-  feature: String,
-  organisations: Array<Object>,
-};
-
-const OrganisationsByFeature = ({
-  organisations = [],
-  feature,
-}: OrganisationsByFeatureProps) => {
+const OrganisationsByFeature = ({ organisations = [], feature }) => {
   const filteredOrganisations = organisations
     .filter(({ features = [] }) =>
       feature ? features.includes(feature) : features.length === 0,

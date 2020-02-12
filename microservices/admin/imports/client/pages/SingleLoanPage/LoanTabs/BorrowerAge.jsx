@@ -1,15 +1,10 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
-type BorrowerAgeProps = {
-  borrower: Object,
-};
-
-const BorrowerAge = ({ borrower }: BorrowerAgeProps) => {
+const BorrowerAge = ({ borrower }) => {
   const { age } = borrower;
   const isNearRetirement = age > 49;
 

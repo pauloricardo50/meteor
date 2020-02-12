@@ -21,14 +21,12 @@ export default function astToQuery(ast, config = {}) {
     intersect: Match.Maybe(Object),
   });
 
-  config = Object.assign(
-    {
-      $options: {},
-      $filters: {},
-    },
-    defaults,
-    config
-  );
+  config = {
+    $options: {},
+    $filters: {},
+    ...defaults,
+    ...config,
+  };
 
   // get the body
   let body = astToBody(ast);
@@ -73,7 +71,7 @@ export default function astToQuery(ast, config = {}) {
 }
 
 export function getMaxDepth(body) {
-  let depths = [];
+  const depths = [];
   for (key in body) {
     if (_.isObject(body[key])) {
       depths.push(getMaxDepth(body[key]));
@@ -89,7 +87,7 @@ export function getMaxDepth(body) {
 
 export function deny(body, fields) {
   fields.forEach(field => {
-    let parts = field.split('.');
+    const parts = field.split('.');
     let accessor = body;
     while (parts.length != 0) {
       if (parts.length === 1) {
@@ -109,7 +107,7 @@ export function deny(body, fields) {
 
 export function clearEmptyObjects(body) {
   // clear empty nodes then back-propagate
-  for (let key in body) {
+  for (const key in body) {
     if (_.isObject(body[key])) {
       const shouldDelete = clearEmptyObjects(body[key]);
       if (shouldDelete) {
@@ -126,7 +124,7 @@ export function createGetArgs(body) {
     const parts = path.split('.');
     let stopped = false;
     let accessor = body;
-    for (var i = 0; i < parts.length; i++) {
+    for (let i = 0; i < parts.length; i++) {
       if (!accessor) {
         stopped = true;
         break;

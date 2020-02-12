@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 
@@ -10,15 +9,7 @@ import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { PROMOTION_STATUS } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 
-type DashboardRecapPromotionProps = {
-  loan: Object,
-  promotion: Object,
-};
-
-const DashboardRecapPromotion = ({
-  loan,
-  promotion,
-}: DashboardRecapPromotionProps) => {
+const DashboardRecapPromotion = ({ loan, promotion }) => {
   const { status } = promotion;
   const { promotionImage = [] } = promotion.documents || {};
 

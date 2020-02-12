@@ -4,7 +4,9 @@
  *
  * @param {CountSubscription} countManager
  */
-export default (countManager) => ({
-    ready: () => countManager.accessToken.get() !== null && countManager.subscriptionHandle.ready(),
-    stop: () => countManager.unsubscribe(),
+export default countManager => ({
+  ready: () =>
+    countManager.accessToken.get() !== null &&
+    countManager.subscriptionHandle.ready(),
+  stop: () => countManager.unsubscribe(),
 });

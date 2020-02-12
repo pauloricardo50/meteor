@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import intersection from 'lodash/intersection';
 
@@ -12,8 +11,6 @@ import {
 import AutoForm from 'core/components/AutoForm2';
 import CustomSubmitField from 'core/components/AutoForm2/CustomSubmitField';
 import { CustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
-
-type LenderRulesEditorSingleFormProps = {};
 
 const getAutoFormParts = formKeys =>
   [
@@ -35,7 +32,7 @@ const LenderRulesEditorSingleForm = ({
   rules,
   formKeys,
   updateLenderRules,
-}: LenderRulesEditorSingleFormProps) => {
+}) => {
   if (
     intersection(formKeys, LenderRulesEditorSchema._schemaKeys).length === 0
   ) {

@@ -1,14 +1,8 @@
-// @flow
 import React from 'react';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 
-type PropertyCardPromotionOptionsProps = {};
-
-const PropertyCardPromotionOptions = ({
-  document,
-  loan,
-}: PropertyCardPromotionOptionsProps) => {
+const PropertyCardPromotionOptions = ({ document, loan }) => {
   if (!loan || !loan.promotionOptions) {
     return null;
   }

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -10,9 +9,7 @@ import Icon from 'core/components/Icon';
 import PromotionsPageContainer from './PromotionsPageContainer';
 import AllPromotionsTable from './AllPromotionsTable';
 
-type PromotionsPageProps = {};
-
-const PromotionsPage = ({ addPromotion }: PromotionsPageProps) => (
+const PromotionsPage = ({ addPromotion }) => (
   <section className="card1 card-top promotions-page">
     <Helmet>
       <title>Promotions</title>

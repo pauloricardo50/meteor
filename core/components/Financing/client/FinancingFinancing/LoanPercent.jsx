@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose, withProps } from 'recompose';
 
@@ -9,9 +8,7 @@ import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingCalculator from '../FinancingCalculator';
 import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 
-type LoanPercentProps = {};
-
-const LoanPercent = ({ handleChange, ...props }: LoanPercentProps) => (
+const LoanPercent = ({ handleChange, ...props }) => (
   <span className="wantedLoanPercent">
     <PercentInput
       value={getBorrowRatio(props)}
