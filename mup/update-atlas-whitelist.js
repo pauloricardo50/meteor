@@ -11,6 +11,15 @@ const PUBLIC_KEY = process.env.ATLAS_PUBLIC_KEY;
 const PRIVATE_KEY = process.env.ATLAS_PRIVATE_KEY;
 const PROJECT_ID = '5e31aad95538553602af0c98';
 
+if (!PUBLIC_KEY) {
+  console.error('ATLAS_PUBLIC_KEY env var was not set');
+  process.exit(1);
+}
+if (!PRIVATE_KEY) {
+  console.error('ATLAS_PRIVATE_KEY env var was not set');
+  process.exit(1);
+}
+
 const client = new DigestFetch(PUBLIC_KEY, PRIVATE_KEY, {});
 const stagingComment = 'google-cloud-staging';
 
