@@ -12,14 +12,13 @@ import LoanBoardCardAssignee from './LoanBoardCardAssignee';
 import LoanStatusModifierContainer from '../../SingleLoanPage/LoanStatusModifier/LoanStatusModifierContainer';
 
 const LoanBoardCardTop = ({
-  admins,
   hasRenderedComplexOnce,
   renderComplex,
   additionalActions,
   loan,
 }) => {
-  const { borrowers, _id: loanId, name, status, user } = loan;
-  const userId = user && user._id;
+  const { borrowers, _id: loanId, name, status, user, assigneeLinks } = loan;
+  const userId = user?._id;
   const hasUser = !!userId;
   const title = getLoanLinkTitle({ user, name, borrowers });
   const { openModal } = useContext(ModalManagerContext);
@@ -41,9 +40,8 @@ const LoanBoardCardTop = ({
         />
 
         <LoanBoardCardAssignee
-          admins={admins}
           renderComplex={renderComplex}
-          user={user}
+          assigneeLinks={assigneeLinks}
         />
 
         {renderComplex ? (

@@ -17,8 +17,8 @@ const DashboardInfoTeam = ({
   contacts,
   currentUser,
 }) => {
+  const { hasPromotion, assignees } = loan;
   const { assignedEmployee } = currentUser;
-  const { hasPromotion } = loan;
   return (
     <div className="dashboard-info-team card1">
       <div className="card-top">
@@ -27,7 +27,8 @@ const DashboardInfoTeam = ({
         </h3>
 
         <DashboardInfoTeamCompany
-          assignedEmployee={assignedEmployee}
+          assignedEmployee={assignedEmployee} // remove me
+          assignees={assignees}
           hasPromotion={hasPromotion}
         />
 

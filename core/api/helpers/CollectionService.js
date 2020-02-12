@@ -204,12 +204,6 @@ class CollectionService {
     }
   }
 
-  getAssignedEmployee({ id }) {
-    const { assignee } = this.get(id, { assignee: 1 });
-
-    return assignee;
-  }
-
   getAdditionalDocLabel({ label, additionalDoc }) {
     if (label) {
       return label;

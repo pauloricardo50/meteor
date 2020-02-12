@@ -348,11 +348,14 @@ describe('monitoring', () => {
         loans: [
           {
             _id: 'loan1',
-            user: { assignedEmployee: { _id: 'admin1' } },
+            assignees: [
+              { _id: 'admin2', $metadata: { isMain: false } },
+              { _id: 'admin1', $metadata: { isMain: true } },
+            ],
           },
           {
             _id: 'loan2',
-            user: { assignedEmployee: { _id: 'admin2' } },
+            assignees: { _id: 'admin2', $metadata: { isMain: true } },
           },
         ],
       });

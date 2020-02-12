@@ -199,12 +199,19 @@ class Analytics {
       const optional = typeof property === 'object' ? property.optional : false;
 
       if (!optional && pickedProperties[name] === undefined) {
+        const error = new Meteor.Error(
+          `Property ${name} in event ${eventName} is required !`,
+        );
         SlackService.sendError({
-          error: new Meteor.Error(
-            `Property ${name} in event ${eventName} is required !`,
-          ),
+          error,
           additionalData: [{ event, data, pickedProperties }],
         });
+
+        if (!Meteor.isProduction || Meteor.isStaging) {
+          // Make sure we are alerted in test or dev if a analytics event is
+          // misconfigured
+          throw error;
+        }
       }
     });
 

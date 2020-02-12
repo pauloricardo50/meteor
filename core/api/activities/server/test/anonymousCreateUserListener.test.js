@@ -27,7 +27,10 @@ describe('anonymousCreateUserListener', function() {
         },
         { _id: 'org2', name: 'Organisation 2' },
       ],
-      users: [{ _id: 'pro2', _factory: 'pro' }],
+      users: [
+        { _id: 'adminId', _factory: 'admin' },
+        { _id: 'pro2', _factory: 'pro' },
+      ],
     });
   });
 

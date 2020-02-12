@@ -1,38 +1,16 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { assignAdminToUser } from 'core/api/methods';
-import DropdownMenu from 'core/components/DropdownMenu';
 import { employeesById } from 'core/arrays/epotekEmployees';
 
-const LoanBoardCardAssignee = ({ admins, renderComplex, user }) => {
-  const { assignedEmployeeCache: assignee } = user || {};
-  const img =
-    (assignee && employeesById[assignee._id].src) || '/img/placeholder.png';
-  const userId = user && user._id;
+const LoanBoardCardAssignee = ({ renderComplex, assigneeLinks }) => {
+  const mainAssignee = assigneeLinks.find(({ isMain }) => isMain);
+  const assignee = employeesById[mainAssignee?._id];
+  const img = assignee?.src || '/img/placeholder.png';
 
   if (renderComplex) {
-    if (userId) {
-      return (
-        <DropdownMenu
-          className="status-label-dropdown"
-          renderTrigger={({ handleOpen }) => (
-            <Tooltip title={assignee && assignee.firstName}>
-              <img src={img} alt="" onClick={handleOpen} />
-            </Tooltip>
-          )}
-          options={admins.map(({ firstName, _id }) => ({
-            id: _id,
-            label: firstName,
-            onClick: () => assignAdminToUser.run({ adminId: _id, userId }),
-          }))}
-          noWrapper
-        />
-      );
-    }
-
     return (
-      <Tooltip title={assignee && assignee.firstName}>
+      <Tooltip title={assignee?.name}>
         <img src={img} alt="" />
       </Tooltip>
     );

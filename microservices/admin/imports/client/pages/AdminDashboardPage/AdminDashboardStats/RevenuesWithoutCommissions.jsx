@@ -2,11 +2,10 @@ import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
 import { Money } from 'core/components/Translation';
-import { adminRevenues } from 'core/api/revenues/queries';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import DialogSimple from 'core/components/DialogSimple';
 import CurrentUserContext from 'core/containers/CurrentUserContext';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
@@ -44,25 +43,23 @@ const OrgItem = ({ orgName, revenues }) => (
 const RevenuesWithoutCommissions = props => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
-    query: adminRevenues,
+    query: REVENUES_COLLECTION,
     params: {
-      $body: {
-        loan: {
-          name: 1,
-          user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
-          borrowers: { name: 1 },
-          hasPromotion: 1,
-        },
-        organisationLinks: 1,
-        amount: 1,
-        assigneeLink: 1,
-      },
-      filters: {
+      $filters: {
         $or: [
           { organisationLinks: { $exists: false } },
           { organisationLinks: { $size: 0 } },
         ],
       },
+      loan: {
+        name: 1,
+        user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
+        borrowers: { name: 1 },
+        hasPromotion: 1,
+      },
+      organisationLinks: 1,
+      amount: 1,
+      assigneeLink: 1,
     },
   });
 

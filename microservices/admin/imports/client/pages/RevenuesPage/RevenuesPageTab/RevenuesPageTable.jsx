@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
-import { REVENUE_STATUS, REVENUE_TYPES } from 'core/api/constants';
+import {
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+  ORGANISATIONS_COLLECTION,
+} from 'core/api/constants';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import employees from 'core/arrays/epotekEmployees';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesTable from '../../../components/RevenuesTable';
 import { revenuesFilter } from './revenuePageHelpers';
 
@@ -24,8 +27,8 @@ const RevenuesPageTable = props => {
     data: referringOrganisations,
     loading: orgLoading,
   } = useStaticMeteorData({
-    query: adminOrganisations,
-    params: { hasReferredUsers: true, $body: { name: 1 } },
+    query: ORGANISATIONS_COLLECTION,
+    params: { $filters: { referredUsersCount: { $gte: 1 } }, name: 1 },
   });
 
   return (

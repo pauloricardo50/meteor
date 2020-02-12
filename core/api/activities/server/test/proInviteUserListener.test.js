@@ -22,7 +22,7 @@ describe('proInviteUserListener', function() {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: { _id: 'pro2', _factory: 'pro' },
+      users: { _id: 'adminId', _factory: 'admin' },
       organisations: [
         {
           _id: 'org',
@@ -64,7 +64,9 @@ describe('proInviteUserListener', function() {
         },
       }),
     );
+
     await checkEmails(2);
+
     const { activities = [] } = UserService.get(
       { 'emails.address': 'john.doe@test.com' },
       { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
@@ -85,44 +87,12 @@ describe('proInviteUserListener', function() {
     });
   });
 
-  it('adds activity on user when user is referred by a pro without organisation', async () => {
-    await ddpWithUserId('pro2', () =>
-      proInviteUser.run({
-        user: {
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john.doe2@test.com',
-          phoneNumber: '12345',
-        },
-      }),
-    );
-    await checkEmails(2);
-
-    const { activities = [] } = UserService.get(
-      { 'emails.address': 'john.doe2@test.com' },
-      { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
-    );
-    expect(activities.length).to.equal(2);
-    expect(activities[0]).to.deep.include({
-      type: ACTIVITY_TYPES.EVENT,
-      title: 'Compte créé',
-      description: 'Référé par TestFirstName TestLastName',
-      metadata: {
-        event: ACTIVITY_EVENT_METADATA.CREATED,
-        details: {
-          referredBy: { _id: 'pro2', name: 'TestFirstName TestLastName' },
-          referredByOrg: {},
-          referredByAPIOrg: {},
-        },
-      },
-    });
-  });
-
   it('adds activity on user when user is referred by a pro via API', async () => {
     const apiUser = UserService.get('pro3', {
       name: 1,
       organisations: { name: 1 },
     });
+
     await ddpWithUserId('pro', () => {
       setAPIUser(apiUser);
       return proInviteUser.run({
@@ -134,6 +104,7 @@ describe('proInviteUserListener', function() {
         },
       });
     });
+
     await checkEmails(2);
 
     const { activities = [] } = UserService.get(
@@ -165,6 +136,7 @@ describe('proInviteUserListener', function() {
         firstName: 'John',
         lastName: 'Doe',
         emails: [{ address: 'john.doe@test.com', verified: true }],
+        assignedEmployee: { _id: 'adminId' },
       },
       properties: {
         _id: 'property',
@@ -197,7 +169,9 @@ describe('proInviteUserListener', function() {
         propertyIds: ['property'],
       }),
     );
+
     await checkEmails(2);
+
     const { activities = [] } = UserService.get(
       { 'emails.address': 'john.doe@test.com' },
       { activities: { type: 1, description: 1, title: 1, metadata: 1 } },

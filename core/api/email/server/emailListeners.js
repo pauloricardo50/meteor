@@ -89,9 +89,12 @@ addEmailListener({
 addEmailListener({
   description: 'Étape du dossier à "Identification du prêteur" -> Client',
   method: setLoanStep,
-  func: ({ params: { loanId }, result: { step, nextStep, user } }) => {
+  func: ({
+    params: { loanId },
+    result: { step, nextStep, mainAssignee, userId },
+  }) => {
     if (shouldSendStepNotification(step, nextStep)) {
-      if (!user || !user.assignedEmployee) {
+      if (!mainAssignee) {
         throw new Meteor.Error(
           'Il faut un client et un conseiller sur ce dossier pour envoyer un email',
         );
@@ -99,8 +102,8 @@ addEmailListener({
 
       return sendEmail.serverRun({
         emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
-        userId: user._id,
-        params: { loanId, assigneeName: user.assignedEmployee.name },
+        userId,
+        params: { loanId, assigneeName: mainAssignee.name },
       });
     }
   },
@@ -112,21 +115,18 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
     lender: {
       organisation: { name: organisationName },
       contact: { email: address, name },
-      loan: {
-        name: loanName,
-        user: { assignedEmployee },
-      },
+      loan: { name: loanName, mainAssignee },
     },
   } = OfferService.get(offerId, {
     createdAt: 1,
     lender: {
       organisation: { name: 1 },
       contact: { email: 1, name: 1 },
-      loan: { name: 1, user: { assignedEmployee: { name: 1, email: 1 } } },
+      loan: { name: 1, mainAssignee: 1 },
     },
   });
 
-  const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
+  const { email: assigneeAddress, name: assigneeName } = mainAssignee || {};
 
   return sendEmailToAddress.serverRun({
     emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
@@ -193,7 +193,7 @@ addEmailListener({
 
       let invitedBy;
 
-      if (pro && pro._id) {
+      if (pro?._id) {
         invitedBy = getUserNameAndOrganisation({
           user: UserService.get(pro._id, {
             name: 1,
@@ -317,16 +317,12 @@ addEmailListener({
 
     const {
       name: loanName,
-      user: {
-        name: customerName,
-        assignedEmployee: { name: adminName } = {},
-      } = {},
+      user: { name: customerName } = {},
+      mainAssignee: { name: adminName } = {},
     } = LoanService.get(loanId, {
       name: 1,
-      user: {
-        name: 1,
-        assignedEmployee: { name: 1 },
-      },
+      user: { name: 1 },
+      mainAssignee: 1,
     });
 
     const notifyWithCta = notifyPros.filter(({ withCta }) => withCta);

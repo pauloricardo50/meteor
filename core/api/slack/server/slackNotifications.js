@@ -1,10 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import SlackService from './SlackService';
 
 export const referralOnlyNotification = ({ currentUser, user }) => {
   const { _id: userId, firstName, lastName } = user;
+
   SlackService.notifyAssignee({
     currentUser,
     link: `${Meteor.settings.public.subdomains.admin}/users/${userId}`,
@@ -44,6 +46,7 @@ export const promotionLotReserved = ({
   currentUser,
   promotionLot,
   user: { name },
+  loanId,
 }) => {
   const {
     name: lotName,
@@ -57,6 +60,7 @@ export const promotionLotReserved = ({
     link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
+    loanId,
   });
 };
 
@@ -64,6 +68,7 @@ export const promotionLotSold = ({
   currentUser,
   promotionLot,
   user: { name },
+  loanId,
 }) => {
   const {
     name: lotName,
@@ -77,6 +82,7 @@ export const promotionLotSold = ({
     link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
+    loanId,
   });
 };
 
@@ -92,6 +98,7 @@ export const updateWatcherNotification = ({
     title,
     link: `${Meteor.settings.public.subdomains.admin}/${collection}/${docId}`,
     message,
+    loanId: collection === LOANS_COLLECTION ? docId : undefined,
   });
 };
 
@@ -100,6 +107,7 @@ export const newLoan = ({ loanId, loanName, currentUser }) => {
     currentUser,
     title: `Nouveau dossier: ${loanName}`,
     link: `${Meteor.settings.public.subdomains.admin}/loans/${loanId}`,
+    loanId,
   });
 };
 
@@ -120,6 +128,7 @@ export const newPromotionReservation = ({
   proName,
   promotionId,
   assignedEmployee,
+  loanId,
 }) => {
   SlackService.notifyAssignee({
     currentUser,
@@ -128,6 +137,7 @@ export const newPromotionReservation = ({
     link: `${Meteor.settings.public.subdomains.admin}/promotions/${promotionId}`,
     assignee: assignedEmployee,
     notifyAlways: true,
+    loanId,
   });
 };
 

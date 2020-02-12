@@ -21,7 +21,7 @@ const LoanMonitoringChart = props => {
     postProcess = ({ data }) => data,
     admins,
     referringOrganisations,
-    assignedEmployeeId,
+    assigneeLinkId,
     referringOrganisationId,
     revenueType,
     additionalFilters,
@@ -39,7 +39,7 @@ const LoanMonitoringChart = props => {
         filters={filters}
         admins={admins}
         referringOrganisations={referringOrganisations}
-        assignedEmployeeId={assignedEmployeeId}
+        assigneeLinkId={assigneeLinkId}
         referringOrganisationId={referringOrganisationId}
         revenueType={revenueType}
         additionalFilters={additionalFilters}
@@ -62,7 +62,7 @@ export default compose(
       groupBy: initialGroupBy,
       value: initialValue,
       withAnonymous: false,
-      assignedEmployeeId: null,
+      assigneeLinkId: null,
       referringOrganisationId: null,
       revenueType: null,
     }),
@@ -79,7 +79,7 @@ export default compose(
       category,
       status,
       withAnonymous,
-      assignedEmployeeId,
+      assigneeLinkId,
       referringOrganisationId,
       revenueType,
     }) => ({
@@ -89,7 +89,9 @@ export default compose(
         category,
         status,
         anonymous: getAnonymous(withAnonymous),
-        'userCache.assignedEmployeeCache._id': assignedEmployeeId || undefined,
+        assigneeLinks: assigneeLinkId
+          ? { $elemMatch: { _id: assigneeLinkId, isMain: true } }
+          : undefined,
         'userCache.referredByOrganisationLink':
           referringOrganisationId || undefined,
       },
