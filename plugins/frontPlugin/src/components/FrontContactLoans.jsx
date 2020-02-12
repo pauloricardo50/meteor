@@ -2,7 +2,9 @@ import React from 'react';
 import StatusLabel from '../core/components/StatusLabel';
 import { LOANS_COLLECTION } from '../core/api/loans/loanConstants';
 
-const { Front } = window;
+const { Front, subdomains } = window;
+
+const adminRootUrl = subdomains.admin;
 
 const FrontContactLoans = ({ loans = [] }) => (
   <div>
@@ -21,7 +23,7 @@ const FrontContactLoans = ({ loans = [] }) => (
             style={{ margin: 0, marginRight: 8 }}
             className="link"
             onClick={() => {
-              Front.openUrl(`https://admin.e-potek.ch/loans/${_id}`);
+              Front.openUrl(`${adminRootUrl}/loans/${_id}`);
             }}
           >
             {name}

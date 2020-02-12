@@ -1,0 +1,25 @@
+.front-plugin {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 16px;
+}
+
+
+.link {
+  text-decoration: underline;
+
+  &:hover {
+    color: $primary;
+    cursor: pointer;
+
+    > * {
+      color: $primary;
+    }
+  }
+}
+
+.front-contact-select {
+  margin-bottom: 16px;
+  width: 100%;
+}

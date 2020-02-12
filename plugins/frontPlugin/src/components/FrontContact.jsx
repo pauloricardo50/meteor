@@ -92,7 +92,7 @@ const FrontContact = ({ contact }) => {
   console.log('finalContact:', finalContact);
 
   return (
-    <div>
+    <div className="card1 p-16">
       <FrontContactHeader
         isEpotekResource={isEpotekResource}
         contact={finalContact}
