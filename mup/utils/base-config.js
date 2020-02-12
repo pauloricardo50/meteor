@@ -3,15 +3,14 @@ process.env.METEOR_PACKAGE_DIRS =
   process.env.METEOR_PACKAGE_DIRS || '../../meteorPackages:packages';
 process.env.METEOR_PROFILE = 50;
 process.env.METEOR_DISABLE_OPTIMISTIC_CACHING = 'true';
-const servers = require('../staging-servers.json');
-
-const BASE_DOMAIN = 'staging-2.e-potek.net';
-const ENVIRONMENT = 'staging';
 
 module.exports = function createConfig({
   microservice,
   subDomains,
   nginxLocationConfig,
+  environment,
+  baseDomain,
+  servers
 }) {
   const appServers = Object.keys(servers).reduce((result, serverName) => {
     // eslint-disable-next-line no-param-reassign
@@ -19,9 +18,9 @@ module.exports = function createConfig({
     return result;
   }, {});
   const path = `../../microservices/${microservice}`;
-  const name = `${microservice}-${ENVIRONMENT}`;
+  const name = `${microservice}-${environment}`;
 
-  const domains = subDomains.map(subdomain => `${subdomain}.${BASE_DOMAIN}`);
+  const domains = subDomains.map(subdomain => `${subdomain}.${baseDomain}`);
 
   return {
     servers,
@@ -54,9 +53,9 @@ module.exports = function createConfig({
 
     proxy: {
       domains: domains.join(','),
-      nginxLocationConfig: nginxLocationConfig ? generateConfig(nginxLocationConfig, BASE_DOMAIN) : undefined,
+      nginxLocationConfig: nginxLocationConfig ? generateConfig(nginxLocationConfig, baseDomain) : undefined,
       shared: {
-        nginxConfig: generateConfig('../nginx/global.conf', BASE_DOMAIN),
+        nginxConfig: generateConfig('../nginx/global.conf', baseDomain),
       },
     },
   };
