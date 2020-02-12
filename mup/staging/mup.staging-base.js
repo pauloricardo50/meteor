@@ -1,3 +1,4 @@
+const { generateConfig } = require('../utils/nginx.js');
 process.env.METEOR_PACKAGE_DIRS =
   process.env.METEOR_PACKAGE_DIRS || '../../meteorPackages:packages';
 process.env.METEOR_PROFILE = 50;
@@ -53,9 +54,9 @@ module.exports = function createConfig({
 
     proxy: {
       domains: domains.join(','),
-      nginxLocationConfig,
+      nginxLocationConfig: nginxLocationConfig ? generateConfig(nginxLocationConfig, BASE_DOMAIN) : undefined,
       shared: {
-        nginxConfig: '../nginx/global-staging.conf',
+        nginxConfig: generateConfig('../nginx/global.conf', BASE_DOMAIN),
       },
     },
   };
