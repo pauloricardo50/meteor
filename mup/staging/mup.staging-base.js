@@ -36,12 +36,12 @@ module.exports = function createConfig({
       },
 
       env: {
-        ROOT_URL: `http://${domains[0]}`,
+        ROOT_URL: `https://${domains[0]}`,
         MONGO_URL:
           'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/e-potek?retryWrites=true&w=majority',
         MONGO_OPLOG_URL:
           'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/local',
-        DDP_DEFAULT_CONNECTION_URL: 'http://backend.staging-2.e-potek.net',
+        DDP_DEFAULT_CONNECTION_URL: 'https://backend.staging-2.e-potek.net',
       },
 
       docker: {
