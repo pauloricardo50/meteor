@@ -8,9 +8,7 @@ import PromotionPageContent from './PromotionPageContent';
 import PromotionMetadataContext from './PromotionMetadata';
 
 const shouldDisplayFilesTab = documents =>
-  documents &&
-  ((documents.promotionDocuments && documents.promotionDocuments.length > 0) ||
-    (documents.proDocuments && documents.proDocuments.length > 0));
+  documents?.promotionDocuments?.length;
 
 const getTabs = ({
   permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
