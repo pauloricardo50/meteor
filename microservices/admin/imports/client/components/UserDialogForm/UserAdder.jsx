@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
@@ -10,6 +10,7 @@ import { ROLES } from 'core/api/constants';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api';
+import useSearchParams from 'core/hooks/useSearchParams';
 import UserDialogFormContainer from './UserDialogFormContainer';
 
 export const userFormLayout = [
@@ -39,6 +40,8 @@ const UserAdder = ({
   createUser,
   labels,
   organisations = [],
+  model = {},
+  openOnMount,
 }) => (
   <AutoFormDialog
     title={<T id="UserAdder.buttonLabel" />}
@@ -105,7 +108,7 @@ const UserAdder = ({
         },
       }),
     )}
-    model={{ assignedEmployeeId: adminId }}
+    model={{ ...model, assignedEmployeeId: adminId }}
     onSubmit={createUser}
     buttonProps={{
       label: <T id="UserAdder.buttonLabel" />,
@@ -119,6 +122,7 @@ const UserAdder = ({
       },
     }}
     layout={userFormLayout}
+    openOnMount={openOnMount}
   />
 );
 
@@ -128,5 +132,17 @@ export default compose(
     query: adminOrganisations,
     dataName: 'organisations',
     params: () => ({ $body: { name: 1, users: { _id: 1 } } }),
+  }),
+  withProps(() => {
+    const initialSearchParams = useSearchParams();
+    const [searchParams, setSearchParams] = useState(initialSearchParams);
+    return {
+      model: searchParams,
+      openOnMount:
+        searchParams.addUser &&
+        !!Object.keys(searchParams).filter(key =>
+          ['email', 'firstName', 'lastName'].includes(key),
+        ).length,
+    };
   }),
 )(UserAdder);

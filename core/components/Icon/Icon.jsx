@@ -89,6 +89,7 @@ import Schedule from '@material-ui/icons/Schedule';
 import Send from '@material-ui/icons/Send';
 import Airplay from '@material-ui/icons/Airplay';
 import HowToReg from '@material-ui/icons/HowToReg';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import colors from '../../config/colors';
 
@@ -151,6 +152,7 @@ export const iconMap = {
   trendingDown: TrendingDown,
   trendingFlat: TrendingFlat,
   expandMore: ExpandMoreIcon,
+  expandLess: ExpandLessIcon,
   backupRestore: SettingsBackupRestore,
   filter: FilterList,
   arrowUp: ArrowUpward,

@@ -10,13 +10,16 @@ import {
 } from '../../../../components/TasksTable/TaskModifier';
 
 const UserTaskInserter = withProps(
-  ({ user: { _id: userId, assignedEmployee } }) => ({
+  ({ user: { _id: userId, assignedEmployee }, model = {}, resetForm }) => ({
     onSubmit: values =>
-      taskInsert.run({
-        object: { docId: userId, collection: USERS_COLLECTION, ...values },
-      }),
+      taskInsert
+        .run({
+          object: { docId: userId, collection: USERS_COLLECTION, ...values },
+        })
+        .then(() => resetForm()),
     schema: schema.omit('status'),
     model: {
+      ...model,
       assigneeLink: {
         _id: (assignedEmployee && assignedEmployee._id) || Meteor.userId(),
       },

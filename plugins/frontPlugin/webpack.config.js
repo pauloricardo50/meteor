@@ -47,8 +47,6 @@ module.exports = {
         resource.context.split('/frontPlugin')[0]
       }/frontPlugin`;
     }),
-    // new webpack.IgnorePlugin(/file-saver/),
-    // new webpack.IgnorePlugin(/i18n-iso-countries/),
   ],
   stats: {
     modulesSort: '!size',

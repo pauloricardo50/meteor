@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import cx from 'classnames';
-import SimpleSchema from 'simpl-schema';
-import { AutoFormDialog } from '../core/components/AutoForm2';
+
+// import FrontContactTaskAdder from './FrontContactTaskAdder';
 
 const { Front } = window;
 
@@ -33,9 +33,12 @@ const getContactSubtitle = ({ collection, isEpotekResource, contact }) => {
   }
 };
 
-const schema = new SimpleSchema({ name: String });
-
-const FrontContactHeader = ({ collection, contact, isEpotekResource }) => {
+const FrontContactHeader = ({
+  collection,
+  contact,
+  isEpotekResource,
+  conversation = {},
+}) => {
   const { assignedEmployee, referredByUser, referredByOrganisation } = contact;
   return (
     <div className="mb-32">
@@ -82,14 +85,12 @@ const FrontContactHeader = ({ collection, contact, isEpotekResource }) => {
           </span>
         </div>
 
-        {/* <Button primary raised size="small">
-          + Tâche
-        </Button> */}
-        <AutoFormDialog
-          buttonProps={{ label: '+ Tâche', raised: true, primary: true }}
-          schema={schema}
-          onSubmit={console.log}
-        />
+        {/* <FrontContactTaskAdder
+          collection={collection}
+          isEpotekResource={isEpotekResource}
+          contact={contact}
+          conversation={conversation}
+        /> */}
       </div>
 
       {(!!assignedEmployee || !!referredByUser || !!referredByOrganisation) && (

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import FrontContact from './FrontContact';
-import FrontContactSelect from './FrontContactSelect';
+import { StylesProvider } from '@material-ui/core/styles';
+
+import FrontContact from './FrontContact/FrontContact';
+import FrontContactSelect from './FrontContactSelect/FrontContactSelect';
 import LibraryWrappers from '../core/components/BaseRouter/LibraryWrappers';
 import {
   getFormats,
@@ -65,18 +67,24 @@ const FrontPlugin = () => {
   }
 
   return (
-    <LibraryWrappers
-      i18n={{ messages, formats: getFormats(), locale: getUserLocale() }}
-    >
-      <div className="front-plugin">
-        <FrontContactSelect
-          contact={contact}
-          contacts={getContacts(data)}
-          setContact={setContact}
-        />
-        <FrontContact contact={contact} key={contact.handle} />
-      </div>
-    </LibraryWrappers>
+    <StylesProvider injectFirst>
+      <LibraryWrappers
+        i18n={{ messages, formats: getFormats(), locale: getUserLocale() }}
+      >
+        <div className="front-plugin">
+          <FrontContactSelect
+            contact={contact}
+            contacts={getContacts(data)}
+            setContact={setContact}
+          />
+          <FrontContact
+            contact={contact}
+            key={contact.handle}
+            conversation={data.conversation}
+          />
+        </div>
+      </LibraryWrappers>
+    </StylesProvider>
   );
 };
 
