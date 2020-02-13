@@ -14,7 +14,7 @@ import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 import Box from 'core/components/Box';
 import { ROLES } from 'core/api/users/userConstants';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(

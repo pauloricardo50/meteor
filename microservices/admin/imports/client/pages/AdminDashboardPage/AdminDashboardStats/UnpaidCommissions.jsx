@@ -10,7 +10,7 @@ import {
 import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
 const UnpaidCommissions = props => {

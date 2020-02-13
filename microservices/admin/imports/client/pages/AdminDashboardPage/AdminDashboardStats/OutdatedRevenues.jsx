@@ -5,17 +5,20 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { REVENUE_STATUS, REVENUES_COLLECTION } from 'core/api/constants';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
 const OutdatedRevenues = ({ revenues }) => {
+  console.log('revenues:', revenues);
   const currentUser = useContext(CurrentUserContext);
+  console.log('currentUser:', currentUser);
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(
     ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,
   );
   const isOk = myRevenues.length === 0;
+  console.log('myRevenues:', myRevenues);
 
   return (
     <StatItem
