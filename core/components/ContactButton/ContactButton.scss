@@ -34,12 +34,6 @@
   opacity: 1;
   box-shadow: 0 0 16px 0 rgba(33, 37, 41, 0.16);
 
-  &.closed {
-    width: 0;
-    height: 0;
-
-    opacity: 0;
-  }
 
   img {
     width: 64px;
