@@ -5,7 +5,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import T from 'core/components/Translation';
+import T from '../Translation';
 
 const safeChange = (value, id, onChange, options) => {
   // If all options are booleans, transform the onChange handler's value
