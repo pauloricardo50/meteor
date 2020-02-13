@@ -22,6 +22,15 @@ const makeArrayOfObjectsInput = (id, required = false) => ({
     { id: 'description', type: 'textInput' },
     { id: 'value', type: 'textInput', money: true },
   ],
+  renderRecap: currentValue => (
+    <span className="flex center-align fs-110">
+      <b>
+        <Money value={currentValue.reduce((t, { value: v }) => t + v, 0)} />
+      </b>
+      &nbsp;-&nbsp;
+      <span className="secondary">{currentValue.length + 1} éléments</span>
+    </span>
+  ),
 });
 
 export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
