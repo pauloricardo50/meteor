@@ -1039,7 +1039,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setStep', async () => {
+  describe('setStep', () => {
     it('sets the step', () => {
       generator({
         loans: { _id: 'id', step: STEPS.SOLVENCY },
@@ -1180,14 +1180,15 @@ describe('LoanService', function() {
             _id: 'customerId',
             firstName: 'Customer',
             lastName: '1',
-            assignedEmployee: {
-              _id: 'adminId1',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: '1',
-            },
             referredByOrganisation: { name: 'Org 1' },
             referredByUser: { firstName: 'Pro', lastName: '1' },
+          },
+          assignees: {
+            _id: 'adminId1',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: '1',
+            $metadata: { isMain: true },
           },
         },
         users: [
@@ -1765,6 +1766,7 @@ describe('LoanService', function() {
             firstName: 'Admin',
             lastName: 'User',
             $metadata: { isMain: true },
+            emails: [{ address: 'admin@e-potek.ch', verified: true }],
           },
         },
       });
@@ -1785,7 +1787,7 @@ describe('LoanService', function() {
         {
           address,
           template: {
-            message: { subject, global_merge_vars, to },
+            message: { subject, global_merge_vars, to, from_email, from_name },
           },
         },
       ] = await checkEmails(1);
@@ -1807,6 +1809,8 @@ describe('LoanService', function() {
 
       expect(to.length).to.equal(3);
       expect(to.every(({ type }) => type === 'bcc')).to.equal(true);
+      expect(from_email).to.equal('admin@e-potek.ch');
+      expect(from_name).to.equal('Admin User');
     });
   });
 
