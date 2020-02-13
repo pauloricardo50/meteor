@@ -10,15 +10,12 @@ import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
 const OutdatedRevenues = ({ revenues }) => {
-  console.log('revenues:', revenues);
   const currentUser = useContext(CurrentUserContext);
-  console.log('currentUser:', currentUser);
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(
     ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,
   );
   const isOk = myRevenues.length === 0;
-  console.log('myRevenues:', myRevenues);
 
   return (
     <StatItem
