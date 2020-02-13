@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
+import { Percent } from 'core/components/Translation';
 import RadioTabs from 'core/components/RadioButtons/RadioTabs';
 import { addBorrower } from 'core/api/methods';
 import {
@@ -10,6 +11,8 @@ import {
   getBorrowerFortuneArray,
   getBorrowerInsuranceArray,
 } from 'core/arrays/BorrowerFormArray';
+import { getCountedArray } from 'core/utils/formArrayHelpers';
+import { getPercent } from 'core/utils/general';
 import BorrowersTabForm from './BorrowersTabForm';
 
 const personalArray = [
@@ -25,7 +28,7 @@ const personalArray = [
   getBorrowerInfoArray,
 ];
 
-const options = [
+const baseOptions = [
   {
     id: 'all',
     label: 'Tout',
@@ -62,10 +65,44 @@ const options = [
   },
 ];
 
+const getPercentage = (funcs, borrowers) => {
+  const countedArray = borrowers.reduce((arr, borrower) => {
+    const formArray = funcs.reduce(
+      (a, func) => [
+        ...a,
+        ...func({ borrowers, borrowerId: borrower._id, borrower }),
+      ],
+      [],
+    );
+
+    return [...arr, ...getCountedArray(formArray, borrower)];
+  }, []);
+
+  return getPercent(countedArray);
+};
+
 const BorrowersTab = props => {
   const [formFilter, setFormFilter] = useState('all');
   const { loan } = props;
   const { borrowers = [], Calculator } = loan;
+  const options = useMemo(
+    () =>
+      baseOptions
+        .map(item => ({
+          ...item,
+          percent: getPercentage(item.funcs, borrowers),
+        }))
+        .map(item => ({
+          ...item,
+          label: (
+            <span>
+              {item.label}&nbsp;-&nbsp;
+              <Percent rounded value={item.percent} />
+            </span>
+          ),
+        })),
+    [borrowers],
+  );
 
   return (
     <div style={{ position: 'relative' }}>

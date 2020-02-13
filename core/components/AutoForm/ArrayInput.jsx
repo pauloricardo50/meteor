@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
@@ -47,6 +49,7 @@ class ArrayInput extends Component {
         intlId,
         Component: CustomComponent,
         inputLabelProps: { shrink } = {},
+        adminOnly,
       } = input;
       const finalCurrentValue =
         currentValue && currentValue[i] && currentValue[i][inputId];
@@ -65,6 +68,10 @@ class ArrayInput extends Component {
           disabled,
         },
       };
+
+      if (adminOnly && Meteor.microservice !== 'admin') {
+        return null;
+      }
 
       if (type === 'textInput') {
         return <AutoFormTextInput {...childProps} key={id + inputId + i} />;
@@ -112,7 +119,7 @@ class ArrayInput extends Component {
           style={styles.arrayItem}
           key={`${id + i}item`}
         >
-          {inputs.map(input => mapInput(input, i))}
+          {inputs.map(input => mapInput(input, i)).filter(x => x)}
         </div>,
       );
     }

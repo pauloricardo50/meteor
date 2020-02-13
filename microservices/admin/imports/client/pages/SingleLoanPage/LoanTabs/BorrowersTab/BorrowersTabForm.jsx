@@ -5,7 +5,7 @@ import VerticalAligner from 'core/components/VerticalAligner';
 import AutoForm from 'core/components/AutoForm';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
-
+import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import Recap from 'core/components/Recap';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
@@ -19,6 +19,7 @@ const BorrowersTabForm = ({
   Calculator,
   funcs,
 }) => {
+  const { mortgageNotes } = borrower;
   const inputs = funcs.reduce(
     (arr, func) => [
       ...arr,
@@ -45,6 +46,11 @@ const BorrowersTabForm = ({
           docId={borrower._id}
           collection={BORROWERS_COLLECTION}
           doc={borrower}
+        />
+
+        <MortgageNotesForm
+          borrowerId={borrower._id}
+          mortgageNotes={mortgageNotes}
         />
       </VerticalAligner>
 

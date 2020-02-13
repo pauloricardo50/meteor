@@ -279,6 +279,7 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
         options: Object.values(constants.OTHER_INCOME),
       },
       { id: 'value', type: 'textInput', money: true },
+      { id: 'comment', type: 'textInput', adminOnly: true },
     ],
   },
   {
@@ -292,6 +293,7 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
         options: Object.values(constants.EXPENSES),
       },
       { id: 'value', type: 'textInput', money: true },
+      { id: 'comment', type: 'textInput', adminOnly: true },
     ],
   },
   {
@@ -342,6 +344,12 @@ export const getBorrowerFortuneArray = () => [
       { id: 'value', type: 'textInput', money: true },
       { id: 'loan', type: 'textInput', money: true },
       { id: 'income', type: 'textInput', money: true, required: false },
+      {
+        id: 'theoreticalExpenses',
+        type: 'textInput',
+        money: true,
+        adminOnly: true,
+      },
       {
         id: 'theoreticalExpenses',
         type: 'custom',
