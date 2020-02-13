@@ -461,6 +461,8 @@ addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION, {
         ctaUrl: Meteor.settings.public.subdomains.pro,
       }),
       bccAddresses: params.bccAddresses,
+      senderAddress: params.adminAddress,
+      senderName: params.adminName,
     };
   },
 });
@@ -472,6 +474,8 @@ addEmailConfig(EMAIL_IDS.PRO_NOTE_NOTIFICATION_NO_CTA, {
     return {
       ...notificationTemplateDefaultOverride.call(this, params, strings),
       bccAddresses: params.bccAddresses,
+      senderAddress: params.adminAddress,
+      senderName: params.adminName,
     };
   },
 });
