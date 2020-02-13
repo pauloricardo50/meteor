@@ -227,6 +227,161 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   ];
 };
 
+export const getBorrowerIncomeArray = ({ borrower }) => [
+  {
+    type: 'h3',
+    id: 'incomeAndExpenses',
+    ignore: true,
+    required: false,
+    className: 'v-align-incomeAndExpenses',
+  },
+  { id: 'salary', type: 'textInput', money: true },
+  { id: 'netSalary', type: 'textInput', money: true },
+  {
+    type: 'conditionalInput',
+    conditionalTrueValue: true,
+    inputs: [
+      {
+        id: 'bonusExists',
+        type: 'radioInput',
+        options: [true, false],
+      },
+      ...[2019, 2018, 2017, 2016, 2015].map(year => ({
+        id: `bonus${year}`,
+        type: 'textInput',
+        money: true,
+        condition:
+          year === 2015
+            ? !!borrower.bonus2015
+            : year === 2016
+            ? !!borrower.bonus2016
+            : true,
+      })),
+    ],
+  },
+  {
+    id: 'otherIncome',
+    type: 'arrayInput',
+    required: false,
+    inputs: [
+      {
+        id: 'description',
+        type: 'selectInput',
+        options: Object.values(constants.OTHER_INCOME),
+      },
+      { id: 'value', type: 'textInput', money: true },
+    ],
+  },
+  {
+    id: 'expenses',
+    type: 'arrayInput',
+    required: false,
+    inputs: [
+      {
+        id: 'description',
+        type: 'selectInput',
+        options: Object.values(constants.EXPENSES),
+      },
+      { id: 'value', type: 'textInput', money: true },
+    ],
+  },
+  {
+    type: 'conditionalInput',
+    conditionalTrueValue: true,
+    inputs: [
+      {
+        id: 'hasOwnCompany',
+        type: 'radioInput',
+        options: [true, false],
+      },
+      {
+        id: 'ownCompanies',
+        type: 'arrayInput',
+        inputs: [
+          { id: 'description', type: 'textInput' },
+          { id: 'ownership', type: 'textInput', percent: true },
+          { id: 'netIncome2018', type: 'textInput', money: true },
+          { id: 'netIncome2017', type: 'textInput', money: true },
+          { id: 'netIncome2016', type: 'textInput', money: true },
+        ],
+      },
+    ],
+  },
+];
+
+export const getBorrowerFortuneArray = () => [
+  {
+    type: 'h3',
+    id: 'fortune',
+    ignore: true,
+    required: false,
+    className: 'v-align-fortune',
+  },
+  makeArrayOfObjectsInput('bankFortune', true),
+  makeArrayOfObjectsInput('donation'),
+  {
+    id: 'realEstate',
+    type: 'arrayInput',
+    required: false,
+    inputs: [
+      { id: 'name', type: 'textInput' },
+      {
+        id: 'description',
+        type: 'selectInput',
+        options: Object.values(constants.RESIDENCE_TYPE),
+      },
+      { id: 'value', type: 'textInput', money: true },
+      { id: 'loan', type: 'textInput', money: true },
+      { id: 'income', type: 'textInput', money: true, required: false },
+      {
+        id: 'theoreticalExpenses',
+        type: 'custom',
+        Component: ({
+          inputProps: { currentValue, label, itemValue = {} },
+        }) => (
+          <div className="flex-col" style={{ paddingLeft: 12 }}>
+            <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+              {label}
+            </label>
+            <b>
+              <Money
+                id="theoreticalExpenses"
+                value={currentValue || Calculator.getRealEstateCost(itemValue)}
+                tooltip={
+                  currentValue ? (
+                    undefined
+                  ) : (
+                    <T id="Forms.theoreticalExpenses.tooltip" />
+                  )
+                }
+              />
+              <span>
+                &nbsp;/
+                <T id="general.month" />
+              </span>
+            </b>
+          </div>
+        ),
+      },
+    ],
+  },
+  makeArrayOfObjectsInput('otherFortune'),
+];
+
+export const getBorrowerInsuranceArray = () => [
+  {
+    type: 'h3',
+    id: 'insurance',
+    required: false,
+    ignore: true,
+    className: 'v-align-insurance',
+  },
+  makeArrayOfObjectsInput('insurance2'),
+  makeArrayOfObjectsInput('bank3A'),
+  makeArrayOfObjectsInput('insurance3A'),
+  makeArrayOfObjectsInput('insurance3B'),
+];
+
 export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
   const b = borrowers.find(({ _id }) => _id === borrowerId);
 
@@ -234,157 +389,11 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
     throw new Error("couldn't find borrower");
   }
 
-  const incomeArray = [
-    {
-      type: 'h3',
-      id: 'incomeAndExpenses',
-      ignore: true,
-      required: false,
-      className: 'v-align-incomeAndExpenses',
-    },
-    { id: 'salary', type: 'textInput', money: true },
-    { id: 'netSalary', type: 'textInput', money: true },
-    {
-      type: 'conditionalInput',
-      conditionalTrueValue: true,
-      inputs: [
-        {
-          id: 'bonusExists',
-          type: 'radioInput',
-          options: [true, false],
-        },
-        ...[2019, 2018, 2017, 2016, 2015].map(year => ({
-          id: `bonus${year}`,
-          type: 'textInput',
-          money: true,
-          condition: year === 2015 ? !!b.bonus2015 : true,
-        })),
-      ],
-    },
-    {
-      id: 'otherIncome',
-      type: 'arrayInput',
-      required: false,
-      inputs: [
-        {
-          id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.OTHER_INCOME),
-        },
-        { id: 'value', type: 'textInput', money: true },
-      ],
-    },
-    {
-      id: 'expenses',
-      type: 'arrayInput',
-      required: false,
-      inputs: [
-        {
-          id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.EXPENSES),
-        },
-        { id: 'value', type: 'textInput', money: true },
-      ],
-    },
-    {
-      type: 'conditionalInput',
-      conditionalTrueValue: true,
-      inputs: [
-        {
-          id: 'hasOwnCompany',
-          type: 'radioInput',
-          options: [true, false],
-        },
-        {
-          id: 'ownCompanies',
-          type: 'arrayInput',
-          inputs: [
-            { id: 'description', type: 'textInput' },
-            { id: 'ownership', type: 'textInput', percent: true },
-            { id: 'netIncome2018', type: 'textInput', money: true },
-            { id: 'netIncome2017', type: 'textInput', money: true },
-            { id: 'netIncome2016', type: 'textInput', money: true },
-          ],
-        },
-      ],
-    },
-  ];
+  const incomeArray = getBorrowerIncomeArray({ borrower: b });
 
-  const fortuneArray = [
-    {
-      type: 'h3',
-      id: 'fortune',
-      ignore: true,
-      required: false,
-      className: 'v-align-fortune',
-    },
-    makeArrayOfObjectsInput('bankFortune', true),
-    makeArrayOfObjectsInput('donation'),
-    {
-      id: 'realEstate',
-      type: 'arrayInput',
-      required: false,
-      inputs: [
-        { id: 'name', type: 'textInput' },
-        {
-          id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.RESIDENCE_TYPE),
-        },
-        { id: 'value', type: 'textInput', money: true },
-        { id: 'loan', type: 'textInput', money: true },
-        { id: 'income', type: 'textInput', money: true, required: false },
-        {
-          id: 'theoreticalExpenses',
-          type: 'custom',
-          Component: ({
-            inputProps: { currentValue, label, itemValue = {} },
-          }) => (
-            <div className="flex-col" style={{ paddingLeft: 12 }}>
-              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
-                {label}
-              </label>
-              <b>
-                <Money
-                  id="theoreticalExpenses"
-                  value={
-                    currentValue || Calculator.getRealEstateCost(itemValue)
-                  }
-                  tooltip={
-                    currentValue ? (
-                      undefined
-                    ) : (
-                      <T id="Forms.theoreticalExpenses.tooltip" />
-                    )
-                  }
-                />
-                <span>
-                  &nbsp;/
-                  <T id="general.month" />
-                </span>
-              </b>
-            </div>
-          ),
-        },
-      ],
-    },
-    makeArrayOfObjectsInput('otherFortune'),
-  ];
+  const fortuneArray = getBorrowerFortuneArray();
 
-  const insuranceArray = [
-    {
-      type: 'h3',
-      id: 'insurance',
-      required: false,
-      ignore: true,
-      className: 'v-align-insurance',
-    },
-    makeArrayOfObjectsInput('insurance2'),
-    makeArrayOfObjectsInput('bank3A'),
-    makeArrayOfObjectsInput('insurance3A'),
-    makeArrayOfObjectsInput('insurance3B'),
-  ];
+  const insuranceArray = getBorrowerInsuranceArray();
 
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
 };

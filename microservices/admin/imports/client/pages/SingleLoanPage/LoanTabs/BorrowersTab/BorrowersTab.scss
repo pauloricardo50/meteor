@@ -5,8 +5,12 @@
   align-items: flex-start;
 
   &-form {
-    margin: 0 16px;
-    max-width: 400px;
+    padding: 0 16px;
+    width: 400px;
+
+    &.second {
+      border-left: solid 1px $border-grey;
+    }
   }
 
   .side-recap {
@@ -51,6 +55,3 @@
   }
 }
 
-.user-form {
-  width: unset;
-}
