@@ -2,7 +2,8 @@ import React from 'react';
 
 import FrontContactContainer from './FrontContactContainer';
 import FrontContactHeader from './FrontContactHeader';
-import ContactCard from './ContactCard/ContactCard';
+import ContactCard from './ContactCard';
+import FrontContactLoans from './FrontContactLoans/FrontContactLoans';
 
 const FrontContact = ({
   finalContact,
@@ -42,6 +43,10 @@ const FrontContact = ({
         isEpotekResource={isEpotekResource}
         collection={collection}
       />
+
+      {isEpotekResource && collection === 'users' && (
+        <FrontContactLoans loans={finalContact.loans} />
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import cx from 'classnames';
 
 import Icon from '../../core/components/Icon';
 
@@ -12,7 +13,7 @@ const FrontCard = props => {
         <div className="title">
           <Icon type={icon} className="icon" />
           <h3>{title}</h3>
-          {subtitle && <span className="subtitle secondary">{subtitle}</span>}
+          {subtitle && <span className="subtitle">{subtitle}</span>}
         </div>
         <Icon type={expand ? 'expandLess' : 'expandMore'} className="icon" />
       </div>

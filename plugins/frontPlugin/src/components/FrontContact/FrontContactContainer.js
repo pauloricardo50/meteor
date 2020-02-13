@@ -41,9 +41,13 @@ export default withProps(({ contact }) => {
         name: 1,
         status: 1,
         tasks: taskFragment,
+        category: 1,
+        mainAssignee: 1,
       },
       tasks: taskFragment,
       roles: 1,
+      organisations: { name: 1 },
+      acquisitionChannel: 1,
     })
       .then(result => {
         if (result._id) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StylesProvider } from '@material-ui/core/styles';
 
 import FrontContact from './FrontContact/FrontContact';
-import FrontContactSelect from './FrontContactSelect/FrontContactSelect';
+import FrontContactSelect from './FrontContactSelect';
 import LibraryWrappers from '../core/components/BaseRouter/LibraryWrappers';
 import {
   getFormats,
