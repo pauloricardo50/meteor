@@ -311,10 +311,14 @@ const analyticsMiddleware = options => (req, res, next) => {
   if (shouldSkipMiddleware({ req, middleware: 'analyticsMiddleware' })) {
     return next();
   }
-  const { files: { file = {} } = {} } = req;
   let analyticsParams = {};
-  if (file.size) {
-    analyticsParams = { fileSize: file.size };
+  const { authenticationType } = req;
+
+  if (authenticationType === 'multipart') {
+    const { files: { file = {} } = {} } = req;
+    if (file.size) {
+      analyticsParams = { fileSize: file.size };
+    }
   }
 
   req.analyticsParams = analyticsParams;
