@@ -34,6 +34,16 @@ Properties.cacheCount({
   cacheField: 'loanCount',
 });
 
+Loans.cacheField({
+  cacheField: 'structureCache',
+  fields: ['structures', 'selectedStructure'],
+  transform({ structures = [], selectedStructure }) {
+    return selectedStructure
+      ? structures.find(({ id }) => id === selectedStructure)
+      : undefined;
+  },
+});
+
 Meteor.startup(() => {
   // Caches
   // migrate('promotionLots', 'promotionCache', {
@@ -50,7 +60,6 @@ Meteor.startup(() => {
   //   ],
   // });
   // migrate('loans', 'userCache', { 'userCache.referredByUserLink': { $exists: false } });
-  // migrate('loans', 'lendersCache', { lendersCache: { $exists: false } });
   // migrate('loans', 'tasksCache', { tasksCache: { $exists: false } });
   // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
   // migrate('lenderRules', 'organisationCache', {
@@ -66,5 +75,18 @@ Meteor.startup(() => {
   // });
   migrate('organisations', 'revenuesCount', {
     revenuesCount: { $exists: false },
+  });
+  migrate('loans', 'structureCache', {
+    structureCache: { $exists: false },
+    selectedStructure: { $exists: true },
+    $nor: [{ structures: { $exists: false } }, { structures: { $size: 0 } }],
+  });
+  migrate('lenders', 'offersCache', { offersCache: { $exists: false } });
+  migrate('loans', 'lendersCache', {
+    $nor: [
+      { lendersCache: { $exists: false } },
+      { lendersCache: { $size: 0 } },
+    ],
+    'lendersCache.offersCache': { $exists: false },
   });
 });
