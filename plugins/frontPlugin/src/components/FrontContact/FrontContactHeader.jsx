@@ -4,6 +4,7 @@ import cx from 'classnames';
 import IconButton from '../../core/components/IconButton';
 import FrontContactAddUser from './FrontContactAddUser';
 import FrontContactTaskAdder from './FrontContactTasks/FrontContactTaskAdder';
+import FrontContactNoteAdder from './FrontContactLoans/FrontContactNoteAdder';
 
 const { Front, subdomains } = window;
 
@@ -51,12 +52,15 @@ const FrontContactHeader = ({
         {name}
       </h3>
       <h4>{email}</h4>
-      <FrontContactTaskAdder
-        collection={collection}
-        isEpotekResource={isEpotekResource}
-        contact={contact}
-        conversation={conversation}
-      />
+      <div className="flex-row center-align sb space-children">
+        <FrontContactTaskAdder
+          collection={collection}
+          isEpotekResource={isEpotekResource}
+          contact={contact}
+          conversation={conversation}
+        />
+        {isEpotekResource && <FrontContactNoteAdder contact={contact} />}
+      </div>
       <IconButton
         onClick={refetch}
         type="loop"
