@@ -31,6 +31,7 @@ const NewUsersStat = ({
     increment={<Percent showPlus value={newUsers.change} />}
     positive={newUsers.change > 0}
     title="Nouveaux clients"
+    large
     top={
       <>
         <DialogSimple

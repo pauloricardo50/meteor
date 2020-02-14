@@ -6,7 +6,7 @@ import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-const RevenuesWithoutAssignees = props => {
+const RevenuesWithoutAssignees = () => {
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
     params: {
@@ -22,6 +22,10 @@ const RevenuesWithoutAssignees = props => {
   });
 
   const isOk = revenues.length === 0;
+
+  if (isOk) {
+    return null;
+  }
 
   return (
     <StatItem

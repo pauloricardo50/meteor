@@ -29,6 +29,10 @@ const CustomersWithoutAssignees = props => {
   const isLoading = loading1 || loading2;
   const isOk = !isLoading && users.length === 0;
 
+  if (isOk) {
+    return null;
+  }
+
   return (
     <StatItem
       title={<span>Clients sans conseiller</span>}

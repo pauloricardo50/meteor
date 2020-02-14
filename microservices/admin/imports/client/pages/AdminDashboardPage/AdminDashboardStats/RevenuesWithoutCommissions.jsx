@@ -93,6 +93,10 @@ const RevenuesWithoutCommissions = props => {
     'loan.user.referredByOrganisation.name',
   );
 
+  if (!filteredRevenues.length) {
+    return null;
+  }
+
   return (
     <StatItem
       title="Revenus sans commission"

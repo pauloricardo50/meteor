@@ -30,6 +30,7 @@ const NewLoansStat = ({
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
     title="Nouveaux dossiers"
+    large
     top={
       <>
         <DialogSimple

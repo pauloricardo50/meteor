@@ -51,3 +51,8 @@ export const userSearch = Users.createQuery(USER_QUERIES.USER_SEARCH, {
   roles: 1,
   $options: { limit: 5 },
 });
+
+export const incoherentAssignees = Users.createQuery(
+  USER_QUERIES.INCOHERENT_ASSIGNEES,
+  () => {},
+);
