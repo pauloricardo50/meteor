@@ -7,6 +7,9 @@ import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import Recap from 'core/components/Recap';
+import BorrowerRemover from 'core/components/BorrowerRemover';
+import BorrowerReuser from 'core/components/BorrowerReuser';
+import BorrowerAge from '../BorrowerAge';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
   gender: doc.gender,
@@ -18,6 +21,7 @@ const BorrowersTabForm = ({
   borrowers,
   Calculator,
   funcs,
+  loanId,
 }) => {
   const { mortgageNotes } = borrower;
   const inputs = funcs.reduce(
@@ -33,6 +37,25 @@ const BorrowersTabForm = ({
       <h2 className="text-center">
         {borrower.name || `Emprunteur ${index + 1}`}
       </h2>
+      <div className="flex c space-children">
+        <BorrowerReuser
+          loanId={loanId}
+          borrowerId={borrower._id}
+          buttonProps={{
+            raised: false,
+            size: 'small',
+            primary: true,
+            label: 'Réutiliser emprunteur',
+          }}
+        />
+        {borrowers && borrowers.length > 1 && (
+          <BorrowerRemover
+            borrower={borrower}
+            loanId={loanId}
+            buttonProps={{ outlined: false, size: 'small' }}
+          />
+        )}
+      </div>
 
       <hr style={{ width: '60%' }} />
 
@@ -55,6 +78,9 @@ const BorrowersTabForm = ({
       </VerticalAligner>
 
       <div className={cx('side-recap card1 card-top', { right: index === 1 })}>
+        <div className="flex-col center-align">
+          <BorrowerAge borrower={borrower} />
+        </div>
         <Recap
           arrayName="borrower"
           borrower={borrower}

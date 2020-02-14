@@ -83,8 +83,8 @@ const getPercentage = (funcs, borrowers) => {
 
 const BorrowersTab = props => {
   const [formFilter, setFormFilter] = useState('all');
-  const { loan } = props;
-  const { borrowers = [], Calculator } = loan;
+  const { loan, Calculator } = props;
+  const { borrowers = [], _id: loanId } = loan;
   const options = useMemo(
     () =>
       baseOptions
@@ -117,7 +117,10 @@ const BorrowersTab = props => {
         }}
       />
 
-      <div style={{ marginBottom: 16 }}>
+      <div style={{ marginBottom: 16 }} className="flex-col center-align">
+        <b htmlFor="" style={{ margin: 'auto' }}>
+          Afficher
+        </b>
         <RadioTabs
           options={options}
           value={formFilter}
@@ -135,6 +138,7 @@ const BorrowersTab = props => {
               key={borrower._id}
               Calculator={Calculator}
               funcs={options.find(({ id }) => id === formFilter).funcs}
+              loanId={loanId}
             />
           ))}
         </div>
