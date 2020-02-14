@@ -19,7 +19,7 @@ const MortgageNotesForm = ({
     <h3 className="text-center v-align-mortgageNotes">
       <T id="general.mortgageNotes" />
     </h3>
-    <p className="description">
+    <p className="description text-center">
       <T
         id={
           borrowerId

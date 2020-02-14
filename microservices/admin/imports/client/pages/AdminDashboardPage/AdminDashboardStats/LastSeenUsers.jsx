@@ -10,7 +10,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import MixpanelService from 'core/utils/mixpanel';
 
 const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
-  <div key={id} className="flex center-align flex--sb">
+  <div key={id} className="flex center-align sb">
     <CollectionIconLink
       relatedDoc={{
         _id: id,

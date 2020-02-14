@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
@@ -6,6 +8,7 @@ import T from '../Translation';
 import AutoFormTextInput from './AutoFormTextInput';
 import AutoFormDateInput from './AutoFormDateInput';
 import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
+import ValidIcon from './ValidIcon';
 
 const styles = {
   button: {
@@ -15,14 +18,18 @@ const styles = {
     marginBottom: 16,
     overflow: 'unset',
   },
+  savingIcon: { top: -7, right: -12 },
 };
 
 class ArrayInput extends Component {
   constructor(props) {
     super(props);
 
+    const count = (this.props.inputProps.currentValue || []).length;
+
     this.state = {
-      count: (this.props.inputProps.currentValue || []).length,
+      count,
+      showRecap: count > 1,
     };
   }
 
@@ -42,6 +49,7 @@ class ArrayInput extends Component {
         intlId,
         Component: CustomComponent,
         inputLabelProps: { shrink } = {},
+        adminOnly,
       } = input;
       const finalCurrentValue =
         currentValue && currentValue[i] && currentValue[i][inputId];
@@ -60,6 +68,10 @@ class ArrayInput extends Component {
           disabled,
         },
       };
+
+      if (adminOnly && Meteor.microservice !== 'admin') {
+        return null;
+      }
 
       if (type === 'textInput') {
         return <AutoFormTextInput {...childProps} key={id + inputId + i} />;
@@ -107,7 +119,7 @@ class ArrayInput extends Component {
           style={styles.arrayItem}
           key={`${id + i}item`}
         >
-          {inputs.map(input => mapInput(input, i))}
+          {inputs.map(input => mapInput(input, i)).filter(x => x)}
         </div>,
       );
     }
@@ -129,9 +141,18 @@ class ArrayInput extends Component {
 
   render() {
     const {
-      inputProps: { style, label, disabled },
+      inputProps: {
+        style,
+        label,
+        disabled,
+        renderRecap,
+        currentValue,
+        required,
+      },
     } = this.props;
-    const { count } = this.state;
+    const { count, showRecap } = this.state;
+
+    const shouldShowRecap = showRecap && renderRecap;
 
     return (
       <div
@@ -142,36 +163,52 @@ class ArrayInput extends Component {
           {label}
         </label>
 
-        {this.getArray()}
+        {shouldShowRecap ? (
+          <div
+            className="card1 card-top flex-col center-align"
+            onClick={() => this.setState({ showRecap: false })}
+            style={{ alignSelf: 'center' }}
+          >
+            <span className="mb-8">{renderRecap(currentValue)}</span>
+            <Button primary>Modifier</Button>
+          </div>
+        ) : (
+          this.getArray()
+        )}
 
-        <div className="text-center">
-          {count <= 0 && (
-            <Button
-              raised
-              label={<T id="ArrayInput.add" />}
-              onClick={this.addValue}
-              disabled={disabled}
-            />
-          )}
-          {count > 0 && (
-            <Button
-              raised
-              label="-"
-              onClick={this.removeValue}
-              style={styles.button}
-              disabled={count <= 0 || disabled}
-            />
-          )}
-          {count > 0 && (
-            <Button
-              raised
-              label="+"
-              onClick={this.addValue}
-              primary
-              disabled={disabled}
-            />
-          )}
-        </div>
+        {!shouldShowRecap && (
+          <div className="text-center" style={{ position: 'relative' }}>
+            {count <= 0 && (
+              <>
+                <Button
+                  raised
+                  label={<T id="ArrayInput.add" />}
+                  onClick={this.addValue}
+                  disabled={disabled}
+                />
+                {required && <ValidIcon style={styles.savingIcon} todo />}
+              </>
+            )}
+            {count > 0 && (
+              <Button
+                raised
+                label="-"
+                onClick={this.removeValue}
+                style={styles.button}
+                disabled={count <= 0 || disabled}
+              />
+            )}
+            {count > 0 && (
+              <Button
+                raised
+                label="+"
+                onClick={this.addValue}
+                primary
+                disabled={disabled}
+              />
+            )}
+          </div>
+        )}
       </div>
     );
   }

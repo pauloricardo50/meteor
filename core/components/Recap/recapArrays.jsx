@@ -12,7 +12,8 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const borrowRatio = calc.getBorrowRatio({ loan });
   const fortune = calc.getFortune({ loan });
   const incomeRatio = calc.getIncomeRatio({ loan });
-  const insuranceFortune = calc.getInsuranceFortune({ loan });
+  const insurance2 = calc.getInsurance2({ loan });
+  const insuranceFortuneRest = calc.getInsuranceFortune({ loan }) - insurance2;
   const loanValue = calc.selectLoanValue({ loan });
   const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
   const monthly = calc.getMonthly({ loan });
@@ -152,9 +153,14 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       value: toMoney(fortune),
     },
     {
+      label: 'Recap.insurance2',
+      value: toMoney(insurance2),
+      hide: !insurance2,
+    },
+    {
       label: 'Recap.insuranceFortune',
-      value: toMoney(insuranceFortune),
-      hide: !insuranceFortune,
+      value: toMoney(insuranceFortuneRest),
+      hide: !insuranceFortuneRest,
     },
     {
       label: 'Recap.availableFunds',
@@ -229,7 +235,9 @@ export const getBorrowerArray = ({
 }) => {
   const bonusIncome = calc.getBonusIncome({ borrowers });
   const fortune = calc.getFortune({ borrowers });
-  const insuranceFortune = calc.getInsuranceFortune({ borrowers });
+  const insurance2 = calc.getInsurance2({ borrowers });
+  const insuranceFortuneRest =
+    calc.getInsuranceFortune({ borrowers }) - insurance2;
   const netSalary = calc.getNetSalary({ borrowers });
   const otherFortune = calc.getOtherFortune({ borrowers });
   const otherIncome = calc.getOtherIncome({ borrowers });
@@ -270,9 +278,14 @@ export const getBorrowerArray = ({
       value: toMoney(fortune),
     },
     {
+      label: 'Recap.insurance2',
+      value: toMoney(insurance2),
+      hide: !insurance2,
+    },
+    {
       label: 'Recap.insuranceFortune',
-      value: toMoney(insuranceFortune),
-      hide: !insuranceFortune,
+      value: toMoney(insuranceFortuneRest),
+      hide: !insuranceFortuneRest,
     },
     {
       label: 'Recap.donation',
