@@ -6,6 +6,7 @@ import SingleContactPageContainer from './SingleContactPageContainer';
 import SingleContactPageHeader from './SingleContactPageHeader';
 import SingleContactPageInfos from './SingleContactPageInfos';
 import OffersTable from '../SingleOrganisationPage/OffersTable/OffersTable';
+import SingleContactPageTasks from './SingleContactPageTasks';
 
 const tabs = props =>
   [
@@ -29,6 +30,7 @@ const SingleContactPage = ({ contact }) => (
   <div className="card1 card-top">
     <SingleContactPageHeader contact={contact} />
     <SingleContactPageInfos contact={contact} />
+    <SingleContactPageTasks contactId={contact._id} />
     {contact.offers && !!contact.offers.length && (
       <Tabs tabs={tabs({ offers: contact.offers })} />
     )}

@@ -14,6 +14,7 @@ import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
 import { task as taskFragment } from '../../fragments';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
+import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -55,6 +56,9 @@ class TaskService extends CollectionService {
     }
     if (collection === LENDERS_COLLECTION) {
       this.addLink({ id: taskId, linkName: 'lender', linkId: docId });
+    }
+    if (collection === CONTACTS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'contact', linkId: docId });
     }
 
     if (assignee) {

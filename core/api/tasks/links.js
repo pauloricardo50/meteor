@@ -4,6 +4,7 @@ import Notifications from '../notifications';
 import Promotions from '../promotions';
 import Organisations from '../organisations';
 import Lenders from '../lenders';
+import Contacts from '../contacts';
 
 Tasks.addLinks({
   assignee: {
@@ -46,5 +47,11 @@ Tasks.addLinks({
     collection: Notifications,
     inversedBy: 'task',
     autoremove: true,
+  },
+  contact: {
+    field: 'contactLink',
+    collection: Contacts,
+    type: 'one',
+    metadata: true,
   },
 });
