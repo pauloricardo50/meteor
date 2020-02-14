@@ -123,4 +123,5 @@ const LoansWithoutRevenues = ({ loans }) => {
 export default withSmartQuery({
   query: loansWithoutRevenues,
   dataName: 'loans',
+  refetchOnMethodCall: false,
 })(LoansWithoutRevenues);

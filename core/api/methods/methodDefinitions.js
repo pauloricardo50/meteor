@@ -3,6 +3,7 @@ import { Method } from './methods';
 
 export const getMixpanelAuthorization = new Method({
   name: 'getMixpanelAuthorization',
+  doNotRefetchQueries: true,
 });
 
 export const addBorrower = new Method({

@@ -19,6 +19,7 @@ const RevenuesWithoutAssignees = () => {
       },
       loan: { name: 1 },
     },
+    refetchOnMethodCall: false,
   });
 
   const isOk = revenues.length === 0;

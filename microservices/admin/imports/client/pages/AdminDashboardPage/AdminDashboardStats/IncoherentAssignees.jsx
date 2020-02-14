@@ -13,6 +13,7 @@ const IncoherentAssignees = () => {
   const currentUser = useContext(CurrentUserContext);
   const { data: users = [], loading } = useStaticMeteorData({
     query: incoherentAssignees,
+    refetchOnMethodCall: false,
   });
   const myUsers = users.filter(
     ({ assignedEmployeeId }) => assignedEmployeeId === currentUser._id,

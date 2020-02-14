@@ -59,7 +59,9 @@ export const removeQueryToRefetch = queryName => {
   }
 };
 
-export const refetchQuery = query => ClientEventService.emit(query);
+export const refetchQuery = query => {
+  ClientEventService.emit(query);
+};
 
 export const refetchQueries = methodName => {
   if (isActive()) {
