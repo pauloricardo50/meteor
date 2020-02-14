@@ -388,6 +388,7 @@ export const trackRequest = ({ req, result }) => {
     duration,
     authenticationType,
     endpointName,
+    analyticsParams = {},
   } = req;
   const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
 
@@ -411,6 +412,7 @@ export const trackRequest = ({ req, result }) => {
     result,
     authenticationType,
     endpointName,
+    ...analyticsParams,
   });
 };
 
@@ -493,6 +495,7 @@ const AUTH_MIDDLEWARES = {
     'authMiddleware',
     'filterMiddleware',
     'replayHandlerMiddleware',
+    'analyticsMiddleware',
   ],
   rsa: ['replayHandlerMiddleware', 'filterMiddleware', 'authMiddleware'],
 };

@@ -37,6 +37,10 @@ export const EVENTS_CONFIG = {
       'duration',
       'authenticationType',
       'endpointName',
+      {
+        name: 'fileSize',
+        optional: ({ endpointName }) => endpointName !== 'Upload file',
+      },
     ],
   },
   [EVENTS.LOAN_CREATED]: {

@@ -307,6 +307,21 @@ const multipartMiddleware = options => (req, res, next) => {
   return middleware(req, res, next);
 };
 
+const analyticsMiddleware = options => (req, res, next) => {
+  if (shouldSkipMiddleware({ req, middleware: 'analyticsMiddleware' })) {
+    return next();
+  }
+  const { files: { file = {} } = {} } = req;
+  let analyticsParams = {};
+  if (file.size) {
+    analyticsParams = { fileSize: file.size };
+  }
+
+  req.analyticsParams = analyticsParams;
+
+  next();
+};
+
 export const preMiddlewares = [
   selectAuthTypeMiddleware,
   filterMiddleware,
@@ -317,5 +332,6 @@ export const preMiddlewares = [
   simpleAuthMiddleware,
   basicAuthMiddleware,
   replayHandlerMiddleware,
+  analyticsMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];
