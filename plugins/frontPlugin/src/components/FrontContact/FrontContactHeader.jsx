@@ -1,8 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
+import IconButton from '../../core/components/IconButton';
 import FrontContactAddUser from './FrontContactAddUser';
-import FrontContactTaskAdder from './FrontContactTaskAdder';
+import FrontContactTaskAdder from './FrontContactTasks/FrontContactTaskAdder';
 
 const { Front, subdomains } = window;
 
@@ -25,6 +26,7 @@ const FrontContactHeader = ({
   isEpotekResource,
   collection,
   conversation,
+  refetch,
 }) => {
   const { name, email, avatar } = contact;
 
@@ -54,6 +56,12 @@ const FrontContactHeader = ({
         isEpotekResource={isEpotekResource}
         contact={contact}
         conversation={conversation}
+      />
+      <IconButton
+        onClick={refetch}
+        type="loop"
+        tooltip="Rafraîchir"
+        className="refresh"
       />
     </div>
   );

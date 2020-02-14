@@ -12,6 +12,7 @@ const FrontContact = ({
   error,
   isEpotekResource,
   collection,
+  refetch,
 }) => {
   if (loading) {
     return (
@@ -36,16 +37,18 @@ const FrontContact = ({
         contact={finalContact}
         isEpotekResource={isEpotekResource}
         collection={collection}
+        refetch={refetch}
         conversation={conversation}
       />
       <ContactCard
         contact={finalContact}
         isEpotekResource={isEpotekResource}
         collection={collection}
+        refetch={refetch}
       />
 
       {isEpotekResource && collection === 'users' && (
-        <FrontContactLoans loans={finalContact.loans} />
+        <FrontContactLoans loans={finalContact.loans} refetch={refetch} />
       )}
     </div>
   );

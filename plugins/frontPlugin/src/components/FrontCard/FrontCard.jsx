@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import cx from 'classnames';
 
 import Icon from '../../core/components/Icon';
 

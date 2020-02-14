@@ -9,11 +9,12 @@ import {
 } from '../../../core/api/loans/loanConstants';
 import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
+import FrontContactTasks from '../FrontContactTasks/FrontContactTasks';
 
 const { Front, subdomains } = window;
 
-const LoanCard = ({ loan, expanded }) => {
-  const { _id, name, status, category, mainAssignee } = loan;
+const LoanCard = ({ loan, expanded, refetch }) => {
+  const { _id, name, status, category, mainAssignee, tasks = [] } = loan;
 
   return (
     <FrontCard
@@ -54,6 +55,7 @@ const LoanCard = ({ loan, expanded }) => {
       expanded={expanded}
     >
       <FrontCardItem label="nom" data={name} />
+      {!!tasks.length && <FrontContactTasks tasks={tasks} refetch={refetch} />}
     </FrontCard>
   );
 };

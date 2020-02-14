@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import FrontCard from '../FrontCard/FrontCard';
 import FrontCardItem from '../FrontCard/FrontCardItem';
+import FrontContactTasks from './FrontContactTasks/FrontContactTasks';
 import T from '../../core/components/Translation';
 import { employeesById } from '../../core/arrays/epotekEmployees';
 
@@ -37,7 +38,7 @@ const getContactTitle = props => {
 };
 
 const ContactCard = props => {
-  const { contact, isEpotekResource } = props;
+  const { contact, isEpotekResource, refetch } = props;
   const {
     email,
     name,
@@ -48,6 +49,7 @@ const ContactCard = props => {
     organisations = [],
     phoneNumbers = [],
     acquisitionChannel,
+    tasks = [],
   } = contact;
   return (
     <FrontCard
@@ -129,6 +131,7 @@ const ContactCard = props => {
           data={<T id={`Forms.acquisitionChannel.${acquisitionChannel}`} />}
         />
       )}
+      {!!tasks.length && <FrontContactTasks tasks={tasks} refetch={refetch} />}
     </FrontCard>
   );
 };

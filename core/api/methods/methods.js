@@ -90,8 +90,8 @@ export class Method extends Mutation {
     const self = this;
 
     Meteor.methods({
-      [name](params = {}, additionalData) {
-        check(additionalData, Object);
+      [name](params = {}, additionalData = {}) {
+        check(additionalData, Match.Maybe(Object));
         check(
           additionalData.location,
           Match.Maybe({

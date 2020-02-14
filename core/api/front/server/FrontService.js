@@ -59,7 +59,7 @@ class FrontService {
   handleMethod({ user: { _id }, methodName, ...params }) {
     return new Promise((resolve, reject) => {
       ddpWithUserId(_id, () => {
-        Meteor.call(methodName, ...params, (error, result) => {
+        Meteor.call(methodName, params[0], (error, result) => {
           if (error) {
             reject(error);
           }

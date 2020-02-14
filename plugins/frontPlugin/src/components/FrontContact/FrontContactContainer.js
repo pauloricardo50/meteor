@@ -17,9 +17,10 @@ const contactFragment = email => ({
 
 const taskFragment = {
   $filters: { status: 'ACTIVE' },
-  title: 1,
-  dueAt: 1,
   assignee: { name: 1 },
+  description: 1,
+  dueAt: 1,
+  title: 1,
 };
 
 export default withProps(({ contact }) => {
@@ -31,7 +32,7 @@ export default withProps(({ contact }) => {
   const isEpotekResource = !!epotekContact;
   let finalContact = epotekContact;
 
-  useEffect(() => {
+  const refetch = () => {
     EpotekFrontApi.queryOne('users', {
       ...contactFragment(handle),
       assignedEmployee: { name: 1 },
@@ -70,7 +71,9 @@ export default withProps(({ contact }) => {
         setLoading(false);
         setError(e);
       });
-  }, []);
+  };
+
+  useEffect(refetch, []);
 
   if (!isEpotekResource) {
     finalContact = { ...contact, email: handle, name: display_name || handle };
@@ -82,5 +85,6 @@ export default withProps(({ contact }) => {
     isEpotekResource,
     finalContact,
     collection,
+    refetch,
   };
 });

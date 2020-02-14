@@ -36,6 +36,13 @@
     align-items: center;
     justify-content: center;
     align-self:center;
+    position: relative;
+
+    .refresh {
+      position: absolute;
+      top: -15px;
+      right: -25px;
+    }
 
     &-avatar {
       width: 100px;
@@ -149,4 +156,14 @@
     }
   }
 
+}
+
+.front-contact-tasks {
+  th span {
+    font-size: 12px;
+  }
+
+  td {
+    padding: 4px 0;
+  }
 }
