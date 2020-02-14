@@ -1,10 +1,9 @@
 import React from 'react';
+import queryString from 'query-string';
+
 import Button from '../../../core/components/Button';
 
 const { Front, subdomains } = window;
-
-const getTaskDescription = frontLink =>
-  encodeURIComponent(`Front: ${frontLink}`);
 
 const getTaskUrl = ({
   collection,
@@ -13,14 +12,17 @@ const getTaskUrl = ({
   loan,
   frontLink,
 }) => {
-  const taskDescription = getTaskDescription(frontLink);
   const baseUrl = subdomains.admin;
-  const searchParams = `addTask=true&description=${taskDescription}`;
-
-  if (!isEpotekResource) {
-    return `${baseUrl}?${searchParams}&title=${contact?.display_name ||
-      contact?.handle}`;
-  }
+  const searchParams = queryString.stringify({
+    ...(isEpotekResource
+      ? { addTask: true }
+      : {
+          addUnlinkedTask: true,
+          title: contact?.display_name || contact?.handle,
+        }),
+    description: `Front: ${frontLink}`,
+  });
+  console.log('searchParams:', searchParams);
 
   const id = contact?._id || loan?._id;
 

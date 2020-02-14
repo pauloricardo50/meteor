@@ -38,11 +38,7 @@ export default compose(
     const [searchParams, setSearchParams] = useState(initialSearchParams);
     return {
       model: searchParams,
-      openOnMount:
-        searchParams.addTask &&
-        !!Object.keys(searchParams).filter(key =>
-          ['title', 'description'].includes(key),
-        ).length,
+      openOnMount: searchParams.addTask,
       resetForm: () => setSearchParams({}),
     };
   }),
