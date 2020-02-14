@@ -318,7 +318,7 @@ addEmailListener({
     const {
       name: loanName,
       user: { name: customerName } = {},
-      mainAssignee: { name: adminName } = {},
+      mainAssignee: { name: adminName, email: adminAddress } = {},
     } = LoanService.get(loanId, {
       name: 1,
       user: { name: 1 },
@@ -337,6 +337,7 @@ addEmailListener({
           loanName,
           note,
           adminName: adminName || 'e-Potek',
+          adminAddress,
           bccAddresses: notifyWithCta.slice(1),
           mainRecipientIsBcc: true,
         },
@@ -352,6 +353,7 @@ addEmailListener({
           loanName,
           note,
           adminName: adminName || 'e-Potek',
+          adminAddress,
           bccAddresses: notifyWithoutCta.slice(1),
           mainRecipientIsBcc: true,
         },

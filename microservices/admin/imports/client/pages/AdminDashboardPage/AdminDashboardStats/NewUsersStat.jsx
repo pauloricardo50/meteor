@@ -31,6 +31,7 @@ const NewUsersStat = ({
     increment={<Percent showPlus value={newUsers.change} />}
     positive={newUsers.change > 0}
     title="Nouveaux clients"
+    large
     top={
       <>
         <DialogSimple
@@ -85,10 +86,12 @@ export default compose(
     query: newUsers,
     dataName: 'newUsers',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: userHistogram,
     dataName: 'userHistogram',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    refetchOnMethodCall: false,
   }),
 )(NewUsersStat);

@@ -77,9 +77,7 @@ const getQueryFilters = ({
   }
 
   return {
-    assigneeLinks: {
-      $elemMatch: { _id: assignedEmployeeId, isMain: true },
-    },
+    assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
     step,
     $or: $or.length ? $or : undefined,
     anonymous: { $ne: true },

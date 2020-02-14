@@ -231,62 +231,8 @@
   }
 }
 
-.user-form {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  width: 100%;
-
-  &.card1 {
-    box-sizing: border-box;
-  }
-
-  .form-select__row {
-    position: relative;
-
-    width: 100%;
-
-    .mui-select {
-      position: relative;
-
-      box-sizing: border-box;
-      margin-bottom: 16px;
-      padding-right: 50px;
-    }
-  }
-
-  .form-input__row {
-    .todo-circle {
-      top: 0;
-      right: -12px;
-    }
-
-    .saving-icon {
-      top: 0;
-      right: -12px;
-    }
-  }
-
-  .form-radio__row {
-    box-sizing: border-box;
-    padding-right: 50px;
-
-    .todo-circle {
-      top: -10px;
-      right: -12px;
-    }
-
-    .saving-icon {
-      top: 16px;
-      right: -12px;
-    }
-  }
-
-  &__finance {
-    max-width: 400px;
-  }
+.user-form__finance {
+  max-width: 400px;
 }
 
 .borrower-page__wrapper {
@@ -340,35 +286,7 @@
   }
 }
 
-.user-form__info h3,
-h2 {
-  margin-bottom: 25px;
-  // font-size: 17px;	
 
-  font-weight: bold;
-}
-
-.user-form__info {
-  h3 {
-    margin-top: 40px;
-  }
-
-  .form-group {
-    > div {
-      max-width: 100% !important;
-    }
-  }
-
-  > div {
-    max-width: 100% !important;
-  }
-
-  .mui-text-input {
-    box-sizing: border-box;
-    max-width: 100% !important;
-    padding-right: 50px;
-  }
-}
 
 .description {
   align-self: initial;

@@ -17,8 +17,10 @@ import {
   userEmails,
   userSearch,
   proUser,
+  incoherentAssignees,
 } from '../queries';
 import UserService from './UserService';
+import { incoherentAssigneesResolver } from './resolvers';
 
 exposeQuery({
   query: adminUsers,
@@ -237,4 +239,9 @@ exposeQuery({
       };
     },
   },
+});
+
+exposeQuery({
+  query: incoherentAssignees,
+  resolver: incoherentAssigneesResolver,
 });

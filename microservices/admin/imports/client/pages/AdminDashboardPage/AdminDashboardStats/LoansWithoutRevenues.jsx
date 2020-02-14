@@ -88,6 +88,10 @@ const LoansWithoutRevenues = ({ loans }) => {
       userCache.assignedEmployeeCache._id === currentUser._id,
   );
 
+  if (isOk) {
+    return null;
+  }
+
   return (
     <StatItem
       value={<CountUp end={loans.length} preserveValue separator=" " />}
@@ -119,4 +123,5 @@ const LoansWithoutRevenues = ({ loans }) => {
 export default withSmartQuery({
   query: loansWithoutRevenues,
   dataName: 'loans',
+  refetchOnMethodCall: false,
 })(LoansWithoutRevenues);

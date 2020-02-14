@@ -5,7 +5,7 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import { REVENUE_STATUS, REVENUES_COLLECTION } from 'core/api/constants';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
@@ -54,4 +54,5 @@ export default withSmartQuery({
     assigneeLink: 1,
   },
   dataName: 'revenues',
+  refetchOnMethodCall: false,
 })(OutdatedRevenues);

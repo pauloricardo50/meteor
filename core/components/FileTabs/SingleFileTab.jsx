@@ -8,6 +8,7 @@ import {
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
   LOANS_COLLECTION,
+  BASIC_DOCUMENTS_LIST,
 } from '../../api/constants';
 import {
   getBorrowerDocuments,
@@ -47,22 +48,35 @@ const SingleFileTab = ({ documentArray, ...props }) => {
     doc,
     className,
     withAdditionalDocAdder = true,
+    basicOnly,
   } = props;
+
+  let displayedDocs =
+    documentArray || documentsToDisplay({ collection, loan, id: doc._id });
+  let hiddenDocs = documentsToHide({
+    collection,
+    loan,
+    id: doc._id,
+    doc,
+  });
+
+  if (typeof basicOnly === 'boolean' && basicOnly) {
+    displayedDocs = displayedDocs.filter(({ id }) =>
+      BASIC_DOCUMENTS_LIST.includes(id),
+    );
+    hiddenDocs = hiddenDocs.filter(({ id }) =>
+      BASIC_DOCUMENTS_LIST.includes(id),
+    );
+  }
+
   return (
     <div className={cx('single-file-tab', className)}>
       {withAdditionalDocAdder && Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}
       <UploaderCategories
-        documentsToDisplay={
-          documentArray || documentsToDisplay({ collection, loan, id: doc._id })
-        }
-        documentsToHide={documentsToHide({
-          collection,
-          loan,
-          id: doc._id,
-          doc,
-        })}
+        documentsToDisplay={displayedDocs}
+        documentsToHide={hiddenDocs}
         canModify
         {...props}
       />

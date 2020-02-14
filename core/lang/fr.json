@@ -2,6 +2,7 @@
   "ContactTaskInsertForm.label": "Ajouter tâche",
   "ContactTaskInsertForm.dialogTitle": "Nouvelle tâche",
   "ContactTaskInsertForm.dialogDescription": "Cette tâche sera liée à ce contact",
+  "Recap.insurance2": "Fonds 2e pilier (LPP)",
   "File.roles.public": "Document public",
   "File.roles.public.tooltip": "Rendre le document public",
   "File.roles.public.confirm": "Êtes-vous sûr de vouloir rendre le document {file} accessible publiquement ?",

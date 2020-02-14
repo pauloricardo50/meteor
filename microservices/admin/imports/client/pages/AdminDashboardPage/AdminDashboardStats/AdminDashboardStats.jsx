@@ -9,6 +9,7 @@ import CustomersWithoutAssignees from './CustomersWithoutAssignees';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
+import IncoherentAssignees from './IncoherentAssignees';
 
 const AdminDashboardStats = ({
   newLoans,
@@ -32,11 +33,12 @@ const AdminDashboardStats = ({
       <h2>Santé de la base de données</h2>
       <div className="flex wrap sa">
         <OutdatedRevenues />
+        <UnpaidCommissions />
         <LoansWithoutRevenues />
         <CustomersWithoutAssignees />
         <RevenuesWithoutAssignees />
         <RevenuesWithoutCommissions />
-        <UnpaidCommissions />
+        <IncoherentAssignees />
       </div>
     </div>
   </div>

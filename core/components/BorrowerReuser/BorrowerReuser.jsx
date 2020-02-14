@@ -7,7 +7,12 @@ import T from '../Translation';
 import BorrowerReuserContainer from './BorrowerReuserContainer';
 import DialogSimple from '../DialogSimple';
 
-const BorrowerReuser = ({ borrowers, switchBorrower, isLastLoan }) => {
+const BorrowerReuser = ({
+  borrowers,
+  switchBorrower,
+  isLastLoan,
+  buttonProps,
+}) => {
   if (!borrowers || borrowers.length === 0) {
     return null;
   }
@@ -24,6 +29,7 @@ const BorrowerReuser = ({ borrowers, switchBorrower, isLastLoan }) => {
         )
       }
       renderProps
+      buttonProps={buttonProps}
     >
       {({ handleClose }) => (
         <div>

@@ -46,7 +46,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
             className: 'grid-2',
             fields: ['amortizationGoal', 'amortizationYears'],
           },
-          { className: 'flex flex--sb', fields: ['interest*'] },
+          { className: 'flex sb', fields: ['interest*'] },
         ],
       },
       {
@@ -72,7 +72,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
             className: 'grid-2',
             fields: ['hasFlatDiscount', 'flatDiscount'],
           },
-          { className: 'flex flex--sb', fields: ['discount_*'] },
+          { className: 'flex sb', fields: ['discount_*'] },
         ],
       },
     ]}

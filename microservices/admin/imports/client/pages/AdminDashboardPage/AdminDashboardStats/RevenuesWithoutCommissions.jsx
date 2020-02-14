@@ -4,7 +4,7 @@ import groupBy from 'lodash/groupBy';
 import { Money } from 'core/components/Translation';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import DialogSimple from 'core/components/DialogSimple';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
@@ -61,6 +61,7 @@ const RevenuesWithoutCommissions = props => {
       amount: 1,
       assigneeLink: 1,
     },
+    refetchOnMethodCall: false,
   });
 
   const filteredRevenues = revenues.filter(
@@ -92,6 +93,10 @@ const RevenuesWithoutCommissions = props => {
     filteredRevenues,
     'loan.user.referredByOrganisation.name',
   );
+
+  if (!filteredRevenues.length) {
+    return null;
+  }
 
   return (
     <StatItem

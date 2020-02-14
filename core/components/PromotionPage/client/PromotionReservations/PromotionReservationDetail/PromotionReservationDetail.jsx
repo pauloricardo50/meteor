@@ -22,7 +22,6 @@ const promotionReservationsArray = [
 
 const PromotionReservationDetail = ({ promotionOption, loan }) => {
   const {
-    _id: promotionOptionId,
     reservationAgreement: {
       expirationDate,
       startDate,

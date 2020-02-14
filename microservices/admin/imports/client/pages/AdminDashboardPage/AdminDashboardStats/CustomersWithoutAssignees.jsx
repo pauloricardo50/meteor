@@ -16,6 +16,7 @@ const CustomersWithoutAssignees = props => {
       roles: [ROLES.USER],
       assignedEmployeeId: { $exists: false },
     },
+    refetchOnMethodCall: false,
   });
   const { data: users2 = [], loading: loading2 } = useStaticMeteorData({
     query: adminUsers,
@@ -24,10 +25,15 @@ const CustomersWithoutAssignees = props => {
       roles: [ROLES.USER],
       assignedEmployeeId: { $type: 'null' },
     },
+    refetchOnMethodCall: false,
   });
   const users = [...users1, ...users2];
   const isLoading = loading1 || loading2;
   const isOk = !isLoading && users.length === 0;
+
+  if (isOk) {
+    return null;
+  }
 
   return (
     <StatItem

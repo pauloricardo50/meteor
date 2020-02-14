@@ -30,6 +30,7 @@ const NewLoansStat = ({
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
     title="Nouveaux dossiers"
+    large
     top={
       <>
         <DialogSimple
@@ -84,10 +85,12 @@ export default compose(
     query: newLoans,
     dataName: 'newLoans',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: loanHistogram,
     dataName: 'loanHistogram',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    refetchOnMethodCall: false,
   }),
 )(NewLoansStat);

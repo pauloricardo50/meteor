@@ -8,11 +8,13 @@ export default compose(
     query: loanOffers,
     params: ({ loan: { _id: loanId } }) => ({ loanId }),
     queryOptions: { reactive: false },
+    smallLoader: true,
     dataName: 'offers',
   }),
   withSmartQuery({
     query: currentInterestRates,
-    dataName: 'generalInterestRates',
+    queryOptions: { reactive: false },
     smallLoader: true,
+    dataName: 'generalInterestRates',
   }),
 );

@@ -40,3 +40,5 @@ const ContextProvider = ({ currentUser, children }) => (
 );
 
 export const InjectCurrentUser = queryContainer(ContextProvider);
+
+export default CurrentUserContext;

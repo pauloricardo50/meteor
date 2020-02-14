@@ -1,3 +1,14 @@
+// This @import must be at top of file, otherwise the custom fonts will not work
+@import url("//hello.myfonts.net/count/36c4a4");
+
+@import "{}/node_modules/normalize-scss/sass/normalize";
+@include normalize();
+
+@import "./variables.scss";
+@import "./mixins.scss";
+@import "./core-components.scss";
+@import "./typography.scss";
+
 body,
 html,
 #react-root {
@@ -216,6 +227,10 @@ p.description,
   &.sa {
     justify-content: space-around;
   }
+
+  &.c {
+    justify-content: center;
+  }
 }
 
 .flex-col {
@@ -425,10 +440,6 @@ p.description,
   flex-basis: 50%;
 }
 
-.flex--sb {
-  justify-content: space-between;
-}
-
 .grid {
   &-2 {
     display: grid;
@@ -480,4 +491,16 @@ p.description,
       border-bottom: 1px solid $border-grey;
     }
   }
+}
+
+.fs-110 {
+  font-size: 1.1rem;
+}
+
+.fs-125 {
+  font-size: 1.25rem;
+}
+
+.fs-150 {
+  font-size: 1.5rem;
 }
