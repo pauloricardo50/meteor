@@ -61,6 +61,7 @@ const RevenuesWithoutCommissions = props => {
       amount: 1,
       assigneeLink: 1,
     },
+    refetchOnMethodCall: false,
   });
 
   const filteredRevenues = revenues.filter(

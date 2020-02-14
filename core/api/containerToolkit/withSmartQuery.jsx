@@ -8,6 +8,7 @@ import {
   renderComponent,
   lifecycle,
 } from 'recompose';
+import React, { useEffect } from 'react';
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
 import ClientEventService from '../events/ClientEventService';
@@ -16,6 +17,8 @@ import {
   removeQueryToRefetch,
 } from '../methods/clientQueryManager';
 import makeSkipContainer from './skipContainer';
+
+let count = 0;
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render = false, { single }) => {
@@ -35,52 +38,51 @@ const makeRenderMissingDocIfNoData = (render = false, { single }) => {
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
 const makeMapProps = dataName =>
-  mapProps(({ data, isLoading, error, ...rest }) => ({
+  mapProps(({ data, isLoading, error, uniqueQueryName, ...rest }) => ({
     [dataName]: data,
     ...rest,
   }));
 
-const withQueryRefetcher = ({ queryName }) =>
-  lifecycle({
-    componentDidMount() {
-      const { refetch } = this.props;
+const withQueryRefetcher = lifecycle({
+  componentDidMount() {
+    const { refetch, uniqueQueryName } = this.props;
 
-      if (refetch) {
-        ClientEventService.addListener(queryName, refetch);
-      }
-    },
-    componentWillUnmount() {
-      const { refetch } = this.props;
-      if (refetch) {
-        ClientEventService.removeListener(queryName, refetch);
-      }
-    },
-  });
+    if (refetch) {
+      ClientEventService.addListener(uniqueQueryName, refetch);
+    }
+  },
+  componentWillUnmount() {
+    const { refetch, uniqueQueryName } = this.props;
+    if (refetch) {
+      ClientEventService.removeListener(uniqueQueryName, refetch);
+    }
+  },
+});
 
 // This adds all non-reactive queries on the window object, and removes them
 // when the query disappears
 // These queries can then all be refreshed from `clientMethodsConfig`
 // every time a method is called
 const withGlobalQueryManager = (
-  { queryName },
+  queryName,
   { reactive },
   refetchOnMethodCall,
 ) => {
   const shouldActivateGlobalRefetch =
     refetchOnMethodCall && !reactive && global.window;
 
-  if (!shouldActivateGlobalRefetch) {
-    return x => x;
-  }
+  return Component => props => {
+    let uniqueQueryName;
+    useEffect(() => {
+      uniqueQueryName = `${queryName}-hoc-${count++}`;
+      if (shouldActivateGlobalRefetch) {
+        addQueryToRefetch(uniqueQueryName, refetchOnMethodCall);
+        return () => removeQueryToRefetch(uniqueQueryName);
+      }
+    }, []);
 
-  return lifecycle({
-    componentDidMount() {
-      addQueryToRefetch(queryName, refetchOnMethodCall);
-    },
-    componentWillUnmount() {
-      removeQueryToRefetch(queryName);
-    },
-  });
+    return <Component {...props} uniqueQueryName={uniqueQueryName} />;
+  };
 };
 
 const calculateParams = (params, props) => {
@@ -112,13 +114,15 @@ const withSmartQuery = ({
     completeQuery = props => query.clone(calculateParams(params, props));
   }
 
+  const queryName = query.queryName || query;
+
   const container = compose(
-    withGlobalQueryManager(query, queryOptions, refetchOnMethodCall),
+    withGlobalQueryManager(queryName, queryOptions, refetchOnMethodCall),
     withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
     withLoading(smallLoader),
     makeRenderMissingDocIfNoData(renderMissingDoc, queryOptions),
+    withQueryRefetcher,
     makeMapProps(dataName),
-    withQueryRefetcher(query),
   );
 
   if (skip) {

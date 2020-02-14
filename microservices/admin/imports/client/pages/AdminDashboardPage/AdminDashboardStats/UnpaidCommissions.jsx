@@ -27,6 +27,7 @@ const UnpaidCommissions = props => {
       loan: { name: 1 },
       assigneeLink: 1,
     },
+    refetchOnMethodCall: false,
   });
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(

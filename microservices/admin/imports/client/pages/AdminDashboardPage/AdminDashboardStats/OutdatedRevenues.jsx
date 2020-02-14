@@ -54,4 +54,5 @@ export default withSmartQuery({
     assigneeLink: 1,
   },
   dataName: 'revenues',
+  refetchOnMethodCall: false,
 })(OutdatedRevenues);
