@@ -10,11 +10,21 @@ import {
 import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
 import FrontContactTasks from '../FrontContactTasks/FrontContactTasks';
+import LoanNotes from './LoanNotes';
 
 const { Front, subdomains } = window;
 
 const LoanCard = ({ loan, expanded, refetch }) => {
-  const { _id, name, status, category, mainAssignee, tasks = [] } = loan;
+  const {
+    _id,
+    name,
+    status,
+    category,
+    mainAssignee,
+    tasks = [],
+    adminNotes = [],
+  } = loan;
+  console.log('adminNotes:', adminNotes);
 
   return (
     <FrontCard
@@ -54,8 +64,8 @@ const LoanCard = ({ loan, expanded, refetch }) => {
       }
       expanded={expanded}
     >
-      <FrontCardItem label="nom" data={name} />
-      {!!tasks.length && <FrontContactTasks tasks={tasks} refetch={refetch} />}
+      <LoanNotes notes={adminNotes} />
+      <FrontContactTasks tasks={tasks} refetch={refetch} />
     </FrontCard>
   );
 };

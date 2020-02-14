@@ -44,6 +44,7 @@ export default withProps(({ contact }) => {
         tasks: taskFragment,
         category: 1,
         mainAssignee: 1,
+        adminNotes: 1,
       },
       tasks: taskFragment,
       roles: 1,
