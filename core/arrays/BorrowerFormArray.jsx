@@ -311,6 +311,7 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
         inputs: [
           { id: 'description', type: 'textInput' },
           { id: 'ownership', type: 'textInput', percent: true },
+          { id: 'netIncome2019', type: 'textInput', money: true },
           { id: 'netIncome2018', type: 'textInput', money: true },
           { id: 'netIncome2017', type: 'textInput', money: true },
           { id: 'netIncome2016', type: 'textInput', money: true },
