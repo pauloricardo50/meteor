@@ -47,7 +47,6 @@ class Form extends Accounts.ui.Form {
     );
   }
 }
-console.log('3');
 
 class Buttons extends Accounts.ui.Buttons {}
 
