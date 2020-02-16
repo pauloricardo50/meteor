@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { employeesByEmail } from 'core/arrays/epotekEmployees';
 import LoanService from '../../../loans/server/LoanService';
-import generator from '../../../factories/index';
+import generator from '../../../factories/server';
 import { up, down } from '../28';
 
 describe('Migration 28', () => {
@@ -50,8 +50,8 @@ describe('Migration 28', () => {
     });
 
     it('sets the user as the assignee', async () => {
-      generator({users: { _id: 'user1', assignedEmployee: { _id: 'admin1' } },
-      });
+      generator({
+        users: { _id: 'user1', assignedEmployee: { _id: 'admin1' } },});
       LoanService.rawInsert({
         name: 'a',
         adminNote: 'yo',

@@ -32,10 +32,6 @@ LinkInitializer.inversedInit(() => {
       collection: Offers,
       inversedBy: 'lender',
       autoremove: true,
-      denormalize: {
-        field: 'offersCache',
-        body: { _id: 1 },
-      },
     },
     tasks: {
       inversedBy: 'lender',

@@ -12,7 +12,7 @@ import { percentFormatters } from '../../../utils/formHelpers';
 import { BORROWERS_COLLECTION, PROPERTIES_COLLECTION } from '../../constants';
 import { updateWatcherNotification } from '../../slack/server/slackNotifications';
 import UserService from '../../users/server/UserService';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import UpdateWatchers from './updateWatchers';
 
 class UpdateWatcherService extends CollectionService {

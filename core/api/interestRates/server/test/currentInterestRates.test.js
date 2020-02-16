@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import moment from 'moment';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from 'core/api/factories';
+import generator from '../../../factories/server';
 import { currentInterestRates } from '../../queries';
 import { TRENDS } from '../../interestRatesConstants';
 

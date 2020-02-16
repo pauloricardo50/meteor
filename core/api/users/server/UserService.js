@@ -6,7 +6,7 @@ import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
 import { fullUser } from 'core/api/fragments';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';

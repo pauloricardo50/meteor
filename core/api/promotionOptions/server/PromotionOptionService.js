@@ -13,7 +13,7 @@ import {
 } from '../promotionOptionConstants';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import PromotionOptions from '../promotionOptions';
 import FileService from '../../files/server/FileService';
 import {

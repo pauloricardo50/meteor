@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { createMeteorAsyncFunction } from './helpers';
+import { createMeteorAsyncFunction } from '../helpers';
 
 class CollectionService {
   constructor(collection, { autoValues } = {}) {

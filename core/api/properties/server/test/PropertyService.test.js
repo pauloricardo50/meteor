@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import LoanService from '../../../loans/server/LoanService';
 import PropertyService from '../PropertyService';
 import UserService from '../../../users/server/UserService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
 
 describe('PropertyService', function() {

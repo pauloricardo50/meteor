@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import CollectionService from '../../CollectionService';
+import CollectionService from '../../server/CollectionService';
 
 const CollectionA = new Mongo.Collection('collectionA');
 const CollectionB = new Mongo.Collection('collectionB');

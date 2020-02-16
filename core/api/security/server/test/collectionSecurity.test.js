@@ -11,7 +11,7 @@ import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LoanService from '../../../loans/server/LoanService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { clearBucket } from '../../../files/server/test/S3Service.test';
 import S3Service from '../../../files/server/S3Service';

@@ -8,6 +8,8 @@ import {
   Loans,
   Users,
   Revenues,
+  Lenders,
+  Offers,
 } from '..';
 
 Organisations.cacheCount({
@@ -42,6 +44,14 @@ Loans.cacheField({
       ? structures.find(({ id }) => id === selectedStructure)
       : undefined;
   },
+});
+
+Lenders.cache({
+  collection: Offers,
+  type: 'many-inverse',
+  fields: ['_id'],
+  referenceField: 'lenderLink._id',
+  cacheField: 'offersCache',
 });
 
 Meteor.startup(() => {

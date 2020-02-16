@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';

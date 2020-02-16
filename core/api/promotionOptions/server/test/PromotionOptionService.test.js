@@ -11,7 +11,7 @@ import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { checkEmails } from '../../../../utils/testHelpers/index';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import PromotionOptionService from '../PromotionOptionService';
 import {

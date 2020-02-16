@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
 import PropertyService from '../../../../properties/server/PropertyService';
-import generator from '../../../../factories/index';
+import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import getPropertyLoansAPI from '../getPropertyLoans';
 import {

@@ -5,7 +5,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { toggleAccount } from '../../../methods';
 
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
 
 describe('toggleAccountListener', () => {

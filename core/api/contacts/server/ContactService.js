@@ -1,5 +1,5 @@
 import Contacts from '../contacts';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 
 class ContactService extends CollectionService {
   constructor() {

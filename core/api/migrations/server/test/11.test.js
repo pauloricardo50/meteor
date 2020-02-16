@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import UserService from '../../../users/server/UserService';
 import { up, down } from '../11';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 
 describe('Migration 11', () => {
   beforeEach(() => {

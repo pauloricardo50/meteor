@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import { checkEmails } from '../../../../../utils/testHelpers';
 import SlackService from '../../../../slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';
-import generator from '../../../../factories/index';
+import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import referCustomerAPI from '../referCustomer';
 import {

@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { loanSetDisbursementDate } from '../../../methods';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import { ACTIVITY_EVENT_METADATA } from '../../activityConstants';
 

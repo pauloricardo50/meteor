@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import LoanService from '../../loans/server/LoanService';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import {
   PROPERTY_PERMISSIONS_FULL_ACCESS,
   PROPERTY_CATEGORY,

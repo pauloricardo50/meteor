@@ -14,7 +14,7 @@ import {
   makeHeaders,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
-import generator from '../../../../factories/index';
+import generator from '../../../../factories/server';
 import { checkEmails } from '../../../../../utils/testHelpers';
 
 let user;

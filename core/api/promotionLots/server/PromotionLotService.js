@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Calculator from '../../../utils/Calculator';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 

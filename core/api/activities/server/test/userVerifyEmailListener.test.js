@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { userVerifyEmail } from '../../../methods';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 

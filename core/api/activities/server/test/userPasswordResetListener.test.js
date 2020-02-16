@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
 import { userPasswordReset } from '../../../methods';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import ActivityService from '../ActivityService';
