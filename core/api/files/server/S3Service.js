@@ -1,27 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
-import { Roles } from 'meteor/alanning:roles';
-import {
-  Loans,
-  Borrowers,
-  Properties,
-  Promotions,
-  PromotionOptions,
-} from '../..';
 import {
   TEST_BUCKET_NAME,
   S3_ENDPOINT,
   OBJECT_STORAGE_PATH,
-  FILE_ROLES,
 } from '../fileConstants';
-import { PROPERTY_CATEGORY } from '../../constants';
-import FileService from './FileService';
-import SecurityService from '../../security';
-import LoanService from '../../loans/server/LoanService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -62,10 +45,17 @@ class S3Service {
       Delete: { Objects: keys.map(Key => ({ Key })) },
     });
 
-  deleteObjectsWithPrefix = prefix =>
-    this.listObjects(prefix)
+  deleteObjectsWithPrefix = prefix => {
+    if (!prefix && Meteor.isProduction) {
+      throw new Meteor.Error(
+        'Tried to delete objects without prefix in production!',
+      );
+    }
+
+    return this.listObjects(prefix)
       .then(results => results.map(({ Key }) => Key))
       .then(this.deleteObjects);
+  };
 
   getObject = Key => this.callS3Method('getObject', { Key });
 

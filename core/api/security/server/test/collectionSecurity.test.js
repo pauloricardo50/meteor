@@ -767,6 +767,14 @@ describe('Collection Security', () => {
       let userId;
       let user;
 
+      before(function() {
+        if (Meteor.settings.public.microservice !== 'pro') {
+          // When running these tests in parallel, it breaks tests
+          this.parent.pending = true;
+          this.skip();
+        }
+      });
+
       beforeEach(() => {
         resetDatabase();
         clearBucket();
