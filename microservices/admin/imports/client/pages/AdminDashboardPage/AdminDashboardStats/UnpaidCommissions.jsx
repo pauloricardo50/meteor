@@ -13,7 +13,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-const UnpaidCommissions = props => {
+const UnpaidCommissions = () => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,

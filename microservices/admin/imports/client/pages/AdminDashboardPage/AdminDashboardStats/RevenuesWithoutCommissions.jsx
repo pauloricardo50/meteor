@@ -40,7 +40,7 @@ const OrgItem = ({ orgName, revenues }) => (
   </div>
 );
 
-const RevenuesWithoutCommissions = props => {
+const RevenuesWithoutCommissions = ({ showAll }) => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
@@ -94,7 +94,7 @@ const RevenuesWithoutCommissions = props => {
     'loan.user.referredByOrganisation.name',
   );
 
-  if (!filteredRevenues.length) {
+  if (!showAll && !filteredRevenues.length) {
     return null;
   }
 

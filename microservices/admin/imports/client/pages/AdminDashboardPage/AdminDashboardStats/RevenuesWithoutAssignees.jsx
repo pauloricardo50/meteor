@@ -6,7 +6,7 @@ import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-const RevenuesWithoutAssignees = () => {
+const RevenuesWithoutAssignees = ({ showAll }) => {
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
     params: {
@@ -24,7 +24,7 @@ const RevenuesWithoutAssignees = () => {
 
   const isOk = revenues.length === 0;
 
-  if (isOk) {
+  if (!showAll && isOk) {
     return null;
   }
 

@@ -9,7 +9,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import { USERS_COLLECTION } from 'core/api/constants';
 import StatItem from './StatItem';
 
-const IncoherentAssignees = () => {
+const IncoherentAssignees = ({ showAll }) => {
   const currentUser = useContext(CurrentUserContext);
   const { data: users = [], loading } = useStaticMeteorData({
     query: incoherentAssignees,
@@ -20,7 +20,7 @@ const IncoherentAssignees = () => {
   );
   const isOk = users.length === 0;
 
-  if (isOk) {
+  if (!showAll && isOk) {
     return null;
   }
 
