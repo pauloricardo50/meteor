@@ -98,7 +98,7 @@ const analysisConfig = {
     ],
     lendersCache: {
       label: "Nb. d'offres reçues",
-      format: ({ lendersCache }) =>
+      format: ({ lendersCache = [] }) =>
         lendersCache.reduce(
           (t, { offersCache = [] }) => t + offersCache.length,
           0,
@@ -282,10 +282,27 @@ const analysisConfig = {
     },
     lenders: [
       {
-        fragment: { offers: { maxAmount: 1 } },
+        fragment: {
+          offers: { maxAmount: 1 },
+          loan: {
+            structureCache: { offerId: 1 },
+          },
+        },
         label: 'Offres faites',
         format: ({ lenders = [] }) =>
           lenders.reduce((t, { offers = [] }) => t + offers.length, 0),
+      },
+      {
+        label: 'Offres retenues',
+        format: ({ lenders = [] }) =>
+          lenders.reduce((t, { offers = [], loan }) => {
+            const chosenOffer = loan?.structureCache?.offerId
+              ? offers
+                  .map(({ _id }) => _id)
+                  .includes(loan.structureCache.offerId)
+              : false;
+            return chosenOffer ? t + 1 : t;
+          }, 0),
       },
       {
         label: "Volume d'offres faites",

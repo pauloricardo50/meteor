@@ -17,7 +17,7 @@ export const useAnalysisData = ({ collection, formatMessage }) => {
   const formattedData = useMemo(
     () =>
       !loading && data ? mapData({ data, collection, formatMessage }) : [],
-    [loading, data, collection],
+    [loading, collection],
   );
 
   useEffect(() => {
