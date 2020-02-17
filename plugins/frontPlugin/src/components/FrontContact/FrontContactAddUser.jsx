@@ -20,23 +20,28 @@ const getAddUserUrl = contact => {
     addUser: true,
     email: handle,
     firstName,
-    lastName
-  })
+    lastName,
+  });
 
   return `${baseUrl}?${searchParams}`;
 };
 
 const FrontContactAddUser = ({ contact }) => (
-  <Button
-    fab
-    onClick={() => Front.openUrl(getAddUserUrl(contact))}
-    size="small"
-    secondary
-    className="ml-8"
-    tooltip="Créer un compte e-Potek"
-  >
-    <Icon type="personAdd" />
-  </Button>
+  <div className="front-contact-add-user">
+    <hr />
+    <h2 className="secondary">Adresse email pas trouvée dans e-Potek</h2>
+    <Button
+      onClick={() => Front.openUrl(getAddUserUrl(contact))}
+      // size="small"
+      secondary
+      // className="ml-8"
+      // tooltip="Créer un compte e-Potek"
+      raised
+      icon={<Icon type="personAdd" />}
+    >
+      Créer un compte e-Potek
+    </Button>
+  </div>
 );
 
 export default FrontContactAddUser;

@@ -6,30 +6,26 @@ import { ROLES } from '../../users/userConstants';
 import { ddpWithUserId } from '../../methods/methodHelpers';
 import { ERROR_CODES } from '../../errors';
 
-const FRONT_AUTH_SECRET = Meteor.settings.front.authSecret;
+const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
 
 class FrontService {
-  checkAuth({ authSecret, email }) {
+  checkAuth({ body: { authSecret, email } = {} }) {
     if (!authSecret || authSecret !== FRONT_AUTH_SECRET) {
       throw new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Authentication failed');
     }
 
-    const user = UserService.get(
-      { 'emails.0.address': email, roles: { $in: [ROLES.DEV, ROLES.ADMIN] } },
-      { _id: 1 },
-    );
+    const user =
+      email &&
+      UserService.get(
+        { 'emails.0.address': email, roles: { $in: [ROLES.DEV, ROLES.ADMIN] } },
+        { _id: 1 },
+      );
 
-    if (!user) {
-      throw new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Authentication failed');
-    }
-
-    return user;
+    return { isAuthenticated: !!user, user };
   }
 
   handleRequest(body) {
-    const user = this.checkAuth(body);
-
-    const { type, params } = body;
+    const { type, params, user } = body;
 
     if (type === 'QUERY_ONE' || type === 'QUERY') {
       return this.handleQuery({ user, type, ...params });

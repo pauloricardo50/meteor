@@ -39,7 +39,6 @@ const FrontContactHeader = ({
         ) : (
           <span>{getContactInitials(contact)}</span>
         )}
-        {!isEpotekResource && <FrontContactAddUser contact={contact} />}
       </div>
       <h3
         className={cx({ link: isEpotekResource })}
@@ -67,6 +66,7 @@ const FrontContactHeader = ({
         tooltip="Rafraîchir"
         className="refresh"
       />
+      {!isEpotekResource && <FrontContactAddUser contact={contact} />}
     </div>
   );
 };

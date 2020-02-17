@@ -30,12 +30,14 @@ const FrontContact = ({
         refetch={refetch}
         conversation={conversation}
       />
-      <ContactCard
-        contact={finalContact}
-        isEpotekResource={isEpotekResource}
-        collection={collection}
-        refetch={refetch}
-      />
+      {isEpotekResource && (
+        <ContactCard
+          contact={finalContact}
+          isEpotekResource={isEpotekResource}
+          collection={collection}
+          refetch={refetch}
+        />
+      )}
 
       {isEpotekResource &&
         collection === 'users' &&

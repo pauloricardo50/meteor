@@ -149,9 +149,14 @@ export default class RESTAPI {
     }
 
     if (
-      !['rsaAuth', 'simpleAuth', 'basicAuth', 'multipart', 'noAuth'].some(
-        auth => Object.keys(options).indexOf(auth) >= 0,
-      )
+      ![
+        'rsaAuth',
+        'simpleAuth',
+        'basicAuth',
+        'multipart',
+        'noAuth',
+        'customAuth',
+      ].some(auth => Object.keys(options).indexOf(auth) >= 0)
     ) {
       throw new Error(
         `Endpoint "${path}" for method "${method}" must have a authentication type`,

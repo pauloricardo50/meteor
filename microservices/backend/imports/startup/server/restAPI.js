@@ -22,6 +22,7 @@ import {
   frontPluginAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
+import FrontService from 'core/api/front/server/FrontService';
 
 const api = new RESTAPI();
 api.addEndpoint(
@@ -140,7 +141,7 @@ api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
   endpointName: 'Add note to a loan',
 });
 api.addEndpoint('/front-plugin', 'POST', frontPluginAPI, {
-  noAuth: true,
+  customAuth: FrontService.checkAuth,
   endpointName: 'Front API',
 });
 

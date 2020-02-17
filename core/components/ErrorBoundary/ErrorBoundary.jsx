@@ -25,7 +25,7 @@ export class ErrorBoundary extends Component {
   // If it crashes again then it will simply go through componentDidCatch
   UNSAFE_componentWillReceiveProps({ pathname }) {
     if (this.state.hasError && pathname !== this.props.pathname) {
-      this.setState({ hasError: false, error: null });
+      this.resetError();
     }
   }
 
@@ -41,6 +41,10 @@ export class ErrorBoundary extends Component {
       this.setState({ hasError: true, error: containerError });
     }
   }
+
+  resetError = () => {
+    this.setState({ hasError: false, error: null });
+  };
 
   render() {
     const { children, helper } = this.props;
@@ -66,7 +70,9 @@ export class ErrorBoundary extends Component {
       }
     }
 
-    return children;
+    return React.Children.map(children, child =>
+      React.cloneElement(child, { resetError: this.resetError }),
+    );
   }
 }
 

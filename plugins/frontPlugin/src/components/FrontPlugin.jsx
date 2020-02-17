@@ -38,7 +38,7 @@ const getContacts = data => {
   );
 };
 
-const FrontPlugin = () => {
+const FrontPlugin = ({ resetError }) => {
   const [data, setData] = useState(null);
   const [contact, setContact] = useState(null);
 
@@ -56,9 +56,7 @@ const FrontPlugin = () => {
     });
 
     Front.on('panel_visible', isVisible => {
-      if (isVisible) {
-        // Reload any existing queries
-      }
+      resetError();
     });
   }, []);
 

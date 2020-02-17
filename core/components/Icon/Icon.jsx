@@ -58,6 +58,7 @@ import Report from '@material-ui/icons/Report';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import DeleteSweep from '@material-ui/icons/DeleteSweep';
 import GroupAdd from '@material-ui/icons/GroupAdd';
+import Group from '@material-ui/icons/Group';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
 import FilterList from '@material-ui/icons/FilterList';
@@ -147,6 +148,7 @@ export const iconMap = {
   deleteForever: DeleteForever,
   deleteSweep: DeleteSweep,
   groupAdd: GroupAdd,
+  group: Group,
   edit: Edit,
   trendingUp: TrendingUp,
   trendingDown: TrendingDown,
