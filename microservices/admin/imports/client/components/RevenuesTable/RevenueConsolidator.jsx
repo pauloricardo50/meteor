@@ -31,8 +31,8 @@ const RevenueConsolidator = ({
     title="Confirmer paiement de"
     description={
       <div>
-        <h2 className="text-center">
-          <Money value={amount} />
+        <h2 className="flex center-align">
+          <Money value={amount} className="mr-8" />
           <small className="secondary">
             {sourceOrganisation && (
               <>
@@ -51,7 +51,7 @@ const RevenueConsolidator = ({
       </div>
     }
     schema={schema}
-    model={{ amount, paidAt: moment(paidAt).format('YYYY-MM-DD') }}
+    model={{ amount, paidAt: paidAt && moment(paidAt).format('YYYY-MM-DD') }}
     onSubmit={values =>
       consolidateRevenue.run({ revenueId, ...values }).finally(onSubmitted)
     }
