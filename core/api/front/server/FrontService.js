@@ -6,12 +6,12 @@ import { ROLES } from '../../users/userConstants';
 import { ddpWithUserId } from '../../methods/methodHelpers';
 import { ERROR_CODES } from '../../errors';
 
-const FRONT_AUTH_SECRET = '121df790630ee6f2';
+const FRONT_AUTH_SECRET = Meteor.settings.front.authSecret;
 
 class FrontService {
   checkAuth({ authSecret, email }) {
     if (!authSecret || authSecret !== FRONT_AUTH_SECRET) {
-      throw new Error(ERROR_CODES.UNAUTHORIZED);
+      throw new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Authentication failed');
     }
 
     const user = UserService.get(
@@ -20,7 +20,7 @@ class FrontService {
     );
 
     if (!user) {
-      throw new Error(ERROR_CODES.UNAUTHORIZED);
+      throw new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Authentication failed');
     }
 
     return user;

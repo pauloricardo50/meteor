@@ -24,7 +24,6 @@ const LoanCard = ({ loan, expanded, refetch }) => {
     tasks = [],
     adminNotes = [],
   } = loan;
-  console.log('adminNotes:', adminNotes);
 
   return (
     <FrontCard

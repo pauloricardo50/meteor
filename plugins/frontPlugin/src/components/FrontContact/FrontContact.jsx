@@ -3,13 +3,12 @@ import React from 'react';
 import FrontContactContainer from './FrontContactContainer';
 import FrontContactHeader from './FrontContactHeader';
 import ContactCard from './ContactCard';
-import FrontContactLoans from './FrontContactLoans/FrontContactLoans';
+import LoanCard from './FrontContactLoans/LoanCard';
 
 const FrontContact = ({
   finalContact,
   conversation,
   loading,
-  error,
   isEpotekResource,
   collection,
   refetch,
@@ -18,15 +17,6 @@ const FrontContact = ({
     return (
       <div className="text-center">
         <i>Loading...</i>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.log(error);
-    return (
-      <div className="text-center">
-        <i>Error...</i>
       </div>
     );
   }
@@ -47,9 +37,17 @@ const FrontContact = ({
         refetch={refetch}
       />
 
-      {isEpotekResource && collection === 'users' && (
-        <FrontContactLoans loans={finalContact.loans} refetch={refetch} />
-      )}
+      {isEpotekResource &&
+        collection === 'users' &&
+        finalContact.loans?.length &&
+        finalContact.loans.map(loan => (
+          <LoanCard
+            key={loan._id}
+            loan={loan}
+            expanded={finalContact.length === 1}
+            refetch={refetch}
+          />
+        ))}
     </div>
   );
 };

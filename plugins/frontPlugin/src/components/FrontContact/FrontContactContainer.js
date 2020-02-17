@@ -27,10 +27,10 @@ const contactFragment = email => ({
 
 export default withProps(({ contact }) => {
   const { handle, display_name } = contact;
-  const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [epotekContact, setEpotekContact] = useState();
   const [collection, setCollection] = useState();
+
   const isEpotekResource = !!epotekContact;
   let finalContact = epotekContact;
 
@@ -70,7 +70,7 @@ export default withProps(({ contact }) => {
       .then(() => setLoading(false))
       .catch(e => {
         setLoading(false);
-        setError(e);
+        throw e;
       });
   };
 
@@ -82,7 +82,6 @@ export default withProps(({ contact }) => {
 
   return {
     loading,
-    error,
     isEpotekResource,
     finalContact,
     collection,

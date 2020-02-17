@@ -1,14 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-const FrontCardItem = ({ label, data, dataOnClick }) => (
+const FrontCardItem = ({ label, children, onClick }) => (
   <div className="front-card-item">
     <h4>{label}</h4>
     <span
-      className={cx({ link: dataOnClick })}
-      onClick={() => dataOnClick && dataOnClick()}
+      className={cx({ link: onClick })}
+      onClick={() => onClick && onClick()}
     >
-      {data}
+      {children}
     </span>
   </div>
 );

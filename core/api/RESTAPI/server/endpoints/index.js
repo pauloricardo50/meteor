@@ -15,4 +15,4 @@ export { default as zipLoanAPI } from './zipLoan';
 export { default as setPropertyUserPermissionsAPI } from './setPropertyUserPermissions';
 export { default as addProUserToPropertyAPI } from './addProUserToProperty';
 export { default as addLoanNoteAPI } from './addLoanNote';
-export { default as frontAPI } from './frontAPI';
+export { default as frontPluginAPI } from './frontPluginAPI';

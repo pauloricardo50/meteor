@@ -2,7 +2,7 @@ import React from 'react';
 import DefaultLinkify from 'react-linkify';
 
 const makeComponentDecorator = props => (href, text, key) => {
-  const { newTab = true, textTransform, style = {}, Front } = props;
+  const { newTab = true, textTransform, style = {}, Front, onClick } = props;
   return (
     <b>
       <a
@@ -13,10 +13,9 @@ const makeComponentDecorator = props => (href, text, key) => {
         style={style}
         onClick={event => {
           event.stopPropagation();
-          if (Front) {
-            console.log('Front:', Front);
+          if (onClick) {
             event.preventDefault();
-            Front.openUrl(href);
+            return onClick(href);
           }
         }}
       >

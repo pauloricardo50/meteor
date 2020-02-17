@@ -22,20 +22,14 @@ const getTaskUrl = ({
         }),
     description: `Front: ${frontLink}`,
   });
-  console.log('searchParams:', searchParams);
 
   const id = contact?._id || loan?._id;
 
-  switch (collection) {
-    case 'users':
-      return `${baseUrl}/users/${id}?${searchParams}`;
-    case 'contacts':
-      return `${baseUrl}/contacts/${id}?${searchParams}`;
-    case 'loans':
-      return `${baseUrl}/loans/${id}?${searchParams}`;
-    default:
-      return `${baseUrl}?${searchParams}`;
+  if (collection) {
+    return `${baseUrl}/${collection}/${id}?${searchParams}`;
   }
+
+  return `${baseUrl}?${searchParams}`;
 };
 
 const getOptions = ({ collection, contact }) => {

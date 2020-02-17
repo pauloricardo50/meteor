@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
 
@@ -134,8 +134,7 @@ export default compose(
     params: () => ({ $body: { name: 1, users: { _id: 1 } } }),
   }),
   withProps(() => {
-    const initialSearchParams = useSearchParams();
-    const [searchParams, setSearchParams] = useState(initialSearchParams);
+    const searchParams = useSearchParams();
     return {
       model: searchParams,
       openOnMount:

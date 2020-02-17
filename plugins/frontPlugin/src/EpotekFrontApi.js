@@ -14,7 +14,7 @@ class EpotekFrontApi {
   getEpotekEndpoint() {
     const pluginEndpoint = Front.endpoint;
     const [apiEndpoint] = pluginEndpoint.split('/files');
-    return `${apiEndpoint}/api/frontapp`;
+    return `${apiEndpoint}/api/front-plugin`;
   }
 
   makeRequest({ type, params }) {

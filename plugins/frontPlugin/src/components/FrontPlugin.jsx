@@ -63,7 +63,11 @@ const FrontPlugin = () => {
   }, []);
 
   if (!data) {
-    return <div>Pas de conversation choisie</div>;
+    return (
+      <div>
+        <h2 className="secondary">Pas de conversation choisie</h2>
+      </div>
+    );
   }
 
   return (

@@ -4,7 +4,7 @@ import cx from 'classnames';
 import IconButton from '../../core/components/IconButton';
 import FrontContactAddUser from './FrontContactAddUser';
 import FrontContactTaskAdder from './FrontContactTasks/FrontContactTaskAdder';
-import FrontContactNoteAdder from './FrontContactLoans/FrontContactNoteAdder';
+import FrontContactNoteAdder from './FrontContactNoteAdder';
 
 const { Front, subdomains } = window;
 

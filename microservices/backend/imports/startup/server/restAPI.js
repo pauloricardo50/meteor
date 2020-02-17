@@ -19,7 +19,7 @@ import {
   setPropertyUserPermissionsAPI,
   addProUserToPropertyAPI,
   addLoanNoteAPI,
-  frontAPI,
+  frontPluginAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
@@ -139,7 +139,7 @@ api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
   rsaAuth: true,
   endpointName: 'Add note to a loan',
 });
-api.addEndpoint('/frontapp', 'POST', frontAPI, {
+api.addEndpoint('/front-plugin', 'POST', frontPluginAPI, {
   noAuth: true,
   endpointName: 'Front API',
 });

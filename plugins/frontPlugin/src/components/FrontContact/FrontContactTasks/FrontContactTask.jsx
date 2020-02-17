@@ -6,11 +6,13 @@ import FrontContactTaskActions from './FrontContactTaskActions';
 import { formatDateTime } from './FrontContactTasks';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
 
+const { Front } = window;
+
 const FrontContactTask = ({ task, handleClose, refetch }) => {
   const { description, dueAt, assignee } = task;
 
   return (
-    <Linkify className="flex-col">
+    <Linkify Front={window.Front} onClick={href => Front.openUrl(href)}>
       <div className="flex-col" style={{ alignItems: 'flex-start' }}>
         <Button outlined primary onClick={handleClose}>
           &lt; Back
@@ -35,9 +37,7 @@ const FrontContactTask = ({ task, handleClose, refetch }) => {
           </div>
         </div>
       </div>
-      <Linkify Front={window.Front}>
-        <p style={{ whiteSpace: 'pre-wrap' }}>{description}</p>
-      </Linkify>
+      <p style={{ whiteSpace: 'pre-wrap' }}>{description}</p>
     </Linkify>
   );
 };

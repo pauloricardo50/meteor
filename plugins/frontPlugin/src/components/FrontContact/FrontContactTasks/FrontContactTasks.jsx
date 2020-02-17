@@ -68,27 +68,25 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const FrontContactTasks = ({ tasks = [], refetch }) => (
   <FrontCardItem
     label="Tâches"
-    data={
-      <TableWithModal
-        columnOptions={columnOptions}
-        rows={tasks.map(makeMapTask({ refetch }))}
-        className="front-contact-tasks"
-        modalType="dialog"
-        getModalProps={({ row: { task }, setOpen }) => ({
-          title: task.title,
-          fullScreen: true,
-          children: (
-            <FrontContactTask
-              task={task}
-              handleClose={() => setOpen(false)}
-              refetch={refetch}
-            />
-          ),
-        })}
-        modalProps={{ actions: [], TransitionComponent: Transition }}
-      />
-    }
-  />
+
+  > <TableWithModal
+      columnOptions={columnOptions}
+      rows={tasks.map(makeMapTask({ refetch }))}
+      className="front-contact-tasks"
+      modalType="dialog"
+      getModalProps={({ row: { task }, setOpen }) => ({
+        title: task.title,
+        fullScreen: true,
+        children: (
+          <FrontContactTask
+            task={task}
+            handleClose={() => setOpen(false)}
+            refetch={refetch}
+          />
+        ),
+      })}
+      modalProps={{ actions: [], TransitionComponent: Transition }}
+    /></FrontCardItem>
 );
 
 export default FrontContactTasks;

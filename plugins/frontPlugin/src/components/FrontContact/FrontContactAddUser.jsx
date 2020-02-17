@@ -1,4 +1,6 @@
 import React from 'react';
+import queryString from 'query-string';
+
 import Button from '../../core/components/Button';
 import Icon from '../../core/components/Icon';
 
@@ -14,7 +16,12 @@ const getAddUserUrl = contact => {
       .join(' '),
   ];
   const baseUrl = subdomains.admin;
-  const searchParams = `addUser=true&email=${handle}&firstName=${firstName}&lastName=${lastName}`;
+  const searchParams = queryString.stringify({
+    addUser: true,
+    email: handle,
+    firstName,
+    lastName
+  })
 
   return `${baseUrl}?${searchParams}`;
 };
