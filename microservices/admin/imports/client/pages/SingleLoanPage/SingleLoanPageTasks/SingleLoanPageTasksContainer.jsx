@@ -1,5 +1,7 @@
+import { useState } from 'react';
+
 import { withSmartQuery } from 'core/api';
-import { compose, shouldUpdate, withState } from 'recompose';
+import { compose, shouldUpdate, withState, withProps } from 'recompose';
 
 import {
   taskInsert,
@@ -8,6 +10,7 @@ import {
   taskComplete,
 } from 'core/api/methods';
 import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
+import useSearchParams from 'core/hooks/useSearchParams';
 import { taskTableFragment } from '../../../components/TasksTable/TasksTable';
 
 export default compose(
@@ -33,5 +36,14 @@ export default compose(
       taskChangeStatus,
       taskComplete,
     ],
+  }),
+  withProps(() => {
+    const initialSearchParams = useSearchParams();
+    const [searchParams, setSearchParams] = useState(initialSearchParams);
+    return {
+      model: searchParams,
+      openOnMount: searchParams.addTask,
+      resetForm: () => setSearchParams({}),
+    };
   }),
 );

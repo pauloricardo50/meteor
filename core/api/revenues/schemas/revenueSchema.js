@@ -1,6 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 import {
   createdAt,
   updatedAt,

@@ -41,6 +41,11 @@ export const schema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
+    uniforms: {
+      multiline: true,
+      rows: 5,
+      rowsMax: 10,
+    },
   },
   dueAtTimeHelpers: {
     type: String,

@@ -9,23 +9,28 @@ import {
   taskFormLayout,
 } from '../../../../components/TasksTable/TaskModifier';
 
-const LoanTaskInserter = withProps(({ loan: { _id: loanId, user } }) => ({
-  onSubmit: values =>
-    taskInsert.run({
-      object: { docId: loanId, collection: LOANS_COLLECTION, ...values },
-    }),
-  schema: schema.omit('status'),
-  model: {
-    assigneeLink: {
-      _id:
-        (user && user.assignedEmployee && user.assignedEmployee._id) ||
-        Meteor.userId(),
+const LoanTaskInserter = withProps(
+  ({ loan: { _id: loanId, user }, model = {}, resetForm }) => ({
+    onSubmit: values =>
+      taskInsert
+        .run({
+          object: { docId: loanId, collection: LOANS_COLLECTION, ...values },
+        })
+        .then(() => resetForm()),
+    schema: schema.omit('status'),
+    model: {
+      ...model,
+      assigneeLink: {
+        _id:
+          (user && user.assignedEmployee && user.assignedEmployee._id) ||
+          Meteor.userId(),
+      },
     },
-  },
-  buttonLabelId: 'LoanTaskInsertForm.label',
-  formTitleId: 'LoanTaskInsertForm.dialogTitle',
-  formDescriptionId: 'LoanTaskInsertForm.dialogDescription',
-  layout: taskFormLayout,
-}));
+    buttonLabelId: 'LoanTaskInsertForm.label',
+    formTitleId: 'LoanTaskInsertForm.dialogTitle',
+    formDescriptionId: 'LoanTaskInsertForm.dialogDescription',
+    layout: taskFormLayout,
+  }),
+);
 
 export default LoanTaskInserter(LoanTaskInsertForm);

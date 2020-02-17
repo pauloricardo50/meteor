@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { compose, withProps } from 'recompose';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
 import withErrorCatcher from '../../containers/withErrorCatcher';
 import { logError } from '../../api/slack/methodDefinitions';
+import FrontError from './FrontError';
 
-class ErrorBoundary extends Component {
+const sendToKadira = error => {
+  // Error should also log to kadira
+  const { Kadira } = window;
+  if (Kadira && Kadira.trackError) {
+    Kadira.trackError('react', error.stack.toString());
+  }
+};
+export class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -20,27 +29,17 @@ class ErrorBoundary extends Component {
     }
   }
 
-  sendToKadira = error => {
-    // Error should also log to kadira
-    const { Kadira } = window;
-    if (Kadira && Kadira.trackError) {
-      Kadira.trackError('react', error.stack.toString());
-    }
-  };
-
   componentDidCatch(error, info) {
     this.setState({ hasError: true, error });
-    this.sendToKadira(error);
-    logError.run({
-      error: JSON.parse(
-        JSON.stringify(error, Object.getOwnPropertyNames(error)),
-      ),
-      additionalData: ['Render error', info],
-      url:
-        window && window.location && window.location.href
-          ? window.location.href
-          : '',
-    });
+    this.props.onCatch(error, info);
+  }
+
+  componentDidUpdate() {
+    const { containerError } = this.props;
+    const { hasError } = this.state;
+    if (containerError && !hasError) {
+      this.setState({ hasError: true, error: containerError });
+    }
   }
 
   render() {
@@ -60,6 +59,8 @@ class ErrorBoundary extends Component {
           );
         case 'root':
           return <RootError error={error} />;
+        case 'front':
+          return <FrontError error={error} />;
         default:
           return <>Woops!</>;
       }
@@ -79,4 +80,21 @@ ErrorBoundary.defaultProps = {
   pathname: undefined,
 };
 
-export default withErrorCatcher(ErrorBoundary);
+export default compose(
+  withErrorCatcher,
+  withProps({
+    onCatch: (error, info) => {
+      sendToKadira(error);
+      logError.run({
+        error: JSON.parse(
+          JSON.stringify(error, Object.getOwnPropertyNames(error)),
+        ),
+        additionalData: ['Render error', info],
+        url:
+          window && window.location && window.location.href
+            ? window.location.href
+            : '',
+      });
+    },
+  }),
+)(ErrorBoundary);

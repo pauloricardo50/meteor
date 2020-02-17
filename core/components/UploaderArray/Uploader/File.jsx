@@ -6,8 +6,8 @@ import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
 
-import DialogForm from 'core/components/ModalManager/DialogForm';
-import { shouldDisplayFile } from 'core/api/files/fileHelpers';
+import DialogForm from '../../ModalManager/DialogForm';
+import { shouldDisplayFile } from '../../../api/files/fileHelpers';
 import { ModalManagerContext } from '../../ModalManager';
 import { FILE_STATUS, ROLES } from '../../../api/constants';
 import { getSignedUrl } from '../../../api/methods';

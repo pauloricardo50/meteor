@@ -2,7 +2,7 @@ import { lifecycle } from 'recompose';
 
 import { logError } from '../api/slack/methodDefinitions';
 
-const handleError = (error, additionalData) => {
+const defaultHandleError = (error, additionalData) => {
   const { Kadira } = window;
   if (Kadira && Kadira.trackError) {
     Kadira.trackError('react', error.stack.toString());
@@ -25,6 +25,8 @@ const withErrorCatcher = lifecycle({
     if (!window || hasAddedListeners) {
       return;
     }
+
+    const { handleError = defaultHandleError } = this.props;
 
     window.onerror = (msg, url, lineNo, columnNo, error) =>
       handleError(error, ['JS error', msg]);

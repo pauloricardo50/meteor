@@ -1,7 +1,11 @@
 import SimpleSchema from 'simpl-schema';
-import { documentsField } from 'core/api/helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import {
+  documentsField,
+  createdAt,
+  updatedAt,
+} from '../../helpers/sharedSchemas';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+
 import {
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
