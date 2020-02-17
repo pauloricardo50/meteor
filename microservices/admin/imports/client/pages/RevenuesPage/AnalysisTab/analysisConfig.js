@@ -69,7 +69,7 @@ const analysisConfig = {
     },
     revenues: [
       {
-        id: 'collections.revenues',
+        id: 'Revenus totaux',
         fragment: { amount: 1, status: 1 },
         format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
@@ -79,6 +79,13 @@ const analysisConfig = {
         format: ({ revenues = [] }) =>
           revenues
             .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
+            .reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus projetés',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
             .reduce((t, { amount }) => t + amount, 0),
       },
     ],
