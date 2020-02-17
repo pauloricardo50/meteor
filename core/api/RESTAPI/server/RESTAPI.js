@@ -83,6 +83,7 @@ export default class RESTAPI {
           Promise.resolve()
             .then(() =>
               handler({
+                req,
                 user: req.user,
                 body: req.body,
                 query: req.query,
