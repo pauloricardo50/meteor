@@ -8,7 +8,7 @@ import {
   renderComponent,
   lifecycle,
 } from 'recompose';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
 import ClientEventService from '../events/ClientEventService';
@@ -72,9 +72,8 @@ const withGlobalQueryManager = (
     refetchOnMethodCall && !reactive && global.window;
 
   return Component => props => {
-    let uniqueQueryName;
+    const [uniqueQueryName] = useState(`${queryName}-hoc-${count++}`);
     useEffect(() => {
-      uniqueQueryName = `${queryName}-hoc-${count++}`;
       if (shouldActivateGlobalRefetch) {
         addQueryToRefetch(uniqueQueryName, refetchOnMethodCall);
         return () => removeQueryToRefetch(uniqueQueryName);

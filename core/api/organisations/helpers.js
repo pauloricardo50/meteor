@@ -1,4 +1,4 @@
-export const getCurrentRate = (commissionRates, referredRevenues) => {
+export const getCurrentRate = (commissionRates, referredRevenues, name) => {
   if (!commissionRates || commissionRates.length === 0) {
     return 0;
   }
@@ -8,6 +8,7 @@ export const getCurrentRate = (commissionRates, referredRevenues) => {
   }
 
   let index = 0;
+
   commissionRates.some(({ threshold }, i) => {
     if (threshold > referredRevenues) {
       index = i - 1;
@@ -17,5 +18,11 @@ export const getCurrentRate = (commissionRates, referredRevenues) => {
     index = i;
     return false;
   });
+
+  // for misconfigured commissionRates
+  if (index < 0) {
+    return 0;
+  }
+
   return commissionRates[index].rate;
 };

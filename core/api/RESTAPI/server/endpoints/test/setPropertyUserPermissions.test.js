@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
 import {
   getTimestampAndNonce,

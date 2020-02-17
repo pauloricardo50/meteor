@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LotService from '../LotService';

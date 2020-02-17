@@ -35,7 +35,7 @@ const pages = {
 
     'Loan Borrowers Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/borrowers`, {
-        shouldRender: '.single-borrower-tab',
+        shouldRender: '.borrower-forms',
       }),
 
     'Loan Properties Tab': ({ loan: { _id } }) =>

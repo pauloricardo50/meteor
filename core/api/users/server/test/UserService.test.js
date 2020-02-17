@@ -10,7 +10,7 @@ import { ddpWithUserId } from '../../../methods/methodHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
@@ -380,8 +380,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({
-          token: 'some unknown token',}),
+        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
+        }),
       ).to.equal(false);
     });
   });

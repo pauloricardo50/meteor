@@ -5,10 +5,10 @@ import omit from 'lodash/omit';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 
-import CollectionService from '../helpers/CollectionService';
-import { COLLECTIONS } from '../constants';
-import { NOTIFICATIONS_COLLECTION } from '../notifications/notificationConstants';
-import { ACTIVITIES_COLLECTION } from '../activities/activityConstants';
+import CollectionService from '../../helpers/server/CollectionService';
+import { COLLECTIONS } from '../../constants';
+import { NOTIFICATIONS_COLLECTION } from '../../notifications/notificationConstants';
+import { ACTIVITIES_COLLECTION } from '../../activities/activityConstants';
 
 const getSingularFactoryName = collection => {
   switch (collection) {

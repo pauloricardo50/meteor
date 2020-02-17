@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { Organisations } from '../../..';
 import OrganisationService from '../../../organisations/server/OrganisationService';
 

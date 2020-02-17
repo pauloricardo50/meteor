@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
 import {
   getTimestampAndNonce,
@@ -10,10 +10,9 @@ import {
   makeHeaders,
 } from '../../test/apiTestHelpers.test';
 import RESTAPI from '../../RESTAPI';
-
-import addProUserToPropertyAPI from '../addProUserToProperty';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import PropertyService from '../../../../properties/server/PropertyService';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
+import addProUserToPropertyAPI from '../addProUserToProperty';
 
 const api = new RESTAPI();
 api.addEndpoint(

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Irs10y from '../irs10y';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import { fetchIrs10y } from './fetchIrs10y';
 
 class Irs10yService extends CollectionService {

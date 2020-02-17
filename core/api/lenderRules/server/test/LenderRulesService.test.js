@@ -5,9 +5,9 @@ import jsonLogic from 'json-logic-js';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from 'core/api/factories';
-import LenderRulesService from '../LenderRulesService';
+import generator from '../../../factories/server';
 import { EXPENSE_TYPES } from '../../lenderRulesConstants';
+import LenderRulesService from '../LenderRulesService';
 
 describe('LenderRulesService', () => {
   let organisationId;

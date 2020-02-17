@@ -7,7 +7,7 @@ import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-const CustomersWithoutAssignees = props => {
+const CustomersWithoutAssignees = ({ showAll }) => {
   // We need to query both for undefined or null values in the assignedEmployeeId
   const { data: users1 = [], loading: loading1 } = useStaticMeteorData({
     query: adminUsers,
@@ -31,7 +31,7 @@ const CustomersWithoutAssignees = props => {
   const isLoading = loading1 || loading2;
   const isOk = !isLoading && users.length === 0;
 
-  if (isOk) {
+  if (!showAll && isOk) {
     return null;
   }
 

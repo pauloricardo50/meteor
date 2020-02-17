@@ -8,6 +8,7 @@ import {
   BORROWERS_COLLECTION,
   ACTIVITIES_COLLECTION,
   TASKS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 import analysisConfig from './analysisConfig';
 
@@ -103,10 +104,10 @@ export const analysisBodies = {
   [ACTIVITIES_COLLECTION]: createBodyFromMap(
     analysisConfig[ACTIVITIES_COLLECTION],
   ),
-  [TASKS_COLLECTION]: {
-    ...createBodyFromMap(analysisConfig[TASKS_COLLECTION]),
-    // $options: { limit: 10 },
-  },
+  [TASKS_COLLECTION]: createBodyFromMap(analysisConfig[TASKS_COLLECTION]),
+  [ORGANISATIONS_COLLECTION]: createBodyFromMap(
+    analysisConfig[ORGANISATIONS_COLLECTION],
+  ),
 };
 
 // FIXME: Not working yet, bug in react-pivottable

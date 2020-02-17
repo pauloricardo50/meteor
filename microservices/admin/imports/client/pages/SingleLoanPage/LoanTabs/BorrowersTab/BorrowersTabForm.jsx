@@ -6,10 +6,9 @@ import AutoForm from 'core/components/AutoForm';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
-import Recap from 'core/components/Recap';
 import BorrowerRemover from 'core/components/BorrowerRemover';
 import BorrowerReuser from 'core/components/BorrowerReuser';
-import BorrowerAge from '../BorrowerAge';
+import BorrowersTabFormRecap from './BorrowersTabFormRecap';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
   gender: doc.gender,
@@ -77,16 +76,11 @@ const BorrowersTabForm = ({
         />
       </VerticalAligner>
 
-      <div className={cx('side-recap card1 card-top', { right: index === 1 })}>
-        <div className="flex-col center-align">
-          <BorrowerAge borrower={borrower} />
-        </div>
-        <Recap
-          arrayName="borrower"
-          borrower={borrower}
-          Calculator={Calculator}
-        />
-      </div>
+      <BorrowersTabFormRecap
+        borrower={borrower}
+        Calculator={Calculator}
+        index={index}
+      />
     </div>
   );
 };

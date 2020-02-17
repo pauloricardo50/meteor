@@ -17,7 +17,7 @@ import {
 } from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import LoanService from '../LoanService';
 import {
   OWN_FUNDS_TYPES,

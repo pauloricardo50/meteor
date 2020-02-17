@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
 import { loansWithoutRevenues } from 'core/api/stats/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
 import DialogSimple from 'core/components/DialogSimple';
 import Table from 'core/components/Table';
 import StatusLabel from 'core/components/StatusLabel';
@@ -10,6 +9,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import { USERS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import StatItem from './StatItem';
 
 const LoansTable = ({ loans }) => (
@@ -77,7 +77,13 @@ const LoansTable = ({ loans }) => (
     })}
   />
 );
-const LoansWithoutRevenues = ({ loans }) => {
+
+const LoansWithoutRevenues = ({ showAll }) => {
+  const { data: loans = [], loading } = useStaticMeteorData({
+    query: loansWithoutRevenues,
+    dataName: 'loans',
+    refetchOnMethodCall: false,
+  });
   const isOk = loans.length === 0;
   const currentUser = useContext(CurrentUserContext);
 
@@ -88,7 +94,7 @@ const LoansWithoutRevenues = ({ loans }) => {
       userCache.assignedEmployeeCache._id === currentUser._id,
   );
 
-  if (isOk) {
+  if (!showAll && isOk) {
     return null;
   }
 
@@ -120,8 +126,4 @@ const LoansWithoutRevenues = ({ loans }) => {
   );
 };
 
-export default withSmartQuery({
-  query: loansWithoutRevenues,
-  dataName: 'loans',
-  refetchOnMethodCall: false,
-})(LoansWithoutRevenues);
+export default LoansWithoutRevenues;

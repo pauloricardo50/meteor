@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from 'core/api/factories/index';
+import generator from 'core/api/factories/server';
 import { getBestPromotionLotStatus } from '../promotionServerHelpers';
 
 describe('promotionServerHelpers', () => {
