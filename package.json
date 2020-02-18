@@ -42,9 +42,12 @@
     "@babel/plugin-proposal-class-properties": "7.7.4",
     "@babel/preset-env": "7.7.7",
     "@cypress/browserify-preprocessor": "^2.1.1",
+    "@google-cloud/compute": "^1.2.0",
     "babel-eslint": "^10.0.3",
     "change-case": "^4.1.1",
     "cypress": "^3.8.1",
+    "digest-fetch": "^1.0.9",
+    "ejs": "^3.0.1",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^14.0.0",
@@ -60,8 +63,10 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "esm": "^3.2.25",
     "global": "^4.4.0",
+    "mup": "^1.5.0-beta.6",
     "node-cmd": "^3.0.0",
     "plop": "^2.5.3",
     "prettier": "^1.19.1"
-  }
+  },
+  "dependencies": {}
 }
