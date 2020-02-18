@@ -114,6 +114,14 @@ const makeMapTask = ({
   const createdByFirstName =
     createdBy && employeesById[createdBy]?.name.split(' ')[0];
 
+  const assigneeCreatedTask = assignee?._id === createdBy;
+
+  const createdByLabel =
+    createdByFirstName && !assigneeCreatedTask
+      ? ` par ${createdByFirstName}`
+      : '';
+  const createdAtLabel = moment(createdAt).fromNow();
+
   return {
     id: taskId,
     priority,
@@ -142,11 +150,7 @@ const makeMapTask = ({
       },
       {
         raw: createdAt && createdAt.getTime(),
-        label: `${moment(createdAt).fromNow()}${
-          createdByFirstName && assignee?._id !== createdBy
-            ? ` par ${createdByFirstName}`
-            : ''
-        }`,
+        label: `${createdAtLabel}${createdByLabel}`,
       },
       { raw: dueAt && dueAt.getTime(), label: formatDateTime(dueAt) },
       {

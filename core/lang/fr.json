@@ -15,7 +15,6 @@
   "File.roles.admin": "Document accessible uniquement aux Admins",
   "File.roles.admin.tooltip": "Donner l'accès uniquement aux Admins",
   "File.roles.admin.confirm": "Êtes-vous sûr de vouloir rendre le document {file} accessible uniquement aux Admins ? {withWarning, select, true {Vous et les clients n'y aurez plus accès.} other {Les clients et les Pros n'y auront plus accès.}}",
-  "OrganisationTabs.tasks": "Tâches",
   "Forms.acquisitionChannel.FACEBOOK": "Facebook",
   "Forms.acquisitionChannel.LINKEDIN": "LinkedIn",
   "Forms.acquisitionChannel": "Canal d'acquisition",
