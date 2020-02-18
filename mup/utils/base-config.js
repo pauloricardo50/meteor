@@ -1,7 +1,8 @@
 const { generateConfig } = require('../utils/nginx.js');
+
 process.env.METEOR_PACKAGE_DIRS =
   process.env.METEOR_PACKAGE_DIRS || '../../meteorPackages:packages';
-process.env.METEOR_PROFILE = 50;
+process.env.METEOR_PROFILE = 1000;
 process.env.METEOR_DISABLE_OPTIMISTIC_CACHING = 'true';
 
 module.exports = function createConfig({
@@ -10,7 +11,7 @@ module.exports = function createConfig({
   nginxLocationConfig,
   environment,
   baseDomain,
-  servers
+  servers,
 }) {
   const appServers = Object.keys(servers).reduce((result, serverName) => {
     // eslint-disable-next-line no-param-reassign
@@ -53,7 +54,9 @@ module.exports = function createConfig({
 
     proxy: {
       domains: domains.join(','),
-      nginxLocationConfig: nginxLocationConfig ? generateConfig(nginxLocationConfig, baseDomain) : undefined,
+      nginxLocationConfig: nginxLocationConfig
+        ? generateConfig(nginxLocationConfig, baseDomain)
+        : undefined,
       shared: {
         nginxConfig: generateConfig('../nginx/global.conf', baseDomain),
       },
