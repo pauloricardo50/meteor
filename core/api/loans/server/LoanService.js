@@ -234,9 +234,6 @@ class LoanService extends CollectionService {
     return loanId;
   };
 
-  confirmClosing = ({ loanId, object }) =>
-    this.update({ loanId, object: { status: LOAN_STATUS.BILLING, ...object } });
-
   pushValue = ({ loanId, object }) =>
     this.baseUpdate(loanId, { $push: object });
 

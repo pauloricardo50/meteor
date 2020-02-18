@@ -83,20 +83,20 @@ Meteor.startup(() => {
   // migrate('organisations', 'referredUsersCount', {
   //   referredUsersCount: { $exists: false },
   // });
-  migrate('organisations', 'revenuesCount', {
-    revenuesCount: { $exists: false },
-  });
-  migrate('loans', 'structureCache', {
-    structureCache: { $exists: false },
-    selectedStructure: { $exists: true },
-    $nor: [{ structures: { $exists: false } }, { structures: { $size: 0 } }],
-  });
-  migrate('lenders', 'offersCache', { offersCache: { $exists: false } });
-  migrate('loans', 'lendersCache', {
-    $nor: [
-      { lendersCache: { $exists: false } },
-      { lendersCache: { $size: 0 } },
-    ],
-    'lendersCache.offersCache': { $exists: false },
-  });
+  // migrate('organisations', 'revenuesCount', {
+  //   revenuesCount: { $exists: false },
+  // });
+  // migrate('loans', 'structureCache', {
+  //   structureCache: { $exists: false },
+  //   selectedStructure: { $exists: true },
+  //   $nor: [{ structures: { $exists: false } }, { structures: { $size: 0 } }],
+  // });
+  // migrate('lenders', 'offersCache', { offersCache: { $exists: false } });
+  // migrate('loans', 'lendersCache', {
+  //   $nor: [
+  //     { lendersCache: { $exists: false } },
+  //     { lendersCache: { $size: 0 } },
+  //   ],
+  //   'lendersCache.offersCache': { $exists: false },
+  // });
 });
