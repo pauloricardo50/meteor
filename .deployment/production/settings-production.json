@@ -88,6 +88,8 @@
     "token": "Aj24eX80LV6tWvKfc8rl"
   },
   "front": {
-    "authSecret": "a4291ad56b8d8a4a"
+    "authSecret": "a4291ad56b8d8a4a",
+    "apiSecret": "ba4fb02d608a6054470124786ffd1199",
+    "apiToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzY29wZXMiOlsic2hhcmVkOioiXSwiaWF0IjoxNTgxOTY2MjQ4LCJpc3MiOiJmcm9udCIsInN1YiI6ImVfcG90ZWsiLCJqdGkiOiIyYTgwZTMxOThmYTE1OWZmIn0.uwiq057GDQjLiQNObx8IFC1QvpX93GPPutXhXFCVdrc"
   }
 }

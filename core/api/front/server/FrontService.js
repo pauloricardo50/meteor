@@ -11,9 +11,8 @@ import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
 
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
-const FRONT_API_SECRET = 'ba4fb02d608a6054470124786ffd1199';
-const FRONT_API_TOKEN =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzY29wZXMiOlsic2hhcmVkOioiXSwiaWF0IjoxNTgxOTY2MjQ4LCJpc3MiOiJmcm9udCIsInN1YiI6ImVfcG90ZWsiLCJqdGkiOiIyYTgwZTMxOThmYTE1OWZmIn0.uwiq057GDQjLiQNObx8IFC1QvpX93GPPutXhXFCVdrc';
+const FRONT_API_SECRET = Meteor.settings.front?.apiSecret;
+const FRONT_API_TOKEN = Meteor.settings.front?.apiToken;
 const API_PATH = 'https://api2.frontapp.com';
 const LOANS_TAG_ID = 'tag_9hgg2';
 export const LOANS_TAG_URL = `https://api2.frontapp.com/tags/${LOANS_TAG_ID}`;
@@ -78,7 +77,7 @@ export class FrontService {
     this.fetch = fetch;
   }
 
-  checkAuth({ body: { authSecret, email } = {} }) {
+  checkPluginAuthentication({ body: { authSecret, email } = {} }) {
     if (!authSecret || authSecret !== FRONT_AUTH_SECRET) {
       throw new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Authentication failed');
     }
@@ -102,7 +101,7 @@ export class FrontService {
     return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
   }
 
-  checkWebhook(req) {
+  checkWebhookAuthentication(req) {
     const signature = req.headers['x-front-signature'];
     const data = req.body;
 

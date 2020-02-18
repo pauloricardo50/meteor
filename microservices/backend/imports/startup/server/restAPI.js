@@ -142,12 +142,12 @@ api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
   endpointName: 'Add note to a loan',
 });
 api.addEndpoint('/front-plugin', 'POST', frontPluginAPI, {
-  customAuth: FrontService.checkAuth.bind(FrontService),
-  endpointName: 'Front API',
+  customAuth: FrontService.checkPluginAuthentication.bind(FrontService),
+  endpointName: 'Front plugin',
 });
 api.addEndpoint('/front-webhooks/:webhookName', 'POST', frontWebhookAPI, {
-  customAuth: FrontService.checkWebhook.bind(FrontService),
-  endpointName: 'Front API',
+  customAuth: FrontService.checkWebhookAuthentication.bind(FrontService),
+  endpointName: 'Front webhooks',
 });
 
 Meteor.startup(() => {
