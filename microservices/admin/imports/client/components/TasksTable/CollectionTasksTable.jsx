@@ -63,9 +63,10 @@ const CollectionTasksTable = ({
   withTaskInsert,
   refetch,
   collection,
+  className,
   ...rest
 }) => (
-  <div>
+  <div className={className}>
     {withTaskInsert && (
       <div className="flex">
         <h3>Tâches</h3>
