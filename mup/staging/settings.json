@@ -12,11 +12,12 @@
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
     "subdomains": {
-      "admin": "http://34.65.110.175:4300",
-      "app": "http://34.65.110.175:4100",
-      "pro": "http://34.65.110.175:4700",
-      "www": "http://34.65.110.175:4000",
-      "backend": "https://backend.staging.e-potek.ch"
+      "api": "https://api.staging-2.e-potek.net",
+      "admin": "https://admin.staging-2.e-potek.net",
+      "app": "https://app.staging-2.e-potek.net",
+      "pro": "https://pro.staging-2.e-potek.net",
+      "www": "https://www.staging-2.e-potek.net",
+      "backend": "https://backend.staging-2.e-potek.net"
     }
   },
   "mandrill": {
