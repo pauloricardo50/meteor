@@ -20,7 +20,7 @@ const BorrowersTabFormRecap = ({ borrower, Calculator, index }) => {
       className={cx('side-recap card1 shadow-2 card-top', {
         right: index === 1,
       })}
-      style={{ top: recapHeight + window.scrollY + 80 }}
+      style={{ top: recapHeight + 40 }}
     >
       <div className="flex-col center-align">
         <BorrowerAge borrower={borrower} />
