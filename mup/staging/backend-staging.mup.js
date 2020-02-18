@@ -4,5 +4,5 @@ const defaults = require('./defaults');
 module.exports = generateConfig({
   ...defaults,
   microservice: 'backend',
-  subDomains: ['backend'],
+  subDomains: ['backend', 'api'],
 });
