@@ -3,7 +3,10 @@ import { Helmet } from 'react-helmet';
 
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
+import {
+  ORGANISATION_FEATURES,
+  ORGANISATIONS_COLLECTION,
+} from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import AdminReferredUsersTable from 'core/components/ReferredUsersTable/AdminReferredUsersTable';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
@@ -16,12 +19,20 @@ import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTa
 import CommissionEditor from './CommissionEditor';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
-import OrganisationTasks from './OrganisationTasks';
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const tabs = ({ organisation, currentUser }) =>
   [
     { id: 'info', Component: OrganisationInfo },
-    { id: 'tasks', Component: OrganisationTasks },
+    {
+      id: 'tasks',
+      Component: CollectionTasksTable,
+      props: {
+        doc: organisation,
+        collection: ORGANISATIONS_COLLECTION,
+        withTaskInsert: true,
+      },
+    },
     { id: 'users', Component: OrganisationUsersTable },
     { id: 'contacts', Component: ContactsTable },
     {
@@ -46,11 +57,12 @@ const tabs = ({ organisation, currentUser }) =>
       id: 'revenues',
       Component: OrganisationRevenues,
     },
-  ].map(({ id, Component, condition, style = {} }) => ({
+  ].map(({ id, Component, condition, style = {}, props = {} }) => ({
     id,
     content: (
       <Component
         {...organisation}
+        {...props}
         currentUser={currentUser}
         organisationId={organisation._id}
       />
