@@ -42,14 +42,19 @@ function filterApps(apps, wantedApps) {
 }
 
 const { argv } = yargs
-  .option('environment')
+  .string('environment')
   .alias('e', 'environment')
+  .describe('environment', 'environment name, or "all"')
   .demandOption('environment')
   .option('apps')
   .describe('apps', 'comma separated list of app names to run the command for');
 
 const mupCommands = getMupCommand();
-const environments = getEnvironments(argv.environment);
+// Sometimes yargs makes environment be an array with extra empty strings
+const environments = getEnvironments(
+  Array.isArray(argv.e) ? argv.e[0] : argv.e,
+);
+
 const wantedApps = argv.apps ? argv.apps.split(',') : null;
 
 log('updating servers');
