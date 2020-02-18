@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES, USERS_COLLECTION } from 'core/api/constants';
 import ProCustomersTable from 'core/components/ProCustomersTable/ProCustomersTable';
 import {
   columnOptions,
@@ -15,7 +15,7 @@ import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
 import UserActivities from './UserActivities';
-import SingleUserPageTasks from './SingleUserPageTasks';
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const SingleUserPage = ({
   user,
@@ -48,7 +48,12 @@ const SingleUserPage = ({
         currentUser={currentUser}
       />
       <UserActivities userId={userId} />
-      <SingleUserPageTasks user={user} />
+      <CollectionTasksTable
+        doc={user}
+        collection={USERS_COLLECTION}
+        withTaskInsert
+        withQueryTaskInsert
+      />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}

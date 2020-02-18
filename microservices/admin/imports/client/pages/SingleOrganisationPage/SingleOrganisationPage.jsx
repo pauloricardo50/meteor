@@ -16,12 +16,10 @@ import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTa
 import CommissionEditor from './CommissionEditor';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
-import OrganisationTasks from './OrganisationTasks';
 
 const tabs = ({ organisation, currentUser }) =>
   [
     { id: 'info', Component: OrganisationInfo },
-    { id: 'tasks', Component: OrganisationTasks },
     { id: 'users', Component: OrganisationUsersTable },
     { id: 'contacts', Component: ContactsTable },
     {
