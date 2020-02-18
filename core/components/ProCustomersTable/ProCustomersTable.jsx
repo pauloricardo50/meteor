@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Table from 'core/components/Table';
@@ -7,8 +6,6 @@ import T from 'core/components/Translation';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import { LOAN_STATUS } from 'core/api/constants';
 import ProCustomersTableContainer from './ProCustomersTableContainer';
-
-type ProCustomersTableProps = {};
 
 const ProCustomersTable = ({
   rows,
@@ -20,7 +17,7 @@ const ProCustomersTable = ({
   referredByMe,
   setReferredByMe,
   proUser,
-}: ProCustomersTableProps) => (
+}) => (
   <>
     <div>
       <MongoSelect

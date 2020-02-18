@@ -1,9 +1,6 @@
-// @flow
 import React from 'react';
 import { classes, ROW_TYPES } from '../PdfTable/PdfTable';
 import { toMoney } from '../../../../../utils/conversionFunctions';
-
-type BalanceSheetTableProps = {};
 
 const makeTableContent = (leftRows, rightRows) => {
   const lines = Math.max(rightRows.length, leftRows.length);
@@ -31,7 +28,7 @@ const BalanceSheetTable = ({
   leftRows,
   bottomTitles,
   bottomValues,
-}: BalanceSheetTableProps) => (
+}) => (
   <table className="pdf-table balance-sheet-table">
     <tr className={classes[ROW_TYPES.TITLE]}>
       <td colSpan={2}>{titles[0]}</td>

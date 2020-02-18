@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,8 +6,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '../Button';
 import T from '../Translation';
-
-type DialogComponentsProps = {};
 
 const makeRenderDialogPart = dialogProps => part => {
   if (typeof part === 'function') {
@@ -29,7 +26,7 @@ const DialogComponents = ({
   returnValue,
   closeAll,
   dialogContent: Content = {},
-}: DialogComponentsProps) => {
+}) => {
   if (React.isValidElement(Content)) {
     return React.cloneElement(Content, { closeModal, returnValue, closeAll });
   }

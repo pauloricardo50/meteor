@@ -22,6 +22,7 @@ import {
   AUTHENTICATION_TYPES,
 } from './restApiConstants';
 import { getImpersonateUserId } from './endpoints/helpers';
+import { ROLES } from '../../users/userConstants';
 
 export const AUTH_ITEMS = {
   RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',
@@ -36,8 +37,9 @@ export const OBJECT_FORMATS = {
 
 export const getHeader = (req, name) => req.headers[name];
 
-export const getRequestType = req => {
+export const getRequestType = (req, options = {}) => {
   const contentType = getHeader(req, 'content-type');
+  const { customAuth } = options;
 
   if (contentType && contentType.includes('multipart/form-data')) {
     return 'multipart';
@@ -63,11 +65,22 @@ export const getRequestType = req => {
     return 'simple';
   }
 
+  if (customAuth) {
+    return 'custom';
+  }
+
   return 'no-auth';
 };
 
 export const requestTypeIsAllowed = ({ req, endpointOptions }) => {
-  const { simpleAuth, noAuth, basicAuth, rsaAuth, multipart } = endpointOptions;
+  const {
+    simpleAuth,
+    noAuth,
+    basicAuth,
+    rsaAuth,
+    multipart,
+    customAuth,
+  } = endpointOptions;
   const { authenticationType } = req;
 
   if (multipart && authenticationType === 'multipart') {
@@ -87,6 +100,10 @@ export const requestTypeIsAllowed = ({ req, endpointOptions }) => {
   }
 
   if (rsaAuth && authenticationType === 'rsa') {
+    return true;
+  }
+
+  if (customAuth && authenticationType === 'custom') {
     return true;
   }
 
@@ -381,7 +398,6 @@ export const verifySignature = req => {
 
 export const trackRequest = ({ req, result }) => {
   const {
-    user: { _id: userId } = {},
     headers = {},
     startTime,
     endTime,
@@ -389,6 +405,14 @@ export const trackRequest = ({ req, result }) => {
     authenticationType,
     endpointName,
   } = req;
+  const { user = {} } = req;
+
+  if (!user) {
+    return;
+  }
+
+  const { _id: userId } = user;
+
   const { 'x-forwarded-for': clientAddress, 'x-real-ip': realIp } = headers;
 
   const analytics = new Analytics({
@@ -495,4 +519,17 @@ const AUTH_MIDDLEWARES = {
     'replayHandlerMiddleware',
   ],
   rsa: ['replayHandlerMiddleware', 'filterMiddleware', 'authMiddleware'],
+  custom: ['customAuthMiddleware'],
+};
+
+export const checkCustomAuth = ({ customAuth, req }) => {
+  const { isAuthenticated, user, error } = customAuth(req);
+
+  if (!isAuthenticated) {
+    throw `Custom authentication failed: ${error.message}`;
+  }
+
+  if (user) {
+    req.user = user;
+  }
 };

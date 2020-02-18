@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
@@ -11,13 +10,7 @@ import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
 
-type PromotionLotDetailProps = {};
-
-const PromotionLotDetail = ({
-  promotionLot,
-  promotion,
-  children,
-}: PromotionLotDetailProps) => {
+const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const {
     lots = [],
     _id: promotionLotId,

@@ -58,6 +58,12 @@ export const REST_API_ERRORS = {
     message: 'Wrong public key',
     info,
   }),
+  AUTHENTICATION_FAILED: info => ({
+    status: HTTP_STATUS_CODES.FORBIDDEN,
+    errorName: 'AUTHENTICATION_FAILED',
+    message: 'Authentication failed',
+    info,
+  }),
 };
 
 export const OS_TMP_DIR = os.tmpdir();

@@ -1,10 +1,7 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
-type MicroserviceHeadProps = {};
 
 const formatTitle = (name = '') =>
   `e-Potek | ${name.charAt(0).toUpperCase() + name.slice(1)}`;
@@ -19,7 +16,7 @@ export const defaultOgTags = {
   type: 'website',
 };
 
-const MicroserviceHead = ({ addOgTags }: MicroserviceHeadProps) => {
+const MicroserviceHead = ({ addOgTags }) => {
   const title = formatTitle(Meteor.microservice);
   const allowScale = Meteor.microservice !== 'app';
   const addFacebookData =

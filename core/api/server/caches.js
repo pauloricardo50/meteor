@@ -1,7 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { migrate } from 'meteor/herteby:denormalize';
 
-import { Organisations, LenderRules, Properties, Loans, Users } from '..';
+import {
+  Organisations,
+  LenderRules,
+  Properties,
+  Loans,
+  Users,
+  Revenues,
+  Lenders,
+  Offers,
+} from '..';
 
 Organisations.cacheCount({
   collection: LenderRules,
@@ -15,10 +24,34 @@ Organisations.cacheCount({
   cacheField: 'referredUsersCount',
 });
 
+Organisations.cacheCount({
+  collection: Revenues,
+  referenceField: 'sourceOrganisationLink._id',
+  cacheField: 'revenuesCount',
+});
+
 Properties.cacheCount({
   collection: Loans,
   referenceField: 'propertyIds',
   cacheField: 'loanCount',
+});
+
+Loans.cacheField({
+  cacheField: 'structureCache',
+  fields: ['structures', 'selectedStructure'],
+  transform({ structures = [], selectedStructure }) {
+    return selectedStructure
+      ? structures.find(({ id }) => id === selectedStructure)
+      : undefined;
+  },
+});
+
+Lenders.cache({
+  collection: Offers,
+  type: 'many-inverse',
+  fields: ['_id'],
+  referenceField: 'lenderLink._id',
+  cacheField: 'offersCache',
 });
 
 Meteor.startup(() => {
@@ -37,7 +70,6 @@ Meteor.startup(() => {
   //   ],
   // });
   // migrate('loans', 'userCache', { 'userCache.referredByUserLink': { $exists: false } });
-  // migrate('loans', 'lendersCache', { lendersCache: { $exists: false } });
   // migrate('loans', 'tasksCache', { tasksCache: { $exists: false } });
   // migrate('offers', 'lenderCache', { lenderCache: { $exists: false } });
   // migrate('lenderRules', 'organisationCache', {
@@ -51,4 +83,20 @@ Meteor.startup(() => {
   // migrate('organisations', 'referredUsersCount', {
   //   referredUsersCount: { $exists: false },
   // });
+  migrate('organisations', 'revenuesCount', {
+    revenuesCount: { $exists: false },
+  });
+  migrate('loans', 'structureCache', {
+    structureCache: { $exists: false },
+    selectedStructure: { $exists: true },
+    $nor: [{ structures: { $exists: false } }, { structures: { $size: 0 } }],
+  });
+  migrate('lenders', 'offersCache', { offersCache: { $exists: false } });
+  migrate('loans', 'lendersCache', {
+    $nor: [
+      { lendersCache: { $exists: false } },
+      { lendersCache: { $size: 0 } },
+    ],
+    'lendersCache.offersCache': { $exists: false },
+  });
 });

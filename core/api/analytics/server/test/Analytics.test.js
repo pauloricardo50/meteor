@@ -1,6 +1,8 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -57,35 +59,45 @@ describe('Analytics', () => {
       expect(analyticsSpy.callCount).to.equal(0);
     });
 
-    it('should send a slack notification when a required property is not given to an event', async () => {
-      const slackSpy = sinon.spy();
-      sinon.stub(SlackService, 'sendError').callsFake(slackSpy);
-      const connectionId = Random.id();
-
-      await SessionService.insert({
-        connectionId,
-        ip: '127.0.0.1',
+    describe('production-only', () => {
+      before(() => {
+        Meteor.isProduction = true;
       });
 
-      const analytics = new Analytics({ connection: { id: connectionId } });
-      const data = {
-        url: 'url',
-        route: 'route',
-        path: 'path',
-      };
-
-      analytics.track(EVENTS.CTA_CLICKED, data);
-
-      expect(slackSpy.firstCall.args[0].error.error).to.include(
-        'Property name in event CTA clicked is required',
-      );
-      expect(slackSpy.firstCall.args[0].additionalData[0]).to.deep.include({
-        event: EVENTS.CTA_CLICKED,
-        data,
-        pickedProperties: { name: undefined, ...data, referrer: undefined },
+      after(() => {
+        Meteor.isProduction = false;
       });
-      expect(analyticsSpy.callCount).to.equal(1);
-      SlackService.sendError.restore();
+
+      it('should send a slack notification when a required property is not given to an event', async () => {
+        const slackSpy = sinon.spy();
+        sinon.stub(SlackService, 'sendError').callsFake(slackSpy);
+        const connectionId = Random.id();
+
+        await SessionService.insert({
+          connectionId,
+          ip: '127.0.0.1',
+        });
+
+        const analytics = new Analytics({ connection: { id: connectionId } });
+        const data = {
+          url: 'url',
+          route: 'route',
+          path: 'path',
+        };
+
+        analytics.track(EVENTS.CTA_CLICKED, data);
+
+        expect(slackSpy.firstCall.args[0].error.error).to.include(
+          'Property name in event CTA clicked is required',
+        );
+        expect(slackSpy.firstCall.args[0].additionalData[0]).to.deep.include({
+          event: EVENTS.CTA_CLICKED,
+          data,
+          pickedProperties: { name: undefined, ...data, referrer: undefined },
+        });
+        expect(analyticsSpy.callCount).to.equal(1);
+        SlackService.sendError.restore();
+      });
     });
   });
 

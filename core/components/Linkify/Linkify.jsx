@@ -1,11 +1,8 @@
-// @flow
 import React from 'react';
 import DefaultLinkify from 'react-linkify';
 
-type LinkifyProps = {};
-
 const makeComponentDecorator = props => (href, text, key) => {
-  const { newTab = true, textTransform, style = {} } = props;
+  const { newTab = true, textTransform, style = {}, Front, onClick } = props;
   return (
     <b>
       <a
@@ -16,6 +13,10 @@ const makeComponentDecorator = props => (href, text, key) => {
         style={style}
         onClick={event => {
           event.stopPropagation();
+          if (onClick) {
+            event.preventDefault();
+            return onClick(href);
+          }
         }}
       >
         {textTransform ? textTransform(text) : text}
@@ -24,7 +25,7 @@ const makeComponentDecorator = props => (href, text, key) => {
   );
 };
 
-const Linkify = ({ children, ...props }: LinkifyProps) => (
+const Linkify = ({ children, ...props }) => (
   <DefaultLinkify componentDecorator={makeComponentDecorator(props)}>
     {children}
   </DefaultLinkify>

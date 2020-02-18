@@ -1,5 +1,3 @@
-// @flow
-
 import Loans from './loans';
 import {
   Borrowers,
@@ -30,6 +28,7 @@ export const lendersCache = {
   status: 1,
   contactLink: 1,
   organisationLink: 1,
+  offersCache: 1,
 };
 
 export const tasksCache = {

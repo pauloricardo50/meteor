@@ -1,10 +1,9 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import InterestRatesService from '../InterestRatesService';
-import { interestRates } from '../../../fragments'
+import { interestRates } from '../../../fragments';
 
 describe('InterestRatesService', () => {
   beforeEach(() => {

@@ -1,9 +1,8 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from '../../../factories/factoriesHelpers';
+import generator from '../../../factories/server';
 import OrganisationService from '../OrganisationService';
 import LenderRulesService from '../../../lenderRules/server/LenderRulesService';
 

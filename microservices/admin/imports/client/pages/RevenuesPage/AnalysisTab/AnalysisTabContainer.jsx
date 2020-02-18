@@ -1,4 +1,3 @@
-// @flow
 import { useMemo, useState, useEffect } from 'react';
 
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -18,7 +17,7 @@ export const useAnalysisData = ({ collection, formatMessage }) => {
   const formattedData = useMemo(
     () =>
       !loading && data ? mapData({ data, collection, formatMessage }) : [],
-    [loading, data, collection],
+    [loading, collection],
   );
 
   useEffect(() => {

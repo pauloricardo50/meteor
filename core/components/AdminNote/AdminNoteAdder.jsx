@@ -1,4 +1,3 @@
-// @flow
 import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
@@ -7,6 +6,7 @@ import {
   loanSetAdminNote,
   loanRemoveAdminNote,
 } from 'core/api/loans/methodDefinitions';
+import useSearchParams from 'core/hooks/useSearchParams';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 import useLoanContacts from './useLoanContacts';
@@ -64,11 +64,14 @@ const AdminNoteSetter = ({
     [contacts],
   );
 
+  const searchParams = useSearchParams();
+
   return (
     <AutoFormDialog
       title={isInsert ? 'Ajouter une note' : 'Modifier note'}
       buttonProps={buttonProps}
       schema={schema}
+      openOnMount={!adminNote && searchParams?.addNote}
       onSubmit={({ notifyPros = [], ...values }) =>
         loanSetAdminNote.run({
           loanId,

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,14 +6,12 @@ import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 
-type ReturnToDashboardProps = {};
-
-export const getPathToDashboard = (currentPath: string): string => {
+export const getPathToDashboard = currentPath => {
   const splittedPath = currentPath.split('/');
   return `/${[splittedPath[1], splittedPath[2]].join('/')}`;
 };
 
-const ReturnToDashboard = ({ history }: ReturnToDashboardProps) => (
+const ReturnToDashboard = ({ history }) => (
   <Button
     onClick={() => history.push(getPathToDashboard(history.location.pathname))}
     raised

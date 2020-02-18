@@ -1,15 +1,13 @@
-// @flow
 import React from 'react';
 
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
+import { LOANS_COLLECTION } from 'core/api/constants';
 import SingleLoanPageHeader from '../SingleLoanPageHeader';
 import PremiumLoanTabs from './PremiumLoanTabs';
-import SingleLoanPageTasks from '../SingleLoanPageTasks';
 import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
+import CollectionTasksTable from '../../../components/TasksTable/CollectionTasksTable';
 
-type PremiumSingleLoanPageProps = {};
-
-const PremiumSingleLoanPage = (props: PremiumSingleLoanPageProps) => {
+const PremiumSingleLoanPage = props => {
   const { loan } = props;
   return (
     <div className="single-loan-page premium">
@@ -23,7 +21,13 @@ const PremiumSingleLoanPage = (props: PremiumSingleLoanPageProps) => {
         customName={loan.customName}
         loanId={loan._id}
       />
-      <SingleLoanPageTasks loan={loan} />
+      <CollectionTasksTable
+        doc={loan}
+        colllection={LOANS_COLLECTION}
+        withTaskInsert
+        withQueryTaskInsert
+        className="single-loan-page-tasks card1 card-top"
+      />
       <PremiumLoanTabs {...props} />
     </div>
   );

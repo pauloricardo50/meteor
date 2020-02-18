@@ -1,10 +1,7 @@
-// @flow
 import React from 'react';
 
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
 import { AutoFormDialog } from '../../AutoForm2';
-
-type ProPropertyFormProps = {};
 
 const proPropertySchema = PropertySchema.pick(
   'address1',
@@ -28,11 +25,7 @@ const proPropertySchema = PropertySchema.pick(
   'imageUrls',
 );
 
-const ProPropertyForm = ({
-  model,
-  onSubmit,
-  buttonLabel,
-}: ProPropertyFormProps) => (
+const ProPropertyForm = ({ model, onSubmit, buttonLabel }) => (
   <AutoFormDialog
     title={buttonLabel}
     buttonProps={{ label: buttonLabel, raised: true, primary: true }}

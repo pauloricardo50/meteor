@@ -28,7 +28,7 @@ describe('#astToQuery', function() {
     assert.isTrue(Object.keys(getArgs('a.b.d')).length === 0);
   });
   it('#deny', function() {
-    let body = {
+    const body = {
       test: 1,
       testDeny: 1,
       nested: {

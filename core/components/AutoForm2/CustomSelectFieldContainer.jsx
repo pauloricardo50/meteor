@@ -180,6 +180,7 @@ export default Component => {
       return (
         <Component
           {...rest}
+          nullable={uniforms.nullable}
           displayEmpty
           values={values}
           formatOption={this.formatOption}

@@ -1,10 +1,7 @@
-// @flow
 import React from 'react';
 
 import T from '../Translation';
 import Select from '.';
-
-type MongoSelectProps = {};
 
 const makeOnChange = onChange => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {
@@ -44,13 +41,7 @@ const getOptions = (options, id) => {
   ];
 };
 
-const MongoSelect = ({
-  value,
-  onChange,
-  options,
-  id,
-  ...props
-}: MongoSelectProps) => {
+const MongoSelect = ({ value, onChange, options, id, ...props }) => {
   const finalOptions = getOptions(options, id);
   const finalValue = value ? value.$in : [null];
   const finalOnChange = makeOnChange(onChange);

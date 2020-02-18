@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LenderRules from '../lenderRules';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import {
   DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,

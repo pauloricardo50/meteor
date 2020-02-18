@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { MORTGAGE_NOTES_COLLECTION } from '../../api/constants';
@@ -6,15 +5,6 @@ import AutoForm from '../AutoForm';
 import T from '../Translation';
 import Button from '../Button';
 import MortgageNotesFormContainer from './MortgageNotesFormContainer';
-
-type MortgageNotesFormProps = {
-  borrowerId?: String,
-  disabled?: boolean,
-  getInputs: Function,
-  mortgageNoteInsert: Function,
-  mortgageNoteRemove: Function,
-  mortgageNotes: Array<Object>,
-};
 
 const MortgageNotesForm = ({
   borrowerId,
@@ -24,12 +14,12 @@ const MortgageNotesForm = ({
   mortgageNoteRemove,
   mortgageNotes = [],
   className = '',
-}: MortgageNotesFormProps) => (
+}) => (
   <div className={className} style={{ maxWidth: 400, width: '100%' }}>
     <h3 className="text-center v-align-mortgageNotes">
       <T id="general.mortgageNotes" />
     </h3>
-    <p className="description">
+    <p className="description text-center">
       <T
         id={
           borrowerId

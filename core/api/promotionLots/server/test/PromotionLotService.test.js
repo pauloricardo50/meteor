@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
@@ -12,7 +11,7 @@ import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
 } from 'core/api/promotionOptions/promotionOptionConstants';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { reservePromotionLot } from '../../../methods/index';
 import { checkEmails } from '../../../../utils/testHelpers';
@@ -20,7 +19,7 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 
-describe('PromotionLotService', function () {
+describe('PromotionLotService', function() {
   this.timeout(20000);
 
   beforeEach(() => {

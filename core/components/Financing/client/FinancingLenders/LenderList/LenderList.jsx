@@ -1,11 +1,8 @@
-// @flow
 import React from 'react';
 
 import LenderListItem from './LenderListItem';
 
-type LenderListProps = {};
-
-const LenderList = ({ organisations, loan, structureId }: LenderListProps) => (
+const LenderList = ({ organisations, loan, structureId }) => (
   <div className="lender-list">
     {organisations
       .filter(({ lenderRules }) => lenderRules && lenderRules.length > 0)

@@ -1,6 +1,13 @@
 import { useTracker } from 'meteor/react-meteor-data';
-import { useState, useEffect } from 'react';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
+
+import { useState, useEffect } from 'react';
+
+import ClientEventService from '../api/events/ClientEventService';
+import {
+  addQueryToRefetch,
+  removeQueryToRefetch,
+} from '../api/methods/clientQueryManager';
 
 const getQuery = (query, params) => {
   if (!query) {
@@ -23,8 +30,30 @@ const getStaticFunction = type =>
 const getSubscriptionFunction = type =>
   type === 'count' ? 'subscribeCount' : 'subscribe';
 
+let count = 0;
+
+// Automatically refetch a query on method calls, making everything seem
+// reactive
+const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall }) => {
+  useEffect(() => {
+    const uniqueId = count++;
+    if (refetchOnMethodCall) {
+      // Make sure there are no clashes between multiple queries with the
+      // same name
+      const queryName = `${(query && query.queryName) ||
+        query}-hook-${uniqueId}`;
+      ClientEventService.addListener(queryName, refetch);
+      addQueryToRefetch(queryName, refetchOnMethodCall);
+      return () => {
+        ClientEventService.removeListener(queryName, refetch);
+        removeQueryToRefetch(queryName);
+      };
+    }
+  }, []);
+};
+
 export const useStaticMeteorData = (
-  { query, params, type = 'many' },
+  { query, params, type = 'many', refetchOnMethodCall = 'all' },
   deps = [],
 ) => {
   const [loading, setLoading] = useState(true);
@@ -55,6 +84,8 @@ export const useStaticMeteorData = (
   };
 
   useEffect(refetch, deps);
+
+  useQueryRefetcher({ refetchOnMethodCall, refetch, query });
 
   return { loading, data, error, refetch };
 };

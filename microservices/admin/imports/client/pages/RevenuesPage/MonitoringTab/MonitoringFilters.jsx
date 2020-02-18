@@ -1,12 +1,9 @@
-// @flow
 import React from 'react';
 
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import { LOAN_CATEGORIES } from 'imports/core/api/constants';
 import { LOAN_STATUS, REVENUE_TYPES } from 'core/api/constants';
-
-type MonitoringFiltersProps = {};
 
 const MonitoringFilters = ({
   category,
@@ -16,13 +13,13 @@ const MonitoringFilters = ({
   makeSetState,
   allowedGroupBy,
   filters,
-  assignedEmployeeId,
+  assigneeLinkId,
   admins,
   referringOrganisations,
   referringOrganisationId,
   revenueType,
   additionalFilters = [],
-}: MonitoringFiltersProps) => (
+}) => (
   <div className="flex">
     <div className="flex-col mr-16">
       <h4>Affichage</h4>
@@ -69,12 +66,13 @@ const MonitoringFilters = ({
           className="mr-8"
         />
         <MongoSelect
-          value={assignedEmployeeId}
-          onChange={makeSetState('assignedEmployeeId')}
+          value={assigneeLinkId}
+          onChange={makeSetState('assigneeLinkId')}
           options={admins.map(admin => ({ id: admin._id, label: admin.name }))}
-          id="assignedEmployee"
-          label="Conseiller"
+          id="assigneeLinkId"
+          label="Conseiller principal du dossier"
           className="mr-8"
+          style={{ minWidth: 260 }}
         />
         <MongoSelect
           value={referringOrganisationId}
@@ -97,6 +95,7 @@ const MonitoringFilters = ({
             id="type"
             label="Type de revenus"
             className="mr-8"
+            style={{ minWidth: 150 }}
           />
         )}
         {filters}

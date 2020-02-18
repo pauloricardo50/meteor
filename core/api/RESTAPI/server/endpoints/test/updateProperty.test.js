@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
 import PropertyService from '../../../../properties/server/PropertyService';
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_STATUS,
@@ -54,10 +54,10 @@ const updateProperty = ({
   });
 };
 
-describe('REST: updateProperty', function () {
+describe('REST: updateProperty', function() {
   this.timeout(10000);
 
-  before(function () {
+  before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();

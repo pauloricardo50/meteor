@@ -1,6 +1,6 @@
 import { COMMISSION_STATUS } from 'imports/core/api/constants';
 import Revenues from '../revenues';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import { REVENUE_STATUS } from '../revenueConstants';
 
 class RevenueService extends CollectionService {

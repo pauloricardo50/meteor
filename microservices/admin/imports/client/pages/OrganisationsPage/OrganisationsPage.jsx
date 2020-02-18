@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -9,24 +8,16 @@ import {
 } from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import OrganisationsPageContainer from './OrganisationsPageContainer';
-import Organisation from './Organisation';
 import OrganisationAdder from './OrganisationAdder';
 import OrganisationFilters from './OrganisationFilters';
 import OrganisationsByFeature from './OrganisationsByFeature';
-
-type OrganisationsPageProps = {
-  insertOrganisation: Function,
-  organisations: Array<Object>,
-  filters: Object,
-  setFilters: Function,
-};
 
 const OrganisationsPage = ({
   insertOrganisation,
   organisations,
   filters,
   setFilters,
-}: OrganisationsPageProps) => (
+}) => (
   <div className="card1 card-top organisations-page">
     <Helmet>
       <title>Organisations</title>
@@ -51,14 +42,6 @@ const OrganisationsPage = ({
         key={feature || 'other'}
       />
     ))}
-
-    {/* <div className="organisations">
-      {organisations
-        .sort(({ name: nameA }, { name: nameB }) => nameA.localeCompare(nameB))
-        .map(org => (
-          <Organisation organisation={org} key={org._id} />
-        ))}
-    </div> */}
   </div>
 );
 

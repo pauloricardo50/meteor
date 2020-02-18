@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose } from 'recompose';
 
@@ -6,9 +5,7 @@ import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
-type FinancingOffersHeaderProps = {};
-
-const FinancingOffersHeader = (props: FinancingOffersHeaderProps) => {
+const FinancingOffersHeader = props => {
   const {
     structure: { offerId },
     offers,

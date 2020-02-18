@@ -47,7 +47,7 @@ const BorrowerFinancePage = props => {
                 />
 
                 <AutoForm
-                  formClasses="user-form user-form__info user-form__finance"
+                  formClasses="user-form user-form__finance"
                   inputs={getBorrowerFinanceArray({ borrowers, borrowerId })}
                   borrowers={borrowers}
                   docId={borrowerId}

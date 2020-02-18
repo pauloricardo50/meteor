@@ -1,4 +1,3 @@
-// @flow
 import { Random } from 'meteor/random';
 
 import React, { useState, useEffect } from 'react';
@@ -6,8 +5,8 @@ import { compose } from 'recompose';
 import { connectField } from 'uniforms';
 import { injectIntl } from 'react-intl';
 
-import { SLINGSHOT_DIRECTIVE_NAME_TEMP, FILE_STATUS } from 'core/api/constants';
-import { deleteTempFile } from 'core/api/methods';
+import { SLINGSHOT_DIRECTIVE_NAME_TEMP, FILE_STATUS } from '../../api/constants';
+import { deleteTempFile } from '../../api/methods';
 import BaseUploader from '../UploaderArray/Uploader/BaseUploader';
 import {
   displayFullState,

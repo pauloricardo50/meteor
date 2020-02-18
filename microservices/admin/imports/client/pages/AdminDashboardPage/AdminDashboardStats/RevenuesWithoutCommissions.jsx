@@ -1,17 +1,13 @@
-// @flow
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
 import { Money } from 'core/components/Translation';
-import { adminRevenues } from 'core/api/revenues/queries';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import DialogSimple from 'core/components/DialogSimple';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
-
-type RevenuesWithoutCommissionsProps = {};
 
 const OrgItem = ({ orgName, revenues }) => (
   <div key={orgName} className="flex center-align sb mb-16">
@@ -44,29 +40,28 @@ const OrgItem = ({ orgName, revenues }) => (
   </div>
 );
 
-const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
+const RevenuesWithoutCommissions = ({ showAll }) => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
-    query: adminRevenues,
+    query: REVENUES_COLLECTION,
     params: {
-      $body: {
-        loan: {
-          name: 1,
-          user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
-          borrowers: { name: 1 },
-          hasPromotion: 1,
-        },
-        organisationLinks: 1,
-        amount: 1,
-        assigneeLink: 1,
-      },
-      filters: {
+      $filters: {
         $or: [
           { organisationLinks: { $exists: false } },
           { organisationLinks: { $size: 0 } },
         ],
       },
+      loan: {
+        name: 1,
+        user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
+        borrowers: { name: 1 },
+        hasPromotion: 1,
+      },
+      organisationLinks: 1,
+      amount: 1,
+      assigneeLink: 1,
     },
+    refetchOnMethodCall: false,
   });
 
   const filteredRevenues = revenues.filter(
@@ -98,6 +93,10 @@ const RevenuesWithoutCommissions = (props: RevenuesWithoutCommissionsProps) => {
     filteredRevenues,
     'loan.user.referredByOrganisation.name',
   );
+
+  if (!showAll && !filteredRevenues.length) {
+    return null;
+  }
 
   return (
     <StatItem

@@ -14,7 +14,9 @@ import { adminUsers } from 'core/api/users/queries';
 import T from 'core/components/Translation';
 import Box from 'core/components/Box';
 import { ROLES } from 'core/api/users/userConstants';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { REVENUE_STATUS } from 'core/api/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(
@@ -82,6 +84,11 @@ const getSchema = currentUser =>
       uniforms: { labelProps: { shrink: true } },
       optional: false,
     }),
+    paidAt: {
+      type: Date,
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+      condition: ({ status }) => status === REVENUE_STATUS.CLOSED,
+    },
   });
 
 const revenueFormLayout = [
@@ -104,7 +111,7 @@ const revenueFormLayout = [
     Component: Box,
     title: <h4>Payé par</h4>,
     className: 'mb-32 grid-2',
-    fields: ['expectedAt', 'sourceOrganisationLink._id'],
+    fields: ['expectedAt', 'sourceOrganisationLink._id', 'paidAt'],
   },
   {
     Component: Box,

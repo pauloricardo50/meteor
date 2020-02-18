@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Link from 'core/components/Link';
@@ -9,16 +8,7 @@ import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 import PropertyCardInfos from './PropertyCardInfos';
 import PropertyCardContainer from './PropertyCardContainer';
 
-type PropertyCardProps = {
-  buttonLabel: Object,
-  image: String,
-  name: String,
-  address: String,
-  additionalInfos: String,
-  onClick: Function,
-};
-
-const PropertyCard = (props: PropertyCardProps) => {
+const PropertyCard = props => {
   const { loan, route } = props;
   const { promotionOptions } = loan;
 

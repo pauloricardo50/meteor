@@ -25,17 +25,6 @@ done
 # keep .bin symlinks
 find .. -type l -not -path "**/node_modules/**" -exec unlink {} \;
 
-# Install flow-typed globally to install all used packages' types
-if [[ $DO_CLEAN == true ]];
-then
-  echo "Installing flow and flow-typed"
-  # meteor npm i -gq flow-typed
-  # npm i -g flow-bin
-
-  echo "Remove current flow typed libdefs"
-  ( cd .. && rm -rf flow-typed );
-fi
-
 # Prepare every microservice
 for i in 'admin' 'app' 'pro' 'www' 'backend'
   do
@@ -60,14 +49,6 @@ for i in 'admin' 'app' 'pro' 'www' 'backend'
 
     echo "Installing npm packages"
     ( cd ../microservices/$i && meteor npm i -q );
-
-    # Do this after installing npm packages
-    if [[ $DO_CLEAN == true ]];
-    then
-      # Use --skip to ignore missing libdefs
-      echo "Fetching types for installed node_modules"
-      ( cd ../microservices/$i && meteor npx flow-typed install --skip -p ../.. );
-    fi
   done
 
 if [[ $DO_CLEAN == true ]];
@@ -87,6 +68,12 @@ echo "Installing npm packages in .deployment"
 
 echo "Creating language files"
 meteor npx babel-node ./createLanguages.js
+
+echo "Preparing front app plugin"
+( cd ../plugins/frontPlugin && npm rebuild node-sass );
+( cd ../plugins/frontPlugin && npm i -q );
+ln -s ../../../core ../plugins/frontPlugin/src/core
+( cd ../plugins/frontPlugin && meteor npm run build-production );
 
 end=`date +%s`
 runtime=$((end-start))

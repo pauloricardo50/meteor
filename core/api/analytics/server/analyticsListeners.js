@@ -17,9 +17,7 @@ import {
 import { followImpersonatedSession } from '../../sessions/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
-import ServerEventService from '../../events/server/ServerEventService';
 import EVENTS from '../events';
-import Analytics from './Analytics';
 import {
   analyticsLogin,
   analyticsPage,
@@ -107,6 +105,7 @@ addAnalyticsListener({
       purchaseType: loanPurchaseType,
       residenceType: loanResidenceType,
       step: loanStep,
+      mainAssignee,
     } = LoanService.get(loanId, {
       userId: 1,
       category: 1,
@@ -114,6 +113,7 @@ addAnalyticsListener({
       purchaseType: 1,
       residenceType: 1,
       step: 1,
+      mainAssignee: 1,
     });
     const { name: adminName } = UserService.get(adminId, { name: 1 });
     if (customerId) {
@@ -123,11 +123,10 @@ addAnalyticsListener({
         assignedEmployee: { name: 1 },
         name: 1,
       });
-      assigneeId = user.assignedEmployee && user.assignedEmployee._id;
-      assigneeName = user.assignedEmployee && user.assignedEmployee.name;
-      referredByOrganisation =
-        user.referredByOrganisation && user.referredByOrganisation.name;
-      referredByUser = user.referredByUser && user.referredByUser.name;
+      assigneeId = mainAssignee?._id;
+      assigneeName = mainAssignee?.name;
+      referredByOrganisation = user.referredByOrganisation?.name;
+      referredByUser = user.referredByUser?.name;
       customerName = user.name;
     }
 

@@ -1,4 +1,3 @@
-// @flow
 import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
@@ -251,5 +250,10 @@ export const loanSetDisbursementDate = new Method({
 
 export const loanSetAssignees = new Method({
   name: 'loanSetAssignees',
-  params: { loanId: String, assignees: Array, note: String },
+  params: {
+    loanId: String,
+    assignees: Array,
+    note: String,
+    updateUserAssignee: Match.Optional(Boolean),
+  },
 });

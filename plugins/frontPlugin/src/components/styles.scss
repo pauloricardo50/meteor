@@ -1,0 +1,174 @@
+.front-plugin {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 16px;
+}
+
+
+.link {
+  text-decoration: underline;
+
+  &:hover {
+    color: $primary;
+    cursor: pointer;
+
+    > * {
+      color: $primary;
+    }
+  }
+}
+
+.front-contact-select {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.front-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self:center;
+
+    .refresh {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+
+    &-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #cdcdcd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+
+      img {
+      border-radius: 50%;
+      }
+
+      span {
+        color: white;
+        font-size: 50px;
+      }
+    }
+
+    h3, h4 {
+      margin:4px;
+    }
+
+    h4 {
+      margin-top: 0px;
+      color: #ababab;
+      font-weight: 200;
+    }
+
+    .front-contact-add-user {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      hr {
+        width: 100%;
+      }
+
+    }
+  }
+}
+
+.front-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #cdcdcd;
+  align-self:center;
+  width: -webkit-fill-available;
+  margin: 16px 0;
+
+  &-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    width: -webkit-fill-available;
+    cursor: pointer;
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-grow: 1;
+
+      .icon {
+        color: #9a9a9a;
+      }
+
+      h3 {
+        margin-left: 8px;
+      }
+
+      .subtitle {
+        flex-grow: 1;
+        margin: 0 8px;
+      }
+    }
+
+    .icon {
+      color: #ababab;
+    }
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    padding: 8px;
+    border-top: 1px solid #cdcdcd;
+
+    .front-card-item {
+      display: flex;
+      flex-direction: column;
+      width: -webkit-fill-available;
+      margin-bottom: 12px;
+  
+      h4 {
+        text-transform: uppercase;
+        color: #cdcdcd;
+        margin-bottom: 4px;
+        margin-top: 4px;
+      }
+  
+      span {
+        margin-top: 0;
+      }
+    }
+  }
+
+}
+
+.front-contact-tasks {
+  th span {
+    font-size: 12px;
+  }
+
+  td {
+    padding: 4px 0;
+  }
+}

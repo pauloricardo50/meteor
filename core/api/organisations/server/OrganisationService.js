@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
 import Organisations from '../organisations';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 
-export class OrganisationService extends CollectionService {
+class OrganisationService extends CollectionService {
   constructor() {
     super(Organisations);
   }

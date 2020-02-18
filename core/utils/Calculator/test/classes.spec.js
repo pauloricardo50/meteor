@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { compose } from 'recompose';
@@ -12,7 +11,7 @@ class RootCalculator {
     this.initializer = 2;
   }
 
-  add(a: number, b: number): number {
+  add(a, b) {
     return a + b;
   }
 
@@ -20,7 +19,7 @@ class RootCalculator {
     return this.var;
   }
 
-  return2(): number {
+  return2() {
     return 2;
   }
 
@@ -39,14 +38,14 @@ const withCalc2 = (SuperClass = class {}) =>
   class extends SuperClass {
     constructor() {
       super();
-      this.initializer = this.initializer * 2;
+      this.initializer *= 2;
     }
 
-    increment(a: number): number {
+    increment(a) {
       return a + 1;
     }
 
-    setVar(value): void {
+    setVar(value) {
       this.var = value;
     }
   };
@@ -55,18 +54,18 @@ const withCalc3 = SuperClass =>
   class extends SuperClass {
     constructor() {
       super();
-      this.initializer = this.initializer + 1;
+      this.initializer += 1;
     }
 
-    multiply(a: number, b: number): number {
+    multiply(a, b) {
       return a * b;
     }
 
-    returnVarChild(): void {
+    returnVarChild() {
       return this.var;
     }
 
-    return2(): number {
+    return2() {
       return -2;
     }
 
@@ -171,22 +170,6 @@ describe('Class composition', () => {
     expect(new MyClass().increment(2)).to.equal(2);
   });
 
-  it('shows the right types with flow-type', () => {
-    class MyClass extends UberClass {
-      return2(): string {
-        return '2';
-      }
-
-      returnNumber() {
-        return super.return2();
-      }
-    }
-
-    // Inspect types here to make sure they are correct
-    expect(new MyClass().return2()).to.equal('2');
-    expect(new MyClass().returnNumber()).to.equal(-2);
-  });
-
   it('parent can call child funcs', () => {
     expect(new UberClass().parentFunc()).to.equal('it works');
   });
@@ -197,7 +180,7 @@ describe('Class composition', () => {
         super(props);
       }
 
-      return2(): string {
+      return2() {
         return '2';
       }
 

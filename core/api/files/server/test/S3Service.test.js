@@ -2,13 +2,8 @@
 import { expect } from 'chai';
 
 import { Meteor } from 'meteor/meteor';
-import { Factory } from 'meteor/dburles:factory';
-import sinon from 'sinon';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { Loans, Borrowers, Properties, Promotions } from '../../..';
 import S3Service from '../S3Service';
-import { PROPERTY_CATEGORY } from '../../../constants';
 
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
@@ -184,91 +179,6 @@ describe('S3Service', function() {
             });
           });
       });
-    });
-  });
-
-  describe('isAllowed', () => {
-    let userId;
-    let user;
-
-    beforeEach(() => {
-      resetDatabase();
-      user = Factory.create('user');
-      userId = user._id;
-      sinon.stub(Meteor, 'user').callsFake(() => user);
-      sinon.stub(Meteor, 'userId').callsFake(() => userId);
-    });
-
-    afterEach(() => {
-      Meteor.user.restore();
-      Meteor.userId.restore();
-    });
-
-    it('should return true if the user is dev', () => {
-      Meteor.users.update(userId, { $set: { roles: ['dev'] } });
-
-      expect(S3Service.isAllowedToAccess({ key: '', userId })).to.equal(true);
-    });
-
-    it('should return true if the user is admin', () => {
-      Meteor.users.update(userId, { $set: { roles: 'admin' } });
-
-      expect(S3Service.isAllowedToAccess({ key: '', userId })).to.equal(true);
-    });
-
-    it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowedToAccess({ key: '', userId })).to.throw(
-        'Unauthorized download',
-      );
-    });
-
-    it('should return true if this user has the loan', () => {
-      const loan = Factory.create('loan', { userId });
-
-      expect(
-        S3Service.isAllowedToAccess({ key: `${loan._id}/`, userId }),
-      ).to.equal(true);
-      Loans.remove(loan._id);
-    });
-
-    it('should return true if this user has the borrower', () => {
-      const borrower = Factory.create('borrower', { userId });
-
-      expect(
-        S3Service.isAllowedToAccess({ key: `${borrower._id}/`, userId }),
-      ).to.equal(true);
-      Borrowers.remove(borrower._id);
-    });
-
-    it('should return true if this user has the property', () => {
-      const property = Factory.create('property', { userId });
-
-      expect(
-        S3Service.isAllowedToAccess({ key: `${property._id}/`, userId }),
-      ).to.equal(true);
-      Properties.remove(property._id);
-    });
-
-    it('should return true if the property is pro and the user exists', () => {
-      const property = Factory.create('property', {
-        category: PROPERTY_CATEGORY.PRO,
-      });
-
-      expect(
-        S3Service.isAllowedToAccess({ key: `${property._id}/`, userId }),
-      ).to.equal(true);
-      Properties.remove(property._id);
-    });
-
-    it('should return true for a promotion and the user exists', () => {
-      const promotion = Factory.create('promotion', {
-        userLinks: [{ _id: userId, permissions: { canManageDocuments: true } }],
-      });
-
-      expect(
-        S3Service.isAllowedToAccess({ key: `${promotion._id}/`, userId }),
-      ).to.equal(true);
-      Promotions.remove(promotion._id);
     });
   });
 

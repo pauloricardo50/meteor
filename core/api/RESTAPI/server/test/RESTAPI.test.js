@@ -693,8 +693,8 @@ describe('RESTAPI', function() {
   });
 
   describe('Basic authentication', () => {
-    it('can authenticate and get a response', () => {
-      return fetchAndCheckResponse({
+    it('can authenticate and get a response', () =>
+      fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'PUT',
@@ -708,11 +708,10 @@ describe('RESTAPI', function() {
       }).then(res => {
         const { message } = res;
         expect(message).to.contain('PUT');
-      });
-    });
+      }));
 
-    it('throws if public key is wrong', () => {
-      return fetchAndCheckResponse({
+    it('throws if public key is wrong', () =>
+      fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'PUT',
@@ -723,23 +722,21 @@ describe('RESTAPI', function() {
       }).then(res => {
         const { message } = res;
         expect(message).to.contain('Wrong public key');
-      });
-    });
+      }));
   });
 
   describe('allows multiple authentication types', () => {
-    it('using no-auth', () => {
-      return fetchAndCheckResponse({
+    it('using no-auth', () =>
+      fetchAndCheckResponse({
         url: '/test',
         data: { method: 'PUT' },
       }).then(res => {
         const { message } = res;
         expect(message).to.equal('PUT');
-      });
-    });
+      }));
 
-    it('using basic', () => {
-      return fetchAndCheckResponse({
+    it('using basic', () =>
+      fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'PUT',
@@ -753,7 +750,6 @@ describe('RESTAPI', function() {
       }).then(res => {
         const { message } = res;
         expect(message).to.equal('PUT');
-      });
-    });
+      }));
   });
 });

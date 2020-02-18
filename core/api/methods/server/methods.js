@@ -21,7 +21,7 @@ import {
   referralExists,
   cleanDatabase,
 } from '../methodDefinitions';
-import generator from '../../factories';
+import generator from '../../factories/server';
 import { migrate } from '../../migrations/server';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';

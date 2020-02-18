@@ -1,10 +1,9 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { adminNotifications } from '../../queries';
-import generator from '../../../factories/index';
+import generator from '../../../factories/server';
 import '../exposures';
 
 describe('adminNotifications', () => {

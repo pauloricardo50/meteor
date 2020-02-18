@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
 
@@ -11,8 +10,6 @@ import Button from '../Button';
 import T from '../Translation';
 import Box from '../Box';
 import CustomSubmitField from '../AutoForm2/CustomSubmitField';
-
-type MortgageNotesFormProps = {};
 
 const handleSubmitMortgageNote = mortgageNoteId => doc => {
   let message;
@@ -52,7 +49,7 @@ const MortgageNotesForm = ({
   id,
   withCanton,
   className,
-}: MortgageNotesFormProps) => {
+}) => {
   const ommittedFields = withCanton
     ? ['createdAt', 'updatedAt']
     : ['createdAt', 'updatedAt', 'canton'];

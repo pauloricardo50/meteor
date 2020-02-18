@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import Select from 'core/components/Select';
@@ -7,8 +6,6 @@ import { TASK_STATUS } from 'core/api/constants';
 import { withSmartQuery } from 'imports/core/api/containerToolkit/index';
 import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'imports/core/api/constants';
-
-type TaskTableFiltersProps = {};
 
 const uptoDateOptions = [
   { id: 'TODAY', label: "-> Aujourd'hui" },
@@ -24,7 +21,7 @@ const TaskTableFilters = ({
   setAssignee,
   uptoDate,
   setUptoDate,
-}: TaskTableFiltersProps) => {
+}) => {
   const assigneeOptions = [
     ...admins.map(({ _id, firstName }) => ({ id: _id, label: firstName })),
     { _id: undefined, label: 'Personne' },

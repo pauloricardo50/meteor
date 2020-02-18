@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -12,14 +11,6 @@ import Box from 'core/components/Box';
 import T from 'core/components/Translation';
 import TaskModifierDateSetter from './TaskModifierDateSetter';
 import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
-
-type TaskModifierProps = {
-  task: Object,
-  updateTask: Function,
-  open: boolean,
-  setOpen: Function,
-  submitting: boolean,
-};
 
 const taskPlaceholders = [
   'Faire la vaisselle',
@@ -50,6 +41,11 @@ export const schema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
+    uniforms: {
+      multiline: true,
+      rows: 5,
+      rowsMax: 10,
+    },
   },
   dueAtTimeHelpers: {
     type: String,
@@ -145,13 +141,7 @@ const getTime = date => {
   return `${hours}:${minutes}`;
 };
 
-const TaskModifier = ({
-  task,
-  updateTask,
-  open,
-  setOpen,
-  submitting,
-}: TaskModifierProps) => {
+const TaskModifier = ({ task, updateTask, open, setOpen, submitting }) => {
   const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog

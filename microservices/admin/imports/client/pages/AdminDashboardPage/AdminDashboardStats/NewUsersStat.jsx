@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
@@ -14,8 +13,6 @@ import DialogSimple from 'core/components/DialogSimple';
 import { ROLES } from 'imports/core/api/constants';
 import StatItem from './StatItem';
 
-type NewLoansStatProps = {};
-
 const formatDate = date =>
   moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
 
@@ -28,12 +25,13 @@ const NewUsersStat = ({
   userHistogram,
   verified,
   setVerified,
-}: NewLoansStatProps) => (
+}) => (
   <StatItem
     value={<CountUp end={newUsers.count} />}
     increment={<Percent showPlus value={newUsers.change} />}
     positive={newUsers.change > 0}
     title="Nouveaux clients"
+    large
     top={
       <>
         <DialogSimple
@@ -88,10 +86,12 @@ export default compose(
     query: newUsers,
     dataName: 'newUsers',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: userHistogram,
     dataName: 'userHistogram',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    refetchOnMethodCall: false,
   }),
 )(NewUsersStat);

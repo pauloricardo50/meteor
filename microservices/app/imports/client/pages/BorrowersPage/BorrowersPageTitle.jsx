@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -6,9 +5,7 @@ import PercentWithStatus from 'core/components/PercentWithStatus';
 import Calculator from 'core/utils/Calculator';
 import { SUCCESS } from 'core/api/constants';
 
-type BorrowersPageTitleProps = {};
-
-const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
+const BorrowersPageTitle = ({ borrowers }) => {
   const value = Calculator.personalInfoPercent({ borrowers });
 
   return (

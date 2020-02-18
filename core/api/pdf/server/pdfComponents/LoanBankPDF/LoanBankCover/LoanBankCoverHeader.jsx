@@ -1,9 +1,6 @@
-// @flow
 import React from 'react';
 
-type LoanBankCoverHeaderProps = {};
-
-const LoanBankCoverHeader = ({ loanName }: LoanBankCoverHeaderProps) => (
+const LoanBankCoverHeader = ({ loanName }) => (
   <div className="cover-header">
     <h1>
       <img

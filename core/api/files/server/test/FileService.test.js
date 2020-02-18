@@ -4,13 +4,13 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import moment from 'moment';
 
-import generator from 'core/api/factories/index';
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
-import { asyncForEach } from 'core/api/helpers/index';
+import generator from '../../../factories/server';
+import { BORROWERS_COLLECTION } from '../../../borrowers/borrowerConstants';
+import { asyncForEach } from '../../../helpers/index';
+import { FILE_STATUS, BORROWER_DOCUMENTS } from '../../fileConstants';
 import FileService from '../FileService';
 import S3Service from '../S3Service';
 import { clearBucket } from './S3Service.test';
-import { FILE_STATUS, BORROWER_DOCUMENTS } from '../../fileConstants';
 
 const docId = 'someDocId';
 const json = { hello: 'world' };

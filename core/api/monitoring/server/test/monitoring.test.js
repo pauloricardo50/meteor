@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
@@ -12,7 +11,7 @@ import {
 } from 'core/api/revenues/revenueConstants';
 import { loanSetStatus } from 'core/api/loans/index';
 import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import generator from '../../../factories/factoriesHelpers';
+import generator from '../../../factories/server';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
 import { loanMonitoring, loanStatusChanges } from '../resolvers';
 
@@ -349,11 +348,14 @@ describe('monitoring', () => {
         loans: [
           {
             _id: 'loan1',
-            user: { assignedEmployee: { _id: 'admin1' } },
+            assignees: [
+              { _id: 'admin2', $metadata: { isMain: false } },
+              { _id: 'admin1', $metadata: { isMain: true } },
+            ],
           },
           {
             _id: 'loan2',
-            user: { assignedEmployee: { _id: 'admin2' } },
+            assignees: { _id: 'admin2', $metadata: { isMain: true } },
           },
         ],
       });

@@ -1,10 +1,9 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import LoanService from '../../../loans/server/LoanService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenueConstants';
 import RevenueService from '../RevenueService';
 

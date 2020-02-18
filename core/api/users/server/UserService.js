@@ -6,7 +6,7 @@ import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
 import { fullUser } from 'core/api/fragments';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -187,29 +187,7 @@ export class UserServiceClass extends CollectionService {
     return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
-  getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
-
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
-
-  getUserById = ({ userId }) =>
-    this.get(userId, {
-      createdAt: 1,
-      updatedAt: 1,
-      emails: 1,
-      firstName: 1,
-      lastName: 1,
-      isDisabled: 1,
-      phoneNumbers: 1,
-      roles: 1,
-      username: 1,
-      assignedEmployeeId: 1,
-      services: 1,
-      heartbeat: 1,
-      apiPublicKey: 1,
-      referredByUserLink: 1,
-      referredByOrganisationLink: 1,
-      assignedEmployeeCache: 1,
-    });
 
   getUserByPasswordResetToken = ({ token }) =>
     this.get(
@@ -391,7 +369,7 @@ export class UserServiceClass extends CollectionService {
     let admin;
 
     if (isNewUser) {
-      admin = this.get(assignedEmployeeId, fullUser());
+      admin = this.get(assignedEmployeeId, { name: 1 });
       userId = this.adminCreateUser({
         options: {
           email,
@@ -409,7 +387,7 @@ export class UserServiceClass extends CollectionService {
         assignedEmployeeId: existingAssignedEmployeeId,
       } = this.getByEmail(email);
 
-      admin = this.get(existingAssignedEmployeeId, fullUser());
+      admin = this.get(existingAssignedEmployeeId, { name: 1 });
       userId = existingUserId;
     }
 
@@ -451,10 +429,7 @@ export class UserServiceClass extends CollectionService {
         ...promises,
         PropertyService.inviteUser({
           propertyIds,
-          admin,
-          pro,
           userId,
-          isNewUser,
           shareSolvency,
         }),
       ];
@@ -466,8 +441,8 @@ export class UserServiceClass extends CollectionService {
           PromotionService.inviteUser({
             promotionId,
             userId,
-            pro,
             isNewUser,
+            pro,
             promotionLotIds: user.promotionLotIds,
             showAllLots: user.showAllLots,
             shareSolvency,
@@ -504,10 +479,7 @@ export class UserServiceClass extends CollectionService {
         ...promises,
         PropertyService.inviteUser({
           propertyIds: internalPropertyIds,
-          admin,
-          pro,
           userId,
-          isNewUser,
           shareSolvency,
         }),
       ];
@@ -741,30 +713,42 @@ export class UserServiceClass extends CollectionService {
     let newAssignee;
 
     if (roles.includes(ROLES.USER)) {
-      const lastCreatedUser = this.get(
-        {
-          roles: ROLES.USER,
-          assignedEmployeeId: { $in: this.employees },
-        },
-        {
-          $options: { sort: { createdAt: -1 } },
-          assignedEmployeeId: 1,
-          createdAt: 1,
-        },
-      );
-
-      if (lastCreatedUser && lastCreatedUser.assignedEmployeeId) {
-        const index = this.employees.indexOf(
-          lastCreatedUser.assignedEmployeeId,
+      if (!this.employees.length) {
+        // In tests or if there are no roundrobin advisors, use any admin
+        // in the db and assign it to the user
+        // this avoids issues with analytics, that expects all users to have
+        // an assignee
+        const anyAdmin = this.get(
+          { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
+          { _id: 1 },
         );
-        if (index >= this.employees.length - 1) {
-          newAssignee = this.employees[0];
-        } else {
-          newAssignee = this.employees[index + 1];
-        }
+        newAssignee = anyAdmin && anyAdmin._id;
       } else {
-        // Assign the very first user
-        newAssignee = this.employees[0];
+        const lastCreatedUser = this.get(
+          {
+            roles: ROLES.USER,
+            assignedEmployeeId: { $in: this.employees },
+          },
+          {
+            $options: { sort: { createdAt: -1 } },
+            assignedEmployeeId: 1,
+            createdAt: 1,
+          },
+        );
+
+        if (lastCreatedUser?.assignedEmployeeId) {
+          const index = this.employees.indexOf(
+            lastCreatedUser.assignedEmployeeId,
+          );
+          if (index >= this.employees.length - 1) {
+            newAssignee = this.employees[0];
+          } else {
+            newAssignee = this.employees[index + 1];
+          }
+        } else {
+          // Assign the very first user
+          newAssignee = this.employees[0];
+        }
       }
     }
 
@@ -788,21 +772,8 @@ export class UserServiceClass extends CollectionService {
     return { organisation: referredByOrganisation || {}, user: {} };
   }
 
-  // May be we can replace one of our existing method or keep this one here?
-  getUserDetails(userId) {
-    if (typeof userId === 'string') {
-      const user = this.get(userId, fullUser());
-      if (!(user && typeof user)) {
-        throw new Meteor.Error('Utilisateur non trouvé');
-      }
-      return user;
-    }
-    throw new Meteor.Error('Valeur invalide');
-  }
-
   toggleAccount({ userId }) {
-    const userDetails = this.getUserDetails(userId);
-    const { isDisabled } = userDetails;
+    const { isDisabled } = this.get(userId, { isDisabled: 1 });
     const nextValue = !isDisabled;
     this.update({
       userId,

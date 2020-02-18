@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
-import { PROPERTY_DOCUMENTS } from '../../../files/fileConstants';
+import { PROPERTY_DOCUMENTS, FILE_ROLES } from '../../../files/fileConstants';
 import FileService from '../../../files/server/FileService';
 import Security from '../../../security';
 import PropertyService from '../../../properties/server/PropertyService';
@@ -9,6 +9,45 @@ import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
 import { withMeteorUserId } from '../helpers';
 import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { getFileRolesArray } from '../../../files/fileHelpers';
+
+const getInvalidRole = roles => {
+  const rolesArray = getFileRolesArray({ roles });
+  let invalidRole;
+
+  rolesArray.some(role => {
+    if (
+      Object.values(FILE_ROLES)
+        // API should not allow user files
+        .filter(r => r !== FILE_ROLES.USER)
+        .includes(role)
+    ) {
+      return false;
+    }
+    invalidRole = role;
+    return true;
+  });
+
+  return invalidRole;
+};
+
+const getErrorMessage = ({ value }) => {
+  const invalidRole = getInvalidRole(value);
+  return `Role "${invalidRole}" is invalid. Please provide any of [${Object.values(
+    FILE_ROLES,
+  )
+    .filter(role => role !== FILE_ROLES.USER)
+    .map(role => `'${role}'`)
+    .join(', ')}] roles, separated by a comma`;
+};
+
+SimpleSchema.setDefaultMessages({
+  messages: {
+    en: {
+      invalidRole: getErrorMessage,
+    },
+  },
+});
 
 const bodySchema = new SimpleSchema({
   propertyId: String,
@@ -21,6 +60,14 @@ const bodySchema = new SimpleSchema({
           ? undefined
           : 'invalidCategory';
       }
+    },
+  },
+  roles: {
+    type: String,
+    defaultValue: 'public',
+    optional: true,
+    custom() {
+      return getInvalidRole(this.value) ? 'invalidRole' : undefined;
     },
   },
 });
@@ -44,7 +91,7 @@ const uploadFileAPI = req => {
     throw new Meteor.Error(error);
   }
 
-  const { category } = cleanBody;
+  const { category, roles } = cleanBody;
   let { propertyId } = cleanBody;
 
   const exists = PropertyService.exists(propertyId);
@@ -67,6 +114,7 @@ const uploadFileAPI = req => {
   if (!file) {
     throw new Meteor.Error('No file uploaded');
   }
+
   return withMeteorUserId({ userId, impersonateUser }, () => {
     let impersonateUserId;
     if (impersonateUser) {
@@ -87,6 +135,7 @@ const uploadFileAPI = req => {
       docId: propertyId,
       id: category,
       collection: PROPERTIES_COLLECTION,
+      roles,
     });
   });
 };

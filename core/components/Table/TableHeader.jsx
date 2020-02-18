@@ -8,7 +8,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import T from 'core/components/Translation';
+import T from '../Translation';
 
 const TableHeader = ({
   columnOptions,

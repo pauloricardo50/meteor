@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
@@ -6,11 +5,6 @@ import T from '../Translation';
 import OfferAdderContainer from './OfferAdderContainer';
 import { INTEREST_RATES } from '../../api/constants';
 import Box from '../Box';
-
-type OfferAdderProps = {
-  schema: Object,
-  insertOffer: Function,
-};
 
 const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
   (obj, rate) => ({
@@ -21,7 +15,7 @@ const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
   {},
 );
 
-const OfferAdder = ({ schema, insertOffer, buttonProps }: OfferAdderProps) => (
+const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={insertOffer}
@@ -52,7 +46,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }: OfferAdderProps) => (
             className: 'grid-2',
             fields: ['amortizationGoal', 'amortizationYears'],
           },
-          { className: 'flex flex--sb', fields: ['interest*'] },
+          { className: 'flex sb', fields: ['interest*'] },
         ],
       },
       {
@@ -78,7 +72,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }: OfferAdderProps) => (
             className: 'grid-2',
             fields: ['hasFlatDiscount', 'flatDiscount'],
           },
-          { className: 'flex flex--sb', fields: ['discount_*'] },
+          { className: 'flex sb', fields: ['discount_*'] },
         ],
       },
     ]}

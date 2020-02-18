@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -7,22 +6,15 @@ import T from '../Translation';
 import ConfirmMethod from '../ConfirmMethod';
 import Icon from '../Icon';
 
-type BorrowerRemoverProps = {
-  handleClick: Function,
-};
-
-const BorrowerRemover = ({
-  handleClick,
-  simple = false,
-}: BorrowerRemoverProps) => (
+const BorrowerRemover = ({ handleClick, simple = false, buttonProps }) => (
   <div className="borrower-remover">
     <ConfirmMethod
       method={handleClick}
       label={!simple && <T id="BorrowerRemover.button" />}
       buttonProps={
         simple
-          ? { error: true, icon: <Icon type="close" /> }
-          : { error: true, outlined: true }
+          ? { error: true, icon: <Icon type="close" />, ...buttonProps }
+          : { error: true, outlined: true, ...buttonProps }
       }
     />
   </div>

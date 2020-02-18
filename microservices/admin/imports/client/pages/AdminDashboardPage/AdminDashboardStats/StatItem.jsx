@@ -1,8 +1,5 @@
-// @flow
 import React from 'react';
 import cx from 'classnames';
-
-type StatItemProps = {};
 
 const StatItem = ({
   value,
@@ -11,7 +8,8 @@ const StatItem = ({
   title,
   children,
   top,
-}: StatItemProps) => {
+  large,
+}) => {
   if (children) {
     return (
       <div className="stat-item card1 card-top">
@@ -22,13 +20,15 @@ const StatItem = ({
   }
 
   return (
-    <div className="stat-item card1 card-top">
+    <div className={cx('stat-item card1 card-top', { large })}>
       <div className="top">{top}</div>
-      <div className="value">{value}</div>
-      <h3 className="title">{title}</h3>
-      <span className={cx({ success: positive, error: !positive })}>
-        {increment}
-      </span>
+      <div className={cx('value', { large })}>{value}</div>
+      <div className="flex-col center-align">
+        <h4 className="title">{title}</h4>
+        <span className={cx({ success: positive, error: !positive })}>
+          {increment}
+        </span>
+      </div>
     </div>
   );
 };

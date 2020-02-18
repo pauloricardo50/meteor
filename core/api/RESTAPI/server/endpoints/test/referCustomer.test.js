@@ -4,9 +4,10 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import SlackService from 'core/api/slack/server/SlackService';
+import { checkEmails } from '../../../../../utils/testHelpers';
+import SlackService from '../../../../slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';
-import generator from '../../../../factories/index';
+import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import referCustomerAPI from '../referCustomer';
 import {
@@ -83,6 +84,7 @@ describe('REST: referCustomer', function() {
     resetDatabase();
     generator({
       users: [
+        { _id: 'admin', _factory: 'admin' },
         {
           _factory: 'pro',
           _id: 'pro',
@@ -94,12 +96,14 @@ describe('REST: referCustomer', function() {
             },
             { _id: 'org3', name: 'Org 3' },
           ],
+          assignedEmployeeId: 'admin',
         },
         {
           _factory: 'pro',
           _id: 'pro2',
           emails: [{ address: 'pro2@org.com', verified: true }],
           organisations: [{ _id: 'org', $metadata: { isMain: true } }],
+          assignedEmployeeId: 'admin',
         },
         {
           _factory: 'pro',
@@ -108,6 +112,7 @@ describe('REST: referCustomer', function() {
           organisations: [
             { _id: 'org2', $metadata: { isMain: true }, name: 'Org 2' },
           ],
+          assignedEmployeeId: 'admin',
         },
         {
           _factory: 'pro',
@@ -116,140 +121,154 @@ describe('REST: referCustomer', function() {
           organisations: [
             { _id: 'org3', $metadata: { isMain: true, title: 'CEO' } },
           ],
+          assignedEmployeeId: 'admin',
         },
       ],
     });
   });
 
-  it('refers a customer', () =>
-    referCustomer({
+  it('refers a customer', async () => {
+    await referCustomer({
       expectedResponse: {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
-    }).then(() => {
-      const customer = UserService.get(
-        { 'emails.address': { $in: [customerToRefer.email] } },
-        {
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-        },
-      );
-      expect(customer.referredByUserLink).to.equal('pro');
-      expect(customer.referredByOrganisationLink).to.equal('org');
-      expect(customer.loans[0].shareSolvency).to.equal(undefined);
-    }));
+    });
 
-  it('refers a customer with solvency sharing', () =>
-    referCustomer({
+    const customer = UserService.get(
+      { 'emails.address': { $in: [customerToRefer.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      },
+    );
+    expect(customer.referredByUserLink).to.equal('pro');
+    expect(customer.referredByOrganisationLink).to.equal('org');
+    expect(customer.loans[0].shareSolvency).to.equal(undefined);
+
+    await checkEmails(2);
+  });
+
+  it('refers a customer with solvency sharing', async () => {
+    await referCustomer({
       shareSolvency: true,
       expectedResponse: {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
-    }).then(() => {
-      const customer = UserService.get(
-        { 'emails.address': { $in: [customerToRefer.email] } },
-        {
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-        },
-      );
-      expect(customer.referredByUserLink).to.equal('pro');
-      expect(customer.referredByOrganisationLink).to.equal('org');
-      expect(customer.loans[0].shareSolvency).to.equal(true);
-    }));
+    });
 
-  it('refers a customer with invitationNote', () =>
-    referCustomer({
+    const customer = UserService.get(
+      { 'emails.address': { $in: [customerToRefer.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      },
+    );
+    expect(customer.referredByUserLink).to.equal('pro');
+    expect(customer.referredByOrganisationLink).to.equal('org');
+    expect(customer.loans[0].shareSolvency).to.equal(true);
+
+    await checkEmails(2);
+  });
+
+  it('refers a customer with invitationNote', async () => {
+    await referCustomer({
       invitationNote: 'testNote',
       expectedResponse: {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
-    })
-      .then(() => {
-        const customer = UserService.get(
-          { 'emails.address': { $in: [customerToRefer.email] } },
-          {
-            referredByUserLink: 1,
-            referredByOrganisationLink: 1,
-            loans: { shareSolvency: 1 },
-            tasks: { description: 1 },
-          },
-        );
-        expect(customer.referredByUserLink).to.equal('pro');
-        expect(customer.referredByOrganisationLink).to.equal('org');
-        expect(customer.loans[0].shareSolvency).to.equal(undefined);
+    });
 
-        let { tasks = [] } = customer;
-        let intervalCount = 0;
+    const customer = UserService.get(
+      { 'emails.address': { $in: [customerToRefer.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+        tasks: { description: 1 },
+      },
+    );
+    expect(customer.referredByUserLink).to.equal('pro');
+    expect(customer.referredByOrganisationLink).to.equal('org');
+    expect(customer.loans[0].shareSolvency).to.equal(undefined);
 
-        return new Promise((resolve, reject) => {
-          const interval = Meteor.setInterval(() => {
-            if (tasks.length === 0 && intervalCount < 10) {
-              tasks =
-                UserService.get(
-                  {
-                    'emails.address': { $in: [customerToRefer.email] },
-                  },
-                  { tasks: { description: 1 } },
-                ).tasks || [];
-              intervalCount++;
-            } else {
-              Meteor.clearInterval(interval);
-              if (intervalCount >= 10) {
-                reject('Fetch tasks timeout');
-              }
-              resolve(tasks);
-            }
-          }, 100);
-        });
-      })
-      .then(tasks => {
-        expect(tasks.length).to.equal(1);
-        expect(tasks[0].description).to.contain('TestFirstName TestLastName');
-        expect(tasks[0].description).to.contain('testNote');
-      }));
+    let { tasks = [] } = customer;
+    let intervalCount = 0;
 
-  it('refers a customer with impersonateUser', () =>
-    referCustomer({
+    tasks = await new Promise((resolve, reject) => {
+      const interval = Meteor.setInterval(() => {
+        if (tasks.length === 0 && intervalCount < 10) {
+          tasks =
+            UserService.get(
+              { 'emails.address': { $in: [customerToRefer.email] } },
+              { tasks: { description: 1 } },
+            ).tasks || [];
+          intervalCount++;
+        } else {
+          Meteor.clearInterval(interval);
+          if (intervalCount >= 10) {
+            reject('Fetch tasks timeout');
+          }
+          resolve(tasks);
+        }
+      }, 100);
+    });
+
+    expect(tasks.length).to.equal(1);
+    expect(tasks[0].description).to.contain('TestFirstName TestLastName');
+    expect(tasks[0].description).to.contain('testNote');
+
+    await checkEmails(2);
+  });
+
+  it('refers a customer with impersonateUser', async () => {
+    await referCustomer({
       impersonateUser: 'pro2@org.com',
       expectedResponse: {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
-    }).then(() => {
-      const customer = UserService.getByEmail(customerToRefer.email);
-      expect(customer.referredByUserLink).to.equal('pro2');
-      expect(customer.referredByOrganisationLink).to.equal('org');
-    }));
+    });
 
-  it('refers a customer with impersonateUser in another org', () =>
-    referCustomer({
+    const customer = UserService.getByEmail(customerToRefer.email);
+    expect(customer.referredByUserLink).to.equal('pro2');
+    expect(customer.referredByOrganisationLink).to.equal('org');
+
+    await checkEmails(2);
+  });
+
+  it('refers a customer with impersonateUser in another org', async () => {
+    await referCustomer({
       impersonateUser: 'pro4@org3.com',
       expectedResponse: {
         message: `Successfully referred user "${customerToRefer.email}"`,
       },
-    }).then(() => {
-      const customer = UserService.getByEmail(customerToRefer.email);
-      expect(customer.referredByUserLink).to.equal('pro4');
-      expect(customer.referredByOrganisationLink).to.equal('org');
-    }));
+    });
 
-  it('returns an error when impersonateUser is not in the same organisation', () =>
-    referCustomer({
+    const customer = UserService.getByEmail(customerToRefer.email);
+    expect(customer.referredByUserLink).to.equal('pro4');
+    expect(customer.referredByOrganisationLink).to.equal('org');
+
+    await checkEmails(2);
+  });
+
+  it('returns an error when impersonateUser is not in the same organisation', async () => {
+    await referCustomer({
       impersonateUser: 'pro3@org2.com',
       expectedResponse: {
         status: 400,
         message:
           '[User with email address "pro3@org2.com" is not part of your organisation]',
       },
-    }));
+    });
+  });
 
-  it('returns an error if the user already exists', () => {
+  it('returns an error if the user already exists', async () => {
     generator({
       users: { emails: [{ address: customerToRefer.email, verified: false }] },
     });
-    return referCustomer({
+
+    await referCustomer({
       expectedResponse: {
         status: 400,
         message:
@@ -281,6 +300,8 @@ describe('REST: referCustomer', function() {
       expect(spy.lastCall.args[0].attachments[0].title).to.equal(
         'Test User a été invité sur e-Potek en referral uniquement',
       );
+
+      await checkEmails(2);
     });
   });
 });

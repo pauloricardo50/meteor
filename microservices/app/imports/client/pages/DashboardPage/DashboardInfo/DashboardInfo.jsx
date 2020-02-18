@@ -17,7 +17,7 @@ const DashboardInfo = props => {
 
       <div className="cards">
         <DashboardInfoTeam {...props} />
-        {(!loan.hasPromotion || (loan.offers && loan.offers.length > 0)) && (
+        {(!loan.hasPromotion || loan.offers?.length > 0) && (
           <DashboardInfoInterests loan={loan} />
         )}
       </div>

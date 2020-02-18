@@ -1,4 +1,3 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
@@ -10,7 +9,7 @@ import {
 } from 'core/api/promotionOptions/promotionOptionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
-import generator from '../../../factories/index';
+import generator from '../../../factories/server';
 import {
   PROMOTION_LOT_STATUS,
   PROMOTION_OPTION_STATUS,

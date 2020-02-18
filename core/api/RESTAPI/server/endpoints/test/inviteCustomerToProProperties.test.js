@@ -11,7 +11,7 @@ import {
   PROPERTY_STATUS,
 } from '../../../../properties/propertyConstants';
 import SlackService from '../../../../slack/server/SlackService';
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
 import {
@@ -20,6 +20,7 @@ import {
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
+import { checkEmails } from '../../../../../utils/testHelpers/index';
 
 const customerToInvite = {
   email: 'test@example.com',
@@ -92,6 +93,7 @@ describe('REST: inviteCustomerToProProperties', function() {
     resetDatabase();
     generator({
       users: [
+        { _id: 'admin', _factory: 'admin' },
         {
           _factory: 'pro',
           _id: 'pro',
@@ -107,6 +109,7 @@ describe('REST: inviteCustomerToProProperties', function() {
               category: PROPERTY_CATEGORY.PRO,
             },
           ],
+          assignedEmployee: { _id: 'admin' },
         },
         {
           _factory: 'pro',
@@ -123,18 +126,20 @@ describe('REST: inviteCustomerToProProperties', function() {
               category: PROPERTY_CATEGORY.PRO,
             },
           ],
+          assignedEmployee: { _id: 'admin' },
         },
         {
           _factory: 'pro',
           _id: 'pro3',
           emails: [{ address: 'pro3@org2.com', verified: true }],
           organisation: [{ _id: 'org2' }],
+          assignedEmployee: { _id: 'admin' },
         },
       ],
     });
   });
 
-  it('invites a customer to multiple properties', () => {
+  it('invites a customer to multiple properties', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property1',
       userId: 'pro',
@@ -155,7 +160,8 @@ describe('REST: inviteCustomerToProProperties', function() {
       userId: 'pro',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperties({
+
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property1' },
         { _id: 'property2' },
@@ -166,21 +172,22 @@ describe('REST: inviteCustomerToProProperties', function() {
       expectedResponse: {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
-    }).then(() => {
-      const customer = UserService.get(
-        { 'emails.address': { $in: [customerToInvite.email] } },
-        {
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-        },
-      );
-
-      expect(customer.loans[0].shareSolvency).to.equal(undefined);
     });
+    const customer = UserService.get(
+      { 'emails.address': { $in: [customerToInvite.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      },
+    );
+
+    expect(customer.loans[0].shareSolvency).to.equal(undefined);
+
+    await checkEmails(2);
   });
 
-  it('invites a customer to multiple properties with solvency sharing', () => {
+  it('invites a customer to multiple properties with solvency sharing', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property1',
       userId: 'pro',
@@ -201,7 +208,8 @@ describe('REST: inviteCustomerToProProperties', function() {
       userId: 'pro',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperties({
+
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property1' },
         { _id: 'property2' },
@@ -213,21 +221,23 @@ describe('REST: inviteCustomerToProProperties', function() {
       expectedResponse: {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
-    }).then(() => {
-      const customer = UserService.get(
-        { 'emails.address': { $in: [customerToInvite.email] } },
-        {
-          referredByUserLink: 1,
-          referredByOrganisationLink: 1,
-          loans: { shareSolvency: 1 },
-        },
-      );
-
-      expect(customer.loans[0].shareSolvency).to.equal(true);
     });
+
+    const customer = UserService.get(
+      { 'emails.address': { $in: [customerToInvite.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+      },
+    );
+
+    expect(customer.loans[0].shareSolvency).to.equal(true);
+
+    await checkEmails(2);
   });
 
-  it('invites a customer to multiple properties with invitation note', () => {
+  it('invites a customer to multiple properties with invitation note', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property1',
       userId: 'pro',
@@ -248,7 +258,7 @@ describe('REST: inviteCustomerToProProperties', function() {
       userId: 'pro',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperties({
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property1' },
         { _id: 'property2' },
@@ -261,54 +271,54 @@ describe('REST: inviteCustomerToProProperties', function() {
       expectedResponse: {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
-    })
-      .then(() => {
-        const customer = UserService.get(
-          { 'emails.address': { $in: [customerToInvite.email] } },
-          {
-            referredByUserLink: 1,
-            referredByOrganisationLink: 1,
-            loans: { shareSolvency: 1 },
-            tasks: { description: 1 },
-          },
-        );
+    });
 
-        expect(customer.loans[0].shareSolvency).to.equal(true);
+    const customer = UserService.get(
+      { 'emails.address': { $in: [customerToInvite.email] } },
+      {
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+        loans: { shareSolvency: 1 },
+        tasks: { description: 1 },
+      },
+    );
 
-        let { tasks = [] } = customer;
-        let intervalCount = 0;
+    expect(customer.loans[0].shareSolvency).to.equal(true);
 
-        return new Promise((resolve, reject) => {
-          const interval = Meteor.setInterval(() => {
-            if (tasks.length === 0 && intervalCount < 10) {
-              tasks =
-                UserService.get(
-                  {
-                    'emails.address': { $in: [customerToInvite.email] },
-                  },
-                  {
-                    tasks: { description: 1 },
-                  },
-                ).tasks || [];
-              intervalCount++;
-            } else {
-              Meteor.clearInterval(interval);
-              if (intervalCount >= 10) {
-                reject('Fetch tasks timeout');
-              }
-              resolve(tasks);
-            }
-          }, 100);
-        });
-      })
-      .then(tasks => {
-        expect(tasks.length).to.equal(1);
-        expect(tasks[0].description).to.contain('TestFirstName TestLastName');
-        expect(tasks[0].description).to.contain('testNote');
-      });
+    let { tasks = [] } = customer;
+    let intervalCount = 0;
+
+    tasks = await new Promise((resolve, reject) => {
+      const interval = Meteor.setInterval(() => {
+        if (tasks.length === 0 && intervalCount < 10) {
+          tasks =
+            UserService.get(
+              {
+                'emails.address': { $in: [customerToInvite.email] },
+              },
+              {
+                tasks: { description: 1 },
+              },
+            ).tasks || [];
+          intervalCount++;
+        } else {
+          Meteor.clearInterval(interval);
+          if (intervalCount >= 10) {
+            reject('Fetch tasks timeout');
+          }
+          resolve(tasks);
+        }
+      }, 100);
+    });
+
+    expect(tasks.length).to.equal(1);
+    expect(tasks[0].description).to.contain('TestFirstName TestLastName');
+    expect(tasks[0].description).to.contain('testNote');
+
+    await checkEmails(2);
   });
 
-  it('invites a customer to multiple properties with impersonateUser', () => {
+  it('invites a customer to multiple properties with impersonateUser', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property4',
       userId: 'pro2',
@@ -329,7 +339,8 @@ describe('REST: inviteCustomerToProProperties', function() {
       userId: 'pro2',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperties({
+
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property4' },
         { _id: 'property5' },
@@ -342,9 +353,11 @@ describe('REST: inviteCustomerToProProperties', function() {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext2\", \"ext3\", \"property4\", \"property5\" and \"property6\"`,
       },
     });
+
+    await checkEmails(2);
   });
 
-  it('returns an error when the user has not the right permissions', () => {
+  it('returns an error when the user has not the right permissions', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property1',
       userId: 'pro',
@@ -356,7 +369,7 @@ describe('REST: inviteCustomerToProProperties', function() {
       permissions: { canInviteCustomers: true },
     });
 
-    return inviteCustomerToProProperties({
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property1' },
         { _id: 'property2' },
@@ -370,7 +383,7 @@ describe('REST: inviteCustomerToProProperties', function() {
     });
   });
 
-  it('returns an error when the user does not have the right permissions with impersonateUser', () => {
+  it('returns an error when the user does not have the right permissions with impersonateUser', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property4',
       userId: 'pro2',
@@ -382,7 +395,7 @@ describe('REST: inviteCustomerToProProperties', function() {
       permissions: { canInviteCustomers: true },
     });
 
-    return inviteCustomerToProProperties({
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property4' },
         { _id: 'property5' },
@@ -397,8 +410,8 @@ describe('REST: inviteCustomerToProProperties', function() {
     });
   });
 
-  it('returns an error when the user is not in the same organisation as impersonateUser', () =>
-    inviteCustomerToProProperties({
+  it('returns an error when the user is not in the same organisation as impersonateUser', async () => {
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property4' },
         { _id: 'property5' },
@@ -410,10 +423,11 @@ describe('REST: inviteCustomerToProProperties', function() {
         message:
           '[User with email address "pro3@org2.com" is not part of your organisation]',
       },
-    }));
+    });
+  });
 
-  it('returns an error when impersonateUser does not exist', () =>
-    inviteCustomerToProProperties({
+  it('returns an error when impersonateUser does not exist', async () => {
+    await inviteCustomerToProProperties({
       properties: [
         { _id: 'property4' },
         { _id: 'property5' },
@@ -424,35 +438,39 @@ describe('REST: inviteCustomerToProProperties', function() {
         status: 400,
         message: '[No user found for email address "pro4@org.com"]',
       },
-    }));
+    });
+  });
 
-  it('returns an error when property is invalid', () =>
-    inviteCustomerToProProperties({
+  it('returns an error when property is invalid', async () => {
+    await inviteCustomerToProProperties({
       properties: [{ _id: 'property4', externalId: 'test' }],
       expectedResponse: {
         status: 400,
         message: '[Each property must have either a "_id" or "externalId" key]',
       },
-    }));
+    });
+  });
 
-  it('returns an error when properties is empty', () =>
-    inviteCustomerToProProperties({
+  it('returns an error when properties is empty', async () => {
+    await inviteCustomerToProProperties({
       properties: [],
       expectedResponse: {
         status: 400,
         message: '[You must provide at least one valid property]',
       },
-    }));
+    });
+  });
 
-  it('returns an error when no property is given', () =>
-    inviteCustomerToProProperties({
+  it('returns an error when no property is given', async () => {
+    await inviteCustomerToProProperties({
       expectedResponse: {
         status: 400,
         message: '[You must provide at least one valid property]',
       },
-    }));
+    });
+  });
 
-  it('returns an error if the customer is already invited to one property', () => {
+  it('returns an error if the customer is already invited to one property', async () => {
     PropertyService.setProUserPermissions({
       propertyId: 'property1',
       userId: 'pro',
@@ -468,53 +486,54 @@ describe('REST: inviteCustomerToProProperties', function() {
       userId: 'pro',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperties({
+
+    await inviteCustomerToProProperties({
       properties: [{ _id: 'property2' }],
       expectedResponse: {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"property2\"`,
       },
-    }).then(() =>
-      inviteCustomerToProProperties({
-        properties: [
-          { _id: 'property1' },
-          { _id: 'property2' },
-          { _id: 'property3' },
-        ],
-        expectedResponse: {
-          status: HTTP_STATUS_CODES.CONFLICT,
-          message: 'Ce client est déjà invité à ce bien immobilier [409]',
-        },
-      }),
-    );
+    });
+
+    await inviteCustomerToProProperties({
+      properties: [
+        { _id: 'property1' },
+        { _id: 'property2' },
+        { _id: 'property3' },
+      ],
+      expectedResponse: {
+        status: HTTP_STATUS_CODES.CONFLICT,
+        message: 'Ce client est déjà invité à ce bien immobilier [409]',
+      },
+    });
+
+    await checkEmails(2);
   });
 
-  it('cleans invalid fields in insert', () => {
+  it('cleans invalid fields in insert', async () => {
     const newProperty = {
       externalId: 'myId',
       status: PROPERTY_STATUS.SOLD,
     };
 
-    return inviteCustomerToProProperties({
+    await inviteCustomerToProProperties({
       properties: [newProperty],
       expectedResponse: {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"myId\"`,
       },
-    }).then(() => {
-      const property = PropertyService.get(
-        { externalId: 'myId' },
-        { status: 1 },
-      );
-      expect(property.status).to.equal(PROPERTY_STATUS.FOR_SALE);
     });
+    const property = PropertyService.get({ externalId: 'myId' }, { status: 1 });
+    expect(property.status).to.equal(PROPERTY_STATUS.FOR_SALE);
+
+    await checkEmails(2);
   });
 
-  it('does not allow invalid fields in insert', () => {
+  it('does not allow invalid fields in insert', async () => {
     const newProperty = {
       externalId: 'myId',
       propertyType: 'FALSE_TYPE',
     };
 
-    return inviteCustomerToProProperties({
+    await inviteCustomerToProProperties({
       properties: [newProperty],
       expectedResponse: {
         status: 400,
@@ -544,5 +563,7 @@ describe('REST: inviteCustomerToProProperties', function() {
       'Test User a été invité au bien immo "Rue du parc 3"',
     );
     SlackService.send.restore();
+
+    await checkEmails(2);
   });
 });

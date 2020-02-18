@@ -1,5 +1,3 @@
-// @flow
-
 import React, { useState, useMemo, useEffect } from 'react';
 import moment from 'moment';
 
@@ -7,21 +5,19 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
-import { adminRevenues } from 'core/api/revenues/queries';
 import {
   REVENUE_STATUS,
   REVENUE_TYPES,
   REVENUE_SECONDARY_TYPES,
+  REVENUES_COLLECTION,
+  ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import employees from 'core/arrays/epotekEmployees';
-import { adminOrganisations } from 'core/api/organisations/queries';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 import { revenuesFilter } from './revenuePageHelpers';
 import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
-
-type RevenuesPageCalendarProps = {};
 
 const getMonths = ({ startDate, endDate }) => {
   const clonedStartDate = moment(startDate);
@@ -68,11 +64,11 @@ const groupRevenues = revenues =>
     return { ...obj, [id]: [revenue] };
   }, {});
 
-const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
+const RevenuesPageCalendar = props => {
   const [type, setType] = useState();
   const [secondaryType, setSecondaryType] = useState();
-  const [assignee, setAssignee] = useState(null);
-  const [referrer, setReferrer] = useState(null);
+  const [assignee, setAssignee] = useState();
+  const [referrer, setReferrer] = useState();
   const [sourceOrganisationId, setSourceOrganisationId] = useState();
   const [revenueDateRange, setRevenueDateRange] = useState({
     startDate: moment()
@@ -89,28 +85,35 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
 
   const months = getMonths(revenueDateRange);
 
+  const dateQuery = { $gte: months[0], $lte: months[months.length - 1] };
+  const $or = [
+    { status: REVENUE_STATUS.EXPECTED, expectedAt: dateQuery },
+    { status: REVENUE_STATUS.CLOSED, paidAt: dateQuery },
+  ];
+
   const { data: revenues, loading, error, refetch } = useStaticMeteorData(
     {
-      query: adminRevenues,
+      query: REVENUES_COLLECTION,
       params: {
-        date: { $gte: months[0], $lte: months[months.length - 1] },
-        type,
-        secondaryType,
-        sourceOrganisationId,
-        $body: {
-          amount: 1,
-          assigneeLink: 1,
-          description: 1,
-          expectedAt: 1,
-          loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
-          organisationLinks: { _id: 1, commissionRate: 1 },
-          paidAt: 1,
-          secondaryType: 1,
-          sourceOrganisationLink: 1,
-          sourceOrganisation: { name: 1 },
-          status: 1,
-          type: 1,
+        $filters: {
+          $or,
+          type,
+          secondaryType,
+          'sourceOrganisationLink._id': sourceOrganisationId,
+          'assigneeLink._id': assignee,
         },
+        amount: 1,
+        assigneeLink: 1,
+        description: 1,
+        expectedAt: 1,
+        loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
+        organisationLinks: { _id: 1, commissionRate: 1 },
+        paidAt: 1,
+        secondaryType: 1,
+        sourceOrganisationLink: 1,
+        sourceOrganisation: { name: 1 },
+        status: 1,
+        type: 1,
       },
     },
     [
@@ -119,12 +122,13 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
       type,
       secondaryType,
       sourceOrganisationId,
+      assignee,
     ],
   );
 
   const filteredRevenues = useMemo(
-    () => revenues && revenuesFilter({ assignee, revenues, referrer }),
-    [assignee, revenues, referrer],
+    () => revenues && revenuesFilter({ revenues, referrer }),
+    [revenues, referrer],
   );
 
   const groupedRevenues = useMemo(
@@ -142,16 +146,16 @@ const RevenuesPageCalendar = (props: RevenuesPageCalendarProps) => {
     data: referringOrganisations,
     loading: orgLoading,
   } = useStaticMeteorData({
-    query: adminOrganisations,
-    params: { hasReferredUsers: true, $body: { name: 1 } },
+    query: ORGANISATIONS_COLLECTION,
+    params: { $filters: { referredUsersCount: { $gte: 1 } }, name: 1 },
   });
 
   const {
     data: sourceOrganisations,
     loading: sourceOrgLoading,
   } = useStaticMeteorData({
-    query: adminOrganisations,
-    params: { $body: { name: 1 } },
+    query: ORGANISATIONS_COLLECTION,
+    params: { $filters: { revenuesCount: { $gte: 1 } }, name: 1 },
   });
 
   return (

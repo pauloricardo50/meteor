@@ -11,8 +11,17 @@ import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LoanService from '../../../loans/server/LoanService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { clearBucket } from '../../../files/server/test/S3Service.test';
+import S3Service from '../../../files/server/S3Service';
+import { Loans, Borrowers, Properties, Promotions } from '../../..';
+
+const uploadFile = (key, metadata = {}) => {
+  const json = { hello: 'world' };
+  const binaryData = Buffer.from(JSON.stringify(json), 'utf-8');
+  return S3Service.putObject(binaryData, key, metadata);
+};
 
 describe('Collection Security', () => {
   describe('UserSecurity', () => {
@@ -749,6 +758,231 @@ describe('Collection Security', () => {
         expect(() =>
           SecurityService.properties.isAllowedToUpdate('propertyId', 'proId'),
         ).to.not.throw();
+      });
+    });
+  });
+
+  describe('FileSecurity', () => {
+    describe('isAllowedToAccess', () => {
+      let userId;
+      let user;
+
+      before(function() {
+        if (Meteor.settings.public.microservice !== 'pro') {
+          // When running these tests in parallel, it breaks tests
+          this.parent.pending = true;
+          this.skip();
+        }
+      });
+
+      beforeEach(() => {
+        resetDatabase();
+        clearBucket();
+        user = Factory.create('user');
+        userId = user._id;
+        sinon.stub(Meteor, 'user').callsFake(() => user);
+        sinon.stub(Meteor, 'userId').callsFake(() => userId);
+      });
+
+      afterEach(() => {
+        Meteor.user.restore();
+        Meteor.userId.restore();
+      });
+
+      it('should return true if the user is dev', async () => {
+        Meteor.users.update(userId, { $set: { roles: ['dev'] } });
+        await uploadFile('test/hello.json');
+        const isAllowed = await SecurityService.files.isAllowedToAccess({
+          key: 'test/hello.json',
+          userId,
+        });
+
+        expect(isAllowed).to.equal(true);
+      });
+
+      it('should return true if the user is admin', async () => {
+        Meteor.users.update(userId, { $set: { roles: 'admin' } });
+        await uploadFile('test/hello.json');
+        const isAllowed = await SecurityService.files.isAllowedToAccess({
+          key: 'test/hello.json',
+          userId,
+        });
+
+        expect(isAllowed).to.equal(true);
+      });
+
+      it('should throw if file is admin only and user is user', async () => {
+        await uploadFile('test/hello.json', { roles: 'admin' });
+        try {
+          await SecurityService.files.isAllowedToAccess({
+            key: 'test/hello.json',
+            userId,
+          });
+          expect(1).to.equal(0, 'Should throw');
+        } catch (error) {
+          expect(error.message).to.include('Unauthorized download');
+        }
+      });
+
+      it('should throw if file is admin only and user is pro', async () => {
+        Meteor.users.update(userId, { $set: { roles: 'pro' } });
+        await uploadFile('test/hello.json', { roles: 'admin' });
+        try {
+          await SecurityService.files.isAllowedToAccess({
+            key: 'test/hello.json',
+            userId,
+          });
+          expect(1).to.equal(0, 'Should throw');
+        } catch (error) {
+          expect(error.message).to.include('Unauthorized download');
+        }
+      });
+
+      it('should throw if no loan or borrower is associated to this account', async () => {
+        await uploadFile('test/hello.json');
+        try {
+          await SecurityService.files.isAllowedToAccess({
+            key: 'test/hello.json',
+            userId,
+          });
+          expect(1).to.equal(0, 'Should throw');
+        } catch (error) {
+          expect(error.message).to.include('Unauthorized download');
+        }
+      });
+
+      it('should return true if this user has the loan', async () => {
+        const loan = Factory.create('loan', { userId });
+        const key = `${loan._id}/hello.json`;
+
+        await uploadFile(key);
+        const isAllowed = await SecurityService.files.isAllowedToAccess({
+          key,
+          userId,
+        });
+
+        expect(isAllowed).to.equal(true);
+        Loans.remove(loan._id);
+      });
+
+      it('should return true if this user has the borrower', async () => {
+        const borrower = Factory.create('borrower', { userId });
+        const key = `${borrower._id}/hello.json`;
+
+        await uploadFile(key);
+        const isAllowed = await SecurityService.files.isAllowedToAccess({
+          key,
+          userId,
+        });
+
+        expect(isAllowed).to.equal(true);
+        Borrowers.remove(borrower._id);
+      });
+
+      it('should return true if this user has the property', async () => {
+        const property = Factory.create('property', { userId });
+        const key = `${property._id}/hello.json`;
+
+        await uploadFile(key);
+        const isAllowed = await SecurityService.files.isAllowedToAccess({
+          key,
+          userId,
+        });
+
+        expect(isAllowed).to.equal(true);
+        Properties.remove(property._id);
+      });
+
+      describe('with a pro property', () => {
+        let property;
+        let key;
+
+        beforeEach(() => {
+          property = Factory.create('property', {
+            category: PROPERTY_CATEGORY.PRO,
+          });
+          key = `${property._id}/hello.json`;
+        });
+
+        afterEach(() => Properties.remove(property._id));
+
+        it('should return true when the file is public', async () => {
+          await uploadFile(key);
+          const isAllowed = await SecurityService.files.isAllowedToAccess({
+            key,
+            userId,
+          });
+
+          expect(isAllowed).to.equal(true);
+        });
+
+        it('should return true when the file is pro only with a pro user', async () => {
+          Meteor.users.update(userId, { $set: { roles: 'pro' } });
+
+          await uploadFile(key, { roles: 'pro' });
+          const isAllowed = await SecurityService.files.isAllowedToAccess({
+            key,
+            userId,
+          });
+
+          expect(isAllowed).to.equal(true);
+        });
+
+        it('should throw when the file is pro only with a user', async () => {
+          await uploadFile(key, { roles: 'pro' });
+
+          try {
+            await SecurityService.files.isAllowedToAccess({ key, userId });
+            expect(1).to.equal(0, 'Should throw');
+          } catch (error) {
+            expect(error.message).to.include('Unauthorized download');
+          }
+        });
+      });
+
+      describe('with a promotion', () => {
+        let promotion;
+        let key;
+
+        beforeEach(() => {
+          promotion = Factory.create('promotion');
+          key = `${promotion._id}/hello.json`;
+        });
+
+        afterEach(() => Promotions.remove(promotion._id));
+
+        it('should return true when the file is public', async () => {
+          await uploadFile(key);
+          const isAllowed = await SecurityService.files.isAllowedToAccess({
+            key,
+            userId,
+          });
+
+          expect(isAllowed).to.equal(true);
+        });
+
+        it('should return true when the file is pro only with a pro user', async () => {
+          Meteor.users.update(userId, { $set: { roles: 'pro' } });
+
+          await uploadFile(key, { roles: 'pro' });
+          const isAllowed = await SecurityService.files.isAllowedToAccess({
+            key,
+            userId,
+          });
+
+          expect(isAllowed).to.equal(true);
+        });
+
+        it('should throw when the file is pro only with a user', async () => {
+          await uploadFile(key, { roles: 'pro' });
+
+          try {
+            await SecurityService.files.isAllowedToAccess({ key, userId });
+            expect(1).to.equal(0, 'Should throw');
+          } catch (error) {
+            expect(error.message).to.include('Unauthorized download');
+          }
+        });
       });
     });
   });

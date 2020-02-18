@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';
@@ -7,13 +6,7 @@ import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
 import { toMoney } from 'core/utils/conversionFunctions';
 import T from '../../../../Translation';
 
-type FinancingOwnFundsWithdrawWarningProps = {};
-
-const FinancingOwnFundsWithdrawWarning = ({
-  usageType,
-  type,
-  value,
-}: FinancingOwnFundsWithdrawWarningProps) => {
+const FinancingOwnFundsWithdrawWarning = ({ usageType, type, value }) => {
   // Withdrawals of LPP and 3A are taxable
   const isWithdrawTaxable =
     usageType === OWN_FUNDS_USAGE_TYPES.WITHDRAW &&

@@ -246,6 +246,7 @@ export const loan = () => ({
   additionalDocuments: 1,
   applicationType: 1,
   anonymous: 1,
+  assignees: { name: 1, phoneNumber: 1, email: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   canton: 1,
@@ -368,9 +369,9 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 });
 
 export const adminLoan = ({ withSort } = {}) => ({
+  assigneeLinks: 1, // Keep this first, to make sure it arrives along with the assignees
   ...userLoan({ withSort }),
   adminNotes: 1,
-  assigneeLinks: 1,
   category: 1,
   financedPromotion: { name: 1, status: 1 },
   financedPromotionLink: 1,

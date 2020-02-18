@@ -2,9 +2,10 @@
   "name": "epotek-backend",
   "private": true,
   "scripts": {
+    "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
+    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505",
     "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500",
-    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505",
-    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505"
+    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505"
   },
   "dependencies": {
     "@babel/runtime": "7.8.3",
@@ -86,7 +87,6 @@
     "chai": "^4.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "flow-typed": "^2.6.2",
     "jsdom": "15.2.1",
     "meteor-babel": "^7.8.0",
     "mocha": "5.2.0",

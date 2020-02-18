@@ -24,6 +24,7 @@ import {
   getRequestType,
   requestTypeIsAllowed,
   shouldSkipMiddleware,
+  checkCustomAuth,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -37,8 +38,8 @@ const bodyParserUrlEncodedMiddleware = () =>
   });
 
 const selectAuthTypeMiddleware = (options = {}) => (req, res, next) => {
-  req.authenticationType = getRequestType(req);
   const endpointOptions = getMatchingPathOptions(req, options);
+  req.authenticationType = getRequestType(req, endpointOptions);
   const { endpointName } = endpointOptions;
 
   // Unknown endpoint
@@ -307,6 +308,24 @@ const multipartMiddleware = options => (req, res, next) => {
   return middleware(req, res, next);
 };
 
+const customAuthMiddleware = options => (req, res, next) => {
+  if (shouldSkipMiddleware({ req, middleware: 'customAuthMiddleware' })) {
+    return next();
+  }
+
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  const { customAuth } = endpointOptions;
+
+  try {
+    checkCustomAuth({ customAuth, req });
+  } catch (error) {
+    return next(REST_API_ERRORS.AUTHENTICATION_FAILED(error));
+  }
+
+  next();
+};
+
 export const preMiddlewares = [
   selectAuthTypeMiddleware,
   filterMiddleware,
@@ -316,6 +335,7 @@ export const preMiddlewares = [
   authMiddleware,
   simpleAuthMiddleware,
   basicAuthMiddleware,
+  customAuthMiddleware,
   replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

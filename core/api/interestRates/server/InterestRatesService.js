@@ -1,5 +1,5 @@
 import InterestRates from '../interestRates';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 
 class InterestRatesService extends CollectionService {
   constructor() {

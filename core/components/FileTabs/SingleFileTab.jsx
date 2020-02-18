@@ -1,4 +1,3 @@
-// @flow
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
@@ -9,6 +8,7 @@ import {
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
   LOANS_COLLECTION,
+  BASIC_DOCUMENTS_LIST,
 } from '../../api/constants';
 import {
   getBorrowerDocuments,
@@ -18,15 +18,6 @@ import {
 } from '../../api/files/documents';
 
 import UploaderCategories from './UploaderCategories';
-
-type SingleFileTabProps = {
-  collection: Sring,
-  doc: Object,
-  disabled: Boolean,
-  documentArray: Array<Object>,
-  currentUser: Object,
-  loan: Object,
-};
 
 const documentsToDisplay = ({ collection, loan, id }) => {
   switch (collection) {
@@ -50,29 +41,42 @@ const documentsToHide = ({ doc, collection, loan, id }) => {
   );
 };
 
-const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
+const SingleFileTab = ({ documentArray, ...props }) => {
   const {
     collection,
     loan,
     doc,
     className,
     withAdditionalDocAdder = true,
+    basicOnly,
   } = props;
+
+  let displayedDocs =
+    documentArray || documentsToDisplay({ collection, loan, id: doc._id });
+  let hiddenDocs = documentsToHide({
+    collection,
+    loan,
+    id: doc._id,
+    doc,
+  });
+
+  if (typeof basicOnly === 'boolean' && basicOnly) {
+    displayedDocs = displayedDocs.filter(({ id }) =>
+      BASIC_DOCUMENTS_LIST.includes(id),
+    );
+    hiddenDocs = hiddenDocs.filter(({ id }) =>
+      BASIC_DOCUMENTS_LIST.includes(id),
+    );
+  }
+
   return (
     <div className={cx('single-file-tab', className)}>
       {withAdditionalDocAdder && Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}
       <UploaderCategories
-        documentsToDisplay={
-          documentArray || documentsToDisplay({ collection, loan, id: doc._id })
-        }
-        documentsToHide={documentsToHide({
-          collection,
-          loan,
-          id: doc._id,
-          doc,
-        })}
+        documentsToDisplay={displayedDocs}
+        documentsToHide={hiddenDocs}
         canModify
         {...props}
       />

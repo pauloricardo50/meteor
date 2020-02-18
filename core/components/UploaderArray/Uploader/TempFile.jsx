@@ -5,7 +5,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { logError } from 'core/api/methods/index';
+import { logError } from '../../../api/methods/index';
 import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/constants';
 
 export default class TempFile extends Component {

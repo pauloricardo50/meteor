@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -48,7 +47,6 @@ class Form extends Accounts.ui.Form {
     );
   }
 }
-console.log('3');
 
 class Buttons extends Accounts.ui.Buttons {}
 

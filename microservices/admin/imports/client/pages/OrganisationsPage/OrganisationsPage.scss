@@ -9,7 +9,8 @@
 
     width: 100%;
     margin-bottom: 16px;
-    h3 {
+    
+    h2 {
       align-self: center;
     }
   }
@@ -23,6 +24,7 @@
     .organisation {
       display: flex;
       flex-direction: column;
+      position:relative;
 
       width: 150px;
       height: 150px;
@@ -40,6 +42,16 @@
         flex-grow: 0;
 
         padding: 8px;
+      }
+
+      .is-paid {
+        position:absolute;
+        top:0;
+        right:0;
+        padding: 4px;
+        background-color: green;
+        color: white;
+        border-top-right-radius: 8px;;
       }
     }
   }

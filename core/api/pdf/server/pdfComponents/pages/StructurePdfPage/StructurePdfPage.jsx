@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
@@ -8,8 +7,6 @@ import CostsBalanceSheet from './CostsBalanceSheet';
 import SingleStructureRecapTable from './SingleStructureRecapTable';
 import PledgeTable from './PledgeTable';
 
-type StructurePdfPageProps = {};
-
 const StructurePdfPage = ({
   loan,
   structureId,
@@ -17,7 +14,7 @@ const StructurePdfPage = ({
   pageNb,
   pageCount,
   calculator,
-}: StructurePdfPageProps) => {
+}) => {
   const { name: structureName } = calculator.selectStructure({
     loan,
     structureId,

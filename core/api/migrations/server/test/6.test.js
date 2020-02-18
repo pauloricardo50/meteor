@@ -2,9 +2,9 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { Organisations } from '../../..';
-import OrganisationService from '../../../organisations/server/OrganisationService'
+import OrganisationService from '../../../organisations/server/OrganisationService';
 
 import { up, down } from '../6';
 
@@ -31,7 +31,10 @@ describe('Migration 6', () => {
         )
         .then(up)
         .then(() => {
-          const { contactIds = [], userLinks = [] } = OrganisationService.get('org', { contactIds: 1, userLinks: 1 });
+          const {
+            contactIds = [],
+            userLinks = [],
+          } = OrganisationService.get('org', { contactIds: 1, userLinks: 1 });
           expect(contactIds.length).to.equal(1);
           expect(userLinks.length).to.equal(1);
           expect(contactIds[0]._id).to.equal('contact');
@@ -57,7 +60,10 @@ describe('Migration 6', () => {
         )
         .then(down)
         .then(() => {
-          const { contactIds = [], userLinks = [] } = OrganisationService.get('org', { contactIds: 1, userLinks: 1 });
+          const {
+            contactIds = [],
+            userLinks = [],
+          } = OrganisationService.get('org', { contactIds: 1, userLinks: 1 });
           expect(contactIds.length).to.equal(1);
           expect(userLinks.length).to.equal(1);
           expect(contactIds[0]._id).to.equal('contact');

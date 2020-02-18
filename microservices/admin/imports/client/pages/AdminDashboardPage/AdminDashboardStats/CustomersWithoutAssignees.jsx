@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import DialogSimple from 'core/components/DialogSimple';
@@ -8,9 +7,7 @@ import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-type CustomersWithoutAssigneesProps = {};
-
-const CustomersWithoutAssignees = (props: CustomersWithoutAssigneesProps) => {
+const CustomersWithoutAssignees = ({ showAll }) => {
   // We need to query both for undefined or null values in the assignedEmployeeId
   const { data: users1 = [], loading: loading1 } = useStaticMeteorData({
     query: adminUsers,
@@ -19,6 +16,7 @@ const CustomersWithoutAssignees = (props: CustomersWithoutAssigneesProps) => {
       roles: [ROLES.USER],
       assignedEmployeeId: { $exists: false },
     },
+    refetchOnMethodCall: false,
   });
   const { data: users2 = [], loading: loading2 } = useStaticMeteorData({
     query: adminUsers,
@@ -27,10 +25,15 @@ const CustomersWithoutAssignees = (props: CustomersWithoutAssigneesProps) => {
       roles: [ROLES.USER],
       assignedEmployeeId: { $type: 'null' },
     },
+    refetchOnMethodCall: false,
   });
   const users = [...users1, ...users2];
   const isLoading = loading1 || loading2;
   const isOk = !isLoading && users.length === 0;
+
+  if (!showAll && isOk) {
+    return null;
+  }
 
   return (
     <StatItem

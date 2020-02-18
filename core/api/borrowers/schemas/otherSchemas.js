@@ -249,4 +249,5 @@ export const ownCompaniesSchema = {
   'ownCompanies.$.netIncome2016': moneyField,
   'ownCompanies.$.netIncome2017': moneyField,
   'ownCompanies.$.netIncome2018': moneyField,
+  'ownCompanies.$.netIncome2019': moneyField,
 };

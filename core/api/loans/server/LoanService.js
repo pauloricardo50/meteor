@@ -5,11 +5,9 @@ import moment from 'moment';
 
 import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import {
-  ACTIVITY_EVENT_METADATA,
-  ACTIVITY_TYPES,
-} from 'core/api/activities/activityConstants';
+import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
+import { assignAdminToUser } from '../../methods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Intl from '../../../utils/server/intl';
 import {
@@ -32,7 +30,7 @@ import {
   lenderRules as lenderRulesFragment,
   userLoan,
 } from '../../fragments';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -65,7 +63,7 @@ class LoanService extends CollectionService {
     if (userId) {
       const user = UserService.get(userId, { assignedEmployee: { _id: 1 } });
 
-      if (user && user.assignedEmployee && user.assignedEmployee._id) {
+      if (user?.assignedEmployee?._id) {
         this.setAssignees({
           loanId,
           assignees: [
@@ -132,15 +130,15 @@ class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    const { step, user } = this.get(loanId, {
+    const { step, mainAssignee, userId } = this.get(loanId, {
       step: 1,
       userId: 1,
-      user: { assignedEmployee: { name: 1 } },
+      mainAssignee: 1,
     });
 
     this.update({ loanId, object: { step: nextStep } });
 
-    return { step, nextStep, user };
+    return { step, nextStep, mainAssignee, userId };
   }
 
   verifyStatusChange({ loanId, status }) {
@@ -1106,7 +1104,7 @@ class LoanService extends CollectionService {
     return disbursedIn10Days.map(({ _id }) => _id);
   }
 
-  setAssignees({ loanId, assignees }) {
+  setAssignees({ loanId, assignees, updateUserAssignee }) {
     if (assignees.length < 1 || assignees.length > 3) {
       throw new Meteor.Error(
         'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
@@ -1127,7 +1125,29 @@ class LoanService extends CollectionService {
       );
     }
 
-    return this.update({ loanId, object: { assigneeLinks: assignees } });
+    const response = this.update({
+      loanId,
+      object: { assigneeLinks: assignees },
+    });
+
+    if (updateUserAssignee) {
+      const { user: { _id: userId } = {} } = this.get(loanId, {
+        user: { _id: 1 },
+      });
+      if (userId) {
+        assignAdminToUser.run({ userId, adminId: main[0]._id });
+      }
+    }
+
+    return response;
+  }
+
+  getMainAssignee({ loanId }) {
+    const { assignees = [] } = this.get(loanId, {
+      assignees: { email: 1, name: 1 },
+    });
+
+    return assignees.find(({ $metadata: { isMain } }) => isMain);
   }
 }
 

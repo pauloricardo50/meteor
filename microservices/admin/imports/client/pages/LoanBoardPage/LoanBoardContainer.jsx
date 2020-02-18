@@ -1,18 +1,27 @@
 import { compose, mapProps, withProps } from 'recompose';
+import merge from 'lodash/merge';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { adminLoans } from 'core/api/loans/queries';
 import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { ORGANISATION_FEATURES, ROLES } from 'core/api/constants';
-import { userCache } from 'core/api/loans/links';
-import { groupLoans, makeClientSideFilter } from './loanBoardHelpers';
+import {
+  ORGANISATION_FEATURES,
+  ROLES,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+} from 'core/api/constants';
+import {
+  groupLoans,
+  makeClientSideFilter,
+  additionalLoanBoardFields,
+} from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import { withLiveSync, addLiveSync } from './liveSync';
 
 const defaultBody = {
   adminNotes: 1,
+  assigneeLinks: 1,
   borrowers: { name: 1 },
   category: 1,
   createdAt: 1,
@@ -25,49 +34,79 @@ const defaultBody = {
   structures: { wantedLoan: 1, id: 1, propertyId: 1 },
   properties: { address1: 1 },
   tasksCache: 1,
-  user: {
-    ...userCache,
-    // FIXME: This is a grapher bug, you can't just put "assignedEmployeeCache: 1" here
-    assignedEmployeeCache: { _id: 1, firstName: 1, lastName: 1 },
-  },
+  user: { name: 1 },
   financedPromotion: { name: 1, status: 1 },
   userId: 1,
   selectedLenderOrganisation: { name: 1 },
   revenues: { _id: 1, status: 1 },
 };
 
+const getQueryBody = additionalFields => {
+  const addedFields = additionalLoanBoardFields.filter(({ id }) =>
+    additionalFields.includes(id),
+  );
+
+  return addedFields.reduce(
+    (newBody, { fragment }) => merge({}, newBody, fragment),
+    defaultBody,
+  );
+};
+
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
-const getPromotionId = promotionId =>
-  noPromotionIsChecked(promotionId) ? undefined : promotionId;
+const getQueryFilters = ({
+  assignedEmployeeId,
+  step,
+  groupBy,
+  status,
+  promotionId,
+  lenderId,
+  category,
+}) => {
+  const $or = [];
+
+  if (groupBy === GROUP_BY.PROMOTION) {
+    $or.push({ 'promotionLinks.0._id': { $exists: true } });
+    $or.push({ 'financedPromotionLink._id': { $exists: true } });
+  }
+
+  if (promotionId) {
+    $or.push({ 'promotionLinks.0._id': promotionId });
+    $or.push({ 'financedPromotionLink._id': promotionId });
+  }
+
+  return {
+    assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
+    step,
+    $or: $or.length ? $or : undefined,
+    anonymous: { $ne: true },
+    status: {
+      $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
+      ...status,
+    },
+    ...(lenderId
+      ? {
+          lendersCache: {
+            $elemMatch: { 'organisationLink._id': lenderId },
+          },
+        }
+      : {}),
+    category,
+    ...(noPromotionIsChecked(promotionId)
+      ? { promotionLinks: { $in: [[], null] } }
+      : {}),
+  };
+};
 
 export default compose(
   addLiveSync,
   withLiveSync,
   withSmartQuery({
-    query: adminLoans,
-    params: ({
-      options: {
-        assignedEmployeeId,
-        step,
-        groupBy,
-        status,
-        promotionId,
-        lenderId,
-        category,
-      },
-    }) => ({
-      $body: defaultBody,
-      assignedEmployeeId,
-      step,
-      relevantOnly: true,
-      hasPromotion: groupBy === GROUP_BY.PROMOTION,
-      status,
-      promotionId: getPromotionId(promotionId),
-      lenderId,
-      category,
-      noPromotion: noPromotionIsChecked(promotionId),
+    query: LOANS_COLLECTION,
+    params: ({ options }) => ({
+      $filters: getQueryFilters(options),
+      ...getQueryBody(options.additionalFields),
     }),
     dataName: 'loans',
     queryOptions: { pollingMs: 5000 },

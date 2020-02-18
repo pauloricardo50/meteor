@@ -9,12 +9,12 @@ import postListResolverCached from './postListResolverCached';
 import userListScoped from './userListScoped';
 
 export {
-    postList,
-    postListCached,
-    postListExposure,
-    postListExposureScoped,
-    postListParamsCheck,
-    postListParamsCheckServer,
-    postListResolver,
-    postListResolverCached
-}
+  postList,
+  postListCached,
+  postListExposure,
+  postListExposureScoped,
+  postListParamsCheck,
+  postListParamsCheckServer,
+  postListResolver,
+  postListResolverCached,
+};

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import { AutoFormDialog } from '../AutoForm2';
@@ -7,9 +6,7 @@ import Button from '../Button';
 import OfferModiferContainer from './OfferModifierContainer';
 import { offerDelete } from '../../api';
 
-type OfferModifierProps = {};
-
-const OfferModifier = ({ onSubmit, offer, schema }: OfferModifierProps) => (
+const OfferModifier = ({ onSubmit, offer, schema }) => (
   <AutoFormDialog
     onSubmit={onSubmit}
     model={offer}

@@ -1,15 +1,14 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+
+import { expect } from 'chai';
 import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import {
   loanSetStatus,
   setLoanStep,
@@ -18,7 +17,7 @@ import {
 } from '../../../methods/index';
 import Analytics from '../../../analytics/server/Analytics';
 import { checkEmails } from '../../../../utils/testHelpers';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import LoanService from '../LoanService';
 import {
   OWN_FUNDS_TYPES,
@@ -1040,7 +1039,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setStep', async () => {
+  describe('setStep', () => {
     it('sets the step', () => {
       generator({
         loans: { _id: 'id', step: STEPS.SOLVENCY },
@@ -1066,8 +1065,8 @@ describe('LoanService', function() {
           step: STEPS.SOLVENCY,
           user: {
             emails: [{ address: 'john@doe.com', verified: false }],
-            assignedEmployeeId: 'admin',
           },
+          assignees: { _id: 'admin', $metadata: { isMain: true } },
         },
       });
 
@@ -1112,8 +1111,8 @@ describe('LoanService', function() {
           step: STEPS.REQUEST,
           user: {
             emails: [{ address: 'john@doe.com', verified: false }],
-            assignedEmployeeId: 'admin',
           },
+          assignees: { _id: 'admin', $metadata: { isMain: true } },
         },
       });
 
@@ -1181,14 +1180,15 @@ describe('LoanService', function() {
             _id: 'customerId',
             firstName: 'Customer',
             lastName: '1',
-            assignedEmployee: {
-              _id: 'adminId1',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: '1',
-            },
             referredByOrganisation: { name: 'Org 1' },
             referredByUser: { firstName: 'Pro', lastName: '1' },
+          },
+          assignees: {
+            _id: 'adminId1',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: '1',
+            $metadata: { isMain: true },
           },
         },
         users: [
@@ -1492,8 +1492,8 @@ describe('LoanService', function() {
       expect(moment(date).format('YYYY-MM-DD')).to.equal(
         moment().format('YYYY-MM-DD'),
       );
-      expect(main.min.borrowRatio).to.equal(0.635);
-      expect(main.min.propertyValue).to.equal(1443000);
+      expect(main.min.borrowRatio).to.equal(0.65);
+      expect(main.min.propertyValue).to.equal(1496000);
       expect(main.max.borrowRatio).to.equal(0.835);
       expect(main.max.propertyValue).to.equal(2761000);
       expect(second.min.borrowRatio).to.equal(0.5);
@@ -1759,12 +1759,14 @@ describe('LoanService', function() {
               lastName: 'User',
               emails: [{ address: 'pro@e-potek.ch', verified: true }],
             },
-            assignedEmployee: {
-              _id: 'adminId',
-              _factory: 'admin',
-              firstName: 'Admin',
-              lastName: 'User',
-            },
+          },
+          assignees: {
+            _id: 'adminId',
+            _factory: 'admin',
+            firstName: 'Admin',
+            lastName: 'User',
+            $metadata: { isMain: true },
+            emails: [{ address: 'admin@e-potek.ch', verified: true }],
           },
         },
       });
@@ -1785,7 +1787,7 @@ describe('LoanService', function() {
         {
           address,
           template: {
-            message: { subject, global_merge_vars, to },
+            message: { subject, global_merge_vars, to, from_email, from_name },
           },
         },
       ] = await checkEmails(1);
@@ -1807,6 +1809,8 @@ describe('LoanService', function() {
 
       expect(to.length).to.equal(3);
       expect(to.every(({ type }) => type === 'bcc')).to.equal(true);
+      expect(from_email).to.equal('admin@e-potek.ch');
+      expect(from_name).to.equal('Admin User');
     });
   });
 

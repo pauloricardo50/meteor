@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
-import { getCookie } from 'core/utils/cookiesHelpers';
+import { getCookie } from '../../utils/cookiesHelpers';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
 import { internalMethod } from './methodHelpers';
 
@@ -90,8 +90,8 @@ export class Method extends Mutation {
     const self = this;
 
     Meteor.methods({
-      [name](params = {}, additionalData) {
-        check(additionalData, Object);
+      [name](params = {}, additionalData = {}) {
+        check(additionalData, Match.Maybe(Object));
         check(
           additionalData.location,
           Match.Maybe({

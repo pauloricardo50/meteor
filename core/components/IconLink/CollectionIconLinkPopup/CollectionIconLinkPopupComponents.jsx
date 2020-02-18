@@ -6,7 +6,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 
 import colors from '../../../config/colors';
-import Calculator from '../../../utils/Calculator';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
@@ -159,6 +158,7 @@ export const components = {
     children,
     borrowers = [],
     promotions = [],
+    mainAssignee,
   }) => {
     const structure = structures.find(({ id }) => id === selectedStructure);
     const [promotion] = promotions;
@@ -210,12 +210,12 @@ export const components = {
           value={
             <CollectionIconLink
               relatedDoc={{
-                ...user.assignedEmployee,
+                ...mainAssignee,
                 collection: USERS_COLLECTION,
               }}
             />
           }
-          isEmpty={!(user && user.assignedEmployee)}
+          isEmpty={!mainAssignee}
         />
       </div>
     );

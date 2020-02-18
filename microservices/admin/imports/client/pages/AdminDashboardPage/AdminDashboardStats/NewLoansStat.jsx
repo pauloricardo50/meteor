@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
@@ -13,8 +12,6 @@ import IconButton from 'core/components/IconButton';
 import DialogSimple from 'core/components/DialogSimple';
 import StatItem from './StatItem';
 
-type NewLoansStatProps = {};
-
 const formatDate = date =>
   moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
 
@@ -27,12 +24,13 @@ const NewLoansStat = ({
   loanHistogram,
   withAnonymous,
   setWithAnonymous,
-}: NewLoansStatProps) => (
+}) => (
   <StatItem
     value={<CountUp end={newLoans.count} />}
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
     title="Nouveaux dossiers"
+    large
     top={
       <>
         <DialogSimple
@@ -87,10 +85,12 @@ export default compose(
     query: newLoans,
     dataName: 'newLoans',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: loanHistogram,
     dataName: 'loanHistogram',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    refetchOnMethodCall: false,
   }),
 )(NewLoansStat);

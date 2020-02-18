@@ -12,7 +12,7 @@ import { percentFormatters } from '../../../utils/formHelpers';
 import { BORROWERS_COLLECTION, PROPERTIES_COLLECTION } from '../../constants';
 import { updateWatcherNotification } from '../../slack/server/slackNotifications';
 import UserService from '../../users/server/UserService';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import UpdateWatchers from './updateWatchers';
 
 class UpdateWatcherService extends CollectionService {
@@ -22,7 +22,7 @@ class UpdateWatcherService extends CollectionService {
 
   addUpdateWatching({ collection, fields, shouldWatch = () => true }) {
     const that = this;
-    const hookHandle = collection.after.update(function (
+    const hookHandle = collection.after.update(function(
       userId,
       doc,
       fieldNames,
@@ -53,10 +53,13 @@ class UpdateWatcherService extends CollectionService {
   }
 
   updateWatcher({ collectionName, doc, changedFields, previousDoc, userId }) {
-    const existingUpdateWatcher = this.get({
-      collection: collectionName,
-      docId: doc._id,
-    }, { userId: 1, docId: 1, collection: 1, updatedFields: 1 });
+    const existingUpdateWatcher = this.get(
+      {
+        collection: collectionName,
+        docId: doc._id,
+      },
+      { userId: 1, docId: 1, collection: 1, updatedFields: 1 },
+    );
 
     if (!existingUpdateWatcher) {
       this.insertWatcher({
@@ -283,19 +286,19 @@ class UpdateWatcherService extends CollectionService {
     const removedValues =
       previousValue.length > currentValue.length
         ? previousValue
-          .map((item, i) => {
-            if (i >= currentValue.length) {
-              const prefix = `\`${i + 1}\`\n`;
+            .map((item, i) => {
+              if (i >= currentValue.length) {
+                const prefix = `\`${i + 1}\`\n`;
 
-              return `${prefix}${this.formatValue(
-                item,
-                fieldName,
-              )} -> _supprimé_`;
-            }
-            return null;
-          })
-          .filter(x => x)
-          .join('\n')
+                return `${prefix}${this.formatValue(
+                  item,
+                  fieldName,
+                )} -> _supprimé_`;
+              }
+              return null;
+            })
+            .filter(x => x)
+            .join('\n')
         : '';
 
     return `*${Intl.formatMessage({
@@ -338,8 +341,8 @@ class UpdateWatcherService extends CollectionService {
       return value === 0
         ? '0'
         : value > 1
-          ? toMoney(value)
-          : `${percentFormatters.format(value)}%`;
+        ? toMoney(value)
+        : `${percentFormatters.format(value)}%`;
     }
 
     if (!value) {

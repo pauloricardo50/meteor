@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
@@ -8,9 +7,7 @@ import { widget1Actions } from 'core/redux/widget1';
 import PageApp from '../../components/PageApp';
 import AppWidget1PageContainer from './AppWidget1PageContainer';
 
-type AppWidget1PageProps = {};
-
-const AppWidget1Page = (props: AppWidget1PageProps) => (
+const AppWidget1Page = props => (
   <PageApp id="AppWidget1Page" fullWidth>
     <div className="app-widget1-page widget1-page">
       <Widget1Part2 {...props} />

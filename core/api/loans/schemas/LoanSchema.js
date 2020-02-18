@@ -1,4 +1,3 @@
-// @flow
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -47,6 +46,7 @@ const LoanSchema = new SimpleSchema({
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
+  structureCache: { type: Object, optional: true, blackbox: true },
   purchaseType: {
     type: String,
     defaultValue: PURCHASE_TYPE.ACQUISITION,

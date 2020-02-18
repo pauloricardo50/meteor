@@ -10,7 +10,8 @@ export const sendPropertyInvitations = (
   propertyIds.forEach(id => {
     const property = PropertyService.get(
       { $or: [{ _id: id }, { externalId: id }] },
-      { address1: 1 });
+      { address1: 1 },
+    );
     propertyInviteNotification({
       currentUser,
       user: invitedUser,

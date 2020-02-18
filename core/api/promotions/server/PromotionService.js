@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import { fullUser } from 'core/api/fragments';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
@@ -132,8 +131,8 @@ class PromotionService extends CollectionService {
     });
 
     if (isNewUser) {
-      const admin = UserService.get(promotion.assignedEmployeeId, fullUser());
-      UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
+      const admin = UserService.get(promotion.assignedEmployeeId, { _id: 1 });
+      UserService.assignAdminToUser({ userId, adminId: admin?._id });
     }
 
     return Promise.resolve(loanId);

@@ -15,26 +15,24 @@ const Info = props => {
   } = props;
 
   return (
-    <>
-      <section className="animated borrower-page-info flex--helper fadeIn">
-        {borrowers.map(borrower => (
-          <div className="borrower-page__wrapper col--50" key={borrower._id}>
-            <TranslatedAutoForm
-              inputs={getBorrowerInfoArray({
-                borrowers,
-                borrowerId: borrower._id,
-                loanId,
-              })}
-              formClasses="user-form user-form__info"
-              docId={borrower._id}
-              collection="borrowers"
-              doc={borrower}
-              disabled={!userFormsEnabled}
-            />
-          </div>
-        ))}
-      </section>
-    </>
+    <section className="animated borrower-page-info flex--helper fadeIn">
+      {borrowers.map(borrower => (
+        <div className="borrower-page__wrapper col--50" key={borrower._id}>
+          <TranslatedAutoForm
+            inputs={getBorrowerInfoArray({
+              borrowers,
+              borrowerId: borrower._id,
+              loanId,
+            })}
+            formClasses="user-form"
+            docId={borrower._id}
+            collection="borrowers"
+            doc={borrower}
+            disabled={!userFormsEnabled}
+          />
+        </div>
+      ))}
+    </section>
   );
 };
 

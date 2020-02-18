@@ -1,21 +1,14 @@
-// @flow
 import get from 'lodash/get';
 
 import { arrayify, simpleHash } from './general';
 
 // Returns the current value of an autoForm input
-const getCurrentValue = (input, doc) => get(doc, input.progressReplacementId || input.id);
-
-type formFieldType = {
-  condition?: boolean,
-  required?: boolean,
-  disabled?: boolean,
-  type: string,
-};
+const getCurrentValue = (input, doc) =>
+  get(doc, input.progressReplacementId || input.id);
 
 // shouldCountField - A boolean to determine if a field in an array
 // should be counted or not
-export const shouldCountField = (formField: formFieldType) =>
+export const shouldCountField = formField =>
   (formField.condition === undefined || formField.condition === true) &&
   formField.required !== false &&
   !formField.disabled &&

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 
 import {
@@ -13,8 +12,6 @@ import { NumberField } from 'core/components/NumberInput';
 import { PercentField } from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
 import TextField from 'core/components/AutoForm2/CustomTextField';
-
-type LenderRulesFormValueProps = {};
 
 const getSelectProps = variable => {
   if (variable === LENDER_RULES_VARIABLES.RESIDENCE_TYPE) {
@@ -44,7 +41,7 @@ const getSelectProps = variable => {
   return { allowedValues: [] };
 };
 
-const LenderRulesFormValue = (props: LenderRulesFormValueProps) => {
+const LenderRulesFormValue = props => {
   const { model, parent, onChange } = props;
   const index = Number(parent.name.slice(-1));
   const { variable } = model.rules[index];

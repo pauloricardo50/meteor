@@ -1,16 +1,14 @@
-// @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import generator from 'core/api/factories/index';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import generator from '../../../factories/server';
 import { checkEmails } from '../../../../utils/testHelpers';
-import LenderService from '../../../lenders/server/LenderService';
 import { EMAIL_TEMPLATES, EMAIL_IDS } from '../../../email/emailConstants';
-import OfferService from '../OfferService';
 import { offerSendFeedback } from '../../methodDefinitions';
+import OfferService from '../OfferService';
 
 describe('OfferService', () => {
   let offer;
@@ -80,7 +78,7 @@ describe('OfferService', () => {
   describe('send feedback', function() {
     this.timeout(10000);
 
-    it('sends the feedback to the lender', async () => {
+    it('sends the feedback to the lender ', async () => {
       generator({
         users: {
           _id: 'userId',
@@ -103,6 +101,7 @@ describe('OfferService', () => {
                 organisations: { _id: 'orgId' },
               },
             },
+            assignees: { _id: 'adminId', $metadata: { isMain: true } },
           },
         },
       });
@@ -120,6 +119,7 @@ describe('OfferService', () => {
         offerSendFeedback.run({ offerId, feedback }),
       );
 
+      const result = await checkEmails(1);
       const [
         {
           emailId,
@@ -130,15 +130,15 @@ describe('OfferService', () => {
             message: { from_email, subject, global_merge_vars, from_name, to },
           },
         },
-      ] = await checkEmails(1);
+      ] = result;
 
-      const bcc = to.find(({ email }) => email === 'dev@e-potek.ch');
+      const bcc = to.find(({ email }) => email === 'dev@e-potek.ch', 'yoo');
 
       expect(status).to.equal('sent');
       expect(emailId).to.equal(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER);
       expect(template_name).to.equal(EMAIL_TEMPLATES.SIMPLE.mandrillId);
       expect(address).to.equal('lender@e-potek.com');
-      expect(from_email).to.equal('dev@e-potek.ch');
+      expect(from_email).to.equal('dev@e-potek.ch', 'dawg');
       expect(bcc.type).to.equal('bcc');
       expect(from_name).to.equal('Dev E-Potek');
       expect(subject).to.include('Feedback client sur');

@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
@@ -11,12 +10,10 @@ import {
 import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import CurrentUserContext from 'core/containers/CurrentUserContext';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
-type UnpaidCommissionsProps = {};
-
-const UnpaidCommissions = (props: UnpaidCommissionsProps) => {
+const UnpaidCommissions = () => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
@@ -30,6 +27,7 @@ const UnpaidCommissions = (props: UnpaidCommissionsProps) => {
       loan: { name: 1 },
       assigneeLink: 1,
     },
+    refetchOnMethodCall: false,
   });
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(

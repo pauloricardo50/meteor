@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
 import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
@@ -13,6 +13,8 @@ import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConsta
 import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
 import { task as taskFragment } from '../../fragments';
 import UserService from '../../users/server/UserService';
+import LoanService from '../../loans/server/LoanService';
+import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -54,6 +56,9 @@ class TaskService extends CollectionService {
     }
     if (collection === LENDERS_COLLECTION) {
       this.addLink({ id: taskId, linkName: 'lender', linkId: docId });
+    }
+    if (collection === CONTACTS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'contact', linkId: docId });
     }
 
     if (assignee) {
@@ -122,11 +127,18 @@ class TaskService extends CollectionService {
   };
 
   getAssigneeForDoc = (docId, collection) => {
+    if (collection === LOANS_COLLECTION) {
+      const mainAssignee = LoanService.getMainAssignee({ loanId: docId });
+      if (mainAssignee) {
+        return mainAssignee?._id;
+      }
+    }
+
     const doc = Mongo.Collection.get(collection)
       .createQuery({ $filters: { _id: docId }, assignee: 1 })
       .fetchOne();
 
-    return doc && doc.assignee ? doc.assignee._id : null;
+    return doc?.assignee?._id;
   };
 
   proAddLoanTask = ({ userId, loanId, note }) => {

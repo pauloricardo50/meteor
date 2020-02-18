@@ -1,40 +1,40 @@
-import Demo, {DemoPublication, DemoMethod} from './demo.js';
-import Intersect, { CollectionLink as IntersectLink } from './intersect';
 import { Exposure } from 'meteor/cultofcoders:grapher';
+import Demo, { DemoPublication, DemoMethod } from './demo.js';
+import Intersect, { CollectionLink as IntersectLink } from './intersect';
 
 Demo.expose({
-    firewall(filters, options, userId) {
-        Exposure.restrictFields(filters, options, ['restrictedField']);
-        filters.isPrivate = false;
-    },
-    maxLimit: 2,
-    maxDepth: 2,
-    restrictLinks(userId) {
-        return ['restrictedLink'];
-    }
+  firewall(filters, options, userId) {
+    Exposure.restrictFields(filters, options, ['restrictedField']);
+    filters.isPrivate = false;
+  },
+  maxLimit: 2,
+  maxDepth: 2,
+  restrictLinks(userId) {
+    return ['restrictedLink'];
+  },
 });
 
 DemoMethod.expose({
-    publication: false
+  publication: false,
 });
 
 DemoPublication.expose({
-    method: false
+  method: false,
 });
 
 Intersect.expose({
-    body: {
-        value: 1,
-        link(userId) {
-            if (!userId) {
-                return {value: 1};
-            }
-        }
-    }
+  body: {
+    value: 1,
+    link(userId) {
+      if (!userId) {
+        return { value: 1 };
+      }
+    },
+  },
 });
 
 IntersectLink.expose({
-    firewall() {
-        throw new Meteor.Error('I do not allow!')
-    }
+  firewall() {
+    throw new Meteor.Error('I do not allow!');
+  },
 });

@@ -123,6 +123,23 @@ const getBorrowersMissingFields = (props, formatMessage) => {
   };
 };
 
+const getLoanMissingDocuments = (props, formatMessage) => {
+  const { loan = {} } = props;
+
+  const missingDocuments = Calculator.getMissingLoanDocuments({ loan });
+
+  return {
+    loan: {
+      title: formatMessage({ id: 'files.OTHER' }),
+      labels: missingDocuments.map(file => ({
+        label: formatFileTitle({ doc: loan, formatMessage, file }),
+        tooltip: formatFileTooltip({ doc: loan, formatMessage, file }),
+        basic: false,
+      })),
+    },
+  };
+};
+
 const getBorrowersMissingDocuments = (props, formatMessage) => {
   const { loan = {}, basicDocumentsOnly } = props;
   const { borrowers = [] } = loan;
@@ -157,6 +174,7 @@ export const getChecklistValidInformationsRatio = props =>
     Calculator.getBorrowersValidDocumentsRatio(props),
     Calculator.getPropertyValidFieldsRatio(props),
     Calculator.getPropertyValidDocumentsRatio(props),
+    Calculator.getLoanValidDocumentsRatio(props),
   ]
     .filter(x => x)
     .reduce(
@@ -176,6 +194,7 @@ export const getChecklistMissingInformations = (...args) => ({
   documents: {
     ...getPropertyMissingDocuments(...args),
     ...getBorrowersMissingDocuments(...args),
+    ...getLoanMissingDocuments(...args),
   },
 });
 

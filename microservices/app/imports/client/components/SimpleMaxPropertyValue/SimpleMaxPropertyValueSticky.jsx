@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { compose } from 'recompose';
@@ -11,8 +10,6 @@ import MaxPropertyValueContainer from 'core/components/MaxPropertyValue/MaxPrope
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
-
-type SimpleMaxPropertyValueStickyProps = {};
 
 const displayPropertyValueRange = values => {
   const { min, max } = values;
@@ -59,9 +56,7 @@ const getFooter = ({
   );
 };
 
-const SimpleMaxPropertyValueSticky = (
-  props: SimpleMaxPropertyValueStickyProps,
-) => {
+const SimpleMaxPropertyValueSticky = props => {
   const {
     loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
     residenceType,

@@ -1,31 +1,32 @@
-// @flow
 import React from 'react';
 
-import { adminRevenues } from 'core/api/revenues/queries';
 import DialogSimple from 'core/components/DialogSimple';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
-type RevenuesWithoutAssigneesProps = {};
-
-const RevenuesWithoutAssignees = (props: RevenuesWithoutAssigneesProps) => {
+const RevenuesWithoutAssignees = ({ showAll }) => {
   const { data: revenues = [], loading } = useStaticMeteorData({
-    query: adminRevenues,
+    query: REVENUES_COLLECTION,
     params: {
-      $body: { loan: { name: 1 } },
-      filters: {
+      $filters: {
         $or: [
           { assigneeLink: { $exists: false } },
           { 'assigneeLink._id': { $exists: false } },
           { 'assigneeLink._id': { $type: 'null' } },
         ],
       },
+      loan: { name: 1 },
     },
+    refetchOnMethodCall: false,
   });
 
   const isOk = revenues.length === 0;
+
+  if (!showAll && isOk) {
+    return null;
+  }
 
   return (
     <StatItem
