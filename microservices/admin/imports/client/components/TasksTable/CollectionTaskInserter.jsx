@@ -5,7 +5,34 @@ import { withProps } from 'recompose';
 import { taskInsert } from 'core/api';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
+import {
+  USERS_COLLECTION,
+  LOANS_COLLECTION,
+  PROMOTIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+  LENDERS_COLLECTION,
+  CONTACTS_COLLECTION,
+} from 'core/api/constants';
 import { schema, taskFormLayout } from './TaskModifier';
+
+const getCollectionLabel = collection => {
+  switch (collection) {
+    case USERS_COLLECTION:
+      return 'ce compte';
+    case LOANS_COLLECTION:
+      return 'cette hypothèque';
+    case PROMOTIONS_COLLECTION:
+      return 'cette promotion';
+    case ORGANISATIONS_COLLECTION:
+      return 'cette organisation';
+    case LENDERS_COLLECTION:
+      return 'ce prêteur';
+    case CONTACTS_COLLECTION:
+      return 'ce contact';
+    default:
+      return 'rien';
+  }
+};
 
 const CollectionTaskInserterForm = ({
   title,
@@ -44,7 +71,12 @@ const CollectionTaskInserter = withProps(
     },
     label: <T id="CollectionTaskInserter.label" />,
     title: <T id="CollectionTaskInserter.title" />,
-    description: <T id="CollectionTaskInserter.description" />,
+    description: (
+      <T
+        id="CollectionTaskInserter.description"
+        values={{ collectionLabel: getCollectionLabel(collection) }}
+      />
+    ),
     layout: taskFormLayout,
   }),
 );
