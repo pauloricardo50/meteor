@@ -37,6 +37,8 @@ function setWallabyConfig(name, overrides = {}) {
                   root: ['.'],
                   alias: {
                     core: './imports/core',
+                    'meteor/cultofcoders:grapher/lib/createQuery':
+                      './imports/core/utils/testHelpers/meteorStubs/cultofcoders:grapher',
                     meteor: './imports/core/utils/testHelpers/meteorStubs',
                   },
                 },

@@ -20,6 +20,7 @@ import {
   addProUserToPropertyAPI,
   addLoanNoteAPI,
   frontPluginAPI,
+  frontWebhookAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 import FrontService from 'core/api/front/server/FrontService';
@@ -141,8 +142,12 @@ api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
   endpointName: 'Add note to a loan',
 });
 api.addEndpoint('/front-plugin', 'POST', frontPluginAPI, {
-  customAuth: FrontService.checkAuth,
-  endpointName: 'Front API',
+  customAuth: FrontService.checkPluginAuthentication.bind(FrontService),
+  endpointName: 'Front plugin',
+});
+api.addEndpoint('/front-webhooks/:webhookName', 'POST', frontWebhookAPI, {
+  customAuth: FrontService.checkWebhookAuthentication.bind(FrontService),
+  endpointName: 'Front webhooks',
 });
 
 Meteor.startup(() => {
