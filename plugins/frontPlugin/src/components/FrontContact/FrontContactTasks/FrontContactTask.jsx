@@ -12,7 +12,7 @@ const FrontContactTask = ({ task, handleClose, refetch }) => {
   const { description, dueAt, assignee } = task;
 
   return (
-    <Linkify Front={window.Front} onClick={href => Front.openUrl(href)}>
+    <Linkify onClick={href => Front.openUrl(href)}>
       <div className="flex-col" style={{ alignItems: 'flex-start' }}>
         <Button outlined primary onClick={handleClose}>
           &lt; Back
