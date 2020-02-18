@@ -364,7 +364,7 @@ export const getBorrowerFortuneArray = () => [
             <b>
               <Money
                 id="theoreticalExpenses"
-                value={currentValue || Calculator.getRealEstateCost(itemValue)}
+                value={Calculator.getRealEstateCost(itemValue)}
                 tooltip={
                   currentValue ? (
                     undefined
