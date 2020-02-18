@@ -5,7 +5,7 @@ import { assignLoanToUser, adminLoanInsert, userLoanInsert } from '../../loans';
 
 ServerEventService.addAfterMethodListener(
   assignLoanToUser,
-  ({ params: { loanId, userId } }) => {
+  ({ context, params: { loanId, userId } }) => {
     context.unblock();
 
     const { name: loanName, frontTagId } = LoanService.get(loanId, {
@@ -23,8 +23,9 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   userLoanInsert,
-  ({ context: { userId }, result: loanId }) => {
+  ({ context, result: loanId }) => {
     context.unblock();
+    const { userId } = context;
 
     if (!userId) {
       // Only tag loans that have a dedicated user
@@ -39,7 +40,7 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   adminLoanInsert,
-  ({ params: { userId }, result: loanId }) => {
+  ({ context, params: { userId }, result: loanId }) => {
     context.unblock();
 
     if (!userId) {
