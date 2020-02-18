@@ -194,7 +194,7 @@ export class FrontService {
       console.log('params:', params);
       console.log('body:', body);
 
-      return Promise.resolve();
+      return Promise.resolve({});
     }
 
     return this.handleFetch(path, {
@@ -321,4 +321,4 @@ export class FrontService {
   }
 }
 
-export default new FrontService({ fetch: nodeFetch, isEnable: ENABLE_API });
+export default new FrontService({ fetch: nodeFetch, isEnabled: ENABLE_API });
