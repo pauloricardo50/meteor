@@ -523,10 +523,10 @@ const AUTH_MIDDLEWARES = {
 };
 
 export const checkCustomAuth = ({ customAuth, req }) => {
-  const { isAuthenticated, user } = customAuth(req);
+  const { isAuthenticated, user, error } = customAuth(req);
 
   if (!isAuthenticated) {
-    throw 'Custom authentication failed';
+    throw `Custom authentication failed: ${error.message}`;
   }
 
   if (user) {

@@ -7,11 +7,28 @@ import { ddpWithUserId } from '../../methods/methodHelpers';
 import { ERROR_CODES } from '../../errors';
 
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
+const EPOTEK_IPS = ['213.3.47.70'];
 
 class FrontService {
-  checkAuth({ body: { authSecret, email } = {} }) {
+  checkAuth({
+    body: { authSecret, email } = {},
+    headers: { 'x-real-ip': realIp = '', 'x-forwarded-for': forwardedFor = '' },
+  }) {
+    let error;
+
+    // Check IP
+    if (
+      !EPOTEK_IPS.some(ip => ip === realIp) &&
+      !EPOTEK_IPS.some(ip =>
+        forwardedFor.split(',').some(forwardedForIp => forwardedForIp === ip),
+      )
+    ) {
+      error = new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Wrong IP');
+    }
+
+    // Check Auth secret
     if (!authSecret || authSecret !== FRONT_AUTH_SECRET) {
-      throw new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Authentication failed');
+      error = new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Wrong auth secret');
     }
 
     const user =
@@ -21,7 +38,12 @@ class FrontService {
         { _id: 1 },
       );
 
-    return { isAuthenticated: !!user, user };
+    // Check user
+    if (!user) {
+      error = new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Invalid user');
+    }
+
+    return { isAuthenticated: !error, user, error };
   }
 
   handleRequest(body) {
