@@ -1,7 +1,6 @@
 import React from 'react';
 
 import FrontCard from '../../FrontCard/FrontCard';
-import FrontCardItem from '../../FrontCard/FrontCardItem';
 import StatusLabel from '../../../core/components/StatusLabel';
 import {
   LOANS_COLLECTION,
@@ -11,10 +10,11 @@ import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
 import FrontContactTasks from '../FrontContactTasks/FrontContactTasks';
 import LoanNotes from './LoanNotes';
+import LoanTagger from './LoanTagger';
 
 const { Front, subdomains } = window;
 
-const LoanCard = ({ loan, expanded, refetch }) => {
+const LoanCard = ({ loan, expanded, refetch, conversation }) => {
   const {
     _id,
     name,
@@ -63,6 +63,7 @@ const LoanCard = ({ loan, expanded, refetch }) => {
       }
       expanded={expanded}
     >
+      <LoanTagger loan={loan} conversation={conversation} />
       <LoanNotes notes={adminNotes} />
       <FrontContactTasks tasks={tasks} refetch={refetch} />
     </FrontCard>

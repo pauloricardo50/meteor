@@ -48,6 +48,7 @@ const FrontContact = ({
             loan={loan}
             expanded={finalContact.length === 1}
             refetch={refetch}
+            conversation={conversation}
           />
         ))}
     </div>
