@@ -49,7 +49,7 @@ const { argv } = yargs
   .describe('apps', 'comma separated list of app names to run the command for');
 
 const mupCommands = getMupCommand();
-const environments = getEnvironments(argv.environments);
+const environments = getEnvironments(argv.environment);
 const wantedApps = argv.apps ? argv.apps.split(',') : null;
 
 log('updating servers');
