@@ -347,6 +347,7 @@ export const getBorrowerFortuneArray = () => [
       { id: 'income', type: 'textInput', money: true, required: false },
       {
         id: 'theoreticalExpenses',
+        intlId: 'adminTheoreticalExpenses',
         type: 'textInput',
         money: true,
         adminOnly: true,

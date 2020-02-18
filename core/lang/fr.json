@@ -1,4 +1,5 @@
 {
+  "Forms.adminTheoreticalExpenses.theoreticalExpenses": "Charges financières [ADMIN]",
   "CollectionTaskInserter.label": "Ajouter tâche",
   "CollectionTaskInserter.title": "Nouvelle tâche",
   "CollectionTaskInserter.description": "Cette tâche sera liée à {collectionLabel}",
