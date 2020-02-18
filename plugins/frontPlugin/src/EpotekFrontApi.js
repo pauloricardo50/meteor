@@ -32,13 +32,13 @@ class EpotekFrontApi {
     })
       .then(result => result.json())
       .then(result => {
-        const { status, message, errorName } = result;
+        const { status, message, errorName, info } = result;
         if (
           status &&
           typeof status === 'number' &&
           status !== HTTP_STATUS_CODES.OK
         ) {
-          throw new Error(errorName, message);
+          throw new Error(info || message, errorName);
         }
 
         return result;

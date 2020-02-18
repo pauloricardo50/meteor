@@ -13,3 +13,12 @@
   grid-gap: 8px;
   justify-items: stretch;
 }
+
+.collection-task-inserter-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-left: 8px;
+}

@@ -2,10 +2,10 @@ import React from 'react';
 import DropdownMenu from '../core/components/DropdownMenu';
 
 const FrontContactSelect = ({
-  contacts,
+  contacts = [],
   contact: currentContact,
   setContact,
-}) => (
+}) => contacts.length > 1 ? (
   <div className="front-contact-select">
     <DropdownMenu
       options={contacts.map(contact => {
@@ -24,6 +24,6 @@ const FrontContactSelect = ({
       tooltip="Contact"
     />
   </div>
-);
+) : null;
 
 export default FrontContactSelect;

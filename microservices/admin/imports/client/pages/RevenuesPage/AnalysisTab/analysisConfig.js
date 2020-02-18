@@ -7,9 +7,9 @@ import {
   REVENUE_STATUS,
   ACTIVITIES_COLLECTION,
   TASKS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
   ACTIVITY_TYPES,
 } from 'core/api/constants';
-import { ORGANISATIONS_COLLECTION } from 'imports/core/api/constants';
 
 const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
@@ -195,12 +195,18 @@ const analysisConfig = {
   [USERS_COLLECTION]: {
     roles: { id: 'Forms.roles' },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
+    'referredByUser.name': { label: 'Référé par compte' },
     createdAt: {
       label: 'Création Mois-Année',
       format: makeFormatDate('createdAt'),
     },
     'assignedEmployee.name': { label: 'Conseiller' },
     acquisitionChannel: { id: 'Forms.acquisitionChannel' },
+    loans: {
+      fragment: { _id: 1 },
+      label: 'Nb. de dossiers',
+      format: ({ loans = [] }) => loans.length,
+    },
   },
   [BORROWERS_COLLECTION]: {
     age: { id: 'Forms.age' },
