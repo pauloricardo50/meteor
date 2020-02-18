@@ -6,5 +6,12 @@ module.exports = {
     'www-staging',
     'pro-staging',
   ],
-  prod: ['admin-prod', 'app-prod', 'backend-prod', 'www-prod', 'pro-prod'],
+  prod: [
+    'admin-prod',
+    'app-prod',
+    'backend-prod',
+    'www-prod',
+    'pro-prod',
+    'api',
+  ],
 };

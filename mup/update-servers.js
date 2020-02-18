@@ -37,3 +37,4 @@ async function updateForGroup(name) {
 
 updateForGroup('prod');
 updateForGroup('staging');
+updateForGroup('api');
