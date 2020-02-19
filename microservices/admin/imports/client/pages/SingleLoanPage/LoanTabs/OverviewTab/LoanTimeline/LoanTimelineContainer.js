@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, withState, mapProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
@@ -48,7 +49,12 @@ export default compose(
       taskComplete,
     ],
   }),
-  mapProps(({ activities, completedTasks, ...rest }) => ({
+  withSmartQuery({
+    query: 'frontGetTaggedConversations',
+    params: ({ frontTagId }) => ({ tagId: frontTagId }),
+    dataName: 'conversations',
+  }),
+  mapProps(({ activities, completedTasks, conversations, ...rest }) => ({
     activities: [
       ...activities,
       ...completedTasks
@@ -59,6 +65,10 @@ export default compose(
           type: 'task',
           description: title,
         })),
+      ...conversations.map(({ frontLink, ...conversation }) => ({
+        ...conversation,
+        description: <a href={frontLink}>Ouvrir dans Front</a>,
+      })),
     ].sort((a, b) => a.date - b.date),
     ...rest,
   })),

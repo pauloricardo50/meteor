@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
+import queryString from 'query-string';
 
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
@@ -42,21 +43,13 @@ const frontEndpoints = {
   listTagConversations: {
     method: 'GET',
     makeEndpoint: ({ tagId, q, pageToken, limit }) => {
-      const url = new URL(`/tags/${tagId}/conversations`);
+      const query = queryString.stringify({
+        ...(q ? { q } : {}),
+        ...(pageToken ? { page_token: pageToken } : {}),
+        ...(limit ? { limit } : {}),
+      });
 
-      if (q) {
-        url.searchParams.append('q', q);
-      }
-
-      if (pageToken) {
-        url.searchParams.append('page_token', pageToken);
-      }
-
-      if (limit) {
-        url.searchParams.append('limit', limit);
-      }
-
-      return url.href;
+      return `/tags/${tagId}/conversations?${query}`;
     },
   },
   getConversation: {
@@ -227,7 +220,6 @@ export class FrontService {
         Authorization: `Bearer ${FRONT_API_TOKEN}`,
       },
       ...(body ? { body: JSON.stringify(body) } : {}),
-      // body: body && JSON.stringify(body),
     })
       .then(result => result.json())
       .then(result => {

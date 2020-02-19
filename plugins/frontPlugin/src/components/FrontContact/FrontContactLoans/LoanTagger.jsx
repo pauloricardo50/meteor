@@ -9,7 +9,7 @@ export const getLoanTag = loan => {
 };
 
 const LoanTagger = ({ loan, conversation }) => {
-  const { name, _id: loanId } = loan;
+  const { _id: loanId } = loan;
   const { tags = [], id: conversationId } = conversation;
   const loanTag = getLoanTag(loan);
   const [isTagged, setIsTagged] = useState(tags.some(tag => tag === loanTag));
@@ -34,7 +34,13 @@ const LoanTagger = ({ loan, conversation }) => {
         });
       }}
       value={isTagged}
-      label={`Ajouter le tag "${name}"`}
+      label={
+        <small>
+          Cette conversation concerne ce dossier
+          <br />
+          <span className="secondary">Apparaîtra dans Admin</span>
+        </small>
+      }
     />
   );
 };
