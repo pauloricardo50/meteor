@@ -2,6 +2,7 @@ import React from 'react';
 import queryString from 'query-string';
 
 import Button from '../../../core/components/Button';
+import Icon from '../../../core/components/Icon';
 
 const { Front, subdomains } = window;
 
@@ -32,17 +33,31 @@ const getTaskUrl = ({
   return `${baseUrl}?${searchParams}`;
 };
 
+const getOptionTitle = ({ collection, object }) => {
+  switch (collection) {
+    case 'contacts':
+      return `Ajouter une tâche sur le contact "${object.name}"`;
+    case 'loans':
+      return `Ajouter une tâche sur le dossier "${object.name}"`;
+    case 'users':
+      return `Ajouter une tâche sur le compte "${object.name}"`;
+    default:
+      return `Ajouter une tâche relative à 
+          "${object.name || object.display_name || object.handle}"`;
+  }
+};
+
 const getOptions = ({ collection, contact }) => {
   const { loans = [] } = contact;
 
   return [
     {
-      title: contact.name || contact.display_name || contact.handle,
+      title: getOptionTitle({ collection, object: contact }),
       collection,
       object: contact,
     },
     ...loans.map(loan => ({
-      title: loan.name,
+      title: getOptionTitle({ collection: 'loans', object: loan }),
       collection: 'loans',
       object: loan,
     })),
@@ -51,6 +66,19 @@ const getOptions = ({ collection, contact }) => {
 
 const openFrontItemList = props => () => {
   const { conversation: { link: frontLink } = {}, isEpotekResource } = props;
+  const items = getOptions(props);
+
+  if (items.length === 1) {
+    const [{ collection, object }] = items;
+    return Front.openUrl(
+      getTaskUrl({
+        collection,
+        isEpotekResource,
+        contact: object,
+        frontLink,
+      }),
+    );
+  }
 
   Front.fuzzylist({ items: getOptions(props) }, ({ collection, object }) => {
     if (object) {
@@ -79,11 +107,12 @@ const openFrontItemList = props => () => {
 
 const FrontContactTaskAdder = props => (
   <Button
-    label="+ Tâche"
+    label="Tâche"
     primary
     raised
     onClick={openFrontItemList(props)}
     small
+    icon={<Icon type="add" />}
   />
 );
 
