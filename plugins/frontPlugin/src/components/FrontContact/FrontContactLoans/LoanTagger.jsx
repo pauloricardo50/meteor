@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Checkbox from '../../../core/components/Checkbox';
 import EpotekFrontApi from '../../../EpotekFrontApi';
 
-const getLoanTag = loan => {
+export const getLoanTag = loan => {
   const { name } = loan;
 
   return `loan/${name.replace('-', '_')}`;
