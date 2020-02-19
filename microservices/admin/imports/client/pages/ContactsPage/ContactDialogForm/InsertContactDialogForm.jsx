@@ -4,7 +4,12 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import ContactDialogFormContainer from './ContactDialogFormContainer';
 
-const InsertContactDialogForm = ({ schema, insertContact, model }) => (
+const InsertContactDialogForm = ({
+  schema,
+  insertContact,
+  model,
+  openOnMount,
+}) => (
   <AutoFormDialog
     schema={schema}
     model={model}
@@ -15,6 +20,7 @@ const InsertContactDialogForm = ({ schema, insertContact, model }) => (
       primary: true,
     }}
     title={<T id="Contacts.insert" />}
+    openOnMount={openOnMount}
   />
 );
 
