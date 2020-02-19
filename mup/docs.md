@@ -8,16 +8,31 @@ Add the public key to Google Cloud by going to https://console.cloud.google.com/
 
 ## Google Cloud API
 
-Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey and `Compute Engine`, and `JSON` key type, and download it. Move the file to be at `mup/credentials.json`.
+### Engine Credentials
+Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey and `Compute Engine`, and `JSON` key type, and download it. Move the file to `mup/config/credentials.json`.
 
-This is used for:
-- Updating list of servers
+This is used for updating the lists of servers.
+
+### Private Repository Credentials
+
+Go to the `private-registry` [service account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/113489271703975496945?project=e-potek-1499177443071), select `Edit`, and click on `Create Key`. Download the key and move it to `mup/config/registry-key.json`.
+
+This is used on the servers to authenticate docker with the private registry.
 
 ## Atlas API keys
 
 Go to https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#access/apiKeys > `Manage` > `Create API Key`.
 
 The api key must have the `Project Owner` permission to be able to update the IP whitelist.
+
+Store the keys in `configs/atlas-auth.json` in the format:
+```
+{
+  "publicKey": "abcdefg",
+  "privateKey": "1111111-aaaa-1111-11aa-11111111111"
+}
+
+```
 
 # VM Instances
 
@@ -39,7 +54,7 @@ We use ephemeral external IP address for most instances. The ephemeral external 
 
 All servers should be configured with a static internal IP address. Once we finish setting up [vpc peering](https://docs.atlas.mongodb.com/security-vpc-peering/), we can use the internal IP address instead, which does not change.
 
-Mup connects to the instances using the external instance. All scripts that run mup also run the `update-servers.js` script to get the latest IP address. If you run `mup` yourself, you might want to run `update-servers` first.
+Mup connects to the instances using the external IP address. All scripts that run mup also run the `update-servers.js` script to get the latest IP address. If you run `mup` yourself, you might want to run `update-servers` first.
 
 ## Setting up additional servers
 
@@ -54,13 +69,13 @@ Mup connects to the instances using the external instance. All scripts that run 
 
 The targets are unmanaged instance groups named `staging`, `production`, and `api`. They are located in zone `a` of the europe-6 region. To support more zones, we would need to add additional unmanaged instance groups in the additional zones, and add them as backends to the backend services in the load balancer.
 
-For sticky sessions we set `Session afinity` to `Generated Cookie`.
+For sticky sessions we set `Session afinity` to `Generated Cookie`. Sticky sessions are disabled for the production api.
 
 ### Routing to healthy instnaces
 
 Backends are required to have a healthcheck. In the global nginx config we added a host only used for the health check: `instance-healthcheck.epotek-internal.net`. It responds with the 200 status code if the nginx instance is running. This health check ensures requests are only sent to healthy vm's, but it doesn't work for detecting healthy instances of the microservice.
 
-TODO: implement this. To send requests to a healthy instance of a microservice, we also load balance between the vm's in the instance group using nginx. When receiving a request from the google load balancer, It will try one of the instances (using sticky sessions), and if it is down it will try one of the other instances of the microservice. The api instance group does not use this since there is only one container per server and the load balancer healthcheck is adequate for that.
+TODO: implement this. To send requests to a healthy instance of a microservice, we also load balance between the vm's in the instance group using nginx. When receiving a request from the google load balancer, It will try one of the instances (using sticky sessions), and if it is down it will try one of the other instances of the microservice. The api instance group does not use this since there is only one microservice per server and the load balancer healthcheck is adequate for that.
 
 ## Certificate
 
