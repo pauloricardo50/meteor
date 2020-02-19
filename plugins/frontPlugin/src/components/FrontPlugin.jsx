@@ -46,7 +46,6 @@ const FrontPlugin = ({ resetError }) => {
     Front.setPanelWidth(500);
 
     Front.on('conversation', frontData => {
-      console.log('new conv');
       const { contact: frontContact } = frontData;
       setContact(frontContact);
       setData(frontData);
