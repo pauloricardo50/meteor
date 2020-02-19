@@ -8,11 +8,15 @@ function generateConfig(configPath, baseDomain) {
   const content = fs.readFileSync(contentPath).toString();
   const outputPath = path.resolve(os.tmpdir(), `nginx-config-${Math.random()}`);
 
-  const output = ejs.render(content, {
-    baseDomain
-  }, {
-    filename: contentPath
-  });
+  const output = ejs.render(
+    content,
+    {
+      baseDomain,
+    },
+    {
+      filename: contentPath,
+    },
+  );
 
   fs.writeFileSync(outputPath, output);
 
@@ -25,4 +29,4 @@ function generateConfig(configPath, baseDomain) {
 
 module.exports = {
   generateConfig,
-}
+};

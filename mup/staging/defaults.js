@@ -1,4 +1,4 @@
-const servers = require('../staging-servers.json');
+const servers = require('../configs/staging-servers.json');
 
 module.exports = {
   servers,

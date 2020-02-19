@@ -5,5 +5,5 @@ module.exports = generateConfig({
   ...defaults,
   microservice: 'admin',
   subDomains: ['admin'],
-  nginxLocationConfig: '../nginx/whitelist.conf'
+  nginxLocationConfig: '../nginx/whitelist.conf',
 });

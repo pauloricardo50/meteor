@@ -1,4 +1,4 @@
-const { generateConfig } = require('../utils/nginx.js');
+const { generateConfig } = require('./nginx.js');
 
 process.env.METEOR_PACKAGE_DIRS =
   process.env.METEOR_PACKAGE_DIRS || '../../meteorPackages:packages';

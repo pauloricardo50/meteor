@@ -1,16 +1,15 @@
 const sh = require('shelljs');
 const DigestFetch = require('digest-fetch');
+const auth = require('./configs/atlas-auth.json');
 
 sh.exec('node update-servers');
 
 const { log, error: logError } = console;
 
-// require('./atlas-auth')
-
 const neededStagingIps = [
-  require('./staging-servers.json'),
-  require('./prod-servers.json'),
-  require('./api-servers.json'),
+  require('./configs/staging-servers.json'),
+  require('./configs/prod-servers.json'),
+  require('./configs/api-servers.json'),
 ]
   .map(Object.values)
   .flat()
@@ -18,16 +17,16 @@ const neededStagingIps = [
 
 log('needed', neededStagingIps);
 
-const PUBLIC_KEY = process.env.ATLAS_PUBLIC_KEY;
-const PRIVATE_KEY = process.env.ATLAS_PRIVATE_KEY;
+const PUBLIC_KEY = auth.publicKey;
+const PRIVATE_KEY = auth.privateKey;
 const PROJECT_ID = '5e31aad95538553602af0c98';
 
 if (!PUBLIC_KEY) {
-  logError('ATLAS_PUBLIC_KEY env var was not set');
+  logError('PUBLIC_KEY is missing in configs/atlas-auth.json');
   process.exit(1);
 }
 if (!PRIVATE_KEY) {
-  logError('ATLAS_PRIVATE_KEY env var was not set');
+  logError('PRIVATE_KEY is missing in configs/atlas-auth.json');
   process.exit(1);
 }
 
@@ -46,7 +45,7 @@ async function updateWhitelist() {
     .map(item => item.ipAddress);
   const neededToAdd = neededStagingIps.filter(ip => !stagingIps.includes(ip));
 
-  console.log('missing addresses:', neededToAdd);
+  log('missing addresses:', neededToAdd);
 
   if (neededToAdd.length > 0) {
     const result = await client
@@ -63,10 +62,10 @@ async function updateWhitelist() {
         },
       })
       .then(res => res.json());
-    console.log(result);
+    log(result);
   }
 
-  console.log('whitelist up to date');
+  log('whitelist up to date');
 }
 
 updateWhitelist();

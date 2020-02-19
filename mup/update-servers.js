@@ -4,7 +4,7 @@ const path = require('path');
 
 const compute = new Compute({
   projectId: 'e-potek-1499177443071',
-  keyFilename: './credentials.json',
+  keyFilename: './configs/credentials.json',
 });
 
 async function updateForGroup(name) {
@@ -31,7 +31,7 @@ async function updateForGroup(name) {
     };
   }
 
-  const outputPath = path.resolve(__dirname, `${name}-servers.json`);
+  const outputPath = path.resolve(__dirname, `configs/${name}-servers.json`);
   fs.writeFileSync(outputPath, JSON.stringify(servers, null, 2));
 }
 
