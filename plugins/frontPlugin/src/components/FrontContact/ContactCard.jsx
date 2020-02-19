@@ -16,7 +16,7 @@ const getContactTitle = props => {
     return source.charAt(0).toUpperCase() + source.slice(1);
   }
 
-  const { roles } = contact;
+  const { roles = [] } = contact;
 
   if (collection === 'contacts') {
     return 'Contact e-Potek';
