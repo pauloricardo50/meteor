@@ -86,6 +86,7 @@ const getSchema = currentUser =>
     }),
     paidAt: {
       type: Date,
+      required: false,
       uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
       condition: ({ status }) => status === REVENUE_STATUS.CLOSED,
     },
