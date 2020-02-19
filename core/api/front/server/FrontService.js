@@ -33,19 +33,16 @@ const frontEndpoints = {
   },
   deleteTag: {
     method: 'DELETE',
-    makeEndpoint: ({ tagId }) => `https://api2.frontapp.com/tags/${tagId}`,
+    makeEndpoint: ({ tagId }) => `/tags/${tagId}`,
   },
   listTagChildren: {
     method: 'GET',
-    makeEndpoint: ({ parentTagId }) =>
-      `https://api2.frontapp.com/tags/${parentTagId}/children`,
+    makeEndpoint: ({ parentTagId }) => `/tags/${parentTagId}/children`,
   },
   listTagConversations: {
     method: 'GET',
     makeEndpoint: ({ tagId, q, pageToken, limit }) => {
-      const url = new URL(
-        `https://api2.frontapp.com/tags/${tagId}/conversations`,
-      );
+      const url = new URL(`/tags/${tagId}/conversations`);
 
       if (q) {
         url.searchParams.append('q', q);
@@ -62,6 +59,10 @@ const frontEndpoints = {
       return url.href;
     },
   },
+  getConversation: {
+    method: 'GET',
+    makeEndpoint: ({ conversationId }) => `/conversations/${conversationId}`,
+  },
 };
 
 const WEBHOOKS = {
@@ -70,7 +71,8 @@ const WEBHOOKS = {
 };
 
 // always stub the API in tests
-const ENABLE_API = Meteor.isProduction;
+// const ENABLE_API = Meteor.isProduction;
+const ENABLE_API = true;
 
 export class FrontService {
   constructor({ fetch, isEnabled }) {
@@ -140,8 +142,8 @@ export class FrontService {
     };
   }
 
-  handleRequest(body) {
-    const { type, params, user } = body;
+  handleRequest({ user, body }) {
+    const { type, params } = body;
 
     if (type === 'QUERY_ONE' || type === 'QUERY') {
       return this.handleQuery({ user, type, ...params });
@@ -224,7 +226,8 @@ export class FrontService {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${FRONT_API_TOKEN}`,
       },
-      body: body && JSON.stringify(body),
+      ...(body ? { body: JSON.stringify(body) } : {}),
+      // body: body && JSON.stringify(body),
     })
       .then(result => result.json())
       .then(result => {
@@ -288,12 +291,29 @@ export class FrontService {
     return frontTagId;
   }
 
+  updateConversationTags({ conversation, tags = [], appendTags = true }) {
+    const { id: conversationId, tags: currentTags = [] } = conversation;
+
+    let newTags = tags;
+
+    if (appendTags) {
+      const currentTagIds = currentTags.map(({ id }) => id);
+      newTags = [...currentTagIds, ...newTags];
+    }
+
+    return this.callFrontApi({
+      endpoint: 'updateConversation',
+      params: { conversationId },
+      body: { tag_ids: newTags },
+    });
+  }
+
   async handleAutoTag({ conversation }) {
     if (!conversation) {
       return;
     }
 
-    const { id: conversationId, tags = [], recipient } = conversation;
+    const { tags = [], recipient } = conversation;
 
     const hasLoanTag = tags.find(
       ({ _links }) => _links?.related?.parent_tag === LOANS_TAG_URL,
@@ -332,12 +352,52 @@ export class FrontService {
       });
     }
 
-    const currentTagIds = tags.map(({ id }) => id);
+    return this.updateConversationTags({ conversation, tags: [frontTagId] });
+  }
 
-    return this.callFrontApi({
-      endpoint: 'updateConversation',
+  async tagLoan({ loanId, conversationId }) {
+    const loan = LoanService.get(loanId, {
+      frontTagId: 1,
+      name: 1,
+    });
+
+    let { frontTagId } = loan;
+    const { name: loanName } = loan;
+
+    if (!frontTagId) {
+      frontTagId = await this.getLoanTagId({ loanId, loanName });
+    }
+
+    const conversation = await this.callFrontApi({
+      endpoint: 'getConversation',
       params: { conversationId },
-      body: { tag_ids: [...currentTagIds, frontTagId] },
+    });
+
+    return this.updateConversationTags({ conversation, tags: [frontTagId] });
+  }
+
+  async untagLoan({ loanId, conversationId }) {
+    const { frontTagId } = LoanService.get(loanId, {
+      frontTagId: 1,
+    });
+
+    if (!frontTagId) {
+      return;
+    }
+
+    const conversation = await this.callFrontApi({
+      endpoint: 'getConversation',
+      params: { conversationId },
+    });
+
+    const { tags: currentTags = [] } = conversation;
+    const currentTagIds = currentTags.map(({ id }) => id);
+    const newTags = currentTagIds.filter(tag => tag !== frontTagId);
+
+    return this.updateConversationTags({
+      conversation,
+      tags: newTags,
+      appendTags: false,
     });
   }
 }

@@ -1,29 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Checkbox from '../../../core/components/Checkbox';
-
-const { Front } = window;
+import EpotekFrontApi from '../../../EpotekFrontApi';
 
 const getLoanTag = loan => {
   const { name } = loan;
 
-  return `loan/${name}`;
+  return `loan/${name.replace('-', '_')}`;
 };
 
 const LoanTagger = ({ loan, conversation }) => {
-  console.log('conversation:', conversation);
-  const { name } = loan;
-  const { tags = [] } = conversation;
+  const { name, _id: loanId } = loan;
+  const { tags = [], id: conversationId } = conversation;
   const loanTag = getLoanTag(loan);
-  const isTagged = tags.some(tag => tag === loanTag);
+  const [isTagged, setIsTagged] = useState(tags.some(tag => tag === loanTag));
 
   return (
     <Checkbox
-      onChange={event => {
+      onChange={() => {
         if (isTagged) {
-          return Front.detachTag(loanTag);
+          return EpotekFrontApi.callMethod('frontUntagLoan', {
+            loanId,
+            conversationId,
+          }).then(() => {
+            setIsTagged(false);
+          });
         }
 
-        return Front.attachTag(loanTag);
+        return EpotekFrontApi.callMethod('frontTagLoan', {
+          loanId,
+          conversationId,
+        }).then(() => {
+          setIsTagged(true);
+        });
       }}
       value={isTagged}
       label={`Ajouter le tag "${name}"`}
