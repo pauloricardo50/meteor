@@ -75,7 +75,7 @@ environments.forEach(environment => {
   const apps = filterApps(microservices[environment], wantedApps);
 
   apps.forEach(name => {
-    log(`*** Running For ${name} ***`);
+    log(`*** Running For ${name} - ${environment} ***`);
     runMup(`--config ${name}.mup.js ${mupCommands.join(' ')}`);
   });
   sh.cd('..');
