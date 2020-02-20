@@ -45,8 +45,9 @@ module.exports = function createConfig({
       },
 
       docker: {
-        image: 'zodern/meteor:root',
-        prepareBundle: false,
+        image: 'zodern/meteor',
+        prepareBundle: true,
+        useBuildKit: true,
       },
       deployCheckWaitTime: 300,
       enableUploadProgressBar: true,
