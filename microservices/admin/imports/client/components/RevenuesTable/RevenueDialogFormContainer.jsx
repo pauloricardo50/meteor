@@ -32,13 +32,13 @@ const getSchema = currentUser =>
     assigneeLink: { type: Object, optional: true, uniforms: { label: ' ' } },
     'assigneeLink._id': {
       type: String,
-      defaultValue: currentUser && currentUser._id,
+      defaultValue: currentUser?._id,
       customAllowedValues: {
         query: adminUsers,
         params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
       },
       uniforms: {
-        transform: ({ name }) => name,
+        transform: assignee => assignee?.name,
         labelProps: { shrink: true },
         label: 'Responsable du revenu',
         displayEmtpy: false,
@@ -54,7 +54,7 @@ const getSchema = currentUser =>
         params: () => ({ $body: { name: 1 } }),
       },
       uniforms: {
-        transform: ({ name }) => name,
+        transform: org => org?.name,
         labelProps: { shrink: true },
         label: <T id="Forms.organisationName" />,
         displayEmtpy: false,
@@ -74,7 +74,7 @@ const getSchema = currentUser =>
         params: () => ({ $body: { name: 1 } }),
       },
       uniforms: {
-        transform: ({ name }) => name,
+        transform: org => org?.name,
         displayEmpty: false,
         labelProps: { shrink: true },
         placeholder: '',
