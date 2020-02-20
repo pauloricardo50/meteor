@@ -614,7 +614,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getRealEstateCost({ loan, value, theoreticalExpenses }) {
-      if (theoreticalExpenses > 0) {
+      if (theoreticalExpenses >= 0) {
         // This function returns a monthly cost
         return theoreticalExpenses / 12;
       }
