@@ -6,5 +6,5 @@ module.exports = generateConfig({
   ...defaults,
   servers,
   microservice: 'backend',
-  subDomains: ['backend'],
+  subDomains: ['api'],
 });
