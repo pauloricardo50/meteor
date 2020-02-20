@@ -61,6 +61,7 @@ module.exports = function createConfig({
     },
 
     proxy: {
+      loadBalancing: true,
       domains: domains.join(','),
       nginxLocationConfig: nginxLocationConfig
         ? generateConfig(nginxLocationConfig, baseDomain)
