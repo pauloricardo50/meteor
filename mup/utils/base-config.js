@@ -53,6 +53,13 @@ module.exports = function createConfig({
       enableUploadProgressBar: true,
     },
 
+    privateDockerRegistry: {
+      host: 'https://eu.gcr.io',
+      imagePrefix: 'eu.gcr.io/e-potek-1499177443071',
+      username: '_json_key',
+      password: JSON.stringify(require('../configs/registry-key.json')),
+    },
+
     proxy: {
       domains: domains.join(','),
       nginxLocationConfig: nginxLocationConfig
