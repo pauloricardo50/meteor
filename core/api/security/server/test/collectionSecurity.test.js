@@ -763,7 +763,7 @@ describe('Collection Security', () => {
   });
 
   describe('FileSecurity', () => {
-    describe('isAllowedToAccess', () => {
+    describe('isAllowedToAccess ', () => {
       let userId;
       let user;
 
@@ -775,9 +775,9 @@ describe('Collection Security', () => {
         }
       });
 
-      beforeEach(() => {
+      beforeEach(async () => {
         resetDatabase();
-        clearBucket();
+        await clearBucket();
         user = Factory.create('user');
         userId = user._id;
         sinon.stub(Meteor, 'user').callsFake(() => user);
