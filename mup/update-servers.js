@@ -21,13 +21,15 @@ async function updateForGroup(name) {
       config => config.name === 'External NAT',
     ).natIP;
 
-    console.log('external ip:', vm.id, external);
+    const internal = metadata[0].networkInterfaces[0].networkIP;
+    console.log(vm.id, 'external:', external, 'internal', internal);
 
     const serverName = `${i}`;
     servers[serverName] = {
       host: external,
       username: 'mup',
       pem: '~/.ssh/epotek',
+      privateIp: internal,
     };
   }
 
