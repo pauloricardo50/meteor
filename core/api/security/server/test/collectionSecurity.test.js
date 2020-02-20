@@ -762,7 +762,9 @@ describe('Collection Security', () => {
     });
   });
 
-  describe('FileSecurity', () => {
+  describe('FileSecurity', function() {
+    this.timeout(10000);
+
     describe('isAllowedToAccess ', () => {
       let userId;
       let user;
