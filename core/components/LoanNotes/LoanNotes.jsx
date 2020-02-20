@@ -6,6 +6,7 @@ import cx from 'classnames';
 import { employeesById } from '../../arrays/epotekEmployees';
 import AdminNoteAdder from '../AdminNote/AdminNoteAdder';
 import Button from '../Button';
+import Icon from '../Icon';
 
 const isAdmin = Meteor.microservice === 'admin';
 
@@ -39,7 +40,8 @@ const LoanNotes = ({
             buttonProps={{
               raised: true,
               primary: true,
-              label: 'Ajouter une note',
+              label: 'Note',
+              icon: <Icon type="add" />,
             }}
             referredByUser={referredByUser}
           />

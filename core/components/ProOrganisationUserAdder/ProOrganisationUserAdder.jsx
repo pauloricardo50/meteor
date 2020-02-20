@@ -2,7 +2,7 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import IconButton from 'core/components/IconButton';
+import Icon from 'core/components/Icon';
 import { proInviteUserToOrganisation } from 'core/api/methods';
 import T from '../Translation';
 
@@ -24,7 +24,7 @@ const onSubmit = ({ organisationId }) => ({ title, ...user }) =>
 const ProOrganisationUserAdder = ({
   organisationId,
   organisationName,
-  trigger,
+  buttonProps,
 }) => (
   <AutoFormDialog
     schema={schema}
@@ -38,21 +38,13 @@ const ProOrganisationUserAdder = ({
         values={{ organisationName }}
       />
     }
-    triggerComponent={
-      trigger ||
-      (handleOpen => (
-        <IconButton
-          onClick={handleOpen}
-          type="personAdd"
-          tooltip={
-            <T
-              id="ProOrganisationUserAdder.tooltip"
-              values={{ organisationName }}
-            />
-          }
-        />
-      ))
-    }
+    buttonProps={{
+      label: 'Nouveau compte',
+      icon: <Icon type="add" />,
+      raised: true,
+      primary: true,
+      ...buttonProps,
+    }}
   />
 );
 

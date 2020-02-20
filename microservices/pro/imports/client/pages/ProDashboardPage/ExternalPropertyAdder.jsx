@@ -4,6 +4,7 @@ import { insertExternalProperty } from 'core/api/methods';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
 import T from 'core/components/Translation';
+import Icon from 'core/components/Icon';
 
 const schema = PropertySchema.pick(
   'address1',
@@ -35,6 +36,7 @@ const ExternalPropertyAdder = props => (
       label: <T id="ProDashboardPage.ExternalPropertyAdder" />,
       raised: true,
       primary: true,
+      icon: <Icon type="add" />,
     }}
   />
 );

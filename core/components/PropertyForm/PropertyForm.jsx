@@ -20,6 +20,7 @@ const PropertyForm = ({
   buttonLabelId,
   className = '',
   disabled,
+  buttonProps,
   ...props
 }) => (
   <div
@@ -42,6 +43,7 @@ const PropertyForm = ({
         icon: <Icon type="home" />,
         label: <T id={buttonLabelId} />,
         disabled,
+        ...buttonProps,
       }}
       layout={[
         'value',

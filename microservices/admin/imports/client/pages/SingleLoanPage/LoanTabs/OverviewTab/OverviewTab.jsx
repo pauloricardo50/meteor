@@ -71,7 +71,7 @@ const OverviewTab = props => {
         </div>
       </div>
 
-      <LoanTimeline loanId={loanId} />
+      <LoanTimeline loanId={loanId} frontTagId={frontTagId} />
 
       <LoanNotes loan={loan} />
 

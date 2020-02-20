@@ -13,6 +13,7 @@ import {
 } from 'core/arrays/BorrowerFormArray';
 import { getCountedArray } from 'core/utils/formArrayHelpers';
 import { getPercent } from 'core/utils/general';
+import Icon from 'core/components/Icon';
 import BorrowersTabForm from './BorrowersTabForm';
 
 const personalArray = [
@@ -109,11 +110,12 @@ const BorrowersTab = props => {
       <ConfirmMethod
         disabled={borrowers.length >= 2}
         method={() => addBorrower.run({ loanId: loan._id })}
-        label="Ajouter emprunteur"
+        label="Emprunteur"
         buttonProps={{
           raised: true,
           primary: true,
           style: { position: 'absolute', right: 8, top: 0, zIndex: 1 },
+          icon: <Icon type="add" />,
         }}
       />
 

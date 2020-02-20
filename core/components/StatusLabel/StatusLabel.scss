@@ -11,6 +11,10 @@
 
   font-size: 12px;
   line-height: initial;
+
+  &.small {
+    padding: 1px 4px;
+  }
 }
 
 .status-label-dot {

@@ -27,7 +27,7 @@ const TaskTableFilters = ({
     { _id: undefined, label: 'Personne' },
   ];
   return (
-    <div className="flex space-children">
+    <div className="flex">
       {setAssignee && (
         <Select
           value={assignee.$in}
@@ -35,6 +35,7 @@ const TaskTableFilters = ({
           label="Assigné"
           options={assigneeOptions}
           onChange={selected => setAssignee({ $in: selected })}
+          className="mr-8"
         />
       )}
 
@@ -48,6 +49,7 @@ const TaskTableFilters = ({
             label: <T id={`Forms.status.${t}`} />,
           }))}
           onChange={selected => setStatus({ $in: selected })}
+          className="mr-8"
         />
       )}
 

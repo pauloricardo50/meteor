@@ -7,6 +7,6 @@ import ProPropertyForm from './ProPropertyForm';
 
 export default mapProps(({ property }) => ({
   onSubmit: object => propertyUpdate.run({ propertyId: property._id, object }),
-  buttonLabel: <T id="general.modify" />,
+  buttonProps: { label: <T id="general.modify" /> },
   model: property,
 }))(ProPropertyForm);

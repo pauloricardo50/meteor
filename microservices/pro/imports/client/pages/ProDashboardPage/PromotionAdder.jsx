@@ -6,6 +6,7 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
 import { promotionInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
+import Icon from 'core/components/Icon';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const PromotionAdder = ({ history }) => (
@@ -15,6 +16,7 @@ const PromotionAdder = ({ history }) => (
       label: <T id="ProDashboardPage.addPromotion" />,
       raised: true,
       primary: true,
+      icon: <Icon type="add" />,
     }}
     schema={BasePromotionSchema}
     onSubmit={promotion =>

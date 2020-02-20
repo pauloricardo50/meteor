@@ -66,27 +66,30 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const FrontContactTasks = ({ tasks = [], refetch }) => (
-  <FrontCardItem
-    label="Tâches"
-
-  > <TableWithModal
-      columnOptions={columnOptions}
-      rows={tasks.map(makeMapTask({ refetch }))}
-      className="front-contact-tasks"
-      modalType="dialog"
-      getModalProps={({ row: { task }, setOpen }) => ({
-        title: task.title,
-        fullScreen: true,
-        children: (
-          <FrontContactTask
-            task={task}
-            handleClose={() => setOpen(false)}
-            refetch={refetch}
-          />
-        ),
-      })}
-      modalProps={{ actions: [], TransitionComponent: Transition }}
-    /></FrontCardItem>
+  <FrontCardItem label="Tâches">
+    {tasks.length ? (
+      <TableWithModal
+        columnOptions={columnOptions}
+        rows={tasks.map(makeMapTask({ refetch }))}
+        className="front-contact-tasks"
+        modalType="dialog"
+        getModalProps={({ row: { task }, setOpen }) => ({
+          title: task.title,
+          fullScreen: true,
+          children: (
+            <FrontContactTask
+              task={task}
+              handleClose={() => setOpen(false)}
+              refetch={refetch}
+            />
+          ),
+        })}
+        modalProps={{ actions: [], TransitionComponent: Transition }}
+      />
+    ) : (
+      <p className="secondary mt-4">Aucune tâche pour l'instant</p>
+    )}
+  </FrontCardItem>
 );
 
 export default FrontContactTasks;
