@@ -11,6 +11,7 @@ import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api';
 import useSearchParams from 'core/hooks/useSearchParams';
+import Icon from 'core/components/Icon';
 import UserDialogFormContainer from './UserDialogFormContainer';
 
 export const userFormLayout = [
@@ -121,9 +122,10 @@ const UserAdder = ({
       openOnMount={openOnMount}
       onSubmit={createUser}
       buttonProps={{
-        label: <T id="UserAdder.buttonLabel" />,
+        label: 'Compte',
         raised: true,
         primary: true,
+        icon: <Icon type="add" />,
       }}
       autoFieldProps={{
         labels: {

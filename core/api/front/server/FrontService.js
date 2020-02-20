@@ -44,9 +44,9 @@ const frontEndpoints = {
     method: 'GET',
     makeEndpoint: ({ tagId, q, pageToken, limit }) => {
       const query = queryString.stringify({
-        ...(q ? { q } : {}),
-        ...(pageToken ? { page_token: pageToken } : {}),
-        ...(limit ? { limit } : {}),
+        q,
+        page_token: pageToken,
+        limit,
       });
 
       return `/tags/${tagId}/conversations?${query}`;
@@ -64,8 +64,8 @@ const WEBHOOKS = {
 };
 
 // always stub the API in tests
-const ENABLE_API = Meteor.isProduction;
-// const ENABLE_API = true;
+// const ENABLE_API = Meteor.isProduction;
+const ENABLE_API = true;
 
 export class FrontService {
   constructor({ fetch, isEnabled }) {

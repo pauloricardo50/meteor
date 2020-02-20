@@ -80,7 +80,17 @@ const ContactCard = props => {
     >
       {!!phoneNumbers.length && (
         <FrontCardItem label="téléphones">
-          {phoneNumbers.join(', ')}
+          <div className="flex center-align">
+            {phoneNumbers.map(phone => (
+              <a
+                href={`tel:${phone.replace(' ', '')}`}
+                className="link mr-8"
+                key={phone}
+              >
+                {phone}
+              </a>
+            ))}
+          </div>
         </FrontCardItem>
       )}
       {!!organisations.length && (

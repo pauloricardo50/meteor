@@ -41,11 +41,12 @@ const LoanCard = ({ loan, expanded, refetch, conversation }) => {
       }
       subtitle={
         <div className="flex sb center-align" style={{ flexGrow: 1 }}>
-          <div>
+          <div className="flex-col start-align">
             <StatusLabel
               status={status}
               collection={LOANS_COLLECTION}
-              className="mr-8"
+              className="mb-4"
+              small
             />
 
             {category === LOAN_CATEGORIES.PREMIUM && <PremiumBadge small />}

@@ -42,6 +42,7 @@ const FrontContactNoteAdder = props => {
       onClick={openFrontItemList(props)}
       small
       icon={<Icon type="add" />}
+      className="ml-8"
     />
   ) : null;
 };

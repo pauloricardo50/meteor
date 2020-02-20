@@ -5,6 +5,7 @@ import T from '../Translation';
 import OfferAdderContainer from './OfferAdderContainer';
 import { INTEREST_RATES } from '../../api/constants';
 import Box from '../Box';
+import Icon from '../Icon';
 
 const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
   (obj, rate) => ({
@@ -23,6 +24,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
       label: <T id="OfferAdder.buttonLabel" />,
       raised: true,
       primary: true,
+      icon: <Icon type="add" />,
       ...buttonProps,
     }}
     title={<T id="OfferAdder.buttonLabel" />}

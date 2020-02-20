@@ -67,7 +67,7 @@ const CollectionTasksTable = ({
   ...rest
 }) => (
   <div className={className}>
-    {withTaskInsert && (
+    {/* {withTaskInsert && (
       <div className="flex">
         <h3>Tâches</h3>
         <CollectionTaskInserter
@@ -79,8 +79,22 @@ const CollectionTasksTable = ({
           collection={collection}
         />
       </div>
-    )}
-    <TasksTable tasks={tasks} relatedTo={false} {...rest} />
+    )} */}
+    <TasksTable tasks={tasks} relatedTo={false} {...rest}>
+      {withTaskInsert && (
+        <>
+          <h3>Tâches</h3>
+          <CollectionTaskInserter
+            doc={doc}
+            refetch={refetch}
+            model={model}
+            openOnMount={openOnMount}
+            resetForm={resetForm}
+            collection={collection}
+          />
+        </>
+      )}
+    </TasksTable>
   </div>
 );
 

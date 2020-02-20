@@ -51,7 +51,7 @@ const FrontContactHeader = ({
         {name}
       </h3>
       <h4>{email}</h4>
-      <div className="flex-row center-align sb space-children mt-8">
+      <div className="flex-row center-align sb ">
         <FrontContactTaskAdder
           collection={collection}
           isEpotekResource={isEpotekResource}
