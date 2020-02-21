@@ -10,24 +10,59 @@ import FormHelperText from '../Material/FormHelperText';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 import FormControl from '../Material/FormControl';
 import Input from '../Material/Input';
-import { swissFrancMask, percentMask } from '../../utils/textMasks';
-import { toNumber } from '../../utils/conversionFunctions';
+import {
+  swissFrancMask,
+  percentMask,
+  swissFrancDecimalNegativeMask,
+  swissFrancNegativeMask,
+  swissFrancMaskDecimal,
+} from '../../utils/textMasks';
+import {
+  toNumber,
+  toNegativeNumber,
+  toDecimalNumber,
+} from '../../utils/conversionFunctions';
 
-const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
+const getDefaults = ({
+  type,
+  id,
+  onChange,
+  value,
+  simpleOnChange,
+  negative,
+  decimal,
+}) => {
   if (simpleOnChange) {
     return { onChangeHandler: onChange, value };
   }
 
   switch (type) {
-    case 'money':
+    case 'money': {
+      let mask;
+      let conversionFunction;
+      if (decimal) {
+        conversionFunction = toDecimalNumber;
+        if (negative) {
+          mask = swissFrancDecimalNegativeMask;
+        } else {
+          mask = swissFrancMaskDecimal;
+        }
+      } else if (negative) {
+        mask = swissFrancNegativeMask;
+        conversionFunction = toNegativeNumber;
+      } else {
+        mask = swissFrancMask;
+        conversionFunction = toNumber;
+      }
       return {
         onChangeHandler: event =>
-          onChange(toNumber(event.target.value), id, event),
+          onChange(conversionFunction(event.target.value), id, event),
         showMask: true,
-        mask: swissFrancMask,
+        mask,
         placeholder: 0,
         value,
       };
+    }
     case 'percent':
       return {
         onChangeHandler: event =>

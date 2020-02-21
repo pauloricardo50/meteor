@@ -1,19 +1,30 @@
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
-export const swissFrancMask = createNumberMask({
+const numberMask = {
   prefix: '',
   suffix: '',
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: ' ',
-});
+};
+
+export const swissFrancMask = createNumberMask(numberMask);
 
 export const swissFrancMaskDecimal = createNumberMask({
-  prefix: '',
-  suffix: '',
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: ' ',
+  ...numberMask,
   allowDecimal: true,
   requireDecimal: true,
+});
+
+export const swissFrancDecimalNegativeMask = createNumberMask({
+  ...numberMask,
+  allowNegative: true,
+  allowDecimal: true,
+  requireDecimal: true,
+});
+
+export const swissFrancNegativeMask = createNumberMask({
+  ...numberMask,
+  allowNegative: true,
 });
 
 export const percentMask = createNumberMask({
@@ -32,14 +43,4 @@ export const decimalMask = createNumberMask({
   decimalSymbol: '.',
   requireDecimal: false,
   allowLeadingZeroes: true,
-});
-
-export const swissFrancDecimalNegativeMask = createNumberMask({
-  prefix: '',
-  suffix: '',
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: ' ',
-  allowDecimal: true,
-  requireDecimal: true,
-  allowNegative: true,
 });
