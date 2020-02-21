@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import UserService from 'core/api/users/server/UserService';
-import { adminLoan } from 'core/api/fragments';
+import { adminLoan, adminUser } from 'core/api/fragments';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
 import Security from '../../security/Security';
@@ -68,7 +68,18 @@ popLoanValue.setHandler((context, { loanId, object }) => {
 
 export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  return LoanService.fullLoanInsert({ userId });
+  const loanId = LoanService.fullLoanInsert({ userId });
+
+  if (!userId) {
+    // Make sure new, loose, loans are assigned to the one creating them
+    // so we don't have unassigned loans in the DB
+    LoanService.setAssignees({
+      loanId,
+      assignees: [{ _id: adminUserId, isMain: true }],
+    });
+  }
+
+  return loanId;
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 
