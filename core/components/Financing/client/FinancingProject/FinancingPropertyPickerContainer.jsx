@@ -61,15 +61,22 @@ const FinancingPropertyPickerContainer = compose(
               <T id={`Forms.propertyType.${propertyType}`} />
             ),
           })),
-          ...promotionOptions.map(({ _id, name }) => ({
-            id: _id,
-            label: (
-              <T
-                id="FinancingPropertyPicker.promotionOption"
-                values={{ name }}
-              />
-            ),
-          })),
+          ...promotionOptions.map(
+            ({ _id, name, promotion: { name: promotionName } }) => ({
+              id: _id,
+              label: (
+                <T
+                  id="FinancingPropertyPicker.promotionOption"
+                  values={{ name }}
+                />
+              ),
+              secondary: (
+                <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
+                  {promotionName}
+                </span>
+              ),
+            }),
+          ),
           {
             id: 'add',
             dividerTop: true,

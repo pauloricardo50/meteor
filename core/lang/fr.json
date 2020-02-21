@@ -1198,7 +1198,7 @@
   "Forms.structure": "Plan financier",
   "Forms.status.SOLD_TO_ME": "Vendu à moi",
   "Forms.status.RESERVED_FOR_ME": "Réservé pour moi",
-  "FinancingPropertyPicker.promotionOption": "Promotion: {name}",
+  "FinancingPropertyPicker.promotionOption": "Lot {name}",
   "PromotionOptionDetail.priority": "{priority, plural, =0 {0} one {1er} other {#ème}} Choix",
   "Forms.phoneNumbers": "Numéros de téléphone",
   "Forms.assignedEmployee": "Conseiller e-Potek",
