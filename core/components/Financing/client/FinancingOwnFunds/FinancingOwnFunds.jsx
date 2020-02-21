@@ -17,7 +17,7 @@ const feesTooltip = props => {
   if (value) {
     return (
       <Tooltip title={`Frais de notaire: CHF ${toMoney(value)}`}>
-        <p>&nbsp;+ frais</p>
+        <span>&nbsp;+ frais</span>
       </Tooltip>
     );
   }
