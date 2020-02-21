@@ -1,4 +1,5 @@
 {
+  "Financing.maxExceeded": "Max. {max}",
   "CollectionTaskInserter.label": "Tâche",
   "Forms.adminTheoreticalExpenses.theoreticalExpenses": "Charges financières [ADMIN]",
   "CollectionTaskInserter.title": "Nouvelle tâche",

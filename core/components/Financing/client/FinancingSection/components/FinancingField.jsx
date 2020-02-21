@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import cx from 'classnames';
 import { AutoForm } from 'uniforms-material';
 import SimpleSchema from 'simpl-schema';
@@ -9,29 +9,31 @@ import StructureUpdateContainer from '../../containers/StructureUpdateContainer'
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 
-import InputAndSliderField from './InputAndSliderField';
+import FinancingInput from './FinancingInput';
 
-export const InputAndSlider = ({
+export const FinancingField = ({
   className,
   id,
   schema,
   value,
   updateStructure,
   ...props
-}) => (
-  <div className={cx('input-and-slider', className)}>
-    <AutoForm
-      onSubmit={updateStructure}
-      schema={new SimpleSchema2Bridge(schema)}
-      model={{ [id]: value }}
-      autosave
-      autosaveDelay={500}
-      disabled={props.structure.disableForms}
-    >
-      <InputAndSliderField name={id} {...props} />
-    </AutoForm>
-  </div>
-);
+}) => {
+  const formRef = useRef(null);
+  return (
+    <div className={cx('input-and-slider', className)}>
+      <AutoForm
+        onSubmit={updateStructure}
+        schema={new SimpleSchema2Bridge(schema)}
+        model={{ [id]: value }}
+        disabled={props.structure.disableForms}
+        ref={formRef}
+      >
+        <FinancingInput name={id} formRef={formRef} {...props} />
+      </AutoForm>
+    </div>
+  );
+};
 
 export default compose(
   FinancingDataContainer,
@@ -54,4 +56,4 @@ export default compose(
       }),
     }),
   ),
-)(InputAndSlider);
+)(FinancingField);

@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { InputAndSlider } from '../FinancingSection';
+import { FinancingField } from '../FinancingSection';
 import DialogSimple from '../../../DialogSimple';
 import IconButton from '../../../IconButton';
 import T from '../../../Translation';
@@ -28,7 +28,7 @@ const FinancingProjectFees = ({ className, ...props }) => {
   }).hasDetailedConfig();
   return (
     <div className={cx(className, 'notary-fees')}>
-      <InputAndSlider {...props} />
+      <FinancingField {...props} />
       <DialogSimple
         closeOnly
         renderTrigger={({ handleOpen }) => (
