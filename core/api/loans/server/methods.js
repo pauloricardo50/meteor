@@ -75,7 +75,7 @@ export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
     // so we don't have unassigned loans in the DB
     LoanService.setAssignees({
       loanId,
-      assignees: [{ _id: adminUserId, isMain: true }],
+      assignees: [{ _id: adminUserId, isMain: true, percent: 100 }],
     });
   }
 
