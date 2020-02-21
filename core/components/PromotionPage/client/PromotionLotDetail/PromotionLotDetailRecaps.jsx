@@ -3,9 +3,11 @@ import React from 'react';
 import Box from '../../../Box';
 import Recap from '../../../Recap';
 import T, { MetricArea, Money } from '../../../Translation';
+import { getPromotionLotValue } from '../PromotionManagement/helpers';
 
 const getPromotionLotValueRecapArray = promotionLot => {
   const { lots = [], properties } = promotionLot;
+
   const property = properties.length > 0 && properties[0];
 
   const {
@@ -114,15 +116,20 @@ const getPromotionLotRecapArray = promotionLot => {
   ];
 };
 
-const PromotionLotDetailRecaps = ({ promotionLot }) => (
-  <>
-    <Box>
-      <Recap array={getPromotionLotValueRecapArray(promotionLot)} />
-    </Box>
-    <Box>
-      <Recap array={getPromotionLotRecapArray(promotionLot)} />
-    </Box>
-  </>
-);
+const PromotionLotDetailRecaps = ({ promotionLot }) => {
+  const promotionLotValue = getPromotionLotValue(promotionLot);
+  return (
+    <>
+      {typeof promotionLotValue === 'number' ? (
+        <Box>
+          <Recap array={getPromotionLotValueRecapArray(promotionLot)} />
+        </Box>
+      ) : null}
+      <Box>
+        <Recap array={getPromotionLotRecapArray(promotionLot)} />
+      </Box>
+    </>
+  );
+};
 
 export default PromotionLotDetailRecaps;

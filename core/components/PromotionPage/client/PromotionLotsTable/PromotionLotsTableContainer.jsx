@@ -12,10 +12,10 @@ import PromotionLotSelector from './PromotionLotSelector';
 import StatusLabel from '../../../StatusLabel';
 import {
   PROMOTION_LOTS_COLLECTION,
-  PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
 } from '../../../../api/constants';
 import PromotionCustomer from '../PromotionCustomer';
+import { getPromotionLotValue } from '../PromotionManagement/helpers';
 
 const proColumnOptions = [
   { id: 'name' },
@@ -46,11 +46,14 @@ const appColumnOptions = ({ promotionStatus }) =>
       id: 'totalValue',
       style: { whiteSpace: 'nowrap' },
       align: 'right',
-      format: value => (
-        <b>
-          <Money value={value} />
-        </b>
-      ),
+      format: value =>
+        typeof value === 'number' ? (
+          <b>
+            <Money value={value} />
+          </b>
+        ) : (
+          value
+        ),
     },
     { id: 'lots' },
     promotionStatus === PROMOTION_STATUS.OPEN && {
@@ -131,7 +134,6 @@ const makeMapAppPromotionLot = ({
     status,
     reducedStatus,
     lots,
-    value,
   } = promotionLot;
 
   return {
@@ -148,7 +150,7 @@ const makeMapAppPromotionLot = ({
           />
         ),
       },
-      reducedStatus === PROMOTION_LOT_STATUS.SOLD ? 0 : value,
+      getPromotionLotValue(promotionLot),
       {
         raw: lots && lots.length,
         label: (

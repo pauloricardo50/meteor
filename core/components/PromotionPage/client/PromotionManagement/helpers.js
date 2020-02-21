@@ -1,4 +1,8 @@
-import { PROMOTION_LOT_STATUS } from 'core/api/constants';
+import { Meteor } from 'meteor/meteor';
+import {
+  PROMOTION_LOT_STATUS,
+  PROMOTION_LOT_REDUCED_STATUS,
+} from 'core/api/constants';
 
 const getPromotionLotsValue = (promotionLots = [], key) =>
   promotionLots.reduce((total, promotionLot) => {
@@ -91,4 +95,16 @@ export const getTotalValueByStatus = (promotionLots = [], status) => {
   }
 
   return totalValue;
+};
+
+export const getPromotionLotValue = promotionLot => {
+  const { value, reducedStatus } = promotionLot;
+
+  if (Meteor.microservice === 'app') {
+    return reducedStatus === PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE
+      ? '-'
+      : value;
+  }
+
+  return value;
 };

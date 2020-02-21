@@ -12,6 +12,7 @@ import {
 import PrioritySetter from './PrioritySetter';
 import RequestReservation from './RequestReservation';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
+import { getPromotionLotValue } from '../PromotionManagement/helpers';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -30,7 +31,10 @@ const makeMapPromotionOption = ({
     },
     status,
   } = promotionOption;
-  const { name, value } = (promotionLots && promotionLots[0]) || {};
+  const promotionLot = (promotionLots?.length && promotionLots[0]) || {};
+  const { name, value } = promotionLot;
+
+  const promotionLotValue = getPromotionLotValue(promotionLot);
   return {
     id: promotionOptionId,
     promotionOption,
@@ -57,7 +61,13 @@ const makeMapPromotionOption = ({
           />
         ),
       },
-      { raw: value, label: toMoney(value) },
+      {
+        raw: value,
+        label:
+          typeof promotionLotValue === 'number'
+            ? toMoney(promotionLotValue)
+            : promotionLotValue,
+      },
       !isAdmin && (
         <RequestReservation
           key="reservation"
