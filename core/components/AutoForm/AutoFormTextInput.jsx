@@ -6,7 +6,11 @@ import moment from 'moment';
 
 import * as constants from '../../config/constants';
 import colors from '../../config/colors';
-import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
+import {
+  toNumber,
+  toDecimalNumber,
+  toNegativeNumber,
+} from '../../utils/conversionFunctions';
 import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';
 
@@ -44,7 +48,7 @@ class AutoFormTextInput extends Component {
   constructor(props) {
     super(props);
 
-    const { currentValue, number, decimal } = props.inputProps;
+    const { currentValue, number, decimal, negative } = props.inputProps;
 
     this.state = {
       // Make sure 0 values are displayed properly
@@ -58,6 +62,8 @@ class AutoFormTextInput extends Component {
     if (number) {
       if (decimal) {
         this.formatter = toDecimalNumber;
+      } else if (negative) {
+        this.formatter = toNegativeNumber;
       } else {
         this.formatter = toNumber;
       }

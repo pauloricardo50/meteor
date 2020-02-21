@@ -39,7 +39,15 @@ export const swissFrancDecimalNegativeMask = createNumberMask({
   suffix: '',
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: ' ',
+  allowNegative: true,
   allowDecimal: true,
   requireDecimal: true,
+});
+
+export const swissFrancNegativeMask = createNumberMask({
+  prefix: '',
+  suffix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ' ',
   allowNegative: true,
 });

@@ -74,6 +74,14 @@ const determineComponentFromProps = ({
     };
   }
 
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { margin: 'normal', negative: true, variant: 'outlined' },
+    };
+  }
+
   if (
     uniforms &&
     uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL

@@ -4,6 +4,7 @@ import {
   percentageField,
   moneyField,
   address,
+  negativeMoneyField,
 } from '../../helpers/sharedSchemas';
 import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
 
@@ -246,8 +247,8 @@ export const ownCompaniesSchema = {
   'ownCompanies.$': Object,
   'ownCompanies.$.description': { type: String, optional: false },
   'ownCompanies.$.ownership': percentageField,
-  'ownCompanies.$.netIncome2016': moneyField,
-  'ownCompanies.$.netIncome2017': moneyField,
-  'ownCompanies.$.netIncome2018': moneyField,
-  'ownCompanies.$.netIncome2019': moneyField,
+  'ownCompanies.$.netIncome2016': negativeMoneyField,
+  'ownCompanies.$.netIncome2017': negativeMoneyField,
+  'ownCompanies.$.netIncome2018': negativeMoneyField,
+  'ownCompanies.$.netIncome2019': negativeMoneyField,
 };

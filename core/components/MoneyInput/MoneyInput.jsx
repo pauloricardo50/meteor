@@ -10,6 +10,7 @@ import {
   swissFrancMask,
   swissFrancMaskDecimal,
   swissFrancDecimalNegativeMask,
+  swissFrancNegativeMask,
 } from '../../utils/textMasks';
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 
@@ -27,11 +28,18 @@ const MoneyInput = ({
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
   const parse = decimal ? toDecimalNumber : toNumber;
 
-  const mask = decimal
-    ? negative
-      ? swissFrancDecimalNegativeMask
-      : swissFrancMaskDecimal
-    : swissFrancMask;
+  let mask;
+  if (decimal) {
+    if (negative) {
+      mask = swissFrancDecimalNegativeMask;
+    } else {
+      mask = swissFrancNegativeMask;
+    }
+  } else if (negative) {
+    mask = swissFrancMaskDecimal;
+  } else {
+    mask = swissFrancMask;
+  }
 
   return (
     <FormControl
