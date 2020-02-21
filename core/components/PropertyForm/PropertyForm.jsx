@@ -6,13 +6,19 @@ import Icon from '../Icon';
 import PropertySchema from '../../api/properties/schemas/PropertySchema';
 import { AutoFormDialog } from '../AutoForm2';
 
-const schema = PropertySchema.pick(
+export const propertyFormSchema = PropertySchema.pick(
   'address1',
   'zipCode',
   'city',
   'country',
   'value',
 );
+
+export const propertyFormLayout = [
+  'value',
+  'address1',
+  { className: 'grid-col', fields: ['zipCode', 'city', 'country'] },
+];
 
 const PropertyForm = ({
   formTitleId,
@@ -34,7 +40,7 @@ const PropertyForm = ({
     }}
   >
     <AutoFormDialog
-      schema={schema}
+      schema={propertyFormSchema}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
       buttonProps={{
@@ -45,11 +51,7 @@ const PropertyForm = ({
         disabled,
         ...buttonProps,
       }}
-      layout={[
-        'value',
-        'address1',
-        { className: 'grid-col', fields: ['zipCode', 'city', 'country'] },
-      ]}
+      layout={propertyFormLayout}
       {...props}
     />
   </div>

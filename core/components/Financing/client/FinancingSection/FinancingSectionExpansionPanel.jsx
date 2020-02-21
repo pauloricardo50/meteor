@@ -25,13 +25,22 @@ const styles = {
       margin: 0,
     },
   },
+  summaryRoot: {
+    minHeight: 32,
+  },
   expanded: {},
 };
 
 const FinancingSectionExpansionPanel = ({
   detailConfig,
   summaryConfig,
-  classes: { container, entered, content, expanded: expandedClass },
+  classes: {
+    container,
+    entered,
+    content,
+    expanded: expandedClass,
+    summaryRoot,
+  },
   className,
   expanded,
   changeExpanded,
@@ -49,6 +58,7 @@ const FinancingSectionExpansionPanel = ({
       sectionProps={sectionProps}
       content={content}
       expandedClass={expandedClass}
+      summaryRoot={summaryRoot}
     />
     <FinancingSectionDetails
       detailConfig={detailConfig}

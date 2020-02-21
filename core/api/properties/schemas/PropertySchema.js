@@ -114,7 +114,6 @@ export const PropertySchema = new SimpleSchema({
   propertyType: {
     type: String,
     optional: true,
-    defaultValue: propertyConstants.PROPERTY_TYPE.FLAT,
     allowedValues: Object.values(propertyConstants.PROPERTY_TYPE),
     uniforms: { placeholder: null },
   },

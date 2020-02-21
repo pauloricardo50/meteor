@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectField } from 'uniforms';
-import Slider from 'core/components/Slider';
 
+import T, { Money } from '../../../../Translation';
 import MoneyInput from '../../../../MoneyInput';
 
 const valueIsNotDefined = value =>
@@ -9,15 +9,11 @@ const valueIsNotDefined = value =>
 
 const makeHandleTextChange = ({
   onChange,
-  max,
   allowUndefined,
   forceUndefined,
 }) => value => {
   if (allowUndefined && valueIsNotDefined(value)) {
     return onChange('');
-  }
-  if (max && value) {
-    return onChange(Math.min(value, max));
   }
   return onChange(value || (forceUndefined && allowUndefined ? '' : 0));
 };
@@ -31,39 +27,54 @@ const setValue = (value, allowUndefined, forceUndefined) => {
   return value || 0;
 };
 
-export const InputAndSliderField = props => {
-  const {
-    value,
-    onChange,
-    placeholder,
-    forceUndefined,
-    allowUndefined,
-    max = 1000000,
-    maxSlider,
-    disabled,
-  } = props;
-  const maxSliderValue = maxSlider || max;
+export const FinancingInput = ({
+  value,
+  placeholder,
+  forceUndefined,
+  allowUndefined,
+  disabled,
+  onChange,
+  max,
+  formRef,
+  structure,
+  name,
+}) => {
+  const dbValue = structure[name];
+
+  const maxExceeded = value > max;
   return (
     <>
       <MoneyInput
         value={setValue(value, allowUndefined, forceUndefined)}
-        onChange={makeHandleTextChange(props)}
+        onChange={makeHandleTextChange({
+          onChange,
+          allowUndefined,
+          forceUndefined,
+        })}
+        onBlur={() => {
+          if (formRef && formRef.current) {
+            if (dbValue !== value) {
+              // Small optimization, only submit onBlur if the value has changed
+              formRef.current.submit();
+            }
+          }
+        }}
         placeholder={placeholder === undefined ? '' : `${placeholder}`} // Placeholders should always be a string
         className="money-input"
         disabled={disabled}
-      />
-      <Slider
-        min={0}
-        max={Math.max(maxSliderValue, value)}
-        step={1000}
-        value={setValue(value, allowUndefined, forceUndefined)}
-        onChange={onChange}
-        className="slider"
-        disabled={disabled}
-        debounce={false}
+        error={maxExceeded}
+        helperText={
+          maxExceeded && (
+            <T
+              id="Financing.maxExceeded"
+              values={{ max: <Money value={max} /> }}
+            />
+          )
+        }
+        margin="dense"
       />
     </>
   );
 };
 
-export default connectField(InputAndSliderField);
+export default connectField(FinancingInput);
