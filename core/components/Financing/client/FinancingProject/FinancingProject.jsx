@@ -43,17 +43,17 @@ const FinancingProject = props => (
         maxSlider: 5000000,
       },
       {
+        Component: FinancingField,
+        id: 'propertyWork',
+        max: 10000000,
+        maxSlider: 1000000,
+      },
+      {
         Component: FinancingProjectFees,
         id: 'notaryFees',
         calculatePlaceholder: calculateDefaultNotaryFees,
         max: calculateMaxNotaryFees,
         allowUndefined: true,
-      },
-      {
-        Component: FinancingField,
-        id: 'propertyWork',
-        max: 10000000,
-        maxSlider: 1000000,
       },
     ]}
   />

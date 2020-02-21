@@ -37,6 +37,7 @@ const FinancingProjectFees = ({ className, ...props }) => {
             onClick={handleOpen}
             className="ml-8"
             size="small"
+            color={hasNotaryFeesOverride ? '' : 'primary'}
           />
         )}
       >
