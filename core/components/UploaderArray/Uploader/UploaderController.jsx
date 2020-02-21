@@ -24,6 +24,7 @@ import {
   willReceiveProps,
   withMergedSuccessfulFiles,
   displayFullState,
+  checkFile,
 } from './uploaderHelpers';
 import AdditionalDocModifier from './AdditionalDocModifier';
 
@@ -65,15 +66,35 @@ const addMeteorProps = withProps(
         handleSuccess(file, url);
       }
     },
-    handleMoveFile: ({ Key, status, oldCollection }) =>
-      moveFile.run({
+    handleMoveFile: destinationFiles => ({
+      Key,
+      status,
+      oldCollection,
+      name,
+    }) => {
+      const isValid = checkFile({ name }, destinationFiles, []);
+
+      if (isValid !== true) {
+        import('../../../utils/notification').then(
+          ({ default: notification }) => {
+            notification.error({
+              message: f({ id: `errors.${isValid}.title` }),
+              description: f({ id: `errors.${isValid}.description` }),
+            });
+          },
+        );
+        return;
+      }
+
+      return moveFile.run({
         Key,
         status,
         oldCollection,
         newId: fileId,
         newDocId: docId,
         newCollection: collection,
-      }),
+      });
+    },
     uploadDirective: SLINGSHOT_DIRECTIVE_NAME,
     uploadDirectiveProps: { collection, docId, id: fileId, acl, maxSize },
     fileId,
