@@ -79,6 +79,15 @@ describe('REST: getUser', function() {
           organisations: [{ _id: 'org3' }],
         },
         {
+          _factory: 'pro',
+          _id: 'pro4',
+          organisations: [{ _id: 'org' }],
+          emails: [{ address: 'pro4@org.com', verified: true }],
+          firstName: 'Pro',
+          lastName: '4',
+          phoneNumbers: ['+41 12345'],
+        },
+        {
           _id: 'user1',
           firstName: 'firstName1',
           lastName: 'lastName1',
@@ -200,5 +209,22 @@ describe('REST: getUser', function() {
 
     expect(response.status).to.equal(404);
     expect(response.message).to.include('"user3@test.com"');
+  });
+
+  it('returns user from the same organisation', async () => {
+    const user = await getUser({
+      email: 'pro4@org.com',
+      userId: 'pro',
+    });
+
+    expect(user).to.deep.equal({
+      _id: 'pro4',
+      email: 'pro4@org.com',
+      firstName: 'Pro',
+      lastName: '4',
+      name: 'Pro 4',
+      phoneNumbers: ['+41 12345'],
+      roles: ['pro'],
+    });
   });
 });
