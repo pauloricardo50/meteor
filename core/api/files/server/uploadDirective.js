@@ -16,6 +16,8 @@ import {
   MAX_FILE_SIZE,
   ONE_KB,
 } from '../fileConstants';
+import Security from '../../security';
+
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -107,6 +109,10 @@ const exoscaleStorageService = {
   },
 
   getDefaultStatus(meta) {
+    if(Security.isUserAdmin(Meteor.userId())){
+      return FILE_STATUS.VALID;
+    }
+    
     if (
       [ORGANISATIONS_COLLECTION, PROMOTIONS_COLLECTION].includes(
         meta.collection,
