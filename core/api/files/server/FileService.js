@@ -141,7 +141,7 @@ class FileService {
       adminname: adminName,
     });
 
-  moveFile = async ({
+  moveFile = ({
     Key,
     name,
     oldDocId,
@@ -154,16 +154,6 @@ class FileService {
 
     if (newKey === Key) {
       return;
-    }
-
-    const documentFiles = await this.listFilesForDocByCategory(newDocId);
-    const documentCategoryFiles = documentFiles[newId];
-    const fileExists = documentCategoryFiles?.some(
-      ({ name: fileName }) => fileName === name,
-    );
-
-    if (fileExists) {
-      throw new Meteor.Error('Vous ne pouvez pas ajouter deux fichiers avec le même nom');
     }
 
     return S3Service.moveObject(Key, newKey)
