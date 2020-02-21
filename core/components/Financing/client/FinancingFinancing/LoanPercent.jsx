@@ -23,6 +23,7 @@ const LoanPercentField = connectField(
         }
       }}
       disabled={disabled}
+      margin="dense"
     />
   ),
 );

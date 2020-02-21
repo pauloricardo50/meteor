@@ -32,7 +32,12 @@ const FinancingProjectFees = ({ className, ...props }) => {
       <DialogSimple
         closeOnly
         renderTrigger={({ handleOpen }) => (
-          <IconButton type="help" onClick={handleOpen} />
+          <IconButton
+            type="help"
+            onClick={handleOpen}
+            className="ml-8"
+            size="small"
+          />
         )}
       >
         <div className="notary-fees-dialog">

@@ -21,7 +21,7 @@ export const FinancingField = ({
 }) => {
   const formRef = useRef(null);
   return (
-    <div className={cx('input-and-slider', className)}>
+    <div className={cx('financing-field', className)}>
       <AutoForm
         onSubmit={updateStructure}
         schema={schema}

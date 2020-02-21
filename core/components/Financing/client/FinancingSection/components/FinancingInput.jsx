@@ -71,6 +71,7 @@ export const FinancingInput = ({
             />
           )
         }
+        margin="dense"
       />
     </>
   );

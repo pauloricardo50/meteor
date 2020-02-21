@@ -15,6 +15,7 @@ const FinancingPropertyPicker = ({
       options={options}
       onChange={handleChange}
       disabled={disabled}
+      margin="dense"
     />
   </div>
 );
