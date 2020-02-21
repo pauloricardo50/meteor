@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import cx from 'classnames';
 import { AutoForm } from 'uniforms-material';
 import SimpleSchema from 'simpl-schema';
@@ -24,7 +24,7 @@ export const FinancingField = ({
     <div className={cx('input-and-slider', className)}>
       <AutoForm
         onSubmit={updateStructure}
-        schema={new SimpleSchema2Bridge(schema)}
+        schema={schema}
         model={{ [id]: value }}
         disabled={props.structure.disableForms}
         ref={formRef}
@@ -46,14 +46,23 @@ export default compose(
       id,
       allowUndefined,
       ...props
-    }) => ({
-      max: typeof _max === 'function' ? _max(props) : _max,
-      placeholder: calculatePlaceholder
-        ? toMoney(calculatePlaceholder(props))
-        : placeholder,
-      schema: new SimpleSchema({
-        [id]: { type: Number, optional: allowUndefined },
-      }),
-    }),
+    }) => {
+      // The schema never changes
+      const [schema] = useState(
+        new SimpleSchema2Bridge(
+          new SimpleSchema({
+            [id]: { type: Number, optional: allowUndefined },
+          }),
+        ),
+      );
+
+      return {
+        max: typeof _max === 'function' ? _max(props) : _max,
+        placeholder: calculatePlaceholder
+          ? toMoney(calculatePlaceholder(props))
+          : placeholder,
+        schema,
+      };
+    },
   ),
 )(FinancingField);

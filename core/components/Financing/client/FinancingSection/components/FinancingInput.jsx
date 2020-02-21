@@ -36,7 +36,11 @@ export const FinancingInput = ({
   onChange,
   max,
   formRef,
+  structure,
+  name,
 }) => {
+  const dbValue = structure[name];
+
   const maxExceeded = value > max;
   return (
     <>
@@ -49,7 +53,10 @@ export const FinancingInput = ({
         })}
         onBlur={() => {
           if (formRef && formRef.current) {
-            formRef.current.submit();
+            if (dbValue !== value) {
+              // Small optimization, only submit onBlur if the value has changed
+              formRef.current.submit();
+            }
           }
         }}
         placeholder={placeholder === undefined ? '' : `${placeholder}`} // Placeholders should always be a string
