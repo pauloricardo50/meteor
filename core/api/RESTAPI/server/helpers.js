@@ -322,6 +322,7 @@ export const logRequest = ({ req, result }) => {
   } = req;
 
   if (Meteor.isTest) {
+    return;
   }
 
   console.log('----- API CALL -----');
