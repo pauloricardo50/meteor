@@ -1,4 +1,9 @@
 {
+  "ProRevenuesTable.loanName": "Dossier",
+  "ProRevenuesTable.status": "Statut",
+  "ProRevenuesTable.date": "Date",
+  "ProRevenuesTable.commissionRate": "Taux de commissionnement",
+  "ProRevenuesTable.commissionValue": "Montant à percevoir",
   "Financing.maxExceeded": "Max. {max}",
   "CollectionTaskInserter.label": "Tâche",
   "Forms.adminTheoreticalExpenses.theoreticalExpenses": "Charges financières [ADMIN]",

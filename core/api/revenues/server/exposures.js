@@ -1,8 +1,11 @@
 import { Match } from 'meteor/check';
+import { Meteor } from 'meteor/meteor';
 
 import { exposeQuery } from '../../queries/queryHelpers';
-import { adminRevenues } from '../queries';
+import SecurityService from '../../security';
+import { adminRevenues, proRevenues } from '../queries';
 import { REVENUE_STATUS } from '../revenueConstants';
+import UserService from '../../users/server/UserService';
 
 exposeQuery({
   query: adminRevenues,
@@ -94,6 +97,35 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),
       secondaryType: Match.Maybe(Match.OneOf(Object, String)),
+    },
+  },
+});
+
+exposeQuery({
+  query: proRevenues,
+  overrides: {
+    firewall(userId, params) {
+      SecurityService.checkUserIsPro(userId);
+      const { _id: mainOrganisationId } = UserService.getUserMainOrganisation(
+        userId,
+      );
+
+      if (!mainOrganisationId) {
+        throw new Meteor.Error('No mainOrganisationId found');
+      }
+
+      params.organisationId = mainOrganisationId;
+    },
+    embody: body => {
+      body.$filter = ({ filters, params }) => {
+        filters.organisationLinks = {
+          $elemMatch: { _id: params.organisationId },
+        };
+      };
+    },
+    validateParams: {
+      status: Match.Maybe(Match.OneOf(Object, String)),
+      organisationId: String,
     },
   },
 });
