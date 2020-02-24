@@ -1090,6 +1090,15 @@ export const adminRevenue = () => ({
   type: 1,
 });
 
+export const proRevenue = () => ({
+  amount: 1,
+  expectedAt: 1,
+  loan: { name: 1, status: 1 },
+  organisationLinks: 1,
+  paidAt: 1,
+  status: 1,
+});
+
 // //
 // // Sessions fragments
 // //

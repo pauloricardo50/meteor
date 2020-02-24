@@ -66,6 +66,13 @@ const userSchema = new SimpleSchema({
       displayEmpty: true,
     },
   },
+  'organisations.$.$metadata.isMain': {
+    type: Boolean,
+    optional: false,
+    uniforms: {
+      label: 'Organisation principale',
+    },
+  },
 });
 
 const updateOrganisations = ({ userId, organisations = [] }) =>

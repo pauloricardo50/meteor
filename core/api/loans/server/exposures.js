@@ -211,7 +211,11 @@ exposeQuery({
     firewall(userId, { referredByUserId }) {
       SecurityService.checkUserIsPro(userId);
 
-      if (referredByUserId && referredByUserId !== 'nobody') {
+      if (
+        referredByUserId &&
+        referredByUserId !== 'nobody' &&
+        referredByUserId !== 'referral'
+      ) {
         const org = UserService.getUserMainOrganisation(userId);
         if (!org.userLinks.find(({ _id }) => _id === userId)) {
           SecurityService.handleUnauthorized('Not allowed');
@@ -241,6 +245,11 @@ exposeQuery({
           if (referredByUserId === 'nobody') {
             forceReferralFilter = [
               { 'userCache.referredByUserLink': { $in: [false, null] } },
+            ];
+          }
+          if (referredByUserId === 'referral') {
+            forceReferralFilter = [
+              { 'userCache.referredByUserLink': { $exists: true, $ne: '' } },
             ];
           }
           filters.$and = [{ $or: filters.$or }, { $or: forceReferralFilter }];

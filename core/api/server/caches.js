@@ -54,6 +54,13 @@ Lenders.cache({
   cacheField: 'offersCache',
 });
 
+// Let's you easily query the main organisation of a user
+Organisations.cacheField({
+  fields: ['userLinks'],
+  cacheField: 'mainUserLinks',
+  transform: ({ userLinks = [] }) => userLinks.filter(({ isMain }) => isMain),
+});
+
 Meteor.startup(() => {
   // Caches
   // migrate('promotionLots', 'promotionCache', {
@@ -99,4 +106,7 @@ Meteor.startup(() => {
   //   ],
   //   'lendersCache.offersCache': { $exists: false },
   // });
+  migrate('organisations', 'mainUserLinks', {
+    mainUserLinks: { $exists: false },
+  });
 });
