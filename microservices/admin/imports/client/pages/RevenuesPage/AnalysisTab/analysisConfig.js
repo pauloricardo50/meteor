@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import {
   LOANS_COLLECTION,
   REVENUES_COLLECTION,
@@ -14,6 +16,16 @@ import {
 const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
 
+const sevenDaysAgo = moment()
+  .day(-7)
+  .hour(0)
+  .minute(0);
+
+const thirtyDaysAgo = moment()
+  .day(-30)
+  .hour(0)
+  .minute(0);
+
 const analysisConfig = {
   [LOANS_COLLECTION]: {
     category: { id: 'Forms.category' },
@@ -26,12 +38,16 @@ const analysisConfig = {
     user: [
       {
         id: 'Forms.roles',
-        fragment: { roles: 1, referredByOrganisation: { name: 1 } },
+        fragment: { roles: 1, referredByOrganisation: { name: 1 }, emails: 1 },
         format: ({ user }) => user?.roles,
       },
       {
         id: 'Référé par',
         format: ({ user }) => user?.referredByOrganisation?.name,
+      },
+      {
+        id: 'Compte vérifié',
+        format: ({ user }) => (user?.emails?.[0]?.verified ? 'Oui' : 'Non'),
       },
     ],
     createdAt: [
@@ -42,6 +58,16 @@ const analysisConfig = {
       {
         label: 'Création Année',
         format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
+      },
+      {
+        label: 'Créé < 7 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(sevenDaysAgo) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'Créé < 30 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(thirtyDaysAgo) ? 'Oui' : 'Non',
       },
     ],
     anonymous: { id: 'Forms.anonymous' },
