@@ -35,6 +35,10 @@ api.addEndpoint('/properties/:propertyId', 'GET', getPropertyAPI, {
 api.addEndpoint('/upload', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
+  analyticsParams: req => {
+    const { files: { file = {} } = {} } = req;
+    return { fileSize: file.size };
+  },
 });
 
 let propertyId = '';

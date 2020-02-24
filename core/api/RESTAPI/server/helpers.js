@@ -404,6 +404,7 @@ export const trackRequest = ({ req, result }) => {
     duration,
     authenticationType,
     endpointName,
+    analyticsParams = {},
   } = req;
   const { user = {} } = req;
 
@@ -435,6 +436,7 @@ export const trackRequest = ({ req, result }) => {
     result,
     authenticationType,
     endpointName,
+    ...analyticsParams,
   });
 };
 
@@ -517,6 +519,7 @@ const AUTH_MIDDLEWARES = {
     'authMiddleware',
     'filterMiddleware',
     'replayHandlerMiddleware',
+    'analyticsMiddleware',
   ],
   rsa: ['replayHandlerMiddleware', 'filterMiddleware', 'authMiddleware'],
   custom: ['customAuthMiddleware'],
@@ -532,4 +535,16 @@ export const checkCustomAuth = ({ customAuth, req }) => {
   if (user) {
     req.user = user;
   }
+};
+
+export const getAnalyticsParams = ({ req, options }) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+  const { analyticsParams, endpointName } = endpointOptions;
+
+  if (!analyticsParams) {
+    throw new Error(
+      `"analyticsParams" function is required on endpoint "${endpointName}". Check in your *.test.js file where the endpoint is declared. You can provide a function returning an empty object if no analytics params is necessary on this endpoint.`,
+    );
+  }
+  return analyticsParams(req);
 };
