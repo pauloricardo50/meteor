@@ -6,8 +6,13 @@ import T, { Percent, Money } from 'core/components/Translation';
 import { proRevenues } from 'core/api/revenues/queries';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { REVENUE_STATUS } from 'imports/core/api/constants';
-import { COMMISSION_STATUS } from 'core/api/constants';
+import {
+  REVENUE_STATUS,
+  LOANS_COLLECTION,
+  COMMISSION_STATUS,
+  PRO_COMMISSION_STATUS,
+} from 'core/api/constants';
+import StatusLabel from 'core/components/StatusLabel';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -48,10 +53,10 @@ const mapRevenueToRow = (
 
   const status =
     revenueStatus === REVENUE_STATUS.EXPECTED
-      ? 'Revenu attendu'
+      ? PRO_COMMISSION_STATUS.WAITING_FOR_REVENUE
       : commissionStatus === COMMISSION_STATUS.TO_BE_PAID
-      ? 'Versé prochainement'
-      : 'Versé';
+      ? PRO_COMMISSION_STATUS.COMMISSION_TO_PAY
+      : PRO_COMMISSION_STATUS.COMMISSION_PAID;
 
   const date =
     revenueStatus === REVENUE_STATUS.EXPECTED
@@ -63,8 +68,16 @@ const mapRevenueToRow = (
   return {
     id: _id,
     columns: [
-      loan.name,
-      status,
+      {
+        raw: loan.name,
+        label: (
+          <span>
+            {loan.name}&nbsp;
+            <StatusLabel status={loan.status} collection={LOANS_COLLECTION} />
+          </span>
+        ),
+      },
+      { raw: status, label: <T id={`ProRevenuesTable.status.${status}`} /> },
       {
         raw: date && date.getTime(),
         label: moment(date).format('D MMMM YYYY'),

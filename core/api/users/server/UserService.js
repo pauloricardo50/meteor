@@ -298,9 +298,9 @@ export class UserServiceClass extends CollectionService {
       }),
     );
 
-    newOrganisations.forEach(({ _id: organisationId, metadata }) => {
-      this.linkOrganisation({ userId, organisationId, metadata });
-    });
+    newOrganisations.forEach(({ _id: organisationId, metadata }) =>
+      this.linkOrganisation({ userId, organisationId, metadata }),
+    );
   };
 
   testUserAccount = ({ email, password, role }) => {

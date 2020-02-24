@@ -11,9 +11,7 @@ const ProRevenuesPage = props => (
     </h1>
 
     <p className="description">
-      Voici les revenus générés par les clients que vous avez référés. Certais
-      des chiffres sur cette page incluent des revenus projettés, ou estimés, et
-      ne sont donc pas des montants exacts que vous pouvez prévoir.
+      <T id="ProRevenuesPage.description" />
     </p>
 
     <ProRevenuesPipeline {...props} />

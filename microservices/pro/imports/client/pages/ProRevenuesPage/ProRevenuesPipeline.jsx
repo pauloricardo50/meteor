@@ -55,7 +55,7 @@ const ProRevenuesPipeline = ({
           value={referredByUserId}
           onChange={setReferredByUserId}
           options={[
-            { id: true, label: 'Tous' },
+            { id: true, label: <T id="general.all" /> },
             {
               id: organisationId,
               label: (
@@ -65,8 +65,14 @@ const ProRevenuesPipeline = ({
                 </span>
               ),
             },
-            { id: 'referral', label: 'Referrals en personne' },
-            { id: 'SELECT_GROUP', label: 'Referrals par agent' },
+            {
+              id: 'referral',
+              label: <T id="ProRevenuesPipeline.referredByUser" />,
+            },
+            {
+              id: 'SELECT_GROUP',
+              label: <T id="ProRevenuesPipeline.referredByUser.group" />,
+            },
             ...users.map(({ _id, name }) => ({ id: _id, label: name })),
           ]}
           className="mr-8"
