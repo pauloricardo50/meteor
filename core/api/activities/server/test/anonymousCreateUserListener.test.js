@@ -48,11 +48,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({
@@ -79,11 +79,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({
@@ -114,11 +114,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({
@@ -152,11 +152,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({

@@ -290,7 +290,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       basicDocumentsOnly,
       customMessage = '',
       assigneeName = 'e-Potek',
-      assigneeAddress = 'info@e-potek.ch',
+      assigneeAddress = 'team@e-potek.ch',
       bccAddresses = [],
       ccAddresses = [],
       mainRecipientIsBcc = false,

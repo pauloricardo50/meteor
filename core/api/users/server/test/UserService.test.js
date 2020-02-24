@@ -459,7 +459,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal('bob@dylan.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Vous avez été invité sur e-Potek');
       expect(
@@ -483,7 +483,7 @@ describe('UserService', function() {
           EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
         );
         expect(address).to.equal('john@doe.com');
-        expect(from_email).to.equal('info@e-potek.ch');
+        expect(from_email).to.equal('team@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('Invitation réussie');
         expect(
@@ -829,7 +829,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal('bob@dylan.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('e-Potek - "Rue du four 1"');
 
@@ -895,7 +895,7 @@ describe('UserService', function() {
       expect(template_name).to.equal(
         EMAIL_TEMPLATES.PROMOTION_INVITATION.mandrillId,
       );
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Promotion immobilière Test promotion');
       expect(title).to.equal("Test promotion, Réservation d'un logement");
@@ -1020,7 +1020,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal(userToInvite.email);
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('e-Potek - "Rue du parc 4"');
       expect(

@@ -1092,7 +1092,7 @@ describe('LoanService', function() {
       expect(status).to.equal('sent');
       expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
       expect(address).to.equal('john@doe.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
       expect(
