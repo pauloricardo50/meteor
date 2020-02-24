@@ -3,9 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { FILE_STATUS, ROLES } from 'core/api/constants';
-import DialogForm from 'core/components/ModalManager/DialogForm';
-import { setFileError } from 'core/api/methods/index';
+import { FILE_STATUS, ROLES } from '../../../api/constants';
+import { setFileError } from '../../../api/methods/index';
+import DialogForm from '../../ModalManager/DialogForm';
 import T from '../../Translation';
 import DropdownMenu from '../../DropdownMenu';
 import { ModalManagerContext } from '../../ModalManager';

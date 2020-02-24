@@ -11,6 +11,7 @@ export const taskTableFragment = {
   assigneeLink: 1,
   assignee: { name: 1, roles: 1 },
   createdAt: 1,
+  createdBy: 1,
   description: 1,
   dueAt: 1,
   lender: { organisation: { name: 1 } },
@@ -48,17 +49,19 @@ const TasksTable = ({
 
   return (
     <>
-      {children}
-      {renderTable && setStatus && (
-        <TaskTableFilters
-          assignee={assignee}
-          status={status}
-          setStatus={setStatus}
-          setAssignee={setAssignee}
-          uptoDate={uptoDate}
-          setUptoDate={setUptoDate}
-        />
-      )}
+      <div className="flex center-align">
+        {children}
+        {renderTable && setStatus && (
+          <TaskTableFilters
+            assignee={assignee}
+            status={status}
+            setStatus={setStatus}
+            setAssignee={setAssignee}
+            uptoDate={uptoDate}
+            setUptoDate={setUptoDate}
+          />
+        )}
+      </div>
       {renderTable ? (
         <TableComponent
           columnOptions={columnOptions}

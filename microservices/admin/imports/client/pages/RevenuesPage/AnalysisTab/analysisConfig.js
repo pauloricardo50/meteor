@@ -7,6 +7,7 @@ import {
   REVENUE_STATUS,
   ACTIVITIES_COLLECTION,
   TASKS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
   ACTIVITY_TYPES,
 } from 'core/api/constants';
 
@@ -22,7 +23,17 @@ const analysisConfig = {
         `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
     },
     residenceType: { id: 'Forms.residenceType' },
-    'user.roles': { id: 'Forms.roles' },
+    user: [
+      {
+        id: 'Forms.roles',
+        fragment: { roles: 1, referredByOrganisation: { name: 1 } },
+        format: ({ user }) => user?.roles,
+      },
+      {
+        id: 'Référé par',
+        format: ({ user }) => user?.referredByOrganisation?.name,
+      },
+    ],
     createdAt: [
       {
         label: 'Création Mois-Année',
@@ -51,10 +62,14 @@ const analysisConfig = {
         format: ({ assignees = [] }) => assignees.length,
       },
     ],
-    'structure.wantedLoan': { id: 'Forms.wantedLoan' },
+    structureCache: {
+      fragment: { wantedLoan: 1, offerId: 1 },
+      id: 'Forms.wantedLoan',
+      format: ({ structureCache }) => structureCache?.wantedLoan,
+    },
     revenues: [
       {
-        id: 'collections.revenues',
+        id: 'Revenus totaux',
         fragment: { amount: 1, status: 1 },
         format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
@@ -64,6 +79,13 @@ const analysisConfig = {
         format: ({ revenues = [] }) =>
           revenues
             .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
+            .reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus projetés',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
             .reduce((t, { amount }) => t + amount, 0),
       },
     ],
@@ -81,6 +103,28 @@ const analysisConfig = {
         },
       },
     ],
+    lendersCache: {
+      label: "Nb. d'offres reçues",
+      format: ({ lendersCache = [] }) =>
+        lendersCache.reduce(
+          (t, { offersCache = [] }) => t + offersCache.length,
+          0,
+        ),
+    },
+    lenders: {
+      fragment: { organisation: { name: 1 }, offersCache: 1 },
+      label: 'Prêteur retenu',
+      format: ({ structureCache, lenders }) => {
+        const offerSelected = structureCache?.offerId;
+
+        if (offerSelected) {
+          const lender = lenders.find(({ offersCache = [] }) =>
+            offersCache.find(({ _id }) => _id === offerSelected),
+          );
+          return lender?.organisation?.name;
+        }
+      },
+    },
   },
   [REVENUES_COLLECTION]: {
     amount: { id: 'Forms.amount' },
@@ -151,12 +195,18 @@ const analysisConfig = {
   [USERS_COLLECTION]: {
     roles: { id: 'Forms.roles' },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
+    'referredByUser.name': { label: 'Référé par compte' },
     createdAt: {
       label: 'Création Mois-Année',
       format: makeFormatDate('createdAt'),
     },
     'assignedEmployee.name': { label: 'Conseiller' },
     acquisitionChannel: { id: 'Forms.acquisitionChannel' },
+    loans: {
+      fragment: { _id: 1 },
+      label: 'Nb. de dossiers',
+      format: ({ loans = [] }) => loans.length,
+    },
   },
   [BORROWERS_COLLECTION]: {
     age: { id: 'Forms.age' },
@@ -219,6 +269,64 @@ const analysisConfig = {
       id: 'Forms.assignedTo',
       format: ({ assignee }) => assignee?.name,
     },
+  },
+  [ORGANISATIONS_COLLECTION]: {
+    name: {
+      id: 'Forms.name',
+    },
+    type: {
+      id: 'Forms.type',
+    },
+    features: {
+      id: 'Forms.features',
+    },
+    userLinks: {
+      label: 'Nb. de comptes',
+      format: ({ userLinks = [] }) => userLinks.length,
+    },
+    referredUsersCount: {
+      label: 'Nb. de clients référés',
+    },
+    commissionRate: {
+      label: 'Taux de commissionnement actuel',
+    },
+    generatedRevenues: {
+      label: 'Revenus générés',
+    },
+    lenders: [
+      {
+        fragment: {
+          offers: { maxAmount: 1 },
+          loan: {
+            structureCache: { offerId: 1 },
+          },
+        },
+        label: 'Offres faites',
+        format: ({ lenders = [] }) =>
+          lenders.reduce((t, { offers = [] }) => t + offers.length, 0),
+      },
+      {
+        label: 'Offres retenues',
+        format: ({ lenders = [] }) =>
+          lenders.reduce((t, { offers = [], loan }) => {
+            const chosenOffer = loan?.structureCache?.offerId
+              ? offers
+                  .map(({ _id }) => _id)
+                  .includes(loan.structureCache.offerId)
+              : false;
+            return chosenOffer ? t + 1 : t;
+          }, 0),
+      },
+      {
+        label: "Volume d'offres faites",
+        format: ({ lenders = [] }) =>
+          lenders.reduce((t, { offers = [] }) => {
+            const amounts = offers.map(({ maxAmount = 0 }) => maxAmount);
+            const maxOfferMade = Math.max(0, ...amounts);
+            return t + maxOfferMade;
+          }, 0),
+      },
+    ],
   },
 };
 

@@ -12,11 +12,11 @@ import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
 
-const checkFile = (file, currentValue = [], tempFiles = []) => {
-  if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
+export const checkFile = (file, currentValue = [], tempFiles = []) => {
+  if (file.type && ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
     return 'fileType';
   }
-  if (file.size > MAX_FILE_SIZE) {
+  if (file.size && file.size > MAX_FILE_SIZE) {
     return 'fileSize';
   }
   if (

@@ -50,7 +50,11 @@ PromotionLots.addReducers({
         }
       }
 
-      if ([PROMOTION_LOT_STATUS.SOLD].includes(status)) {
+      if (
+        [PROMOTION_LOT_STATUS.SOLD, PROMOTION_LOT_STATUS.RESERVED].includes(
+          status,
+        )
+      ) {
         return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
       }
 

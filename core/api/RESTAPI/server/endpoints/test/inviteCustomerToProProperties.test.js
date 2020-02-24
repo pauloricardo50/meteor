@@ -11,7 +11,7 @@ import {
   PROPERTY_STATUS,
 } from '../../../../properties/propertyConstants';
 import SlackService from '../../../../slack/server/SlackService';
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
 import {

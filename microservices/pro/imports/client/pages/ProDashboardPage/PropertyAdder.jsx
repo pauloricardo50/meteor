@@ -8,6 +8,7 @@ import { proPropertyInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
 import { moneyField, address } from 'core/api/helpers/sharedSchemas';
+import Icon from 'core/components/Icon';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 export const proPropertySchema = new SimpleSchema({
@@ -25,6 +26,7 @@ const PropertyAdder = ({ history, currentUser: { _id: userId } }) => (
       label: <T id="ProDashboardPage.addProperty" />,
       raised: true,
       primary: true,
+      icon: <Icon type="add" />,
     }}
     schema={proPropertySchema}
     onSubmit={property =>

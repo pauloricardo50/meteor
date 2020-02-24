@@ -1,14 +1,6 @@
 import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
-export const loanInsert = new Method({
-  name: 'loanInsert',
-  params: {
-    loan: Object,
-    userId: Match.Optional(String),
-  },
-});
-
 export const loanUpdate = new Method({
   name: 'loanUpdate',
   params: {
@@ -21,14 +13,6 @@ export const loanDelete = new Method({
   name: 'loanDelete',
   params: {
     loanId: String,
-  },
-});
-
-export const confirmClosing = new Method({
-  name: 'confirmClosing',
-  params: {
-    loanId: String,
-    object: Object,
   },
 });
 

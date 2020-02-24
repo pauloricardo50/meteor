@@ -40,7 +40,8 @@ const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall }) => {
     if (refetchOnMethodCall) {
       // Make sure there are no clashes between multiple queries with the
       // same name
-      const queryName = `${query.queryName || query}-hook-${uniqueId}`;
+      const queryName = `${(query && query.queryName) ||
+        query}-hook-${uniqueId}`;
       ClientEventService.addListener(queryName, refetch);
       addQueryToRefetch(queryName, refetchOnMethodCall);
       return () => {

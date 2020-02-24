@@ -135,6 +135,21 @@
     margin-bottom: 16px;
   }
 
+  &-description {
+    a {
+      text-decoration: underline;
+
+      &:hover {
+        color: $primary;
+        cursor: pointer;
+    
+        > * {
+          color: $primary;
+        }
+      }
+    }
+  }
+
   .timeline-title {
     .activity-modifier {
       position: absolute;

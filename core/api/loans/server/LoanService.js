@@ -30,7 +30,7 @@ import {
   lenderRules as lenderRulesFragment,
   userLoan,
 } from '../../fragments';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -233,9 +233,6 @@ class LoanService extends CollectionService {
     this.addNewStructure({ loanId });
     return loanId;
   };
-
-  confirmClosing = ({ loanId, object }) =>
-    this.update({ loanId, object: { status: LOAN_STATUS.BILLING, ...object } });
 
   pushValue = ({ loanId, object }) =>
     this.baseUpdate(loanId, { $push: object });

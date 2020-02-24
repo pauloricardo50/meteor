@@ -12,7 +12,7 @@ import {
 import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
 
 import PropertyService from 'core/api/properties/server/PropertyService';
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
@@ -27,6 +27,10 @@ let propertyId = '';
 api.addEndpoint('/files', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
+  analyticsParams: req => {
+    const { files: { file = {} } = {} } = req;
+    return { fileSize: file.size };
+  },
 });
 
 describe('REST: uploadFile', function() {

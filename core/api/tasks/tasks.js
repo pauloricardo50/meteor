@@ -96,6 +96,14 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  contactLink: {
+    type: Object,
+    optional: true,
+  },
+  'contactLink._id': {
+    type: String,
+    optional: true,
+  },
   isPrivate: {
     type: Boolean,
     defaultValue: false,

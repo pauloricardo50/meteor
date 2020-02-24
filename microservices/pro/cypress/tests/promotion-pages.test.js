@@ -45,7 +45,7 @@ describe('Promotion pages', () => {
   });
 
   it('can add users to a property', () => {
-    cy.contains('Ajouter bien immobilier').click();
+    cy.contains('Bien immobilier').click();
 
     cy.get('input[name=address1]').type('Rue du test 1');
     cy.get('input[name=city]').type('Genève');

@@ -1,6 +1,7 @@
 import React from 'react';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import T from 'imports/core/components/Translation/';
+import T from 'core/components/Translation/';
+import Icon from 'core/components/Icon';
 import InterestRatesDialogFormContainer from './InterestRatesDialogFormContainer';
 
 const InsertInterestRatesDialogForm = ({
@@ -14,9 +15,11 @@ const InsertInterestRatesDialogForm = ({
     model={{ date: new Date() }}
     onSubmit={insertInterestRates}
     buttonProps={{
-      label: <T id="InterestRates.insert" />,
+      label: 'Taux',
       raised: true,
       primary: true,
+      icon: <Icon type="add" />,
+      className: 'mt-16',
     }}
     title={<T id="InterestRates.insert" />}
   >

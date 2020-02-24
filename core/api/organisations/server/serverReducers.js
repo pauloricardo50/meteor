@@ -9,8 +9,8 @@ Organisations.addReducers({
       RevenueService.getGeneratedRevenues({ organisationId }),
   },
   commissionRate: {
-    body: { commissionRates: 1 },
-    reduce: ({ commissionRates = [], _id: organisationId }) => {
+    body: { commissionRates: 1, name: 1 },
+    reduce: ({ commissionRates = [], _id: organisationId, name }) => {
       let generatedRevenues = 0;
       if (commissionRates.length > 1) {
         generatedRevenues = RevenueService.getGeneratedRevenues({
@@ -18,7 +18,7 @@ Organisations.addReducers({
         });
       }
 
-      return getCurrentRate(commissionRates, generatedRevenues);
+      return getCurrentRate(commissionRates, generatedRevenues, name);
     },
   },
 });

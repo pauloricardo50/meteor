@@ -5,7 +5,7 @@ import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import { TRENDS } from '../../../../constants';
 import RESTAPI from '../../RESTAPI';
 import {

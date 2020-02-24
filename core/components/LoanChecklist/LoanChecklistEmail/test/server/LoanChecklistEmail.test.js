@@ -5,7 +5,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { formatMessage } from 'core/utils/server/intl';
 import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import { sendLoanChecklist } from 'core/api/loans/index';
-import generator from 'core/api/factories';
+import generator from 'core/api/factories/server';
 import { checkEmails } from 'core/utils/testHelpers/index';
 import { EMAIL_IDS } from 'core/api/constants';
 import { getChecklistMissingInformations } from '../../../helpers';

@@ -20,5 +20,6 @@ import '../../revenues/server/exposures';
 import '../../sessions/server/exposures';
 import '../../stats/server/exposures';
 import '../../users/server/exposures';
+import '../../front/server/exposures';
 import './exposures';
 import './globalExposures';

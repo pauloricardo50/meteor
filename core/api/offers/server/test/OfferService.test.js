@@ -3,12 +3,12 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import generator from 'core/api/factories/index';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import generator from '../../../factories/server';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_TEMPLATES, EMAIL_IDS } from '../../../email/emailConstants';
-import OfferService from '../OfferService';
 import { offerSendFeedback } from '../../methodDefinitions';
+import OfferService from '../OfferService';
 
 describe('OfferService', () => {
   let offer;

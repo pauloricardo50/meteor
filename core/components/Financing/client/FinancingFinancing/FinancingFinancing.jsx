@@ -3,7 +3,7 @@ import React from 'react';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
 import T from '../../../Translation';
 import FinancingSection, {
-  InputAndSlider,
+  FinancingField,
   CalculatedValue,
 } from '../FinancingSection';
 import Calc, { getOffer } from '../FinancingCalculator';
@@ -73,7 +73,7 @@ const FinancingFinancing = props => (
     ]}
     detailConfig={[
       {
-        Component: InputAndSlider,
+        Component: FinancingField,
         id: 'wantedLoan',
         max: calculateMaxLoan,
       },

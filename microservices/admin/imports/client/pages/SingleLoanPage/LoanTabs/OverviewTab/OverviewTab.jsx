@@ -11,6 +11,7 @@ import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import LoanNotes from 'core/components/LoanNotes';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
+import LinkToFront from '../../../../components/LinkToFront';
 import LoanAssigneeManager from '../../../../components/LoanAssigneeManager/LoanAssigneeManager';
 import BorrowerAge from '../BorrowerAge';
 import LoanObject from './LoanObject';
@@ -24,7 +25,7 @@ const OverviewTab = props => {
     loan,
     currentUser: { roles },
   } = props;
-  const { borrowers, _id: loanId } = loan;
+  const { borrowers, _id: loanId, frontTagId } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -66,10 +67,11 @@ const OverviewTab = props => {
             loan={loan}
             currentUser={props.currentUser}
           />
+          <LinkToFront tagId={frontTagId} />
         </div>
       </div>
 
-      <LoanTimeline loanId={loanId} />
+      <LoanTimeline loanId={loanId} frontTagId={frontTagId} />
 
       <LoanNotes loan={loan} />
 

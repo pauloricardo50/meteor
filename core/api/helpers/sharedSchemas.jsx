@@ -1,12 +1,12 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import countries from 'i18n-iso-countries';
+
+import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/constants';
 import {
   getSortedCountriesCodes,
   COMMON_COUNTRIES,
-} from 'core/utils/countriesUtils';
+} from '../../utils/countriesUtils';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
@@ -223,4 +223,11 @@ export const decimalNegativeMoneyField = {
   type: Number,
   min: -1000000000,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL },
+};
+
+export const negativeMoneyField = {
+  ...moneyField,
+  type: Number,
+  min: -1000000000,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE },
 };

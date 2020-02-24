@@ -15,6 +15,8 @@ import T from 'core/components/Translation';
 import Box from 'core/components/Box';
 import { ROLES } from 'core/api/users/userConstants';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { REVENUE_STATUS } from 'core/api/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(
@@ -30,13 +32,13 @@ const getSchema = currentUser =>
     assigneeLink: { type: Object, optional: true, uniforms: { label: ' ' } },
     'assigneeLink._id': {
       type: String,
-      defaultValue: currentUser && currentUser._id,
+      defaultValue: currentUser?._id,
       customAllowedValues: {
         query: adminUsers,
         params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
       },
       uniforms: {
-        transform: ({ name }) => name,
+        transform: assignee => assignee?.name,
         labelProps: { shrink: true },
         label: 'Responsable du revenu',
         displayEmtpy: false,
@@ -52,7 +54,7 @@ const getSchema = currentUser =>
         params: () => ({ $body: { name: 1 } }),
       },
       uniforms: {
-        transform: ({ name }) => name,
+        transform: org => org?.name,
         labelProps: { shrink: true },
         label: <T id="Forms.organisationName" />,
         displayEmtpy: false,
@@ -72,7 +74,7 @@ const getSchema = currentUser =>
         params: () => ({ $body: { name: 1 } }),
       },
       uniforms: {
-        transform: ({ name }) => name,
+        transform: org => org?.name,
         displayEmpty: false,
         labelProps: { shrink: true },
         placeholder: '',
@@ -82,6 +84,12 @@ const getSchema = currentUser =>
       uniforms: { labelProps: { shrink: true } },
       optional: false,
     }),
+    paidAt: {
+      type: Date,
+      required: false,
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+      condition: ({ status }) => status === REVENUE_STATUS.CLOSED,
+    },
   });
 
 const revenueFormLayout = [
@@ -104,7 +112,7 @@ const revenueFormLayout = [
     Component: Box,
     title: <h4>Payé par</h4>,
     className: 'mb-32 grid-2',
-    fields: ['expectedAt', 'sourceOrganisationLink._id'],
+    fields: ['expectedAt', 'sourceOrganisationLink._id', 'paidAt'],
   },
   {
     Component: Box,

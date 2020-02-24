@@ -42,6 +42,9 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
   switch (status) {
     case LOAN_STATUS.ONGOING: {
       return new Promise((resolve, reject) => {
+        if (loan.disbursementDate) {
+          return resolve();
+        }
         openModal({
           title: getTitle(status),
           description:

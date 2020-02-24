@@ -235,7 +235,7 @@ describe('Pro promotion', () => {
 
         cy.get('.pro-dashboard-page').contains('Rien à afficher');
 
-        cy.contains('Ajouter promotion immobilière').click();
+        cy.contains('Promotion immobilière').click();
 
         cy.get('input[name=name]').type('New promotion');
         cy.setSelect('type', 'CREDIT');

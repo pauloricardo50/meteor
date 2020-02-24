@@ -1,0 +1,20 @@
+@import "../node_modules/normalize-scss/sass/normalize/import-now";
+
+@import './core/assets/css/variables.scss';
+@import './core/assets/css/core-styles.scss';
+
+@import './core/components/StatusLabel/StatusLabel.scss';
+@import './core/components/PremiumBadge/PremiumBadge.scss';
+@import './core/components/LoanNotes/LoanNotes.scss';
+
+@import './components/styles.scss';
+
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+}
+
+
+

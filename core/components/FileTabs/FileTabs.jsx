@@ -18,6 +18,7 @@ import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
 import T from '../Translation';
+import Icon from '../Icon';
 import ConfirmMethod from '../ConfirmMethod';
 import ZipLoan from './ZipLoan';
 import LoanGoogleDrive from './LoanGoogleDrive';
@@ -124,11 +125,12 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                         <div>
                           <ConfirmMethod
                             method={() => addBorrower.run({ loanId: loan._id })}
-                            label="Ajouter emprunteur"
+                            label="Emprunteur"
                             buttonProps={{
                               raised: true,
                               primary: true,
                               style: { marginBottom: 16 },
+                              icon: <Icon type="add" />,
                             }}
                           />
                         </div>

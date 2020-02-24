@@ -1,6 +1,7 @@
 import Contacts from '.';
 
-import { Users, Organisations, Lenders, Offers } from '..';
+import { Users, Organisations, Lenders, Offers, Tasks } from '..';
+import LinkInitializer from '../links/LinkInitializer';
 
 Contacts.addLinks({
   user: {
@@ -17,4 +18,14 @@ Contacts.addLinks({
     collection: Lenders,
     inversedBy: 'contact',
   },
+});
+
+LinkInitializer.inversedInit(() => {
+  Contacts.addLinks({
+    tasks: {
+      collection: Tasks,
+      inversedBy: 'contact',
+      autoremove: true,
+    },
+  });
 });

@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import intl, { formatMessage as clientFormatMessage } from 'core/utils/intl';
+import intl, { formatMessage as clientFormatMessage } from '../../utils/intl';
 import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
@@ -17,7 +17,7 @@ export const documentHasTooltip = documentId => {
   let formatMessage = clientFormatMessage;
   if (Meteor.isServer || Meteor.isTest) {
     // email checklist is called on server and needs messages
-    const messagesFR = require('core/lang/fr.json');
+    const messagesFR = require('../../lang/fr.json');
     intl.init(messagesFR);
     formatMessage = intl.formatMessage.bind(intl);
   }

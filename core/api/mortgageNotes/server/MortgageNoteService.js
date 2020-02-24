@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import MortgageNotes from '../mortgageNotes';
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 
 class MortgageNoteService extends CollectionService {
   constructor() {

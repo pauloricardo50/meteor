@@ -6,23 +6,32 @@ import colors from '../../config/colors';
 import {
   PROMOTION_STATUS,
   PROMOTIONS_COLLECTION,
-  PROMOTION_LOTS_COLLECTION,
+} from '../../api/promotions/promotionConstants';
+import {
   PROMOTION_LOT_STATUS,
   PROMOTION_LOT_REDUCED_STATUS,
-  TASKS_COLLECTION,
-  TASK_STATUS,
-  LOANS_COLLECTION,
-  LOAN_STATUS,
-  LENDERS_COLLECTION,
-  LENDER_STATUS,
-  PROPERTIES_COLLECTION,
-  PROPERTY_STATUS,
+  PROMOTION_LOTS_COLLECTION,
+} from '../../api/promotionLots/promotionLotConstants';
+import {
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_STATUS,
+} from '../../api/promotionOptions/promotionOptionConstants';
+import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
+import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
+import {
   REVENUES_COLLECTION,
   REVENUE_STATUS,
   COMMISSION_STATUS,
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_OPTION_STATUS,
-} from '../../api/constants';
+} from '../../api/revenues/revenueConstants';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_STATUS,
+} from '../../api/properties/propertyConstants';
+import {
+  LENDERS_COLLECTION,
+  LENDER_STATUS,
+} from '../../api/lenders/lenderConstants';
+
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
 import { updateDocument } from '../../api/methods/methodDefinitions';
@@ -106,6 +115,7 @@ export const getStatuses = collection => {
       throw new Error(`Unknown collection "${collection}" in StatusLabel`);
   }
 };
+
 const getLabel = ({
   allowModify,
   color,
@@ -115,12 +125,13 @@ const getLabel = ({
   suffix,
   variant,
   className,
+  small,
 }) => {
   switch (variant) {
     case 'full':
       return props => (
         <span
-          className={cx('status-label', { allowModify }, className)}
+          className={cx('status-label', { allowModify, small }, className)}
           style={{ backgroundColor: color || statuses[status] }}
           {...props}
         >
@@ -168,6 +179,7 @@ const StatusLabel = ({
   showTooltip = true,
   method,
   className,
+  small,
 }) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -180,6 +192,7 @@ const StatusLabel = ({
     suffix,
     variant,
     className,
+    small,
   });
 
   if (allowModify) {

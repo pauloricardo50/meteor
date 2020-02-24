@@ -69,6 +69,12 @@ echo "Installing npm packages in .deployment"
 echo "Creating language files"
 meteor npx babel-node ./createLanguages.js
 
+echo "Preparing front app plugin"
+( cd ../plugins/frontPlugin && npm rebuild node-sass );
+( cd ../plugins/frontPlugin && npm i -q );
+ln -s ../../../core ../plugins/frontPlugin/src/core
+( cd ../plugins/frontPlugin && meteor npm run build-production );
+
 end=`date +%s`
 runtime=$((end-start))
 

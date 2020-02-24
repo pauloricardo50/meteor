@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from 'core/components/Icon';
-import colors from 'core/config/colors';
-import { FILE_STATUS } from 'core/api/constants';
+import colors from '../../../config/colors';
+import { FILE_STATUS } from '../../../api/constants';
+import Icon from '../../Icon';
 
 const styles = { icon: { width: 32, height: 24 } };
 

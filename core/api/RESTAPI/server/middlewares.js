@@ -24,6 +24,8 @@ import {
   getRequestType,
   requestTypeIsAllowed,
   shouldSkipMiddleware,
+  checkCustomAuth,
+  getAnalyticsParams,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -37,8 +39,8 @@ const bodyParserUrlEncodedMiddleware = () =>
   });
 
 const selectAuthTypeMiddleware = (options = {}) => (req, res, next) => {
-  req.authenticationType = getRequestType(req);
   const endpointOptions = getMatchingPathOptions(req, options);
+  req.authenticationType = getRequestType(req, endpointOptions);
   const { endpointName } = endpointOptions;
 
   // Unknown endpoint
@@ -311,17 +313,27 @@ const analyticsMiddleware = options => (req, res, next) => {
   if (shouldSkipMiddleware({ req, middleware: 'analyticsMiddleware' })) {
     return next();
   }
-  let analyticsParams = {};
-  const { authenticationType } = req;
 
-  if (authenticationType === 'multipart') {
-    const { files: { file = {} } = {} } = req;
-    if (file.size) {
-      analyticsParams = { fileSize: file.size };
-    }
+  const analyticsParams = getAnalyticsParams({ req, options });
+  req.analyticsParams = analyticsParams;
+
+  next();
+};
+
+const customAuthMiddleware = options => (req, res, next) => {
+  if (shouldSkipMiddleware({ req, middleware: 'customAuthMiddleware' })) {
+    return next();
   }
 
-  req.analyticsParams = analyticsParams;
+  const endpointOptions = getMatchingPathOptions(req, options);
+
+  const { customAuth } = endpointOptions;
+
+  try {
+    checkCustomAuth({ customAuth, req });
+  } catch (error) {
+    return next(REST_API_ERRORS.AUTHENTICATION_FAILED(error));
+  }
 
   next();
 };
@@ -335,6 +347,7 @@ export const preMiddlewares = [
   authMiddleware,
   simpleAuthMiddleware,
   basicAuthMiddleware,
+  customAuthMiddleware,
   replayHandlerMiddleware,
   analyticsMiddleware,
 ];

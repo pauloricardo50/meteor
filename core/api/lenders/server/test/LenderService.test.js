@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import TaskService from '../../../tasks/server/TaskService';
 import OfferService from '../../../offers/server/OfferService';

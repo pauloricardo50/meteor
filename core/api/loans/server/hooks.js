@@ -11,6 +11,7 @@ import formatNumbersHook, {
   formatPhoneNumber,
 } from '../../../utils/phoneFormatting';
 import LoanService from './LoanService';
+import FrontService from '../../front/server/FrontService';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
@@ -135,3 +136,17 @@ Loans.after.update(
     }
   },
 );
+
+Loans.before.remove((userId, { frontTagId }) => {
+  if (frontTagId) {
+    FrontService.listTagConversations({ tagId: frontTagId, limit: 1 }).then(
+      ({ _results }) => {
+        // if there are no conversations related to a loan, and it is removed,
+        // remove this particular tag, as it is useless
+        if (_results?.length === 0) {
+          FrontService.deleteTag({ tagId: frontTagId });
+        }
+      },
+    );
+  }
+});

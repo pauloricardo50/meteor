@@ -4,7 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { setAPIUser } from 'core/api/RESTAPI/server/helpers';
 import { proInviteUser } from '../../../methods';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
 import { checkEmails } from '../../../../utils/testHelpers';
 import { ddpWithUserId } from '../../../methods/methodHelpers';

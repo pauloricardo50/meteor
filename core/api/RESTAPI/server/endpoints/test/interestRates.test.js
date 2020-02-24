@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import generator from '../../../../factories';
+import generator from '../../../../factories/server';
 import { TRENDS, INTEREST_RATES } from '../../../../constants';
 import RESTAPI from '../../RESTAPI';
 import {

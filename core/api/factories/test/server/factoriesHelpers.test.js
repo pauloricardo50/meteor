@@ -4,7 +4,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from '../../factoriesHelpers';
+import generator from '../../server';
 
 const PostCollection = new Mongo.Collection('posts');
 const CategoryCollection = new Mongo.Collection('categories');

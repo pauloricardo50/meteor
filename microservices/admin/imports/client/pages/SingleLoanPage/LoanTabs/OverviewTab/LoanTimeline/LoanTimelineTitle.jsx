@@ -11,6 +11,7 @@ const icons = {
   [ACTIVITY_TYPES.OTHER]: 'radioButtonChecked',
   [ACTIVITY_TYPES.PHONE]: 'phone',
   [ACTIVITY_TYPES.MAIL]: 'markunreadMailbox',
+  front: { src: '/img/front-logo.svg' },
   task: 'check',
 };
 

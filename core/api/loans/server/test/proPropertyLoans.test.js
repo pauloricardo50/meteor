@@ -6,7 +6,7 @@ import {
   RESIDENCE_TYPE,
   PROPERTY_CATEGORY,
 } from 'core/api/properties/propertyConstants';
-import generator from '../../../factories/index';
+import generator from '../../../factories/server';
 import { proPropertyLoans } from '../../queries';
 import { SOLVENCY_TYPE } from '../../loanConstants';
 

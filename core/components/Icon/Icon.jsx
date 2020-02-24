@@ -58,6 +58,7 @@ import Report from '@material-ui/icons/Report';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import DeleteSweep from '@material-ui/icons/DeleteSweep';
 import GroupAdd from '@material-ui/icons/GroupAdd';
+import Group from '@material-ui/icons/Group';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
 import FilterList from '@material-ui/icons/FilterList';
@@ -89,6 +90,7 @@ import Schedule from '@material-ui/icons/Schedule';
 import Send from '@material-ui/icons/Send';
 import Airplay from '@material-ui/icons/Airplay';
 import HowToReg from '@material-ui/icons/HowToReg';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import colors from '../../config/colors';
 
@@ -146,11 +148,13 @@ export const iconMap = {
   deleteForever: DeleteForever,
   deleteSweep: DeleteSweep,
   groupAdd: GroupAdd,
+  group: Group,
   edit: Edit,
   trendingUp: TrendingUp,
   trendingDown: TrendingDown,
   trendingFlat: TrendingFlat,
   expandMore: ExpandMoreIcon,
+  expandLess: ExpandLessIcon,
   backupRestore: SettingsBackupRestore,
   filter: FilterList,
   arrowUp: ArrowUpward,

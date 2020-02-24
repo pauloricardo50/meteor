@@ -46,6 +46,7 @@ const LoanSchema = new SimpleSchema({
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
+  structureCache: { type: Object, optional: true, blackbox: true },
   purchaseType: {
     type: String,
     defaultValue: PURCHASE_TYPE.ACQUISITION,
@@ -160,6 +161,7 @@ const LoanSchema = new SimpleSchema({
       }
     },
   },
+  frontTagId: { type: String, optional: true },
 });
 
 export default LoanSchema;

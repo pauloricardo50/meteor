@@ -73,24 +73,6 @@ const MonitoringTab = () => {
         }}
       />
 
-      <h2 className="text-center">Volume hypothécaire</h2>
-      <LoanMonitoringChart
-        initialValue="loanValue"
-        initialGroupBy="status"
-        allowedGroupBy={['status', 'createdAt']}
-        admins={admins}
-        referringOrganisations={referringOrganisations}
-      />
-
-      <h2 className="text-center">Dossiers</h2>
-      <LoanMonitoringChart
-        initialValue="count"
-        initialGroupBy="createdAt"
-        allowedGroupBy={['status', 'createdAt']}
-        admins={admins}
-        referringOrganisations={referringOrganisations}
-      />
-
       <h2 className="text-center">Activité</h2>
       <MonitoringActivity />
     </div>

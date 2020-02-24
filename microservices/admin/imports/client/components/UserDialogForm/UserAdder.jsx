@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
@@ -10,6 +10,8 @@ import { ROLES } from 'core/api/constants';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api';
+import useSearchParams from 'core/hooks/useSearchParams';
+import Icon from 'core/components/Icon';
 import UserDialogFormContainer from './UserDialogFormContainer';
 
 export const userFormLayout = [
@@ -33,94 +35,108 @@ export const userFormLayout = [
   },
 ];
 
+const getSchema = ({ schema, organisations }) =>
+  schema.extend(
+    new SimpleSchema({
+      sendEnrollmentEmail: {
+        type: Boolean,
+        optional: true,
+        defaultValue: false,
+      },
+      referredByUserId: {
+        type: String,
+        optional: true,
+        customAllowedValues: {
+          query: adminUsers,
+          params: () => ({
+            roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
+            $body: {
+              name: 1,
+              organisations: { name: 1 },
+              $options: { sort: { name: 1 } },
+            },
+          }),
+          allowNull: true,
+        },
+        uniforms: {
+          transform: pro =>
+            pro ? getUserNameAndOrganisation({ user: pro }) : 'Personne',
+          labelProps: { shrink: true },
+          label: 'Référé par',
+          placeholder: null,
+        },
+      },
+      referredByOrganisation: {
+        type: String,
+        optional: true,
+        allowedValues: organisations,
+        uniforms: {
+          transform: organisation =>
+            organisation ? organisation.name : 'Aucune',
+          labelProps: { shrink: true },
+          label: 'Référé par organisation',
+          placeholder: null,
+        },
+        customAutoValue: model => {
+          const { referredByUserId, referredByOrganisation } = model;
+          if (referredByOrganisation) {
+            return referredByOrganisation;
+          }
+
+          if (!referredByUserId) {
+            return null;
+          }
+
+          const org = organisations.find(({ users = [] }) =>
+            users.some(
+              ({ _id, $metadata: { isMain } }) =>
+                _id === referredByUserId && isMain,
+            ),
+          );
+
+          return org;
+        },
+      },
+    }),
+  );
+
 const UserAdder = ({
   schema,
   currentUser: { _id: adminId },
   createUser,
   labels,
   organisations = [],
-}) => (
-  <AutoFormDialog
-    title={<T id="UserAdder.buttonLabel" />}
-    schema={schema.extend(
-      new SimpleSchema({
-        sendEnrollmentEmail: {
-          type: Boolean,
-          optional: true,
-          defaultValue: false,
-        },
-        referredByUserId: {
-          type: String,
-          optional: true,
-          customAllowedValues: {
-            query: adminUsers,
-            params: () => ({
-              roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
-              $body: {
-                name: 1,
-                organisations: { name: 1 },
-                $options: { sort: { name: 1 } },
-              },
-            }),
-            allowNull: true,
-          },
-          uniforms: {
-            transform: pro =>
-              pro ? getUserNameAndOrganisation({ user: pro }) : 'Personne',
-            labelProps: { shrink: true },
-            label: 'Référé par',
-            placeholder: null,
-          },
-        },
-        referredByOrganisation: {
-          type: String,
-          optional: true,
-          allowedValues: organisations,
-          uniforms: {
-            transform: organisation =>
-              organisation ? organisation.name : 'Aucune',
-            labelProps: { shrink: true },
-            label: 'Référé par organisation',
-            placeholder: null,
-          },
-          customAutoValue: model => {
-            const { referredByUserId, referredByOrganisation } = model;
-            if (referredByOrganisation) {
-              return referredByOrganisation;
-            }
+  model = {},
+  openOnMount,
+}) => {
+  const finalSchema = useMemo(() => getSchema({ schema, organisations }), [
+    schema,
+    organisations,
+  ]);
 
-            if (!referredByUserId) {
-              return null;
-            }
-
-            const org = organisations.find(({ users = [] }) =>
-              users.some(
-                ({ _id, $metadata: { isMain } }) =>
-                  _id === referredByUserId && isMain,
-              ),
-            );
-
-            return org;
-          },
+  return (
+    <AutoFormDialog
+      title={<T id="UserAdder.buttonLabel" />}
+      schema={finalSchema}
+      model={{ ...model, assignedEmployeeId: adminId }}
+      openOnMount={openOnMount}
+      onSubmit={createUser}
+      buttonProps={{
+        label: 'Compte',
+        raised: true,
+        primary: true,
+        icon: <Icon type="add" />,
+      }}
+      autoFieldProps={{
+        labels: {
+          ...labels,
+          sendEnrollmentEmail: <T id="UserAdder.sendEnrollmentEmail" />,
         },
-      }),
-    )}
-    model={{ assignedEmployeeId: adminId }}
-    onSubmit={createUser}
-    buttonProps={{
-      label: <T id="UserAdder.buttonLabel" />,
-      raised: true,
-      primary: true,
-    }}
-    autoFieldProps={{
-      labels: {
-        ...labels,
-        sendEnrollmentEmail: <T id="UserAdder.sendEnrollmentEmail" />,
-      },
-    }}
-    layout={userFormLayout}
-  />
-);
+      }}
+      layout={userFormLayout}
+    />
+  );
+};
 
 export default compose(
   UserDialogFormContainer,
@@ -128,5 +144,16 @@ export default compose(
     query: adminOrganisations,
     dataName: 'organisations',
     params: () => ({ $body: { name: 1, users: { _id: 1 } } }),
+  }),
+  withProps(() => {
+    const searchParams = useSearchParams();
+    return {
+      model: searchParams,
+      openOnMount:
+        searchParams.addUser &&
+        !!Object.keys(searchParams).filter(key =>
+          ['email', 'firstName', 'lastName'].includes(key),
+        ).length,
+    };
   }),
 )(UserAdder);

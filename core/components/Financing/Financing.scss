@@ -1,4 +1,5 @@
 @import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
+@import './client/FinancingFinancing/FinancingFinancing.scss';
 @import './client/FinancingHeader/FinancingHeader.scss';
 @import './client/FinancingLenders/FinancingLenders.scss';
 @import './client/FinancingOffers/FinancingOffers.scss';
@@ -6,8 +7,8 @@
 @import './client/FinancingProject/FinancingProject.scss';
 $labels-width: 180px;
 $structure-width: 320px;
-$item-height: 24px;
-$card1_padding: 24px;
+$item-height: 20px;
+$card1_padding: 20px;
 $result-section-negative-offset: -32px;
 
 .own-funds-icon {
@@ -41,10 +42,10 @@ $result-section-negative-offset: -32px;
   align-items: flex-start;
   flex-direction: column;
 
-  .input-and-slider {
+  .financing-field {
     .money-input {
       width: 100%;
-      margin-bottom: 4px;
+      margin: 0;
     }
   }
 }
@@ -71,7 +72,7 @@ $result-section-negative-offset: -32px;
 
     min-height: $item-height;
     // Use padding on both sides to allow labels to center properly	
-    padding: 8px 0;
+    padding: 4px 0;
   }
 
   .radio-buttons {
@@ -133,7 +134,7 @@ $result-section-negative-offset: -32px;
   overflow-x: scroll;
 
   width: 100%;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 
   background-color: #f7fafb;
 
@@ -380,7 +381,7 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   flex-wrap: nowrap;
   justify-content: flex-start !important;
 
-  .input-and-slider {
+  .financing-field {
     display: flex;
     flex-basis: 0;
     flex-direction: column;

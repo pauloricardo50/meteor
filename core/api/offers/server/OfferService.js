@@ -1,4 +1,4 @@
-import CollectionService from '../../helpers/CollectionService';
+import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import LenderService from '../../lenders/server/LenderService';
 import { LENDER_STATUS } from '../../lenders/lenderConstants';

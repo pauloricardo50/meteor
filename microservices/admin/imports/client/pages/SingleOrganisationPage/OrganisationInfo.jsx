@@ -3,6 +3,7 @@ import React from 'react';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import UploaderArray from 'core/components/UploaderArray';
 import AdminNote from 'core/components/AdminNote';
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];
 
@@ -21,6 +22,11 @@ const OrganisationInfo = ({ currentUser, adminNote, _id, documents }) => (
       currentUser={currentUser}
       allowRequireByAdmin={false}
       variant="simple"
+    />
+    <CollectionTasksTable
+      doc={{ _id }}
+      collection={ORGANISATIONS_COLLECTION}
+      withTaskInsert
     />
   </div>
 );

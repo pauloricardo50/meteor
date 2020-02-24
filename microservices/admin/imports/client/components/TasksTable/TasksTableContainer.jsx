@@ -15,6 +15,7 @@ import {
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
 import Linkify from 'core/components/Linkify';
+import { employeesById } from 'core/arrays/epotekEmployees';
 import TasksTableActions from './TasksTableActions';
 
 const now = moment();
@@ -107,7 +108,19 @@ const makeMapTask = ({
     lender,
     priority,
     createdAt,
+    createdBy,
   } = task;
+
+  const createdByFirstName =
+    createdBy && employeesById[createdBy]?.name.split(' ')[0];
+
+  const assigneeCreatedTask = assignee?._id === createdBy;
+
+  const createdByLabel =
+    createdByFirstName && !assigneeCreatedTask
+      ? ` par ${createdByFirstName}`
+      : '';
+  const createdAtLabel = moment(createdAt).fromNow();
 
   return {
     id: taskId,
@@ -137,7 +150,7 @@ const makeMapTask = ({
       },
       {
         raw: createdAt && createdAt.getTime(),
-        label: moment(createdAt).fromNow(),
+        label: `${createdAtLabel}${createdByLabel}`,
       },
       { raw: dueAt && dueAt.getTime(), label: formatDateTime(dueAt) },
       {

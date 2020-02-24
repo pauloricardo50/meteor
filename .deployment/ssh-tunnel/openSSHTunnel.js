@@ -93,6 +93,8 @@ const openSSHTunnel = ({
     .alias('i', 'ssh_id')
     .array('i')
     .describe('i', 'Random id for the application')
+    .boolean('downloadOnly')
+    .describe('downloadOnly', 'Download as archive and do not restore locally')
     .demandOption(['e', 'i'])
     .help('h')
     .alias('h', 'help').argv;
@@ -126,6 +128,7 @@ const openSSHTunnel = ({
       ),
       sshId: SSH_ID,
       environment,
+      downloadOnly: args.downloadOnly,
     }));
 };
 

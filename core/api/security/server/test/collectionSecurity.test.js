@@ -11,7 +11,7 @@ import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LoanService from '../../../loans/server/LoanService';
-import generator from '../../../factories';
+import generator from '../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { clearBucket } from '../../../files/server/test/S3Service.test';
 import S3Service from '../../../files/server/S3Service';
@@ -762,14 +762,24 @@ describe('Collection Security', () => {
     });
   });
 
-  describe('FileSecurity', () => {
-    describe('isAllowedToAccess', () => {
+  describe('FileSecurity', function() {
+    this.timeout(10000);
+
+    describe('isAllowedToAccess ', () => {
       let userId;
       let user;
 
-      beforeEach(() => {
+      before(function() {
+        if (Meteor.settings.public.microservice !== 'pro') {
+          // When running these tests in parallel, it breaks tests
+          this.parent.pending = true;
+          this.skip();
+        }
+      });
+
+      beforeEach(async () => {
         resetDatabase();
-        clearBucket();
+        await clearBucket();
         user = Factory.create('user');
         userId = user._id;
         sinon.stub(Meteor, 'user').callsFake(() => user);

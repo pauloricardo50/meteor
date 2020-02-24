@@ -49,6 +49,7 @@ const renderSelect = ({
   transform,
   value,
   variant,
+  nullable,
   ...props
 }) => {
   const Item = native ? 'option' : MenuItem;
@@ -82,13 +83,13 @@ const renderSelect = ({
       variant={variant}
     >
       {hasPlaceholder && (
-        <Item value="" disabled>
-          <i>{placeholder}</i>
+        <Item value="" disabled={nullable}>
+          <i className="secondary">{placeholder}</i>
         </Item>
       )}
-      {allowedValues.map(value => (
-        <Item key={value} value={value}>
-          {transform ? transform(value) : value}
+      {allowedValues.map(v => (
+        <Item key={v} value={v}>
+          {transform(v)}
         </Item>
       ))}
     </TextField>
@@ -111,10 +112,13 @@ const renderCheckboxes = ({
   showInlineError,
   transform,
   value,
+  nullable,
   ...props
 }) => {
   let children;
   const filteredProps = wrapField._filterDOMProps(filterDOMProps(props));
+
+  const allValues = nullable ? [undefined, ...allowedValues] : allowedValues;
 
   if (fieldType !== Array) {
     children = (
@@ -125,7 +129,7 @@ const renderCheckboxes = ({
         ref={inputRef}
         value={value}
       >
-        {allowedValues.map(item => (
+        {allValues.map(item => (
           <FormControlLabel
             control={<Radio id={`${id}-${item}`} {...filteredProps} />}
             key={item}
@@ -140,7 +144,7 @@ const renderCheckboxes = ({
 
     children = (
       <FormGroup id={id}>
-        {allowedValues.map(item => (
+        {allValues.map(item => (
           <FormControlLabel
             control={
               <SelectionControl
