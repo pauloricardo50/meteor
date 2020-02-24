@@ -158,10 +158,10 @@ class Analytics {
     this.analytics.identify({
       userId: this.userId,
       traits: {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
-        role: this.user.roles[0],
+        firstName: this.user?.firstName,
+        lastName: this.user?.lastName,
+        email: this.user?.email,
+        role: this.user?.roles[0],
       },
     });
   }

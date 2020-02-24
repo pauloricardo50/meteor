@@ -18,6 +18,7 @@ const FRONT_API_TOKEN = Meteor.settings.front?.apiToken;
 const API_PATH = 'https://api2.frontapp.com';
 const LOANS_TAG_ID = 'tag_9hgg2';
 export const LOANS_TAG_URL = `https://api2.frontapp.com/tags/${LOANS_TAG_ID}`;
+const FRONT_WEBHOOK_ANALYTICS_USER_ID = 'front_webhook';
 
 const frontEndpoints = {
   updateConversation: {
@@ -123,7 +124,6 @@ export class FrontService {
     const data = req.body;
 
     const isValid = this.validateFrontSignature(data, signature);
-
     return {
       isAuthenticated: isValid,
       error:
@@ -132,6 +132,7 @@ export class FrontService {
           ERROR_CODES.UNAUTHORIZED,
           'Front signature verification failed',
         ),
+      user: { _id: FRONT_WEBHOOK_ANALYTICS_USER_ID },
     };
   }
 
