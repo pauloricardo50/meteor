@@ -8,6 +8,8 @@ export const getLoanTag = loan => {
   return `loan/${name.replace('-', '_')}`;
 };
 
+const {Front} = window;
+
 const LoanTagger = ({ loan, conversation }) => {
   const { _id: loanId } = loan;
   const { tags = [], id: conversationId } = conversation;
@@ -31,6 +33,7 @@ const LoanTagger = ({ loan, conversation }) => {
           conversationId,
         }).then(() => {
           setIsTagged(true);
+          Front.moveToInbox('team');
         });
       }}
       value={isTagged}
