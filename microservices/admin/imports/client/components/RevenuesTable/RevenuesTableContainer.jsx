@@ -16,11 +16,11 @@ import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 
 const now = moment();
-export const formatDateTime = (date, toNow) => {
+const formatDateTime = (date, status) => {
   const momentDate = moment(date);
   const text = date ? momentDate.format("D MMM 'YY") : '-';
 
-  if (momentDate.isBefore(now)) {
+  if (momentDate.isBefore(now) && status !== REVENUE_STATUS.CLOSED) {
     return (
       <span className="error-box" style={{ whiteSpace: 'nowrap' }}>
         {text}
@@ -93,7 +93,7 @@ export const makeMapRevenue = ({
       },
       {
         raw: date && date.getTime(),
-        label: date && formatDateTime(date),
+        label: date && formatDateTime(date, status),
       },
       {
         raw: type,
