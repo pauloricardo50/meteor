@@ -1,8 +1,12 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTag } from '@fortawesome/pro-light-svg-icons/faTag';
+
 import FrontConversationTaggerContainer from './FrontConversationTaggerContainer';
 import FrontConversationTaggerResults from './FrontConversationTaggerResults';
 import FrontModal from '../../FrontModal';
-import Icon from '../../../core/components/Icon';
+
+const formatTag = tag => tag.replace('/', ' > ').replace('_', '-');
 
 const FrontConversationTagger = ({
   fetchLoans,
@@ -14,14 +18,27 @@ const FrontConversationTagger = ({
   return (
     <FrontModal
       buttonProps={{
-        label: 'Tag',
+        label: 'Tags',
         style: { marginRight: '8px' },
-        icon: <Icon type="add" />,
+        icon: <FontAwesomeIcon icon={faTag} className="icon" />,
         secondary: !hasLoanTags,
         primary: hasLoanTags,
       }}
-      title="Taguer la conversation"
+      title="Tags"
     >
+      <div className="flex center-align">
+        {tags
+          .filter(tag => tag.includes('loan'))
+          .map(tag => (
+            <span key={tag} className="front-tag">
+              {formatTag(tag)}
+            </span>
+          ))}
+      </div>
+      <h3 className="mt-16 mb-8">Ajouter un tag</h3>
+      <p className="description mb-8 mt-0">
+        Recherchez un dossier par numéro, nom ou utilisateur
+      </p>
       <FrontConversationTaggerResults
         fetchLoans={fetchLoans}
         conversation={conversation}

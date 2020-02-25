@@ -186,6 +186,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
 
-  
+.front-tag {
+  border: 1px solid #ababab;
+  border-radius: 4px;
+  text-transform: uppercase;
+  padding: 4px;
+  margin-right: 4px;
+  background-color: #f7f7f7;
+  margin-bottom: 4px;
 }
