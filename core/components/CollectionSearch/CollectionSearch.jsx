@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import cx from 'classnames';
 
 import Input from '../Material/Input';
 import CollectionSearchContainer from './CollectionSearchContainer';
@@ -18,6 +19,8 @@ const CollectionSearch = ({
   description,
   disableItem,
   type = 'popper',
+  style,
+  className,
 }) => {
   const inputEl = useRef(null);
   const results = searchResults[searchQuery];
@@ -25,7 +28,11 @@ const CollectionSearch = ({
   const isEmpty = results && !results.length;
 
   return (
-    <div className="collection-search-container" ref={inputEl}>
+    <div
+      className={cx('collection-search-container', className)}
+      ref={inputEl}
+      style={style}
+    >
       <label htmlFor="collection-search">{title}</label>
       <input style={{ display: 'none' }} name="collection-search" />
       {description && <p className="description">{description}</p>}

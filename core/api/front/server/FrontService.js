@@ -65,8 +65,8 @@ const WEBHOOKS = {
 };
 
 // always stub the API in tests
-const ENABLE_API = Meteor.isProduction;
-// const ENABLE_API = true;
+// const ENABLE_API = Meteor.isProduction;
+const ENABLE_API = true;
 
 export class FrontService {
   constructor({ fetch, isEnabled }) {

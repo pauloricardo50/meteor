@@ -6,14 +6,13 @@ import ContactCard from './ContactCard';
 import LoanCard from './FrontContactLoans/LoanCard';
 import { getLoanTag } from './FrontContactLoans/LoanTagger';
 
-const mapLoans = ({ loans = [], conversation, refetch }) => {
+const mapLoans = ({ loans = [], conversation, refetch, tags, setTags }) => {
   if (!loans.length) {
     return null;
   }
 
   let sortedLoans = loans;
   let expandedLoan;
-  const { tags = [] } = conversation;
   const loanTags = tags.filter(tag => tag.includes('loan'));
 
   if (loanTags.length === 1) {
@@ -38,6 +37,8 @@ const mapLoans = ({ loans = [], conversation, refetch }) => {
       }
       refetch={refetch}
       conversation={conversation}
+      tags={tags}
+      setTags={setTags}
     />
   ));
 };
@@ -49,6 +50,8 @@ const FrontContact = ({
   isEpotekResource,
   collection,
   refetch,
+  tags,
+  setTags,
 }) => {
   if (loading) {
     return (
@@ -66,6 +69,8 @@ const FrontContact = ({
         collection={collection}
         refetch={refetch}
         conversation={conversation}
+        tags={tags}
+        setTags={setTags}
       />
       {isEpotekResource && (
         <ContactCard
@@ -78,7 +83,13 @@ const FrontContact = ({
 
       {isEpotekResource &&
         collection === 'users' &&
-        mapLoans({ loans: finalContact?.loans, conversation, refetch })}
+        mapLoans({
+          loans: finalContact?.loans,
+          conversation,
+          refetch,
+          tags,
+          setTags,
+        })}
     </div>
   );
 };
