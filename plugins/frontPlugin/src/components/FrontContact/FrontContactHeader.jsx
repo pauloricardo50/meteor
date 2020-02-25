@@ -5,6 +5,7 @@ import IconButton from '../../core/components/IconButton';
 import FrontContactAddUser from './FrontContactAddUser';
 import FrontContactTaskAdder from './FrontContactTasks/FrontContactTaskAdder';
 import FrontContactNoteAdder from './FrontContactNoteAdder';
+import FrontConversationTagger from './FrontConversationTagger/FrontConversationTagger';
 
 const { Front, subdomains } = window;
 
@@ -28,6 +29,8 @@ const FrontContactHeader = ({
   collection,
   conversation,
   refetch,
+  tags,
+  setTags,
 }) => {
   const { name, email, avatar } = contact;
 
@@ -52,6 +55,11 @@ const FrontContactHeader = ({
       </h3>
       <h4>{email}</h4>
       <div className="flex-row center-align sb ">
+        <FrontConversationTagger
+          conversation={conversation}
+          tags={tags}
+          setTags={setTags}
+        />
         <FrontContactTaskAdder
           collection={collection}
           isEpotekResource={isEpotekResource}
