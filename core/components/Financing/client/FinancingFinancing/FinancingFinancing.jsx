@@ -12,6 +12,7 @@ import MortgageNotesPicker from './MortgageNotesPicker';
 import LoanPercent from './LoanPercent';
 import Calculator from '../../../../utils/Calculator';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
+import { getAmortization } from '../FinancingResult/financingResultHelpers';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -61,6 +62,9 @@ const calculateDefaultFirstRank = ({ Calculator: calc, ...data }) => {
   return goal;
 };
 
+const calculateYearlyAmortizationPlaceholder = data =>
+  getAmortization(data) * 12;
+
 const enableOffers = ({ loan }) => loan.enableOffers;
 
 const oneStructureHasLoan = ({ loan: { structures } }) =>
@@ -101,6 +105,17 @@ const FinancingFinancing = props => (
         max: calculateMaxFirstRank,
         allowUndefined: true,
         calculatePlaceholder: calculateDefaultFirstRank,
+      },
+      {
+        Component: FinancingField,
+        id: 'yearlyAmortization',
+        allowUndefined: true,
+        calculatePlaceholder: calculateYearlyAmortizationPlaceholder,
+        getError: ({ value, structure }) => {
+          if (value > 0 && structure.firstRank > 0) {
+            return <T id="FinancingFinancing.amortizationClash" />;
+          }
+        },
       },
       {
         Component: MortgageNotesPicker,

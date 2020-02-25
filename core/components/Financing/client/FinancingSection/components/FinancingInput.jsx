@@ -31,19 +31,33 @@ const setValue = (value, allowUndefined, forceUndefined) => {
   return value || 0;
 };
 
-export const FinancingInput = ({
-  value,
-  placeholder,
-  forceUndefined,
-  allowUndefined,
-  disabled,
-  onChange,
-  max,
-  formRef,
-  structure,
-  name,
-  type = 'money',
-}) => {
+const defaultGetError = ({ value, max, FormatComponent }) => {
+  if (value > max) {
+    return (
+      <T
+        id="Financing.maxExceeded"
+        values={{ max: <FormatComponent value={max} /> }}
+      />
+    );
+  }
+
+  return null;
+};
+
+export const FinancingInput = props => {
+  const {
+    value,
+    placeholder,
+    forceUndefined,
+    allowUndefined,
+    disabled,
+    onChange,
+    formRef,
+    structure,
+    name,
+    type = 'money',
+    getError = defaultGetError,
+  } = props;
   const InputComponent = type === 'money' ? MoneyInput : PercentInput;
   const FormatComponent = type === 'money' ? Money : Percent;
   const formatFunc =
@@ -51,8 +65,8 @@ export const FinancingInput = ({
       ? toMoney
       : compose(v => `${v}%`, percentFormatters.format);
   const dbValue = structure[name];
+  const error = getError({ ...props, FormatComponent });
 
-  const maxExceeded = value > max;
   return (
     <InputComponent
       value={setValue(value, allowUndefined, forceUndefined)}
@@ -74,15 +88,8 @@ export const FinancingInput = ({
       } // Placeholders should always be a string
       className="money-input"
       disabled={disabled}
-      error={maxExceeded}
-      helperText={
-        maxExceeded && (
-          <T
-            id="Financing.maxExceeded"
-            values={{ max: <FormatComponent value={max} /> }}
-          />
-        )
-      }
+      error={!!error}
+      helperText={error}
       margin="dense"
       shrink
     />

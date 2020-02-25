@@ -74,6 +74,7 @@ export const structureSchema = {
     ...roundedInteger({ digits: 3, func: 'floor', min: 100000 }),
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
+  yearlyAmortization: { ...moneyField },
   ...loanTranchesSchema,
 };
 

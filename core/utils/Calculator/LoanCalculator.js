@@ -143,6 +143,21 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getAmortization({ loan, structureId, offerOverride }) {
       const loanValue = this.selectLoanValue({ loan, structureId });
+      const yearlyAmortization = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'yearlyAmortization',
+      });
+      const offer = this.selectOffer({ loan, structureId });
+      const offerToUse = offerOverride || offer;
+
+      if (yearlyAmortization >= 0) {
+        return yearlyAmortization / 12;
+      }
+
+      if (offerToUse?.yearlyAmortization >= 0) {
+        return offerToUse.yearlyAmortization / 12;
+      }
 
       const amortizationYears = this.getAmortizationYears({
         loan,

@@ -1,4 +1,6 @@
 {
+  "FinancingFinancing.amortizationClash": "Choisissez entre premier rang et un amortissement annuel",
+  "Financing.yearlyAmortization": "Amortissement annuel",
   "Financing.firstRank": "Premier rang",
   "Financing.maxExceeded": "Max. {max}",
   "CollectionTaskInserter.label": "Tâche",
