@@ -27,7 +27,7 @@ export const calculateLoan = params => {
   return wantedLoan;
 };
 
-export const calculateMaxLoan = (data, pledgeOverride) => {
+const calculateMaxLoan = (data, pledgeOverride) => {
   const { loan, structureId } = data;
   const offer = Calculator.selectOffer({ loan, structureId });
   if (offer) {
