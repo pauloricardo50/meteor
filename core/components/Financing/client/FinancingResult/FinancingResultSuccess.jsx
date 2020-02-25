@@ -11,7 +11,7 @@ import {
   getInterests,
 } from './financingResultHelpers';
 
-const FinancingResultChart = ({ className, ...props }) => {
+const FinancingResultSuccess = ({ className, ...props }) => {
   const interests = getInterests(props);
   const amortization = getAmortization(props);
   const propertyExpenses = getPropertyExpenses(props);
@@ -30,4 +30,4 @@ const FinancingResultChart = ({ className, ...props }) => {
 export default compose(
   FinancingDataContainer,
   SingleStructureContainer,
-)(FinancingResultChart);
+)(FinancingResultSuccess);

@@ -194,6 +194,10 @@ $result-section-negative-offset: -32px;
       margin: 8px;
       padding: 8px;
     }
+
+    .warning-error {
+      margin-bottom: 0;
+    }
   }
 
   .section-summary {
@@ -279,13 +283,14 @@ $result-section-negative-offset: -32px;
 .result {
   display: flex;
   align-items: center;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
 
   width: 100%;
 
   .total {
     font-size: 36px;
+    line-height: 36px;
+    white-space: nowrap;
 
     .chf {
       font-size: 20px;

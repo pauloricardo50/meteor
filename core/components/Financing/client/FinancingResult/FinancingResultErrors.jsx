@@ -1,12 +1,5 @@
-import React from 'react';
-import { compose } from 'recompose';
-
-import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
-import SingleStructureContainer from '../containers/SingleStructureContainer';
-import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { getIncomeRatio, getMaxIncomeRatio } from './financingResultHelpers';
-import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator from '../FinancingCalculator';
 
 export const ERROR_TYPES = {
@@ -73,39 +66,9 @@ const errors = [
   },
 ];
 
-const getError = props =>
+export const getFinancingError = props =>
   errors.reduce(
     (currentError, { id, type, func }) =>
       currentError || (func(props) && { id, type }),
     undefined,
   );
-
-export const FinancingResultErrors = props => {
-  const error = getError(props);
-
-  if (error.type === ERROR_TYPES.BREAKING) {
-    return (
-      <p className="error error-box result">
-        <T id={`FinancingResultErrors.${error.id}`} />
-      </p>
-    );
-  }
-  if (error.type === ERROR_TYPES.WARNING) {
-    return (
-      <div className="result">
-        <FinancingResultChart {...props} className="" />
-
-        <p className="error error-box">
-          <T id={`FinancingResultErrors.${error.id}`} />
-        </p>
-      </div>
-    );
-  }
-
-  return <FinancingResultChart {...props} />;
-};
-
-export default compose(
-  FinancingDataContainer,
-  SingleStructureContainer,
-)(FinancingResultErrors);

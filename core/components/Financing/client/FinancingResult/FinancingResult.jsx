@@ -6,7 +6,6 @@ import FinancingSection, {
   CalculatedValue,
   FinmaRatio,
 } from '../FinancingSection';
-import FinancingResultErrors from './FinancingResultErrors';
 import {
   getInterests,
   getAmortization,
@@ -23,6 +22,7 @@ import {
 import FinancingResultInterests from './FinancingResultInterests';
 import FinancingResultAmortization from './FinancingResultAmortization';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
+import FinancingResultSummary from './FinancingResultSummary';
 
 const FinancingResult = ({ error }) =>
   error ? (
@@ -38,7 +38,7 @@ const FinancingResult = ({ error }) =>
               <T id="FinancingResult.title" />
             </span>
           ),
-          Component: FinancingResultErrors,
+          Component: FinancingResultSummary,
         },
       ]}
       detailConfig={[
