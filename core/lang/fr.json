@@ -1,4 +1,6 @@
 {
+  "FinancingAmortizationDuration.years": "{years} {years, plural, one {an} other {ans}}",
+  "Financing.amortizationDuration": "Durée d'amortissement",
   "FinancingFinancing.amortizationClash": "Choisissez entre premier rang et un amortissement annuel",
   "Financing.yearlyAmortization": "Amortissement annuel",
   "Financing.firstRank": "Premier rang",

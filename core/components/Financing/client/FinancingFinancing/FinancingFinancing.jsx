@@ -13,6 +13,7 @@ import LoanPercent from './LoanPercent';
 import Calculator from '../../../../utils/Calculator';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
+import FinancingAmortizationDuration from './FinancingAmortizationDuration';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -116,6 +117,10 @@ const FinancingFinancing = props => (
             return <T id="FinancingFinancing.amortizationClash" />;
           }
         },
+      },
+      {
+        Component: FinancingAmortizationDuration,
+        id: 'amortizationDuration',
       },
       {
         Component: MortgageNotesPicker,
