@@ -1,10 +1,10 @@
-@import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
-@import './client/FinancingFinancing/FinancingFinancing.scss';
-@import './client/FinancingHeader/FinancingHeader.scss';
-@import './client/FinancingLenders/FinancingLenders.scss';
-@import './client/FinancingOffers/FinancingOffers.scss';
-@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
-@import './client/FinancingProject/FinancingProject.scss';
+@import "./client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss";
+@import "./client/FinancingFinancing/FinancingFinancing.scss";
+@import "./client/FinancingHeader/FinancingHeader.scss";
+@import "./client/FinancingLenders/FinancingLenders.scss";
+@import "./client/FinancingOffers/FinancingOffers.scss";
+@import "./client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss";
+@import "./client/FinancingProject/FinancingProject.scss";
 $labels-width: 180px;
 $structure-width: 320px;
 $item-height: 20px;
@@ -42,11 +42,10 @@ $result-section-negative-offset: -32px;
   align-items: flex-start;
   flex-direction: column;
 
-  .financing-field {
-    .money-input {
-      width: 100%;
-      margin: 0;
-    }
+  .money-input,
+  .percent-input {
+    width: 100%;
+    margin: 0;
   }
 }
 
@@ -71,7 +70,7 @@ $result-section-negative-offset: -32px;
     justify-content: center;
 
     min-height: $item-height;
-    // Use padding on both sides to allow labels to center properly	
+    // Use padding on both sides to allow labels to center properly
     padding: 4px 0;
   }
 
@@ -87,7 +86,7 @@ $result-section-negative-offset: -32px;
     justify-content: flex-start;
 
     color: $primary;
-    // To match material-ui input size	
+    // To match material-ui input size
 
     font-size: calc((16 / 14) * 1rem);
   }
@@ -156,7 +155,7 @@ $result-section-negative-offset: -32px;
     color: white;
     background-color: $primary;
 
-    font-family: 'Eina04-Bold', 'Helvetica';
+    font-family: "Eina04-Bold", "Helvetica";
 
     .label {
       color: rgba(255, 255, 255, 0.78);

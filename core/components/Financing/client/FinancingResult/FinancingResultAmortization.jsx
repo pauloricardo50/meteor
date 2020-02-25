@@ -10,7 +10,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
     loan,
     structureId,
   });
-  const amortizationYears = Calculator.getAmortizationDuration({
+  const amortizationYears = Calculator.getAmortizationYears({
     loan,
     structureId,
   });

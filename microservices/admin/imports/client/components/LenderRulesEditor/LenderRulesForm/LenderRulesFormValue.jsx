@@ -9,7 +9,7 @@ import {
 import MoneyInput from 'core/components/MoneyInput';
 import RadioButtons from 'core/components/RadioButtons';
 import { NumberField } from 'core/components/NumberInput';
-import { PercentField } from 'core/components/PercentInput';
+import PercentInput from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
 import TextField from 'core/components/AutoForm2/CustomTextField';
 
@@ -68,7 +68,7 @@ const LenderRulesFormValue = props => {
   }
 
   if ([LENDER_RULES_VARIABLES.BORROW_RATIO].includes(variable)) {
-    return <PercentField {...props} />;
+    return <PercentInput {...props} />;
   }
 
   if ([LENDER_RULES_VARIABLES.ZIP_CODE].includes(variable)) {

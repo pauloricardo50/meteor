@@ -3,12 +3,10 @@ import cx from 'classnames';
 import { AutoForm } from 'uniforms-material';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-
 import { compose, withProps } from 'recompose';
+
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
-import { toMoney } from '../../../../../utils/conversionFunctions';
-
 import FinancingInput from './FinancingInput';
 
 export const FinancingField = ({
@@ -40,7 +38,7 @@ export default compose(
   StructureUpdateContainer,
   withProps(
     ({
-      max: _max,
+      max,
       calculatePlaceholder,
       placeholder,
       id,
@@ -57,9 +55,9 @@ export default compose(
       );
 
       return {
-        max: typeof _max === 'function' ? _max(props) : _max,
+        max: typeof max === 'function' ? max(props) : max,
         placeholder: calculatePlaceholder
-          ? toMoney(calculatePlaceholder(props))
+          ? calculatePlaceholder(props)
           : placeholder,
         schema,
       };

@@ -48,6 +48,19 @@ export const calculateMaxLoan = (data, pledgeOverride) => {
   return Math.floor(maxLoan / rounding) * rounding;
 };
 
+const calculateMaxFirstRank = ({ Calculator: calc, ...data }) =>
+  calc.getMaxBorrowRatio(data);
+const calculateDefaultFirstRank = ({ Calculator: calc, ...data }) => {
+  const borrowRatio = calc.getBorrowRatio(data);
+  const goal = calc.getAmortizationGoal(data);
+
+  if (borrowRatio <= goal) {
+    return borrowRatio;
+  }
+
+  return goal;
+};
+
 const enableOffers = ({ loan }) => loan.enableOffers;
 
 const oneStructureHasLoan = ({ loan: { structures } }) =>
@@ -80,6 +93,14 @@ const FinancingFinancing = props => (
       {
         Component: LoanPercent,
         id: 'wantedLoanPercent',
+      },
+      {
+        Component: FinancingField,
+        id: 'firstRank',
+        type: 'percent',
+        max: calculateMaxFirstRank,
+        allowUndefined: true,
+        calculatePlaceholder: calculateDefaultFirstRank,
       },
       {
         Component: MortgageNotesPicker,

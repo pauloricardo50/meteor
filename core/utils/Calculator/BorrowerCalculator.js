@@ -449,7 +449,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getYearsToRetirement(argMap);
     }
 
-    getAmortizationDuration({ loan, structureId, offerOverride, borrowers }) {
+    getAmortizationYears({ loan, structureId, offerOverride, borrowers }) {
       const offer = this.selectOffer({ loan, structureId });
       const offerToUse = offerOverride || offer;
 

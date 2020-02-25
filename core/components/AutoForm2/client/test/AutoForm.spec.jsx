@@ -13,7 +13,7 @@ import AutoForm from '../../AutoForm';
 import CustomSelectField from '../../CustomSelectField';
 import DateField from '../../../DateField';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../constants';
-import { PercentField } from '../../../PercentInput';
+import PercentInput from '../../../PercentInput';
 import { CustomAutoField } from '../../AutoFormComponents';
 
 let props;
@@ -165,7 +165,7 @@ describe('AutoForm', () => {
         }),
       };
 
-      expect(component().find(PercentField).length).to.equal(1);
+      expect(component().find(PercentInput).length).to.equal(1);
     });
   });
 
@@ -533,7 +533,7 @@ describe('AutoForm', () => {
         ),
       };
 
-      expect(component().find(PercentField).length).to.equal(1);
+      expect(component().find(PercentInput).length).to.equal(1);
       expect(component().find(DateField).length).to.equal(1);
       expect(component().find(CustomSelectField).length).to.equal(1);
     });
