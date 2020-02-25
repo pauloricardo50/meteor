@@ -519,7 +519,6 @@ const AUTH_MIDDLEWARES = {
     'authMiddleware',
     'filterMiddleware',
     'replayHandlerMiddleware',
-    'analyticsMiddleware',
   ],
   rsa: ['replayHandlerMiddleware', 'filterMiddleware', 'authMiddleware'],
   custom: ['customAuthMiddleware'],
@@ -539,12 +538,7 @@ export const checkCustomAuth = ({ customAuth, req }) => {
 
 export const getAnalyticsParams = ({ req, options }) => {
   const endpointOptions = getMatchingPathOptions(req, options);
-  const { analyticsParams, endpointName } = endpointOptions;
+  const { analyticsParams = () => undefined } = endpointOptions;
 
-  if (!analyticsParams) {
-    throw new Error(
-      `"analyticsParams" function is required on endpoint "${endpointName}". Check in your *.test.js file where the endpoint is declared. You can provide a function returning an empty object if no analytics params is necessary on this endpoint.`,
-    );
-  }
   return analyticsParams(req);
 };

@@ -763,7 +763,7 @@ describe('LoanService', function() {
           {
             _id: 'proId',
             _factory: 'pro',
-            organisations: { _id: 'orgId' },
+            organisations: { _id: 'orgId', $metadata: { isMain: true } },
           },
         ],
         loans: { _id: 'loanId', referralId: 'proId' },

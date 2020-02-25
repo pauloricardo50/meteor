@@ -310,12 +310,11 @@ const multipartMiddleware = options => (req, res, next) => {
 };
 
 const analyticsMiddleware = options => (req, res, next) => {
-  if (shouldSkipMiddleware({ req, middleware: 'analyticsMiddleware' })) {
-    return next();
-  }
-
   const analyticsParams = getAnalyticsParams({ req, options });
-  req.analyticsParams = analyticsParams;
+
+  if (analyticsParams) {
+    req.analyticsParams = analyticsParams;
+  }
 
   next();
 };

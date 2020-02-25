@@ -103,7 +103,7 @@ describe('PropertyService', function() {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _id: 'organisation' },
+            organisations: { _id: 'organisation', $metadata: { isMain: true } },
             properties: {
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
