@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
 
 import Table from 'core/components/Table';
+import Select from 'core/components/Select';
 import T, { Percent, Money } from 'core/components/Translation';
 import { proRevenues } from 'core/api/revenues/queries';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -89,15 +90,24 @@ const mapRevenueToRow = (
 };
 
 const ProRevenuesTable = () => {
+  const [proCommissionStatus, setProCommissionStatus] = useState([
+    PRO_COMMISSION_STATUS.WAITING_FOR_REVENUE,
+    PRO_COMMISSION_STATUS.COMMISSION_TO_PAY,
+  ]);
   const currentUser = useContext(CurrentUserContext);
   const mainOrg = currentUser.organisations.find(
     ({ $metadata }) => $metadata?.isMain,
   );
-  const { data: revenues = [], loading } = useStaticMeteorData({
-    query: proRevenues,
-    params: {},
-  });
-  const rows = revenues.reduce(
+  const { data: revenues, loading } = useStaticMeteorData(
+    {
+      query: proRevenues,
+      params: { proCommissionStatus },
+    },
+    [proCommissionStatus],
+  );
+
+  // Do this because revenues can be null
+  const rows = (revenues || []).reduce(
     (arr, revenue) => [...arr, mapRevenueToRow(revenue, mainOrg)],
     [],
   );
@@ -106,6 +116,16 @@ const ProRevenuesTable = () => {
     <div>
       <h2>Liste</h2>
 
+      <Select
+        options={Object.values(PRO_COMMISSION_STATUS).map(s => ({
+          id: s,
+          label: <T id={`ProRevenuesTable.status.${s}`} />,
+        }))}
+        multiple
+        onChange={setProCommissionStatus}
+        value={proCommissionStatus}
+        label="Statut"
+      />
       <Table rows={rows} columnOptions={columnOptions} initialOrderBy={2} />
     </div>
   );

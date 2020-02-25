@@ -4,7 +4,11 @@ import { Meteor } from 'meteor/meteor';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { adminRevenues, proRevenues } from '../queries';
-import { REVENUE_STATUS } from '../revenueConstants';
+import {
+  REVENUE_STATUS,
+  PRO_COMMISSION_STATUS,
+  COMMISSION_STATUS,
+} from '../revenueConstants';
 import UserService from '../../users/server/UserService';
 
 exposeQuery({
@@ -117,15 +121,66 @@ exposeQuery({
       params.organisationId = mainOrganisationId;
     },
     embody: body => {
-      body.$filter = ({ filters, params }) => {
-        filters.organisationLinks = {
-          $elemMatch: { _id: params.organisationId },
-        };
+      body.$filter = ({
+        filters,
+        params: { organisationId, proCommissionStatus },
+      }) => {
+        const $or = [];
+
+        if (
+          proCommissionStatus.includes(
+            PRO_COMMISSION_STATUS.WAITING_FOR_REVENUE,
+          )
+        ) {
+          $or.push({
+            status: REVENUE_STATUS.EXPECTED,
+            organisationLinks: {
+              $elemMatch: {
+                _id: organisationId,
+                status: COMMISSION_STATUS.TO_BE_PAID,
+              },
+            },
+          });
+        }
+
+        if (
+          proCommissionStatus.includes(PRO_COMMISSION_STATUS.COMMISSION_TO_PAY)
+        ) {
+          $or.push({
+            status: REVENUE_STATUS.CLOSED,
+            organisationLinks: {
+              $elemMatch: {
+                _id: organisationId,
+                status: COMMISSION_STATUS.TO_BE_PAID,
+              },
+            },
+          });
+        }
+
+        if (
+          proCommissionStatus.includes(PRO_COMMISSION_STATUS.COMMISSION_PAID)
+        ) {
+          $or.push({
+            status: REVENUE_STATUS.CLOSED,
+            organisationLinks: {
+              $elemMatch: {
+                _id: organisationId,
+                status: COMMISSION_STATUS.PAID,
+              },
+            },
+          });
+        }
+
+        if ($or.length === 0) {
+          throw new Meteor.Error('Invalid query');
+        }
+
+        filters.$or = $or;
       };
     },
     validateParams: {
-      status: Match.Maybe(Match.OneOf(Object, String)),
       organisationId: String,
+      proCommissionStatus: Match.OneOf(String, [String]),
     },
   },
 });
