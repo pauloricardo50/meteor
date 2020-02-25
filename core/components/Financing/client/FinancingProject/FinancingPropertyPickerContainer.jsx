@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import { compose, mapProps } from 'recompose';
 
@@ -87,7 +88,11 @@ const FinancingPropertyPickerContainer = compose(
         handleChange,
         handleAddProperty: values =>
           propertyInsert
-            .run({ property: values, loanId, userId })
+            .run({
+              property: values,
+              loanId,
+              userId: Meteor.microservice === 'admin' ? userId : undefined,
+            })
             .then(newId => {
               handleChange(newId);
               setOpenForm(false);
