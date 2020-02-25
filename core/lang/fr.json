@@ -364,6 +364,7 @@
   "FinancingResultAmortization.total": "Montant à amortir",
   "FinancingResultAmortization.duration": "Durée de l'amortissement",
   "FinancingResultAmortization.yearly": "Amortissement annuel",
+  "FinancingResultAmortization.percentage": "En % du prêt",
   "FinancingResultAmortization.none": "Vous n'avez pas besoin d'amortir votre prêt hypothécaire.",
   "Forms.job": "Profession",
   "Forms.job.placeholder": "Conseiller en financement",

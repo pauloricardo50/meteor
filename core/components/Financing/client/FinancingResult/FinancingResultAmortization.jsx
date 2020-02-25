@@ -1,7 +1,6 @@
 import React from 'react';
 
-// import Calculator from '../../../../utils/Calculator';
-import T, { Money } from '../../../Translation';
+import T, { Money, Percent } from '../../../Translation';
 import Icon from '../../../Icon';
 import { CalculatedValue } from '../FinancingSection/components';
 
@@ -64,15 +63,27 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
   );
 };
 
-const FinancingResultAmortization = ({ className, ...props }) => (
-  <div className={className}>
-    <CalculatedValue {...props} />
-    <Icon
-      type="info"
-      tooltip={<AmortizationTooltip {...props} />}
-      tooltipPlacement="right"
-    />
-  </div>
-);
+const FinancingResultAmortization = ({ className, ...props }) => {
+  const { Calculator, loan, structureId, value } = props;
+  const loanValue = Calculator.selectLoanValue({
+    loan,
+    structureId,
+  });
+
+  return (
+    <div className={className}>
+      <CalculatedValue {...props} />
+      <span className="secondary">
+        &nbsp;(
+        <Percent value={(value(props) * 12) / loanValue} /> par an)&nbsp;
+      </span>
+      <Icon
+        type="info"
+        tooltip={<AmortizationTooltip {...props} />}
+        tooltipPlacement="right"
+      />
+    </div>
+  );
+};
 
 export default FinancingResultAmortization;
