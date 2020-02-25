@@ -193,6 +193,8 @@ $result-section-negative-offset: -32px;
     .error {
       margin: 8px;
       padding: 8px;
+      max-width: 80%;
+      text-align: center;
     }
 
     .warning-error {
