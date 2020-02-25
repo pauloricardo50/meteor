@@ -41,18 +41,17 @@ const LoanPercent = ({ handleSubmit, ...props }) => {
   const formRef = useRef(null);
 
   return (
-    <span className="wantedLoanPercent">
-      <AutoForm
-        onSubmit={({ loanPercent }) => handleSubmit(loanPercent)}
-        schema={schema}
-        model={{ loanPercent: getBorrowRatio(props) }}
-        disabled={props.structure.disableForms}
-        submitFieldProps={{ showSubmitField: false }}
-        ref={formRef}
-      >
-        <LoanPercentField formRef={formRef} name="loanPercent" />
-      </AutoForm>
-    </span>
+    <AutoForm
+      onSubmit={({ loanPercent }) => handleSubmit(loanPercent)}
+      schema={schema}
+      model={{ loanPercent: getBorrowRatio(props) }}
+      disabled={props.structure.disableForms}
+      submitFieldProps={{ showSubmitField: false }}
+      ref={formRef}
+      className="loan-percent"
+    >
+      <LoanPercentField formRef={formRef} name="loanPercent" />
+    </AutoForm>
   );
 };
 

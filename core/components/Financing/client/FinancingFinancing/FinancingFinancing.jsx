@@ -9,11 +9,11 @@ import FinancingSection, {
 import Calc, { getOffer } from '../FinancingCalculator';
 import FinancingTranchePicker from './FinancingTranchePicker';
 import MortgageNotesPicker from './MortgageNotesPicker';
-import LoanPercent from './LoanPercent';
 import Calculator from '../../../../utils/Calculator';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
 import FinancingAmortizationDuration from './FinancingAmortizationDuration';
+import FinancingLoanValue from './FinancingLoanValue';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -91,13 +91,9 @@ const FinancingFinancing = props => (
     ]}
     detailConfig={[
       {
-        Component: FinancingField,
+        Component: FinancingLoanValue,
         id: 'wantedLoan',
         max: calculateMaxLoan,
-      },
-      {
-        Component: LoanPercent,
-        id: 'wantedLoanPercent',
       },
       {
         Component: FinancingField,
