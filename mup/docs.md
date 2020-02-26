@@ -9,13 +9,13 @@ Add the public key to Google Cloud by going to https://console.cloud.google.com/
 ## Google Cloud API
 
 ### Engine Credentials
-Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey and `Compute Engine`, and `JSON` key type, and download it. Move the file to `mup/config/credentials.json`.
+Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey and `Compute Engine`, and `JSON` key type, and download it. Move the file to `mup/configs/credentials.json`.
 
 This is used for updating the lists of servers.
 
 ### Private Repository Credentials
 
-Go to the `private-registry` [service account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/113489271703975496945?project=e-potek-1499177443071), select `Edit`, and click on `Create Key`. Download the key and move it to `mup/config/registry-key.json`.
+Go to the `private-registry` [service account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/113489271703975496945?project=e-potek-1499177443071), select `Edit`, and click on `Create Key`. Download the key and move it to `mup/configs/registry-key.json`.
 
 This is used on the servers to authenticate docker with the private registry.
 
@@ -33,6 +33,25 @@ Store the keys in `configs/atlas-auth.json` in the format:
 }
 
 ```
+
+This is used to authenticate 
+
+## Atlas Database User
+
+This user is needed to connect to Atlas for the `atlas-migrate.sh` script or to connect with the mongo shell.
+
+1. Go to the [Database Access](https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#security/database/users) page for the Atlas cluster
+2. Click Add New User
+3. Put in a username that shows it is yours, and create a password. You will not be shown the password later, though you can change it.
+4. Select `Read and Write from any database`
+5. Create a file in `mup/configs/mongo-auth` with the content:
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
 
 # VM Instances
 
@@ -108,9 +127,8 @@ To use, set the `ATLAS_PUBLIC_KEY` and `ATLAS_PRIVATE_KEY` env vars with the val
 
 This script should be run whenever servers are started, restarted, or added to a instance group until we set up the vpc peering.
 
-# Meteor Up
 
-## Run for all microservices
+## Run mup command for all microservices
 
 The `run-all` script will execute a mup command for each microservice in the environment(s). 
 
@@ -144,10 +162,10 @@ To SSH into a specific server, run `mup --config <any microservice mup config> s
 
 To deploy an environment, run
 ```
-node run-all --environment <environment name> deploy
+node run-all -e <environment name> deploy
 ```
 
 To deploy a specific app, run
 ```
-node run-all --environment <environment name> --apps <app name> deploy
+node run-all -e <environment name> --apps <app name> deploy
 ```
