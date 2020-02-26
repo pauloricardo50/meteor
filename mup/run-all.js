@@ -57,10 +57,10 @@ const environments = getEnvironments(
 
 const wantedApps = argv.apps ? argv.apps.split(',') : null;
 
+sh.set('-e');
+
 log('updating servers');
 sh.exec('node update-servers');
-
-sh.set('-e');
 
 if (mupCommands[0] === 'deploy') {
   sh.exec('meteor npm run setup');
