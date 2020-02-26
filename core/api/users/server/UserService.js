@@ -6,7 +6,7 @@ import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
 import { fullUser } from 'core/api/fragments';
-import { selectorForFastCaseInsensitiveLookup } from 'core/api/helpers/index';
+import { selectorForFastCaseInsensitiveLookup } from 'core/api/helpers/server/mongoServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
