@@ -119,14 +119,11 @@ describe('REST: inviteUserToPromotion', function() {
       status: HTTP_STATUS_CODES.OK,
     });
 
-    const invitedUser = UserService.get(
-      { 'emails.address': { $in: [userToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const invitedUser = UserService.getByEmail(userToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
 
@@ -145,14 +142,11 @@ describe('REST: inviteUserToPromotion', function() {
       status: HTTP_STATUS_CODES.OK,
     });
 
-    const invitedUser = UserService.get(
-      { 'emails.address': { $in: [userToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const invitedUser = UserService.getByEmail(userToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
@@ -172,15 +166,12 @@ describe('REST: inviteUserToPromotion', function() {
       status: HTTP_STATUS_CODES.OK,
     });
 
-    const invitedUser = UserService.get(
-      { 'emails.address': { $in: [userToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-        tasks: { description: 1 },
-      },
-    );
+    const invitedUser = UserService.getByEmail(userToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+      tasks: { description: 1 },
+    });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
@@ -191,14 +182,9 @@ describe('REST: inviteUserToPromotion', function() {
       const interval = Meteor.setInterval(() => {
         if (tasks.length === 0 && intervalCount < 10) {
           tasks =
-            UserService.get(
-              {
-                'emails.address': { $in: [userToInvite.email] },
-              },
-              {
-                tasks: { description: 1 },
-              },
-            ).tasks || [];
+            UserService.getByEmail(userToInvite.email, {
+              tasks: { description: 1 },
+            }).tasks || [];
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);

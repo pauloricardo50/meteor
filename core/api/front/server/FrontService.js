@@ -285,10 +285,25 @@ export class FrontService {
   }
 
   getTeamMateId = async email => {
+    const user = UserService.getByEmail(email, { frontUserId: 1 });
+
+    if (!user) {
+      return;
+    }
+    if (user.frontUserId) {
+      return user.frontUserId;
+    }
     const { _results: teamMates = [] } = await this.listTeam();
     const teamMate = teamMates.find(
       ({ email: teamMateEmail }) => teamMateEmail === email,
     );
+
+    if (teamMate?.id) {
+      UserService.update({
+        userId: user._id,
+        object: { frontUserId: teamMate.id },
+      });
+    }
     return teamMate?.id;
   };
 

@@ -97,7 +97,10 @@ ServerEventService.addAfterMethodListener(
       ...properties.map(({ _id, externalId }) => _id || externalId),
     ];
     const currentUser = UserService.get(userId, slackCurrentUserFragment);
-    const invitedUser = UserService.getByEmail(user.email);
+    const invitedUser = UserService.getByEmail(user.email, {
+      firstName: 1,
+      lastName: 1,
+    });
 
     sendPropertyInvitations(notificationPropertyIds, currentUser, {
       ...invitedUser,

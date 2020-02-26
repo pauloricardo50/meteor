@@ -22,27 +22,24 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
     proId = getImpersonateUserId({ userId, impersonateUser });
   }
 
-  const user = UserService.get(
-    { 'emails.address': { $in: [email] } },
-    {
-      assignedEmployee: {
-        firstName: 1,
-        lastName: 1,
-        name: 1,
-        email: 1,
-        phoneNumbers: 1,
-      },
-      email: 1,
-      emails: 1,
+  const user = UserService.getByEmail(email, {
+    assignedEmployee: {
       firstName: 1,
       lastName: 1,
       name: 1,
+      email: 1,
       phoneNumbers: 1,
-      roles: 1,
-      referredByOrganisationLink: 1,
-      referredByUserLink: 1,
     },
-  );
+    email: 1,
+    emails: 1,
+    firstName: 1,
+    lastName: 1,
+    name: 1,
+    phoneNumbers: 1,
+    roles: 1,
+    referredByOrganisationLink: 1,
+    referredByUserLink: 1,
+  });
 
   if (!user) {
     throw new Meteor.Error(

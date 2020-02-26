@@ -380,8 +380,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({
-          token: 'some unknown token',}),
+        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
+        }),
       ).to.equal(false);
     });
   });
@@ -440,7 +440,11 @@ describe('UserService', function() {
         proInviteUser.run({ user: userToInvite }),
       );
 
-      const userCreated = UserService.getByEmail(userToInvite.email);
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
 
       expect(userCreated.assignedEmployeeId).to.equal('adminId');
       expect(userCreated.referredByUserLink).to.equal('proId');
@@ -534,7 +538,11 @@ describe('UserService', function() {
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       }).then(({ userId, isNewUser, proId, admin, pro }) => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loan = LoanService.get(
           { userId: userCreated._id },
           { promotionLinks: 1, promotionOptionLinks: 1 },
@@ -588,7 +596,11 @@ describe('UserService', function() {
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loans = LoanService.fetch({
           $filters: { userId: userCreated._id },
           promotionLinks: 1,
@@ -654,7 +666,11 @@ describe('UserService', function() {
         proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId'] }),
       );
 
-      const userCreated = UserService.getByEmail(userToInvite.email);
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
       const loan = LoanService.get(
         { userId: userCreated._id },
         { propertyIds: 1 },
@@ -706,7 +722,11 @@ describe('UserService', function() {
         propertyIds: ['propertyId1', 'propertyId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loan = LoanService.get(
           { userId: userCreated._id },
           { propertyIds: 1 },
@@ -773,7 +793,11 @@ describe('UserService', function() {
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loans = LoanService.fetch({
           $filters: { userId: userCreated._id },
           promotionLinks: 1,

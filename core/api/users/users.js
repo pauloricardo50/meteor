@@ -113,6 +113,7 @@ export const UserSchema = new SimpleSchema({
       withCustomOther: true,
     },
   },
+  frontUserId: { type: String, optional: true },
 });
 
 Meteor.users.attachSchema(UserSchema);
