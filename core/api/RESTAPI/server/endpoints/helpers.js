@@ -66,11 +66,20 @@ export const checkAccessToUser = ({ user, proId, errorMessage }) => {
     organisations: { users: { _id: 1 } },
   });
 
+  const userIsReferredByProOrg = organisations.some(
+    ({ _id }) => _id === user.referredByOrganisationLink,
+  );
+  const userIsReferredByProOrgMember = organisations.some(({ users = [] }) =>
+    users.some(({ _id }) => _id === user.referredByUserLink),
+  );
+  const userIsPartOfProOrg = organisations.some(({ users = [] }) =>
+    users.some(({ _id }) => _id === user._id),
+  );
+
   if (
-    !organisations.some(({ _id }) => _id === user.referredByOrganisationLink) &&
-    !organisations.some(({ users = [] }) =>
-      users.some(({ _id }) => _id === user.referredByUserLink),
-    )
+    !userIsReferredByProOrg &&
+    !userIsReferredByProOrgMember &&
+    !userIsPartOfProOrg
   ) {
     throw new Meteor.Error(
       HTTP_STATUS_CODES.NOT_FOUND,

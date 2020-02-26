@@ -21,7 +21,7 @@ const FrontContactSelect = ({
         };
       })}
       iconType="group"
-      tooltip="Contact"
+      tooltip="Choisir contact"
     />
   </div>
 ) : null;

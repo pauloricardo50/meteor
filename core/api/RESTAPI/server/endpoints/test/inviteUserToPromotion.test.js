@@ -93,7 +93,11 @@ describe('REST: inviteUserToPromotion', function() {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: { _id: 'pro', _factory: 'pro', organisations: {} },
+      users: {
+        _id: 'pro',
+        _factory: 'pro',
+        organisations: { _id: 'org', name: 'org', $metadata: { isMain: true } },
+      },
       promotions: {
         _id: 'promotionId',
         _factory: 'promotion',

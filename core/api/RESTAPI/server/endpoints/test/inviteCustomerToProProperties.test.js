@@ -98,7 +98,9 @@ describe('REST: inviteCustomerToProProperties', function() {
           _factory: 'pro',
           _id: 'pro',
           emails: [{ address: 'pro@org.com', verified: true }],
-          organisations: [{ _id: 'org', name: 'Main Org' }],
+          organisations: [
+            { _id: 'org', name: 'Main Org', $metadata: { isMain: true } },
+          ],
           proProperties: [
             { _id: 'property1', category: PROPERTY_CATEGORY.PRO },
             { _id: 'property2', category: PROPERTY_CATEGORY.PRO },
@@ -115,7 +117,7 @@ describe('REST: inviteCustomerToProProperties', function() {
           _factory: 'pro',
           _id: 'pro2',
           emails: [{ address: 'pro2@org.com', verified: true }],
-          organisations: [{ _id: 'org' }],
+          organisations: [{ _id: 'org', $metadata: { isMain: true } }],
           proProperties: [
             { _id: 'property4', category: PROPERTY_CATEGORY.PRO },
             { _id: 'property5', category: PROPERTY_CATEGORY.PRO },
@@ -132,7 +134,7 @@ describe('REST: inviteCustomerToProProperties', function() {
           _factory: 'pro',
           _id: 'pro3',
           emails: [{ address: 'pro3@org2.com', verified: true }],
-          organisation: [{ _id: 'org2' }],
+          organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
           assignedEmployee: { _id: 'admin' },
         },
       ],

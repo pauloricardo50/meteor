@@ -7,7 +7,7 @@ import UploaderBottom from './UploaderBottom';
 
 const BaseUploader = ({
   toggleDisplayFull,
-  handleMoveFile,
+  handleMoveFile = () => {},
   variant,
   ...rest
 }) => {

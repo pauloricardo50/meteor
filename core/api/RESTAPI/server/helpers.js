@@ -322,6 +322,7 @@ export const logRequest = ({ req, result }) => {
   } = req;
 
   if (Meteor.isTest) {
+    return;
   }
 
   console.log('----- API CALL -----');
@@ -403,6 +404,7 @@ export const trackRequest = ({ req, result }) => {
     duration,
     authenticationType,
     endpointName,
+    analyticsParams = {},
   } = req;
   const { user = {} } = req;
 
@@ -434,6 +436,7 @@ export const trackRequest = ({ req, result }) => {
     result,
     authenticationType,
     endpointName,
+    ...analyticsParams,
   });
 };
 
@@ -531,4 +534,11 @@ export const checkCustomAuth = ({ customAuth, req }) => {
   if (user) {
     req.user = user;
   }
+};
+
+export const getAnalyticsParams = ({ req, options }) => {
+  const endpointOptions = getMatchingPathOptions(req, options);
+  const { analyticsParams = () => undefined } = endpointOptions;
+
+  return analyticsParams(req);
 };

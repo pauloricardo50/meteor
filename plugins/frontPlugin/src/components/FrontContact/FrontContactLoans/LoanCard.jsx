@@ -14,7 +14,7 @@ import LoanTagger from './LoanTagger';
 
 const { Front, subdomains } = window;
 
-const LoanCard = ({ loan, expanded, refetch, conversation }) => {
+const LoanCard = ({ loan, expanded, refetch, conversation, tags, setTags }) => {
   const {
     _id,
     name,
@@ -64,7 +64,12 @@ const LoanCard = ({ loan, expanded, refetch, conversation }) => {
       }
       expanded={expanded}
     >
-      <LoanTagger loan={loan} conversation={conversation} />
+      <LoanTagger
+        loan={loan}
+        conversation={conversation}
+        tags={tags}
+        setTags={setTags}
+      />
       <LoanNotes notes={adminNotes} />
       <FrontContactTasks tasks={tasks} refetch={refetch} />
     </FrontCard>

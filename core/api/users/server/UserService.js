@@ -276,6 +276,16 @@ export class UserServiceClass extends CollectionService {
         'Vous ne pouvez pas lier un compte deux fois à la même organisation.',
       );
     }
+
+    const mainOrgs = newOrganisations.filter(
+      ({ metadata }) => metadata?.isMain,
+    );
+    if (mainOrgs.length !== 1) {
+      throw new Meteor.Error(
+        'Une des organisations doit être choisie comme "principale"',
+      );
+    }
+
     const { organisations: oldOrganisations = [] } = this.get(userId, {
       organisations: { _id: 1 },
     });
@@ -605,13 +615,18 @@ export class UserServiceClass extends CollectionService {
     const { organisations: userOrganisations = [] } = this.get(userId, {
       organisations: { _id: 1 },
     });
-    const isMain = userOrganisations.length === 0;
+    const isMain =
+      typeof metadata.isMain === 'boolean'
+        ? metadata.isMain
+        : userOrganisations.length === 0;
+
+    const newMetadata = { ...metadata, isMain };
 
     this.addLink({
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { ...metadata, isMain },
+      metadata: newMetadata,
     });
   }
 
@@ -627,16 +642,9 @@ export class UserServiceClass extends CollectionService {
   }
 
   getUserMainOrganisation(userId) {
-    const organisations = OrganisationService.fetch({
-      $filters: { userLinks: { $elemMatch: { _id: userId } } },
-      userLinks: 1,
+    return OrganisationService.fetchOne({
+      $filters: { mainUserLinks: { $elemMatch: { _id: userId } } },
       name: 1,
-    });
-
-    return this.getMainOrg({
-      organisations,
-      getIsMain: ({ userLinks }) =>
-        userLinks.find(({ _id }) => _id === userId).isMain,
     });
   }
 

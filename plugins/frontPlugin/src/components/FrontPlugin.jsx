@@ -41,14 +41,19 @@ const getContacts = data => {
 const FrontPlugin = ({ resetError }) => {
   const [data, setData] = useState(null);
   const [contact, setContact] = useState(null);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     Front.setPanelWidth(500);
 
     Front.on('conversation', frontData => {
-      const { contact: frontContact } = frontData;
+      const {
+        contact: frontContact,
+        conversation: { tags: frontTags = [] } = {},
+      } = frontData;
       setContact(frontContact);
       setData(frontData);
+      setTags(frontTags);
     });
 
     Front.on('no_conversation', () => {
@@ -83,6 +88,8 @@ const FrontPlugin = ({ resetError }) => {
             contact={contact}
             key={contact.handle}
             conversation={data.conversation}
+            tags={tags}
+            setTags={setTags}
           />
         </div>
       </LibraryWrappers>

@@ -6,6 +6,7 @@ import { REVENUE_STATUS, REVENUES_COLLECTION } from 'core/api/constants';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { toMoney } from 'core/utils/conversionFunctions';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
@@ -16,11 +17,12 @@ const OutdatedRevenues = ({ revenues }) => {
     ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,
   );
   const isOk = myRevenues.length === 0;
+  const myTotal = myRevenues.reduce((tot, { amount }) => tot + amount, 0);
 
   return (
     <StatItem
       value={<CountUp end={total} prefix="CHF " preserveValue separator=" " />}
-      increment={`Dont ${myRevenues.length} à moi`}
+      increment={`Dont ${toMoney(myTotal)} à moi`}
       positive={isOk}
       title="Revenus en retard"
       top={

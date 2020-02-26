@@ -158,10 +158,10 @@ class Analytics {
     this.analytics.identify({
       userId: this.userId,
       traits: {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
-        role: this.user.roles[0],
+        firstName: this.user?.firstName,
+        lastName: this.user?.lastName,
+        email: this.user?.email,
+        role: this.user?.roles[0],
       },
     });
   }
@@ -196,7 +196,13 @@ class Analytics {
 
     properties.forEach(property => {
       const name = property.name || property;
-      const optional = typeof property === 'object' ? property.optional : false;
+      let optional = false;
+      if (typeof property === 'object') {
+        optional =
+          typeof property.optional === 'function'
+            ? property.optional(data)
+            : property.optional;
+      }
 
       if (!optional && pickedProperties[name] === undefined) {
         const error = new Meteor.Error(

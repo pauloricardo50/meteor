@@ -18,7 +18,7 @@ const LoanAssignees = ({ assigneeLinks }) => {
             <Tooltip
               title={
                 <div>
-                  <b>{employeesById[_id].name}</b>
+                  <b>{employeesById[_id]?.name}</b>
                   {isMain && <span> - Conseiller principal</span>}
                   <br />
                   <i>
@@ -28,8 +28,8 @@ const LoanAssignees = ({ assigneeLinks }) => {
               }
             >
               <img
-                src={employeesById[_id].src}
-                alt={employeesById[_id].name}
+                src={employeesById[_id]?.src}
+                alt={employeesById[_id]?.name}
                 style={{ width: 24, height: 24, borderRadius: '50%' }}
               />
             </Tooltip>

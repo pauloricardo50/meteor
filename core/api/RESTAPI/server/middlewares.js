@@ -25,6 +25,7 @@ import {
   requestTypeIsAllowed,
   shouldSkipMiddleware,
   checkCustomAuth,
+  getAnalyticsParams,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -308,6 +309,16 @@ const multipartMiddleware = options => (req, res, next) => {
   return middleware(req, res, next);
 };
 
+const analyticsMiddleware = options => (req, res, next) => {
+  const analyticsParams = getAnalyticsParams({ req, options });
+
+  if (analyticsParams) {
+    req.analyticsParams = analyticsParams;
+  }
+
+  next();
+};
+
 const customAuthMiddleware = options => (req, res, next) => {
   if (shouldSkipMiddleware({ req, middleware: 'customAuthMiddleware' })) {
     return next();
@@ -337,5 +348,6 @@ export const preMiddlewares = [
   basicAuthMiddleware,
   customAuthMiddleware,
   replayHandlerMiddleware,
+  analyticsMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

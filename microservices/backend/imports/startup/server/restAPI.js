@@ -111,6 +111,10 @@ api.addEndpoint('/properties', 'POST', insertPropertyAPI, {
 api.addEndpoint('/files', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
+  analyticsParams: req => {
+    const { files: { file = {} } = {} } = req;
+    return { fileSize: file.size };
+  },
 });
 api.addEndpoint('/files', 'DELETE', deleteFileAPI, {
   rsaAuth: true,
@@ -144,10 +148,29 @@ api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
 api.addEndpoint('/front-plugin', 'POST', frontPluginAPI, {
   customAuth: FrontService.checkPluginAuthentication.bind(FrontService),
   endpointName: 'Front plugin',
+  analyticsParams: req => {
+    const { body: { type, params = {} } = {} } = req;
+    const analyticsParams = { type };
+
+    if (type === 'QUERY_ONE' || type === 'QUERY') {
+      const { collectionName } = params;
+      analyticsParams.collectionName = collectionName;
+    } else if (type === 'METHOD') {
+      const { methodName } = params;
+      analyticsParams.methodName = methodName;
+    }
+
+    return analyticsParams;
+  },
 });
 api.addEndpoint('/front-webhooks/:webhookName', 'POST', frontWebhookAPI, {
   customAuth: FrontService.checkWebhookAuthentication.bind(FrontService),
   endpointName: 'Front webhooks',
+  analyticsParams: req => {
+    const { params: { webhookName } = {} } = req;
+
+    return { webhookName };
+  },
 });
 
 Meteor.startup(() => {

@@ -43,6 +43,7 @@ export const LoanActivityForm = ({
   onSubmit,
   iconType,
   className = '',
+  buttonProps = {},
   ...rest
 }) => (
   <AutoFormDialog
@@ -57,6 +58,7 @@ export const LoanActivityForm = ({
       primary: true,
       icon: <Icon type="add" />,
       style: { margin: '0 8px' },
+      ...buttonProps,
     }}
     {...rest}
   />
@@ -65,7 +67,7 @@ export const LoanActivityForm = ({
 export const LoanActivityModifier = withProps(({ model }) => ({
   onSubmit: values =>
     activityUpdate.run({ activityId: model._id, object: values }),
-  iconType: 'edit',
+  buttonProps: {icon: <Icon type="edit"/>, fab: true, label:'', style: {}, tooltip: 'Modifier'},
   renderAdditionalActions: ({ closeDialog, setDisableActions }) => (
     <Button
       onClick={() => {

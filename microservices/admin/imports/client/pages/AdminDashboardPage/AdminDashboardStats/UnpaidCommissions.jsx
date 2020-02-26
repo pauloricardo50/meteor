@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -10,12 +10,10 @@ import {
 import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import StatItem from './StatItem';
 
 const UnpaidCommissions = () => {
-  const currentUser = useContext(CurrentUserContext);
-  const { data: revenues = [], loading } = useStaticMeteorData({
+  const { data: revenues = [] } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
     params: {
       $filters: {
@@ -29,16 +27,22 @@ const UnpaidCommissions = () => {
     },
     refetchOnMethodCall: false,
   });
-  const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
-  const myRevenues = revenues.filter(
-    ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,
-  );
-  const isOk = myRevenues.length === 0;
+  const total = revenues.reduce((tot, { amount, organisationLinks }) => {
+    const totalRate = organisationLinks.reduce(
+      (accumulatedRate, { status, commissionRate }) =>
+        status === COMMISSION_STATUS.TO_BE_PAID
+          ? accumulatedRate + commissionRate
+          : accumulatedRate,
+      0,
+    );
+
+    return tot + totalRate * amount;
+  }, 0);
+  const isOk = revenues.length === 0;
 
   return (
     <StatItem
       value={<CountUp end={total} prefix="CHF " preserveValue separator=" " />}
-      increment={`Dont ${myRevenues.length} à moi`}
       positive={isOk}
       title="Commissions à payer"
       top={
@@ -52,7 +56,7 @@ const UnpaidCommissions = () => {
               tabId: 'commissions',
             })}
           >
-            Résoudre le problème
+            Afficher liste
           </Button>
         )
       }

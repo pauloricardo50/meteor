@@ -10,7 +10,7 @@ import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
 const WrappedRevenuesTable = CommissionsTableContainer(RevenuesTable);
 
 const CommissionsTable = props => {
-  const [status, setStatus] = useState(undefined);
+  const [status, setStatus] = useState({ $in: [REVENUE_STATUS.CLOSED] });
   const [commissionStatus, setCommissionStatus] = useState([
     COMMISSION_STATUS.TO_BE_PAID,
   ]);

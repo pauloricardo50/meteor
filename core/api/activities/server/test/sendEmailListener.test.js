@@ -54,12 +54,12 @@ describe('sendEmailListener', function() {
       expect(activities[0]).to.deep.include({
         type: ACTIVITY_TYPES.EMAIL,
         title: 'Email envoyé',
-        description: 'E-Potek - Rue du test 1, de info@e-potek.ch',
+        description: 'E-Potek - Rue du test 1, de team@e-potek.ch',
       });
       expect(activities[0].metadata).to.deep.include({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
         to: 'john.doe@test.com',
-        from: 'info@e-potek.ch',
+        from: 'team@e-potek.ch',
       });
       expect(activities[0].metadata.response).to.deep.include({
         status: 'sent',
@@ -89,12 +89,12 @@ describe('sendEmailListener', function() {
       expect(activities[0]).to.deep.include({
         type: ACTIVITY_TYPES.EMAIL,
         title: 'Email envoyé',
-        description: 'E-Potek - Rue du test 1, de info@e-potek.ch',
+        description: 'E-Potek - Rue du test 1, de team@e-potek.ch',
       });
       expect(activities[0].metadata).to.deep.include({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
         to: 'john.doe@test.com',
-        from: 'info@e-potek.ch',
+        from: 'team@e-potek.ch',
       });
       expect(activities[0].metadata.response).to.deep.include({
         status: 'sent',
