@@ -71,6 +71,20 @@ const LightTheme = ({ children }) => (
             color: 'white',
           },
         },
+        MuiInputAdornment: {
+          root: {
+            '&> p': {
+              color: 'white',
+              opacity: 0.54,
+            },
+          },
+        },
+        MuiFormHelperText: {
+          root: {
+            color: 'white',
+            opacity: 0.54,
+          },
+        },
       },
     }}
   >

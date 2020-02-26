@@ -151,6 +151,10 @@ $result-section-negative-offset: -32px;
     color: $primary;
   }
 
+  .monthlyPropertyCost input {
+    color: white;
+  }
+
   &.result-section {
     color: white;
     background-color: $primary;

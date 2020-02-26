@@ -57,6 +57,7 @@ export const FinancingInput = props => {
     name,
     type = 'money',
     getError = defaultGetError,
+    helperText,
   } = props;
   const InputComponent = type === 'money' ? MoneyInput : PercentInput;
   const FormatComponent = type === 'money' ? Money : Percent;
@@ -89,7 +90,7 @@ export const FinancingInput = props => {
       className="money-input"
       disabled={disabled}
       error={!!error}
-      helperText={error}
+      helperText={error || helperText}
       margin="dense"
       shrink
     />

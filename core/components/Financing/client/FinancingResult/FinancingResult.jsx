@@ -14,7 +14,6 @@ import {
   getRemainingInsurance3A,
   getRemainingBank3A,
   getRemainingInsurance3B,
-  getPropertyExpenses,
   getIncomeRatio,
   getIncomeRatioStatus,
   makeHasOwnFundsOfType,
@@ -23,6 +22,7 @@ import FinancingResultInterests from './FinancingResultInterests';
 import FinancingResultAmortization from './FinancingResultAmortization';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 import FinancingResultSummary from './FinancingResultSummary';
+import FinancingPropertyExpenses from './FinancingPropertyExpenses';
 
 const FinancingResult = ({ error }) =>
   error ? (
@@ -61,9 +61,8 @@ const FinancingResult = ({ error }) =>
           value: getAmortization,
         },
         {
-          id: 'propertyCost',
-          Component: CalculatedValue,
-          value: getPropertyExpenses,
+          id: 'monthlyPropertyCost',
+          Component: FinancingPropertyExpenses,
         },
         {
           id: 'finma',

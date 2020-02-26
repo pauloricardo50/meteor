@@ -1,4 +1,9 @@
 {
+  "FinancingPropertyExpenses.helperText": "Indicatif: charges PPE, chauffage, etc.",
+  "FinancingAmortizationDuration.withOffer": "Défini par {organisationName}",
+  "FinancingAmortizationDuration.investment": "Bien d'investissement",
+  "FinancingAmortizationDuration.closeToRetirement": "Approche de la retraite",
+  "FinancingAmortizationDuration.default": "Durée standard",
   "FinancingAmortizationDuration.years": "{years} {years, plural, one {an} other {ans}}",
   "Financing.amortizationDuration": "Durée d'amortissement",
   "FinancingFinancing.amortizationClash": "Choisissez entre premier rang et un amortissement annuel",
@@ -1920,7 +1925,7 @@
   "Financing.loanTranches": "Tranches",
   "Financing.notaryFees": "Frais de notaire",
   "Financing.pledgedAmount": "Nantissement",
-  "Financing.propertyCost": "Charges mensuelles",
+  "Financing.monthlyPropertyCost": "Charges mensuelles",
   "Financing.propertyId": "Bien immobilier",
   "Financing.propertyValue": "{purchaseType, select, REFINANCING {Valeur du bien} other {Prix d'achat}}",
   "Financing.propertyWork": "Travaux à plus-value",

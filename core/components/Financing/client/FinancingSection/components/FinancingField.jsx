@@ -14,17 +14,17 @@ export const FinancingField = ({
   id,
   schema,
   value,
-  updateStructure,
+  handleSubmit,
   ...props
 }) => {
   const formRef = useRef(null);
   return (
     <div className={cx('financing-field', className)}>
       <AutoForm
-        onSubmit={updateStructure}
+        onSubmit={handleSubmit}
         schema={schema}
         model={{ [id]: value }}
-        disabled={props.structure.disableForms}
+        disabled={props.structure?.disableForms}
         ref={formRef}
       >
         <FinancingInput name={id} formRef={formRef} {...props} />
@@ -43,6 +43,7 @@ export default compose(
       placeholder,
       id,
       allowUndefined,
+      updateStructure,
       ...props
     }) => {
       // The schema never changes
@@ -60,6 +61,7 @@ export default compose(
           ? calculatePlaceholder(props)
           : placeholder,
         schema,
+        handleSubmit: updateStructure,
       };
     },
   ),
