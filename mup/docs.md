@@ -8,6 +8,8 @@ Add the public key to Google Cloud by going to https://console.cloud.google.com/
 
 ## Google Cloud API
 
+Both of these are needed to deploy.
+
 ### Engine Credentials
 Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey and `Compute Engine`, and `JSON` key type, and download it. Move the file to `mup/configs/credentials.json`.
 
