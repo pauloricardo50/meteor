@@ -298,6 +298,7 @@ describe('Admin promotion', () => {
       cy.get('input[name=landValue]').type('{backspace}500000');
       cy.get('input[name=constructionValue]').type('{backspace}500000');
       cy.get('input[name=additionalMargin]').type('{backspace}500000');
+      cy.setSelect('propertyType', 'HOUSE');
 
       cy.get('button[type=submit]').click();
 

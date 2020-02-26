@@ -60,8 +60,7 @@ describe('Single Loan Page', () => {
 
     cy.get('.tasks-table').should('not.exist');
 
-    cy.get('.single-loan-page-tasks')
-      .get('button')
+    cy.get('.single-loan-page-tasks button')
       .contains('Tâche')
       .click();
     cy.get('input[name=title]').type('Cypress Task');

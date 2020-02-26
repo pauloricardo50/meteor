@@ -94,23 +94,36 @@ Meteor.methods({
       newOrganisations: [{ _id: orgId, metadata: { isMain: true } }],
     });
 
-    OrganisationService.insert({
+    const orgId1 = OrganisationService.insert({
       name: ORG_NAME,
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
       city: 'Genève',
-      userLinks: [{ _id: userId }, { _id: userId2 }],
       features: [ORGANISATION_FEATURES.PRO],
     });
-    OrganisationService.insert({
+
+    const orgId2 = OrganisationService.insert({
       name: 'Organisation 2',
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
       city: 'Genève',
-      userLinks: [{ _id: userId3 }],
+      userLinks: [{ _id: userId3, metadata: { isMain: true } }],
       features: [ORGANISATION_FEATURES.PRO],
+    });
+
+    UserService.updateOrganisations({
+      userId,
+      newOrganisations: [{ _id: orgId1, metadata: { isMain: true } }],
+    });
+    UserService.updateOrganisations({
+      userId: userId2,
+      newOrganisations: [{ _id: orgId1, metadata: { isMain: true } }],
+    });
+    UserService.updateOrganisations({
+      userId: userId3,
+      newOrganisations: [{ _id: orgId2, metadata: { isMain: true } }],
     });
 
     const organisationId = OrganisationService.insert({
