@@ -57,10 +57,20 @@ const frontEndpoints = {
     method: 'GET',
     makeEndpoint: ({ conversationId }) => `/conversations/${conversationId}`,
   },
+  listTeamMates: {
+    method: 'GET',
+    makeEndpoint: () => `/teammates`,
+  },
+  updateConversationAssignee: {
+    method: 'PUT',
+    makeEndpoint: ({ conversationId }) =>
+      `/conversations/${conversationId}/assignee`,
+  },
 };
 
 const WEBHOOKS = {
   AUTO_TAG: 'auto-tag',
+  AUTO_ASSIGN: 'auto-assign',
   TEST: 'test',
 };
 
@@ -183,6 +193,10 @@ export class FrontService {
       return this.handleAutoTag(body);
     }
 
+    if (webhookName === WEBHOOKS.AUTO_ASSIGN) {
+      return this.handleAutoAssign(body);
+    }
+
     if (webhookName === WEBHOOKS.TEST) {
       return this.callFrontApi({ endpoint: 'identity' });
     }
@@ -264,6 +278,35 @@ export class FrontService {
     });
   }
 
+  listTeam() {
+    return this.callFrontApi({
+      endpoint: 'listTeamMates',
+    });
+  }
+
+  getTeamMateId = async email => {
+    const user = UserService.getByEmail(email, { frontUserId: 1 });
+
+    if (!user) {
+      return;
+    }
+    if (user.frontUserId) {
+      return user.frontUserId;
+    }
+    const { _results: teamMates = [] } = await this.listTeam();
+    const teamMate = teamMates.find(
+      ({ email: teamMateEmail }) => teamMateEmail === email,
+    );
+
+    if (teamMate?.id) {
+      UserService.update({
+        userId: user._id,
+        object: { frontUserId: teamMate.id },
+      });
+    }
+    return teamMate?.id;
+  };
+
   async getLoanTagId({ loanId, loanName }) {
     const { _results = [] } = await this.listTagChildren({
       parentTagId: LOANS_TAG_ID,
@@ -301,12 +344,28 @@ export class FrontService {
     });
   }
 
+  getRecipientUser({ conversation, role }) {
+    const { last_message: { recipients = [] } = {} } = conversation;
+    const recipient = recipients.find(
+      ({ role: recipientRole, handle }) => recipientRole === role && !!handle,
+    );
+    const email = recipient?.handle;
+    const recipientUser =
+      email &&
+      UserService.getByEmail(email, {
+        assignedEmployee: { email: 1 },
+        loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+      });
+
+    return recipientUser;
+  }
+
   async handleAutoTag({ conversation }) {
     if (!conversation) {
       return;
     }
 
-    const { tags = [], recipient } = conversation;
+    const { tags = [] } = conversation;
 
     const hasLoanTag = tags.find(
       ({ _links }) => _links?.related?.parent_tag === LOANS_TAG_URL,
@@ -317,13 +376,7 @@ export class FrontService {
       return;
     }
 
-    const email = recipient.role === 'from' && recipient.handle;
-    const recipientUser =
-      email &&
-      UserService.get(
-        { 'emails.0.address': email, roles: ROLES.USER },
-        { loans: { name: 1, frontTagId: 1 } },
-      );
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
 
     if (!recipientUser) {
       // If the user is not found in our DB
@@ -392,6 +445,59 @@ export class FrontService {
       tags: newTags,
       appendTags: false,
     });
+  }
+
+  updateConversationAssignee({ conversationId, assigneeId = null }) {
+    return this.callFrontApi({
+      endpoint: 'updateConversationAssignee',
+      params: { conversationId },
+      body: { assignee_id: assigneeId },
+    });
+  }
+
+  async handleAutoAssign({ conversation }) {
+    if (!conversation) {
+      return;
+    }
+
+    const { assignee, id: conversationId } = conversation;
+
+    if (assignee) {
+      // The conversation is already assigned
+      return;
+    }
+
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+
+    if (!recipientUser) {
+      // User not found
+      return;
+    }
+
+    const { assignedEmployee, loans = [] } = recipientUser;
+
+    let assigneeEmail;
+
+    if (loans.length === 1) {
+      const [{ mainAssignee }] = loans;
+      assigneeEmail = mainAssignee.email;
+    } else if (assignedEmployee) {
+      assigneeEmail = assignedEmployee.email;
+    }
+
+    if (!assigneeEmail) {
+      // No assignee found
+      return;
+    }
+
+    const assigneeId = await this.getTeamMateId(assigneeEmail);
+
+    if (!assigneeId) {
+      // Assignee not found in team
+      return;
+    }
+
+    return this.updateConversationAssignee({ conversationId, assigneeId });
   }
 }
 

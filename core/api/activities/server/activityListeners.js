@@ -129,15 +129,12 @@ ServerEventService.addAfterMethodListener(
     const { userId: proId } = context;
     const APIUser = getAPIUser();
 
-    const currentUser = UserService.get(
-      { 'emails.address': { $in: [email] } },
-      {
-        activities: { metadata: 1 },
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        createdAt: 1,
-      },
-    );
+    const currentUser = UserService.getByEmail(email, {
+      activities: { metadata: 1 },
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      createdAt: 1,
+    });
 
     const { activities = [] } = currentUser;
 

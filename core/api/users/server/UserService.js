@@ -6,6 +6,7 @@ import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
 
 import { fullUser } from 'core/api/fragments';
+import { selectorForFastCaseInsensitiveLookup } from 'core/api/helpers/index';
 import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -23,8 +24,26 @@ export class UserServiceClass extends CollectionService {
     this.setupRoundRobin(employees);
   }
 
-  getByEmail(email) {
-    return Accounts.findUserByEmail(email);
+  getByEmail(email, fragment = {}) {
+    let user = null;
+    const mergedFragment = { _id: 1, ...fragment };
+    user = this.get({ 'emails.address': email }, mergedFragment);
+
+    if (!user) {
+      const filters = selectorForFastCaseInsensitiveLookup(
+        'emails.address',
+        email,
+      );
+      const candidateUsers = this.fetch({
+        $filters: filters,
+        ...mergedFragment,
+      });
+      if (candidateUsers.length === 1) {
+        user = candidateUsers[0];
+      }
+    }
+
+    return user;
   }
 
   createUser = ({ options, role }) => {
@@ -395,7 +414,7 @@ export class UserServiceClass extends CollectionService {
       const {
         _id: existingUserId,
         assignedEmployeeId: existingAssignedEmployeeId,
-      } = this.getByEmail(email);
+      } = this.getByEmail(email, { assignedEmployeeId: 1 });
 
       admin = this.get(existingAssignedEmployeeId, { name: 1 });
       userId = existingUserId;

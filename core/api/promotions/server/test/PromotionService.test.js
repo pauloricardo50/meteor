@@ -258,7 +258,9 @@ describe('PromotionService', function() {
         userId,
         isNewUser,
       }).then(() => {
-        const user = UserService.getByEmail(newUser.email);
+        const user = UserService.getByEmail(newUser.email, {
+          assignedEmployeeId: 1,
+        });
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
       });

@@ -37,10 +37,9 @@ describe('adminCreateUserListener', () => {
       }),
     );
 
-    const { activities = [] } = UserService.get(
-      { 'emails.address': 'john.doe@test.com' },
-      { activities: { type: 1, description: 1, title: 1, metadata: 1 } },
-    );
+    const { activities = [] } = UserService.getByEmail('john.doe@test.com', {
+      activities: { type: 1, description: 1, title: 1, metadata: 1 },
+    });
 
     expect(activities.length).to.equal(1);
     expect(activities[0]).to.deep.include({

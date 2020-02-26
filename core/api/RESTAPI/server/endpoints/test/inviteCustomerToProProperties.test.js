@@ -175,14 +175,11 @@ describe('REST: inviteCustomerToProProperties', function() {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
     });
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(customer.loans[0].shareSolvency).to.equal(undefined);
 
@@ -225,14 +222,11 @@ describe('REST: inviteCustomerToProProperties', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(customer.loans[0].shareSolvency).to.equal(true);
 
@@ -275,15 +269,12 @@ describe('REST: inviteCustomerToProProperties', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-        tasks: { description: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+      tasks: { description: 1 },
+    });
 
     expect(customer.loans[0].shareSolvency).to.equal(true);
 
@@ -294,14 +285,9 @@ describe('REST: inviteCustomerToProProperties', function() {
       const interval = Meteor.setInterval(() => {
         if (tasks.length === 0 && intervalCount < 10) {
           tasks =
-            UserService.get(
-              {
-                'emails.address': { $in: [customerToInvite.email] },
-              },
-              {
-                tasks: { description: 1 },
-              },
-            ).tasks || [];
+            UserService.getByEmail(customerToInvite.email, {
+              tasks: { description: 1 },
+            }).tasks || [];
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);
