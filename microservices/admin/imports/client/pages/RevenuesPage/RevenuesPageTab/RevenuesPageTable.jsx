@@ -83,8 +83,6 @@ const RevenuesPageTable = props => {
         )}
       </div>
       <RevenuesTable
-        displayLoan
-        displayActions
         filterRevenues={() => ({ status, type })}
         initialOrderBy={2}
         postFilter={revenues =>

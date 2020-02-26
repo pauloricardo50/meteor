@@ -23,8 +23,6 @@ const RevenuesToPay = ({ _id: organisationId }) => {
         style={{ display: 'inline-block' }}
       />
       <RevenuesTable
-        displayLoan
-        displayActions
         filterRevenues={() => ({
           sourceOrganisationId: organisationId,
           status,

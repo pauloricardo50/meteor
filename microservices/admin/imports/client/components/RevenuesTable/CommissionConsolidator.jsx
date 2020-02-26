@@ -61,7 +61,10 @@ const CommissionsConsolidator = ({
       </div>
     }
     schema={schema}
-    model={{ commissionRate, paidAt: moment(paidAt).format('YYYY-MM-DD') }}
+    model={{
+      commissionRate,
+      paidAt: paidAt && moment(paidAt).format('YYYY-MM-DD'),
+    }}
     onSubmit={values =>
       consolidateCommission.run({
         revenueId,

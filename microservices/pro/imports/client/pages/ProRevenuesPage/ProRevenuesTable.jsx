@@ -7,13 +7,12 @@ import T, { Percent, Money } from 'core/components/Translation';
 import { proRevenues } from 'core/api/revenues/queries';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import {
-  REVENUE_STATUS,
-  LOANS_COLLECTION,
-  COMMISSION_STATUS,
-  PRO_COMMISSION_STATUS,
-} from 'core/api/constants';
+import { LOANS_COLLECTION, PRO_COMMISSION_STATUS } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
+import {
+  getProCommissionStatus,
+  getProCommissionDate,
+} from 'core/api/revenues/revenueHelpers';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -52,22 +51,22 @@ const mapRevenueToRow = (
     ({ _id: organisationLinkId }) => organisationLinkId === mainOrg._id,
   );
 
-  const status =
-    revenueStatus === REVENUE_STATUS.EXPECTED
-      ? PRO_COMMISSION_STATUS.WAITING_FOR_REVENUE
-      : commissionStatus === COMMISSION_STATUS.TO_BE_PAID
-      ? PRO_COMMISSION_STATUS.COMMISSION_TO_PAY
-      : PRO_COMMISSION_STATUS.COMMISSION_PAID;
+  const status = getProCommissionStatus(revenueStatus, commissionStatus);
 
-  const date =
-    revenueStatus === REVENUE_STATUS.EXPECTED
-      ? expectedAt
-      : commissionStatus === COMMISSION_STATUS.TO_BE_PAID
-      ? revenuePaidAt
-      : paidAt;
+  const date = getProCommissionDate({
+    revenueStatus,
+    commissionStatus,
+    expectedAt,
+    revenuePaidAt,
+    commissionPaidAt: paidAt,
+  });
+
+  const commissionAmount = amount * commissionRate;
 
   return {
     id: _id,
+
+    commissionAmount,
     columns: [
       {
         raw: loan.name,
@@ -78,13 +77,13 @@ const mapRevenueToRow = (
           </span>
         ),
       },
-      { raw: status, label: <T id={`ProRevenuesTable.status.${status}`} /> },
+      { raw: status, label: <T id={`Forms.status.${status}`} /> },
       {
-        raw: date && date.getTime(),
+        raw: date?.getTime(),
         label: moment(date).format('D MMMM YYYY'),
       },
       commissionRate,
-      amount * commissionRate,
+      commissionAmount,
     ],
   };
 };
@@ -112,6 +111,11 @@ const ProRevenuesTable = () => {
     [],
   );
 
+  const total = rows.reduce(
+    (t, { commissionAmount }) => t + commissionAmount,
+    0,
+  );
+
   return (
     <div>
       <h2>Liste</h2>
@@ -119,7 +123,7 @@ const ProRevenuesTable = () => {
       <Select
         options={Object.values(PRO_COMMISSION_STATUS).map(s => ({
           id: s,
-          label: <T id={`ProRevenuesTable.status.${s}`} />,
+          label: <T id={`Forms.status.${s}`} />,
         }))}
         multiple
         onChange={setProCommissionStatus}
@@ -127,6 +131,11 @@ const ProRevenuesTable = () => {
         label="Statut"
       />
       <Table rows={rows} columnOptions={columnOptions} initialOrderBy={2} />
+      {rows.length > 1 && (
+        <h2 className="secondary" style={{ textAlign: 'right' }}>
+          Total: <Money value={total} />
+        </h2>
+      )}
     </div>
   );
 };

@@ -4,12 +4,9 @@ import { Meteor } from 'meteor/meteor';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import { adminRevenues, proRevenues } from '../queries';
-import {
-  REVENUE_STATUS,
-  PRO_COMMISSION_STATUS,
-  COMMISSION_STATUS,
-} from '../revenueConstants';
+import { REVENUE_STATUS } from '../revenueConstants';
 import UserService from '../../users/server/UserService';
+import { getCommissionFilters } from '../revenueHelpers';
 
 exposeQuery({
   query: adminRevenues,
@@ -125,51 +122,7 @@ exposeQuery({
         filters,
         params: { organisationId, proCommissionStatus },
       }) => {
-        const $or = [];
-
-        if (
-          proCommissionStatus.includes(
-            PRO_COMMISSION_STATUS.WAITING_FOR_REVENUE,
-          )
-        ) {
-          $or.push({
-            status: REVENUE_STATUS.EXPECTED,
-            organisationLinks: {
-              $elemMatch: {
-                _id: organisationId,
-                status: COMMISSION_STATUS.TO_BE_PAID,
-              },
-            },
-          });
-        }
-
-        if (
-          proCommissionStatus.includes(PRO_COMMISSION_STATUS.COMMISSION_TO_PAY)
-        ) {
-          $or.push({
-            status: REVENUE_STATUS.CLOSED,
-            organisationLinks: {
-              $elemMatch: {
-                _id: organisationId,
-                status: COMMISSION_STATUS.TO_BE_PAID,
-              },
-            },
-          });
-        }
-
-        if (
-          proCommissionStatus.includes(PRO_COMMISSION_STATUS.COMMISSION_PAID)
-        ) {
-          $or.push({
-            status: REVENUE_STATUS.CLOSED,
-            organisationLinks: {
-              $elemMatch: {
-                _id: organisationId,
-                status: COMMISSION_STATUS.PAID,
-              },
-            },
-          });
-        }
+        const $or = getCommissionFilters(proCommissionStatus, organisationId);
 
         if ($or.length === 0) {
           throw new Meteor.Error('Invalid query');
