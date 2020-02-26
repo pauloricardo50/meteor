@@ -559,7 +559,7 @@ describe('FrontService', () => {
         expect(fetchStub.callCount).to.equal(0);
       });
 
-      it('does not call anything the assignee if it is not found in the team mates', async () => {
+      it('does not call anything if the assignee is not found in the team mates', async () => {
         listTeamStub.resolves({
           _results: [{ id: 'admin', email: 'admin@e-potek.ch' }],
         });

@@ -15,7 +15,7 @@ const schema = new SimpleSchema({
     customAllowedValues: {
       query: adminUsers,
       params: () => ({
-        roles: [ROLES.ADMIN, ROLES.DEV],
+        roles: [ROLES.ADMIN],
         $body: { name: 1, $options: { sort: { name: 1 } } },
       }),
     },
