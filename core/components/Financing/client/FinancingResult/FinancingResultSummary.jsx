@@ -7,7 +7,7 @@ import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { getFinancingError, ERROR_TYPES } from './FinancingResultErrors';
 import FinancingResultSuccess from './FinancingResultSuccess';
 
-const FinancingResultSummary = props => {
+export const FinancingResultSummary = props => {
   const error = getFinancingError(props);
 
   if (error.type === ERROR_TYPES.BREAKING) {
