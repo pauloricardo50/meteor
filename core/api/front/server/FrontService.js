@@ -344,12 +344,28 @@ export class FrontService {
     });
   }
 
+  getRecipientUser({ conversation, role }) {
+    const { last_message: { recipients = [] } = {} } = conversation;
+    const recipient = recipients.find(
+      ({ role: recipientRole, handle }) => recipientRole === role && !!handle,
+    );
+    const email = recipient?.handle;
+    const recipientUser =
+      email &&
+      UserService.getByEmail(email, {
+        assignedEmployee: { email: 1 },
+        loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+      });
+
+    return recipientUser;
+  }
+
   async handleAutoTag({ conversation }) {
     if (!conversation) {
       return;
     }
 
-    const { tags = [], recipient } = conversation;
+    const { tags = [] } = conversation;
 
     const hasLoanTag = tags.find(
       ({ _links }) => _links?.related?.parent_tag === LOANS_TAG_URL,
@@ -360,13 +376,7 @@ export class FrontService {
       return;
     }
 
-    const email = recipient.role === 'from' && recipient.handle;
-    const recipientUser =
-      email &&
-      UserService.get(
-        { 'emails.0.address': email, roles: ROLES.USER },
-        { loans: { name: 1, frontTagId: 1 } },
-      );
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
 
     if (!recipientUser) {
       // If the user is not found in our DB
@@ -450,30 +460,14 @@ export class FrontService {
       return;
     }
 
-    const {
-      last_message: { recipients = [] } = {},
-      assignee,
-      id: conversationId,
-    } = conversation;
+    const { assignee, id: conversationId } = conversation;
 
     if (assignee) {
       // The conversation is already assigned
       return;
     }
 
-    const recipient = recipients.find(
-      ({ role, handle }) => role === 'from' && !!handle,
-    );
-    const email = recipient?.handle;
-    const recipientUser =
-      email &&
-      UserService.get(
-        { 'emails.0.address': email },
-        {
-          assignedEmployee: { email: 1 },
-          loans: { mainAssignee: { email: 1 } },
-        },
-      );
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
 
     if (!recipientUser) {
       // User not found

@@ -160,7 +160,9 @@ describe('FrontService', () => {
             conversation: {
               id: 'conversationId',
               tags: [{ id: 'tag1' }],
-              recipient: { handle: 'user@e-potek.ch', role: 'from' },
+              last_message: {
+                recipients: [{ handle: 'user@e-potek.ch', role: 'from' }],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -195,7 +197,9 @@ describe('FrontService', () => {
             conversation: {
               id: 'conversationId',
               tags: [{ id: 'tag1' }],
-              recipient: { handle: 'user@e-potek.ch', role: 'from' },
+              last_message: {
+                recipients: [{ handle: 'user@e-potek.ch', role: 'from' }],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -234,7 +238,9 @@ describe('FrontService', () => {
             conversation: {
               id: 'conversationId',
               tags: [{ id: 'tag1' }],
-              recipient: { handle: 'user@e-potek.ch', role: 'from' },
+              last_message: {
+                recipients: [{ handle: 'user@e-potek.ch', role: 'from' }],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -256,7 +262,9 @@ describe('FrontService', () => {
             conversation: {
               id: 'conversationId',
               tags: [{ id: 'tag1' }],
-              recipient: { handle: 'user@e-potek.ch', role: 'from' },
+              last_message: {
+                recipients: [{ handle: 'user@e-potek.ch', role: 'from' }],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -279,7 +287,9 @@ describe('FrontService', () => {
             conversation: {
               id: 'conversationId',
               tags: [{ id: 'tag1' }],
-              recipient: { handle: 'user@e-potek.ch', role: 'from' },
+              last_message: {
+                recipients: [{ handle: 'user@e-potek.ch', role: 'from' }],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -301,7 +311,9 @@ describe('FrontService', () => {
             conversation: {
               id: 'conversationId',
               tags: [{ id: 'tag1' }],
-              recipient: { handle: 'user@e-potek.ch', role: 'from' },
+              last_message: {
+                recipients: [{ handle: 'user@e-potek.ch', role: 'from' }],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -321,7 +333,9 @@ describe('FrontService', () => {
                   _links: { related: { parent_tag: LOANS_TAG_URL } },
                 },
               ],
-              recipient: {},
+              last_message: {
+                recipients: [],
+              },
             },
           },
           webhookName: 'auto-tag',
@@ -624,10 +638,6 @@ describe('FrontService', () => {
       });
 
       it('does not call front list team if the assignee has already a front user id stored in db', async () => {
-        // listTeamStub.resolves({
-        //   _results: [{ id: 'admin', email: 'admin@e-potek.ch' }],
-        // });
-
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
