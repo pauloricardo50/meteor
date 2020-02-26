@@ -9,9 +9,11 @@ import FinancingSection, {
 import Calc, { getOffer } from '../FinancingCalculator';
 import FinancingTranchePicker from './FinancingTranchePicker';
 import MortgageNotesPicker from './MortgageNotesPicker';
-import LoanPercent from './LoanPercent';
 import Calculator from '../../../../utils/Calculator';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
+import { getAmortization } from '../FinancingResult/financingResultHelpers';
+import FinancingAmortizationDuration from './FinancingAmortizationDuration';
+import FinancingLoanValue from './FinancingLoanValue';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -25,7 +27,7 @@ export const calculateLoan = params => {
   return wantedLoan;
 };
 
-export const calculateMaxLoan = (data, pledgeOverride) => {
+const calculateMaxLoan = (data, pledgeOverride) => {
   const { loan, structureId } = data;
   const offer = Calculator.selectOffer({ loan, structureId });
   if (offer) {
@@ -47,6 +49,22 @@ export const calculateMaxLoan = (data, pledgeOverride) => {
   const rounding = 10 ** 3;
   return Math.floor(maxLoan / rounding) * rounding;
 };
+
+const calculateMaxFirstRank = ({ Calculator: calc, ...data }) =>
+  calc.getMaxBorrowRatio(data);
+const calculateDefaultFirstRank = ({ Calculator: calc, ...data }) => {
+  const borrowRatio = calc.getBorrowRatio(data);
+  const goal = calc.getAmortizationGoal(data);
+
+  if (borrowRatio <= goal) {
+    return borrowRatio;
+  }
+
+  return goal;
+};
+
+const calculateYearlyAmortizationPlaceholder = data =>
+  getAmortization(data) * 12;
 
 const enableOffers = ({ loan }) => loan.enableOffers;
 
@@ -73,13 +91,32 @@ const FinancingFinancing = props => (
     ]}
     detailConfig={[
       {
-        Component: FinancingField,
+        Component: FinancingLoanValue,
         id: 'wantedLoan',
         max: calculateMaxLoan,
       },
       {
-        Component: LoanPercent,
-        id: 'wantedLoanPercent',
+        Component: FinancingField,
+        id: 'firstRank',
+        type: 'percent',
+        max: calculateMaxFirstRank,
+        allowUndefined: true,
+        calculatePlaceholder: calculateDefaultFirstRank,
+      },
+      {
+        Component: FinancingField,
+        id: 'yearlyAmortization',
+        allowUndefined: true,
+        calculatePlaceholder: calculateYearlyAmortizationPlaceholder,
+        getError: ({ value, structure }) => {
+          if (value > 0 && structure.firstRank > 0) {
+            return <T id="FinancingFinancing.amortizationClash" />;
+          }
+        },
+      },
+      {
+        Component: FinancingAmortizationDuration,
+        id: 'amortizationDuration',
       },
       {
         Component: MortgageNotesPicker,

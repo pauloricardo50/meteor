@@ -3,12 +3,10 @@ import cx from 'classnames';
 import { AutoForm } from 'uniforms-material';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-
 import { compose, withProps } from 'recompose';
+
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
-import { toMoney } from '../../../../../utils/conversionFunctions';
-
 import FinancingInput from './FinancingInput';
 
 export const FinancingField = ({
@@ -16,17 +14,17 @@ export const FinancingField = ({
   id,
   schema,
   value,
-  updateStructure,
+  handleSubmit,
   ...props
 }) => {
   const formRef = useRef(null);
   return (
     <div className={cx('financing-field', className)}>
       <AutoForm
-        onSubmit={updateStructure}
+        onSubmit={handleSubmit}
         schema={schema}
         model={{ [id]: value }}
-        disabled={props.structure.disableForms}
+        disabled={props.structure?.disableForms}
         ref={formRef}
       >
         <FinancingInput name={id} formRef={formRef} {...props} />
@@ -40,11 +38,12 @@ export default compose(
   StructureUpdateContainer,
   withProps(
     ({
-      max: _max,
+      max,
       calculatePlaceholder,
       placeholder,
       id,
       allowUndefined,
+      updateStructure,
       ...props
     }) => {
       // The schema never changes
@@ -57,11 +56,12 @@ export default compose(
       );
 
       return {
-        max: typeof _max === 'function' ? _max(props) : _max,
+        max: typeof max === 'function' ? max(props) : max,
         placeholder: calculatePlaceholder
-          ? toMoney(calculatePlaceholder(props))
+          ? calculatePlaceholder(props)
           : placeholder,
         schema,
+        handleSubmit: updateStructure,
       };
     },
   ),

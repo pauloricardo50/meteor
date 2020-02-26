@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { compose, mapProps } from 'recompose';
 
 import { propertyInsert } from 'core/api/properties/methodDefinitions';
-import T from '../../../Translation';
+import T, { Money } from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import { updateStructure } from '../../../../api';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
@@ -50,19 +50,20 @@ const FinancingPropertyPickerContainer = compose(
         setOpenForm,
         disabled: disableForms,
         options: [
-          ...properties.map(({ _id, address, propertyType }) => ({
+          ...properties.map(({ _id, address, propertyType, value }) => ({
             id: _id,
             label: (
               <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
                 {address.replace(', ', '\n')}
               </span>
             ) || <T id="FinancingPropertyPicker.placeholder" />,
-            secondary: propertyType && (
+            secondary: <Money value={value} />,
+            description: propertyType && (
               <T id={`Forms.propertyType.${propertyType}`} />
             ),
           })),
           ...promotionOptions.map(
-            ({ _id, name, promotion: { name: promotionName } }) => ({
+            ({ _id, name, promotion: { name: promotionName }, value }) => ({
               id: _id,
               label: (
                 <T
@@ -70,7 +71,8 @@ const FinancingPropertyPickerContainer = compose(
                   values={{ name }}
                 />
               ),
-              secondary: (
+              secondary: <Money value={value} />,
+              description: (
                 <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
                   {promotionName}
                 </span>

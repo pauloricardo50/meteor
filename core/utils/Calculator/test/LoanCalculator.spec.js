@@ -449,6 +449,55 @@ describe('LoanCalculator', () => {
         }),
       ).to.equal(1500);
     });
+
+    it('amortizes faster if a firstRank is set', () => {
+      expect(
+        Calculator.getAmortization({
+          loan: {
+            structure: {
+              wantedLoan: 960000,
+              propertyWork: 0,
+              property: { value: 1200000 },
+              firstRank: 0.5,
+            },
+          },
+        }),
+      ).to.equal(2000);
+    });
+
+    it('amortizes faster if a firstRank is set, even with offer', () => {
+      expect(
+        Calculator.getAmortization({
+          loan: {
+            structure: {
+              wantedLoan: 960000,
+              propertyWork: 0,
+              property: { value: 1200000 },
+              offer: { amortizationGoal: 0.6 },
+              firstRank: 0.5,
+            },
+          },
+        }),
+      ).to.equal(2000);
+    });
+  });
+
+  describe('getTheoreticalAmortization', () => {
+    it('ignores offers and firstRank when calculating', () => {
+      expect(
+        Calculator.getTheoreticalAmortization({
+          loan: {
+            structure: {
+              wantedLoan: 960000,
+              property: { value: 1200000 },
+              propertyWork: 0,
+              offer: { amortizationGoal: 0.3 },
+              firstRank: 0.2,
+            },
+          },
+        }),
+      ).to.equal(1000);
+    });
   });
 
   describe('getMonthly', () => {

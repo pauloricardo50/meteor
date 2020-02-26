@@ -1,5 +1,6 @@
 import React from 'react';
 import MaskedInput from 'react-text-mask';
+import cx from 'classnames';
 
 import InputAdornment from '../Material/InputAdornment';
 import FormHelperText from '../Material/FormHelperText';
@@ -15,14 +16,15 @@ import {
 import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
 
 const MoneyInput = ({
+  decimal = false,
   fullWidth = true,
   helperText,
   label,
+  margin,
+  negative = false,
   onChange,
   required,
-  margin,
-  decimal = false,
-  negative = false,
+  className,
   ...props
 }) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
@@ -43,7 +45,7 @@ const MoneyInput = ({
 
   return (
     <FormControl
-      className="money-input"
+      className={cx('money-input', className)}
       required={required}
       fullWidth={fullWidth}
       margin={margin}
@@ -62,4 +64,5 @@ const MoneyInput = ({
     </FormControl>
   );
 };
+
 export default MoneyInput;

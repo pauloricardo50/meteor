@@ -1,6 +1,12 @@
-.wantedLoanPercent {
-  form > * {
-    width: 100%;
+.wantedLoan {
+  display: flex;
+  flex-direction: row !important;
+
+  > *:first-child {
+    margin-right: 4px;
   }
 
+  .loan-percent {
+    flex-basis: 140px;
+  }
 }

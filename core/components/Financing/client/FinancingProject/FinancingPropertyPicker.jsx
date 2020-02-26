@@ -43,7 +43,7 @@ const FinancingPropertyPicker = ({
             selectedOption && (
               <ListItemText
                 primary={selectedOption.label}
-                secondary={selectedOption.secondary}
+                secondary={selectedOption.description}
                 classes={{ root: classes.root }}
               />
             )

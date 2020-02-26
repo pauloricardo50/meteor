@@ -3,8 +3,8 @@ import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import { connectField } from 'uniforms';
 
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import AutoForm from 'core/components/AutoForm2';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/constants';
+import AutoForm from '../../../AutoForm2';
 import PercentInput from '../../../PercentInput';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { getBorrowRatio } from '../FinancingResult/financingResultHelpers';
@@ -41,18 +41,17 @@ const LoanPercent = ({ handleSubmit, ...props }) => {
   const formRef = useRef(null);
 
   return (
-    <span className="wantedLoanPercent">
-      <AutoForm
-        onSubmit={({ loanPercent }) => handleSubmit(loanPercent)}
-        schema={schema}
-        model={{ loanPercent: getBorrowRatio(props) }}
-        disabled={props.structure.disableForms}
-        submitFieldProps={{ showSubmitField: false }}
-        ref={formRef}
-      >
-        <LoanPercentField formRef={formRef} name="loanPercent" />
-      </AutoForm>
-    </span>
+    <AutoForm
+      onSubmit={({ loanPercent }) => handleSubmit(loanPercent)}
+      schema={schema}
+      model={{ loanPercent: getBorrowRatio(props) }}
+      disabled={props.structure.disableForms}
+      submitFieldProps={{ showSubmitField: false }}
+      ref={formRef}
+      className="loan-percent"
+    >
+      <LoanPercentField formRef={formRef} name="loanPercent" />
+    </AutoForm>
   );
 };
 
