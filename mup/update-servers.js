@@ -2,6 +2,13 @@ const Compute = require('@google-cloud/compute');
 const fs = require('fs');
 const path = require('path');
 
+if (!fs.existsSync('./configs/credentials.json')) {
+  console.error(
+    'Please create the engine credentials as described in the docs',
+  );
+  process.exit(1);
+}
+
 const compute = new Compute({
   projectId: 'e-potek-1499177443071',
   keyFilename: './configs/credentials.json',
