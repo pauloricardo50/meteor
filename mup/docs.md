@@ -148,8 +148,8 @@ Run `node run-all --help` for usage instructions.
 
 Run `mup --config <microservice config path> <commands>`. For example:
 ```
-mup --config prod-staging.mup.js logs --tail 200 -t --follow
-mup --config backend-api.mup.js proxy nginx-config
+mup --config prod.mup.js logs --tail 200 -t --follow
+mup --config api.mup.js proxy nginx-config
 ```
 
 ## SSH
