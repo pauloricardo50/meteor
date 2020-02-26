@@ -7,6 +7,7 @@ import { ScrollSync } from 'react-scroll-sync';
 import { mount } from 'core/utils/testHelpers/enzyme';
 import messages from 'core/lang/fr.json';
 import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
+import MoneyInput from 'core/components/MoneyInput';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
@@ -118,8 +119,14 @@ describe('FinancingResult', () => {
       expectResult(component, '.amortizationCost', 833);
     });
 
-    it('propertyCost', () => {
-      expectResult(component, '.propertyCost', 100);
+    it('monthlyPropertyCost', () => {
+      const val = component()
+        .find('.monthlyPropertyCost')
+        .last()
+        .find(MoneyInput)
+        .props().value;
+
+      expect(val).to.equal(100);
     });
 
     it('borrowRatio', () => {
@@ -191,7 +198,7 @@ describe('FinancingResult', () => {
           {
             _id: 'house',
             value: 1000000,
-            yearlyExpenses: 1200,
+            yearlyExpenses: 2400,
           },
         ],
         offers: [
@@ -213,7 +220,7 @@ describe('FinancingResult', () => {
       );
       const string = monthly.text();
       const value = string.match(/\d/g).join('');
-      expect(value).to.equal('9720');
+      expect(value).to.equal('9820');
     });
 
     it('interestsCost', () => {
@@ -221,10 +228,11 @@ describe('FinancingResult', () => {
         .find('.interestsCost')
         .last();
       const string = interestsCost.text();
-      const value = string.match(/\d/g).join('');
+      const [value, rate] = string.split('(');
 
       // Average of 1.8% interests
-      expect(value).to.equal('1620');
+      expect(value.match(/\d/g).join('')).to.equal('1620');
+      expect(rate.match(/\d/g).join('')).to.equal('0018');
     });
 
     it('amortizationCost', () => {
@@ -232,8 +240,14 @@ describe('FinancingResult', () => {
       expectResult(component, '.amortizationCost', '8 000');
     });
 
-    it('propertyCost', () => {
-      expectResult(component, '.propertyCost', 100);
+    it('monthlyPropertyCost', () => {
+      const val = component()
+        .find('.monthlyPropertyCost')
+        .last()
+        .find(MoneyInput)
+        .props().value;
+
+      expect(val).to.equal(200);
     });
 
     it('borrowRatio', () => {
