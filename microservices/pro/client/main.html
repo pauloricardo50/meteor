@@ -1,4 +1,18 @@
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84358947-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    var h = window.location.hostname
+    if (h == 'localhost' || h.indexOf('staging') > 0) {
+      window['ga-disable-UA-84358947-1'] = true;
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-84358947-1');
+  </script>
+
   <!-- is executed when the browser doesn't support/or disables JS -->
   <noscript>
     <style>
