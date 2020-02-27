@@ -46,7 +46,7 @@ This user is needed to connect to Atlas for the `atlas-migrate.sh` script or to 
 2. Click Add New User
 3. Put in a username that shows it is yours, and create a password. You will not be shown the password later, though you can change it.
 4. Select `Read and Write from any database`
-5. Create a file in `mup/configs/mongo-auth` with the content:
+5. Create a file in `mup/configs/mongo-auth.json` with the content:
 ```json
 {
   "username": "username",
@@ -54,6 +54,7 @@ This user is needed to connect to Atlas for the `atlas-migrate.sh` script or to 
 }
 ```
 
+To connect to the database from your computer, you also need to [whitelist your IP address](https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#security/network/whitelist). 
 
 # VM Instances
 
@@ -125,10 +126,9 @@ Shows status of servers, docker, nginx, and the Meteor apps for each environment
 
 Updates the Atlas ip whitelist. Currently it only adds addresses; it does not remove unused addresses.
 
-To use, set the `ATLAS_PUBLIC_KEY` and `ATLAS_PRIVATE_KEY` env vars with the values from creating the api key. Then run `node update-atlas-whitelist`
+To use, run `node update-atlas-whitelist`
 
-This script should be run whenever servers are started, restarted, or added to a instance group until we set up the vpc peering.
-
+This script should be run whenever servers are started, restarted, or added to a instance group, until we set up the vpc peering and switch to whitelisting their private IP address.
 
 ## Run mup command for all microservices
 
@@ -139,6 +139,7 @@ Examples:
 node run-all -e prod logs logs --tail 10 -t
 node run-all -e api proxy reconfig-shared
 node run-all -e all validate
+node run-all -e all --parallel restart
 node run-all -e staging --apps pro,admin deploy --verbose
 ```
 
@@ -171,3 +172,23 @@ To deploy a specific app, run
 ```
 node run-all -e <environment name> --apps <app name> deploy
 ```
+
+## Mongo Shell
+
+To connect a mongo shell to the Atlas cluster, run `node mongo-shell`. Make sure you have already created a database user and whitelisted your IP address in Atlas.
+
+## mongodump
+
+To dump a database, run `node pull-mongo -e <environment name>`.
+
+It will show the location the archive is created. The `--out` option can be used to give the path to create the archive at, for example `--out /tmp/backup.archive`.
+
+A file at `<out path>.db-name.txt` will be created with the name of the database that was dumped. This file must exist when restoring the database with the `restore-mongo` script.
+
+## mongorestore
+
+To restore a database from an archive, run `node restore-mongo -e <environment name> --archivePath path/to/archive.archive`.
+
+Environments allowed are:
+- staging
+- local. Restores to the backend database. The backend microservice must be running first.
