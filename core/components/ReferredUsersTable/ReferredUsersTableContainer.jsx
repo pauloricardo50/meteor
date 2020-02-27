@@ -11,6 +11,10 @@ export const getReferredBy = (referredByUserId, organisationId) => {
     return;
   }
 
+  if (referredByUserId === 'referral') {
+    return 'referral';
+  }
+
   if (organisationId === referredByUserId) {
     return 'nobody';
   }

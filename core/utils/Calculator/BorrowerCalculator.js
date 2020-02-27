@@ -449,7 +449,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getYearsToRetirement(argMap);
     }
 
-    getAmortizationDuration({ loan, structureId, offerOverride, borrowers }) {
+    getAmortizationYears({ loan, structureId, offerOverride, borrowers }) {
       const offer = this.selectOffer({ loan, structureId });
       const offerToUse = offerOverride || offer;
 
@@ -614,7 +614,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getRealEstateCost({ loan, value, theoreticalExpenses }) {
-      if (theoreticalExpenses > 0) {
+      if (theoreticalExpenses >= 0) {
         // This function returns a monthly cost
         return theoreticalExpenses / 12;
       }

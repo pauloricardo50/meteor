@@ -421,7 +421,11 @@ describe('UserService', function() {
           {
             _id: 'proId',
             assignedEmployeeId: 'adminId',
-            organisations: { _id: 'organisationId', name: 'bank' },
+            organisations: {
+              _id: 'organisationId',
+              name: 'bank',
+              $metadata: { isMain: true },
+            },
             _factory: 'pro',
             firstName: 'John',
             lastName: 'Doe',
@@ -436,7 +440,11 @@ describe('UserService', function() {
         proInviteUser.run({ user: userToInvite }),
       );
 
-      const userCreated = UserService.getByEmail(userToInvite.email);
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
 
       expect(userCreated.assignedEmployeeId).to.equal('adminId');
       expect(userCreated.referredByUserLink).to.equal('proId');
@@ -459,7 +467,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal('bob@dylan.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Vous avez été invité sur e-Potek');
       expect(
@@ -483,7 +491,7 @@ describe('UserService', function() {
           EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
         );
         expect(address).to.equal('john@doe.com');
-        expect(from_email).to.equal('info@e-potek.ch');
+        expect(from_email).to.equal('team@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('Invitation réussie');
         expect(
@@ -530,7 +538,11 @@ describe('UserService', function() {
         promotionIds: ['promotionId'],
         proUserId: 'proId',
       }).then(({ userId, isNewUser, proId, admin, pro }) => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loan = LoanService.get(
           { userId: userCreated._id },
           { promotionLinks: 1, promotionOptionLinks: 1 },
@@ -584,7 +596,11 @@ describe('UserService', function() {
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loans = LoanService.fetch({
           $filters: { userId: userCreated._id },
           promotionLinks: 1,
@@ -650,7 +666,11 @@ describe('UserService', function() {
         proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId'] }),
       );
 
-      const userCreated = UserService.getByEmail(userToInvite.email);
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
       const loan = LoanService.get(
         { userId: userCreated._id },
         { propertyIds: 1 },
@@ -702,7 +722,11 @@ describe('UserService', function() {
         propertyIds: ['propertyId1', 'propertyId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loan = LoanService.get(
           { userId: userCreated._id },
           { propertyIds: 1 },
@@ -769,7 +793,11 @@ describe('UserService', function() {
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
       }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
+        const userCreated = UserService.getByEmail(userToInvite.email, {
+          assignedEmployeeId: 1,
+          referredByUserLink: 1,
+          referredByOrganisationLink: 1,
+        });
         const loans = LoanService.fetch({
           $filters: { userId: userCreated._id },
           promotionLinks: 1,
@@ -829,7 +857,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal('bob@dylan.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('e-Potek - "Rue du four 1"');
 
@@ -895,7 +923,7 @@ describe('UserService', function() {
       expect(template_name).to.equal(
         EMAIL_TEMPLATES.PROMOTION_INVITATION.mandrillId,
       );
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Promotion immobilière Test promotion');
       expect(title).to.equal("Test promotion, Réservation d'un logement");
@@ -979,14 +1007,14 @@ describe('UserService', function() {
               _id: 'adminUser',
               firstName: 'Lydia',
               lastName: 'Abraha',
-              organisations: {},
+              organisations: { $metadata: { isMain: true } },
             },
           },
           {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _id: 'organisation' },
+            organisations: { _id: 'organisation', $metadata: { isMain: true } },
             properties: {
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
@@ -1020,7 +1048,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal(userToInvite.email);
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('e-Potek - "Rue du parc 4"');
       expect(
@@ -1031,12 +1059,16 @@ describe('UserService', function() {
     it('should send an email invite if it is done by an admin', async () => {
       generator({
         users: [
-          { _factory: 'admin', _id: 'adminUser', organisations: {} },
+          {
+            _factory: 'admin',
+            _id: 'adminUser',
+            organisations: { $metadata: { isMain: true } },
+          },
           {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _id: 'organisation' },
+            organisations: { _id: 'organisation', $metadata: { isMain: true } },
             properties: {
               _id: 'proProperty3',
               category: PROPERTY_CATEGORY.PRO,

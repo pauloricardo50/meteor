@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation';
-import Icon from 'core/components/Icon/Icon';
+import Icon from 'core/components/Icon';
 import collectionIcons from 'core/arrays/collectionIcons';
 import { PROPERTIES_COLLECTION, PROPERTY_CATEGORY } from 'core/api/constants';
 import { PropertyAdder } from 'core/components/PropertyForm';
@@ -26,7 +26,7 @@ const Propertiespage = ({ history }) => (
     </h1>
     <PropertyAdder
       category={PROPERTY_CATEGORY.PRO}
-      buttonLabelId="PropertiesPage.addProProperty"
+      buttonProps={{ label: 'Bien immo Pro', icon: <Icon type="add" /> }}
       onSubmitSuccess={propertyId =>
         history.push(
           createRoute(ADMIN_ROUTES.SINGLE_PROPERTY_PAGE.path, { propertyId }),

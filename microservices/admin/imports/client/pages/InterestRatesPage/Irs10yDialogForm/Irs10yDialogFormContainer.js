@@ -6,7 +6,7 @@ import {
   irs10yUpdate,
   irs10yRemove,
 } from 'imports/core/api/methods/index';
-import { PercentField } from 'imports/core/components/PercentInput/';
+import PercentInput from 'imports/core/components/PercentInput';
 
 const irs10ySchema = new SimpleSchema({
   date: {
@@ -17,7 +17,7 @@ const irs10ySchema = new SimpleSchema({
     type: Number,
     min: -1,
     max: 1,
-    uniforms: { component: PercentField },
+    uniforms: { component: PercentInput },
   },
 });
 

@@ -125,12 +125,13 @@ const getLabel = ({
   suffix,
   variant,
   className,
+  small,
 }) => {
   switch (variant) {
     case 'full':
       return props => (
         <span
-          className={cx('status-label', { allowModify }, className)}
+          className={cx('status-label', { allowModify, small }, className)}
           style={{ backgroundColor: color || statuses[status] }}
           {...props}
         >
@@ -178,6 +179,7 @@ const StatusLabel = ({
   showTooltip = true,
   method,
   className,
+  small,
 }) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -190,6 +192,7 @@ const StatusLabel = ({
     suffix,
     variant,
     className,
+    small,
   });
 
   if (allowModify) {

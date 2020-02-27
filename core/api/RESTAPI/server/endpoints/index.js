@@ -16,3 +16,4 @@ export { default as setPropertyUserPermissionsAPI } from './setPropertyUserPermi
 export { default as addProUserToPropertyAPI } from './addProUserToProperty';
 export { default as addLoanNoteAPI } from './addLoanNote';
 export { default as frontPluginAPI } from './frontPluginAPI';
+export { default as frontWebhookAPI } from './frontWebhookAPI';

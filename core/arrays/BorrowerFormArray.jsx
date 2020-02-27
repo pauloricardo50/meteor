@@ -311,10 +311,30 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
         inputs: [
           { id: 'description', type: 'textInput' },
           { id: 'ownership', type: 'textInput', percent: true },
-          { id: 'netIncome2019', type: 'textInput', money: true },
-          { id: 'netIncome2018', type: 'textInput', money: true },
-          { id: 'netIncome2017', type: 'textInput', money: true },
-          { id: 'netIncome2016', type: 'textInput', money: true },
+          {
+            id: 'netIncome2019',
+            type: 'textInput',
+            money: true,
+            negative: true,
+          },
+          {
+            id: 'netIncome2018',
+            type: 'textInput',
+            money: true,
+            negative: true,
+          },
+          {
+            id: 'netIncome2017',
+            type: 'textInput',
+            money: true,
+            negative: true,
+          },
+          {
+            id: 'netIncome2016',
+            type: 'textInput',
+            money: true,
+            negative: true,
+          },
         ],
       },
     ],
@@ -347,6 +367,7 @@ export const getBorrowerFortuneArray = () => [
       { id: 'income', type: 'textInput', money: true, required: false },
       {
         id: 'theoreticalExpenses',
+        intlId: 'adminTheoreticalExpenses',
         type: 'textInput',
         money: true,
         adminOnly: true,
@@ -364,7 +385,7 @@ export const getBorrowerFortuneArray = () => [
             <b>
               <Money
                 id="theoreticalExpenses"
-                value={currentValue || Calculator.getRealEstateCost(itemValue)}
+                value={Calculator.getRealEstateCost(itemValue)}
                 tooltip={
                   currentValue ? (
                     undefined

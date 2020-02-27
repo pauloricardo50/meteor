@@ -16,6 +16,7 @@ import {
   MAX_FILE_SIZE,
   ONE_KB,
 } from '../fileConstants';
+import Security from '../../security';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -106,7 +107,11 @@ const exoscaleStorageService = {
     return directive.maxSize || MAX_FILE_SIZE;
   },
 
-  getDefaultStatus(meta) {
+  getDefaultStatus(meta, method) {
+    if (Security.isUserAdmin(method.userId)) {
+      return FILE_STATUS.VALID;
+    }
+
     if (
       [ORGANISATIONS_COLLECTION, PROMOTIONS_COLLECTION].includes(
         meta.collection,
@@ -157,7 +162,7 @@ const exoscaleStorageService = {
         file,
         meta,
       ),
-      'x-amz-meta-status': this.getDefaultStatus(meta),
+      'x-amz-meta-status': this.getDefaultStatus(meta, method),
     };
 
     const bucketUrl = _.isFunction(directive.bucketUrl)

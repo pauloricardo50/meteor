@@ -35,7 +35,7 @@ addEmailListener({
 });
 
 addEmailListener({
-  description: 'Formulaire de contact -> info@e-potek.ch',
+  description: 'Formulaire de contact -> team@e-potek.ch',
   method: submitContactForm,
   func: ({ params }) =>
     sendEmailToAddress.serverRun({

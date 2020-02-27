@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 
+import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 import T from 'core/components/Translation';
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { FinancingResultErrors } from '../FinancingResultErrors';
-import FinancingResultChart from '../FinancingResultChart';
+import { FinancingResultSummary } from '../FinancingResultSummary';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
+import FinancingResultSuccess from '../FinancingResultSuccess';
+import { Provider } from '../../containers/loan-context';
 
 describe('FinancingResultErrors', () => {
   let props;
@@ -19,9 +20,20 @@ describe('FinancingResultErrors', () => {
   let offerId;
   let structure;
   let borrower;
-  const component = () => shallow(<FinancingResultErrors {...props} />);
+  const component = () =>
+    getMountedComponent({
+      Component: p => (
+        <Provider value={{ loan: p.loan, Calculator }}>
+          <FinancingResultSummary {...p} />{' '}
+        </Provider>
+      ),
+      props,
+    });
 
   beforeEach(() => {
+    getMountedComponent.reset();
+    getMountedComponent.reset();
+
     propertyId = 'propertyId';
     structureId = 'structureId';
     offerId = 'offerId';
@@ -135,7 +147,7 @@ describe('FinancingResultErrors', () => {
     borrower.salary = 100000;
     expect(
       component()
-        .find(FinancingResultChart)
+        .find(FinancingResultSuccess)
         .exists(),
     ).to.equal(true);
   });

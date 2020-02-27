@@ -22,13 +22,17 @@ describe('Single Loan Page', () => {
   });
 
   it('creates and routes to a loan from the dashboard', () => {
-    cy.contains('Nouvelle hypothèque').click();
+    cy.get('button')
+      .contains('Hypothèque')
+      .click();
     cy.url().should('include', '/loans/');
     cy.contains('Pas de compte');
   });
 
   it('changes status', () => {
-    cy.contains('Nouvelle hypothèque').click();
+    cy.get('button')
+      .contains('Hypothèque')
+      .click();
     cy.get('.status-label').should('contain', 'Prospect');
     cy.contains('Prospect').click();
     cy.contains('Qualifié').click({ force: true });
@@ -50,12 +54,14 @@ describe('Single Loan Page', () => {
   });
 
   it('should add a task to the loan', () => {
-    cy.contains('Nouvelle hypothèque').click();
+    cy.get('button')
+      .contains('Hypothèque')
+      .click();
 
     cy.get('.tasks-table').should('not.exist');
 
-    cy.get('.single-loan-page-tasks')
-      .contains('Ajouter tâche')
+    cy.get('.single-loan-page-tasks button')
+      .contains('Tâche')
       .click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
@@ -63,7 +69,9 @@ describe('Single Loan Page', () => {
   });
 
   it('should add lenders', () => {
-    cy.contains('Nouvelle hypothèque').click();
+    cy.get('button')
+      .contains('Hypothèque')
+      .click();
     cy.contains('Prospect').click();
     cy.contains('Qualifié').click({ force: true });
 

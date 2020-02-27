@@ -49,17 +49,19 @@ const TasksTable = ({
 
   return (
     <>
-      {children}
-      {renderTable && setStatus && (
-        <TaskTableFilters
-          assignee={assignee}
-          status={status}
-          setStatus={setStatus}
-          setAssignee={setAssignee}
-          uptoDate={uptoDate}
-          setUptoDate={setUptoDate}
-        />
-      )}
+      <div className="flex center-align">
+        {children}
+        {renderTable && setStatus && (
+          <TaskTableFilters
+            assignee={assignee}
+            status={status}
+            setStatus={setStatus}
+            setAssignee={setAssignee}
+            uptoDate={uptoDate}
+            setUptoDate={setUptoDate}
+          />
+        )}
+      </div>
       {renderTable ? (
         <TableComponent
           columnOptions={columnOptions}

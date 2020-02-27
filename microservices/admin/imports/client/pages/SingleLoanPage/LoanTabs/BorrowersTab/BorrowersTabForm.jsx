@@ -68,6 +68,7 @@ const BorrowersTabForm = ({
           docId={borrower._id}
           collection={BORROWERS_COLLECTION}
           doc={borrower}
+          showDisclaimer={false}
         />
 
         <MortgageNotesForm

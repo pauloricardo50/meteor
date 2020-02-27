@@ -94,23 +94,36 @@ Meteor.methods({
       newOrganisations: [{ _id: orgId, metadata: { isMain: true } }],
     });
 
-    OrganisationService.insert({
+    const orgId1 = OrganisationService.insert({
       name: ORG_NAME,
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
       city: 'Genève',
-      userLinks: [{ _id: userId }, { _id: userId2 }],
       features: [ORGANISATION_FEATURES.PRO],
     });
-    OrganisationService.insert({
+
+    const orgId2 = OrganisationService.insert({
       name: 'Organisation 2',
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
       city: 'Genève',
-      userLinks: [{ _id: userId3 }],
+      userLinks: [{ _id: userId3, metadata: { isMain: true } }],
       features: [ORGANISATION_FEATURES.PRO],
+    });
+
+    UserService.updateOrganisations({
+      userId,
+      newOrganisations: [{ _id: orgId1, metadata: { isMain: true } }],
+    });
+    UserService.updateOrganisations({
+      userId: userId2,
+      newOrganisations: [{ _id: orgId1, metadata: { isMain: true } }],
+    });
+    UserService.updateOrganisations({
+      userId: userId3,
+      newOrganisations: [{ _id: orgId2, metadata: { isMain: true } }],
     });
 
     const organisationId = OrganisationService.insert({
@@ -124,12 +137,7 @@ Meteor.methods({
     LenderRulesService.initialize({ organisationId });
   },
   insertPromotion() {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     PromotionService.insert({
       userId,
       promotion: {
@@ -157,18 +165,9 @@ Meteor.methods({
     PromotionService.remove({ promotionId: {} });
   },
   addProUsersToPromotion() {
-    const { _id: userId } = UserService.get(
-      { 'emails.address': PRO_EMAIL },
-      { _id: 1 },
-    );
-    const { _id: userId2 } = UserService.get(
-      { 'emails.address': PRO_EMAIL_2 },
-      { _id: 1 },
-    );
-    const { _id: userId3 } = UserService.get(
-      { 'emails.address': PRO_EMAIL_3 },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
+    const { _id: userId2 } = UserService.getByEmail(PRO_EMAIL_2);
+    const { _id: userId3 } = UserService.getByEmail(PRO_EMAIL_3);
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -180,14 +179,8 @@ Meteor.methods({
     });
   },
   setInvitedBy({ email }) {
-    const { _id: userId } = UserService.get(
-      { 'emails.address': PRO_EMAIL },
-      { _id: 1 },
-    );
-    const { _id: invitedBy } = UserService.get(
-      { 'emails.address': email },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
+    const { _id: invitedBy } = UserService.getByEmail(email);
     const promotions =
       PromotionService.find(
         { 'userLinks._id': userId },
@@ -206,12 +199,7 @@ Meteor.methods({
     });
   },
   setUserPermissions({ permissions }) {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const promotions =
       PromotionService.find(
         { 'userLinks._id': userId },
@@ -223,12 +211,7 @@ Meteor.methods({
     );
   },
   setPromotionStatus({ status }) {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -239,12 +222,7 @@ Meteor.methods({
     );
   },
   resetUserPermissions() {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -386,7 +364,7 @@ Meteor.methods({
     return loginToken;
   },
   addProProperty() {
-    let userId = UserService.getByEmail(PRO_EMAIL);
+    let { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     if (!userId) {
       userId = UserService.adminCreateUser({
         options: {
@@ -457,7 +435,10 @@ Meteor.methods({
     });
   },
   getUser(email) {
-    return UserService.getByEmail(email);
+    return UserService.getByEmail(email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+    });
   },
   getAdminEndToEndTestData() {
     const loan = adminLoansQuery.clone({ owned: true }).fetchOne();

@@ -24,7 +24,9 @@ describe('DashboardInfoTeamCompany', () => {
   });
 
   it('adds yannis and jeanluc if yannis is the assignedemployee', () => {
-    props.assignedEmployee = { email: 'yannis@e-potek.ch' };
+    props.assignees = [
+      { email: 'yannis@e-potek.ch', $metadata: { isMain: true } },
+    ];
     const expectedEmails = ['yannis@e-potek.ch', 'jeanluc@e-potek.ch'];
     const emails = component()
       .find(DashboardInfoTeamMember)

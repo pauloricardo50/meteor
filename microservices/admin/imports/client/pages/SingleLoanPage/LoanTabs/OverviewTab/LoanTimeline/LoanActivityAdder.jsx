@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import IconButton from 'core/components/IconButton';
+import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import {
@@ -43,16 +43,23 @@ export const LoanActivityForm = ({
   onSubmit,
   iconType,
   className = '',
+  buttonProps = {},
   ...rest
 }) => (
   <AutoFormDialog
     schema={ActivitySchema}
     model={model}
-    triggerComponent={handleOpen => (
-      <IconButton className={className} onClick={handleOpen} type={iconType} />
-    )}
     onSubmit={onSubmit}
     layout={activityFormLayout}
+    buttonProps={{
+      className,
+      label: 'Activité',
+      raised: true,
+      primary: true,
+      icon: <Icon type="add" />,
+      style: { margin: '0 8px' },
+      ...buttonProps,
+    }}
     {...rest}
   />
 );
@@ -60,7 +67,7 @@ export const LoanActivityForm = ({
 export const LoanActivityModifier = withProps(({ model }) => ({
   onSubmit: values =>
     activityUpdate.run({ activityId: model._id, object: values }),
-  iconType: 'edit',
+  buttonProps: {icon: <Icon type="edit"/>, fab: true, label:'', style: {}, tooltip: 'Modifier'},
   renderAdditionalActions: ({ closeDialog, setDisableActions }) => (
     <Button
       onClick={() => {

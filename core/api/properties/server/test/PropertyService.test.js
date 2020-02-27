@@ -103,7 +103,7 @@ describe('PropertyService', function() {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _id: 'organisation' },
+            organisations: { _id: 'organisation', $metadata: { isMain: true } },
             properties: {
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
@@ -131,15 +131,12 @@ describe('PropertyService', function() {
         isNewUser,
       });
 
-      const user = UserService.get(
-        { 'emails.address': 'john@doe.com' },
-        {
-          loans: { properties: { _id: 1 } },
-          assignedEmployee: { _id: 1 },
-          referredByUser: { _id: 1 },
-          referredByOrganisation: { _id: 1 },
-        },
-      );
+      const user = UserService.getByEmail('john@doe.com', {
+        loans: { properties: { _id: 1 } },
+        assignedEmployee: { _id: 1 },
+        referredByUser: { _id: 1 },
+        referredByOrganisation: { _id: 1 },
+      });
 
       const {
         loans = [],

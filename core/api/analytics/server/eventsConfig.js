@@ -11,8 +11,8 @@ export const EVENTS_CONFIG = {
       { name: 'referringUserName', optional: true },
       { name: 'referringOrganisationId', optional: true },
       { name: 'referringOrganisationName', optional: true },
-      'assigneeId',
-      'assigneeName',
+      { name: 'assigneeId', optional: true },
+      { name: 'assigneeName', optional: true },
       'origin',
       { name: 'ctaId', optional: true },
     ],
@@ -37,6 +37,36 @@ export const EVENTS_CONFIG = {
       'duration',
       'authenticationType',
       'endpointName',
+      {
+        name: 'fileSize',
+        optional: ({ endpointName }) => endpointName !== 'Upload file',
+      },
+      {
+        name: 'type',
+        optional: ({ endpointName }) => endpointName !== 'Front plugin',
+      },
+      {
+        name: 'collectionName',
+        optional: ({ endpointName, type }) => {
+          if (endpointName === 'Front plugin') {
+            return type !== 'QUERY' && type !== 'QUERY_ONE';
+          }
+          return true;
+        },
+      },
+      {
+        name: 'methodName',
+        optional: ({ endpointName, type }) => {
+          if (endpointName === 'Front plugin') {
+            return type !== 'METHOD';
+          }
+          return true;
+        },
+      },
+      {
+        name: 'webhookName',
+        optional: ({ endpointName }) => endpointName !== 'Front webhooks',
+      },
     ],
   },
   [EVENTS.LOAN_CREATED]: {

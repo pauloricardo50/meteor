@@ -106,6 +106,7 @@ const File = props => {
             draggable,
             Key,
             status,
+            name,
             ...dragProps,
           })}
         >

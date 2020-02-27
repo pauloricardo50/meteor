@@ -161,6 +161,7 @@ const LoanSchema = new SimpleSchema({
       }
     },
   },
+  frontTagId: { type: String, optional: true },
 });
 
 export default LoanSchema;

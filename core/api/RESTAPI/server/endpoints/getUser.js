@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
+import omit from 'lodash/omit';
 
 import { getImpersonateUserId, checkQuery, checkAccessToUser } from './helpers';
 import UserService from '../../../users/server/UserService';
@@ -21,7 +22,24 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
     proId = getImpersonateUserId({ userId, impersonateUser });
   }
 
-  const user = UserService.getByEmail(email);
+  const user = UserService.getByEmail(email, {
+    assignedEmployee: {
+      firstName: 1,
+      lastName: 1,
+      name: 1,
+      email: 1,
+      phoneNumbers: 1,
+    },
+    email: 1,
+    emails: 1,
+    firstName: 1,
+    lastName: 1,
+    name: 1,
+    phoneNumbers: 1,
+    roles: 1,
+    referredByOrganisationLink: 1,
+    referredByUserLink: 1,
+  });
 
   if (!user) {
     throw new Meteor.Error(
@@ -32,23 +50,11 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
 
   checkAccessToUser({ user, proId: proId || userId });
 
-  const { _id: returnedUserId } = user;
-
-  return UserService.get(returnedUserId, {
-    assignedEmployee: {
-      firstName: 1,
-      lastName: 1,
-      name: 1,
-      email: 1,
-      phoneNumbers: 1,
-    },
-    email: 1,
-    firstName: 1,
-    lastName: 1,
-    name: 1,
-    phoneNumbers: 1,
-    roles: 1,
-  });
+  return omit(user, [
+    'referredByOrganisationLink',
+    'referredByUserLink',
+    'emails',
+  ]);
 };
 
 export default getUserAPI;

@@ -13,6 +13,7 @@ import CareersPage from '../../ui/pages/CareersPage/loadable';
 import Widget1Page from '../../ui/pages/Widget1Page/loadable';
 import InterestsPage from '../../ui/pages/InterestsPage/loadable';
 import BlogPage from '../../ui/pages/BlogPage/loadable';
+import GoogleAnalyticsTracker from './GoogleAnalyticsTracker';
 
 export const WWW_ROUTES = {
   HOME_PAGE: { exact: true, path: '/', component: HomePage },
@@ -29,13 +30,15 @@ export const WWW_ROUTES = {
 };
 
 const Routes = () => (
-  <ScrollToTop>
-    <Switch>
-      {Object.keys(WWW_ROUTES).map(route => (
-        <Route key={route} {...WWW_ROUTES[route]} />
-      ))}
-    </Switch>
-  </ScrollToTop>
+  <GoogleAnalyticsTracker>
+    <ScrollToTop>
+      <Switch>
+        {Object.keys(WWW_ROUTES).map(route => (
+          <Route key={route} {...WWW_ROUTES[route]} />
+        ))}
+      </Switch>
+    </ScrollToTop>
+  </GoogleAnalyticsTracker>
 );
 
 export default Routes;

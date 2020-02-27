@@ -29,6 +29,10 @@ let propertyId = '';
 api.addEndpoint('/files', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
+  analyticsParams: req => {
+    const { files: { file = {} } = {} } = req;
+    return { fileSize: file.size };
+  },
 });
 api.addEndpoint('/files', 'DELETE', deleteFileAPI, {
   rsaAuth: true,

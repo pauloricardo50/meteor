@@ -1,18 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
 import UserService from 'core/api/users/server/UserService';
-import { adminLoan } from 'core/api/fragments';
+import { adminLoan, adminUser } from 'core/api/fragments';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
-import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import Security from '../../security/Security';
 import ActivityService from '../../activities/server/ActivityService';
 import SecurityService from '../../security';
 import {
-  loanInsert,
   loanUpdate,
   loanDelete,
-  confirmClosing,
   pushLoanValue,
   popLoanValue,
   adminLoanInsert,
@@ -49,11 +46,6 @@ import { STEPS, LOAN_STATUS } from '../loanConstants';
 import LoanService from './LoanService';
 import { Method } from '../../methods/methods';
 
-loanInsert.setHandler((context, { loan, userId }) => {
-  userId = checkInsertUserId(userId);
-  return LoanService.insert({ loan, userId });
-});
-
 loanUpdate.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.update({ loanId, object });
@@ -62,11 +54,6 @@ loanUpdate.setHandler((context, { loanId, object }) => {
 loanDelete.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
   return LoanService.remove({ loanId });
-});
-
-confirmClosing.setHandler((context, { loanId, object }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.confirmClosing({ loanId, object });
 });
 
 pushLoanValue.setHandler((context, { loanId, object }) => {
@@ -81,7 +68,18 @@ popLoanValue.setHandler((context, { loanId, object }) => {
 
 export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  return LoanService.fullLoanInsert({ userId });
+  const loanId = LoanService.fullLoanInsert({ userId });
+
+  if (!userId) {
+    // Make sure new, loose, loans are assigned to the one creating them
+    // so we don't have unassigned loans in the DB
+    LoanService.setAssignees({
+      loanId,
+      assignees: [{ _id: adminUserId, isMain: true, percent: 100 }],
+    });
+  }
+
+  return loanId;
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 

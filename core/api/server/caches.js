@@ -54,6 +54,13 @@ Lenders.cache({
   cacheField: 'offersCache',
 });
 
+// Let's you easily query the main organisation of a user
+Organisations.cacheField({
+  fields: ['userLinks'],
+  cacheField: 'mainUserLinks',
+  transform: ({ userLinks = [] }) => userLinks.filter(({ isMain }) => isMain),
+});
+
 Meteor.startup(() => {
   // Caches
   // migrate('promotionLots', 'promotionCache', {
@@ -83,20 +90,23 @@ Meteor.startup(() => {
   // migrate('organisations', 'referredUsersCount', {
   //   referredUsersCount: { $exists: false },
   // });
-  migrate('organisations', 'revenuesCount', {
-    revenuesCount: { $exists: false },
-  });
-  migrate('loans', 'structureCache', {
-    structureCache: { $exists: false },
-    selectedStructure: { $exists: true },
-    $nor: [{ structures: { $exists: false } }, { structures: { $size: 0 } }],
-  });
-  migrate('lenders', 'offersCache', { offersCache: { $exists: false } });
-  migrate('loans', 'lendersCache', {
-    $nor: [
-      { lendersCache: { $exists: false } },
-      { lendersCache: { $size: 0 } },
-    ],
-    'lendersCache.offersCache': { $exists: false },
+  // migrate('organisations', 'revenuesCount', {
+  //   revenuesCount: { $exists: false },
+  // });
+  // migrate('loans', 'structureCache', {
+  //   structureCache: { $exists: false },
+  //   selectedStructure: { $exists: true },
+  //   $nor: [{ structures: { $exists: false } }, { structures: { $size: 0 } }],
+  // });
+  // migrate('lenders', 'offersCache', { offersCache: { $exists: false } });
+  // migrate('loans', 'lendersCache', {
+  //   $nor: [
+  //     { lendersCache: { $exists: false } },
+  //     { lendersCache: { $size: 0 } },
+  //   ],
+  //   'lendersCache.offersCache': { $exists: false },
+  // });
+  migrate('organisations', 'mainUserLinks', {
+    mainUserLinks: { $exists: false },
   });
 });

@@ -16,7 +16,7 @@ const getContactTitle = props => {
     return source.charAt(0).toUpperCase() + source.slice(1);
   }
 
-  const { roles } = contact;
+  const { roles = [] } = contact;
 
   if (collection === 'contacts') {
     return 'Contact e-Potek';
@@ -40,8 +40,6 @@ const getContactTitle = props => {
 const ContactCard = props => {
   const { contact, isEpotekResource, refetch } = props;
   const {
-    email,
-    name,
     assignedEmployee,
     referredByUser,
     referredByOrganisation,
@@ -81,7 +79,19 @@ const ContactCard = props => {
       expanded
     >
       {!!phoneNumbers.length && (
-        <FrontCardItem label="téléphones" >{phoneNumbers.join(', ')}</FrontCardItem>
+        <FrontCardItem label="téléphones">
+          <div className="flex center-align">
+            {phoneNumbers.map(phone => (
+              <a
+                href={`tel:${phone.replace(' ', '')}`}
+                className="link mr-8"
+                key={phone}
+              >
+                {phone}
+              </a>
+            ))}
+          </div>
+        </FrontCardItem>
       )}
       {!!organisations.length && (
         <FrontCardItem
@@ -91,34 +101,51 @@ const ContactCard = props => {
               `${subdomains.admin}/organisations/${organisations[0]._id}`,
             )
           }
-        >{organisations[0].name}</FrontCardItem>
+        >
+          {organisations[0].name}
+        </FrontCardItem>
       )}
       <FrontCardItem
         label="Conseiller"
-        onClick={assignedEmployee && (() =>
-          Front.openUrl(`${subdomains.admin}/users/${assignedEmployee._id}`))
+        onClick={
+          assignedEmployee &&
+          (() =>
+            Front.openUrl(`${subdomains.admin}/users/${assignedEmployee._id}`))
         }
-      >{assignedEmployee?.name || '-'}</FrontCardItem>
+      >
+        {assignedEmployee?.name || '-'}
+      </FrontCardItem>
       <FrontCardItem
         label="Référé par"
-        onClick={referredByUser && (() =>
-          Front.openUrl(`${subdomains.admin}/users/${referredByUser._id}`))
+        onClick={
+          referredByUser &&
+          (() =>
+            Front.openUrl(`${subdomains.admin}/users/${referredByUser._id}`))
         }
-      >{referredByUser?.name || '-'}</FrontCardItem>
+      >
+        {referredByUser?.name || '-'}
+      </FrontCardItem>
 
       <FrontCardItem
         label="Référé par organisation"
-        onClick={referredByOrganisation && (() =>
-          Front.openUrl(
-            `${subdomains.admin}/organisations/${referredByOrganisation._id}`,
-          ))
+        onClick={
+          referredByOrganisation &&
+          (() =>
+            Front.openUrl(
+              `${subdomains.admin}/organisations/${referredByOrganisation._id}`,
+            ))
         }
-      >{referredByOrganisation?.name || '-'}</FrontCardItem>
-      <FrontCardItem
-        label="canal d'acquisition"
-      >{acquisitionChannel ? <T id={`Forms.acquisitionChannel.${acquisitionChannel}`} /> : '-'}</FrontCardItem>
-
-      {!!tasks.length && <FrontContactTasks tasks={tasks} refetch={refetch} />}
+      >
+        {referredByOrganisation?.name || '-'}
+      </FrontCardItem>
+      <FrontCardItem label="canal d'acquisition">
+        {acquisitionChannel ? (
+          <T id={`Forms.acquisitionChannel.${acquisitionChannel}`} />
+        ) : (
+          '-'
+        )}
+      </FrontCardItem>
+      <FrontContactTasks tasks={tasks} refetch={refetch} />
     </FrontCard>
   );
 };

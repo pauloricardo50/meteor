@@ -7,7 +7,7 @@ import UploaderBottom from './UploaderBottom';
 
 const BaseUploader = ({
   toggleDisplayFull,
-  handleMoveFile,
+  handleMoveFile = () => {},
   variant,
   ...rest
 }) => {
@@ -15,6 +15,7 @@ const BaseUploader = ({
     handleAddFiles,
     displayFull,
     fileMeta: { id },
+    currentValue: destinationFiles = [],
   } = rest;
 
   return (
@@ -22,7 +23,7 @@ const BaseUploader = ({
       handleAddFiles={handleAddFiles}
       toggleDisplayFull={toggleDisplayFull}
       id={id}
-      handleMoveFile={handleMoveFile}
+      handleMoveFile={handleMoveFile(destinationFiles)}
       variant={variant}
     >
       <UploaderTop toggleDisplayFull={toggleDisplayFull} {...rest} />

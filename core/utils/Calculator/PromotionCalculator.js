@@ -77,7 +77,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     }) {
       return this.getIncomeLimitedPropertyValue({
         nF: notaryFees / propertyValue,
-        r: this.getAmortizationDuration({ borrowers }),
+        r: this.getAmortizationYears({ borrowers }),
         i: this.theoreticalInterestRate,
         mR: this.maxIncomeRatio,
         m: this.theoreticalMaintenanceRate,

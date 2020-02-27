@@ -209,6 +209,10 @@ p.description,
     align-items: center;
   }
 
+  &.start-align {
+    align-items: flex-start;
+  }
+
   &.sb {
     justify-content: space-between;
   }
@@ -219,6 +223,10 @@ p.description,
 
   &.c {
     justify-content: center;
+  }
+
+  &.fs {
+    justify-content: flex-start;
   }
 }
 
@@ -363,6 +371,10 @@ p.description,
 }
 .mt-16 {
   margin-top: 16px;
+}
+
+.mb-4 {
+  margin-bottom: 4px;
 }
 
 .mb-8 {

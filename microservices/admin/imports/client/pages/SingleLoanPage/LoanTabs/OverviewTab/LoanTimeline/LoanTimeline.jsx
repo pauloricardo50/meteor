@@ -5,6 +5,7 @@ import Timeline from 'core/components/Timeline';
 import TimelineDescription from 'core/components/Timeline/TimelineDescription';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
+import Checkbox from 'core/components/Checkbox';
 import LoanActivityAdder from './LoanActivityAdder';
 import LoanTimelineContainer, {
   activityFilterOptions,
@@ -13,7 +14,16 @@ import LoanTimelineTitle from './LoanTimelineTitle';
 
 const now = new Date();
 
-const LoanTimeline = ({ loanId, activities = [], type, setType }) => {
+const LoanTimeline = ({
+  loanId,
+  activities = [],
+  type,
+  setType,
+  fetchTasks,
+  setFetchTasks,
+  fetchConversations,
+  setFetchConversations,
+}) => {
   useEffect(() => {
     const el = document.getElementsByClassName('loan-timeline-timeline')[0];
     el.scrollLeft = el.scrollWidth;
@@ -36,6 +46,17 @@ const LoanTimeline = ({ loanId, activities = [], type, setType }) => {
             label: <T id={`Forms.type.${t}`} />,
           }))}
           onChange={selected => setType({ $in: selected })}
+        />
+        <Checkbox
+          onChange={() => setFetchTasks(!fetchTasks)}
+          value={fetchTasks}
+          label="Tâches"
+          className="ml-8"
+        />
+        <Checkbox
+          onChange={() => setFetchConversations(!fetchConversations)}
+          value={fetchConversations}
+          label="Front"
         />
       </div>
       <Timeline

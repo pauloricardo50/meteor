@@ -18,11 +18,7 @@ const initCalc = ({
     finalOffer = offers.find(({ _id }) => offerId === _id);
   }
 
-  if (
-    finalOffer &&
-    finalOffer.organisation &&
-    finalOffer.organisation.lenderRules
-  ) {
+  if (finalOffer?.organisation?.lenderRules) {
     return new CalculatorClass({
       loan,
       structureId,

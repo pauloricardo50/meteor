@@ -1,49 +1,77 @@
 import React, { useState } from 'react';
 
-import { REVENUE_STATUS, COMMISSION_STATUS } from 'core/api/constants';
+import { PRO_COMMISSION_STATUS } from 'core/api/constants';
 import Select from 'core/components/Select';
-import T from 'core/components/Translation';
-import MongoSelect from 'core/components/Select/MongoSelect';
-import CommissionsTableContainer from './CommissionsTableContainer';
-import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
+import T, { Money } from 'core/components/Translation';
+import Table from 'core/components/Table';
 
-const WrappedRevenuesTable = CommissionsTableContainer(RevenuesTable);
+import {
+  mapRevenueIntoCommissions,
+  useCommissionsTableData,
+} from './commissionsTableHelpers';
 
-const CommissionsTable = props => {
-  const [status, setStatus] = useState(undefined);
-  const [commissionStatus, setCommissionStatus] = useState([
-    COMMISSION_STATUS.TO_BE_PAID,
+const columnOptions = [
+  { id: 'organisationName', label: 'A payer' },
+  { id: 'proName', label: 'Compte referral' },
+  { id: 'status', label: 'Statut' },
+  { id: 'date', label: 'Attendu/Encaissé/Payé' },
+  { id: 'loan', label: 'Dossier' },
+  { id: 'commissionRate', label: 'Taux' },
+  { id: 'commissionAmount', label: 'Montant' },
+  { id: 'actions', label: 'Actions' },
+];
+
+const CommissionsTable = () => {
+  const [proCommissionStatus, setProCommissionStatus] = useState([
+    PRO_COMMISSION_STATUS.COMMISSION_TO_PAY,
   ]);
-  const options = Object.values(COMMISSION_STATUS).map(id => ({
-    id,
-    label: <T id={`Forms.status.${id}`} />,
-  }));
+  const [orgId, setOrgId] = useState();
+  const { orgs, revenues, loading } = useCommissionsTableData(
+    proCommissionStatus,
+    orgId,
+  );
+
+  const rows = (revenues || []).reduce(
+    (arr, revenue) => [...arr, ...mapRevenueIntoCommissions(revenue)],
+    [],
+  );
+
+  const total = rows.reduce(
+    (t, { commissionAmount }) => t + commissionAmount,
+    0,
+  );
 
   return (
     <>
-      <MongoSelect
-        label="Statut du revenu"
-        value={status}
-        onChange={setStatus}
-        options={REVENUE_STATUS}
-        id="status"
-        style={{ display: 'inline-flex', minWidth: 150 }}
-        className="mr-8"
-      />
-      <Select
-        label="Statut de la commission"
-        value={commissionStatus}
-        onChange={setCommissionStatus}
-        options={options}
-        multiple
-        style={{ display: 'inline-flex', minWidth: 200 }}
-      />
+      <div className="flex">
+        <Select
+          options={Object.values(PRO_COMMISSION_STATUS).map(s => ({
+            id: s,
+            label: <T id={`Forms.status.${s}`} />,
+          }))}
+          multiple
+          onChange={setProCommissionStatus}
+          value={proCommissionStatus}
+          label="Statut"
+          className="mr-8"
+        />
+        <Select
+          options={[
+            { id: undefined, label: 'Tous' },
+            ...orgs.map(o => ({ id: o._id, label: o.name })),
+          ]}
+          onChange={setOrgId}
+          value={orgId}
+          label="A payer"
+        />
+      </div>
 
-      <WrappedRevenuesTable
-        {...props}
-        filterRevenues={() => ({ status })}
-        commissionStatus={commissionStatus}
-      />
+      <Table rows={rows} columnOptions={columnOptions} />
+      {rows.length > 1 && (
+        <h2 className="secondary" style={{ textAlign: 'right' }}>
+          Total: <Money value={total} />
+        </h2>
+      )}
     </>
   );
 };

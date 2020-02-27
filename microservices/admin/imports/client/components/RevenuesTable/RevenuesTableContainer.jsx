@@ -16,11 +16,11 @@ import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 
 const now = moment();
-export const formatDateTime = (date, toNow) => {
+const formatDateTime = (date, status) => {
   const momentDate = moment(date);
   const text = date ? momentDate.format("D MMM 'YY") : '-';
 
-  if (momentDate.isBefore(now)) {
+  if (momentDate.isBefore(now) && status !== REVENUE_STATUS.CLOSED) {
     return (
       <span className="error-box" style={{ whiteSpace: 'nowrap' }}>
         {text}
@@ -31,31 +31,20 @@ export const formatDateTime = (date, toNow) => {
   return text;
 };
 
-const getColumnOptions = ({
-  displayLoan,
-  displayActions,
-  displayOrganisationsToPay,
-}) =>
-  [
-    displayLoan && { id: 'loan' },
-    { id: 'revenueStatus' },
-    { id: 'date' },
-    { id: 'type' },
-    { id: 'description' },
-    { id: 'sourceOrganisationLink' },
-    displayOrganisationsToPay && { id: 'organisationsToPay' },
-    { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
-    displayActions && { id: 'actions' },
-  ]
-    .filter(x => x)
-    .map(i => ({ ...i, label: <T id={`Forms.${i.id}`} /> }));
+const columnOptions = [
+  { id: 'loan' },
+  { id: 'revenueStatus' },
+  { id: 'date' },
+  { id: 'type' },
+  { id: 'description' },
+  { id: 'sourceOrganisationLink' },
+  { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
+  { id: 'actions' },
+].map(i => ({ ...i, label: <T id={`Forms.${i.id}`} /> }));
 
 export const makeMapRevenue = ({
   setOpenModifier,
   setRevenueToModify,
-  displayLoan,
-  displayActions,
-  displayOrganisationsToPay,
 }) => revenue => {
   const {
     _id: revenueId,
@@ -77,23 +66,21 @@ export const makeMapRevenue = ({
     organisations,
     amount,
     columns: [
-      displayLoan
-        ? {
-            raw: loan && loan.name,
-            label: loan && (
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-              />
-            ),
-          }
-        : null,
+      {
+        raw: loan && loan.name,
+        label: loan && (
+          <CollectionIconLink
+            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          />
+        ),
+      },
       {
         raw: status,
         label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
       },
       {
         raw: date && date.getTime(),
-        label: date && formatDateTime(date),
+        label: date && formatDateTime(date, status),
       },
       {
         raw: type,
@@ -121,17 +108,6 @@ export const makeMapRevenue = ({
           />
         ),
       },
-      displayOrganisationsToPay
-        ? organisations.map(organisation => (
-            <CollectionIconLink
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-              key={organisation._id}
-            />
-          ))
-        : null,
       {
         raw: amount,
         label: (
@@ -140,9 +116,7 @@ export const makeMapRevenue = ({
           </b>
         ),
       },
-      displayActions ? (
-        <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />
-      ) : null,
+      <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />,
     ].filter(cell => cell !== null),
     handleClick: () => {
       setRevenueToModify(revenue);
@@ -187,29 +161,13 @@ export default compose(
       return { revenues: postFilter(revenues) };
     }
   }),
-  withProps(
-    ({
-      revenues = [],
-      setOpenModifier,
-      setRevenueToModify,
-      displayLoan,
-      displayActions,
-      displayOrganisationsToPay,
-    }) => ({
-      rows: revenues.map(
-        makeMapRevenue({
-          setOpenModifier,
-          setRevenueToModify,
-          displayLoan,
-          displayActions,
-          displayOrganisationsToPay,
-        }),
-      ),
-      columnOptions: getColumnOptions({
-        displayLoan,
-        displayActions,
-        displayOrganisationsToPay,
+  withProps(({ revenues = [], setOpenModifier, setRevenueToModify }) => ({
+    rows: revenues.map(
+      makeMapRevenue({
+        setOpenModifier,
+        setRevenueToModify,
       }),
-    }),
-  ),
+    ),
+    columnOptions,
+  })),
 );

@@ -2,7 +2,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import FinancingSection, {
-  InputAndSlider,
+  FinancingField,
   CalculatedValue,
 } from '../FinancingSection';
 import FinancingPropertyPicker from './FinancingPropertyPicker';
@@ -34,7 +34,7 @@ const FinancingProject = props => (
     detailConfig={[
       { Component: FinancingPropertyPicker, id: 'propertyId' },
       {
-        Component: InputAndSlider,
+        Component: FinancingField,
         id: 'propertyValue',
         calculatePlaceholder: data => Calculator.selectPropertyValue(data),
         max: 100000000,
@@ -43,17 +43,17 @@ const FinancingProject = props => (
         maxSlider: 5000000,
       },
       {
+        Component: FinancingField,
+        id: 'propertyWork',
+        max: 10000000,
+        maxSlider: 1000000,
+      },
+      {
         Component: FinancingProjectFees,
         id: 'notaryFees',
         calculatePlaceholder: calculateDefaultNotaryFees,
         max: calculateMaxNotaryFees,
         allowUndefined: true,
-      },
-      {
-        Component: InputAndSlider,
-        id: 'propertyWork',
-        max: 10000000,
-        maxSlider: 1000000,
       },
     ]}
   />

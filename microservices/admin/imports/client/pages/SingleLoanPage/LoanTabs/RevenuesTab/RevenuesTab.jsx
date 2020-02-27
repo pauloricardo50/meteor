@@ -34,7 +34,6 @@ const RevenuesTab = ({ loan }) => {
       <LoanAssigneeManager loan={loan} />
       <RevenueSuggestions loan={loan} suggestRevenue={suggestRevenue} />
       <RevenuesTable
-        displayActions
         loan={loan}
         filterRevenues={({ loan: { _id: loanId } }) => ({ loanId })}
       />

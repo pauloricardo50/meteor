@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
 import { compose, withState, withProps } from 'recompose';
@@ -13,6 +13,7 @@ import {
 } from 'core/api/methods';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import T from 'core/components/Translation';
+import useSearchParams from 'core/hooks/useSearchParams';
 
 const schema = existingOrganisations =>
   new SimpleSchema({
@@ -114,29 +115,45 @@ export default compose(
     smallLoader: true,
   }),
   withState('submitting', 'setSubmitting', false),
-  withProps(({ existingOrganisations }) => ({
-    schema: schema(existingOrganisations),
-    insertContact: ({ organisations = [], useSameAddress, ...contact }) =>
-      contactInsert.run({ contact }).then(contactId =>
-        changeOrganisations({
-          contactId,
-          organisations,
+  withProps(({ existingOrganisations }) => {
+    const initialSearchParams = useSearchParams();
+    const [searchParams, setSearchParams] = useState(initialSearchParams);
+    const { email, ...newContact } = searchParams || {};
+
+    const model = searchParams && {
+      ...newContact,
+      emails: email && [{ address: email }],
+    };
+
+    return {
+      schema: schema(existingOrganisations),
+      insertContact: ({ organisations = [], useSameAddress, ...contact }) =>
+        contactInsert.run({ contact }).then(contactId =>
+          changeOrganisations({
+            contactId,
+            organisations,
+            useSameAddress,
+          })
+            .then(() => setSearchParams({}))
+            .then(() => contactId),
+        ),
+      modifyContact: data => {
+        const {
+          _id: contactId,
+          organisations = [],
           useSameAddress,
-        }).then(() => contactId),
-      ),
-    modifyContact: data => {
-      const {
-        _id: contactId,
-        organisations = [],
-        useSameAddress,
-        ...object
-      } = data;
-      return contactUpdate
-        .run({ contactId, object })
-        .then(() =>
-          changeOrganisations({ contactId, organisations, useSameAddress }),
-        );
-    },
-    removeContact: contactId => contactRemove.run({ contactId }),
-  })),
+          ...object
+        } = data;
+        return contactUpdate
+          .run({ contactId, object })
+          .then(() =>
+            changeOrganisations({ contactId, organisations, useSameAddress }),
+          );
+      },
+      removeContact: contactId => contactRemove.run({ contactId }),
+      model,
+      openOnMount: searchParams.addContact,
+      resetForm: () => setSearchParams({}),
+    };
+  }),
 );

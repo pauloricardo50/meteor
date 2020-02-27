@@ -141,41 +141,80 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getAmountToAmortize({ borrowRatio }) {
-      return borrowRatio - this.amortizationGoal;
-    }
-
     getAmortization({ loan, structureId, offerOverride }) {
-      const offer = this.selectOffer({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
+      const yearlyAmortization = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'yearlyAmortization',
+      });
+      const offer = this.selectOffer({ loan, structureId });
       const offerToUse = offerOverride || offer;
 
-      if (offerToUse) {
-        // Temporarily change amortizationGoal
-        const oldAmortizationGoal = this.amortizationGoal;
-        this.amortizationGoal = offerToUse.amortizationGoal;
-
-        const amortizationRate = this.getAmortizationRate({
-          loan,
-          amortizationYears: offerToUse.amortizationYears,
-          structureId,
-        });
-
-        const amortization = (amortizationRate * loanValue) / 12;
-
-        this.amortizationGoal = oldAmortizationGoal;
-
-        return amortization;
+      if (yearlyAmortization >= 0) {
+        return yearlyAmortization / 12;
       }
 
-      const amortizationRate = this.getAmortizationRate({ loan, structureId });
-      return (amortizationRate * loanValue) / 12;
+      if (offerToUse?.yearlyAmortization >= 0) {
+        return offerToUse.yearlyAmortization / 12;
+      }
+
+      const amortizationYears = this.getAmortizationYears({
+        loan,
+        structureId,
+        offerOverride,
+      });
+      const amortizationGoal = this.getAmortizationGoal({
+        loan,
+        structureId,
+        offerOverride,
+      });
+
+      const amortizationRate = this.getAmortizationRate({
+        loan,
+        structureId,
+        amortizationYears,
+        amortizationGoal,
+      });
+
+      const amortization = (amortizationRate * loanValue) / 12;
+
+      return amortization;
+    }
+
+    getAmortizationGoal({ loan, structureId, offerOverride }) {
+      const offer = this.selectOffer({ loan, structureId });
+      const offerToUse = offerOverride || offer;
+
+      const firstRank = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'firstRank',
+      });
+
+      if (firstRank >= 0) {
+        return firstRank;
+      }
+
+      if (offerToUse) {
+        return offerToUse.amortizationGoal;
+      }
+
+      return this.amortizationGoal;
     }
 
     getTheoreticalAmortization({ loan, structureId }) {
       const loanValue = this.selectLoanValue({ loan, structureId });
 
-      return (this.getAmortizationRate({ loan, structureId }) * loanValue) / 12;
+      return (
+        (this.getAmortizationRate({
+          loan,
+          structureId,
+          amortizationGoal: this.amortizationGoal,
+        }) *
+          loanValue) /
+        12
+      );
     }
 
     getAmortizationBorrowRatio({ loan, structureId }) {
@@ -197,7 +236,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getAmortizationRate({
       loan,
       structureId,
-      amortizationYears = this.getAmortizationDuration({ loan, structureId }),
+      amortizationYears = this.getAmortizationYears({ loan, structureId }),
+      amortizationGoal,
     }) {
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
       const amortizationBorrowRatio = this.getAmortizationBorrowRatio({
@@ -211,8 +251,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         (this.getAmortizationRateBase({
           borrowRatio: amortizationBorrowRatio,
           amortizationYears,
-          // Prevent caching of this function if amortizationGoal has changed
-          cacheFix: this.amortizationGoal,
+          amortizationGoal,
         }) *
           amortizationBorrowRatio) /
         borrowRatio
@@ -221,7 +260,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getTotalAmortization({ loan, structureId }) {
       const amortization = this.getAmortization({ loan, structureId });
-      const amortizationYears = this.getAmortizationDuration({
+      const amortizationYears = this.getAmortizationYears({
         loan,
         structureId,
       });

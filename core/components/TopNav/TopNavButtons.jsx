@@ -9,8 +9,11 @@ import TopNavDropdown from './TopNavDropdown';
 
 const TopNavButtons = ({ children, history }) => {
   const currentUser = useContext(CurrentUserContext);
-  const { name, organisations } = currentUser || {};
+  const { name, organisations = [] } = currentUser || {};
   const isMobile = useMedia({ maxWidth: 768 });
+  const mainOrganisation = organisations.find(
+    ({ $metadata: { isMain } = {} }) => isMain,
+  );
 
   return (
     <div className="buttons">
@@ -20,11 +23,7 @@ const TopNavButtons = ({ children, history }) => {
           {!isMobile && (
             <div className="flex-col">
               <span>{name}</span>
-              <span className="secondary">
-                {organisations &&
-                  organisations.length > 0 &&
-                  organisations[0].name}
-              </span>
+              <span className="secondary">{mainOrganisation?.name}</span>
             </div>
           )}
           <TopNavDropdown currentUser={currentUser} />

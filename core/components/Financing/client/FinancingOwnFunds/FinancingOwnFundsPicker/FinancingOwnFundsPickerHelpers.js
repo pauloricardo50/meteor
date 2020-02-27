@@ -3,7 +3,6 @@ import {
   OWN_FUNDS_USAGE_TYPES,
 } from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
-import { calculateMaxLoan } from '../../FinancingFinancing/FinancingFinancing';
 
 export const chooseOwnFundsTypes = ({ loan: { residenceType } }) =>
   Calculator.getAllowedOwnFundsTypes({ residenceType });
@@ -105,27 +104,6 @@ export const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
     .filter((_, index) => index !== ownFundsIndex)
     .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
-
-export const getNewWantedLoanAfterPledge = props => {
-  const { loan, structureId, usageType, value, ownFundsIndex } = props;
-  const { wantedLoan, ownFunds } = Calculator.selectStructure({
-    loan,
-    structureId,
-  });
-  if (usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE) {
-    return wantedLoan;
-  }
-  const currentPledgedFunds = getCurrentPledgedFunds({
-    ownFunds,
-    ownFundsIndex,
-  });
-  const maxLoanWithNewPledge = calculateMaxLoan(
-    props,
-    currentPledgedFunds + value,
-  );
-
-  return maxLoanWithNewPledge;
-};
 
 export const getMaxPledge = props => {
   const { loan, structureId } = props;

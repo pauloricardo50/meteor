@@ -46,7 +46,6 @@ edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
 montiapm:agent
-okgrow:analytics
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import@0.5.1

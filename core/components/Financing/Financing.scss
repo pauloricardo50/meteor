@@ -1,13 +1,14 @@
-@import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
-@import './client/FinancingHeader/FinancingHeader.scss';
-@import './client/FinancingLenders/FinancingLenders.scss';
-@import './client/FinancingOffers/FinancingOffers.scss';
-@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
-@import './client/FinancingProject/FinancingProject.scss';
+@import "./client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss";
+@import "./client/FinancingFinancing/FinancingFinancing.scss";
+@import "./client/FinancingHeader/FinancingHeader.scss";
+@import "./client/FinancingLenders/FinancingLenders.scss";
+@import "./client/FinancingOffers/FinancingOffers.scss";
+@import "./client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss";
+@import "./client/FinancingProject/FinancingProject.scss";
 $labels-width: 180px;
 $structure-width: 320px;
-$item-height: 24px;
-$card1_padding: 24px;
+$item-height: 20px;
+$card1_padding: 20px;
 $result-section-negative-offset: -32px;
 
 .own-funds-icon {
@@ -41,11 +42,10 @@ $result-section-negative-offset: -32px;
   align-items: flex-start;
   flex-direction: column;
 
-  .input-and-slider {
-    .money-input {
-      width: 100%;
-      margin-bottom: 4px;
-    }
+  .money-input,
+  .percent-input {
+    width: 100%;
+    margin: 0;
   }
 }
 
@@ -70,8 +70,8 @@ $result-section-negative-offset: -32px;
     justify-content: center;
 
     min-height: $item-height;
-    // Use padding on both sides to allow labels to center properly	
-    padding: 8px 0;
+    // Use padding on both sides to allow labels to center properly
+    padding: 4px 0;
   }
 
   .radio-buttons {
@@ -86,7 +86,7 @@ $result-section-negative-offset: -32px;
     justify-content: flex-start;
 
     color: $primary;
-    // To match material-ui input size	
+    // To match material-ui input size
 
     font-size: calc((16 / 14) * 1rem);
   }
@@ -133,7 +133,7 @@ $result-section-negative-offset: -32px;
   overflow-x: scroll;
 
   width: 100%;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 
   background-color: #f7fafb;
 
@@ -151,11 +151,15 @@ $result-section-negative-offset: -32px;
     color: $primary;
   }
 
+  .monthlyPropertyCost input {
+    color: white;
+  }
+
   &.result-section {
     color: white;
     background-color: $primary;
 
-    font-family: 'Eina04-Bold', 'Helvetica';
+    font-family: "Eina04-Bold", "Helvetica";
 
     .label {
       color: rgba(255, 255, 255, 0.78);
@@ -193,6 +197,12 @@ $result-section-negative-offset: -32px;
     .error {
       margin: 8px;
       padding: 8px;
+      max-width: 80%;
+      text-align: center;
+    }
+
+    .warning-error {
+      margin-bottom: 0;
     }
   }
 
@@ -276,16 +286,17 @@ $result-section-negative-offset: -32px;
   }
 }
 
-.financing-structures-result-chart {
+.result {
   display: flex;
   align-items: center;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
 
   width: 100%;
 
   .total {
     font-size: 36px;
+    line-height: 36px;
+    white-space: nowrap;
 
     .chf {
       font-size: 20px;
@@ -310,7 +321,7 @@ $result-section-negative-offset: -32px;
   justify-content: center;
 
   min-height: 24px;
-  padding: 8px 0;
+  padding: 4px 0;
 
   > *:first-child {
     margin-bottom: 8px;
@@ -380,7 +391,7 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   flex-wrap: nowrap;
   justify-content: flex-start !important;
 
-  .input-and-slider {
+  .financing-field {
     display: flex;
     flex-basis: 0;
     flex-direction: column;

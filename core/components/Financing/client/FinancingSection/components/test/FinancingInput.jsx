@@ -4,16 +4,14 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { mount } from 'core/utils/testHelpers/enzyme';
 
-import { InputAndSliderField } from '../InputAndSliderField';
+import { FinancingInput } from '../FinancingInput';
 import MoneyInput from '../../../../../MoneyInput';
-import Slider from '../../../../../Slider';
 
-describe('InputAndSliderField', () => {
+describe.only('FinancingInput', () => {
   let props;
-  const component = () => mount(<InputAndSliderField {...props} />);
+  const component = () => mount(<FinancingInput {...props} />);
 
   const inputValue = wrapper => wrapper.find(MoneyInput).props().value;
-  const sliderValue = wrapper => wrapper.find(Slider).props().value;
 
   beforeEach(() => {
     props = {};
@@ -27,13 +25,11 @@ describe('InputAndSliderField', () => {
     const wrapper = component();
 
     expect(inputValue(wrapper)).to.equal(12);
-    expect(sliderValue(wrapper)).to.equal(12);
 
     wrapper.setProps({ value: '' });
     wrapper.update();
 
     expect(inputValue(wrapper)).to.equal('');
-    expect(sliderValue(wrapper)).to.equal('');
   });
 
   it('does not allow undefined values', () => {
@@ -43,13 +39,11 @@ describe('InputAndSliderField', () => {
     const wrapper = component();
 
     expect(inputValue(wrapper)).to.equal(12);
-    expect(sliderValue(wrapper)).to.equal(12);
 
     wrapper.setProps({ value: '' });
     wrapper.update();
 
     expect(inputValue(wrapper)).to.equal(0);
-    expect(sliderValue(wrapper)).to.equal(0);
   });
 
   it('forces 0 to be undefined values', () => {
@@ -61,13 +55,11 @@ describe('InputAndSliderField', () => {
     const wrapper = component();
 
     expect(inputValue(wrapper)).to.equal(12);
-    expect(sliderValue(wrapper)).to.equal(12);
 
     wrapper.setProps({ value: 0 });
     wrapper.update();
 
     expect(inputValue(wrapper)).to.equal('');
-    expect(sliderValue(wrapper)).to.equal('');
   });
 
   it('does not force 0 to be undefined values when undefined values are not allowed', () => {
@@ -78,13 +70,11 @@ describe('InputAndSliderField', () => {
     const wrapper = component();
 
     expect(inputValue(wrapper)).to.equal(12);
-    expect(sliderValue(wrapper)).to.equal(12);
 
     wrapper.setProps({ value: 0 });
     wrapper.update();
 
     expect(inputValue(wrapper)).to.equal(0);
-    expect(sliderValue(wrapper)).to.equal(0);
   });
 
   describe('onChange', () => {

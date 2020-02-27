@@ -224,3 +224,10 @@ export const decimalNegativeMoneyField = {
   min: -1000000000,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE_DECIMAL },
 };
+
+export const negativeMoneyField = {
+  ...moneyField,
+  type: Number,
+  min: -1000000000,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE },
+};

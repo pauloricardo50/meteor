@@ -1,5 +1,3 @@
-import { Mongo } from 'meteor/mongo';
-
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -17,6 +15,13 @@ import {
 import { createCollection } from '../helpers/collectionHelpers';
 
 const Organisations = createCollection(ORGANISATIONS_COLLECTION);
+
+const userLinkSchema = new SimpleSchema({
+  _id: { type: String, optional: true },
+  title: { type: String, optional: true },
+  isMain: { type: Boolean, optional: true },
+  shareCustomers: { type: Boolean, defaultValue: true },
+});
 
 export const OrganisationSchema = new SimpleSchema({
   name: {
@@ -57,11 +62,9 @@ export const OrganisationSchema = new SimpleSchema({
   },
   'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
   userLinks: { type: Array, defaultValue: [] },
-  'userLinks.$': Object,
-  'userLinks.$._id': { type: String, optional: true },
-  'userLinks.$.title': { type: String, optional: true },
-  'userLinks.$.isMain': { type: Boolean, optional: true },
-  'userLinks.$.shareCustomers': { type: Boolean, defaultValue: true },
+  'userLinks.$': userLinkSchema,
+  mainUserLinks: { type: Array, defaultValue: [] },
+  'mainUserLinks.$': userLinkSchema,
   commissionRates: { type: Array, defaultValue: [] },
   'commissionRates.$': Object,
   'commissionRates.$.rate': percentageField,

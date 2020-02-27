@@ -13,8 +13,8 @@ export default class HistoryWatcher extends Component {
   componentDidMount() {
     const { history } = this.props;
     this.generateTrackingId();
-    this.loadPage(history.location.pathname);
-    this.unlisten = history.listen(({ pathname }) => this.loadPage(pathname));
+    this.loadPage(history.location);
+    this.unlisten = history.listen(location => this.loadPage(location));
 
     if (Meteor.isDevelopment && !(Meteor.isTest || Meteor.isAppTest)) {
       const adminId = sessionStorage.getItem('dev_impersonate_adminId');
@@ -54,7 +54,8 @@ export default class HistoryWatcher extends Component {
       history: this.props.history,
     });
 
-  loadPage(pathname) {
+  loadPage(location) {
+    const { pathname } = location;
     const {
       path,
       route,
@@ -72,6 +73,12 @@ export default class HistoryWatcher extends Component {
       queryParams: params,
       queryString,
     });
+
+    if (window.gtag) {
+      window.gtag('config', window.GA_TAG, {
+        page_path: location.pathname + location.search,
+      });
+    }
   }
 
   render() {

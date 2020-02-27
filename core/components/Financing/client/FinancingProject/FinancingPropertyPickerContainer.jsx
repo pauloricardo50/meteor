@@ -1,8 +1,9 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
+import React, { useState } from 'react';
 import { compose, mapProps } from 'recompose';
 
-import T from '../../../Translation';
+import { propertyInsert } from 'core/api/properties/methodDefinitions';
+import T, { Money } from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import { updateStructure } from '../../../../api';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
@@ -10,42 +11,23 @@ import FinancingDataContainer from '../containers/FinancingDataContainer';
 const FinancingPropertyPickerContainer = compose(
   FinancingDataContainer,
   SingleStructureContainer,
-  withRouter,
   mapProps(
     ({
       properties = [],
       promotionOptions = [],
-      loan: { _id: loanId },
+      loan: { _id: loanId, userId },
       structure: {
         id: structureId,
         propertyId,
         promotionOptionId,
         disableForms,
       },
-      history: { push },
-    }) => ({
-      disabled: disableForms,
-      options: [
-        ...properties.map(({ _id, address1 }) => ({
-          id: _id,
-          label: address1 || <T id="FinancingPropertyPicker.placeholder" />,
-        })),
-        ...promotionOptions.map(({ _id, name }) => ({
-          id: _id,
-          label: (
-            <T id="FinancingPropertyPicker.promotionOption" values={{ name }} />
-          ),
-        })),
-        {
-          id: 'add',
-          dividerTop: true,
-          label: <T id="FinancingPropertyPicker.addProperty" />,
-        },
-      ],
-      value: propertyId || promotionOptionId,
-      handleChange: value => {
+    }) => {
+      const [openForm, setOpenForm] = useState();
+
+      const handleChange = value => {
         if (value === 'add') {
-          push(`/loans/${loanId}/properties`);
+          setOpenForm(true);
         } else {
           const isPromotionOption = promotionOptions
             .map(({ _id }) => _id)
@@ -62,8 +44,63 @@ const FinancingPropertyPickerContainer = compose(
             },
           });
         }
-      },
-    }),
+      };
+
+      return {
+        openForm,
+        setOpenForm,
+        disabled: disableForms,
+        options: [
+          ...properties.map(({ _id, address, propertyType, value }) => ({
+            id: _id,
+            label: (
+              <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
+                {address.replace(', ', '\n')}
+              </span>
+            ) || <T id="FinancingPropertyPicker.placeholder" />,
+            secondary: <Money value={value} />,
+            description: propertyType && (
+              <T id={`Forms.propertyType.${propertyType}`} />
+            ),
+          })),
+          ...promotionOptions.map(
+            ({ _id, name, promotion: { name: promotionName }, value }) => ({
+              id: _id,
+              label: (
+                <T
+                  id="FinancingPropertyPicker.promotionOption"
+                  values={{ name }}
+                />
+              ),
+              secondary: <Money value={value} />,
+              description: (
+                <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
+                  {promotionName}
+                </span>
+              ),
+            }),
+          ),
+          {
+            id: 'add',
+            dividerTop: true,
+            label: <T id="FinancingPropertyPicker.addProperty" />,
+          },
+        ],
+        value: propertyId || promotionOptionId,
+        handleChange,
+        handleAddProperty: values =>
+          propertyInsert
+            .run({
+              property: values,
+              loanId,
+              userId: Meteor.microservice === 'admin' ? userId : undefined,
+            })
+            .then(newId => {
+              handleChange(newId);
+              setOpenForm(false);
+            }),
+      };
+    },
   ),
 );
 

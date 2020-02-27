@@ -11,7 +11,7 @@ import LoanAssigneeManager from '../../../components/LoanAssigneeManager';
 
 const PremiumOverviewTab = props => {
   const { loan } = props;
-  const { _id: loanId } = loan;
+  const { _id: loanId, frontTagId } = loan;
   return (
     <div className="premium-overview">
       <div className="card1 card-top top">
@@ -29,7 +29,7 @@ const PremiumOverviewTab = props => {
         <LoanAssigneeManager loan={loan} />
       </div>
 
-      <LoanTimeline loanId={loanId} />
+      <LoanTimeline loanId={loanId} frontTagId={frontTagId} />
       <LoanNotes loan={loan} />
 
       <div className="structure-form">

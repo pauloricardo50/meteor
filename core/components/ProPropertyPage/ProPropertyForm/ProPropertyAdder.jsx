@@ -2,6 +2,7 @@ import React from 'react';
 import { mapProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
+import Icon from 'core/components/Icon';
 import { proPropertyInsert } from '../../../api/methods';
 import { createRoute } from '../../../utils/routerUtils';
 import T from '../../Translation';
@@ -16,6 +17,9 @@ export default compose(
         .then(propertyId =>
           history.push(createRoute('/properties/:propertyId', { propertyId })),
         ),
-    buttonLabel: <T id="ProDashboardPage.addProperty" />,
+    buttonProps: {
+      label: <T id="ProDashboardPage.addProperty" />,
+      icon: <Icon type="add" />,
+    },
   })),
 )(ProPropertyForm);

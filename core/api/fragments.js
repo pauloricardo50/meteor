@@ -375,6 +375,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   category: 1,
   financedPromotion: { name: 1, status: 1 },
   financedPromotionLink: 1,
+  frontTagId: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
   nextDueTask: 1,
@@ -1087,6 +1088,15 @@ export const adminRevenue = () => ({
   sourceOrganisation: { name: 1 },
   status: 1,
   type: 1,
+});
+
+export const proRevenue = () => ({
+  amount: 1,
+  expectedAt: 1,
+  loan: { name: 1, status: 1 },
+  organisationLinks: 1,
+  paidAt: 1,
+  status: 1,
 });
 
 // //

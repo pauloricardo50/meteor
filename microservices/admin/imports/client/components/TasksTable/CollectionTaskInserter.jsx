@@ -13,6 +13,7 @@ import {
   LENDERS_COLLECTION,
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
+import Icon from 'core/components/Icon';
 import { schema, taskFormLayout } from './TaskModifier';
 
 const getCollectionLabel = collection => {
@@ -40,7 +41,7 @@ const CollectionTaskInserterForm = ({
   label,
   ...props
 }) => (
-  <div className="collection-task-inserter-form">
+  <div className="collection-task-inserter-form mr-8">
     <AutoFormDialog
       schema={schema.omit('status')}
       title={title}
@@ -49,6 +50,7 @@ const CollectionTaskInserterForm = ({
         raised: true,
         primary: true,
         label,
+        icon: <Icon type="add" />,
       }}
       {...props}
     />

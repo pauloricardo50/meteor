@@ -5,7 +5,7 @@ import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
 
 import DateField from '../DateField';
-import { PercentField } from '../PercentInput';
+import PercentInput from '../PercentInput';
 import {
   CUSTOM_AUTOFIELD_TYPES,
   COMPONENT_TYPES,
@@ -25,7 +25,7 @@ const container = ignoreProps(FIELDS_TO_IGNORE);
 
 const OptimizedMoneyInput = container(MoneyInput);
 const OptimizedDateField = container(DateField);
-const OptimizedPercentField = container(PercentField);
+const OptimizedPercentInput = container(PercentInput);
 const OptimizedBoolField = container(BoolField);
 
 const determineComponentFromProps = ({
@@ -55,7 +55,7 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
-    return { Component: OptimizedPercentField, type: COMPONENT_TYPES.PERCENT };
+    return { Component: OptimizedPercentInput, type: COMPONENT_TYPES.PERCENT };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
@@ -71,6 +71,14 @@ const determineComponentFromProps = ({
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
       props: { margin: 'normal', decimal: true, variant: 'outlined' },
+    };
+  }
+
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { margin: 'normal', negative: true, variant: 'outlined' },
     };
   }
 
