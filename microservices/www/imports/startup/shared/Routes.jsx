@@ -30,15 +30,15 @@ export const WWW_ROUTES = {
 };
 
 const Routes = () => (
-  <ScrollToTop>
-    <Switch>
-      <GoogleAnalyticsTracker>
+  <GoogleAnalyticsTracker>
+    <ScrollToTop>
+      <Switch>
         {Object.keys(WWW_ROUTES).map(route => (
           <Route key={route} {...WWW_ROUTES[route]} />
         ))}
-      </GoogleAnalyticsTracker>
-    </Switch>
-  </ScrollToTop>
+      </Switch>
+    </ScrollToTop>
+  </GoogleAnalyticsTracker>
 );
 
 export default Routes;

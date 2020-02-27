@@ -9,7 +9,10 @@ const GoogleAnalyticsTracker = props => {
     let unlisten;
     if (Meteor.isClient) {
       unlisten = history.listen(location => {
+        console.log('listen location:', location);
         if (window.ga) {
+          console.log('ga??');
+
           window.ga('set', 'page', location.pathname + location.search);
           window.ga('send', 'pageview');
         }
