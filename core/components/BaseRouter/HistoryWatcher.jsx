@@ -74,9 +74,10 @@ export default class HistoryWatcher extends Component {
       queryString,
     });
 
-    if (window.ga) {
-      window.ga('set', 'page', location.pathname + location.search);
-      window.ga('send', 'pageview');
+    if (window.gtag) {
+      window.gtag('config', window.GA_TAG, {
+        page_path: location.pathname + location.search,
+      });
     }
   }
 
