@@ -91,14 +91,14 @@ export class FrontService {
     let error;
 
     // Check IP
-    if (
-      !EPOTEK_IPS.some(ip => ip === realIp) &&
-      !EPOTEK_IPS.some(ip =>
-        forwardedFor.split(',').some(forwardedForIp => forwardedForIp === ip),
-      )
-    ) {
-      error = new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Wrong IP');
-    }
+    // if (
+    //   !EPOTEK_IPS.some(ip => ip === realIp) &&
+    //   !EPOTEK_IPS.some(ip =>
+    //     forwardedFor.split(',').some(forwardedForIp => forwardedForIp === ip),
+    //   )
+    // ) {
+    //   error = new Meteor.Error(ERROR_CODES.UNAUTHORIZED, 'Wrong IP');
+    // }
 
     // Check Auth secret
     if (!authSecret || authSecret !== FRONT_AUTH_SECRET) {
