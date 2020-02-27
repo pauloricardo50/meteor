@@ -9,7 +9,7 @@ import {
   LOAN_CATEGORIES,
 } from '../../../core/api/loans/loanConstants';
 
-const makeRenderLoan = ({ conversation, tags, setTags }) => loan => {
+const Loan = ({ conversation, tags, setTags, result: loan }) => {
   const ref = useRef(null);
   const { name, status, category } = loan;
   const title = getLoanLinkTitle(loan);
@@ -54,7 +54,9 @@ const FrontConversationTaggerResults = ({
   <div className="flex-col mt-16 center-align">
     <CollectionSearch
       func={fetchLoans}
-      renderItem={makeRenderLoan({ conversation, tags, setTags })}
+      renderItem={
+        <Loan conversation={conversation} tags={tags} setTags={setTags} />
+      }
       type="list"
       className="flex-col"
       style={{ width: '100%' }}

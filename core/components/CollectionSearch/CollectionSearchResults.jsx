@@ -49,7 +49,9 @@ const ItemsPopper = ({
                 onClick={() => onClickItem(result)}
                 disabled={disableItem(result)}
               >
-                {renderItem(result, hideResults)}
+                {typeof renderItem === 'function'
+                  ? renderItem(result, hideResults)
+                  : React.cloneElement(renderItem, { result, hideResults })}
               </MenuItem>
             ))}
           </MenuList>
@@ -83,7 +85,9 @@ const ItemsList = ({
             button
             disabled={disableItem(result)}
           >
-            {renderItem(result, hideResults)}
+            {typeof renderItem === 'function'
+              ? renderItem(result, hideResults)
+              : React.cloneElement(renderItem, { result, hideResults })}
           </ListItem>
         ))
       )}
