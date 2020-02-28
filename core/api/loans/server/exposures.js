@@ -216,7 +216,9 @@ exposeQuery({
         referredByUserId !== 'nobody' &&
         referredByUserId !== 'referral'
       ) {
-        const org = UserService.getUserMainOrganisation(userId);
+        const org = UserService.getUserMainOrganisation(userId, {
+          userLinks: 1,
+        });
         if (!org.userLinks.find(({ _id }) => _id === userId)) {
           SecurityService.handleUnauthorized('Not allowed');
         }
