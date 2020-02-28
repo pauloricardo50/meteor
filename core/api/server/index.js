@@ -27,6 +27,8 @@ import './reducers';
 import './mongoIndexes';
 import './caches';
 
+import { Roles } from 'meteor/alanning:roles';
+
 import { COLLECTIONS } from '../constants';
 import BorrowerService from '../borrowers/server/BorrowerService';
 import ContactService from '../contacts/server/ContactService';
@@ -90,3 +92,7 @@ export const Services = {
   [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
   [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
 };
+
+Meteor.startup(() => {
+  Roles._forwardMigrate();
+});

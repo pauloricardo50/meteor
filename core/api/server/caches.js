@@ -106,7 +106,7 @@ Meteor.startup(() => {
   //   ],
   //   'lendersCache.offersCache': { $exists: false },
   // });
-  migrate('organisations', 'mainUserLinks', {
-    mainUserLinks: { $exists: false },
-  });
+  // migrate('organisations', 'mainUserLinks', {
+  //   mainUserLinks: { $exists: false },
+  // });
 });

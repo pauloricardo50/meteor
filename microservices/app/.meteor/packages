@@ -31,7 +31,7 @@ meteortesting:mocha@1.0.1
 
 
 # User Accounts
-alanning:roles                  # Easy role management
+alanning:roles@2.1.0
 
 email@1.2.3
 

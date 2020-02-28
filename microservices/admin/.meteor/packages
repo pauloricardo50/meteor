@@ -32,7 +32,7 @@ tmeasday:acceptance-test-driver
 
 
 # User Accounts
-alanning:roles                  # Easy role management
+alanning:roles@2.1.0
 accounts-password@1.5.2
 epotek:accounts-ui
 email@1.2.3
