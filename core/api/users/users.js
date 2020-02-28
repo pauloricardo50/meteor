@@ -2,7 +2,7 @@ import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
 import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
-import { ROLES, ACQUISITION_CHANNELS } from './userConstants';
+import { ACQUISITION_CHANNELS } from './userConstants';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 
 export const UserSchema = new SimpleSchema({
@@ -46,6 +46,12 @@ export const UserSchema = new SimpleSchema({
     type: Array,
     optional: true,
   },
+  // Shape is something like this:
+  // {
+  //   _id: 'admin',
+  //   scope: 'manchester-united',
+  //   assigned: true
+  // }
   'roles.$': {
     type: Object,
     optional: true,
