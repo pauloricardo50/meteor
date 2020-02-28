@@ -30,7 +30,7 @@ describe('ImpersonateService', () => {
 
     Users.update(adminId, {
       $set: {
-        roles: ROLES.ADMIN,
+        roles: [{ _id: ROLES.ADMIN }],
         'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
@@ -56,7 +56,7 @@ describe('ImpersonateService', () => {
 
     Users.update(adminId, {
       $set: {
-        roles: ROLES.LENDER,
+        roles: [{ _id: ROLES.PRO }],
         'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
@@ -82,7 +82,7 @@ describe('ImpersonateService', () => {
 
     Users.update(adminId, {
       $set: {
-        roles: ROLES.ADMIN,
+        roles: [{ _id: ROLES.ADMIN }],
         'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });

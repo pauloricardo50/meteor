@@ -110,8 +110,7 @@ export class UserServiceClass extends CollectionService {
         referredByUserId && this.get(referredByUserId, { roles: 1 });
       const isReferralAdmin =
         userReferral &&
-        (Roles.userIsInRole(userReferral, ROLES.ADMIN) ||
-          Roles.userIsInRole(userReferral, ROLES.DEV));
+        Roles.userIsInRole(userReferral, [ROLES.ADMIN, ROLES.DEV]);
 
       this.update({
         userId: newUserId,
@@ -145,7 +144,7 @@ export class UserServiceClass extends CollectionService {
         object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_PRO },
       });
       const referralUser = this.get(
-        { _id: referralId, roles: { $in: [ROLES.PRO] } },
+        { _id: referralId, 'roles._id': ROLES.PRO },
         { _id: 1 },
       );
       const referralOrg = OrganisationService.get(referralId, { _id: 1 });
@@ -729,31 +728,32 @@ export class UserServiceClass extends CollectionService {
   }
 
   setAssigneeForNewUser(userId) {
-    const { roles, assignedEmployeeId } = this.get(userId, {
+    const user = this.get(userId, {
       assignedEmployeeId: 1,
       roles: 1,
     });
+    const { assignedEmployeeId } = user;
 
     if (assignedEmployeeId) {
       return;
     }
     let newAssignee;
 
-    if (roles.includes(ROLES.USER)) {
+    if (Roles.userIsInRole(user, ROLES.USER)) {
       if (!this.employees.length) {
         // In tests or if there are no roundrobin advisors, use any admin
         // in the db and assign it to the user
         // this avoids issues with analytics, that expects all users to have
         // an assignee
         const anyAdmin = this.get(
-          { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
+          { 'roles._id': { $in: [ROLES.ADMIN, ROLES.DEV] } },
           { _id: 1 },
         );
         newAssignee = anyAdmin && anyAdmin._id;
       } else {
         const lastCreatedUser = this.get(
           {
-            roles: ROLES.USER,
+            'roles._id': ROLES.USER,
             assignedEmployeeId: { $in: this.employees },
           },
           {

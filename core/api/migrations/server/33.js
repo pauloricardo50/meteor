@@ -1,4 +1,5 @@
 import { Migrations } from 'meteor/percolate:migrations';
+import { Roles } from 'meteor/alanning:roles';
 
 import ActivityService from 'core/api/activities/server/ActivityService';
 import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
@@ -43,7 +44,10 @@ export const up = () => {
           { _id },
           {
             $set: {
-              acquisitionChannel: referredByUser.roles.includes(ROLES.ADMIN)
+              acquisitionChannel: Roles.userIsInRole(
+                referredByUser,
+                ROLES.ADMIN,
+              )
                 ? ACQUISITION_CHANNELS.REFERRAL_ADMIN
                 : ACQUISITION_CHANNELS.REFERRAL_PRO,
             },

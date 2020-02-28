@@ -74,7 +74,7 @@ const PromotionAdministration = ({
         <div className="flex-col">
           <CollectionSearch
             query={userSearch}
-            queryParams={{ roles: [ROLES.PRO] }}
+            queryParams={{ 'roles._id': ROLES.PRO }}
             title="Rechercher un utilisateur PRO"
             renderItem={user => (
               <div className="user-search-item">

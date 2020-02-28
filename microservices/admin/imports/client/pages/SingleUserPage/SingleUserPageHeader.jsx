@@ -46,10 +46,10 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     emails = [],
     isDisabled,
   } = user;
-  const { roles: currentUserRoles = [] } = currentUser || {};
   const allowAssign =
-    currentUserRoles.includes(ROLES.DEV) ||
-    (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
+    Roles.userIsInRole(currentUser, ROLES.DEV) ||
+    (!Roles.userIsInRole(user, ROLES.DEV) &&
+      !Roles.userIsInRole(user, ROLES.ADMIN));
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => toggleAccount.run({ userId });
 

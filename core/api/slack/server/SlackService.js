@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import fetch from 'node-fetch';
@@ -164,9 +166,7 @@ export class SlackService {
     loanId,
   }) => {
     const isAdmin =
-      currentUser &&
-      (currentUser.roles.includes(ROLES.ADMIN) ||
-        currentUser.roles.includes(ROLES.DEV));
+      currentUser && Roles.userIsInRole(currentUser, ROLES.ADMIN, ROLES.DEV);
 
     if (!notifyAlways && isAdmin) {
       return false;
@@ -208,7 +208,7 @@ export class SlackService {
   getNotificationOrigin = currentUser => {
     const APIUser = getAPIUser();
     const username = currentUser ? currentUser.name : undefined;
-    const isPro = currentUser && currentUser.roles.includes(ROLES.PRO);
+    const isPro = currentUser && Roles.userIsInRole(currentUser, ROLES.PRO);
 
     if (APIUser) {
       const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
@@ -241,7 +241,7 @@ export class SlackService {
   };
 
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
-    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+    const isUser = currentUser && Roles.userIsInRole(currentUser, ROLES.USER);
 
     if (!isUser) {
       return false;

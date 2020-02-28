@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -23,10 +24,9 @@ const styles = {
   },
 };
 
-const isAdminAndDev = ({ roles }) =>
-  roles.includes(ROLES.ADMIN) &&
-  Meteor.user() &&
-  Meteor.user().roles.includes(ROLES.DEV);
+const isAdminAndDev = admin =>
+  Roles.userIsInRole(admin, ROLES.ADMIN) &&
+  Roles.userIsInRole(Meteor.user(), ROLES.DEV);
 
 const ImpersonateLink = ({ user, className, classes }) => {
   if (!user) {

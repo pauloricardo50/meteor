@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -32,9 +34,9 @@ const SingleUserPage = ({
     promotions,
     proProperties,
   } = user;
-  const isUser = user.roles.includes(ROLES.USER);
-  const isPro = user.roles.includes(ROLES.PRO);
-  const currentUserIsDev = currentUser.roles.includes(ROLES.DEV);
+  const isUser = Roles.userIsInRole(user, ROLES.USER);
+  const isPro = Roles.userIsInRole(user, ROLES.PRO);
+  const currentUserIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
 
   return (
     <section

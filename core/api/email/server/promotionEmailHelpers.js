@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import { ROLES } from 'core/api/users/userConstants';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
@@ -49,13 +51,12 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   let userName = 'e-Potek';
 
   if (userId) {
-    const { name, roles } = UserService.get(userId, { name: 1, roles: 1 });
-    const isUser = roles.includes(ROLES.USER);
+    const user = UserService.get(userId, { name: 1, roles: 1 });
 
-    if (isUser && anonymize) {
+    if (Roles.userIsInRole(user, ROLES.USER) && anonymize) {
       userName = 'un acquéreur';
     } else {
-      userName = name;
+      userName = user.name;
     }
   }
 

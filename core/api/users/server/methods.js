@@ -9,7 +9,7 @@ import {
   changeEmail,
   doesUserExist,
   generateApiKeyPair,
-  getUserByEmail,
+  getProByEmail,
   getUserByPasswordResetToken,
   proInviteUser,
   proInviteUserToOrganisation,
@@ -178,13 +178,13 @@ proInviteUser.setHandler((context, params) => {
   });
 });
 
-getUserByEmail.setHandler(({ userId }, { email }) => {
+getProByEmail.setHandler(({ userId }, { email }) => {
   SecurityService.checkUserIsPro(userId);
   const user = UserService.getByEmail(email);
 
   if (user) {
     return UserService.get(
-      { $and: [{ _id: user._id }, { roles: { $in: [ROLES.PRO] } }] },
+      { _id: user._id, 'roles._id': ROLES.PRO },
       {
         name: 1,
         organisations: { name: 1 },

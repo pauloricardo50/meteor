@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import { compose, withProps } from 'recompose';
@@ -56,7 +57,7 @@ const AdminPromotionPageContainer = compose(
       canModifyPromotion: true,
       canModifyStatus: true,
       canRemoveLots: true,
-      canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
+      canRemovePromotion: Roles.userIsInRole(Meteor.user(), ROLES.DEV),
       canSeeCustomers: true,
       canSeeManagement: true,
       canSeeUsers: true,

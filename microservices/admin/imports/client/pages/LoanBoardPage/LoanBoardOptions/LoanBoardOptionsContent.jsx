@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 
 import T from 'core/components/Translation';
@@ -81,7 +83,7 @@ const LoanBoardOptionsContent = ({
     ...devAndAdmins.map(admin => ({
       id: admin._id,
       label: admin.firstName,
-      hide: admin.roles.includes(ROLES.DEV),
+      hide: Roles.userIsInRole(admin, ROLES.DEV),
     })),
   ];
   const statusOptions = [

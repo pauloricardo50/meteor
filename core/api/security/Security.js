@@ -99,12 +99,10 @@ export default class Security {
   }
 
   static checkOwnership(doc, userId) {
-    userId = userId || Meteor.userId();
-    const userIdIsValid = doc && doc.userId === userId;
+    const finaluserId = userId || Meteor.userId();
+    const userIdIsValid = doc && doc.userId === finaluserId;
     const userLinksIsValid =
-      doc &&
-      doc.userLinks &&
-      doc.userLinks.filter(({ _id }) => userId === _id).length > 0;
+      doc?.userLinks?.filter(({ _id }) => finaluserId === _id).length > 0;
 
     if (!(userIdIsValid || userLinksIsValid)) {
       this.handleUnauthorized('Checking ownership');
@@ -186,15 +184,8 @@ export default class Security {
         throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
     }
 
-    const isAllowed = allowedRoles.some(allowedRole =>
-      this.hasRole(userId, allowedRole),
-    );
-
-    if (!isAllowed) {
-      return false;
-    }
-
-    return true;
+    // Returns true if any of the roles matches
+    return Roles.userIsInRole(userId, allowedRoles);
   }
 
   static minimumRole(role) {
@@ -213,15 +204,11 @@ export default class Security {
 
     const me = doc.users.find(({ _id }) => _id === userId);
 
-    return (
-      me &&
-      me.$metadata &&
-      me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
-    );
+    return me?.$metadata?.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY;
   };
 
   static isAllowedToModifyFiles({ collection, docId, userId, fileKey }) {
-    const keyId = fileKey.split('/')[0];
+    const [keyId] = fileKey.split('/');
 
     if (keyId !== docId) {
       this.handleUnauthorized('Invalid fileKey or docId');

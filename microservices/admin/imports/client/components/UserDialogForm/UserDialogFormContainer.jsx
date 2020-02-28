@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
@@ -18,7 +20,7 @@ const userSchema = new SimpleSchema({
   lastName: { type: String, optional: true },
   organisations: {
     type: Array,
-    condition: ({ roles = [] }) => !roles.includes(ROLES.USER),
+    condition: user => !Roles.userIsInRole(user, ROLES.USER),
   },
   email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
   phoneNumbers: { type: Array, optional: true },
@@ -99,7 +101,7 @@ export default compose(
         .run({ userId: user._id, object })
         .then(
           () =>
-            !user.roles.includes(ROLES.USER) &&
+            !Roles.userIsInRole(user, ROLES.USER) &&
             updateOrganisations({ userId: user._id, organisations }),
         );
     },

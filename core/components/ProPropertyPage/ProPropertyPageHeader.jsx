@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 
@@ -13,7 +14,7 @@ import ConfirmMethod from '../ConfirmMethod';
 const ProPropertyPageHeader = ({ property, permissions }) => {
   const { address, totalValue, _id: propertyId, status } = property;
   const { canModifyProperty } = permissions;
-  const isDev = Meteor.user().roles.includes(ROLES.DEV);
+  const isDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
 
   return (
     <div className="pro-property-page-header">

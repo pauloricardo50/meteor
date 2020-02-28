@@ -120,8 +120,8 @@ export const proInviteUser = new Method({
   },
 });
 
-export const getUserByEmail = new Method({
-  name: 'getUserByEmail',
+export const getProByEmail = new Method({
+  name: 'getProByEmail',
   params: {
     email: String,
   },

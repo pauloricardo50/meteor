@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+import { Roles } from 'meteor/alanning:roles';
 
 import { ROLES } from 'core/api/users/userConstants';
 import { exposeQuery } from '../../queries/queryHelpers';
@@ -109,11 +110,8 @@ exposeQuery({
 
         const isAdmin =
           currentUser &&
-          currentUser.roles &&
-          currentUser.roles.length &&
-          currentUser.roles.some(role =>
-            [ROLES.ADMIN, ROLES.DEV].includes(role),
-          );
+          (Roles.userIsInRole(currentUser, ROLES.ADMIN) ||
+            Roles.userIsInRole(ROLES.DEV));
 
         const promotionsWithFilteredNotes = isAdmin
           ? promotions

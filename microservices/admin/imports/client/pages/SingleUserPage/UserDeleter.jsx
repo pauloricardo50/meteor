@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
@@ -5,7 +7,7 @@ import { ROLES } from 'core/api/constants';
 import { removeUser } from 'core/api';
 
 const UserDeleter = ({ currentUser, user }) => {
-  if (!currentUser || !currentUser.roles.includes(ROLES.DEV)) {
+  if (!currentUser || !Roles.userIsInRole(currentUser, ROLES.DEV)) {
     return null;
   }
 

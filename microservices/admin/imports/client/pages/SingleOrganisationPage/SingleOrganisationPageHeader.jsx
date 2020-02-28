@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
@@ -61,7 +63,7 @@ const SingleOrganisationPage = ({
           </div>
         </span>
         <div>
-          {currentUser.roles.includes(ROLES.DEV) && (
+          {Roles.userIsInRole(currentUser, ROLES.DEV) && (
             <ConfirmMethod
               keyword={name}
               buttonProps={{

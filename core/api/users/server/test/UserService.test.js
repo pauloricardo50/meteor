@@ -42,7 +42,7 @@ describe('UserService', function() {
       const userId = UserService.createUser({ options });
       user = UserService.findOne(userId);
 
-      expect(user.roles).to.deep.equal([ROLES.USER]);
+      expect(user.roles).to.deep.include([{ _id: ROLES.USER }]);
     });
 
     it('creates a user with a PRO role', () => {
@@ -50,7 +50,7 @@ describe('UserService', function() {
       const userId = UserService.createUser({ options, role: ROLES.PRO });
       user = UserService.findOne(userId);
 
-      expect(user.roles).to.deep.equal([ROLES.PRO]);
+      expect(user.roles).to.deep.include([{ _id: ROLES.PRO }]);
     });
 
     it('uses all options to create the user', () => {
@@ -285,7 +285,9 @@ describe('UserService', function() {
   describe('setRole', () => {
     it('changes the role of a user', () => {
       const newRole = ROLES.DEV;
-      expect(UserService.findOne(user._id).roles).to.deep.equal([ROLES.USER]);
+      expect(UserService.findOne(user._id).roles).to.deep.include([
+        { _id: ROLES.USER },
+      ]);
       UserService.setRole({ userId: user._id, role: newRole });
       expect(UserService.findOne(user._id).roles).to.deep.equal([newRole]);
     });
@@ -380,8 +382,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
-        }),
+        !!UserService.getUserByPasswordResetToken({
+          token: 'some unknown token',}),
       ).to.equal(false);
     });
   });

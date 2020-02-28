@@ -42,7 +42,7 @@ describe('FrontService', () => {
       generator({
         users: {
           emails: [{ address: 'user@e-potek.ch', verified: true }],
-          roles: [ROLES.USER],
+          roles: [{ _id: ROLES.USER }],
           loans: { _id: 'loanId', name: '20-0001' },
         },
       });
@@ -63,7 +63,7 @@ describe('FrontService', () => {
       generator({
         users: {
           emails: [{ address: 'user@e-potek.ch', verified: true }],
-          roles: [ROLES.USER],
+          roles: [{ _id: ROLES.USER }],
           loans: { _id: 'loanId', name: '20-0001' },
         },
       });
@@ -87,7 +87,7 @@ describe('FrontService', () => {
       generator({
         users: {
           emails: [{ address: 'user@e-potek.ch', verified: true }],
-          roles: [ROLES.USER],
+          roles: [{ _id: ROLES.USER }],
           loans: { _id: 'loanId', name: '20-0001' },
         },
       });
@@ -150,7 +150,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: { name: '20-0001' },
           },
         });
@@ -187,7 +187,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: { _id: 'loanId', name: '20-0001' },
           },
         });
@@ -228,7 +228,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: { _id: 'loanId', name: '20-0001', frontTagId: 'existingId' },
           },
         });
@@ -277,7 +277,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: [{}, {}],
           },
         });
@@ -302,7 +302,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
           },
         });
 
@@ -364,7 +364,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             assignedEmployee: {
               emails: [{ address: 'admin@e-potek.ch', verified: true }],
             },
@@ -401,7 +401,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             assignedEmployee: {
               emails: [{ address: 'admin@e-potek.ch', verified: true }],
             },
@@ -438,7 +438,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: {
               assignees: [
                 {
@@ -488,7 +488,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: [
               {
                 assignees: [
@@ -568,7 +568,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
           },
         });
 
@@ -589,7 +589,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             loans: [{ _id: 'loan' }],
           },
         });
@@ -615,7 +615,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             assignedEmployee: {
               emails: [{ address: 'admin2@e-potek.ch', verified: true }],
             },
@@ -641,7 +641,7 @@ describe('FrontService', () => {
         generator({
           users: {
             emails: [{ address: 'user@e-potek.ch', verified: true }],
-            roles: [ROLES.USER],
+            roles: [{ _id: ROLES.USER }],
             assignedEmployee: {
               emails: [{ address: 'admin@e-potek.ch', verified: true }],
               frontUserId: 'admin',

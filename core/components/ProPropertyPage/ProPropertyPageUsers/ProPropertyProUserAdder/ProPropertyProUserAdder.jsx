@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
 import { userSearch } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
-import { addProUserToProperty, getUserByEmail } from 'core/api';
+import { addProUserToProperty, getProByEmail } from 'core/api';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
 import { ProPropertyPageContext } from '../../ProPropertyPageContext';
@@ -23,8 +23,8 @@ const ProPropertyProUserAdder = ({ property, permissions: { isAdmin } }) => {
       <CollectionSearch
         query={isAdmin && userSearch}
         title="Rechercher un compte Pro"
-        queryParams={{ roles: [ROLES.PRO] }}
-        method={!isAdmin && getUserByEmail}
+        queryParams={{ 'roles._id': ROLES.PRO }}
+        method={!isAdmin && getProByEmail}
         methodParams={({ searchQuery }) => ({ email: searchQuery })}
         placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}
         resultsFilter={(results = []) =>

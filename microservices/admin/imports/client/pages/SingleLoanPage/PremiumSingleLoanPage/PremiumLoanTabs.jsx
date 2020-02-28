@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
@@ -33,7 +35,7 @@ const getTabs = props => {
       icon: collectionIcons[REVENUES_COLLECTION],
     },
     { id: 'actions', Component: ActionsTab, icon: 'settings' },
-    currentUser.roles.includes(ROLES.DEV) && {
+    Roles.userIsInRole(currentUser, ROLES.DEV) && {
       id: 'dev',
       Component: DevTab,
       icon: 'developerMode',

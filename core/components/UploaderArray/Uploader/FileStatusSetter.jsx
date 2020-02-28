@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -20,7 +21,7 @@ const FileStatusSetter = ({
 
   const user = Meteor.user();
 
-  if (user.roles.includes(ROLES.USER) || user.roles.includes(ROLES.PRO)) {
+  if (Roles.userIsInRole(user, [ROLES.USER, ROLES.PRO])) {
     return (
       <span className={`${status} bold`}>
         <T id={`File.status.${status}`} />

@@ -1,19 +1,19 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { ROLES } from 'core/api/constants';
 
-const hasRole = ({ roles }, role) => roles.includes(role);
-
 const formatCurrentUser = user => {
   if (user) {
     return {
       ...user,
-      isDev: hasRole(user, ROLES.DEV),
-      isUser: hasRole(user, ROLES.USER),
-      isAdmin: hasRole(user, ROLES.ADMIN),
-      isPro: hasRole(user, ROLES.PRO),
+      isDev: Roles.userIsInRole(user, ROLES.DEV),
+      isUser: Roles.userIsInRole(user, ROLES.USER),
+      isAdmin: Roles.userIsInRole(user, ROLES.ADMIN),
+      isPro: Roles.userIsInRole(user, ROLES.PRO),
     };
   }
 

@@ -52,12 +52,19 @@ import {
 import { fakeProperty } from '../../api/properties/fakes';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 import OrganisationService from '../../api/organisations/server/OrganisationService';
+import UserService from '../../api/users/server/UserService';
+import BorrowerService from '../../api/borrowers/server/BorrowerService';
+import PropertyService from '../../api/properties/server/PropertyService';
+import OfferService from '../../api/offers/server/OfferService';
 
 const isAuthorizedToRun = () =>
   !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
 const getAdmins = () => {
-  const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
+  const admins = UserService.fetch({
+    $filters: { 'roles._id': ROLES.ADMIN },
+    _id: 1,
+  });
   if (admins.length <= 1) {
     const newAdmins = createAdmins();
     return newAdmins;
@@ -66,14 +73,14 @@ const getAdmins = () => {
 };
 
 const deleteUsersRelatedData = usersToDelete => {
-  Borrowers.remove({ userId: { $in: usersToDelete } });
-  Properties.remove({ userId: { $in: usersToDelete } });
-  Offers.remove({ userId: { $in: usersToDelete } });
-  Loans.remove({ userId: { $in: usersToDelete } });
+  BorrowerService.collection.remove({ userId: { $in: usersToDelete } });
+  PropertyService.collection.remove({ userId: { $in: usersToDelete } });
+  OfferService.collection.remove({ userId: { $in: usersToDelete } });
+  LoanService.collection.remove({ userId: { $in: usersToDelete } });
 };
 
 const deleteUsers = usersToDelete =>
-  Users.remove({ _id: { $in: usersToDelete } });
+  UserService.collection.remove({ _id: { $in: usersToDelete } });
 
 const createFakeLoanFixture = ({
   userId,
@@ -328,7 +335,7 @@ Meteor.methods({
       });
     }
 
-    Organisations.update(
+    OrganisationService.baseUpdate(
       { _id: orgId },
       { $set: { userLinks: [{ _id: this.userId }] } },
     );

@@ -45,9 +45,9 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     }
     case USERS_COLLECTION: {
       let text;
-      const { organisations = [], roles = [] } = data;
+      const { organisations = [] } = data;
       if (
-        (roles.includes(ROLES.ADMIN) || roles.includes(ROLES.DEV)) &&
+        Roles.userIsInRole(data, [ROLES.ADMIN, ROLES.DEV]) &&
         employeesById[docId]
       ) {
         text = (

@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 
@@ -25,26 +24,30 @@ import { incoherentAssigneesResolver } from './resolvers';
 exposeQuery({
   query: adminUsers,
   overrides: {
+    firewall(userId) {
+      SecurityService.checkUserIsAdmin(userId);
+      params.userId = userId;
+    },
     embody: body => {
       body.$filter = ({
         filters,
-        params: { roles, _id, admins, assignedEmployeeId },
+        params: { roles, _id, admins, assignedEmployeeId, userId },
       }) => {
         if (_id) {
           filters._id = _id;
         }
 
         if (roles) {
-          filters.roles = { $in: roles };
+          filters['roles._id'] = { $in: roles };
         }
 
         if (admins) {
-          const userIsDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
+          const userIsDev = Roles.userIsInRole(userId, ROLES.DEV);
 
           if (userIsDev) {
-            filters.roles = { $in: [ROLES.ADMIN, ROLES.DEV] };
+            filters['roles._id'] = { $in: [ROLES.ADMIN, ROLES.DEV] };
           } else {
-            filters.roles = { $in: [ROLES.ADMIN] };
+            filters['roles._id'] = ROLES.ADMIN;
           }
         }
 
@@ -54,9 +57,10 @@ exposeQuery({
       };
     },
     validateParams: {
-      roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
       assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String, null)),
+      roles: Match.Maybe([String]),
+      userId: String,
     },
   },
   options: { allowFilterById: true },
@@ -197,7 +201,7 @@ exposeQuery({
       body.$filter = ({ filters, params: { searchQuery, roles } }) => {
         const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
         if (roles) {
-          filters.roles = { $in: roles };
+          filters['roles._id'] = { $in: roles };
         }
         filters.$or = [
           createRegexQuery('_id', searchQuery),

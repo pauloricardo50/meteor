@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import { compose, mapProps, withProps } from 'recompose';
 import merge from 'lodash/merge';
 
@@ -124,8 +126,8 @@ export default compose(
   }),
   mapProps(({ admins, ...rest }) => ({
     devAndAdmins: admins,
-    admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
-    devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
+    admins: admins.filter(user => Roles.userIsInRole(user, ROLES.ADMIN)),
+    devs: admins.filter(user => Roles.userIsInRole(user, ROLES.DEV)),
     ...rest,
   })),
   withSmartQuery({
