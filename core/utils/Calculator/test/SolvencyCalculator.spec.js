@@ -309,7 +309,7 @@ describe('SolvencyCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         canton: 'GE',
       });
-      expect(borrowRatio).to.equal(0.7313);
+      expect(borrowRatio).to.equal(0.7275);
       expect(propertyValue).to.equal(769000);
     });
 

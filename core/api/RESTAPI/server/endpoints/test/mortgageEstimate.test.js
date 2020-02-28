@@ -146,9 +146,9 @@ describe('REST: mortgageEstimate', function() {
       notaryFees: {
         canton: 'GE',
         estimate: false,
-        total: 65273.96,
+        total: 40682.96,
       },
-      ownFunds: 305273.96,
+      ownFunds: 280682.96,
       monthlyTotals: {
         interestsLibor: 1400,
         interests5: 1800,
@@ -157,7 +157,7 @@ describe('REST: mortgageEstimate', function() {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      totalValue: 1265273.96,
+      totalValue: 1240682.96,
     };
 
     const query = { 'property-value': '1200000', canton: 'GE' };
@@ -216,9 +216,9 @@ describe('REST: mortgageEstimate', function() {
       notaryFees: {
         canton: 'GE',
         estimate: false,
-        total: 65273.96,
+        total: 40682.96,
       },
-      ownFunds: 305273.96,
+      ownFunds: 280682.96,
       monthlyTotals: {
         interestsLibor: 1400,
         interests5: 1800,
@@ -227,7 +227,7 @@ describe('REST: mortgageEstimate', function() {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      totalValue: 1265273.96,
+      totalValue: 1240682.96,
     };
 
     const query = {
