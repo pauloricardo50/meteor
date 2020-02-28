@@ -5,10 +5,7 @@ const PdfPageFooter = ({ pageNb, pageCount }) => (
     <div>
       <span className="bold">e-Potek SA</span>
       &nbsp;
-      <span>
-        Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex &bull; +41 22 566 01
-        10
-      </span>
+      <span>Place de Neuve 2, 1204 Genève &bull; +41 22 566 01 10</span>
     </div>
     <div>
       Page {pageNb}/{pageCount}

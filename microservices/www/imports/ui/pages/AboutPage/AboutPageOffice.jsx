@@ -4,7 +4,7 @@ import MapWithMarker from 'core/components/maps/MapWithMarker';
 import T from 'core/components/Translation';
 import ContactPageInformation from '../ContactPage/ContactPageInformation';
 
-export const ADDRESS = 'Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex';
+export const ADDRESS = 'Place de Neuve 2, 1204 Genève';
 
 const AboutPageOffice = () => (
   <div className="about-section about-page-office">
@@ -19,9 +19,9 @@ const AboutPageOffice = () => (
         <hr />
         <div className="about-page-office-description">
           <p className="description">
-            Chemin Auguste-Vilbert 14
+            Place de Neuve 2
             <br />
-            1218 Le Grand-Saconnex
+            1204 Genève
             <br />
             <br />
             Lu-Ve 8h-18h

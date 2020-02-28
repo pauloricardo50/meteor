@@ -17,8 +17,8 @@ const LoanBankCoverHeader = ({ loanName }) => (
       <h6>
         <b>e-Potek SA</b>
       </h6>
-      <h6>Chemin Auguste-Vilbert 14</h6>
-      <h6>1218 Le Grand-Saconnex</h6>
+      <h6>Place de Neuve 2</h6>
+      <h6>1204 Genève</h6>
       <h6>+41 22 566 01 10</h6>
     </div>
   </div>
