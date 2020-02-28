@@ -116,6 +116,7 @@ exposeQuery({
       }
 
       params.organisationId = mainOrganisationId;
+      params.mainOrganisationFragment = { _id: 1 };
     },
     embody: body => {
       body.$filter = ({
@@ -130,10 +131,27 @@ exposeQuery({
 
         filters.$or = $or;
       };
+
+      body.$postFilter = (revenues = [], { mainOrganisationId }) =>
+        revenues.map(revenue => {
+          if (
+            revenue.loan?.user?.referredByUser?.mainOrganisation?._id ===
+            mainOrganisationId
+          ) {
+            return revenue;
+          }
+
+          // Filter out the referrer if he's not from the organisation
+          return {
+            ...revenue,
+            loan: { ...revenue?.loan, user: { ...revenue?.loan?.user } },
+          };
+        });
     },
     validateParams: {
       organisationId: String,
       proCommissionStatus: Match.OneOf(String, [String]),
+      mainOrganisationFragment: Object,
     },
   },
 });

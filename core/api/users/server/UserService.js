@@ -660,10 +660,9 @@ export class UserServiceClass extends CollectionService {
     return mainOrganisation;
   }
 
-  getUserMainOrganisation(userId, fragment) {
+  getUserMainOrganisation(userId, fragment = { name: 1 }) {
     return OrganisationService.fetchOne({
       $filters: { mainUserLinks: { $elemMatch: { _id: userId } } },
-      name: 1,
       ...fragment,
     });
   }

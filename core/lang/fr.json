@@ -16,6 +16,8 @@
   "ProRevenuesPipeline.referredByUser.group": "Referrals par agent",
   "general.all": "Tous",
   "ProRevenuesPage.description": "Voici les revenus générés par les clients que vous avez référés. Certains des chiffres sur cette page incluent des revenus projettés, ou estimés, et ne sont donc pas des montants exacts que vous pouvez prévoir.",
+  "ProRevenuesTable.referredByUser": "Référé par",
+  "ProRevenuesTable.customer": "Client",
   "ProRevenuesTable.loanName": "Dossier",
   "ProRevenuesTable.status": "Statut",
   "ProRevenuesTable.date": "Attendu/Encaissé/Payé",

@@ -16,6 +16,8 @@ import {
 
 const columnOptions = [
   { id: 'loanName' },
+  { id: 'customer' },
+  { id: 'referredByUser' },
   { id: 'status' },
   { id: 'date' },
   {
@@ -65,7 +67,6 @@ const mapRevenueToRow = (
 
   return {
     id: _id,
-
     commissionAmount,
     columns: [
       {
@@ -77,6 +78,8 @@ const mapRevenueToRow = (
           </span>
         ),
       },
+      loan.user?.name,
+      loan?.user?.referredByUser?.name,
       { raw: status, label: <T id={`Forms.status.${status}`} /> },
       {
         raw: date?.getTime(),

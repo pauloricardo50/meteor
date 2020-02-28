@@ -1093,7 +1093,11 @@ export const adminRevenue = () => ({
 export const proRevenue = () => ({
   amount: 1,
   expectedAt: 1,
-  loan: { name: 1, status: 1 },
+  loan: {
+    name: 1,
+    status: 1,
+    user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },
+  },
   organisationLinks: 1,
   paidAt: 1,
   status: 1,
