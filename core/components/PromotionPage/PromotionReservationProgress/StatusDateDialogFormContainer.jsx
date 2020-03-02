@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { withProps } from 'recompose';
 
-import { setPromotionOptionProgress } from '../../../../../api/methods';
-import PromotionOptionSchema from '../../../../../api/promotionOptions/schemas/PromotionOptionSchema';
-import { PROMOTION_OPTION_BANK_STATUS } from '../../../../../api/constants';
-import T from '../../../../Translation';
+import { setPromotionOptionProgress } from '../../../api/methods';
+import PromotionOptionSchema from '../../../api/promotionOptions/schemas/PromotionOptionSchema';
+import { PROMOTION_OPTION_BANK_STATUS } from '../../../api/constants';
+import T from '../../Translation';
 import {
   getEmailsToBeSent,
   getEmailsToBeSentWarning,

@@ -4,9 +4,9 @@ import moment from 'moment';
 import {
   loanUpdate,
   getPromotionOptionProgressEmails,
-} from '../../../../../api/methods';
-import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../../../api/constants';
-import T from '../../../../Translation';
+} from '../../../api/methods';
+import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../api/constants';
+import T from '../../Translation';
 
 export const getEmailsToBeSent = async ({ id, status, nextStatus }) => {
   if (status === nextStatus) {

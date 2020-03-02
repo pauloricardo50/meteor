@@ -2,15 +2,15 @@ import React, { useMemo } from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';
 
-import { getLoanProgress } from 'core/api/loans/helpers';
+import { getLoanProgress } from '../../../api/loans/helpers';
 import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-} from '../../../../../api/promotionOptions/promotionOptionConstants';
-import ProgressCircle from '../../../../ProgressCircle';
+} from '../../../api/promotionOptions/promotionOptionConstants';
+import ProgressCircle from '../../ProgressCircle';
 import {
   makeGetProgressItem,
   makeGetIcon,

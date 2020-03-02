@@ -1,9 +1,11 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
 
-import Icon from '../../../../Icon';
-import T from '../../../../Translation';
+import Icon from '../../Icon';
+import T from '../../Translation';
 import StatusDateDialogForm from './StatusDateDialogForm';
 
 const isAdmin = Meteor.microservice === 'admin';

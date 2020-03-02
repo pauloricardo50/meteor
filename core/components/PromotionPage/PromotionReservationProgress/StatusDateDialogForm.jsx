@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { AutoFormDialog } from '../../../../AutoForm2/AutoFormDialog';
+import { AutoFormDialog } from '../../AutoForm2/AutoFormDialog';
+import Button from '../../Button';
+import Dialog from '../../Material/Dialog';
+import T from '../../Translation';
 import StatusDateDialogFormContainer from './StatusDateDialogFormContainer';
-import Button from '../../../../Button';
-import Dialog from '../../../../Material/Dialog';
-import T from '../../../../Translation';
 
 const StatusDateDialogForm = ({
   openConfirmDialog,

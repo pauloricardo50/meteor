@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import T from '../../../Translation';
-import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
+import PromotionReservationProgress from '../../PromotionReservationProgress';
 import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';
 
 const UserReservation = ({

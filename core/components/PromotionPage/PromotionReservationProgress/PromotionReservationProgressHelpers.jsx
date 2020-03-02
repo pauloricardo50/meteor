@@ -8,7 +8,7 @@ import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-} from '../../../../../api/promotionOptions/promotionOptionConstants';
+} from '../../../api/promotionOptions/promotionOptionConstants';
 
 export const makeGetIcon = ({
   success = [],
