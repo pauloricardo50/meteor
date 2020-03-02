@@ -7,7 +7,7 @@ export const BACKGROUND_INFO_TYPE = {
 };
 
 const formatObjectMissingDocuments = ({ title, labels }) =>
-  labels.map(label => `- ${title}: ${label}`).join('\n');
+  labels.map(({ label }) => `- ${title}: ${label}`).join('\n');
 
 const formatMissingDocuments = loan => {
   const {
