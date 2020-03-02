@@ -48,6 +48,14 @@ const DashboardInfoInterests = props => {
         )}
 
         <DashboardInfoInterestsTable {...props} />
+
+        {!enableOffers && (
+          <p className="text-center" style={{ marginBottom: 0 }}>
+            <small>
+              <T id="DashboardInfoInterests.disclaimer" />
+            </small>
+          </p>
+        )}
       </div>
     </div>
   );

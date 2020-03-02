@@ -1,4 +1,5 @@
 {
+  "DashboardInfoInterests.disclaimer": "Attention à ne pas oublier que les conditions de taux varient fortement selon les dossiers. Ils dépendent principalement de la solvabilité et du montant emprunté.",
   "FinancingPropertyExpenses.helperText": "Indicatif: charges PPE, chauffage, etc.",
   "FinancingAmortizationDuration.withOffer": "Défini par {organisationName}",
   "FinancingAmortizationDuration.investment": "Bien d'investissement",
