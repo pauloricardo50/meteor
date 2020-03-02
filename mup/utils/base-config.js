@@ -1,3 +1,8 @@
+const {
+  removePrepareBundleLock,
+  getPrepareBundleLock,
+} = require('./prepare-bundle-lock');
+
 const { generateConfig } = require('./nginx.js');
 
 process.env.METEOR_PACKAGE_DIRS =
@@ -13,15 +18,21 @@ module.exports = function createConfig({
   baseDomain,
   servers,
 }) {
-  const appServers = Object.keys(servers).reduce((result, serverName) => {
-    // eslint-disable-next-line no-param-reassign
-    result[serverName] = {};
-    return result;
-  }, {});
+  const appServers = Object.keys(servers)
+    // Randomize the order so all apps don't run Prepare Bundle on the same server
+    // during parallel deploys
+    .sort(() => Math.random())
+    .reduce((result, serverName) => {
+      // eslint-disable-next-line no-param-reassign
+      result[serverName] = {};
+      return result;
+    }, {});
   const path = `../../microservices/${microservice}`;
   const name = `${microservice}-${environment}`;
 
   const domains = subDomains.map(subdomain => `${subdomain}.${baseDomain}`);
+
+  let lockRemoved = false;
 
   return {
     servers,
@@ -68,6 +79,32 @@ module.exports = function createConfig({
         : undefined,
       shared: {
         nginxConfig: generateConfig('../nginx/global.conf', baseDomain),
+      },
+    },
+
+    hooks: {
+      'post.meteor.build': async function(api) {
+        const history = api.commandHistory;
+
+        // Check for `mup meteor push`, which calls `mup meteor build` as part of a deploy
+        if (!history.find(entry => entry.name === 'meteor.push')) {
+          return;
+        }
+
+        console.log('Waiting for lock');
+        await getPrepareBundleLock();
+        console.log('Has lock');
+
+        process.on('exit', () => {
+          if (!lockRemoved) {
+            console.log('lock removed on exit');
+            removePrepareBundleLock();
+          }
+        });
+      },
+      'post.meteor.push': function() {
+        removePrepareBundleLock();
+        lockRemoved = true;
       },
     },
   };
