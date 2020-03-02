@@ -24,12 +24,12 @@ const interestRatesData = ({ rateLow, rateHigh, trend }) => (
     {rateLow && rateHigh && trend ? (
       <>
         <Percent value={rateLow} />
-        <p>-</p>
+        <span>-</span>
         <Percent value={rateHigh} />
         <InterestsTableTrend trend={trend} />
       </>
     ) : (
-      <p>-</p>
+      <span>-</span>
     )}
   </div>
 );

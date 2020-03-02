@@ -157,7 +157,7 @@ export default class Table extends Component {
           />
           <TableBody
             data={data}
-            selectalbe={selectable}
+            selectable={selectable}
             columnOptions={columnOptions}
             page={page}
             rowsPerPage={rowsPerPage}
