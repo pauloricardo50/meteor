@@ -36,7 +36,6 @@ export default class NotFound extends Component {
   }
 
   render() {
-    console.log('NOTFOUND???');
     const { to } = this.props;
     return (
       <section id="not-found-page" style={styles.section}>
