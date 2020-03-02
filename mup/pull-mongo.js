@@ -22,8 +22,8 @@ if (!fs.existsSync('./configs/mongo-auth.json')) {
 const { username, password } = require('./configs/mongo-auth.json');
 
 let dbName;
-if (argv.environment === 'production') {
-  dbName = 'e-potek';
+if (argv.environment === 'prod') {
+  dbName = 'prod';
 } else if (argv.environment === 'staging') {
   dbName = 'staging';
 } else {

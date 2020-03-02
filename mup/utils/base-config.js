@@ -48,8 +48,7 @@ module.exports = function createConfig({
 
       env: {
         ROOT_URL: `https://${domains[0]}`,
-        MONGO_URL:
-          'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/e-potek?retryWrites=true&w=majority',
+        MONGO_URL: `mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/${environment}?retryWrites=true&w=majority`,
         MONGO_OPLOG_URL:
           'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/local',
         DDP_DEFAULT_CONNECTION_URL: `https://backend.${baseDomain}`,
