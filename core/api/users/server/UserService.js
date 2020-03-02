@@ -24,10 +24,13 @@ export class UserServiceClass extends CollectionService {
     this.setupRoundRobin(employees);
   }
 
-  getByEmail(email, fragment = {}) {
+  getByEmail(email, fragment = {}, additionalFilters = {}) {
     let user = null;
     const mergedFragment = { _id: 1, ...fragment };
-    user = this.get({ 'emails.address': email }, mergedFragment);
+    user = this.get(
+      { 'emails.address': email, ...additionalFilters },
+      mergedFragment,
+    );
 
     if (!user) {
       const filters = selectorForFastCaseInsensitiveLookup(
@@ -35,7 +38,7 @@ export class UserServiceClass extends CollectionService {
         email,
       );
       const candidateUsers = this.fetch({
-        $filters: filters,
+        $filters: { ...filters, ...additionalFilters },
         ...mergedFragment,
       });
       if (candidateUsers.length === 1) {
