@@ -21,7 +21,7 @@ export const SORT_ORDER = {
 export const GROUP_BY = {
   STATUS: 'status',
   PROMOTION: 'promotions[0]._id',
-  ADMIN: 'user.assignedEmployeeCache._id',
+  ADMIN: 'mainAssigneeLink._id',
 };
 
 export const NO_PROMOTION = 'NO_PROMOTION';

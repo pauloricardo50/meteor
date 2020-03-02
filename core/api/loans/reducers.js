@@ -83,4 +83,9 @@ Loans.addReducers({
         : undefined;
     },
   },
+  mainAssigneeLink: {
+    body: { assigneeLinks: 1 },
+    reduce: ({ assigneeLinks = [] }) =>
+      assigneeLinks.find(({ isMain }) => isMain),
+  },
 });
