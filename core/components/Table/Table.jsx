@@ -134,13 +134,15 @@ export default class Table extends Component {
       noIntl,
       clickable,
       className,
+      padding,
+      size = 'small',
     } = this.props;
     const { data, rowsPerPage, page, selected, order, orderBy } = this.state;
     const rowCount = data.length;
 
     return (
       <div className={classnames('mui-table', className)} style={style}>
-        <TableCustom>
+        <TableCustom padding={padding} size={size}>
           <TableHeader
             columnOptions={columnOptions}
             sortable={sortable}
