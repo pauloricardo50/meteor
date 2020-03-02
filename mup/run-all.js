@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const { spawnSync } = require('child_process');
 const microservices = require('./microservices');
 const { runMup, getFullCommand } = require('./utils/run-mup');
+const { removePrepareBundleLock } = require('./utils/prepare-bundle-lock');
 
 const { log, error } = console;
 
@@ -80,6 +81,12 @@ sh.exec('node update-servers');
 if (mupCommands[0] === 'deploy') {
   sh.exec('meteor npm run setup');
 }
+
+// Remove a lock in case it wasn't properly removed at the end of the last deploy
+// If this script is run during a deploy, it could cause
+// this lock to be removed and an additional prepare bundle step
+// to be run, but that is still better than running 5 at once
+removePrepareBundleLock();
 
 function runInParallel() {
   sh.exec('bash ../scripts/installTmuxinator.sh');
