@@ -58,6 +58,7 @@ module.exports = function createConfig({
         image: 'zodern/meteor',
         prepareBundle: true,
         useBuildKit: true,
+        stopAppDuringPrepareBundle: false,
       },
       deployCheckWaitTime: 300,
       enableUploadProgressBar: true,
