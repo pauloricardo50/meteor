@@ -352,10 +352,14 @@ export class FrontService {
     const email = recipient?.handle;
     const recipientUser =
       email &&
-      UserService.getByEmail(email, {
-        assignedEmployee: { email: 1 },
-        loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
-      });
+      UserService.getByEmail(
+        email,
+        {
+          assignedEmployee: { email: 1 },
+          loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+        },
+        { roles: { $in: [ROLES.USER, ROLES.PRO] } },
+      );
 
     return recipientUser;
   }
