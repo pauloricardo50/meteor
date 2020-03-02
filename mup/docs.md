@@ -155,6 +155,24 @@ mup --config prod.mup.js logs --tail 200 -t --follow
 mup --config api.mup.js proxy nginx-config
 ```
 
+## Mup Commands
+
+These are some of the useful commands:
+
+```bash
+# Check for problems with the config
+mup validate
+
+# View the generated config
+mup validate --show
+
+# Logs (with options to tail, follow, and show timestamp)
+mup logs --tail 200 --follow -t
+
+# Update env vars, settings.json, and other options without deploying
+mup reconfig
+```
+
 ## SSH
 
 Run `mup --config <any microservice mup config> ssh` to get a list of servers. Use a config for the environment you want to SSH into. If there is only one server, it will SSH you into it instead of showing a list.
