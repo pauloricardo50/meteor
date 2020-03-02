@@ -93,6 +93,16 @@ const employees = [
     title: 'Comptabilité & Finance',
     gender: 'F',
   },
+  {
+    email: 'alban@e-potek.ch',
+    src: '/img/placeholder.png',
+    name: 'Alban Kastrati',
+    title: 'Directeur des Financements et de l’agence de Lausanne',
+    appTitle: 'Financement & Prévoyance',
+    phoneNumber: '+41 21 566 25 24',
+    _id: 'pXJug4n8qSuDfB76e',
+    gender: 'M',
+  },
 ];
 
 export const employeesByEmail = employees.reduce(
