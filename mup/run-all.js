@@ -70,7 +70,7 @@ sh.set('-e');
 
 if (!fs.existsSync('./configs/registry-key.json')) {
   console.error(
-    'Private Repository Credentials do not exist. Please create as described in the docs.',
+    'Private Repository Credentials (registry-key.json) do not exist. Please create as described in the docs.',
   );
   process.exit(1);
 }
