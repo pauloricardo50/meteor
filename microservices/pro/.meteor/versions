@@ -115,6 +115,6 @@ url@1.2.0
 webapp@1.8.1
 webapp-hashing@1.0.9
 xolvio:cleaner@0.3.3
-zodern:caching-minifier@0.1.1
+zodern:caching-minifier@0.2.0
 zodern:minifier-js@3.0.0
-zodern:standard-minifier-js@4.0.0-beta.2
+zodern:standard-minifier-js@4.0.0-beta.3

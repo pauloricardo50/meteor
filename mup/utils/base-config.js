@@ -1,7 +1,13 @@
-const { generateConfig } = require('../utils/nginx.js');
+const {
+  removePrepareBundleLock,
+  getPrepareBundleLock,
+} = require('./prepare-bundle-lock');
+
+const { generateConfig } = require('./nginx.js');
+
 process.env.METEOR_PACKAGE_DIRS =
   process.env.METEOR_PACKAGE_DIRS || '../../meteorPackages:packages';
-process.env.METEOR_PROFILE = 50;
+process.env.METEOR_PROFILE = 1000;
 process.env.METEOR_DISABLE_OPTIMISTIC_CACHING = 'true';
 
 module.exports = function createConfig({
@@ -10,17 +16,24 @@ module.exports = function createConfig({
   nginxLocationConfig,
   environment,
   baseDomain,
-  servers
+  servers,
+  globalApiConfig,
 }) {
-  const appServers = Object.keys(servers).reduce((result, serverName) => {
-    // eslint-disable-next-line no-param-reassign
-    result[serverName] = {};
-    return result;
-  }, {});
+  const appServers = Object.keys(servers)
+    // Randomize the order so all apps don't run Prepare Bundle on the same server
+    // during parallel deploys
+    .sort(() => Math.random())
+    .reduce((result, serverName) => {
+      // eslint-disable-next-line no-param-reassign
+      result[serverName] = {};
+      return result;
+    }, {});
   const path = `../../microservices/${microservice}`;
   const name = `${microservice}-${environment}`;
 
   const domains = subDomains.map(subdomain => `${subdomain}.${baseDomain}`);
+
+  let lockRemoved = false;
 
   return {
     servers,
@@ -36,26 +49,67 @@ module.exports = function createConfig({
 
       env: {
         ROOT_URL: `https://${domains[0]}`,
-        MONGO_URL:
-          'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/e-potek?retryWrites=true&w=majority',
+        MONGO_URL: `mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/${environment}?retryWrites=true&w=majority`,
         MONGO_OPLOG_URL:
           'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/local',
-        DDP_DEFAULT_CONNECTION_URL: 'https://backend.staging-2.e-potek.net',
+        DDP_DEFAULT_CONNECTION_URL: `https://backend.${baseDomain}`,
       },
 
       docker: {
-        image: 'zodern/meteor:root',
-        prepareBundle: false,
+        image: 'zodern/meteor',
+        prepareBundle: true,
+        useBuildKit: true,
+        stopAppDuringPrepareBundle: false,
       },
       deployCheckWaitTime: 300,
       enableUploadProgressBar: true,
     },
 
+    privateDockerRegistry: {
+      host: 'https://eu.gcr.io',
+      imagePrefix: 'eu.gcr.io/e-potek-1499177443071',
+      username: '_json_key',
+      password: JSON.stringify(require('../configs/registry-key.json')),
+    },
+
     proxy: {
+      loadBalancing: true,
       domains: domains.join(','),
-      nginxLocationConfig: nginxLocationConfig ? generateConfig(nginxLocationConfig, baseDomain) : undefined,
+      nginxLocationConfig: nginxLocationConfig
+        ? generateConfig(nginxLocationConfig, baseDomain)
+        : undefined,
       shared: {
-        nginxConfig: generateConfig('../nginx/global.conf', baseDomain),
+        nginxConfig: generateConfig(
+          '../nginx/global.conf',
+          baseDomain,
+          globalApiConfig,
+        ),
+      },
+    },
+
+    hooks: {
+      'post.meteor.build': async function(api) {
+        const history = api.commandHistory;
+
+        // Check for `mup meteor push`, which calls `mup meteor build` as part of a deploy
+        if (!history.find(entry => entry.name === 'meteor.push')) {
+          return;
+        }
+
+        console.log('Waiting for lock');
+        await getPrepareBundleLock();
+        console.log('Has lock');
+
+        process.on('exit', () => {
+          if (!lockRemoved) {
+            console.log('lock removed on exit');
+            removePrepareBundleLock();
+          }
+        });
+      },
+      'post.meteor.push': function() {
+        removePrepareBundleLock();
+        lockRemoved = true;
       },
     },
   };

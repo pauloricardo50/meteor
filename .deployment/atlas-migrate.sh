@@ -17,7 +17,7 @@ mongorestore \
   --authenticationDatabase admin \
   --nsExclude="admin.system.*" \
   --nsFrom "${DB_NAME}.*" \
-  --nsTo "e-potek.*" \
+  --nsTo "prod.*" \
   --archive=/tmp/e-potek.archive \
   --gzip \
   --drop \

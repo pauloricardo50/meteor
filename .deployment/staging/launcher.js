@@ -6,7 +6,7 @@ const appEnv = cfenv.getAppEnv();
 process.env.NODE_ENV = 'production';
 process.env.ROOT_URL = appEnv.url;
 process.env.MONGO_URL =
-  'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/e-potek?retryWrites=true&w=majority';
+  'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/staging?retryWrites=true&w=majority';
 process.env.METEOR_SETTINGS = JSON.stringify(settings);
 
 if (!appEnv.name.includes('backend')) {

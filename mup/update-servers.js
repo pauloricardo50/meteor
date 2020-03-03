@@ -2,9 +2,16 @@ const Compute = require('@google-cloud/compute');
 const fs = require('fs');
 const path = require('path');
 
+if (!fs.existsSync('./configs/credentials.json')) {
+  console.error(
+    'Please create the engine credentials as described in the docs',
+  );
+  process.exit(1);
+}
+
 const compute = new Compute({
   projectId: 'e-potek-1499177443071',
-  keyFilename: './credentials.json',
+  keyFilename: './configs/credentials.json',
 });
 
 async function updateForGroup(name) {
@@ -21,19 +28,22 @@ async function updateForGroup(name) {
       config => config.name === 'External NAT',
     ).natIP;
 
-    console.log('external ip:', vm.id, external);
+    const internal = metadata[0].networkInterfaces[0].networkIP;
+    console.log(vm.id, 'external:', external, 'internal', internal);
 
     const serverName = `${i}`;
     servers[serverName] = {
       host: external,
       username: 'mup',
       pem: '~/.ssh/epotek',
+      privateIp: internal,
     };
   }
 
-  const outputPath = path.resolve(__dirname, `${name}-servers.json`);
+  const outputPath = path.resolve(__dirname, `configs/${name}-servers.json`);
   fs.writeFileSync(outputPath, JSON.stringify(servers, null, 2));
 }
 
 updateForGroup('prod');
 updateForGroup('staging');
+updateForGroup('api');
