@@ -23,12 +23,12 @@
     },
     "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
     "subdomains": {
-      "api": "https://api.prod-2.e-potek.net",
-      "admin": "https://admin.prod-2.e-potek.net",
-      "app": "https://app.prod-2.e-potek.net",
-      "pro": "https://pro.prod-2.e-potek.net",
-      "www": "https://www.prod-2.e-potek.net",
-      "backend": "https://backend.prod-2.e-potek.net"
+      "api": "https://api.e-potek.ch",
+      "admin": "https://admin.e-potek.ch",
+      "app": "https://app.e-potek.ch",
+      "pro": "https://pro.e-potek.ch",
+      "www": "https://www.e-potek.ch",
+      "backend": "https://backend.e-potek.ch"
     }
   },
   "mandrill": {
