@@ -16,6 +16,7 @@ const InsuranceRequestSchema = new SimpleSchema({
   status: {
     type: String,
     allowedValues: Object.values(INSURANCE_REQUEST_STATUS),
+    defaultValue: INSURANCE_REQUEST_STATUS.LEAD,
   },
   userLink: { type: Object, optional: true },
   'userLink.$': Object,

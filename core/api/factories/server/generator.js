@@ -9,6 +9,7 @@ import CollectionService from '../../helpers/server/CollectionService';
 import { COLLECTIONS } from '../../constants';
 import { NOTIFICATIONS_COLLECTION } from '../../notifications/notificationConstants';
 import { ACTIVITIES_COLLECTION } from '../../activities/activityConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
 
 const getSingularFactoryName = collection => {
   switch (collection) {
@@ -44,6 +45,8 @@ const getSingularFactoryName = collection => {
       return 'notification';
     case ACTIVITIES_COLLECTION:
       return 'activity';
+    case INSURANCE_REQUESTS_COLLECTION:
+      return 'insuranceRequest';
     default:
       throw new Error(
         `No singular factory name found for ${collection}, add it in the generator`,

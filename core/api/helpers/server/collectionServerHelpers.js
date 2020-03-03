@@ -36,7 +36,7 @@ export const getNewName = ({ collection, now = new Date() }) => {
   const lastName = [lastLoan?.name, lastInsuranceRequest?.name]
     .filter(x => x)
     .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
-    .slice(-1);
+    .slice(-1)[0];
 
   const [lastPrefix, count] = lastName
     .split('-')
@@ -79,7 +79,7 @@ export const setAssignees = ({
 
   const Service = Services[collection];
 
-  const response = Service.update({
+  const response = Service._update({
     id: docId,
     object: { assigneeLinks: assignees },
   });
