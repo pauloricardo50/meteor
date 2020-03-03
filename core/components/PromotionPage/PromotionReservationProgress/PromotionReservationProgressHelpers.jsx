@@ -40,15 +40,12 @@ export const makeGetIcon = ({
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-export const makeGetProgressItem = (variant, promotionOptionId, loanId) => ({
-  icon,
-  color,
-  status,
-  date,
-  id,
-  component,
-  placeholder,
-}) => ({
+export const makeGetProgressItem = (
+  variant,
+  promotionOptionId,
+  loanId,
+  withTooltip,
+) => ({ icon, color, status, date, id, component, placeholder }) => ({
   id,
   progressItem: (
     <PromotionReservationProgressItem
@@ -62,6 +59,7 @@ export const makeGetProgressItem = (variant, promotionOptionId, loanId) => ({
       component={component}
       placeholder={placeholder}
       loanId={loanId}
+      withTooltip={withTooltip}
     />
   ),
 });
@@ -84,6 +82,7 @@ export const getAdminNoteIcon = ({
   variant,
   promotionOptionId,
   isAnonymized,
+  withTooltip,
 }) => {
   const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
 
@@ -102,6 +101,7 @@ export const getAdminNoteIcon = ({
       id="proNote"
       // Modify the note on the loan
       promotionOptionId={promotionOptionId}
+      withTooltip={withTooltip}
     />
   );
 };

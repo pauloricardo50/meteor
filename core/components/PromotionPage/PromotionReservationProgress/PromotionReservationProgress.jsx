@@ -32,6 +32,7 @@ const PromotionReservationProgressComponent = ({
   variant = 'icon',
   className,
   loanProgress = {},
+  withTooltip,
 }) => {
   const {
     _id: promotionOptionId,
@@ -47,7 +48,7 @@ const PromotionReservationProgressComponent = ({
   const { info = {}, documents = {} } = loanProgress;
 
   const getProgressItem = useMemo(
-    () => makeGetProgressItem(variant, promotionOptionId, loanId),
+    () => makeGetProgressItem(variant, promotionOptionId, loanId, withTooltip),
     [],
   );
 
@@ -172,6 +173,7 @@ const PromotionReservationProgressComponent = ({
               variant,
               promotionOptionId,
               isAnonymized,
+              withTooltip,
             })}
           </div>
         )}

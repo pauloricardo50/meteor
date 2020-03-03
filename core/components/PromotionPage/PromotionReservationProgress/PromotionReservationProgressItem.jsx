@@ -38,6 +38,7 @@ const PromotionReservationProgressItem = ({
   placeholder,
   component,
   loanId,
+  withTooltip = true,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const allowModify = allowModification(id);
@@ -102,13 +103,15 @@ const PromotionReservationProgressItem = ({
       color={color}
       className="promotion-reservation-progress-icon"
       tooltip={
-        <IconTooltip
-          date={date}
-          status={status}
-          id={id}
-          note={note}
-          placeholder={placeholder}
-        />
+        withTooltip && (
+          <IconTooltip
+            date={date}
+            status={status}
+            id={id}
+            note={note}
+            placeholder={placeholder}
+          />
+        )
       }
       {...iconProps}
     />

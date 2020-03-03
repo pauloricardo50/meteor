@@ -1,4 +1,3 @@
-import ReactDOMServer from 'react-dom/server';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
@@ -14,10 +13,15 @@ import {
   getAccountsUrl,
   notificationTemplateDefaultOverride,
   notificationAndCtaTemplateDefaultOverride,
+  renderEmailComponent,
 } from './emailHelpers';
 import PromotionLogos from './components/PromotionLogos';
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import PromotionOptionProgress, {
+  promotionOptionProgressStyles,
+  getPromotionProgressData,
+} from './components/PromotionOptionProgress';
 
 const emailConfigs = {};
 
@@ -162,9 +166,10 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       templateContent: [
         {
           name: 'logos',
-          content: ReactDOMServer.renderToStaticMarkup(
-            PromotionLogos({ logoUrls }),
-          ),
+          content: renderEmailComponent({
+            Component: PromotionLogos,
+            props: { logoUrls },
+          }),
         },
       ],
     };
@@ -311,9 +316,10 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       templateContent: [
         {
           name: 'body-content-1',
-          content: ReactDOMServer.renderToStaticMarkup(
-            LoanChecklistEmail({ loan, basicDocumentsOnly }),
-          ),
+          content: renderEmailComponent({
+            Component: LoanChecklistEmail,
+            props: { loan, basicDocumentsOnly },
+          }),
         },
       ],
       senderName: assigneeName,
@@ -332,11 +338,15 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   }),
 });
 
-const promotionEmailOverridesPro = function(
-  { promotionId, fromEmail },
-  { title, body, cta },
-) {
+const promotionEmailOverridesPro = function(params, { title, body, cta }) {
+  const { promotionId, promotionOptionId, fromEmail, showProgress } = params;
   const { variables } = this.template;
+  let progressData;
+
+  if (showProgress) {
+    progressData = getPromotionProgressData({ promotionOptionId });
+  }
+
   return {
     variables: [
       { name: variables.TITLE, content: title },
@@ -346,7 +356,19 @@ const promotionEmailOverridesPro = function(
         name: variables.CTA_URL,
         content: `${Meteor.settings.public.subdomains.pro}/promotions/${promotionId}`,
       },
+      { name: variables.CSS, content: promotionOptionProgressStyles },
     ],
+    templateContent: showProgress
+      ? [
+          {
+            name: 'body-content-1',
+            content: renderEmailComponent({
+              Component: PromotionOptionProgress,
+              props: progressData,
+            }),
+          },
+        ]
+      : undefined,
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
