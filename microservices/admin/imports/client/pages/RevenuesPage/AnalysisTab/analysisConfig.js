@@ -195,7 +195,14 @@ const analysisConfig = {
     loan: [
       {
         label: 'Catégorie du dossier',
-        fragment: { category: 1, status: 1, promotions: { name: 1 } },
+        fragment: {
+          category: 1,
+          status: 1,
+          promotions: { name: 1 },
+          user: {
+            referredByOrganisation: { name: 1 },
+          },
+        },
         format: ({ loan }) => loan && loan.category,
       },
       {
@@ -215,6 +222,10 @@ const analysisConfig = {
 
           return promotion.name;
         },
+      },
+      {
+        id: 'Référé par',
+        format: ({ loan }) => loan?.user?.referredByOrganisation?.name,
       },
     ],
   },
