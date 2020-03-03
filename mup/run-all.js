@@ -89,7 +89,12 @@ if (mupCommands[0] === 'deploy') {
 removePrepareBundleLock();
 
 function runInParallel() {
-  sh.exec('bash ../scripts/installTmuxinator.sh');
+  try {
+    sh.exec('gem list - i tmuxinator')
+  } catch (e) {
+    console.log('Please install tmuxinator');
+    process.exit(1);
+  }
 
   const appConfigs = [];
   environments.forEach(env => {
