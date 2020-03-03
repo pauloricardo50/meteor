@@ -2,7 +2,7 @@ const servers = require('../configs/prod-servers.json');
 
 module.exports = {
   servers,
-  baseDomain: 'prod-2.e-potek.net',
+  baseDomain: 'e-potek.ch',
   environment: 'prod',
   globalApiConfig: false,
 };
