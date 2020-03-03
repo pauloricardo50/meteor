@@ -42,9 +42,13 @@ import {
   STEPS,
   APPLICATION_TYPES,
   LOAN_STATUS_ORDER,
+  LOANS_COLLECTION,
 } from '../loanConstants';
 import { fullLoan } from '../queries';
-import { getNewLoanOrInsuranceRequestName } from '../../helpers/server/collectionServerHelpers';
+import {
+  getNewName,
+  setAssignees,
+} from '../../helpers/server/collectionServerHelpers';
 
 class LoanService extends CollectionService {
   constructor() {
@@ -52,7 +56,7 @@ class LoanService extends CollectionService {
   }
 
   insert = ({ loan = {}, userId }) => {
-    const name = getNewLoanOrInsuranceRequestName();
+    const name = getNewName({ collection: LOANS_COLLECTION });
     const loanId = super.insert({ ...loan, name, userId });
 
     if (userId) {
@@ -71,6 +75,9 @@ class LoanService extends CollectionService {
     return loanId;
   };
 
+  setAssignees = ({ loanId, ...params }) =>
+    setAssignees({ docId: loanId, collection: LOANS_COLLECTION, ...params });
+
   insertAnonymousLoan = ({ proPropertyId, referralId }) => {
     let loanId;
     if (proPropertyId) {
@@ -86,29 +93,6 @@ class LoanService extends CollectionService {
 
     return loanId;
   };
-
-  // getNewLoanName = (now = new Date()) => {
-  //   const year = now.getYear();
-  //   const yearPrefix = year - 100;
-  //   const lastLoan = this.get(
-  //     {},
-  //     { name: 1, $options: { sort: { name: -1 } } },
-  //   );
-  //   if (!lastLoan) {
-  //     return `${yearPrefix}-0001`;
-  //   }
-  //   const [lastPrefix, count] = lastLoan.name
-  //     .split('-')
-  //     .map(numb => parseInt(numb, 10));
-
-  //   if (lastPrefix !== yearPrefix) {
-  //     return `${yearPrefix}-0001`;
-  //   }
-
-  //   const nextCountString = zeroPadding(count + 1, 4);
-
-  //   return `${yearPrefix}-${nextCountString}`;
-  // };
 
   update = ({ loanId, object, operator = '$set' }) =>
     Loans.update(loanId, { [operator]: object });
@@ -1094,44 +1078,6 @@ class LoanService extends CollectionService {
     });
 
     return disbursedIn10Days.map(({ _id }) => _id);
-  }
-
-  setAssignees({ loanId, assignees, updateUserAssignee }) {
-    if (assignees.length < 1 || assignees.length > 3) {
-      throw new Meteor.Error(
-        'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
-      );
-    }
-
-    const total = assignees.reduce((t, v) => t + v.percent, 0);
-
-    if (total !== 100) {
-      throw new Meteor.Error('Les pourcentages doivent faire 100%');
-    }
-
-    const main = assignees.filter(a => a.isMain);
-
-    if (main.length !== 1) {
-      throw new Meteor.Error(
-        "Il ne peut y avoir qu'un seul conseiller principal",
-      );
-    }
-
-    const response = this.update({
-      loanId,
-      object: { assigneeLinks: assignees },
-    });
-
-    if (updateUserAssignee) {
-      const { user: { _id: userId } = {} } = this.get(loanId, {
-        user: { _id: 1 },
-      });
-      if (userId) {
-        assignAdminToUser.run({ userId, adminId: main[0]._id });
-      }
-    }
-
-    return response;
   }
 
   getMainAssignee({ loanId }) {

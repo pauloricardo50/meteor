@@ -1,4 +1,4 @@
-import Insurances from './insuranceRequests';
+import InsuranceRequests from './insuranceRequests';
 import { Borrowers, Revenues, Tasks, Users, Activities } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
@@ -22,7 +22,7 @@ const tasksCache = {
 };
 
 LinkInitializer.directInit(() => {
-  Insurances.addLinks({
+  InsuranceRequests.addLinks({
     borrowers: {
       field: 'borrowerLinks',
       collection: Borrowers,
@@ -54,7 +54,7 @@ LinkInitializer.directInit(() => {
 });
 
 LinkInitializer.inversedInit(() => {
-  Insurances.addLinks({
+  InsuranceRequests.addLinks({
     activities: {
       inversedBy: 'insuranceRequest',
       collection: Activities,
