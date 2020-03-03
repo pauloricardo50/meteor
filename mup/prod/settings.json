@@ -1,53 +1,65 @@
 {
   "public": {
-    "environment": "staging",
+    "environment": "production",
     "features": {
       "LITE_VERSION": true,
-      "NOT_PRODUCTION_READY": false
+      "NOT_PRODUCTION_READY": true
     },
     "analyticsSettings": {
+      "Hotjar": {
+        "app": {
+          "hjid": "1310709"
+        },
+        "pro": {
+          "hjid": "1310711"
+        },
+        "www": {
+          "hjid": "1310643"
+        }
+      },
       "Segment": {
-        "key": "XqJuxPntb3fnO9FrU2vtshEuSdJ5FQ3d"
+        "key": "G93hv64QSld1gnjzSlBWhQDFl44oyDmE"
       }
     },
-    "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
+    "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
     "subdomains": {
-      "admin": "http://34.65.110.175:4300",
-      "app": "http://34.65.110.175:4100",
-      "pro": "http://34.65.110.175:4700",
-      "www": "http://34.65.110.175:4000",
-      "backend": "https://backend.staging.e-potek.ch"
+      "api": "https://api.prod-2.e-potek.net",
+      "admin": "https://admin.prod-2.e-potek.net",
+      "app": "https://app.prod-2.e-potek.net",
+      "pro": "https://pro.prod-2.e-potek.net",
+      "www": "https://www.prod-2.e-potek.net",
+      "backend": "https://backend.prod-2.e-potek.net"
     }
   },
   "mandrill": {
     "MANDRILL_LOGIN": "florian@e-potek.ch",
-    "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
+    "MANDRILL_API_KEY": "Bn4sTZ-Q9JqK-PyXACgJ_w",
     "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
   },
   "Monti": {
     "www": {
-      "appId": "Su5rr3RvoqvdioEGA",
-      "appSecret": "30d6be86-49fc-4306-afa6-2c741a4203b3"
+      "appId": "ec9rXiSyuwckHcLML",
+      "appSecret": "0eab02c3-21d1-41d3-8af3-b9a8045a6f5d"
     },
     "admin": {
-      "appId": "8rPFk9ifZJ8ijnQGm",
-      "appSecret": "505c0621-817d-4dcc-af34-1afeb2656255"
+      "appId": "XvADC8QSa2ffEEWwL",
+      "appSecret": "225bab95-5090-4ef0-9c91-3bdee8c980fa"
     },
     "app": {
-      "appId": "kJtRiGYhASx9MBEBB",
-      "appSecret": "1be61fbc-aceb-4d99-99ba-2f74589810d4"
+      "appId": "7biJnXCK5H4KRZHXk",
+      "appSecret": "64d55cf8-3be9-41fe-adeb-4b76825c9076"
     },
     "pro": {
-      "appId": "DhH42zgf8TDgNQXyW",
-      "appSecret": "37f5bd49-d33a-462d-92c2-6473ba7b2d73"
+      "appId": "qRFrSndRuuavPg64i",
+      "appSecret": "e11cf37b-1ef8-4fc0-acce-f451f4c012ab"
     },
     "backend": {
-      "appId": "Ta9aik2yB8PrgXd53",
-      "appSecret": "348114db-4ace-4472-bd78-b274917e255d"
+      "appId": "3g7w3bTRF3PcNBSsr",
+      "appSecret": "c98a4899-a226-4746-86c2-c6a02662c6d9"
     }
   },
   "storage": {
-    "bucketName": "e-potek-staging-files"
+    "bucketName": "e-potek-production-files"
   },
   "exoscale": {
     "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
@@ -57,5 +69,13 @@
   "mixpanel": {
     "API_KEY": "032982c31f75296d6b55dd1fc320d010",
     "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  },
+  "PrerenderIO": {
+    "token": "Aj24eX80LV6tWvKfc8rl"
+  },
+  "front": {
+    "authSecret": "a4291ad56b8d8a4a",
+    "apiSecret": "ba4fb02d608a6054470124786ffd1199",
+    "apiToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzY29wZXMiOlsicHJpdmF0ZToqIiwic2hhcmVkOioiXSwiaWF0IjoxNTgyMTA5MTQ2LCJpc3MiOiJmcm9udCIsInN1YiI6ImVfcG90ZWsiLCJqdGkiOiJjMmVjZjdlNTAwMDM0MTQ3In0.zH093BcF2V0vds8xUob35Uk1zghpAaYNZGDqIUmW7Wg"
   }
 }
