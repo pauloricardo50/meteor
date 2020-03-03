@@ -18,7 +18,11 @@ module.exports = function createConfig({
   baseDomain,
   servers,
   globalApiConfig,
+  parallelPrepareBundle,
+  appName,
 }) {
+  appName = appName || microservice;
+
   const appServers = Object.keys(servers)
     // Randomize the order so all apps don't run Prepare Bundle on the same server
     // during parallel deploys
@@ -29,7 +33,7 @@ module.exports = function createConfig({
       return result;
     }, {});
   const path = `../../microservices/${microservice}`;
-  const name = `${microservice}-${environment}`;
+  const name = `${appName}-${environment}`;
 
   const domains = subDomains.map(subdomain => `${subdomain}.${baseDomain}`);
 
@@ -89,6 +93,10 @@ module.exports = function createConfig({
 
     hooks: {
       'post.meteor.build': async function(api) {
+        if (parallelPrepareBundle) {
+          return false
+        }
+
         const history = api.commandHistory;
 
         // Check for `mup meteor push`, which calls `mup meteor build` as part of a deploy
@@ -108,6 +116,10 @@ module.exports = function createConfig({
         });
       },
       'post.meteor.push': function() {
+        if (parallelPrepareBundle) {
+          return false
+        }
+
         removePrepareBundleLock();
         lockRemoved = true;
       },

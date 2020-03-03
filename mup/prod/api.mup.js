@@ -7,5 +7,9 @@ module.exports = generateConfig({
   servers,
   microservice: 'backend',
   subDomains: ['api'],
+  appName: 'api',
+  // Since api has dedicated servers, we can do it in parallel
+  // with the other microservices
+  parallelPrepareBundle: true,
   nginxLocationConfig: '../nginx/api-docs.conf',
 });
