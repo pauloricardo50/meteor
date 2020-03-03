@@ -92,8 +92,12 @@ function runInParallel() {
   try {
     sh.exec('gem list - i tmuxinator')
   } catch (e) {
-    console.log('Please install tmuxinator');
-    process.exit(1);
+    try {
+      sh.exec('tmuxinator -v');
+    } catch (e) {
+      console.log('Please install tmuxinator');
+      process.exit(1);
+    }
   }
 
   const appConfigs = [];
