@@ -12,7 +12,17 @@ const isAdmin = Meteor.microservice === 'admin';
 
 const allowModification = id => isAdmin && id !== 'proNote';
 
-const IconTooltip = ({ date, status, id, note, placeholder }) => (
+const defaultRenderStatus = ({ note, placeholder, status }) =>
+  note || placeholder || <T id={`Forms.status.${status}`} />;
+
+const IconTooltip = ({
+  date,
+  status,
+  id,
+  note,
+  placeholder,
+  renderStatus = defaultRenderStatus,
+}) => (
   <div className="promotion-reservation-progress-item-tooltip">
     <b className="flex sb">
       <T id={`Forms.${id}`} />
@@ -21,7 +31,7 @@ const IconTooltip = ({ date, status, id, note, placeholder }) => (
         <i className="secondary">{moment(date).format("H:mm, D MMM 'YY")}</i>
       )}
     </b>
-    {note || placeholder || <T id={`Forms.status.${status}`} />}
+    {renderStatus({ id, note, placeholder, status })}
   </div>
 );
 
@@ -39,6 +49,8 @@ const PromotionReservationProgressItem = ({
   component,
   loanId,
   withTooltip = true,
+  withIcon = true,
+  renderStatus,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const allowModify = allowModification(id);
@@ -47,8 +59,12 @@ const PromotionReservationProgressItem = ({
     if (component) {
       return (
         <p className="flex center-align">
-          {component}
-          <IconTooltip id={id} placeholder={placeholder} />
+          {withIcon && component}
+          <IconTooltip
+            id={id}
+            placeholder={placeholder}
+            renderStatus={renderStatus}
+          />
         </p>
       );
     }
@@ -61,7 +77,9 @@ const PromotionReservationProgressItem = ({
           )}
           onClick={() => (allowModify ? setOpenDialog(!openDialog) : null)}
         >
-          <Icon type={icon} color={color} className="mr-16" {...iconProps} />
+          {withIcon && (
+            <Icon type={icon} color={color} className="mr-16" {...iconProps} />
+          )}
           {allowModify && (
             <StatusDateDialogForm
               promotionOptionId={promotionOptionId}
@@ -79,6 +97,7 @@ const PromotionReservationProgressItem = ({
             id={id}
             note={note}
             placeholder={placeholder}
+            renderStatus={renderStatus}
           />
         </p>
       </>
@@ -89,7 +108,7 @@ const PromotionReservationProgressItem = ({
     if (variant === 'label') {
       return (
         <div className="flex-col center-align">
-          {component}
+          {withIcon && component}
           <T id={`Forms.${id}`} />
         </div>
       );
@@ -110,6 +129,7 @@ const PromotionReservationProgressItem = ({
             id={id}
             note={note}
             placeholder={placeholder}
+            renderStatus={renderStatus}
           />
         )
       }
@@ -120,7 +140,7 @@ const PromotionReservationProgressItem = ({
   if (variant === 'label') {
     return (
       <div className="flex-col center-align">
-        {baseIcon}
+        {withIcon && baseIcon}
         <T id={`Forms.${id}`} />
       </div>
     );

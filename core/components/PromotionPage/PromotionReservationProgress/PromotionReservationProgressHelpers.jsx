@@ -10,14 +10,49 @@ import {
   PROMOTION_OPTION_BANK_STATUS,
 } from '../../../api/promotionOptions/promotionOptionConstants';
 
-export const makeGetIcon = ({
-  success = [],
-  waiting = [],
-  error = [],
-  warning = [],
-  sent = [],
-  waitList = [],
-}) => status => {
+const iconConfig = {
+  simpleVerification: {
+    error: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED],
+    success: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED],
+    waiting: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED],
+  },
+  fullVerification: {
+    error: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED],
+    success: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED],
+  },
+  bank: {
+    success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
+    error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
+    warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
+    sent: [PROMOTION_OPTION_BANK_STATUS.SENT],
+    waitList: [PROMOTION_OPTION_BANK_STATUS.WAITLIST],
+  },
+  reservationAgreement: {
+    success: [PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED],
+    waiting: [PROMOTION_OPTION_AGREEMENT_STATUS.WAITING],
+  },
+  reservationDeposit: {
+    success: [PROMOTION_OPTION_DEPOSIT_STATUS.PAID],
+    error: [PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID],
+  },
+};
+
+export const getPromotionReservationIcon = (id, status) => {
+  const config = iconConfig[id];
+
+  if (!config) {
+    return;
+  }
+
+  const {
+    success = [],
+    waiting = [],
+    error = [],
+    warning = [],
+    sent = [],
+    waitList = [],
+  } = config;
+
   if (waiting.includes(status)) {
     return { icon: 'waiting', color: 'warning' };
   }
@@ -40,12 +75,14 @@ export const makeGetIcon = ({
   return { icon: 'radioButtonChecked', color: 'primary' };
 };
 
-export const makeGetProgressItem = (
+export const makeGetProgressItem = ({
   variant,
   promotionOptionId,
   loanId,
   withTooltip,
-) => ({ icon, color, status, date, id, component, placeholder }) => ({
+  withIcon,
+  renderStatus,
+}) => ({ icon, color, status, date, id, component, placeholder }) => ({
   id,
   progressItem: (
     <PromotionReservationProgressItem
@@ -60,6 +97,8 @@ export const makeGetProgressItem = (
       placeholder={placeholder}
       loanId={loanId}
       withTooltip={withTooltip}
+      withIcon={withIcon}
+      renderStatus={renderStatus}
     />
   ),
 });
@@ -83,6 +122,8 @@ export const getAdminNoteIcon = ({
   promotionOptionId,
   isAnonymized,
   withTooltip,
+  withIcon,
+  renderStatus,
 }) => {
   const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
 
@@ -102,6 +143,8 @@ export const getAdminNoteIcon = ({
       // Modify the note on the loan
       promotionOptionId={promotionOptionId}
       withTooltip={withTooltip}
+      withIcon={withIcon}
+      renderStatus={renderStatus}
     />
   );
 };

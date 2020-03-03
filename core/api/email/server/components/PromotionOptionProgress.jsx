@@ -2,7 +2,9 @@ import React from 'react';
 
 import T from '../../../../components/Translation';
 import PromotionReservationProgress from '../../../../components/PromotionPage/PromotionReservationProgress';
+import colors from '../../../../config/colors';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
+import { getPromotionReservationIcon } from '../../../../components/PromotionPage/PromotionReservationProgress/PromotionReservationProgressHelpers';
 import { proPromotionOption } from '../../../fragments';
 
 const PromotionOptionProgress = ({ loan, promotionOption }) => (
@@ -17,6 +19,20 @@ const PromotionOptionProgress = ({ loan, promotionOption }) => (
       className="full"
       loan={loan}
       withTooltip={false}
+      withIcon={false}
+      renderStatus={({ id, note, placeholder, status }) => {
+        const { color = 'primary' } =
+          getPromotionReservationIcon(id, status) || {};
+
+        return (
+          <span style={{ color: colors[color] }}>
+            <br />
+            <span>
+              {note || placeholder || <T id={`Forms.status.${status}`} />}
+            </span>
+          </span>
+        );
+      }}
     />
   </div>
 );
@@ -24,8 +40,8 @@ const PromotionOptionProgress = ({ loan, promotionOption }) => (
 export default PromotionOptionProgress;
 
 export const promotionOptionProgressStyles = `
-  .hello {
-    color: white;
+  .secondary {
+    opacity: 0.5;
   }
 `;
 
