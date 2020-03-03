@@ -174,6 +174,9 @@ mup logs --tail 200 --follow -t
 
 # Update env vars, settings.json, and other options without deploying
 mup reconfig
+
+# Update nginx configs
+mup proxy setup
 ```
 
 ## SSH
@@ -189,9 +192,9 @@ To deploy an environment, run
 node run-all -e <environment name> deploy
 ```
 
-To deploy a specific app, run
+To deploy specific apps, run
 ```
-node run-all -e <environment name> --apps <app name> deploy
+node run-all -e <environment name> --apps www,prod deploy
 ```
 
 ## Mongo Shell

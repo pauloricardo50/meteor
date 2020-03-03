@@ -70,7 +70,7 @@ sh.set('-e');
 
 if (!fs.existsSync('./configs/registry-key.json')) {
   console.error(
-    'Private Repository Credentials do not exist. Please create as described in the docs.',
+    'Private Repository Credentials (registry-key.json) do not exist. Please create as described in the docs.',
   );
   process.exit(1);
 }
@@ -89,7 +89,16 @@ if (mupCommands[0] === 'deploy') {
 removePrepareBundleLock();
 
 function runInParallel() {
-  sh.exec('bash ../scripts/installTmuxinator.sh');
+  try {
+    sh.exec('gem list - i tmuxinator')
+  } catch (e) {
+    try {
+      sh.exec('tmuxinator -v');
+    } catch (e) {
+      console.log('Please install tmuxinator');
+      process.exit(1);
+    }
+  }
 
   const appConfigs = [];
   environments.forEach(env => {
