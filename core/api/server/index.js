@@ -47,6 +47,7 @@ import SlackService from '../slack/server/SlackService';
 import LenderRulesService from '../lenderRules/server/LenderRulesService';
 import RevenueService from '../revenues/server/RevenueService';
 import OrganisationService from '../organisations/server/OrganisationService';
+import InsuranceService from '../insurances/server/InsuranceService';
 import './serverCollections';
 
 process.on('uncaughtException', error => {
@@ -89,4 +90,5 @@ export const Services = {
   [COLLECTIONS.LENDERS_COLLECTION]: LenderService,
   [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
   [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
+  [COLLECTIONS.INSURANCES_COLLECTION]: InsuranceService,
 };

@@ -44,12 +44,7 @@ import {
   LOAN_STATUS_ORDER,
 } from '../loanConstants';
 import { fullLoan } from '../queries';
-
-// Pads a number with zeros: 4 --> 0004
-const zeroPadding = (num, places) => {
-  const zero = places - num.toString().length + 1;
-  return Array(+(zero > 0 && zero)).join('0') + num;
-};
+import { getNewLoanOrInsuranceName } from '../../helpers/server/collectionServerHelpers';
 
 class LoanService extends CollectionService {
   constructor() {
@@ -57,7 +52,7 @@ class LoanService extends CollectionService {
   }
 
   insert = ({ loan = {}, userId }) => {
-    const name = this.getNewLoanName();
+    const name = getNewLoanOrInsuranceName();
     const loanId = super.insert({ ...loan, name, userId });
 
     if (userId) {
@@ -92,28 +87,28 @@ class LoanService extends CollectionService {
     return loanId;
   };
 
-  getNewLoanName = (now = new Date()) => {
-    const year = now.getYear();
-    const yearPrefix = year - 100;
-    const lastLoan = this.get(
-      {},
-      { name: 1, $options: { sort: { name: -1 } } },
-    );
-    if (!lastLoan) {
-      return `${yearPrefix}-0001`;
-    }
-    const [lastPrefix, count] = lastLoan.name
-      .split('-')
-      .map(numb => parseInt(numb, 10));
+  // getNewLoanName = (now = new Date()) => {
+  //   const year = now.getYear();
+  //   const yearPrefix = year - 100;
+  //   const lastLoan = this.get(
+  //     {},
+  //     { name: 1, $options: { sort: { name: -1 } } },
+  //   );
+  //   if (!lastLoan) {
+  //     return `${yearPrefix}-0001`;
+  //   }
+  //   const [lastPrefix, count] = lastLoan.name
+  //     .split('-')
+  //     .map(numb => parseInt(numb, 10));
 
-    if (lastPrefix !== yearPrefix) {
-      return `${yearPrefix}-0001`;
-    }
+  //   if (lastPrefix !== yearPrefix) {
+  //     return `${yearPrefix}-0001`;
+  //   }
 
-    const nextCountString = zeroPadding(count + 1, 4);
+  //   const nextCountString = zeroPadding(count + 1, 4);
 
-    return `${yearPrefix}-${nextCountString}`;
-  };
+  //   return `${yearPrefix}-${nextCountString}`;
+  // };
 
   update = ({ loanId, object, operator = '$set' }) =>
     Loans.update(loanId, { [operator]: object });
