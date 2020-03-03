@@ -2,6 +2,7 @@ import Notifications from '../notifications';
 import Loans from '../loans';
 import Activities from './activities';
 import Users from '../users';
+import Insurances from '../insurances';
 
 Activities.addLinks({
   notifications: {
@@ -22,5 +23,9 @@ Activities.addLinks({
   createdByUser: {
     collection: Users,
     field: 'createdBy',
+  },
+  insurance: {
+    collection: Insurances,
+    field: 'insuranceLink',
   },
 });

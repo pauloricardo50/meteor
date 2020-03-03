@@ -1,5 +1,5 @@
 import Tasks from './tasks';
-import { Users, Loans } from '..';
+import { Users, Loans, Insurances } from '..';
 import Notifications from '../notifications';
 import Promotions from '../promotions';
 import Organisations from '../organisations';
@@ -51,6 +51,12 @@ Tasks.addLinks({
   contact: {
     field: 'contactLink',
     collection: Contacts,
+    type: 'one',
+    metadata: true,
+  },
+  insurance: {
+    field: 'insuranceLink',
+    collection: Insurances,
     type: 'one',
     metadata: true,
   },

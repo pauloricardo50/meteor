@@ -23,5 +23,6 @@ export * from '../tasks/methodDefinitions';
 export * from '../users/methodDefinitions';
 export * from '../analytics/methodDefinitions';
 export * from '../front/methodDefiinitions';
+export * from '../insurances/methodDefinitions';
 
 export * from './methodDefinitions';
