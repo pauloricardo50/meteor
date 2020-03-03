@@ -1,5 +1,6 @@
 name: mup-parallel
 root: ./
+pre_window: bash
 on_project_exit: >-
   tmux kill-session -t mup-parallel
 windows:
@@ -12,6 +13,6 @@ windows:
 
         - <%- app %>-<%- environment %>:
             - cd <%- configFolder %>
-            - <%- command %> || echo "FAILED !!!"
+            - <%- command %> || echo "FAILED"
             - echo "DONE"
            <% }) %>
