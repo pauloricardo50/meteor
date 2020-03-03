@@ -10,7 +10,7 @@ import {
   Tasks,
   Activities,
   Sessions,
-  Insurances,
+  InsuranceRequests,
 } from '..';
 import LinkInitializer from '../links/LinkInitializer';
 
@@ -116,13 +116,13 @@ LinkInitializer.inversedInit(() => {
       inversedBy: 'user',
       autoremove: true,
     },
-    insurances: {
-      collection: Insurances,
+    insuranceRequests: {
+      collection: InsuranceRequests,
       inversedBy: 'user',
       autoremove: true,
     },
-    assignedInsurances: {
-      collection: Insurances,
+    assignedInsuranceRequests: {
+      collection: InsuranceRequests,
       inversedBy: 'assignees',
     },
   });

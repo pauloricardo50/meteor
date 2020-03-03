@@ -73,8 +73,8 @@ const RevenueSchema = new SimpleSchema({
   'loanCache.$': cacheField,
   assigneeLink: { type: Object, optional: true },
   'assigneeLink._id': { type: String },
-  insuranceCache: { type: Array, optional: true },
-  'insuranceCache.$': cacheField,
+  insuranceRequestCache: { type: Array, optional: true },
+  'insuranceRequestCache.$': cacheField,
 });
 
 export default RevenueSchema;

@@ -44,7 +44,7 @@ import {
   LOAN_STATUS_ORDER,
 } from '../loanConstants';
 import { fullLoan } from '../queries';
-import { getNewLoanOrInsuranceName } from '../../helpers/server/collectionServerHelpers';
+import { getNewLoanOrInsuranceRequestName } from '../../helpers/server/collectionServerHelpers';
 
 class LoanService extends CollectionService {
   constructor() {
@@ -52,7 +52,7 @@ class LoanService extends CollectionService {
   }
 
   insert = ({ loan = {}, userId }) => {
-    const name = getNewLoanOrInsuranceName();
+    const name = getNewLoanOrInsuranceRequestName();
     const loanId = super.insert({ ...loan, name, userId });
 
     if (userId) {

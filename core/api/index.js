@@ -19,7 +19,7 @@ import MortgageNoteSchema from './mortgageNotes/schemas/MortgageNoteSchema';
 import ContactSchema from './contacts/schemas/contactSchema';
 import LenderSchema from './lenders/schemas/lenderSchema';
 import RevenueSchema from './revenues/schemas/revenueSchema';
-import InsuranceSchema from './insurances/schemas/InsuranceSchema';
+import InsuranceRequestSchema from './insuranceRequests/schemas/InsuranceRequestSchema';
 
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';
@@ -41,7 +41,7 @@ export { default as LenderRules } from './lenderRules';
 export { default as Revenues } from './revenues';
 export { default as Activities } from './activities';
 export { default as Sessions } from './sessions';
-export { default as Insurances } from './insurances';
+export { default as InsuranceRequests } from './insuranceRequests';
 
 export * from './helpers';
 export * from './methods';
@@ -67,7 +67,7 @@ export const schemas = {
   [constants.CONTACTS_COLLECTION]: ContactSchema,
   [constants.LENDERS_COLLECTION]: LenderSchema,
   [constants.REVENUES_COLLECTION]: RevenueSchema,
-  [constants.INSURANCES_COLLECTION]: InsuranceSchema,
+  [constants.INSURANCE_REQUESTS_COLLECTION]: InsuranceRequestSchema,
 };
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';

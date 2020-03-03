@@ -49,8 +49,8 @@ const ActivitySchema = new SimpleSchema({
   shouldNotify: { type: Boolean, optional: true },
   userLink: { type: Object, optional: true },
   'userLink._id': { type: String, optional: true },
-  insuranceLink: { type: Object, optional: true },
-  'insuranceLink._id': { type: String, optional: true },
+  insuranceRequestLink: { type: Object, optional: true },
+  'insuranceRequestLink._id': { type: String, optional: true },
   isServerGenerated: { type: Boolean, defaultValue: false },
   isImportant: { type: Boolean, defaultValue: false },
 });

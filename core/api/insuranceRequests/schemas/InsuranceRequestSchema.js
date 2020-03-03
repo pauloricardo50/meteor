@@ -7,13 +7,16 @@ import {
   adminNotesSchema,
 } from '../../helpers/sharedSchemas';
 
-import { INSURANCE_STATUS } from '../insuranceConstants';
+import { INSURANCE_REQUEST_STATUS } from '../insuranceRequestConstants';
 
-const InsuranceSchema = new SimpleSchema({
+const InsuranceRequestSchema = new SimpleSchema({
   createdAt,
   updatedAt,
   name: { type: String, unique: true, regEx: /^\d{2}-\d{4}-A$/ },
-  status: { type: String, allowedValues: Object.values(INSURANCE_STATUS) },
+  status: {
+    type: String,
+    allowedValues: Object.values(INSURANCE_REQUEST_STATUS),
+  },
   userLink: { type: Object, optional: true },
   'userLink.$': Object,
   'userLink.$._id': String,
@@ -52,4 +55,4 @@ const InsuranceSchema = new SimpleSchema({
   'tasksCache.$': cacheField,
 });
 
-export default InsuranceSchema;
+export default InsuranceRequestSchema;

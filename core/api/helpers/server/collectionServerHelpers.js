@@ -1,5 +1,5 @@
 import LoanService from '../../loans/server/LoanService';
-import InsuranceService from '../../insurances/server/InsuranceService';
+import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -7,7 +7,10 @@ const zeroPadding = (num, places) => {
   return Array(+(zero > 0 && zero)).join('0') + num;
 };
 
-export const getNewLoanOrInsuranceName = (now = new Date(), type = 'loan') => {
+export const getNewLoanOrInsuranceRequestName = (
+  now = new Date(),
+  type = 'loan',
+) => {
   const NAME_SUFFIX = {
     loan: '',
     insurance: '-A',
@@ -18,16 +21,16 @@ export const getNewLoanOrInsuranceName = (now = new Date(), type = 'loan') => {
     {},
     { name: 1, $options: { sort: { name: -1 } } },
   );
-  const lastInsurance = InsuranceService.get(
+  const lastInsuranceRequest = InsuranceRequestService.get(
     {},
     { name: 1, $options: { sort: { name: -1 } } },
   );
 
-  if (!lastLoan && !lastInsurance) {
+  if (!lastLoan && !lastInsuranceRequest) {
     return `${yearPrefix}-0001${NAME_SUFFIX[type]}`;
   }
 
-  const lastName = [lastLoan?.name, lastInsurance?.name]
+  const lastName = [lastLoan?.name, lastInsuranceRequest?.name]
     .filter(x => x)
     .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
     .slice(-1);

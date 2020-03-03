@@ -17,7 +17,7 @@ import '../revenues/links';
 import '../tasks/links';
 import '../users/links';
 import '../sessions/links';
-import '../insurances/links';
+import '../insuranceRequests/links';
 import LinkInitializer from './LinkInitializer';
 
 LinkInitializer.setLinks();

@@ -23,4 +23,4 @@ import '../../users/server/exposures';
 import '../../front/server/exposures';
 import './exposures';
 import './globalExposures';
-import '../../insurances/server/exposures';
+import '../../insuranceRequests/server/exposures';

@@ -1,4 +1,4 @@
-import Insurances from './insurances';
+import Insurances from './insuranceRequests';
 import { Borrowers, Revenues, Tasks, Users, Activities } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
@@ -56,12 +56,12 @@ LinkInitializer.directInit(() => {
 LinkInitializer.inversedInit(() => {
   Insurances.addLinks({
     activities: {
-      inversedBy: 'insurance',
+      inversedBy: 'insuranceRequest',
       collection: Activities,
       autoremove: true,
     },
     tasks: {
-      inversedBy: 'insurance',
+      inversedBy: 'insuranceRequest',
       collection: Tasks,
       autoremove: true,
       denormalize: {
