@@ -4,4 +4,5 @@ module.exports = {
   servers,
   baseDomain: 'prod-2.e-potek.net',
   environment: 'prod',
+  globalApiConfig: false,
 };

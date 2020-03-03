@@ -17,6 +17,7 @@ module.exports = function createConfig({
   environment,
   baseDomain,
   servers,
+  globalApiConfig,
 }) {
   const appServers = Object.keys(servers)
     // Randomize the order so all apps don't run Prepare Bundle on the same server
@@ -78,7 +79,11 @@ module.exports = function createConfig({
         ? generateConfig(nginxLocationConfig, baseDomain)
         : undefined,
       shared: {
-        nginxConfig: generateConfig('../nginx/global.conf', baseDomain),
+        nginxConfig: generateConfig(
+          '../nginx/global.conf',
+          baseDomain,
+          globalApiConfig,
+        ),
       },
     },
 

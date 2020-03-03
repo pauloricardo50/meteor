@@ -7,4 +7,5 @@ module.exports = generateConfig({
   servers,
   microservice: 'backend',
   subDomains: ['api'],
+  nginxLocationConfig: '../nginx/api-docs.conf',
 });
