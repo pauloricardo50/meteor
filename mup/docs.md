@@ -63,7 +63,8 @@ To connect to the database from your computer, you also need to [whitelist your 
 - Disk: `30GB`
 - OS: Ubuntu 18 LTS
 - Allow HTTP traffic
-- Label: `env` with a value of `staging`, `production`, or `api`.
+- Label: `env` with a value of `staging`, `production`, or `api`
+- Under networking, add a `http-server` network tag. If this is for the production environment, add a `prod` network tag also 
 - Under networking, select the default network interface
   - Change `Primary internal IP` to `Reserve static ip address` and name it after the instance
   - Network Service Tier can be changed to `Standard`
@@ -97,7 +98,9 @@ For sticky sessions we set `Session afinity` to `Generated Cookie`. Sticky sessi
 
 Backends are required to have a healthcheck. In the global nginx config we added a host only used for the health check: `instance-healthcheck.epotek-internal.net`. It responds with the 200 status code if the nginx instance is running. This health check ensures requests are only sent to healthy vm's, but it doesn't work for detecting healthy instances of the microservice.
 
-TODO: implement this. To send requests to a healthy instance of a microservice, we also load balance between the vm's in the instance group using nginx. When receiving a request from the google load balancer, It will try one of the instances (using sticky sessions), and if it is down it will try one of the other instances of the microservice. The api instance group does not use this since there is only one microservice per server and the load balancer healthcheck is adequate for that.
+To send requests to a healthy instance of a microservice, we also load balance between the vm's in the instance group using nginx. When receiving a request from the Google Cloud load balancer, it will try one of the instances (using sticky sessions), and if it is down it will try one of the other instances of the microservice.
+
+For the nginx instance to communicate with other servers, we have a firewall rule named mup-prod-internal. For this firewall rule to apply to a server, it must have the `prod` network tag. To add an additional microservice you will need to open an additional port. To find the port, run `mup validate --show --config <path to mup config>` and check the value of `app.env.PORT`. Then add the port to the [mup-prod-internal](https://console.cloud.google.com/networking/firewalls/details/prod-mup-internal?project=e-potek-1499177443071) firewall rule.
 
 ## Certificate
 
