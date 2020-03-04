@@ -576,6 +576,13 @@ export const adminOrganisation = () => ({
   adminNote: 1,
   documents: 1,
   referredCustomers: { _id: 1 },
+  productionRates: 1,
+  insuranceProducts: {
+    type: 1,
+    name: 1,
+    category: 1,
+    revaluationFactor: 1,
+  },
 });
 
 // //

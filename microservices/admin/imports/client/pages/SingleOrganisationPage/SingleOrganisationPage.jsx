@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
+import { ORGANISATION_FEATURES, ORGANISATION_TYPES } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import AdminReferredUsersTable from 'core/components/ReferredUsersTable/AdminReferredUsersTable';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
@@ -16,12 +16,21 @@ import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTa
 import CommissionEditor from './CommissionEditor';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
+import InsuranceProducts from './InsuranceProducts';
 
 const tabs = ({ organisation, currentUser }) =>
   [
     { id: 'info', Component: OrganisationInfo },
     { id: 'users', Component: OrganisationUsersTable },
     { id: 'contacts', Component: ContactsTable },
+    {
+      id: 'insuranceProducts',
+      condition: [
+        ORGANISATION_TYPES.INSURANCE,
+        ORGANISATION_TYPES.PENSION_FUND,
+      ].includes(organisation.type),
+      Component: InsuranceProducts,
+    },
     {
       id: 'offers',
       Component: OffersTable,

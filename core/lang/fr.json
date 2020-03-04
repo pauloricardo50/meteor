@@ -1,4 +1,12 @@
 {
+  "OrganisationTabs.insuranceProducts": "Produits assurance",
+  "InsuranceProduct.category.3A": "3A",
+  "InsuranceProduct.category.3B": "3B",
+  "InsuranceProduct.type.DEATH": "Décès",
+  "InsuranceProduct.type.LIFE": "Vie",
+  "InsuranceProduct.type.DISABILITY": "Rente d'incapacité de gain",
+  "Forms.revaluationFactor": "Facteur de revalorisation",
+  "Forms.revaluationFactor.placeholder": "1.5",
   "DashboardInfoInterests.disclaimer": "Attention à ne pas oublier que les conditions de taux varient fortement selon les dossiers. Ils dépendent principalement de la solvabilité et du montant emprunté.",
   "FinancingPropertyExpenses.helperText": "Indicatif: charges PPE, chauffage, etc.",
   "FinancingAmortizationDuration.withOffer": "Défini par {organisationName}",
