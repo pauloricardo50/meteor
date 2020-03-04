@@ -7,6 +7,24 @@ import PromotionOptionService from '../../../promotionOptions/server/PromotionOp
 import { getPromotionReservationIcon } from '../../../../components/PromotionPage/PromotionReservationProgress/PromotionReservationProgressHelpers';
 import { proPromotionOption } from '../../../fragments';
 
+export const promotionOptionProgressStyles = `
+  .secondary {
+    opacity: 0.5;
+  }
+`;
+
+export const getPromotionProgressData = ({ promotionOptionId }) => {
+  const promotionOption = PromotionOptionService.get(
+    promotionOptionId,
+    proPromotionOption(),
+  );
+
+  return {
+    promotionOption,
+    loan: promotionOption.loan,
+  };
+};
+
 const PromotionOptionProgress = ({ loan, promotionOption }) => (
   <div style={{ padding: 18, marginTop: 24 }}>
     <h2>
@@ -38,21 +56,3 @@ const PromotionOptionProgress = ({ loan, promotionOption }) => (
 );
 
 export default PromotionOptionProgress;
-
-export const promotionOptionProgressStyles = `
-  .secondary {
-    opacity: 0.5;
-  }
-`;
-
-export const getPromotionProgressData = ({ promotionOptionId }) => {
-  const promotionOption = PromotionOptionService.get(
-    promotionOptionId,
-    proPromotionOption(),
-  );
-
-  return {
-    promotionOption,
-    loan: promotionOption.loan,
-  };
-};
