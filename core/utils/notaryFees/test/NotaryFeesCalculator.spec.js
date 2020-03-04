@@ -210,7 +210,7 @@ describe('NotaryFeesCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       });
 
-      expect(notaryFees.total).to.equal(31944.1);
+      expect(notaryFees.total).to.equal(31660.1);
     });
 
     it('should work for unknown cantons', () => {
