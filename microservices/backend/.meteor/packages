@@ -34,6 +34,7 @@ xolvio:cleaner
 meteortesting:mocha
 
 # Data
+cultofcoders:grapher
 cultofcoders:mutations
 ddp-rate-limiter@1.0.7
 meteorhacks:inject-initial
@@ -48,7 +49,6 @@ dynamic-import@0.5.1
 # qualia:profile
 matb33:collection-hooks
 percolate:migrations
-cultofcoders:grapher-react
 littledata:synced-cron
 zodern:standard-minifier-js@4.0.0-beta.2
 qualia:prod-shell
