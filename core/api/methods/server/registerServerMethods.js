@@ -28,5 +28,6 @@ import '../../users/server/methods';
 import '../../front/server/methods';
 import '../../insuranceRequests/server/methods';
 import '../../insurances/server/methods';
+import '../../insuranceProducts/server/methods';
 
 import './methods';

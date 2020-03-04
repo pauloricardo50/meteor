@@ -1,5 +1,11 @@
 import Insurances from './insurances';
-import { Borrowers, Revenues, Organisations, InsuranceRequests } from '..';
+import {
+  Borrowers,
+  Revenues,
+  Organisations,
+  InsuranceRequests,
+  InsuranceProducts,
+} from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
 
@@ -14,6 +20,18 @@ LinkInitializer.directInit(() => {
     organisation: {
       field: 'organisationLink',
       collection: Organisations,
+      type: 'one',
+      metadata: true,
+    },
+    revenues: {
+      field: 'revenueLinks',
+      collection: Revenues,
+      type: 'many',
+      metadata: true,
+    },
+    insuranceProduct: {
+      field: 'insuranceProductLink',
+      collection: InsuranceProducts,
       type: 'one',
       metadata: true,
     },

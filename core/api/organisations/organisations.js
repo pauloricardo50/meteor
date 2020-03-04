@@ -76,6 +76,14 @@ export const OrganisationSchema = new SimpleSchema({
   adminNote: { type: String, optional: true },
   emails: { type: Array, defaultValue: [] },
   'emails.$': String,
+  productionRates: { type: Array, defaultValue: [] },
+  'productionRates.$': Object,
+  'productionRates.$.rate': percentageField,
+  'productionRates.$.treshold': moneyField,
+  'productionRates.$.date': Date,
+  insuranceProductLinks: { type: Array, defaultValue: [] },
+  'insuranceProductLinks.$': Object,
+  'insuranceProductLinks.$._id': String,
 });
 
 Organisations.attachSchema(OrganisationSchema);

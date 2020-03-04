@@ -16,6 +16,7 @@ const InsuranceSchema = new SimpleSchema({
     allowedValues: Object.values(INSURANCE_STATUS),
     defaultValue: INSURANCE_STATUS.SUGGESTED,
   },
+  description: String,
   borrowerLink: { type: Object, optional: true },
   'borrowerLink._id': String,
   organisationLink: { type: Object, optional: true },
@@ -24,6 +25,9 @@ const InsuranceSchema = new SimpleSchema({
   singlePremium: { type: Boolean, defaultValue: false },
   duration: { type: SimpleSchema.Integer, optional: true, min: 1, max: 9999 },
   billingDate: { type: Date, optional: true },
+  revenueLinks: { type: Array, defaultValue: [] },
+  'revenueLinks.$': Object,
+  'revenueLinks.$._id': String,
 });
 
 export default InsuranceSchema;

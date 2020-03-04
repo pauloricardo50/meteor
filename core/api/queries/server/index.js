@@ -23,5 +23,6 @@ import '../../users/server/exposures';
 import '../../front/server/exposures';
 import '../../insuranceRequests/server/exposures';
 import '../../insurances/server/exposures';
+import '../../insuranceProducts/server/exposures';
 import './exposures';
 import './globalExposures';

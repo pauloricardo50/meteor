@@ -21,6 +21,7 @@ import LenderSchema from './lenders/schemas/lenderSchema';
 import RevenueSchema from './revenues/schemas/revenueSchema';
 import InsuranceRequestSchema from './insuranceRequests/schemas/InsuranceRequestSchema';
 import InsuranceSchema from './insurances/schemas/InsuranceSchema';
+import InsuranceProductSchema from './insuranceProducts/schemas/InsuranceProductSchema';
 
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';
@@ -44,6 +45,7 @@ export { default as Activities } from './activities';
 export { default as Sessions } from './sessions';
 export { default as InsuranceRequests } from './insuranceRequests';
 export { default as Insurances } from './insurances';
+export { default as InsuranceProducts } from './insuranceProducts';
 
 export * from './helpers';
 export * from './methods';
@@ -71,6 +73,7 @@ export const schemas = {
   [constants.REVENUES_COLLECTION]: RevenueSchema,
   [constants.INSURANCE_REQUESTS_COLLECTION]: InsuranceRequestSchema,
   [constants.INSURANCES_COLLECTION]: InsuranceSchema,
+  [constants.INSURANCE_PRODUCTS_COLLECTION]: InsuranceProductSchema,
 };
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';

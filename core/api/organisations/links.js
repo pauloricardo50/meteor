@@ -7,6 +7,7 @@ import {
   Revenues,
   Tasks,
   Insurances,
+  InsuranceProducts,
 } from '..';
 import Organisations from './organisations';
 
@@ -57,6 +58,10 @@ LinkInitializer.inversedInit(() => {
     },
     insurances: {
       collection: Insurances,
+      inversedBy: 'organisation',
+    },
+    insuranceProducts: {
+      collection: InsuranceProducts,
       inversedBy: 'organisation',
     },
   });

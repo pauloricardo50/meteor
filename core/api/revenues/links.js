@@ -1,6 +1,6 @@
 import LinkInitializer from '../links/LinkInitializer';
 import Revenues from '.';
-import { Loans, Organisations, Users, InsuranceRequests } from '..';
+import { Loans, Organisations, Users, InsuranceRequests, Insurances } from '..';
 
 Revenues.addLinks({
   organisations: {
@@ -37,6 +37,10 @@ LinkInitializer.inversedInit(() => {
         field: 'insuranceRequestCache',
         body: { _id: 1, name: 1 },
       },
+    },
+    insurance: {
+      collection: Insurances,
+      inversedBy: 'revenues',
     },
   });
 });

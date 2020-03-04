@@ -22,6 +22,7 @@ import { UPDATE_WATCHERS_COLLECTION } from './updateWatchers/updateWatcherConsta
 import { USERS_COLLECTION } from './users/userConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from './insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from './insurances/insuranceConstants';
+import { INSURANCE_PRODUCTS_COLLECTION } from './insuranceProducts/insuranceProductConstants';
 
 export * from './activities/activityConstants';
 export * from './borrowers/borrowerConstants';
@@ -51,6 +52,7 @@ export * from './updateWatchers/updateWatcherConstants';
 export * from './users/userConstants';
 export * from './insuranceRequests/insuranceRequestConstants';
 export * from './insurances/insuranceConstants';
+export * from './insuranceProducts/insuranceProductConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -81,4 +83,5 @@ export const COLLECTIONS = {
   USERS_COLLECTION,
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCES_COLLECTION,
+  INSURANCE_PRODUCTS_COLLECTION,
 };
