@@ -207,14 +207,18 @@ export class SlackService {
 
   getNotificationOrigin = currentUser => {
     const APIUser = getAPIUser();
-    const username = currentUser ? currentUser.name : undefined;
-    const isPro = currentUser && currentUser.roles.includes(ROLES.PRO);
+    const username = currentUser?.name;
+    const isPro = currentUser?.roles.includes(ROLES.PRO);
 
     if (APIUser) {
-      const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
-      const proOrg = UserService.getUserMainOrganisation(currentUser._id);
+      const mainOrg =
+        UserService.getUserMainOrganisation(APIUser._id) ||
+        (APIUser.organisations?.length && APIUser.organisations[0].name);
+      const proOrg =
+        (currentUser && UserService.getUserMainOrganisation(currentUser._id)) ||
+        (APIUser.organisations?.length && APIUser.organisations[0].name);
       return [
-        username,
+        username || APIUser.name,
         `(${proOrg && proOrg.name}, API ${mainOrg && mainOrg.name})`,
       ].join(' ');
     }
