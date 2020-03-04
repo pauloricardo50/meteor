@@ -1398,6 +1398,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId',
@@ -1415,10 +1416,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1459,6 +1463,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: {
               _id: 'proId',
               _factory: 'pro',
@@ -1468,10 +1473,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1510,6 +1518,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId1',
@@ -1534,10 +1543,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId1' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1569,6 +1581,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId1',
@@ -1599,7 +1612,11 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId1' },
             },
             promotionOptions: { _id: 'pOptId' },

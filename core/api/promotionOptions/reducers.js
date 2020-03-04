@@ -13,8 +13,8 @@ PromotionOptions.addReducers({
       if (promotionLots.length === 0) {
         return 0;
       }
-      const { value } = promotionLots[0];
-      return value;
+
+      return promotionLots[0].value;
     },
   },
   priority: {
@@ -32,11 +32,7 @@ PromotionOptions.addReducers({
   attributedToMe: {
     body: { promotionLots: { attributedTo: { userId: 1 } } },
     reduce: ({ promotionLots = [] }) =>
-      !!(
-        promotionLots[0] &&
-        promotionLots[0].attributedTo &&
-        promotionLots[0].attributedTo.userId === Meteor.userId()
-      ),
+      !!(promotionLots[0]?.attributedTo?.userId === Meteor.userId()),
   },
   canton: {
     body: { promotionLots: { promotion: { canton: 1 } } },
