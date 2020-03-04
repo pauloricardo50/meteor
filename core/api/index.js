@@ -43,7 +43,6 @@ export { default as Sessions } from './sessions';
 
 export * from './helpers';
 export * from './methods';
-export * from './containerToolkit';
 
 // Do this for autocompletion...
 export const constants = _constants;

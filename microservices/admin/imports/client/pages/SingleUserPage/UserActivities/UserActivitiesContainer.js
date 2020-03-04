@@ -1,4 +1,4 @@
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminActivities } from 'core/api/activities/queries';
 
 export default withSmartQuery({

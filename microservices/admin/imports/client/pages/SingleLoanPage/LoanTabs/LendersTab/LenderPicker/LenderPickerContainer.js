@@ -1,7 +1,7 @@
 import { withProps, compose, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
 import { lenderInsert, lenderRemove } from 'core/api/methods';

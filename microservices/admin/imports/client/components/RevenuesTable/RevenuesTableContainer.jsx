@@ -11,7 +11,7 @@ import {
   LOANS_COLLECTION,
   REVENUE_STATUS,
 } from 'core/api/constants';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 

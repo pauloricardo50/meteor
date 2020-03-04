@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 
-import { withSmartQuery } from '../../api';
+import { withSmartQuery } from '../../api/containerToolkit';
 import { proOrganisation } from '../../api/organisations/queries';
 
 export default compose(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose, withStateHandlers, withProps } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { LOAN_STATUS_ORDER } from 'core/api/constants';
 import { loanMonitoring } from 'core/api/monitoring/queries';
 import MonitoringFilters from './MonitoringFilters';

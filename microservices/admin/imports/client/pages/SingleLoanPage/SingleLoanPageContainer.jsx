@@ -2,7 +2,7 @@ import { compose, mapProps, branch, renderComponent } from 'recompose';
 import omit from 'lodash/omit';
 
 import { adminLoans } from 'core/api/loans/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
 import {

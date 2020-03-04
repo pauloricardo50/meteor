@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from '../../api/containerToolkit';
 import { loanLenders } from '../../api/lenders/queries';
 import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';

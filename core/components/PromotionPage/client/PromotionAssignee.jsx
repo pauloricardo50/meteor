@@ -3,7 +3,8 @@ import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { adminUsers as query } from '../../../api/users/queries';
-import { withSmartQuery, promotionUpdate } from '../../../api';
+import { promotionUpdate } from '../../../api/promotions/methodDefinitions';
+import { withSmartQuery } from '../../../api/containerToolkit';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
 const getSchema = admins =>

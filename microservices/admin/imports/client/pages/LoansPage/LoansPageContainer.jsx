@@ -1,4 +1,4 @@
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminLoans } from 'core/api/loans/queries';
 
 export default withSmartQuery({

@@ -2,7 +2,7 @@ import { withRouter } from 'react-router-dom';
 import { withState, withProps, lifecycle, compose } from 'recompose';
 
 import { adminLoans } from 'core/api/loans/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import {
   LOANS_COLLECTION,
   USERS_COLLECTION,

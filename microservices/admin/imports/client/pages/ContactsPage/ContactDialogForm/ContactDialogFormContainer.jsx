@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
 import { compose, withState, withProps } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { address } from 'core/api/helpers/sharedSchemas';
 import {
   contactInsert,
