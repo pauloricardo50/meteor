@@ -1,8 +1,8 @@
 import { withSmartQuery } from 'core/api';
-import { adminLoans as query } from 'core/api/loans/queries';
+import { adminLoans } from 'core/api/loans/queries';
 
 export default withSmartQuery({
-  query,
+  query: adminLoans,
   params: {
     $body: {
       name: 1,
