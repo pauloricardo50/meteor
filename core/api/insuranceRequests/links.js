@@ -1,5 +1,5 @@
 import InsuranceRequests from './insuranceRequests';
-import { Borrowers, Revenues, Tasks, Users, Activities } from '..';
+import { Borrowers, Revenues, Tasks, Users, Activities, Insurances } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
 
@@ -47,6 +47,12 @@ LinkInitializer.directInit(() => {
     revenues: {
       field: 'revenueLinks',
       collection: Revenues,
+      type: 'many',
+      metadata: true,
+    },
+    insurances: {
+      field: 'insuranceLinks',
+      collection: Insurances,
       type: 'many',
       metadata: true,
     },

@@ -1,5 +1,5 @@
 import Borrowers from './borrowers';
-import { Loans, Users, MortgageNotes, InsuranceRequests } from '..';
+import { Loans, Users, MortgageNotes, InsuranceRequests, Insurances } from '..';
 import LinkInitializer from '../links/LinkInitializer';
 
 LinkInitializer.directInit(() => {
@@ -29,6 +29,10 @@ LinkInitializer.inversedInit(() => {
     insuranceRequests: {
       collection: InsuranceRequests,
       inversedBy: 'borrowers',
+    },
+    insurances: {
+      collection: Insurances,
+      inversedBy: 'borrower',
     },
   });
 });

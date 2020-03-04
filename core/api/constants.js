@@ -21,6 +21,7 @@ import { TASKS_COLLECTION } from './tasks/taskConstants';
 import { UPDATE_WATCHERS_COLLECTION } from './updateWatchers/updateWatcherConstants';
 import { USERS_COLLECTION } from './users/userConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from './insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from './insurances/insuranceConstants';
 
 export * from './activities/activityConstants';
 export * from './borrowers/borrowerConstants';
@@ -49,6 +50,7 @@ export * from './tasks/taskConstants';
 export * from './updateWatchers/updateWatcherConstants';
 export * from './users/userConstants';
 export * from './insuranceRequests/insuranceRequestConstants';
+export * from './insurances/insuranceConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -78,4 +80,5 @@ export const COLLECTIONS = {
   UPDATE_WATCHERS_COLLECTION,
   USERS_COLLECTION,
   INSURANCE_REQUESTS_COLLECTION,
+  INSURANCES_COLLECTION,
 };

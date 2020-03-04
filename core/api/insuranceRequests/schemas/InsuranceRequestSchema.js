@@ -54,6 +54,9 @@ const InsuranceRequestSchema = new SimpleSchema({
   },
   tasksCache: { type: Array, optional: true },
   'tasksCache.$': cacheField,
+  insuranceLinks: { type: Array, optional: true, defaultValue: [] },
+  'insuranceLinks.$': Object,
+  'insuranceLinks.$._id': String,
 });
 
 export default InsuranceRequestSchema;

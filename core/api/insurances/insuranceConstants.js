@@ -1,0 +1,8 @@
+export const INSURANCES_COLLECTION = 'insurances';
+
+export const INSURANCE_STATUS = {
+  SUGGESTED: 'SUGGESTED',
+  SIGNED: 'SIGNED',
+  DECLINED: 'DECLINED',
+  ACTIVE: 'ACTIVE',
+};
