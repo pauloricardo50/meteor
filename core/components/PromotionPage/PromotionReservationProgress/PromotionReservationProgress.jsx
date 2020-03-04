@@ -69,7 +69,7 @@ const PromotionReservationProgressComponent = ({
       { data: documents, id: 'documents', tooltipPrefix: 'Documents:' },
     ].map(({ data, id, tooltipPrefix }) =>
       getProgressItem({
-        component: (
+        renderComponent: (
           <ProgressCircle
             percent={getPercent(data)}
             ratio={getRatio(data)}

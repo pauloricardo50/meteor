@@ -46,7 +46,7 @@ const PromotionReservationProgressItem = ({
   iconProps,
   note,
   placeholder,
-  component,
+  renderComponent,
   loanId,
   withTooltip = true,
   withIcon = true,
@@ -56,10 +56,10 @@ const PromotionReservationProgressItem = ({
   const allowModify = allowModification(id);
 
   if (variant === 'text') {
-    if (component) {
+    if (renderComponent) {
       return (
         <p className="flex center-align">
-          {withIcon && component}
+          {withIcon && renderComponent}
           <IconTooltip
             id={id}
             placeholder={placeholder}
@@ -104,16 +104,16 @@ const PromotionReservationProgressItem = ({
     );
   }
 
-  if (component) {
+  if (renderComponent) {
     if (variant === 'label') {
       return (
         <div className="flex-col center-align">
-          {withIcon && component}
+          {withIcon && renderComponent}
           <T id={`Forms.${id}`} />
         </div>
       );
     }
-    return component;
+    return renderComponent;
   }
 
   const baseIcon = (

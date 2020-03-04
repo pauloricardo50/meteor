@@ -82,7 +82,7 @@ export const makeGetProgressItem = ({
   withTooltip,
   withIcon,
   renderStatus,
-}) => ({ icon, color, status, date, id, component, placeholder }) => ({
+}) => ({ icon, color, status, date, id, renderComponent, placeholder }) => ({
   id,
   progressItem: (
     <PromotionReservationProgressItem
@@ -93,7 +93,7 @@ export const makeGetProgressItem = ({
       variant={variant}
       id={id}
       promotionOptionId={promotionOptionId}
-      component={component}
+      renderComponent={renderComponent}
       placeholder={placeholder}
       loanId={loanId}
       withTooltip={withTooltip}
