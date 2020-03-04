@@ -2,18 +2,11 @@ import React, { useMemo } from 'react';
 import cx from 'classnames';
 import { withProps } from 'recompose';
 
-import { getLoanProgress } from 'core/api/loans/helpers';
-import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-} from '../../../../../api/promotionOptions/promotionOptionConstants';
-import ProgressCircle from '../../../../ProgressCircle';
+import { getLoanProgress } from '../../../api/loans/helpers';
+import ProgressCircle from '../../ProgressCircle';
 import {
   makeGetProgressItem,
-  makeGetIcon,
+  getPromotionReservationIcon,
   getAdminNoteIcon,
   getPercent,
   getRatio,
@@ -32,6 +25,9 @@ const PromotionReservationProgressComponent = ({
   variant = 'icon',
   className,
   loanProgress = {},
+  withTooltip,
+  withIcon,
+  renderStatus,
 }) => {
   const {
     _id: promotionOptionId,
@@ -47,18 +43,25 @@ const PromotionReservationProgressComponent = ({
   const { info = {}, documents = {} } = loanProgress;
 
   const getProgressItem = useMemo(
-    () => makeGetProgressItem(variant, promotionOptionId, loanId),
+    () =>
+      makeGetProgressItem({
+        variant,
+        promotionOptionId,
+        loanId,
+        withTooltip,
+        withIcon,
+        renderStatus,
+      }),
     [],
   );
 
   const verificationAndBankIcons = [
     getProgressItem({
       ...simpleVerification,
-      ...makeGetIcon({
-        error: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED],
-        success: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED],
-        waiting: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED],
-      })(simpleVerification.status),
+      ...getPromotionReservationIcon(
+        'simpleVerification',
+        simpleVerification.status,
+      ),
       id: 'simpleVerification',
     }),
     ...[
@@ -66,7 +69,7 @@ const PromotionReservationProgressComponent = ({
       { data: documents, id: 'documents', tooltipPrefix: 'Documents:' },
     ].map(({ data, id, tooltipPrefix }) =>
       getProgressItem({
-        component: (
+        renderComponent: (
           <ProgressCircle
             percent={getPercent(data)}
             ratio={getRatio(data)}
@@ -88,21 +91,15 @@ const PromotionReservationProgressComponent = ({
     ),
     getProgressItem({
       ...fullVerification,
-      ...makeGetIcon({
-        error: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED],
-        success: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED],
-      })(fullVerification.status),
+      ...getPromotionReservationIcon(
+        'fullVerification',
+        fullVerification.status,
+      ),
       id: 'fullVerification',
     }),
     getProgressItem({
       ...bank,
-      ...makeGetIcon({
-        success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
-        error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
-        warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
-        sent: [PROMOTION_OPTION_BANK_STATUS.SENT],
-        waitList: [PROMOTION_OPTION_BANK_STATUS.WAITLIST],
-      })(bank.status),
+      ...getPromotionReservationIcon('bank', bank.status),
       id: 'bank',
     }),
   ];
@@ -110,18 +107,18 @@ const PromotionReservationProgressComponent = ({
   const agreementAndDepositIcons = [
     getProgressItem({
       ...reservationAgreement,
-      ...makeGetIcon({
-        success: [PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED],
-        waiting: [PROMOTION_OPTION_AGREEMENT_STATUS.WAITING],
-      })(reservationAgreement.status),
+      ...getPromotionReservationIcon(
+        'reservationAgreement',
+        reservationAgreement.status,
+      ),
       id: 'reservationAgreement',
     }),
     getProgressItem({
       ...reservationDeposit,
-      ...makeGetIcon({
-        success: [PROMOTION_OPTION_DEPOSIT_STATUS.PAID],
-        error: [PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID],
-      })(reservationDeposit.status),
+      ...getPromotionReservationIcon(
+        'reservationDeposit',
+        reservationDeposit.status,
+      ),
       id: 'reservationDeposit',
     }),
   ];
@@ -172,6 +169,9 @@ const PromotionReservationProgressComponent = ({
               variant,
               promotionOptionId,
               isAnonymized,
+              withTooltip,
+              withIcon,
+              renderStatus,
             })}
           </div>
         )}

@@ -1,8 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+
 import SecurityService from '../../security';
-import Intl from '../../../utils/server/intl';
+import Intl, { ServerIntlProvider } from '../../../utils/server/intl';
 import ServerEventService from '../../events/server/ServerEventService';
 import { ROLES } from '../../constants';
 import {
@@ -195,3 +198,8 @@ Meteor.methods({
     return emailListeners;
   },
 });
+
+export const renderEmailComponent = ({ Component, props }) =>
+  ReactDOMServer.renderToStaticMarkup(
+    <ServerIntlProvider>{Component(props)}</ServerIntlProvider>,
+  );
