@@ -65,20 +65,6 @@
     "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
     "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
   },
-  "redisOplog": {
-    "redis": {
-      "port": 45783,
-      "host": "kubernetes-service-node.service.consul",
-      "password": "Z524DK6IDGXOznCJtQZVpOadaiaK7a"
-    },
-    "retryIntervalMs": 10000,
-    "mutationDefaults": {
-      "optimistic": true,
-      "pushToRedis": true
-    },
-    "debug": false,
-    "overridePublishFunction": true
-  },
   "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I",
   "mixpanel": {
     "API_KEY": "032982c31f75296d6b55dd1fc320d010",

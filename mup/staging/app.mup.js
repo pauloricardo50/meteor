@@ -3,7 +3,6 @@ const defaults = require('./defaults');
 
 module.exports = generateConfig({
   ...defaults,
-  microservice: 'admin',
-  subDomains: ['admin'],
-  nginxLocationConfig: '../nginx/whitelist.conf'
+  microservice: 'app',
+  subDomains: ['app'],
 });

@@ -1,0 +1,18 @@
+name: mup-parallel
+root: ./
+pre_window: bash
+on_project_exit: >-
+  tmux kill-session -t mup-parallel
+windows:
+  - deploy:
+      layout: tiled
+      panes:
+        - instructions:
+            - echo 'When all panels show "DONE", press ctr + b and type ":kill-session" to continue'
+        <% apps.forEach(({ app, environment, configFolder, command }) => { %>
+
+        - <%- app %>-<%- environment %>:
+            - cd <%- configFolder %>
+            - <%- command %> || echo "FAILED"
+            - echo "DONE"
+           <% }) %>
