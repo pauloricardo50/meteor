@@ -39,6 +39,7 @@ export default compose(
   withProps(
     ({
       max,
+      min,
       calculatePlaceholder,
       placeholder,
       id,
@@ -57,6 +58,7 @@ export default compose(
 
       return {
         max: typeof max === 'function' ? max(props) : max,
+        min: typeof min === 'function' ? min(props) : min,
         placeholder: calculatePlaceholder
           ? calculatePlaceholder(props)
           : placeholder,
