@@ -119,8 +119,16 @@ const FinancingFinancing = props => (
         id: 'amortizationDuration',
       },
       {
+        Component: FinancingField,
+        id: 'wantedMortgageNote',
+        max: 10000000,
+        calculatePlaceholder: calculateLoan,
+        min: calculateLoan,
+        allowUndefined: true,
+      },
+      {
         Component: MortgageNotesPicker,
-        id: 'mortgageNoteIds',
+        id: 'existingMortgageNotes',
         condition: oneStructureHasLoan,
       },
       // TODO: To be released in the future

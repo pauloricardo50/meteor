@@ -40,13 +40,11 @@ const FinancingProject = props => (
         max: 100000000,
         allowUndefined: true,
         forceUndefined: true,
-        maxSlider: 5000000,
       },
       {
         Component: FinancingField,
         id: 'propertyWork',
         max: 10000000,
-        maxSlider: 1000000,
       },
       {
         Component: FinancingProjectFees,

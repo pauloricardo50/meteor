@@ -2,13 +2,14 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  padding: 8px !important;
 
-  h4 {
+  h5 {
     margin: 0;
   }
 
   .calculated-value {
-    margin: 8px 0;
+    margin: 0;
   }
 
   p:last-of-type {
@@ -16,13 +17,6 @@
   }
 }
 
-.mortgage-notes-picker-dialog {
-  a {
-    display: block;
-
-    max-width: 400px;
-  }
-}
 .mortgage-note-list-item {
   position: relative;
 

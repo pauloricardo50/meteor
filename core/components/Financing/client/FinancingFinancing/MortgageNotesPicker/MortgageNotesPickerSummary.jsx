@@ -1,13 +1,14 @@
 import React from 'react';
 
-import T from '../../../../Translation';
+import T, { Money } from '../../../../Translation';
+import Button from '../../../../Button';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 
 const MortgageNotesPickerSummary = ({
   borrowerMortgageNotes,
   currentMortgageNotes,
   handleOpen,
-  wantedLoan,
+  wantedMortgageNote,
   disabled,
 }) => {
   const allNotes = [...borrowerMortgageNotes, ...currentMortgageNotes];
@@ -15,39 +16,36 @@ const MortgageNotesPickerSummary = ({
     (total, { value = 0 }) => total + value,
     0,
   );
+
+  if (allNotes.length === 0) {
+    return (
+      <div className="text-center">
+        <Button primary onClick={handleOpen} disabled={disabled}>
+          <T id="general.choose" />
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div
       className="card-hover pointer mortgage-notes-picker-summary"
       onClick={disabled ? null : handleOpen}
     >
-      {wantedLoan > currentMortgageNotesValue && (
-        <>
-          <h4 className="text-center">
-            <T id="FinancingMortgageNotesPicker.mortgageNoteToCreate" />
-          </h4>
-          <p className="calculated-value">
-            <span className="chf">CHF</span>{' '}
-            <span className="primary">
-              {toMoney(wantedLoan - currentMortgageNotesValue)}
-            </span>
-          </p>
-        </>
-      )}
       {allNotes.length > 0 && (
-        <>
-          <h4>
-            <T
-              id="FinancingMortgageNotesPicker.title"
-              values={{ count: allNotes.length }}
-            />
-          </h4>
-          <p className="calculated-value">
-            <span className="chf">CHF</span>{' '}
-            <span className="primary">
-              {toMoney(currentMortgageNotesValue)}
-            </span>
-          </p>
-        </>
+        <p className="calculated-value">
+          <span className="chf">CHF</span>{' '}
+          <span className="primary">{toMoney(currentMortgageNotesValue)}</span>
+        </p>
+      )}
+      {wantedMortgageNote > currentMortgageNotesValue && (
+        <div className="flex center-align mt-8">
+          <h5 className="text-center">
+            <T id="FinancingMortgageNotesPicker.mortgageNoteToCreate" />:
+          </h5>
+          &nbsp;
+          <Money value={wantedMortgageNote - currentMortgageNotesValue} />
+        </div>
       )}
     </div>
   );
