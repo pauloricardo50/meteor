@@ -15,7 +15,7 @@ const LenderPickerOrganisation = ({
   const [loading, setLoading] = useState(false);
   return (
     <div className="flex center organisation">
-      <div className="flex-col">
+      <div className="organisation-detail">
         <h4 className={cx({ secondary: !isActive })}>{name}</h4>
         <LenderPickerOrganisationRules
           organisation={organisation}
