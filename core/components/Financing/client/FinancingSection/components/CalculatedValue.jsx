@@ -24,7 +24,7 @@ const formatters = {
   [FORMATS.DEFAULT]: value => value,
 };
 
-const CalculatedValue = ({
+export const CalculatedValue = ({
   value,
   format = FORMATS.MONEY,
   className,
