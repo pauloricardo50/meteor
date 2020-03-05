@@ -4,4 +4,4 @@ node_modules/
 microservices/**/lang/*
 .idea/
 **/commit.txt
-core/assets/public/files/frontPlugin
+core/assets/public/files/frontPlugin/*.js
