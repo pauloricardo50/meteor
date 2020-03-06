@@ -12,6 +12,7 @@ import {
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   REVENUES_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import { createRoute } from 'imports/core/utils/routerUtils';
@@ -40,6 +41,12 @@ const getItems = currentUser =>
     {
       detail: true,
       collection: LOANS_COLLECTION,
+    },
+    {
+      collection: INSURANCE_REQUESTS_COLLECTION,
+      to: '/insuranceRequests',
+      exact: true,
+      label: 'Assurances',
     },
     {
       collection: PROMOTIONS_COLLECTION,
