@@ -4,10 +4,11 @@ import { Method } from '../methods/methods';
 export const insuranceRequestInsert = new Method({
   name: 'insuranceRequestInsert',
   params: {
-    insuranceRequest: Object,
+    insuranceRequest: Match.Maybe(Object),
     loanId: Match.Maybe(String),
     userId: Match.Maybe(String),
     assigneeId: Match.Maybe(String),
+    borrowerIds: Match.Maybe(Array),
   },
 });
 

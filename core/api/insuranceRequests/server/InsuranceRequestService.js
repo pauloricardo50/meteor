@@ -13,7 +13,13 @@ class InsuranceRequestService extends CollectionService {
     super(InsuranceRequests);
   }
 
-  insert = ({ insuranceRequest = {}, userId, loanId, assigneeId }) => {
+  insert = ({
+    insuranceRequest = {},
+    userId,
+    loanId,
+    assigneeId,
+    borrowerIds,
+  }) => {
     const name = getNewName({ collection: INSURANCE_REQUESTS_COLLECTION });
     const insuranceRequestId = super.insert({ ...insuranceRequest, name });
     const loan =
@@ -26,11 +32,19 @@ class InsuranceRequestService extends CollectionService {
       userId && UserService.get(userId, { assignedEmployee: { _id: 1 } });
 
     if (loan) {
-      this.addLink({
-        id: insuranceRequestId,
-        linkName: 'loan',
-        linkId: loanId,
+      LoanService.addLink({
+        id: loanId,
+        linkName: 'insuranceRequests',
+        linkId: insuranceRequestId,
       });
+      const { user: { _id: loanUserId } = {} } = loan;
+      if (loanUserId) {
+        this.addLink({
+          id: insuranceRequestId,
+          linkName: 'user',
+          linkId: loanUserId,
+        });
+      }
     }
 
     if (user) {
@@ -39,6 +53,16 @@ class InsuranceRequestService extends CollectionService {
         linkName: 'user',
         linkId: userId,
       });
+    }
+
+    if (borrowerIds?.length) {
+      borrowerIds.forEach(borrowerId =>
+        this.addLink({
+          id: insuranceRequestId,
+          linkName: 'borrowers',
+          linkId: borrowerId,
+        }),
+      );
     }
 
     // Set the assignee
@@ -50,18 +74,11 @@ class InsuranceRequestService extends CollectionService {
     }
     // Set the same assignees as the loan
     else if (!user && loan) {
-      const { assignees = [], user: { _id: loanUserId } = {} } = loan;
+      const { assignees = [] } = loan;
       if (assignees.length) {
         this.setAssignees({
           insuranceRequestId,
           assignees,
-        });
-      }
-      if (loanUserId) {
-        this.addLink({
-          id: insuranceRequestId,
-          linkName: 'user',
-          linkId: loanUserId,
         });
       }
     }

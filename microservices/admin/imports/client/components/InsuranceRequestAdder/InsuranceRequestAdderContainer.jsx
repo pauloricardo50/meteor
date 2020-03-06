@@ -21,14 +21,14 @@ const getSchema = ({ admins = [], availableBorrowers = [] }) =>
     },
     ...(availableBorrowers?.length
       ? {
-          borrowers: {
+          borrowerIds: {
             type: Array,
             optional: true,
             defaultValue: [],
             maxCount: 2,
-            uniforms: { checkboxes: true },
+            uniforms: { checkboxes: true, label: 'Assurés' },
           },
-          'borrowers.$': {
+          'borrowerIds.$': {
             type: String,
             allowedValues: availableBorrowers.map(({ _id }) => _id),
             optional: true,
@@ -47,8 +47,15 @@ export default withProps(({ user = {}, loan = {} }) => {
     assignedEmployee = {},
     borrowers: userBorrowers = [],
   } = user;
-  const { _id: loanId, assignees = [], borrowers: loanBorrowers = [] } = loan;
-  const loanMainAssignee = assignees?.find(({ isMain }) => isMain);
+  const {
+    _id: loanId,
+    assignees = [],
+    borrowers: loanBorrowers = [],
+    name,
+  } = loan;
+  const loanMainAssignee = assignees?.find(
+    ({ $metadata: { isMain } = {} }) => isMain,
+  );
   const availableBorrowers = uniqBy(
     [...userBorrowers, ...loanBorrowers],
     '_id',
@@ -68,14 +75,12 @@ export default withProps(({ user = {}, loan = {} }) => {
     model: {
       assigneeId: loanMainAssignee?._id || assignedEmployee?._id,
     },
-    onSubmit: ({ assigneeId, borrowers = [] }) =>
+    onSubmit: ({ assigneeId, borrowerIds = [] }) =>
       insuranceRequestInsert.run({
-        insuranceRequest: {
-          borrowerLinks: borrowers.map(_id => ({ _id })),
-        },
         loanId,
         userId,
         assigneeId,
+        borrowerIds,
       }),
   };
 });

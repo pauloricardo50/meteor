@@ -1,5 +1,7 @@
 import React from 'react';
+
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
+import Icon from 'core/components/Icon';
 import InsuranceRequestAdderContainer from './InsuranceRequestAdderContainer';
 
 const InsuranceRequestAdder = ({ schema, model, onSubmit, loading }) => {
@@ -12,7 +14,13 @@ const InsuranceRequestAdder = ({ schema, model, onSubmit, loading }) => {
       model={model}
       onSubmit={onSubmit}
       title="Nouveau dossier assurance"
-      buttonProps={{ label: 'Dossier assurance', raised: true, primary: true }}
+      buttonProps={{
+        label: 'Dossier assurance',
+        raised: true,
+        primary: true,
+        icon: <Icon type="add" />,
+        className: 'ml-8',
+      }}
     />
   );
 };

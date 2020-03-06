@@ -394,6 +394,12 @@ export const adminLoan = ({ withSort } = {}) => ({
   userCache: 1,
   user: adminUser(),
   selectedLenderOrganisation: { name: 1 },
+  insuranceRequests: {
+    name: 1,
+    borrowers: { name: 1 },
+    createdAt: 1,
+    updatedAt: 1,
+  },
 });
 
 export const adminLoans = () => ({
@@ -1031,6 +1037,13 @@ export const adminUser = () => ({
   referredByOrganisationLink: 1,
   acquisitionChannel: 1,
   borrowers: { name: 1 },
+  insuranceRequests: {
+    name: 1,
+    borrowers: { name: 1 },
+    createdAt: 1,
+    updatedAt: 1,
+    status: 1,
+  },
 });
 
 export const appUser = () => ({

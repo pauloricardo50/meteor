@@ -23,7 +23,7 @@ const InsuranceRequestSchema = new SimpleSchema({
   userCache: cacheField,
   borrowerLinks: { type: Array, optional: true, defaultValue: [] },
   'borrowerLinks.$': Object,
-  'borrowerLinks._id': String,
+  'borrowerLinks.$._id': String,
   assigneeLinks: { type: Array, optional: true },
   'assigneeLinks.$': Object,
   'assigneeLinks.$._id': String,

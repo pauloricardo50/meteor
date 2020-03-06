@@ -19,6 +19,7 @@ import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
 import LoanTimeline from './LoanTimeline';
 import LoanDisbursementDate from './LoanDisbursementDate';
+import InsuranceRequestAdder from '../../../../components/InsuranceRequestAdder/InsuranceRequestAdder';
 
 const OverviewTab = props => {
   const {

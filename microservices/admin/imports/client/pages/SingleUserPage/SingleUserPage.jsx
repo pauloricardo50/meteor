@@ -16,7 +16,7 @@ import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
 import UserActivities from './UserActivities';
 import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
-import InsuranceRequestAdder from '../../components/InsuranceRequestAdder';
+import InsuranceRequestsSummaryList from '../../components/InsuranceRequestsSummaryList/InsuranceRequestsSummaryList';
 
 const SingleUserPage = ({
   user,
@@ -32,6 +32,7 @@ const SingleUserPage = ({
     assignedEmployee,
     promotions,
     proProperties,
+    insuranceRequests,
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
   const isPro = user.roles.includes(ROLES.PRO);
@@ -59,7 +60,12 @@ const SingleUserPage = ({
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}
 
-      {isUser && <InsuranceRequestAdder user={user} />}
+      {(isUser || insuranceRequests?.length) && (
+        <InsuranceRequestsSummaryList
+          insuranceRequests={insuranceRequests}
+          user={user}
+        />
+      )}
 
       {promotions && promotions.length > 0 && (
         <PromotionList promotions={promotions} />

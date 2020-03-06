@@ -12,45 +12,45 @@ import { CollectionIconLink } from '../IconLink';
 import T from '../Translation';
 import { BORROWERS_COLLECTION } from '../../api/constants';
 
-const BorrowersSummary = ({ borrowers, showTitle = true, className }) => {
+const BorrowersSummary = ({
+  borrowers,
+  showTitle = true,
+  className,
+  title,
+  emptyState,
+}) => {
   const isAdmin = Meteor.microservice === 'admin';
   return (
     <div className={cx('borrowers-summary', className)}>
-      {showTitle && (
-        <h5>
-          <T id="collections.borrowers" />
-        </h5>
-      )}
+      {showTitle && <h5>{title || <T id="collections.borrowers" />}</h5>}
       <div className="borrowers-list">
-        {borrowers.length > 0 ? (
-          borrowers.map((borrower, index) =>
-            isAdmin ? (
-              <CollectionIconLink
-                relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
-              />
-            ) : (
-              <Chip
-                style={{ margin: 8 }}
-                key={borrower._id}
-                avatar={
-                  <Avatar>
-                    <Icon type="face" />
-                  </Avatar>
-                }
-                label={
-                  borrower.name || (
-                    <T
-                      id="BorrowersSummary.borrower"
-                      values={{ index: index + 1 }}
-                    />
-                  )
-                }
-              />
-            ),
-          )
-        ) : (
-          <T id="general.noBorrowersForLoan" />
-        )}
+        {borrowers.length > 0
+          ? borrowers.map((borrower, index) =>
+              isAdmin ? (
+                <CollectionIconLink
+                  relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
+                />
+              ) : (
+                <Chip
+                  style={{ margin: 8 }}
+                  key={borrower._id}
+                  avatar={
+                    <Avatar>
+                      <Icon type="face" />
+                    </Avatar>
+                  }
+                  label={
+                    borrower.name || (
+                      <T
+                        id="BorrowersSummary.borrower"
+                        values={{ index: index + 1 }}
+                      />
+                    )
+                  }
+                />
+              ),
+            )
+          : emptyState || <T id="general.noBorrowersForLoan" />}
       </div>
     </div>
   );
