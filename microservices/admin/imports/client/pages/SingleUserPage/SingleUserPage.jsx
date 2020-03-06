@@ -16,6 +16,7 @@ import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
 import UserActivities from './UserActivities';
 import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import InsuranceRequestAdder from '../../components/InsuranceRequestAdder';
 
 const SingleUserPage = ({
   user,
@@ -57,6 +58,8 @@ const SingleUserPage = ({
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}
+
+      {isUser && <InsuranceRequestAdder user={user} />}
 
       {promotions && promotions.length > 0 && (
         <PromotionList promotions={promotions} />

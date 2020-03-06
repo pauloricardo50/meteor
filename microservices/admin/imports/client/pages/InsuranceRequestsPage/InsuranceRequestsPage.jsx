@@ -8,22 +8,26 @@ import collectionIcons from 'core/arrays/collectionIcons';
 import InsuranceRequestsPageContainer from './InsuranceRequestsPageContainer';
 import InsuranceRequestsTable from '../../components/InsuranceRequestsTable/InsuranceRequestsTable';
 
-const InsuranceRequestsPage = props => (
-  <section className="card1 card-top insurance-requests-page">
-    <Helmet>
-      <title>Dossiers assurance</title>
-    </Helmet>
-    <h1 className="flex center-align">
-      <Icon
-        type={collectionIcons[INSURANCE_REQUESTS_COLLECTION]}
-        style={{ marginRight: 8 }}
-        size={32}
-      />
-      Dossiers assurance
-    </h1>
+const InsuranceRequestsPage = props => {
+  console.log('props:', props);
+  const { insuranceRequests } = props;
+  return (
+    <section className="card1 card-top insurance-requests-page">
+      <Helmet>
+        <title>Dossiers assurance</title>
+      </Helmet>
+      <h1 className="flex center-align">
+        <Icon
+          type={collectionIcons[INSURANCE_REQUESTS_COLLECTION]}
+          style={{ marginRight: 8 }}
+          size={32}
+        />
+        Dossiers assurance
+      </h1>
 
-    <InsuranceRequestsTable {...props} />
-  </section>
-);
+      <InsuranceRequestsTable insuranceRequests={insuranceRequests} />
+    </section>
+  );
+};
 
 export default InsuranceRequestsPageContainer(InsuranceRequestsPage);

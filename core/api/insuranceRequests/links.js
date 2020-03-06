@@ -1,5 +1,13 @@
 import InsuranceRequests from './insuranceRequests';
-import { Borrowers, Revenues, Tasks, Users, Activities, Insurances } from '..';
+import {
+  Borrowers,
+  Revenues,
+  Tasks,
+  Users,
+  Activities,
+  Insurances,
+  Loans,
+} from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
 
@@ -21,6 +29,12 @@ const tasksCache = {
   assigneeLink: 1,
 };
 
+const loanCache = {
+  name: 1,
+  user: { name: 1 },
+  assigneeLinks: { _id: 1 },
+};
+
 LinkInitializer.directInit(() => {
   InsuranceRequests.addLinks({
     borrowers: {
@@ -33,6 +47,7 @@ LinkInitializer.directInit(() => {
       field: 'userLink',
       collection: Users,
       type: 'one',
+      metadata: true,
       denormalize: {
         field: 'userCache',
         body: userCache,
@@ -73,6 +88,14 @@ LinkInitializer.inversedInit(() => {
       denormalize: {
         field: 'tasksCache',
         body: tasksCache,
+      },
+    },
+    loan: {
+      inversedBy: 'insuranceRequests',
+      collection: Loans,
+      denormalize: {
+        field: 'loanCache',
+        body: loanCache,
       },
     },
   });

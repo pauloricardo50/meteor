@@ -162,6 +162,9 @@ const LoanSchema = new SimpleSchema({
     },
   },
   frontTagId: { type: String, optional: true },
+  insuranceRequestLinks: { type: Array, optional: true, defaultValue: [] },
+  'insuranceRequestLinks.$': Object,
+  'insuranceRequestLinks.$._id': String,
 });
 
 export default LoanSchema;

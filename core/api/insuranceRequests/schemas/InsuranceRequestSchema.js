@@ -19,8 +19,7 @@ const InsuranceRequestSchema = new SimpleSchema({
     defaultValue: INSURANCE_REQUEST_STATUS.LEAD,
   },
   userLink: { type: Object, optional: true },
-  'userLink.$': Object,
-  'userLink.$._id': String,
+  'userLink._id': String,
   userCache: cacheField,
   borrowerLinks: { type: Array, optional: true, defaultValue: [] },
   'borrowerLinks.$': Object,
@@ -57,6 +56,7 @@ const InsuranceRequestSchema = new SimpleSchema({
   insuranceLinks: { type: Array, optional: true, defaultValue: [] },
   'insuranceLinks.$': Object,
   'insuranceLinks.$._id': String,
+  loanCache: cacheField,
 });
 
 export default InsuranceRequestSchema;
