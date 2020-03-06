@@ -19,6 +19,7 @@ import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
 import OtherPage from '../../client/pages/OtherPage/loadable';
 import WikiPage from '../../client/pages/WikiPage/loadable';
 import InsuranceRequestsPage from '../../client/pages/InsuranceRequestsPage/loadable';
+import SingleInsuranceRequestPage from '../../client/pages/SingleInsuranceRequestPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
@@ -86,6 +87,10 @@ const ADMIN_ROUTES = {
   ADMIN_PROMOTION_PAGE: {
     component: AdminPromotionPage,
     path: '/promotions/:promotionId/:tabId?',
+  },
+  SINGLE_INSURANCE_REQUEST_PAGE: {
+    component: SingleInsuranceRequestPage,
+    path: '/insuranceRequests/:insuranceRequestId/:tabId?',
   },
 
   //   Other
