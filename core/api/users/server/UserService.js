@@ -17,6 +17,7 @@ import { ROLES, ACQUISITION_CHANNELS } from '../userConstants';
 import Users from '../users';
 import roundRobinAdvisors from './roundRobinAdvisors';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+import { assigneesByOrg } from './assigneesByOrg';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
@@ -85,12 +86,6 @@ export class UserServiceClass extends CollectionService {
 
     this.update({ userId: newUserId, object: additionalData });
 
-    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
-      this.assignAdminToUser({ userId: newUserId, adminId });
-    } else if (!additionalData.assignedEmployeeId) {
-      this.setAssigneeForNewUser(newUserId);
-    }
-
     if (referredByUserId) {
       this.setReferredBy({ userId: newUserId, proId: referredByUserId });
     }
@@ -99,6 +94,12 @@ export class UserServiceClass extends CollectionService {
         userId: newUserId,
         organisationId: referredByOrganisation._id,
       });
+    }
+
+    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
+      this.assignAdminToUser({ userId: newUserId, adminId });
+    } else if (!additionalData.assignedEmployeeId) {
+      this.setAssigneeForNewUser(newUserId);
     }
 
     const APIUser = getAPIUser();
@@ -763,10 +764,20 @@ export class UserServiceClass extends CollectionService {
             $options: { sort: { createdAt: -1 } },
             assignedEmployeeId: 1,
             createdAt: 1,
+            referredByOrganisationLink: 1,
           },
         );
 
-        if (lastCreatedUser?.assignedEmployeeId) {
+        // Hard coded assignee for organisation
+        if (
+          lastCreatedUser?.referredByOrganisationLink &&
+          assigneesByOrg[lastCreatedUser.referredByOrganisationLink]
+        ) {
+          newAssignee =
+            assigneesByOrg[lastCreatedUser.referredByOrganisationLink];
+        }
+        // Round robin
+        else if (lastCreatedUser?.assignedEmployeeId) {
           const index = this.employees.indexOf(
             lastCreatedUser.assignedEmployeeId,
           );
