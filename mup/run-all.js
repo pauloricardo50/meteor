@@ -90,7 +90,7 @@ removePrepareBundleLock();
 
 function runInParallel() {
   try {
-    sh.exec('gem list - i tmuxinator')
+    sh.exec('gem list - i tmuxinator');
   } catch (e) {
     try {
       sh.exec('tmuxinator -v');
