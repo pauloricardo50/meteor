@@ -24,16 +24,18 @@ export const FinancingResultFutureTitle = ({ borrowers = [] }) => {
   );
 };
 
-export const FinancingResultFutureValue = ({ value, ...props }) => {
+export const FinancingResultFutureValue = ({ value, className, ...props }) => {
   const { borrowers } = props;
   const values = value(props);
   if (borrowers.length <= 1) {
-    return <CalculatedValue {...props} value={values[0]} />;
+    return (
+      <CalculatedValue {...props} className={className} value={values[0]} />
+    );
   }
 
   return (
     <div
-      className={props.className}
+      className={className}
       style={{ flexDirection: 'row', justifyContent: 'space-between' }}
     >
       {borrowers.map((b, i) => (
