@@ -1,0 +1,32 @@
+.single-insurance-request-page {
+    &-tasks {
+        margin-bottom: 16px;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            vertical-align: middle;
+
+            > * {
+                margin-right: 4px;
+            }
+        }
+
+        .left {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            flex-grow: 1;
+
+            &-top {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+        }
+    }
+}

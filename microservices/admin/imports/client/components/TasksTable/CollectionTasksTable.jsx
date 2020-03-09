@@ -20,6 +20,7 @@ import TasksTable, { taskTableFragment } from './TasksTable';
 import {
   LENDERS_COLLECTION,
   CONTACTS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from '../../../core/api/constants';
 import CollectionTaskInserter from './CollectionTaskInserter';
 
@@ -46,6 +47,9 @@ const getFilters = ({ collection, doc, assignee, status }) => {
       break;
     case CONTACTS_COLLECTION:
       filters = { ...filters, 'contactLink._id': docId };
+      break;
+    case INSURANCE_REQUESTS_COLLECTION:
+      filters = { ...filters, 'insuranceRequestLink._id': docId };
       break;
     default:
       break;

@@ -1,18 +1,31 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+import CollectionTasksTable from 'imports/client/components/TasksTable/CollectionTasksTable';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import SingleInsuranceRequestPageContainer from './SingleInsuranceRequestPageContainer';
 import SingleInsuranceRequestPageHeader from './SingleInsuranceRequestPageHeader';
+import InsuranceRequestTabs from './InsuranceRequestTabs';
 
 const SingleInsuranceRequestPage = props => {
   const { insuranceRequest } = props;
   return (
-    <div className="card1 card-top">
+    <section className="single-insurance-request-page">
       <Helmet>
         <title>{insuranceRequest.user?.name || insuranceRequest.name}</title>
       </Helmet>
       <SingleInsuranceRequestPageHeader insuranceRequest={insuranceRequest} />
-    </div>
+      <div className="single-insurance-request-page-sub-header">
+        <CollectionTasksTable
+          doc={insuranceRequest}
+          collection={INSURANCE_REQUESTS_COLLECTION}
+          withTaskInsert
+          withQueryTaskInsert
+          className="single-insurance-request-page-tasks card1 card-top"
+        />
+      </div>
+      <InsuranceRequestTabs {...props} />
+    </section>
   );
 };
 
