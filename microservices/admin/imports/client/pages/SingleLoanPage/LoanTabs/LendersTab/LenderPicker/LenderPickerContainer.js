@@ -1,5 +1,4 @@
 import { withProps, compose, withState } from 'recompose';
-import SimpleSchema from 'simpl-schema';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminOrganisations } from 'core/api/organisations/queries';
@@ -13,28 +12,20 @@ const formatOrganisations = orgs =>
     {},
   );
 
-const tagPickerSchema = new SimpleSchema({
-  tags: {
-    type: Array,
-    defaultValue: null,
-    uniforms: { placeholder: 'Tous' },
-  },
-  'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
-});
-
 export default compose(
   withState('tags', 'setTags', [ORGANISATION_TAGS.CH_RETAIL]),
+  withState('hasRules', 'setHasRules', true),
   withSmartQuery({
     query: adminOrganisations,
-    params: ({ tags }) => ({
+    params: ({ tags, hasRules }) => ({
       features: [ORGANISATION_FEATURES.LENDER],
       tags,
+      hasRules,
       $body: { name: 1, logo: 1, type: 1, lenderRules: lenderRules() },
     }),
     dataName: 'organisations',
   }),
   withProps(({ organisations, loan: { _id: loanId, lenders }, setTags }) => ({
-    tagPickerSchema,
     filterOrganisations: ({ tags = [] }) => setTags(tags),
     count: organisations.length,
     organisations: formatOrganisations(organisations),

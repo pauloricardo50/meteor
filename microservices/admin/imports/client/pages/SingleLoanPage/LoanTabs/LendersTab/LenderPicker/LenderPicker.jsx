@@ -2,15 +2,14 @@ import React from 'react';
 
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
-import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import { ORGANISATION_TAGS } from 'core/api/constants';
+import Checkbox from 'core/components/Checkbox';
+import Select from 'core/components/Select';
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
 
 const isActive = ({ loan, org }) =>
-  loan.lenders.find(
-    ({ organisation }) => organisation && organisation._id === org._id,
-  );
+  loan.lenders.find(({ organisation }) => organisation?._id === org._id);
 
 const LenderPicker = ({
   organisations,
@@ -18,8 +17,11 @@ const LenderPicker = ({
   loan,
   addLender,
   removeLender,
-  tagPickerSchema,
+  tags,
+  setTags,
   filterOrganisations,
+  hasRules,
+  setHasRules,
 }) => (
   <DialogSimple
     label="Choisir prêteurs"
@@ -27,40 +29,54 @@ const LenderPicker = ({
     primary
     buttonProps={{ style: { marginRight: 8 } }}
     onClose={() => filterOrganisations({ tags: [] })}
+    title="Choisir prêteurs"
   >
     <div className="lender-picker-dialog">
-      <h2>Choisir prêteurs</h2>
       {count === 0 && (
         <h1 className="secondary">
           Pas de prêteurs, ajouter un prêteur en donnant cette fonctionalité à
           une organisation.
         </h1>
       )}
-      <AutoForm
-        schema={tagPickerSchema}
-        onSubmit={filterOrganisations}
-        autosave
-        model={{ tags: [ORGANISATION_TAGS.CH_RETAIL] }}
-      >
-        <CustomAutoField name="tags" />
-      </AutoForm>
+
+      <div className="flex center-align">
+        <Select
+          value={tags}
+          onChange={setTags}
+          multiple
+          label="Tags"
+          options={Object.values(ORGANISATION_TAGS).map(tag => ({
+            id: tag,
+            label: <T id={`Forms.tags.${tag}`} />,
+          }))}
+          className="mr-8"
+        />
+        <Checkbox
+          value={hasRules}
+          onChange={e => setHasRules(e.target.checked)}
+          label="Critères d'octroi"
+        />
+      </div>
+
       {Object.keys(organisations).map(type => (
         <div key={type}>
           <div className="lender-picker-dialog-type">
-            <h3>
+            <h3 className="mt-32 mb-0">
               <T id={`Forms.type.${type}`} />
             </h3>
           </div>
-          {organisations[type].map(org => (
-            <LenderPickerOrganisation
-              key={org._id}
-              organisation={org}
-              addLender={addLender}
-              removeLender={removeLender}
-              isActive={isActive({ loan, org })}
-              loan={loan}
-            />
-          ))}
+          {organisations[type]
+            .map(org => (
+              <LenderPickerOrganisation
+                key={org._id}
+                organisation={org}
+                addLender={addLender}
+                removeLender={removeLender}
+                isActive={isActive({ loan, org })}
+                loan={loan}
+              />
+            ))
+            .map((item, i) => [i !== 0 && <hr />, item])}
         </div>
       ))}
     </div>
