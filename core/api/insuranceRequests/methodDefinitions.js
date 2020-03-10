@@ -39,3 +39,13 @@ export const insuranceRequestRemoveAdminNote = new Method({
     adminNoteId: String,
   },
 });
+
+export const insuranceRequestSetAssignees = new Method({
+  name: 'insuranceRequestSetAssignees',
+  params: {
+    insuranceRequestId: String,
+    assignees: Array,
+    note: String,
+    updateUserAssignee: Match.Optional(Boolean),
+  },
+});

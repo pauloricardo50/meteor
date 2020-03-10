@@ -4,7 +4,7 @@ import { employeesById } from 'core/arrays/epotekEmployees';
 import { Percent } from 'core/components/Translation';
 import Tooltip from 'core/components/Material/Tooltip';
 
-const LoanAssignees = ({ assigneeLinks }) => {
+const Assignees = ({ assigneeLinks }) => {
   if (!assigneeLinks || assigneeLinks.length === 0) {
     return <div>Pas encore de répartition</div>;
   }
@@ -39,4 +39,4 @@ const LoanAssignees = ({ assigneeLinks }) => {
   );
 };
 
-export default LoanAssignees;
+export default Assignees;

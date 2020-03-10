@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+import { LOANS_COLLECTION } from 'core/api/constants';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import RevenuesTable from '../../../../components/RevenuesTable';
-import LoanAssigneeManager from '../../../../components/LoanAssigneeManager';
+import AssigneesManager from '../../../../components/AssigneesManager';
 import RevenueSuggestions from './RevenueSuggestions';
 
 const RevenuesTab = ({ loan }) => {
@@ -31,7 +32,7 @@ const RevenuesTab = ({ loan }) => {
           setOpen={setOpen}
         />
       </div>
-      <LoanAssigneeManager loan={loan} />
+      <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
       <RevenueSuggestions loan={loan} suggestRevenue={suggestRevenue} />
       <RevenuesTable
         loan={loan}

@@ -12,7 +12,7 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import AdminNotes from 'core/components/AdminNotes';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LinkToFront from '../../../../components/LinkToFront';
-import LoanAssigneeManager from '../../../../components/LoanAssigneeManager/LoanAssigneeManager';
+import AssigneesManager from '../../../../components/AssigneesManager';
 import BorrowerAge from '../BorrowerAge';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
@@ -58,7 +58,7 @@ const OverviewTab = props => {
           />
           <LoanStepSetter loan={loan} />
           <LoanDisbursementDate loan={loan} />
-          <LoanAssigneeManager loan={loan} />
+          <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
         </div>
 
         <div className="card-bottom">

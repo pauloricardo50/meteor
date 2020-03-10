@@ -6,7 +6,7 @@ import { LOANS_COLLECTION } from 'core/api/constants';
 import AdminNotes from 'core/components/AdminNotes';
 import StructureForm from './StructureForm';
 import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
-import LoanAssigneeManager from '../../../components/LoanAssigneeManager';
+import AssigneesManager from '../../../components/AssigneesManager';
 import AdminTimeline from '../../../components/AdminTimeline';
 
 const PremiumOverviewTab = props => {
@@ -26,7 +26,7 @@ const PremiumOverviewTab = props => {
           collection={LOANS_COLLECTION}
         />
         <LoanDisbursementDate loan={loan} />
-        <LoanAssigneeManager loan={loan} />
+        <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
       </div>
 
       <AdminTimeline

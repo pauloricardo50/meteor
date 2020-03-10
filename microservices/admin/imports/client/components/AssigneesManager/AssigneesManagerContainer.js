@@ -1,11 +1,16 @@
-import React from 'react';
 import SimpleSchema from 'simpl-schema';
+import { withProps } from 'recompose';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
 import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
-import { loanSetAssignees } from 'core/api/loans/index';
-import LoanAssignees from './LoanAssignees';
+import {
+  ROLES,
+  LOANS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
+} from 'core/api/constants';
+import {
+  loanSetAssignees,
+  insuranceRequestSetAssignees,
+} from 'core/api/methods';
 
 const schema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
@@ -49,32 +54,34 @@ const schema = new SimpleSchema({
   },
 });
 
-const LoanAssigneeManager = ({ loan: { _id: loanId, assigneeLinks = [] } }) => (
-  <div>
-    <div className="flex center-align">
-      <h4 className="mr-8">Répartition des conseillers</h4>
-    </div>
-    <div className="flex center-align">
-      <div className="mr-8">
-        <LoanAssignees assigneeLinks={assigneeLinks} />
-      </div>
-      <AutoFormDialog
-        buttonProps={{ label: 'Modifier', color: 'primary', size: 'small' }}
-        model={{ assigneeLinks }}
-        schema={schema}
-        title="Répartition des conseillers"
-        description="Ajoutera une activité sur ce dossier visible pour tous"
-        onSubmit={values =>
-          loanSetAssignees.run({
-            loanId,
-            assignees: values.assigneeLinks,
-            note: values.note,
-            updateUserAssignee: values.updateUserAssignee,
-          })
-        }
-      />
-    </div>
-  </div>
-);
+export default withProps(
+  ({ doc: { _id: docId, assigneeLinks = [] }, collection }) => {
+    let methodParams;
+    let setAssignees;
 
-export default LoanAssigneeManager;
+    switch (collection) {
+      case LOANS_COLLECTION:
+        methodParams = { loanId: docId };
+        setAssignees = loanSetAssignees;
+        break;
+      case INSURANCE_REQUESTS_COLLECTION:
+        methodParams = { insuranceRequestId: docId };
+        setAssignees = insuranceRequestSetAssignees;
+        break;
+      default:
+        break;
+    }
+
+    return {
+      schema,
+      model: { assigneeLinks },
+      onSubmit: ({ assigneeLinks: assignees, note, updateUserAssignee }) =>
+        setAssignees.run({
+          ...methodParams,
+          assignees,
+          note,
+          updateUserAssignee,
+        }),
+    };
+  },
+);

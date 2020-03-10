@@ -20,6 +20,7 @@ import {
   loanSetStatus,
   sendLoanChecklist,
   loanSetAssignees,
+  insuranceRequestSetAssignees,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -415,15 +416,28 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  loanSetAssignees,
-  ({ context, params: { loanId, assignees, note } }) => {
+  [loanSetAssignees, insuranceRequestSetAssignees],
+  ({ context, params: { loanId, insuranceRequestId, assignees, note } }) => {
     context.unblock();
     const { userId } = context;
 
+    let eventParams;
+
+    if (loanId) {
+      eventParams = {
+        event: ACTIVITY_EVENT_METADATA.NEW_LOAN_ASSIGNEES,
+        loanLink: { _id: loanId },
+      };
+    } else if (insuranceRequestId) {
+      eventParams = {
+        event: ACTIVITY_EVENT_METADATA.NEW_INSURANCE_REQUEST_ASSIGNEES,
+        insuranceRequestLink: { _id: insuranceRequestId },
+      };
+    }
+
     ActivityService.addEventActivity({
-      event: ACTIVITY_EVENT_METADATA.NEW_LOAN_ASSIGNEES,
+      ...eventParams,
       isServerGenerated: true,
-      loanLink: { _id: loanId },
       title: `Nouvelle répartition des conseillers`,
       description: `Répartition: ${assignees
         .map(({ _id, percent }) => {
