@@ -93,6 +93,4 @@ export const Services = {
   [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
 };
 
-Accounts.onLogin((...args) => {
-  console.log('Accounts login server', JSON.stringify(args, null, 2));
-});
+Accounts.onLogin((...args) => {});

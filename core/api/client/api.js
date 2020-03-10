@@ -13,6 +13,5 @@ if (Meteor.isAppTest) {
 }
 
 Accounts.onLogin((...args) => {
-  console.log('Accounts login', args);
   analyticsLogin.run({});
 });
