@@ -78,7 +78,6 @@ exposeQuery({
         if (loanStatus) {
           filters['loanCache.status'] = loanStatus;
         }
-        console.log('filters:', filters);
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
