@@ -22,6 +22,7 @@ export const taskTableFragment = {
   status: 1,
   title: 1,
   user: { name: 1, roles: 1, organisations: { name: 1 } },
+  insuranceRequest: { name: 1 },
   isPrivate: 1,
 };
 

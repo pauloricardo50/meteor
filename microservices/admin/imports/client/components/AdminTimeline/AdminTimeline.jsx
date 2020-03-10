@@ -6,16 +6,16 @@ import TimelineDescription from 'core/components/Timeline/TimelineDescription';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 import Checkbox from 'core/components/Checkbox';
-import LoanActivityAdder from './LoanActivityAdder';
-import LoanTimelineContainer, {
+import AdminTimelineContainer, {
   activityFilterOptions,
-} from './LoanTimelineContainer';
-import LoanTimelineTitle from './LoanTimelineTitle';
+} from './AdminTimelineContainer';
+import AdminActivityAdder from './AdminActivityAdder';
+import AdminTimelineTitle from './AdminTimelineTitle';
 
 const now = new Date();
 
-const LoanTimeline = ({
-  loanId,
+const AdminTimeline = ({
+  docId,
   activities = [],
   type,
   setType,
@@ -23,20 +23,23 @@ const LoanTimeline = ({
   setFetchTasks,
   fetchConversations,
   setFetchConversations,
+  frontTagId,
+  withActivityAdder = true,
 }) => {
   useEffect(() => {
-    const el = document.getElementsByClassName('loan-timeline-timeline')[0];
+    const el = document.getElementsByClassName('admin-timeline-timeline')[0];
     el.scrollLeft = el.scrollWidth;
   }, []);
+
   const elementAfterToday = activities.find(
     ({ date }) => date.getTime() > now.getTime(),
   );
 
   return (
-    <div className="loan-timeline">
+    <div className="admin-timeline">
       <div className="flex">
         <h2>Activité</h2>
-        <LoanActivityAdder loanId={loanId} />
+        {withActivityAdder && <AdminActivityAdder docId={docId} />}
         <Select
           value={type.$in}
           multiple
@@ -53,15 +56,17 @@ const LoanTimeline = ({
           label="Tâches"
           className="ml-8"
         />
-        <Checkbox
-          onChange={() => setFetchConversations(!fetchConversations)}
-          value={fetchConversations}
-          label="Front"
-        />
+        {frontTagId && (
+          <Checkbox
+            onChange={() => setFetchConversations(!fetchConversations)}
+            value={fetchConversations}
+            label="Front"
+          />
+        )}
       </div>
       <Timeline
         variant="horizontal"
-        className="loan-timeline-timeline"
+        className="admin-timeline-timeline"
         events={activities.map(activity => ({
           children: elementAfterToday &&
             activities.length >= 2 &&
@@ -72,11 +77,11 @@ const LoanTimeline = ({
                 </Tooltip>
               </div>
             ),
-          mainLabel: <LoanTimelineTitle activity={activity} />,
+          mainLabel: <AdminTimelineTitle activity={activity} />,
           secondaryLabel: (
             <TimelineDescription
               activity={activity}
-              className="loan-timeline-description"
+              className="admin-timeline-description"
             />
           ),
         }))}
@@ -85,4 +90,4 @@ const LoanTimeline = ({
   );
 };
 
-export default LoanTimelineContainer(LoanTimeline);
+export default AdminTimelineContainer(AdminTimeline);

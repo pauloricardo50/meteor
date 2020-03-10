@@ -13,6 +13,11 @@ import {
 } from 'core/api/activities/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+import {
+  LOANS_COLLECTION,
+  USERS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
+} from 'core/api/constants';
 
 export const ActivitySchema = new SimpleSchema({
   title: String,
@@ -38,7 +43,7 @@ export const activityFormLayout = [
   'isImportant',
 ];
 
-export const LoanActivityForm = ({
+export const AdminActivityForm = ({
   model = {},
   onSubmit,
   iconType,
@@ -64,10 +69,16 @@ export const LoanActivityForm = ({
   />
 );
 
-export const LoanActivityModifier = withProps(({ model }) => ({
+export const AdminActivityModifier = withProps(({ model }) => ({
   onSubmit: values =>
     activityUpdate.run({ activityId: model._id, object: values }),
-  buttonProps: {icon: <Icon type="edit"/>, fab: true, label:'', style: {}, tooltip: 'Modifier'},
+  buttonProps: {
+    icon: <Icon type="edit" />,
+    fab: true,
+    label: '',
+    style: {},
+    tooltip: 'Modifier',
+  },
   renderAdditionalActions: ({ closeDialog, setDisableActions }) => (
     <Button
       onClick={() => {
@@ -83,11 +94,29 @@ export const LoanActivityModifier = withProps(({ model }) => ({
     </Button>
   ),
   title: 'Modifier événement',
-}))(LoanActivityForm);
+}))(AdminActivityForm);
 
-export default withProps(({ loanId }) => ({
-  onSubmit: values =>
-    activityInsert.run({ object: { ...values, loanLink: { _id: loanId } } }),
-  iconType: 'add',
-  title: 'Ajouter événement',
-}))(LoanActivityForm);
+export default withProps(({ docId, collection }) => {
+  let methodParams;
+
+  switch (collection) {
+    case LOANS_COLLECTION:
+      methodParams = { loanLink: { _id: docId } };
+      break;
+    case USERS_COLLECTION:
+      methodParams = { userLin: { _id: docId } };
+      break;
+    case INSURANCE_REQUESTS_COLLECTION:
+      methodParams = { insuranceRequestLink: { _id: docId } };
+      break;
+    default:
+      break;
+  }
+
+  return {
+    onSubmit: values =>
+      activityInsert.run({ object: { ...values, ...methodParams } }),
+    iconType: 'add',
+    title: 'Ajouter événement',
+  };
+})(AdminActivityForm);

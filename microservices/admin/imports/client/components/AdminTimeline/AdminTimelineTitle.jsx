@@ -3,7 +3,7 @@ import React from 'react';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import colors from 'core/config/colors';
-import { LoanActivityModifier } from './LoanActivityAdder';
+import { AdminActivityModifier } from './AdminActivityAdder';
 
 const icons = {
   [ACTIVITY_TYPES.EMAIL]: 'mail',
@@ -29,7 +29,7 @@ const getIcon = (type, isServerGenerated, isImportant) => {
 const allowModify = (type, isServerGenerated) =>
   !isServerGenerated && type !== 'task';
 
-const LoanTimelineTitle = ({ activity }) => {
+const AdminTimelineTitle = ({ activity }) => {
   const { date, title, type, isServerGenerated, isImportant } = activity;
 
   return (
@@ -40,10 +40,10 @@ const LoanTimelineTitle = ({ activity }) => {
       iconStyle={isImportant ? { color: colors.warning } : {}}
     >
       {allowModify(type, isServerGenerated) && (
-        <LoanActivityModifier className="activity-modifier" model={activity} />
+        <AdminActivityModifier className="activity-modifier" model={activity} />
       )}
     </TimelineTitle>
   );
 };
 
-export default LoanTimelineTitle;
+export default AdminTimelineTitle;

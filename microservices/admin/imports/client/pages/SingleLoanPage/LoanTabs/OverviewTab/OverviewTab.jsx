@@ -17,9 +17,8 @@ import BorrowerAge from '../BorrowerAge';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
-import LoanTimeline from './LoanTimeline';
 import LoanDisbursementDate from './LoanDisbursementDate';
-import InsuranceRequestAdder from '../../../../components/InsuranceRequestAdder/InsuranceRequestAdder';
+import AdminTimeline from '../../../../components/AdminTimeline';
 
 const OverviewTab = props => {
   const {
@@ -72,7 +71,11 @@ const OverviewTab = props => {
         </div>
       </div>
 
-      <LoanTimeline loanId={loanId} frontTagId={frontTagId} />
+      <AdminTimeline
+        docId={loanId}
+        collection={LOANS_COLLECTION}
+        frontTagId={frontTagId}
+      />
 
       <AdminNotes doc={loan} collection={LOANS_COLLECTION} />
 

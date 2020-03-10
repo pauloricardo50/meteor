@@ -12,6 +12,7 @@ import {
   ORGANISATIONS_COLLECTION,
   LENDERS_COLLECTION,
   CONTACTS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import Icon from 'core/components/Icon';
 import { schema, taskFormLayout } from './TaskModifier';
@@ -30,6 +31,8 @@ const getCollectionLabel = collection => {
       return 'ce prêteur';
     case CONTACTS_COLLECTION:
       return 'ce contact';
+    case INSURANCE_REQUESTS_COLLECTION:
+      return 'ce dossier assurance';
     default:
       return 'rien';
   }
