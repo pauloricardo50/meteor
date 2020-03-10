@@ -26,7 +26,7 @@ export default compose(
     onClick: () => {
       const { _id: loanId } = loan;
       const confirm = window.confirm(`Réinitialiser le dossier ? Les informations suivantes seront modifées:\n
-      - Etape du dossier -> "Attestation de financement"
+      - Etape du dossier -> "Accord de principe"
       - Interface -> "Simplifiée"
       - Suppression de la capacité d'achat
       `);
