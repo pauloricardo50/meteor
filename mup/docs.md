@@ -45,7 +45,7 @@ This user is needed to connect to Atlas for the `atlas-migrate.sh` script or to 
 1. Go to the [Database Access](https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#security/database/users) page for the Atlas cluster
 2. Click Add New User
 3. Put in a username that shows it is yours, and create a password. You will not be shown the password later, though you can change it.
-4. Select `Read and Write from any database`
+4. Select `Read and Write to any database`
 5. Create a file in `mup/configs/mongo-auth.json` with the content:
 ```json
 {
