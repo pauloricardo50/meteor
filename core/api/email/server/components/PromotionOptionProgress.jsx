@@ -28,7 +28,7 @@ export const getPromotionProgressData = ({ promotionOptionId }) => {
 const PromotionOptionProgress = ({ loan, promotionOption }) => (
   <div style={{ padding: 18, marginTop: 24 }}>
     <h2>
-      <T id="PromotionReservationsTable.progress" />
+      <T id="PromotionOptionProgress.title" />
     </h2>
     <PromotionReservationProgress
       promotionOption={promotionOption}
