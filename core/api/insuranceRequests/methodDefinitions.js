@@ -21,3 +21,21 @@ export const insuranceRequestUpdate = new Method({
   name: 'insuranceRequestUpdate',
   params: { insuranceRequestId: String, object: Object },
 });
+
+export const insuranceRequestSetAdminNote = new Method({
+  name: 'insuranceRequestSetAdminNote',
+  params: {
+    insuranceRequestId: String,
+    adminNoteId: Match.Maybe(String),
+    note: Object,
+    notifyPros: Match.Maybe(Array),
+  },
+});
+
+export const insuranceRequestRemoveAdminNote = new Method({
+  name: 'insuranceRequestRemoveAdminNote',
+  params: {
+    insuranceRequestId: String,
+    adminNoteId: String,
+  },
+});

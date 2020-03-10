@@ -1,0 +1,18 @@
+.overview-tab {
+    display: flex;
+    flex-direction: column;
+}
+
+.insurance-request-timeline {
+    margin-top: 40px;
+
+    .timeline {
+        overflow-x: scroll;
+    }
+
+    h2 {
+        margin: 0;
+    }
+
+    
+}

@@ -1,23 +1,23 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
-
 import { employeesById } from '../../arrays/epotekEmployees';
 import AdminNoteAdder from '../AdminNote/AdminNoteAdder';
 import Button from '../Button';
 import Icon from '../Icon';
+import AdminNotesContainer from './AdminNotesContainer';
 
 const isAdmin = Meteor.microservice === 'admin';
 
-const LoanNotes = ({
-  loan: {
-    _id: loanId,
-    proNotes = [],
-    adminNotes = [],
-    proNote,
-    user: { referredByUser } = {},
-  },
+const AdminNotes = ({
+  collection,
+  docId,
+  proNotes,
+  adminNotes,
+  proNote,
+  referredByUser,
   title = 'Notes',
 }) => {
   const [showAll, setShowAll] = useState(false);
@@ -30,13 +30,13 @@ const LoanNotes = ({
     !shownNotes.find(({ id }) => id === proNote.id);
 
   return (
-    <div className="loan-notes">
+    <div className="admin-notes">
       <div className="flex center-align mb-16">
         <h2 className="mr-8">{title}</h2>
 
         {isAdmin && (
           <AdminNoteAdder
-            loanId={loanId}
+            docId={docId}
             buttonProps={{
               raised: true,
               primary: true,
@@ -44,6 +44,7 @@ const LoanNotes = ({
               icon: <Icon type="add" />,
             }}
             referredByUser={referredByUser}
+            collection={collection}
           />
         )}
       </div>
@@ -62,7 +63,7 @@ const LoanNotes = ({
             return (
               <div
                 key={id}
-                className={cx('mb-16 loan-notes-note', {
+                className={cx('mb-16 admin-notes-note', {
                   shared: isAdmin && isSharedWithPros,
                 })}
               >
@@ -80,13 +81,14 @@ const LoanNotes = ({
                   </span>
                   {isAdmin && (
                     <AdminNoteAdder
-                      loanId={loanId}
+                      docId={docId}
                       buttonProps={{
                         label: 'Modifier',
                         size: 'small',
                         className: 'mr-8',
                       }}
                       adminNote={shownNote}
+                      collection={collection}
                     />
                   )}
                   {isAdmin && isSharedWithPros && (
@@ -110,4 +112,4 @@ const LoanNotes = ({
   );
 };
 
-export default LoanNotes;
+export default AdminNotesContainer(AdminNotes);

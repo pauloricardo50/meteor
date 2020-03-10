@@ -6,6 +6,7 @@ import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import SingleInsuranceRequestPageContainer from './SingleInsuranceRequestPageContainer';
 import SingleInsuranceRequestPageHeader from './SingleInsuranceRequestPageHeader';
 import InsuranceRequestTabs from './InsuranceRequestTabs';
+import SingleInsuranceRequestPageContacts from './SingleInsuranceRequestPageContacts';
 
 const SingleInsuranceRequestPage = props => {
   const { insuranceRequest } = props;
@@ -22,6 +23,9 @@ const SingleInsuranceRequestPage = props => {
           withTaskInsert
           withQueryTaskInsert
           className="single-insurance-request-page-tasks card1 card-top"
+        />
+        <SingleInsuranceRequestPageContacts
+          insuranceRequestId={insuranceRequest._id}
         />
       </div>
       <InsuranceRequestTabs {...props} />

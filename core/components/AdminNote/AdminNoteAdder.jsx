@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { adminNotesSchema } from 'core/api/loans/schemas/otherSchemas';
-import {
-  loanSetAdminNote,
-  loanRemoveAdminNote,
-} from 'core/api/loans/methodDefinitions';
+import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
+
 import useSearchParams from 'core/hooks/useSearchParams';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
-import useLoanContacts from './useLoanContacts';
+import AdminNoteAdderContainer from './AdminNoteAdderContainer';
 
 const getUpdateSchema = () =>
   new SimpleSchema(adminNotesSchema)
@@ -48,12 +45,15 @@ const getInsertSchema = contacts =>
 
 const AdminNoteSetter = ({
   adminNote,
-  loanId,
+  docId,
   buttonProps,
-  referredByUser,
+  getContacts,
+  setAdminNote,
+  removeAdminNote,
+  methodParams,
 }) => {
   const isInsert = !adminNote;
-  const { loading, contacts } = useLoanContacts(loanId);
+  const { loading, contacts } = getContacts(docId);
   const schema = useMemo(
     () =>
       isInsert
@@ -73,8 +73,8 @@ const AdminNoteSetter = ({
       schema={schema}
       openOnMount={!adminNote && searchParams?.addNote}
       onSubmit={({ notifyPros = [], ...values }) =>
-        loanSetAdminNote.run({
-          loanId,
+        setAdminNote.run({
+          ...methodParams,
           adminNoteId: isInsert ? undefined : adminNote.id,
           note: values,
           notifyPros: notifyPros.map(email => ({
@@ -97,8 +97,8 @@ const AdminNoteSetter = ({
           <Button
             onClick={() => {
               setDisableActions(true);
-              loanRemoveAdminNote
-                .run({ loanId, adminNoteId: adminNote.id })
+              removeAdminNote
+                .run({ ...methodParams, adminNoteId: adminNote.id })
                 .then(closeDialog)
                 .finally(() => setDisableActions(false));
             }}
@@ -113,4 +113,4 @@ const AdminNoteSetter = ({
   );
 };
 
-export default AdminNoteSetter;
+export default AdminNoteAdderContainer(AdminNoteSetter);

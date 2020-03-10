@@ -3,7 +3,7 @@ import React from 'react';
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import LoanNotes from 'core/components/LoanNotes';
+import AdminNotes from 'core/components/AdminNotes';
 import LoanTimeline from '../LoanTabs/OverviewTab/LoanTimeline';
 import StructureForm from './StructureForm';
 import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
@@ -30,7 +30,7 @@ const PremiumOverviewTab = props => {
       </div>
 
       <LoanTimeline loanId={loanId} frontTagId={frontTagId} />
-      <LoanNotes loan={loan} />
+      <AdminNotes doc={loan} collection={LOANS_COLLECTION} />
 
       <div className="structure-form">
         <StructureForm {...props} />

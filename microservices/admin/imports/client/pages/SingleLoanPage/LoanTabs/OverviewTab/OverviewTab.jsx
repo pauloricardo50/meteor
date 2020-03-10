@@ -9,7 +9,7 @@ import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklis
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'core/api/constants';
-import LoanNotes from 'core/components/LoanNotes';
+import AdminNotes from 'core/components/AdminNotes';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LinkToFront from '../../../../components/LinkToFront';
 import LoanAssigneeManager from '../../../../components/LoanAssigneeManager/LoanAssigneeManager';
@@ -74,7 +74,7 @@ const OverviewTab = props => {
 
       <LoanTimeline loanId={loanId} frontTagId={frontTagId} />
 
-      <LoanNotes loan={loan} />
+      <AdminNotes doc={loan} collection={LOANS_COLLECTION} />
 
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />
