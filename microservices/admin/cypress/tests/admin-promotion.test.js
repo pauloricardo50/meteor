@@ -216,7 +216,7 @@ describe('Admin promotion', () => {
         .should('have.length', 1)
         .click();
 
-      cy.contains('Attestation de financement').click();
+      cy.contains('Accord de principe').click();
 
       cy.get('input[name=status]')
         .parent()
@@ -232,7 +232,7 @@ describe('Admin promotion', () => {
         .contains('Oui')
         .click();
 
-      cy.contains('Attestation de financement')
+      cy.contains('Accord de principe')
         .parents('div')
         .contains('Validé')
         .should('exist');
