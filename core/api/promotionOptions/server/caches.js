@@ -9,5 +9,5 @@ PromotionOptionService.cache(
     referenceField: 'promotionOptionLinks._id',
     cacheField: 'loanCache',
   },
-  {},
+  { loanCache: { $exists: false } },
 );
