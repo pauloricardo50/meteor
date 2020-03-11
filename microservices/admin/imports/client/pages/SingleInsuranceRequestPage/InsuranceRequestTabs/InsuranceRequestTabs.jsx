@@ -8,6 +8,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 import OverviewTab from './OverviewTab';
+import InsurancesTab from './InsurancesTab';
 
 const getTabs = props => {
   const { insuranceRequest } = props;
@@ -17,6 +18,11 @@ const getTabs = props => {
       id: 'overview',
       Component: OverviewTab,
       icon: 'info',
+    },
+    {
+      id: 'insurances',
+      Component: InsurancesTab,
+      icon: 'accessibleForward',
     },
   ];
 };

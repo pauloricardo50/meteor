@@ -4,6 +4,7 @@ import {
   updatedAt,
   createdAt,
   decimalMoneyField,
+  dateField,
 } from '../../helpers/sharedSchemas';
 
 import { INSURANCE_STATUS } from '../insuranceConstants';
@@ -23,9 +24,17 @@ const InsuranceSchema = new SimpleSchema({
   'organisationLink._id': String,
   premium: decimalMoneyField,
   singlePremium: { type: Boolean, defaultValue: false },
-  duration: { type: SimpleSchema.Integer, optional: true, min: 1, max: 9999 },
-  billingDate: { type: Date, optional: true },
-  revenueLinks: { type: Array, defaultValue: [] },
+  duration: {
+    type: SimpleSchema.Integer,
+    optional: true,
+    min: 1,
+    max: 9999,
+    condition: ({ singlePremium }) => !singlePremium,
+  },
+  billingDate: { ...dateField, optional: false },
+  insuranceProductLink: { type: Object, optional: true },
+  'insuranceProductLink._id': String,
+  revenueLinks: { type: Array, optional: true },
   'revenueLinks.$': Object,
   'revenueLinks.$._id': String,
 });

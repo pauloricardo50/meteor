@@ -19,7 +19,7 @@ Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
     const { insuranceRequests = [], loans = [] } = BorrowerService.createQuery({
       $filters: { id: borrowerId },
       loans: { _id: 1 },
-      InsuranceRequests: { _id: 1 },
+      insuranceRequests: { _id: 1 },
     }).fetchOne();
     const hasOneLoan = loans.length === 1;
     const hasOneInsuranceRequest = insuranceRequests.length === 1;

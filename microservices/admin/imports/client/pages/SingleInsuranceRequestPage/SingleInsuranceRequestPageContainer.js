@@ -14,6 +14,7 @@ export default compose(
       status: 1,
       assigneeLinks: 1,
       assignees: { name: 1, phoneNumber: 1, email: 1 },
+      borrowers: { name: 1 },
     }),
     dataName: 'insuranceRequest',
     queryOptions: { reactive: true, single: true },
