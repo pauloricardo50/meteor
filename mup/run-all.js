@@ -23,7 +23,7 @@ function getMupCommand() {
   removeOption('--environment', true);
   removeOption('-e', true);
   removeOption('--apps', true);
-  removeOption('--serial', false);
+  removeOption('--parallel', false);
 
   return commands;
 }
@@ -52,8 +52,8 @@ const { argv } = yargs
   .describe('environment', 'environment name, or "all"')
   .demandOption('environment')
   .option('apps')
-  .option('serial', {
-    description: 'Run command in serial for all apps',
+  .option('parallel', {
+    description: 'Run command in parallel for all apps',
     type: 'boolean',
   })
   .describe('apps', 'comma separated list of app names to run the command for');
@@ -146,8 +146,8 @@ function runInSerial() {
   });
 }
 
-if (argv.serial) {
-  runInSerial();
-} else {
+if (argv.parallel) {
   runInParallel();
+} else {
+  runInSerial();
 }
