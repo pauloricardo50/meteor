@@ -30,7 +30,7 @@ class CommissionRateService extends CollectionService {
       );
     }
 
-    rates.forEach(({ rate, threshold }, index, array) => {
+    rates.forEach(({ rate, threshold = 0 }, index, array) => {
       if (index === 0) {
         if (threshold !== 0) {
           throw new Meteor.Error('Le premier seuil doit être à 0');
@@ -38,7 +38,7 @@ class CommissionRateService extends CollectionService {
         return;
       }
 
-      const { rate: previousRate, threshold: previousThreshold } = array[
+      const { rate: previousRate, threshold: previousThreshold = 0 } = array[
         index - 1
       ];
 

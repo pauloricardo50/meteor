@@ -53,6 +53,6 @@ export const setCommissionRates = new Method({
   name: 'setCommissionRates',
   params: {
     organisationId: String,
-    commissionRates: Array,
+    commissionRates: Object,
   },
 });

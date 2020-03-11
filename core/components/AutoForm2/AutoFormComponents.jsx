@@ -47,10 +47,11 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
+    const { getProps = () => {} } = uniforms;
     return {
       Component: OptimizedDateField,
       type: COMPONENT_TYPES.DATE,
-      props: { placeholder: null, variant: 'outlined' },
+      props: { placeholder: null, variant: 'outlined', getProps },
     };
   }
 

@@ -8,7 +8,9 @@ import CommissionRatesViewerContainer from './CommissionRatesViewerContainer';
 const CommissionRatesViewer = ({
   commissionRates = [],
   generatedRevenues = 0,
+  generatedProductions,
 }) => {
+  console.log('generatedProductions:', generatedProductions);
   const currentRate = getCurrentRate(commissionRates, generatedRevenues);
 
   return (

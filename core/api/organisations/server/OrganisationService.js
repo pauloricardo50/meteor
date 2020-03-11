@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Organisations from '../organisations';
 import CollectionService from '../../helpers/server/CollectionService';
+import CommissionRateService from '../../commissionRates/server/CommissionRateService';
 
 class OrganisationService extends CollectionService {
   constructor() {
@@ -9,33 +10,16 @@ class OrganisationService extends CollectionService {
   }
 
   setCommissionRates({ commissionRates, organisationId }) {
-    if (commissionRates.length > 0) {
-      if (commissionRates[0].threshold !== 0) {
-        throw new Meteor.Error('Le premier seuil doit être 0');
-      }
+    const { _id: currentCommissionRatesId } =
+      CommissionRateService.get(
+        { 'organisationLink._id': organisationId, type: commissionRates.type },
+        { _id: 1 },
+      ) || {};
+    if (currentCommissionRatesId) {
+      console.log('currentCommissionRatesId:', currentCommissionRatesId);
+      CommissionRateService.remove(currentCommissionRatesId);
     }
-
-    commissionRates.forEach(({ rate, threshold }, i, arr) => {
-      if (i === 0) {
-        return;
-      }
-
-      const { rate: previousRate, threshold: previousThreshold } = arr[i - 1];
-
-      if (previousRate >= rate) {
-        throw new Meteor.Error(
-          'Chaque taux doit être plus élevé que le précédent',
-        );
-      }
-
-      if (previousThreshold >= threshold) {
-        throw new Meteor.Error(
-          'Chaque seuil doit être plus élevé que le précédent',
-        );
-      }
-    });
-
-    return this._update({ id: organisationId, object: { commissionRates } });
+    return CommissionRateService.insert({ commissionRates, organisationId });
   }
 }
 

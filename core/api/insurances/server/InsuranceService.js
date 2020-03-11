@@ -1,6 +1,7 @@
 import CollectionService from '../../helpers/server/CollectionService';
 import Insurances from '../insurances';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
+import { INSURANCE_STATUS } from '../insuranceConstants';
 
 class InsuranceService extends CollectionService {
   constructor() {
@@ -33,6 +34,37 @@ class InsuranceService extends CollectionService {
     });
 
     return insuranceId;
+  };
+
+  getGeneratedProductions = ({ organisationId }) => {
+    const activeInsurances = this.fetch({
+      $filters: {
+        'organisationLink._id': organisationId,
+        status: INSURANCE_STATUS.ACTIVE,
+      },
+      premium: 1,
+      singlePremium: 1,
+      duration: 1,
+      insuranceProduct: { revaluationFactor: 1 },
+    });
+
+    return activeInsurances.reduce((totalProduction, insurance) => {
+      const {
+        premium,
+        singlePremium,
+        duration,
+        insuranceProduct: { revaluationFactor },
+      } = insurance;
+      let production = 0;
+
+      if (singlePremium) {
+        production = premium * revaluationFactor;
+      } else {
+        production = premium * duration * revaluationFactor;
+      }
+
+      return production + totalProduction;
+    }, 0);
   };
 }
 

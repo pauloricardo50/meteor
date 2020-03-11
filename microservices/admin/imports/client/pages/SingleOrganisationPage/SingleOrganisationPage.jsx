@@ -13,7 +13,7 @@ import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
-import CommissionEditor from './CommissionEditor';
+import CommissionRates from './CommissionRates';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
 import InsuranceProducts from './InsuranceProducts';
@@ -43,7 +43,7 @@ const tabs = ({ organisation, currentUser }) =>
     },
     {
       id: 'commission',
-      Component: CommissionEditor,
+      Component: CommissionRates,
     },
     {
       id: 'referredUsers',
@@ -74,17 +74,24 @@ const tabs = ({ organisation, currentUser }) =>
     }),
   }));
 
-const SingleOrganisationPage = ({ organisation, currentUser }) => (
-  <div className="card1 card-top single-organisation-page">
-    <Helmet>
-      <title>{organisation.name}</title>
-    </Helmet>
-    <SingleOrganisationPageHeader
-      organisation={organisation}
-      currentUser={currentUser}
-    />
-    <Tabs tabs={tabs({ organisation, currentUser })} routerParamName="tabId" />
-  </div>
-);
+const SingleOrganisationPage = ({ organisation, currentUser }) => {
+  console.log('organisation:', organisation);
+
+  return (
+    <div className="card1 card-top single-organisation-page">
+      <Helmet>
+        <title>{organisation.name}</title>
+      </Helmet>
+      <SingleOrganisationPageHeader
+        organisation={organisation}
+        currentUser={currentUser}
+      />
+      <Tabs
+        tabs={tabs({ organisation, currentUser })}
+        routerParamName="tabId"
+      />
+    </div>
+  );
+};
 
 export default SingleOrganisationPageContainer(SingleOrganisationPage);

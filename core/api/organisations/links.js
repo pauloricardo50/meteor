@@ -68,6 +68,7 @@ LinkInitializer.inversedInit(() => {
     commissionRates: {
       collection: CommissionRates,
       inversedBy: 'organisation',
+      type: 'many',
     },
   });
 });
