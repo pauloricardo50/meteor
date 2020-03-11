@@ -115,7 +115,7 @@ export const tmuxinatorPane = ({
 }) => ({
   [applicationName]: [
     `cd ${microservicePath}`,
-    `METEOR_PACKAGE_DIRS="packages:../../meteorPackages" meteor build ${buildDirectoryPath}/. --server-only --architecture os.linux.x86_64`,
+    `METEOR_PACKAGE_DIRS="packages:../../meteorPackages" METEOR_ALLOW_SUPERUSER=true meteor build ${buildDirectoryPath}/. --server-only --architecture os.linux.x86_64`,
     `cd ${buildDirectoryPath}`,
     `mv ./*.tar.gz ./${applicationImage}`,
     `cd ../../`,

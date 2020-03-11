@@ -12,6 +12,8 @@ if (Meteor.isAppTest) {
   window.ClientEventService = ClientEventService;
 }
 
-Accounts.onLogin((...args) => {
-  analyticsLogin.run({});
+Accounts.onLogin(({ type }) => {
+  if (type === 'password') {
+    analyticsLogin.run({});
+  }
 });

@@ -15,7 +15,7 @@
     "antd": "^3.26.7",
     "archiver": "^3.1.1",
     "aws-sdk": "^2.604.0",
-    "axios": "^0.19.2",
+    "axios": "0.18.1",
     "babel-polyfill": "^6.26.0",
     "base64topdf": "^1.1.8",
     "bcrypt": "^3.0.7",
