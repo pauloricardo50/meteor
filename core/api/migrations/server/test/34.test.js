@@ -88,7 +88,7 @@ describe('Migration 34', () => {
 
       CommissionRateService.insert({
         commissionRates: {
-          type: COMMISSION_RATES_TYPE.REVENUES,
+          type: COMMISSION_RATES_TYPE.PRODUCTIONS,
           rates: [
             { rate: 0.1, threshold: 0, date: '01-01' },
             { rate: 0.2, threshold: 1, date: '01-01' },

@@ -23,7 +23,7 @@ const CommissionsEditor = props => {
       <hr />
       <CommissionRatesViewer
         organisationId={organisationId}
-        commissionRates={rates}
+        commissionRates={commissionRates}
       />
     </div>
   );

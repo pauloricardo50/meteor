@@ -37,4 +37,25 @@ Organisations.addReducers({
       return getCurrentRate(rates, generatedRevenues, name);
     },
   },
+  productionRate: {
+    body: { name: 1 },
+    reduce: ({ _id: organisationId, name }) => {
+      let generatedProductions = 0;
+      const { rates = [] } =
+        CommissionRateService.get(
+          {
+            'organisationLink._id': organisationId,
+            type: COMMISSION_RATES_TYPE.PRODUCTIONS,
+          },
+          { rates: 1 },
+        ) || {};
+      if (rates.length > 1) {
+        generatedProductions = InsuranceService.getGeneratedProductions({
+          organisationId,
+        });
+      }
+
+      return getCurrentRate(rates, generatedProductions, name);
+    },
+  },
 });

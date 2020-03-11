@@ -6,13 +6,13 @@ import CommissionsEditor from './CommissionsEditor';
 
 export default withProps(({ commissionRates = [] }) => {
   const [commissionCommissionRates = {}] = commissionRates.filter(
-    ({ type }) => type === COMMISSION_RATES_TYPE.REVENUES,
+    ({ type }) => type === COMMISSION_RATES_TYPE.PRODUCTIONS,
   );
 
   return {
     commissionRates: {
       ...commissionCommissionRates,
-      type: COMMISSION_RATES_TYPE.REVENUES,
+      type: COMMISSION_RATES_TYPE.PRODUCTIONS,
     },
     emptyState: (
       <p className="description">

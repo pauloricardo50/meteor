@@ -559,6 +559,7 @@ export const baseOrganisation = () => ({
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
   commissionRate: 1,
+  productionRate: 1,
   commissionRates: { type: 1, rates: 1 },
   contacts: contact(),
   documents: 1,

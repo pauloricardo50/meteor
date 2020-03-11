@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import Organisations from '../organisations';
 import CollectionService from '../../helpers/server/CollectionService';
 import CommissionRateService from '../../commissionRates/server/CommissionRateService';
@@ -16,7 +14,6 @@ class OrganisationService extends CollectionService {
         { _id: 1 },
       ) || {};
     if (currentCommissionRatesId) {
-      console.log('currentCommissionRatesId:', currentCommissionRatesId);
       CommissionRateService.remove(currentCommissionRatesId);
     }
     return CommissionRateService.insert({ commissionRates, organisationId });
