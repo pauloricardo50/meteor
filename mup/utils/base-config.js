@@ -92,9 +92,21 @@ module.exports = function createConfig({
     },
 
     hooks: {
+      'post.setup': {
+        remoteCommand: `
+          # If you need to change settings for the papertrail-logs container
+          # Uncomment the following line so it is recreated
+          # docker rm -f papertrail-logs; 
+          docker run --restart=always -d --name papertrail-logs \
+          -e "SYSLOG_HOSTNAME=$HOSTNAME" \
+          -v=/var/run/docker.sock:/var/run/docker.sock gliderlabs/logspout  \
+          syslog+tls://logs7.papertrailapp.com:31301
+        `,
+      },
+
       'post.meteor.build': async function(api) {
         if (parallelPrepareBundle) {
-          return false
+          return false;
         }
 
         const history = api.commandHistory;
@@ -117,7 +129,7 @@ module.exports = function createConfig({
       },
       'post.meteor.push': function() {
         if (parallelPrepareBundle) {
-          return false
+          return false;
         }
 
         removePrepareBundleLock();
