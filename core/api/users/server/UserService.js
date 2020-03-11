@@ -733,10 +733,14 @@ export class UserServiceClass extends CollectionService {
   }
 
   setAssigneeForNewUser(userId) {
-    const { roles, assignedEmployeeId } = this.get(userId, {
-      assignedEmployeeId: 1,
-      roles: 1,
-    });
+    const { roles, assignedEmployeeId, referredByOrganisationLink } = this.get(
+      userId,
+      {
+        assignedEmployeeId: 1,
+        roles: 1,
+        referredByOrganisationLink: 1,
+      },
+    );
 
     if (assignedEmployeeId) {
       return;
@@ -764,17 +768,15 @@ export class UserServiceClass extends CollectionService {
             $options: { sort: { createdAt: -1 } },
             assignedEmployeeId: 1,
             createdAt: 1,
-            referredByOrganisationLink: 1,
           },
         );
 
         // Hard coded assignee for organisation
         if (
-          lastCreatedUser?.referredByOrganisationLink &&
-          assigneesByOrg[lastCreatedUser.referredByOrganisationLink]
+          referredByOrganisationLink &&
+          assigneesByOrg[referredByOrganisationLink]
         ) {
-          newAssignee =
-            assigneesByOrg[lastCreatedUser.referredByOrganisationLink];
+          newAssignee = assigneesByOrg[referredByOrganisationLink];
         }
         // Round robin
         else if (lastCreatedUser?.assignedEmployeeId) {
