@@ -6,7 +6,7 @@ module.exports = generateConfig({
   ...defaults,
   servers,
   microservice: 'backend',
-  subDomains: ['api'],
+  subDomains: ['api', 'pro'],
   appName: 'api',
   // Since api has dedicated servers, we can do it in parallel
   // with the other microservices
