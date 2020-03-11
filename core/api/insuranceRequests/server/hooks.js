@@ -6,7 +6,7 @@ import InsuranceRequests from '..';
 InsuranceRequests.before.remove((userId, { borrowerLinks }) => {
   borrowerLinks.forEach(({ _id: borrowerId }) => {
     const { insuranceRequests = [], loans = [] } = BorrowerService.createQuery({
-      $filters: { id: borrowerId },
+      $filters: { _id: borrowerId },
       loans: { _id: 1 },
       insuranceRequests: { _id: 1 },
     }).fetchOne();

@@ -193,7 +193,7 @@ export const adminLender = () => {
     offers: adminOffer(),
     organisation: {
       ...lenderFragment.organisation,
-      commissionRates: 1,
+      commissionRates: { type: 1, rates: { rate: 1, threshold: 1, date: 1 } },
     },
     status: 1,
   };
@@ -559,7 +559,7 @@ export const baseOrganisation = () => ({
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
   commissionRate: 1,
-  commissionRates: 1,
+  commissionRates: { type: 1, rates: { rate: 1, threshold: 1, date: 1 } },
   contacts: contact(),
   documents: 1,
   generatedRevenues: 1,
@@ -582,7 +582,6 @@ export const adminOrganisation = () => ({
   adminNote: 1,
   documents: 1,
   referredCustomers: { _id: 1 },
-  productionRates: 1,
   insuranceProducts: {
     type: 1,
     name: 1,
@@ -1094,7 +1093,13 @@ export const adminRevenue = () => ({
   loan: {
     name: 1,
     borrowers: { name: 1 },
-    user: { name: 1, referredByOrganisation: { name: 1, commissionRates: 1 } },
+    user: {
+      name: 1,
+      referredByOrganisation: {
+        name: 1,
+        commissionRates: { type: 1, rates: { rate: 1, threshold: 1, date: 1 } },
+      },
+    },
     userCache: 1,
     assigneeLinks: 1,
     hasPromotion: 1,

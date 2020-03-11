@@ -26,5 +26,6 @@ export * from '../front/methodDefiinitions';
 export * from '../insuranceRequests/methodDefinitions';
 export * from '../insurances/methodDefinitions';
 export * from '../insuranceProducts/methodDefinitions';
+export * from '../commissionRates/methodDefinitions';
 
 export * from './methodDefinitions';

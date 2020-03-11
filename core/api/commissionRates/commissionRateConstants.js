@@ -1,0 +1,6 @@
+export const COMMISSION_RATES_COLLECTION = 'commissionRates';
+
+export const COMMISSION_RATES_TYPE = {
+  REVENUES: 'REVENUES',
+  COMMISSIONS: 'COMMISSIONS',
+};

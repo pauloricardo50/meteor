@@ -5,7 +5,11 @@ import { Money } from 'core/components/Translation';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import DialogSimple from 'core/components/DialogSimple';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
+import {
+  LOANS_COLLECTION,
+  REVENUES_COLLECTION,
+  COMMISSION_RATES_TYPE,
+} from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatItem from './StatItem';
 
@@ -53,7 +57,12 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
       },
       loan: {
         name: 1,
-        user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
+        user: {
+          referredByOrganisation: {
+            name: 1,
+            commissionRates: { _id: 1, type: 1 },
+          },
+        },
         borrowers: { name: 1 },
         hasPromotion: 1,
       },
@@ -77,7 +86,10 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
       ) {
         return (
           referredByOrganisation.commissionRates &&
-          referredByOrganisation.commissionRates.length > 0
+          referredByOrganisation.commissionRates.length > 0 &&
+          referredByOrganisation.commissionRates.some(
+            ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
+          )
         );
       }
       return false;

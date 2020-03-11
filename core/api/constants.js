@@ -23,6 +23,7 @@ import { USERS_COLLECTION } from './users/userConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from './insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from './insurances/insuranceConstants';
 import { INSURANCE_PRODUCTS_COLLECTION } from './insuranceProducts/insuranceProductConstants';
+import { COMMISSION_RATES_COLLECTION } from './commissionRates/commissionRateConstants';
 
 export * from './activities/activityConstants';
 export * from './borrowers/borrowerConstants';
@@ -53,6 +54,7 @@ export * from './users/userConstants';
 export * from './insuranceRequests/insuranceRequestConstants';
 export * from './insurances/insuranceConstants';
 export * from './insuranceProducts/insuranceProductConstants';
+export * from './commissionRates/commissionRateConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -84,4 +86,5 @@ export const COLLECTIONS = {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCES_COLLECTION,
   INSURANCE_PRODUCTS_COLLECTION,
+  COMMISSION_RATES_COLLECTION,
 };

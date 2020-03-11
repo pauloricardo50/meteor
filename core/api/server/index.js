@@ -50,6 +50,7 @@ import OrganisationService from '../organisations/server/OrganisationService';
 import InsuranceRequestService from '../insuranceRequests/server/InsuranceRequestService';
 import InsuranceService from '../insurances/server/InsuranceService';
 import InsuranceProductService from '../insuranceProducts/server/InsuranceProductService';
+import CommissionRateService from '../commissionRates/server/CommissionRateService';
 import './serverCollections';
 
 process.on('uncaughtException', error => {
@@ -95,4 +96,5 @@ export const Services = {
   [COLLECTIONS.INSURANCE_REQUESTS_COLLECTION]: InsuranceRequestService,
   [COLLECTIONS.INSURANCES_COLLECTION]: InsuranceService,
   [COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION]: InsuranceProductService,
+  [COLLECTIONS.COMMISSION_RATES_COLLECTION]: CommissionRateService,
 };

@@ -28,7 +28,6 @@ class TaskService extends CollectionService {
   insert = ({
     object: { collection, dueAt, dueAtTime, docId, assigneeLink = {}, ...rest },
   }) => {
-    console.log('collection:', collection);
     let assignee = assigneeLink._id;
     if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);

@@ -1,6 +1,8 @@
+import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
 import Organisations from '..';
 import RevenueService from '../../revenues/server/RevenueService';
 import { getCurrentRate } from '../helpers';
+import CommissionRateService from '../../commissionRates/server/CommissionRateService';
 
 Organisations.addReducers({
   generatedRevenues: {
@@ -9,9 +11,17 @@ Organisations.addReducers({
       RevenueService.getGeneratedRevenues({ organisationId }),
   },
   commissionRate: {
-    body: { commissionRates: 1, name: 1 },
-    reduce: ({ commissionRates = [], _id: organisationId, name }) => {
+    body: { name: 1 },
+    reduce: ({ _id: organisationId, name }) => {
       let generatedRevenues = 0;
+      const { rates: commissionRates = [] } =
+        CommissionRateService.get(
+          {
+            'organisationLink._id': organisationId,
+            type: COMMISSION_RATES_TYPE.COMMISSIONS,
+          },
+          { rates: 1 },
+        ) || {};
       if (commissionRates.length > 1) {
         generatedRevenues = RevenueService.getGeneratedRevenues({
           organisationId,

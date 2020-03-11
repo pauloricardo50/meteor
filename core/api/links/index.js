@@ -20,6 +20,7 @@ import '../sessions/links';
 import '../insuranceRequests/links';
 import '../insurances/links';
 import '../insuranceProducts/links';
+import '../commissionRates/links';
 import LinkInitializer from './LinkInitializer';
 
 LinkInitializer.setLinks();

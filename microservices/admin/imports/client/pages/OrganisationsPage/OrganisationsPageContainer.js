@@ -33,7 +33,7 @@ export default compose(
         features: 1,
         $filter: 1,
         type: 1,
-        commissionRates: 1,
+        commissionRates: { type: 1, rates: { rate: 1, threshold: 1, date: 1 } },
       },
     }),
     dataName: 'organisations',
