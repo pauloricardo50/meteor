@@ -173,7 +173,7 @@ const MonitoringActivity = ({
         modalType="dialog"
         rows={rows}
         columnOptions={getColumnOptions({ hasCreatedAtRange })}
-        initialOrderBy={1}
+        initialOrderBy="loanCount"
         getModalProps={({ row: { loans: ls, name } }) => {
           const groups = groupBy(ls, 'status');
           return {

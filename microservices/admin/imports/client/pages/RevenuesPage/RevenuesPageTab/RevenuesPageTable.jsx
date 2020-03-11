@@ -84,7 +84,7 @@ const RevenuesPageTable = props => {
       </div>
       <RevenuesTable
         filterRevenues={() => ({ status, type })}
-        initialOrderBy={2}
+        initialOrderBy="date"
         postFilter={revenues =>
           revenuesFilter({ assignee, referrer, revenues })
         }

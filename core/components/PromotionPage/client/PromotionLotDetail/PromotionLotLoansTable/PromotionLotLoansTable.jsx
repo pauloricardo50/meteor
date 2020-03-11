@@ -18,7 +18,7 @@ const PromotionLotLoansTable = ({ rows, columnOptions, status, setStatus }) => (
     <Table
       rows={rows}
       columnOptions={columnOptions}
-      initialOrderBy={1} // By status
+      initialOrderBy="status" // By status
       className="promotion-lot-loans-table"
     />
   </>

@@ -12,7 +12,7 @@ export const RevenuesTable = ({
   revenueToModify,
   openModifier,
   setOpenModifier,
-  initialOrderBy = 1,
+  initialOrderBy = 'revenueStatus',
 }) => (
   <>
     <RevenueModifier
