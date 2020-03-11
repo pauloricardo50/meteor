@@ -50,6 +50,7 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
         promotionOption={promotionOption}
         promotionLotName={promotionLot.name}
         status={status}
+        buttonProps={{ size: 'small' }}
       />
     );
   }

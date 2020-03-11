@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps, mapProps } from 'recompose';
+import { compose, withProps, mapProps, withState } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import { proPromotionOptions } from '../../../../../api/promotionOptions/queries
 import {
   LOANS_COLLECTION,
   PROMOTION_OPTIONS_COLLECTION,
+  LOAN_STATUS,
 } from '../../../../../api/constants';
 import T from '../../../../Translation';
 import { CollectionIconLink } from '../../../../IconLink';
@@ -109,12 +110,32 @@ const columnOptions = [
 
 export default compose(
   mapProps(({ promotionLot }) => ({ promotionLot })),
+  withState('status', 'setStatus', {
+    $in: Object.values(LOAN_STATUS).filter(
+      s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST,
+    ),
+  }),
   withSmartQuery({
     query: proPromotionOptions,
-    params: ({ promotionLot: { _id: promotionLotId } }) => ({
+    params: ({ promotionLot: { _id: promotionLotId }, status }) => ({
       promotionLotId,
+      loanStatus: status,
     }),
-    queryOptions: { reactive: false, shouldRefetch: () => false },
+    queryOptions: {
+      reactive: false,
+      shouldRefetch: (
+        {
+          query: {
+            params: { loanStatus: prevLoanStatus },
+          },
+        },
+        {
+          query: {
+            params: { loanStatus: nextLoanStatus },
+          },
+        },
+      ) => prevLoanStatus !== nextLoanStatus,
+    },
     dataName: 'promotionOptions',
   }),
   withRouter,

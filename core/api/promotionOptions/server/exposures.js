@@ -59,7 +59,7 @@ exposeQuery({
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionLotId, status, promotionId } = params;
+        const { promotionLotId, status, promotionId, loanStatus } = params;
 
         if (status) {
           filters.status = status;
@@ -73,6 +73,10 @@ exposeQuery({
           filters.promotionLotLinks = {
             $elemMatch: { _id: promotionLotId },
           };
+        }
+
+        if (loanStatus) {
+          filters['loanCache.status'] = loanStatus;
         }
       };
 
@@ -93,6 +97,7 @@ exposeQuery({
       userId: String,
       anonymize: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
+      loanStatus: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

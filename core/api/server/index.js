@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 
 import '../initialization';
 
@@ -92,7 +91,3 @@ export const Services = {
   [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
   [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
 };
-
-Accounts.onLogin((...args) => {
-  console.log('Accounts login server', JSON.stringify(args, null, 2));
-});

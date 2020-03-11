@@ -3,6 +3,7 @@ import {
   documentsField,
   createdAt,
   updatedAt,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
@@ -119,6 +120,8 @@ const PromotionOptionSchema = new SimpleSchema({
     autoValue: dateAutoValue(),
     optional: true,
   },
+  loanCache: { type: Array, optional: true },
+  'loanCache.$': cacheField,
 });
 
 export default PromotionOptionSchema;
