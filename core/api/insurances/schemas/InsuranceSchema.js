@@ -12,6 +12,7 @@ import { INSURANCE_STATUS } from '../insuranceConstants';
 const InsuranceSchema = new SimpleSchema({
   createdAt,
   updatedAt,
+  name: { type: String, unique: true, regEx: /^\d{2}-\d{4}-[A-Z]\d{2}/ },
   status: {
     type: String,
     allowedValues: Object.values(INSURANCE_STATUS),

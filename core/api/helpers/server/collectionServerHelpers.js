@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import { Services } from '../../server/index';
 import { assignAdminToUser } from '../../users/index';
 import LoanService from '../../loans/server/LoanService';
@@ -17,7 +18,9 @@ const getInsuranceRequestNameSuffix = loanId => {
   const loan = LoanService.get(loanId, { insuranceRequests: { name: 1 } });
   const [lastInsuranceRequest] =
     loan?.insuranceRequests
-      ?.sort(({ name: a }, { name: b }) => a.localeCompare(b))
+      ?.sort(({ name: a }, { name: b }) =>
+        a.localeCompare(b, 'en', { numeric: true }),
+      )
       .slice(-1) || [];
 
   if (!lastInsuranceRequest) {
@@ -37,6 +40,29 @@ const getInsuranceRequestNameSuffix = loanId => {
     lastSuffixLetter.charCodeAt(0) + 1,
   );
   return `-${nextSuffixLetter}`;
+};
+
+const getInsuranceNamePrefix = (insurances = []) => {
+  if (insurances.length === 0) {
+    return '01';
+  }
+
+  const [lastInsuranceName] = insurances
+    .map(({ name }) => name)
+    .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
+    .slice(-1);
+
+  const lastInsurancePrefixNumber = parseInt(
+    lastInsuranceName
+      .split('-')
+      .slice(-1)[0]
+      .slice(1, 3),
+    10,
+  );
+
+  const nextPrefixNumber = zeroPadding(lastInsurancePrefixNumber + 1, 2);
+
+  return nextPrefixNumber;
 };
 
 const getNewBaseName = now => {
@@ -71,6 +97,18 @@ const getNewBaseName = now => {
   const nextCountString = zeroPadding(count + 1, 4);
 
   return `${yearPrefix}-${nextCountString}`;
+};
+
+const getNewInsuranceName = insuranceRequestId => {
+  const {
+    name: insuranceRequestName,
+    insurances = [],
+  } = InsuranceRequestService.get(insuranceRequestId, {
+    name: 1,
+    insurances: { name: 1 },
+  });
+
+  return `${insuranceRequestName}${getInsuranceNamePrefix(insurances)}`;
 };
 
 const getNewLoanName = ({ insuranceRequestId, now }) => {
@@ -110,6 +148,8 @@ export const getNewName = ({
       return getNewLoanName({ insuranceRequestId, now });
     case INSURANCE_REQUESTS_COLLECTION:
       return getNewInsuranceRequestName({ loanId, now });
+    case INSURANCES_COLLECTION:
+      return getNewInsuranceName(insuranceRequestId);
     default:
       return '';
   }

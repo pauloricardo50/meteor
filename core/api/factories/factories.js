@@ -34,6 +34,7 @@ import {
   Tasks,
   Users,
   InsuranceRequests,
+  Insurances,
 } from '..';
 import {
   PROPERTY_CATEGORY,
@@ -50,6 +51,8 @@ const TEST_PHONE = '0123456789';
 const getRandomLoanName = () => `20-0${Math.floor(Math.random() * 899 + 100)}`;
 const getRandomInsuranceRequestName = () =>
   `20-0${Math.floor(Math.random() * 899 + 100)}-A`;
+const getRandomInsuranceName = () =>
+  `20-0${Math.floor(Math.random() * 899 + 100)}-A01`;
 
 Factory.define('user', Users, {
   roles: [ROLES.USER],
@@ -237,4 +240,19 @@ Factory.define('insuranceRequest', InsuranceRequests, {
       }
     }
   },
+});
+
+Factory.define('insurance', Insurances, {
+  createdAt: () => new Date(),
+  name: () => {
+    while (true) {
+      const name = getRandomInsuranceName();
+
+      if (!Insurances.findOne({ name })) {
+        return name;
+      }
+    }
+  },
+  description: 'This is an insurance',
+  billingDate: () => new Date(),
 });

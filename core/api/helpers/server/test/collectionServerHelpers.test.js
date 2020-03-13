@@ -8,6 +8,7 @@ import InsuranceRequestService from '../../../insuranceRequests/server/Insurance
 import generator from '../../../factories/server/generator';
 import { LOANS_COLLECTION } from '../../../loans/loanConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../../insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../../insurances/insuranceConstants';
 
 describe('collectionServerHelpers', () => {
   beforeEach(() => {
@@ -157,6 +158,37 @@ describe('collectionServerHelpers', () => {
           now: new Date(2021, 1, 1),
         });
         expect(name).to.equal('21-0001-A');
+      });
+    });
+    describe('Insurances', () => {
+      it('returns 20-0001-A01 when being first linked to insurance request 20-0001-A', () => {
+        generator({
+          insuranceRequests: { _id: 'insuranceRequestId', name: '20-0001-A' },
+        });
+
+        const name = getNewName({
+          collection: INSURANCES_COLLECTION,
+          insuranceRequestId: 'insuranceRequestId',
+        });
+
+        expect(name).to.equal('20-0001-A01');
+      });
+
+      it('returns 20-0001-A02 when being the second linked to insurance request 20-0001-A', () => {
+        generator({
+          insuranceRequests: {
+            _id: 'insuranceRequestId',
+            name: '20-0001-A',
+            insurances: { name: '20-0001-A01' },
+          },
+        });
+
+        const name = getNewName({
+          collection: INSURANCES_COLLECTION,
+          insuranceRequestId: 'insuranceRequestId',
+        });
+
+        expect(name).to.equal('20-0001-A02');
       });
     });
 

@@ -1,7 +1,8 @@
+import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import Insurances from '../insurances';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
-import { INSURANCE_STATUS } from '../insuranceConstants';
+import { INSURANCE_STATUS, INSURANCES_COLLECTION } from '../insuranceConstants';
 
 class InsuranceService extends CollectionService {
   constructor() {
@@ -15,7 +16,11 @@ class InsuranceService extends CollectionService {
     insuranceProductId,
     insurance = {},
   }) => {
-    const insuranceId = super.insert(insurance);
+    const name = getNewName({
+      collection: INSURANCES_COLLECTION,
+      insuranceRequestId,
+    });
+    const insuranceId = super.insert({ ...insurance, name });
     this.addLink({
       id: insuranceId,
       linkName: 'insuranceRequest',
