@@ -175,6 +175,49 @@ describe('collectionServerHelpers', () => {
         expect(name).to.equal('20-0002-A');
       });
 
+      it('returns 20-0001-A for the first insurance request linked to the loan 20-0001', () => {
+        generator({
+          loans: {
+            _id: 'loanId',
+            name: getNewName({ collection: LOANS_COLLECTION }),
+          },
+        });
+
+        const name = getNewName({
+          collection: INSURANCE_REQUESTS_COLLECTION,
+          loanId: 'loanId',
+        });
+        expect(name).to.equal('20-0001-A');
+      });
+
+      it('returns 20-0001-B for the second insurance request linked to the loan 20-0001', () => {
+        generator({
+          loans: {
+            _id: 'loanId',
+            name: getNewName({ collection: LOANS_COLLECTION }),
+            insuranceRequests: { name: '20-0001-A' },
+          },
+        });
+
+        const name = getNewName({
+          collection: INSURANCE_REQUESTS_COLLECTION,
+          loanId: 'loanId',
+        });
+        expect(name).to.equal('20-0001-B');
+      });
+
+      it('returns 20-0001 for the loan linked to insurance request 20-0001-A', () => {
+        generator({
+          insuranceRequests: { _id: 'insuranceRequestId', name: '20-0001-A' },
+        });
+        const name = getNewName({
+          collection: LOANS_COLLECTION,
+          insuranceRequestId: 'insuranceRequestId',
+        });
+
+        expect(name).to.equal('20-0001');
+      });
+
       it('returns 20-0002 for the first loan inserted after the first insurance request', () => {
         generator({
           insuranceRequests: {

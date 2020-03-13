@@ -2,7 +2,7 @@ import React from 'react';
 
 import Tabs from 'core/components/Tabs';
 import { ORGANISATION_TYPES } from 'imports/core/api/constants';
-import RevenuesCommissionsEditor from './RevenuesCommissionsEditor';
+import ProductionsCommissionsEditor from './ProductionsCommissionsEditor';
 import CommissionsCommissionsEditor from './CommissionsCommissionsEditor';
 
 const CommissionRates = props => {
@@ -12,9 +12,9 @@ const CommissionRates = props => {
       <Tabs
         tabs={[
           {
-            id: 'revenues',
+            id: 'productions',
             label: `${name} -> e-Potek`,
-            content: <RevenuesCommissionsEditor {...props} />,
+            content: <ProductionsCommissionsEditor {...props} />,
             condition: [
               ORGANISATION_TYPES.INSURANCE,
               ORGANISATION_TYPES.PENSION_FUND,

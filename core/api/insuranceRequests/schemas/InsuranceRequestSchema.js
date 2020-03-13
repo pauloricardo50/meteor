@@ -12,7 +12,7 @@ import { INSURANCE_REQUEST_STATUS } from '../insuranceRequestConstants';
 const InsuranceRequestSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  name: { type: String, unique: true, regEx: /^\d{2}-\d{4}-A$/ },
+  name: { type: String, unique: true, regEx: /^\d{2}-\d{4}-[A-Z]$/ },
   status: {
     type: String,
     allowedValues: Object.values(INSURANCE_REQUEST_STATUS),

@@ -1,4 +1,7 @@
 {
+  "InsuranceRequestTabs.overview": "Général",
+  "InsuranceRequestTabs.insurances": "Assurances",
+  "LoanTabs.insuranceRequests": "Dossiers assurance",
   "OrganisationTabs.insuranceProducts": "Produits assurance",
   "InsuranceProduct.category.3A": "3A",
   "InsuranceProduct.category.3B": "3B",

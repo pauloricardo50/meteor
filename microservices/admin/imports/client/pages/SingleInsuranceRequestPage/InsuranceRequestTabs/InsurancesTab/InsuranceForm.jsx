@@ -5,13 +5,19 @@ import uniqBy from 'lodash/uniqBy';
 import {
   ORGANISATION_TYPES,
   ORGANISATIONS_COLLECTION,
+  INSURANCE_STATUS,
 } from 'core/api/constants';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { insuranceInsert } from 'core/api/methods';
+import { insuranceInsert, insuranceModify } from 'core/api/methods';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 
 const getSchema = ({ borrowers, organisations }) =>
   new SimpleSchema({
+    status: {
+      type: String,
+      allowedValues: Object.values(INSURANCE_STATUS),
+      defaultValue: INSURANCE_STATUS.SUGGESTED,
+    },
     borrowerId: {
       type: String,
       allowedValues: borrowers.map(({ _id }) => _id),
@@ -111,7 +117,7 @@ const getSchema = ({ borrowers, organisations }) =>
     ),
   );
 
-export default withProps(({ insuranceRequest, insurance = {} }) => {
+export default withProps(({ insuranceRequest, insurance = {}, setOpen }) => {
   const { borrowers, _id: insuranceRequestId } = insuranceRequest;
   const { loading, data: organisations } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
@@ -140,7 +146,14 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
             ({ insuranceProducts = [] }) => !!insuranceProducts.length,
           ),
         }),
-    model: insurance,
+    model: {
+      ...insurance,
+      borrowerId: insurance.borrower?._id,
+      organisationId: insurance.organisation?._id,
+      type: insurance.insuranceProduct?.type,
+      category: insurance.insuranceProduct?.category,
+      insuranceProductId: insurance.insuranceProduct?._id,
+    },
     insertInsurance: ({
       borrowerId,
       organisationId,
@@ -150,6 +163,7 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
       singlePremium,
       duration,
       billingDate,
+      status,
     }) =>
       insuranceInsert.run({
         insuranceRequestId,
@@ -157,6 +171,32 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
         organisationId,
         insuranceProductId,
         insurance: {
+          status,
+          description,
+          premium,
+          singlePremium,
+          duration,
+          billingDate: new Date(billingDate),
+        },
+      }),
+    modifyInsurance: ({
+      status,
+      borrowerId,
+      organisationId,
+      insuranceProductId,
+      description,
+      premium,
+      singlePremium,
+      duration,
+      billingDate,
+    }) =>
+      insuranceModify.run({
+        insuranceId: insurance._id,
+        borrowerId,
+        organisationId,
+        insuranceProductId,
+        insurance: {
+          status,
           description,
           premium,
           singlePremium,

@@ -66,6 +66,23 @@ class InsuranceService extends CollectionService {
       return production + totalProduction;
     }, 0);
   };
+
+  update = ({
+    insuranceId,
+    borrowerId,
+    organisationId,
+    insuranceProductId,
+    insurance = {},
+  }) =>
+    this._update({
+      id: insuranceId,
+      object: {
+        insurance,
+        'borrowerLink._id': borrowerId,
+        'insuranceProductLink._id': insuranceProductId,
+        'organisationLink._id': organisationId,
+      },
+    });
 }
 
 export default new InsuranceService({});

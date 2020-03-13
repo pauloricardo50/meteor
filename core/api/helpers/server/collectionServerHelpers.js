@@ -13,11 +13,33 @@ const zeroPadding = (num, places) => {
   return Array(+(zero > 0 && zero)).join('0') + num;
 };
 
-export const getNewName = ({ collection, now = new Date() }) => {
-  const NAME_SUFFIX = {
-    [LOANS_COLLECTION]: '',
-    [INSURANCE_REQUESTS_COLLECTION]: '-A',
-  };
+const getInsuranceRequestNameSuffix = loanId => {
+  const loan = LoanService.get(loanId, { insuranceRequests: { name: 1 } });
+  const [lastInsuranceRequest] =
+    loan?.insuranceRequests
+      ?.sort(({ name: a }, { name: b }) => a.localeCompare(b))
+      .slice(-1) || [];
+
+  if (!lastInsuranceRequest) {
+    return '-A';
+  }
+
+  const { name } = lastInsuranceRequest;
+  const [lastSuffixLetter] = name.split('-').slice(-1);
+
+  if (lastSuffixLetter === 'Z') {
+    throw new Error(
+      'Le maximum de dossiers assurances liés à une hypothèque est de 26',
+    );
+  }
+
+  const nextSuffixLetter = String.fromCharCode(
+    lastSuffixLetter.charCodeAt(0) + 1,
+  );
+  return `-${nextSuffixLetter}`;
+};
+
+const getNewBaseName = now => {
   const year = now.getYear();
   const yearPrefix = year - 100;
   const lastLoan = LoanService.get(
@@ -30,25 +52,67 @@ export const getNewName = ({ collection, now = new Date() }) => {
   );
 
   if (!lastLoan && !lastInsuranceRequest) {
-    return `${yearPrefix}-0001${NAME_SUFFIX[collection]}`;
+    return `${yearPrefix}-0001`;
   }
 
-  const lastName = [lastLoan?.name, lastInsuranceRequest?.name]
+  const [lastName] = [lastLoan?.name, lastInsuranceRequest?.name]
     .filter(x => x)
     .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
-    .slice(-1)[0];
+    .slice(-1);
 
   const [lastPrefix, count] = lastName
     .split('-')
     .map(numb => parseInt(numb, 10));
 
   if (lastPrefix !== yearPrefix) {
-    return `${yearPrefix}-0001${NAME_SUFFIX[collection]}`;
+    return `${yearPrefix}-0001`;
   }
 
   const nextCountString = zeroPadding(count + 1, 4);
 
-  return `${yearPrefix}-${nextCountString}${NAME_SUFFIX[collection]}`;
+  return `${yearPrefix}-${nextCountString}`;
+};
+
+const getNewLoanName = ({ insuranceRequestId, now }) => {
+  if (insuranceRequestId) {
+    const {
+      name: insuranceRequestName,
+    } = InsuranceRequestService.get(insuranceRequestId, { name: 1 });
+    const loanName = insuranceRequestName
+      .split('-')
+      .slice(0, 2)
+      .join('-');
+    return loanName;
+  }
+
+  return getNewBaseName(now);
+};
+
+const getNewInsuranceRequestName = ({ loanId, now }) => {
+  const nameSuffix = getInsuranceRequestNameSuffix(loanId);
+
+  if (loanId) {
+    const { name: loanName } = LoanService.get(loanId, { name: 1 });
+    return `${loanName}${nameSuffix}`;
+  }
+
+  return `${getNewBaseName(now)}${nameSuffix}`;
+};
+
+export const getNewName = ({
+  collection,
+  loanId,
+  insuranceRequestId,
+  now = new Date(),
+}) => {
+  switch (collection) {
+    case LOANS_COLLECTION:
+      return getNewLoanName({ insuranceRequestId, now });
+    case INSURANCE_REQUESTS_COLLECTION:
+      return getNewInsuranceRequestName({ loanId, now });
+    default:
+      return '';
+  }
 };
 
 export const setAssignees = ({

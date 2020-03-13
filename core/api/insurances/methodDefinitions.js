@@ -10,3 +10,14 @@ export const insuranceInsert = new Method({
     insurance: Object,
   },
 });
+
+export const insuranceModify = new Method({
+  name: 'insuranceModify',
+  params: {
+    insuranceId: String,
+    borrowerId: String,
+    organisationId: String,
+    insuranceProductId: String,
+    insurance: Object,
+  },
+});

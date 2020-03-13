@@ -23,7 +23,10 @@ class InsuranceRequestService extends CollectionService {
     assigneeId,
     borrowerIds,
   }) => {
-    const name = getNewName({ collection: INSURANCE_REQUESTS_COLLECTION });
+    const name = getNewName({
+      collection: INSURANCE_REQUESTS_COLLECTION,
+      loanId,
+    });
     const insuranceRequestId = super.insert({ ...insuranceRequest, name });
     const loan =
       loanId &&
