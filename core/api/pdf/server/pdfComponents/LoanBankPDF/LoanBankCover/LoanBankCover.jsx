@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import { PROPERTY_TYPE } from 'core/api/properties/propertyConstants';
-import T, { Money } from '../../../../../../components/Translation';
+import T from '../../../../../../components/Translation';
 import Calculator from '../../../../../../utils/Calculator';
 import PdfPage from '../../PdfPage';
 import LoanBankCoverHeader from './LoanBankCoverHeader';
@@ -28,10 +28,12 @@ const borrowersNames = borrowers => (
 const getPropertyType = ({ propertyType, houseType, flatType }) => {
   switch (propertyType) {
     case PROPERTY_TYPE.HOUSE:
-      return houseType ? (
-        <T id={`Forms.houseType.${houseType}`} />
-      ) : (
-        <T id="Forms.propertyType.HOUSE" />
+      return (
+        <span>
+          <T id="Forms.propertyType.HOUSE" />
+          &nbsp;
+          {!!houseType && <T id={`Forms.houseType.${houseType}`} />}
+        </span>
       );
     case PROPERTY_TYPE.FLAT:
       return flatType ? (

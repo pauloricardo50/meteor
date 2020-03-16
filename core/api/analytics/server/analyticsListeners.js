@@ -168,9 +168,9 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: analyticsLogin,
-  func: ({ analytics }) => {
+  func: ({ analytics, params }) => {
     analytics.identify();
-    analytics.track(EVENTS.USER_LOGGED_IN);
+    analytics.track(EVENTS.USER_LOGGED_IN, params);
   },
 });
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Percent, Money } from 'core/components/Translation';
 import { REVENUE_TYPES, COMMISSION_RATES_TYPE } from 'core/api/constants';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 
 const getLastDateinXMonths = offset => {
   const inXMonths = new Date();

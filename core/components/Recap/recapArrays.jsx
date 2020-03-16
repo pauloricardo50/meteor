@@ -389,14 +389,11 @@ export const getPropertyArray = ({ property }) => {
     investmentRent,
   } = property;
 
-  return [
-    {
-      title: true,
-      label: 'Recap.details',
-    },
+  const dataArray = [
     {
       label: 'Forms.propertyType',
       value: <T id={`Forms.propertyType.${propertyType}`} />,
+      hide: !propertyType,
     },
     {
       label: 'Forms.roomCount',
@@ -441,6 +438,23 @@ export const getPropertyArray = ({ property }) => {
       hide: !investmentRent,
       spacingTop: true,
     },
+  ];
+
+  return [
+    {
+      title: true,
+      label: 'Recap.details',
+    },
+    {
+      title: true,
+      label: (
+        <small className="secondary">
+          <T id="Recap.empty" />
+        </small>
+      ),
+      hide: dataArray.filter(({ hide }) => !hide).length > 0,
+    },
+    ...dataArray,
   ];
 };
 

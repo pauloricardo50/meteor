@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DialogSimple from '../../../../DialogSimple';
+import T from '../../../../Translation';
 import MortgageNotesPickerSummary from './MortgageNotesPickerSummary';
 import MortgageNotesPickerContainer from './MortgageNotesPickerContainer';
 import MortgageNotesPickerDialog from './MortgageNotesPickerDialog';
@@ -10,7 +11,7 @@ const MortgageNotesPicker = props => {
     borrowerMortgageNotes,
     currentMortgageNotes,
     className,
-    structure: { wantedLoan, disableForms },
+    structure: { wantedLoan, wantedMortgageNote = wantedLoan, disableForms },
   } = props;
 
   // This component does not make sense if there's no wantedLoan
@@ -28,10 +29,11 @@ const MortgageNotesPicker = props => {
             borrowerMortgageNotes={borrowerMortgageNotes.filter(
               ({ selected }) => selected,
             )}
-            wantedLoan={wantedLoan}
+            wantedMortgageNote={wantedMortgageNote}
             disabled={disableForms}
           />
         )}
+        title={<T id="Financing.pickMortgageNotes" />}
       >
         <MortgageNotesPickerDialog {...props} />
       </DialogSimple>

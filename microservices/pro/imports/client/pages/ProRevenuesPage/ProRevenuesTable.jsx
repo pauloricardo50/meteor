@@ -133,7 +133,11 @@ const ProRevenuesTable = () => {
         value={proCommissionStatus}
         label="Statut"
       />
-      <Table rows={rows} columnOptions={columnOptions} initialOrderBy={2} />
+      <Table
+        rows={rows}
+        columnOptions={columnOptions}
+        initialOrderBy="referredByUser"
+      />
       {rows.length > 1 && (
         <h2 className="secondary" style={{ textAlign: 'right' }}>
           Total: <Money value={total} />

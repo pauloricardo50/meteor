@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { organisationInsert } from 'core/api';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { createRoute } from 'core/utils/routerUtils';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';

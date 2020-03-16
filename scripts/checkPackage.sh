@@ -56,7 +56,7 @@ isPackageInstalled() {
             fi
             ;;
         "${LINUX}")
-            if ! type "${package}" > dev/null 2>&1; then
+            if ! type "${package}" > /dev/null 2>&1; then
                 echo 0
             fi
             ;;
@@ -90,6 +90,3 @@ if [[ $isInstalled = 0 ]] ; then
         echo 0
     fi
 fi 
-
-
-

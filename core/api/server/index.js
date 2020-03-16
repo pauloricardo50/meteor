@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import '../initialization';
 
 import '../../fixtures/server/fixtureMethods';

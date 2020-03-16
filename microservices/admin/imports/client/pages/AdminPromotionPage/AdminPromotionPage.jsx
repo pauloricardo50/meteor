@@ -5,7 +5,7 @@ import { compose, withProps } from 'recompose';
 import omit from 'lodash/omit';
 
 import { proPromotions } from 'core/api/promotions/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { proPromotion } from 'core/api/fragments';
 import withMatchParam from 'core/containers/withMatchParam';
 import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';

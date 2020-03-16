@@ -1,7 +1,7 @@
 import { compose, withProps } from 'recompose';
 
 import { appPromotion } from 'core/api/promotions/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
 import PromotionPage from 'core/components/PromotionPage/client';

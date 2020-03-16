@@ -26,7 +26,7 @@ const PromotionCustomersTable = ({
       rows={rows}
       columnOptions={columnOptions}
       className="promotion-users-table"
-      initialOrderBy={4}
+      initialOrderBy="createdAt"
       initialOrder={ORDER.DESC}
     />
   </>

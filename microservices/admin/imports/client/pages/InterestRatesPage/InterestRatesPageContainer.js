@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import {
   interestRates,
   currentInterestRates,

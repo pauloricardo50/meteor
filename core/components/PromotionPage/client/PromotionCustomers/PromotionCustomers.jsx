@@ -3,7 +3,7 @@ import { withState, compose } from 'recompose';
 
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { LOAN_STATUS } from '../../../../api/constants';
-import { withSmartQuery } from '../../../../api';
+import { withSmartQuery } from '../../../../api/containerToolkit';
 import { proPromotionLoans } from '../../../../api/loans/queries';
 import T from '../../../Translation';
 import PromotionCustomersTable from './PromotionCustomersTable';

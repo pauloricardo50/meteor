@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { compose, shouldUpdate, withState, withProps } from 'recompose';
 import {
   taskInsert,

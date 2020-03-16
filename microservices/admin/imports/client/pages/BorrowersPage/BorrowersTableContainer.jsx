@@ -3,7 +3,7 @@ import { compose, withProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminBorrowers as query } from 'core/api/borrowers/queries';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';

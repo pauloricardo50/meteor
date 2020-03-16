@@ -22,6 +22,7 @@ class LoanTagger extends React.Component {
       setTags,
       loanTag,
     } = this.props;
+    const { user: { alias } = {} } = Front;
 
     setLoading(true);
     if (isTagged) {
@@ -43,6 +44,7 @@ class LoanTagger extends React.Component {
       setLoading(false);
       setTags([...tags, loanTag]);
       Front.moveToInbox('team');
+      Front.assign(alias);
     });
   };
 

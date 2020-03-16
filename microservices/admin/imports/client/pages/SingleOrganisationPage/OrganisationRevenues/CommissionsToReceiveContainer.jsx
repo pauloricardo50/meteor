@@ -57,6 +57,6 @@ export default compose(
       { id: 'commissionRate', label: 'Commission' },
     ],
     rows: rows.map(makeAddCommissionStatus(organisationId)),
-    initialOrderBy: 2,
+    initialOrderBy: 'revenueStatus',
   })),
 );

@@ -126,7 +126,7 @@ describe('SolvencyCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         loanValue,
         canton: 'GE',
-        notaryFees: 31944.1,
+        notaryFees: 31660.1,
       });
       const total = ownFunds.reduce((t, { value }) => t + value, 0);
 

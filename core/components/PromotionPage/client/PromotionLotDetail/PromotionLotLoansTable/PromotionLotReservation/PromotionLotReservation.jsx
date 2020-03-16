@@ -10,7 +10,7 @@ import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
-import PromotionReservationProgress from '../../../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
+import PromotionReservationProgress from '../../../../PromotionReservationProgress/PromotionReservationProgress';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
 const isAdmin = Meteor.microservice === 'admin';
@@ -50,6 +50,7 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
         promotionOption={promotionOption}
         promotionLotName={promotionLot.name}
         status={status}
+        buttonProps={{ size: 'small' }}
       />
     );
   }

@@ -68,8 +68,16 @@
     display: flex;
     justify-content: space-between;
 
+    &-detail {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+
     h4 {
       width: 200px;
+      margin: 0;
       margin-right: 8px;
     }
   }
@@ -79,6 +87,10 @@
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  hr {
+    margin: 0;
   }
 }
 

@@ -1,7 +1,7 @@
 import { compose, withProps } from 'recompose';
 
 import { proPromotions } from 'core/api/promotions/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import withMatchParam from 'core/containers/withMatchParam';
 import {
   isAllowedToModifyPromotion,

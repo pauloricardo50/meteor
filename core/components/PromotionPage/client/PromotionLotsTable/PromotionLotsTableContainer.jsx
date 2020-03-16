@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import {
   proPromotionLots,
   appPromotionLots,

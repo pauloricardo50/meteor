@@ -142,7 +142,11 @@ export class FrontService {
           ERROR_CODES.UNAUTHORIZED,
           'Front signature verification failed',
         ),
-      user: { _id: FRONT_WEBHOOK_ANALYTICS_USER_ID },
+      user: {
+        _id: FRONT_WEBHOOK_ANALYTICS_USER_ID,
+        name: 'Front webhook',
+        organisations: [{ name: 'Front webhook' }],
+      },
     };
   }
 

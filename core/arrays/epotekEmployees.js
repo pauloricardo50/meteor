@@ -95,7 +95,7 @@ const employees = [
   },
   {
     email: 'alban@e-potek.ch',
-    src: '/img/placeholder.png',
+    src: '/img/team/alban.jpg',
     name: 'Alban Kastrati',
     title: 'Directeur des Financements et de l’agence de Lausanne',
     appTitle: 'Financement & Prévoyance',

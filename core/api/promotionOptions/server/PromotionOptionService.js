@@ -23,7 +23,7 @@ import {
 import { shouldAnonymize } from '../../promotions/server/promotionServerHelpers';
 import { expirePromotionOptionReservation } from './serverMethods';
 
-export class PromotionOptionService extends CollectionService {
+class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {

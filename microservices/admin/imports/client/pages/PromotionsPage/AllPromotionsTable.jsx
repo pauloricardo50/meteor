@@ -5,7 +5,7 @@ import {
   PromotionsTable,
   BasePromotionsTableContainer,
 } from 'core/components/PromotionsTable';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { PROMOTION_STATUS } from 'core/api/constants';
 import MongoSelect from 'core/components/Select/MongoSelect';

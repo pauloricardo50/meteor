@@ -9,7 +9,7 @@ import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/constants';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import useSearchParams from 'core/hooks/useSearchParams';
 import Icon from 'core/components/Icon';
 import UserDialogFormContainer from './UserDialogFormContainer';

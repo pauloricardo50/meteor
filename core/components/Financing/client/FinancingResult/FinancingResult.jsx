@@ -2,10 +2,7 @@ import React from 'react';
 
 import T from '../../../Translation';
 import { OWN_FUNDS_TYPES } from '../../../../api/constants';
-import FinancingSection, {
-  CalculatedValue,
-  FinmaRatio,
-} from '../FinancingSection';
+import FinancingSection, { FinmaRatio } from '../FinancingSection';
 import {
   getInterests,
   getAmortization,
@@ -23,6 +20,10 @@ import FinancingResultAmortization from './FinancingResultAmortization';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 import FinancingResultSummary from './FinancingResultSummary';
 import FinancingPropertyExpenses from './FinancingPropertyExpenses';
+import {
+  FinancingResultFutureValue,
+  FinancingResultFutureTitle,
+} from './FinancingResultFuture';
 
 const FinancingResult = ({ error }) =>
   error ? (
@@ -84,40 +85,44 @@ const FinancingResult = ({ error }) =>
           tooltip: true,
         },
         {
+          id: 'spacing',
+          label: <span />,
+        },
+        {
           id: 'future',
           label: (
-            <h4 className="section-subtitle">
+            <h4 className="future">
               <T id="FinancingResult.future" />
             </h4>
           ),
-          className: 'section-subtitle',
+          Component: FinancingResultFutureTitle,
         },
         {
           id: 'remainingCash',
-          Component: CalculatedValue,
+          Component: FinancingResultFutureValue,
           value: getRemainingCash,
         },
         {
           id: 'remainingInsurance2',
-          Component: CalculatedValue,
+          Component: FinancingResultFutureValue,
           value: getRemainingInsurance2,
           condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.INSURANCE_2),
         },
         {
           id: 'remainingInsurance3A',
-          Component: CalculatedValue,
+          Component: FinancingResultFutureValue,
           value: getRemainingInsurance3A,
           condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.INSURANCE_3A),
         },
         {
           id: 'remainingBank3A',
-          Component: CalculatedValue,
+          Component: FinancingResultFutureValue,
           value: getRemainingBank3A,
           condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.BANK_3A),
         },
         {
           id: 'remainingInsurance3B',
-          Component: CalculatedValue,
+          Component: FinancingResultFutureValue,
           value: getRemainingInsurance3B,
           condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.INSURANCE_3B),
         },

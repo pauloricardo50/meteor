@@ -19,6 +19,7 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.USER_LOGGED_IN]: {
     name: 'User Logged in',
+    properties: ['type'],
   },
   [EVENTS.USER_VERIFIED_EMAIL]: {
     name: 'User Verified',

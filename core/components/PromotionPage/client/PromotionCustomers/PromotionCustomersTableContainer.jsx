@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 import moment from 'moment';
 
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';

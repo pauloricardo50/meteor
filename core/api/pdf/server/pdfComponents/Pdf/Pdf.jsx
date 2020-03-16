@@ -1,18 +1,11 @@
 import React from 'react';
-import { IntlProvider } from 'react-intl';
 
-import { getUserLocale, getFormats } from 'core/utils/localization';
-import messagesFR from '../../../../../lang/fr.json';
+import { ServerIntlProvider } from 'core/utils/server/intl';
 
 export const LastPageContext = React.createContext();
 
 const Pdf = ({ stylesheet, pages, pdfName }) => (
-  <IntlProvider
-    locale={getUserLocale()}
-    messages={messagesFR}
-    formats={getFormats()}
-    defaultLocale="fr"
-  >
+  <ServerIntlProvider>
     <>
       <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
       {pdfName && <title>{pdfName}</title>}
@@ -26,7 +19,7 @@ const Pdf = ({ stylesheet, pages, pdfName }) => (
         );
       })}
     </>
-  </IntlProvider>
+  </ServerIntlProvider>
 );
 
 export default Pdf;

@@ -105,7 +105,9 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler(({ userId }, params) => {
+changeEmail.setHandler((context, params) => {
+  const { userId } = context;
+  context.unblock(); // This method will send an email to the user
   SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });

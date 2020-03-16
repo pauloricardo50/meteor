@@ -461,8 +461,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         0,
       );
       const loanValue = this.selectLoanValue({ loan, structureId });
+      const wantedMortgageNote = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedMortgageNote',
+      });
 
-      return Math.max(0, loanValue - mortgageNoteValue);
+      return Math.max(0, (wantedMortgageNote || loanValue) - mortgageNoteValue);
     }
 
     getCashUsed({ loan, structureId }) {

@@ -17,6 +17,7 @@ import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
 import { proInviteUser } from '../../methodDefinitions';
+import { assigneesByOrg } from '../assigneesByOrg';
 
 describe('UserService', function() {
   this.timeout(10000);
@@ -147,6 +148,30 @@ describe('UserService', function() {
       user = UserService.findOne(userId);
 
       expect(user.assignedEmployeeId).to.equal(undefined);
+    });
+
+    it('sets a hardcoded assignee per organisation', () => {
+      generator({
+        users: {
+          _factory: 'admin',
+          _id: 'testAdminId',
+        },
+        organisations: {
+          _id: 'testOrgId',
+        },
+      });
+
+      const options = {
+        email: 'test@test.com',
+        referredByOrganisation: 'testOrgId',
+      };
+
+      const userId = UserService.adminCreateUser({
+        options,
+      });
+
+      user = UserService.get(userId, { assignedEmployeeId: 1 });
+      expect(user.assignedEmployeeId).to.equal('testAdminId');
     });
   });
 
@@ -1117,9 +1142,7 @@ describe('UserService', function() {
     });
 
     it('sets the second user to the second in the array', () => {
-      const service = new UserServiceClass({
-        employees,
-      });
+      const service = new UserServiceClass({ employees });
 
       service.adminCreateUser({
         options: { email: '1@e-potek.ch' },
@@ -1157,9 +1180,7 @@ describe('UserService', function() {
     });
 
     it('ignores users assigned to people outside of employees list, and check latest one', () => {
-      const service = new UserServiceClass({
-        employees,
-      });
+      const service = new UserServiceClass({ employees });
 
       generator({
         users: [

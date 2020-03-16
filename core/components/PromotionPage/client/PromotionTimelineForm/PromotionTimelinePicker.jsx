@@ -2,7 +2,8 @@ import React from 'react';
 
 import Button from '../../../Button';
 import DropdownMenu from '../../../DropdownMenu';
-import { reuseConstructionTimeline, withSmartQuery } from '../../../../api';
+import { reuseConstructionTimeline } from '../../../../api';
+import { withSmartQuery } from '../../../../api/containerToolkit';
 import { adminPromotions } from '../../../../api/promotions/queries';
 
 const PromotionTimelinePicker = ({

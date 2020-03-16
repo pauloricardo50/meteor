@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { appPromotionOption } from 'core/api/promotionOptions/queries';
 import withMatchParam from 'core/containers/withMatchParam';
 import { AppPromotionLotPage } from '../AppPromotionLotPage/AppPromotionLotPage';

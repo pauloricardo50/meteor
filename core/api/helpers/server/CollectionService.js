@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import { migrate } from 'meteor/herteby:denormalize';
+
 import { createMeteorAsyncFunction } from '../helpers';
 
 class CollectionService {
@@ -284,6 +286,29 @@ class CollectionService {
       this.rawCollection.insert.bind(this.rawCollection),
     );
     return func({ ...doc, _id });
+  }
+
+  cache(options, migrationSelector) {
+    this.collection.cache(options);
+    this.migrateCache(options, migrationSelector);
+  }
+
+  cacheField(options, migrationSelector) {
+    this.collection.cacheField(options);
+    this.migrateCache(options, migrationSelector);
+  }
+
+  cacheCount(options, migrationSelector) {
+    this.collection.cacheCount(options);
+    this.migrateCache(options, migrationSelector);
+  }
+
+  migrateCache(options, migrationSelector) {
+    if (migrationSelector) {
+      Meteor.startup(() => {
+        migrate(this.collection._name, options.cacheField, migrationSelector);
+      });
+    }
   }
 }
 

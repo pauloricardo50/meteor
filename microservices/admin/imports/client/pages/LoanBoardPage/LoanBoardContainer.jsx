@@ -1,7 +1,7 @@
 import { compose, mapProps, withProps } from 'recompose';
 import merge from 'lodash/merge';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminUsers } from 'core/api/users/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminOrganisations } from 'core/api/organisations/queries';

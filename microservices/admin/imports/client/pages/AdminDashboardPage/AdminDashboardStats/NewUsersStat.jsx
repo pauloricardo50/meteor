@@ -4,7 +4,7 @@ import { compose, withState } from 'recompose';
 import moment from 'moment';
 
 import { newUsers, userHistogram } from 'core/api/stats/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { Percent } from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Histogram from 'core/components/charts/Histogram';

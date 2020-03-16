@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { liveSyncs } from 'core/api/liveSync/liveSync';
 import { ACTIONS } from './loanBoardConstants';
 

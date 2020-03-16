@@ -17,6 +17,7 @@ import { ROLES, ACQUISITION_CHANNELS } from '../userConstants';
 import Users from '../users';
 import roundRobinAdvisors from './roundRobinAdvisors';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+import { assigneesByOrg } from './assigneesByOrg';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
@@ -85,12 +86,6 @@ export class UserServiceClass extends CollectionService {
 
     this.update({ userId: newUserId, object: additionalData });
 
-    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
-      this.assignAdminToUser({ userId: newUserId, adminId });
-    } else if (!additionalData.assignedEmployeeId) {
-      this.setAssigneeForNewUser(newUserId);
-    }
-
     if (referredByUserId) {
       this.setReferredBy({ userId: newUserId, proId: referredByUserId });
     }
@@ -99,6 +94,12 @@ export class UserServiceClass extends CollectionService {
         userId: newUserId,
         organisationId: referredByOrganisation._id,
       });
+    }
+
+    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
+      this.assignAdminToUser({ userId: newUserId, adminId });
+    } else if (!additionalData.assignedEmployeeId) {
+      this.setAssigneeForNewUser(newUserId);
     }
 
     const APIUser = getAPIUser();
@@ -731,58 +732,79 @@ export class UserServiceClass extends CollectionService {
       .filter(x => x);
   }
 
-  setAssigneeForNewUser(userId) {
-    const { roles, assignedEmployeeId } = this.get(userId, {
-      assignedEmployeeId: 1,
-      roles: 1,
-    });
-
-    if (assignedEmployeeId) {
+  getAssigneeForNewUser(user) {
+    if (!Roles.userIsInRole(user, ROLES.USER)) {
       return;
     }
-    let newAssignee;
 
-    if (roles.includes(ROLES.USER)) {
-      if (!this.employees.length) {
-        // In tests or if there are no roundrobin advisors, use any admin
-        // in the db and assign it to the user
-        // this avoids issues with analytics, that expects all users to have
-        // an assignee
-        const anyAdmin = this.get(
-          { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
-          { _id: 1 },
-        );
-        newAssignee = anyAdmin && anyAdmin._id;
-      } else {
-        const lastCreatedUser = this.get(
-          {
-            roles: ROLES.USER,
-            assignedEmployeeId: { $in: this.employees },
-          },
-          {
-            $options: { sort: { createdAt: -1 } },
-            assignedEmployeeId: 1,
-            createdAt: 1,
-          },
-        );
-
-        if (lastCreatedUser?.assignedEmployeeId) {
-          const index = this.employees.indexOf(
-            lastCreatedUser.assignedEmployeeId,
-          );
-          if (index >= this.employees.length - 1) {
-            newAssignee = this.employees[0];
-          } else {
-            newAssignee = this.employees[index + 1];
-          }
-        } else {
-          // Assign the very first user
-          newAssignee = this.employees[0];
-        }
-      }
+    if (!this.employees.length) {
+      // In tests or if there are no roundrobin advisors, use any admin
+      // in the db and assign it to the user
+      // this avoids issues with analytics, that expects all users to have
+      // an assignee
+      const anyAdmin = this.get(
+        { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
+        { _id: 1 },
+      );
+      return anyAdmin && anyAdmin._id;
     }
 
-    return this.update({ userId, object: { assignedEmployeeId: newAssignee } });
+    // Hard coded assignee for an organisation
+    if (
+      user.referredByOrganisationLink &&
+      assigneesByOrg[user.referredByOrganisationLink]
+    ) {
+      return assigneesByOrg[user.referredByOrganisationLink];
+    }
+
+    // Round robin
+    const previouslyCreatedUser = this.get(
+      {
+        roles: ROLES.USER,
+        assignedEmployeeId: { $in: this.employees },
+      },
+      {
+        $options: { sort: { createdAt: -1 } },
+        assignedEmployeeId: 1,
+        createdAt: 1,
+      },
+    );
+
+    if (previouslyCreatedUser?.assignedEmployeeId) {
+      const index = this.employees.indexOf(
+        previouslyCreatedUser.assignedEmployeeId,
+      );
+      if (index >= this.employees.length - 1) {
+        return this.employees[0];
+      }
+      return this.employees[index + 1];
+    }
+
+    // Assign the very first user
+    return this.employees[0];
+  }
+
+  setAssigneeForNewUser(userId) {
+    const user = this.get(userId, {
+      assignedEmployeeId: 1,
+      roles: 1,
+      referredByOrganisationLink: 1,
+    });
+
+    // Don't set an assignee if there is already one
+    if (user.assignedEmployeeId) {
+      return;
+    }
+
+    const newAssignee = this.getAssigneeForNewUser(user);
+
+    if (newAssignee) {
+      this.addLink({
+        id: userId,
+        linkName: 'assignedEmployee',
+        linkId: newAssignee,
+      });
+    }
   }
 
   getReferral(userId) {

@@ -10,7 +10,12 @@ import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
 import colors from 'core/config/colors';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 
-const RequestReservation = ({ promotionOption, promotionLotName, status }) => {
+const RequestReservation = ({
+  promotionOption,
+  promotionLotName,
+  status,
+  buttonProps,
+}) => {
   const {
     _id: promotionOptionId,
     loan: { promotions = [] },
@@ -37,6 +42,7 @@ const RequestReservation = ({ promotionOption, promotionLotName, status }) => {
         raised: true,
         disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
         style: { alignSelf: 'center' },
+        ...buttonProps,
       }}
       title={<T id="PromotionPage.lots.requestReservation.title" />}
       description={

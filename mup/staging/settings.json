@@ -12,10 +12,11 @@
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
     "subdomains": {
-      "admin": "http://34.65.110.175:4300",
-      "app": "http://34.65.110.175:4100",
-      "pro": "http://34.65.110.175:4700",
-      "www": "http://34.65.110.175:4000",
+      "api": "https://api.staging.e-potek.ch",
+      "admin": "https://admin.staging.e-potek.ch",
+      "app": "https://app.staging.e-potek.ch",
+      "pro": "https://pro.staging.e-potek.ch",
+      "www": "https://www.staging.e-potek.ch",
       "backend": "https://backend.staging.e-potek.ch"
     }
   },
@@ -42,8 +43,8 @@
       "appSecret": "37f5bd49-d33a-462d-92c2-6473ba7b2d73"
     },
     "backend": {
-      "appId": "Ta9aik2yB8PrgXd53",
-      "appSecret": "348114db-4ace-4472-bd78-b274917e255d"
+      "appId": "LFp3bR83mwWCChkGH",
+      "appSecret": "828aeb0a-da22-4052-82b7-fc9171d24829"
     }
   },
   "storage": {

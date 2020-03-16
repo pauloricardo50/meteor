@@ -1,6 +1,7 @@
 import { compose, withProps } from 'recompose';
+
 import { adminUsers as query } from 'core/api/users/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
   const oldAdmin = relatedDoc.assignedEmployee

@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { compose, withState } from 'recompose';
 import moment from 'moment';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
 import TasksTable, { taskTableFragment } from './TasksTable';
 

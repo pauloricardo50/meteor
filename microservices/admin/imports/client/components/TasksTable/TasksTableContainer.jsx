@@ -201,7 +201,7 @@ export default compose(
         }),
       ),
       columnOptions,
-      initialOrderBy: columnOptions.findIndex(({ id }) => id === 'dueAt'),
+      initialOrderBy: 'dueAt',
       initialOrder: ORDER.ASC,
     };
   }),

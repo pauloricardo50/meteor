@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { REVENUE_STATUS, REVENUES_COLLECTION } from 'core/api/constants';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';

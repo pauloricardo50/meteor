@@ -31,12 +31,21 @@ const setValue = (value, allowUndefined, forceUndefined) => {
   return value || 0;
 };
 
-const defaultGetError = ({ value, max, FormatComponent }) => {
-  if (value > max) {
+const defaultGetError = ({ value, max, min, FormatComponent }) => {
+  if (typeof value === 'number' && value > max) {
     return (
       <T
         id="Financing.maxExceeded"
         values={{ max: <FormatComponent value={max} /> }}
+      />
+    );
+  }
+
+  if (typeof value === 'number' && value < min) {
+    return (
+      <T
+        id="Financing.belowMin"
+        values={{ min: <FormatComponent value={min} /> }}
       />
     );
   }
