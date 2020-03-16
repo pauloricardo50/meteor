@@ -2,8 +2,10 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { getNewName } from '../collectionServerHelpers';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { getNewName, setAssignees } from '../collectionServerHelpers';
 import LoanService from '../../../loans/server/LoanService';
+import UserService from '../../../users/server/UserService';
 import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
 import generator from '../../../factories/server/generator';
 import { LOANS_COLLECTION } from '../../../loans/loanConstants';
@@ -284,6 +286,202 @@ describe('collectionServerHelpers', () => {
         expect(insuranceRequestName).to.equal('20-1457-A');
         expect(loanName).to.equal('20-1458');
       });
+    });
+  });
+
+  describe('setAssignees', () => {
+    it('throws if no assignees are set', () => {
+      expect(() => setAssignees({ assignees: [] })).to.throw('entre 1 et 3');
+      expect(() => setAssignees({ assignees: [{}, {}, {}, {}] })).to.throw(
+        'entre 1 et 3',
+      );
+    });
+
+    it('throws if percentages do not add up to 1000', () => {
+      expect(() => setAssignees({ assignees: [{ percent: 80 }] })).to.throw(
+        '100%',
+      );
+      expect(() =>
+        setAssignees({ assignees: [{ percent: 80 }, { percent: 30 }] }),
+      ).to.throw('100%');
+    });
+
+    it('throws if a decimal value is used for percent', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        setAssignees({
+          collection: LOANS_COLLECTION,
+          docId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 79.5, isMain: true },
+            { _id: 'admin2', percent: 20.5 },
+          ],
+        }),
+      ).to.throw('integer');
+    });
+
+    it('throws if a percentage less than 10 is used', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        setAssignees({
+          collection: LOANS_COLLECTION,
+          docId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 8, isMain: true },
+            { _id: 'admin2', percent: 92 },
+          ],
+        }),
+      ).to.throw('at least 10');
+    });
+
+    it('forces isMain to a boolean', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      LoanService.setAssignees({
+        loanId: 'id',
+        assignees: [
+          { _id: 'admin1', percent: 10, isMain: true },
+          { _id: 'admin2', percent: 90 },
+        ],
+      });
+
+      expect(
+        LoanService.get('id', { assigneeLinks: 1 }).assigneeLinks,
+      ).to.deep.equal([
+        {
+          _id: 'admin1',
+          isMain: true,
+          percent: 10,
+        },
+        { _id: 'admin2', isMain: false, percent: 90 },
+      ]);
+    });
+
+    it('throws if there is more or less than 1 main assignee', () => {
+      expect(() =>
+        setAssignees({
+          collection: LOANS_COLLECTION,
+          docId: 'id',
+          assignees: [{ percent: 100 }],
+        }),
+      ).to.throw('un seul');
+
+      expect(() =>
+        setAssignees({
+          collection: LOANS_COLLECTION,
+          docId: 'id',
+          assignees: [
+            { percent: 80, isMain: true },
+            { percent: 20, isMain: true },
+          ],
+        }),
+      ).to.throw('un seul');
+    });
+
+    it('does not allow non multiples of 10', () => {
+      generator({
+        loans: { _id: 'id' },
+        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
+      });
+
+      expect(() =>
+        setAssignees({
+          collection: LOANS_COLLECTION,
+          docId: 'id',
+          assignees: [
+            { _id: 'admin1', percent: 25, isMain: true },
+            { _id: 'admin2', percent: 75 },
+          ],
+        }),
+      ).to.throw('25 is not an allowed');
+    });
+
+    it('sets the main assignee to be the user assignee if asked to', () => {
+      generator({
+        loans: { _id: 'id', user: { _id: 'user' } },
+        users: [
+          { _factory: 'admin', _id: 'admin1' },
+          { _factory: 'admin', _id: 'admin2' },
+        ],
+      });
+
+      return ddpWithUserId('admin1', () => {
+        setAssignees({
+          docId: 'id',
+          collection: LOANS_COLLECTION,
+          assignees: [
+            { _id: 'admin1', percent: 50, isMain: true },
+            { _id: 'admin2', percent: 50, isMain: false },
+          ],
+          updateUserAssignee: true,
+        });
+
+        const user = UserService.get('user', { assignedEmployeeId: 1 });
+        expect(user.assignedEmployeeId).to.equal('admin1');
+      });
+    });
+
+    it('also sets the assignees to the linked insurance requests', async () => {
+      generator({
+        loans: {
+          _id: 'id',
+          insuranceRequests: [{ _id: 'iR1' }, { _id: 'iR2' }],
+        },
+        users: { _id: 'admin', _factory: 'admin' },
+      });
+
+      await setAssignees({
+        docId: 'id',
+        collection: LOANS_COLLECTION,
+        assignees: [{ _id: 'admin', percent: 100, isMain: true }],
+      });
+
+      const iR1 = InsuranceRequestService.get('iR1', { assigneeLinks: 1 });
+      const iR2 = InsuranceRequestService.get('iR2', { assigneeLinks: 1 });
+
+      expect(iR1.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 100, isMain: true },
+      ]);
+      expect(iR2.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 100, isMain: true },
+      ]);
+    });
+
+    it('also sets the assignees to the linked loan and other insurance requests', async () => {
+      generator({
+        loans: {
+          _id: 'id',
+          insuranceRequests: [{ _id: 'iR1' }, { _id: 'iR2' }],
+        },
+        users: { _id: 'admin', _factory: 'admin' },
+      });
+
+      await setAssignees({
+        docId: 'iR1',
+        collection: INSURANCE_REQUESTS_COLLECTION,
+        assignees: [{ _id: 'admin', percent: 100, isMain: true }],
+      });
+
+      const loan = LoanService.get('id', { assigneeLinks: 1 });
+      const iR2 = InsuranceRequestService.get('iR2', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 100, isMain: true },
+      ]);
+      expect(iR2.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 100, isMain: true },
+      ]);
     });
   });
 });

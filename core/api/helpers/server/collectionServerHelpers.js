@@ -200,11 +200,19 @@ export const setAssignees = ({
     case INSURANCE_REQUESTS_COLLECTION: {
       const loan = LoanService.get(
         { 'insuranceRequestLinks._id': docId },
-        { _id: 1 },
+        { _id: 1, insuranceRequestLinks: { _id: 1 } },
       );
       documents = [
         ...documents,
         loan && { _id: loan._id, collection: LOANS_COLLECTION },
+        ...(loan?.insuranceRequestLinks?.length
+          ? loan.insuranceRequestLinks
+              .filter(({ _id }) => _id !== docId)
+              .map(({ _id }) => ({
+                _id,
+                collection: INSURANCE_REQUESTS_COLLECTION,
+              }))
+          : []),
       ].filter(x => x);
       break;
     }
