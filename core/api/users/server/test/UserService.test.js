@@ -154,16 +154,16 @@ describe('UserService', function() {
       generator({
         users: {
           _factory: 'admin',
-          _id: assigneesByOrg[Object.keys(assigneesByOrg)[0]],
+          _id: 'testAdminId',
         },
         organisations: {
-          _id: Object.keys(assigneesByOrg)[0],
+          _id: 'testOrgId',
         },
       });
 
       const options = {
         email: 'test@test.com',
-        referredByOrganisation: Object.keys(assigneesByOrg)[0],
+        referredByOrganisation: 'testOrgId',
       };
 
       const userId = UserService.adminCreateUser({
@@ -171,9 +171,7 @@ describe('UserService', function() {
       });
 
       user = UserService.get(userId, { assignedEmployeeId: 1 });
-      expect(user.assignedEmployeeId).to.equal(
-        assigneesByOrg[Object.keys(assigneesByOrg)[0]],
-      );
+      expect(user.assignedEmployeeId).to.equal('testAdminId');
     });
   });
 

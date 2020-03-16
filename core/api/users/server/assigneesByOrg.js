@@ -1,1 +1,4 @@
-export const assigneesByOrg = {};
+export const assigneesByOrg = {
+  // For tests
+  testOrgId: 'testAdminId',
+};

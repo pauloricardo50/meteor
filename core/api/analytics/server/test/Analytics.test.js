@@ -38,7 +38,7 @@ describe('Analytics', () => {
 
       const analytics = new Analytics({ connection: { id: connectionId } });
 
-      analytics.track(EVENTS.USER_LOGGED_IN);
+      analytics.track(EVENTS.USER_LOGGED_IN, { type: 'password' });
 
       expect(analyticsSpy.callCount).to.equal(1);
     });
@@ -54,7 +54,7 @@ describe('Analytics', () => {
 
       const analytics = new Analytics({ connection: { id: connectionId } });
 
-      analytics.track(EVENTS.USER_LOGGED_IN);
+      analytics.track(EVENTS.USER_LOGGED_IN, { type: 'password' });
 
       expect(analyticsSpy.callCount).to.equal(0);
     });
