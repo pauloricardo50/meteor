@@ -12,7 +12,7 @@ import {
   insuranceRequestSetAssignees,
 } from 'core/api/methods';
 
-const schema = new SimpleSchema({
+export const assigneesSchema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
   'assigneeLinks.$': Object,
   'assigneeLinks.$._id': {
@@ -73,7 +73,7 @@ export default withProps(
     }
 
     return {
-      schema,
+      schema: assigneesSchema,
       model: { assigneeLinks },
       onSubmit: ({ assigneeLinks: assignees, note, updateUserAssignee }) =>
         setAssignees.run({

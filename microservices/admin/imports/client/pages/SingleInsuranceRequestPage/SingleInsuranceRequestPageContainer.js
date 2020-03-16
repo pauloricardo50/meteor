@@ -13,7 +13,7 @@ export default compose(
       user: { name: 1 },
       status: 1,
       assigneeLinks: 1,
-      assignees: { name: 1, phoneNumber: 1, email: 1 },
+      assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
       borrowers: { name: 1 },
       insurances: {
         createdAt: 1,

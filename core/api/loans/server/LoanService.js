@@ -7,6 +7,7 @@ import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
 import ActivityService from 'core/api/activities/server/ActivityService';
+import InsuranceRequestService from 'core/api/insuranceRequests/server/InsuranceRequestService';
 import { assignAdminToUser } from '../../methods';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Intl from '../../../utils/server/intl';

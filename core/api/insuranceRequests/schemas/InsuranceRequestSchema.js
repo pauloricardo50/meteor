@@ -34,6 +34,14 @@ const InsuranceRequestSchema = new SimpleSchema({
     defaultValue: 100,
     allowedValues: [...Array(10)].map((_, i) => 10 * (i + 1)),
   },
+  'assigneeLinks.$.isMain': {
+    type: Boolean,
+    autoValue() {
+      if (!this.value) {
+        return false;
+      }
+    },
+  },
   revenueLinks: {
     type: Array,
     optional: true,

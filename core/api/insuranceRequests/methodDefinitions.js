@@ -7,7 +7,9 @@ export const insuranceRequestInsert = new Method({
     insuranceRequest: Match.Maybe(Object),
     loanId: Match.Maybe(String),
     userId: Match.Maybe(String),
-    assigneeId: Match.Maybe(String),
+    assignees: Match.Maybe(Array),
+    updateUserAssignee: Match.Maybe(Boolean),
+    note: Match.Maybe(String),
     borrowerIds: Match.Maybe(Array),
   },
 });

@@ -6,21 +6,64 @@ import uniqBy from 'lodash/uniqBy';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { insuranceRequestInsert } from 'core/api/insuranceRequests/methodDefinitions';
 import { USERS_COLLECTION, ROLES } from 'core/api/constants';
-import { ModalManagerContext } from 'core/components/ModalManager';
-import InsuranceRequestAdderNameSetter from './InsuranceRequestAdderNameSetter';
+import { adminUsers } from 'core/api/users/queries';
 
-const getSchema = ({ admins = [], availableBorrowers = [] }) =>
+import { assigneesSchema } from '../AssigneesManager/AssigneesManagerContainer';
+
+const getSchema = ({ availableBorrowers = [] }) =>
   new SimpleSchema({
-    assigneeId: {
+    keepAssignees: {
+      type: Boolean,
+      defaultValue: true,
+      uniforms: { label: 'Garder les mêmes conseillers' },
+    },
+    assigneeLinks: {
+      type: Array,
+      optional: true,
+      uniforms: { label: 'Conseillers' },
+      condition: ({ keepAssignees }) => !keepAssignees,
+    },
+    'assigneeLinks.$': Object,
+    'assigneeLinks.$._id': {
       type: String,
-      allowedValues: admins.map(({ _id }) => _id),
+      customAllowedValues: {
+        query: adminUsers,
+        params: () => ({
+          roles: [ROLES.ADMIN],
+          $body: { name: 1, $options: { sort: { name: 1 } } },
+        }),
+      },
       uniforms: {
-        transform: assigneeId =>
-          admins.find(({ _id }) => _id === assigneeId).name,
-        labelProps: { shrink: true },
+        transform: user => (user ? user.name : ''),
         label: 'Conseiller',
         placeholder: null,
       },
+    },
+    'assigneeLinks.$.percent': {
+      type: SimpleSchema.Integer,
+      min: 10,
+      max: 100,
+      defaultValue: 100,
+      uniforms: { label: 'Assist %' },
+    },
+    'assigneeLinks.$.isMain': {
+      type: Boolean,
+      defaultValue: false,
+      uniforms: { label: 'Conseiller principal' },
+    },
+    note: {
+      type: String,
+      uniforms: {
+        placeholder: 'Expliquer la raison de la nouvelle répartition',
+      },
+      condition: ({ keepAssignees }) => !keepAssignees,
+    },
+    updateUserAssignee: {
+      type: Boolean,
+      defaultValue: false,
+      optional: true,
+      uniforms: { label: "Assigner le conseiller principal à l'utilisateur" },
+      condition: ({ keepAssignees }) => !keepAssignees,
     },
     ...(availableBorrowers?.length
       ? {
@@ -45,8 +88,6 @@ const getSchema = ({ admins = [], availableBorrowers = [] }) =>
   });
 
 export default withProps(({ user = {}, loan = {} }) => {
-  const { openModal } = useContext(ModalManagerContext);
-
   const {
     _id: userId,
     assignedEmployee = {},
@@ -55,67 +96,36 @@ export default withProps(({ user = {}, loan = {} }) => {
 
   const {
     _id: loanId,
-    assignees = [],
+    assigneeLinks = [],
     borrowers: loanBorrowers = [],
-    name: loanName,
-    insuranceRequests = [],
   } = loan;
-
-  const loanMainAssignee = assignees?.find(
-    ({ $metadata: { isMain } = {} }) => isMain,
-  );
 
   const availableBorrowers = uniqBy(
     [...userBorrowers, ...loanBorrowers],
     '_id',
   );
 
-  const { loading, data: admins } = useStaticMeteorData({
-    query: USERS_COLLECTION,
-    params: {
-      $filters: { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
-      name: 1,
-    },
-    refetchOnMethodCall: false,
-  });
-
   return {
-    schema: !loading ? getSchema({ admins, availableBorrowers }) : null,
-    loading,
+    schema: getSchema({ availableBorrowers }),
     model: {
-      assigneeId: loanMainAssignee?._id || assignedEmployee?._id,
+      assigneeLinks: assigneeLinks.length
+        ? assigneeLinks
+        : [{ _id: assignedEmployee._id, percent: 100, isMain: true }],
+      keepAssignees: !!assigneeLinks.length,
+      note: assigneeLinks.length ? '' : 'Répartition initiale',
     },
-    onSubmit: ({ assigneeId, borrowerIds = [] }) =>
-      insuranceRequestInsert
-        .run({
-          loanId,
-          userId,
-          assigneeId,
-          borrowerIds,
-        })
-        .then(({ name: insuranceRequestName, _id: insuranceRequestId }) => {
-          if (loanId && !insuranceRequests.length) {
-            openModal([
-              {
-                title: 'Numéro du dossier assurance',
-                description: `Vous avez lié un dossier assurance au dossier hypothécaire "${loanName}". Veuillez choisir un numéro pour ce dossier assurance. Attention: si vous conservez le numéro courant, le numéro du dossier hypothécaire sera modifié à "${insuranceRequestName
-                  .split('-')
-                  .slice(0, 2)
-                  .join('-')}"`,
-                content: ({ closeModal }) => (
-                  <InsuranceRequestAdderNameSetter
-                    closeModal={closeModal}
-                    insuranceRequestId={insuranceRequestId}
-                    insuranceRequestName={insuranceRequestName}
-                    loanId={loanId}
-                    loanName={loanName}
-                  />
-                ),
-                actions: [],
-                important: true,
-              },
-            ]);
-          }
-        }),
+    onSubmit: ({
+      keepAssignees,
+      assigneeLinks: assignees,
+      note,
+      updateUserAssignee,
+      borrowerIds = [],
+    }) =>
+      insuranceRequestInsert.run({
+        loanId,
+        userId,
+        ...(keepAssignees ? {} : { assignees, note, updateUserAssignee }),
+        borrowerIds,
+      }),
   };
 });

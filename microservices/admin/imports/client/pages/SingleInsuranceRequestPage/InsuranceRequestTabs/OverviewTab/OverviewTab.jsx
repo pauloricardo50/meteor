@@ -7,6 +7,7 @@ import AdminTimeline from '../../../../components/AdminTimeline';
 const OverviewTab = props => {
   const { insuranceRequest } = props;
   const { borrowers, _id: insuranceRequestId } = insuranceRequest;
+  console.log('insuranceRequest:', insuranceRequest);
 
   return (
     <div className="overview-tab">

@@ -181,15 +181,47 @@ export const setAssignees = ({
     );
   }
 
-  const Service = Services[collection];
+  let documents = [{ _id: docId, collection }];
 
-  const response = Service._update({
-    id: docId,
-    object: { assigneeLinks: assignees },
+  switch (collection) {
+    case LOANS_COLLECTION: {
+      const { insuranceRequestLinks = [] } = LoanService.get(docId, {
+        insuranceRequestLinks: 1,
+      });
+      documents = [
+        ...documents,
+        ...insuranceRequestLinks.map(({ _id }) => ({
+          _id,
+          collection: INSURANCE_REQUESTS_COLLECTION,
+        })),
+      ];
+      break;
+    }
+    case INSURANCE_REQUESTS_COLLECTION: {
+      const loan = LoanService.get(
+        { 'insuranceRequestLinks._id': docId },
+        { _id: 1 },
+      );
+      documents = [
+        ...documents,
+        loan && { _id: loan._id, collection: LOANS_COLLECTION },
+      ].filter(x => x);
+      break;
+    }
+    default:
+      break;
+  }
+
+  documents.forEach(({ _id, collection: docCollection }) => {
+    const Service = Services[docCollection];
+    Service._update({
+      id: _id,
+      object: { assigneeLinks: assignees },
+    });
   });
 
   if (updateUserAssignee) {
-    const { user: { _id: userId } = {} } = Service.get(docId, {
+    const { user: { _id: userId } = {} } = Services[collection].get(docId, {
       user: { _id: 1 },
     });
     if (userId) {
@@ -197,5 +229,5 @@ export const setAssignees = ({
     }
   }
 
-  return response;
+  return Promise.resolve();
 };

@@ -20,7 +20,8 @@ class InsuranceRequestService extends CollectionService {
     insuranceRequest = {},
     userId,
     loanId,
-    assigneeId,
+    assignees,
+    updateUserAssignee,
     borrowerIds,
   }) => {
     const name = getNewName({
@@ -72,19 +73,21 @@ class InsuranceRequestService extends CollectionService {
     }
 
     // Set the assignee
-    if (assigneeId) {
+    if (assignees) {
       this.setAssignees({
         insuranceRequestId,
-        assignees: [{ _id: assigneeId, percent: 100, isMain: true }],
+        assignees,
+        loanId,
+        updateUserAssignee,
       });
     }
     // Set the same assignees as the loan
     else if (!user && loan) {
-      const { assignees = [] } = loan;
+      const { assignees: loanAssignees = [] } = loan;
       if (assignees.length) {
         this.setAssignees({
           insuranceRequestId,
-          assignees,
+          assignees: loanAssignees,
         });
       }
     }
