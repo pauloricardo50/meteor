@@ -5,6 +5,7 @@ import {
   createdAt,
   decimalMoneyField,
   dateField,
+  cacheField,
 } from '../../helpers/sharedSchemas';
 
 import { INSURANCE_STATUS } from '../insuranceConstants';
@@ -38,6 +39,8 @@ const InsuranceSchema = new SimpleSchema({
   revenueLinks: { type: Array, optional: true },
   'revenueLinks.$': Object,
   'revenueLinks.$._id': String,
+  tasksCache: { type: Array, optional: true },
+  'tasksCache.$': cacheField,
 });
 
 export default InsuranceSchema;

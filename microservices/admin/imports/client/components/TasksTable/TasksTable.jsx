@@ -44,6 +44,7 @@ const TasksTable = ({
   uptoDate,
   setUptoDate,
   withPriority,
+  additionalFilters,
 }) => {
   const renderTable = !(hideIfNoData && !rows.length);
   const TableComponent = withPriority ? TasksTablePriority : Table;
@@ -60,6 +61,7 @@ const TasksTable = ({
             setAssignee={setAssignee}
             uptoDate={uptoDate}
             setUptoDate={setUptoDate}
+            additionalFilters={additionalFilters}
           />
         )}
       </div>

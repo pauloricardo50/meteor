@@ -5,9 +5,19 @@ import {
   Organisations,
   InsuranceRequests,
   InsuranceProducts,
+  Tasks,
 } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
+
+const tasksCache = {
+  createdAt: 1,
+  dueAt: 1,
+  status: 1,
+  title: 1,
+  isPrivate: 1,
+  assigneeLink: 1,
+};
 
 LinkInitializer.directInit(() => {
   Insurances.addLinks({
@@ -44,6 +54,15 @@ LinkInitializer.inversedInit(() => {
       inversedBy: 'insurances',
       collection: InsuranceRequests,
       autoremove: true,
+    },
+    tasks: {
+      inversedBy: 'insuranceRequest',
+      collection: Tasks,
+      autoremove: true,
+      denormalize: {
+        field: 'tasksCache',
+        body: tasksCache,
+      },
     },
   });
 });

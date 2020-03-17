@@ -52,8 +52,8 @@ const getRows = ({ insuranceRequests = [], history }) =>
           label: updatedAt ? moment(updatedAt).fromNow() : '-',
         },
       ],
-      handleClick: () =>
-        history.push(`/insuranceRequests/${insuranceRequestId}`),
+      // handleClick: () =>
+      //   history.push(`/insuranceRequests/${insuranceRequestId}`),
     };
   });
 

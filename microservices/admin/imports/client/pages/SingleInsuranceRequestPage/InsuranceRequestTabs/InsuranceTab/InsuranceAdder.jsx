@@ -14,11 +14,13 @@ const InsuranceAdder = ({ schema, insertInsurance, loading }) => {
       onSubmit={insertInsurance}
       title="Nouvelle assurance"
       buttonProps={{
-        label: 'Assurance',
-        raised: true,
+        fab: true,
         primary: true,
+        label: '',
         icon: <Icon type="add" />,
         className: 'ml-8',
+        size: 'small',
+        tooltip: 'Ajouter une assurance',
       }}
     />
   );

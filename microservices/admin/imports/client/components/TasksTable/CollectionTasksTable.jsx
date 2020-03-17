@@ -58,7 +58,7 @@ const getFilters = ({ collection, doc, assignee, status }) => {
   return filters;
 };
 
-const CollectionTasksTable = ({
+export const CollectionTasksTable = ({
   doc,
   tasks,
   model,
@@ -68,6 +68,7 @@ const CollectionTasksTable = ({
   refetch,
   collection,
   className,
+  CustomTaskInserter,
   ...rest
 }) => (
   <div className={className}>
@@ -75,14 +76,24 @@ const CollectionTasksTable = ({
       {withTaskInsert && (
         <>
           <h3>Tâches</h3>
-          <CollectionTaskInserter
-            doc={doc}
-            refetch={refetch}
-            model={model}
-            openOnMount={openOnMount}
-            resetForm={resetForm}
-            collection={collection}
-          />
+          {CustomTaskInserter ? (
+            <CustomTaskInserter
+              doc={doc}
+              refetch={refetch}
+              model={model}
+              openOnMount={openOnMount}
+              resetForm={resetForm}
+            />
+          ) : (
+            <CollectionTaskInserter
+              doc={doc}
+              refetch={refetch}
+              model={model}
+              openOnMount={openOnMount}
+              resetForm={resetForm}
+              collection={collection}
+            />
+          )}
         </>
       )}
     </TasksTable>

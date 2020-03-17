@@ -106,6 +106,8 @@ export const TasksSchema = new SimpleSchema({
   },
   insuranceRequestLink: { type: Object, optional: true },
   'insuranceRequestLink._id': { type: String, optional: true },
+  insuranceLink: { type: Object, optional: true },
+  'insuranceLink._id': { type: String, optional: true },
   isPrivate: {
     type: Boolean,
     defaultValue: false,

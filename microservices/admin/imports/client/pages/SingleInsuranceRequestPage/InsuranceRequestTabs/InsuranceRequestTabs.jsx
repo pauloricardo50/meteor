@@ -1,60 +1,73 @@
 import React from 'react';
-import { lifecycle } from 'recompose';
 
 import Tabs from 'core/components/Tabs';
-import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import { createRoute } from 'core/utils/routerUtils';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 import OverviewTab from './OverviewTab';
-import InsurancesTab from './InsurancesTab';
+import InsuranceTab from './InsuranceTab';
+import InsuranceAdder from './InsuranceTab/InsuranceAdder';
 
 const getTabs = props => {
   const { insuranceRequest } = props;
-
+  const { insurances = [] } = insuranceRequest;
   return [
     {
       id: 'overview',
-      Component: OverviewTab,
-      icon: 'info',
-    },
-    {
-      id: 'insurances',
-      Component: InsurancesTab,
-      icon: 'accessibleForward',
-    },
-  ];
-};
-
-const formatTabs = (tabs, props) =>
-  tabs
-    .filter(x => x)
-    .map(({ id, Component, style = {}, additionalLabel, icon = 'help' }) => ({
-      id,
-      content: <Component {...props} />,
+      content: <OverviewTab {...props} />,
       label: (
-        <span
-          style={style}
-          className="single-insurance-request-page-tabs-label"
-        >
-          <Icon type={icon} className="mr-4" />
-          <T id={`InsuranceRequestTabs.${id}`} noTooltips />
-          {additionalLabel && <>&nbsp;&bull;&nbsp; {additionalLabel}</>}
+        <span className="single-insurance-request-page-tabs-label">
+          <Icon type="info" className="mr-4" />
+          <span>Général</span>
         </span>
       ),
       to:
         props.enableTabRouting &&
         createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
           insuranceRequestId: props.insuranceRequest._id,
-          tabId: id,
+          tabId: 'overview',
         }),
-    }));
+    },
+    ...insurances.map(insurance => {
+      const { organisation, borrower } = insurance;
+
+      return {
+        id: `insurances/${insurance._id}`,
+        content: <InsuranceTab {...props} insurance={insurance} />,
+        label: (
+          <span className="single-insurance-request-page-tabs-label">
+            <img
+              src={organisation.logo}
+              alt={organisation.name}
+              height={24}
+              className="mr-8"
+            />
+            <div className="flex-col">
+              <span>{insurance.name}</span>
+              <span>{borrower.name}</span>
+            </div>
+          </span>
+        ),
+        to:
+          props.enableTabRouting &&
+          createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
+            insuranceRequestId: props.insuranceRequest._id,
+            tabId: insurance._id,
+          }),
+      };
+    }),
+    {
+      id: 'insuranceAdder',
+      content: null,
+      label: <InsuranceAdder insuranceRequest={insuranceRequest} />,
+    },
+  ];
+};
 
 const InsuranceRequestTabs = ({ tabs, ...props }) => {
   const { enableTabRouting } = props;
-  const formattedTabs = formatTabs(tabs || getTabs(props), props);
-  console.log('formattedTabs:', formattedTabs);
+  const formattedTabs = getTabs(props);
 
   return (
     <Tabs

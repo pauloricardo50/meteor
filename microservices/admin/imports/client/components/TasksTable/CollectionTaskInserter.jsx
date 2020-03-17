@@ -15,7 +15,7 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import Icon from 'core/components/Icon';
-import { schema, taskFormLayout } from './TaskModifier';
+import { schema as taskSchema, taskFormLayout } from './TaskModifier';
 
 const getCollectionLabel = collection => {
   switch (collection) {
@@ -38,15 +38,16 @@ const getCollectionLabel = collection => {
   }
 };
 
-const CollectionTaskInserterForm = ({
+export const CollectionTaskInserterForm = ({
   title,
   description,
   label,
+  schema,
   ...props
 }) => (
   <div className="collection-task-inserter-form mr-8">
     <AutoFormDialog
-      schema={schema.omit('status')}
+      schema={schema || taskSchema.omit('status')}
       title={title}
       description={description}
       buttonProps={{

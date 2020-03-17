@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
-import { withSmartQuery } from 'core/api';
+import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 
 export default compose(
@@ -16,12 +16,13 @@ export default compose(
       assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
       borrowers: { name: 1 },
       insurances: {
+        name: 1,
         createdAt: 1,
         updatedAt: 1,
         status: 1,
         description: 1,
         borrower: { name: 1 },
-        organisation: { name: 1 },
+        organisation: { name: 1, logo: 1 },
         premium: 1,
         singlePremium: 1,
         duration: 1,

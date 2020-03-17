@@ -20,6 +20,7 @@ const TaskTableFilters = ({
   setAssignee,
   uptoDate,
   setUptoDate,
+  additionalFilters,
 }) => {
   const assigneeOptions = [
     ...admins.map(({ _id, firstName }) => ({ id: _id, label: firstName })),
@@ -60,6 +61,8 @@ const TaskTableFilters = ({
           onChange={value => setUptoDate(value)}
         />
       )}
+
+      {additionalFilters}
     </div>
   );
 };

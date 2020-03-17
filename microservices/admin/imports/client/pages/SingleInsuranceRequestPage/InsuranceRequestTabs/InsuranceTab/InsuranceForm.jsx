@@ -11,6 +11,56 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { insuranceInsert, insuranceModify } from 'core/api/methods';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 
+const makeInsuranceMethod = ({
+  insuranceRequestId,
+  insurance = {},
+  type = 'insert',
+}) => ({
+  status,
+  borrowerId,
+  organisationId,
+  insuranceProductId,
+  description,
+  premium,
+  singlePremium,
+  duration,
+  billingDate,
+}) => {
+  if (type === 'insert') {
+    return insuranceInsert.run({
+      insuranceRequestId,
+      borrowerId,
+      organisationId,
+      insuranceProductId,
+      insurance: {
+        status,
+        description,
+        premium,
+        singlePremium,
+        duration,
+        billingDate: new Date(billingDate),
+      },
+    });
+  }
+
+  if (type === 'update') {
+    return insuranceModify.run({
+      insuranceId: insurance._id,
+      borrowerId,
+      organisationId,
+      insuranceProductId,
+      insurance: {
+        status,
+        description,
+        premium,
+        singlePremium,
+        duration,
+        billingDate: new Date(billingDate),
+      },
+    });
+  }
+};
+
 const getSchema = ({ borrowers, organisations }) =>
   new SimpleSchema({
     status: {
@@ -117,7 +167,7 @@ const getSchema = ({ borrowers, organisations }) =>
     ),
   );
 
-export default withProps(({ insuranceRequest, insurance = {}, setOpen }) => {
+export default withProps(({ insuranceRequest, insurance = {} }) => {
   const { borrowers, _id: insuranceRequestId } = insuranceRequest;
   const { loading, data: organisations } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
@@ -154,57 +204,16 @@ export default withProps(({ insuranceRequest, insurance = {}, setOpen }) => {
       category: insurance.insuranceProduct?.category,
       insuranceProductId: insurance.insuranceProduct?._id,
     },
-    insertInsurance: ({
-      borrowerId,
-      organisationId,
-      insuranceProductId,
-      description,
-      premium,
-      singlePremium,
-      duration,
-      billingDate,
-      status,
-    }) =>
-      insuranceInsert.run({
-        insuranceRequestId,
-        borrowerId,
-        organisationId,
-        insuranceProductId,
-        insurance: {
-          status,
-          description,
-          premium,
-          singlePremium,
-          duration,
-          billingDate: new Date(billingDate),
-        },
-      }),
-    modifyInsurance: ({
-      status,
-      borrowerId,
-      organisationId,
-      insuranceProductId,
-      description,
-      premium,
-      singlePremium,
-      duration,
-      billingDate,
-    }) =>
-      insuranceModify.run({
-        insuranceId: insurance._id,
-        borrowerId,
-        organisationId,
-        insuranceProductId,
-        insurance: {
-          status,
-          description,
-          premium,
-          singlePremium,
-          duration,
-          billingDate: new Date(billingDate),
-        },
-      }),
-
+    insertInsurance: makeInsuranceMethod({
+      insuranceRequestId,
+      insurance,
+      type: 'insert',
+    }),
+    modifyInsurance: makeInsuranceMethod({
+      insuranceRequestId,
+      insurance,
+      type: 'update',
+    }),
     loading,
   };
 });
