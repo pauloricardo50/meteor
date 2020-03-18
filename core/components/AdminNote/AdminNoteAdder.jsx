@@ -43,7 +43,7 @@ const getInsertSchema = contacts =>
     },
   });
 
-const AdminNoteSetter = ({
+export const AdminNoteSetter = ({
   adminNote,
   docId,
   buttonProps,
@@ -51,18 +51,19 @@ const AdminNoteSetter = ({
   setAdminNote,
   removeAdminNote,
   methodParams,
+  getInsertSchemaOverride,
+  getUpdateSchemaOverride,
 }) => {
   const isInsert = !adminNote;
   const { loading, contacts } = getContacts(docId);
-  const schema = useMemo(
-    () =>
-      isInsert
-        ? getInsertSchema(
-            contacts.filter(({ isEmailable }) => isEmailable) || [],
-          )
-        : getUpdateSchema(),
-    [contacts],
-  );
+  const schema = useMemo(() => {
+    const insertSchema = getInsertSchemaOverride || getInsertSchema;
+    const updateSchema = getUpdateSchemaOverride || getUpdateSchema;
+
+    return isInsert
+      ? insertSchema(contacts.filter(({ isEmailable }) => isEmailable) || [])
+      : updateSchema();
+  }, [contacts]);
 
   const searchParams = useSearchParams();
 

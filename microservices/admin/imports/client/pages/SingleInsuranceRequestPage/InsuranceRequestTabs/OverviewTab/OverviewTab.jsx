@@ -1,13 +1,12 @@
 import React from 'react';
-import AdminNotes from 'core/components/AdminNotes';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import AssigneesManager from 'imports/client/components/AssigneesManager';
 import AdminTimeline from '../../../../components/AdminTimeline';
+import InsuranceRequestAdminNotes from '../../InsuranceRequestAdminNotes';
 
 const OverviewTab = props => {
   const { insuranceRequest } = props;
   const { borrowers, _id: insuranceRequestId } = insuranceRequest;
-  console.log('insuranceRequest:', insuranceRequest);
 
   return (
     <div className="overview-tab">
@@ -23,8 +22,8 @@ const OverviewTab = props => {
         docId={insuranceRequestId}
         collection={INSURANCE_REQUESTS_COLLECTION}
       />
-      <AdminNotes
-        doc={insuranceRequest}
+      <InsuranceRequestAdminNotes
+        insuranceRequest={insuranceRequest}
         collection={INSURANCE_REQUESTS_COLLECTION}
       />
     </div>

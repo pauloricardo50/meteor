@@ -9,6 +9,7 @@ import {
 } from '../../helpers/server/collectionServerHelpers';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
+import InsuranceService from '../../insurances/server/InsuranceService';
 import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequestConstants';
 
 class InsuranceRequestService extends CollectionService {
@@ -127,12 +128,33 @@ class InsuranceRequestService extends CollectionService {
       throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
     }
 
-    if (adminNoteId) {
+    const { adminNotes: currentAdminNotes = [] } = this.get(
+      insuranceRequestId,
+      {
+        adminNotes: 1,
+      },
+    );
+
+    const adminNoteExists =
+      adminNoteId && currentAdminNotes.find(({ id }) => id === adminNoteId);
+
+    if (adminNoteExists) {
       result = this.baseUpdate(
         { _id: insuranceRequestId, 'adminNotes.id': adminNoteId },
         { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
       );
     } else {
+      const { _id: insuranceId } = adminNoteId
+        ? InsuranceService.get({ 'adminNotes.id': adminNoteId }, { _id: 1 })
+        : {};
+
+      if (insuranceId) {
+        InsuranceService.removeAdminNote({
+          insuranceId,
+          adminNoteId,
+        });
+      }
+
       result = this._update({
         id: insuranceRequestId,
         operator: '$push',

@@ -9,6 +9,8 @@ import {
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
+  INSURANCES_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from '../../../api/constants';
 
 const makeQuery = (collection, params, cb) =>
@@ -136,6 +138,26 @@ export default {
         name: 1,
         organisations: { name: 1, logo: 1 },
         phoneNumbers: 1,
+      },
+      cb,
+    ),
+  [INSURANCES_COLLECTION]: (_id, cb) =>
+    makeQuery(
+      INSURANCES_COLLECTION,
+      {
+        $filters: { _id },
+        name: 1,
+        organisations: { name: 1, logo: 1 },
+        insuranceRequest: { _id: 1 },
+      },
+      cb,
+    ),
+  [INSURANCE_REQUESTS_COLLECTION]: (_id, cb) =>
+    makeQuery(
+      INSURANCE_REQUESTS_COLLECTION,
+      {
+        $filters: { _id },
+        name: 1,
       },
       cb,
     ),

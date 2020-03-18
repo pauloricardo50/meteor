@@ -7,10 +7,7 @@ import { taskInsert } from 'core/api';
 import T from 'core/components/Translation';
 import Box from 'core/components/Box';
 import { CollectionTaskInserterForm } from '../../../components/TasksTable/CollectionTaskInserter';
-import {
-  schema as taskSchema,
-  taskFormLayout,
-} from '../../../components/TasksTable/TaskModifier';
+import { schema as taskSchema } from '../../../components/TasksTable/TaskModifier';
 
 const getSchema = insuranceRequest => {
   const { insurances = [], _id: insuranceRequestId, name } = insuranceRequest;
@@ -60,12 +57,6 @@ export default withProps(
     },
     label: <T id="CollectionTaskInserter.label" />,
     title: <T id="CollectionTaskInserter.title" />,
-    // description: (
-    //   <T
-    //     id="CollectionTaskInserter.description"
-    //     values={{ collectionLabel: getCollectionLabel(collection) }}
-    //   />
-    // ),
     layout: [
       {
         Component: Box,

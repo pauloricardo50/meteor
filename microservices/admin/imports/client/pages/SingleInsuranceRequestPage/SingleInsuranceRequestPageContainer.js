@@ -15,7 +15,13 @@ export default compose(
       assigneeLinks: 1,
       assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
       borrowers: { name: 1 },
+      adminNotes: 1,
+      proNote: 1,
+      proNotes: 1,
       insurances: {
+        adminNotes: 1,
+        proNote: 1,
+        proNotes: 1,
         name: 1,
         createdAt: 1,
         updatedAt: 1,

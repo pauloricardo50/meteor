@@ -18,6 +18,8 @@ import {
   LOAN_CATEGORIES,
   PROPERTY_CATEGORY,
   ORGANISATION_FEATURES,
+  INSURANCES_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import Roles from '../../Roles';
@@ -147,6 +149,8 @@ export const titles = {
       </span>
     </span>
   ),
+  [INSURANCES_COLLECTION]: ({ name }) => <span>{name}</span>,
+  [INSURANCE_REQUESTS_COLLECTION]: ({ name }) => <span>{name}</span>,
 };
 
 export const components = {
@@ -605,4 +609,6 @@ export const components = {
       />
     </div>
   ),
+  [INSURANCE_REQUESTS_COLLECTION]: ({ name }) => <div>{name}</div>,
+  [INSURANCES_COLLECTION]: ({ name }) => <div>{name}</div>,
 };

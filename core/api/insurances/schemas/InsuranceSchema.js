@@ -6,6 +6,7 @@ import {
   decimalMoneyField,
   dateField,
   cacheField,
+  adminNotesSchema,
 } from '../../helpers/sharedSchemas';
 
 import { INSURANCE_STATUS } from '../insuranceConstants';
@@ -41,6 +42,11 @@ const InsuranceSchema = new SimpleSchema({
   'revenueLinks.$._id': String,
   tasksCache: { type: Array, optional: true },
   'tasksCache.$': cacheField,
+  ...adminNotesSchema,
+  proNote: {
+    type: new SimpleSchema(adminNotesSchema).getObjectSchema('adminNotes.$'),
+    optional: true,
+  },
 });
 
 export default InsuranceSchema;

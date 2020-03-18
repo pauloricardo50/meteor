@@ -1,3 +1,4 @@
+import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const insuranceInsert = new Method({
@@ -19,5 +20,23 @@ export const insuranceModify = new Method({
     organisationId: String,
     insuranceProductId: String,
     insurance: Object,
+  },
+});
+
+export const insuranceSetAdminNote = new Method({
+  name: 'insuranceSetAdminNote',
+  params: {
+    insuranceId: String,
+    adminNoteId: Match.Maybe(String),
+    note: Object,
+    notifyPros: Match.Maybe(Array),
+  },
+});
+
+export const insuranceRemoveAdminNote = new Method({
+  name: 'insuranceRemoveAdminNote',
+  params: {
+    insuranceId: String,
+    adminNoteId: String,
   },
 });

@@ -33,7 +33,7 @@ const getTabs = props => {
       const { organisation, borrower } = insurance;
 
       return {
-        id: `insurances/${insurance._id}`,
+        id: insurance._id,
         content: <InsuranceTab {...props} insurance={insurance} />,
         label: (
           <span className="single-insurance-request-page-tabs-label">

@@ -11,7 +11,7 @@ import AdminNotesContainer from './AdminNotesContainer';
 
 const isAdmin = Meteor.microservice === 'admin';
 
-const AdminNotes = ({
+export const AdminNotes = ({
   collection,
   docId,
   proNotes,
@@ -19,6 +19,9 @@ const AdminNotes = ({
   proNote,
   referredByUser,
   title = 'Notes',
+  CustomNoteAdder,
+  Filters,
+  doc,
 }) => {
   const [showAll, setShowAll] = useState(false);
   const notes = isAdmin ? adminNotes : proNotes;
@@ -34,19 +37,34 @@ const AdminNotes = ({
       <div className="flex center-align mb-16">
         <h2 className="mr-8">{title}</h2>
 
-        {isAdmin && (
-          <AdminNoteAdder
-            docId={docId}
-            buttonProps={{
-              raised: true,
-              primary: true,
-              label: 'Note',
-              icon: <Icon type="add" />,
-            }}
-            referredByUser={referredByUser}
-            collection={collection}
-          />
-        )}
+        {isAdmin &&
+          (CustomNoteAdder ? (
+            <CustomNoteAdder
+              docId={docId}
+              buttonProps={{
+                raised: true,
+                primary: true,
+                label: 'Note',
+                icon: <Icon type="add" />,
+              }}
+              referredByUser={referredByUser}
+              collection={collection}
+              doc={doc}
+            />
+          ) : (
+            <AdminNoteAdder
+              docId={docId}
+              buttonProps={{
+                raised: true,
+                primary: true,
+                label: 'Note',
+                icon: <Icon type="add" />,
+              }}
+              referredByUser={referredByUser}
+              collection={collection}
+            />
+          ))}
+        {Filters}
       </div>
       {shouldShowProNote && (
         <div className="card1 card-top pro-note mb-16">
@@ -79,18 +97,31 @@ const AdminNotes = ({
                   <span className="secondary mr-8">
                     {moment(date).format('D/M/YY')}
                   </span>
-                  {isAdmin && (
-                    <AdminNoteAdder
-                      docId={docId}
-                      buttonProps={{
-                        label: 'Modifier',
-                        size: 'small',
-                        className: 'mr-8',
-                      }}
-                      adminNote={shownNote}
-                      collection={collection}
-                    />
-                  )}
+                  {isAdmin &&
+                    (CustomNoteAdder ? (
+                      <CustomNoteAdder
+                        docId={docId}
+                        buttonProps={{
+                          label: 'Modifier',
+                          size: 'small',
+                          className: 'mr-8',
+                        }}
+                        adminNote={shownNote}
+                        collection={collection}
+                        doc={doc}
+                      />
+                    ) : (
+                      <AdminNoteAdder
+                        docId={docId}
+                        buttonProps={{
+                          label: 'Modifier',
+                          size: 'small',
+                          className: 'mr-8',
+                        }}
+                        adminNote={shownNote}
+                        collection={collection}
+                      />
+                    ))}
                   {isAdmin && isSharedWithPros && (
                     <span className="primary">Partagé avec les pros!</span>
                   )}

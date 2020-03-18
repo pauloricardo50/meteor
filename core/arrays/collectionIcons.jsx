@@ -20,6 +20,7 @@ import {
   INTEREST_RATES_COLLECTION,
   REVENUES_COLLECTION,
   INSURANCE_REQUESTS_COLLECTION,
+  INSURANCES_COLLECTION,
 } from '../api/constants';
 
 export default {
@@ -45,6 +46,9 @@ export default {
     <FontAwesomeIcon icon={faMoneyBillWave} className="collection-icon" />
   ),
   [INSURANCE_REQUESTS_COLLECTION]: (
+    <FontAwesomeIcon icon={faFileContract} className="collection-icon" />
+  ),
+  [INSURANCES_COLLECTION]: (
     <FontAwesomeIcon icon={faFileContract} className="collection-icon" />
   ),
 };
