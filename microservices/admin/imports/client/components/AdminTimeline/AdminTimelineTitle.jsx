@@ -15,7 +15,7 @@ const icons = {
   task: 'check',
 };
 
-const getIcon = (type, isServerGenerated, isImportant) => {
+export const getIcon = (type, isServerGenerated, isImportant) => {
   if (isImportant) {
     return 'star';
   }

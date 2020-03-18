@@ -26,6 +26,9 @@ const documentSelectSchema = (availableDocuments = []) =>
       uniforms: {
         transform: docId =>
           availableDocuments.find(({ _id }) => _id === docId).name,
+        label: 'Relatif à',
+        displayEmpty: false,
+        allowNull: false,
       },
     },
   });

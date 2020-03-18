@@ -20,6 +20,10 @@ export const activity = () => ({
   metadata: 1,
   isServerGenerated: 1,
   isImportant: 1,
+  loanLink: { _id: 1 },
+  userLink: { _id: 1 },
+  insuranceRequestLink: { _id: 1 },
+  insuranceLink: { _id: 1 },
 });
 
 // //

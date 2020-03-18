@@ -49,13 +49,15 @@ export const AdminActivityForm = ({
   iconType,
   className = '',
   buttonProps = {},
+  schema,
+  layout,
   ...rest
 }) => (
   <AutoFormDialog
-    schema={ActivitySchema}
+    schema={schema || ActivitySchema}
     model={model}
     onSubmit={onSubmit}
-    layout={activityFormLayout}
+    layout={layout || activityFormLayout}
     buttonProps={{
       className,
       label: 'Activité',
@@ -104,7 +106,7 @@ export default withProps(({ docId, collection }) => {
       methodParams = { loanLink: { _id: docId } };
       break;
     case USERS_COLLECTION:
-      methodParams = { userLin: { _id: docId } };
+      methodParams = { userLink: { _id: docId } };
       break;
     case INSURANCE_REQUESTS_COLLECTION:
       methodParams = { insuranceRequestLink: { _id: docId } };

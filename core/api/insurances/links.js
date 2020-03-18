@@ -6,6 +6,7 @@ import {
   InsuranceRequests,
   InsuranceProducts,
   Tasks,
+  Activities,
 } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
@@ -63,6 +64,11 @@ LinkInitializer.inversedInit(() => {
         field: 'tasksCache',
         body: tasksCache,
       },
+    },
+    activities: {
+      inversedBy: 'insurance',
+      collection: Activities,
+      autoremove: true,
     },
   });
 });

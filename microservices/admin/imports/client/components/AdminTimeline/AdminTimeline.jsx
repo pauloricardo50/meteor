@@ -25,6 +25,11 @@ const AdminTimeline = ({
   setFetchConversations,
   frontTagId,
   withActivityAdder = true,
+  AdditionalFilters,
+  ActivityDescription,
+  ActivityTitle,
+  CustomActivityAdder,
+  collection,
 }) => {
   useEffect(() => {
     const el = document.getElementsByClassName('admin-timeline-timeline')[0];
@@ -37,9 +42,12 @@ const AdminTimeline = ({
 
   return (
     <div className="admin-timeline">
-      <div className="flex">
+      <div className="flex center-align mb-16">
         <h2>Activité</h2>
-        {withActivityAdder && <AdminActivityAdder docId={docId} />}
+        {withActivityAdder &&
+          (CustomActivityAdder || (
+            <AdminActivityAdder docId={docId} collection={collection} />
+          ))}
         <Select
           value={type.$in}
           multiple
@@ -63,6 +71,7 @@ const AdminTimeline = ({
             label="Front"
           />
         )}
+        {AdditionalFilters}
       </div>
       <Timeline
         variant="horizontal"
@@ -77,8 +86,17 @@ const AdminTimeline = ({
                 </Tooltip>
               </div>
             ),
-          mainLabel: <AdminTimelineTitle activity={activity} />,
-          secondaryLabel: (
+          mainLabel: ActivityTitle ? (
+            React.cloneElement(ActivityTitle, { activity })
+          ) : (
+            <AdminTimelineTitle activity={activity} />
+          ),
+          secondaryLabel: ActivityDescription ? (
+            React.cloneElement(ActivityDescription, {
+              activity,
+              className: 'admin-timeline-description',
+            })
+          ) : (
             <TimelineDescription
               activity={activity}
               className="admin-timeline-description"

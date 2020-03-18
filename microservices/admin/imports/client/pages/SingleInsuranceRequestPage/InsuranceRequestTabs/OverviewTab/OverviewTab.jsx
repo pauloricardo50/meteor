@@ -3,6 +3,7 @@ import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import AssigneesManager from 'imports/client/components/AssigneesManager';
 import AdminTimeline from '../../../../components/AdminTimeline';
 import InsuranceRequestAdminNotes from '../../InsuranceRequestAdminNotes';
+import InsuranceRequestTimeline from '../../InsuranceRequestTimeline';
 
 const OverviewTab = props => {
   const { insuranceRequest } = props;
@@ -18,10 +19,11 @@ const OverviewTab = props => {
           />
         </div>
       </div>
-      <AdminTimeline
+      {/* <AdminTimeline
         docId={insuranceRequestId}
         collection={INSURANCE_REQUESTS_COLLECTION}
-      />
+      /> */}
+      <InsuranceRequestTimeline insuranceRequest={insuranceRequest} />
       <InsuranceRequestAdminNotes
         insuranceRequest={insuranceRequest}
         collection={INSURANCE_REQUESTS_COLLECTION}
