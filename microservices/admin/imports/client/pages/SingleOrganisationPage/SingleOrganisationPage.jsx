@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import { ORGANISATION_FEATURES, ORGANISATION_TYPES } from 'core/api/constants';
+import { ORGANISATION_FEATURES } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import AdminReferredUsersTable from 'core/components/ReferredUsersTable/AdminReferredUsersTable';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
@@ -25,10 +25,9 @@ const tabs = ({ organisation, currentUser }) =>
     { id: 'contacts', Component: ContactsTable },
     {
       id: 'insuranceProducts',
-      condition: [
-        ORGANISATION_TYPES.INSURANCE,
-        ORGANISATION_TYPES.PENSION_FUND,
-      ].includes(organisation.type),
+      condition: organisation.features.includes(
+        ORGANISATION_FEATURES.INSURANCE,
+      ),
       Component: InsuranceProducts,
     },
     {
@@ -42,16 +41,20 @@ const tabs = ({ organisation, currentUser }) =>
       Component: LenderRulesEditor,
     },
     {
-      id: 'commission',
-      Component: CommissionRates,
-    },
-    {
       id: 'referredUsers',
       Component: AdminReferredUsersTable,
     },
     {
       id: 'revenues',
       Component: OrganisationRevenues,
+      condition:
+        organisation.features.includes(ORGANISATION_FEATURES.LENDER) ||
+        organisation.features.includes(ORGANISATION_FEATURES.INSURANCE),
+    },
+    {
+      id: 'commission',
+      Component: CommissionRates,
+      condition: organisation.features.includes(ORGANISATION_FEATURES.PRO),
     },
   ].map(({ id, Component, condition, style = {} }) => ({
     id,
@@ -74,24 +77,17 @@ const tabs = ({ organisation, currentUser }) =>
     }),
   }));
 
-const SingleOrganisationPage = ({ organisation, currentUser }) => {
-  console.log('organisation:', organisation);
-
-  return (
-    <div className="card1 card-top single-organisation-page">
-      <Helmet>
-        <title>{organisation.name}</title>
-      </Helmet>
-      <SingleOrganisationPageHeader
-        organisation={organisation}
-        currentUser={currentUser}
-      />
-      <Tabs
-        tabs={tabs({ organisation, currentUser })}
-        routerParamName="tabId"
-      />
-    </div>
-  );
-};
+const SingleOrganisationPage = ({ organisation, currentUser }) => (
+  <div className="card1 card-top single-organisation-page">
+    <Helmet>
+      <title>{organisation.name}</title>
+    </Helmet>
+    <SingleOrganisationPageHeader
+      organisation={organisation}
+      currentUser={currentUser}
+    />
+    <Tabs tabs={tabs({ organisation, currentUser })} routerParamName="tabId" />
+  </div>
+);
 
 export default SingleOrganisationPageContainer(SingleOrganisationPage);

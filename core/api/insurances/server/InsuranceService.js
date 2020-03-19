@@ -40,6 +40,8 @@ class InsuranceService extends CollectionService {
       linkId: insuranceProductId,
     });
 
+    InsuranceRequestService.calculateNewStatus({ insuranceRequestId });
+
     return insuranceId;
   };
 
@@ -81,8 +83,7 @@ class InsuranceService extends CollectionService {
     insuranceProductId,
     insurance = {},
   }) => {
-    console.log('insurance:', insurance);
-    return this._update({
+    const response = this._update({
       id: insuranceId,
       object: {
         ...insurance,
@@ -91,6 +92,16 @@ class InsuranceService extends CollectionService {
         'organisationLink._id': organisationId,
       },
     });
+
+    const { insuranceRequest } = this.get(insuranceId, {
+      insuranceRequest: { _id: 1 },
+    });
+
+    InsuranceRequestService.calculateNewStatus({
+      insuranceRequestId: insuranceRequest[0]._id,
+    });
+
+    return response;
   };
 
   setAdminNote({ insuranceId, adminNoteId, note, userId }) {

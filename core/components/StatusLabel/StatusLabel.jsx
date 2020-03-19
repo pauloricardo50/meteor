@@ -2,6 +2,10 @@ import React from 'react';
 import cx from 'classnames';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import {
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCE_REQUEST_STATUS,
+} from 'core/api/constants';
 import colors from '../../config/colors';
 import {
   PROMOTION_STATUS,
@@ -49,6 +53,19 @@ export const getStatuses = collection => {
         [LOAN_STATUS.FINALIZED]: colors.success,
         [LOAN_STATUS.UNSUCCESSFUL]: colors.error,
         [LOAN_STATUS.TEST]: colors.warning,
+      };
+
+    case INSURANCE_REQUESTS_COLLECTION:
+      return {
+        [INSURANCE_REQUEST_STATUS.LEAD]: colors.mix,
+        [INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD]: colors.secondary,
+        [INSURANCE_REQUEST_STATUS.ONGOING]: colors.primary,
+        [INSURANCE_REQUEST_STATUS.PENDING]: colors.warning,
+        [INSURANCE_REQUEST_STATUS.CLOSING]: colors.tertiary,
+        [INSURANCE_REQUEST_STATUS.BILLING]: colors.success,
+        [INSURANCE_REQUEST_STATUS.FINALIZED]: colors.success,
+        [INSURANCE_REQUEST_STATUS.UNSUCCESSFUL]: colors.error,
+        [INSURANCE_REQUEST_STATUS.TEST]: colors.warning,
       };
 
     case PROMOTIONS_COLLECTION:

@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
+import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequests from '../insuranceRequests';
 import {
@@ -10,7 +12,11 @@ import {
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import InsuranceService from '../../insurances/server/InsuranceService';
-import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequestConstants';
+import {
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCE_REQUEST_STATUS,
+  INSURANCE_REQUEST_STATUS_ORDER,
+} from '../insuranceRequestConstants';
 
 class InsuranceRequestService extends CollectionService {
   constructor() {
@@ -202,6 +208,100 @@ class InsuranceRequestService extends CollectionService {
       operator: '$unset',
       object: { proNote: true },
     });
+  }
+
+  verifyStatusChange({ insuranceRequestId, status }) {
+    const { status: prevStatus } = this.get(insuranceRequestId, { status: 1 });
+
+    if (prevStatus === status) {
+      throw new Meteor.Error("Ce statut est le même qu'avant");
+    }
+
+    if (
+      [
+        INSURANCE_REQUEST_STATUS.BILLING,
+        INSURANCE_REQUEST_STATUS.FINALIZED,
+      ].includes(status)
+    ) {
+      throw new Meteor.Error(
+        'Ce statut ne peut pas être appliqué manuellement',
+      );
+    }
+
+    const orderedStatuses = INSURANCE_REQUEST_STATUS_ORDER.filter(
+      s =>
+        ![
+          INSURANCE_REQUEST_STATUS.PENDING,
+          INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
+          INSURANCE_REQUEST_STATUS.TEST,
+        ].includes(s),
+    );
+
+    // Resurrection or kill
+    if (
+      !orderedStatuses.includes(status) ||
+      !orderedStatuses.includes(prevStatus)
+    ) {
+      return prevStatus;
+    }
+
+    const statusIndex = orderedStatuses.indexOf(status);
+    const prevStatusIndex = orderedStatuses.indexOf(prevStatus);
+
+    // Status change does not respect the order
+    if (
+      statusIndex !== prevStatusIndex + 1 &&
+      statusIndex !== prevStatusIndex - 1
+    ) {
+      throw new Meteor.Error('Vous ne pouvez pas sauter des statuts');
+    }
+
+    return prevStatus;
+  }
+
+  setStatus({ insuranceRequestId, status }) {
+    const prevStatus = this.verifyStatusChange({ insuranceRequestId, status });
+
+    this._update({ id: insuranceRequestId, object: { status } });
+    return { prevStatus, nextStatus: status };
+  }
+
+  calculateNewStatus({ insuranceRequestId }) {
+    const { insurances = [], status: insuranceRequestStatus } = this.get(
+      insuranceRequestId,
+      {
+        insurances: { status: 1, revenues: { status: 1 } },
+        status: 1,
+      },
+    );
+
+    const shouldBeBilling = insurances
+      .filter(({ status }) => status !== INSURANCE_STATUS.DECLINED)
+      .every(({ status }) => status === INSURANCE_STATUS.ACTIVE);
+
+    const insurancesRevenues = insurances.reduce(
+      (allRevenues, { revenues = [] }) => [...allRevenues, ...revenues],
+      [],
+    );
+
+    const shouldBeFinalized =
+      insuranceRequestStatus === INSURANCE_REQUEST_STATUS.BILLING &&
+      !!insurancesRevenues.length &&
+      insurancesRevenues.every(
+        ({ status }) => status === REVENUE_STATUS.CLOSED,
+      );
+
+    if (shouldBeFinalized) {
+      this._update({
+        id: insuranceRequestId,
+        object: { status: INSURANCE_REQUEST_STATUS.FINALIZED },
+      });
+    } else if (shouldBeBilling) {
+      this._update({
+        id: insuranceRequestId,
+        object: { status: INSURANCE_REQUEST_STATUS.BILLING },
+      });
+    }
   }
 }
 

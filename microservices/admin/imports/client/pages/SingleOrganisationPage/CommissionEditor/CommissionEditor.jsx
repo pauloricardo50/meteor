@@ -5,7 +5,6 @@ import CommissionRatesForm from './CommissionRatesForm';
 
 const CommissionEditor = props => {
   const { commissionRates = [], _id: organisationId } = props;
-  console.log('commissionRates:', commissionRates);
   const [{ rates = [] }] = commissionRates;
 
   return (

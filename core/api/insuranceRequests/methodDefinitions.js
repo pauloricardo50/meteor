@@ -51,3 +51,11 @@ export const insuranceRequestSetAssignees = new Method({
     updateUserAssignee: Match.Optional(Boolean),
   },
 });
+
+export const insuranceRequestUpdateStatus = new Method({
+  name: 'insuranceRequestUpdateStatus',
+  params: {
+    insuranceRequestId: String,
+    status: String,
+  },
+});

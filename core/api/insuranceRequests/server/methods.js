@@ -5,6 +5,7 @@ import {
   insuranceRequestSetAdminNote,
   insuranceRequestRemoveAdminNote,
   insuranceRequestSetAssignees,
+  insuranceRequestUpdateStatus,
 } from '../methodDefinitions';
 import InsuranceRequestService from './InsuranceRequestService';
 import Security from '../../security/Security';
@@ -37,4 +38,9 @@ insuranceRequestRemoveAdminNote.setHandler(({ userId }, params) => {
 insuranceRequestSetAssignees.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return InsuranceRequestService.setAssignees(params);
+});
+
+insuranceRequestUpdateStatus.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  return InsuranceRequestService.setStatus(params);
 });

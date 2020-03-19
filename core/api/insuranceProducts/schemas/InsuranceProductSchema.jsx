@@ -11,6 +11,12 @@ import T from '../../../components/Translation';
 const InsuranceProductSchema = new SimpleSchema({
   createdAt,
   updatedAt,
+  name: {
+    type: String,
+    uniforms: {
+      placeholder: 'FlexSave Duo',
+    },
+  },
   type: {
     type: String,
     allowedValues: Object.values(INSURANCE_PRODUCT_TYPES),
@@ -21,12 +27,6 @@ const InsuranceProductSchema = new SimpleSchema({
     allowedValues: Object.values(INSURANCE_PRODUCT_CATEGORIES),
     uniforms: {
       transform: category => <T id={`InsuranceProduct.category.${category}`} />,
-    },
-  },
-  name: {
-    type: String,
-    uniforms: {
-      placeholder: 'FlexSave Duo',
     },
   },
   revaluationFactor: { type: Number, min: 0.01, max: 10 },

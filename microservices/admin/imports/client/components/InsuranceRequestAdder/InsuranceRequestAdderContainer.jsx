@@ -80,7 +80,8 @@ const getSchema = ({ availableBorrowers = [] }) =>
             optional: true,
             uniforms: {
               transform: borrowerId =>
-                availableBorrowers.find(({ _id }) => _id === borrowerId).name,
+                availableBorrowers.find(({ _id }) => _id === borrowerId).name ||
+                'Emprunteur sans nom',
             },
           },
         }
