@@ -75,6 +75,11 @@ echo "Preparing front app plugin"
 ln -s ../../../core ../plugins/frontPlugin/src/core
 ( cd ../plugins/frontPlugin && meteor npm run build-production );
 
+
+echo "Preparing gatsby brand website"
+( cd ../microservices/www2 && npm i -q );
+ln -s ../../../core ../microservices/www2/src/core
+
 end=`date +%s`
 runtime=$((end-start))
 
