@@ -94,7 +94,7 @@ function runInParallel() {
   } catch (e) {
     try {
       sh.exec('tmuxinator -v');
-    } catch (e) {
+    } catch (_e) {
       console.log('Please install tmuxinator');
       process.exit(1);
     }
@@ -146,7 +146,7 @@ function runInSerial() {
   });
 }
 
-if (argv.parallel) {
+if (argv.parallel || mupCommands.includes('deploy')) {
   runInParallel();
 } else {
   runInSerial();
