@@ -128,7 +128,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
       };
     case INSURANCES_COLLECTION: {
       const { insuranceRequest } = data;
-      const [{ _id: insuranceRequestId }] = insuranceRequest;
+      const { _id: insuranceRequestId } = insuranceRequest;
       return {
         link: `/insuranceRequests/${insuranceRequestId}/${docId}`,
         text: data.name,

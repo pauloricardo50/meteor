@@ -2,17 +2,34 @@ import { COMMISSION_STATUS } from 'imports/core/api/constants';
 import Revenues from '../revenues';
 import CollectionService from '../../helpers/server/CollectionService';
 import { REVENUE_STATUS } from '../revenueConstants';
+import InsuranceService from '../../insurances/server/InsuranceService';
 
 class RevenueService extends CollectionService {
   constructor() {
     super(Revenues);
   }
 
-  insert({ revenue, loanId }) {
+  insert({ revenue, loanId, insuranceId }) {
     const revenueId = this.collection.insert(revenue);
 
     if (loanId) {
       this.addLink({ id: revenueId, linkName: 'loan', linkId: loanId });
+    }
+
+    if (insuranceId) {
+      const { insuranceRequest } = InsuranceService.get(insuranceId, {
+        insuranceRequest: { _id: 1 },
+      });
+      this.addLink({
+        id: revenueId,
+        linkName: 'insurance',
+        linkId: insuranceId,
+      });
+      this.addLink({
+        id: revenueId,
+        linkName: 'insuranceRequest',
+        linkId: insuranceRequest._id,
+      });
     }
 
     return revenueId;

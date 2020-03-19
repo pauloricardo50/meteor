@@ -4,7 +4,7 @@ import { taskInsert } from 'core/api/methods';
 import { LOANS_COLLECTION } from 'core/api/constants';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { schema } from '../../../components/TasksTable/TaskModifier';
-import { ActivitySchema } from '../../SingleLoanPage/LoanTabs/OverviewTab/LoanTimeline/LoanActivityAdder';
+import { ActivitySchema } from '../../../components/AdminTimeline/AdminActivityAdder';
 
 const taskSchema = schema.omit('assigneeLink', 'status');
 

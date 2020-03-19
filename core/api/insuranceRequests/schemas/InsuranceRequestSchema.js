@@ -53,7 +53,8 @@ const InsuranceRequestSchema = new SimpleSchema({
       }
     },
   },
-  'revenueLinks.$': String,
+  'revenueLinks.$': Object,
+  'revenueLinks.$._id': String,
   ...adminNotesSchema,
   proNote: {
     type: new SimpleSchema(adminNotesSchema).getObjectSchema('adminNotes.$'),

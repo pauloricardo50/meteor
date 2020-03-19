@@ -31,7 +31,7 @@ const getItems = currentUser =>
     {
       label: 'Dossiers',
       icon: 'viewWeek',
-      to: '/loan-board',
+      to: '/board',
       exact: true,
     },
     {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import LoanBoard from './LoanBoard';
 
-const LoanBoardPage = ({
+const BoardPage = ({
   currentUser,
   loanBoardOptions,
   loanBoardDispatch,
@@ -18,4 +18,4 @@ const LoanBoardPage = ({
   />
 );
 
-export default LoanBoardPage;
+export default BoardPage;

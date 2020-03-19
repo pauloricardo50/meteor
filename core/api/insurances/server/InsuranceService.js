@@ -98,7 +98,7 @@ class InsuranceService extends CollectionService {
     });
 
     InsuranceRequestService.calculateNewStatus({
-      insuranceRequestId: insuranceRequest[0]._id,
+      insuranceRequestId: insuranceRequest._id,
     });
 
     return response;

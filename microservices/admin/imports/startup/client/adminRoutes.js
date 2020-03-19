@@ -14,7 +14,7 @@ import SingleOrganisationPage from '../../client/pages/SingleOrganisationPage/lo
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
-import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
+import BoardPage from '../../client/pages/BoardPage/loadable';
 import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
 import OtherPage from '../../client/pages/OtherPage/loadable';
 import WikiPage from '../../client/pages/WikiPage/loadable';
@@ -24,9 +24,9 @@ import SingleInsuranceRequestPage from '../../client/pages/SingleInsuranceReques
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
   LOAN_BOARD_PAGE: {
-    component: LoanBoardPage,
-    path: '/loan-board',
-    exact: true,
+    component: BoardPage,
+    path: '/board/:boardId?',
+    // exact: true,
   },
 
   //   "All" pages

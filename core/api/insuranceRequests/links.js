@@ -64,12 +64,14 @@ LinkInitializer.directInit(() => {
       collection: Revenues,
       type: 'many',
       metadata: true,
+      unique: true,
     },
     insurances: {
       field: 'insuranceLinks',
       collection: Insurances,
       type: 'many',
       metadata: true,
+      unique: true,
     },
   });
 });
