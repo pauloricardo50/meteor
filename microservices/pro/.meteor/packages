@@ -62,4 +62,4 @@ montiapm:agent
 percolate:migrations
 cultofcoders:grapher-react
 qualia:one
-zodern:standard-minifier-js@4.0.0-beta.2
+zodern:standard-minifier-js@4.0.0-beta.5
