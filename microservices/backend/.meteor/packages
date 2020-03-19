@@ -50,7 +50,7 @@ dynamic-import@0.5.1
 matb33:collection-hooks
 percolate:migrations
 littledata:synced-cron
-zodern:standard-minifier-js@4.0.0-beta.5
+zodern:standard-minifier-js@4.0.0-beta.2
 qualia:prod-shell
 jquery
 montiapm:profiler
