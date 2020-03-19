@@ -10,6 +10,8 @@ process.env.METEOR_PACKAGE_DIRS =
 process.env.METEOR_PROFILE = 1000;
 process.env.METEOR_DISABLE_OPTIMISTIC_CACHING = 'true';
 
+const enableLock = process.env.EPOTEK_RUN_PARALLEL === 'true';
+
 module.exports = function createConfig({
   microservice,
   subDomains,
@@ -19,9 +21,9 @@ module.exports = function createConfig({
   servers,
   globalApiConfig,
   parallelPrepareBundle,
-  appName,
+  appName: _appName,
 }) {
-  appName = appName || microservice;
+  const appName = _appName || microservice;
 
   const appServers = Object.keys(servers)
     // Randomize the order so all apps don't run Prepare Bundle on the same server
@@ -105,7 +107,7 @@ module.exports = function createConfig({
       },
 
       'post.meteor.build': async function(api) {
-        if (parallelPrepareBundle) {
+        if (parallelPrepareBundle || !enableLock) {
           return false;
         }
 
@@ -128,7 +130,7 @@ module.exports = function createConfig({
         });
       },
       'post.meteor.push': function() {
-        if (parallelPrepareBundle) {
+        if (parallelPrepareBundle || !enableLock) {
           return false;
         }
 
