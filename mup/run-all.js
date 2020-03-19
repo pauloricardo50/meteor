@@ -36,8 +36,13 @@ function getEnvironments(name) {
   return [name];
 }
 
-function filterApps(apps, wantedApps) {
+function filterApps(apps, wantedApps, isDeploying) {
   return apps.filter(name => {
+    if (isDeploying && name === 'api') {
+      // api is handled by a hook in the backend
+      return false;
+    }
+
     if (wantedApps) {
       return wantedApps.includes(name);
     }
@@ -65,6 +70,7 @@ const environments = getEnvironments(
 );
 
 const wantedApps = argv.apps ? argv.apps.split(',') : null;
+const isDeploying = mupCommands.includes('deploy');
 
 sh.set('-e');
 
@@ -102,7 +108,7 @@ function runInParallel() {
 
   const appConfigs = [];
   environments.forEach(env => {
-    const apps = filterApps(microservices[env], wantedApps);
+    const apps = filterApps(microservices[env], wantedApps, isDeploying);
     apps.forEach(app => {
       appConfigs.push({
         app,
@@ -136,7 +142,11 @@ function runInSerial() {
       error(`Unknown environment: ${environment}`);
     }
 
-    const apps = filterApps(microservices[environment], wantedApps);
+    const apps = filterApps(
+      microservices[environment],
+      wantedApps,
+      isDeploying,
+    );
 
     apps.forEach(name => {
       log(`*** Running For ${name} - ${environment} ***`);
@@ -146,7 +156,7 @@ function runInSerial() {
   });
 }
 
-if (argv.parallel || mupCommands.includes('deploy')) {
+if (argv.parallel || isDeploying) {
   runInParallel();
 } else {
   runInSerial();

@@ -22,6 +22,7 @@ module.exports = function createConfig({
   globalApiConfig,
   parallelPrepareBundle,
   appName: _appName,
+  hooks = {},
 }) {
   const appName = _appName || microservice;
 
@@ -137,6 +138,7 @@ module.exports = function createConfig({
         removePrepareBundleLock();
         lockRemoved = true;
       },
+      ...hooks,
     },
   };
 };
