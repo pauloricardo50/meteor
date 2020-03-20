@@ -22,7 +22,6 @@ const getPages = async graphql => {
 const createDefaultPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const pages = await getPages(graphql);
-  console.log('pages:', pages);
 
   pages.forEach(({ slug, node_locale }) => {
     const [language] = node_locale.split('-');

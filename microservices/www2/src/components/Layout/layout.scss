@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+
+  .layout-nav {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+  }
+}

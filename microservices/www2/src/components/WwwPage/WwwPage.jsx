@@ -1,9 +1,12 @@
 import React from 'react';
 
+import Layout from '../Layout';
+
 const WwwPage = ({ pageContext }) => (
-  <div>
+  <Layout>
     <h1>{pageContext.slug}</h1>
     <p>Hello from WwwPage</p>
-  </div>
+  </Layout>
 );
+
 export default WwwPage;
