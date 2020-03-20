@@ -92,7 +92,7 @@ class InsuranceRequestService extends CollectionService {
     // Set the same assignees as the loan
     else if (!user && loan) {
       const { assignees: loanAssignees = [] } = loan;
-      if (assignees.length) {
+      if (assignees?.length) {
         this.setAssignees({
           insuranceRequestId,
           assignees: loanAssignees,

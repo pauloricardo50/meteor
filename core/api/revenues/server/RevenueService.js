@@ -1,7 +1,7 @@
 import { COMMISSION_STATUS } from 'imports/core/api/constants';
 import Revenues from '../revenues';
 import CollectionService from '../../helpers/server/CollectionService';
-import { REVENUE_STATUS } from '../revenueConstants';
+import { REVENUE_STATUS, REVENUE_TYPES } from '../revenueConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
 
 class RevenueService extends CollectionService {
@@ -77,6 +77,53 @@ class RevenueService extends CollectionService {
       linkId: organisationId,
       metadata: { paidAt, status: COMMISSION_STATUS.PAID, commissionRate },
     });
+  }
+
+  updateOrganisationRevenues({ organisationId }) {
+    const revenues = this.fetch({
+      $filters: {
+        'sourceOrganisationLink._id': organisationId,
+        status: REVENUE_STATUS.EXPECTED,
+        type: REVENUE_TYPES.INSURANCE,
+      },
+
+      insurance: {
+        premium: 1,
+        singlePremium: 1,
+        duration: 1,
+        insuranceProduct: { revaluationFactor: 1 },
+      },
+      sourceOrganisation: { productionRate: 1 },
+    });
+
+    if (revenues?.length) {
+      revenues.forEach(revenue => {
+        const {
+          insurance,
+          sourceOrganisation: { productionRate },
+          _id: revenueId,
+        } = revenue;
+
+        if (!insurance) {
+          return;
+        }
+
+        const {
+          premium,
+          singlePremium,
+          duration,
+          insuranceProduct: { revaluationFactor },
+        } = insurance;
+
+        const newRevenue = Math.round(
+          singlePremium
+            ? premium * revaluationFactor * productionRate
+            : premium * duration * revaluationFactor * productionRate,
+        );
+
+        this._update({ id: revenueId, object: { amount: newRevenue } });
+      });
+    }
   }
 }
 
