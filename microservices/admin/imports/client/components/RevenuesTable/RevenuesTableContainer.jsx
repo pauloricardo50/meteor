@@ -58,6 +58,8 @@ export const makeMapRevenue = ({
     organisations = [],
     sourceOrganisation,
     loan,
+    insurance,
+    insuranceRequest,
   } = revenue;
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
@@ -152,6 +154,8 @@ export default compose(
         type: 1,
         organisationLinks: 1,
         organisations: { name: 1 },
+        insurance: { name: 1 },
+        insuranceRequest: { name: 1 },
       },
     }),
     dataName: 'revenues',

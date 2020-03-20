@@ -399,6 +399,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   user: adminUser(),
   selectedLenderOrganisation: { name: 1 },
   insuranceRequests: {
+    status: 1,
     name: 1,
     borrowers: { name: 1 },
     createdAt: 1,
@@ -1110,6 +1111,8 @@ export const adminRevenue = () => ({
     assigneeLinks: 1,
     hasPromotion: 1,
   },
+  insurance: { name: 1 },
+  insuranceRequest: { name: 1 },
   // Keep these in the right order
   organisationLinks: 1,
   organisations: { name: 1 },

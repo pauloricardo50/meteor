@@ -59,3 +59,8 @@ export const insuranceRequestUpdateStatus = new Method({
     status: String,
   },
 });
+
+export const insuranceRequestInsertBorrower = new Method({
+  name: 'insuranceRequestInsertBorrower',
+  params: { insuranceRequestId: String, amount: Match.Maybe(Number) },
+});

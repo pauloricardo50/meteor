@@ -12,6 +12,7 @@ import {
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import InsuranceService from '../../insurances/server/InsuranceService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
@@ -302,6 +303,16 @@ class InsuranceRequestService extends CollectionService {
         object: { status: INSURANCE_REQUEST_STATUS.BILLING },
       });
     }
+  }
+
+  addBorrower({ insuranceRequestId, amount = 1 }) {
+    const {
+      user: { _id: userId },
+    } = this.get(insuranceRequestId, { user: { _id: 1 } });
+
+    return [...Array(amount)].map(i =>
+      BorrowerService.insert({ userId, insuranceRequestId }),
+    );
   }
 }
 

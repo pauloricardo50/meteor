@@ -73,8 +73,12 @@ const getSchema = ({ borrowers, organisations }) =>
       allowedValues: borrowers.map(({ _id }) => _id),
       uniforms: {
         label: 'Assuré',
-        transform: borrowerId =>
-          borrowers.find(({ _id }) => _id === borrowerId).name,
+        transform: borrowerId => {
+          const borrower = borrowers
+            .map((b, i) => ({ ...b, index: i }))
+            .find(({ _id }) => _id === borrowerId);
+          return borrower.name || `Assuré ${borrower.index + 1}`;
+        },
         labelProps: { shrink: true },
         placeholder: null,
       },

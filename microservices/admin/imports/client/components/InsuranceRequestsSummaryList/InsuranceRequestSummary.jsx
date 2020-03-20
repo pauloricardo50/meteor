@@ -3,6 +3,8 @@ import moment from 'moment';
 
 import Link from 'core/components/Link';
 import BorrowersSummary from 'core/components/BorrowersSummary';
+import StatusLabel from 'core/components/StatusLabel';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 
 const InsuranceRequestSummary = ({ insuranceRequest }) => {
   const {
@@ -23,7 +25,10 @@ const InsuranceRequestSummary = ({ insuranceRequest }) => {
       <div className="flex-row sb">
         <div className="flex-col">
           <b>Status</b>
-          <p>{status}</p>
+          <StatusLabel
+            status={status}
+            collection={INSURANCE_REQUESTS_COLLECTION}
+          />
         </div>
         <div className="flex-col">
           <b>Créé le</b>

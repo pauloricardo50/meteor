@@ -2,7 +2,7 @@ import { compose, withProps } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
-import { adminRevenue } from 'core/api/fragments';
+import { adminRevenue, adminBorrower } from 'core/api/fragments';
 
 export default compose(
   withMatchParam('insuranceRequestId'),
@@ -15,7 +15,7 @@ export default compose(
       status: 1,
       assigneeLinks: 1,
       assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
-      borrowers: { name: 1 },
+      borrowers: adminBorrower(),
       adminNotes: 1,
       proNote: 1,
       proNotes: 1,

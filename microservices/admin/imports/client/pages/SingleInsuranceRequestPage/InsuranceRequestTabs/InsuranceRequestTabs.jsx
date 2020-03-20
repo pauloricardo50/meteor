@@ -8,6 +8,7 @@ import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import OverviewTab from './OverviewTab';
 import InsuranceTab from './InsuranceTab';
 import InsuranceAdder from './InsuranceTab/InsuranceAdder';
+import BorrowersTab from './BorrowersTab';
 
 const getTabs = props => {
   const { insuranceRequest } = props;
@@ -27,6 +28,22 @@ const getTabs = props => {
         createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
           insuranceRequestId: props.insuranceRequest._id,
           tabId: 'overview',
+        }),
+    },
+    {
+      id: 'borrowers',
+      content: <BorrowersTab {...props} />,
+      label: (
+        <span className="single-insurance-request-page-tabs-label">
+          <Icon type="people" className="mr-4" />
+          <span>Assurés</span>
+        </span>
+      ),
+      to:
+        props.enableTabRouting &&
+        createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
+          insuranceRequestId: props.insuranceRequest._id,
+          tabId: 'borrowers',
         }),
     },
     ...insurances.map(insurance => {
