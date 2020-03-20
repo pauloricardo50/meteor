@@ -15,6 +15,8 @@ Our brand website is built on the following stack:
 
 ## Setup
 
+### Development
+
 1. Install the gatsby CLI: `npm install -g gatsby-cli`
 2. Add 2 environment files `.env.development` and `.env.production` with the following data from contentful.js:
 
@@ -24,3 +26,15 @@ CONTENTFUL_ACCESS_TOKEN='accessToken'
 ```
 
 3. Start your development environment with `npm start`
+
+### Deployment
+
+* Install netlify's CLI for linux or macOS (https://github.com/netlify/netlifyctl): 
+```
+brew tap netlify/netlifyctl
+brew install netlifyctl
+```
+* Login (make sure you have a netlify account first: netlify.com): `netlifyctl login`
+* Deploy the site using `npm run deploy`
+
+Netlify also listens to webhooks from Contentful to automatically trigger a rebuild

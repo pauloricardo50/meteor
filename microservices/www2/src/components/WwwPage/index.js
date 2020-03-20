@@ -1,1 +1,3 @@
-export { default } from './WwwPage';
+import WwwPage from './WwwPage';
+
+export default WwwPage;
