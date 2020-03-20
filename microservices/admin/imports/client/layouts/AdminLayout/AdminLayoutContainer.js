@@ -13,7 +13,7 @@ import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import {
   filterReducer,
   getInitialOptions,
-} from '../../pages/BoardPage/loanBoardHelpers';
+} from '../../pages/BoardPage/LoanBoard/loanBoardHelpers';
 
 const loanBoardContainer = compose(
   withState('activateLoanBoardSync', 'setActivateLoanBoardSync', false),

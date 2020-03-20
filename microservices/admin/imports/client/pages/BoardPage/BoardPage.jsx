@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { withProps, compose } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import RadioTabs from 'core/components/RadioButtons/RadioTabs';
-import LoanBoard from './LoanBoard';
+import LoanBoard from './LoanBoard/LoanBoard';
+import InsuranceRequestBoard from './InsuranceRequestBoard/InsuranceRequestBoard';
 
 const BoardPage = ({
   currentUser,
@@ -31,7 +32,13 @@ const BoardPage = ({
         setActivateLoanBoardSync={setActivateLoanBoardSync}
       />
     ) : (
-      <div>Hello</div>
+      <InsuranceRequestBoard
+        currentUser={currentUser}
+        options={loanBoardOptions}
+        dispatch={loanBoardDispatch}
+        activateLoanBoardSync={activateLoanBoardSync}
+        setActivateLoanBoardSync={setActivateLoanBoardSync}
+      />
     )}
   </>
 );

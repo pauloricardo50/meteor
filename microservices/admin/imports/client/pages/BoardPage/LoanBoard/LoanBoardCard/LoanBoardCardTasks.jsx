@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import StickyPopover from 'core/components/StickyPopover';
 import Timeline from 'core/components/Timeline';
-import { TASK_STATUS } from 'imports/core/api/constants';
+import { TASK_STATUS } from 'core/api/constants';
 import LoanBoardCardTask from './LoanBoardCardTask';
 
 const sortTasks = ({ dueAt: dueA }, { dueAt: dueB }) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Board from '../../components/Board';
+import Board from '../../../components/Board';
 import LoanBoardOptions from './LoanBoardOptions';
 import LoanBoardContainer from './LoanBoardContainer';
 import LoanBoardColumnHeader from './LoanBoardColumnHeader';

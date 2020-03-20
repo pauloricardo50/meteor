@@ -9,7 +9,7 @@ import { ModalManagerContext } from 'core/components/ModalManager';
 import LoanBoardCardActions from './LoanBoardCardActions';
 import LoanBoardCardTitle from './LoanBoardCardTitle';
 import LoanBoardCardAssignee from './LoanBoardCardAssignee';
-import LoanStatusModifierContainer from '../../SingleLoanPage/LoanStatusModifier/LoanStatusModifierContainer';
+import LoanStatusModifierContainer from '../../../SingleLoanPage/LoanStatusModifier/LoanStatusModifierContainer';
 
 const LoanBoardCardTop = ({
   hasRenderedComplexOnce,

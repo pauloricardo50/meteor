@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { liveSyncs } from 'core/api/liveSync/liveSync';
-import { ACTIONS } from './loanBoardConstants';
+import { ACTIONS } from './LoanBoard/loanBoardConstants';
 
 export const addLiveSync = Comp =>
   class extends Component {

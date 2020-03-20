@@ -2,9 +2,9 @@ import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import DropdownMenu from 'core/components/DropdownMenu';
-import { taskFormLayout } from '../../../components/TasksTable/TaskModifier';
+import { taskFormLayout } from '../../../../components/TasksTable/TaskModifier';
 import LoanBoardCardActionsContainer from './LoanBoardCardActionsContainer';
-import { activityFormLayout } from '../../../components/AdminTimeline/AdminActivityAdder';
+import { activityFormLayout } from '../../../../components/AdminTimeline/AdminActivityAdder';
 
 const handleKeyDown = e => {
   if (e.keyCode === 13 && e.metaKey) {

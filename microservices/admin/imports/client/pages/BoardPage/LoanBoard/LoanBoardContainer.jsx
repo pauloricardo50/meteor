@@ -17,7 +17,7 @@ import {
   additionalLoanBoardFields,
 } from './loanBoardHelpers';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
-import { withLiveSync, addLiveSync } from './liveSync';
+import { withLiveSync, addLiveSync } from '../liveSync';
 
 const defaultBody = {
   adminNotes: 1,

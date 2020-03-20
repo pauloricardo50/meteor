@@ -5,6 +5,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
+  INSURANCES_COLLECTION,
+  INSURANCE_STATUS,
 } from 'core/api/constants';
 import colors from '../../config/colors';
 import {
@@ -126,6 +128,14 @@ export const getStatuses = collection => {
         [PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST]: colors.warning,
         [PROMOTION_OPTION_STATUS.RESERVED]: colors.primary,
         [PROMOTION_OPTION_STATUS.SOLD]: colors.error,
+      };
+
+    case INSURANCES_COLLECTION:
+      return {
+        [INSURANCE_STATUS.SUGGESTED]: colors.mix,
+        [INSURANCE_STATUS.SIGNED]: colors.tertiary,
+        [INSURANCE_STATUS.DECLINED]: colors.error,
+        [INSURANCE_STATUS.ACTIVE]: colors.success,
       };
 
     default:

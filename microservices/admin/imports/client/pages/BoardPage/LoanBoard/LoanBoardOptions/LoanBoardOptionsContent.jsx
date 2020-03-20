@@ -9,11 +9,13 @@ import {
   STEP_ORDER,
   LOAN_STATUS_ORDER,
   PROMOTION_STATUS,
+  LOAN_CATEGORIES,
+  ROLES,
 } from 'core/api/constants';
-import { LOAN_CATEGORIES, ROLES } from 'imports/core/api/constants';
+
 import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
-import { LiveQueryMonitor } from '../liveSync';
+import { LiveQueryMonitor } from '../../liveSync';
 import { additionalLoanBoardFields } from '../loanBoardHelpers';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
