@@ -75,6 +75,8 @@ const RevenueSchema = new SimpleSchema({
   'assigneeLink._id': { type: String },
   insuranceRequestCache: { type: Array, optional: true },
   'insuranceRequestCache.$': cacheField,
+  insuranceCache: { type: Array, optional: true },
+  'insuranceCache.$': cacheField,
 });
 
 export default RevenueSchema;

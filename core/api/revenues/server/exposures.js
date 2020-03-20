@@ -27,6 +27,8 @@ exposeQuery({
           type,
           filters: extraFilters,
           secondaryType,
+          insuranceId,
+          insuranceRequestId,
         },
       }) => {
         if (_id) {
@@ -47,6 +49,14 @@ exposeQuery({
 
         if (loanId) {
           filters['loanCache.0._id'] = loanId;
+        }
+
+        if (insuranceRequestId) {
+          filters['insuranceRequestCache.0._id'] = insuranceRequestId;
+        }
+
+        if (insuranceId) {
+          filters['insuranceCache.0._id'] = insuranceId;
         }
 
         if (sourceOrganisationId) {
@@ -98,6 +108,8 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(Object, String)),
       type: Match.Maybe(Match.OneOf(Object, String)),
       secondaryType: Match.Maybe(Match.OneOf(Object, String)),
+      insuranceId: Match.Maybe(String),
+      insuranceRequestId: Match.Maybe(String),
     },
   },
 });

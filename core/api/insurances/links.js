@@ -39,6 +39,7 @@ LinkInitializer.directInit(() => {
       collection: Revenues,
       type: 'many',
       metadata: true,
+      unique: true,
     },
     insuranceProduct: {
       field: 'insuranceProductLink',

@@ -10,6 +10,8 @@ import {
   REVENUES_COLLECTION,
   LOANS_COLLECTION,
   REVENUE_STATUS,
+  INSURANCES_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminRevenues } from 'core/api/revenues/queries';
@@ -63,19 +65,45 @@ export const makeMapRevenue = ({
   } = revenue;
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
+  let title;
+  if (loan) {
+    title = {
+      raw: loan && loan.name,
+      label: loan && (
+        <CollectionIconLink
+          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+        />
+      ),
+    };
+  } else if (insurance) {
+    title = {
+      raw: insurance && insurance.name,
+      label: insurance && (
+        <CollectionIconLink
+          relatedDoc={{ ...insurance, collection: INSURANCES_COLLECTION }}
+        />
+      ),
+    };
+  } else if (insuranceRequest) {
+    title = {
+      raw: insuranceRequest && insuranceRequest.name,
+      label: insuranceRequest && (
+        <CollectionIconLink
+          relatedDoc={{
+            ...insuranceRequest,
+            collection: INSURANCE_REQUESTS_COLLECTION,
+          }}
+        />
+      ),
+    };
+  }
+
   return {
     id: revenueId,
     organisations,
     amount,
     columns: [
-      {
-        raw: loan && loan.name,
-        label: loan && (
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
-        ),
-      },
+      title,
       {
         raw: status,
         label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
@@ -154,7 +182,7 @@ export default compose(
         type: 1,
         organisationLinks: 1,
         organisations: { name: 1 },
-        insurance: { name: 1 },
+        insurance: { name: 1, insuranceRequest: { _id: 1 } },
         insuranceRequest: { name: 1 },
       },
     }),

@@ -33,10 +33,15 @@ LinkInitializer.inversedInit(() => {
     insuranceRequest: {
       collection: InsuranceRequests,
       inversedBy: 'revenues',
+      denormalize: {
+        field: 'insuranceRequestCache',
+        body: { _id: 1, name: 1 },
+      },
     },
     insurance: {
       collection: Insurances,
       inversedBy: 'revenues',
+      denormalize: { field: 'insuranceCache', body: { _id: 1, name: 1 } },
     },
   });
 });

@@ -3,16 +3,19 @@ import React from 'react';
 import Tabs from 'core/components/Tabs';
 import Icon from 'core/components/Icon';
 import { createRoute } from 'core/utils/routerUtils';
+import collectionIcons from 'core/arrays/collectionIcons';
+import { REVENUES_COLLECTION } from 'core/api/constants';
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 
 import OverviewTab from './OverviewTab';
 import InsuranceTab from './InsuranceTab';
 import InsuranceAdder from './InsuranceTab/InsuranceAdder';
 import BorrowersTab from './BorrowersTab';
+import RevenuesTab from './RevenuesTab';
 
 const getTabs = props => {
   const { insuranceRequest } = props;
-  const { insurances = [] } = insuranceRequest;
+  const { insurances = [], borrowers = [] } = insuranceRequest;
   return [
     {
       id: 'overview',
@@ -46,8 +49,27 @@ const getTabs = props => {
           tabId: 'borrowers',
         }),
     },
+    {
+      id: 'revenues',
+      content: <RevenuesTab {...props} />,
+      label: (
+        <span className="single-insurance-request-page-tabs-label">
+          <Icon type={collectionIcons[REVENUES_COLLECTION]} className="mr-4" />
+          <span>Revenus</span>
+        </span>
+      ),
+      to:
+        props.enableTabRouting &&
+        createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
+          insuranceRequestId: props.insuranceRequest._id,
+          tabId: 'revenues',
+        }),
+    },
     ...insurances.map(insurance => {
       const { organisation, borrower } = insurance;
+      const borrowerIndex = borrowers
+        .map((b, i) => ({ ...b, index: i }))
+        .find(({ _id }) => _id === borrower._id).index;
 
       return {
         id: insurance._id,
@@ -62,7 +84,7 @@ const getTabs = props => {
             />
             <div className="flex-col">
               <span>{insurance.name}</span>
-              <span>{borrower.name}</span>
+              <span>{borrower.name || `Assuré ${borrowerIndex + 1}`}</span>
             </div>
           </span>
         ),

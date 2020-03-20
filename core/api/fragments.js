@@ -1111,7 +1111,7 @@ export const adminRevenue = () => ({
     assigneeLinks: 1,
     hasPromotion: 1,
   },
-  insurance: { name: 1 },
+  insurance: { name: 1, insuranceRequest: { _id: 1 } },
   insuranceRequest: { name: 1 },
   // Keep these in the right order
   organisationLinks: 1,
