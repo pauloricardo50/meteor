@@ -19,9 +19,6 @@ jobs:
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
     resource_class: large
     steps:
-      - run:
-          name: Install expect
-          command: sudo apt-get update && sudo apt-get install expect
       - restore_cache:
           name: Restore source
           keys:
@@ -75,6 +72,9 @@ jobs:
       - run:
           name: Install node_modules
           command: meteor npm --prefix microservices/backend ci
+      - run:
+          name: Install expect
+          command: sudo apt-get update && sudo apt-get install expect
       - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
