@@ -70,7 +70,9 @@ Accounts.generateOptionsForEmail = (email, user, url, reason) => {
     reason,
   );
 
-  if (reason === 'enrollAccount') {
+  // Don't do this in tests, as it throws in nodemailer
+  // https://github.com/nodemailer/nodemailer/issues/615
+  if (reason === 'enrollAccount' && !Meteor.isTest) {
     return {
       ...defaultOptions,
       attachments: [
