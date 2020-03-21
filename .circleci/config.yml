@@ -9,7 +9,7 @@ jobs:
           LANGUAGE: C.UTF-8
           LC_ALL: C.UTF-8
           LC_NUMERIC: en_US.UTF-8
-          METEOR_VERSION: '1.9'
+          METEOR_VERSION: 1.10.1
           NODE_ENV: development
           TOOL_NODE_FLAGS: >-
             --max_old_space_size=8192 --optimize_for_size --gc_interval=100
