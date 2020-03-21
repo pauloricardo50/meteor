@@ -138,6 +138,7 @@ const makePrepareJob = () => ({
       'Install node_modules',
       'meteor npm --prefix microservices/backend ci',
     ),
+    runCommand('Install expect', 'apt-get install expect'),
     runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
     saveCache(
       'Cache meteor backend',

@@ -73,6 +73,9 @@ jobs:
           name: Install node_modules
           command: meteor npm --prefix microservices/backend ci
       - run:
+          name: Install expect
+          command: apt-get install expect
+      - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
           no_output_timeout: 30m
