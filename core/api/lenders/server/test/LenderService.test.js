@@ -60,7 +60,7 @@ describe('LenderService', () => {
       expect(lender.contact.firstName).to.equal('John');
     });
 
-    it.only('inserts a proper offersCache', () => {
+    it('inserts a proper offersCache', () => {
       generator({
         organisations: {},
         loans: { lenders: { _id: 'lenderId', offers: {} } },
