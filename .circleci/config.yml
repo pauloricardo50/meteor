@@ -21,7 +21,7 @@ jobs:
     steps:
       - run:
           name: Install expect
-          command: apt-get update && sudo apt-get install expect
+          command: sudo apt-get update && sudo apt-get install expect
       - restore_cache:
           name: Restore source
           keys:
