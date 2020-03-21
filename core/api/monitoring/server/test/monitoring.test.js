@@ -37,9 +37,9 @@ describe('monitoring', () => {
       });
 
       expect(result).to.deep.equal([
-        { _id: LOAN_STATUS.CLOSING, count: 1 },
-        { _id: LOAN_STATUS.ONGOING, count: 1 },
         { _id: LOAN_STATUS.LEAD, count: 2 },
+        { _id: LOAN_STATUS.ONGOING, count: 1 },
+        { _id: LOAN_STATUS.CLOSING, count: 1 },
       ]);
     });
 
@@ -64,18 +64,18 @@ describe('monitoring', () => {
 
       expect(result).to.deep.equal([
         {
-          _id: LOAN_STATUS.CLOSING,
-          revenues: 200,
-          expectedRevenues: 100,
-          paidRevenues: 100,
-          commissionsToPay: 0,
-          commissionsPaid: 0,
-        },
-        {
           _id: LOAN_STATUS.LEAD,
           revenues: 100,
           expectedRevenues: 100,
           paidRevenues: 0,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
+        },
+        {
+          _id: LOAN_STATUS.CLOSING,
+          revenues: 200,
+          expectedRevenues: 100,
+          paidRevenues: 100,
           commissionsToPay: 0,
           commissionsPaid: 0,
         },
@@ -110,8 +110,8 @@ describe('monitoring', () => {
       });
 
       expect(result).to.deep.equal([
-        { _id: LOAN_STATUS.CLOSING, loanValue: 4000 },
         { _id: LOAN_STATUS.LEAD, loanValue: 8000 },
+        { _id: LOAN_STATUS.CLOSING, loanValue: 4000 },
       ]);
     });
 
