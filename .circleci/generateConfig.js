@@ -108,7 +108,10 @@ const makePrepareJob = () => ({
   ...defaultJobValues,
   resource_class: 'large',
   steps: [
-    runCommand('Install expect', 'sudo apt-get install expect'),
+    runCommand(
+      'Install expect',
+      'apt-get update && sudo apt-get install expect',
+    ),
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
