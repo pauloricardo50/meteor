@@ -18,7 +18,7 @@ Our brand website is built on the following stack:
 ### Development
 
 1. Install the gatsby CLI: `npm install -g gatsby-cli`
-2. Add 2 environment files `.env.development` and `.env.production` with the following data from contentful.js:
+2. Add 2 environment files `.env.development` and `.env.production` with the following data from contentful.com:
 
 ```
 CONTENTFUL_SPACE_ID='spaceId'
@@ -26,6 +26,8 @@ CONTENTFUL_ACCESS_TOKEN='accessToken'
 ```
 
 3. Start your development environment with `npm start`
+
+You can get access to "Draft" data from Contentful, is you use the "Preview API" instead of the "Delivery API". This is helpful if you're working on draft content and don't want to publish it yet.
 
 ### Deployment
 
