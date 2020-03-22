@@ -187,7 +187,16 @@ const buildPipeline = ({ filters, groupBy, value, revenueFilters }) =>
 
 export const loanMonitoring = args => {
   const pipeline = buildPipeline(args);
-  return LoanService.aggregate(pipeline);
+  const result = LoanService.aggregate(pipeline);
+
+  if (args.groupBy === 'status') {
+    return result.sort(
+      ({ _id: _idA }, { _id: _idB }) =>
+        LOAN_STATUS_ORDER.indexOf(_idA) - LOAN_STATUS_ORDER.indexOf(_idB),
+    );
+  }
+
+  return result;
 };
 
 const getFilters = ({ fromDate, toDate }) => {

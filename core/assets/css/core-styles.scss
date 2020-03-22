@@ -16,7 +16,7 @@ body {
 
 // Nicer styling for a tags, removes horrible blue color
 // And avoid it if this is a button
-a:not([role="button"]) {
+a:not([role='button']) {
   cursor: pointer;
 
   color: inherit;
@@ -362,7 +362,7 @@ p.description,
   margin-bottom: 0;
 }
 
-.mt-0{
+.mt-0 {
   margin-top: 0;
 }
 

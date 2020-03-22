@@ -8,6 +8,7 @@ import sinon from 'sinon';
 
 import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import { checkEmails } from '../../../../utils/testHelpers/index';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
@@ -250,6 +251,17 @@ describe('PromotionOptionService', function() {
 
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
       expect(loan.promotionLinks[0].priorityOrder[1]).to.equal(id);
+    });
+
+    it('adds a loanCache', () => {
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
+      expect(
+        PromotionOptionService.get(id, { loanCache: 1 }).loanCache,
+      ).to.deep.equal([{ _id: loanId, status: LOAN_STATUS.LEAD }]);
     });
   });
 
