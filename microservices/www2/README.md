@@ -18,7 +18,7 @@ Our brand website is built on the following stack:
 ### Development
 
 1. Install the gatsby CLI: `npm install -g gatsby-cli`
-2. Add 2 environment files `.env.development` and `.env.production` with the following data from contentful.com:
+2. Add 2 environment files `.env.development` and `.env.production` with the following data from contentful.com (https://app.contentful.com/spaces/w7hxxjveit99/api/keys):
 
 ```
 CONTENTFUL_SPACE_ID='spaceId'
