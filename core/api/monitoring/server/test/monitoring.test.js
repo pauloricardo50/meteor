@@ -383,7 +383,7 @@ describe('monitoring', () => {
           .add(1, 'd')
           .toDate(),
         breakdown: 'assignee',
-      });
+      }).sort((a, b) => a._id.localeCompare(b._id));
 
       expect(result.length).to.equal(2);
       expect(result[0]).to.deep.include({
