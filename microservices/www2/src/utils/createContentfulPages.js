@@ -9,8 +9,9 @@ const getPages = async graphql => {
     query Pages {
       allContentfulPage {
         nodes {
-          slug
+          id
           node_locale
+          slug
         }
       }
     }
@@ -19,21 +20,21 @@ const getPages = async graphql => {
   return pages;
 };
 
-const createDefaultPages = async ({ graphql, actions }) => {
+const createContentfulPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const pages = await getPages(graphql);
 
-  pages.forEach(({ slug, node_locale }) => {
+  pages.forEach(({ id, node_locale, slug }) => {
     const [language] = node_locale.split('-');
 
     createPage({
       path: `/${language}/${slug}`,
-      component: path.resolve('src/components/WwwPage/index.js'),
-      context: {
-        slug,
-      },
+      component: path.resolve(
+        'src/components/ContentfulPage/ContentfulPage.jsx',
+      ),
+      context: { slug, id },
     });
   });
 };
 
-export default createDefaultPages;
+export default createContentfulPages;

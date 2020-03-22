@@ -13,7 +13,7 @@ LayoutNav.propTypes = {
 };
 
 LayoutNav.defaultProps = {
-  siteTitle: ``,
+  siteTitle: '',
 };
 
 export default LayoutNav;
