@@ -12,7 +12,8 @@ describe('Migration 11', () => {
   });
 
   describe('up', () => {
-    it('sets first organisation as main', () => {
+    // No longer relevant
+    it.skip('sets first organisation as main', () => {
       generator({
         organisations: [
           { name: 'org1', users: [{ _id: 'user1' }, { _id: 'user2' }] },

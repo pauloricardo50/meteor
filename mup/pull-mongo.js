@@ -35,39 +35,25 @@ const outPath =
   argv.out ||
   `${path.resolve(os.tmpdir(), `${Math.floor(Math.random() * 1000)}`)}.archive`;
 const dbNameFile = `${outPath}.db-name.txt`;
-console.log([
+const args = [
+  '--host',
+  `Cluster0-shard-0/cluster0-shard-00-00-rcyrm.gcp.mongodb.net:27017,cluster0-shard-00-01-rcyrm.gcp.mongodb.net:27017,cluster0-shard-00-02-rcyrm.gcp.mongodb.net:27017`,
+  '--ssl',
   '--username',
   username,
   '--password',
   password,
-  '-d',
+  '--authenticationDatabase',
+  'admin',
+  '--db',
   dbName,
-  '-h',
-  `mongodb+srv://cluster0-rcyrm.gcp.mongodb.net`,
-  `--archive`,
-  outPath,
-]);
-spawnSync(
-  'mongodump',
-  [
-    '--ssl',
-    '--username',
-    username,
-    '--authenticationDatabase',
-    'admin',
-    '--password',
-    password,
-    '-d',
-    dbName,
-    '--host',
-    `Cluster0-shard-0/cluster0-shard-00-00-rcyrm.gcp.mongodb.net:27017,cluster0-shard-00-01-rcyrm.gcp.mongodb.net:27017,cluster0-shard-00-02-rcyrm.gcp.mongodb.net:27017`,
-    // parsing of archive option is different where we have to
-    // put the value with the option name
-    `--archive=${outPath}`,
-    '--gzip',
-  ],
-  { stdio: 'inherit' },
-);
+  // parsing of archive option is different where we have to
+  // put the value with the option name
+  `--archive=${outPath}`,
+  '--gzip',
+];
+console.log({ args });
+spawnSync('mongodump', args, { stdio: 'inherit' });
 fs.writeFileSync(dbNameFile, dbName);
 
 console.log(`Finished pulling. File at ${outPath}`);

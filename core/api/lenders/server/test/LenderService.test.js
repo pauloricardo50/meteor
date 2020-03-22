@@ -59,6 +59,16 @@ describe('LenderService', () => {
 
       expect(lender.contact.firstName).to.equal('John');
     });
+
+    it('inserts a proper offersCache', () => {
+      generator({
+        organisations: {},
+        loans: { lenders: { _id: 'lenderId', offers: {} } },
+      });
+
+      const lender = LenderService.get('lenderId', { offersCache: 1 });
+      expect(lender.offersCache.length).to.equal(1);
+    });
   });
 
   describe('remove', () => {

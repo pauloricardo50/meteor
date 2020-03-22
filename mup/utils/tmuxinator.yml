@@ -13,6 +13,6 @@ windows:
 
         - <%- app %>-<%- environment %>:
             - cd <%- configFolder %>
-            - <%- command %> || echo "FAILED"
+            - METEOR_ALLOW_SUPERUSER=true EPOTEK_RUN_PARALLEL=true <%- command %> || echo "FAILED"
             - echo "DONE"
            <% }) %>
