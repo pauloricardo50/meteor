@@ -4,37 +4,37 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: `e-Potek`,
+    title: 'e-Potek',
     description: "La révolution de l'hypothèque",
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
-    `gatsby-plugin-offline`,
-    `gatsby-plugin-netlify`,
-    `gatsby-plugin-sass`,
+    'gatsby-plugin-react-helmet',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
+    'gatsby-plugin-offline',
+    'gatsby-plugin-netlify',
+    'gatsby-plugin-sass',
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: `images`,
+        name: 'images',
         path: `${__dirname}/src/images`,
       },
     },
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        name: `e-Potek`,
-        short_name: `epotek`,
-        start_url: `/`,
-        background_color: `#005bea`,
-        theme_color: `#005bea`,
-        display: `minimal-ui`,
-        icon: `src/images/epotek_logo.png`, // This path is relative to the root of the site.
+        name: 'e-Potek',
+        short_name: 'epotek',
+        start_url: '/',
+        background_color: '#005bea',
+        theme_color: '#005bea',
+        display: 'minimal-ui',
+        icon: 'src/images/epotek_logo.png', // This path is relative to the root of the site.
       },
     },
     {
-      resolve: `gatsby-source-contentful`,
+      resolve: 'gatsby-source-contentful',
       options: {
         spaceId: process.env.CONTENTFUL_SPACE_ID,
         // Learn about environment variables: https://gatsby.dev/env-vars

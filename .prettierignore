@@ -1,1 +1,6 @@
 **/*.json
+
+microservices/www2/.cache
+microservices/www2/package.json
+microservices/www2/package-lock.json
+microservices/www2/public
