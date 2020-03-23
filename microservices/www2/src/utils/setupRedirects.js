@@ -1,6 +1,5 @@
 const setupRedirects = ({ actions: { createRedirect } }) => {
-  createRedirect({ fromPath: '/', toPath: '/fr' });
-  // createRedirect({ fromPath: '/', toPath: '/en', Language: 'en' });
+  // createRedirect({ fromPath: '/about', toPath: '/fr/a-propos', Language: 'fr' });
 };
 
 export default setupRedirects;

@@ -6,14 +6,15 @@ module.exports = {
   siteMetadata: {
     title: 'e-Potek',
     description: "La révolution de l'hypothèque",
+    siteUrl: `https://www.e-potek.ch`, // Necessary for the sitemap
   },
   plugins: [
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     'gatsby-plugin-offline',
-    'gatsby-plugin-netlify',
     'gatsby-plugin-sass',
+    `gatsby-plugin-sitemap`,
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -25,7 +26,7 @@ module.exports = {
       resolve: 'gatsby-plugin-manifest',
       options: {
         name: 'e-Potek',
-        short_name: 'epotek',
+        short_name: 'e-Potek',
         start_url: '/',
         background_color: '#005bea',
         theme_color: '#005bea',
@@ -41,5 +42,13 @@ module.exports = {
         accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
     },
+    {
+      resolve: 'gatsby-plugin-i18n',
+      options: {
+        langKeyDefault: 'fr',
+        useLangKeyLayout: false,
+      },
+    },
+    'gatsby-plugin-netlify', // Keep this one last in the array
   ],
 };

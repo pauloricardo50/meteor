@@ -9,8 +9,9 @@ const getBlogPosts = async graphql => {
     query Pages {
       allContentfulBlogPost {
         nodes {
-          slug
+          id
           node_locale
+          slug
         }
       }
     }
@@ -28,7 +29,7 @@ const createBlogPages = async ({ graphql, actions }) => {
 
     createPage({
       path: `/${language}/blog/${slug}`,
-      component: path.resolve('src/components/BlogPostPage/index.js'),
+      component: path.resolve('src/components/BlogPostPage/BlogPostPage.jsx'),
       context: {
         slug,
       },
