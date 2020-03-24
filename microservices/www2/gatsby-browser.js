@@ -20,3 +20,6 @@ const wrapRootElement = ({ element }) => (
 );
 
 export { wrapPageElement, wrapRootElement };
+
+// Use this variable in core if needed
+window.GATSBY = true;
