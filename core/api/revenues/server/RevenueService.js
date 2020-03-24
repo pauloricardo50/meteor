@@ -86,42 +86,22 @@ class RevenueService extends CollectionService {
         status: REVENUE_STATUS.EXPECTED,
         type: REVENUE_TYPES.INSURANCE,
       },
-
       insurance: {
-        premium: 1,
-        singlePremium: 1,
-        duration: 1,
-        insuranceProduct: { revaluationFactor: 1 },
+        estimatedRevenue: 1,
       },
-      sourceOrganisation: { productionRate: 1 },
     });
 
     if (revenues?.length) {
       revenues.forEach(revenue => {
-        const {
-          insurance,
-          sourceOrganisation: { productionRate },
-          _id: revenueId,
-        } = revenue;
+        const { insurance, _id: revenueId } = revenue;
 
         if (!insurance) {
           return;
         }
 
-        const {
-          premium,
-          singlePremium,
-          duration,
-          insuranceProduct: { revaluationFactor },
-        } = insurance;
+        const { estimatedRevenue } = insurance;
 
-        const newRevenue = Math.round(
-          singlePremium
-            ? premium * revaluationFactor * productionRate
-            : premium * duration * revaluationFactor * productionRate,
-        );
-
-        this._update({ id: revenueId, object: { amount: newRevenue } });
+        this._update({ id: revenueId, object: { amount: estimatedRevenue } });
       });
     }
   }

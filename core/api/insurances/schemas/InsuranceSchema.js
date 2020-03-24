@@ -9,7 +9,10 @@ import {
   adminNotesSchema,
 } from '../../helpers/sharedSchemas';
 
-import { INSURANCE_STATUS } from '../insuranceConstants';
+import {
+  INSURANCE_STATUS,
+  INSURANCE_PREMIUM_FREQUENCY,
+} from '../insuranceConstants';
 
 const InsuranceSchema = new SimpleSchema({
   createdAt,
@@ -20,21 +23,27 @@ const InsuranceSchema = new SimpleSchema({
     allowedValues: Object.values(INSURANCE_STATUS),
     defaultValue: INSURANCE_STATUS.SUGGESTED,
   },
-  description: String,
   borrowerLink: { type: Object, optional: true },
   'borrowerLink._id': String,
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
   premium: decimalMoneyField,
-  singlePremium: { type: Boolean, defaultValue: false },
-  duration: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 1,
-    max: 9999,
-    condition: ({ singlePremium }) => !singlePremium,
+  premiumFrequency: {
+    type: String,
+    allowedValues: Object.values(INSURANCE_PREMIUM_FREQUENCY),
+    defaultValue: INSURANCE_PREMIUM_FREQUENCY.MONTHLY,
+    uniforms: { checkboxes: true },
   },
-  billingDate: { ...dateField, optional: false },
+  startDate: {
+    ...dateField,
+    optional: false,
+    uniforms: { ...dateField.uniforms, label: 'Début du contrat' },
+  },
+  endDate: {
+    ...dateField,
+    optional: false,
+    uniforms: { ...dateField.uniforms, label: 'Fin du contrat' },
+  },
   insuranceProductLink: { type: Object, optional: true },
   'insuranceProductLink._id': String,
   revenueLinks: { type: Array, optional: true },

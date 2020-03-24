@@ -48,6 +48,7 @@ export { default as InsuranceRequests } from './insuranceRequests';
 export { default as Insurances } from './insurances';
 export { default as InsuranceProducts } from './insuranceProducts';
 export { default as CommissionRates } from './commissionRates';
+export { default as Notifications } from './notifications';
 
 export * from './helpers';
 export * from './methods';

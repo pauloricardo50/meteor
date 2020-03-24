@@ -1,10 +1,15 @@
 import { Random } from 'meteor/random';
+import moment from 'moment';
 
 import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import Insurances from '../insurances';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
-import { INSURANCE_STATUS, INSURANCES_COLLECTION } from '../insuranceConstants';
+import {
+  INSURANCE_STATUS,
+  INSURANCES_COLLECTION,
+  INSURANCE_PREMIUM_FREQUENCY,
+} from '../insuranceConstants';
 
 class InsuranceService extends CollectionService {
   constructor() {
@@ -51,29 +56,14 @@ class InsuranceService extends CollectionService {
         'organisationLink._id': organisationId,
         status: INSURANCE_STATUS.ACTIVE,
       },
-      premium: 1,
-      singlePremium: 1,
-      duration: 1,
-      insuranceProduct: { revaluationFactor: 1 },
+      estimatedRevenue: 1,
     });
 
-    return activeInsurances.reduce((totalProduction, insurance) => {
-      const {
-        premium,
-        singlePremium,
-        duration,
-        insuranceProduct: { revaluationFactor },
-      } = insurance;
-      let production = 0;
-
-      if (singlePremium) {
-        production = premium * revaluationFactor;
-      } else {
-        production = premium * duration * revaluationFactor;
-      }
-
-      return production + totalProduction;
-    }, 0);
+    return activeInsurances.reduce(
+      (totalProduction, { estimatedRevenue }) =>
+        totalProduction + estimatedRevenue,
+      0,
+    );
   };
 
   update = ({
@@ -191,6 +181,48 @@ class InsuranceService extends CollectionService {
       operator: '$unset',
       object: { proNote: true },
     });
+  }
+
+  getInsuranceDuration({ insuranceId }) {
+    const { startDate, endDate, premiumFrequency } = this.get(insuranceId, {
+      startDate: 1,
+      endDate: 1,
+      premiumFrequency: 1,
+    });
+    const rawDuration = moment.duration(
+      moment(endDate).diff(moment(startDate)),
+    );
+
+    switch (premiumFrequency) {
+      case INSURANCE_PREMIUM_FREQUENCY.SINGLE:
+        return 1;
+      case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
+        return Math.round(rawDuration.asMonths());
+      case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
+        return Math.round(rawDuration.asMonths() / 3);
+      case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
+        return Math.round(rawDuration.asYears() * 2);
+      case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
+        return Math.round(rawDuration.asYears());
+      default:
+        return 0;
+    }
+  }
+
+  getEstimatedRevenue({ insuranceId }) {
+    const {
+      organisation: { productionRate },
+      duration,
+      premium,
+      insuranceProduct: { revaluationFactor },
+    } = this.get(insuranceId, {
+      premium: 1,
+      duration: 1,
+      insuranceProduct: { revaluationFactor: 1 },
+      organisation: { productionRate: 1 },
+    });
+
+    return Math.round(premium * duration * revaluationFactor * productionRate);
   }
 }
 

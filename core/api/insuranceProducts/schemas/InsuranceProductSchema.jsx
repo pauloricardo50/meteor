@@ -30,7 +30,7 @@ const InsuranceProductSchema = new SimpleSchema({
     },
   },
   revaluationFactor: { type: Number, min: 0.01, max: 10 },
-  organisationLink: Object,
+  organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
 });
 

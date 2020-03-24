@@ -10,3 +10,4 @@ import '../promotions/server/serverReducers';
 import '../properties/server/serverReducers';
 import '../tasks/server/serverReducers';
 import '../users/server/serverReducers';
+import '../insurances/server/serverReducers';

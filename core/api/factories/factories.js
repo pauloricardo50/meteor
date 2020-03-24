@@ -14,6 +14,12 @@ import {
   DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
+  INSURANCE_PRODUCT_TYPES,
+  INSURANCE_PRODUCT_CATEGORIES,
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+  LOAN_CATEGORIES,
+  COMMISSION_RATES_TYPE,
 } from '../constants';
 import {
   Borrowers,
@@ -35,14 +41,11 @@ import {
   Users,
   InsuranceRequests,
   Insurances,
+  CommissionRates,
+  InsuranceProducts,
+  Notifications,
+  Activities,
 } from '..';
-import {
-  PROPERTY_CATEGORY,
-  RESIDENCE_TYPE,
-} from '../properties/propertyConstants';
-import Notifications from '../notifications/index';
-import Activities from '../activities/index';
-import { LOAN_CATEGORIES } from '../loans/loanConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -254,5 +257,18 @@ Factory.define('insurance', Insurances, {
     }
   },
   description: 'This is an insurance',
-  billingDate: () => new Date(),
+});
+
+Factory.define('commissionRate', CommissionRates, {
+  createdAt: () => new Date(),
+  type: COMMISSION_RATES_TYPE.PRODUCTIONS,
+  rates: [{ rate: 0.01, threshold: 0, date: '01-01' }],
+});
+
+Factory.define('insuranceProduct', InsuranceProducts, {
+  createdAt: () => new Date(),
+  name: 'Product',
+  type: INSURANCE_PRODUCT_TYPES.LIFE,
+  category: INSURANCE_PRODUCT_CATEGORIES['3A'],
+  revaluationFactor: 2,
 });
