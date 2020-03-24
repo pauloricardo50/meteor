@@ -1,3 +1,5 @@
+import getPageContext from './getPageContext';
+
 const path = require('path');
 
 const getPages = async graphql => {
@@ -9,6 +11,7 @@ const getPages = async graphql => {
     query Pages {
       allContentfulPage {
         nodes {
+          contentful_id
           id
           node_locale
           slug
@@ -24,15 +27,12 @@ const createContentfulPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const pages = await getPages(graphql);
 
-  pages.forEach(({ id, node_locale, slug }) => {
-    const [language] = node_locale.split('-');
-
+  pages.forEach(page => {
     createPage({
-      path: `/${language}/${slug}`,
       component: path.resolve(
         'src/components/ContentfulPage/ContentfulPage.jsx',
       ),
-      context: { slug, id },
+      ...getPageContext({ page, pages }),
     });
   });
 };
