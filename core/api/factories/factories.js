@@ -256,7 +256,6 @@ Factory.define('insurance', Insurances, {
       }
     }
   },
-  description: 'This is an insurance',
 });
 
 Factory.define('commissionRate', CommissionRates, {
