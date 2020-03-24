@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import {
   GENDER,
   SUCCESS,
@@ -258,19 +260,28 @@ export class FinanceCalculator {
     return (propertyValue + propertyWork) * maxBorrowRatio;
   }
 
-  getYearsToRetirement = ({ age1, age2, gender1, gender2 } = {}) => {
-    const retirement1 = this.getRetirementForGender({ gender: gender1 });
-    let retirement2 = null;
-    if (gender2) {
-      retirement2 = this.getRetirementForGender({ gender: gender2 });
+  getYearsToRetirement = ({ retirementDate1, retirementDate2 } = {}) => {
+    const today = moment();
+    const toRetirement1 = moment
+      .duration(moment(retirementDate1).diff(today))
+      .asYears();
+    // const retirement1 = this.getRetirementForGender({ gender: gender1 });
+    let toRetirement2 = null;
+    // if (gender2) {
+    //   retirement2 = this.getRetirementForGender({ gender: gender2 });
+    // }
+    if (retirementDate2) {
+      toRetirement2 = moment
+        .duration(moment(retirementDate2).diff(today))
+        .asYears();
     }
 
     // Substract age to determine remaining time to retirement for both borrowers
-    const toRetirement1 = retirement1 - age1;
-    let toRetirement2;
-    if (retirement2 && age2) {
-      toRetirement2 = retirement2 - age2;
-    }
+    // const toRetirement1 = retirement1 - age1;
+    // let toRetirement2;
+    // if (retirement2 && age2) {
+    //   toRetirement2 = retirement2 - age2;
+    // }
 
     // Get the most limiting time to retirement for both borrowers, in years
     let yearsToRetirement;
@@ -280,7 +291,7 @@ export class FinanceCalculator {
       yearsToRetirement = toRetirement1;
     }
 
-    return Math.max(yearsToRetirement, 0);
+    return Math.round(Math.max(yearsToRetirement, 0));
   };
 
   getTheoreticalMonthly({ propAndWork, loanValue, amortizationRate }) {

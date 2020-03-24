@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
@@ -435,18 +436,20 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getRetirement({ borrowers }) {
       const argMap = borrowers.reduce(
-        (obj, { birthDate, age, gender }, index) => {
-          const finalAge = age || getAgeFromBirthDate(birthDate);
-          return {
-            ...obj,
-            [`${`age${index + 1}`}`]: finalAge,
-            [`${`gender${index + 1}`}`]: gender,
-          };
-        },
+        (obj, borrower, index) => ({
+          ...obj,
+          [`${`retirementDate${index + 1}`}`]: this.getRetirementDate(borrower),
+        }),
         {},
       );
 
       return this.getYearsToRetirement(argMap);
+    }
+
+    getRetirementDate(borrower) {
+      const { birthDate } = borrower;
+      const retirementAge = this.getRetirementForGender(borrower);
+      return moment(birthDate).add(retirementAge, 'years');
     }
 
     getAmortizationYears({ loan, structureId, offerOverride, borrowers }) {
