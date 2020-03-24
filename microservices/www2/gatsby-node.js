@@ -1,6 +1,7 @@
 import createContentfulPages from './src/utils/createContentfulPages';
 import createBlogPages from './src/utils/createBlogPages';
 import setupRedirects from './src/utils/setupRedirects';
+import customizeWebpackConfig from './src/utils/customizeWebpackConfig';
 
 const createPages = async gatsbyNodeHelpers => {
   setupRedirects(gatsbyNodeHelpers);
@@ -8,4 +9,8 @@ const createPages = async gatsbyNodeHelpers => {
   createBlogPages(gatsbyNodeHelpers);
 };
 
-export { createPages };
+const onCreateWebpackConfig = gatsbyNodeHelpers => {
+  customizeWebpackConfig(gatsbyNodeHelpers);
+};
+
+export { createPages, onCreateWebpackConfig };

@@ -1,10 +1,7 @@
-import { Meteor } from 'meteor/meteor';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import colors from './colors';
 
-const fontSize = () => (Meteor.microservice === 'www' ? 16 : 14);
-
-const createTheme = () =>
+const createTheme = ({ fontSize = 14 }) =>
   createMuiTheme({
     overrides: {
       MuiInput: {},
@@ -89,7 +86,7 @@ const createTheme = () =>
     },
     typography: {
       fontFamily: 'Eina04-Regular, Helvetica',
-      htmlFontSize: fontSize(),
+      htmlFontSize: fontSize,
       letterSpacing: '0.048em',
       fontWeightRegular: 400,
       fontWeightMedium: 600,
