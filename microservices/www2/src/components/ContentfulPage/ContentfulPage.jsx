@@ -1,18 +1,18 @@
 import React from 'react';
-
 import { graphql } from 'gatsby';
+
 import WwwPage from '../WwwPage';
 
-const ContentfulPage = ({
-  data: {
-    allContentfulPage: { nodes },
-  },
-}) => {
-  const [{ title, description }] = nodes;
+const ContentfulPage = props => {
+  const {
+    data: {
+      contentfulPage: { title, description },
+    },
+  } = props;
 
   return (
     <WwwPage title={title} description={description}>
-      Hello from ContentfulPage
+      <h1>{title}</h1>
     </WwwPage>
   );
 };
@@ -21,12 +21,9 @@ export default ContentfulPage;
 
 export const query = graphql`
   query ContentfulPageQuery($id: String!) {
-    allContentfulPage(filter: { id: { eq: $id } }) {
-      nodes {
-        id
-        slug
-        title
-      }
+    contentfulPage(id: { eq: $id }) {
+      title
+      description
     }
   }
 `;
