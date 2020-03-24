@@ -7,28 +7,19 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useStaticQuery, graphql } from 'gatsby';
 
 import './layout.scss';
 import LayoutNav from './LayoutNav';
 import LayoutFooter from './LayoutFooter';
 
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
+const Layout = ({ children, pageContext }) => {
+  const { i18n } = pageContext;
 
   return (
     <div className="layout">
       <LayoutNav />
       <main>{children}</main>
-      <LayoutFooter />
+      <LayoutFooter i18n={i18n} />
     </div>
   );
 };
