@@ -28,6 +28,7 @@ const PromotionReservationProgressComponent = ({
   withTooltip,
   withIcon,
   renderStatus,
+  loan: loanOverride,
 }) => {
   const {
     _id: promotionOptionId,
@@ -39,7 +40,7 @@ const PromotionReservationProgressComponent = ({
     loan,
     isAnonymized,
   } = promotionOption;
-  const { user, _id: loanId, proNote = {} } = loan;
+  const { user, _id: loanId, proNote = {} } = loanOverride || loan;
   const { info = {}, documents = {} } = loanProgress;
 
   const getProgressItem = useMemo(
