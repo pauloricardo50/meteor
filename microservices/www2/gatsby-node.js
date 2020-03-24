@@ -1,7 +1,8 @@
 import createContentfulPages from './src/utils/createContentfulPages';
 import createBlogPages from './src/utils/createBlogPages';
 import setupRedirects from './src/utils/setupRedirects';
-import customizeWebpackConfig from './src/utils/customizeWebpackConfig';
+
+const path = require('path');
 
 const createPages = async gatsbyNodeHelpers => {
   setupRedirects(gatsbyNodeHelpers);
@@ -9,8 +10,16 @@ const createPages = async gatsbyNodeHelpers => {
   createBlogPages(gatsbyNodeHelpers);
 };
 
-const onCreateWebpackConfig = gatsbyNodeHelpers => {
-  customizeWebpackConfig(gatsbyNodeHelpers);
+const onCreateWebpackConfig = ({ actions: { setWebpackConfig } }) => {
+  // This should stay in this file for the alias to work
+  setWebpackConfig({
+    resolve: {
+      symlinks: false,
+      alias: {
+        core: path.resolve(__dirname, 'src/core/'),
+      },
+    },
+  });
 };
 
 export { createPages, onCreateWebpackConfig };
