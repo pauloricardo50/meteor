@@ -3,12 +3,16 @@ import InsuranceRequestBoardInsuranceCard from './InsuranceRequestBoardInsurance
 
 const InsuranceRequestBoardCardDescription = ({ insurances = [] }) => (
   <>
-    {insurances.map(insurance => (
-      <InsuranceRequestBoardInsuranceCard
-        insurance={insurance}
-        key={insurance._id}
-      />
-    ))}
+    {insurances.length ? (
+      insurances.map(insurance => (
+        <InsuranceRequestBoardInsuranceCard
+          insurance={insurance}
+          key={insurance._id}
+        />
+      ))
+    ) : (
+      <p>Pas encore d'assurance pour ce dossier</p>
+    )}
   </>
 );
 

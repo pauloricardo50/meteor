@@ -35,9 +35,11 @@ export default compose(
           logo: 1,
         },
         premium: 1,
-        singlePremium: 1,
         duration: 1,
-        billingDate: 1,
+        estimatedRevenue: 1,
+        premiumFrequency: 1,
+        startDate: 1,
+        endDate: 1,
         insuranceProduct: {
           name: 1,
           category: 1,

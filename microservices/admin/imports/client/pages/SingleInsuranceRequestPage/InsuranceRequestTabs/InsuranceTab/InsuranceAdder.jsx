@@ -1,9 +1,10 @@
 import React from 'react';
+
 import Icon from 'core/components/Icon';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import InsuranceForm from './InsuranceForm';
 
-const InsuranceAdder = ({ schema, insertInsurance, loading }) => {
+const InsuranceAdder = ({ schema, insertInsurance, loading, layout }) => {
   if (loading) {
     return null;
   }
@@ -22,6 +23,7 @@ const InsuranceAdder = ({ schema, insertInsurance, loading }) => {
         size: 'small',
         tooltip: 'Ajouter une assurance',
       }}
+      layout={layout}
     />
   );
 };

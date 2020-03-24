@@ -1,6 +1,10 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
+import moment from 'moment';
+
+import Box from 'core/components/Box';
 
 import {
   ORGANISATION_TYPES,
@@ -10,6 +14,7 @@ import {
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { insuranceInsert, insuranceModify } from 'core/api/methods';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
+import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
 
 const makeInsuranceMethod = ({
   insuranceRequestId,
@@ -20,11 +25,10 @@ const makeInsuranceMethod = ({
   borrowerId,
   organisationId,
   insuranceProductId,
-  description,
   premium,
-  singlePremium,
-  duration,
-  billingDate,
+  premiumFrequency,
+  startDate,
+  endDate,
 }) => {
   if (type === 'insert') {
     return insuranceInsert.run({
@@ -34,11 +38,10 @@ const makeInsuranceMethod = ({
       insuranceProductId,
       insurance: {
         status,
-        description,
         premium,
-        singlePremium,
-        duration,
-        billingDate: new Date(billingDate),
+        startDate,
+        endDate,
+        premiumFrequency,
       },
     });
   }
@@ -51,11 +54,10 @@ const makeInsuranceMethod = ({
       insuranceProductId,
       insurance: {
         status,
-        description,
         premium,
-        singlePremium,
-        duration,
-        billingDate: new Date(billingDate),
+        startDate,
+        endDate,
+        premiumFrequency,
       },
     });
   }
@@ -161,14 +163,33 @@ const getSchema = ({ borrowers, organisations }) =>
         placeholder: null,
       },
     },
+    endDateHelpers: {
+      type: String,
+      optional: true,
+      uniforms: {
+        render: InsuranceFormEndDateSetter,
+        buttonProps: { raised: true, primary: true },
+        label: '-> Retraite',
+        func: ({ model, setError }) => {
+          setError(undefined);
+          const { borrowerId } = model;
+          const borrower =
+            borrowerId && borrowers.find(({ _id }) => _id === borrowerId);
+
+          if (!borrower?.birthDate) {
+            setError('Blablabla');
+            return [];
+          }
+
+          const endDate = moment(borrower.birthDate)
+            .add(30, 'year')
+            .toDate();
+          return [['endDate', endDate]];
+        },
+      },
+    },
   }).extend(
-    InsuranceSchema.pick(
-      'description',
-      'premium',
-      'singlePremium',
-      'duration',
-      'billingDate',
-    ),
+    InsuranceSchema.pick('premium', 'premiumFrequency', 'startDate', 'endDate'),
   );
 
 export default withProps(({ insuranceRequest, insurance = {} }) => {
@@ -219,5 +240,52 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
       type: 'update',
     }),
     loading,
+    layout: [
+      {
+        fields: ['status', 'borrowerId'],
+        Component: Box,
+        className: 'grid-row mb-32',
+        title: <h3>Général</h3>,
+      },
+      {
+        Component: Box,
+        title: <h3>Assurance</h3>,
+        layout: [
+          {
+            fields: [
+              'organisationId',
+              'type',
+              'category',
+              'insuranceProductId',
+            ],
+            Component: Box,
+            className: 'grid-row mt-16',
+            title: (
+              <h3>
+                <small>Produit</small>
+              </h3>
+            ),
+          },
+          {
+            fields: ['premium', 'premiumFrequency'],
+            Component: Box,
+            className: 'grid-row mt-16',
+            title: (
+              <h3>
+                <small>Prime</small>
+              </h3>
+            ),
+            layout: [
+              {
+                fields: ['startDate', 'endDate', 'endDateHelpers'],
+                className: 'grid-col',
+                style: { alignItems: 'center', position: 'relative' },
+              },
+            ],
+          },
+        ],
+        className: 'grid-row mb-32',
+      },
+    ],
   };
 });

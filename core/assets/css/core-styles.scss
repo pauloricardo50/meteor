@@ -232,6 +232,10 @@ p.description,
   &.end-align {
     align-items: flex-end;
   }
+
+  &.nowrap {
+    flex-wrap: nowrap
+  }
 }
 
 .flex-col {
