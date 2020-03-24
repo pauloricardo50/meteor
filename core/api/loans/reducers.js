@@ -68,7 +68,7 @@ Loans.addReducers({
   },
   proNotes: {
     body: { adminNotes: 1 },
-    reduce: ({ adminNotes }) =>
+    reduce: ({ adminNotes = [] }) =>
       adminNotes.filter(({ isSharedWithPros }) => isSharedWithPros),
   },
   mainAssignee: {
