@@ -21,14 +21,19 @@ const getSchema = insuranceRequest => {
         label: 'Tâche relative à',
         transform: linkId => {
           if (linkId === insuranceRequestId) {
-            return name;
+            return `Dossier assurance ${name}`;
           }
 
-          return insurances.find(({ _id }) => _id === linkId).name;
+          const { name: insuranceName, borrower } = insurances.find(
+            ({ _id }) => _id === linkId,
+          );
+
+          return `Assurance ${borrower.name} ${insuranceName}`;
         },
         allowNull: false,
         displayEmpty: false,
         placeholder: '',
+        checkboxes: true,
       },
     },
   }).extend(taskSchema.omit('status'));

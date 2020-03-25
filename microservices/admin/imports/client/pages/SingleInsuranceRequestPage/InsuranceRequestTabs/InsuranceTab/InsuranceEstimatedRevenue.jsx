@@ -39,7 +39,7 @@ const InsuranceEstimatedRevenue = ({
     premium,
     premiumFrequency,
     organisation: { _id: organisationId },
-    insuranceProduct: { revaluationFactor, type, category },
+    insuranceProduct: { name, revaluationFactor, type, category },
   },
   insuranceRequest,
 }) => {
@@ -109,6 +109,7 @@ const InsuranceEstimatedRevenue = ({
         setOpen={setOpenRevenueAdder}
         revenue={{
           sourceOrganisationLink: { _id: organisationId },
+          decription: name,
           amount: estimatedRevenue,
           type: REVENUE_TYPES.INSURANCE,
           secondaryType: getSecondaryType({ category, type }),

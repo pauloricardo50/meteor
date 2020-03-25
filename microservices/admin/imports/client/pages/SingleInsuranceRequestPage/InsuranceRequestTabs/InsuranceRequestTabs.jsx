@@ -66,7 +66,11 @@ const getTabs = props => {
         }),
     },
     ...insurances.map(insurance => {
-      const { organisation, borrower } = insurance;
+      const {
+        organisation,
+        borrower,
+        insuranceProduct: { name },
+      } = insurance;
       const borrowerIndex = borrowers
         .map((b, i) => ({ ...b, index: i }))
         .find(({ _id }) => _id === borrower._id).index;
@@ -83,8 +87,8 @@ const getTabs = props => {
               className="mr-8"
             />
             <div className="flex-col">
-              <span>{insurance.name}</span>
               <span>{borrower.name || `Assuré ${borrowerIndex + 1}`}</span>
+              <span>{name}</span>
             </div>
           </span>
         ),

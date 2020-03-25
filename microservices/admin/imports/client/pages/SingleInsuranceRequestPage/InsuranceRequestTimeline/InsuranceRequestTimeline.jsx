@@ -15,14 +15,14 @@ const AdditionalFilters = ({
   setDocumentFilter,
 }) => (
   <div className="flex ml-8">
-    {availableDocuments.map(({ id, label }) => {
+    {availableDocuments.map(({ id, shortLabel }) => {
       const value = !!documentFilter.find(doc => doc === id);
       return (
         <Checkbox
           key={id}
           value={value}
           id={id}
-          label={label}
+          label={shortLabel}
           onChange={() => {
             if (value) {
               setDocumentFilter(documentFilter.filter(doc => doc !== id));
@@ -92,12 +92,14 @@ const InsuranceRequestTimeline = ({ insuranceRequest }) => {
   const availableDocuments = [
     {
       id: insuranceRequestId,
-      label: insuranceRequestName,
+      label: `Dossier assurance ${insuranceRequestName}`,
+      shortLabel: insuranceRequestName,
       collection: INSURANCE_REQUESTS_COLLECTION,
     },
-    ...insurances.map(({ _id, name }) => ({
+    ...insurances.map(({ _id, name, borrower }) => ({
       id: _id,
-      label: name,
+      label: `Assurance ${borrower.name} ${name}`,
+      shortLabel: name,
       collection: INSURANCES_COLLECTION,
     })),
   ];

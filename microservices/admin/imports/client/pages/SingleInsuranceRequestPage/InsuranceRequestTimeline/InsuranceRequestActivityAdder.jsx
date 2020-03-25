@@ -19,6 +19,7 @@ const getSchema = (availableDocuments = []) =>
         label: 'Relatif à',
         allowNull: false,
         displayEmpty: false,
+        checkboxes: true,
       },
     },
   }).extend(ActivitySchema);

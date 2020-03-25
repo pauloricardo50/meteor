@@ -29,6 +29,7 @@ const documentSelectSchema = (availableDocuments = []) =>
         label: 'Relatif à',
         displayEmpty: false,
         allowNull: false,
+        checkboxes: true,
       },
     },
   });
@@ -112,11 +113,11 @@ export default withProps(
       {
         _id: insuranceRequestId,
         collection: INSURANCE_REQUESTS_COLLECTION,
-        name: insuranceRequestName,
+        name: `Dossier assurance ${insuranceRequestName}`,
       },
-      ...insurances.map(({ _id, name }) => ({
+      ...insurances.map(({ _id, name, borrower }) => ({
         _id,
-        name,
+        name: `Assurance ${borrower.name} ${name}`,
         collection: INSURANCES_COLLECTION,
       })),
     ];
