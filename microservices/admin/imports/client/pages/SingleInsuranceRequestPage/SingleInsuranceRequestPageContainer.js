@@ -35,8 +35,6 @@ export default compose(
           logo: 1,
         },
         premium: 1,
-        duration: 1,
-        estimatedRevenue: 1,
         premiumFrequency: 1,
         startDate: 1,
         endDate: 1,

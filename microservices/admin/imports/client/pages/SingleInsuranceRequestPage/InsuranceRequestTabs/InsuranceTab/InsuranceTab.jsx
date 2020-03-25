@@ -7,27 +7,31 @@ const InsuranceTab = props => {
   const { insurance, insuranceRequest } = props;
   const { revenues = [] } = insurance;
   return (
-    <div>
-      {revenues.length ? (
-        <div className="flex-col mb-32">
-          <h3>Revenus</h3>
+    <div className="flex-col">
+      <div className="flex-col card1 p-16 mb-32">
+        <h3 className="mt-0">Revenus</h3>
+        {revenues.length ? (
           <RevenuesTable
             insurance={insurance}
             filterRevenues={({ insurance: { _id: insuranceId } }) => ({
               insuranceId,
             })}
           />
-        </div>
-      ) : (
-        <InsuranceEstimatedRevenue
-          insurance={insurance}
+        ) : (
+          <InsuranceEstimatedRevenue
+            insurance={insurance}
+            insuranceRequest={insuranceRequest}
+          />
+        )}
+      </div>
+
+      <div className="flex-col card1 p-16">
+        <h3 className="mt-0">{insurance.name}</h3>
+        <InsuranceModifier
           insuranceRequest={insuranceRequest}
+          insurance={insurance}
         />
-      )}
-      <InsuranceModifier
-        insuranceRequest={insuranceRequest}
-        insurance={insurance}
-      />
+      </div>
     </div>
   );
 };

@@ -17,20 +17,20 @@ const layout = [
     fields: ['status', 'borrowerId'],
     Component: Box,
     className: 'grid-row mb-32',
-    title: <h3>Général</h3>,
+    title: <h4>Général</h4>,
   },
   {
     Component: Box,
-    title: <h3>Assurance</h3>,
+    title: <h4>Assurance</h4>,
     layout: [
       {
         fields: ['organisationId', 'type', 'category', 'insuranceProductId'],
         Component: Box,
         className: 'grid-row mt-16',
         title: (
-          <h3>
+          <h4>
             <small>Produit</small>
-          </h3>
+          </h4>
         ),
       },
       {
@@ -38,9 +38,9 @@ const layout = [
         Component: Box,
         className: 'grid-row mt-16',
         title: (
-          <h3>
+          <h4>
             <small>Prime</small>
-          </h3>
+          </h4>
         ),
         layout: [
           {
