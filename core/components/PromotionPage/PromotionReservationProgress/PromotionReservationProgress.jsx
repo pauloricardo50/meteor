@@ -12,13 +12,6 @@ import {
   getRatio,
 } from './PromotionReservationProgressHelpers';
 
-const getAnimationDelay = (index, offset = 0) => (index + offset) * 50;
-
-const getAnimation = (variant, index, offset) =>
-  `animated ${
-    variant === 'icon' ? 'fadeInLeft' : 'fadeInDown'
-  } delay-${getAnimationDelay(index, offset)}`;
-
 const PromotionReservationProgressComponent = ({
   promotionOption,
   style,
@@ -134,37 +127,21 @@ const PromotionReservationProgressComponent = ({
     >
       <div className="promotion-reservation-progress-icons">
         {verificationAndBankIcons.map(({ id, progressItem }, index) => (
-          <div className={cx('icon', getAnimation(variant, index))} key={id}>
+          <div className="icon" key={id}>
             {progressItem}
           </div>
         ))}
       </div>
       <div className="promotion-reservation-progress-icons">
         {agreementAndDepositIcons.map(({ id, progressItem }, index) => (
-          <div
-            className={cx(
-              'icon',
-              getAnimation(variant, index, verificationAndBankIcons.length),
-            )}
-            key={id}
-          >
+          <div className="icon" key={id}>
             {progressItem}
           </div>
         ))}
       </div>
       <div className="promotion-reservation-progress-icons">
         {!isAnonymized && (
-          <div
-            className={cx(
-              'icon',
-              getAnimation(
-                variant,
-                0,
-                verificationAndBankIcons.length +
-                  agreementAndDepositIcons.length,
-              ),
-            )}
-          >
+          <div className="icon">
             {getAdminNoteIcon({
               proNote,
               variant,
