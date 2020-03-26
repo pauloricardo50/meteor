@@ -6,6 +6,7 @@ import InsuranceRequestBoardOptions from './InsuranceRequestBoardOptions/Insuran
 import InsuranceRequestBoardColumnHeader from './InsuranceRequestBoardColumnHeader';
 import InsuranceRequestBoardCard from './InsuranceRequestBoardCard/InsuranceRequestBoardCard';
 import { ACTIONS } from './insuranceRequestBoardConstants';
+import InsuranceRequestModal from './InsuranceRequestModal';
 
 const InsuranceRequestBoard = props => {
   const {
@@ -15,6 +16,7 @@ const InsuranceRequestBoard = props => {
     devAndAdmins,
     refetchInsuranceRequests,
     data,
+    currentUser,
   } = props;
 
   return (
@@ -39,6 +41,13 @@ const InsuranceRequestBoard = props => {
                 payload: insuranceRequestId,
               }),
           }}
+        />
+        <InsuranceRequestModal
+          insuranceRequestId={options.insuranceRequestId}
+          closeModal={() =>
+            dispatch({ type: ACTIONS.SET_INSURANCE_REQUEST_ID, payload: '' })
+          }
+          currentUser={currentUser}
         />
       </div>
     </>

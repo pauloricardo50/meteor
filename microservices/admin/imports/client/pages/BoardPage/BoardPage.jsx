@@ -9,6 +9,8 @@ const BoardPage = ({
   currentUser,
   loanBoardOptions,
   loanBoardDispatch,
+  insuranceRequestBoardOptions,
+  insuranceRequestBoardDispatch,
   activateLoanBoardSync,
   setActivateLoanBoardSync,
   board,
@@ -34,8 +36,8 @@ const BoardPage = ({
     ) : (
       <InsuranceRequestBoard
         currentUser={currentUser}
-        options={loanBoardOptions}
-        dispatch={loanBoardDispatch}
+        options={insuranceRequestBoardOptions}
+        dispatch={insuranceRequestBoardDispatch}
         activateLoanBoardSync={activateLoanBoardSync}
         setActivateLoanBoardSync={setActivateLoanBoardSync}
       />
@@ -45,8 +47,11 @@ const BoardPage = ({
 
 export default compose(
   withMatchParam('boardId'),
-  withProps(({ boardId }) => {
-    const [board, setBoard] = useState(boardId || 'loans');
+  withProps(({ boardId, currentUser }) => {
+    console.log('currentUser:', currentUser);
+    const [board, setBoard] = useState(
+      boardId || currentUser?.defaultBoardId || 'loans',
+    );
 
     return {
       board,

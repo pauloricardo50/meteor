@@ -26,7 +26,7 @@ const SingleInsuranceRequestPage = props => {
           insuranceRequestId={insuranceRequest._id}
         />
       </div>
-      <InsuranceRequestTabs {...props} enableTabRouting />
+      <InsuranceRequestTabs {...props} />
     </section>
   );
 };

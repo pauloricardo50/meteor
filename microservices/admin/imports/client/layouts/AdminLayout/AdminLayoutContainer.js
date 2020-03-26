@@ -11,17 +11,27 @@ import { withRouter } from 'react-router-dom';
 import { withFileViewer } from 'core/containers/FileViewerContext';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import {
-  filterReducer,
-  getInitialOptions,
+  filterReducer as loansFilterReducer,
+  getInitialOptions as loansGetInitialOptions,
 } from '../../pages/BoardPage/LoanBoard/loanBoardHelpers';
+import {
+  filterReducer as insuranceRequestsFilterReducer,
+  getInitialOptions as insuranceRequestsGetInitialOptions,
+} from '../../pages/BoardPage/InsuranceRequestBoard/insuranceRequestBoardHelpers';
 
 const loanBoardContainer = compose(
   withState('activateLoanBoardSync', 'setActivateLoanBoardSync', false),
   withReducer(
     'loanBoardOptions',
     'loanBoardDispatch',
-    filterReducer,
-    getInitialOptions,
+    loansFilterReducer,
+    loansGetInitialOptions,
+  ),
+  withReducer(
+    'insuranceRequestBoardOptions',
+    'insuranceRequestBoardDispatch',
+    insuranceRequestsFilterReducer,
+    insuranceRequestsGetInitialOptions,
   ),
 );
 

@@ -1025,6 +1025,7 @@ export const fullUser = () => ({
   loans: loanBase(),
   updatedAt: 1,
   organisations: fullOrganisation(),
+  defaultBoardId: 1,
 });
 
 export const adminUser = () => ({

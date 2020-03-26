@@ -2,12 +2,28 @@ import React from 'react';
 
 import Icon from 'core/components/Icon';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
+import { INSURANCE_REQUEST_STATUS } from 'imports/core/api/constants';
 import InsuranceForm from './InsuranceForm';
 
-const InsuranceAdder = ({ schema, insertInsurance, loading, layout }) => {
+const InsuranceAdder = ({
+  schema,
+  insertInsurance,
+  loading,
+  layout,
+  insuranceRequest,
+}) => {
   if (loading) {
     return null;
   }
+
+  const { borrowers = [], status } = insuranceRequest;
+  const hasBorrowers = !!borrowers.length;
+  const statusAllowsToInsert = ![
+    INSURANCE_REQUEST_STATUS.BILLING,
+    INSURANCE_REQUEST_STATUS.FINALIZED,
+  ].includes(status);
+
+  const shouldDisable = !hasBorrowers || !statusAllowsToInsert;
 
   return (
     <AutoFormDialog
@@ -21,7 +37,12 @@ const InsuranceAdder = ({ schema, insertInsurance, loading, layout }) => {
         icon: <Icon type="add" />,
         className: 'ml-8',
         size: 'small',
-        tooltip: 'Ajouter une assurance',
+        disabled: shouldDisable,
+        tooltip: shouldDisable
+          ? !hasBorrowers
+            ? 'Vous devez ajouter des assurés pour insérer une assurance'
+            : 'Vous ne pouvez pas insérer de nouvelle assurance lorsque le dossier est en Facturation ou Finalisé'
+          : 'Ajouter une assurance',
       }}
       layout={layout}
     />
