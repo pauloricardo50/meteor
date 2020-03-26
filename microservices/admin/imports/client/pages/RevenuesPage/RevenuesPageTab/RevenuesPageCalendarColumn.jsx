@@ -11,6 +11,7 @@ import {
 import { CollectionIconLink } from 'core/components/IconLink';
 import Icon from 'core/components/Icon';
 import RevenueConsolidator from '../../../components/RevenuesTable/RevenueConsolidator';
+import RevenuePostponer from './RevenuePostponer';
 
 const now = new Date();
 
@@ -95,6 +96,9 @@ const RevenuesPageCalendarColumn = ({
                     revenue={revenue}
                     onSubmitted={refetch}
                   />
+                )}
+                {revenue.status === REVENUE_STATUS.EXPECTED && (
+                  <RevenuePostponer revenue={revenue} />
                 )}
               </div>
             </div>
