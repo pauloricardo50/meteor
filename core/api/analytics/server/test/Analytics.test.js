@@ -43,7 +43,7 @@ describe('Analytics', () => {
       expect(analyticsSpy.callCount).to.equal(1);
     });
 
-    it('should not track events when impersonating users', async () => {
+    it.skip('should not track events when impersonating users', async () => {
       const connectionId = Random.id();
 
       await SessionService.insert({
