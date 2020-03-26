@@ -8,6 +8,8 @@ import {
   insuranceRequestUpdateStatus,
   insuranceRequestInsertBorrower,
   insuranceRequestLinkBorrower,
+  insuranceRequestLinkLoan,
+  insuranceRequestLinkNewLoan,
 } from '../methodDefinitions';
 import InsuranceRequestService from './InsuranceRequestService';
 import Security from '../../security/Security';
@@ -55,4 +57,14 @@ insuranceRequestInsertBorrower.setHandler(({ userId }, params) => {
 insuranceRequestLinkBorrower.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return InsuranceRequestService.linkBorrower(params);
+});
+
+insuranceRequestLinkLoan.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  return InsuranceRequestService.linkLoan(params);
+});
+
+insuranceRequestLinkNewLoan.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  return InsuranceRequestService.linkNewLoan(params);
 });

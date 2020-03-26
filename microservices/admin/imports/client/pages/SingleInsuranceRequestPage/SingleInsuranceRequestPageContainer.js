@@ -46,6 +46,7 @@ export default compose(
         },
         revenues: adminRevenue(),
       },
+      loan: { name: 1 },
     }),
     dataName: 'insuranceRequest',
     queryOptions: { reactive: true, single: true },

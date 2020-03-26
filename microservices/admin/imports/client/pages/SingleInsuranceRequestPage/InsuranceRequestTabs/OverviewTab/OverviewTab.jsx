@@ -1,28 +1,27 @@
 import React from 'react';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import AssigneesManager from 'imports/client/components/AssigneesManager';
-import AdminTimeline from '../../../../components/AdminTimeline';
 import InsuranceRequestAdminNotes from '../../InsuranceRequestAdminNotes';
 import InsuranceRequestTimeline from '../../InsuranceRequestTimeline';
+import InsuranceRequestLinkedLoan from './InsuranceRequestLinkedLoan';
 
 const OverviewTab = props => {
   const { insuranceRequest } = props;
-  const { borrowers, _id: insuranceRequestId } = insuranceRequest;
 
   return (
     <div className="overview-tab">
-      <div className="admin-section card1">
-        <div className="card-top">
+      <div
+        className="admin-section card1"
+        style={{ width: '30%', alignSelf: 'center' }}
+      >
+        <div className="flex center-align p-16 sb">
+          <InsuranceRequestLinkedLoan insuranceRequest={insuranceRequest} />
           <AssigneesManager
             doc={insuranceRequest}
             collection={INSURANCE_REQUESTS_COLLECTION}
           />
         </div>
       </div>
-      {/* <AdminTimeline
-        docId={insuranceRequestId}
-        collection={INSURANCE_REQUESTS_COLLECTION}
-      /> */}
       <InsuranceRequestTimeline insuranceRequest={insuranceRequest} />
       <InsuranceRequestAdminNotes
         insuranceRequest={insuranceRequest}

@@ -323,6 +323,32 @@ class InsuranceRequestService extends CollectionService {
     });
     return Promise.resolve();
   }
+
+  linkLoan({ insuranceRequestId, loanId }) {
+    this.addLink({
+      id: insuranceRequestId,
+      linkName: 'loan',
+      linkId: loanId,
+    });
+    return Promise.resolve();
+  }
+
+  linkNewLoan({ insuranceRequestId }) {
+    const { user, borrowers = [] } = this.get(insuranceRequestId, {
+      user: { _id: 1 },
+      borrowers: { _id: 1 },
+    });
+    const loanId = LoanService.insert({
+      loan: { borrowerIds: borrowers.map(({ _id }) => _id) },
+      userId: user?._id,
+      insuranceRequestId,
+    });
+
+    this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
+
+    console.log('loanId:', loanId);
+    return loanId;
+  }
 }
 
 export default new InsuranceRequestService({});

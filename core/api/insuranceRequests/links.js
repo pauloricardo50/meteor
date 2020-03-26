@@ -95,10 +95,6 @@ LinkInitializer.inversedInit(() => {
     loan: {
       inversedBy: 'insuranceRequests',
       collection: Loans,
-      denormalize: {
-        field: 'loanCache',
-        body: loanCache,
-      },
     },
   });
 });

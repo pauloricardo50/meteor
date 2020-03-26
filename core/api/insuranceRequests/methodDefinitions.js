@@ -69,3 +69,13 @@ export const insuranceRequestLinkBorrower = new Method({
   name: 'insuranceRequestLinkBorrower',
   params: { insuranceRequestId: String, borrowerId: String },
 });
+
+export const insuranceRequestLinkLoan = new Method({
+  name: 'insuranceRequestLinkLoan',
+  params: { insuranceRequestId: String, loanId: String },
+});
+
+export const insuranceRequestLinkNewLoan = new Method({
+  name: 'insuranceRequestLinkNewLoan',
+  params: { insuranceRequestId: String },
+});

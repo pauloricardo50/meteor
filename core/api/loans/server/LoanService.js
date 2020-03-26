@@ -56,8 +56,11 @@ class LoanService extends CollectionService {
     super(Loans);
   }
 
-  insert = ({ loan = {}, userId }) => {
-    const name = getNewName({ collection: LOANS_COLLECTION });
+  insert = ({ loan = {}, userId, insuranceRequestId }) => {
+    const name = getNewName({
+      collection: LOANS_COLLECTION,
+      insuranceRequestId,
+    });
     const loanId = super.insert({ ...loan, name, userId });
 
     if (userId) {

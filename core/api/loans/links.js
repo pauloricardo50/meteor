@@ -112,6 +112,7 @@ LinkInitializer.directInit(() => {
       collection: InsuranceRequests,
       type: 'many',
       metadata: true,
+      unique: true,
     },
   });
 });
