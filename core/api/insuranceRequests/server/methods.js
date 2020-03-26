@@ -7,6 +7,7 @@ import {
   insuranceRequestSetAssignees,
   insuranceRequestUpdateStatus,
   insuranceRequestInsertBorrower,
+  insuranceRequestLinkBorrower,
 } from '../methodDefinitions';
 import InsuranceRequestService from './InsuranceRequestService';
 import Security from '../../security/Security';
@@ -49,4 +50,9 @@ insuranceRequestUpdateStatus.setHandler(({ userId }, params) => {
 insuranceRequestInsertBorrower.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return InsuranceRequestService.addBorrower(params);
+});
+
+insuranceRequestLinkBorrower.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  return InsuranceRequestService.linkBorrower(params);
 });

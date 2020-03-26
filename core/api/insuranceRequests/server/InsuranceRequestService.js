@@ -314,6 +314,15 @@ class InsuranceRequestService extends CollectionService {
       BorrowerService.insert({ userId, insuranceRequestId }),
     );
   }
+
+  linkBorrower({ insuranceRequestId, borrowerId }) {
+    this.addLink({
+      id: insuranceRequestId,
+      linkName: 'borrowers',
+      linkId: borrowerId,
+    });
+    return Promise.resolve();
+  }
 }
 
 export default new InsuranceRequestService({});
