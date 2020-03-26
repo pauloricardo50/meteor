@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import Icon from 'core/components/Icon';
 import { revenueUpdate } from 'core/api/revenues/methodDefinitions';
 import IconButton from 'core/components/IconButton';
 

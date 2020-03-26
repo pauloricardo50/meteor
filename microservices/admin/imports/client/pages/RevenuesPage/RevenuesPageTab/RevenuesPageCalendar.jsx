@@ -18,6 +18,7 @@ import employees from 'core/arrays/epotekEmployees';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 import { revenuesFilter } from './revenuePageHelpers';
 import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
+import InsuranceBillingFilter from './InsuranceBillingFilter';
 
 const getMonths = ({ startDate, endDate }) => {
   const clonedStartDate = moment(startDate);
@@ -85,7 +86,15 @@ const RevenuesPageCalendar = props => {
 
   const months = getMonths(revenueDateRange);
 
-  const dateQuery = { $gte: months[0], $lte: months[months.length - 1] };
+  const dateQuery = {
+    $gte: months[0],
+    $lte:
+      months.length === 1
+        ? moment(months[0])
+            .endOf('month')
+            .toDate()
+        : months[months.length - 1],
+  };
   const $or = [
     { status: REVENUE_STATUS.EXPECTED, expectedAt: dateQuery },
     { status: REVENUE_STATUS.CLOSED, paidAt: dateQuery },
@@ -155,12 +164,12 @@ const RevenuesPageCalendar = props => {
     loading: sourceOrgLoading,
   } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
-    params: { $filters: { revenuesCount: { $gte: 1 } }, name: 1 },
+    params: { $filters: { revenuesCount: { $gte: 1 } }, name: 1, features: 1 },
   });
 
   return (
     <div>
-      <div className="flex mb-16">
+      <div className="flex mb-16 center-align">
         <div className="mr-8">
           <DateRangePicker
             range={revenueDateRange}
@@ -226,6 +235,15 @@ const RevenuesPageCalendar = props => {
             label={<T id="Forms.sourceOrganisation" />}
             className="mr-8"
             style={{ minWidth: 240 }}
+          />
+        )}
+        {!sourceOrgLoading && (
+          <InsuranceBillingFilter
+            setRevenueDateRange={setRevenueDateRange}
+            sourceOrganisations={sourceOrganisations}
+            sourceOrganisationId={sourceOrganisationId}
+            setSourceOrganisationId={setSourceOrganisationId}
+            setType={setType}
           />
         )}
       </div>

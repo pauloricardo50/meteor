@@ -86,9 +86,7 @@ class RevenueService extends CollectionService {
         status: REVENUE_STATUS.EXPECTED,
         type: REVENUE_TYPES.INSURANCE,
       },
-      insurance: {
-        estimatedRevenue: 1,
-      },
+      insurance: { _id: 1 },
     });
 
     if (revenues?.length) {
@@ -99,7 +97,9 @@ class RevenueService extends CollectionService {
           return;
         }
 
-        const { estimatedRevenue } = insurance;
+        const { estimatedRevenue } = InsuranceService.get(insurance._id, {
+          estimatedRevenue: 1,
+        });
 
         this._update({ id: revenueId, object: { amount: estimatedRevenue } });
       });

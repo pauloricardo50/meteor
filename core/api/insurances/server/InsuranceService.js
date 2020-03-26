@@ -56,12 +56,16 @@ class InsuranceService extends CollectionService {
         'organisationLink._id': organisationId,
         status: INSURANCE_STATUS.ACTIVE,
       },
-      estimatedRevenue: 1,
+      insuranceProduct: { revaluationFactor: 1 },
+      duration: 1,
+      premium: 1,
     });
 
     return activeInsurances.reduce(
-      (totalProduction, { estimatedRevenue }) =>
-        totalProduction + estimatedRevenue,
+      (
+        totalProduction,
+        { insuranceProduct: { revaluationFactor }, duration, premium },
+      ) => totalProduction + premium * duration * revaluationFactor,
       0,
     );
   };
