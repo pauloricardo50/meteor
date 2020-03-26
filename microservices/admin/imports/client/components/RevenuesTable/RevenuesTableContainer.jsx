@@ -34,7 +34,7 @@ const formatDateTime = (date, status) => {
 };
 
 const columnOptions = [
-  { id: 'loan' },
+  { id: 'loan', label: 'Dossier' },
   { id: 'revenueStatus' },
   { id: 'date' },
   { id: 'type' },
@@ -42,7 +42,7 @@ const columnOptions = [
   { id: 'sourceOrganisationLink' },
   { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
   { id: 'actions' },
-].map(i => ({ ...i, label: <T id={`Forms.${i.id}`} /> }));
+].map(i => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
 
 export const makeMapRevenue = ({
   setOpenModifier,

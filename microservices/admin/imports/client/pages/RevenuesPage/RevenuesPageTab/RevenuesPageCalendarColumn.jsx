@@ -7,6 +7,7 @@ import {
   REVENUE_STATUS,
   LOANS_COLLECTION,
   ORGANISATIONS_COLLECTION,
+  INSURANCES_COLLECTION,
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Icon from 'core/components/Icon';
@@ -74,7 +75,15 @@ const RevenuesPageCalendarColumn = ({
       </div>
 
       {revenues.map(revenue => {
-        const { _id, amount, loan, description, sourceOrganisation } = revenue;
+        const {
+          _id,
+          amount,
+          loan,
+          description,
+          sourceOrganisation,
+          insurance,
+        } = revenue;
+
         return (
           <div
             className="revenues-calendar-item card1 card-top card-hover"
@@ -86,7 +95,11 @@ const RevenuesPageCalendarColumn = ({
           >
             <div className="flex sb">
               <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+                relatedDoc={
+                  loan
+                    ? { ...loan, collection: LOANS_COLLECTION }
+                    : { ...insurance, collection: INSURANCES_COLLECTION }
+                }
               />
               <div className="flex center-align">
                 <span className="mr-8">{toMoney(amount)}</span>

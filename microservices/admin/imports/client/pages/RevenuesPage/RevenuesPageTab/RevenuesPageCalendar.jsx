@@ -123,6 +123,11 @@ const RevenuesPageCalendar = props => {
         sourceOrganisation: { name: 1 },
         status: 1,
         type: 1,
+        insurance: {
+          name: 1,
+          borrower: { name: 1 },
+          insuranceRequest: { user: { name: 1 } },
+        },
       },
     },
     [
