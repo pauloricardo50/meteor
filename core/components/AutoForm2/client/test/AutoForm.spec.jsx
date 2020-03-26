@@ -275,9 +275,7 @@ describe('AutoForm', () => {
   describe('placeholders', () => {
     it('does not set a placeholder if placeholder is false on the autoform', () => {
       props = {
-        schema: new SimpleSchema({
-          myText: { type: String },
-        }),
+        schema: new SimpleSchema({ myText: { type: String } }),
         placeholder: false,
       };
 
@@ -326,9 +324,7 @@ describe('AutoForm', () => {
 
     it('sets a default placeholder', () => {
       props = {
-        schema: new SimpleSchema({
-          myText: { type: String },
-        }),
+        schema: new SimpleSchema({ myText: { type: String } }),
         placeholder: true,
       };
 
@@ -359,14 +355,12 @@ describe('AutoForm', () => {
           component()
             .find(CustomSelectField)
             .prop('placeholder'),
-        ).to.equal('general.pick');
+        ).to.equal('Choisissez...');
       });
 
       it('does not set a placeholder for a list item field', () => {
         props = {
-          schema: new SimpleSchema({
-            myText: [String],
-          }),
+          schema: new SimpleSchema({ myText: [String] }),
           placeholder: false,
         };
 

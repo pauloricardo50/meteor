@@ -29,11 +29,11 @@ LoanService.migrateCache(
 
 LoanService.migrateCache(
   { cacheField: 'lendersCache' },
-  {
-    // $nor: [
-    //   { lendersCache: { $exists: false } },
-    //   { lendersCache: { $size: 0 } },
-    // ],
-    // 'lendersCache.offersCache': { $exists: false },
-  },
+  // {
+  // $nor: [
+  //   { lendersCache: { $exists: false } },
+  //   { lendersCache: { $size: 0 } },
+  // ],
+  // 'lendersCache.offersCache': { $exists: false },
+  // },
 );

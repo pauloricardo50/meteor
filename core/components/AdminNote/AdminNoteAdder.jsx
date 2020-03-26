@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { adminNotesSchema } from 'core/api/loans/schemas/otherSchemas';
@@ -53,6 +53,7 @@ const AdminNoteSetter = ({
   referredByUser,
 }) => {
   const isInsert = !adminNote;
+  const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
   const { loading, contacts } = useLoanContacts(loanId);
   const schema = useMemo(
     () =>
@@ -83,7 +84,7 @@ const AdminNoteSetter = ({
           })),
         })
       }
-      model={adminNote}
+      model={isInsert ? { date } : adminNote}
       renderAdditionalActions={({
         closeDialog,
         setDisableActions,
@@ -109,6 +110,7 @@ const AdminNoteSetter = ({
           </Button>
         );
       }}
+      onOpen={() => setDate(new Date())}
     />
   );
 };

@@ -4,7 +4,12 @@ import { EMPTY_STRUCTURE } from '../../api/loans/loanConstants';
 
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
-    selectProperty({ loan, structureId } = {}) {
+    selectProperty({ loan, structureId, property } = {}) {
+      // In case you need to override this function
+      if (property) {
+        return property;
+      }
+
       let propertyId = loan.structure && loan.structure.propertyId;
       let promotionOptionId =
         loan.structure && loan.structure.promotionOptionId;
@@ -92,8 +97,8 @@ export const withSelector = (SuperClass = class {}) =>
       return this.makeSelectStructureKey(key)({ loan, structureId });
     }
 
-    selectPropertyKey({ loan, structureId, key }) {
-      return this.makeSelectPropertyKey(key)({ loan, structureId });
+    selectPropertyKey({ loan, structureId, key, property }) {
+      return this.makeSelectPropertyKey(key)({ loan, structureId, property });
     }
 
     makeSelectStructureKey(key) {

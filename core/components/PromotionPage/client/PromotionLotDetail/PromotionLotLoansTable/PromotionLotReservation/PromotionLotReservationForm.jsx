@@ -43,7 +43,8 @@ const PromotionLotReservationForm = ({
   buttonProps,
 }) => {
   const [schema] = useState(getSchema(agreementDuration));
-  const [today] = useState(new Date());
+  const [today, setToday] = useState(new Date());
+
   return (
     <AutoFormDialog
       model={{ startDate: today }}
@@ -59,6 +60,7 @@ const PromotionLotReservationForm = ({
         })
       }
       title="Réserver"
+      onOpen={() => setToday(new Date())}
     />
   );
 };
