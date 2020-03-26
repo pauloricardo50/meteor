@@ -109,7 +109,7 @@ export class SlackService {
       },
       {
         title: 'Stack',
-        text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
+        text: error && `\`\`\`${error?.stack?.toString()}\`\`\``,
         color: colors.error,
       },
       {
