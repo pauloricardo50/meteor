@@ -10,10 +10,7 @@ const OverviewTab = props => {
 
   return (
     <div className="overview-tab">
-      <div
-        className="admin-section card1"
-        style={{ width: '30%', alignSelf: 'center' }}
-      >
+      <div className="admin-section card1" style={{ alignSelf: 'center' }}>
         <div className="flex center-align p-16 sb">
           <InsuranceRequestLinkedLoan insuranceRequest={insuranceRequest} />
           <AssigneesManager
