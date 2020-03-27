@@ -1,12 +1,16 @@
 import React from 'react';
 import { withProps } from 'recompose';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
-import { USERS_COLLECTION } from 'core/api/constants';
+import {
+  USERS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
+} from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
-  { id: 'No.' },
+  { id: 'Dossier' },
   { id: 'Compte' },
   { id: 'Statut' },
   { id: 'Créé le' },
@@ -23,11 +27,22 @@ const getRows = ({ insuranceRequests = [], history }) =>
       createdAt,
       updatedAt,
     } = insuranceRequest;
+    console.log('history:', history);
 
     return {
       id: insuranceRequestId,
       columns: [
-        name,
+        {
+          raw: name,
+          label: (
+            <CollectionIconLink
+              relatedDoc={{
+                ...insuranceRequest,
+                collection: INSURANCE_REQUESTS_COLLECTION,
+              }}
+            />
+          ),
+        },
         {
           raw: user && user.name,
           label: user ? (
@@ -52,12 +67,15 @@ const getRows = ({ insuranceRequests = [], history }) =>
           label: updatedAt ? moment(updatedAt).fromNow() : '-',
         },
       ],
-      // handleClick: () =>
-      //   history.push(`/insuranceRequests/${insuranceRequestId}`),
+      handleClick: () =>
+        history.push(`/insuranceRequests/${insuranceRequestId}`),
     };
   });
 
-export default withProps(props => ({
-  columnOptions,
-  rows: getRows(props),
-}));
+export default withProps(props => {
+  const history = useHistory();
+  return {
+    columnOptions,
+    rows: getRows({ ...props, history }),
+  };
+});

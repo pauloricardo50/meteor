@@ -182,7 +182,11 @@ export default compose(
         type: 1,
         organisationLinks: 1,
         organisations: { name: 1 },
-        insurance: { name: 1, insuranceRequest: { _id: 1 } },
+        insurance: {
+          name: 1,
+          insuranceRequest: { _id: 1 },
+          borrower: { name: 1 },
+        },
         insuranceRequest: { name: 1 },
       },
     }),

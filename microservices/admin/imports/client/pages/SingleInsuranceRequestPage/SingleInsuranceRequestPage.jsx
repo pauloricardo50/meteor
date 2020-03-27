@@ -8,7 +8,7 @@ import SingleInsuranceRequestPageContacts from './SingleInsuranceRequestPageCont
 import InsuranceRequestTasksTable from './InsuranceRequestTasksTable/InsuranceRequestTasksTable';
 
 const SingleInsuranceRequestPage = props => {
-  const { insuranceRequest } = props;
+  const { insuranceRequest, enableTabRouting } = props;
   return (
     <section className="single-insurance-request-page">
       <Helmet>
@@ -26,7 +26,12 @@ const SingleInsuranceRequestPage = props => {
           insuranceRequestId={insuranceRequest._id}
         />
       </div>
-      <InsuranceRequestTabs {...props} />
+      <InsuranceRequestTabs
+        {...props}
+        enableTabRouting={
+          enableTabRouting !== undefined ? enableTabRouting : true
+        }
+      />
     </section>
   );
 };
