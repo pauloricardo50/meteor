@@ -6,11 +6,16 @@ const InsuranceRequestsSummaryList = ({
   insuranceRequests = [],
   user,
   loan,
+  withKeepAssigneesCheckbox,
 }) => (
   <div className="mt-32">
     <h3>
       Dossiers assurance
-      <InsuranceRequestAdder user={user} loan={loan} />
+      <InsuranceRequestAdder
+        user={user}
+        loan={loan}
+        withKeepAssigneesCheckbox={withKeepAssigneesCheckbox}
+      />
     </h3>
     {insuranceRequests.map(insuranceRequest => (
       <InsuranceRequestSummary

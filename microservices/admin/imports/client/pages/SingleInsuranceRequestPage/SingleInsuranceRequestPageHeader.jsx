@@ -6,6 +6,7 @@ import {
 } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import { insuranceRequestUpdateStatus } from 'core/api/methods/index';
+import SingleInsuranceRequestCustomName from './SingleInsuranceRequestCustomName';
 
 const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
   const {
@@ -36,6 +37,7 @@ const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
             />
           </span>
         </div>
+        <SingleInsuranceRequestCustomName insuranceRequest={insuranceRequest} />
       </div>
     </div>
   );

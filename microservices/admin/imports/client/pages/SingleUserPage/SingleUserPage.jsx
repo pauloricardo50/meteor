@@ -68,6 +68,7 @@ const SingleUserPage = ({
         <InsuranceRequestsSummaryList
           insuranceRequests={insuranceRequests}
           user={user}
+          withKeepAssigneesCheckbox={false}
         />
       )}
 

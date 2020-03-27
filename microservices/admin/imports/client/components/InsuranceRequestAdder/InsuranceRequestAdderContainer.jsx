@@ -10,12 +10,13 @@ import { adminUsers } from 'core/api/users/queries';
 
 import { assigneesSchema } from '../AssigneesManager/AssigneesManagerContainer';
 
-const getSchema = ({ availableBorrowers = [] }) =>
+const getSchema = ({ availableBorrowers = [], withKeepAssigneesCheckbox }) =>
   new SimpleSchema({
     keepAssignees: {
       type: Boolean,
-      defaultValue: true,
+      defaultValue: false,
       uniforms: { label: 'Garder les mêmes conseillers' },
+      condition: () => withKeepAssigneesCheckbox,
     },
     assigneeLinks: {
       type: Array,
@@ -53,6 +54,7 @@ const getSchema = ({ availableBorrowers = [] }) =>
     },
     note: {
       type: String,
+      optional: true,
       uniforms: {
         placeholder: 'Expliquer la raison de la nouvelle répartition',
       },
@@ -88,45 +90,51 @@ const getSchema = ({ availableBorrowers = [] }) =>
       : {}),
   });
 
-export default withProps(({ user = {}, loan = {} }) => {
-  const {
-    _id: userId,
-    assignedEmployee = {},
-    borrowers: userBorrowers = [],
-  } = user;
+export default withProps(
+  ({ user = {}, loan = {}, withKeepAssigneesCheckbox = true }) => {
+    console.log('withKeepAssigneesCheckbox:', withKeepAssigneesCheckbox);
+    const {
+      _id: userId,
+      assignedEmployee = {},
+      borrowers: userBorrowers = [],
+    } = user;
 
-  const {
-    _id: loanId,
-    assigneeLinks = [],
-    borrowers: loanBorrowers = [],
-  } = loan;
+    const {
+      _id: loanId,
+      assigneeLinks = [],
+      borrowers: loanBorrowers = [],
+    } = loan;
 
-  const availableBorrowers = uniqBy(
-    [...userBorrowers, ...loanBorrowers],
-    '_id',
-  );
+    const availableBorrowers = uniqBy(
+      [...userBorrowers, ...loanBorrowers],
+      '_id',
+    );
 
-  return {
-    schema: getSchema({ availableBorrowers }),
-    model: {
-      assigneeLinks: assigneeLinks.length
-        ? assigneeLinks
-        : [{ _id: assignedEmployee._id, percent: 100, isMain: true }],
-      keepAssignees: !!assigneeLinks.length,
-      note: assigneeLinks.length ? '' : 'Répartition initiale',
-    },
-    onSubmit: ({
-      keepAssignees,
-      assigneeLinks: assignees,
-      note,
-      updateUserAssignee,
-      borrowerIds = [],
-    }) =>
-      insuranceRequestInsert.run({
-        loanId,
-        userId,
-        ...(keepAssignees ? {} : { assignees, note, updateUserAssignee }),
-        borrowerIds,
+    return {
+      schema: getSchema({
+        availableBorrowers,
+        withKeepAssigneesCheckbox,
       }),
-  };
-});
+      model: {
+        assigneeLinks: assigneeLinks.length
+          ? assigneeLinks
+          : [{ _id: assignedEmployee._id, percent: 100, isMain: true }],
+        keepAssignees: !!assigneeLinks.length,
+        note: assigneeLinks.length ? '' : 'Répartition initiale',
+      },
+      onSubmit: ({
+        keepAssignees,
+        assigneeLinks: assignees,
+        note,
+        updateUserAssignee,
+        borrowerIds = [],
+      }) =>
+        insuranceRequestInsert.run({
+          loanId,
+          userId,
+          ...(keepAssignees ? {} : { assignees, note, updateUserAssignee }),
+          borrowerIds,
+        }),
+    };
+  },
+);

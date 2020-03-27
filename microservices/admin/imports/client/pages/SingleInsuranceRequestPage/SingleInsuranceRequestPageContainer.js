@@ -1,4 +1,4 @@
-import { compose, withProps } from 'recompose';
+import { compose } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
@@ -11,6 +11,7 @@ export default compose(
     params: ({ insuranceRequestId }) => ({
       $filters: { _id: insuranceRequestId },
       name: 1,
+      customName: 1,
       user: { name: 1 },
       status: 1,
       assigneeLinks: 1,
