@@ -10,6 +10,7 @@ const CommissionRatesForm = ({ commissionRates, onSubmit }) => (
     model={commissionRates}
     onSubmit={onSubmit}
     buttonProps={{ label: 'Modifier', raised: true, primary: true }}
+    title="Structure de commissionnement"
   />
 );
 
