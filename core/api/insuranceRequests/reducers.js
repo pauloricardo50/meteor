@@ -1,6 +1,7 @@
 import InsuranceRequests from '.';
 import mainAssigneeReducer from '../reducers/mainAssigneeReducer';
 import proNotesReducer from '../reducers/proNotesReducer';
+import { nextDueTaskReducer } from '../../utils/insuranceRequestFunctions';
 
 InsuranceRequests.addReducers({
   mainAssignee: mainAssigneeReducer,
@@ -10,4 +11,8 @@ InsuranceRequests.addReducers({
       assigneeLinks.find(({ isMain }) => isMain),
   },
   proNotes: proNotesReducer,
+  nextDueTask: {
+    body: { tasksCache: 1 },
+    reduce: nextDueTaskReducer,
+  },
 });

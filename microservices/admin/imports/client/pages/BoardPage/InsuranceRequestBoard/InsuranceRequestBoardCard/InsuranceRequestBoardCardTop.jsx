@@ -4,6 +4,7 @@ import StatusLabel from 'core/components/StatusLabel';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import { insuranceRequestUpdateStatus } from 'core/api/methods';
 
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import InsuranceRequestBoardCardAssignee from './InsuranceRequestBoardCardAssignee';
 
 const InsuranceRequestBoardCardTop = props => {
@@ -38,14 +39,13 @@ const InsuranceRequestBoardCardTop = props => {
           assigneeLinks={assigneeLinks}
         />
 
-        <h4 className="title title-placeholder">{insuranceRequestName}</h4>
+        <CollectionIconLink
+          relatedDoc={{
+            ...insuranceRequest,
+            collection: INSURANCE_REQUESTS_COLLECTION,
+          }}
+        />
       </div>
-
-      {/* <div className="right">
-            {(renderComplex || hasRenderedComplexOnce) && (
-              <LoanBoardCardActions loanId={loanId} />
-            )}
-          </div> */}
     </>
   );
 };

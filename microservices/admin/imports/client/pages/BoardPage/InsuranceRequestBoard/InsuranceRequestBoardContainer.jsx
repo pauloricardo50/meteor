@@ -12,6 +12,7 @@ import { groupInsuranceRequests } from './insuranceRequestBoardHelpers';
 
 const defaultBody = {
   name: 1,
+  customName: 1,
   status: 1,
   assigneeLinks: 1,
   insurances: {
@@ -19,9 +20,14 @@ const defaultBody = {
     status: 1,
     organisation: { logo: 1 },
     insuranceProduct: { name: 1 },
+    insuranceRequest: { name: 1, user: { name: 1 } },
+    borrower: { name: 1 },
   },
   mainAssigneeLink: 1,
   user: { name: 1 },
+  nextDueTask: 1,
+  tasksCache: 1,
+  adminNotes: 1,
 };
 
 const getQueryFilters = ({ assignedEmployeeId, status }) => ({
