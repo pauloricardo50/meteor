@@ -5,7 +5,8 @@ import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
 import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWave';
-import { faFileContract } from '@fortawesome/pro-light-svg-icons/faFileContract';
+import { faUserShield } from '@fortawesome/pro-light-svg-icons/faUserShield';
+import { faShieldCheck } from '@fortawesome/pro-light-svg-icons/faShieldCheck';
 
 import {
   BORROWERS_COLLECTION,
@@ -46,9 +47,9 @@ export default {
     <FontAwesomeIcon icon={faMoneyBillWave} className="collection-icon" />
   ),
   [INSURANCE_REQUESTS_COLLECTION]: (
-    <FontAwesomeIcon icon={faFileContract} className="collection-icon" />
+    <FontAwesomeIcon icon={faShieldCheck} className="collection-icon" />
   ),
   [INSURANCES_COLLECTION]: (
-    <FontAwesomeIcon icon={faFileContract} className="collection-icon" />
+    <FontAwesomeIcon icon={faUserShield} className="collection-icon" />
   ),
 };

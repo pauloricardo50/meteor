@@ -1,38 +1,7 @@
 import React from 'react';
-import T, { Money, Percent } from 'core/components/Translation';
+import { Money, Percent } from 'core/components/Translation';
 import { INSURANCE_PREMIUM_FREQUENCY } from 'core/api/constants';
-
-const getFrequency = premiumFrequency => {
-  switch (premiumFrequency) {
-    case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
-      return ' / mois';
-    case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
-      return ' / trimestre';
-    case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
-      return ' / semestre';
-    case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
-      return ' / année';
-    case INSURANCE_PREMIUM_FREQUENCY.SINGLE:
-      return ' unique';
-    default:
-      return '';
-  }
-};
-
-const getDuration = ({ premiumFrequency, duration }) => {
-  switch (premiumFrequency) {
-    case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
-      return `${duration} mois`;
-    case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
-      return `${duration} trimestres`;
-    case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
-      return `${duration} semestres`;
-    case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
-      return `${duration} ans`;
-    default:
-      return '';
-  }
-};
+import { getFrequency, getDuration } from 'core/api/insurances/helpers';
 
 const InsuranceEstimatedRevenueInfos = props => {
   const {
@@ -86,32 +55,6 @@ const InsuranceEstimatedRevenueInfos = props => {
       </tbody>
     </table>
   );
-
-  //   return (
-  //     <div className="grid-col">
-  //       <div className="flex-col">
-  //         <b>Prime</b>
-  //         <span>
-  //           <Money value={premium} />
-  //           {getFrequency(premiumFrequency)}
-  //         </span>
-  //       </div>
-  //       {premiumFrequency !== INSURANCE_PREMIUM_FREQUENCY.SINGLE && (
-  //         <div className="flex-col">
-  //           <b>Durée</b>
-  //           <span>{getDuration({ premiumFrequency, duration })}</span>
-  //         </div>
-  //       )}
-  //       <div className="flex-col">
-  //         <b>Facteur de revalorisation</b>
-  //         <span>{revaluationFactor}</span>
-  //       </div>
-  //       <div className="flex-col">
-  //         <b>Taux de commissionnement</b>
-  //         <Percent value={productionRate} />
-  //       </div>
-  //     </div>
-  //   );
 };
 
 export default InsuranceEstimatedRevenueInfos;

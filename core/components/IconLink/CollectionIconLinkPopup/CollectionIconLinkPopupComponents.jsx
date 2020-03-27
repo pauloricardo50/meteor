@@ -28,6 +28,7 @@ import T, { Money, IntlDate } from '../../Translation';
 import CollectionIconLink from '../CollectionIconLink';
 import TooltipArray from '../../TooltipArray';
 import FullDate from '../../dateComponents/FullDate';
+import { getFrequency, getDuration } from '../../../api/insurances/helpers';
 
 const Information = ({
   label,
@@ -149,8 +150,20 @@ export const titles = {
       </span>
     </span>
   ),
-  [INSURANCES_COLLECTION]: ({ name }) => <span>{name}</span>,
-  [INSURANCE_REQUESTS_COLLECTION]: ({ name }) => <span>{name}</span>,
+  [INSURANCES_COLLECTION]: ({ name, status }) => (
+    <span>
+      {name}
+      &nbsp;
+      <StatusLabel status={status} collection={INSURANCES_COLLECTION} />
+    </span>
+  ),
+  [INSURANCE_REQUESTS_COLLECTION]: ({ name, status }) => (
+    <span>
+      {name}
+      &nbsp;
+      <StatusLabel status={status} collection={INSURANCE_REQUESTS_COLLECTION} />
+    </span>
+  ),
 };
 
 export const components = {
@@ -609,6 +622,95 @@ export const components = {
       />
     </div>
   ),
-  [INSURANCE_REQUESTS_COLLECTION]: ({ name }) => <div>{name}</div>,
-  [INSURANCES_COLLECTION]: ({ name }) => <div>{name}</div>,
+  [INSURANCE_REQUESTS_COLLECTION]: ({
+    children,
+    borrowers = [],
+    user,
+    mainAssignee,
+  }) => (
+    <div>
+      {children}
+
+      <Information
+        label="Assurés"
+        value={<LinkList docs={borrowers} collection={BORROWERS_COLLECTION} />}
+        isEmpty={borrowers.length === 0}
+      />
+
+      <Information
+        className="flex center-align"
+        label="Compte"
+        value={
+          <CollectionIconLink
+            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+          />
+        }
+        isEmpty={!user || !user._id}
+        emptyText="Sans compte"
+      />
+
+      <Information
+        label="Conseiller"
+        value={
+          <CollectionIconLink
+            relatedDoc={{
+              ...mainAssignee,
+              collection: USERS_COLLECTION,
+            }}
+          />
+        }
+        isEmpty={!mainAssignee}
+      />
+    </div>
+  ),
+  [INSURANCES_COLLECTION]: ({
+    borrower,
+    insuranceProduct,
+    organisation,
+    children,
+    premium,
+    premiumFrequency,
+    duration,
+  }) => {
+    const { name: productName } = insuranceProduct;
+    return (
+      <div>
+        {children}
+
+        <Information
+          label="Assuré"
+          value={
+            <CollectionIconLink
+              relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
+            />
+          }
+        />
+        <Information
+          label="Assureur"
+          value={
+            <CollectionIconLink
+              relatedDoc={{
+                ...organisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+            />
+          }
+        />
+        <Information label="Produit" value={productName} />
+        <Information
+          label="Prime"
+          value={
+            <span>
+              <Money value={premium} />
+              {getFrequency(premiumFrequency)}
+            </span>
+          }
+        />
+        <Information
+          label="Durée"
+          value={getDuration({ premiumFrequency, duration })}
+        />
+      </div>
+    );
+  },
 };
