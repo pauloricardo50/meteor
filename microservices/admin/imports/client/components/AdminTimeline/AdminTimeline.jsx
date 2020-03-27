@@ -30,6 +30,7 @@ const AdminTimeline = ({
   ActivityTitle,
   CustomActivityAdder,
   collection,
+  activitiesFilter,
 }) => {
   useEffect(() => {
     const el = document.getElementsByClassName('admin-timeline-timeline')[0];
@@ -46,7 +47,11 @@ const AdminTimeline = ({
         <h2>Activité</h2>
         {withActivityAdder &&
           (CustomActivityAdder || (
-            <AdminActivityAdder docId={docId} collection={collection} />
+            <AdminActivityAdder
+              docId={docId}
+              collection={collection}
+              activitiesFilter={activitiesFilter}
+            />
           ))}
         <Select
           value={type.$in}

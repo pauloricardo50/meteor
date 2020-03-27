@@ -19,22 +19,23 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 
-export const ActivitySchema = new SimpleSchema({
-  title: String,
-  description: { type: String, optional: true },
-  date: {
-    type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-    defaultValue: new Date(),
-  },
-  type: {
-    type: String,
-    allowedValues: Object.values(ACTIVITY_TYPES),
-    uniforms: { placeholder: null },
-  },
-  shouldNotify: { type: Boolean, defaultValue: false },
-  isImportant: { type: Boolean, defaultValue: false },
-});
+export const getActivitySchema = (activitiesFilter = () => true) =>
+  new SimpleSchema({
+    title: String,
+    description: { type: String, optional: true },
+    date: {
+      type: Date,
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+      defaultValue: new Date(),
+    },
+    type: {
+      type: String,
+      allowedValues: Object.values(ACTIVITY_TYPES).filter(activitiesFilter),
+      uniforms: { placeholder: null },
+    },
+    shouldNotify: { type: Boolean, defaultValue: false },
+    isImportant: { type: Boolean, defaultValue: false },
+  });
 
 export const activityFormLayout = [
   { className: 'grid-col', fields: ['title', 'type'] },
@@ -51,10 +52,11 @@ export const AdminActivityForm = ({
   buttonProps = {},
   schema,
   layout,
+  activitiesFilter,
   ...rest
 }) => (
   <AutoFormDialog
-    schema={schema || ActivitySchema}
+    schema={schema || getActivitySchema(activitiesFilter)}
     model={model}
     onSubmit={onSubmit}
     layout={layout || activityFormLayout}

@@ -1,4 +1,6 @@
 {
+  "Forms.type.MEETING": "Rendez-vous",
+  "Forms.type.PLANNING": "Planification faite",
   "Forms.premiumFrequency": "Paiement de la prime",
   "Forms.premiumFrequency.MONTHLY": "Mensuel",
   "Forms.premiumFrequency.QUARTERLY": "Trimestriel",

@@ -10,6 +10,8 @@ export const ACTIVITY_TYPES = {
   MAIL: 'MAIL',
   PHONE: 'PHONE',
   OTHER: 'OTHER',
+  MEETING: 'MEETING',
+  PLANNING: 'PLANNING',
 };
 
 export const ACTIVITY_EVENT_METADATA = {

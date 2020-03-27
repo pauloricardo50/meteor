@@ -4,7 +4,7 @@ import { withProps } from 'recompose';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { INSURANCES_COLLECTION } from 'core/api/constants';
 import {
-  ActivitySchema,
+  getActivitySchema,
   AdminActivityForm,
 } from '../../../components/AdminTimeline/AdminActivityAdder';
 
@@ -22,7 +22,7 @@ const getSchema = (availableDocuments = []) =>
         checkboxes: true,
       },
     },
-  }).extend(ActivitySchema);
+  }).extend(getActivitySchema());
 
 export default withProps(({ availableDocuments = [] }) => ({
   schema: getSchema(availableDocuments),

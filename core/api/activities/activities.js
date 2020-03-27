@@ -86,6 +86,8 @@ const ActivityEmailSchema = ActivitySchema.extend({
 const ActivityPhoneSchema = ActivitySchema;
 const ActivityOtherSchema = ActivitySchema;
 const ActivityMailSchema = ActivitySchema;
+const ActivityMeetingSchema = ActivitySchema;
+const ActivityPlanningSchema = ActivitySchema;
 
 Activities.attachSchema(ActivityEventSchema, {
   selector: { type: ACTIVITY_TYPES.EVENT },
@@ -101,6 +103,12 @@ Activities.attachSchema(ActivityOtherSchema, {
 });
 Activities.attachSchema(ActivityMailSchema, {
   selector: { type: ACTIVITY_TYPES.MAIL },
+});
+Activities.attachSchema(ActivityMeetingSchema, {
+  selector: { type: ACTIVITY_TYPES.MEETING },
+});
+Activities.attachSchema(ActivityPlanningSchema, {
+  selector: { type: ACTIVITY_TYPES.PLANNING },
 });
 
 export default Activities;

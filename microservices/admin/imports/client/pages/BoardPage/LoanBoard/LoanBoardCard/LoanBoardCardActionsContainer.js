@@ -1,10 +1,10 @@
 import { compose, withProps, withState } from 'recompose';
 
 import { taskInsert } from 'core/api/methods';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION, ACTIVITY_TYPES } from 'core/api/constants';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { schema } from '../../../../components/TasksTable/TaskModifier';
-import { ActivitySchema } from '../../../../components/AdminTimeline/AdminActivityAdder';
+import { getActivitySchema } from '../../../../components/AdminTimeline/AdminActivityAdder';
 
 const taskSchema = schema.omit('assigneeLink', 'status');
 
@@ -25,6 +25,8 @@ export default compose(
         })
         .then(() => setOpenActivity(false)),
     taskSchema,
-    activitySchema: ActivitySchema,
+    activitySchema: getActivitySchema(
+      type => ![ACTIVITY_TYPES.MEETING, ACTIVITY_TYPES.PLANNING].includes(type),
+    ),
   })),
 );
