@@ -39,12 +39,14 @@ const insuranceRequestBoardContent = ({
   dispatch,
   devAndAdmins,
   refetchInsuranceRequests,
+  organisations,
 }) => {
-  const { assignedEmployeeId, groupBy, status } = options;
+  const { assignedEmployeeId, groupBy, status, organisationId } = options;
   const assignedEmployeeValue = assignedEmployeeId
     ? assignedEmployeeId.$in
     : [null];
   const statusValue = status ? status.$in : [null];
+  const organisationIdValue = organisationId ? organisationId.$in : [null];
   const groupByOptions = [
     { id: GROUP_BY.STATUS, label: 'Par statut' },
     { id: GROUP_BY.ADMIN, label: 'Par conseiller' },
@@ -64,6 +66,11 @@ const insuranceRequestBoardContent = ({
       id: s,
       label: <T id={`Forms.status.${s}`} />,
     })),
+  ];
+
+  const organisationOptions = [
+    { id: null, label: 'Tous' },
+    ...organisations.map(({ _id, name }) => ({ id: _id, label: name })),
   ];
 
   return (
@@ -86,6 +93,15 @@ const insuranceRequestBoardContent = ({
           value={statusValue}
           options={statusOptions}
           onChange={next => makeOnChange('status', dispatch)(statusValue, next)}
+        />
+
+        <LoanBoardOptionsCheckboxes
+          label="Assureurs"
+          value={organisationIdValue}
+          options={organisationOptions}
+          onChange={next =>
+            makeOnChange('organisationId', dispatch)(organisationIdValue, next)
+          }
         />
 
         <div>

@@ -30,7 +30,7 @@ const defaultBody = {
   adminNotes: 1,
 };
 
-const getQueryFilters = ({ assignedEmployeeId, status }) => ({
+const getQueryFilters = ({ assignedEmployeeId, status, organisationId }) => ({
   assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
   status: {
     $nin: [
@@ -39,6 +39,13 @@ const getQueryFilters = ({ assignedEmployeeId, status }) => ({
     ],
     ...status,
   },
+  ...(organisationId
+    ? {
+        insurancesCache: {
+          $elemMatch: { 'organisationLink._id': organisationId },
+        },
+      }
+    : {}),
 });
 
 export default compose(
@@ -67,17 +74,13 @@ export default compose(
   })),
   withSmartQuery({
     query: adminOrganisations,
-    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.LENDER },
-    dataName: 'lenders',
+    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.INSURANCE },
+    dataName: 'organisations',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
-  mapProps(({ insuranceRequests, ...rest }) => {
-    console.log('insuranceRequests:', insuranceRequests);
-
-    return {
-      data: groupInsuranceRequests({ insuranceRequests, ...rest }),
-      ...rest,
-    };
-  }),
+  mapProps(({ insuranceRequests, ...rest }) => ({
+    data: groupInsuranceRequests({ insuranceRequests, ...rest }),
+    ...rest,
+  })),
 );

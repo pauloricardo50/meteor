@@ -67,6 +67,8 @@ const InsuranceRequestSchema = new SimpleSchema({
   'insuranceLinks.$': Object,
   'insuranceLinks.$._id': String,
   loanCache: cacheField,
+  insurancesCache: { type: Array, optional: true },
+  'insurancesCache.$': cacheField,
 });
 
 export default InsuranceRequestSchema;

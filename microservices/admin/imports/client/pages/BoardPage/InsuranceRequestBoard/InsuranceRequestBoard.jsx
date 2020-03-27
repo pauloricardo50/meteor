@@ -17,6 +17,7 @@ const InsuranceRequestBoard = props => {
     refetchInsuranceRequests,
     data,
     currentUser,
+    organisations,
   } = props;
 
   return (
@@ -28,6 +29,7 @@ const InsuranceRequestBoard = props => {
           admins={admins}
           devAndAdmins={devAndAdmins}
           refetchInsuranceRequests={refetchInsuranceRequests}
+          organisations={organisations}
         />
         <Board
           data={data}

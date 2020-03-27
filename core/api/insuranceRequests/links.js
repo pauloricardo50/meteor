@@ -35,6 +35,10 @@ const loanCache = {
   assigneeLinks: { _id: 1 },
 };
 
+const insurancesCache = {
+  organisationLink: 1,
+};
+
 LinkInitializer.directInit(() => {
   InsuranceRequests.addLinks({
     borrowers: {
@@ -72,6 +76,10 @@ LinkInitializer.directInit(() => {
       type: 'many',
       metadata: true,
       unique: true,
+      denormalize: {
+        field: 'insurancesCache',
+        body: insurancesCache,
+      },
     },
   });
 });
