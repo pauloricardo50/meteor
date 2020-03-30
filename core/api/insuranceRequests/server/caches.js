@@ -10,5 +10,4 @@ InsuranceRequestService.cache(
     referenceField: 'insuranceLinks:_id',
   },
   {},
-  // { insurancesCache: { $exists: false } },
 );

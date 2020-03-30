@@ -346,7 +346,6 @@ class InsuranceRequestService extends CollectionService {
 
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
 
-    console.log('loanId:', loanId);
     return loanId;
   }
 }

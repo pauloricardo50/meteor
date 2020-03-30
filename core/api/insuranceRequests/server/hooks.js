@@ -5,11 +5,13 @@ import InsuranceRequests from '..';
 
 InsuranceRequests.before.remove((userId, { borrowerLinks }) => {
   borrowerLinks.forEach(({ _id: borrowerId }) => {
-    const { insuranceRequests = [], loans = [] } = BorrowerService.createQuery({
-      $filters: { _id: borrowerId },
-      loans: { _id: 1 },
-      insuranceRequests: { _id: 1 },
-    }).fetchOne();
+    const { insuranceRequests = [], loans = [] } = BorrowerService.get(
+      borrowerId,
+      {
+        loans: { _id: 1 },
+        insuranceRequests: { _id: 1 },
+      },
+    );
     const hasOneLoan = loans.length === 1;
     const hasOneInsuranceRequest = insuranceRequests.length === 1;
 
