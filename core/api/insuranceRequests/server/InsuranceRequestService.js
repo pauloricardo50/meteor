@@ -112,7 +112,7 @@ class InsuranceRequestService extends CollectionService {
       }
     }
 
-    return { _id: insuranceRequestId, name };
+    return insuranceRequestId;
   };
 
   setAssignees = ({ insuranceRequestId, ...params }) =>
