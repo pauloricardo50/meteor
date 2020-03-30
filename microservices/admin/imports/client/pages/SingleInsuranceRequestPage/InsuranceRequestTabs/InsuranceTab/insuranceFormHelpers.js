@@ -170,10 +170,13 @@ export const makeInsuranceMethod = ({
       })
       .then(insuranceId =>
         history.push(
-          createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
-            insuranceRequestId,
-            tabId: insuranceId,
-          }),
+          createRoute(
+            ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES.path,
+            {
+              insuranceRequestId,
+              tabId: insuranceId,
+            },
+          ),
         ),
       );
   }

@@ -94,10 +94,13 @@ const getTabs = props => {
         ),
         to:
           props.enableTabRouting &&
-          createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
-            insuranceRequestId: props.insuranceRequest._id,
-            tabId: insurance._id,
-          }),
+          createRoute(
+            ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES.path,
+            {
+              insuranceRequestId: props.insuranceRequest._id,
+              tabId: insurance._id,
+            },
+          ),
       };
     }),
     {

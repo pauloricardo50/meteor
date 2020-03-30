@@ -88,6 +88,10 @@ const ADMIN_ROUTES = {
     component: AdminPromotionPage,
     path: '/promotions/:promotionId/:tabId?',
   },
+  SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES: {
+    component: SingleInsuranceRequestPage,
+    path: '/insuranceRequests/:insuranceRequestId/insurances/:tabId?',
+  },
   SINGLE_INSURANCE_REQUEST_PAGE: {
     component: SingleInsuranceRequestPage,
     path: '/insuranceRequests/:insuranceRequestId/:tabId?',
