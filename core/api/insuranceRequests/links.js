@@ -76,10 +76,6 @@ LinkInitializer.directInit(() => {
       type: 'many',
       metadata: true,
       unique: true,
-      denormalize: {
-        field: 'insurancesCache',
-        body: insurancesCache,
-      },
     },
   });
 });
