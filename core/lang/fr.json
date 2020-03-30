@@ -1,4 +1,5 @@
 {
+  "Forms.assigneeLinks.percent.placeholder": "50",
   "Forms.type.MEETING": "Rendez-vous",
   "Forms.type.FINANCIAL_PLANNING": "Planification faite",
   "Forms.premiumFrequency": "Paiement de la prime",
