@@ -5,6 +5,8 @@ import {
   createdAt,
   cacheField,
   adminNotesSchema,
+  additionalDocuments,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 
 import { INSURANCE_REQUEST_STATUS } from '../insuranceRequestConstants';
@@ -69,6 +71,8 @@ const InsuranceRequestSchema = new SimpleSchema({
   loanCache: cacheField,
   insurancesCache: { type: Array, optional: true },
   'insurancesCache.$': cacheField,
+  ...additionalDocuments([]),
+  documents: documentsField,
 });
 
 export default InsuranceRequestSchema;

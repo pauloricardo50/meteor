@@ -33,9 +33,10 @@ const documentsToDisplay = ({ collection, loan, id }) => {
   }
 };
 
-const documentsToHide = ({ doc, collection, loan, id }) => {
+const documentsToHide = ({ doc, collection, loan, id, documentArray }) => {
   const allDocs = allDocuments({ doc, collection });
-  const docsToDisplay = documentsToDisplay({ collection, loan, id });
+  const docsToDisplay =
+    documentArray || documentsToDisplay({ collection, loan, id });
   return allDocs.filter(
     document => !docsToDisplay.some(({ id: docId }) => docId === document.id),
   );
@@ -58,6 +59,7 @@ const SingleFileTab = ({ documentArray, ...props }) => {
     loan,
     id: doc._id,
     doc,
+    documentArray,
   });
 
   if (typeof basicOnly === 'boolean' && basicOnly) {

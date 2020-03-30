@@ -7,6 +7,8 @@ import {
   dateField,
   cacheField,
   adminNotesSchema,
+  additionalDocuments,
+  documentsField,
 } from '../../helpers/sharedSchemas';
 
 import {
@@ -56,6 +58,8 @@ const InsuranceSchema = new SimpleSchema({
     type: new SimpleSchema(adminNotesSchema).getObjectSchema('adminNotes.$'),
     optional: true,
   },
+  ...additionalDocuments([]),
+  documents: documentsField,
 });
 
 export default InsuranceSchema;

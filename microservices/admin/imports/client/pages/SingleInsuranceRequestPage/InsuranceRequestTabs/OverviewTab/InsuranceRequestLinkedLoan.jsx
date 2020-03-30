@@ -16,7 +16,7 @@ const InsuranceRequestLinkedLoan = props => {
   const history = useHistory();
 
   return (
-    <div className="flex-col">
+    <div className="flex-col mr-16">
       <h4>Dossier hypothécaire lié</h4>
       {loan ? (
         <CollectionIconLink
