@@ -9,8 +9,8 @@ export default withProps(({ organisationId }) => ({
       organisationId,
       commissionRates: {
         type,
-        rates: rates.map(({ date, ...rest }) => ({
-          date: moment(date).format('MM-DD'),
+        rates: rates.map(({ startDate, ...rest }) => ({
+          startDate: moment(startDate).format('MM-DD'),
           ...rest,
         })),
       },

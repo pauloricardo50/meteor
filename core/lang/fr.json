@@ -695,7 +695,7 @@
   "ProSideNav.revenues": "Revenus",
   "ProSideNav.dashboard": "Dashboard",
   "ProSideNav.organisation": "Organisation",
-  "CommissionRatesViewer.fromThreshold": "À partir de {value} dès le {date}",
+  "CommissionRatesViewer.fromThreshold": "À partir de {value} dès le {startDate}",
   "CommissionRatesViewer.commissionRatesList": "Votre structure de commissionement",
   "CommissionRatesViewer.currentRate": "Votre commission d'apporteur d'affaires",
   "CommissionRatesViewer.referredRevenues": "Revenus apportés",

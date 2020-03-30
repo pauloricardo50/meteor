@@ -14,8 +14,8 @@ export const getCurrentRate = (commissionRates, referredRevenues, name) => {
   const today = moment(new Date());
 
   commissionRates
-    .filter(({ date }) =>
-      moment(new Date(`${today.year()}-${date}`)).isSameOrBefore(today),
+    .filter(({ startDate }) =>
+      moment(new Date(`${today.year()}-${startDate}`)).isSameOrBefore(today),
     )
     .some(({ threshold }, i) => {
       if (threshold > referredRevenues) {

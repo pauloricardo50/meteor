@@ -31,12 +31,12 @@ describe('Migration 34', () => {
       expect(rates[0]).to.deep.include({
         threshold: 0,
         rate: 0.1,
-        date: '01-01',
+        startDate: '01-01',
       });
       expect(rates[1]).to.deep.include({
         threshold: 1,
         rate: 0.2,
-        date: '01-01',
+        startDate: '01-01',
       });
     });
 
@@ -57,8 +57,8 @@ describe('Migration 34', () => {
         commissionRates: {
           type: COMMISSION_RATES_TYPE.COMMISSIONS,
           rates: [
-            { rate: 0.1, threshold: 0, date: '01-01' },
-            { rate: 0.2, threshold: 1, date: '01-01' },
+            { rate: 0.1, threshold: 0, startDate: '01-01' },
+            { rate: 0.2, threshold: 1, startDate: '01-01' },
           ],
         },
         organisationId: 'org',
@@ -90,8 +90,8 @@ describe('Migration 34', () => {
         commissionRates: {
           type: COMMISSION_RATES_TYPE.PRODUCTIONS,
           rates: [
-            { rate: 0.1, threshold: 0, date: '01-01' },
-            { rate: 0.2, threshold: 1, date: '01-01' },
+            { rate: 0.1, threshold: 0, startDate: '01-01' },
+            { rate: 0.2, threshold: 1, startDate: '01-01' },
           ],
         },
         organisationId: 'org',
