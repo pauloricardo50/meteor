@@ -827,7 +827,7 @@ describe('LoanService', function() {
         referredByOrganisationLink: 1,
       });
 
-      expect(user).to.deep.equal({
+      expect(user).to.deep.include({
         _id: 'userId',
         referredByUserLink: 'proId1',
       });

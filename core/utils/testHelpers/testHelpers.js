@@ -115,3 +115,10 @@ export const resetDatabase = () =>
       err ? reject(err) : resolve(res),
     );
   });
+
+export const generateScenario = scenario =>
+  new Promise((resolve, reject) => {
+    Meteor.call('generateScenario', { scenario }, (err, res) =>
+      err ? reject(err) : resolve(res),
+    );
+  });

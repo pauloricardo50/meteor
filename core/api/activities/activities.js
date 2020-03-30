@@ -1,5 +1,3 @@
-import { Mongo } from 'meteor/mongo';
-
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
@@ -10,8 +8,9 @@ import {
 } from './activityConstants';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 import { EMAIL_IDS } from '../email/emailConstants';
+import { createCollection } from '../helpers/collectionHelpers';
 
-const Activities = new Mongo.Collection(ACTIVITIES_COLLECTION);
+const Activities = createCollection(ACTIVITIES_COLLECTION);
 
 const ActivitySchema = new SimpleSchema({
   createdAt,
