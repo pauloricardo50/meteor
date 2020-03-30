@@ -26,7 +26,10 @@ export default compose(
         .then(() => setOpenActivity(false)),
     taskSchema,
     activitySchema: getActivitySchema(
-      type => ![ACTIVITY_TYPES.MEETING, ACTIVITY_TYPES.PLANNING].includes(type),
+      type =>
+        ![ACTIVITY_TYPES.MEETING, ACTIVITY_TYPES.FINANCIAL_PLANNING].includes(
+          type,
+        ),
     ),
   })),
 );
