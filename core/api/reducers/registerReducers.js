@@ -11,3 +11,4 @@ import '../promotions/reducers';
 import '../properties/reducers';
 import '../users/reducers';
 import '../insuranceRequests/reducers';
+import '../insurances/reducers';
