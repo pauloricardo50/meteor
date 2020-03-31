@@ -41,17 +41,18 @@ class InsuranceRequestService extends CollectionService {
       loanId &&
       LoanService.get(loanId, {
         user: { _id: 1 },
-        assignees: { percent: 1, isMain: 1 },
+        assigneeLinks: { _id: 1, percent: 1, isMain: 1 },
       });
     const user =
       userId && UserService.get(userId, { assignedEmployee: { _id: 1 } });
 
     if (loan) {
-      LoanService.addLink({
-        id: loanId,
-        linkName: 'insuranceRequests',
-        linkId: insuranceRequestId,
-      });
+      this.linkLoan({ insuranceRequestId, loanId });
+      // LoanService.addLink({
+      //   id: loanId,
+      //   linkName: 'insuranceRequests',
+      //   linkId: insuranceRequestId,
+      // });
       const { user: { _id: loanUserId } = {} } = loan;
       if (loanUserId) {
         this.addLink({
@@ -71,12 +72,13 @@ class InsuranceRequestService extends CollectionService {
     }
 
     if (borrowerIds?.length) {
-      borrowerIds.forEach(borrowerId =>
-        this.addLink({
-          id: insuranceRequestId,
-          linkName: 'borrowers',
-          linkId: borrowerId,
-        }),
+      borrowerIds.forEach(
+        borrowerId => this.linkBorrower({ insuranceRequestId, borrowerId }),
+        // this.addLink({
+        //   id: insuranceRequestId,
+        //   linkName: 'borrowers',
+        //   linkId: borrowerId,
+        // }),
       );
     }
 
@@ -91,8 +93,8 @@ class InsuranceRequestService extends CollectionService {
     }
     // Set the same assignees as the loan
     else if (!user && loan) {
-      const { assignees: loanAssignees = [] } = loan;
-      if (assignees?.length) {
+      const { assigneeLinks: loanAssignees = [] } = loan;
+      if (loanAssignees?.length) {
         this.setAssignees({
           insuranceRequestId,
           assignees: loanAssignees,
@@ -176,7 +178,8 @@ class InsuranceRequestService extends CollectionService {
       id: insuranceRequestId,
       object: {
         adminNotes: adminNotes.sort(
-          ({ date: a }, { date: b }) => new Date(b) - new Date(a),
+          ({ date: a }, { date: b }) =>
+            new Date(b).getTime() - new Date(a).getTime(),
         ),
       },
     });
@@ -321,7 +324,6 @@ class InsuranceRequestService extends CollectionService {
       linkName: 'borrowers',
       linkId: borrowerId,
     });
-    return Promise.resolve();
   }
 
   linkLoan({ insuranceRequestId, loanId }) {
@@ -330,7 +332,6 @@ class InsuranceRequestService extends CollectionService {
       linkName: 'loan',
       linkId: loanId,
     });
-    return Promise.resolve();
   }
 
   linkNewLoan({ insuranceRequestId }) {
