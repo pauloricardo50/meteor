@@ -9,25 +9,23 @@ export const up = () => {
     .fetch()
     .filter(({ commissionRates = [] }) => !!commissionRates.length);
 
-  return Promise.all(
-    organisationsWithCommissionRates.map(
-      ({ commissionRates, _id: organisationId }) => {
-        CommissionRateService.insert({
-          commissionRates: {
-            type: COMMISSION_RATES_TYPE.COMMISSIONS,
-            rates: commissionRates,
-          },
-          organisationId,
-        });
+  return organisationsWithCommissionRates.map(
+    ({ commissionRates, _id: organisationId }) => {
+      CommissionRateService.insert({
+        commissionRates: {
+          type: COMMISSION_RATES_TYPE.COMMISSIONS,
+          rates: commissionRates,
+        },
+        organisationId,
+      });
 
-        OrganisationService.baseUpdate(
-          { _id: organisationId },
-          { $unset: { commissionRates: true } },
-        );
+      OrganisationService.baseUpdate(
+        { _id: organisationId },
+        { $unset: { commissionRates: true } },
+      );
 
-        return Promise.resolve();
-      },
-    ),
+      return Promise.resolve();
+    },
   );
 };
 

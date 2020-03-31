@@ -36,7 +36,9 @@ const RevenuesTab = ({ loan }) => {
       <RevenueSuggestions loan={loan} suggestRevenue={suggestRevenue} />
       <RevenuesTable
         loan={loan}
-        filterRevenues={({ loan: { _id: loanId } }) => ({ loanId })}
+        filterRevenues={({ loan: { _id: loanId } }) => ({
+          'loanCache.0._id': loanId,
+        })}
       />
     </div>
   );

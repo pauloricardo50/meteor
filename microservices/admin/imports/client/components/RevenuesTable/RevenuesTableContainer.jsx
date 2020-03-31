@@ -14,7 +14,6 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminRevenues } from 'core/api/revenues/queries';
 import RevenueConsolidator from './RevenueConsolidator';
 
 const now = moment();
@@ -160,36 +159,34 @@ export default compose(
   withState('openModifier', 'setOpenModifier', false),
   withState('revenueToModify', 'setRevenueToModify', null),
   withSmartQuery({
-    query: adminRevenues,
+    query: REVENUES_COLLECTION,
     params: ({ filterRevenues, ...props }) => ({
-      ...filterRevenues(props),
-      $body: {
-        amount: 1,
-        assigneeLink: 1,
-        description: 1,
-        expectedAt: 1,
-        loan: {
-          name: 1,
-          borrowers: { name: 1 },
-          user: { name: 1 },
-          userCache: 1,
-          assigneeLinks: 1,
-        },
-        paidAt: 1,
-        secondaryType: 1,
-        sourceOrganisationLink: 1,
-        sourceOrganisation: { name: 1 },
-        status: 1,
-        type: 1,
-        organisationLinks: 1,
-        organisations: { name: 1 },
-        insurance: {
-          name: 1,
-          insuranceRequest: { _id: 1 },
-          borrower: { name: 1 },
-        },
-        insuranceRequest: { name: 1 },
+      ...(filterRevenues ? { $filters: filterRevenues(props) } : {}),
+      amount: 1,
+      assigneeLink: 1,
+      description: 1,
+      expectedAt: 1,
+      loan: {
+        name: 1,
+        borrowers: { name: 1 },
+        user: { name: 1 },
+        userCache: 1,
+        assigneeLinks: 1,
       },
+      paidAt: 1,
+      secondaryType: 1,
+      sourceOrganisationLink: 1,
+      sourceOrganisation: { name: 1 },
+      status: 1,
+      type: 1,
+      organisationLinks: 1,
+      organisations: { name: 1 },
+      insurance: {
+        name: 1,
+        insuranceRequest: { _id: 1 },
+        borrower: { name: 1 },
+      },
+      insuranceRequest: { name: 1 },
     }),
     dataName: 'revenues',
   }),

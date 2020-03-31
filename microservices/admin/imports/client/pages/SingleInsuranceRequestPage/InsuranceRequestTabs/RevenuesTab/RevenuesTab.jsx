@@ -11,7 +11,7 @@ const RevenuesTab = props => {
         insuranceRequest={insuranceRequest}
         filterRevenues={({
           insuranceRequest: { _id: insuranceRequestId },
-        }) => ({ insuranceRequestId })}
+        }) => ({ 'insuranceRequestCache.0._id': insuranceRequestId })}
         firstColumnLabel="Assurance"
       />
     </div>

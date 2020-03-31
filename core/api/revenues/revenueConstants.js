@@ -1,7 +1,6 @@
 export const REVENUES_COLLECTION = 'revenues';
 
 export const REVENUE_QUERIES = {
-  ADMIN_REVENUES: 'ADMIN_REVENUES',
   PRO_REVENUES: 'PRO_REVENUES',
 };
 
