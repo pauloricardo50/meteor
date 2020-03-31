@@ -3,8 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { getNewName } from '../collectionServerHelpers';
-import { setAssignees } from '../sharedHelpers';
+import { getNewName, setAssignees } from '../collectionServerHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';
 import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
