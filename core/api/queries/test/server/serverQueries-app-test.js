@@ -6,10 +6,10 @@ import {
   query3,
   query4,
   testCollectionInsert,
-} from '../collection.app-test';
+} from '../collection-app-test';
 import { exposeQuery } from '../../queryHelpers';
 
-const TestCollection = require('../collection.app-test').default;
+const TestCollection = require('../collection-app-test').default;
 
 testCollectionInsert.setHandler((context, params) =>
   TestCollection.insert(params),
