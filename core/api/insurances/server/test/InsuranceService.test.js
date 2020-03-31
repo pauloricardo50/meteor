@@ -108,7 +108,7 @@ describe('InsuranceService', () => {
       expect(duration).to.equal(1);
     });
 
-    it('returns 12 if the premium frequency is MONTHLY and the duration is 15 months', () => {
+    it('returns 15 if the premium frequency is MONTHLY and the duration is 15 months', () => {
       const insuranceId = InsuranceService.insert({
         insuranceRequestId: 'insuranceRequest',
         borrowerId: 'borrower',
