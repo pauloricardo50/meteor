@@ -28,6 +28,13 @@ async function updateForGroup(name) {
       config => config.name === 'External NAT',
     ).natIP;
 
+    if (!external) {
+      // server is stopped or doesn't have an external IP address
+      console.warn(
+        `!!!! Server "${metadata[0].name}" does not have an external address !!!!`,
+      );
+    }
+
     const internal = metadata[0].networkInterfaces[0].networkIP;
     console.log(vm.id, 'external:', external, 'internal', internal);
 

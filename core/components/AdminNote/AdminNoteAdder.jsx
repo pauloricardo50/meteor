@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
@@ -54,7 +54,9 @@ export const AdminNoteSetter = ({
   getInsertSchemaOverride,
   getUpdateSchemaOverride,
 }) => {
+  const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
   const isInsert = !adminNote;
+
   const { loading, contacts } = getContacts(docId);
   const schema = useMemo(() => {
     const insertSchema = getInsertSchemaOverride || getInsertSchema;
@@ -84,7 +86,7 @@ export const AdminNoteSetter = ({
           })),
         })
       }
-      model={adminNote}
+      model={isInsert ? { date } : adminNote}
       renderAdditionalActions={({
         closeDialog,
         setDisableActions,
@@ -110,6 +112,7 @@ export const AdminNoteSetter = ({
           </Button>
         );
       }}
+      onOpen={() => setDate(new Date())}
     />
   );
 };

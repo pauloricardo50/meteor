@@ -1,10 +1,10 @@
-@import "./client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss";
-@import "./client/FinancingFinancing/FinancingFinancing.scss";
-@import "./client/FinancingHeader/FinancingHeader.scss";
-@import "./client/FinancingLenders/FinancingLenders.scss";
-@import "./client/FinancingOffers/FinancingOffers.scss";
-@import "./client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss";
-@import "./client/FinancingProject/FinancingProject.scss";
+@import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
+@import './client/FinancingFinancing/FinancingFinancing.scss';
+@import './client/FinancingHeader/FinancingHeader.scss';
+@import './client/FinancingLenders/FinancingLenders.scss';
+@import './client/FinancingOffers/FinancingOffers.scss';
+@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
+@import './client/FinancingProject/FinancingProject.scss';
 $labels-width: 180px;
 $structure-width: 340px;
 $card1_padding: 20px;
@@ -158,7 +158,7 @@ $result-section-negative-offset: -32px;
     color: white;
     background-color: $primary;
 
-    font-family: "Eina04-Bold", "Helvetica";
+    font-family: 'Eina04-Bold', 'Helvetica';
 
     .label {
       color: rgba(255, 255, 255, 0.78);
@@ -194,9 +194,10 @@ $result-section-negative-offset: -32px;
     }
 
     .error {
+      max-width: 80%;
       margin: 8px;
       padding: 8px;
-      max-width: 80%;
+
       text-align: center;
     }
 
@@ -289,15 +290,16 @@ $result-section-negative-offset: -32px;
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  width: 100%;
   margin: 8px 0;
   padding: 0;
 
-  width: 100%;
-
   .total {
+    white-space: nowrap;
+
     font-size: 36px;
     line-height: 36px;
-    white-space: nowrap;
 
     .chf {
       font-size: 20px;

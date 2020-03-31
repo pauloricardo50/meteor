@@ -86,7 +86,6 @@ const PromotionReservationProgressItem = ({
               loanId={loanId}
               id={id}
               status={status}
-              date={date}
               openDialog={openDialog}
               setOpenDialog={setOpenDialog}
             />

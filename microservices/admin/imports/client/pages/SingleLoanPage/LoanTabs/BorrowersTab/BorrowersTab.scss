@@ -1,12 +1,12 @@
 .borrower-forms {
   display: flex;
+  align-items: flex-start;
   align-self: center;
   justify-content: center;
-  align-items: flex-start;
 
   &-form {
-    padding: 0 16px;
     width: 400px;
+    padding: 0 16px;
 
     &.second {
       border-left: solid 1px $border-grey;
@@ -15,13 +15,15 @@
 
   .side-recap {
     position: fixed;
-    display: none;
-    width: 300px;
     left: 172px;
 
+    display: none;
+
+    width: 300px;
+
     &.right {
-      left: unset;
       right: 48px;
+      left: unset;
     }
   }
 
@@ -33,8 +35,9 @@
 
   @media (min-width: 2000px) {
     .side-recap {
-      display: block;
       left: 272px;
+
+      display: block;
 
       &.right {
         right: 148px;
@@ -44,8 +47,9 @@
 
   @media (min-width: 2300px) {
     .side-recap {
-      display: block;
       left: 372px;
+
+      display: block;
 
       &.right {
         right: 248px;
@@ -53,4 +57,3 @@
     }
   }
 }
-

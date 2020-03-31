@@ -51,6 +51,7 @@ export class AutoFormDialog extends Component {
       disableActions = false,
       layout,
       maxWidth = 'sm',
+      onOpen,
       ...otherProps
     } = this.props;
     const schemaKeys = this.props.schema._schemaKeys;
@@ -61,6 +62,10 @@ export class AutoFormDialog extends Component {
         event.preventDefault();
       }
       setOpen(true);
+
+      if (onOpen) {
+        onOpen();
+      }
     };
     const handleClose = event => {
       if (event && event.stopPropagation) {

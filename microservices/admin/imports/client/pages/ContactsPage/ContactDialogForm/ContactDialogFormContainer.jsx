@@ -115,15 +115,17 @@ export default compose(
     smallLoader: true,
   }),
   withState('submitting', 'setSubmitting', false),
-  withProps(({ existingOrganisations }) => {
+  withProps(({ existingOrganisations, model }) => {
     const initialSearchParams = useSearchParams();
     const [searchParams, setSearchParams] = useState(initialSearchParams);
     const { email, ...newContact } = searchParams || {};
 
-    const model = searchParams && {
-      ...newContact,
-      emails: email && [{ address: email }],
-    };
+    const finalModel = Object.keys(searchParams).length
+      ? {
+          ...newContact,
+          emails: email && [{ address: email }],
+        }
+      : model;
 
     return {
       schema: schema(existingOrganisations),
@@ -151,7 +153,7 @@ export default compose(
           );
       },
       removeContact: contactId => contactRemove.run({ contactId }),
-      model,
+      model: finalModel,
       openOnMount: searchParams.addContact,
       resetForm: () => setSearchParams({}),
     };
