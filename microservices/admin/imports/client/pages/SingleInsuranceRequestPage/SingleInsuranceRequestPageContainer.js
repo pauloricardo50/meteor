@@ -46,7 +46,7 @@ export default compose(
         insuranceProduct: {
           name: 1,
           category: 1,
-          type: 1,
+          features: 1,
           revaluationFactor: 1,
         },
         revenues: adminRevenue(),

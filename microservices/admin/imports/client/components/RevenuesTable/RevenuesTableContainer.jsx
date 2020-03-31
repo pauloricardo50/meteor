@@ -54,7 +54,6 @@ export const makeMapRevenue = ({
     paidAt,
     amount,
     type,
-    secondaryType,
     description,
     status,
     organisations = [],
@@ -117,12 +116,6 @@ export const makeMapRevenue = ({
         label: (
           <span>
             <T id={`Forms.type.${type}`} />
-            {secondaryType && (
-              <span>
-                -
-                <T id={`Forms.secondaryType.${secondaryType}`} />
-              </span>
-            )}
           </span>
         ),
       },
@@ -174,7 +167,6 @@ export default compose(
         assigneeLinks: 1,
       },
       paidAt: 1,
-      secondaryType: 1,
       sourceOrganisationLink: 1,
       sourceOrganisation: { name: 1 },
       status: 1,

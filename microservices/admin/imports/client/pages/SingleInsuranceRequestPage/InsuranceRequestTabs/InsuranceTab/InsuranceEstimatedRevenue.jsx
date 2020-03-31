@@ -7,31 +7,11 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import {
   ORGANISATIONS_COLLECTION,
   REVENUE_TYPES,
-  REVENUE_SECONDARY_TYPES,
-  INSURANCE_PRODUCT_TYPES,
   INSURANCES_COLLECTION,
 } from 'core/api/constants';
 import { Money } from 'core/components/Translation';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import InsuranceEstimatedRevenueInfos from './InsuranceEstimatedRevenueInfos';
-
-const getSecondaryType = ({ category, type }) => {
-  switch (type) {
-    case INSURANCE_PRODUCT_TYPES.DEATH:
-      return category === '3A'
-        ? REVENUE_SECONDARY_TYPES.DEATH_3A
-        : REVENUE_SECONDARY_TYPES.DEATH_3B;
-    case INSURANCE_PRODUCT_TYPES.LIFE:
-      return category === '3A'
-        ? REVENUE_SECONDARY_TYPES.LIFE_3A
-        : REVENUE_SECONDARY_TYPES.LIFE_3B;
-    case INSURANCE_PRODUCT_TYPES.DISABILITY:
-      return category === '3A'
-        ? REVENUE_SECONDARY_TYPES.INCOME_PROTECTION_3A
-        : REVENUE_SECONDARY_TYPES.INCOME_PROTECTION_3B;
-    default:
-  }
-};
 
 const InsuranceEstimatedRevenue = ({
   insurance: {
@@ -39,7 +19,7 @@ const InsuranceEstimatedRevenue = ({
     premium,
     premiumFrequency,
     organisation: { _id: organisationId },
-    insuranceProduct: { name, revaluationFactor, type, category },
+    insuranceProduct: { name, revaluationFactor },
   },
   insuranceRequest,
 }) => {
@@ -112,7 +92,6 @@ const InsuranceEstimatedRevenue = ({
           decription: name,
           amount: estimatedRevenue,
           type: REVENUE_TYPES.INSURANCE,
-          secondaryType: getSecondaryType({ category, type }),
           assigneeLink: { _id: Meteor.userId() || mainAssignee?._id },
         }}
         buttonProps={{

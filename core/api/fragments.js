@@ -590,7 +590,7 @@ export const adminOrganisation = () => ({
   documents: 1,
   referredCustomers: { _id: 1 },
   insuranceProducts: {
-    type: 1,
+    features: 1,
     name: 1,
     category: 1,
     revaluationFactor: 1,
@@ -1118,7 +1118,6 @@ export const adminRevenue = () => ({
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
-  secondaryType: 1,
   // Keep these in the right order
   sourceOrganisationLink: 1,
   sourceOrganisation: { name: 1 },

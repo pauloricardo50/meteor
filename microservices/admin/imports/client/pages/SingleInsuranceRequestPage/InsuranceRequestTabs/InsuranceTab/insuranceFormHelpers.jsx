@@ -8,6 +8,7 @@ import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 import { insuranceInsert, insuranceModify } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
+import { formatMessage } from 'core/utils/intl';
 import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
 import ADMIN_ROUTES from '../../../../../startup/client/adminRoutes';
 
@@ -63,7 +64,7 @@ export const getSchema = ({ borrowers, organisations }) =>
             ],
             [],
           );
-          const { name, type, category } = allProducts.find(
+          const { name, features = [], category } = allProducts.find(
             ({ _id }) => _id === productId,
           );
 
@@ -72,9 +73,14 @@ export const getSchema = ({ borrowers, organisations }) =>
               primary={name}
               secondary={
                 <span>
-                  <T id={`Forms.type.${type}`} />
-                  &nbsp;
-                  {category}
+                  {category} -{' '}
+                  {features
+                    .map(feature =>
+                      formatMessage({
+                        id: `insuranceProduct.features.${feature}`,
+                      }),
+                    )
+                    .join(' + ')}
                 </span>
               }
             />

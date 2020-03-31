@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import T from 'core/components/Translation';
+import { formatMessage } from 'core/utils/intl';
 import InsuranceProductModifier from './InsuranceProductModifier';
 
 const InsuranceProduct = ({ insuranceProduct }) => {
-  const { type, category, name, revaluationFactor } = insuranceProduct;
+  const { features = [], category, name, revaluationFactor } = insuranceProduct;
   const [openModifier, setOpenModifier] = useState(false);
   return (
     <>
@@ -19,11 +20,17 @@ const InsuranceProduct = ({ insuranceProduct }) => {
       >
         <h3 className="card-header mt-0 mb-0">{name}</h3>
         <div className="p-8">
-          <h4>Type de produit</h4>
+          <h4>Catégorie</h4>
+          <T id={`InsuranceProduct.category.${category}`} />
+          <h4>Prestations</h4>
           <span>
-            <T id={`InsuranceProduct.type.${type}`} />
-            &nbsp;
-            <T id={`InsuranceProduct.category.${category}`} />
+            {features
+              .map(feature =>
+                formatMessage({
+                  id: `insuranceProduct.features.${feature}`,
+                }),
+              )
+              .join(' + ')}
           </span>
           <h4>Facteur de revalorisation</h4>
           <span>{revaluationFactor}</span>

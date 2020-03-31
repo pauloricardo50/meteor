@@ -69,7 +69,7 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
       name: 1,
       insuranceProducts: {
         name: 1,
-        type: 1,
+        features: 1,
         category: 1,
         revaluationFactor: 1,
       },
