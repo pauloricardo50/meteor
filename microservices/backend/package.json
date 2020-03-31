@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
-    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505",
+    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505 --exclude-archs \"web.browser, web.browser.legacy, web.cordova\"",
     "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500 --exclude-archs \"web.browser, web.browser.legacy, web.cordova\"",
-    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505"
+    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505 --exclude-archs \"web.browser, web.browser.legacy, web.cordova\""
   },
   "dependencies": {
     "@babel/runtime": "7.8.3",

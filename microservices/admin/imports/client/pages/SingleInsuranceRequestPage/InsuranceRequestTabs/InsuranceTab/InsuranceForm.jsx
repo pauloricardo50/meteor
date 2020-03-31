@@ -5,8 +5,8 @@ import { useHistory } from 'react-router-dom';
 import Box from 'core/components/Box';
 
 import {
-  ORGANISATION_TYPES,
   ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
 } from 'core/api/constants';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
@@ -61,11 +61,7 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
   const { loading, data: organisations } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
     params: {
-      $filters: {
-        type: {
-          $in: [ORGANISATION_TYPES.INSURANCE, ORGANISATION_TYPES.PENSION_FUND],
-        },
-      },
+      $filters: { features: ORGANISATION_FEATURES.INSURANCE },
       name: 1,
       insuranceProducts: {
         name: 1,
