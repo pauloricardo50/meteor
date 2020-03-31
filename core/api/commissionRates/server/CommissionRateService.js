@@ -24,9 +24,9 @@ class CommissionRateService extends CollectionService {
       { rates: 1, organisation: { name: 1 } },
     );
 
-    if (organisationCommissionRates?.length) {
+    if (organisationCommissionRates) {
       throw new Meteor.Error(
-        `${type} commission rates already exist for organisation ${organisationCommissionRates[0]?.organisation?.name}`,
+        `${type} commission rates already exist for organisation ${organisationCommissionRates?.organisation?.name}`,
       );
     }
 

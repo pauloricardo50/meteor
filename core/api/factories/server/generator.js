@@ -48,6 +48,8 @@ const getSingularFactoryName = collection => {
       return 'insurance';
     case COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION:
       return 'insuranceProduct';
+    case COLLECTIONS.COMMISSION_RATES_COLLECTION:
+      return 'commissionRate';
     default:
       throw new Error(
         `No singular factory name found for ${collection}, add it in the generator`,
