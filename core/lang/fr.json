@@ -1,4 +1,8 @@
 {
+  "Forms.status.SUGGESTED": "Proposé",
+  "Forms.status.SIGNED": "Signé",
+  "Forms.status.DECLINED": "Refusé",
+  "Forms.status.POLICED": "Policé",
   "Forms.assigneeLinks.percent.placeholder": "50",
   "Forms.type.MEETING": "Rendez-vous",
   "Forms.type.FINANCIAL_PLANNING": "Planification faite",
@@ -19,9 +23,6 @@
   "Forms.premium.placeholder": "500",
   "Forms.duration.placeholder": "36",
   "Forms.duration": "Durée en mois",
-  "Forms.status.SUGGESTED": "Proposé",
-  "Forms.status.SIGNED": "Signé",
-  "Forms.status.DECLINED": "Refusé",
   "Forms.features.INSURANCE": "Assurance",
   "InsuranceRequestTabs.overview": "Général",
   "InsuranceRequestTabs.insurances": "Assurances",

@@ -3,6 +3,8 @@ import { Random } from 'meteor/random';
 
 import faker from 'faker';
 
+import moment from 'moment';
+
 import {
   LOT_TYPES,
   ORGANISATION_TYPES,
@@ -256,6 +258,11 @@ Factory.define('insurance', Insurances, {
       }
     }
   },
+  startDate: () => new Date(),
+  endDate: () =>
+    moment()
+      .add(10, 'years')
+      .toDate(),
 });
 
 Factory.define('commissionRate', CommissionRates, {

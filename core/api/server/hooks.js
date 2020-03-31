@@ -12,3 +12,4 @@ import '../revenues/server/hooks';
 import '../tasks/server/hooks';
 import '../users/server/hooks';
 import '../insuranceRequests/server/hooks';
+import '../insurances/server/hooks';

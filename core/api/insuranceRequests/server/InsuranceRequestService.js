@@ -3,6 +3,7 @@ import { Random } from 'meteor/random';
 
 import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import Intl from 'core/utils/server/intl';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequests from '../insuranceRequests';
 import {
@@ -18,6 +19,10 @@ import {
   INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUEST_STATUS_ORDER,
 } from '../insuranceRequestConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+
+const formatMessage = Intl.formatMessage.bind(Intl);
 
 class InsuranceRequestService extends CollectionService {
   constructor() {
@@ -214,8 +219,12 @@ class InsuranceRequestService extends CollectionService {
     });
   }
 
-  verifyStatusChange({ insuranceRequestId, status }) {
+  verifyStatusChange({ insuranceRequestId, status, isServerCall = false }) {
     const { status: prevStatus } = this.get(insuranceRequestId, { status: 1 });
+
+    if (isServerCall) {
+      return prevStatus;
+    }
 
     if (prevStatus === status) {
       throw new Meteor.Error("Ce statut est le même qu'avant");
@@ -263,8 +272,12 @@ class InsuranceRequestService extends CollectionService {
     return prevStatus;
   }
 
-  setStatus({ insuranceRequestId, status }) {
-    const prevStatus = this.verifyStatusChange({ insuranceRequestId, status });
+  setStatus({ insuranceRequestId, status, isServerCall = false }) {
+    const prevStatus = this.verifyStatusChange({
+      insuranceRequestId,
+      status,
+      isServerCall,
+    });
 
     this._update({ id: insuranceRequestId, object: { status } });
     return { prevStatus, nextStatus: status };
@@ -279,9 +292,11 @@ class InsuranceRequestService extends CollectionService {
       },
     );
 
-    const shouldBeBilling = insurances
-      .filter(({ status }) => status !== INSURANCE_STATUS.DECLINED)
-      .every(({ status }) => status === INSURANCE_STATUS.ACTIVE);
+    const shouldBeBilling =
+      insuranceRequestStatus !== INSURANCE_REQUEST_STATUS.BILLING &&
+      insurances
+        .filter(({ status }) => status !== INSURANCE_STATUS.DECLINED)
+        .every(({ status }) => status === INSURANCE_STATUS.POLICED);
 
     const insurancesRevenues = insurances.reduce(
       (allRevenues, { revenues = [] }) => [...allRevenues, ...revenues],
@@ -295,15 +310,44 @@ class InsuranceRequestService extends CollectionService {
         ({ status }) => status === REVENUE_STATUS.CLOSED,
       );
 
+    let statusChanged = false;
+    let prevStatus;
+    let nextStatus;
+
     if (shouldBeFinalized) {
-      this._update({
-        id: insuranceRequestId,
-        object: { status: INSURANCE_REQUEST_STATUS.FINALIZED },
+      const { prevStatus: previous, nextStatus: next } = this.setStatus({
+        insuranceRequestId,
+        status: INSURANCE_REQUEST_STATUS.FINALIZED,
+        isServerCall: true,
       });
+      statusChanged = true;
+      prevStatus = previous;
+      nextStatus = next;
     } else if (shouldBeBilling) {
-      this._update({
-        id: insuranceRequestId,
-        object: { status: INSURANCE_REQUEST_STATUS.BILLING },
+      const { prevStatus: previous, nextStatus: next } = this.setStatus({
+        insuranceRequestId,
+        status: INSURANCE_REQUEST_STATUS.BILLING,
+        isServerCall: true,
+      });
+      statusChanged = true;
+      prevStatus = previous;
+      nextStatus = next;
+    }
+
+    if (statusChanged) {
+      const formattedPrevStatus = formatMessage({
+        id: `Forms.status.${prevStatus}`,
+      });
+      const formattedNexStatus = formatMessage({
+        id: `Forms.status.${nextStatus}`,
+      });
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS,
+        details: { prevStatus, nextStatus },
+        isServerGenerated: true,
+        insuranceRequestLink: { _id: insuranceRequestId },
+        title: 'Statut modifié',
+        description: `${formattedPrevStatus} -> ${formattedNexStatus}`,
       });
     }
   }

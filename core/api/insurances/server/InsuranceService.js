@@ -54,7 +54,7 @@ class InsuranceService extends CollectionService {
     const activeInsurances = this.fetch({
       $filters: {
         'organisationLink._id': organisationId,
-        status: INSURANCE_STATUS.ACTIVE,
+        status: INSURANCE_STATUS.POLICED,
       },
       insuranceProduct: { revaluationFactor: 1 },
       duration: 1,
