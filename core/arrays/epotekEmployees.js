@@ -78,30 +78,11 @@ const employees = [
     gender: 'M',
   },
   {
-    email: 'franco@e-potek.ch',
-    src: '/img/team/franco.jpg',
-    name: 'Franco Ponzetta',
-    title: 'Conseiller en Financement et Prévoyance',
-    appTitle: 'Financement & Prévoyance',
-    gender: 'M',
-    _id: 'Z5x3BuXdETe57trKC',
-  },
-  {
     email: '',
     src: '/img/team/seila.jpg',
     name: 'Seila Rada',
     title: 'Comptabilité & Finance',
     gender: 'F',
-  },
-  {
-    email: 'alban@e-potek.ch',
-    src: '/img/team/alban.jpg',
-    name: 'Alban Kastrati',
-    title: 'Directeur des Financements et de l’agence de Lausanne',
-    appTitle: 'Financement & Prévoyance',
-    phoneNumber: '+41 21 566 25 24',
-    _id: 'pXJug4n8qSuDfB76e',
-    gender: 'M',
   },
 ];
 

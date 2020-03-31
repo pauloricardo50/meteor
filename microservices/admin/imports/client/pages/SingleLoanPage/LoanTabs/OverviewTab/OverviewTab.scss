@@ -140,9 +140,10 @@
       text-decoration: underline;
 
       &:hover {
-        color: $primary;
         cursor: pointer;
-    
+
+        color: $primary;
+
         > * {
           color: $primary;
         }

@@ -250,10 +250,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       );
     }
 
-    isUserProperty({ loan, structureId }) {
+    isUserProperty({ loan, structureId, property }) {
       const propertyCategory = this.selectPropertyKey({
         loan,
         structureId,
+        property,
         key: 'category',
       });
 

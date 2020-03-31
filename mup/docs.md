@@ -64,7 +64,8 @@ To connect to the database from your computer, you also need to [whitelist your 
 - OS: Ubuntu 18 LTS
 - Allow HTTP traffic
 - Label: `env` with a value of `staging`, `production`, or `api`
-- Under networking, add a `http-server` network tag. If this is for the production environment, add a `prod` network tag also 
+- Under Firewall, `Allow HTTP traffic` should be enabled
+- Under networking, add a `http-server` network tag. If this is for the production or api environment, add a `prod` network tag also so the correct ports are open on the firewall
 - Under networking, select the default network interface
   - Change `Primary internal IP` to `Reserve static ip address` and name it after the instance
   - Network Service Tier can be changed to `Standard`
@@ -84,7 +85,7 @@ Mup connects to the instances using the external IP address. All scripts that ru
 1. Run `node update-atlas-whitelist`
 2. Run `node run-all -e <env with changes> setup`
 3. Run `node run-all -e <env with changes> proxy reconfig-shared`
-4. Run `node run-all -e <env with changes> deploy`. If you are sure the last deploy was done from your computer, you could use the `--cached-build` option to skip building the apps.
+4. Run `node run-all -e <env with changes> reconfig`
 
 # Load balancing and SSL termination
 

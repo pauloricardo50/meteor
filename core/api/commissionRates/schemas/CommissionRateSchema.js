@@ -18,7 +18,7 @@ const CommissionRateSchema = new SimpleSchema({
     },
   },
   organisationLink: { type: Object, optional: true },
-  'organisationLink._id': String,
+  'organisationLink._id': { type: String, optional: true },
   rates: { type: Array, defaultValue: [] },
   'rates.$': Object,
   'rates.$.rate': { ...percentageField },

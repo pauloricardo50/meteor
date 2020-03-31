@@ -13,15 +13,7 @@ import {
 } from './statusDateFormDialogHelpers';
 
 export default withProps(
-  ({
-    promotionOptionId,
-    loanId,
-    id,
-    status,
-    date,
-    openDialog,
-    setOpenDialog,
-  }) => {
+  ({ promotionOptionId, loanId, id, status, openDialog, setOpenDialog }) => {
     const isBankStatus = id === 'bank';
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [confirmDialogActions, setConfirmDialogActions] = useState({
@@ -51,7 +43,7 @@ export default withProps(
     return {
       schema,
       title: <T id={`Forms.${id}`} />,
-      model: { status, date },
+      model: { status },
       open: openDialog,
       setOpen: setOpenDialog,
       layout: [

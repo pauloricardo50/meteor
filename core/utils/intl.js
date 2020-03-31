@@ -33,6 +33,6 @@ export class Intl {
   }
 }
 
-const intl = new Intl();
+const intl = new Intl({});
 export const formatMessage = intl.formatMessage.bind(intl);
 export default intl;

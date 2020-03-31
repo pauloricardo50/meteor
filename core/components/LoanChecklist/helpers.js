@@ -2,16 +2,36 @@ import { documentHasTooltip, documentIsBasic } from 'core/api/files/documents';
 import { PROPERTY_CATEGORY } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
 
+const getChecklistProperty = props => {
+  const { loan = {} } = props;
+  const { properties = [] } = loan;
+  const property = Calculator.selectProperty({ loan });
+
+  if (property?._id) {
+    return property;
+  }
+
+  if (
+    properties.length >= 1 &&
+    properties[0].category === PROPERTY_CATEGORY.USER
+  ) {
+    // If the user has entered properties, but not yet a structure
+    // Use the first property as a initial checklist
+    return properties[0];
+  }
+
+  return {};
+};
+
 const shouldDisplayPropertyChecklist = props => {
   const { loan = {} } = props;
+  const property = getChecklistProperty(props);
 
-  const property = Calculator.selectProperty({ loan });
-  return (
-    !loan.hasPromotion &&
-    property &&
-    property._id && // Perform extra check in case property is an empty object
-    property.category !== PROPERTY_CATEGORY.PRO
-  );
+  if (loan.hasPromotion) {
+    return false;
+  }
+
+  return !!property._id;
 };
 
 const labelOverrider = (doc, id) => {
@@ -26,7 +46,7 @@ const labelOverrider = (doc, id) => {
   return false;
 };
 
-const formatFileTitle = ({ doc, formatMessage, file }) => {
+const formatFileTitle = ({ doc, file }, formatMessage) => {
   const label = labelOverrider(doc, file);
 
   return label || formatMessage({ id: `files.${file}` });
@@ -44,7 +64,7 @@ const tooltipOverrider = (doc, id) => {
   return false;
 };
 
-const formatFileTooltip = ({ doc, formatMessage, file }) => {
+const formatFileTooltip = ({ doc, file }, formatMessage) => {
   const tooltip = tooltipOverrider(doc, file);
 
   return (
@@ -56,7 +76,7 @@ const formatFileTooltip = ({ doc, formatMessage, file }) => {
 const getPropertyMissingFields = (props, formatMessage) => {
   const { loan = {} } = props;
   const displayPropertyChecklist = shouldDisplayPropertyChecklist(props);
-  const property = Calculator.selectProperty({ loan });
+  const property = getChecklistProperty(props);
 
   return {
     ...(displayPropertyChecklist
@@ -65,9 +85,10 @@ const getPropertyMissingFields = (props, formatMessage) => {
             title:
               (property && property.address1) ||
               formatMessage({ id: 'general.property' }),
-            labels: Calculator.getMissingPropertyFields({ loan }).map(field =>
-              formatMessage({ id: `Forms.${field}` }),
-            ),
+            labels: Calculator.getMissingPropertyFields({
+              loan,
+              property,
+            }).map(field => formatMessage({ id: `Forms.${field}` })),
           },
         }
       : {}),
@@ -77,7 +98,7 @@ const getPropertyMissingFields = (props, formatMessage) => {
 const getPropertyMissingDocuments = (props, formatMessage) => {
   const { loan = {}, basicDocumentsOnly } = props;
   const displayPropertyChecklist = shouldDisplayPropertyChecklist(props);
-  const property = Calculator.selectProperty({ loan });
+  const property = getChecklistProperty(props);
 
   return {
     ...(displayPropertyChecklist
@@ -89,13 +110,13 @@ const getPropertyMissingDocuments = (props, formatMessage) => {
             labels: Calculator.getMissingPropertyDocuments({
               loan,
               basicDocumentsOnly,
+              property,
             }).map(file => ({
-              label: formatFileTitle({ doc: property, formatMessage, file }),
-              tooltip: formatFileTooltip({
-                doc: property,
+              label: formatFileTitle({ doc: property, file }, formatMessage),
+              tooltip: formatFileTooltip(
+                { doc: property, file },
                 formatMessage,
-                file,
-              }),
+              ),
               basic: documentIsBasic(file),
             })),
           },
@@ -125,15 +146,14 @@ const getBorrowersMissingFields = (props, formatMessage) => {
 
 const getLoanMissingDocuments = (props, formatMessage) => {
   const { loan = {} } = props;
-
   const missingDocuments = Calculator.getMissingLoanDocuments({ loan });
 
   return {
     loan: {
       title: formatMessage({ id: 'files.OTHER' }),
       labels: missingDocuments.map(file => ({
-        label: formatFileTitle({ doc: loan, formatMessage, file }),
-        tooltip: formatFileTooltip({ doc: loan, formatMessage, file }),
+        label: formatFileTitle({ doc: loan, file }, formatMessage),
+        tooltip: formatFileTooltip({ doc: loan, file }, formatMessage),
         basic: false,
       })),
     },
@@ -159,8 +179,8 @@ const getBorrowersMissingDocuments = (props, formatMessage) => {
             { index: index + 1 },
           ),
         labels: missingDocuments.map(file => ({
-          label: formatFileTitle({ doc: borrower, formatMessage, file }),
-          tooltip: formatFileTooltip({ doc: borrower, formatMessage, file }),
+          label: formatFileTitle({ doc: borrower, file }, formatMessage),
+          tooltip: formatFileTooltip({ doc: borrower, file }, formatMessage),
           basic: documentIsBasic(file),
         })),
       };
@@ -168,12 +188,14 @@ const getBorrowersMissingDocuments = (props, formatMessage) => {
   };
 };
 
-export const getChecklistValidInformationsRatio = props =>
-  [
+export const getChecklistValidInformationsRatio = props => {
+  const property = getChecklistProperty(props);
+
+  return [
     Calculator.getBorrowersValidFieldsRatio(props),
     Calculator.getBorrowersValidDocumentsRatio(props),
-    Calculator.getPropertyValidFieldsRatio(props),
-    Calculator.getPropertyValidDocumentsRatio(props),
+    Calculator.getPropertyValidFieldsRatio({ ...props, property }),
+    Calculator.getPropertyValidDocumentsRatio({ ...props, property }),
     Calculator.getLoanValidDocumentsRatio(props),
   ]
     .filter(x => x)
@@ -184,6 +206,7 @@ export const getChecklistValidInformationsRatio = props =>
       }),
       { valid: 0, required: 0 },
     );
+};
 
 export const getChecklistMissingInformations = (...args) => ({
   fields: {

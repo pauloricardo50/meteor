@@ -91,7 +91,7 @@ export default withProps(({ currentUser }) => {
     .filter(property =>
       isAllowedToInviteCustomersToProProperty({ property, currentUser }),
     )
-    .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
+    .sort(({ address1: A = '' }, { address1: B = '' }) => A.localeCompare(B));
   const filteredPromotions = promotions
     .filter(promotion =>
       isAllowedToInviteCustomersToPromotion({ promotion, currentUser }),

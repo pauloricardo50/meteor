@@ -788,11 +788,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getPropertyValidFieldsRatio({ loan }) {
+    getPropertyValidFieldsRatio({ loan, property }) {
       const { hasPromotion, properties = [] } = loan;
 
       if (
-        !this.isUserProperty({ loan }) ||
+        !this.isUserProperty({ loan, property }) ||
         hasPromotion ||
         properties.length === 0
       ) {
@@ -801,6 +801,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return this.getValidPropertyFieldsRatio({
         loan,
+        property,
       });
     }
 
@@ -829,18 +830,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return getRequiredDocumentIds(getLoanDocuments({ loan }, this));
     }
 
-    getPropertyValidDocumentsRatio({ loan }) {
+    getPropertyValidDocumentsRatio({ loan, property }) {
       const { hasPromotion, properties = [] } = loan;
 
       if (
-        !this.isUserProperty({ loan }) ||
+        !this.isUserProperty({ loan, property }) ||
         hasPromotion ||
         properties.length === 0
       ) {
         return null;
       }
 
-      return this.getValidPropertyDocumentsRatio({ loan });
+      return this.getValidPropertyDocumentsRatio({ loan, property });
     }
 
     getValidFieldsRatio({ loan }) {
