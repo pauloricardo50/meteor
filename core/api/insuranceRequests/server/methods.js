@@ -14,20 +14,22 @@ import {
 import InsuranceRequestService from './InsuranceRequestService';
 import Security from '../../security/Security';
 
-insuranceRequestInsert.setHandler((context, params) => {
-  Security.checkCurrentUserIsAdmin();
+insuranceRequestInsert.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
   return InsuranceRequestService.insert(params);
 });
 
-insuranceRequestRemove.setHandler((context, { insuranceRequestId }) => {
-  Security.checkCurrentUserIsAdmin();
+insuranceRequestRemove.setHandler(({ userId }, { insuranceRequestId }) => {
+  Security.checkUserIsAdmin(userId);
   return InsuranceRequestService.remove(insuranceRequestId);
 });
 
-insuranceRequestUpdate.setHandler((context, { insuranceRequestId, object }) => {
-  Security.checkCurrentUserIsAdmin();
-  return InsuranceRequestService._update({ id: insuranceRequestId, object });
-});
+insuranceRequestUpdate.setHandler(
+  ({ userId }, { insuranceRequestId, object }) => {
+    Security.checkUserIsAdmin(userId);
+    return InsuranceRequestService._update({ id: insuranceRequestId, object });
+  },
+);
 
 insuranceRequestSetAdminNote.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);

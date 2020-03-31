@@ -7,13 +7,13 @@ import {
 import Security from '../../security/Security';
 import InsuranceService from './InsuranceService';
 
-insuranceInsert.setHandler((context, params) => {
-  Security.checkCurrentUserIsAdmin();
+insuranceInsert.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
   return InsuranceService.insert(params);
 });
 
-insuranceModify.setHandler((context, params) => {
-  Security.checkCurrentUserIsAdmin();
+insuranceModify.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
   return InsuranceService.update(params);
 });
 

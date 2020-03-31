@@ -8,6 +8,7 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import StatusLabel from 'core/components/StatusLabel';
 
 const columnOptions = [
   { id: 'Dossier' },
@@ -27,7 +28,6 @@ const getRows = ({ insuranceRequests = [], history }) =>
       createdAt,
       updatedAt,
     } = insuranceRequest;
-    console.log('history:', history);
 
     return {
       id: insuranceRequestId,
@@ -56,7 +56,12 @@ const getRows = ({ insuranceRequests = [], history }) =>
         },
         {
           raw: status,
-          label: <span>{status}</span>,
+          label: (
+            <StatusLabel
+              status={status}
+              collection={INSURANCE_REQUESTS_COLLECTION}
+            />
+          ),
         },
         {
           raw: createdAt && createdAt.getTime(),

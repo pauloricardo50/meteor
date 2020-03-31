@@ -71,7 +71,6 @@ export default withProps(
           },
           ...activityFragment(),
         },
-        refetchOnMethodCall: [activityInsert, activityUpdate],
       },
       [activityFilters],
     );

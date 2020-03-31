@@ -1,6 +1,7 @@
 {
+  "Forms.assigneeLinks.percent.placeholder": "50",
   "Forms.type.MEETING": "Rendez-vous",
-  "Forms.type.PLANNING": "Planification faite",
+  "Forms.type.FINANCIAL_PLANNING": "Planification faite",
   "Forms.premiumFrequency": "Paiement de la prime",
   "Forms.premiumFrequency.MONTHLY": "Mensuel",
   "Forms.premiumFrequency.QUARTERLY": "Trimestriel",
@@ -695,7 +696,7 @@
   "ProSideNav.revenues": "Revenus",
   "ProSideNav.dashboard": "Dashboard",
   "ProSideNav.organisation": "Organisation",
-  "CommissionRatesViewer.fromThreshold": "À partir de {value} dès le {date}",
+  "CommissionRatesViewer.fromThreshold": "À partir de {value} dès le {startDate}",
   "CommissionRatesViewer.commissionRatesList": "Votre structure de commissionement",
   "CommissionRatesViewer.currentRate": "Votre commission d'apporteur d'affaires",
   "CommissionRatesViewer.referredRevenues": "Revenus apportés",

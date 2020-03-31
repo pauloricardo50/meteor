@@ -112,7 +112,7 @@ class InsuranceRequestService extends CollectionService {
       }
     }
 
-    return { _id: insuranceRequestId, name };
+    return insuranceRequestId;
   };
 
   setAssignees = ({ insuranceRequestId, ...params }) =>
@@ -346,7 +346,6 @@ class InsuranceRequestService extends CollectionService {
 
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
 
-    console.log('loanId:', loanId);
     return loanId;
   }
 }

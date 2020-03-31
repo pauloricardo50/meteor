@@ -8,14 +8,14 @@ const CommissionRatesViewerList = ({ commissionRates }) => (
     <h3 className="secondary">
       <T id="CommissionRatesViewer.commissionRatesList" />
     </h3>
-    {commissionRates.map(({ rate, threshold, date }) => (
+    {commissionRates.map(({ rate, threshold, startDate }) => (
       <div key={rate}>
         <h4 className="secondary">
           <T
             id="CommissionRatesViewer.fromThreshold"
             values={{
               value: <Money value={threshold} />,
-              date: moment(date).format('D MMM'),
+              startDate: moment(startDate).format('D MMM'),
             }}
           />
         </h4>

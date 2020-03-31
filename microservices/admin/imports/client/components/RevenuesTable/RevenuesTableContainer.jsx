@@ -33,16 +33,17 @@ const formatDateTime = (date, status) => {
   return text;
 };
 
-const columnOptions = [
-  { id: 'loan', label: 'Dossier' },
-  { id: 'revenueStatus' },
-  { id: 'date' },
-  { id: 'type' },
-  { id: 'description' },
-  { id: 'sourceOrganisationLink' },
-  { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
-  { id: 'actions' },
-].map(i => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
+const getColumnOptions = firstColumnLabel =>
+  [
+    { id: 'loan', label: firstColumnLabel || 'Dossier' },
+    { id: 'revenueStatus' },
+    { id: 'date' },
+    { id: 'type' },
+    { id: 'description' },
+    { id: 'sourceOrganisationLink' },
+    { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
+    { id: 'actions' },
+  ].map(i => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
 
 export const makeMapRevenue = ({
   setOpenModifier,
@@ -197,13 +198,20 @@ export default compose(
       return { revenues: postFilter(revenues) };
     }
   }),
-  withProps(({ revenues = [], setOpenModifier, setRevenueToModify }) => ({
-    rows: revenues.map(
-      makeMapRevenue({
-        setOpenModifier,
-        setRevenueToModify,
-      }),
-    ),
-    columnOptions,
-  })),
+  withProps(
+    ({
+      revenues = [],
+      setOpenModifier,
+      setRevenueToModify,
+      firstColumnLabel,
+    }) => ({
+      rows: revenues.map(
+        makeMapRevenue({
+          setOpenModifier,
+          setRevenueToModify,
+        }),
+      ),
+      columnOptions: getColumnOptions(firstColumnLabel),
+    }),
+  ),
 );

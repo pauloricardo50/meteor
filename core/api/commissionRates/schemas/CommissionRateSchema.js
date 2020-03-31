@@ -23,7 +23,7 @@ const CommissionRateSchema = new SimpleSchema({
   'rates.$': Object,
   'rates.$.rate': { ...percentageField },
   'rates.$.threshold': { ...moneyField, defaultValue: 0 },
-  'rates.$.date': {
+  'rates.$.startDate': {
     type: String,
     // MM-DD
     defaultValue: '01-01',

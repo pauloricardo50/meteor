@@ -10,6 +10,8 @@ export default compose(
     query: INSURANCE_REQUESTS_COLLECTION,
     params: ({ insuranceRequestId }) => ({
       $filters: { _id: insuranceRequestId },
+      additionalDocuments: 1,
+      documents: 1,
       name: 1,
       customName: 1,
       user: { name: 1 },
@@ -22,6 +24,8 @@ export default compose(
       proNotes: 1,
       revenues: adminRevenue(),
       insurances: {
+        additionalDocuments: 1,
+        documents: 1,
         adminNotes: 1,
         proNote: 1,
         proNotes: 1,

@@ -12,6 +12,7 @@ import InsuranceTab from './InsuranceTab';
 import InsuranceAdder from './InsuranceTab/InsuranceAdder';
 import BorrowersTab from './BorrowersTab';
 import RevenuesTab from './RevenuesTab';
+import InsuranceRequestFileTabs from './InsuranceRequestFileTabs';
 
 const getTabs = props => {
   const { insuranceRequest } = props;
@@ -65,6 +66,22 @@ const getTabs = props => {
           tabId: 'revenues',
         }),
     },
+    {
+      id: 'files',
+      content: <InsuranceRequestFileTabs {...props} />,
+      label: (
+        <span className="single-insurance-request-page-tabs-label">
+          <Icon type={collectionIcons[REVENUES_COLLECTION]} className="mr-4" />
+          <span>Documents</span>
+        </span>
+      ),
+      to:
+        props.enableTabRouting &&
+        createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
+          insuranceRequestId: props.insuranceRequest._id,
+          tabId: 'files',
+        }),
+    },
     ...insurances.map(insurance => {
       const {
         organisation,
@@ -94,10 +111,13 @@ const getTabs = props => {
         ),
         to:
           props.enableTabRouting &&
-          createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
-            insuranceRequestId: props.insuranceRequest._id,
-            tabId: insurance._id,
-          }),
+          createRoute(
+            ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES.path,
+            {
+              insuranceRequestId: props.insuranceRequest._id,
+              tabId: insurance._id,
+            },
+          ),
       };
     }),
     {

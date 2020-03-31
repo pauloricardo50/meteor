@@ -12,7 +12,7 @@ const icons = {
   [ACTIVITY_TYPES.PHONE]: 'phone',
   [ACTIVITY_TYPES.MAIL]: 'markunreadMailbox',
   [ACTIVITY_TYPES.MEETING]: 'meetingRoom',
-  [ACTIVITY_TYPES.PLANNING]: 'trendingUp',
+  [ACTIVITY_TYPES.FINANCIAL_PLANNING]: 'trendingUp',
   front: { src: '/img/front-logo.svg' },
   task: 'check',
 };

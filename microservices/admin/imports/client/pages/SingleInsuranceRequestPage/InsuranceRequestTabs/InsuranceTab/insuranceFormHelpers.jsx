@@ -1,11 +1,13 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import uniqBy from 'lodash/uniqBy';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import { INSURANCE_STATUS } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 import { insuranceInsert, insuranceModify } from 'core/api/methods';
 import { createRoute } from 'core/utils/routerUtils';
+import T from 'core/components/Translation';
 import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
 import ADMIN_ROUTES from '../../../../../startup/client/adminRoutes';
 
@@ -42,57 +44,16 @@ export const getSchema = ({ borrowers, organisations }) =>
         placeholder: null,
       },
     },
-    type: {
+    insuranceProductId: {
       type: String,
       customAllowedValues: ({ organisationId }) => {
         const { insuranceProducts = [] } = organisations.find(
           ({ _id }) => _id === organisationId,
         );
-        return uniqBy(insuranceProducts, 'type').map(({ type }) => type);
+
+        return insuranceProducts.map(({ _id }) => _id);
       },
       condition: ({ organisationId }) => !!organisationId,
-      uniforms: {
-        labelProps: { shrink: true },
-        label: 'Type',
-        placeholder: null,
-      },
-    },
-    category: {
-      type: String,
-      customAllowedValues: ({ organisationId, type }) => {
-        const { insuranceProducts = [] } = organisations.find(
-          ({ _id }) => _id === organisationId,
-        );
-        return uniqBy(
-          insuranceProducts.filter(
-            ({ type: productType }) => type === productType,
-          ),
-          'category',
-        ).map(({ category }) => category);
-      },
-      condition: ({ organisationId, type }) => !!organisationId && !!type,
-      uniforms: {
-        labelProps: { shrink: true },
-        label: 'Catégorie',
-        placeholder: null,
-      },
-    },
-    insuranceProductId: {
-      type: String,
-      customAllowedValues: ({ organisationId, type, category }) => {
-        const { insuranceProducts = [] } = organisations.find(
-          ({ _id }) => _id === organisationId,
-        );
-
-        return insuranceProducts
-          .filter(
-            ({ type: insuranceType, category: insuranceCategory }) =>
-              type === insuranceType && category === insuranceCategory,
-          )
-          .map(({ _id }) => _id);
-      },
-      condition: ({ organisationId, type, category }) =>
-        !!organisationId && !!type && !!category,
       uniforms: {
         transform: productId => {
           const allProducts = organisations.reduce(
@@ -102,7 +63,22 @@ export const getSchema = ({ borrowers, organisations }) =>
             ],
             [],
           );
-          return allProducts.find(({ _id }) => _id === productId).name;
+          const { name, type, category } = allProducts.find(
+            ({ _id }) => _id === productId,
+          );
+
+          return (
+            <ListItemText
+              primary={name}
+              secondary={
+                <span>
+                  <T id={`Forms.type.${type}`} />
+                  &nbsp;
+                  {category}
+                </span>
+              }
+            />
+          );
         },
         labelProps: { shrink: true },
         label: 'Produit',
@@ -170,10 +146,13 @@ export const makeInsuranceMethod = ({
       })
       .then(insuranceId =>
         history.push(
-          createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
-            insuranceRequestId,
-            tabId: insuranceId,
-          }),
+          createRoute(
+            ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES.path,
+            {
+              insuranceRequestId,
+              tabId: insuranceId,
+            },
+          ),
         ),
       );
   }

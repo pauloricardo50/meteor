@@ -91,7 +91,12 @@ const getSchema = ({ availableBorrowers = [], withKeepAssigneesCheckbox }) =>
   });
 
 export default withProps(
-  ({ user = {}, loan = {}, withKeepAssigneesCheckbox = true }) => {
+  ({
+    user = {},
+    loan = {},
+    withKeepAssigneesCheckbox = true,
+    onSuccess = () => ({}),
+  }) => {
     console.log('withKeepAssigneesCheckbox:', withKeepAssigneesCheckbox);
     const {
       _id: userId,
@@ -129,12 +134,14 @@ export default withProps(
         updateUserAssignee,
         borrowerIds = [],
       }) =>
-        insuranceRequestInsert.run({
-          loanId,
-          userId,
-          ...(keepAssignees ? {} : { assignees, note, updateUserAssignee }),
-          borrowerIds,
-        }),
+        insuranceRequestInsert
+          .run({
+            loanId,
+            userId,
+            ...(keepAssignees ? {} : { assignees, note, updateUserAssignee }),
+            borrowerIds,
+          })
+          .then(onSuccess),
     };
   },
 );

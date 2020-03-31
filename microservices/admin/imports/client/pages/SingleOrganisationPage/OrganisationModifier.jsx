@@ -37,12 +37,6 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
           className: 'mb-32',
           fields: ['emails'],
         },
-        // {
-        //   Component: Box,
-        //   title: <h4>Commissionnement</h4>,
-        //   className: 'mb-32',
-        //   fields: ['commissionRates'],
-        // },
       ]}
     >
       {() => (

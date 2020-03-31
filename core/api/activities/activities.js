@@ -108,7 +108,7 @@ Activities.attachSchema(ActivityMeetingSchema, {
   selector: { type: ACTIVITY_TYPES.MEETING },
 });
 Activities.attachSchema(ActivityPlanningSchema, {
-  selector: { type: ACTIVITY_TYPES.PLANNING },
+  selector: { type: ACTIVITY_TYPES.FINANCIAL_PLANNING },
 });
 
 export default Activities;

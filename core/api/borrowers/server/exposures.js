@@ -17,7 +17,6 @@ exposeQuery({
   overrides: {
     embody: body => {
       body.$filter = ({ filters, params: { searchQuery, userId } }) => {
-        console.log('userId:', userId);
         // the following method forces one word to be found in lastname field
         // and one word in firstName field.
         const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);

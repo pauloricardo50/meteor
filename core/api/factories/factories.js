@@ -261,7 +261,7 @@ Factory.define('insurance', Insurances, {
 Factory.define('commissionRate', CommissionRates, {
   createdAt: () => new Date(),
   type: COMMISSION_RATES_TYPE.PRODUCTIONS,
-  rates: [{ rate: 0.01, threshold: 0, date: '01-01' }],
+  rates: [{ rate: 0.01, threshold: 0, startDate: '01-01' }],
 });
 
 Factory.define('insuranceProduct', InsuranceProducts, {

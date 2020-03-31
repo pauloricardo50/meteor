@@ -4,6 +4,23 @@ import moment from 'moment';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { revenueUpdate } from 'core/api/revenues/methodDefinitions';
 import IconButton from 'core/components/IconButton';
+import RevenueCard from './RevenueCard';
+
+const Description = props => {
+  const { revenue, newDate } = props;
+  const { expectedAt } = revenue;
+
+  return (
+    <div className="flex-col">
+      <RevenueCard revenue={revenue} withActions={false} />
+      <span className="mt-16">
+        Repousser le revenu initialement attendu au mois de{' '}
+        {moment(expectedAt).format('MMM YYYY')} au mois de{' '}
+        {newDate.format('MMM YYYY')} ?
+      </span>
+    </div>
+  );
+};
 
 const RevenuePostponer = props => {
   const {
@@ -27,7 +44,7 @@ const RevenuePostponer = props => {
       }
       TriggerComponent={IconButton}
       buttonProps={{
-        tooltip: 'Repousser de un mois',
+        tooltip: "Repousser d'un mois",
         label: '',
         primary: true,
         type: 'right',
@@ -35,9 +52,7 @@ const RevenuePostponer = props => {
         fab: true,
         raised: true,
       }}
-      description={`Repousser le revenu au mois de ${newDate.format(
-        'MMM YYYY',
-      )} ?`}
+      description={<Description newDate={newDate} {...props} />}
     />
   );
 };
