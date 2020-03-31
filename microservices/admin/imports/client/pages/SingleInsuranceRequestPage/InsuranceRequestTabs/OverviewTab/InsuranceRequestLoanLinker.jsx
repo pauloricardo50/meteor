@@ -11,9 +11,15 @@ import { insuranceRequestLinkLoan } from 'core/api/methods/index';
 
 const InsuranceRequestLoanLinker = props => {
   const { insuranceRequest } = props;
-  const {
-    user: { _id: userId },
-  } = insuranceRequest;
+  const { user: { _id: userId } = {} } = insuranceRequest;
+
+  if (!userId) {
+    return (
+      <span style={{ maxWidth: 200, textAlign: 'center' }}>
+        Ajoutez un compte sur ce dossier pour plus d'options
+      </span>
+    );
+  }
 
   const [openDialog, setOpenDialog] = useState(false);
 

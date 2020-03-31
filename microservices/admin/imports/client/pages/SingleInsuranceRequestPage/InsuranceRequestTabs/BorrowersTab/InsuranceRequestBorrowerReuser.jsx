@@ -11,10 +11,15 @@ import { insuranceRequestLinkBorrower } from 'core/api/methods';
 
 const InsuranceRequestBorrowerReuser = props => {
   const { insuranceRequest, className, buttonProps = {} } = props;
-  const {
-    user: { _id: userId },
-    borrowers = [],
-  } = insuranceRequest;
+  const { user: { _id: userId } = {}, borrowers = [] } = insuranceRequest;
+
+  if (!userId) {
+    return (
+      <span style={{ maxWidth: 200, marginLeft: 8, textAlign: 'center' }}>
+        Ajoutez un compte sur ce dossier pour réutiliser des assurés existants
+      </span>
+    );
+  }
 
   const [openDialog, setOpenDialog] = useState(false);
 

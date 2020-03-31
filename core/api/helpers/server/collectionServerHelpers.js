@@ -1,4 +1,8 @@
+import { Meteor } from 'meteor/meteor';
+
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { Services } from '../../server/index';
+import { assignAdminToUser } from '../../users/index';
 import LoanService from '../../loans/server/LoanService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
@@ -149,4 +153,89 @@ export const getNewName = ({
     default:
       return '';
   }
+};
+
+export const setAssignees = ({
+  docId,
+  collection,
+  assignees,
+  updateUserAssignee,
+}) => {
+  if (assignees.length < 1 || assignees.length > 3) {
+    throw new Meteor.Error(
+      'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
+    );
+  }
+
+  const total = assignees.reduce((t, v) => t + v.percent, 0);
+
+  if (total !== 100) {
+    throw new Meteor.Error('Les pourcentages doivent faire 100%');
+  }
+
+  const main = assignees.filter(a => a.isMain);
+
+  if (main.length !== 1) {
+    throw new Meteor.Error(
+      "Il ne peut y avoir qu'un seul conseiller principal",
+    );
+  }
+
+  let documents = [{ _id: docId, collection }];
+
+  switch (collection) {
+    case LOANS_COLLECTION: {
+      const { insuranceRequestLinks = [] } = LoanService.get(docId, {
+        insuranceRequestLinks: 1,
+      });
+      documents = [
+        ...documents,
+        ...insuranceRequestLinks.map(({ _id }) => ({
+          _id,
+          collection: INSURANCE_REQUESTS_COLLECTION,
+        })),
+      ];
+      break;
+    }
+    case INSURANCE_REQUESTS_COLLECTION: {
+      const loan = LoanService.get(
+        { 'insuranceRequestLinks._id': docId },
+        { _id: 1, insuranceRequestLinks: { _id: 1 } },
+      );
+      documents = [
+        ...documents,
+        loan && { _id: loan._id, collection: LOANS_COLLECTION },
+        ...(loan?.insuranceRequestLinks?.length
+          ? loan.insuranceRequestLinks
+              .filter(({ _id }) => _id !== docId)
+              .map(({ _id }) => ({
+                _id,
+                collection: INSURANCE_REQUESTS_COLLECTION,
+              }))
+          : []),
+      ].filter(x => x);
+      break;
+    }
+    default:
+      break;
+  }
+
+  documents.forEach(({ _id, collection: docCollection }) => {
+    const Service = Services[docCollection];
+    Service._update({
+      id: _id,
+      object: { assigneeLinks: assignees },
+    });
+  });
+
+  if (updateUserAssignee) {
+    const { user: { _id: userId } = {} } = Services[collection].get(docId, {
+      user: { _id: 1 },
+    });
+    if (userId) {
+      assignAdminToUser.run({ userId, adminId: main[0]._id });
+    }
+  }
+
+  return Promise.resolve();
 };

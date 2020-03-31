@@ -143,7 +143,7 @@ export default withProps(
                   description: <a href={frontLink}>Ouvrir dans Front</a>,
                 }))
               : []),
-          ].sort((a, b) => a.date?.getTime() - b.date?.getTime()),
+          ].sort((a, b) => b.date?.getTime() - a.date?.getTime()),
       fetchTasks,
       setFetchTasks,
       fetchConversations,

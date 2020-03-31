@@ -66,6 +66,9 @@ describe('Single Loan Page', () => {
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
     cy.get('.tasks-table tr').should('have.length', 2);
+    cy.get('.tasks-table')
+      .contains('Cypress Task')
+      .should('exist');
   });
 
   it('should add lenders', () => {
