@@ -247,6 +247,8 @@ Factory.define('insuranceRequest', InsuranceRequests, {
 
 Factory.define('insurance', Insurances, {
   createdAt: () => new Date(),
+  startDate: () => new Date('2020-02-01T00:00:00'),
+  endDate: () => new Date('2045-02-01T00:00:00'),
   name: () => {
     while (true) {
       const name = getRandomInsuranceName();

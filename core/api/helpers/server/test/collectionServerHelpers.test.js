@@ -88,6 +88,7 @@ describe('collectionServerHelpers', () => {
         expect(name).to.equal('21-0001');
       });
     });
+
     describe('InsuranceRequests', () => {
       it('returns 20-0001-A for the very first insurance request', () => {
         const name = getNewName({ collection: INSURANCE_REQUESTS_COLLECTION });
@@ -162,6 +163,7 @@ describe('collectionServerHelpers', () => {
         expect(name).to.equal('21-0001-A');
       });
     });
+
     describe('Insurances', () => {
       it('returns 20-0001-A01 when being first linked to insurance request 20-0001-A', () => {
         generator({
