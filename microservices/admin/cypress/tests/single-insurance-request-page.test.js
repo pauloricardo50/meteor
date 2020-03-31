@@ -23,15 +23,18 @@ const scenario = {
     },
   },
   organisations: {
+    _id: 'orgId',
     name: 'Org 1',
     features: [ORGANISATION_FEATURES.INSURANCE],
     insuranceProducts: {
+      _id: 'prodId',
       name: 'Product 1',
       revaluationFactor: 1,
       type: INSURANCE_PRODUCT_TYPES.LIFE,
       category: '3A',
     },
     commissionRates: {
+      _id: 'rateId',
       type: COMMISSION_RATES_TYPE.PRODUCTION,
       rates: [
         {
