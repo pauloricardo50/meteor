@@ -115,9 +115,9 @@ export default withProps(
         collection: INSURANCE_REQUESTS_COLLECTION,
         name: `Dossier assurance ${insuranceRequestName}`,
       },
-      ...insurances.map(({ _id, name, borrower }) => ({
+      ...insurances.map(({ _id, borrower, insuranceProduct: { name } }) => ({
         _id,
-        name: `Assurance ${borrower.name} ${name}`,
+        name: `${name} - ${borrower.name}`,
         collection: INSURANCES_COLLECTION,
       })),
     ];
