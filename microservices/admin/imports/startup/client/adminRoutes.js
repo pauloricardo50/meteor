@@ -26,7 +26,6 @@ const ADMIN_ROUTES = {
   LOAN_BOARD_PAGE: {
     component: BoardPage,
     path: '/board/:boardId?',
-    // exact: true,
   },
 
   //   "All" pages

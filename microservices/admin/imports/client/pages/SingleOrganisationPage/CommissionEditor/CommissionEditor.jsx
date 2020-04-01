@@ -3,8 +3,7 @@ import React from 'react';
 import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
 import CommissionRatesForm from './CommissionRatesForm';
 
-const CommissionEditor = props => {
-  const { commissionRates = [], _id: organisationId } = props;
+const CommissionEditor = ({ commissionRates = [], _id: organisationId }) => {
   const [{ rates = [] }] = commissionRates;
 
   return (
