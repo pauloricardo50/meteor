@@ -26,7 +26,7 @@ const InsuranceProduct = ({ insuranceProduct }) => {
           {features
             .map(feature =>
               formatMessage({
-                id: `insuranceProduct.features.${feature}`,
+                id: `InsuranceProduct.features.${feature}`,
               }),
             )
             .join(' + ')}

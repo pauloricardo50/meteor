@@ -27,7 +27,12 @@ const InsuranceProductSchema = new SimpleSchema({
   features: {
     type: Array,
     // minCount: 1,
-    uniforms: { checkboxes: true, allowNull: false, displayEmpty: false },
+    uniforms: {
+      label: 'Prestations',
+      checkboxes: true,
+      allowNull: false,
+      displayEmpty: false,
+    },
   },
   'features.$': {
     type: String,

@@ -275,6 +275,6 @@ Factory.define('insuranceProduct', InsuranceProducts, {
   createdAt: () => new Date(),
   name: 'Product',
   features: [INSURANCE_PRODUCT_FEATURES.CAPITALIZATION],
-  category: INSURANCE_PRODUCT_CATEGORIES['3A'],
+  category: INSURANCE_PRODUCT_CATEGORIES['3A_INSURANCE'],
   revaluationFactor: 2,
 });

@@ -73,11 +73,12 @@ export const getSchema = ({ borrowers, organisations }) =>
               primary={name}
               secondary={
                 <span>
-                  {category} -{' '}
+                  <T id={`InsuranceProduct.category.${category}`} />
+                  &nbsp;-&nbsp;
                   {features
                     .map(feature =>
                       formatMessage({
-                        id: `insuranceProduct.features.${feature}`,
+                        id: `InsuranceProduct.features.${feature}`,
                       }),
                     )
                     .join(' + ')}
