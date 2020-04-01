@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { TASK_STATUS } from '../api/constants';
+import { TASK_STATUS } from '../constants';
 
-export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
+const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
   const activeTasks = tasks.filter(
     ({
       status: taskStatus,
@@ -24,7 +24,7 @@ export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
     .sort(({ createdAt: A }, { createdAt: B }) => A - B);
 
   if (tasksWithoutDate.length > 0) {
-    const task = tasksWithoutDate[0];
+    const [task] = tasksWithoutDate;
     return { ...task, dueAt: task.createdAt, noDueDate: true };
   }
 
@@ -34,3 +34,5 @@ export const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
     return sortedTasks[0];
   }
 };
+
+export default nextDueTaskReducer;

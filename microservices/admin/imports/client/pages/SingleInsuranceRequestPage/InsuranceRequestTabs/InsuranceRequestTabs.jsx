@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
 
 import Tabs from 'core/components/Tabs';
 import Icon from 'core/components/Icon';
@@ -71,7 +73,7 @@ const getTabs = props => {
       content: <InsuranceRequestFileTabs {...props} />,
       label: (
         <span className="single-insurance-request-page-tabs-label">
-          <Icon type={collectionIcons[REVENUES_COLLECTION]} className="mr-4" />
+          <FontAwesomeIcon icon={faFolderOpen} className="mr-4" />
           <span>Documents</span>
         </span>
       ),

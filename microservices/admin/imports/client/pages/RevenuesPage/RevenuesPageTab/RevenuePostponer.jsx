@@ -33,7 +33,7 @@ const RevenuePostponer = props => {
 
   return (
     <ConfirmMethod
-      type="modal"
+      type="popover"
       method={() =>
         revenueUpdate.run({
           revenueId,

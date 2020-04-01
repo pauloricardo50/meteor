@@ -9,9 +9,14 @@ import Dialog from 'core/components/Material/Dialog';
 import Icon from 'core/components/Icon';
 import { insuranceRequestLinkBorrower } from 'core/api/methods';
 
-const InsuranceRequestBorrowerReuser = props => {
-  const { insuranceRequest, className, buttonProps = {} } = props;
+const InsuranceRequestBorrowerReuser = ({
+  insuranceRequest,
+  className,
+  buttonProps = {},
+}) => {
   const { user: { _id: userId } = {}, borrowers = [] } = insuranceRequest;
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   if (!userId) {
     return (
@@ -20,8 +25,6 @@ const InsuranceRequestBorrowerReuser = props => {
       </span>
     );
   }
-
-  const [openDialog, setOpenDialog] = useState(false);
 
   if (borrowers.length === 2) {
     return null;

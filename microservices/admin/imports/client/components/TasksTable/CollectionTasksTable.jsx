@@ -68,7 +68,7 @@ export const CollectionTasksTable = ({
   refetch,
   collection,
   className,
-  CustomTaskInserter,
+  CustomTaskInserter = CollectionTaskInserter,
   ...rest
 }) => (
   <div className={className}>
@@ -76,24 +76,14 @@ export const CollectionTasksTable = ({
       {withTaskInsert && (
         <>
           <h3>Tâches</h3>
-          {CustomTaskInserter ? (
-            <CustomTaskInserter
-              doc={doc}
-              refetch={refetch}
-              model={model}
-              openOnMount={openOnMount}
-              resetForm={resetForm}
-            />
-          ) : (
-            <CollectionTaskInserter
-              doc={doc}
-              refetch={refetch}
-              model={model}
-              openOnMount={openOnMount}
-              resetForm={resetForm}
-              collection={collection}
-            />
-          )}
+          <CustomTaskInserter
+            doc={doc}
+            refetch={refetch}
+            model={model}
+            openOnMount={openOnMount}
+            resetForm={resetForm}
+            collection={collection}
+          />
         </>
       )}
     </TasksTable>

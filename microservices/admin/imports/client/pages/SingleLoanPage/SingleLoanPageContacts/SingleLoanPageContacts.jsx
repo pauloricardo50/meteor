@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useLoanContacts from 'core/components/AdminNote/useLoanContacts';
-import Contact from '../../../components/Contact';
+import RequestContact from '../../../components/RequestContact';
 
 const SingleLoanPageContacts = ({ loanId }) => {
   const { loading, contacts } = useLoanContacts(loanId);
@@ -12,7 +12,7 @@ const SingleLoanPageContacts = ({ loanId }) => {
       <div className="scroll-wrapper">
         {!loading &&
           contacts.map(contact => (
-            <Contact
+            <RequestContact
               {...contact}
               key={contact.name}
               className="single-loan-page-contacts-contact"

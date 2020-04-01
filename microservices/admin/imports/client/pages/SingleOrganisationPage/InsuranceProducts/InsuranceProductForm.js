@@ -7,17 +7,19 @@ import {
   insuranceProductRemove,
 } from 'core/api/methods';
 
+const schema = InsuranceProductSchema.omit(
+  'createdAt',
+  'updatedAt',
+  'organisationLink',
+);
+
 export default withProps(
   ({
     organisationId,
     insuranceProduct: { _id: insuranceProductId } = {},
     setOpen,
   }) => ({
-    schema: InsuranceProductSchema.omit(
-      'createdAt',
-      'updatedAt',
-      'organisationLink',
-    ),
+    schema,
     insertInsuranceProduct: values =>
       insuranceProductInsert.run({
         insuranceProduct: {

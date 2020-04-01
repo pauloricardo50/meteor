@@ -53,7 +53,10 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
         <>
           <h3 className="mb-8">Revenus</h3>
           <RevenuesTable
-            filterRevenues={() => ({ loanId, status: REVENUE_STATUS.EXPECTED })}
+            filterRevenues={() => ({
+              'loanCache.0._id': loanId,
+              status: REVENUE_STATUS.EXPECTED,
+            })}
           />
         </>
       )}

@@ -48,7 +48,6 @@ const BoardPage = ({
 export default compose(
   withMatchParam('boardId'),
   withProps(({ boardId, currentUser }) => {
-    console.log('currentUser:', currentUser);
     const [board, setBoard] = useState(
       boardId || currentUser?.defaultBoardId || 'loans',
     );

@@ -3,7 +3,6 @@ import InsuranceRequestsSummaryList from '../../../../components/InsuranceReques
 
 const InsuranceRequestsTab = ({ loan }) => {
   const { insuranceRequests = [] } = loan;
-  console.log('loan:', loan);
   return (
     <InsuranceRequestsSummaryList
       insuranceRequests={insuranceRequests}

@@ -79,14 +79,12 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
       loan: { user: { referredByOrganisation } = {}, hasPromotion } = {},
     }) => {
       if (
-        referredByOrganisation &&
-        referredByOrganisation.name &&
+        referredByOrganisation?.name &&
         (!organisationLinks || organisationLinks.length === 0) &&
         !hasPromotion
       ) {
         return (
-          referredByOrganisation.commissionRates &&
-          referredByOrganisation.commissionRates.length > 0 &&
+          referredByOrganisation.commissionRates?.length > 0 &&
           referredByOrganisation.commissionRates.some(
             ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
           )

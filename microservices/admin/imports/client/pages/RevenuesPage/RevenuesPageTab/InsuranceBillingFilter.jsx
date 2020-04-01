@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
 
@@ -45,12 +45,15 @@ const InsuranceBillingFilter = props => {
     setType,
   } = props;
   const [label, setLabel] = useState('Réceptionner décompte assurance');
+  const schema = useMemo(() => getSchema(sourceOrganisations), [
+    sourceOrganisations,
+  ]);
 
   return (
     <AutoFormDialog
       title="Réceptionner décompte assurance"
       description="Permet d'afficher tous les revenus assurance attendus dans le décompte d'un mois et d'une organisation sélectionnés. Un décompte annonçant en principe les revenus à recevoir un mois plus tard, les revenus attendus le mois suivant le décompte seront affichés. Par exemple, en sélectionnant le décompte Swisslife du mois d'avril 2020, seuls les revenus de type assurance attendus de la part de Swisslife au mois de mai 2020 seront affichés."
-      schema={getSchema(sourceOrganisations)}
+      schema={schema}
       onSubmit={({ date, organisationId }) =>
         new Promise((resolve, reject) => {
           setSourceOrganisationId({ $in: [organisationId] });

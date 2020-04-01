@@ -28,7 +28,10 @@ const CommissionsToReceive = props => {
       />
       <WrappedRevenuesTable
         {...props}
-        filterRevenues={() => ({ organisationId, status })}
+        filterRevenues={() => ({
+          organisationLinks: { $elemMatch: { _id: organisationId } },
+          status,
+        })}
       />
     </>
   );

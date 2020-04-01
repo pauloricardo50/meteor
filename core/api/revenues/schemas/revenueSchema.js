@@ -12,7 +12,6 @@ import {
   REVENUE_TYPES,
   REVENUE_STATUS,
   COMMISSION_STATUS,
-  REVENUE_SECONDARY_TYPES,
 } from '../revenueConstants';
 
 const RevenueSchema = new SimpleSchema({
@@ -24,13 +23,6 @@ const RevenueSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(REVENUE_TYPES),
     uniforms: { displayEmpty: false, placeholder: '' },
-  },
-  secondaryType: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(REVENUE_SECONDARY_TYPES),
-    uniforms: { displayEmpty: false, placeholder: '' },
-    condition: ({ type }) => type === REVENUE_TYPES.INSURANCE,
   },
   status: {
     type: String,

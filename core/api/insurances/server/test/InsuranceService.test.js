@@ -41,7 +41,7 @@ describe('InsuranceService', () => {
           organisationId: 'org',
           insuranceProductId: 'product',
           insurance: {
-            status: INSURANCE_STATUS.ACTIVE,
+            status: INSURANCE_STATUS.POLICED,
             startDate: new Date(),
             endDate: new Date(),
           },
@@ -73,7 +73,7 @@ describe('InsuranceService', () => {
           organisationId: 'org',
           insuranceProductId: 'product',
           insurance: {
-            status: INSURANCE_STATUS.ACTIVE,
+            status: INSURANCE_STATUS.POLICED,
             startDate: new Date(),
             endDate: new Date(),
           },
@@ -96,7 +96,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: new Date(),
           premiumFrequency: INSURANCE_PREMIUM_FREQUENCY.SINGLE,
@@ -108,14 +108,14 @@ describe('InsuranceService', () => {
       expect(duration).to.equal(1);
     });
 
-    it('returns 12 if the premium frequency is MONTHLY and the duration is 15 months', () => {
+    it('returns 15 if the premium frequency is MONTHLY and the duration is 15 months', () => {
       const insuranceId = InsuranceService.insert({
         insuranceRequestId: 'insuranceRequest',
         borrowerId: 'borrower',
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(15, 'months')
@@ -136,7 +136,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(12, 'months')
@@ -157,7 +157,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(18, 'months')
@@ -178,7 +178,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(60, 'months')
@@ -201,7 +201,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: new Date(),
           premiumFrequency: INSURANCE_PREMIUM_FREQUENCY.SINGLE,
@@ -223,7 +223,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(1, 'year')
@@ -247,7 +247,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(1, 'year')
@@ -295,7 +295,7 @@ describe('InsuranceService', () => {
         organisationId: 'org',
         insuranceProductId: 'product',
         insurance: {
-          status: INSURANCE_STATUS.ACTIVE,
+          status: INSURANCE_STATUS.POLICED,
           startDate: new Date(),
           endDate: moment()
             .add(1, 'year')

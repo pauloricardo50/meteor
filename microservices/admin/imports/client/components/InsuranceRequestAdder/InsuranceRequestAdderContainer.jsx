@@ -1,14 +1,11 @@
-import React, { useContext } from 'react';
+import { useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import uniqBy from 'lodash/uniqBy';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { insuranceRequestInsert } from 'core/api/insuranceRequests/methodDefinitions';
-import { USERS_COLLECTION, ROLES } from 'core/api/constants';
+import { ROLES } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
-
-import { assigneesSchema } from '../AssigneesManager/AssigneesManagerContainer';
 
 const getSchema = ({ availableBorrowers = [], withKeepAssigneesCheckbox }) =>
   new SimpleSchema({
@@ -97,7 +94,6 @@ export default withProps(
     withKeepAssigneesCheckbox = true,
     onSuccess = () => ({}),
   }) => {
-    console.log('withKeepAssigneesCheckbox:', withKeepAssigneesCheckbox);
     const {
       _id: userId,
       assignedEmployee = {},
@@ -115,11 +111,17 @@ export default withProps(
       '_id',
     );
 
+    const schema = useMemo(
+      () =>
+        getSchema({
+          availableBorrowers,
+          withKeepAssigneesCheckbox,
+        }),
+      [availableBorrowers, withKeepAssigneesCheckbox],
+    );
+
     return {
-      schema: getSchema({
-        availableBorrowers,
-        withKeepAssigneesCheckbox,
-      }),
+      schema,
       model: {
         assigneeLinks: assigneeLinks.length
           ? assigneeLinks

@@ -1,9 +1,6 @@
 import omit from 'lodash/omit';
 import Loans from '.';
-import {
-  formatLoanWithStructure,
-  nextDueTaskReducer,
-} from '../../utils/loanFunctions';
+import { formatLoanWithStructure } from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
 import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
 import {
@@ -13,6 +10,7 @@ import {
 import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
 import mainAssigneeReducer from '../reducers/mainAssigneeReducer';
 import proNotesReducer from '../reducers/proNotesReducer';
+import nextDueTaskReducer from '../reducers/nextDueTaskReducer';
 
 Loans.addReducers({
   structure: {

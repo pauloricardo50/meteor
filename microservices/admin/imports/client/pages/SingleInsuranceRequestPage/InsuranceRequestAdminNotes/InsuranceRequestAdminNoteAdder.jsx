@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
@@ -34,12 +34,12 @@ const documentSelectSchema = (availableDocuments = []) =>
     },
   });
 
+const adminNotesBaseSchema = new SimpleSchema(adminNotesSchema)
+  .getObjectSchema('adminNotes.$')
+  .omit('updatedBy', 'id');
+
 const makeGetUpdateSchema = availableDocuments => () =>
-  documentSelectSchema(availableDocuments).extend(
-    new SimpleSchema(adminNotesSchema)
-      .getObjectSchema('adminNotes.$')
-      .omit('updatedBy', 'id'),
-  );
+  documentSelectSchema(availableDocuments).extend(adminNotesBaseSchema);
 
 const makeGetInsertSchema = availableDocuments => contacts =>
   makeGetUpdateSchema(availableDocuments)().extend({
@@ -115,9 +115,9 @@ export default withProps(
         collection: INSURANCE_REQUESTS_COLLECTION,
         name: `Dossier assurance ${insuranceRequestName}`,
       },
-      ...insurances.map(({ _id, name, borrower }) => ({
+      ...insurances.map(({ _id, borrower, insuranceProduct: { name } }) => ({
         _id,
-        name: `Assurance ${borrower.name} ${name}`,
+        name: `${name} - ${borrower.name}`,
         collection: INSURANCES_COLLECTION,
       })),
     ];
@@ -137,13 +137,22 @@ export default withProps(
         break;
     }
 
+    const getInsertSchemaOverride = useMemo(
+      () => makeGetInsertSchema(availableDocuments),
+      [availableDocuments],
+    );
+    const getUpdateSchemaOverride = useMemo(
+      () => makeGetUpdateSchema(availableDocuments),
+      [availableDocuments],
+    );
+
     return {
       getContacts: useInsuranceRequestContacts,
       setAdminNote: makeSetAdminNote(availableDocuments),
       removeAdminNote,
       methodParams,
-      getInsertSchemaOverride: makeGetInsertSchema(availableDocuments),
-      getUpdateSchemaOverride: makeGetUpdateSchema(availableDocuments),
+      getInsertSchemaOverride,
+      getUpdateSchemaOverride,
     };
   },
 )(AdminNoteSetter);

@@ -98,7 +98,7 @@ const revenueFormLayout = [
     title: <h4>Général</h4>,
     className: 'mb-32',
     layout: [
-      { className: 'grid-col', fields: ['amount', 'type', 'secondaryType'] },
+      { className: 'grid-col', fields: ['amount', 'type'] },
       'description',
     ],
   },

@@ -5,12 +5,20 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon/Icon';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import InsuranceRequestsPageContainer from './InsuranceRequestsPageContainer';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import InsuranceRequestsTable from '../../components/InsuranceRequestsTable/InsuranceRequestsTable';
 
-const InsuranceRequestsPage = props => {
-  console.log('props:', props);
-  const { insuranceRequests } = props;
+const InsuranceRequestsPage = () => {
+  const { data: insuranceRequests } = useStaticMeteorData({
+    query: INSURANCE_REQUESTS_COLLECTION,
+    params: {
+      name: 1,
+      user: { name: 1 },
+      status: 1,
+      createdAt: 1,
+      updatedAt: 1,
+    },
+  });
   return (
     <section className="card1 card-top insurance-requests-page">
       <Helmet>
@@ -30,4 +38,4 @@ const InsuranceRequestsPage = props => {
   );
 };
 
-export default InsuranceRequestsPageContainer(InsuranceRequestsPage);
+export default InsuranceRequestsPage;

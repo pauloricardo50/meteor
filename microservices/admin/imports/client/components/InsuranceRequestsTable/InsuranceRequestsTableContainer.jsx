@@ -44,7 +44,7 @@ const getRows = ({ insuranceRequests = [], history }) =>
           ),
         },
         {
-          raw: user && user.name,
+          raw: user?.name,
           label: user ? (
             <CollectionIconLink
               relatedDoc={{ ...user, collection: USERS_COLLECTION }}
@@ -64,11 +64,11 @@ const getRows = ({ insuranceRequests = [], history }) =>
           ),
         },
         {
-          raw: createdAt && createdAt.getTime(),
+          raw: createdAt?.getTime(),
           label: moment(createdAt).fromNow(),
         },
         {
-          raw: updatedAt && updatedAt.getTime(),
+          raw: updatedAt?.getTime(),
           label: updatedAt ? moment(updatedAt).fromNow() : '-',
         },
       ],

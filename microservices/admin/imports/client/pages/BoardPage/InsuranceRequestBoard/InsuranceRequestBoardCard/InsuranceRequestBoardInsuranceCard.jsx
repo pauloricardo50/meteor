@@ -4,7 +4,7 @@ import StatusLabel from 'core/components/StatusLabel';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 
 const InsuranceRequestBoardInsuranceCard = ({ insurance }) => {
-  const { status, name, organisation, insuranceProduct } = insurance;
+  const { status, organisation, insuranceProduct } = insurance;
 
   return (
     <div className="card1 p-4 flex-col mb-4">
@@ -15,13 +15,17 @@ const InsuranceRequestBoardInsuranceCard = ({ insurance }) => {
             status={status}
             collection={INSURANCES_COLLECTION}
           />
-          <img src={organisation.logo} width={16} className="ml-4 mr-4" />
-          <p>{insuranceProduct.name}</p>
+          <img
+            src={organisation?.logo}
+            width={16}
+            className="ml-4 mr-4"
+            alt={organisation?.name}
+          />
+          <p>{insuranceProduct?.name}</p>
         </div>
         <CollectionIconLink
           relatedDoc={{ ...insurance, collection: INSURANCES_COLLECTION }}
         />
-        {/* <h4 className="title ml-8">{name}</h4> */}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const InsuranceFormEndDateSetter = ({
   buttonProps,
   model = {},
 }) => {
-  const [error, setError] = useState(undefined);
+  const [error, setError] = useState();
 
   return (
     <div className="flex-col">

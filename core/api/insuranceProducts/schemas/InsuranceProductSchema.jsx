@@ -3,8 +3,8 @@ import SimpleSchema from 'simpl-schema';
 
 import { updatedAt, createdAt } from '../../helpers/sharedSchemas';
 import {
-  INSURANCE_PRODUCT_TYPES,
   INSURANCE_PRODUCT_CATEGORIES,
+  INSURANCE_PRODUCT_FEATURES,
 } from '../insuranceProductConstants';
 import T from '../../../components/Translation';
 
@@ -17,16 +17,28 @@ const InsuranceProductSchema = new SimpleSchema({
       placeholder: 'FlexSave Duo',
     },
   },
-  type: {
-    type: String,
-    allowedValues: Object.values(INSURANCE_PRODUCT_TYPES),
-    uniforms: { transform: type => <T id={`InsuranceProduct.type.${type}`} /> },
-  },
   category: {
     type: String,
     allowedValues: Object.values(INSURANCE_PRODUCT_CATEGORIES),
     uniforms: {
       transform: category => <T id={`InsuranceProduct.category.${category}`} />,
+    },
+  },
+  features: {
+    type: Array,
+    // minCount: 1,
+    uniforms: {
+      label: 'Prestations',
+      checkboxes: true,
+      allowNull: false,
+      displayEmpty: false,
+    },
+  },
+  'features.$': {
+    type: String,
+    allowedValues: Object.values(INSURANCE_PRODUCT_FEATURES),
+    uniforms: {
+      transform: feature => <T id={`InsuranceProduct.features.${feature}`} />,
     },
   },
   revaluationFactor: { type: Number, min: 0.01, max: 10 },

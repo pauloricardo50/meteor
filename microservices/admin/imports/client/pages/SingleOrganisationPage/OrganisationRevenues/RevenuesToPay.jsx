@@ -24,7 +24,7 @@ const RevenuesToPay = ({ _id: organisationId }) => {
       />
       <RevenuesTable
         filterRevenues={() => ({
-          sourceOrganisationId: organisationId,
+          'sourceOrganisationLink._id': organisationId,
           status,
         })}
       />

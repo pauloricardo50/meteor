@@ -128,6 +128,19 @@ export class BorrowerService extends CollectionService {
       });
     });
   }
+
+  cleanUpBorrowers({ borrowerId }) {
+    const { insuranceRequests = [], loans = [] } = this.get(borrowerId, {
+      loans: { _id: 1 },
+      insuranceRequests: { _id: 1 },
+    });
+    const hasOneLoan = loans.length === 1;
+    const hasOneInsuranceRequest = insuranceRequests.length === 1;
+
+    if (hasOneLoan ? !hasOneInsuranceRequest : hasOneInsuranceRequest) {
+      this.remove({ borrowerId });
+    }
+  }
 }
 
 export default new BorrowerService();

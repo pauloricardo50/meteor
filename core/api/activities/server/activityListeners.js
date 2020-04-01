@@ -21,6 +21,7 @@ import {
   sendLoanChecklist,
   loanSetAssignees,
   insuranceRequestSetAssignees,
+  insuranceRequestUpdateStatus,
 } from '../../methods';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import UserService from '../../users/server/UserService';
@@ -445,6 +446,35 @@ ServerEventService.addAfterMethodListener(
           return assignee && `${assignee.firstName} (${percent}%)`;
         })
         .join(', ')}\nNote: "${note}"`,
+      createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  insuranceRequestUpdateStatus,
+  ({
+    context,
+    params: { insuranceRequestId },
+    result: { prevStatus, nextStatus },
+  }) => {
+    context.unblock();
+    const { userId } = context;
+    const formattedPrevStatus = formatMessage({
+      id: `Forms.status.${prevStatus}`,
+    });
+    const formattedNexStatus = formatMessage({
+      id: `Forms.status.${nextStatus}`,
+    });
+    const { name: adminName } = UserService.get(userId, { name: 1 });
+
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS,
+      details: { prevStatus, nextStatus },
+      isServerGenerated: true,
+      insuranceRequestLink: { _id: insuranceRequestId },
+      title: 'Statut modifié',
+      description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
       createdBy: userId,
     });
   },

@@ -54,7 +54,7 @@ class InsuranceService extends CollectionService {
     const activeInsurances = this.fetch({
       $filters: {
         'organisationLink._id': organisationId,
-        status: INSURANCE_STATUS.ACTIVE,
+        status: INSURANCE_STATUS.POLICED,
       },
       insuranceProduct: { revaluationFactor: 1 },
       duration: 1,
@@ -185,32 +185,6 @@ class InsuranceService extends CollectionService {
       operator: '$unset',
       object: { proNote: true },
     });
-  }
-
-  getInsuranceDuration({ insuranceId }) {
-    const { startDate, endDate, premiumFrequency } = this.get(insuranceId, {
-      startDate: 1,
-      endDate: 1,
-      premiumFrequency: 1,
-    });
-    const rawDuration = moment.duration(
-      moment(endDate).diff(moment(startDate)),
-    );
-
-    switch (premiumFrequency) {
-      case INSURANCE_PREMIUM_FREQUENCY.SINGLE:
-        return 1;
-      case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
-        return Math.round(rawDuration.asMonths());
-      case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
-        return Math.round(rawDuration.asMonths() / 3);
-      case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
-        return Math.round(rawDuration.asYears() * 2);
-      case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
-        return Math.round(rawDuration.asYears());
-      default:
-        return 0;
-    }
   }
 
   getEstimatedRevenue({ insuranceId }) {

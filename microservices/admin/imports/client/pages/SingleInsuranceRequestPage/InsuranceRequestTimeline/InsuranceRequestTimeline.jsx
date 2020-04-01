@@ -50,23 +50,17 @@ const handleDocumentFilterChange = ({
   );
 
   const taskFilters = {
-    $and: [
-      {
-        $or: documents.map(({ id, collection }) => {
-          if (collection === INSURANCE_REQUESTS_COLLECTION) {
-            return { 'insuranceRequestLink._id': id };
-          }
-          return { 'insuranceLink._id': id };
-        }),
-      },
-      {
-        'insuranceLink._id': {
-          $nin: skippedDocuments
-            .filter(({ collection }) => collection === INSURANCES_COLLECTION)
-            .map(({ id }) => id),
-        },
-      },
-    ],
+    $or: documents.map(({ id, collection }) => {
+      if (collection === INSURANCE_REQUESTS_COLLECTION) {
+        return { 'insuranceRequestLink._id': id };
+      }
+      return { 'insuranceLink._id': id };
+    }),
+    'insuranceLink._id': {
+      $nin: skippedDocuments
+        .filter(({ collection }) => collection === INSURANCES_COLLECTION)
+        .map(({ id }) => id),
+    },
   };
 
   const activityFilters = {
@@ -96,10 +90,10 @@ const InsuranceRequestTimeline = ({ insuranceRequest }) => {
       shortLabel: insuranceRequestName,
       collection: INSURANCE_REQUESTS_COLLECTION,
     },
-    ...insurances.map(({ _id, name, borrower }) => ({
+    ...insurances.map(({ _id, borrower, insuranceProduct: { name } }) => ({
       id: _id,
-      label: `Assurance ${borrower.name} ${name}`,
-      shortLabel: name,
+      label: `${name} - ${borrower.name}`,
+      shortLabel: `${name} - ${borrower.name}`,
       collection: INSURANCES_COLLECTION,
     })),
   ];

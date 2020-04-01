@@ -49,7 +49,10 @@ export default withProps(({ insuranceRequest }) => {
 
   const availableDocuments = [
     { id: docId, label: insuranceRequestName },
-    ...insurances.map(({ _id, name }) => ({ id: _id, label: name })),
+    ...insurances.map(({ _id, borrower, insuranceProduct: { name } }) => ({
+      id: _id,
+      label: `${name} - ${borrower.name}`,
+    })),
   ];
 
   const [documentFilter, setDocumentFilter] = useState(

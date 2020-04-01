@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 
@@ -54,24 +54,31 @@ export const AdminActivityForm = ({
   layout,
   activitiesFilter,
   ...rest
-}) => (
-  <AutoFormDialog
-    schema={schema || getActivitySchema(activitiesFilter)}
-    model={model}
-    onSubmit={onSubmit}
-    layout={layout || activityFormLayout}
-    buttonProps={{
-      className,
-      label: 'Activité',
-      raised: true,
-      primary: true,
-      icon: <Icon type="add" />,
-      style: { margin: '0 8px' },
-      ...buttonProps,
-    }}
-    {...rest}
-  />
-);
+}) => {
+  const activitySchema = useMemo(
+    () => schema || getActivitySchema(activitiesFilter),
+    [activitiesFilter, schema],
+  );
+
+  return (
+    <AutoFormDialog
+      schema={activitySchema}
+      model={model}
+      onSubmit={onSubmit}
+      layout={layout || activityFormLayout}
+      buttonProps={{
+        className,
+        label: 'Activité',
+        raised: true,
+        primary: true,
+        icon: <Icon type="add" />,
+        style: { margin: '0 8px' },
+        ...buttonProps,
+      }}
+      {...rest}
+    />
+  );
+};
 
 export const AdminActivityModifier = withProps(({ model }) => ({
   onSubmit: values =>

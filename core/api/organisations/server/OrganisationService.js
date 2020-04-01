@@ -14,7 +14,10 @@ class OrganisationService extends CollectionService {
         { _id: 1 },
       ) || {};
     if (currentCommissionRatesId) {
-      CommissionRateService.remove(currentCommissionRatesId);
+      return CommissionRateService._update({
+        id: currentCommissionRatesId,
+        object: commissionRates,
+      });
     }
     return CommissionRateService.insert({ commissionRates, organisationId });
   }

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';
 
 import Box from 'core/components/Box';
 
 import {
-  ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
+  ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
@@ -65,22 +65,28 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
       name: 1,
       insuranceProducts: {
         name: 1,
-        type: 1,
+        features: 1,
         category: 1,
         revaluationFactor: 1,
       },
     },
   });
 
+  const schema = useMemo(
+    () =>
+      loading
+        ? {}
+        : getSchema({
+            borrowers,
+            organisations: organisations.filter(
+              ({ insuranceProducts = [] }) => !!insuranceProducts.length,
+            ),
+          }),
+    [loading, borrowers, organisations],
+  );
+
   return {
-    schema: loading
-      ? {}
-      : getSchema({
-          borrowers,
-          organisations: organisations.filter(
-            ({ insuranceProducts = [] }) => !!insuranceProducts.length,
-          ),
-        }),
+    schema,
     model: {
       ...insurance,
       borrowerId: insurance.borrower?._id,
