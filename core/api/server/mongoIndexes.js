@@ -17,6 +17,7 @@ Meteor.startup(() => {
   Activities._ensureIndex({ 'userLink._id': 1 });
   Borrowers._ensureIndex({ userId: 1 });
   Loans._ensureIndex({ userId: 1 });
+  Loans._ensureIndex({ propertyIds: 1 });
   Offers._ensureIndex({ loanId: 1 });
   Properties._ensureIndex({ userId: 1 });
   Sessions._ensureIndex({ connectionId: 1 });
