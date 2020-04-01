@@ -3,7 +3,7 @@ import React from 'react';
 import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
 
-const Contact = ({
+const RequestContact = ({
   name,
   email = '-',
   title = 'Contact perso',
@@ -48,4 +48,4 @@ const Contact = ({
   </div>
 );
 
-export default Contact;
+export default RequestContact;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
-import Contact from '../../components/Contact';
+import RequestContact from '../../components/RequestContact';
 
 const SingleInsuranceRequestPageContacts = ({ insuranceRequestId }) => {
   const { loading, contacts } = useInsuranceRequestContacts(insuranceRequestId);
@@ -12,7 +12,7 @@ const SingleInsuranceRequestPageContacts = ({ insuranceRequestId }) => {
       <div className="scroll-wrapper">
         {!loading &&
           contacts.map(contact => (
-            <Contact
+            <RequestContact
               {...contact}
               key={contact.name}
               className="single-insurance-request-page-contacts-contact"
