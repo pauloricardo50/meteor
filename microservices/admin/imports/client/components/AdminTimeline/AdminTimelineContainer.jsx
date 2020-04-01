@@ -17,8 +17,6 @@ import {
   taskUpdate,
   taskChangeStatus,
   taskComplete,
-  activityInsert,
-  activityUpdate,
 } from 'core/api/methods';
 import { activity as activityFragment } from 'core/api/fragments';
 
@@ -35,6 +33,91 @@ export const activityFilterOptions = [
     type => type !== ACTIVITY_TYPES.EMAIL && type !== ACTIVITY_TYPES.PHONE,
   ),
 ];
+
+const getActivities = ({ activityFilters, queryFilters, type }) =>
+  useStaticMeteorData(
+    {
+      query: ACTIVITIES_COLLECTION,
+      params: {
+        $filters: {
+          ...(activityFilters || queryFilters),
+          type: formatType(type),
+        },
+        ...activityFragment(),
+      },
+    },
+    [activityFilters],
+  );
+
+const getTasks = ({ fetchTasks, taskFilters, queryFilters }) =>
+  useStaticMeteorData(
+    {
+      query: fetchTasks && TASKS_COLLECTION,
+      params: {
+        $filters: {
+          ...(taskFilters || queryFilters),
+          status: TASK_STATUS.COMPLETED,
+        },
+        completedAt: 1,
+        title: 1,
+        loanLink: 1,
+        userLink: 1,
+        promotionLink: 1,
+        organisationLink: 1,
+        lenderLink: 1,
+        contactLink: 1,
+        insuranceRequestLink: 1,
+        insuranceLink: 1,
+      },
+      refetchOnMethodCall: [
+        taskInsert,
+        taskUpdate,
+        taskChangeStatus,
+        taskComplete,
+      ],
+    },
+    [fetchTasks, taskFilters],
+  );
+
+const getConversations = ({ fetchConversations, frontTagId }) =>
+  useStaticMeteorData(
+    {
+      query: fetchConversations && 'frontGetTaggedConversations',
+      params: { tagId: frontTagId },
+      dataName: 'conversations',
+      refetchOnMethodCall: false,
+    },
+    [fetchConversations],
+  );
+
+const mergeActivities = ({
+  loading,
+  activities,
+  completedTasks,
+  conversations,
+}) =>
+  loading
+    ? []
+    : [
+        ...(activities || []),
+        ...(completedTasks
+          ? completedTasks
+              .filter(({ completedAt }) => !!completedAt)
+              .map(({ completedAt, title, ...task }) => ({
+                date: completedAt,
+                title: 'Tâche complétée',
+                type: 'task',
+                description: title,
+                ...task,
+              }))
+          : []),
+        ...(conversations
+          ? conversations.map(({ frontLink, ...conversation }) => ({
+              ...conversation,
+              description: <a href={frontLink}>Ouvrir dans Front</a>,
+            }))
+          : []),
+      ].sort((a, b) => a.date?.getTime() - b.date?.getTime());
 
 export default withProps(
   ({ docId, collection, frontTagId, taskFilters, activityFilters }) => {
@@ -58,92 +141,34 @@ export default withProps(
         break;
     }
 
-    const {
-      loading: loadingActivities,
-      data: activities,
-    } = useStaticMeteorData(
-      {
-        query: ACTIVITIES_COLLECTION,
-        params: {
-          $filters: {
-            ...(activityFilters || queryFilters),
-            type: formatType(type),
-          },
-          ...activityFragment(),
-        },
-      },
-      [activityFilters],
-    );
+    const { loading: loadingActivities, data: activities } = getActivities({
+      activityFilters,
+      queryFilters,
+      type,
+    });
 
-    const { loading: loadingTasks, data: completedTasks } = useStaticMeteorData(
-      {
-        query: fetchTasks && TASKS_COLLECTION,
-        params: {
-          $filters: {
-            ...(taskFilters || queryFilters),
-            status: TASK_STATUS.COMPLETED,
-          },
-          completedAt: 1,
-          title: 1,
-          loanLink: { _id: 1 },
-          userLink: { _id: 1 },
-          promotionLink: { _id: 1 },
-          organisationLink: { _id: 1 },
-          lenderLink: { _id: 1 },
-          contactLink: { _id: 1 },
-          insuranceRequestLink: { _id: 1 },
-          insuranceLink: { _id: 1 },
-        },
-        refetchOnMethodCall: [
-          taskInsert,
-          taskUpdate,
-          taskChangeStatus,
-          taskComplete,
-        ],
-      },
-      [fetchTasks, taskFilters],
-    );
+    const { loading: loadingTasks, data: completedTasks } = getTasks({
+      fetchTasks,
+      taskFilters,
+      queryFilters,
+    });
 
     const {
       loading: loadingConversations,
       data: conversations,
-    } = useStaticMeteorData(
-      {
-        query: fetchConversations && 'frontGetTaggedConversations',
-        params: { tagId: frontTagId },
-        dataName: 'conversations',
-        refetchOnMethodCall: false,
-      },
-      [fetchConversations],
-    );
+    } = getConversations({ fetchConversations, frontTagId });
 
     const loading = loadingActivities || loadingTasks || loadingConversations;
 
     return {
       setType,
       type,
-      activities: loading
-        ? []
-        : [
-            ...(activities || []),
-            ...(completedTasks
-              ? completedTasks
-                  .filter(({ completedAt }) => !!completedAt)
-                  .map(({ completedAt, title, ...task }) => ({
-                    date: completedAt,
-                    title: 'Tâche complétée',
-                    type: 'task',
-                    description: title,
-                    ...task,
-                  }))
-              : []),
-            ...(conversations
-              ? conversations.map(({ frontLink, ...conversation }) => ({
-                  ...conversation,
-                  description: <a href={frontLink}>Ouvrir dans Front</a>,
-                }))
-              : []),
-          ].sort((a, b) => a.date?.getTime() - b.date?.getTime()),
+      activities: mergeActivities({
+        loading,
+        activities,
+        completedTasks,
+        conversations,
+      }),
       fetchTasks,
       setFetchTasks,
       fetchConversations,
