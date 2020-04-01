@@ -9,7 +9,6 @@ const BOARD_IDS = {
 
 const DefaultBoardIdModifier = ({ currentUser }) => {
   const { _id: userId, defaultBoardId } = currentUser;
-  console.log('currentUser:', currentUser);
 
   return (
     <Toggle
