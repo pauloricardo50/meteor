@@ -10,8 +10,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import ADMIN_ROUTES from '../../../../../startup/client/adminRoutes';
 import InsuranceRequestLoanLinker from './InsuranceRequestLoanLinker';
 
-const InsuranceRequestLinkedLoan = props => {
-  const { insuranceRequest } = props;
+const InsuranceRequestLinkedLoan = ({ insuranceRequest }) => {
   const { loan } = insuranceRequest;
   const history = useHistory();
 

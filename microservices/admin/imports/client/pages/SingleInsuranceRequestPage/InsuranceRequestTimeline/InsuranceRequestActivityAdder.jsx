@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { withProps } from 'recompose';
@@ -7,6 +8,8 @@ import {
   getActivitySchema,
   AdminActivityForm,
 } from '../../../components/AdminTimeline/AdminActivityAdder';
+
+const activitySchema = getActivitySchema();
 
 const getSchema = (availableDocuments = []) =>
   new SimpleSchema({
@@ -22,28 +25,34 @@ const getSchema = (availableDocuments = []) =>
         checkboxes: true,
       },
     },
-  }).extend(getActivitySchema());
+  }).extend(activitySchema);
 
-export default withProps(({ availableDocuments = [] }) => ({
-  schema: getSchema(availableDocuments),
-  layout: [
-    'docId',
-    { className: 'grid-col', fields: ['title', 'type'] },
-    { className: 'grid-col', fields: ['date', 'shouldNotify'] },
-    'description',
-    'isImportant',
-  ],
-  onSubmit: ({ docId, ...values }) => {
-    let methodParams;
-    const { collection } = availableDocuments.find(({ id }) => id === docId);
-    if (collection === INSURANCES_COLLECTION) {
-      methodParams = { insuranceLink: { _id: docId } };
-    } else {
-      methodParams = { insuranceRequestLink: { _id: docId } };
-    }
+export default withProps(({ availableDocuments = [] }) => {
+  const schema = useMemo(() => getSchema(availableDocuments), [
+    availableDocuments,
+  ]);
 
-    return activityInsert.run({ object: { ...values, ...methodParams } });
-  },
-  iconType: 'add',
-  title: 'Ajouter événement',
-}))(AdminActivityForm);
+  return {
+    schema,
+    layout: [
+      'docId',
+      { className: 'grid-col', fields: ['title', 'type'] },
+      { className: 'grid-col', fields: ['date', 'shouldNotify'] },
+      'description',
+      'isImportant',
+    ],
+    onSubmit: ({ docId, ...values }) => {
+      let methodParams;
+      const { collection } = availableDocuments.find(({ id }) => id === docId);
+      if (collection === INSURANCES_COLLECTION) {
+        methodParams = { insuranceLink: { _id: docId } };
+      } else {
+        methodParams = { insuranceRequestLink: { _id: docId } };
+      }
+
+      return activityInsert.run({ object: { ...values, ...methodParams } });
+    },
+    iconType: 'add',
+    title: 'Ajouter événement',
+  };
+})(AdminActivityForm);

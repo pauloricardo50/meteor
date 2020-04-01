@@ -9,8 +9,11 @@ import Dialog from 'core/components/Material/Dialog';
 import Icon from 'core/components/Icon';
 import { insuranceRequestLinkBorrower } from 'core/api/methods';
 
-const InsuranceRequestBorrowerReuser = props => {
-  const { insuranceRequest, className, buttonProps = {} } = props;
+const InsuranceRequestBorrowerReuser = ({
+  insuranceRequest,
+  className,
+  buttonProps = {},
+}) => {
   const {
     user: { _id: userId },
     borrowers = [],

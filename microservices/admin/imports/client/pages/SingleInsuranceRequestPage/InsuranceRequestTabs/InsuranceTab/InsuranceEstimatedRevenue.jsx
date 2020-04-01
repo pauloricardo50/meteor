@@ -10,6 +10,7 @@ import {
   INSURANCES_COLLECTION,
 } from 'core/api/constants';
 import { Money } from 'core/components/Translation';
+import Loading from 'core/components/Loading';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import InsuranceEstimatedRevenueInfos from './InsuranceEstimatedRevenueInfos';
 
@@ -54,7 +55,7 @@ const InsuranceEstimatedRevenue = ({
   );
 
   if (loadingInsurance || loadingOrg) {
-    return null;
+    return <Loading small />;
   }
 
   const { estimatedRevenue, duration } = insurance;
