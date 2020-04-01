@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
@@ -34,12 +34,12 @@ const documentSelectSchema = (availableDocuments = []) =>
     },
   });
 
+const adminNotesBaseSchema = new SimpleSchema(adminNotesSchema)
+  .getObjectSchema('adminNotes.$')
+  .omit('updatedBy', 'id');
+
 const makeGetUpdateSchema = availableDocuments => () =>
-  documentSelectSchema(availableDocuments).extend(
-    new SimpleSchema(adminNotesSchema)
-      .getObjectSchema('adminNotes.$')
-      .omit('updatedBy', 'id'),
-  );
+  documentSelectSchema(availableDocuments).extend(adminNotesBaseSchema);
 
 const makeGetInsertSchema = availableDocuments => contacts =>
   makeGetUpdateSchema(availableDocuments)().extend({
@@ -137,13 +137,22 @@ export default withProps(
         break;
     }
 
+    const getInsertSchemaOverride = useMemo(
+      () => makeGetInsertSchema(availableDocuments),
+      [availableDocuments],
+    );
+    const getUpdateSchemaOverride = useMemo(
+      () => makeGetUpdateSchema(availableDocuments),
+      [availableDocuments],
+    );
+
     return {
       getContacts: useInsuranceRequestContacts,
       setAdminNote: makeSetAdminNote(availableDocuments),
       removeAdminNote,
       methodParams,
-      getInsertSchemaOverride: makeGetInsertSchema(availableDocuments),
-      getUpdateSchemaOverride: makeGetUpdateSchema(availableDocuments),
+      getInsertSchemaOverride,
+      getUpdateSchemaOverride,
     };
   },
 )(AdminNoteSetter);
