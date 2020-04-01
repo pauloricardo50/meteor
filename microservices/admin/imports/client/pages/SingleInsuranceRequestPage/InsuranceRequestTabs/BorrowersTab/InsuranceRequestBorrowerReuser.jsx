@@ -14,12 +14,17 @@ const InsuranceRequestBorrowerReuser = ({
   className,
   buttonProps = {},
 }) => {
-  const {
-    user: { _id: userId },
-    borrowers = [],
-  } = insuranceRequest;
+  const { user: { _id: userId } = {}, borrowers = [] } = insuranceRequest;
 
   const [openDialog, setOpenDialog] = useState(false);
+
+  if (!userId) {
+    return (
+      <span style={{ maxWidth: 200, marginLeft: 8, textAlign: 'center' }}>
+        Ajoutez un compte sur ce dossier pour réutiliser des assurés existants
+      </span>
+    );
+  }
 
   if (borrowers.length === 2) {
     return null;

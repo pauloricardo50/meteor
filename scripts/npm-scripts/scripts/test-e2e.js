@@ -28,6 +28,8 @@ server.spawn({
     'settings-dev.json',
     '--port',
     port,
+    '--exclude-archs',
+    '"web.browser.legacy, web.cordova"',
   ],
   options: {
     cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),

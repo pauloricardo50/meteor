@@ -61,9 +61,7 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
   const { loading, data: organisations } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
     params: {
-      $filters: {
-        features: ORGANISATION_FEATURES.INSURANCE,
-      },
+      $filters: { features: ORGANISATION_FEATURES.INSURANCE },
       name: 1,
       insuranceProducts: {
         name: 1,

@@ -25,6 +25,7 @@ export const RevenuesTable = ({
       rows={rows}
       columnOptions={columnOptions}
       initialOrderBy={initialOrderBy}
+      className="revenues-table"
     />
     {rows.length > 1 && (
       <h2 className="secondary" style={{ textAlign: 'right' }}>

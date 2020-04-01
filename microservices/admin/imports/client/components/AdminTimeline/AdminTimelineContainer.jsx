@@ -117,7 +117,7 @@ const mergeActivities = ({
               description: <a href={frontLink}>Ouvrir dans Front</a>,
             }))
           : []),
-      ].sort((a, b) => a.date?.getTime() - b.date?.getTime());
+      ].sort((a, b) => b.date?.getTime() - a.date?.getTime());
 
 export default withProps(
   ({ docId, collection, frontTagId, taskFilters, activityFilters }) => {

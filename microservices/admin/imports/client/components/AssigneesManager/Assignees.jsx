@@ -10,7 +10,7 @@ const Assignees = ({ assigneeLinks }) => {
   }
 
   return (
-    <div className="flex">
+    <div className="assignees flex">
       {assigneeLinks
         .sort(({ percent: p1 }, { percent: p2 }) => p2 - p1)
         .map(({ _id, percent, isMain }) => (

@@ -419,6 +419,9 @@ describe('LoanCalculator', () => {
     });
 
     it('should amortize faster if borrowers are old', () => {
+      const sixtyYearsAgo = new Date();
+      sixtyYearsAgo.setFullYear(sixtyYearsAgo.getFullYear() - 60);
+
       // I.e. amortize in 5 years
       expect(
         Calculator.getAmortization({
@@ -428,7 +431,7 @@ describe('LoanCalculator', () => {
               propertyWork: 0,
               property: { value: 1200000 },
             },
-            borrowers: [{ age: 60 }],
+            borrowers: [{ birthDate: sixtyYearsAgo }],
           },
         }),
       ).to.equal(3000);
