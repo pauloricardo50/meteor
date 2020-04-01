@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 
 import { ORGANISATION_FEATURES } from '../../imports/core/api/organisations/organisationConstants';
-import { INSURANCE_PRODUCT_TYPES } from '../../imports/core/api/insuranceProducts/insuranceProductConstants';
+import { INSURANCE_PRODUCT_FEATURES } from '../../imports/core/api/insuranceProducts/insuranceProductConstants';
 import { COMMISSION_RATES_TYPE } from '../../imports/core/api/commissionRates/commissionRateConstants';
 import { GENDER } from '../../imports/core/api/borrowers/borrowerConstants';
 import {
@@ -30,7 +30,10 @@ const scenario = {
       _id: 'prodId',
       name: 'Product 1',
       revaluationFactor: 1,
-      type: INSURANCE_PRODUCT_TYPES.LIFE,
+      features: [
+        INSURANCE_PRODUCT_FEATURES.GUARANTEED_CAPITAL,
+        INSURANCE_PRODUCT_FEATURES.NON_GUARANTEED_CAPITAL,
+      ],
       category: '3A',
     },
     commissionRates: {
