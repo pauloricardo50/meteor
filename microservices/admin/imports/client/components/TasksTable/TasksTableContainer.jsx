@@ -142,26 +142,22 @@ const makeMapTask = ({
       : '';
   const createdAtLabel = moment(createdAt).fromNow();
 
+  const selectedRelatedTo =
+    loan ||
+    user ||
+    promotion ||
+    organisation ||
+    lender ||
+    insuranceRequest ||
+    insurance;
+
   return {
     id: taskId,
     priority,
     columns: [
       relatedTo && {
-        raw:
-          loan ||
-          user ||
-          promotion ||
-          organisation ||
-          lender ||
-          insuranceRequest ||
-          insurance,
-        label: (loan ||
-          user ||
-          promotion ||
-          organisation ||
-          lender ||
-          insuranceRequest ||
-          insurance) && (
+        raw: selectedRelatedTo,
+        label: selectedRelatedTo && (
           <CollectionIconLink
             relatedDoc={getRelatedDoc(task)}
             variant="TASKS_TABLE"
