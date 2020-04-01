@@ -498,58 +498,6 @@ describe('LoanService', function() {
     });
   });
 
-  describe.skip('getNewLoanName', () => {
-    it('returns 20-0001 for the very first loan', () => {
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0001');
-    });
-
-    it('returns 20-0002 for the second loan', () => {
-      loanId = LoanService.insert({ loan: {} });
-      loan = LoanService.get(loanId, { name: 1 });
-      expect(loan.name).to.equal('20-0001');
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0002');
-    });
-
-    it('sorts loans properly 1', () => {
-      Factory.create('loan', { name: '20-0009' });
-      Factory.create('loan', { name: '20-0010' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0011');
-    });
-
-    it('sorts loans properly even if created in different order', () => {
-      Factory.create('loan', { name: '20-0955' });
-      Factory.create('loan', { name: '20-0153' });
-      Factory.create('loan', { name: '10-0001' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0956');
-    });
-
-    it('returns 20-1234 for the nth loan', () => {
-      Factory.create('loan', { name: '20-1233' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-1234');
-    });
-
-    it('does not break if a 10000th loan is added', () => {
-      Factory.create('loan', { name: '20-9999' });
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-10000');
-    });
-
-    it('handles new year properly', () => {
-      Factory.create('loan', { name: '20-0003' });
-      const name = LoanService.getNewLoanName(new Date(2021, 1, 1));
-      expect(name).to.equal('21-0001');
-    });
-  });
-
   describe('loan name regEx', () => {
     it('allows loan names with correct format', () => {
       expect(() => Factory.create('loan', { name: '18-0202' })).to.not.throw();
