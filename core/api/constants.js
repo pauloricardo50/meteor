@@ -20,6 +20,11 @@ import { SESSIONS_COLLECTION } from './sessions/sessionConstants';
 import { TASKS_COLLECTION } from './tasks/taskConstants';
 import { UPDATE_WATCHERS_COLLECTION } from './updateWatchers/updateWatcherConstants';
 import { USERS_COLLECTION } from './users/userConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from './insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from './insurances/insuranceConstants';
+import { INSURANCE_PRODUCTS_COLLECTION } from './insuranceProducts/insuranceProductConstants';
+import { COMMISSION_RATES_COLLECTION } from './commissionRates/commissionRateConstants';
+import { NOTIFICATIONS_COLLECTION } from './notifications/notificationConstants';
 
 export * from './activities/activityConstants';
 export * from './borrowers/borrowerConstants';
@@ -47,6 +52,11 @@ export * from './sessions/sessionConstants';
 export * from './tasks/taskConstants';
 export * from './updateWatchers/updateWatcherConstants';
 export * from './users/userConstants';
+export * from './insuranceRequests/insuranceRequestConstants';
+export * from './insurances/insuranceConstants';
+export * from './insuranceProducts/insuranceProductConstants';
+export * from './commissionRates/commissionRateConstants';
+export * from './notifications/notificationConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -75,4 +85,9 @@ export const COLLECTIONS = {
   TASKS_COLLECTION,
   UPDATE_WATCHERS_COLLECTION,
   USERS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCES_COLLECTION,
+  INSURANCE_PRODUCTS_COLLECTION,
+  COMMISSION_RATES_COLLECTION,
+  NOTIFICATIONS_COLLECTION,
 };

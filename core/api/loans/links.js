@@ -10,6 +10,7 @@ import {
   Tasks,
   Users,
   Organisations,
+  InsuranceRequests,
 } from '..';
 
 import LinkInitializer from '../links/LinkInitializer';
@@ -105,6 +106,13 @@ LinkInitializer.directInit(() => {
       collection: Users,
       type: 'many',
       metadata: true,
+    },
+    insuranceRequests: {
+      field: 'insuranceRequestLinks',
+      collection: InsuranceRequests,
+      type: 'many',
+      metadata: true,
+      unique: true,
     },
   });
 });

@@ -33,7 +33,7 @@ import './30';
 import './31';
 import './32';
 import './33';
-
+import './34';
 // To migrate to a specific version
 // Migrations.migrateTo(2);
 // To redo a migration

@@ -14,11 +14,17 @@ import {
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
   ROLES,
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCES_COLLECTION,
 } from '../../api/constants';
 import { employeesById } from '../../arrays/epotekEmployees';
 import collectionIcons from '../../arrays/collectionIcons';
 import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
-import { getLoanLinkTitle } from './collectionIconLinkHelpers';
+import {
+  getLoanLinkTitle,
+  getInsuranceRequestLinkTitle,
+  getInsuranceLinkTitle,
+} from './collectionIconLinkHelpers';
 
 const showPopups = Meteor.microservice === 'admin';
 
@@ -118,6 +124,21 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
         text: data.name,
         hasPopup: true,
       };
+    case INSURANCE_REQUESTS_COLLECTION:
+      return {
+        link: `/insuranceRequests/${docId}`,
+        text: getInsuranceRequestLinkTitle(data),
+        hasPopup: true,
+      };
+    case INSURANCES_COLLECTION: {
+      const { insuranceRequest } = data;
+      const { _id: insuranceRequestId } = insuranceRequest;
+      return {
+        link: `/insuranceRequests/${insuranceRequestId}/${docId}`,
+        text: getInsuranceLinkTitle(data),
+        hasPopup: true,
+      };
+    }
     case 'NOT_FOUND':
       return {
         link: '/',

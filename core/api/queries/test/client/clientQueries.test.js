@@ -10,7 +10,7 @@ import {
   query3,
   query4,
   testCollectionInsert,
-} from '../collection.app-test';
+} from '../collection-app-test';
 
 const insertTestData = n => {
   const promises = [...Array(n)].map((_, index) =>

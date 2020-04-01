@@ -10,6 +10,7 @@ import {
   proInviteUser,
   offerSendFeedback,
   loanSetAdminNote,
+  insuranceRequestSetAdminNote,
 } from '../../methods/index';
 import OfferService from '../../offers/server/OfferService';
 import FileService from '../../files/server/FileService';
@@ -22,6 +23,7 @@ import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from './methods';
 import { addEmailListener } from './emailHelpers';
 import { PROMOTION_EMAILS, mapConfigToListener } from './promotionEmailHelpers';
+import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 
 addEmailListener({
   description: 'Formulaire de contact -> Client',
@@ -303,27 +305,45 @@ PROMOTION_EMAILS.forEach(({ description, method, ...config }) => {
 
 addEmailListener({
   description: 'Notification pour une nouvelle note partagée -> Pro',
-  method: loanSetAdminNote,
+  method: [loanSetAdminNote, insuranceRequestSetAdminNote],
   func: ({ params }) => {
     const {
       notifyPros,
       note: { isSharedWithPros, note },
       loanId,
+      insuranceRequestId,
     } = params;
 
     if (!notifyPros || notifyPros.length === 0 || !isSharedWithPros) {
       return;
     }
 
-    const {
-      name: loanName,
-      user: { name: customerName } = {},
-      mainAssignee: { name: adminName, email: adminAddress } = {},
-    } = LoanService.get(loanId, {
-      name: 1,
-      user: { name: 1 },
-      mainAssignee: 1,
-    });
+    let loanName;
+    let customerName;
+    let adminName;
+    let adminAddress;
+
+    if (loanId) {
+      const loan = LoanService.get(loanId, {
+        name: 1,
+        user: { name: 1 },
+        mainAssignee: 1,
+      });
+      loanName = loan?.name;
+      customerName = loan?.user?.name;
+      adminName = loan?.mainAssignee?.name;
+      adminAddress = loan?.mainAssignee?.email;
+    } else if (insuranceRequestId) {
+      const insuranceRequest = InsuranceRequestService.get(insuranceRequestId, {
+        name: 1,
+        user: { name: 1 },
+        mainAssignee: 1,
+      });
+      loanName = insuranceRequest?.name;
+      customerName = insuranceRequest?.user?.name;
+      adminName = insuranceRequest?.mainAssignee?.name;
+      adminAddress = insuranceRequest?.mainAssignee?.email;
+    }
 
     const notifyWithCta = notifyPros.filter(({ withCta }) => withCta);
     const notifyWithoutCta = notifyPros.filter(({ withCta }) => !withCta);

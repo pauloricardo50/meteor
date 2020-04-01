@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Percent, Money } from 'core/components/Translation';
-import { REVENUE_TYPES } from 'core/api/constants';
+import { REVENUE_TYPES, COMMISSION_RATES_TYPE } from 'core/api/constants';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 
@@ -31,8 +31,13 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
         {lenders.map(lender => {
           const { organisation } = lender;
           const { commissionRates = [] } = organisation;
-          const hasCommissionRate = commissionRates.length === 1;
-          const commission = hasCommissionRate && commissionRates[0].rate;
+          const [commissionCommissionRates] = commissionRates.filter(
+            ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
+          );
+          const hasCommissionRate =
+            commissionCommissionRates?.rates?.length === 1;
+          const commission =
+            hasCommissionRate && commissionCommissionRates.rates[0].rate;
           const amount = commission * wantedLoan;
 
           return (

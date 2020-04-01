@@ -3,8 +3,9 @@ import { AutoForm } from 'uniforms-material';
 import pickBy from 'lodash/pickBy';
 import pick from 'lodash/pick';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-
 import { withProps } from 'recompose';
+import cx from 'classnames';
+
 import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
@@ -22,6 +23,7 @@ const CustomAutoForm = ({
   schema,
   schemaKeys,
   submitFieldProps,
+  className,
   ...props
 }) => {
   const handleSubmit = (...args) =>
@@ -54,7 +56,7 @@ const CustomAutoForm = ({
       showInlineError
       model={pickBy(model, (_, key) => !key.startsWith('$'))}
       placeholder={placeholder}
-      className="autoform"
+      className={cx('autoform', className)}
       onSubmit={handleSubmit}
       schema={bridgedSchema}
       {...props}

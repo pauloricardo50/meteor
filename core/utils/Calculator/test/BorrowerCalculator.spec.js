@@ -732,11 +732,83 @@ describe('BorrowerCalculator', () => {
     });
 
     it('returns 0 for a retired person', () => {
+      const yearsAgo70 = new Date();
+      yearsAgo70.setFullYear(yearsAgo70.getFullYear() - 70);
+      yearsAgo70.setDate(yearsAgo70.getDate() - 1);
       expect(
         Calculator.getRetirement({
-          borrowers: [{ age: 70, gender: GENDER.M }],
+          borrowers: [{ birthDate: yearsAgo70, gender: GENDER.M }],
         }),
       ).to.equal(0);
+    });
+
+    it('Should return 35 with a male of 30 yo', () => {
+      const yearsAgo30 = new Date();
+      yearsAgo30.setFullYear(yearsAgo30.getFullYear() - 30);
+      yearsAgo30.setDate(yearsAgo30.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo30, gender: GENDER.M }],
+        }),
+      ).to.equal(35);
+    });
+
+    it('Should return 34 with a female of 30 yo', () => {
+      const yearsAgo30 = new Date();
+      yearsAgo30.setFullYear(yearsAgo30.getFullYear() - 30);
+      yearsAgo30.setDate(yearsAgo30.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo30, gender: GENDER.F }],
+        }),
+      ).to.equal(34);
+    });
+
+    it('Should return 35 with an undefined gender of 30 yo', () => {
+      const yearsAgo30 = new Date();
+      yearsAgo30.setFullYear(yearsAgo30.getFullYear() - 30);
+      yearsAgo30.setDate(yearsAgo30.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo30 }],
+        }),
+      ).to.equal(35);
+    });
+
+    it('Should return 0 with a female of 64 yo', () => {
+      const yearsAgo64 = new Date();
+      yearsAgo64.setFullYear(yearsAgo64.getFullYear() - 64);
+      yearsAgo64.setDate(yearsAgo64.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo64, gender: GENDER.F }],
+        }),
+      ).to.equal(0);
+    });
+
+    it('Should return 0 with a female over 64 yo', () => {
+      const yearsAgo80 = new Date();
+      yearsAgo80.setFullYear(yearsAgo80.getFullYear() - 80);
+      yearsAgo80.setDate(yearsAgo80.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo80, gender: GENDER.F }],
+        }),
+      ).to.equal(0);
+    });
+
+    it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
+      const yearsAgo54 = new Date();
+      yearsAgo54.setFullYear(yearsAgo54.getFullYear() - 54);
+      yearsAgo54.setDate(yearsAgo54.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [
+            { birthDate: yearsAgo54, gender: GENDER.F },
+            { birthDate: yearsAgo54, gender: GENDER.M },
+          ],
+        }),
+      ).to.equal(10);
     });
   });
 

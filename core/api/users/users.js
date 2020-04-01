@@ -114,6 +114,12 @@ export const UserSchema = new SimpleSchema({
     },
   },
   frontUserId: { type: String, optional: true },
+  defaultBoardId: {
+    type: String,
+    optional: true,
+    allowedValues: ['loans', 'insuranceRequests'],
+    defaultValue: 'loans',
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);

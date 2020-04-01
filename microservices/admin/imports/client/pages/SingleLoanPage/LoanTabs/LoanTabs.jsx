@@ -15,6 +15,7 @@ import {
   PROMOTIONS_COLLECTION,
   BORROWERS_COLLECTION,
   REVENUES_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import FileTabs from 'core/components/FileTabs/loadable';
 import { createRoute } from 'core/utils/routerUtils';
@@ -34,6 +35,7 @@ import PromotionsTab from './PromotionsTab/loadable';
 import RefinancingTab from './RefinancingTab/loadable';
 import LendersTab from './LendersTab/loadable';
 import RevenuesTab from './RevenuesTab/loadable';
+import InsuranceRequestsTab from './InsuranceRequestsTab/loadable';
 
 const getTabs = props => {
   const { loan, currentUser } = props;
@@ -82,6 +84,11 @@ const getTabs = props => {
         />
       ),
       icon: collectionIcons[PROPERTIES_COLLECTION],
+    },
+    {
+      id: 'insuranceRequests',
+      icon: collectionIcons[INSURANCE_REQUESTS_COLLECTION],
+      Component: InsuranceRequestsTab,
     },
     {
       id: 'lenders',

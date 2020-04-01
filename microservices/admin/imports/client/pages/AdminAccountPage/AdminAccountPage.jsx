@@ -2,6 +2,7 @@ import React from 'react';
 
 import PasswordChange from 'core/components/AccountPage/PasswordChange';
 import SingleUserPage from '../SingleUserPage';
+import DefaultBoardIdModifier from './DefaultBoardIdModifier';
 
 const AdminAccountPage = props => {
   const { currentUser } = props;
@@ -14,7 +15,10 @@ const AdminAccountPage = props => {
         className="admin-account-page"
       >
         <div className="mb-16" />
-        <PasswordChange />
+        <div className="flex-col center-align">
+          <DefaultBoardIdModifier currentUser={currentUser} />
+          <PasswordChange />
+        </div>
       </SingleUserPage>
     </>
   );

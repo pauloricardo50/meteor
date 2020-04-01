@@ -228,6 +228,14 @@ p.description,
   &.fs {
     justify-content: flex-start;
   }
+
+  &.end-align {
+    align-items: flex-end;
+  }
+
+  &.nowrap {
+    flex-wrap: nowrap
+  }
 }
 
 .flex-col {
@@ -356,6 +364,9 @@ p.description,
 }
 .p-16 {
   padding: 16px;
+}
+.p-32 {
+  padding: 32px;
 }
 
 .mb-0 {

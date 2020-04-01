@@ -156,14 +156,23 @@ exposeQuery({
       SecurityService.checkUserIsAdmin(userId);
     },
     embody: body => {
-      body.$filter = ({ filters, params: { searchQuery } }) => {
-        Object.assign(
-          filters,
-          createSearchFilters(['name', '_id', 'customName'], searchQuery),
+      body.$filter = ({ filters, params: { searchQuery, userId } }) => {
+        const search = createSearchFilters(
+          ['name', '_id', 'customName'],
+          searchQuery,
         );
+
+        if (userId) {
+          filters.$and = [search, { userId }];
+        } else {
+          Object.assign(filters, search);
+        }
       };
     },
-    validateParams: { searchQuery: Match.Maybe(String) },
+    validateParams: {
+      searchQuery: Match.Maybe(String),
+      userId: Match.Maybe(String),
+    },
   },
 });
 

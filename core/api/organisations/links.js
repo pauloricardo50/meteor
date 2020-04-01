@@ -1,5 +1,15 @@
 import LinkInitializer from '../links/LinkInitializer';
-import { Contacts, Lenders, Users, LenderRules, Revenues, Tasks } from '..';
+import {
+  Contacts,
+  Lenders,
+  Users,
+  LenderRules,
+  Revenues,
+  Tasks,
+  Insurances,
+  InsuranceProducts,
+  CommissionRates,
+} from '..';
 import Organisations from './organisations';
 
 Organisations.addLinks({
@@ -46,6 +56,19 @@ LinkInitializer.inversedInit(() => {
     sourceOfRevenues: {
       collection: Revenues,
       inversedBy: 'organisations',
+    },
+    insurances: {
+      collection: Insurances,
+      inversedBy: 'organisation',
+    },
+    insuranceProducts: {
+      collection: InsuranceProducts,
+      inversedBy: 'organisation',
+    },
+    commissionRates: {
+      collection: CommissionRates,
+      inversedBy: 'organisation',
+      type: 'many',
     },
   });
 });

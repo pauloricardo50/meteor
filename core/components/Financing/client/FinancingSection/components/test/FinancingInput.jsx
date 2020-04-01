@@ -7,7 +7,7 @@ import { mount } from 'core/utils/testHelpers/enzyme';
 import { FinancingInput } from '../FinancingInput';
 import MoneyInput from '../../../../../MoneyInput';
 
-describe.only('FinancingInput', () => {
+describe('FinancingInput', () => {
   let props;
   const component = () => mount(<FinancingInput {...props} />);
 

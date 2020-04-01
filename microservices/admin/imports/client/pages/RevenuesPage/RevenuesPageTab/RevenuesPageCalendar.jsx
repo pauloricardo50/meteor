@@ -8,7 +8,6 @@ import T from 'core/components/Translation';
 import {
   REVENUE_STATUS,
   REVENUE_TYPES,
-  REVENUE_SECONDARY_TYPES,
   REVENUES_COLLECTION,
   ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
@@ -18,6 +17,7 @@ import employees from 'core/arrays/epotekEmployees';
 import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 import { revenuesFilter } from './revenuePageHelpers';
 import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
+import InsuranceBillingFilter from './InsuranceBillingFilter';
 
 const getMonths = ({ startDate, endDate }) => {
   const clonedStartDate = moment(startDate);
@@ -66,7 +66,6 @@ const groupRevenues = revenues =>
 
 const RevenuesPageCalendar = props => {
   const [type, setType] = useState();
-  const [secondaryType, setSecondaryType] = useState();
   const [assignee, setAssignee] = useState();
   const [referrer, setReferrer] = useState();
   const [sourceOrganisationId, setSourceOrganisationId] = useState();
@@ -85,7 +84,15 @@ const RevenuesPageCalendar = props => {
 
   const months = getMonths(revenueDateRange);
 
-  const dateQuery = { $gte: months[0], $lte: months[months.length - 1] };
+  const dateQuery = {
+    $gte: months[0],
+    $lte:
+      months.length === 1
+        ? moment(months[0])
+            .endOf('month')
+            .toDate()
+        : months[months.length - 1],
+  };
   const $or = [
     { status: REVENUE_STATUS.EXPECTED, expectedAt: dateQuery },
     { status: REVENUE_STATUS.CLOSED, paidAt: dateQuery },
@@ -98,7 +105,6 @@ const RevenuesPageCalendar = props => {
         $filters: {
           $or,
           type,
-          secondaryType,
           'sourceOrganisationLink._id': sourceOrganisationId,
           'assigneeLink._id': assignee,
         },
@@ -109,18 +115,21 @@ const RevenuesPageCalendar = props => {
         loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
         organisationLinks: { _id: 1, commissionRate: 1 },
         paidAt: 1,
-        secondaryType: 1,
         sourceOrganisationLink: 1,
         sourceOrganisation: { name: 1 },
         status: 1,
         type: 1,
+        insurance: {
+          name: 1,
+          borrower: { name: 1 },
+          insuranceRequest: { user: { name: 1 } },
+        },
       },
     },
     [
       revenueDateRange.startDate,
       revenueDateRange.endDate,
       type,
-      secondaryType,
       sourceOrganisationId,
       assignee,
     ],
@@ -136,12 +145,6 @@ const RevenuesPageCalendar = props => {
     [filteredRevenues],
   );
 
-  useEffect(() => {
-    if (!type || !type.$in || !type.$in.includes(REVENUE_TYPES.INSURANCE)) {
-      setSecondaryType(undefined);
-    }
-  }, [type]);
-
   const {
     data: referringOrganisations,
     loading: orgLoading,
@@ -155,12 +158,12 @@ const RevenuesPageCalendar = props => {
     loading: sourceOrgLoading,
   } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
-    params: { $filters: { revenuesCount: { $gte: 1 } }, name: 1 },
+    params: { $filters: { revenuesCount: { $gte: 1 } }, name: 1, features: 1 },
   });
 
   return (
     <div>
-      <div className="flex mb-16">
+      <div className="flex mb-16 center-align">
         <div className="mr-8">
           <DateRangePicker
             range={revenueDateRange}
@@ -175,16 +178,6 @@ const RevenuesPageCalendar = props => {
           label={<T id="Forms.type" />}
           className="mr-8"
         />
-        {type && type.$in && type.$in.includes(REVENUE_TYPES.INSURANCE) && (
-          <MongoSelect
-            value={secondaryType}
-            onChange={setSecondaryType}
-            options={REVENUE_SECONDARY_TYPES}
-            id="secondaryType"
-            label={<T id="Forms.secondaryType" />}
-            className="mr-8"
-          />
-        )}
         <Select
           value={assignee}
           onChange={setAssignee}
@@ -226,6 +219,15 @@ const RevenuesPageCalendar = props => {
             label={<T id="Forms.sourceOrganisation" />}
             className="mr-8"
             style={{ minWidth: 240 }}
+          />
+        )}
+        {!sourceOrgLoading && (
+          <InsuranceBillingFilter
+            setRevenueDateRange={setRevenueDateRange}
+            sourceOrganisations={sourceOrganisations}
+            sourceOrganisationId={sourceOrganisationId}
+            setSourceOrganisationId={setSourceOrganisationId}
+            setType={setType}
           />
         )}
       </div>

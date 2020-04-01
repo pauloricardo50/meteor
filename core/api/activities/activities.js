@@ -49,6 +49,10 @@ const ActivitySchema = new SimpleSchema({
   shouldNotify: { type: Boolean, optional: true },
   userLink: { type: Object, optional: true },
   'userLink._id': { type: String, optional: true },
+  insuranceRequestLink: { type: Object, optional: true },
+  'insuranceRequestLink._id': { type: String, optional: true },
+  insuranceLink: { type: Object, optional: true },
+  'insuranceLink._id': { type: String, optional: true },
   isServerGenerated: { type: Boolean, defaultValue: false },
   isImportant: { type: Boolean, defaultValue: false },
 });
@@ -82,6 +86,8 @@ const ActivityEmailSchema = ActivitySchema.extend({
 const ActivityPhoneSchema = ActivitySchema;
 const ActivityOtherSchema = ActivitySchema;
 const ActivityMailSchema = ActivitySchema;
+const ActivityMeetingSchema = ActivitySchema;
+const ActivityPlanningSchema = ActivitySchema;
 
 Activities.attachSchema(ActivityEventSchema, {
   selector: { type: ACTIVITY_TYPES.EVENT },
@@ -97,6 +103,12 @@ Activities.attachSchema(ActivityOtherSchema, {
 });
 Activities.attachSchema(ActivityMailSchema, {
   selector: { type: ACTIVITY_TYPES.MAIL },
+});
+Activities.attachSchema(ActivityMeetingSchema, {
+  selector: { type: ACTIVITY_TYPES.MEETING },
+});
+Activities.attachSchema(ActivityPlanningSchema, {
+  selector: { type: ACTIVITY_TYPES.FINANCIAL_PLANNING },
 });
 
 export default Activities;

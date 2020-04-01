@@ -7,6 +7,7 @@ export const revenueInsert = new Method({
   params: {
     revenue: Object,
     loanId: Match.Maybe(String),
+    insuranceId: Match.Maybe(String),
   },
 });
 

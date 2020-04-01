@@ -231,3 +231,16 @@ export const negativeMoneyField = {
   min: -1000000000,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE },
 };
+
+export const adminNotesSchema = {
+  adminNotes: { type: Array, defaultValue: [] },
+  'adminNotes.$': Object,
+  'adminNotes.$.id': String,
+  'adminNotes.$.note': {
+    type: String,
+    uniforms: { multiline: true, rows: 3 },
+  },
+  'adminNotes.$.date': { type: Date, defaultValue: new Date() },
+  'adminNotes.$.updatedBy': String,
+  'adminNotes.$.isSharedWithPros': { type: Boolean, defaultValue: false },
+};

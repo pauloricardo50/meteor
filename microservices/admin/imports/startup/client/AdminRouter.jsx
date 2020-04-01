@@ -31,6 +31,7 @@ const AdminRouter = () => (
           name: 1,
           organisations: { name: 1 },
           roles: 1,
+          defaultBoardId: 1,
         },
       }),
     }}

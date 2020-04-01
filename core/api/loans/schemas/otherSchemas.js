@@ -83,16 +83,3 @@ export const maxPropertyValueSchema = {
   'maxPropertyValue.second.max.borrowRatio': percentageField,
   'maxPropertyValue.second.max.organisationName': String,
 };
-
-export const adminNotesSchema = {
-  adminNotes: { type: Array, defaultValue: [] },
-  'adminNotes.$': Object,
-  'adminNotes.$.id': String,
-  'adminNotes.$.note': {
-    type: String,
-    uniforms: { multiline: true, rows: 3 },
-  },
-  'adminNotes.$.date': { type: Date, defaultValue: new Date() },
-  'adminNotes.$.updatedBy': String,
-  'adminNotes.$.isSharedWithPros': { type: Boolean, defaultValue: false },
-};

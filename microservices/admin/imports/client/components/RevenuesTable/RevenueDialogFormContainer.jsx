@@ -98,7 +98,7 @@ const revenueFormLayout = [
     title: <h4>Général</h4>,
     className: 'mb-32',
     layout: [
-      { className: 'grid-col', fields: ['amount', 'type', 'secondaryType'] },
+      { className: 'grid-col', fields: ['amount', 'type'] },
       'description',
     ],
   },
@@ -124,7 +124,14 @@ const revenueFormLayout = [
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(
-    ({ loan, revenue, setSubmitting, setOpen, onSubmitted = () => null }) => {
+    ({
+      loan,
+      insurance,
+      revenue,
+      setSubmitting,
+      setOpen,
+      onSubmitted = () => null,
+    }) => {
       const currentUser = useContext(CurrentUserContext);
       const schema = useMemo(() => getSchema(currentUser), [currentUser]);
 
@@ -133,7 +140,11 @@ export default compose(
         model: revenue,
         insertRevenue: model =>
           revenueInsert
-            .run({ revenue: model, loanId: loan && loan._id })
+            .run({
+              revenue: model,
+              loanId: loan && loan._id,
+              insuranceId: insurance?._id,
+            })
             .then(() => setOpen && setOpen(false)),
         modifyRevenue: ({ _id: revenueId, ...object }) => {
           setSubmitting(true);

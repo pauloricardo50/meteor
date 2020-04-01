@@ -13,5 +13,8 @@ export default withProps(({ organisation: { _id: organisationId } }) => ({
     'documents',
     'lenderRulesCount',
     'adminNote',
+    'mainUserLinks',
+    'revenuesCount',
+    'insuranceProductLinks',
   ),
 }));

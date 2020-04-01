@@ -1,0 +1,93 @@
+@import './InsuranceRequestTabs/OverviewTab/OverviewTab.scss';
+@import './InsuranceRequestTabs/InsuranceTab/InsuranceTab.scss';
+
+.single-insurance-request-page {
+    &-tasks {
+        margin-bottom: 16px;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            vertical-align: middle;
+
+            > * {
+                margin-right: 4px;
+            }
+        }
+
+        .left {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            flex-grow: 1;
+
+            &-top {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    &-sub-header {
+        display: flex;
+
+        .single-insurance-request-page-tasks {
+            flex-basis: 75%;
+        }
+
+        .single-insurance-request-page-contacts {
+            flex-basis: 75%;
+        }
+    }
+}
+
+.single-insurance-request-page-tabs > .core-tabs-top {
+    position: sticky;
+    z-index: 9;
+    top: 65px;
+
+    background: #fff;
+}
+
+.single-insurance-request-page-tabs-label {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    margin: 0 4px;
+
+    white-space: nowrap;
+
+    svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+.single-insurance-request-page-contacts {
+    margin-bottom: 16px;
+    margin-left: 16px;
+  
+    h3 {
+      margin: 0;
+      margin-bottom: 8px;
+    }
+  
+    &-contact {
+      margin-bottom: 8px;
+      h4 {
+        margin: 0;
+      }
+    }
+  
+    .scroll-wrapper {
+      overflow-y: scroll;
+  
+      max-height: 300px;
+    }
+  }

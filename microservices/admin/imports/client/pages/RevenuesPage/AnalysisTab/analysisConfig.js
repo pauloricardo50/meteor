@@ -155,7 +155,6 @@ const analysisConfig = {
   [REVENUES_COLLECTION]: {
     amount: { id: 'Forms.amount' },
     type: { id: 'Forms.type' },
-    secondaryType: { id: 'Forms.secondaryType' },
     status: { id: 'Forms.status' },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
     paidAt: {

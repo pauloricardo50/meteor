@@ -12,7 +12,6 @@ import {
   REVENUE_TYPES,
   REVENUE_STATUS,
   COMMISSION_STATUS,
-  REVENUE_SECONDARY_TYPES,
 } from '../revenueConstants';
 
 const RevenueSchema = new SimpleSchema({
@@ -24,13 +23,6 @@ const RevenueSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(REVENUE_TYPES),
     uniforms: { displayEmpty: false, placeholder: '' },
-  },
-  secondaryType: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(REVENUE_SECONDARY_TYPES),
-    uniforms: { displayEmpty: false, placeholder: '' },
-    condition: ({ type }) => type === REVENUE_TYPES.INSURANCE,
   },
   status: {
     type: String,
@@ -73,6 +65,10 @@ const RevenueSchema = new SimpleSchema({
   'loanCache.$': cacheField,
   assigneeLink: { type: Object, optional: true },
   'assigneeLink._id': { type: String },
+  insuranceRequestCache: { type: Array, optional: true },
+  'insuranceRequestCache.$': cacheField,
+  insuranceCache: { type: Array, optional: true },
+  'insuranceCache.$': cacheField,
 });
 
 export default RevenueSchema;

@@ -4,7 +4,11 @@ import { Mongo } from 'meteor/mongo';
 import moment from 'moment';
 
 import { getUserNameAndOrganisation } from 'core/api/helpers/index';
-import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
+import {
+  LOANS_COLLECTION,
+  USERS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
+} from '../../constants';
 import CollectionService from '../../helpers/server/CollectionService';
 import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
@@ -60,7 +64,9 @@ class TaskService extends CollectionService {
     if (collection === CONTACTS_COLLECTION) {
       this.addLink({ id: taskId, linkName: 'contact', linkId: docId });
     }
-
+    if (collection === INSURANCE_REQUESTS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'insuranceRequest', linkId: docId });
+    }
     if (assignee) {
       this.addLink({
         id: taskId,

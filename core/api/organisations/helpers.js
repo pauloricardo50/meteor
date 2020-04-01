@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const getCurrentRate = (commissionRates, referredRevenues, name) => {
   if (!commissionRates || commissionRates.length === 0) {
     return 0;
@@ -9,15 +11,21 @@ export const getCurrentRate = (commissionRates, referredRevenues, name) => {
 
   let index = 0;
 
-  commissionRates.some(({ threshold }, i) => {
-    if (threshold > referredRevenues) {
-      index = i - 1;
-      return true;
-    }
+  const today = moment(new Date());
 
-    index = i;
-    return false;
-  });
+  commissionRates
+    .filter(({ startDate }) =>
+      moment(new Date(`${today.year()}-${startDate}`)).isSameOrBefore(today),
+    )
+    .some(({ threshold }, i) => {
+      if (threshold > referredRevenues) {
+        index = i - 1;
+        return true;
+      }
+
+      index = i;
+      return false;
+    });
 
   // for misconfigured commissionRates
   if (index < 0) {

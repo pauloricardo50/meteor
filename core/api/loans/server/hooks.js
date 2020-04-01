@@ -15,16 +15,9 @@ import FrontService from '../../front/server/FrontService';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
-  borrowerIds.forEach(borrowerId => {
-    const { loans } = BorrowerService.createQuery({
-      $filters: { _id: borrowerId },
-      loans: { _id: 1 },
-    }).fetchOne();
-
-    if (loans.length === 1) {
-      BorrowerService.remove({ borrowerId });
-    }
-  });
+  borrowerIds.forEach(borrowerId =>
+    BorrowerService.cleanUpBorrowers({ borrowerId }),
+  );
   propertyIds.forEach(propertyId => {
     const { loans, category } = PropertyService.createQuery({
       $filters: { _id: propertyId },

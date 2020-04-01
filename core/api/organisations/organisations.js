@@ -65,10 +65,6 @@ export const OrganisationSchema = new SimpleSchema({
   'userLinks.$': userLinkSchema,
   mainUserLinks: { type: Array, defaultValue: [] },
   'mainUserLinks.$': userLinkSchema,
-  commissionRates: { type: Array, defaultValue: [] },
-  'commissionRates.$': Object,
-  'commissionRates.$.rate': percentageField,
-  'commissionRates.$.threshold': moneyField,
   documents: documentsField,
   lenderRulesCount: { type: Number, optional: true },
   referredUsersCount: { type: Number, optional: true },
@@ -76,6 +72,9 @@ export const OrganisationSchema = new SimpleSchema({
   adminNote: { type: String, optional: true },
   emails: { type: Array, defaultValue: [] },
   'emails.$': String,
+  insuranceProductLinks: { type: Array, defaultValue: [] },
+  'insuranceProductLinks.$': Object,
+  'insuranceProductLinks.$._id': String,
 });
 
 Organisations.attachSchema(OrganisationSchema);

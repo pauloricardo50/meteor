@@ -7,6 +7,7 @@ import {
   additionalDocuments,
   documentsField,
   cacheField,
+  adminNotesSchema,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -25,7 +26,6 @@ import {
   propertyIdsSchema,
   previousLoanTranchesSchema,
   maxPropertyValueSchema,
-  adminNotesSchema,
 } from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
@@ -162,6 +162,9 @@ const LoanSchema = new SimpleSchema({
     },
   },
   frontTagId: { type: String, optional: true },
+  insuranceRequestLinks: { type: Array, optional: true, defaultValue: [] },
+  'insuranceRequestLinks.$': Object,
+  'insuranceRequestLinks.$._id': String,
 });
 
 export default LoanSchema;

@@ -355,7 +355,7 @@ describe('AutoForm', () => {
           component()
             .find(CustomSelectField)
             .prop('placeholder'),
-        ).to.equal('Choisissez...');
+        ).to.equal('general.pick');
       });
 
       it('does not set a placeholder for a list item field', () => {

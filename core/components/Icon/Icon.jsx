@@ -91,6 +91,9 @@ import Send from '@material-ui/icons/Send';
 import Airplay from '@material-ui/icons/Airplay';
 import HowToReg from '@material-ui/icons/HowToReg';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import AccessibleForward from '@material-ui/icons/AccessibleForward';
+import MeetingRoom from '@material-ui/icons/MeetingRoom';
+import Security from '@material-ui/icons/Security';
 
 import colors from '../../config/colors';
 
@@ -184,6 +187,9 @@ export const iconMap = {
   send: Send,
   airplay: Airplay,
   howToReg: HowToReg,
+  accessibleForward: AccessibleForward,
+  meetingRoom: MeetingRoom,
+  security: Security,
 };
 
 const getColorStyle = color => ({ color: colors[color], fill: colors[color] });

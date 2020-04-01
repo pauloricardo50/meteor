@@ -179,43 +179,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('Calculate Years to Retirement', () => {
-    it('Should return 35 with a male of 30 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(
-        35,
-      );
-    });
-
-    it('Should return 34 with a female of 30 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'F' })).to.equal(
-        34,
-      );
-    });
-
-    it('Should return 35 with an undefined gender of 30 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 30 })).to.equal(35);
-    });
-
-    it('Should return 0 with a female of 64 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 64, gender1: 'F' })).to.equal(0);
-    });
-
-    it('Should return 0 with a female over 64 yo', () => {
-      expect(calc.getYearsToRetirement({ age1: 80, gender1: 'F' })).to.equal(0);
-    });
-
-    it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
-      expect(
-        calc.getYearsToRetirement({
-          age1: 54,
-          age2: 54,
-          gender1: 'F',
-          gender2: 'M',
-        }),
-      ).to.equal(10);
-    });
-  });
-
   describe('getFeesBase', () => {
     it('returns fees if its above 0 or 0', () => {
       expect(calc.getFeesBase({ fees: 0 })).to.equal(0);

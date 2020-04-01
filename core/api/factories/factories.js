@@ -3,6 +3,8 @@ import { Random } from 'meteor/random';
 
 import faker from 'faker';
 
+import moment from 'moment';
+
 import {
   LOT_TYPES,
   ORGANISATION_TYPES,
@@ -14,6 +16,12 @@ import {
   DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
+  INSURANCE_PRODUCT_FEATURES,
+  INSURANCE_PRODUCT_CATEGORIES,
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+  LOAN_CATEGORIES,
+  COMMISSION_RATES_TYPE,
 } from '../constants';
 import {
   Borrowers,
@@ -33,20 +41,23 @@ import {
   Revenues,
   Tasks,
   Users,
+  InsuranceRequests,
+  Insurances,
+  CommissionRates,
+  InsuranceProducts,
+  Notifications,
+  Activities,
 } from '..';
-import {
-  PROPERTY_CATEGORY,
-  RESIDENCE_TYPE,
-} from '../properties/propertyConstants';
-import Notifications from '../notifications/index';
-import Activities from '../activities/index';
-import { LOAN_CATEGORIES } from '../loans/loanConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
 const getRandomLoanName = () => `20-0${Math.floor(Math.random() * 899 + 100)}`;
+const getRandomInsuranceRequestName = () =>
+  `20-0${Math.floor(Math.random() * 899 + 100)}-A`;
+const getRandomInsuranceName = () =>
+  `20-0${Math.floor(Math.random() * 899 + 100)}-A01`;
 
 Factory.define('user', Users, {
   roles: [ROLES.USER],
@@ -222,3 +233,50 @@ Factory.define('lenderRulesSecondary', LenderRules, {
 Factory.define('notification', Notifications, {});
 
 Factory.define('activity', Activities, {});
+
+Factory.define('insuranceRequest', InsuranceRequests, {
+  createdAt: () => new Date(),
+  name: () => {
+    while (true) {
+      const name = getRandomInsuranceRequestName();
+
+      if (!InsuranceRequests.findOne({ name })) {
+        return name;
+      }
+    }
+  },
+});
+
+Factory.define('insurance', Insurances, {
+  createdAt: () => new Date(),
+  startDate: () => new Date('2020-02-01T00:00:00'),
+  endDate: () => new Date('2045-02-01T00:00:00'),
+  name: () => {
+    while (true) {
+      const name = getRandomInsuranceName();
+
+      if (!Insurances.findOne({ name })) {
+        return name;
+      }
+    }
+  },
+  startDate: () => new Date(),
+  endDate: () =>
+    moment()
+      .add(10, 'years')
+      .toDate(),
+});
+
+Factory.define('commissionRate', CommissionRates, {
+  createdAt: () => new Date(),
+  type: COMMISSION_RATES_TYPE.PRODUCTIONS,
+  rates: [{ rate: 0.01, threshold: 0, startDate: '01-01' }],
+});
+
+Factory.define('insuranceProduct', InsuranceProducts, {
+  createdAt: () => new Date(),
+  name: 'Product',
+  features: [INSURANCE_PRODUCT_FEATURES.CAPITALIZATION],
+  category: INSURANCE_PRODUCT_CATEGORIES['3A_INSURANCE'],
+  revaluationFactor: 2,
+});

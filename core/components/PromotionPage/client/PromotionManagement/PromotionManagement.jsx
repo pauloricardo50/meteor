@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 import AdminNote from 'core/components/AdminNote';
 import UpdateField from 'core/components/UpdateField';
-import LoanNotes from 'core/components/LoanNotes/LoanNotes';
+import AdminNotes from 'core/components/AdminNotes';
 import LotsChart from './LotsChart';
 import LoansChart from './LoansChart';
 import PromotionMetadataContext from '../PromotionMetadata';
@@ -40,8 +40,9 @@ const PromotionManagement = ({ promotion }) => {
         <LoansChart loans={loans} />
       </div>
       {promotionLoan && (
-        <LoanNotes
-          loan={promotionLoan}
+        <AdminNotes
+          doc={promotionLoan}
+          collection={LOANS_COLLECTION}
           title="Notes sur le dossier de développement"
         />
       )}

@@ -20,6 +20,7 @@ import TasksTable, { taskTableFragment } from './TasksTable';
 import {
   LENDERS_COLLECTION,
   CONTACTS_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from '../../../core/api/constants';
 import CollectionTaskInserter from './CollectionTaskInserter';
 
@@ -47,6 +48,9 @@ const getFilters = ({ collection, doc, assignee, status }) => {
     case CONTACTS_COLLECTION:
       filters = { ...filters, 'contactLink._id': docId };
       break;
+    case INSURANCE_REQUESTS_COLLECTION:
+      filters = { ...filters, 'insuranceRequestLink._id': docId };
+      break;
     default:
       break;
   }
@@ -54,7 +58,7 @@ const getFilters = ({ collection, doc, assignee, status }) => {
   return filters;
 };
 
-const CollectionTasksTable = ({
+export const CollectionTasksTable = ({
   doc,
   tasks,
   model,
@@ -64,6 +68,7 @@ const CollectionTasksTable = ({
   refetch,
   collection,
   className,
+  CustomTaskInserter = CollectionTaskInserter,
   ...rest
 }) => (
   <div className={className}>
@@ -71,7 +76,7 @@ const CollectionTasksTable = ({
       {withTaskInsert && (
         <>
           <h3>Tâches</h3>
-          <CollectionTaskInserter
+          <CustomTaskInserter
             doc={doc}
             refetch={refetch}
             model={model}

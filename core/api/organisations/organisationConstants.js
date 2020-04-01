@@ -28,6 +28,7 @@ export const ORGANISATION_QUERIES = {
 export const ORGANISATION_FEATURES = {
   LENDER: 'LENDER',
   PRO: 'PRO',
+  INSURANCE: 'INSURANCE',
 };
 
 export const ORGANISATION_TAGS = {

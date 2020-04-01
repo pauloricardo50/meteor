@@ -9,13 +9,14 @@ import {
   makeMapProperty,
 } from 'core/components/PropertiesTable/PropertiesTableContainer';
 import Table from 'core/components/Table';
+import AdminTimeline from '../../components/AdminTimeline/AdminTimeline';
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 import PromotionList from './PromotionList';
-import UserActivities from './UserActivities';
 import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import InsuranceRequestsSummaryList from '../../components/InsuranceRequestsSummaryList/InsuranceRequestsSummaryList';
 
 const SingleUserPage = ({
   user,
@@ -31,6 +32,7 @@ const SingleUserPage = ({
     assignedEmployee,
     promotions,
     proProperties,
+    insuranceRequests,
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
   const isPro = user.roles.includes(ROLES.PRO);
@@ -47,7 +49,11 @@ const SingleUserPage = ({
         }}
         currentUser={currentUser}
       />
-      <UserActivities userId={userId} />
+      <AdminTimeline
+        docId={userId}
+        collection={USERS_COLLECTION}
+        withActivityAdder={false}
+      />
       <CollectionTasksTable
         doc={user}
         collection={USERS_COLLECTION}
@@ -56,6 +62,14 @@ const SingleUserPage = ({
       />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
+      )}
+
+      {(isUser || insuranceRequests?.length) && (
+        <InsuranceRequestsSummaryList
+          insuranceRequests={insuranceRequests}
+          user={user}
+          withKeepAssigneesCheckbox={false}
+        />
       )}
 
       {promotions && promotions.length > 0 && (

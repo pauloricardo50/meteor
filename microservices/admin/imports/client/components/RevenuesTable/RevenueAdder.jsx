@@ -12,6 +12,7 @@ const RevenueAdder = ({
   open,
   setOpen,
   model,
+  buttonProps,
 }) => (
   <AutoFormDialog
     schema={schema}
@@ -22,6 +23,7 @@ const RevenueAdder = ({
       raised: true,
       primary: true,
       icon: <Icon type="add" />,
+      ...buttonProps,
     }}
     title="Insérer un revenu"
     layout={layout}

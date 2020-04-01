@@ -13,15 +13,23 @@ import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
-import CommissionEditor from './CommissionEditor';
+import CommissionRates from './CommissionRates';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationInfo from './OrganisationInfo';
+import InsuranceProducts from './InsuranceProducts';
 
 const tabs = ({ organisation, currentUser }) =>
   [
     { id: 'info', Component: OrganisationInfo },
     { id: 'users', Component: OrganisationUsersTable },
     { id: 'contacts', Component: ContactsTable },
+    {
+      id: 'insuranceProducts',
+      condition: organisation.features.includes(
+        ORGANISATION_FEATURES.INSURANCE,
+      ),
+      Component: InsuranceProducts,
+    },
     {
       id: 'offers',
       Component: OffersTable,
@@ -33,16 +41,20 @@ const tabs = ({ organisation, currentUser }) =>
       Component: LenderRulesEditor,
     },
     {
-      id: 'commission',
-      Component: CommissionEditor,
-    },
-    {
       id: 'referredUsers',
       Component: AdminReferredUsersTable,
     },
     {
       id: 'revenues',
       Component: OrganisationRevenues,
+      condition:
+        organisation.features.includes(ORGANISATION_FEATURES.LENDER) ||
+        organisation.features.includes(ORGANISATION_FEATURES.INSURANCE),
+    },
+    {
+      id: 'commission',
+      Component: CommissionRates,
+      condition: organisation.features.includes(ORGANISATION_FEATURES.PRO),
     },
   ].map(({ id, Component, condition, style = {} }) => ({
     id,

@@ -1,15 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { adminNotesSchema } from 'core/api/loans/schemas/otherSchemas';
-import {
-  loanSetAdminNote,
-  loanRemoveAdminNote,
-} from 'core/api/loans/methodDefinitions';
+import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
+
 import useSearchParams from 'core/hooks/useSearchParams';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
-import useLoanContacts from './useLoanContacts';
+import AdminNoteAdderContainer from './AdminNoteAdderContainer';
 
 const getUpdateSchema = () =>
   new SimpleSchema(adminNotesSchema)
@@ -46,24 +43,29 @@ const getInsertSchema = contacts =>
     },
   });
 
-const AdminNoteSetter = ({
+export const AdminNoteSetter = ({
   adminNote,
-  loanId,
+  docId,
   buttonProps,
-  referredByUser,
+  getContacts,
+  setAdminNote,
+  removeAdminNote,
+  methodParams,
+  getInsertSchemaOverride,
+  getUpdateSchemaOverride,
 }) => {
-  const isInsert = !adminNote;
   const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
-  const { loading, contacts } = useLoanContacts(loanId);
-  const schema = useMemo(
-    () =>
-      isInsert
-        ? getInsertSchema(
-            contacts.filter(({ isEmailable }) => isEmailable) || [],
-          )
-        : getUpdateSchema(),
-    [contacts],
-  );
+  const isInsert = !adminNote;
+
+  const { loading, contacts } = getContacts(docId);
+  const schema = useMemo(() => {
+    const insertSchema = getInsertSchemaOverride || getInsertSchema;
+    const updateSchema = getUpdateSchemaOverride || getUpdateSchema;
+
+    return isInsert
+      ? insertSchema(contacts.filter(({ isEmailable }) => isEmailable) || [])
+      : updateSchema();
+  }, [contacts]);
 
   const searchParams = useSearchParams();
 
@@ -74,8 +76,8 @@ const AdminNoteSetter = ({
       schema={schema}
       openOnMount={!adminNote && searchParams?.addNote}
       onSubmit={({ notifyPros = [], ...values }) =>
-        loanSetAdminNote.run({
-          loanId,
+        setAdminNote.run({
+          ...methodParams,
           adminNoteId: isInsert ? undefined : adminNote.id,
           note: values,
           notifyPros: notifyPros.map(email => ({
@@ -98,8 +100,8 @@ const AdminNoteSetter = ({
           <Button
             onClick={() => {
               setDisableActions(true);
-              loanRemoveAdminNote
-                .run({ loanId, adminNoteId: adminNote.id })
+              removeAdminNote
+                .run({ ...methodParams, adminNoteId: adminNote.id })
                 .then(closeDialog)
                 .finally(() => setDisableActions(false));
             }}
@@ -115,4 +117,4 @@ const AdminNoteSetter = ({
   );
 };
 
-export default AdminNoteSetter;
+export default AdminNoteAdderContainer(AdminNoteSetter);

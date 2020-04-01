@@ -12,7 +12,7 @@ export class BorrowerService extends CollectionService {
   update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
-  insert = ({ borrower = {}, userId, loanId }) => {
+  insert = ({ borrower = {}, userId, loanId, insuranceRequestId }) => {
     let borrowerPersonalInfo = {};
 
     if (loanId) {
@@ -45,6 +45,14 @@ export class BorrowerService extends CollectionService {
 
     if (loanId) {
       this.addLink({ id: borrowerId, linkName: 'loans', linkId: loanId });
+    }
+
+    if (insuranceRequestId) {
+      this.addLink({
+        id: borrowerId,
+        linkName: 'insuranceRequests',
+        linkId: insuranceRequestId,
+      });
     }
     return borrowerId;
   };
@@ -119,6 +127,19 @@ export class BorrowerService extends CollectionService {
         });
       });
     });
+  }
+
+  cleanUpBorrowers({ borrowerId }) {
+    const { insuranceRequests = [], loans = [] } = this.get(borrowerId, {
+      loans: { _id: 1 },
+      insuranceRequests: { _id: 1 },
+    });
+    const hasOneLoan = loans.length === 1;
+    const hasOneInsuranceRequest = insuranceRequests.length === 1;
+
+    if (hasOneLoan ? !hasOneInsuranceRequest : hasOneInsuranceRequest) {
+      this.remove({ borrowerId });
+    }
   }
 }
 
