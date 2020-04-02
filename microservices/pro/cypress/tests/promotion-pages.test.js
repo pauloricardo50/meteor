@@ -1,3 +1,4 @@
+import { COMMISSION_RATES_TYPE } from '../../../../core/api/commissionRates/commissionRateConstants';
 /* eslint-env mocha */
 import { LOAN_STATUS } from '../../imports/core/api/loans/loanConstants';
 import {
@@ -81,10 +82,27 @@ describe('Promotion pages', () => {
       phoneNumber: '022 566 01 10',
     });
     cy.get('form').submit();
+    cy.get('.pro-side-nav')
+      .contains('Organisation')
+      .click();
 
-    cy.callMethod('editOrganisation', {
-      commissionRates: [{ rate: 0.5, threshold: 0 }],
-    });
+    cy.get('.organisation-id')
+      .invoke('text')
+      .then(organisationId =>
+        cy.callMethod('generateScenario', {
+          scenario: {
+            organisations: {
+              _id: organisationId,
+              commissionRates: {
+                rates: [{ rate: 0.5, threshold: 0 }],
+                type: COMMISSION_RATES_TYPE.COMMISSIONS,
+              },
+            },
+          },
+        }),
+      );
+
+    cy.refetch();
 
     cy.get('.pro-side-nav')
       .contains('Revenus')
