@@ -9,7 +9,7 @@ import {
   REVENUE_STATUS,
   COMMISSION_STATUS,
 } from 'core/api/revenues/revenueConstants';
-import { loanSetStatus } from 'core/api/loans/index';
+import { loanSetStatus } from 'core/api/loans';
 import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import generator from '../../../factories/server';
 import { LOAN_STATUS } from '../../../loans/loanConstants';

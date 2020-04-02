@@ -20,7 +20,7 @@ import {
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
-import { checkEmails } from '../../../../../utils/testHelpers/index';
+import { checkEmails } from '../../../../../utils/testHelpers';
 
 const customerToInvite = {
   email: 'test@example.com',

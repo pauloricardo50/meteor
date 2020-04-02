@@ -1,7 +1,7 @@
 import Loans from '../loans/loans';
-import MortgageNotes from '../mortgageNotes/index';
-import PromotionLots from '../promotionLots/index';
-import Promotions from '../promotions/index';
+import MortgageNotes from '../mortgageNotes';
+import PromotionLots from '../promotionLots';
+import Promotions from '../promotions';
 import Users from '../users/users';
 import Properties from './properties';
 

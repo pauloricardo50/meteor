@@ -1,10 +1,10 @@
-import Activities from '../activities/index';
-import Borrowers from '../borrowers/index';
-import InsuranceProducts from '../insuranceProducts/index';
-import InsuranceRequests from '../insuranceRequests/index';
+import Activities from '../activities';
+import Borrowers from '../borrowers';
+import InsuranceProducts from '../insuranceProducts';
+import InsuranceRequests from '../insuranceRequests';
 import LinkInitializer from '../links/LinkInitializer';
-import Organisations from '../organisations/index';
-import Revenues from '../revenues/index';
+import Organisations from '../organisations';
+import Revenues from '../revenues';
 import Tasks from '../tasks/tasks';
 import Insurances from './insurances';
 

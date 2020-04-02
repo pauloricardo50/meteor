@@ -3,7 +3,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Properties from '../../../properties/index';
+import Properties from '../../../properties';
 import PropertyService from '../../../properties/server/PropertyService';
 import { down, up } from '../14';
 

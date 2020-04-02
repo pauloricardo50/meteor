@@ -5,10 +5,10 @@ import { expect } from 'chai';
 
 import { EMAIL_IDS } from '../../../../../api/email/emailConstants';
 import generator from '../../../../../api/factories/server';
-import { sendLoanChecklist } from '../../../../../api/loans/index';
+import { sendLoanChecklist } from '../../../../../api/loans';
 import { ddpWithUserId } from '../../../../../api/methods/methodHelpers';
 import { formatMessage } from '../../../../../utils/server/intl';
-import { checkEmails } from '../../../../../utils/testHelpers/index';
+import { checkEmails } from '../../../../../utils/testHelpers';
 import { getChecklistMissingInformations } from '../../../helpers';
 
 describe('LoanChecklist', function() {

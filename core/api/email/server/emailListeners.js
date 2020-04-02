@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import FileService from '../../files/server/FileService';
-import { getUserNameAndOrganisation } from '../../helpers/index';
+import { getUserNameAndOrganisation } from '../../helpers';
 import { insuranceRequestSetAdminNote } from '../../insuranceRequests/methodDefinitions';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import {

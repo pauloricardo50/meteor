@@ -6,7 +6,7 @@ import { compose, mapProps, withState } from 'recompose';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 import { withSmartQuery } from '../../../api/containerToolkit';
-import { getReferredBy } from '../../../api/helpers/index';
+import { getReferredBy } from '../../../api/helpers';
 import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { proPropertyLoans } from '../../../api/loans/queries';
 import { removeCustomerFromProperty } from '../../../api/properties/methodDefinitions';

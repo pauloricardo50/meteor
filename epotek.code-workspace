@@ -35,7 +35,9 @@
     },
     "debug.node.autoAttach": "on",
     "search.followSymlinks": false,
-    "sort-imports.on-save": true
+    "sort-imports.on-save": true,
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "typescript.preferences.importModuleSpecifier": "relative",
   },
   "extensions": {
     "recommendations": [

@@ -10,7 +10,7 @@ import {
   isAllowedToManageProPropertyPermissions,
   isAllowedToModifyProProperty,
   isAllowedToSeeProPropertyCustomers,
-} from 'core/api/security/clientSecurityHelpers/index';
+} from 'core/api/security/clientSecurityHelpers/';
 import ProPropertyPage from 'core/components/ProPropertyPage/ProPropertyPage';
 import { ProPropertyPageContext } from 'core/components/ProPropertyPage/ProPropertyPageContext';
 import withMatchParam from 'core/containers/withMatchParam';

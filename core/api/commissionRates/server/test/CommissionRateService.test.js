@@ -1,10 +1,11 @@
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import CommissionRateService from '../CommissionRateService';
-import generator from '../../../factories/server/index';
+import generator from '../../../factories/server';
 import { COMMISSION_RATES_TYPE } from '../../commissionRateConstants';
+import CommissionRateService from '../CommissionRateService';
 
 describe('CommissionRateService', () => {
   beforeEach(() => resetDatabase());

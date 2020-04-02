@@ -6,7 +6,7 @@ import { createReadStream, statSync } from 'fs';
 import path from 'path';
 import mime from 'mime-types';
 
-import { sortObject } from 'core/api/helpers/index';
+import { sortObject } from 'core/api/helpers';
 import UserService from 'core/api/users/server/UserService';
 import { OBJECT_FORMATS, formatObject } from '../helpers';
 

@@ -1,8 +1,8 @@
 import LinkInitializer from '../links/LinkInitializer';
 import Loans from '../loans/loans';
 import Lots from '../lots/lots';
-import PromotionLots from '../promotionLots/index';
-import Promotions from '../promotions/index';
+import PromotionLots from '../promotionLots';
+import Promotions from '../promotions';
 import PromotionOptions from '.';
 
 PromotionOptions.addLinks({

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import { asyncForEach } from '../../helpers/index';
+import { asyncForEach } from '../../helpers';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,

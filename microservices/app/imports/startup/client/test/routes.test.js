@@ -1,13 +1,15 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
-import { render } from 'react-dom';
 import { expect } from 'chai';
+import { render } from 'react-dom';
+
+import AppRouter from '../AppRouter';
 
 // import jsdom from 'jsdom';
 
-import AppRouter from '../AppRouter';
-// import start from './index';
+// import start from './';
 
 if (Meteor.isClient) {
   describe('App', () => {

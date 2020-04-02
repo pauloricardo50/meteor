@@ -5,7 +5,7 @@ import SimpleSchema from 'simpl-schema';
 import {
   isAllowedToInviteCustomersToProProperty,
   isAllowedToInviteCustomersToPromotion,
-} from '../../api/security/clientSecurityHelpers/index';
+} from '../../api/security/clientSecurityHelpers';
 import { proInviteUser } from '../../api/users/methodDefinitions';
 import { createRoute } from '../../utils/routerUtils';
 

@@ -4,52 +4,50 @@ import { Random } from 'meteor/random';
 import faker from 'faker';
 import moment from 'moment';
 
-import Users from '../users/users';
-import { ROLES } from '../users/userConstants';
+import Activities from '../activities';
 import Borrowers from '../borrowers/borrowers';
-import Tasks from '../tasks/tasks';
-import Loans from '../loans/loans';
-import { TASK_STATUS } from '../tasks/taskConstants';
-import { STEPS, LOAN_CATEGORIES } from '../loans/loanConstants';
+import CommissionRates from '../commissionRates';
+import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
+import Contacts from '../contacts';
+import InsuranceProducts from '../insuranceProducts';
 import {
-  RESIDENCE_TYPE,
-  PROPERTY_CATEGORY,
-} from '../properties/propertyConstants';
-import Properties from '../properties/properties';
+  INSURANCE_PRODUCT_CATEGORIES,
+  INSURANCE_PRODUCT_FEATURES,
+} from '../insuranceProducts/insuranceProductConstants';
+import InsuranceRequests from '../insuranceRequests';
+import Insurances from '../insurances';
+import InterestRates from '../interestRates';
+import LenderRules from '../lenderRules';
 import {
-  Offers,
-  Promotions,
-  PromotionOptions,
-  Lots,
-  MortgageNotes,
-  Lenders,
-  InterestRates,
-  LenderRules,
-  Revenues,
-  Activities,
-  InsuranceRequests,
-  Insurances,
-  CommissionRates,
-  InsuranceProducts,
-} from '../index';
-import { PROMOTION_TYPES } from '../promotions/promotionConstants';
-import PromotionLots from '../promotionLots/index';
-import { LOT_TYPES } from '../lots/lotConstants';
-import Organisations from '../organisations/index';
-import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
-import Contacts from '../contacts/index';
-import { REVENUE_TYPES } from '../revenues/revenueConstants';
-import {
-  DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
+  DEFAULT_VALUE_FOR_ALL,
 } from '../lenderRules/lenderRulesConstants';
-import Notifications from '../notifications/index';
-import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
+import Lenders from '../lenders';
+import { LOAN_CATEGORIES, STEPS } from '../loans/loanConstants';
+import Loans from '../loans/loans';
+import { LOT_TYPES } from '../lots/lotConstants';
+import Lots from '../lots/lots';
+import MortgageNotes from '../mortgageNotes';
+import Notifications from '../notifications';
+import Offers from '../offers';
+import Organisations from '../organisations';
+import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
+import PromotionLots from '../promotionLots';
+import PromotionOptions from '../promotionOptions';
+import Promotions from '../promotions';
+import { PROMOTION_TYPES } from '../promotions/promotionConstants';
+import Properties from '../properties/properties';
 import {
-  INSURANCE_PRODUCT_FEATURES,
-  INSURANCE_PRODUCT_CATEGORIES,
-} from '../insuranceProducts/insuranceProductConstants';
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../properties/propertyConstants';
+import Revenues from '../revenues';
+import { REVENUE_TYPES } from '../revenues/revenueConstants';
+import { TASK_STATUS } from '../tasks/taskConstants';
+import Tasks from '../tasks/tasks';
+import { ROLES } from '../users/userConstants';
+import Users from '../users/users';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';

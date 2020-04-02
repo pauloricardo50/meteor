@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
-import Calculator from '../../utils/Calculator/index';
+import Calculator from '../../utils/Calculator';
 import StatusLabel from '../StatusLabel';
 import T, { Money } from '../Translation';
 

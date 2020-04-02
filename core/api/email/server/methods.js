@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
-import SecurityService from 'core/api/security/index';
+import SecurityService from 'core/api/security';
 import { Method } from '../../methods/methods';
 import EmailService from './EmailService';
 

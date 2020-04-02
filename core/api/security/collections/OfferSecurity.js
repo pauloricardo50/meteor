@@ -1,4 +1,4 @@
-import Offers from '../../offers/index';
+import Offers from '../../offers';
 import Security from '../Security';
 
 class OfferSecurity {

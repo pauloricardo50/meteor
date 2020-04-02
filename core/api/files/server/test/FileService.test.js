@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import generator from '../../../factories/server';
 import { BORROWERS_COLLECTION } from '../../../borrowers/borrowerConstants';
-import { asyncForEach } from '../../../helpers/index';
+import { asyncForEach } from '../../../helpers';
 import { FILE_STATUS, BORROWER_DOCUMENTS } from '../../fileConstants';
 import FileService from '../FileService';
 import S3Service from '../S3Service';

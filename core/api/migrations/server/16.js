@@ -1,7 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
 import { formatPhoneNumber } from '../../../utils/phoneFormatting';
-import Contacts from '../../contacts/index';
+import Contacts from '../../contacts';
 import Users from '../../users/users';
 
 export const up = async () => {

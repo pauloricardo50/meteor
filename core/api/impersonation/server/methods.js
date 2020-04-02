@@ -1,4 +1,4 @@
-import SecurityService from 'core/api/security/index';
+import SecurityService from 'core/api/security';
 import SessionService from 'core/api/sessions/server/SessionService';
 import { impersonateUser, impersonateAdmin } from '../methodDefinitions';
 import ImpersonateService from './ImpersonateService';

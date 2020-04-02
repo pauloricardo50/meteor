@@ -18,7 +18,7 @@ import PromotionOptionService from '../../api/promotionOptions/server/PromotionO
 import { PROMOTION_TYPES } from '../../api/promotions/promotionConstants';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import PropertyService from '../../api/properties/server/PropertyService';
-import { Services } from '../../api/server/index';
+import { Services } from '../../api/server';
 import UserService from '../../api/users/server/UserService';
 import { ROLES } from '../../api/users/userConstants';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
@@ -28,7 +28,7 @@ import { createAdmins, createEpotek } from '../../fixtures/userFixtures';
 import {
   createEmailVerificationToken,
   createLoginToken,
-} from '../../utils/testHelpers/index';
+} from '../../utils/testHelpers';
 import {
   ADMIN_EMAIL,
   ORG_NAME,

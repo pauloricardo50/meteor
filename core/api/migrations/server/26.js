@@ -1,7 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
 import { PROPERTY_STATUS } from 'core/api/properties/propertyConstants';
-import { asyncForEach } from 'core/api/helpers/index';
+import { asyncForEach } from 'core/api/helpers';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';

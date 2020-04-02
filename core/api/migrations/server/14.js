@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import Properties from '../../properties/index';
+import Properties from '../../properties';
 
 export const up = () => {
   const allProperties = Properties.find({}).fetch();

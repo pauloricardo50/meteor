@@ -7,7 +7,7 @@ import {
 } from '../../config/financeConstants';
 import { roundValue } from '../conversionFunctions';
 import { arrayify } from '../general';
-import { NotaryFeesCalculator } from '../notaryFees/index';
+import { NotaryFeesCalculator } from '../notaryFees';
 
 const INITIAL_MIN_BOUND = 0;
 const INITIAL_MAX_BOUND = 1000000;

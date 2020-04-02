@@ -9,7 +9,7 @@ import {
   STEPS,
 } from 'core/api/loans/loanConstants';
 import { cleanAllData } from 'core/api/migrations/server/dataCleaning';
-import { checkEmails } from 'core/utils/testHelpers/index';
+import { checkEmails } from 'core/utils/testHelpers';
 
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import Loans from '../../../loans/loans';

@@ -1,13 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { TASK_STATUS, TASK_PRIORITIES } from 'core/api/tasks/taskConstants';
+import { taskChangeStatus, taskComplete, taskUpdate } from 'core/api/tasks/';
+import { TASK_PRIORITIES, TASK_STATUS } from 'core/api/tasks/taskConstants';
 import IconButton from 'core/components/IconButton';
-import {
-  taskComplete,
-  taskChangeStatus,
-  taskUpdate,
-} from 'core/api/tasks/index';
 
 const TasksTableActions = ({ taskId, priority }) => (
   <div className="flex space-children">

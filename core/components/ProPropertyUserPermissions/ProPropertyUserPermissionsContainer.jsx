@@ -1,7 +1,7 @@
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { getUserNameAndOrganisation } from '../../api/helpers/index';
+import { getUserNameAndOrganisation } from '../../api/helpers';
 import { makePermissions } from '../../api/helpers/sharedSchemas';
 import { setProPropertyPermissions } from '../../api/properties/methodDefinitions';
 import { propertyPermissionsSchema } from '../../api/properties/schemas/PropertySchema';

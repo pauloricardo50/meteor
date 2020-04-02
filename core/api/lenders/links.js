@@ -1,8 +1,8 @@
-import Contacts from '../contacts/index';
+import Contacts from '../contacts';
 import LinkInitializer from '../links/LinkInitializer';
 import Loans from '../loans/loans';
-import Offers from '../offers/index';
-import Organisations from '../organisations/index';
+import Offers from '../offers';
+import Organisations from '../organisations';
 import Tasks from '../tasks';
 import Lenders from '.';
 

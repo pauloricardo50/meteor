@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import InsuranceService from '../InsuranceService';
 import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
-import generator from '../../../factories/server/index';
+import generator from '../../../factories/server';
 import { ORGANISATION_FEATURES } from '../../../organisations/organisationConstants';
 import {
   INSURANCE_STATUS,

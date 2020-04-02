@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { createMeteorAsyncFunction } from '../../helpers/index';
+import { createMeteorAsyncFunction } from '../../helpers';
 import SlackService from '../../slack/server/SlackService';
 import ServerEventService from '../../events/server/ServerEventService';
 import { Method } from '../methods';

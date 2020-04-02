@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import Activities from '../activities/index';
-import Borrowers from '../borrowers/index';
+import Activities from '../activities';
+import Borrowers from '../borrowers';
 import Loans from '../loans/loans';
-import Offers from '../offers/index';
-import Properties from '../properties/index';
-import Sessions from '../sessions/index';
+import Offers from '../offers';
+import Properties from '../properties';
+import Sessions from '../sessions';
 import Tasks from '../tasks/tasks';
 import UpdateWatchers from '../updateWatchers/server/updateWatchers';
 import Users from '../users/users';

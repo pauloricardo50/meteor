@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
 import { task as taskFragment } from '../../fragments';
-import { getUserNameAndOrganisation } from '../../helpers/index';
+import { getUserNameAndOrganisation } from '../../helpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
 import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';

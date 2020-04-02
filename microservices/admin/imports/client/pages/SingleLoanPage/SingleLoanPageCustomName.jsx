@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { loanUpdate } from 'core/api/loans/';
 import ClickToEditField from 'core/components/ClickToEditField';
-import { loanUpdate } from 'core/api/loans/index';
 import Icon from 'core/components/Icon';
 
 const SingleLoanPageCustomName = ({ customName, loanId }) => (

@@ -1,4 +1,4 @@
-import Lenders from '../lenders/index';
+import Lenders from '../lenders';
 import Users from '../users/users';
 import Offers from './offers';
 

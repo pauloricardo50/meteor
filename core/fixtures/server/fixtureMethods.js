@@ -9,8 +9,8 @@ import {
   completeFakeBorrower,
   emptyFakeBorrower,
 } from '../../api/borrowers/fakes';
-import Borrowers from '../../api/borrowers/index';
-import Contacts from '../../api/contacts/index';
+import Borrowers from '../../api/borrowers';
+import Contacts from '../../api/contacts';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 import {
   APPLICATION_TYPES,
@@ -20,15 +20,15 @@ import {
 } from '../../api/loans/loanConstants';
 import Loans from '../../api/loans/loans';
 import Lots from '../../api/lots/lots';
-import Offers from '../../api/offers/index';
-import Organisations from '../../api/organisations/index';
+import Offers from '../../api/offers';
+import Organisations from '../../api/organisations';
 import { ORGANISATION_TYPES } from '../../api/organisations/organisationConstants';
 import OrganisationService from '../../api/organisations/server/OrganisationService';
-import PromotionLots from '../../api/promotionLots/index';
-import PromotionOptions from '../../api/promotionOptions/index';
-import Promotions from '../../api/promotions/index';
+import PromotionLots from '../../api/promotionLots';
+import PromotionOptions from '../../api/promotionOptions';
+import Promotions from '../../api/promotions';
 import { fakeProperty } from '../../api/properties/fakes';
-import Properties from '../../api/properties/index';
+import Properties from '../../api/properties';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
 import Tasks from '../../api/tasks/tasks';

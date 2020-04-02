@@ -17,7 +17,7 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
-import { isAllowedToManageCustomerPromotionReservation } from '../../../../../api/security/clientSecurityHelpers/index';
+import { isAllowedToManageCustomerPromotionReservation } from '../../../../../api/security/clientSecurityHelpers';
 import { CurrentUserContext } from '../../../../../containers/CurrentUserContext';
 import Calculator from '../../../../../utils/Calculator';
 

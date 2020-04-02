@@ -1,9 +1,9 @@
 import LinkInitializer from '../links/LinkInitializer';
 import Loans from '../loans/loans';
 import Lots from '../lots/lots';
-import PromotionOptions from '../promotionOptions/index';
-import Promotions from '../promotions/index';
-import Properties from '../properties/index';
+import PromotionOptions from '../promotionOptions';
+import Promotions from '../promotions';
+import Properties from '../properties';
 import PromotionLots from '.';
 
 const promotionCache = {

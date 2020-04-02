@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
-import { Services } from '../../server/index';
-import { assignAdminToUser } from '../../users/index';
+import { Services } from '../../server';
+import { assignAdminToUser } from '../../users';
 import LoanService from '../../loans/server/LoanService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';

@@ -1,8 +1,8 @@
-import InsuranceRequests from '../insuranceRequests/index';
-import Insurances from '../insurances/index';
+import InsuranceRequests from '../insuranceRequests';
+import Insurances from '../insurances';
 import LinkInitializer from '../links/LinkInitializer';
 import Loans from '../loans/loans';
-import Organisations from '../organisations/index';
+import Organisations from '../organisations';
 import Users from '../users/users';
 import Revenues from '.';
 

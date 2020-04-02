@@ -1,22 +1,22 @@
-import merge from 'lodash/merge';
 import React, { useContext, useMemo } from 'react';
+import merge from 'lodash/merge';
 import { compose, withProps, withState } from 'recompose';
 
-import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
-import {
-  revenueInsert,
-  revenueUpdate,
-  revenueRemove,
-} from 'core/api/revenues/index';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { adminUsers } from 'core/api/users/queries';
-import T from 'core/components/Translation';
-import Box from 'core/components/Box';
-import { ROLES } from 'core/api/users/userConstants';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import {
+  revenueInsert,
+  revenueRemove,
+  revenueUpdate,
+} from 'core/api/revenues/';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
+import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import Box from 'core/components/Box';
+import T from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(

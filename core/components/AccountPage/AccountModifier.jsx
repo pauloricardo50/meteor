@@ -4,7 +4,7 @@ import { withProps } from 'recompose';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 import { UserSchema } from 'core/api/users/users';
-import { updateUser } from 'core/api/users/index';
+import { updateUser } from 'core/api/users';
 
 const AccountModifier = ({ schema, onSubmit, buttonProps, currentUser }) => (
   <AutoFormDialog

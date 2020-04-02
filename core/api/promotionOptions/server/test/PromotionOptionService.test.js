@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import { ddpWithUserId } from 'core/api/methods/methodHelpers';
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
-import { checkEmails } from '../../../../utils/testHelpers/index';
+import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import generator from '../../../factories/server';
