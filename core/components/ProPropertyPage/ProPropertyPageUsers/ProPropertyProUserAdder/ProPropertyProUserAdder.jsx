@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { addProUserToProperty, getUserByEmail } from '../../../../api';
 import withContextConsumer from '../../../../api/containerToolkit/withContextConsumer';
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { addProUserToProperty } from '../../../../api/properties/methodDefinitions';
+import { getUserByEmail } from '../../../../api/users/methodDefinitions';
 import { userSearch } from '../../../../api/users/queries';
 import { ROLES } from '../../../../api/users/userConstants';
 import CollectionSearch from '../../../CollectionSearch';

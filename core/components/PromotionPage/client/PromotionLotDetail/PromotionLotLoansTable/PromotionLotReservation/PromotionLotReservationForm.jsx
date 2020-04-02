@@ -1,8 +1,8 @@
-import moment from 'moment';
 import React, { useState } from 'react';
+import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
 
-import { promotionOptionUploadAgreement } from '../../../../../../api/methods';
+import { promotionOptionUploadAgreement } from '../../../../../../api/promotionOptions/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../../../AutoForm2/autoFormConstants';
 import AutoFormDialog from '../../../../../AutoForm2/AutoFormDialog';
 import T from '../../../../../Translation';

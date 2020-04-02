@@ -1,11 +1,11 @@
 import { compose, withProps } from 'recompose';
 
-import { setUserReferredBy } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import {
   getUserNameAndOrganisation,
   getUserOrganisationName,
 } from 'core/api/helpers';
+import { setUserReferredBy } from 'core/api/users/methodDefinitions';
 import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/users/userConstants';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { borrowerDelete } from 'core/api';
+import { borrowerDelete } from 'core/api/borrowers/methodDefinitions';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import FullDate from 'core/components/dateComponents/FullDate';

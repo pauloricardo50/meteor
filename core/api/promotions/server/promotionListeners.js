@@ -1,8 +1,7 @@
-import { cancelPromotionLotReservation } from 'core/api/methods/index';
 import ServerEventService from '../../events/server/ServerEventService';
-import PromotionService from './PromotionService';
-
+import { cancelPromotionLotReservation } from '../../promotionLots/methodDefinitions';
 import { removeLoanFromPromotion } from '../methodDefinitions';
+import PromotionService from './PromotionService';
 
 ServerEventService.addBeforeMethodListener(
   removeLoanFromPromotion,

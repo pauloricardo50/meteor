@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 import { APPLICATION_TYPES, STEPS } from 'core/api/loans/loanConstants';
-import { loanUpdate } from 'core/api/methods';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import Icon from 'core/components/Icon';

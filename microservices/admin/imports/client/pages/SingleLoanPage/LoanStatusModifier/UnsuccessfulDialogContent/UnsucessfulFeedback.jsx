@@ -1,11 +1,12 @@
 import React from 'react';
-import { withProps } from 'recompose';
-import uniqBy from 'lodash/uniqBy';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons/faEnvelope';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import uniqBy from 'lodash/uniqBy';
+import { withProps } from 'recompose';
 
-import { sendNegativeFeedbackToAllLenders } from 'core/api/methods';
+import { sendNegativeFeedbackToAllLenders } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
+
 import DialogContentSection from '../DialogContentSection';
 
 const makeSendNegativeFeedbackToAllLenders = (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { removeUser } from 'core/api';
+import { removeUser } from 'core/api/users/methodDefinitions';
 import { ROLES } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 

@@ -8,8 +8,11 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { sendEnrollmentEmail, toggleAccount } from 'core/api';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import {
+  sendEnrollmentEmail,
+  toggleAccount,
+} from 'core/api/users/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import EmailModifier from 'core/components/EmailModifier';

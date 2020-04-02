@@ -1,17 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { ONE_KB, S3_ACLS } from '../../../../api/files/fileConstants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
+import { lotInsert } from '../../../../api/lots/methodDefinitions';
 import {
   insertPromotionProperty,
-  lotInsert,
   promotionRemove,
   promotionUpdate,
   toggleNotifications,
-} from '../../../../api/methods';
+} from '../../../../api/promotions/methodDefinitions';
 import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
 import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';

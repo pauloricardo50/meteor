@@ -1,11 +1,11 @@
-import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
 import {
+  adminLoanInsert,
   loanLinkPromotion,
   loanUnlinkPromotion,
-  adminLoanInsert,
-} from 'core/api/methods';
+} from '../../../../api/loans/methodDefinitions';
 
 export default compose(
   withRouter,

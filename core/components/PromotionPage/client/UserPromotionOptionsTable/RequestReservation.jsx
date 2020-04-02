@@ -4,7 +4,7 @@ import { faPlus } from '@fortawesome/pro-light-svg-icons/faPlus';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
-import { promotionOptionActivateReservation } from '../../../../api/methods';
+import { promotionOptionActivateReservation } from '../../../../api/promotionOptions/methodDefinitions';
 import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import colors from '../../../../config/colors';
 import ConfirmMethod from '../../../ConfirmMethod';

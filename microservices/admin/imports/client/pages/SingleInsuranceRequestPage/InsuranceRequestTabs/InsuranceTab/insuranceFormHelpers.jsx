@@ -3,8 +3,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SimpleSchema from 'simpl-schema';
 
 import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
+import {
+  insuranceInsert,
+  insuranceModify,
+} from 'core/api/insurances/methodDefinitions';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
-import { insuranceInsert, insuranceModify } from 'core/api/methods';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { formatMessage } from 'core/utils/intl';

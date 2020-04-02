@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { withProps } from 'recompose';
 
-import { setPromotionOptionProgress } from '../../../api/methods';
+import { setPromotionOptionProgress } from '../../../api/promotionOptions/methodDefinitions';
 import { PROMOTION_OPTION_BANK_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import PromotionOptionSchema from '../../../api/promotionOptions/schemas/PromotionOptionSchema';
 import T from '../../Translation';

@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { compose, shouldUpdate, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
-import {
-  taskInsert,
-  taskUpdate,
-  taskChangeStatus,
-  taskComplete,
-} from 'core/api/methods';
-import useSearchParams from 'core/hooks/useSearchParams';
-import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import {
+  taskChangeStatus,
+  taskComplete,
+  taskInsert,
+  taskUpdate,
+} from 'core/api/tasks/methodDefinitions';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import useSearchParams from 'core/hooks/useSearchParams';
 
 import CollectionTaskInserter from './CollectionTaskInserter';
 import TasksTable, { taskTableFragment } from './TasksTable';

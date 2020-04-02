@@ -3,21 +3,23 @@ import moment from 'moment';
 import ServerEventService from '../../events/server/ServerEventService';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import {
+  loanShareSolvency,
+  setMaxPropertyValueWithoutBorrowRatio,
+} from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import { generateDisbursedSoonLoansTasks } from '../../loans/server/methods';
-import {
-  adminCreateUser,
-  anonymousCreateUser,
-  loanShareSolvency,
-  proInviteUser,
-  setMaxPropertyValueWithoutBorrowRatio,
-} from '../../methods';
 import {
   generateExpiringSoonReservationTasks,
   generateTenDayExpirationReminderTasks,
 } from '../../promotionOptions/server/methods';
 import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
+import {
+  adminCreateUser,
+  anonymousCreateUser,
+  proInviteUser,
+} from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import TaskService from './TaskService';

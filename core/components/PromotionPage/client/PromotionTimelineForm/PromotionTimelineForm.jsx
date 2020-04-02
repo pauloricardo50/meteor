@@ -1,12 +1,11 @@
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
 import { withProps } from 'recompose';
 
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import PromotionSchema from 'core/api/promotions/schemas/PromotionSchema';
-import { promotionUpdate } from 'core/api/methods';
-
+import { promotionUpdate } from '../../../../api/promotions/methodDefinitions';
+import PromotionSchema from '../../../../api/promotions/schemas/PromotionSchema';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/autoFormConstants';
+import AutoFormDialog from '../../../AutoForm2/AutoFormDialog';
 import PromotionTimelinePicker from './PromotionTimelinePicker';
 
 const schema = PromotionSchema.pick(

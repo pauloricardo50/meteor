@@ -2,7 +2,10 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
-import { removeAdditionalDoc, setAdditionalDoc } from '../../../api/methods';
+import {
+  removeAdditionalDoc,
+  setAdditionalDoc,
+} from '../../../api/methods/methodDefinitions';
 import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
 import AutoFormDialog from '../../AutoForm2/AutoFormDialog';
 import Button from '../../Button';

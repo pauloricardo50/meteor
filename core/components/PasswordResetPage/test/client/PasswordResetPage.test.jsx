@@ -4,10 +4,10 @@ import { Random } from 'meteor/random';
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
 
-import { resetDatabase } from 'core/utils/testHelpers/testHelpers';
-import { testCreateUser } from '../../../../api';
-import { getMountedComponent } from '../../../../utils/testHelpers';
+import { testCreateUser } from '../../../../api/users/methodDefinitions';
 import pollUntilReady from '../../../../utils/pollUntilReady';
+import { getMountedComponent } from '../../../../utils/testHelpers';
+import { resetDatabase } from '../../../../utils/testHelpers/testHelpers';
 import Loading from '../../../Loading/Loading';
 import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,

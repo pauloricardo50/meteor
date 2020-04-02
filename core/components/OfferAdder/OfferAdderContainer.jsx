@@ -1,10 +1,10 @@
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { offerInsert } from '../../api';
 import { withSmartQuery } from '../../api/containerToolkit';
 import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 import { loanLenders } from '../../api/lenders/queries';
+import { offerInsert } from '../../api/offers/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 
 const interestRatesSchema = ({ isDiscount }) =>

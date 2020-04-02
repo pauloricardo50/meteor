@@ -1,8 +1,8 @@
 import React from 'react';
 import { withState } from 'recompose';
 
+import { throwDevError } from '../../api/methods/methodDefinitions';
 import Button from '../Button';
-import { throwDevError } from '../../api';
 
 const ErrorThrower = ({ fuckedUp, fuckShitUp }) => (
   <div className="error-thrower">

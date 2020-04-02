@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import LoanSchema from 'core/api/loans/schemas/LoanSchema';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import { adminLoans } from 'core/api/loans/queries';
-import { loanUpdate } from 'core/api';
+import LoanSchema from 'core/api/loans/schemas/LoanSchema';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 
 const LoanRenamer = ({ loan }) => (
   <AutoFormDialog

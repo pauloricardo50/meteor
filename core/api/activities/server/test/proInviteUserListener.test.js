@@ -1,19 +1,20 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { setAPIUser } from 'core/api/RESTAPI/server/helpers';
-import { proInviteUser } from '../../../methods';
-import generator from '../../../factories/server';
-import UserService from '../../../users/server/UserService';
-import { checkEmails } from '../../../../utils/testHelpers';
-import { ddpWithUserId } from '../../../methods/methodHelpers';
+/* eslint-env mocha */
+import { expect } from 'chai';
 
-import {
-  ACTIVITY_TYPES,
-  ACTIVITY_EVENT_METADATA,
-} from '../../activityConstants';
+import { setAPIUser } from 'core/api/RESTAPI/server/helpers';
+
+import { checkEmails } from '../../../../utils/testHelpers';
+import generator from '../../../factories/server';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { proInviteUser } from '../../../users/methodDefinitions';
+import UserService from '../../../users/server/UserService';
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from '../../activityConstants';
 import ActivityService from '../ActivityService';
 
 describe('proInviteUserListener', function() {

@@ -1,19 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 
-import { ORGANISATIONS_COLLECTION } from 'imports/core/api/organisations/organisationConstants';
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { taskInsert } from 'core/api';
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { taskInsert } from 'core/api/tasks/methodDefinitions';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 
 import { taskFormLayout, schema as taskSchema } from './TaskModifier';
 

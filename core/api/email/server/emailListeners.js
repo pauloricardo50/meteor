@@ -3,27 +3,27 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
-import {
-  submitContactForm,
-  setLoanStep,
-  sendNegativeFeedbackToAllLenders,
-  proInviteUser,
-  offerSendFeedback,
-  loanSetAdminNote,
-  insuranceRequestSetAdminNote,
-} from '../../methods/index';
-import OfferService from '../../offers/server/OfferService';
 import FileService from '../../files/server/FileService';
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
-import UserService from '../../users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
 import { getUserNameAndOrganisation } from '../../helpers/index';
-import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
-import { sendEmail, sendEmailToAddress } from './methods';
-import { addEmailListener } from './emailHelpers';
-import { PROMOTION_EMAILS, mapConfigToListener } from './promotionEmailHelpers';
+import { insuranceRequestSetAdminNote } from '../../insuranceRequests/methodDefinitions';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
+import {
+  loanSetAdminNote,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+} from '../../loans/methodDefinitions';
+import LoanService from '../../loans/server/LoanService';
+import { submitContactForm } from '../../methods/methodDefinitions';
+import { offerSendFeedback } from '../../offers/methodDefinitions';
+import OfferService from '../../offers/server/OfferService';
+import PromotionService from '../../promotions/server/PromotionService';
+import PropertyService from '../../properties/server/PropertyService';
+import { proInviteUser } from '../../users/methodDefinitions';
+import UserService from '../../users/server/UserService';
+import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
+import { addEmailListener } from './emailHelpers';
+import { sendEmail, sendEmailToAddress } from './methods';
+import { PROMOTION_EMAILS, mapConfigToListener } from './promotionEmailHelpers';
 
 addEmailListener({
   description: 'Formulaire de contact -> Client',

@@ -1,14 +1,16 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { borrowerUpdate, offerUpdate, propertyUpdate } from 'core/api';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
 import BorrowerSchema from 'core/api/borrowers/schemas/BorrowerSchema';
 import { loanUpdate } from 'core/api/loans/index';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
+import { offerUpdate } from 'core/api/offers/methodDefinitions';
 import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
 import { OfferSchema } from 'core/api/offers/offers';
+import { propertyUpdate } from 'core/api/properties/methodDefinitions';
 import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
 import Tabs from 'core/components/Tabs';

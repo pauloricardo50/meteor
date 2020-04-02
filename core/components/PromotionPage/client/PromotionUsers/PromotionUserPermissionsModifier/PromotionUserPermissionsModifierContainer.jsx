@@ -3,7 +3,7 @@ import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { makePermissions } from '../../../../../api/helpers/sharedSchemas';
-import { setPromotionUserPermissions } from '../../../../../api/methods';
+import { setPromotionUserPermissions } from '../../../../../api/promotions/methodDefinitions';
 import {
   PROMOTION_PERMISSIONS,
   PROMOTION_PERMISSIONS_BUNDLES,

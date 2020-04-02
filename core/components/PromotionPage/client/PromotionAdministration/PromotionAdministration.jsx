@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { addProUserToPromotion } from '../../../../api/methods';
+import { addProUserToPromotion } from '../../../../api/promotions/methodDefinitions';
 import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
 import { userSearch } from '../../../../api/users/queries';
 import { ROLES, USERS_COLLECTION } from '../../../../api/users/userConstants';

@@ -1,16 +1,17 @@
 import React from 'react';
 import moment from 'moment';
-import { withProps, compose, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps, withState } from 'recompose';
 
-import Dialog from 'core/components/Material/Dialog';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { assignLoanToUser } from 'core/api/methods/index';
+import { assignLoanToUser } from 'core/api/loans/methodDefinitions';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
+import Dialog from 'core/components/Material/Dialog';
+import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import APP_ROUTES from 'imports/startup/client/appRoutes';
+
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 import { withAnonymousLoan } from '../../../pages/AppPage/AnonymousAppPage/AnonymousAppPageContainer';
 
 const AnonymousLoanClaimer = ({

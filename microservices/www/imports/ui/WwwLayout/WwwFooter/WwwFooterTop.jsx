@@ -1,12 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+import CTAS from 'core/api/analytics/ctas';
+import { ctaClicked } from 'core/api/analytics/helpers';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import { ctaClicked } from 'core/api/analytics/helpers';
-import CTAS from 'core/api/analytics/ctas';
-import { WWW_ROUTES } from 'imports/startup/shared/Routes';
+
+import { WWW_ROUTES } from '../../../startup/shared/Routes';
 
 const WwwFooterTop = ({ children, history }) => {
   if (children) {

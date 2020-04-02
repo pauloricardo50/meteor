@@ -2,7 +2,7 @@ import { injectIntl } from 'react-intl';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { offerSendFeedback } from '../../api';
+import { offerSendFeedback } from '../../api/offers/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 import {
   FEEDBACK_OPTIONS,

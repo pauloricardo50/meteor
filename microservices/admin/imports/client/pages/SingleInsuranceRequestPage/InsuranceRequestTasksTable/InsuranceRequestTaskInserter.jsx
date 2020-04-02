@@ -1,12 +1,12 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useMemo, useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { taskInsert } from 'core/api';
-import T from 'core/components/Translation';
+import { taskInsert } from 'core/api/tasks/methodDefinitions';
 import Box from 'core/components/Box';
+import T from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+
 import { CollectionTaskInserterForm } from '../../../components/TasksTable/CollectionTaskInserter';
 import { schema as taskSchema } from '../../../components/TasksTable/TaskModifier';
 

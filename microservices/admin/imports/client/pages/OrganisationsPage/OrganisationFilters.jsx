@@ -1,11 +1,11 @@
 import React from 'react';
-import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import SimpleSchema from 'simpl-schema';
 
 import {
   ORGANISATION_TAGS,
   ORGANISATION_TYPES,
 } from 'core/api/organisations/organisationConstants';
+import AutoForm, { CustomAutoField } from 'core/components/AutoForm2';
 
 const filtersSchema = new SimpleSchema({
   tags: {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import fileSaver from 'file-saver';
+import PropTypes from 'prop-types';
 
+import { downloadFile } from '../api/files/methodDefinitions';
 import IconButton from './IconButton';
 import T from './Translation';
-import { downloadFile } from '../api';
 
 export default class Download extends Component {
   constructor(props) {

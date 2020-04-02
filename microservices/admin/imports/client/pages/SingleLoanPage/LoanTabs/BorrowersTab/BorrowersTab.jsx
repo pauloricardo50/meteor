@@ -1,19 +1,19 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import { Percent } from 'core/components/Translation';
-import RadioTabs from 'core/components/RadioButtons/RadioTabs';
-import { addBorrower } from 'core/api/methods';
+import { addBorrower } from 'core/api/methods/methodDefinitions';
 import {
-  getBorrowerFinanceArray,
-  getBorrowerInfoArray,
-  getBorrowerIncomeArray,
   getBorrowerFortuneArray,
+  getBorrowerIncomeArray,
+  getBorrowerInfoArray,
   getBorrowerInsuranceArray,
 } from 'core/arrays/BorrowerFormArray';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import Icon from 'core/components/Icon';
+import RadioTabs from 'core/components/RadioButtons/RadioTabs';
+import { Percent } from 'core/components/Translation';
 import { getCountedArray } from 'core/utils/formArrayHelpers';
 import { getPercent } from 'core/utils/general';
-import Icon from 'core/components/Icon';
+
 import BorrowersTabForm from './BorrowersTabForm';
 
 const personalArray = [

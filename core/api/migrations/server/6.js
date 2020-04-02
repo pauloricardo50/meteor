@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Organisations } from '../..';
+import Organisations from '../../organisations/index';
 
 export const up = () => {
   const allOrganisations = Organisations.find().fetch();

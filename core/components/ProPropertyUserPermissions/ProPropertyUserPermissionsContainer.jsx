@@ -1,12 +1,10 @@
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { propertyPermissionsSchema } from '../../api/properties/schemas/PropertySchema';
+import { getUserNameAndOrganisation } from '../../api/helpers/index';
 import { makePermissions } from '../../api/helpers/sharedSchemas';
-import {
-  setProPropertyPermissions,
-  getUserNameAndOrganisation,
-} from '../../api';
+import { setProPropertyPermissions } from '../../api/properties/methodDefinitions';
+import { propertyPermissionsSchema } from '../../api/properties/schemas/PropertySchema';
 
 const userPermissionsSchema = ({ user }) => {
   const permissionsSchema = Object.keys(propertyPermissionsSchema)

@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import { organisationRemove } from 'core/api/methods';
+import { organisationRemove } from 'core/api/organisations/methodDefinitions';
 import { ROLES } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import Chip from 'core/components/Material/Chip';

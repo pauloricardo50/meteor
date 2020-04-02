@@ -1,22 +1,25 @@
 import { Meteor } from 'meteor/meteor';
+
 import { useContext } from 'react';
 import { withProps } from 'recompose';
 
 import {
-  promotionOptionActivateReservation,
   cancelPromotionLotReservation,
-  promotionOptionAddToWaitList,
-  sellPromotionLot,
   reservePromotionLot,
-} from '../../../../../api/methods';
-import Calculator from '../../../../../utils/Calculator';
-import { CurrentUserContext } from '../../../../../containers/CurrentUserContext';
-import { isAllowedToManageCustomerPromotionReservation } from '../../../../../api/security/clientSecurityHelpers/index';
-import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
+  sellPromotionLot,
+} from '../../../../../api/promotionLots/methodDefinitions';
 import {
-  PROMOTION_OPTION_STATUS,
+  promotionOptionActivateReservation,
+  promotionOptionAddToWaitList,
+} from '../../../../../api/promotionOptions/methodDefinitions';
+import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
+import { isAllowedToManageCustomerPromotionReservation } from '../../../../../api/security/clientSecurityHelpers/index';
+import { CurrentUserContext } from '../../../../../containers/CurrentUserContext';
+import Calculator from '../../../../../utils/Calculator';
 
 export default withProps(({ promotionOption }) => {
   const {

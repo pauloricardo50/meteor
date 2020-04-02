@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 
-import { addProUserToPromotion } from '../../../../../api';
+import { addProUserToPromotion } from '../../../../../api/promotions/methodDefinitions';
 
 export default compose(
   withProps(({ promotion }) => ({

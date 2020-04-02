@@ -2,7 +2,7 @@ import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { lenderRules } from 'core/api/fragments';
-import { lenderInsert, lenderRemove } from 'core/api/methods';
+import { lenderInsert, lenderRemove } from 'core/api/lenders/methodDefinitions';
 import {
   ORGANISATION_FEATURES,
   ORGANISATION_TAGS,

@@ -1,5 +1,6 @@
 import { withProps } from 'recompose';
-import { organisationUpdate } from 'core/api/methods';
+
+import { organisationUpdate } from 'core/api/organisations/methodDefinitions';
 import { OrganisationSchema } from 'core/api/organisations/organisations';
 
 export default withProps(({ organisation: { _id: organisationId } }) => ({

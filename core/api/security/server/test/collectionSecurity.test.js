@@ -6,16 +6,19 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import Borrowers from '../../../borrowers/index';
 import generator from '../../../factories/server';
 import S3Service from '../../../files/server/S3Service';
 import { clearBucket } from '../../../files/server/test/S3Service.test';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
+import Loans from '../../../loans/loans';
 import LoanService from '../../../loans/server/LoanService';
+import Promotions from '../../../promotions/index';
 import { PROMOTION_PERMISSIONS } from '../../../promotions/promotionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
+import Properties from '../../../properties/index';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { ROLES } from '../../../users/userConstants';
-import { Borrowers, Loans, Promotions, Properties } from '../../..';
 import SecurityService, { SECURITY_ERROR } from '../..';
 
 const uploadFile = (key, metadata = {}) => {

@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Loans } from '../..';
+import Loans from '../../loans/loans';
 
 export const up = () => {
   Loans.update({}, { $set: { additionalDocuments: [] } }, { multi: true });

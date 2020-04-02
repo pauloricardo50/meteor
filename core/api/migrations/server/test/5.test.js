@@ -4,12 +4,12 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
 import generator from '../../../factories/server';
+import Loans from '../../../loans/loans';
 import LoanService from '../../../loans/server/LoanService';
 import {
   ORGANISATION_FEATURES,
   ORGANISATION_TYPES,
 } from '../../../organisations/organisationConstants';
-import { Loans } from '../../..';
 import { down, up } from '../5';
 
 // Tests are out of date with new max property calculation

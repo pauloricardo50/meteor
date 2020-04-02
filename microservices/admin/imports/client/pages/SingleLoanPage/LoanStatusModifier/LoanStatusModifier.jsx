@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { loanSetStatus } from 'core/api/methods/index';
+import { loanSetStatus } from 'core/api/loans/methodDefinitions';
 import { ModalManagerContext } from 'core/components/ModalManager';
 import StatusLabel from 'core/components/StatusLabel';
 

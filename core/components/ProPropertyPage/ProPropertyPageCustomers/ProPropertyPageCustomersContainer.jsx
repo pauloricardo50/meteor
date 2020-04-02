@@ -5,10 +5,11 @@ import { compose, mapProps, withState } from 'recompose';
 
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
-import { getReferredBy, removeCustomerFromProperty } from '../../../api';
 import { withSmartQuery } from '../../../api/containerToolkit';
+import { getReferredBy } from '../../../api/helpers/index';
 import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { proPropertyLoans } from '../../../api/loans/queries';
+import { removeCustomerFromProperty } from '../../../api/properties/methodDefinitions';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { PROPERTY_SOLVENCY } from '../../../api/properties/propertyConstants';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';

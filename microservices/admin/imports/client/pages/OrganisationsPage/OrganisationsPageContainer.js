@@ -1,11 +1,12 @@
-import { compose, withProps, withState } from 'recompose';
-import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
+import { compose, withProps, withState } from 'recompose';
 
-import { organisationInsert } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { organisationInsert } from 'core/api/organisations/methodDefinitions';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 export default compose(

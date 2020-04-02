@@ -1,8 +1,10 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Loans, Borrowers, Properties } from '../..';
-import { MIGRATIONS } from './migrationConstants';
+import Borrowers from '../../borrowers/index';
 import { STEP_ORDER } from '../../loans/loanConstants';
+import Loans from '../../loans/loans';
+import Properties from '../../properties/index';
+import { MIGRATIONS } from './migrationConstants';
 
 // This is an example of a migration we did
 // WARNING: Don't use dot-versions, only integers

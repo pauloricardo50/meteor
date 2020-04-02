@@ -1,5 +1,5 @@
+import Offers from '../../offers/index';
 import Security from '../Security';
-import { Offers } from '../..';
 
 class OfferSecurity {
   static isAllowedToInsert() {

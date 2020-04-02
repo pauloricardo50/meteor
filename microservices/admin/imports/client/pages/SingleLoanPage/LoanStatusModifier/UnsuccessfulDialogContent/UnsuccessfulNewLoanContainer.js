@@ -1,15 +1,15 @@
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+import { activityInsert } from 'core/api/activities/methodDefinitions';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import {
   adminLoanInsert,
   loanSetCreatedAtActivityDescription,
   loanUpdate,
   reuseProperty,
-} from 'core/api';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import { activityInsert } from 'core/api/activities/methodDefinitions';
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+} from 'core/api/loans/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 
 const insertNewLoan = ({

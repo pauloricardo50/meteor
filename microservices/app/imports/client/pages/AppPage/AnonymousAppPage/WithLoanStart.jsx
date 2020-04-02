@@ -5,7 +5,8 @@ import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import T, { Money } from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import APP_ROUTES from 'imports/startup/client/appRoutes';
+
+import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 const WithLoanStart = ({
   anonymousLoan: { _id: loanId, name, updatedAt, borrowers = [], properties },

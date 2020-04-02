@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { insuranceRequestUpdateStatus } from 'core/api/methods';
+import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import StatusLabel from 'core/components/StatusLabel';
 

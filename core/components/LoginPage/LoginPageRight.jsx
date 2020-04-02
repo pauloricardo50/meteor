@@ -2,10 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { sendVerificationLink } from 'core/api/methods';
-import Accounts from './Accounts';
+import { sendVerificationLink } from '../../api/users/methodDefinitions';
 import Link from '../Link';
 import T from '../Translation';
+import Accounts from './Accounts';
 
 const LoginPageRight = ({ path, push }) => {
   const isApp = Meteor.microservice === 'app';

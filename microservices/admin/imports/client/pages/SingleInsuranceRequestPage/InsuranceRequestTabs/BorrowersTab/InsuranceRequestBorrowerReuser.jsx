@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { borrowerSearch } from 'core/api/borrowers/queries';
-import { insuranceRequestLinkBorrower } from 'core/api/methods';
+import { insuranceRequestLinkBorrower } from 'core/api/insuranceRequests/methodDefinitions';
 import Button from 'core/components/Button';
 import CollectionSearch from 'core/components/CollectionSearch';
 import Icon from 'core/components/Icon';

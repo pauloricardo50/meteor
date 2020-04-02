@@ -1,6 +1,7 @@
 import React from 'react';
+
+import { updateUser } from 'core/api/users/methodDefinitions';
 import Toggle from 'core/components/Toggle';
-import { updateUser } from 'core/api/methods';
 
 const BOARD_IDS = {
   LOANS: 'loans',

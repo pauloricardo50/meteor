@@ -3,8 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import { promotionLotRemove, propertyUpdate } from '../../../../api/methods';
+import { promotionLotRemove } from '../../../../api/promotionLots/methodDefinitions';
 import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
+import { propertyUpdate } from '../../../../api/properties/methodDefinitions';
 import { AutoFormDialog } from '../../../AutoForm2';
 import Button from '../../../Button';
 import T from '../../../Translation';

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-import { propertyDelete } from 'core/api/methods/index';
+import { propertyDelete } from 'core/api/properties/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';

@@ -1,13 +1,12 @@
 import { Random } from 'meteor/random';
+
 import { withProps } from 'recompose';
 
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
-import {
-  pushPropertyValue,
-  pushBorrowerValue,
-  pushLoanValue,
-} from '../../api/methods/index';
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
+import { pushBorrowerValue } from '../../api/borrowers/methodDefinitions';
+import { pushLoanValue } from '../../api/loans/methodDefinitions';
+import { pushPropertyValue } from '../../api/properties/methodDefinitions';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 
 export default withProps(({ docId, collection }) => ({
   onSubmit: ({ label, category, tooltip }) => {

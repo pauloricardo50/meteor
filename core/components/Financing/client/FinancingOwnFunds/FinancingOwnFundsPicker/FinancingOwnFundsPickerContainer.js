@@ -6,16 +6,15 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
-
+import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
 import {
   borrowerUpdate,
   pushBorrowerValue,
-  updateStructure,
-} from '../../../../../api';
-import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
+} from '../../../../../api/borrowers/methodDefinitions';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import { updateStructure } from '../../../../../api/loans/methodDefinitions';
 import { RESIDENCE_TYPE } from '../../../../../api/properties/propertyConstants';
+import { MIN_INSURANCE2_WITHDRAW } from '../../../../../config/financeConstants';
 import Calculator from '../../../../../utils/Calculator';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';

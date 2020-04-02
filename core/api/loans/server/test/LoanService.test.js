@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import faker from 'faker/locale/fr';
@@ -16,12 +16,6 @@ import BorrowerService from '../../../borrowers/server/BorrowerService';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import LenderService from '../../../lenders/server/LenderService';
-import {
-  loanSetAdminNote,
-  loanSetStatus,
-  sendNegativeFeedbackToAllLenders,
-  setLoanStep,
-} from '../../../methods/index';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import OfferService from '../../../offers/server/OfferService';
 import {
@@ -38,6 +32,12 @@ import SlackService from '../../../slack/server/SlackService';
 import TaskService from '../../../tasks/server/TaskService';
 import UserService from '../../../users/server/UserService';
 import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import {
+  loanSetAdminNote,
+  loanSetStatus,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+} from '../../methodDefinitions';
 import LoanService from '../LoanService';
 import { generateDisbursedSoonLoansTasks } from '../methods';
 

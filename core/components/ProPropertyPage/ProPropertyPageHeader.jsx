@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { propertyDelete } from '../../api/methods/index';
+import { propertyDelete } from '../../api/properties/methodDefinitions';
 import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import { ROLES } from '../../api/users/userConstants';
 import ConfirmMethod from '../ConfirmMethod';

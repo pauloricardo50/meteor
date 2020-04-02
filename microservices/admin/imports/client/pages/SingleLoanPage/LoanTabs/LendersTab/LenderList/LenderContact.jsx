@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
-import { lenderLinkOrganisationAndContact } from 'core/api/methods';
+import { lenderLinkOrganisationAndContact } from 'core/api/lenders/methodDefinitions';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { CollectionIconLink } from 'core/components/IconLink';
 

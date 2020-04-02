@@ -1,8 +1,8 @@
 import React from 'react';
 import pick from 'lodash/pick';
 
+import { updateDocument } from '../../api/methods/methodDefinitions';
 import AutoForm, { CustomAutoField } from '../AutoForm2';
-import { updateDocument, schemas } from '../../api';
 
 const makeOnSubmit = ({ collection, doc, fields, onSuccess }) => values =>
   updateDocument

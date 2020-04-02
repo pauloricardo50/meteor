@@ -1,7 +1,11 @@
 import ServerEventService from '../../events/server/ServerEventService';
+import {
+  adminLoanInsert,
+  assignLoanToUser,
+  userLoanInsert,
+} from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import FrontService from './FrontService';
-import { assignLoanToUser, adminLoanInsert, userLoanInsert } from '../../loans';
 
 ServerEventService.addAfterMethodListener(
   assignLoanToUser,

@@ -3,10 +3,8 @@ import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 
-import {
-  pullBorrowerValue,
-  pullPropertyValue,
-} from '../../../api/methods/index';
+import { pullBorrowerValue } from '../../../api/borrowers/methodDefinitions';
+import { pullPropertyValue } from '../../../api/properties/methodDefinitions';
 import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
 import { ROLES } from '../../../api/users/userConstants';
 import ConfirmMethod from '../../ConfirmMethod';

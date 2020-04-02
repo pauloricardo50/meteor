@@ -1,9 +1,9 @@
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import Button from 'core/components/Button';
-import { adminLoanReset } from 'core/api/methods/index';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { adminLoanReset } from 'core/api/loans/methodDefinitions';
+import Button from 'core/components/Button';
 
 const ResetLoanButton = ({ loan: { status }, loading, onClick }) => (
   <Button

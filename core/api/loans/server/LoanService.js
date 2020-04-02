@@ -26,10 +26,7 @@ import {
   setAssignees,
 } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
-import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import LenderRulesService from '../../lenderRules/server/LenderRulesService';
-import { assignAdminToUser } from '../../methods';
-import OfferService from '../../offers/server/OfferService';
 import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';

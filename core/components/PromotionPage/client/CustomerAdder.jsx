@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { proInviteUser } from '../../../api/methods';
 import { PROMOTION_STATUS } from '../../../api/promotions/promotionConstants';
+import { proInviteUser } from '../../../api/users/methodDefinitions';
 import useSearchParams from '../../../hooks/useSearchParams';
 import { createRoute } from '../../../utils/routerUtils';
 import { AutoFormDialog } from '../../AutoForm2';

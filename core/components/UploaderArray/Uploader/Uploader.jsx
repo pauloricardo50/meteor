@@ -4,8 +4,8 @@ import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 
-import { setAdditionalDoc } from '../../../api';
 import { DOCUMENTS } from '../../../api/files/fileConstants';
+import { setAdditionalDoc } from '../../../api/methods/methodDefinitions';
 import Checkbox from '../../Checkbox';
 import BaseUploader from './BaseUploader';
 import UploaderContainer from './UploaderContainer';

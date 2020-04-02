@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { addBorrower } from 'core/api/methods/methodDefinitions';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import { addBorrower } from 'core/api';
 
 export default class BorrowerAdder extends Component {
   constructor(props) {

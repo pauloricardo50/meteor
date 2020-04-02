@@ -1,5 +1,4 @@
 import React from 'react';
-import TextField from 'imports/core/components/Material/TextField';
 
 import { userSearch } from 'core/api/users/queries';
 import { ROLES } from 'core/api/users/userConstants';
@@ -8,6 +7,7 @@ import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch'
 import DialogSimple from 'core/components/DialogSimple';
 import Icon from 'core/components/Icon';
 import { ListItemSecondaryAction, ListItemText } from 'core/components/List';
+import TextField from 'core/components/Material/TextField';
 import T from 'core/components/Translation';
 
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';

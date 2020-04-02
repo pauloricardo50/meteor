@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Element } from 'react-scroll';
 import SimpleSchema from 'simpl-schema';
 
-import { lotRemove, lotUpdate } from '../../../../api/methods';
+import { lotRemove, lotUpdate } from '../../../../api/lots/methodDefinitions';
 import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import TableModifier from '../../../TableModifier';
 import T from '../../../Translation';

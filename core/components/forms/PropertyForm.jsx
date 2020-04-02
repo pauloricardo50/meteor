@@ -1,8 +1,9 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
+import { mortgageNoteInsert } from '../../api/mortgageNotes/methodDefinitions';
+import { propertyUpdate } from '../../api/properties/methodDefinitions';
 import { PropertySchemaAdmin } from '../../api/properties/schemas/PropertySchema';
-import { propertyUpdate, mortgageNoteInsert } from '../../api/methods';
 import AutoForm from '../AutoForm2';
 import Box from '../Box';
 import MortgageNotesForm from './MortgageNotesForm';

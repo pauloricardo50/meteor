@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
 import { CANTONS } from '../../api/loans/loanConstants';
-import { setMaxPropertyValueWithoutBorrowRatio } from '../../api/methods';
+import { setMaxPropertyValueWithoutBorrowRatio } from '../../api/loans/methodDefinitions';
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,

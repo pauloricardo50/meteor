@@ -1,11 +1,13 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
-import { Loans } from '../../..';
-import { up, down } from '../21';
+
+import Loans from '../../../loans/loans';
 import LoanService from '../../../loans/server/LoanService';
+import { down, up } from '../21';
 
 describe('Migration 21', () => {
   beforeEach(() => {

@@ -1,10 +1,11 @@
 import { apiProperty } from 'core/api/fragments';
+
+import { proPropertyInsert } from '../../../properties/methodDefinitions';
 import PropertyService from '../../../properties/server/PropertyService';
-import { proPropertyInsert } from '../../../methods';
-import { withMeteorUserId } from '../helpers';
-import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
-import { HTTP_STATUS_CODES } from '../restApiConstants';
 import Security from '../../../security';
+import { withMeteorUserId } from '../helpers';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, getImpersonateUserId, impersonateSchema } from './helpers';
 
 const insertPropertyAPI = ({
   user: { _id: userId },

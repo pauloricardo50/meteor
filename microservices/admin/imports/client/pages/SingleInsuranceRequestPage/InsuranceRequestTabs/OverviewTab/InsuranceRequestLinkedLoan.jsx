@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { insuranceRequestLinkNewLoan } from 'core/api/insuranceRequests/methodDefinitions';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { insuranceRequestLinkNewLoan } from 'core/api/methods/index';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import { CollectionIconLink } from 'core/components/IconLink';

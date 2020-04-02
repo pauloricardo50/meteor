@@ -1,22 +1,22 @@
 import { Random } from 'meteor/random';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { connectField } from 'uniforms';
-import { injectIntl } from 'react-intl';
 
 import {
-  SLINGSHOT_DIRECTIVE_NAME_TEMP,
   FILE_STATUS,
+  SLINGSHOT_DIRECTIVE_NAME_TEMP,
 } from '../../api/files/fileConstants';
-import { deleteTempFile } from '../../api/methods';
+import { deleteTempFile } from '../../api/files/methodDefinitions';
 import BaseUploader from '../UploaderArray/Uploader/BaseUploader';
 import {
+  addProps,
   displayFullState,
   tempFileState,
   willReceiveProps,
   withMergedSuccessfulFiles,
-  addProps,
 } from '../UploaderArray/Uploader/uploaderHelpers';
 
 export default compose(

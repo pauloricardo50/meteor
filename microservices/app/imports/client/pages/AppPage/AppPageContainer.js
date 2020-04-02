@@ -6,7 +6,8 @@ import {
   withState,
 } from 'recompose';
 
-import { referralExists, userLoanInsert } from 'core/api/methods/index';
+import { userLoanInsert } from 'core/api/loans/methodDefinitions';
+import { referralExists } from 'core/api/methods/methodDefinitions';
 import {
   LOCAL_STORAGE_OLD_REFERRAL,
   LOCAL_STORAGE_REFERRAL,

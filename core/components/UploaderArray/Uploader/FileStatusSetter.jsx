@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { FILE_STATUS } from '../../../api/files/fileConstants';
-import { setFileError } from '../../../api/methods/index';
+import { setFileError } from '../../../api/files/methodDefinitions';
 import { ROLES } from '../../../api/users/userConstants';
 import DropdownMenu from '../../DropdownMenu';
 import { ModalManagerContext } from '../../ModalManager';

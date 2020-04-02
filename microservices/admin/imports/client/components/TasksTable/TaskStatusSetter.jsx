@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { taskChangeStatus } from 'core/api/tasks/methodDefinitions';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import T from 'core/components/Translation/';
 import DropdownMenu from 'core/components/DropdownMenu/';
-import { taskChangeStatus } from 'core/api/methods';
+import T from 'core/components/Translation/';
 
 const changeStatus = (status, taskId) => {
   taskChangeStatus.run({ taskId, newStatus: status });

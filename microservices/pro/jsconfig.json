@@ -9,5 +9,5 @@
       ]
     }
   },
-  "exclude": ["node_modules", ".meteor", "imports/core"]
+  "include": ["imports"],
 }

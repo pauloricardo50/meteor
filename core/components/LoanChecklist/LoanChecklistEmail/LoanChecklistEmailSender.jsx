@@ -3,8 +3,9 @@ import moment from 'moment';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { sendLoanChecklist, taskInsert } from '../../../api';
 import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
+import { sendLoanChecklist } from '../../../api/loans/methodDefinitions';
+import { taskInsert } from '../../../api/tasks/methodDefinitions';
 import { AutoFormDialog } from '../../AutoForm2';
 
 const schema = new SimpleSchema({

@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { impersonateUser } from '../../../api/methods';
+import { impersonateUser } from '../../../api/impersonation/methodDefinitions';
 import impersonateNotification from './impersonateNotification';
 
 export const impersonate = async ({

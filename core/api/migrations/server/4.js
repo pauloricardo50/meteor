@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Promotions } from '../..';
+import Promotions from '../../promotions/index';
 
 export const PERMISSIONS = {
   canSellLots: false,

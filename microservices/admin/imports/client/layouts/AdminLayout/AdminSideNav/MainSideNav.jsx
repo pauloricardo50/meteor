@@ -3,17 +3,17 @@ import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiag
 import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import List from '@material-ui/core/List';
-import { ORGANISATIONS_COLLECTION } from 'imports/core/api/organisations/organisationConstants';
-import { createRoute } from 'imports/core/utils/routerUtils';
 import PropTypes from 'prop-types';
 
-import collectionIcons from 'core/arrays/collectionIcons';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import collectionIcons from 'core/arrays/collectionIcons';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { createRoute } from 'core/utils/routerUtils';
 
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import MainSideNavListItem from './MainSideNavListItem';

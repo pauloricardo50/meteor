@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { propertyDelete } from 'core/api/methods';
+import { propertyDelete } from 'core/api/properties/methodDefinitions';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import FullDate from 'core/components/dateComponents/FullDate';

@@ -1,11 +1,11 @@
 import { withProps } from 'recompose';
 
-import InsuranceProductSchema from 'core/api/insuranceProducts/schemas/InsuranceProductSchema';
 import {
   insuranceProductInsert,
-  insuranceProductUpdate,
   insuranceProductRemove,
-} from 'core/api/methods';
+  insuranceProductUpdate,
+} from 'core/api/insuranceProducts/methodDefinitions';
+import InsuranceProductSchema from 'core/api/insuranceProducts/schemas/InsuranceProductSchema';
 
 const schema = InsuranceProductSchema.omit(
   'createdAt',

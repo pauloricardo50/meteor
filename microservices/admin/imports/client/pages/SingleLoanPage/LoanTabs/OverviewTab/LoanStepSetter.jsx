@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { setLoanStep } from 'core/api/methods';
+import { setLoanStep } from 'core/api/loans/methodDefinitions';
 import UpdateField from 'core/components/UpdateField';
 import { shouldSendStepNotification } from 'core/utils/loanFunctions';
 

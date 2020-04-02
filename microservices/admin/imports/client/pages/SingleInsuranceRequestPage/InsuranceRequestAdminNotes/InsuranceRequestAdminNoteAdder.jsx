@@ -5,13 +5,15 @@ import SimpleSchema from 'simpl-schema';
 
 import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import {
+  insuranceRequestRemoveAdminNote,
+  insuranceRequestSetAdminNote,
+} from 'core/api/insuranceRequests/methodDefinitions';
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import {
   insuranceRemoveAdminNote,
-  insuranceRequestRemoveAdminNote,
-  insuranceRequestSetAdminNote,
   insuranceSetAdminNote,
-} from 'core/api/methods';
+} from 'core/api/insurances/methodDefinitions';
 import { AdminNoteSetter } from 'core/components/AdminNote/AdminNoteAdder';
 import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
 

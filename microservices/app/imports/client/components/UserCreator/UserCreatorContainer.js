@@ -1,14 +1,15 @@
-import APP_ROUTES from 'imports/startup/client/appRoutes';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { anonymousCreateUser } from 'core/api/methods/index';
+import { anonymousCreateUser } from 'core/api/users/methodDefinitions';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 import { getCookie } from 'core/utils/cookiesHelpers';
 import { createRoute } from 'core/utils/routerUtils';
+
+import APP_ROUTES from '../../../startup/client/appRoutes';
 
 export const userSchema = new SimpleSchema({
   firstName: String,

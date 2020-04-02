@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
+import { loanUpdateCreatedAt } from 'core/api/loans/methodDefinitions';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import { loanUpdateCreatedAt } from 'core/api';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 
 const LoanCreatedAtModifier = ({ loan }) => (
   <AutoFormDialog

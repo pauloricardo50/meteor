@@ -5,7 +5,10 @@ import { compose, lifecycle, withProps } from 'recompose';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { anonymousLoanInsert, userLoanInsert } from 'core/api/methods';
+import {
+  anonymousLoanInsert,
+  userLoanInsert,
+} from 'core/api/loans/methodDefinitions';
 import { anonymousProperty } from 'core/api/properties/queries';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';

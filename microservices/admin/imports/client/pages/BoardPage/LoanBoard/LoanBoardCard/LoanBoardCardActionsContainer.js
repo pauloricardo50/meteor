@@ -3,7 +3,7 @@ import { compose, withProps, withState } from 'recompose';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { taskInsert } from 'core/api/methods';
+import { taskInsert } from 'core/api/tasks/methodDefinitions';
 
 import { getActivitySchema } from '../../../../components/AdminTimeline/AdminActivityAdder';
 import { schema } from '../../../../components/TasksTable/TaskModifier';

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { logError } from 'core/api/methods/index';
+import { logError } from '../../slack/methodDefinitions';
 import { getEmailFooter } from './emailHelpers';
 import { isEmailTestEnv, skipEmails } from './EmailService';
 import Mandrill from './MandrillService';

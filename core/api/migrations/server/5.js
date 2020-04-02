@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Loans } from '../..';
+import Loans from '../../loans/loans';
 import LoanService from '../../loans/server/LoanService';
 
 export const up = () => {

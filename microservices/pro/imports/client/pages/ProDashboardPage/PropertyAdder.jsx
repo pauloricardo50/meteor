@@ -2,8 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
-import { proPropertyInsert } from 'core/api';
 import { address, moneyField } from 'core/api/helpers/sharedSchemas';
+import { proPropertyInsert } from 'core/api/properties/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';

@@ -3,14 +3,14 @@ import intersection from 'lodash/intersection';
 
 import {
   LenderRulesEditorSchema,
-  incomeConsideration,
-  theoreticalExpenses,
   cutOffCriteria,
+  incomeConsideration,
   otherParams,
+  theoreticalExpenses,
 } from 'core/api/lenderRules/schemas/lenderRulesSchema';
 import AutoForm from 'core/components/AutoForm2';
+import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
 import CustomSubmitField from 'core/components/AutoForm2/CustomSubmitField';
-import { CustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
 
 const getAutoFormParts = formKeys =>
   [

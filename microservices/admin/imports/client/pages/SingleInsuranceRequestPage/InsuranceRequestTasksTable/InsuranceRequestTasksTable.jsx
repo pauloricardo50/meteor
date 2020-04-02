@@ -7,7 +7,7 @@ import {
   taskComplete,
   taskInsert,
   taskUpdate,
-} from 'core/api/methods';
+} from 'core/api/tasks/methodDefinitions';
 import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
 import Select from 'core/components/Select';
 import useSearchParams from 'core/hooks/useSearchParams';

@@ -1,10 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 
-import {
-  getPromotionOptionProgressEmails,
-  loanUpdate,
-} from '../../../api/methods';
+import { loanUpdate } from '../../../api/loans/methodDefinitions';
+import { getPromotionOptionProgressEmails } from '../../../api/promotionOptions/methodDefinitions';
 import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../Translation';
 
