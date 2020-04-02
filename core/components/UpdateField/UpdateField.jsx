@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import pick from 'lodash/pick';
 
 import { updateDocument } from '../../api/methods/methodDefinitions';
@@ -14,23 +14,38 @@ const UpdateField = ({
   doc,
   fields,
   onSuccess,
-  onSubmit = makeOnSubmit({ collection, doc, fields, onSuccess }),
+  onSubmit = makeOnSubmit({
+    collection: collection._name,
+    doc,
+    fields,
+    onSuccess,
+  }),
   onSubmitCallback = () => ({}),
   extendSchema = {},
   ...props
-}) => (
-  <AutoForm
-    autosave
-    schema={schemas[collection].pick(...fields).extend(extendSchema)}
-    model={doc}
-    onSubmit={values => onSubmit(values).then(onSubmitCallback)}
-    className="update-field"
-    {...props}
-  >
-    {fields.map(field => (
-      <CustomAutoField name={field} key={field} fullWidth />
-    ))}
-  </AutoForm>
-);
+}) => {
+  const schema = useMemo(
+    () =>
+      collection
+        .simpleSchema()
+        .pick(...fields)
+        .extend(extendSchema),
+    [],
+  );
+  return (
+    <AutoForm
+      autosave
+      schema={schema}
+      model={doc}
+      onSubmit={values => onSubmit(values).then(onSubmitCallback)}
+      className="update-field"
+      {...props}
+    >
+      {fields.map(field => (
+        <CustomAutoField name={field} key={field} fullWidth />
+      ))}
+    </AutoForm>
+  );
+};
 
 export default UpdateField;

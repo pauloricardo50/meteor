@@ -14,6 +14,7 @@ import {
   toggleAccount,
 } from 'core/api/users/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import Users from 'core/api/users/users';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import EmailModifier from 'core/components/EmailModifier';
 import Icon from 'core/components/Icon';
@@ -167,7 +168,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             </div>
             <div>
               <UpdateField
-                collection={USERS_COLLECTION}
+                collection={Users}
                 doc={user}
                 fields={['acquisitionChannel']}
                 autosaveDelay={250}

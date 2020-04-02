@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
-import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import Loans from '../../api/loans';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
 import { Money } from '../Translation';
@@ -66,7 +66,7 @@ const ProPropertyheader = ({ property, loan }) => {
             <UpdateField
               doc={loan}
               fields={['residenceType']}
-              collection={LOANS_COLLECTION}
+              collection={Loans}
               className="residence-type-setter"
             />
           )}

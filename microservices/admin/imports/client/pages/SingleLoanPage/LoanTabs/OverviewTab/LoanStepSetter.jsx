@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import Loans from 'core/api/loans';
 import { setLoanStep } from 'core/api/loans/methodDefinitions';
 import UpdateField from 'core/components/UpdateField';
 import { shouldSendStepNotification } from 'core/utils/loanFunctions';
@@ -12,7 +12,7 @@ const LoanStepSetter = ({ loan }) => {
     <UpdateField
       doc={loan}
       fields={['step']}
-      collection={LOANS_COLLECTION}
+      collection={Loans}
       onSubmit={({ step: nextStep }) => {
         let confirm = true;
 

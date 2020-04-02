@@ -2,7 +2,7 @@ import React from 'react';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import Loans from '../../api/loans';
 import T from '../Translation';
 import UpdateField from '../UpdateField';
 
@@ -22,7 +22,7 @@ const ResidenceTypeSetter = ({
         <UpdateField
           doc={loan}
           fields={['residenceType']}
-          collection={LOANS_COLLECTION}
+          collection={Loans}
           className="residence-type-setter-dropdown"
           onSubmitCallback={onSubmitCallback}
         />

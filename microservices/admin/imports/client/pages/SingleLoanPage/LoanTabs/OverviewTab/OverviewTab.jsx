@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Loans from 'core/api/loans';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import AdminNotes from 'core/components/AdminNotes';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
@@ -36,26 +37,22 @@ const OverviewTab = props => {
       <div className="admin-section card1">
         <div className="card-top">
           <DisableUserFormsToggle loan={loan} />
-          <UpdateField
-            doc={loan}
-            fields={['category']}
-            collection={LOANS_COLLECTION}
-          />
+          <UpdateField doc={loan} fields={['category']} collection={Loans} />
           <UpdateField
             doc={loan}
             fields={['residenceType']}
-            collection={LOANS_COLLECTION}
+            collection={Loans}
           />
           <UpdateField
             doc={loan}
             fields={['purchaseType']}
-            collection={LOANS_COLLECTION}
+            collection={Loans}
             disabled
           />
           <UpdateField
             doc={loan}
             fields={['applicationType']}
-            collection={LOANS_COLLECTION}
+            collection={Loans}
           />
           <LoanStepSetter loan={loan} />
           <LoanDisbursementDate loan={loan} />

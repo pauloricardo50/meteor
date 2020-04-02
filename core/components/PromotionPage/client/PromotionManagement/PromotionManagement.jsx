@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 
 import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
+import Promotions from '../../../../api/promotions';
 import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
 import AdminNote from '../../../AdminNote';
 import AdminNotes from '../../../AdminNotes';
@@ -29,7 +30,7 @@ const PromotionManagement = ({ promotion }) => {
       {Meteor.microservice === 'admin' && (
         <div className="promotion-management-statuses">
           <UpdateField
-            collection={PROMOTIONS_COLLECTION}
+            collection={Promotions}
             doc={promotion}
             fields={['projectStatus', 'authorizationStatus']}
           />

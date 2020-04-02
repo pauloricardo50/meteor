@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { BORROWERS_COLLECTION } from '../../../../../api/borrowers/borrowerConstants';
+import Properties from '../../../../../api/properties';
 import { PROPERTIES_COLLECTION } from '../../../../../api/properties/propertyConstants';
 import collectionIcons from '../../../../../arrays/collectionIcons';
 import { createRoute } from '../../../../../utils/routerUtils';
@@ -10,9 +11,6 @@ import T from '../../../../Translation';
 import UpdateField from '../../../../UpdateField';
 import { getProperty } from '../../FinancingCalculator';
 import MortgageNotesPickerList from './MortgageNotesPickerList';
-
-PROPERTIES_COLLECTION;
-BORROWERS_COLLECTION;
 
 const MortgageNotesPickerDialog = props => {
   const {
@@ -43,7 +41,7 @@ const MortgageNotesPickerDialog = props => {
         <UpdateField
           doc={property}
           fields={['zipCode']}
-          collection={PROPERTIES_COLLECTION}
+          collection={Properties}
         />
       </div>
     );

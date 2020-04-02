@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Loans from 'core/api/loans';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import AdminNotes from 'core/components/AdminNotes';
 import Recap from 'core/components/Recap';
@@ -16,16 +17,8 @@ const PremiumOverviewTab = props => {
   return (
     <div className="premium-overview">
       <div className="card1 card-top top">
-        <UpdateField
-          doc={loan}
-          fields={['category']}
-          collection={LOANS_COLLECTION}
-        />
-        <UpdateField
-          doc={loan}
-          fields={['residenceType']}
-          collection={LOANS_COLLECTION}
-        />
+        <UpdateField doc={loan} fields={['category']} collection={Loans} />
+        <UpdateField doc={loan} fields={['residenceType']} collection={Loans} />
         <LoanDisbursementDate loan={loan} />
         <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
       </div>
