@@ -1,8 +1,6 @@
 import './initialization';
-import { Meteor } from 'meteor/meteor';
 
-export * from './helpers';
-export * from './methods';
+import { Meteor } from 'meteor/meteor';
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';
 Meteor.isDevEnvironment =
