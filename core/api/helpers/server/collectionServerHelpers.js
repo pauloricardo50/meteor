@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
-import { Services } from '../../server';
-import { assignAdminToUser } from '../../users';
-import LoanService from '../../loans/server/LoanService';
+
+import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
+import LoanService from '../../loans/server/LoanService';
+import { Services } from '../../server';
+import { assignAdminToUser } from '../../users/methodDefinitions';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {

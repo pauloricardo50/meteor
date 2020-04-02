@@ -5,7 +5,7 @@ import { expect } from 'chai';
 
 import { EMAIL_IDS } from '../../../../../api/email/emailConstants';
 import generator from '../../../../../api/factories/server';
-import { sendLoanChecklist } from '../../../../../api/loans';
+import { sendLoanChecklist } from '../../../../../api/loans/methodDefinitions';
 import { ddpWithUserId } from '../../../../../api/methods/methodHelpers';
 import { formatMessage } from '../../../../../utils/server/intl';
 import { checkEmails } from '../../../../../utils/testHelpers';

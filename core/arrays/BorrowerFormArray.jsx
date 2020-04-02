@@ -1,22 +1,23 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
 
+import {
+  BORROWER_ACTIVITY_TYPES,
+  CIVIL_STATUS,
+  EXPENSES,
+  GENDER,
+  OTHER_INCOME,
+  RESIDENCY_PERMIT,
+} from 'core/api/borrowers/borrowerConstants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import CantonField from 'core/components/CantonField/CantonField';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import {
-  getSortedCountriesCodes,
   COMMON_COUNTRIES,
+  getSortedCountriesCodes,
 } from 'core/utils/countriesUtils';
-import {
-  CIVIL_STATUS,
-  BORROWER_ACTIVITY_TYPES,
-  GENDER,
-  RESIDENCY_PERMIT,
-  OTHER_INCOME,
-  EXPENSES,
-} from 'core/api/borrowers/borrowerConstants';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -175,7 +176,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     {
       id: 'civilStatus',
       type: 'radioInput',
-      options: Object.values(constants.CIVIL_STATUS).map(value => ({
+      options: Object.values(CIVIL_STATUS).map(value => ({
         id: value,
       })),
     },

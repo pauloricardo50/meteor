@@ -1,21 +1,21 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
 
-import {
-  PROPERTY_TYPE,
-  PURCHASE_TYPE,
-  OWNER,
-  RESIDENCE_TYPE,
-  MINERGIE_CERTIFICATE,
-  HOUSE_TYPE,
-  FLAT_TYPE,
-  VOLUME_NORM,
-} from 'core/api/properties/propertyConstants';
 import CantonField from 'core/components/CantonField/CantonField';
 import {
-  getSortedCountriesCodes,
   COMMON_COUNTRIES,
+  getSortedCountriesCodes,
 } from 'core/utils/countriesUtils';
+
+import { OWNER, PURCHASE_TYPE } from '../api/loans/loanConstants';
+import {
+  FLAT_TYPE,
+  HOUSE_TYPE,
+  MINERGIE_CERTIFICATE,
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+  VOLUME_NORM,
+} from '../api/properties/propertyConstants';
 
 const mapInput = input => {
   const intlSafeObject = { ...input };
