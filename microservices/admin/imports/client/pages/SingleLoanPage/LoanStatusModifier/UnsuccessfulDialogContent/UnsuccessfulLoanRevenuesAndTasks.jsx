@@ -1,13 +1,12 @@
 import React from 'react';
-import {
-  TASK_STATUS,
-  REVENUE_STATUS,
-  TASKS_COLLECTION,
-} from 'core/api/constants';
+
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
+
+import RevenuesTable from '../../../../components/RevenuesTable';
 import TasksTable from '../../../../components/TasksTable';
 import { taskTableFragment } from '../../../../components/TasksTable/TasksTable';
-import RevenuesTable from '../../../../components/RevenuesTable';
 
 const UnsuccessfulLoanRevenuesAndTasks = ({
   loan,

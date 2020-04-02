@@ -1,16 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import Icon from 'core/components/Icon';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
-} from 'core/api/constants';
+} from 'core/api/organisations/organisationConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import OrganisationsPageContainer from './OrganisationsPageContainer';
+import Icon from 'core/components/Icon';
+
 import OrganisationAdder from './OrganisationAdder';
 import OrganisationFilters from './OrganisationFilters';
 import OrganisationsByFeature from './OrganisationsByFeature';
+import OrganisationsPageContainer from './OrganisationsPageContainer';
 
 const OrganisationsPage = ({
   insertOrganisation,

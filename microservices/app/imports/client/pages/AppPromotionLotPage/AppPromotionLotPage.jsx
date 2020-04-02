@@ -1,35 +1,23 @@
 import React from 'react';
 
+import { PROMOTION_LOTS_COLLECTION } from 'core/api/promotionLots/promotionLotConstants';
 import Button from 'core/components/Button';
-import T, { Money } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
-import ClickToEditField from 'core/components/ClickToEditField';
 import PromotionLotRecapTable from 'core/components/PromotionLotPage/PromotionLotRecapTable';
-import {
-  PROMOTION_LOTS_COLLECTION,
-  PROMOTION_STATUS,
-} from 'core/api/constants';
-import { createRoute } from 'core/utils/routerUtils';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
+import StatusLabel from 'core/components/StatusLabel';
+import T, { Money } from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
 export const AppPromotionLotPage = ({
-  promotionOption,
   promotionLot,
   loan: { _id: loanId },
   promotionId,
 }) => {
-  const {
-    name,
-    reducedStatus,
-    promotion,
-    lots,
-    documents,
-    properties,
-  } = promotionLot;
-  const { attributedToMe } = promotionOption || {};
+  const { name, reducedStatus, lots, documents, properties } = promotionLot;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
 

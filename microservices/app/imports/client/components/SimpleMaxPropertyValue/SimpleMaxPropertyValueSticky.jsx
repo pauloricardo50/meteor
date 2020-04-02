@@ -1,14 +1,15 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { compose } from 'recompose';
 import cx from 'classnames';
+import { compose } from 'recompose';
 
-import T from 'core/components/Translation';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { toMoney } from 'core/utils/conversionFunctions';
 import MaxPropertyValueContainer from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
-import { RESIDENCE_TYPE } from 'core/api/constants';
+import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
+import { toMoney } from 'core/utils/conversionFunctions';
+
 import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
 const displayPropertyValueRange = values => {

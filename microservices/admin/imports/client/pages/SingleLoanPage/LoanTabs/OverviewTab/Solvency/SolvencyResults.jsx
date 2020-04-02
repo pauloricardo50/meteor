@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { RESIDENCE_TYPE } from 'core/api/constants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import Button from 'core/components/Button';
+
 import SolvencyItem from './SolvencyItem';
 
 const SolvencyResults = ({

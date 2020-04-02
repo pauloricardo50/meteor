@@ -54,11 +54,19 @@ function format(styleApi) {
     { match: isMeteor },
 
     // Meteor packages
-    { match: isMeteorPackage },
+    {
+      match: isMeteorPackage,
+      sort: moduleName(naturally),
+      sortNamedMembers: alias(unicode),
+    },
     { separator: true },
 
     // Put react first on top
-    { match: isReact },
+    {
+      match: isReact,
+      sort: moduleName(naturally),
+      sortNamedMembers: alias(unicode),
+    },
 
     // import … from "foo";
     {
@@ -69,7 +77,11 @@ function format(styleApi) {
     { separator: true },
 
     // Core packages
-    { match: isCoreModule },
+    {
+      match: isCoreModule,
+      sort: moduleName(naturally),
+      sortNamedMembers: alias(unicode),
+    },
     { separator: true },
 
     // import … from "../foo";

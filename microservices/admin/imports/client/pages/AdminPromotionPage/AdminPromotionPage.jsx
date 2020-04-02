@@ -1,16 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import omit from 'lodash/omit';
+import { compose, withProps } from 'recompose';
 
-import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { proPromotion } from 'core/api/fragments';
-import withMatchParam from 'core/containers/withMatchParam';
-import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
-import { ROLES } from 'core/api/constants';
+import { proPromotions } from 'core/api/promotions/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import PromotionPage from 'core/components/PromotionPage/client';
+import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import withMatchParam from 'core/containers/withMatchParam';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const promotionFragment = {

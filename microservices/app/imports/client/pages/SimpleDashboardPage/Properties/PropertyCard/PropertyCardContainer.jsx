@@ -1,8 +1,9 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
+import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { createRoute } from 'core/utils/routerUtils';
-import { PROPERTY_DOCUMENTS, PROMOTIONS_COLLECTION } from 'core/api/constants';
 
 const getImage = ({ documents = {}, imageUrls = [] }) => {
   let images = [];

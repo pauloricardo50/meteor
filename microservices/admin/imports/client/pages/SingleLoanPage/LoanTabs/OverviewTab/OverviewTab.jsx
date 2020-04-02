@@ -1,24 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Recap from 'core/components/Recap';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import AdminNotes from 'core/components/AdminNotes';
+import { LoanChecklistDialog } from 'core/components/LoanChecklist';
+import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
 import MaxPropertyValue from 'core/components/MaxPropertyValue';
+import Recap from 'core/components/Recap';
 import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
-import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
-import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import Calculator from 'core/utils/Calculator';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import AdminNotes from 'core/components/AdminNotes';
+
+import AdminTimeline from '../../../../components/AdminTimeline';
+import AssigneesManager from '../../../../components/AssigneesManager';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LinkToFront from '../../../../components/LinkToFront';
-import AssigneesManager from '../../../../components/AssigneesManager';
 import BorrowerAge from '../BorrowerAge';
+import LoanDisbursementDate from './LoanDisbursementDate';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
 import Solvency from './Solvency';
-import LoanDisbursementDate from './LoanDisbursementDate';
-import AdminTimeline from '../../../../components/AdminTimeline';
 
 const OverviewTab = props => {
   const {

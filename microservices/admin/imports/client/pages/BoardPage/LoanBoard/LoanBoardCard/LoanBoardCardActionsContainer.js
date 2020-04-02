@@ -1,10 +1,12 @@
 import { compose, withProps, withState } from 'recompose';
 
-import { taskInsert } from 'core/api/methods';
-import { LOANS_COLLECTION, ACTIVITY_TYPES } from 'core/api/constants';
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
-import { schema } from '../../../../components/TasksTable/TaskModifier';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { taskInsert } from 'core/api/methods';
+
 import { getActivitySchema } from '../../../../components/AdminTimeline/AdminActivityAdder';
+import { schema } from '../../../../components/TasksTable/TaskModifier';
 
 const taskSchema = schema.omit('assigneeLink', 'status');
 

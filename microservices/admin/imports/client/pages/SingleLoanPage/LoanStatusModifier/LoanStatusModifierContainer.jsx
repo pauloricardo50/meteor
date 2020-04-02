@@ -2,16 +2,17 @@ import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { LOAN_STATUS, LOANS_COLLECTION } from 'core/api/constants';
-import T from 'core/components/Translation';
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import Button from 'core/components/Button';
-import DialogForm from 'core/components/ModalManager/DialogForm';
 import { CollectionIconLink } from 'core/components/IconLink';
-import RealRevenuesDialogContent from './RealRevenuesDialogContent';
-import UnsucessfulFeedback from './UnsuccessfulDialogContent/UnsucessfulFeedback';
-import UnsuccessfulNewLoan from './UnsuccessfulDialogContent/UnsuccessfulNewLoan';
+import DialogForm from 'core/components/ModalManager/DialogForm';
+import T from 'core/components/Translation';
+
 import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
+import RealRevenuesDialogContent from './RealRevenuesDialogContent';
 import UnsuccessfulLoanRevenuesAndTasks from './UnsuccessfulDialogContent/UnsuccessfulLoanRevenuesAndTasks';
+import UnsuccessfulNewLoan from './UnsuccessfulDialogContent/UnsuccessfulNewLoan';
+import UnsucessfulFeedback from './UnsuccessfulDialogContent/UnsucessfulFeedback';
 
 const requiresRevenueStatus = status =>
   [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(

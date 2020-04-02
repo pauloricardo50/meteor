@@ -1,13 +1,13 @@
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { setUserReferredBy } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import {
   getUserNameAndOrganisation,
   getUserOrganisationName,
 } from 'core/api/helpers';
-import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
+import { ROLES } from 'core/api/users/userConstants';
 
 const getMenuItems = ({
   proUsers,

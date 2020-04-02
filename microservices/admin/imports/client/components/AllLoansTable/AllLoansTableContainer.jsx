@@ -1,12 +1,13 @@
+import moment from 'moment';
 import React from 'react';
 import { mapProps } from 'recompose';
-import moment from 'moment';
 
-import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 
 const columnOptions = [
   { id: 'No.' },

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { COMMISSION_RATES_TYPE } from 'core/api/constants';
+import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
+
 import OrganisationContainer from './OrganisationContainer';
 
 const Organisation = ({ organisation, updateOrganisation, onClick }) => {

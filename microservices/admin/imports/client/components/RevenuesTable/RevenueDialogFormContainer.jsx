@@ -15,7 +15,7 @@ import T from 'core/components/Translation';
 import Box from 'core/components/Box';
 import { ROLES } from 'core/api/users/userConstants';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { REVENUE_STATUS } from 'core/api/constants';
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 
 const getSchema = currentUser =>

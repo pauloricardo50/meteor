@@ -1,7 +1,8 @@
 import React from 'react';
-import { CollectionIconLink } from 'core/components/IconLink';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import Icon from 'core/components/Icon';
+import { CollectionIconLink } from 'core/components/IconLink';
 
 const getAddress = ({ address, organisations }) => {
   const { address: organisationAddress } =

@@ -1,13 +1,13 @@
 import React from 'react';
 import { compose, withState } from 'recompose';
 
-import {
-  PromotionsTable,
-  BasePromotionsTableContainer,
-} from 'core/components/PromotionsTable';
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import { adminPromotions } from 'core/api/promotions/queries';
-import { PROMOTION_STATUS } from 'core/api/constants';
+import {
+  BasePromotionsTableContainer,
+  PromotionsTable,
+} from 'core/components/PromotionsTable';
 import MongoSelect from 'core/components/Select/MongoSelect';
 
 export default compose(

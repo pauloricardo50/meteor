@@ -1,23 +1,22 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
 import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import {
-  USERS_COLLECTION,
-  TASKS_COLLECTION,
-  LOANS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  LENDERS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-  INSURANCES_COLLECTION,
-} from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
 import Linkify from 'core/components/Linkify';
 import { employeesById } from 'core/arrays/epotekEmployees';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+
 import TasksTableActions from './TasksTableActions';
 
 const now = moment();

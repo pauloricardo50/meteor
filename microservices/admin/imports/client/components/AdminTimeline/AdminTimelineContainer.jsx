@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { withProps } from 'recompose';
+
 import {
   ACTIVITY_TYPES,
   ACTIVITIES_COLLECTION,
 } from 'core/api/activities/activityConstants';
-import {
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-  TASKS_COLLECTION,
-  TASK_STATUS,
-} from 'core/api/constants';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import {
   taskInsert,
@@ -19,6 +13,10 @@ import {
   taskComplete,
 } from 'core/api/methods';
 import { activity as activityFragment } from 'core/api/fragments';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
 
 const formatType = type => {
   if (type.$in && type.$in.includes('COMMUNICATION')) {

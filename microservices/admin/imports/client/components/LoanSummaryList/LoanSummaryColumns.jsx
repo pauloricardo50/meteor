@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import Calculator from 'core/utils/Calculator';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 
 const getLoanSummaryColumns = ({ status, createdAt, updatedAt, ...loan }) => {
   const ownFunds = Calculator.getNonPledgedOwnFunds({ loan });

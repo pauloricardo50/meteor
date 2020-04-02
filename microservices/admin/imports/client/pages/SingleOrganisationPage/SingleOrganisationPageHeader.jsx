@@ -1,14 +1,15 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { injectIntl } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import { ROLES } from 'core/api/constants';
 import { organisationRemove } from 'core/api/methods';
-import T from 'core/components/Translation/Translation';
-import Chip from 'core/components/Material/Chip';
+import { ROLES } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
+import Chip from 'core/components/Material/Chip';
+import T from 'core/components/Translation/Translation';
+
 import OrganisationModifier from './OrganisationModifier';
 
 const SingleOrganisationPage = ({

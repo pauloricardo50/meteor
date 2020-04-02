@@ -1,13 +1,14 @@
 import React from 'react';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import AdminNotes from 'core/components/AdminNotes';
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import AdminNotes from 'core/components/AdminNotes';
-import StructureForm from './StructureForm';
-import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
-import AssigneesManager from '../../../components/AssigneesManager';
+
 import AdminTimeline from '../../../components/AdminTimeline';
+import AssigneesManager from '../../../components/AssigneesManager';
+import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
+import StructureForm from './StructureForm';
 
 const PremiumOverviewTab = props => {
   const { loan } = props;

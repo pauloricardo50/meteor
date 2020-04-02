@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
-import UploaderArray from 'core/components/UploaderArray';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import AdminNote from 'core/components/AdminNote';
+import UploaderArray from 'core/components/UploaderArray';
+
 import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];

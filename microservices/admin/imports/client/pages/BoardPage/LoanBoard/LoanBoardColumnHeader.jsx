@@ -1,12 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
-import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
-import { ACTIONS, SORT_ORDER, GROUP_BY, SORT_BY } from './loanBoardConstants';
+import StatusLabel from 'core/components/StatusLabel';
+
+import { ACTIONS, GROUP_BY, SORT_BY, SORT_ORDER } from './loanBoardConstants';
 
 const getTitle = ({ id, groupBy, admins, promotions }) => {
   switch (groupBy) {

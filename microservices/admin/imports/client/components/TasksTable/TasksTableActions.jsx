@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { TASK_STATUS, TASK_PRIORITIES } from 'core/api/constants';
+import { TASK_STATUS, TASK_PRIORITIES } from 'core/api/tasks/taskConstants';
 import IconButton from 'core/components/IconButton';
 import {
   taskComplete,

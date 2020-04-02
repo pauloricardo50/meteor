@@ -1,22 +1,21 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
 import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
+import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  ROLES,
-  REVENUES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
-import FileTabs from 'core/components/FileTabs/loadable';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { ROLES } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import FileTabs from 'core/components/FileTabs/loadable';
+
+import LoanTabs from '../LoanTabs';
 import ActionsTab from '../LoanTabs/ActionsTab/loadable';
 import DevTab from '../LoanTabs/DevTab/loadable';
+import InsuranceRequestsTab from '../LoanTabs/InsuranceRequestsTab';
 import LendersTab from '../LoanTabs/LendersTab/loadable';
 import RevenuesTab from '../LoanTabs/RevenuesTab/loadable';
-import LoanTabs from '../LoanTabs';
 import PremiumOverviewTab from './PremiumOverviewTab';
-import InsuranceRequestsTab from '../LoanTabs/InsuranceRequestsTab';
 
 const getTabs = props => {
   const { currentUser } = props;

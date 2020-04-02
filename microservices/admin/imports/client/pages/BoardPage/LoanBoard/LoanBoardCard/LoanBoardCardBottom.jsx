@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { LOAN_CATEGORIES } from 'core/api/loans/loanConstants';
 import Icon from 'core/components/Icon';
-import { LOAN_CATEGORIES } from 'core/api/constants';
 
 const LoanBoardCardBottom = ({
   category,

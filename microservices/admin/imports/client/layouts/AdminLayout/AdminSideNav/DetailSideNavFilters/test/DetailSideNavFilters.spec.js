@@ -6,11 +6,9 @@ import sinon from 'sinon';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import T from 'core/components/Translation';
 import DropdownSelect from 'core/components/DropdownSelect';
-import {
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  USERS_COLLECTION,
-} from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import DetailSideNavFilters from '../DetailSideNavFilters';
 

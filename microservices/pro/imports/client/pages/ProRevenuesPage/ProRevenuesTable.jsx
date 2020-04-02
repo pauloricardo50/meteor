@@ -1,18 +1,19 @@
 import React, { useContext, useState } from 'react';
 import moment from 'moment';
 
-import Table from 'core/components/Table';
-import Select from 'core/components/Select';
-import T, { Percent, Money } from 'core/components/Translation';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { proRevenues } from 'core/api/revenues/queries';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { LOANS_COLLECTION, PRO_COMMISSION_STATUS } from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
+import { PRO_COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
 import {
-  getProCommissionStatus,
   getProCommissionDate,
+  getProCommissionStatus,
 } from 'core/api/revenues/revenueHelpers';
+import Select from 'core/components/Select';
+import StatusLabel from 'core/components/StatusLabel';
+import Table from 'core/components/Table';
+import T, { Money, Percent } from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 const columnOptions = [
   { id: 'loanName' },

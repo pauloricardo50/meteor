@@ -1,7 +1,8 @@
 import React from 'react';
+
+import { getDuration, getFrequency } from 'core/api/insurances/helpers';
+import { INSURANCE_PREMIUM_FREQUENCY } from 'core/api/insurances/insuranceConstants';
 import { Money, Percent } from 'core/components/Translation';
-import { INSURANCE_PREMIUM_FREQUENCY } from 'core/api/constants';
-import { getFrequency, getDuration } from 'core/api/insurances/helpers';
 
 const InsuranceEstimatedRevenueInfos = props => {
   const {

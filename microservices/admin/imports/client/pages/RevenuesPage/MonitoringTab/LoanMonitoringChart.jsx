@@ -1,11 +1,12 @@
 import React from 'react';
-import { compose, withStateHandlers, withProps } from 'recompose';
+import { compose, withProps, withStateHandlers } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { LOAN_STATUS_ORDER } from 'core/api/constants';
+import { LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
 import { loanMonitoring } from 'core/api/monitoring/queries';
-import MonitoringFilters from './MonitoringFilters';
+
 import MonitoringChart from './MonitoringChart';
+import MonitoringFilters from './MonitoringFilters';
 
 const LoanMonitoringChart = props => {
   const {

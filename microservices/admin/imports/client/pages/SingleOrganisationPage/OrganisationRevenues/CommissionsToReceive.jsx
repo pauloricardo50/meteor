@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import T from 'core/components/Translation';
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import Select from 'core/components/Select';
-import { REVENUE_STATUS } from 'core/api/constants';
+import T from 'core/components/Translation';
+
 import { RevenuesTable } from '../../../components/RevenuesTable/RevenuesTable';
 import CommissionsToReceiveContainer from './CommissionsToReceiveContainer';
 

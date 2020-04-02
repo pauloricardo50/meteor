@@ -1,14 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import get from 'lodash/get';
 import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
-import get from 'lodash/get';
 import moment from 'moment';
 
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
 import Calculator from 'core/utils/Calculator';
-import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
-import { GROUP_BY, SORT_BY, ACTIONS, SORT_ORDER } from './loanBoardConstants';
+
+import { ACTIONS, GROUP_BY, SORT_BY, SORT_ORDER } from './loanBoardConstants';
 
 export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   switch (groupBy) {

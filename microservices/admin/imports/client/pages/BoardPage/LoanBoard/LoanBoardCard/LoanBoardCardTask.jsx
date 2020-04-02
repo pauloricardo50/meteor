@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
+import { taskChangeStatus, taskComplete } from 'core/api/tasks/index';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import IconButton from 'core/components/IconButton';
-import { taskComplete, taskChangeStatus } from 'core/api/tasks/index';
-import { TASK_STATUS } from 'core/api/constants';
 
 const LoanBoardCardTask = ({ title = 'Tâche sans titre', _id }) => {
   const [showButtons, setShowButtons] = useState(false);

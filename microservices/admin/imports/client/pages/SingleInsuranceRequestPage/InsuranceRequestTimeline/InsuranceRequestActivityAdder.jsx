@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { withProps } from 'recompose';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
-import { INSURANCES_COLLECTION } from 'core/api/constants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+
 import {
-  getActivitySchema,
   AdminActivityForm,
+  getActivitySchema,
 } from '../../../components/AdminTimeline/AdminActivityAdder';
 
 const activitySchema = getActivitySchema();

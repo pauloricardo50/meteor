@@ -1,20 +1,16 @@
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 
-import { shallow } from 'core/utils/testHelpers/enzyme';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { getMountedComponent } from 'core/utils/testHelpers';
-import {
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  USERS_COLLECTION,
-} from 'core/api/constants';
 
 import { initialState } from '../../../../redux/sidenav/sidenavReducer';
 import AdminSideNav from '../AdminSideNav';
+import DetailSideNavFilters from '../DetailSideNavFilters';
 import DetailSideNavHeader from '../DetailSideNavHeader';
 import DetailSideNavList from '../DetailSideNavList';
-import DetailSideNavFilters from '../DetailSideNavFilters';
 import DetailSideNavSort from '../DetailSideNavSort';
 import { defaultSortOption } from '../DetailSideNavSort/sortOptions';
 

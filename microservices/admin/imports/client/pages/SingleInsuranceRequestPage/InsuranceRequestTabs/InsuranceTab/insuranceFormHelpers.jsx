@@ -1,16 +1,17 @@
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 import ListItemText from '@material-ui/core/ListItemText';
+import SimpleSchema from 'simpl-schema';
 
-import { INSURANCE_STATUS } from 'core/api/constants';
-import Calculator from 'core/utils/Calculator';
+import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 import { insuranceInsert, insuranceModify } from 'core/api/methods';
-import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
 import { formatMessage } from 'core/utils/intl';
-import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
+import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../../../startup/client/adminRoutes';
+import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
 
 export const getSchema = ({ borrowers, organisations }) =>
   new SimpleSchema({

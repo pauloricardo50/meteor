@@ -2,13 +2,14 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
-import T from 'core/components/Translation';
-import { AutoFormDialog } from 'core/components/AutoForm2';
 import { proPropertyInsert } from 'core/api';
-import { createRoute } from 'core/utils/routerUtils';
-import { PROPERTY_CATEGORY } from 'core/api/constants';
-import { moneyField, address } from 'core/api/helpers/sharedSchemas';
+import { address, moneyField } from 'core/api/helpers/sharedSchemas';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 export const proPropertySchema = new SimpleSchema({

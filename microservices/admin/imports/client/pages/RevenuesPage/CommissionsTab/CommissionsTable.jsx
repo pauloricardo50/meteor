@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { PRO_COMMISSION_STATUS } from 'core/api/constants';
+import { PRO_COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
 import Select from 'core/components/Select';
-import T, { Money } from 'core/components/Translation';
 import Table from 'core/components/Table';
+import T, { Money } from 'core/components/Translation';
 
 import {
   mapRevenueIntoCommissions,

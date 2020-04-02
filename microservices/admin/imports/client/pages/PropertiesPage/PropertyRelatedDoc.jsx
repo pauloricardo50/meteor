@@ -1,7 +1,9 @@
 import React from 'react';
-import { PROPERTY_CATEGORY } from 'imports/core/api/constants';
+
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 
 const PropertyRelatedDoc = ({ loans = [], promotion, category }) => {
   if (category === PROPERTY_CATEGORY.PROMOTION) {

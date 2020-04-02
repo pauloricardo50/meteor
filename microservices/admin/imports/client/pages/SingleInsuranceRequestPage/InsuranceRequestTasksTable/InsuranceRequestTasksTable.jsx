@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { compose, shouldUpdate, withProps, withState } from 'recompose';
+
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { compose, shouldUpdate, withState, withProps } from 'recompose';
 import {
-  taskInsert,
-  taskUpdate,
   taskChangeStatus,
   taskComplete,
+  taskInsert,
+  taskUpdate,
 } from 'core/api/methods';
-import useSearchParams from 'core/hooks/useSearchParams';
-import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
 import Select from 'core/components/Select';
+import useSearchParams from 'core/hooks/useSearchParams';
+
 import { CollectionTasksTable } from '../../../components/TasksTable/CollectionTasksTable';
 import { taskTableFragment } from '../../../components/TasksTable/TasksTable';
 import InsuranceRequestTaskInserter from './InsuranceRequestTaskInserter';

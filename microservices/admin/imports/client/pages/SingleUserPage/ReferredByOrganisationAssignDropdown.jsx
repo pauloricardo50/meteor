@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+
 import ReferredByOrganisationAssignDropdownContainer from './ReferredByOrganisationAssignDropdownContainer';
 
 const ReferredByOrganisationAssignDropdown = ({

@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { USERS_COLLECTION } from 'core/api/constants';
+
 import ReferredByAssignDropdownContainer from './ReferredByAssignDropdownContainer';
 
 const ReferredByAssignDropdown = ({ options, referredByUser }) => (

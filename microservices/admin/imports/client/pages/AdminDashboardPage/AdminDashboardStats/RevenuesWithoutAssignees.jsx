@@ -1,9 +1,11 @@
 import React from 'react';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const RevenuesWithoutAssignees = ({ showAll }) => {

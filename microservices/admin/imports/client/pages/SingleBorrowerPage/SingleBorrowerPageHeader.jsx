@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
+import { borrowerDelete } from 'core/api';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import FullDate from 'core/components/dateComponents/FullDate';
-import { USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { borrowerDelete } from 'core/api';
+import T from 'core/components/Translation';
 
 const SingleBorrowerHeader = ({
   borrower: {

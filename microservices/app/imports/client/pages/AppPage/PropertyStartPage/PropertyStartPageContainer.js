@@ -1,15 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 
-import { compose, withProps, lifecycle } from 'recompose';
+import { compose, lifecycle, withProps } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { anonymousProperty } from 'core/api/properties/queries';
-import { createRoute } from 'core/utils/routerUtils';
-import { anonymousLoanInsert, userLoanInsert } from 'core/api/methods';
-import { LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
-import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { parseCookies } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
+import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
+import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
+import { anonymousLoanInsert, userLoanInsert } from 'core/api/methods';
+import { anonymousProperty } from 'core/api/properties/queries';
+import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
+import { parseCookies } from 'core/utils/cookiesHelpers';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export default compose(

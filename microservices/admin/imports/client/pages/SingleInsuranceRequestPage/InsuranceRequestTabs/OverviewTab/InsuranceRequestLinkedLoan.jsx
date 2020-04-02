@@ -1,12 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { CollectionIconLink } from 'core/components/IconLink';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { insuranceRequestLinkNewLoan } from 'core/api/methods/index';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
+import { CollectionIconLink } from 'core/components/IconLink';
 import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../../../startup/client/adminRoutes';
 import InsuranceRequestLoanLinker from './InsuranceRequestLoanLinker';
 

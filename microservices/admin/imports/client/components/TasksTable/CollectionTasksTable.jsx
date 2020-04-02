@@ -1,28 +1,25 @@
 import React, { useState } from 'react';
+import { compose, shouldUpdate, withProps, withState } from 'recompose';
+
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { compose, shouldUpdate, withState, withProps } from 'recompose';
 import {
   taskInsert,
   taskUpdate,
   taskChangeStatus,
   taskComplete,
 } from 'core/api/methods';
-import {
-  TASK_STATUS,
-  TASKS_COLLECTION,
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
 import useSearchParams from 'core/hooks/useSearchParams';
-import TasksTable, { taskTableFragment } from './TasksTable';
-import {
-  LENDERS_COLLECTION,
-  CONTACTS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from '../../../core/api/constants';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+
 import CollectionTaskInserter from './CollectionTaskInserter';
+import TasksTable, { taskTableFragment } from './TasksTable';
 
 const getFilters = ({ collection, doc, assignee, status }) => {
   const { _id: docId } = doc;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { CONTACTS_COLLECTION } from 'core/api/constants';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { lenderLinkOrganisationAndContact } from 'core/api/methods';
 import DropdownMenu from 'core/components/DropdownMenu';
-import { lenderLinkOrganisationAndContact } from 'imports/core/api/methods';
 import { CollectionIconLink } from 'core/components/IconLink';
 
 const LenderContact = ({ contact, contacts, lenderId }) => (

@@ -1,22 +1,23 @@
 import React from 'react';
-import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
+import uniqBy from 'lodash/uniqBy';
 
-import { Percent } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import { CollectionIconLink } from 'core/components/IconLink';
 import {
-  LOAN_STATUS_ORDER,
   LOANS_COLLECTION,
-  ROLES,
   LOAN_STATUS,
-} from 'core/api/constants';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { adminUsers } from 'core/api/users/queries';
+  LOAN_STATUS_ORDER,
+} from 'core/api/loans/loanConstants';
 import { adminLoans } from 'core/api/loans/queries';
+import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
+import { CollectionIconLink } from 'core/components/IconLink';
+import StatusLabel from 'core/components/StatusLabel';
 import TableWithModal from 'core/components/Table/TableWithModal';
-import MonitoringActivityFilters from './MonitoringActivityFilters';
+import { Percent } from 'core/components/Translation';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import MonitoringActivityContainer from './MonitoringActivityContainer';
+import MonitoringActivityFilters from './MonitoringActivityFilters';
 
 const statuses = LOAN_STATUS_ORDER.slice(1);
 

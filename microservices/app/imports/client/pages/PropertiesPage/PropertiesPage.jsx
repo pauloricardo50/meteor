@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { APPLICATION_TYPES } from 'core/api/constants';
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
+
 import PageApp from '../../components/PageApp';
 import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
+import PropertiesPageAdder from './PropertiesPageAdder';
 import PropertiesPageDetail from './PropertiesPageDetail';
 import PropertiesPagePromotions from './PropertiesPagePromotions';
-import PropertiesPageAdder from './PropertiesPageAdder';
 
 const PropertiesPage = ({ loan, currentUser }) => {
   const { _id: loanId, properties = [], hasPromotion, applicationType } = loan;

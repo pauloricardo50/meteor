@@ -8,7 +8,7 @@ import { Money, Percent } from 'core/components/Translation';
 import { consolidateCommission } from 'core/api/revenues/index';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 
 const schema = new SimpleSchema({

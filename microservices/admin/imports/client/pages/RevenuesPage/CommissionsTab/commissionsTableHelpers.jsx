@@ -1,22 +1,23 @@
 import React from 'react';
 import moment from 'moment';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import {
-  getCommissionFilters,
-  getProCommissionStatus,
-  getProCommissionDate,
-} from 'core/api/revenues/revenueHelpers';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import {
   ORGANISATIONS_COLLECTION,
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
   ORGANISATION_FEATURES,
-} from 'core/api/constants';
+} from 'core/api/organisations/organisationConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import {
+  getCommissionFilters,
+  getProCommissionDate,
+  getProCommissionStatus,
+} from 'core/api/revenues/revenueHelpers';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import CommissionsConsolidator from 'imports/client/components/RevenuesTable/CommissionConsolidator';
-import T, { Percent, Money } from 'core/components/Translation';
+import T, { Money, Percent } from 'core/components/Translation';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
+import CommissionsConsolidator from '../../../components/RevenuesTable/CommissionConsolidator';
 
 export const mapRevenueIntoCommissions = ({
   _id: revenueId,

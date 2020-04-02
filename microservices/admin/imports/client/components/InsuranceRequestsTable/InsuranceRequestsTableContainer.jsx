@@ -1,14 +1,12 @@
-import React from 'react';
-import { withProps } from 'recompose';
 import moment from 'moment';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 
-import {
-  USERS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 
 const columnOptions = [
   { id: 'Dossier' },

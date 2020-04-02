@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TASK_PRIORITIES } from 'core/api/constants';
+import { TASK_PRIORITIES } from 'core/api/tasks/taskConstants';
 import Table from 'core/components/Table';
 
 const TasksTablePriority = ({

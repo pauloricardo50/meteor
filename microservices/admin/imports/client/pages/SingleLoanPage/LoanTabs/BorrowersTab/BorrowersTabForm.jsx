@@ -1,13 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-import VerticalAligner from 'core/components/VerticalAligner';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import AutoForm from 'core/components/AutoForm';
-import { BORROWERS_COLLECTION } from 'core/api/constants';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import BorrowerRemover from 'core/components/BorrowerRemover';
 import BorrowerReuser from 'core/components/BorrowerReuser';
+import MortgageNotesForm from 'core/components/MortgageNotesForm';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import VerticalAligner from 'core/components/VerticalAligner';
+
 import BorrowersTabFormRecap from './BorrowersTabFormRecap';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({

@@ -1,19 +1,20 @@
-import React from 'react';
-import { withProps, compose, withState } from 'recompose';
 import moment from 'moment';
+import React from 'react';
+import { compose, withProps, withState } from 'recompose';
 
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import {
-  ORGANISATIONS_COLLECTION,
-  REVENUES_COLLECTION,
-  LOANS_COLLECTION,
-  REVENUE_STATUS,
-  INSURANCES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import {
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from 'core/api/revenues/revenueConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+
 import RevenueConsolidator from './RevenueConsolidator';
 
 const now = moment();

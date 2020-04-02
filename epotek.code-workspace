@@ -41,11 +41,11 @@
     "recommendations": [
       "amatiasq.sort-imports",
       "bobmagicii.autofoldyeah",
-      "formulahendry.auto-rename-tag",
       "dbaeumer.vscode-eslint",
-      "pkief.material-icon-theme",
+      "formulahendry.auto-rename-tag",
       "midnightsyntax.vscode-wrap-console-log",
-      "naumovs.color-highlight"
+      "naumovs.color-highlight",
+      "pkief.material-icon-theme"
     ]
   }
 }

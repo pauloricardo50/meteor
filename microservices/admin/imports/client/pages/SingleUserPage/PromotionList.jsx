@@ -1,8 +1,8 @@
 import React from 'react';
 
-import StatusLabel from 'core/components/StatusLabel';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import StatusLabel from 'core/components/StatusLabel';
 
 const PromotionList = ({ promotions }) => (
   <div className="promotion-list">

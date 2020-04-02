@@ -1,15 +1,17 @@
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loansWithoutRevenues } from 'core/api/stats/queries';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import Table from 'core/components/Table';
-import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { USERS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
-import { getUserDisplayName } from 'core/utils/userFunctions';
+import StatusLabel from 'core/components/StatusLabel';
+import Table from 'core/components/Table';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import { getUserDisplayName } from 'core/utils/userFunctions';
+
 import StatItem from './StatItem';
 
 const LoansTable = ({ loans }) => (

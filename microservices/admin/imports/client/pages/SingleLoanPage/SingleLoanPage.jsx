@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 import LoanTabs from './LoanTabs';
+import SingleLoanPageContacts from './SingleLoanPageContacts';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
-import SingleLoanPageContacts from './SingleLoanPageContacts';
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const SingleLoanPage = props => {
   const { loan } = props;

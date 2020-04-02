@@ -1,19 +1,21 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-import { PROPERTY_CATEGORY, APPLICATION_TYPES } from 'core/api/constants';
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
+import { propertyDelete } from 'core/api/methods/index';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import { propertyDelete } from 'core/api/methods/index';
-import { createRoute } from 'core/utils/routerUtils';
 import ProProperty from 'core/components/ProProperty';
+import T from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../startup/client/appRoutes';
-import ReturnToDashboard from '../../components/ReturnToDashboard';
 import PageApp from '../../components/PageApp';
-import SinglePropertyPageTitle from './SinglePropertyPageTitle';
-import SinglePropertyPageForms from './SinglePropertyPageForms';
+import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
+import SinglePropertyPageForms from './SinglePropertyPageForms';
+import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 
 const SinglePropertyPage = props => {
   const { loan, propertyId, history, currentUser } = props;

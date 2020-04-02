@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 import T from 'core/components/Translation';
-import { INTEREST_RATES } from 'core/api/constants';
 
 export const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },

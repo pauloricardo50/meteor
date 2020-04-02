@@ -1,16 +1,18 @@
 import { Meteor } from 'meteor/meteor';
+
+import get from 'lodash/get';
 import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
-import get from 'lodash/get';
 
 import {
-  INSURANCE_REQUEST_STATUS_ORDER,
   INSURANCE_REQUEST_STATUS,
-} from 'core/api/constants';
+  INSURANCE_REQUEST_STATUS_ORDER,
+} from 'core/api/insuranceRequests/insuranceRequestConstants';
+
 import {
+  ACTIONS,
   GROUP_BY,
   SORT_BY,
-  ACTIONS,
   SORT_ORDER,
 } from './insuranceRequestBoardConstants';
 

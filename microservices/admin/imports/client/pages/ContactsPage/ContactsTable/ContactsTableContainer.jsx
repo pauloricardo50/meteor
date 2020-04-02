@@ -1,10 +1,10 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
-import T from 'core/components/Translation';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 
 const columnOptions = [

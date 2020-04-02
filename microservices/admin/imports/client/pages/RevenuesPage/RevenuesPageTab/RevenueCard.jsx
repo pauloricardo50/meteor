@@ -1,15 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
+
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import Icon from 'core/components/Icon';
+import { CollectionIconLink } from 'core/components/IconLink';
 import { toMoney } from 'core/utils/conversionFunctions';
 
-import {
-  REVENUE_STATUS,
-  LOANS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  INSURANCES_COLLECTION,
-} from 'core/api/constants';
-import { CollectionIconLink } from 'core/components/IconLink';
-import Icon from 'core/components/Icon';
 import RevenueConsolidator from '../../../components/RevenuesTable/RevenueConsolidator';
 import RevenuePostponer from './RevenuePostponer';
 

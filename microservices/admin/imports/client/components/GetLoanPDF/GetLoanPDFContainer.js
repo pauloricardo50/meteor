@@ -1,8 +1,9 @@
 import fileSaver from 'file-saver';
 import { compose, withProps } from 'recompose';
 
-import { PDF_TYPES } from 'core/api/constants';
 import { generatePDF } from 'core/api/pdf/methodDefinitions';
+import { PDF_TYPES } from 'core/api/pdf/pdfConstants';
+
 import { base64ToBlob } from './base64-to-blob';
 import { makeGenerateBackgroundInfo } from './helpers';
 

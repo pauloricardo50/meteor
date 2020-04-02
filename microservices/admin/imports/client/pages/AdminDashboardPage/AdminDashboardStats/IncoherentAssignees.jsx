@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { incoherentAssignees } from 'core/api/users/queries';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { USERS_COLLECTION } from 'core/api/constants';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const IncoherentAssignees = ({ showAll }) => {

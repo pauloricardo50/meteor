@@ -1,19 +1,17 @@
 import React from 'react';
 
+import { LOAN_CATEGORIES, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import Calculator from 'core/utils/Calculator';
-import {
-  PROMOTIONS_COLLECTION,
-  LOAN_STATUS,
-  USERS_COLLECTION,
-  LOAN_CATEGORIES,
-} from 'core/api/constants';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
+
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
-import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 import LoanStatusModifier from './LoanStatusModifier/LoanStatusModifier';
+import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 
 const getUserName = ({ anonymous, user, category }) => {
   if (anonymous) {

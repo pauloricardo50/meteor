@@ -1,12 +1,11 @@
 import React from 'react';
 
-import {
-  LENDERS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
-import { CollectionIconLink } from 'core/components/IconLink';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import AdminNote from 'core/components/AdminNote';
+import { CollectionIconLink } from 'core/components/IconLink';
+import StatusLabel from 'core/components/StatusLabel';
+
 import LenderContact from './LenderContact';
 
 const Lender = ({ lender }) => {

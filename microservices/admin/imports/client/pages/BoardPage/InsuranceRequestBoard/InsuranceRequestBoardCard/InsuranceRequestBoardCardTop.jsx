@@ -1,10 +1,10 @@
 import React from 'react';
 
-import StatusLabel from 'core/components/StatusLabel';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { insuranceRequestUpdateStatus } from 'core/api/methods';
-
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import StatusLabel from 'core/components/StatusLabel';
+
 import InsuranceRequestBoardCardAssignee from './InsuranceRequestBoardCardAssignee';
 
 const InsuranceRequestBoardCardTop = props => {

@@ -1,13 +1,15 @@
-import { compose, withProps, mapProps } from 'recompose';
+import { compose, mapProps, withProps } from 'recompose';
+
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminUsers } from 'core/api/users/queries';
 import {
-  ORGANISATION_FEATURES,
-  ROLES,
-  INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
+  INSURANCE_REQUEST_STATUS,
+} from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import { adminOrganisations } from 'core/api/organisations/queries';
+import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
+
 import { groupInsuranceRequests } from './insuranceRequestBoardHelpers';
 
 const defaultBody = {

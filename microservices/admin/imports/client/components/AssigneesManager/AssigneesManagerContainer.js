@@ -1,16 +1,14 @@
-import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
 import { adminUsers } from 'core/api/users/queries';
-import {
-  ROLES,
-  LOANS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
 import {
   loanSetAssignees,
   insuranceRequestSetAssignees,
 } from 'core/api/methods';
+import { ROLES } from 'core/api/users/userConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 
 export const assigneesSchema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },

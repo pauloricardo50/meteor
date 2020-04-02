@@ -1,9 +1,10 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import AutoForm from 'core/components/AutoForm';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import getRefinancingFormArray from 'core/arrays/RefinancingFormArray';
+import AutoForm from 'core/components/AutoForm';
+import T from 'core/components/Translation';
+
 import PageApp from '../../components/PageApp';
 import RefinancingPageTitle from './RefinancingPageTitle';
 

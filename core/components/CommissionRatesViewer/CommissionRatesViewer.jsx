@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { COMMISSION_RATES_TYPE } from 'core/api/revenues/revenueConstants';
+import { COMMISSION_RATES_TYPE } from '../../api/commissionRates/commissionRateConstants';
 import { getCurrentRate } from '../../api/organisations/helpers';
-import T, { Percent, Money } from '../Translation';
-import CommissionRatesViewerList from './CommissionRatesViewerList';
+import T, { Money, Percent } from '../Translation';
 import CommissionRatesViewerContainer from './CommissionRatesViewerContainer';
+import CommissionRatesViewerList from './CommissionRatesViewerList';
 
 const CommissionRatesViewer = ({
   commissionRates: { rates = [], type } = {},

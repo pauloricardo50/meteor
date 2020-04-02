@@ -1,16 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import Tabs from 'core/components/Tabs';
-import Icon from 'core/components/Icon';
+import { INTEREST_RATES_COLLECTION } from 'core/api/interestRates/interestRatesConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { INTEREST_RATES_COLLECTION } from 'core/api/constants';
+import Icon from 'core/components/Icon';
+import Tabs from 'core/components/Tabs';
+
 import InterestRatesChart from './InterestRatesChart/InterestRatesChart';
-import Irs10yTable from './Irs10yTable/Irs10yTable';
-import { InsertIrs10yDialogForm } from './Irs10yDialogForm';
-import InterestRatesTable from './InterestRatesTable';
-import InterestRatesPageContainer from './InterestRatesPageContainer';
 import { InsertInterestRatesDialogForm } from './InterestRatesDialogForm';
+import InterestRatesPageContainer from './InterestRatesPageContainer';
+import InterestRatesTable from './InterestRatesTable';
+import { InsertIrs10yDialogForm } from './Irs10yDialogForm';
+import Irs10yTable from './Irs10yTable/Irs10yTable';
 
 const InterestRatesPage = ({
   interestRates,

@@ -1,12 +1,14 @@
 import React from 'react';
 
-import AutoForm from 'core/components/AutoForm';
-import MortgageNotesForm from 'core/components/MortgageNotesForm';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
 import {
   getPropertyArray,
   getPropertyLoanArray,
 } from 'core/arrays/PropertyFormArray';
-import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
+import AutoForm from 'core/components/AutoForm';
+import MortgageNotesForm from 'core/components/MortgageNotesForm';
+
 import DeactivatedFormInfo from '../../components/DeactivatedFormInfo';
 
 const SinglePropertyPageForms = ({ loan, borrowers, property }) => {

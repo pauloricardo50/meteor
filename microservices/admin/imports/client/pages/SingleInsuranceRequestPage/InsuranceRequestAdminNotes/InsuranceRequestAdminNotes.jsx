@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { withProps } from 'recompose';
 
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import { AdminNotes } from 'core/components/AdminNotes/AdminNotes';
-import {
-  INSURANCES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
 import Checkbox from 'core/components/Checkbox';
+
 import InsuranceRequestAdminNoteAdder from './InsuranceRequestAdminNoteAdder';
 
 const SelectDocumentFilter = ({

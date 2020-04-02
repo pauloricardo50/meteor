@@ -1,11 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon/Icon';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import Icon from 'core/components/Icon/Icon';
+import T from 'core/components/Translation';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import InsuranceRequestsTable from '../../components/InsuranceRequestsTable/InsuranceRequestsTable';
 
 const InsuranceRequestsPage = () => {

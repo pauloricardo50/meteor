@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import Tabs from 'core/components/Tabs';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
-import RevenuesToPay from './RevenuesToPay';
+
 import ProductionsCommissionsEditor from '../CommissionRates/ProductionsCommissionsEditor';
+import RevenuesToPay from './RevenuesToPay';
 
 const OrganisationRevenues = props => {
   const { name, features } = props;

@@ -1,10 +1,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { RESIDENCE_TYPE } from 'core/api/constants';
-
 import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
 import { PROMOTION_TYPES } from '../../../api/promotions/promotionConstants';
+import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import { GE } from '../cantonConstants';
 import NotaryFeesCalculator from '../NotaryFeesCalculator';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 
 const PromotionsTab = ({ loan }) => {
   const [promotion] = loan.promotions;

@@ -1,20 +1,20 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Tabs from 'core/components/Tabs';
-import Icon from 'core/components/Icon';
-import { createRoute } from 'core/utils/routerUtils';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { REVENUES_COLLECTION } from 'core/api/constants';
-import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
+import Icon from 'core/components/Icon';
+import Tabs from 'core/components/Tabs';
+import { createRoute } from 'core/utils/routerUtils';
 
-import OverviewTab from './OverviewTab';
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
+import BorrowersTab from './BorrowersTab';
+import InsuranceRequestFileTabs from './InsuranceRequestFileTabs';
 import InsuranceTab from './InsuranceTab';
 import InsuranceAdder from './InsuranceTab/InsuranceAdder';
-import BorrowersTab from './BorrowersTab';
+import OverviewTab from './OverviewTab';
 import RevenuesTab from './RevenuesTab';
-import InsuranceRequestFileTabs from './InsuranceRequestFileTabs';
 
 const getTabs = props => {
   const { insuranceRequest } = props;

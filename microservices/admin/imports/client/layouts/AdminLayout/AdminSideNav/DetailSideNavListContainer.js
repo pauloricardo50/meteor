@@ -1,15 +1,13 @@
 import { withRouter } from 'react-router-dom';
-import { withState, withProps, lifecycle, compose } from 'recompose';
+import { compose, lifecycle, withProps, withState } from 'recompose';
 
 import { adminLoans } from 'core/api/loans/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminUsers } from 'core/api/users/queries';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 
 const PAGINATION_AMOUNT = 10;
 

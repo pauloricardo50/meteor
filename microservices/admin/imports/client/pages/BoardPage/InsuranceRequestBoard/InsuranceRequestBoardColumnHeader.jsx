@@ -1,15 +1,16 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
 import StatusLabel from 'core/components/StatusLabel';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
+
 import {
   ACTIONS,
-  SORT_ORDER,
   GROUP_BY,
   SORT_BY,
+  SORT_ORDER,
 } from './insuranceRequestBoardConstants';
 
 const getTitle = ({ id, groupBy, admins }) => {

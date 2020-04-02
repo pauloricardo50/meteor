@@ -1,23 +1,24 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import moment from 'moment';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import DateRangePicker from 'core/components/DateInput/DateRangePicker';
-import Loading from 'core/components/Loading';
-import T from 'core/components/Translation';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
+  REVENUES_COLLECTION,
   REVENUE_STATUS,
   REVENUE_TYPES,
-  REVENUES_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
+} from 'core/api/revenues/revenueConstants';
+import employees from 'core/arrays/epotekEmployees';
+import DateRangePicker from 'core/components/DateInput/DateRangePicker';
+import Loading from 'core/components/Loading';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
-import employees from 'core/arrays/epotekEmployees';
-import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
-import { revenuesFilter } from './revenuePageHelpers';
+import T from 'core/components/Translation';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import RevenueModifier from '../../../components/RevenuesTable/RevenueModifier';
 import InsuranceBillingFilter from './InsuranceBillingFilter';
+import { revenuesFilter } from './revenuePageHelpers';
+import RevenuesPageCalendarColumn from './RevenuesPageCalendarColumn';
 
 const getMonths = ({ startDate, endDate }) => {
   const clonedStartDate = moment(startDate);
@@ -25,7 +26,7 @@ const getMonths = ({ startDate, endDate }) => {
   const result = [];
   let i = 0;
   if (clonedEndDate.isBefore(clonedStartDate)) {
-    throw 'End date must be greater than start date.';
+    throw new Error('End date must be greater than start date.');
   }
 
   while (clonedStartDate.isBefore(clonedEndDate)) {

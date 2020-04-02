@@ -1,24 +1,22 @@
 import React, { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
 import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import List from '@material-ui/core/List';
-
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  REVENUES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
-import collectionIcons from 'core/arrays/collectionIcons';
+import { ORGANISATIONS_COLLECTION } from 'imports/core/api/organisations/organisationConstants';
 import { createRoute } from 'imports/core/utils/routerUtils';
+import PropTypes from 'prop-types';
+
+import collectionIcons from 'core/arrays/collectionIcons';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import MainSideNavListItem from './MainSideNavListItem';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
+import MainSideNavListItem from './MainSideNavListItem';
 
 const getItems = currentUser =>
   [

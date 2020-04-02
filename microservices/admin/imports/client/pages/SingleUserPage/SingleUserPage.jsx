@@ -1,22 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-import { ROLES, USERS_COLLECTION } from 'core/api/constants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import ProCustomersTable from 'core/components/ProCustomersTable/ProCustomersTable';
 import {
   columnOptions,
   makeMapProperty,
 } from 'core/components/PropertiesTable/PropertiesTableContainer';
 import Table from 'core/components/Table';
+
 import AdminTimeline from '../../components/AdminTimeline/AdminTimeline';
+import EmailList from '../../components/EmailList';
+import InsuranceRequestsSummaryList from '../../components/InsuranceRequestsSummaryList/InsuranceRequestsSummaryList';
+import LoanSummaryList from '../../components/LoanSummaryList';
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import PromotionList from './PromotionList';
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
-import LoanSummaryList from '../../components/LoanSummaryList';
-import EmailList from '../../components/EmailList';
-import PromotionList from './PromotionList';
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
-import InsuranceRequestsSummaryList from '../../components/InsuranceRequestsSummaryList/InsuranceRequestsSummaryList';
 
 const SingleUserPage = ({
   user,

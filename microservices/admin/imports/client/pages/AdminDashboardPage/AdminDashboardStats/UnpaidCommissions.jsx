@@ -1,15 +1,16 @@
 import React from 'react';
 import CountUp from 'react-countup';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import {
+  COMMISSION_STATUS,
   REVENUES_COLLECTION,
   REVENUE_STATUS,
-  COMMISSION_STATUS,
-} from 'core/api/constants';
-import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
+} from 'core/api/revenues/revenueConstants';
 import Button from 'core/components/Button';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { createRoute } from 'core/utils/routerUtils';
+
+import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
 const UnpaidCommissions = () => {

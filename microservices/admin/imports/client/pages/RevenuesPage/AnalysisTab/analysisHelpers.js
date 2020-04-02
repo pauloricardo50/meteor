@@ -1,15 +1,14 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
 
-import {
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  ACTIVITIES_COLLECTION,
-  TASKS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
+import { ACTIVITIES_COLLECTION } from 'core/api/activities/activityConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+
 import analysisConfig from './analysisConfig';
 
 export const analysisCollections = Object.keys(analysisConfig);

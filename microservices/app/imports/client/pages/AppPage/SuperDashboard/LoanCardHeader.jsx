@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { PROPERTY_DOCUMENTS } from 'core/api/files/fileConstants';
 import T from 'core/components/Translation';
-import { PROPERTY_DOCUMENTS } from 'core/api/constants';
+
 import LoanRenamer from '../LoanRenamer';
 
 const getLoanTitle = (name, customName) => {
