@@ -75,6 +75,9 @@ echo "Preparing front app plugin"
 ln -s ../../../core ../plugins/frontPlugin/src/core
 ( cd ../plugins/frontPlugin && meteor npm run build-production );
 
+echo "Setting up sort-import style"
+ln -s ../plugins/import-sort-style-epotek ../node_modules/.
+
 end=`date +%s`
 runtime=$((end-start))
 

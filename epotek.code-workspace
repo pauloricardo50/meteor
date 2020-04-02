@@ -34,6 +34,18 @@
       "**/.DS_Store": true
     },
     "debug.node.autoAttach": "on",
-    "search.followSymlinks": false
+    "search.followSymlinks": false,
+    "sort-imports.on-save": true
+  },
+  "extensions": {
+    "recommendations": [
+      "amatiasq.sort-imports",
+      "bobmagicii.autofoldyeah",
+      "formulahendry.auto-rename-tag",
+      "dbaeumer.vscode-eslint",
+      "pkief.material-icon-theme",
+      "midnightsyntax.vscode-wrap-console-log",
+      "naumovs.color-highlight"
+    ]
   }
 }
