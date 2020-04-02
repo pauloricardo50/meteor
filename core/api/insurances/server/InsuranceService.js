@@ -1,7 +1,13 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import moment from 'moment';
 
 import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
+import {
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+} from 'core/api/revenues/revenueConstants';
+import RevenueService from 'core/api/revenues/server/RevenueService';
 import CollectionService from '../../helpers/server/CollectionService';
 import Insurances from '../insurances';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
@@ -226,6 +232,137 @@ class InsuranceService extends CollectionService {
 
     return Math.round(
       premium * effectiveDuration * revaluationFactor * productionRate,
+    );
+  }
+
+  addRecurrentRevenues({ insuranceId, managementRate, assigneeId }) {
+    const {
+      premium,
+      premiumFrequency,
+      duration,
+      startDate,
+      insuranceProduct: { name: insuranceProductName },
+      organisation: { _id: organisationId },
+    } = this.get(insuranceId, {
+      premium: 1,
+      premiumFrequency: 1,
+      duration: 1,
+      startDate: 1,
+      insuranceProduct: { name: 1 },
+      organisation: { _id: 1 },
+    });
+
+    if (premiumFrequency === INSURANCE_PREMIUM_FREQUENCY.SINGLE) {
+      throw new Meteor.Error(
+        'Les assurances à prime unique ne peuvent pas avoir de revenus récurrents',
+      );
+    }
+
+    const amount = premium * managementRate;
+
+    let monthIncrement = 0;
+
+    switch (premiumFrequency) {
+      case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
+        monthIncrement = 1;
+        break;
+      case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
+        monthIncrement = 3;
+        break;
+      case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
+        monthIncrement = 6;
+        break;
+      case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
+        monthIncrement = 12;
+        break;
+      default:
+        break;
+    }
+
+    const firstRevenueDate = moment(startDate)
+      .add(1, 'month')
+      .endOf('month');
+
+    let revenueDates = [firstRevenueDate];
+
+    for (
+      let increment = monthIncrement;
+      increment < duration;
+      increment += monthIncrement
+    ) {
+      revenueDates = [
+        ...revenueDates,
+        firstRevenueDate.add(increment, 'months').endOf('month'),
+      ];
+    }
+
+    revenueDates.forEach(date => {
+      const revenueId = RevenueService.insert({
+        revenue: {
+          amount,
+          description: insuranceProductName,
+          type: REVENUE_TYPES.INSURANCE,
+          expectedAt: date.toDate(),
+          sourceOrganisationLink: { _id: organisationId },
+          assigneeLink: { _id: assigneeId },
+        },
+      });
+      this.addLink({
+        id: insuranceId,
+        linkName: 'revenues',
+        linkId: revenueId,
+        metadata: { recurrent: true, managementRate },
+      });
+    });
+  }
+
+  updateRecurrentRevenues({ insuranceId, managementRate, amount }) {
+    if ((amount && managementRate) || (!amount && !managementRate)) {
+      throw new Meteor.Error(
+        'Vous devez modifier le montant ou le taux de gestion',
+      );
+    }
+
+    const { revenues = [], premium } = this.get(insuranceId, {
+      revenues: { _id: 1, status: 1 },
+      premium: 1,
+    });
+    const recurrentRevenues = revenues.filter(
+      ({ status, $metadata }) =>
+        status === REVENUE_STATUS.EXPECTED && $metadata?.recurrent === true,
+    );
+
+    let newAmount;
+    let newManagementRate = managementRate;
+    if (managementRate) {
+      newAmount = managementRate * premium;
+    } else if (amount) {
+      newAmount = amount;
+      newManagementRate = newAmount / premium;
+    }
+
+    recurrentRevenues.forEach(({ _id: revenueId }) => {
+      RevenueService._update({ id: revenueId, object: { amount: newAmount } });
+      this.updateLinkMetadata({
+        id: insuranceId,
+        linkName: 'revenues',
+        linkId: revenueId,
+        metadata: { recurrent: true, managementRate: newManagementRate },
+      });
+    });
+  }
+
+  removeReccurentRevenues({ insuranceId }) {
+    const { revenues = [] } = this.get(insuranceId, {
+      revenues: { _id: 1, status: 1 },
+    });
+    const recurrentRevenues = revenues.filter(
+      ({ status, $metadata }) =>
+        status === REVENUE_STATUS.EXPECTED && $metadata?.recurrent === true,
+    );
+
+    recurrentRevenues.forEach(({ _id: revenueId }) =>
+      RevenueService.remove({ revenueId }),
     );
   }
 }
