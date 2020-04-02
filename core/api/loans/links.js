@@ -1,20 +1,17 @@
-import Loans from './loans';
-import {
-  Borrowers,
-  Lenders,
-  PromotionLots,
-  PromotionOptions,
-  Promotions,
-  Properties,
-  Revenues,
-  Tasks,
-  Users,
-  Organisations,
-  InsuranceRequests,
-} from '..';
-
-import LinkInitializer from '../links/LinkInitializer';
 import Activities from '../activities/activities';
+import Borrowers from '../borrowers/index';
+import InsuranceRequests from '../insuranceRequests/index';
+import Lenders from '../lenders/index';
+import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations/index';
+import PromotionLots from '../promotionLots/index';
+import PromotionOptions from '../promotionOptions/index';
+import Promotions from '../promotions/index';
+import Properties from '../properties/index';
+import Revenues from '../revenues/index';
+import Tasks from '../tasks/tasks';
+import Users from '../users/users';
+import Loans from './loans';
 
 export const userCache = {
   _id: 1,

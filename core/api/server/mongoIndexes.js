@@ -1,16 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
-import {
-  Activities,
-  Borrowers,
-  Loans,
-  Offers,
-  Properties,
-  Sessions,
-  Tasks,
-  Users,
-} from '..';
+import Activities from '../activities/index';
+import Borrowers from '../borrowers/index';
+import Loans from '../loans/loans';
+import Offers from '../offers/index';
+import Properties from '../properties/index';
+import Sessions from '../sessions/index';
+import Tasks from '../tasks/tasks';
 import UpdateWatchers from '../updateWatchers/server/updateWatchers';
+import Users from '../users/users';
 
 Meteor.startup(() => {
   Activities._ensureIndex({ 'loanLink._id': 1 });

@@ -1,15 +1,12 @@
-import Insurances from './insurances';
-import {
-  Borrowers,
-  Revenues,
-  Organisations,
-  InsuranceRequests,
-  InsuranceProducts,
-  Tasks,
-  Activities,
-} from '..';
-
+import Activities from '../activities/index';
+import Borrowers from '../borrowers/index';
+import InsuranceProducts from '../insuranceProducts/index';
+import InsuranceRequests from '../insuranceRequests/index';
 import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations/index';
+import Revenues from '../revenues/index';
+import Tasks from '../tasks/tasks';
+import Insurances from './insurances';
 
 const tasksCache = {
   createdAt: 1,
