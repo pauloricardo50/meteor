@@ -9,7 +9,6 @@ import {
   adminNotesSchema,
   additionalDocuments,
   documentsField,
-  percentageField,
 } from '../../helpers/sharedSchemas';
 
 import {
@@ -52,8 +51,6 @@ const InsuranceSchema = new SimpleSchema({
   revenueLinks: { type: Array, optional: true },
   'revenueLinks.$': Object,
   'revenueLinks.$._id': String,
-  'revenueLinks.$.recurrent': { type: Boolean, defaultValue: false },
-  'revenueLinks.$.managementRate': percentageField,
   tasksCache: { type: Array, optional: true },
   'tasksCache.$': cacheField,
   ...adminNotesSchema,

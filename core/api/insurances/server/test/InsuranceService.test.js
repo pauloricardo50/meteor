@@ -33,7 +33,6 @@ describe('InsuranceService', () => {
         _factory: 'insuranceRequest',
         borrowers: { _id: 'borrower', _factory: 'borrower' },
       },
-      users: { _id: 'admin', _factory: 'admin' },
     });
   });
 
@@ -339,32 +338,6 @@ describe('InsuranceService', () => {
       });
 
       expect(estimatedRevenue).to.equal(2400);
-    });
-  });
-
-  describe('addRecurrentRevenues', () => {
-    describe('adds the correct amount of recurrent revenues when premium frequency is', () => {
-      it('monthly', async () => {
-        const today = new Date();
-        generator({
-          insurances: {
-            _id: 'insurance',
-            borrowers: { _id: 'borrower' },
-            organisation: { _id: 'org' },
-            insuranceProduct: { _id: 'product' },
-            startDate: today,
-            endDate: moment(today).add(10, 'years'),
-            premiumFrequency: INSURANCE_PREMIUM_FREQUENCY.MONTHLY,
-            premium: 100,
-          },
-        });
-
-        await InsuranceService.addRecurrentRevenues({
-          insuranceId: 'insurance',
-          managementRate: 0.01,
-          assigneeId: 'admin',
-        });
-      });
     });
   });
 });
