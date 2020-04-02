@@ -7,6 +7,7 @@ import {
   LOANS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   INSURANCES_COLLECTION,
+  INSURANCE_REQUESTS_COLLECTION,
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Icon from 'core/components/Icon';
@@ -34,7 +35,14 @@ const RevenueCard = ({
   setOpenModifier = () => ({}),
   refetch = () => ({}),
 }) => {
-  const { amount, loan, description, sourceOrganisation, insurance } = revenue;
+  const {
+    amount,
+    loan,
+    description,
+    sourceOrganisation,
+    insurance,
+    insuranceRequest,
+  } = revenue;
 
   return (
     <div
@@ -51,7 +59,12 @@ const RevenueCard = ({
           relatedDoc={
             loan
               ? { ...loan, collection: LOANS_COLLECTION }
-              : { ...insurance, collection: INSURANCES_COLLECTION }
+              : insurance
+              ? { ...insurance, collection: INSURANCES_COLLECTION }
+              : {
+                  ...insuranceRequest,
+                  collection: INSURANCE_REQUESTS_COLLECTION,
+                }
           }
         />
         <div className="flex center-align">

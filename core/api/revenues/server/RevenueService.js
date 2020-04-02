@@ -9,7 +9,7 @@ class RevenueService extends CollectionService {
     super(Revenues);
   }
 
-  insert({ revenue, loanId, insuranceId }) {
+  insert({ revenue, loanId, insuranceId, insuranceRequestId }) {
     const revenueId = this.collection.insert(revenue);
 
     if (loanId) {
@@ -29,6 +29,14 @@ class RevenueService extends CollectionService {
         id: revenueId,
         linkName: 'insuranceRequest',
         linkId: insuranceRequest._id,
+      });
+    }
+
+    if (insuranceRequestId) {
+      this.addLink({
+        id: revenueId,
+        linkName: 'insuranceRequest',
+        linkId: insuranceRequestId,
       });
     }
 

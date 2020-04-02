@@ -24,7 +24,6 @@ const InsuranceEstimatedRevenue = ({
   },
   insuranceRequest,
 }) => {
-  console.log('name:', name);
   const { assignees = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
 
