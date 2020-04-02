@@ -2,13 +2,15 @@
 import { expect } from 'chai';
 
 import {
-  OWN_FUNDS_USAGE_TYPES,
-  INTEREST_RATES,
   EXPENSES,
   OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
+} from '../../../api/borrowers/borrowerConstants';
+import { INTEREST_RATES } from '../../../api/interestRates/interestRatesConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../api/loans/loanConstants';
+import {
   PROPERTY_CATEGORY,
-} from '../../../api/constants';
+  RESIDENCE_TYPE,
+} from '../../../api/properties/propertyConstants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('LoanCalculator', () => {

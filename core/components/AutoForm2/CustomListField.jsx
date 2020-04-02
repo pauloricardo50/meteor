@@ -4,9 +4,9 @@ import React, { Children } from 'react';
 import { shouldUpdate } from 'recompose';
 import { connectField, filterDOMProps, joinName } from 'uniforms';
 
+import { FIELDS_TO_IGNORE } from './autoFormConstants';
 import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
-import { FIELDS_TO_IGNORE } from './constants';
 
 const List = ({
   addIcon,

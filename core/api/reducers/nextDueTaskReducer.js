@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { TASK_STATUS } from '../constants';
+
+import { TASK_STATUS } from '../tasks/taskConstants';
 
 const nextDueTaskReducer = ({ tasksCache: tasks = [] }) => {
   const activeTasks = tasks.filter(

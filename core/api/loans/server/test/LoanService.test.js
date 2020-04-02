@@ -8,38 +8,38 @@ import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import {
-  loanSetStatus,
-  setLoanStep,
-  sendNegativeFeedbackToAllLenders,
-  loanSetAdminNote,
-} from '../../../methods/index';
-import Analytics from '../../../analytics/server/Analytics';
+import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
 import { checkEmails } from '../../../../utils/testHelpers';
-import generator from '../../../factories/server';
-import LoanService from '../LoanService';
-import {
-  OWN_FUNDS_TYPES,
-  STEPS,
-  EMAIL_IDS,
-  ORGANISATION_TYPES,
-  ORGANISATION_FEATURES,
-  LOAN_STATUS,
-  PROPERTY_CATEGORY,
-} from '../../../constants';
-import UserService from '../../../users/server/UserService';
+import Analytics from '../../../analytics/server/Analytics';
+import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
-import PropertyService from '../../../properties/server/PropertyService';
+import { EMAIL_IDS } from '../../../email/emailConstants';
+import generator from '../../../factories/server';
 import LenderService from '../../../lenders/server/LenderService';
-import OfferService from '../../../offers/server/OfferService';
-import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
-import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
-import { LOAN_CATEGORIES } from '../../loanConstants';
+import {
+  loanSetAdminNote,
+  loanSetStatus,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+} from '../../../methods/index';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { generateDisbursedSoonLoansTasks } from '../methods';
-import TaskService from '../../../tasks/server/TaskService';
+import OfferService from '../../../offers/server/OfferService';
+import {
+  ORGANISATION_FEATURES,
+  ORGANISATION_TYPES,
+} from '../../../organisations/organisationConstants';
+import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../../properties/propertyConstants';
+import PropertyService from '../../../properties/server/PropertyService';
 import SlackService from '../../../slack/server/SlackService';
+import TaskService from '../../../tasks/server/TaskService';
+import UserService from '../../../users/server/UserService';
+import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import LoanService from '../LoanService';
+import { generateDisbursedSoonLoansTasks } from '../methods';
 
 describe('LoanService', function() {
   this.timeout(10000);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import T from '../Translation';
-import { COMPONENT_TYPES } from './constants';
+import { COMPONENT_TYPES } from './autoFormConstants';
 
 const formatStringId = ({ intlId, name, intlPrefix, parent }) => {
   const start = `${intlPrefix || 'Forms'}.`;

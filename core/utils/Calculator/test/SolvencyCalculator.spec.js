@@ -1,15 +1,15 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import Calculator, { Calculator as CalculatorClass } from '..';
+import { OWN_FUNDS_TYPES } from '../../../api/borrowers/borrowerConstants';
 import {
-  OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
   INCOME_CONSIDERATION_TYPES,
-} from '../../../api/constants';
+} from '../../../api/lenderRules/lenderRulesConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import { MIN_INSURANCE2_WITHDRAW } from '../../../config/financeConstants';
+import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('SolvencyCalculator', () => {
   describe('suggestStructure', () => {

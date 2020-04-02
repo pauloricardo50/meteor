@@ -1,8 +1,8 @@
-import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { percentageField, moneyField } from '../../helpers/sharedSchemas';
+import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
+import { moneyField, percentageField } from '../../helpers/sharedSchemas';
 import { COMMISSION_RATES_TYPE } from '../commissionRateConstants';
 
 const CommissionRateSchema = new SimpleSchema({

@@ -3,12 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { FILE_STATUS, ROLES } from '../../../api/constants';
+import { FILE_STATUS } from '../../../api/files/fileConstants';
 import { setFileError } from '../../../api/methods/index';
-import DialogForm from '../../ModalManager/DialogForm';
-import T from '../../Translation';
+import { ROLES } from '../../../api/users/userConstants';
 import DropdownMenu from '../../DropdownMenu';
 import { ModalManagerContext } from '../../ModalManager';
+import DialogForm from '../../ModalManager/DialogForm';
+import T from '../../Translation';
 
 const FileStatusSetter = ({
   status = FILE_STATUS.UNVERIFIED,

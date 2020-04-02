@@ -1,17 +1,17 @@
 import SimpleSchema from 'simpl-schema';
 
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
 import {
-  createdAt,
-  updatedAt,
-  percentageField,
-  decimalNegativeMoneyField,
   cacheField,
+  createdAt,
+  decimalNegativeMoneyField,
+  percentageField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
 import {
-  REVENUE_TYPES,
-  REVENUE_STATUS,
   COMMISSION_STATUS,
+  REVENUE_STATUS,
+  REVENUE_TYPES,
 } from '../revenueConstants';
 
 const RevenueSchema = new SimpleSchema({

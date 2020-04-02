@@ -1,14 +1,14 @@
-import SimpleSchema from 'simpl-schema';
-import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
+import { compose, withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
 import { offerSendFeedback } from '../../api';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 import {
   FEEDBACK_OPTIONS,
-  makeFeedback,
   FEEDBACK_OPTIONS_SETTINGS,
+  makeFeedback,
 } from './feedbackHelpers';
-import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
 const schema = ({ offer, formatMessage }) =>
   new SimpleSchema({

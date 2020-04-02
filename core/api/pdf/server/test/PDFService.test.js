@@ -1,21 +1,20 @@
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { expect } from 'chai';
 import base64 from 'base64topdf';
-import fs from 'fs';
+import { expect } from 'chai';
 import cheerio from 'cheerio';
+import fs from 'fs';
 
+import { CIVIL_STATUS, GENDER } from '../../../borrowers/borrowerConstants';
+import { PURCHASE_TYPE } from '../../../loans/loanConstants';
 import {
   PROPERTY_TYPE,
   RESIDENCE_TYPE,
-  PURCHASE_TYPE,
-  CIVIL_STATUS,
-  PDF_TYPES,
-  GENDER,
-} from '../../../constants';
+} from '../../../properties/propertyConstants';
+import { PDF_TYPES } from '../../pdfConstants';
 import PDFService from '../PDFService';
-import { getTwoBorrowersLoan, getFullLoan } from './testFactories';
+import { getFullLoan, getTwoBorrowersLoan } from './testFactories';
 import { FAKE_USER } from './testFactories/fakes';
 
 describe('PDFService', () => {

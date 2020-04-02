@@ -1,30 +1,34 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { expect } from 'chai';
-import { appendFileSync } from 'fs';
 import { Random } from 'meteor/random';
 
+import { expect } from 'chai';
+import { appendFileSync } from 'fs';
+
 import {
-  PROPERTY_DOCUMENTS,
-  OBJECT_STORAGE_PATH,
-} from 'core/api/files/fileConstants';
-import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
-import PropertyService from '../../../../properties/server/PropertyService';
+  flushFileUploadDir,
+  makeFileUploadDir,
+} from '../../../../../utils/filesUtils';
 import generator from '../../../../factories/server';
-import RESTAPI from '../../RESTAPI';
-import { getPropertyAPI, uploadFileAPI } from '..';
 import {
-  fetchAndCheckResponse,
-  makeHeaders,
-  getTimestampAndNonce,
-  uploadFile,
-} from '../../test/apiTestHelpers.test';
+  OBJECT_STORAGE_PATH,
+  PROPERTY_DOCUMENTS,
+} from '../../../../files/fileConstants';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
-} from '../../../../constants';
-import { HTTP_STATUS_CODES, FILE_UPLOAD_DIR } from '../../restApiConstants';
+} from '../../../../properties/propertyConstants';
+import PropertyService from '../../../../properties/server/PropertyService';
+import RESTAPI from '../../RESTAPI';
+import { FILE_UPLOAD_DIR } from '../../restApiConstants';
+import {
+  fetchAndCheckResponse,
+  getTimestampAndNonce,
+  makeHeaders,
+  uploadFile,
+} from '../../test/apiTestHelpers.test';
+import { getPropertyAPI, uploadFileAPI } from '..';
 
 const api = new RESTAPI();
 

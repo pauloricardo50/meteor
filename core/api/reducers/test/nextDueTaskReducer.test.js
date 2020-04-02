@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { TASK_STATUS } from '../../tasks/taskConstants';
 import nextDueTaskReducer from '../nextDueTaskReducer';
-import { TASK_STATUS } from '../../constants';
 
 describe('nextDueTaskReducer', () => {
   it('returns undefined if no dates exist', () => {

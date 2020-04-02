@@ -1,7 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import { injectIntl } from 'react-intl';
+import { compose, withProps } from 'recompose';
 
 import {
   moveFile,
@@ -12,21 +11,22 @@ import {
   autoRenameFile,
   setFileRoles,
 } from 'core/api/methods/index';
-import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/constants';
+
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
+import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/files/fileConstants';
 import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
 import withMatchParam from '../../../containers/withMatchParam';
+import AdditionalDocModifier from './AdditionalDocModifier';
 import {
-  tempFileState,
   addProps,
+  checkFile,
+  displayFullState,
+  tempFileState,
   willReceiveProps,
   withMergedSuccessfulFiles,
-  displayFullState,
-  checkFile,
 } from './uploaderHelpers';
-import AdditionalDocModifier from './AdditionalDocModifier';
 
 const addMeteorProps = withProps(
   ({

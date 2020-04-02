@@ -1,12 +1,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { RESIDENCE_TYPE } from 'core/api/constants';
+import { OWN_FUNDS_TYPES } from '../../../../../../api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../../../../api/properties/propertyConstants';
 import { getRequiredAndCurrentFunds } from '../OwnFundsCompleterContainer';
-import {
-  OWN_FUNDS_USAGE_TYPES,
-  OWN_FUNDS_TYPES,
-} from '../../../../../../api/constants';
 
 describe('OwnFundsCompleter', () => {
   describe('getRequiredAndCurrentFunds', () => {

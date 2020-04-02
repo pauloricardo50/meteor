@@ -1,7 +1,5 @@
 import { DOCUMENTS } from '../files/fileConstants';
 import * as propertyConstants from './propertyConstants';
-import { RESIDENCE_TYPE } from '../constants';
-import Loans from '../loans';
 
 export const initialDocuments = [
   { id: DOCUMENTS.PURCHASE_CONTRACT },
@@ -11,16 +9,6 @@ export const initialDocuments = [
   { id: DOCUMENTS.PROPERTY_PLANS },
   { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE },
 ];
-
-const getLoanResidenceType = propertyId => {
-  // If a property is shared among multiple loans, this may work in unexpected ways,
-  // since each of those properties could have a different residenceType
-  const loan = Loans.findOne(
-    { propertyIds: propertyId },
-    { fields: { residenceType: 1 }, sort: { createdAt: 1 } },
-  );
-  return loan && loan.residenceType;
-};
 
 export const conditionalDocuments = [
   {

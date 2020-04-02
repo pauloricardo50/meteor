@@ -1,9 +1,8 @@
 import React from 'react';
 
-import Table, { ORDER } from '../../../Table';
-import { LOAN_STATUS } from '../../../../api/constants';
+import { LOAN_STATUS } from '../../../../api/loans/loanConstants';
 import MongoSelect from '../../../Select/MongoSelect';
-
+import Table, { ORDER } from '../../../Table';
 import T from '../../../Translation';
 import PromotionCustomersTableContainer from './PromotionCustomersTableContainer';
 

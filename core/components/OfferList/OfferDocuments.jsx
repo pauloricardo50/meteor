@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { OFFERS_COLLECTION } from '../../api/constants';
+import { OFFERS_COLLECTION } from '../../api/offers/offerConstants';
 import DialogSimple from '../DialogSimple';
 import UploaderArray from '../UploaderArray';
 

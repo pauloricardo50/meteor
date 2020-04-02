@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import Loading from '../../Loading';
 import StickyPopover from '../../StickyPopover';
+import { components, titles } from './CollectionIconLinkPopupComponents';
 import queries from './queries';
-import { titles, components } from './CollectionIconLinkPopupComponents';
 
 export default class CollectionIconLinkPopup extends Component {
   constructor(props) {

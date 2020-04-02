@@ -4,17 +4,17 @@ import { expect } from 'chai';
 import { IntlProvider, intlShape } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 
-import { mount } from 'core/utils/testHelpers/enzyme';
-import messages from 'core/lang/fr.json';
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import MoneyInput from 'core/components/MoneyInput';
-import FinancingResult from '../FinancingResult';
-import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import messages from '../../../../../lang/fr.json';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../../utils/Calculator';
+import { mount } from '../../../../../utils/testHelpers/enzyme';
+import MoneyInput from '../../../../MoneyInput';
 import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
+import { Provider } from '../../containers/loan-context';
+import FinancingResult from '../FinancingResult';
 
 const expectResult = (component, name, value) => {
   const val = component()

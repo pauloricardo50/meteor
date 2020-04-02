@@ -1,8 +1,8 @@
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { ROLES } from 'core/api/constants';
+import withSmartQuery from '../api/containerToolkit/withSmartQuery';
+import { ROLES } from '../api/users/userConstants';
 
 const hasRole = ({ roles }, role) => roles.includes(role);
 

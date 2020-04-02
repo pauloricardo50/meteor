@@ -1,9 +1,10 @@
 import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
+
 import { loanSetDisbursementDate } from 'core/api/loans/index';
 import AutoForm from 'core/components/AutoForm2';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 
 const schema = new SimpleSchema({
   disbursementDate: {

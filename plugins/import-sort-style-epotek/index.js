@@ -1,9 +1,17 @@
+function isMeteor(imported) {
+  return imported.moduleName === 'meteor/meteor';
+}
+
 function isMeteorPackage(imported) {
   return imported.moduleName.startsWith('meteor');
 }
 
 function isCoreModule(imported) {
   return imported.moduleName.startsWith('core');
+}
+
+function isReact(imported) {
+  return imported.moduleName === 'react';
 }
 
 function format(styleApi) {
@@ -42,21 +50,19 @@ function format(styleApi) {
     { match: and(hasNoMember, isRelativeModule) },
     { separator: true },
 
+    // Meteor itself
+    { match: isMeteor },
+
     // Meteor packages
     { match: isMeteorPackage },
     { separator: true },
 
-    // import … from "fs";
-    {
-      match: and(isNodeModule, not(isCoreModule)),
-      sort: moduleName(naturally),
-      sortNamedMembers: alias(unicode),
-    },
-    { separator: true },
+    // Put react first on top
+    { match: isReact },
 
     // import … from "foo";
     {
-      match: and(isAbsoluteModule, not(isCoreModule)),
+      match: and(or(isNodeModule, isAbsoluteModule), not(isCoreModule)),
       sort: moduleName(naturally),
       sortNamedMembers: alias(unicode),
     },

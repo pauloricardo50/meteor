@@ -1,10 +1,11 @@
+import './promotionDemo/promotionFixturesMethods';
+
 import { Meteor } from 'meteor/meteor';
 
-import { ROLES } from '../api/constants';
 import InterestRatesService from '../api/interestRates/server/InterestRatesService';
-import { createDevs, createAdmins } from './userFixtures';
-import './promotionDemo/promotionFixturesMethods';
+import { ROLES } from '../api/users/userConstants';
 import { createFakeInterestRates } from './interestRatesFixtures';
+import { createAdmins, createDevs } from './userFixtures';
 
 Meteor.startup(() => {
   if (!Meteor.isAppTest) {

@@ -2,18 +2,18 @@
 import { expect } from 'chai';
 
 import {
-  STEPS,
-  GENDER,
-  EXPENSES,
   BORROWER_ACTIVITY_TYPES,
-} from 'core/api/constants';
-import Calculator, { Calculator as CalculatorClass } from '..';
-import { DOCUMENTS } from '../../../api/constants';
+  EXPENSES,
+  GENDER,
+} from '../../../api/borrowers/borrowerConstants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
+import { DOCUMENTS } from '../../../api/files/fileConstants';
+import { STEPS } from '../../../api/loans/loanConstants';
 import {
   BONUS_ALGORITHMS,
   REAL_ESTATE_INCOME_ALGORITHMS,
 } from '../../../config/financeConstants';
+import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {

@@ -1,10 +1,10 @@
+import moment from 'moment';
 import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
-import moment from 'moment';
 
 import { promotionOptionUploadAgreement } from '../../../../../../api/methods';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../../../AutoForm2/autoFormConstants';
 import AutoFormDialog from '../../../../../AutoForm2/AutoFormDialog';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../../../AutoForm2/constants';
 import T from '../../../../../Translation';
 
 const getSchema = (agreementDuration = 0) =>

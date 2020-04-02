@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
+import React, { useMemo, useState } from 'react';
+import SimpleSchema from 'simpl-schema';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import { ORGANISATION_FEATURES, REVENUE_TYPES } from 'core/api/constants';
 
 const getSchema = (sourceOrganisations = []) =>

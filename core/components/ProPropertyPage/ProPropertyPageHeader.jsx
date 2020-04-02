@@ -2,13 +2,14 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { Money } from 'core/components/Translation';
-import { propertyDelete } from 'core/api/methods/index';
-import { ProPropertyModifier } from './ProPropertyForm';
-import PropertyDocumentsManager from './PropertyDocumentsManager';
-import StatusLabel from '../StatusLabel';
-import { PROPERTIES_COLLECTION, ROLES } from '../../api/constants';
+import { propertyDelete } from '../../api/methods/index';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import { ROLES } from '../../api/users/userConstants';
 import ConfirmMethod from '../ConfirmMethod';
+import StatusLabel from '../StatusLabel';
+import { Money } from '../Translation';
+import PropertyDocumentsManager from './PropertyDocumentsManager';
+import { ProPropertyModifier } from './ProPropertyForm';
 
 const ProPropertyPageHeader = ({ property, permissions }) => {
   const { address, totalValue, _id: propertyId, status } = property;

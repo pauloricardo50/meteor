@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import DefaultFinanceCalculator, {
   FinanceCalculator,
 } from '../FinanceCalculator';
-import { NO_INTEREST_RATE_ERROR } from '../financeCalculatorConstants';
-import { RESIDENCE_TYPE } from '../../../api/constants';
 
 describe('FinanceCalculator', () => {
   let calc;

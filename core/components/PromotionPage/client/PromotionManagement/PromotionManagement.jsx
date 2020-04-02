@@ -1,13 +1,15 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useContext } from 'react';
 
-import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
-import AdminNote from 'core/components/AdminNote';
-import UpdateField from 'core/components/UpdateField';
-import AdminNotes from 'core/components/AdminNotes';
-import LotsChart from './LotsChart';
-import LoansChart from './LoansChart';
+import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
+import AdminNote from '../../../AdminNote';
+import AdminNotes from '../../../AdminNotes';
+import UpdateField from '../../../UpdateField';
 import PromotionMetadataContext from '../PromotionMetadata';
+import LoansChart from './LoansChart';
+import LotsChart from './LotsChart';
 import LotsValueChart from './LotsValueChart';
 import PromotionRecap from './PromotionRecap';
 

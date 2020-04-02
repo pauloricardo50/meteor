@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Tracker } from 'meteor/tracker';
 import { Slingshot } from 'meteor/edgee:slingshot';
+
+import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import PropTypes from 'prop-types';
 
+import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/files/fileConstants';
 import { logError } from '../../../api/methods/index';
-import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/constants';
 
 export default class TempFile extends Component {
   constructor(props) {

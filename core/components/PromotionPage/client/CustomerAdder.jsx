@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';
-
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import useSearchParams from 'core/hooks/useSearchParams';
-import { createRoute } from 'core/utils/routerUtils';
+
 import { proInviteUser } from '../../../api/methods';
-import { PROMOTION_STATUS } from '../../../api/constants';
-import T from '../../Translation';
-import Icon from '../../Icon';
+import { PROMOTION_STATUS } from '../../../api/promotions/promotionConstants';
+import useSearchParams from '../../../hooks/useSearchParams';
+import { createRoute } from '../../../utils/routerUtils';
 import { AutoFormDialog } from '../../AutoForm2';
+import Icon from '../../Icon';
+import T from '../../Translation';
 
 SimpleSchema.setDefaultMessages({
   messages: {

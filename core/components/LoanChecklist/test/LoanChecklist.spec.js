@@ -1,11 +1,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { PROPERTY_DOCUMENTS } from '../../../api/files/fileConstants';
+import { PROPERTY_CATEGORY } from '../../../api/properties/propertyConstants';
 import {
-  getChecklistValidInformationsRatio,
   getChecklistMissingInformations,
+  getChecklistValidInformationsRatio,
 } from '../helpers';
-import { PROPERTY_CATEGORY, PROPERTY_DOCUMENTS } from '../../../api/constants';
 
 describe('LoanChecklist helpers', () => {
   describe('getChecklistValidInformationsRatio', () => {

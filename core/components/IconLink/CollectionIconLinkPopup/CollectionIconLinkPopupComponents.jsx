@@ -1,34 +1,32 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 
+import { getDuration, getFrequency } from '../../../api/insurances/helpers';
+import { LOAN_CATEGORIES } from '../../../api/loans/loanConstants';
+import { ORGANISATION_FEATURES } from '../../../api/organisations/organisationConstants';
+import { PROPERTY_CATEGORY } from '../../../api/properties/propertyConstants';
 import colors from '../../../config/colors';
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-  LOAN_CATEGORIES,
-  PROPERTY_CATEGORY,
-  ORGANISATION_FEATURES,
-  INSURANCES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from '../../../api/constants';
-import StatusLabel from '../../StatusLabel';
-import Roles from '../../Roles';
-import PremiumBadge from '../../PremiumBadge';
-import T, { Money, IntlDate } from '../../Translation';
-import CollectionIconLink from '../CollectionIconLink';
-import TooltipArray from '../../TooltipArray';
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../../api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { OFFERS_COLLECTION } from '../../api/offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../../api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import { USERS_COLLECTION } from '../../api/users/userConstants';
 import FullDate from '../../dateComponents/FullDate';
-import { getFrequency, getDuration } from '../../../api/insurances/helpers';
+import PremiumBadge from '../../PremiumBadge';
+import Roles from '../../Roles';
+import StatusLabel from '../../StatusLabel';
+import TooltipArray from '../../TooltipArray';
+import T, { IntlDate, Money } from '../../Translation';
+import CollectionIconLink from '../CollectionIconLink';
 
 const Information = ({
   label,

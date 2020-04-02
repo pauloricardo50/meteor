@@ -6,41 +6,38 @@ import { Accounts } from 'meteor/accounts-base';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { check } from 'meteor/check';
 
-import UserService from 'core/api/users/server/UserService';
-import PromotionService from 'core/api/promotions/server/PromotionService';
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import {
-  ROLES,
-  PROMOTION_TYPES,
-  LOAN_QUERIES,
-  STEPS,
-  ORGANISATION_FEATURES,
-} from 'core/api/constants';
-import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
-import LoanService from 'core/api/loans/server/LoanService';
-import PropertyService from 'core/api/properties/server/PropertyService';
-import Loans from 'core/api/loans/loans';
-import { loanBase, adminLoan } from 'core/api/fragments';
-import {
-  createLoginToken,
-  createEmailVerificationToken,
-} from 'core/utils/testHelpers/index';
-import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
-import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
-import { Services } from 'core/api/server/index';
-import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
-import { createAdmins, createEpotek } from 'core/fixtures/userFixtures';
+import { adminLoan, loanBase } from '../../api/fragments';
+import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';
+import Loans from '../../api/loans';
+import { LOAN_QUERIES, STEPS } from '../../api/loans/loanConstants';
+import { adminLoans as adminLoansQuery } from '../../api/loans/queries';
+import LoanService from '../../api/loans/server/LoanService';
+import { ORGANISATION_FEATURES } from '../../api/organisations/organisationConstants';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
+import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
+import { PROMOTION_TYPES } from '../../api/promotions/promotionConstants';
+import PromotionService from '../../api/promotions/server/PromotionService';
+import PropertyService from '../../api/properties/server/PropertyService';
+import { Services } from '../../api/server/index';
+import UserService from '../../api/users/server/UserService';
+import { ROLES } from '../../api/users/userConstants';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
+import { createFakeInterestRates } from '../../fixtures/interestRatesFixtures';
+import { createPromotionDemo } from '../../fixtures/promotionDemo/promotionDemoFixtures';
+import { createAdmins, createEpotek } from '../../fixtures/userFixtures';
 import {
+  createEmailVerificationToken,
+  createLoginToken,
+} from '../../utils/testHelpers/index';
+import {
+  ADMIN_EMAIL,
+  ORG_NAME,
   PRO_EMAIL,
   PRO_EMAIL_2,
   PRO_EMAIL_3,
   PRO_PASSWORD,
-  ORG_NAME,
   USER_EMAIL,
   USER_PASSWORD,
-  ADMIN_EMAIL,
 } from './e2eConstants';
 
 // remove login rate limits in E2E tests

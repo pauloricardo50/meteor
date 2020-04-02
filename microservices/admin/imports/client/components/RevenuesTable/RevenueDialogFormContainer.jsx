@@ -1,6 +1,6 @@
+import merge from 'lodash/merge';
 import React, { useContext, useMemo } from 'react';
 import { compose, withProps, withState } from 'recompose';
-import merge from 'lodash/merge';
 
 import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
 import {
@@ -16,7 +16,7 @@ import Box from 'core/components/Box';
 import { ROLES } from 'core/api/users/userConstants';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { REVENUE_STATUS } from 'core/api/constants';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(

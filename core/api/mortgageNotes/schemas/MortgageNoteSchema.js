@@ -1,10 +1,11 @@
 import SimpleSchema from 'simpl-schema';
-import { createdAt, updatedAt, moneyField } from '../../helpers/sharedSchemas';
+
 import {
-  CANTONS,
-  MORTGAGE_NOTE_TYPES,
   MORTGAGE_NOTE_CATEGORIES,
-} from '../../constants';
+  MORTGAGE_NOTE_TYPES,
+} from '../../helpers/sharedSchemaConstants';
+import { createdAt, moneyField, updatedAt } from '../../helpers/sharedSchemas';
+import { CANTONS } from '../../loans/loanConstants';
 
 const MortgageNoteSchema = new SimpleSchema({
   createdAt,

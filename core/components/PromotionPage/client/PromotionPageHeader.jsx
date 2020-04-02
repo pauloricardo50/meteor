@@ -2,21 +2,19 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
 
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import {
-  PROMOTIONS_COLLECTION,
-  LOANS_COLLECTION,
-} from '../../../api/constants';
+import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
+import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
+import CollectionIconLink from '../../IconLink/CollectionIconLink';
 import ImageCarrousel from '../../ImageCarrousel';
-import { LightTheme } from '../../Themes';
 import StatusLabel from '../../StatusLabel';
+import { LightTheme } from '../../Themes';
 import T from '../../Translation';
-import PromotionMetadataContext from './PromotionMetadata';
 import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
+import PromotionMetadataContext from './PromotionMetadata';
 
 const PromotionPageHeader = ({ promotion }) => {
   const {

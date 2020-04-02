@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { LOAN_STATUS } from '../../../../../api/constants';
+import { LOAN_STATUS } from '../../../../../api/loans/loanConstants';
 import MongoSelect from '../../../../Select/MongoSelect';
 import Table from '../../../../Table';
-import PromotionLotLoansTableContainer from './PromotionLotLoansTableContainer';
 import T from '../../../../Translation';
+import PromotionLotLoansTableContainer from './PromotionLotLoansTableContainer';
 
 const PromotionLotLoansTable = ({ rows, columnOptions, status, setStatus }) => (
   <>

@@ -1,55 +1,56 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+
 import omit from 'lodash/omit';
 import moment from 'moment';
 
-import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
-import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
-import ActivityService from 'core/api/activities/server/ActivityService';
-import InsuranceRequestService from 'core/api/insuranceRequests/server/InsuranceRequestService';
-import { assignAdminToUser } from '../../methods';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import Intl from '../../../utils/server/intl';
 import {
-  makeFeedback,
   FEEDBACK_OPTIONS,
+  makeFeedback,
 } from '../../../components/OfferList/feedbackHelpers';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../utils/Calculator';
+import Intl from '../../../utils/server/intl';
 import { getZipcodeForCanton } from '../../../utils/zipcodes';
-import {
-  RESIDENCE_TYPE,
-  ORGANISATION_FEATURES,
-  LOAN_STATUS,
-  CANTONS,
-} from '../../constants';
-import OfferService from '../../offers/server/OfferService';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
   adminLoan,
   lenderRules as lenderRulesFragment,
   userLoan,
 } from '../../fragments';
-import CollectionService from '../../helpers/server/CollectionService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
-import UserService from '../../users/server/UserService';
-import OrganisationService from '../../organisations/server/OrganisationService';
-import Loans from '../loans';
-import {
-  ORGANISATION_NAME_SEPARATOR,
-  STEPS,
-  APPLICATION_TYPES,
-  LOAN_STATUS_ORDER,
-  LOANS_COLLECTION,
-} from '../loanConstants';
-import { fullLoan } from '../queries';
 import {
   getNewName,
   setAssignees,
 } from '../../helpers/server/collectionServerHelpers';
+import CollectionService from '../../helpers/server/CollectionService';
+import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
+import LenderRulesService from '../../lenderRules/server/LenderRulesService';
+import { assignAdminToUser } from '../../methods';
+import OfferService from '../../offers/server/OfferService';
+import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import PromotionService from '../../promotions/server/PromotionService';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import UserService from '../../users/server/UserService';
+import {
+  APPLICATION_TYPES,
+  CANTONS,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+  LOAN_STATUS_ORDER,
+  ORGANISATION_NAME_SEPARATOR,
+  STEPS,
+} from '../loanConstants';
+import Loans from '../loans';
+import { fullLoan } from '../queries';
 
 class LoanService extends CollectionService {
   constructor() {

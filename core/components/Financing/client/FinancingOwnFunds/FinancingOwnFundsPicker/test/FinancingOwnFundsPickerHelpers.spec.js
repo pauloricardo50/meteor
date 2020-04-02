@@ -1,16 +1,14 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { OWN_FUNDS_TYPES } from '../../../../../../api/borrowers/borrowerConstants';
+import { RESIDENCE_TYPE } from '../../../../../../api/properties/propertyConstants';
 import {
-  chooseOwnFundsTypes,
-  shouldAskForUsageType,
   calculateRemainingFunds,
+  chooseOwnFundsTypes,
   makeNewOwnFundsArray,
+  shouldAskForUsageType,
 } from '../FinancingOwnFundsPickerHelpers';
-import {
-  RESIDENCE_TYPE,
-  OWN_FUNDS_TYPES,
-} from '../../../../../../api/constants';
 
 describe('FinancingOwnFundsPickerHelpers', () => {
   describe('chooseOwnFundsTypes', () => {

@@ -1,5 +1,5 @@
-import { documentHasTooltip, documentIsBasic } from 'core/api/files/documents';
-import { PROPERTY_CATEGORY } from '../../api/constants';
+import { documentHasTooltip, documentIsBasic } from '../../api/files/documents';
+import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
 import Calculator from '../../utils/Calculator';
 
 const getChecklistProperty = props => {

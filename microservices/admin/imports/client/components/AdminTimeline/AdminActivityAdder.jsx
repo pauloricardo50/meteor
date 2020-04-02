@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
@@ -11,7 +11,7 @@ import {
   activityUpdate,
   activityRemove,
 } from 'core/api/activities/methodDefinitions';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import {
   LOANS_COLLECTION,

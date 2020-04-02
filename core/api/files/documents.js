@@ -1,13 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import intl, { formatMessage as clientFormatMessage } from '../../utils/intl';
 import {
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-  LOANS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-  INSURANCES_COLLECTION,
-} from '../constants';
-import {
   DOCUMENTS,
   BORROWER_DOCUMENTS,
   PROPERTY_DOCUMENTS,
@@ -16,6 +9,11 @@ import {
   INSURANCE_DOCUMENTS,
   BASIC_DOCUMENTS_LIST,
 } from './fileConstants';
+import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
+import { LOANS_COLLECTION } from '../loans/loanConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../insurances/insuranceConstants';
 
 export const documentHasTooltip = documentId => {
   let formatMessage = clientFormatMessage;

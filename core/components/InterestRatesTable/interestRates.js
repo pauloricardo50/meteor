@@ -1,4 +1,4 @@
-import { INTEREST_RATES } from 'core/api/constants';
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 
 export const TRENDS = {
   UP: 'UP',

@@ -1,15 +1,15 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
-import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
+import { compose, mapProps } from 'recompose';
 
-import { createRoute } from '../../utils/routerUtils';
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import { proPromotions } from '../../api/promotions/queries';
 import { proPromotions as promotionsFragment } from '../../api/fragments';
-import { PROMOTIONS_COLLECTION } from '../../api/constants';
-import T from '../Translation';
+import { PROMOTIONS_COLLECTION } from '../../api/promotions/promotionConstants';
+import { proPromotions } from '../../api/promotions/queries';
+import { createRoute } from '../../utils/routerUtils';
 import StatusLabel from '../StatusLabel';
+import T from '../Translation';
 
 const makeMapPromotion = history => ({
   _id,

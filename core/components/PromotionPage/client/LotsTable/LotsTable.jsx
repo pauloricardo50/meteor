@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import SimpleSchema from 'simpl-schema';
 import { Element } from 'react-scroll';
+import SimpleSchema from 'simpl-schema';
 
-import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { lotRemove, lotUpdate } from '../../../../api/methods';
-import T from '../../../Translation';
-import LotsTableContainer from './LotsTableContainer';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import TableModifier from '../../../TableModifier';
+import T from '../../../Translation';
 import { lotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 import PromotionMetadataContext from '../PromotionMetadata';
+import LotsTableContainer from './LotsTableContainer';
 
 const additionalLotModifierSchema = ({ promotionLots = [], formatMessage }) =>
   lotSchema.extend(

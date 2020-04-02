@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-import InterestRatesService from '../api/interestRates/server/InterestRatesService';
-import { INTEREST_RATES } from '../api/constants';
 import { getRandomInterestRate } from '../api/interestRates/fakes';
+import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
+import InterestRatesService from '../api/interestRates/server/InterestRatesService';
 
 const FAKE_INTEREST_RATES_MEANS = {
   [INTEREST_RATES.LIBOR]: 0.8,

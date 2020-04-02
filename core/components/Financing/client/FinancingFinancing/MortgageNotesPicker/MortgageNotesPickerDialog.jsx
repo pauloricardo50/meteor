@@ -1,18 +1,18 @@
 import React from 'react';
 
+import { BORROWERS_COLLECTION } from '../../../../../api/borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from '../../../../../api/properties/propertyConstants';
 import collectionIcons from '../../../../../arrays/collectionIcons';
-import Icon from '../../../../Icon';
 import { createRoute } from '../../../../../utils/routerUtils';
-import {
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-} from '../../../../../api/constants';
-import T from '../../../../Translation';
 import Button from '../../../../Button';
+import Icon from '../../../../Icon';
+import T from '../../../../Translation';
 import UpdateField from '../../../../UpdateField';
 import { getProperty } from '../../FinancingCalculator';
-import Link from '../../../../Link';
 import MortgageNotesPickerList from './MortgageNotesPickerList';
+
+PROPERTIES_COLLECTION;
+BORROWERS_COLLECTION;
 
 const MortgageNotesPickerDialog = props => {
   const {

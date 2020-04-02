@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { withProps, compose, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { propertyUpdate, promotionLotRemove } from '../../../../api/methods';
-import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
-import T from '../../../Translation';
+import { promotionLotRemove, propertyUpdate } from '../../../../api/methods';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import { AutoFormDialog } from '../../../AutoForm2';
 import Button from '../../../Button';
+import T from '../../../Translation';
 import { promotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 
 const disableModification = promotionLotStatus => {

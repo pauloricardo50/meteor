@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
 
-import Checkbox from '../../Checkbox';
+import React from 'react';
+import cx from 'classnames';
+import PropTypes from 'prop-types';
+
 import { setAdditionalDoc } from '../../../api';
-import { DOCUMENTS } from '../../../api/constants';
+import { DOCUMENTS } from '../../../api/files/fileConstants';
+import Checkbox from '../../Checkbox';
 import BaseUploader from './BaseUploader';
 import UploaderContainer from './UploaderContainer';
 

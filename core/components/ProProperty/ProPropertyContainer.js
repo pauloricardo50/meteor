@@ -1,7 +1,7 @@
 import { compose, mapProps, withProps } from 'recompose';
 
-import { PROPERTY_DOCUMENTS } from 'core/api/constants';
 import { withSmartQuery } from '../../api/containerToolkit';
+import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
 import { userProperty } from '../../api/properties/queries';
 
 const getPropertyDocuments = property => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../../Translation';
 import PromotionReservationProgress from '../../PromotionReservationProgress';
 import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';

@@ -1,30 +1,28 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
 import { Roles } from 'meteor/alanning:roles';
 
+import React from 'react';
+
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../../api/contacts/contactsConstants';
 import { getUserNameAndOrganisation } from '../../api/helpers';
-import IconLink from './IconLink';
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-  ROLES,
-  INSURANCE_REQUESTS_COLLECTION,
-  INSURANCES_COLLECTION,
-} from '../../api/constants';
-import { employeesById } from '../../arrays/epotekEmployees';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { OFFERS_COLLECTION } from '../../api/offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../../api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import { ROLES, USERS_COLLECTION } from '../../api/users/userConstants';
 import collectionIcons from '../../arrays/collectionIcons';
-import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
+import { employeesById } from '../../arrays/epotekEmployees';
 import {
-  getLoanLinkTitle,
-  getInsuranceRequestLinkTitle,
   getInsuranceLinkTitle,
+  getInsuranceRequestLinkTitle,
+  getLoanLinkTitle,
 } from './collectionIconLinkHelpers';
+import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
+import IconLink from './IconLink';
 
 const showPopups = Meteor.microservice === 'admin';
 

@@ -1,12 +1,15 @@
 import React from 'react';
 
 import { userSearch } from '../../../../../api/users/queries';
-import { ROLES, USERS_COLLECTION } from '../../../../../api/constants';
-import DialogSimple from '../../../../DialogSimple';
+import {
+  ROLES,
+  USERS_COLLECTION,
+} from '../../../../../api/users/userConstants';
 import Button from '../../../../Button';
-import T from '../../../../Translation';
 import CollectionSearch from '../../../../CollectionSearch';
+import DialogSimple from '../../../../DialogSimple';
 import { CollectionIconLink } from '../../../../IconLink';
+import T from '../../../../Translation';
 import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 
 const PromotionProUserAdder = ({ addUser, promotion }) => (

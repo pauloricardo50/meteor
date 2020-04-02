@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
 
-import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
-import MongoSelect from 'core/components/Select/MongoSelect';
-import T from 'core/components/Translation';
-import TableWithModal from 'core/components/Table/TableWithModal';
-import PromotionOptionsTableContainer from './PromotionOptionsTableContainer';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
+import MongoSelect from '../../../Select/MongoSelect';
+import TableWithModal from '../../../Table/TableWithModal';
+import T from '../../../Translation';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
+import PromotionOptionsTableContainer from './PromotionOptionsTableContainer';
 
 const PromotionOptionsTableComponent = PromotionOptionsTableContainer(
   ({ rows, columnOptions }) => (

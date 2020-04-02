@@ -1,14 +1,15 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import { TASK_STATUS } from 'core/api/constants';
 import { adminUsers } from 'core/api/users/queries';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
+
 import TaskModifierDateSetter from './TaskModifierDateSetter';
 import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
 

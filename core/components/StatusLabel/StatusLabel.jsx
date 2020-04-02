@@ -1,46 +1,44 @@
 import React from 'react';
-import cx from 'classnames';
 import Tooltip from '@material-ui/core/Tooltip';
+import cx from 'classnames';
 
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
-  INSURANCES_COLLECTION,
-  INSURANCE_STATUS,
-} from 'core/api/constants';
-import colors from '../../config/colors';
+} from '../../api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../api/insurances/insuranceConstants';
 import {
-  PROMOTION_STATUS,
-  PROMOTIONS_COLLECTION,
-} from '../../api/promotions/promotionConstants';
+  LENDERS_COLLECTION,
+  LENDER_STATUS,
+} from '../../api/lenders/lenderConstants';
+import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
+import { updateDocument } from '../../api/methods/methodDefinitions';
 import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_LOT_REDUCED_STATUS,
   PROMOTION_LOTS_COLLECTION,
+  PROMOTION_LOT_REDUCED_STATUS,
+  PROMOTION_LOT_STATUS,
 } from '../../api/promotionLots/promotionLotConstants';
 import {
   PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_OPTION_STATUS,
 } from '../../api/promotionOptions/promotionOptionConstants';
-import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
-import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
 import {
-  REVENUES_COLLECTION,
-  REVENUE_STATUS,
-  COMMISSION_STATUS,
-} from '../../api/revenues/revenueConstants';
+  PROMOTIONS_COLLECTION,
+  PROMOTION_STATUS,
+} from '../../api/promotions/promotionConstants';
 import {
   PROPERTIES_COLLECTION,
   PROPERTY_STATUS,
 } from '../../api/properties/propertyConstants';
 import {
-  LENDERS_COLLECTION,
-  LENDER_STATUS,
-} from '../../api/lenders/lenderConstants';
-
-import T from '../Translation';
+  COMMISSION_STATUS,
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from '../../api/revenues/revenueConstants';
+import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
+import colors from '../../config/colors';
 import DropdownMenu from '../DropdownMenu';
-import { updateDocument } from '../../api/methods/methodDefinitions';
+import T from '../Translation';
 
 export const getStatuses = collection => {
   switch (collection) {

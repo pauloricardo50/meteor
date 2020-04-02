@@ -1,11 +1,11 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import pick from 'lodash/pick';
+import { compose, withProps } from 'recompose';
 
-import { INTEREST_RATES } from '../../../../../api/constants';
+import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
+import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
-import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import FinancingCalculator from '../../FinancingCalculator';
 import { Consumer } from '../FinancingOffersContainer';
 import {

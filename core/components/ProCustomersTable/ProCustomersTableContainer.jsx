@@ -1,14 +1,14 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { proLoans2 } from 'core/api/loans/queries';
-import T from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import ProCustomer from 'core/components/ProCustomer';
-import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
-import { CollectionIconLink } from 'core/components/IconLink';
+import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
+import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
+import { proLoans2 } from '../../api/loans/queries';
+import { CollectionIconLink } from '../IconLink';
+import ProCustomer from '../ProCustomer';
+import StatusLabel from '../StatusLabel';
+import T from '../Translation';
 import ProCustomersTableAssigneeInfo from './ProCustomersTableAssigneeInfo';
 
 const columnOptions = [

@@ -1,16 +1,19 @@
 import { Random } from 'meteor/random';
+
 import sample from 'lodash/sample';
 
 import {
   EXPENSES,
+  OTHER_INCOME,
+  OWN_FUNDS_TYPES,
+} from '../../../../borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../loans/loanConstants';
+import {
   FLAT_TYPE,
   HOUSE_TYPE,
   MINERGIE_CERTIFICATE,
-  OTHER_INCOME,
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
   PROPERTY_TYPE,
-} from '../../../../constants';
+} from '../../../../properties/propertyConstants';
 
 export const FAKE_SALARY = 150000;
 export const FAKE_BANK_FORTUNE = { bankFortune: [{ value: 1000000 }] };

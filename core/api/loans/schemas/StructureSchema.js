@@ -1,13 +1,13 @@
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
 import { MIN_INSURANCE2_WITHDRAW } from '../../../config/financeConstants';
-import { OWN_FUNDS_TYPES } from '../../constants';
+import { OWN_FUNDS_TYPES } from '../../borrowers/borrowerConstants';
 import {
   moneyField,
-  roundedInteger,
   percentageField,
+  roundedInteger,
 } from '../../helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
 

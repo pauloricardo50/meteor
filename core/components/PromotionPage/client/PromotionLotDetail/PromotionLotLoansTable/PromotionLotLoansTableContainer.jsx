@@ -1,23 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps, mapProps, withState } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withProps, withState } from 'recompose';
 
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
-import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
 import {
   LOANS_COLLECTION,
-  PROMOTION_OPTIONS_COLLECTION,
   LOAN_STATUS,
-} from '../../../../../api/constants';
-import T from '../../../../Translation';
+} from '../../../../../api/loans/loanConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
 import { CollectionIconLink } from '../../../../IconLink';
 import StatusLabel from '../../../../StatusLabel';
+import T from '../../../../Translation';
 import PromotionCustomer from '../../PromotionCustomer';
-import PromotionLotReservation from './PromotionLotReservation';
 import PriorityOrder from './PriorityOrder';
+import PromotionLotReservation from './PromotionLotReservation';
 
 const getColumns = ({ promotionLot, promotionOption }) => {
   const {

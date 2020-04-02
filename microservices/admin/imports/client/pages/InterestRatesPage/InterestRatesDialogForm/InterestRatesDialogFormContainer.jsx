@@ -1,12 +1,12 @@
 import React from 'react';
+import { compose, withProps, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import {
   TRENDS,
   INTEREST_RATES,
 } from 'core/api/interestRates/interestRatesConstants';
-import { withProps, compose, withState } from 'recompose';
 import {
   interestRatesInsert,
   interestRatesUpdate,

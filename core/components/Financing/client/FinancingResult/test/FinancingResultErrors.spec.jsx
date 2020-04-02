@@ -2,14 +2,14 @@
 import React from 'react';
 import { expect } from 'chai';
 
-import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
-import T from 'core/components/Translation';
-import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { FinancingResultSummary } from '../FinancingResultSummary';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
+import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
 import Calculator from '../../../../../utils/Calculator';
-import FinancingResultSuccess from '../FinancingResultSuccess';
+import getMountedComponent from '../../../../../utils/testHelpers/getMountedComponent';
+import T from '../../../../Translation';
 import { Provider } from '../../containers/loan-context';
+import FinancingResultSuccess from '../FinancingResultSuccess';
+import { FinancingResultSummary } from '../FinancingResultSummary';
 
 describe('FinancingResultErrors', () => {
   let props;

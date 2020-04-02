@@ -1,17 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import PropTypes from 'prop-types';
 
-import { ROLES } from 'core/api/constants';
-import T from '../Translation';
-import Icon from '../Icon';
-import Button from '../Button';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
 import { impersonateAdmin } from '../../api/impersonation/methodDefinitions';
+import { ROLES } from '../../api/users/userConstants';
 import { isUser } from '../../utils/userFunctions';
+import Button from '../Button';
+import Icon from '../Icon';
+import T from '../Translation';
 
 const styles = {
   cssRoot: {

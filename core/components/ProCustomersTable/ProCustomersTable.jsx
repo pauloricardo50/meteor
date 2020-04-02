@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Table from 'core/components/Table';
-import Select from 'core/components/Select';
-import T from 'core/components/Translation';
-import MongoSelect from 'core/components/Select/MongoSelect';
-import { LOAN_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from '../../api/loans/loanConstants';
+import Select from '../Select';
+import MongoSelect from '../Select/MongoSelect';
+import Table from '../Table';
+import T from '../Translation';
 import ProCustomersTableContainer from './ProCustomersTableContainer';
 
 const ProCustomersTable = ({
@@ -16,7 +16,6 @@ const ProCustomersTable = ({
   setWithAnonymous,
   referredByMe,
   setReferredByMe,
-  proUser,
 }) => (
   <>
     <div>

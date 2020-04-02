@@ -1,15 +1,15 @@
 import React from 'react';
 
-import DialogSimple from 'core/components/DialogSimple';
-import T from 'core/components/Translation';
-import UploaderArray from 'core/components/UploaderArray';
+import { getPropertyDocuments } from '../../api/files/documents';
 import {
-  PROPERTIES_COLLECTION,
-  S3_ACLS,
   ONE_KB,
   PROPERTY_DOCUMENTS,
-} from 'core/api/constants';
-import { getPropertyDocuments } from 'core/api/files/documents';
+  S3_ACLS,
+} from '../../api/files/fileConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import DialogSimple from '../DialogSimple';
+import T from '../Translation';
+import UploaderArray from '../UploaderArray';
 
 const propertyDocuments = property =>
   getPropertyDocuments({ id: property._id }, { doc: property }).map(doc => ({

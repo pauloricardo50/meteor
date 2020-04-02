@@ -1,8 +1,9 @@
 import React from 'react';
-import TranchePickerContainer from './TranchePickerContainer';
+
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 import Button from '../Button';
 import Tranche from './Tranche';
-import { INTEREST_RATES } from '../../api/constants';
+import TranchePickerContainer from './TranchePickerContainer';
 
 const interestRatesOrder = Object.values(INTEREST_RATES);
 

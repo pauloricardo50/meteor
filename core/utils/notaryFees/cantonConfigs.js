@@ -1,7 +1,7 @@
-import { RESIDENCE_TYPE } from 'core/api/constants';
-import degressive from './degressive';
-import * as cantons from './cantonConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import { VAT } from '../../config/financeConstants';
+import * as cantons from './cantonConstants';
+import degressive from './degressive';
 
 const isCasatax = ({ residenceType, propertyValue }) =>
   residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE &&

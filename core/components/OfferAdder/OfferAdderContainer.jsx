@@ -1,11 +1,11 @@
-import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import { withSmartQuery } from '../../api/containerToolkit';
-import { loanLenders } from '../../api/lenders/queries';
-import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';
-import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
+import { withSmartQuery } from '../../api/containerToolkit';
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
+import { loanLenders } from '../../api/lenders/queries';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 
 const interestRatesSchema = ({ isDiscount }) =>
   Object.values(INTEREST_RATES).reduce(

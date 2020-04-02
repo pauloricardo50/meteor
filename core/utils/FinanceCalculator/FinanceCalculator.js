@@ -1,14 +1,12 @@
 import moment from 'moment';
 
+import { GENDER } from '../../api/borrowers/borrowerConstants';
+import { ERROR, SUCCESS, WARNING } from '../../api/constants';
 import {
-  GENDER,
-  SUCCESS,
-  ERROR,
-  WARNING,
-  RESIDENCE_TYPE,
-  REAL_ESTATE_CONSIDERATION_TYPES,
   EXPENSE_TYPES_WITHOUT_DELTAS,
-} from '../../api/constants';
+  REAL_ESTATE_CONSIDERATION_TYPES,
+} from '../../api/lenderRules/lenderRulesConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
   AMORTIZATION_STOP,
   AMORTIZATION_YEARS,
@@ -27,20 +25,20 @@ import {
   MAINTENANCE_FINMA,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_PLEDGE,
-  MAX_INCOME_RATIO_TIGHT,
   MAX_INCOME_RATIO,
+  MAX_INCOME_RATIO_TIGHT,
   MIN_CASH,
   NOTARY_FEES,
   OWN_FUNDS_ROUNDING_AMOUNT,
   PENSION_INCOME_CONSIDERATION,
   REAL_ESTATE_INCOME_ALGORITHMS,
   REAL_ESTATE_INCOME_CONSIDERATION,
-  REFERRAL_COMMISSION_SPLIT,
   REFERRAL_COMMISSION,
+  REFERRAL_COMMISSION_SPLIT,
 } from '../../config/financeConstants';
+import { memoizeMiddleware } from '../Calculator/middleware';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
-import { memoizeMiddleware } from '../Calculator/middleware';
 
 export class FinanceCalculator {
   constructor(settings) {

@@ -1,23 +1,20 @@
 import React, { useContext } from 'react';
 
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import { addProUserToPromotion } from '../../../../api/methods';
-import {
-  PROMOTIONS_COLLECTION,
-  ROLES,
-  USERS_COLLECTION,
-} from '../../../../api/constants';
+import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
 import { userSearch } from '../../../../api/users/queries';
-import CollectionSearch from '../../../CollectionSearch';
-import CollectionIconLink from '../../../IconLink/CollectionIconLink';
+import { ROLES, USERS_COLLECTION } from '../../../../api/users/userConstants';
+import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import Button from '../../../Button';
+import CollectionSearch from '../../../CollectionSearch';
 import DropdownMenu from '../../../DropdownMenu';
 import Icon from '../../../Icon';
+import CollectionIconLink from '../../../IconLink/CollectionIconLink';
+import Dialog from '../../../Material/Dialog';
 import T from '../../../Translation';
 import UploaderArray from '../../../UploaderArray';
-import Dialog from '../../../Material/Dialog';
-import PromotionAdministrationContainer from './PromotionAdministrationContainer';
 import PromotionLoanLinker from '../PromotionLoanLinker';
+import PromotionAdministrationContainer from './PromotionAdministrationContainer';
 
 const PromotionAdministration = ({
   promotion,

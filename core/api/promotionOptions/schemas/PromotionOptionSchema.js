@@ -1,19 +1,19 @@
 import SimpleSchema from 'simpl-schema';
-import {
-  documentsField,
-  createdAt,
-  updatedAt,
-  cacheField,
-} from '../../helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
 import {
-  PROMOTION_OPTION_DEPOSIT_STATUS,
+  cacheField,
+  createdAt,
+  documentsField,
+  updatedAt,
+} from '../../helpers/sharedSchemas';
+import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../promotionOptionConstants';
 
 const dateAutoValue = (triggerField = 'status') =>

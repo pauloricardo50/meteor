@@ -1,16 +1,14 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
-import { scroller } from 'react-scroll';
 import { injectIntl } from 'react-intl';
+import { scroller } from 'react-scroll';
+import { compose, withProps } from 'recompose';
 
 import withHider from 'core/containers/withHider';
-import T, { Money } from '../../../Translation';
+
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/promotionLots/promotionLotConstants';
 import Chip from '../../../Material/Chip';
 import StatusLabel from '../../../StatusLabel';
-import {
-  PROMOTION_LOTS_COLLECTION,
-  PROMOTION_LOT_STATUS,
-} from '../../../../api/constants';
+import T, { Money } from '../../../Translation';
 
 const columnOptions = [
   { id: 'name' },

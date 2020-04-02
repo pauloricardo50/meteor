@@ -1,13 +1,13 @@
+import moment from 'moment';
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import moment from 'moment';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import IconButton from 'core/components/IconButton';
 import { Money } from 'core/components/Translation';
 import { consolidateRevenue } from 'core/api/revenues/index';
 import { decimalNegativeMoneyField } from 'core/api/helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 

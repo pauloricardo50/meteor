@@ -1,17 +1,18 @@
 import { Meteor } from 'meteor/meteor';
+
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import fetch from 'node-fetch';
 
-import colors from 'core/config/colors';
-import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
-import LoanService from 'core/api/loans/server/LoanService';
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../constants';
-import { fullLoan } from '../../loans/queries';
+import colors from '../../../config/colors';
 import Calculator from '../../../utils/Calculator';
-import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
+import { getClientMicroservice } from '../../../utils/server/getClientUrl';
+import { fullLoan } from '../../loans/queries';
+import LoanService from '../../loans/server/LoanService';
+import { getAPIUser } from '../../RESTAPI/server/helpers';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 
 const LOGO_URL =
   'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';

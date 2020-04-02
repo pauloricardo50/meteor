@@ -2,10 +2,10 @@ import React from 'react';
 import moment from 'moment';
 
 import {
-  loanUpdate,
   getPromotionOptionProgressEmails,
+  loanUpdate,
 } from '../../../api/methods';
-import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../api/constants';
+import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../Translation';
 
 export const getEmailsToBeSent = async ({ id, status, nextStatus }) => {

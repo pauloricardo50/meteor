@@ -1,4 +1,4 @@
-import { CANTONS } from '../api/constants';
+import { CANTONS } from '../api/loans/loanConstants';
 
 // Each zipcode has a corresponding number, which is the index of all
 // cantons in an array, sorted by short form ('GE', 'ZH')

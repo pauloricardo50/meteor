@@ -1,31 +1,32 @@
 import { Factory } from 'meteor/dburles:factory';
 import { Mongo } from 'meteor/mongo';
-import pick from 'lodash/pick';
+
 import omit from 'lodash/omit';
+import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 
-import CollectionService from '../../helpers/server/CollectionService';
-import { LOANS_COLLECTION } from '../../loans/loanConstants';
-import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
-import { USERS_COLLECTION } from '../../users/userConstants';
-import { TASKS_COLLECTION } from '../../tasks/taskConstants';
-import { OFFERS_COLLECTION } from '../../offers/offerConstants';
-import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
-import { PROMOTION_OPTIONS_COLLECTION } from '../../promotionOptions/promotionOptionConstants';
-import { PROMOTION_LOTS_COLLECTION } from '../../promotionLots/promotionLotConstants';
-import { LOTS_COLLECTION } from '../../lots/lotConstants';
-import { MORTGAGE_NOTES_COLLECTION } from '../../mortgageNotes/mortgageNoteConstants';
-import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
-import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
-import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
-import { NOTIFICATIONS_COLLECTION } from '../../notifications/notificationConstants';
 import { ACTIVITIES_COLLECTION } from '../../activities/activityConstants';
+import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import { COMMISSION_RATES_COLLECTION } from '../../commissionRates/commissionRateConstants';
+import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
+import CollectionService from '../../helpers/server/CollectionService';
+import { INSURANCE_PRODUCTS_COLLECTION } from '../../insuranceProducts/insuranceProductConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from '../../insurances/insuranceConstants';
-import { INSURANCE_PRODUCTS_COLLECTION } from '../../insuranceProducts/insuranceProductConstants';
-import { COMMISSION_RATES_COLLECTION } from '../../commissionRates/commissionRateConstants';
+import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import { LOTS_COLLECTION } from '../../lots/lotConstants';
+import { MORTGAGE_NOTES_COLLECTION } from '../../mortgageNotes/mortgageNoteConstants';
+import { NOTIFICATIONS_COLLECTION } from '../../notifications/notificationConstants';
+import { OFFERS_COLLECTION } from '../../offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { PROMOTION_LOTS_COLLECTION } from '../../promotionLots/promotionLotConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from '../../promotionOptions/promotionOptionConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
+import { TASKS_COLLECTION } from '../../tasks/taskConstants';
+import { USERS_COLLECTION } from '../../users/userConstants';
 
 const getSingularFactoryName = collection => {
   switch (collection) {

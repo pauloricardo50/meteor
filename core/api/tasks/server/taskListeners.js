@@ -1,29 +1,26 @@
 import moment from 'moment';
 
-import PropertyService from 'core/api/properties/server/PropertyService';
-import PromotionService from 'core/api/promotions/server/PromotionService';
-import {
-  generateExpiringSoonReservationTasks,
-  generateTenDayExpirationReminderTasks,
-} from 'core/api/promotionOptions/server/methods';
-import { getUserNameAndOrganisation } from '../../helpers';
-import UserService from '../../users/server/UserService';
 import ServerEventService from '../../events/server/ServerEventService';
+import { getUserNameAndOrganisation } from '../../helpers';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import LoanService from '../../loans/server/LoanService';
+import { generateDisbursedSoonLoansTasks } from '../../loans/server/methods';
 import {
   adminCreateUser,
   anonymousCreateUser,
-  proInviteUser,
   loanShareSolvency,
+  proInviteUser,
   setMaxPropertyValueWithoutBorrowRatio,
 } from '../../methods';
 import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from '../../constants';
+  generateExpiringSoonReservationTasks,
+  generateTenDayExpirationReminderTasks,
+} from '../../promotionOptions/server/methods';
+import PromotionService from '../../promotions/server/PromotionService';
+import PropertyService from '../../properties/server/PropertyService';
+import UserService from '../../users/server/UserService';
+import { USERS_COLLECTION } from '../../users/userConstants';
 import TaskService from './TaskService';
-import LoanService from '../../loans/server/LoanService';
-import { generateDisbursedSoonLoansTasks } from '../../loans/server/methods';
 
 const newUserTask = ({ userId, ...params }) =>
   TaskService.insert({

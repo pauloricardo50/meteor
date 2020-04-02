@@ -1,15 +1,16 @@
 import SimpleSchema from 'simpl-schema';
 
-import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
-import {
-  createdAt,
-  updatedAt,
-  percentageField,
-  moneyField,
-  cacheField,
-  documentsField,
-} from '../helpers/sharedSchemas';
 import { createCollection } from '../helpers/collectionHelpers';
+import {
+  cacheField,
+  createdAt,
+  documentsField,
+  moneyField,
+  percentageField,
+  updatedAt,
+} from '../helpers/sharedSchemas';
+import { INTEREST_RATES } from '../interestRates/interestRatesConstants';
+import { OFFERS_COLLECTION } from './offerConstants';
 
 const Offers = createCollection(OFFERS_COLLECTION);
 

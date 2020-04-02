@@ -1,17 +1,17 @@
-import LoanService from '../../loans/server/LoanService';
-import Properties from '..';
-import SecurityService from '../../security';
-import { additionalDocumentsHook } from '../../helpers/sharedHooks';
-import { PROPERTIES_COLLECTION } from '../propertyConstants';
-import {
-  initialDocuments,
-  conditionalDocuments,
-} from '../propertiesAdditionalDocuments';
-import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
-import { ROLES } from '../../constants';
 import FileService from '../../files/server/FileService';
+import { additionalDocumentsHook } from '../../helpers/sharedHooks';
+import LoanService from '../../loans/server/LoanService';
+import SecurityService from '../../security';
+import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
+import { ROLES } from '../../users/userConstants';
+import {
+  conditionalDocuments,
+  initialDocuments,
+} from '../propertiesAdditionalDocuments';
+import { PROPERTIES_COLLECTION } from '../propertyConstants';
 import { PropertySchemaAdmin } from '../schemas/PropertySchema';
 import { removePropertyFromLoan } from './propertyServerHelpers';
+import Properties from '..';
 
 Properties.before.remove((userId, { _id: propertyId }) => {
   // Remove all references to this property on the loan

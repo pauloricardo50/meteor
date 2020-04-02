@@ -2,10 +2,10 @@ import { compose, withProps } from 'recompose';
 
 import { mortgageNoteInsert, mortgageNoteRemove } from '../../api';
 import {
-  MORTGAGE_NOTE_TYPES,
   MORTGAGE_NOTE_CATEGORIES,
-  CANTONS,
-} from '../../api/constants';
+  MORTGAGE_NOTE_TYPES,
+} from '../../api/helpers/sharedSchemaConstants';
+import { CANTONS } from '../../api/loans/loanConstants';
 import withTranslationContext from '../Translation/withTranslationContext';
 
 const makeGetInputs = withCanton => mortgageNote =>

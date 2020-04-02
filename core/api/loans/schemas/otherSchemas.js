@@ -1,5 +1,6 @@
-import { INTEREST_RATES, SOLVENCY_TYPE, CANTONS } from '../../constants';
 import { moneyField, percentageField } from '../../helpers/sharedSchemas';
+import { INTEREST_RATES } from '../../interestRates/interestRatesConstants';
+import { CANTONS, SOLVENCY_TYPE } from '../loanConstants';
 
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
