@@ -24,7 +24,7 @@ const InsuranceEstimatedRevenueInfos = props => {
     premiumFrequency,
     maxProductionYears,
   });
-  const formatedDuration = getDuration({
+  const formattedDuration = getDuration({
     premiumFrequency,
     duration: effectiveDuration,
   });
@@ -64,12 +64,12 @@ const InsuranceEstimatedRevenueInfos = props => {
                 <Tooltip
                   title={`La durée maximale de production pour le produit étant de ${maxProductionYears} ans, la durée prise en compte est réduite de ${getDuration(
                     { premiumFrequency, duration },
-                  )} à ${formatedDuration}`}
+                  )} à ${formattedDuration}`}
                 >
-                  <span>{formatedDuration}</span>
+                  <span>{formattedDuration}</span>
                 </Tooltip>
               ) : (
-                <span>{formatedDuration}</span>
+                <span>{formattedDuration}</span>
               )}
             </td>
           )}
