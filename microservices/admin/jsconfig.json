@@ -10,4 +10,5 @@
     }
   },
   "include": ["imports"],
+  "exclude": ["imports/core/assets", "imports/core/lang"]
 }
