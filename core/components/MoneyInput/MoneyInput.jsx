@@ -35,10 +35,10 @@ const MoneyInput = ({
     if (negative) {
       mask = swissFrancDecimalNegativeMask;
     } else {
-      mask = swissFrancNegativeMask;
+      mask = swissFrancMaskDecimal;
     }
   } else if (negative) {
-    mask = swissFrancMaskDecimal;
+    mask = swissFrancNegativeMask;
   } else {
     mask = swissFrancMask;
   }

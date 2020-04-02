@@ -10,6 +10,7 @@ import {
   INSURANCES_COLLECTION,
   INSURANCE_PREMIUM_FREQUENCY,
 } from '../insuranceConstants';
+import { getEffectiveDuration } from '../helpers';
 
 class InsuranceService extends CollectionService {
   constructor() {
@@ -56,16 +57,31 @@ class InsuranceService extends CollectionService {
         'organisationLink._id': organisationId,
         status: INSURANCE_STATUS.POLICED,
       },
-      insuranceProduct: { revaluationFactor: 1 },
+      insuranceProduct: { revaluationFactor: 1, maxProductionYears: 1 },
       duration: 1,
       premium: 1,
+      premiumFrequency: 1,
     });
 
     return activeInsurances.reduce(
       (
         totalProduction,
-        { insuranceProduct: { revaluationFactor }, duration, premium },
-      ) => totalProduction + premium * duration * revaluationFactor,
+        {
+          insuranceProduct: { revaluationFactor, maxProductionYears },
+          duration,
+          premium,
+          premiumFrequency,
+        },
+      ) => {
+        const effectiveDuration = getEffectiveDuration({
+          premiumFrequency,
+          duration,
+          maxProductionYears,
+        });
+        return (
+          totalProduction + premium * effectiveDuration * revaluationFactor
+        );
+      },
       0,
     );
   };
@@ -192,15 +208,25 @@ class InsuranceService extends CollectionService {
       organisation: { productionRate },
       duration,
       premium,
-      insuranceProduct: { revaluationFactor },
+      premiumFrequency,
+      insuranceProduct: { revaluationFactor, maxProductionYears },
     } = this.get(insuranceId, {
       premium: 1,
+      premiumFrequency: 1,
       duration: 1,
-      insuranceProduct: { revaluationFactor: 1 },
+      insuranceProduct: { revaluationFactor: 1, maxProductionYears: 1 },
       organisation: { productionRate: 1 },
     });
 
-    return Math.round(premium * duration * revaluationFactor * productionRate);
+    const effectiveDuration = getEffectiveDuration({
+      premiumFrequency,
+      duration,
+      maxProductionYears,
+    });
+
+    return Math.round(
+      premium * effectiveDuration * revaluationFactor * productionRate,
+    );
   }
 }
 
