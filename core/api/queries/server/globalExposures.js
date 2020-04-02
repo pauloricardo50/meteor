@@ -6,6 +6,7 @@ import SecurityService from '../../security';
 Meteor.startup(() => {
   Object.values(COLLECTIONS).forEach(collectionName => {
     const Collection = Mongo.Collection.get(collectionName);
+
     Collection.expose({
       firewall(filters, options, userId) {
         SecurityService.checkUserIsAdmin(userId);

@@ -122,6 +122,7 @@ describe('REST: getUser', function() {
 
     expect(user).to.deep.equal({
       _id: 'user1',
+      _collection: 'users',
       email: 'user1@test.com',
       firstName: 'FirstName1',
       lastName: 'LastName1',
@@ -130,6 +131,7 @@ describe('REST: getUser', function() {
       roles: ['user'],
       assignedEmployee: {
         _id: 'admin',
+        _collection: 'users',
         email: 'admin@e-potek.ch',
         firstName: 'TestFirstName',
         lastName: 'TestLastName',
@@ -148,6 +150,7 @@ describe('REST: getUser', function() {
 
     expect(user).to.deep.equal({
       _id: 'user2',
+      _collection: 'users',
       email: 'user2@test.com',
       firstName: 'FirstName2',
       lastName: 'LastName2',
@@ -165,6 +168,7 @@ describe('REST: getUser', function() {
 
     expect(user).to.deep.equal({
       _id: 'user2',
+      _collection: 'users',
       email: 'user2@test.com',
       firstName: 'FirstName2',
       lastName: 'LastName2',
@@ -182,6 +186,7 @@ describe('REST: getUser', function() {
 
     expect(user).to.deep.equal({
       _id: 'user2',
+      _collection: 'users',
       email: 'user2@test.com',
       firstName: 'FirstName2',
       lastName: 'LastName2',
@@ -219,6 +224,7 @@ describe('REST: getUser', function() {
 
     expect(user).to.deep.equal({
       _id: 'pro4',
+      _collection: 'users',
       email: 'pro4@org.com',
       firstName: 'Pro',
       lastName: '4',

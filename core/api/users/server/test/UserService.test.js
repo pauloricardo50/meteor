@@ -392,6 +392,7 @@ describe('UserService', function() {
           UserService.getUserByPasswordResetToken({ token }),
         ).to.deep.equal({
           _id: userId,
+          _collection: 'users',
           firstName,
           lastName,
           email: 'yo@dude.com',
@@ -405,8 +406,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
-        }),
+        !!UserService.getUserByPasswordResetToken({
+          token: 'some unknown token',}),
       ).to.equal(false);
     });
   });

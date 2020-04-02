@@ -21,6 +21,7 @@ const env = {
   METEOR_PACKAGE_DIRS: 'packages:../../meteorPackages',
   QUALIA_ONE_BUNDLE_TYPE: 'modern',
   TEST_WATCH: 1,
+  // TEST_SERVER: 0, // If you only want client tests
 };
 
 const spawnArgs = [

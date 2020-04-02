@@ -1,5 +1,4 @@
 import { Factory } from 'meteor/dburles:factory';
-import Tasks from '../../api/tasks/tasks';
 
 export const generateData = (overrides = {}) => {
   const user = Factory.create('user', { ...overrides.user });
