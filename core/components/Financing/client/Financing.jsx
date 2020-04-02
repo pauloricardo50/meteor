@@ -5,7 +5,7 @@ import { ScrollSync } from 'react-scroll-sync';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 
-import { PURCHASE_TYPE, LOANS_COLLECTION } from '../../../api/constants';
+import { LOANS_COLLECTION, PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import Loading from '../../Loading';
 import UpdateField from '../../UpdateField';
 import T from '../../Translation';

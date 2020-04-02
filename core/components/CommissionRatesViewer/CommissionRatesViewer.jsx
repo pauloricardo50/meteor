@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { COMMISSION_RATES_TYPE } from 'core/api/constants';
+import { COMMISSION_RATES_TYPE } from 'core/api/revenues/revenueConstants';
 import { getCurrentRate } from '../../api/organisations/helpers';
 import T, { Percent, Money } from '../Translation';
 import CommissionRatesViewerList from './CommissionRatesViewerList';

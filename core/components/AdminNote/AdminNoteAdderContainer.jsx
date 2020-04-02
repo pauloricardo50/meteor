@@ -1,15 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { withProps } from 'recompose';
+
 import {
   loanSetAdminNote,
   loanRemoveAdminNote,
   insuranceRequestSetAdminNote,
   insuranceRequestRemoveAdminNote,
 } from 'core/api/methods';
-import {
-  LOANS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from '../../api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import useLoanContacts from './useLoanContacts';
 import useInsuranceRequestContacts from './useInsuranceRequestContacts';
 

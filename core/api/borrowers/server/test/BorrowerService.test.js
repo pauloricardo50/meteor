@@ -3,7 +3,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
-import { DOCUMENTS } from 'core/api/constants';
+import { DOCUMENTS } from 'core/api/files/fileConstants';
 import BorrowerService from '../BorrowerService';
 import { initialDocuments } from '../../borrowersAdditionalDocuments';
 import * as borrowerConstants from '../../borrowerConstants';

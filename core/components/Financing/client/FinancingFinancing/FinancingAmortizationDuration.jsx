@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { RESIDENCE_TYPE } from 'core/api/constants';
+import T from '../../../Translation';
 import {
   AMORTIZATION_YEARS_INVESTMENT,
   AMORTIZATION_YEARS,
-} from 'core/config/financeConstants';
-import T from '../../../Translation';
+} from '../../../../config/financeConstants';
+import { RESIDENCE_TYPE } from '../../../../api/properties/propertyConstants';
 
 const getDescriptionId = ({ loan, duration, offer }) => {
   if (offer) {

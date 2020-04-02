@@ -1,12 +1,10 @@
 import uniqBy from 'lodash/uniqBy';
 
 import collectionIcons from 'core/arrays/collectionIcons';
-import {
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  CONTACTS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 
 const getCommonContacts = ({ user, borrowers = [], contacts = [] }) => {
   const contactsArray = [];

@@ -1,29 +1,6 @@
 import './initialization';
 import { Meteor } from 'meteor/meteor';
 
-import * as _constants from './constants';
-import LoanSchema from './loans/schemas/LoanSchema';
-import PromotionOptionSchema from './promotionOptions/schemas/PromotionOptionSchema';
-import BorrowerSchema from './borrowers/schemas/BorrowerSchema';
-import PropertySchema from './properties/schemas/PropertySchema';
-import { TasksSchema } from './tasks/tasks';
-import PromotionSchema from './promotions/schemas/PromotionSchema';
-import LotSchema from './lots/schemas/LotSchema';
-import { OfferSchema } from './offers/offers';
-import PromotionLotSchema from './promotionLots/schemas/PromotionLotSchema';
-import { OrganisationSchema } from './organisations/organisations';
-import { UserSchema } from './users/users';
-import InterestRatesSchema from './interestRates/schemas/interestRatesSchema';
-import Irs10ySchema from './irs10y/schemas/irs10ySchema';
-import MortgageNoteSchema from './mortgageNotes/schemas/MortgageNoteSchema';
-import ContactSchema from './contacts/schemas/contactSchema';
-import LenderSchema from './lenders/schemas/lenderSchema';
-import RevenueSchema from './revenues/schemas/revenueSchema';
-import InsuranceRequestSchema from './insuranceRequests/schemas/InsuranceRequestSchema';
-import InsuranceSchema from './insurances/schemas/InsuranceSchema';
-import InsuranceProductSchema from './insuranceProducts/schemas/InsuranceProductSchema';
-import CommissionRateSchema from './commissionRates/schemas/CommissionRateSchema';
-
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';
 export { default as Lots } from './lots';
@@ -52,32 +29,6 @@ export { default as Notifications } from './notifications';
 
 export * from './helpers';
 export * from './methods';
-
-// Do this for autocompletion...
-export const constants = _constants;
-export const schemas = {
-  [constants.BORROWERS_COLLECTION]: BorrowerSchema,
-  [constants.LOANS_COLLECTION]: LoanSchema,
-  [constants.LOTS_COLLECTION]: LotSchema,
-  [constants.OFFERS_COLLECTION]: OfferSchema,
-  [constants.PROMOTION_LOTS_COLLECTION]: PromotionLotSchema,
-  [constants.PROMOTION_OPTIONS_COLLECTION]: PromotionOptionSchema,
-  [constants.PROMOTIONS_COLLECTION]: PromotionSchema,
-  [constants.PROPERTIES_COLLECTION]: PropertySchema,
-  [constants.TASKS_COLLECTION]: TasksSchema,
-  [constants.ORGANISATIONS_COLLECTION]: OrganisationSchema,
-  [constants.USERS_COLLECTION]: UserSchema,
-  [constants.INTEREST_RATES_COLLECTION]: InterestRatesSchema,
-  [constants.IRS10Y_COLLECTION]: Irs10ySchema,
-  [constants.MORTGAGE_NOTES_COLLECTION]: MortgageNoteSchema,
-  [constants.CONTACTS_COLLECTION]: ContactSchema,
-  [constants.LENDERS_COLLECTION]: LenderSchema,
-  [constants.REVENUES_COLLECTION]: RevenueSchema,
-  [constants.INSURANCE_REQUESTS_COLLECTION]: InsuranceRequestSchema,
-  [constants.INSURANCES_COLLECTION]: InsuranceSchema,
-  [constants.INSURANCE_PRODUCTS_COLLECTION]: InsuranceProductSchema,
-  [constants.COMMISSION_RATES_COLLECTION]: CommissionRateSchema,
-};
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';
 Meteor.isDevEnvironment =

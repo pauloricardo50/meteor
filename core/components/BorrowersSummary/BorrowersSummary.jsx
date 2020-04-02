@@ -3,14 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 
 import Icon from '../Icon';
 import { CollectionIconLink } from '../IconLink';
 import T from '../Translation';
-import { BORROWERS_COLLECTION } from '../../api/constants';
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 
 const BorrowersSummary = ({
   borrowers,

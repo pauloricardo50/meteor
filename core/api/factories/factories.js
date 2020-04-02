@@ -2,52 +2,54 @@ import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
 
 import faker from 'faker';
-
 import moment from 'moment';
 
+import Users from '../users/users';
+import { ROLES } from '../users/userConstants';
+import Borrowers from '../borrowers/borrowers';
+import Tasks from '../tasks/tasks';
+import Loans from '../loans/loans';
+import { TASK_STATUS } from '../tasks/taskConstants';
+import { STEPS, LOAN_CATEGORIES } from '../loans/loanConstants';
 import {
-  LOT_TYPES,
-  ORGANISATION_TYPES,
-  PROMOTION_TYPES,
-  REVENUE_TYPES,
-  ROLES,
-  STEPS,
-  TASK_STATUS,
-  DEFAULT_VALUE_FOR_ALL,
-  DEFAULT_MAIN_RESIDENCE_RULES,
-  DEFAULT_SECONDARY_RESIDENCE_RULES,
-  INSURANCE_PRODUCT_FEATURES,
-  INSURANCE_PRODUCT_CATEGORIES,
-  PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
-  LOAN_CATEGORIES,
-  COMMISSION_RATES_TYPE,
-} from '../constants';
+  PROPERTY_CATEGORY,
+} from '../properties/propertyConstants';
+import Properties from '../properties/properties';
 import {
-  Borrowers,
-  Contacts,
-  InterestRates,
-  LenderRules,
-  Lenders,
-  Loans,
+  Offers,
+  Promotions,
+  PromotionOptions,
   Lots,
   MortgageNotes,
-  Offers,
-  Organisations,
-  PromotionLots,
-  PromotionOptions,
-  Promotions,
-  Properties,
+  Lenders,
+  InterestRates,
+  LenderRules,
   Revenues,
-  Tasks,
-  Users,
+  Activities,
   InsuranceRequests,
   Insurances,
   CommissionRates,
   InsuranceProducts,
-  Notifications,
-  Activities,
-} from '..';
+} from '../index';
+import { PROMOTION_TYPES } from '../promotions/promotionConstants';
+import PromotionLots from '../promotionLots/index';
+import { LOT_TYPES } from '../lots/lotConstants';
+import Organisations from '../organisations/index';
+import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
+import Contacts from '../contacts/index';
+import { REVENUE_TYPES } from '../revenues/revenueConstants';
+import {
+  DEFAULT_VALUE_FOR_ALL,
+  DEFAULT_MAIN_RESIDENCE_RULES,
+  DEFAULT_SECONDARY_RESIDENCE_RULES,
+} from '../lenderRules/lenderRulesConstants';
+import Notifications from '../notifications/index';
+import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
+import {
+  INSURANCE_PRODUCT_FEATURES,
+  INSURANCE_PRODUCT_CATEGORIES,
+} from '../insuranceProducts/insuranceProductConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -249,8 +251,6 @@ Factory.define('insuranceRequest', InsuranceRequests, {
 
 Factory.define('insurance', Insurances, {
   createdAt: () => new Date(),
-  startDate: () => new Date('2020-02-01T00:00:00'),
-  endDate: () => new Date('2045-02-01T00:00:00'),
   name: () => {
     while (true) {
       const name = getRandomInsuranceName();

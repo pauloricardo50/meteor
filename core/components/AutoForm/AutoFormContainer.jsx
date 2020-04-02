@@ -1,11 +1,9 @@
 import { withProps } from 'recompose';
 
-import {
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  MORTGAGE_NOTES_COLLECTION,
-} from '../../api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { MORTGAGE_NOTES_COLLECTION } from 'core/api/mortgageNotes/mortgageNoteConstants';
 import * as methods from '../../api/methods';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });

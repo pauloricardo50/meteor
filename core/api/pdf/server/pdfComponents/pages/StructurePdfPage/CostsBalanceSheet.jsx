@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';
+import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from 'core/api/loans/loanConstants';
 import T, { Money, Percent } from '../../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';

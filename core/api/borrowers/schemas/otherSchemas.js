@@ -17,7 +17,7 @@ import {
   OWN_FUNDS_TYPES,
   BORROWER_ACTIVITY_TYPES,
 } from '../borrowerConstants';
-import { RESIDENCE_TYPE } from '../../constants';
+import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({

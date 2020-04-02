@@ -8,21 +8,19 @@ import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWav
 import { faUserShield } from '@fortawesome/pro-light-svg-icons/faUserShield';
 import { faShieldCheck } from '@fortawesome/pro-light-svg-icons/faShieldCheck';
 
-import {
-  BORROWERS_COLLECTION,
-  LOANS_COLLECTION,
-  TASKS_COLLECTION,
-  USERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-  INTEREST_RATES_COLLECTION,
-  REVENUES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-  INSURANCES_COLLECTION,
-} from '../api/constants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
+import { INTEREST_RATES_COLLECTION } from 'core/api/interestRates/interestRatesConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 
 export default {
   [BORROWERS_COLLECTION]: 'people',

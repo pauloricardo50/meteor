@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { STEPS } from 'core/api/constants';
+import { STEPS } from 'core/api/loans/loanConstants';
 import { initialDocuments as propertyDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
 import {
   getPropertyDocuments,

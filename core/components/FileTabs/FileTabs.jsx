@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 import cx from 'classnames';
 
-import { PROPERTY_CATEGORY } from '../../api/constants';
+import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
 import Calculator from '../../utils/Calculator';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,

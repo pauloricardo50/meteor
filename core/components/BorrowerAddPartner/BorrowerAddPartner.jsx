@@ -4,7 +4,7 @@ import { withProps, withState, compose } from 'recompose';
 import { addBorrower } from '../../api/methods';
 import T from '../Translation';
 import Button from '../Button';
-import { CIVIL_STATUS } from '../../api/constants';
+import { CIVIL_STATUS } from '../../api/borrowers/borrowerConstants';
 
 const BorrowerAddPartner = ({ handleClick, isLoading }) => (
   <div className="borrower-add-partner">

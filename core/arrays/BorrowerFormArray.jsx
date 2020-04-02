@@ -1,4 +1,3 @@
-import * as constants from 'core/api/constants';
 import React from 'react';
 import countries from 'i18n-iso-countries';
 
@@ -9,10 +8,19 @@ import {
   getSortedCountriesCodes,
   COMMON_COUNTRIES,
 } from 'core/utils/countriesUtils';
+import {
+  CIVIL_STATUS,
+  BORROWER_ACTIVITY_TYPES,
+  GENDER,
+  RESIDENCY_PERMIT,
+  OTHER_INCOME,
+  EXPENSES,
+} from 'core/api/borrowers/borrowerConstants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
-  civilStatus === constants.CIVIL_STATUS.MARRIED && !multiple && isFirst;
+  civilStatus === CIVIL_STATUS.MARRIED && !multiple && isFirst;
 
 const makeArrayOfObjectsInput = (id, required = false) => ({
   id,
@@ -38,14 +46,12 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
   const isFirst = borrowers[0]._id === borrowerId;
-  const isMarried = b.civilStatus === constants.CIVIL_STATUS.MARRIED;
-  const isDivorced = b.civilStatus === constants.CIVIL_STATUS.DIVORCED;
-  const isSalaried =
-    b.activityType === constants.BORROWER_ACTIVITY_TYPES.SALARIED;
+  const isMarried = b.civilStatus === CIVIL_STATUS.MARRIED;
+  const isDivorced = b.civilStatus === CIVIL_STATUS.DIVORCED;
+  const isSalaried = b.activityType === BORROWER_ACTIVITY_TYPES.SALARIED;
   const isSelfEmployed =
-    b.activityType === constants.BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED;
-  const isAnnuitant =
-    b.activityType === constants.BORROWER_ACTIVITY_TYPES.ANNUITANT;
+    b.activityType === BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED;
+  const isAnnuitant = b.activityType === BORROWER_ACTIVITY_TYPES.ANNUITANT;
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -70,7 +76,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     {
       id: 'gender',
       type: 'radioInput',
-      options: Object.values(constants.GENDER),
+      options: Object.values(GENDER),
     },
     {
       id: 'sameAddress',
@@ -150,7 +156,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
         {
           id: 'residencyPermit',
           type: 'selectFieldInput',
-          options: Object.values(constants.RESIDENCY_PERMIT),
+          options: Object.values(RESIDENCY_PERMIT),
         },
       ],
     },
@@ -194,7 +200,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     {
       id: 'activityType',
       type: 'radioInput',
-      options: Object.values(constants.BORROWER_ACTIVITY_TYPES),
+      options: Object.values(BORROWER_ACTIVITY_TYPES),
     },
     {
       type: 'percent',
@@ -276,7 +282,7 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
       {
         id: 'description',
         type: 'selectInput',
-        options: Object.values(constants.OTHER_INCOME),
+        options: Object.values(OTHER_INCOME),
       },
       { id: 'value', type: 'textInput', money: true },
       { id: 'comment', type: 'textInput', adminOnly: true },
@@ -290,7 +296,7 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
       {
         id: 'description',
         type: 'selectInput',
-        options: Object.values(constants.EXPENSES),
+        options: Object.values(EXPENSES),
       },
       { id: 'value', type: 'textInput', money: true },
       { id: 'comment', type: 'textInput', adminOnly: true },
@@ -360,7 +366,7 @@ export const getBorrowerFortuneArray = () => [
       {
         id: 'description',
         type: 'selectInput',
-        options: Object.values(constants.RESIDENCE_TYPE),
+        options: Object.values(RESIDENCE_TYPE),
       },
       { id: 'value', type: 'textInput', money: true },
       { id: 'loan', type: 'textInput', money: true },

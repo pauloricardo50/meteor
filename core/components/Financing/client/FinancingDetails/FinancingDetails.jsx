@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/constants';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import FinancingCollapser from './FinancingCollapser';
 import UpdateField from '../../../UpdateField';
+import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
 
 const FinancingDetails = props => {
   const { loan } = props;

@@ -1,7 +1,6 @@
-// import merge from 'lodash/merge';
-
 import { Meteor } from 'meteor/meteor';
-import { INTEREST_RATES } from './constants';
+
+import { INTEREST_RATES } from './interestRates/interestRatesConstants';
 
 // //
 // // activity fragments

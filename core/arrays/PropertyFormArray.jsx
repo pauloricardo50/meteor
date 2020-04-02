@@ -10,7 +10,7 @@ import {
   HOUSE_TYPE,
   FLAT_TYPE,
   VOLUME_NORM,
-} from 'core/api/constants';
+} from 'core/api/properties/propertyConstants';
 import CantonField from 'core/components/CantonField/CantonField';
 import {
   getSortedCountriesCodes,

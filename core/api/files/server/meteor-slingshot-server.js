@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES } from '../../users/userConstants';
 import { COLLECTIONS } from '../../constants';
 import SecurityService from '../../security';
 import {

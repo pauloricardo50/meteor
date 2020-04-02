@@ -6,49 +6,68 @@ import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 
 import CollectionService from '../../helpers/server/CollectionService';
-import { COLLECTIONS } from '../../constants';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
+import { USERS_COLLECTION } from '../../users/userConstants';
+import { TASKS_COLLECTION } from '../../tasks/taskConstants';
+import { OFFERS_COLLECTION } from '../../offers/offerConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from '../../promotionOptions/promotionOptionConstants';
+import { PROMOTION_LOTS_COLLECTION } from '../../promotionLots/promotionLotConstants';
+import { LOTS_COLLECTION } from '../../lots/lotConstants';
+import { MORTGAGE_NOTES_COLLECTION } from '../../mortgageNotes/mortgageNoteConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
+import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
+import { NOTIFICATIONS_COLLECTION } from '../../notifications/notificationConstants';
+import { ACTIVITIES_COLLECTION } from '../../activities/activityConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../insurances/insuranceConstants';
+import { INSURANCE_PRODUCTS_COLLECTION } from '../../insuranceProducts/insuranceProductConstants';
+import { COMMISSION_RATES_COLLECTION } from '../../commissionRates/commissionRateConstants';
 
 const getSingularFactoryName = collection => {
   switch (collection) {
-    case COLLECTIONS.LOANS_COLLECTION:
+    case LOANS_COLLECTION:
       return 'loan';
-    case COLLECTIONS.BORROWERS_COLLECTION:
+    case BORROWERS_COLLECTION:
       return 'borrower';
-    case COLLECTIONS.PROPERTIES_COLLECTION:
+    case PROPERTIES_COLLECTION:
       return 'property';
-    case COLLECTIONS.USERS_COLLECTION:
+    case USERS_COLLECTION:
       return 'user';
-    case COLLECTIONS.TASKS_COLLECTION:
+    case TASKS_COLLECTION:
       return 'task';
-    case COLLECTIONS.OFFERS_COLLECTION:
+    case OFFERS_COLLECTION:
       return 'offer';
-    case COLLECTIONS.PROMOTIONS_COLLECTION:
+    case PROMOTIONS_COLLECTION:
       return 'promotion';
-    case COLLECTIONS.PROMOTION_OPTIONS_COLLECTION:
+    case PROMOTION_OPTIONS_COLLECTION:
       return 'promotionOption';
-    case COLLECTIONS.PROMOTION_LOTS_COLLECTION:
+    case PROMOTION_LOTS_COLLECTION:
       return 'promotionLot';
-    case COLLECTIONS.LOTS_COLLECTION:
+    case LOTS_COLLECTION:
       return 'lot';
-    case COLLECTIONS.MORTGAGE_NOTES_COLLECTION:
+    case MORTGAGE_NOTES_COLLECTION:
       return 'mortgageNote';
-    case COLLECTIONS.ORGANISATIONS_COLLECTION:
+    case ORGANISATIONS_COLLECTION:
       return 'organisation';
-    case COLLECTIONS.LENDERS_COLLECTION:
+    case LENDERS_COLLECTION:
       return 'lender';
-    case COLLECTIONS.CONTACTS_COLLECTION:
+    case CONTACTS_COLLECTION:
       return 'contact';
-    case COLLECTIONS.NOTIFICATIONS_COLLECTION:
+    case NOTIFICATIONS_COLLECTION:
       return 'notification';
-    case COLLECTIONS.ACTIVITIES_COLLECTION:
+    case ACTIVITIES_COLLECTION:
       return 'activity';
-    case COLLECTIONS.INSURANCE_REQUESTS_COLLECTION:
+    case INSURANCE_REQUESTS_COLLECTION:
       return 'insuranceRequest';
-    case COLLECTIONS.INSURANCES_COLLECTION:
+    case INSURANCES_COLLECTION:
       return 'insurance';
-    case COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION:
+    case INSURANCE_PRODUCTS_COLLECTION:
       return 'insuranceProduct';
-    case COLLECTIONS.COMMISSION_RATES_COLLECTION:
+    case COMMISSION_RATES_COLLECTION:
       return 'commissionRate';
     default:
       throw new Error(
