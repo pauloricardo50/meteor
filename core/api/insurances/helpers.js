@@ -31,3 +31,50 @@ export const getDuration = ({ premiumFrequency, duration }) => {
       return '';
   }
 };
+
+export const getEffectiveDuration = ({
+  duration,
+  premiumFrequency,
+  maxProductionYears,
+}) => {
+  let durationInYears = 0;
+  switch (premiumFrequency) {
+    case INSURANCE_PREMIUM_FREQUENCY.SINGLE:
+      durationInYears = 1;
+      break;
+    case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
+      durationInYears = duration / 12;
+      break;
+    case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
+      durationInYears = duration / 4;
+      break;
+    case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
+      durationInYears = duration / 2;
+      break;
+    case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
+      durationInYears = duration;
+      break;
+    default:
+      break;
+  }
+
+  const effectiveDurationInYears = Math.min(
+    durationInYears,
+    maxProductionYears,
+  );
+
+  switch (premiumFrequency) {
+    case INSURANCE_PREMIUM_FREQUENCY.SINGLE:
+      return effectiveDurationInYears;
+    case INSURANCE_PREMIUM_FREQUENCY.MONTHLY:
+      return effectiveDurationInYears * 12;
+    case INSURANCE_PREMIUM_FREQUENCY.QUARTERLY:
+      return effectiveDurationInYears * 4;
+    case INSURANCE_PREMIUM_FREQUENCY.BIANNUAL:
+      return effectiveDurationInYears * 2;
+    case INSURANCE_PREMIUM_FREQUENCY.YEARLY:
+      return effectiveDurationInYears;
+    default:
+      return 0;
+  }
+};

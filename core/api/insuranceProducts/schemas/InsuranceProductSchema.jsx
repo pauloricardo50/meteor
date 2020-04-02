@@ -26,7 +26,6 @@ const InsuranceProductSchema = new SimpleSchema({
   },
   features: {
     type: Array,
-    // minCount: 1,
     uniforms: {
       label: 'Prestations',
       checkboxes: true,
@@ -42,6 +41,7 @@ const InsuranceProductSchema = new SimpleSchema({
     },
   },
   revaluationFactor: { type: Number, min: 0.01, max: 10 },
+  maxProductionYears: { type: Number, min: 0 },
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
 });

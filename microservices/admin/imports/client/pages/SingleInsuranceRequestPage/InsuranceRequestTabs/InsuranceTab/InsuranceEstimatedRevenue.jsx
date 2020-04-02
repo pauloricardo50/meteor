@@ -20,7 +20,7 @@ const InsuranceEstimatedRevenue = ({
     premium,
     premiumFrequency,
     organisation: { _id: organisationId },
-    insuranceProduct: { name, revaluationFactor },
+    insuranceProduct: { name, revaluationFactor, maxProductionYears },
   },
   insuranceRequest,
 }) => {
@@ -78,6 +78,7 @@ const InsuranceEstimatedRevenue = ({
         duration={duration}
         revaluationFactor={revaluationFactor}
         productionRate={productionRate}
+        maxProductionYears={maxProductionYears}
       />
       <h3 className="mr-8">
         Revenu estimé&nbsp;
