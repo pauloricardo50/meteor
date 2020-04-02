@@ -1,15 +1,13 @@
+import CommissionRates from '../commissionRates/index';
+import Contacts from '../contacts/index';
+import InsuranceProducts from '../insuranceProducts/index';
+import Insurances from '../insurances/index';
+import LenderRules from '../lenderRules/index';
+import Lenders from '../lenders/index';
 import LinkInitializer from '../links/LinkInitializer';
-import {
-  Contacts,
-  Lenders,
-  Users,
-  LenderRules,
-  Revenues,
-  Tasks,
-  Insurances,
-  InsuranceProducts,
-  CommissionRates,
-} from '..';
+import Revenues from '../revenues/index';
+import Tasks from '../tasks/tasks';
+import Users from '../users/users';
 import Organisations from './organisations';
 
 Organisations.addLinks({

@@ -1,7 +1,9 @@
-import Contacts from '.';
-
-import { Users, Organisations, Lenders, Offers, Tasks } from '..';
+import Lenders from '../lenders';
 import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations';
+import Tasks from '../tasks';
+import Users from '../users';
+import Contacts from '.';
 
 Contacts.addLinks({
   user: {

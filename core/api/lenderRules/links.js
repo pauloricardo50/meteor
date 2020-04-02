@@ -1,5 +1,5 @@
+import Organisations from '../organisations';
 import LenderRules from '.';
-import { Organisations } from '..';
 
 LenderRules.addLinks({
   organisation: {

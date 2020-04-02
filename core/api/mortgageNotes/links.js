@@ -1,5 +1,6 @@
+import Borrowers from '../borrowers';
+import Properties from '../properties';
 import MortgageNotes from '.';
-import { Borrowers, Properties } from '..';
 
 // If you want to use links, don't forget to import this file in 'core/api/links.js'
 

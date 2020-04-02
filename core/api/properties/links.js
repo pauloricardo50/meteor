@@ -1,5 +1,9 @@
+import Loans from '../loans/loans';
+import MortgageNotes from '../mortgageNotes/index';
+import PromotionLots from '../promotionLots/index';
+import Promotions from '../promotions/index';
+import Users from '../users/users';
 import Properties from './properties';
-import { Users, Loans, Promotions, PromotionLots, MortgageNotes } from '..';
 
 Properties.addLinks({
   user: {

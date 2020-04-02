@@ -1,18 +1,16 @@
-import Users from './users';
-import {
-  Loans,
-  Offers,
-  Borrowers,
-  Properties,
-  Promotions,
-  Contacts,
-  Organisations,
-  Tasks,
-  Activities,
-  Sessions,
-  InsuranceRequests,
-} from '..';
+import Activities from '../activities/index';
+import Borrowers from '../borrowers/index';
+import Contacts from '../contacts/index';
+import InsuranceRequests from '../insuranceRequests/index';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Offers from '../offers/index';
+import Organisations from '../organisations/index';
+import Promotions from '../promotions/index';
+import Properties from '../properties/index';
+import Sessions from '../sessions/index';
+import Tasks from '../tasks/tasks';
+import Users from './users';
 
 const assignedEmployeeCache = {
   _id: 1,

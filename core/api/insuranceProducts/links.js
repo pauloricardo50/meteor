@@ -1,7 +1,7 @@
-import InsuranceProducts from './insuranceProducts';
-import { Organisations, Insurances } from '..';
-
+import Insurances from '../insurances/index';
 import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations/index';
+import InsuranceProducts from './insuranceProducts';
 
 LinkInitializer.directInit(() => {
   InsuranceProducts.addLinks({

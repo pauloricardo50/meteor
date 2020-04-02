@@ -1,5 +1,6 @@
+import Lenders from '../lenders/index';
+import Users from '../users/users';
 import Offers from './offers';
-import { Users, Lenders } from '..';
 
 Offers.addLinks({
   user: {

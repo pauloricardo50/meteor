@@ -1,6 +1,10 @@
-import Borrowers from './borrowers';
-import { Loans, Users, MortgageNotes, InsuranceRequests, Insurances } from '..';
+import InsuranceRequests from '../insuranceRequests';
+import Insurances from '../insurances';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans';
+import MortgageNotes from '../mortgageNotes';
+import Users from '../users';
+import Borrowers from './borrowers';
 
 LinkInitializer.directInit(() => {
   Borrowers.addLinks({

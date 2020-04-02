@@ -1,7 +1,10 @@
-import PromotionLots from '.';
-
-import { Promotions, Properties, Lots, PromotionOptions, Loans } from '..';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Lots from '../lots/lots';
+import PromotionOptions from '../promotionOptions/index';
+import Promotions from '../promotions/index';
+import Properties from '../properties/index';
+import PromotionLots from '.';
 
 const promotionCache = {
   _id: 1,

@@ -1,6 +1,10 @@
+import InsuranceRequests from '../insuranceRequests/index';
+import Insurances from '../insurances/index';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Organisations from '../organisations/index';
+import Users from '../users/users';
 import Revenues from '.';
-import { Loans, Organisations, Users, InsuranceRequests, Insurances } from '..';
 
 Revenues.addLinks({
   organisations: {
