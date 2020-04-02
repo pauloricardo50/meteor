@@ -24,6 +24,7 @@ const InsuranceEstimatedRevenue = ({
   },
   insuranceRequest,
 }) => {
+  console.log('name:', name);
   const { assignees = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
 
@@ -91,7 +92,7 @@ const InsuranceEstimatedRevenue = ({
         setOpen={setOpenRevenueAdder}
         revenue={{
           sourceOrganisationLink: { _id: organisationId },
-          decription: name,
+          description: name,
           amount: estimatedRevenue,
           type: REVENUE_TYPES.INSURANCE,
           assigneeLink: { _id: Meteor.userId() || mainAssignee?._id },
