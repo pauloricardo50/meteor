@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { loanSetDisbursementDate } from 'core/api/loans/';
+import { loanSetDisbursementDate } from 'core/api/loans/methodDefinitions';
 import AutoForm from 'core/components/AutoForm2';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 

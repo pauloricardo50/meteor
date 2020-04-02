@@ -8,7 +8,7 @@ import {
   revenueInsert,
   revenueRemove,
   revenueUpdate,
-} from 'core/api/revenues/';
+} from 'core/api/revenues/methodDefinitions';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
 import { adminUsers } from 'core/api/users/queries';
