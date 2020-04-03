@@ -1,7 +1,8 @@
 import React from 'react';
-
 import { withProps } from 'recompose';
-import { COMMISSION_RATES_TYPE } from 'core/api/constants';
+
+import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
+
 import CommissionsEditor from './CommissionsEditor';
 
 export default withProps(({ commissionRates = [] }) => {

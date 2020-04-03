@@ -5,13 +5,13 @@ import moment from 'moment';
 
 import InsuranceService from '../InsuranceService';
 import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
-import generator from '../../../factories/server/index';
+import generator from '../../../factories/server';
+import { ORGANISATION_FEATURES } from '../../../organisations/organisationConstants';
 import {
-  ORGANISATION_FEATURES,
-  INSURANCE_REQUEST_STATUS,
   INSURANCE_STATUS,
   INSURANCE_PREMIUM_FREQUENCY,
-} from '../../../constants';
+} from '../../insuranceConstants';
+import { INSURANCE_REQUEST_STATUS } from '../../../insuranceRequests/insuranceRequestConstants';
 
 describe('InsuranceService', () => {
   beforeEach(() => {

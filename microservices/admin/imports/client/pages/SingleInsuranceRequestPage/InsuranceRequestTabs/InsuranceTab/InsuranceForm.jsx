@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
-import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';
-
-import Box from 'core/components/Box';
+import { withProps } from 'recompose';
 
 import {
-  ORGANISATION_FEATURES,
   ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
+  ORGANISATION_FEATURES,
+} from 'core/api/organisations/organisationConstants';
+import Box from 'core/components/Box';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import { getSchema, makeInsuranceMethod } from './insuranceFormHelpers';

@@ -3,10 +3,10 @@ import { Roles } from 'meteor/alanning:roles';
 
 import faker from 'faker/locale/fr';
 
-import { ADMIN_EMAIL } from 'core/cypress/server/e2eConstants';
+import { ORGANISATION_TYPES } from '../api/organisations/organisationConstants';
 import OrganisationService from '../api/organisations/server/OrganisationService';
-import { ORGANISATION_TYPES } from '../api/constants';
 import UserService from '../api/users/server/UserService';
+import { ADMIN_EMAIL } from '../cypress/server/e2eConstants';
 import { USER_PASSWORD } from './fixtureConstants';
 
 export const createUser = (email, role, password) => {

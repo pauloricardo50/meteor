@@ -7,7 +7,7 @@ import { readFileBuffer, removeFile } from 'core/utils/filesUtils';
 import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
 import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
 import Intl from 'core/utils/server/intl';
-import { asyncForEach } from 'core/api/helpers/index';
+import { asyncForEach } from 'core/api/helpers';
 import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
 

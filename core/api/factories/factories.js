@@ -2,52 +2,52 @@ import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
 
 import faker from 'faker';
-
 import moment from 'moment';
 
+import Activities from '../activities';
+import Borrowers from '../borrowers/borrowers';
+import CommissionRates from '../commissionRates';
+import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
+import Contacts from '../contacts';
+import InsuranceProducts from '../insuranceProducts';
 import {
-  LOT_TYPES,
-  ORGANISATION_TYPES,
-  PROMOTION_TYPES,
-  REVENUE_TYPES,
-  ROLES,
-  STEPS,
-  TASK_STATUS,
-  DEFAULT_VALUE_FOR_ALL,
+  INSURANCE_PRODUCT_CATEGORIES,
+  INSURANCE_PRODUCT_FEATURES,
+} from '../insuranceProducts/insuranceProductConstants';
+import InsuranceRequests from '../insuranceRequests';
+import Insurances from '../insurances';
+import InterestRates from '../interestRates';
+import LenderRules from '../lenderRules';
+import {
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
-  INSURANCE_PRODUCT_FEATURES,
-  INSURANCE_PRODUCT_CATEGORIES,
+  DEFAULT_VALUE_FOR_ALL,
+} from '../lenderRules/lenderRulesConstants';
+import Lenders from '../lenders';
+import { LOAN_CATEGORIES, STEPS } from '../loans/loanConstants';
+import Loans from '../loans/loans';
+import { LOT_TYPES } from '../lots/lotConstants';
+import Lots from '../lots/lots';
+import MortgageNotes from '../mortgageNotes';
+import Notifications from '../notifications';
+import Offers from '../offers';
+import Organisations from '../organisations';
+import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
+import PromotionLots from '../promotionLots';
+import PromotionOptions from '../promotionOptions';
+import Promotions from '../promotions';
+import { PROMOTION_TYPES } from '../promotions/promotionConstants';
+import Properties from '../properties/properties';
+import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
-  LOAN_CATEGORIES,
-  COMMISSION_RATES_TYPE,
-} from '../constants';
-import {
-  Borrowers,
-  Contacts,
-  InterestRates,
-  LenderRules,
-  Lenders,
-  Loans,
-  Lots,
-  MortgageNotes,
-  Offers,
-  Organisations,
-  PromotionLots,
-  PromotionOptions,
-  Promotions,
-  Properties,
-  Revenues,
-  Tasks,
-  Users,
-  InsuranceRequests,
-  Insurances,
-  CommissionRates,
-  InsuranceProducts,
-  Notifications,
-  Activities,
-} from '..';
+} from '../properties/propertyConstants';
+import Revenues from '../revenues';
+import { REVENUE_TYPES } from '../revenues/revenueConstants';
+import { TASK_STATUS } from '../tasks/taskConstants';
+import Tasks from '../tasks/tasks';
+import { ROLES } from '../users/userConstants';
+import Users from '../users/users';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -249,8 +249,6 @@ Factory.define('insuranceRequest', InsuranceRequests, {
 
 Factory.define('insurance', Insurances, {
   createdAt: () => new Date(),
-  startDate: () => new Date('2020-02-01T00:00:00'),
-  endDate: () => new Date('2045-02-01T00:00:00'),
   name: () => {
     while (true) {
       const name = getRandomInsuranceName();

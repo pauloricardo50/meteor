@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { SyncedCron } from 'meteor/littledata:synced-cron';
 
-import { logError } from 'core/api/methods';
-import SlackService from 'core/api/slack/server/SlackService';
+import { logError } from '../../slack/methodDefinitions';
+import { SlackService } from '../../slack/server/SlackService';
 import CronitorService from './CronitorService';
 
 const ACTIVATE_CRONITOR = !(

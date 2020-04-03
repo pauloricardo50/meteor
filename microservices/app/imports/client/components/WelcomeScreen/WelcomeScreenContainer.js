@@ -1,9 +1,10 @@
-import { compose, withProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps, withState } from 'recompose';
 
-import { loanUpdate } from 'core/api/methods';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import { createRoute } from 'core/utils/routerUtils';
-import APP_ROUTES from 'imports/startup/client/appRoutes';
+
+import APP_ROUTES from '../../../startup/client/appRoutes';
 
 export default compose(
   withState(

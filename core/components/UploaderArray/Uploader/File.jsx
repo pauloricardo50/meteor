@@ -1,16 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import DialogForm from '../../ModalManager/DialogForm';
 import { shouldDisplayFile } from '../../../api/files/fileHelpers';
 import { ModalManagerContext } from '../../ModalManager';
-import { FILE_STATUS, ROLES } from '../../../api/constants';
-import { getSignedUrl } from '../../../api/methods';
+import { ROLES } from '../../../api/users/userConstants';
+import { FILE_STATUS } from '../../../api/files/fileConstants';
+import { getSignedUrl } from '../../../api/files/methodDefinitions';
 import { FileViewerContext } from '../../../containers/FileViewerContext';
 import T from '../../Translation';
 import IconButton from '../../IconButton';

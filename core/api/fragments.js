@@ -1,7 +1,6 @@
-// import merge from 'lodash/merge';
-
 import { Meteor } from 'meteor/meteor';
-import { INTEREST_RATES } from './constants';
+
+import { INTEREST_RATES } from './interestRates/interestRatesConstants';
 
 // //
 // // activity fragments
@@ -1130,6 +1129,16 @@ export const proRevenue = () => ({
   amount: 1,
   expectedAt: 1,
   loan: {
+    name: 1,
+    status: 1,
+    user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },
+  },
+  insurance: {
+    name: 1,
+    status: 1,
+    borrower: { name: 1 },
+  },
+  insuranceRequest: {
     name: 1,
     status: 1,
     user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },

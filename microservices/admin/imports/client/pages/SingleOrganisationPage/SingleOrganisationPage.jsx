@@ -1,22 +1,23 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
+import AdminReferredUsersTable from 'core/components/ReferredUsersTable/AdminReferredUsersTable';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
-import AdminReferredUsersTable from 'core/components/ReferredUsersTable/AdminReferredUsersTable';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import LenderRulesEditor from '../../components/LenderRulesEditor';
 import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
+import CommissionRates from './CommissionRates';
+import InsuranceProducts from './InsuranceProducts';
+import OffersTable from './OffersTable/OffersTable';
+import OrganisationInfo from './OrganisationInfo';
+import OrganisationRevenues from './OrganisationRevenues';
+import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
-import OffersTable from './OffersTable/OffersTable';
-import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
-import CommissionRates from './CommissionRates';
-import OrganisationRevenues from './OrganisationRevenues';
-import OrganisationInfo from './OrganisationInfo';
-import InsuranceProducts from './InsuranceProducts';
 
 const tabs = ({ organisation, currentUser }) =>
   [

@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { withSmartQuery } from '../../../../api/containerToolkit';
+import { reuseConstructionTimeline } from '../../../../api/promotions/methodDefinitions';
+import { adminPromotions } from '../../../../api/promotions/queries';
 import Button from '../../../Button';
 import DropdownMenu from '../../../DropdownMenu';
-import { reuseConstructionTimeline } from '../../../../api';
-import { withSmartQuery } from '../../../../api/containerToolkit';
-import { adminPromotions } from '../../../../api/promotions/queries';
 
 const PromotionTimelinePicker = ({
   handleOpen,

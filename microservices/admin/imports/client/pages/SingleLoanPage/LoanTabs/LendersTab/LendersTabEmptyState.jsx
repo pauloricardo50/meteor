@@ -1,8 +1,9 @@
 import React from 'react';
+
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import collectionIcons from 'core/arrays/collectionIcons';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import collectionIcons from 'core/arrays/collectionIcons';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 
 const LendersTabEmptyState = props => (
   <div className="lenders-tab-empty-state">

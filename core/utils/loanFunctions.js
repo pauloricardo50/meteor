@@ -1,5 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-import { STEPS, TASK_STATUS } from '../api/constants';
+import { STEPS } from '../api/loans/loanConstants';
 import Calculator from './Calculator';
 
 export const formatLoanWithStructure = ({

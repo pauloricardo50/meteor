@@ -1,7 +1,10 @@
 import React from 'react';
-import { LENDER_RULES_VARIABLES } from 'core/api/constants';
+
+import {
+  LENDER_RULES_VARIABLES,
+  LENDER_RULES_OPERATORS,
+} from 'core/api/lenderRules/lenderRulesConstants';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
-import { LENDER_RULES_OPERATORS } from 'imports/core/api/constants';
 
 const LenderRulesFormOperator = props => {
   const { model, parent } = props;

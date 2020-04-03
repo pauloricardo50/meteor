@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import {
-  INSURANCES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
+import React, { useEffect, useState } from 'react';
 
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import Checkbox from 'core/components/Checkbox';
+
 import AdminTimeline from '../../../components/AdminTimeline';
-import InsuranceRequestTimelineTitle from './InsuranceRequestTimelineTitle';
 import InsuranceRequestActivityAdder from './InsuranceRequestActivityAdder';
+import InsuranceRequestTimelineTitle from './InsuranceRequestTimelineTitle';
 
 const AdditionalFilters = ({
   availableDocuments = [],

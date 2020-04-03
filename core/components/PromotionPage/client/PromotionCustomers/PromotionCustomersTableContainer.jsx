@@ -1,18 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { withProps } from 'recompose';
 import moment from 'moment';
+import { withProps } from 'recompose';
 
+import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
-import { LOANS_COLLECTION } from '../../../../api/constants';
-import T from '../../../Translation';
 import { CollectionIconLink } from '../../../IconLink';
 import StatusLabel from '../../../StatusLabel';
-import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
-import PromotionCustomersTableActions from './PromotionCustomersTableActions';
+import T from '../../../Translation';
 import PromotionCustomer from '../PromotionCustomer';
+import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
+import PromotionCustomersTableActions from './PromotionCustomersTableActions';
 
 const isAdmin = Meteor.microservice === 'admin';
 

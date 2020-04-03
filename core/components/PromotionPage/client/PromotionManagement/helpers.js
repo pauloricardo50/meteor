@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import {
-  PROMOTION_LOT_STATUS,
   PROMOTION_LOT_REDUCED_STATUS,
-} from 'core/api/constants';
+  PROMOTION_LOT_STATUS,
+} from '../../../../api/promotionLots/promotionLotConstants';
 
 const getPromotionLotsValue = (promotionLots = [], key) =>
   promotionLots.reduce((total, promotionLot) => {

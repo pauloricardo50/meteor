@@ -2,7 +2,7 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { adminOrganisations } from '../../../api/organisations/queries';
-import { promotionUpdate } from '../../../api';
+import { promotionUpdate } from '../../../api/promotions/methodDefinitions';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
 const schema = new SimpleSchema({

@@ -1,19 +1,19 @@
 import React from 'react';
 
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
-import T from '../../../Translation';
-import FinancingSection, {
-  FinancingField,
-  CalculatedValue,
-} from '../FinancingSection';
-import Calc, { getOffer } from '../FinancingCalculator';
-import FinancingTranchePicker from './FinancingTranchePicker';
-import MortgageNotesPicker from './MortgageNotesPicker';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
-import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
+import T from '../../../Translation';
+import Calc, { getOffer } from '../FinancingCalculator';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
+import FinancingSection, {
+  CalculatedValue,
+  FinancingField,
+} from '../FinancingSection';
+import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 import FinancingAmortizationDuration from './FinancingAmortizationDuration';
 import FinancingLoanValue from './FinancingLoanValue';
+import FinancingTranchePicker from './FinancingTranchePicker';
+import MortgageNotesPicker from './MortgageNotesPicker';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds

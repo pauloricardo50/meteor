@@ -1,7 +1,8 @@
 import React from 'react';
-import { INSURANCES_COLLECTION } from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
+
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import StatusLabel from 'core/components/StatusLabel';
 
 const InsuranceRequestBoardInsuranceCard = ({ insurance }) => {
   const { status, organisation, insuranceProduct } = insurance;

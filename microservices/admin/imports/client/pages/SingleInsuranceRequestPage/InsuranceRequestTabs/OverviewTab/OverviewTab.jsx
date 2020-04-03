@@ -1,8 +1,10 @@
 import React from 'react';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
-import AssigneesManager from 'imports/client/components/AssigneesManager';
+
 import { getInsuranceRequestDocuments } from 'core/api/files/documents';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import SingleFileTab from 'core/components/FileTabs/SingleFileTab';
+
+import AssigneesManager from '../../../../components/AssigneesManager';
 import InsuranceRequestAdminNotes from '../../InsuranceRequestAdminNotes';
 import InsuranceRequestTimeline from '../../InsuranceRequestTimeline';
 import InsuranceRequestLinkedLoan from './InsuranceRequestLinkedLoan';

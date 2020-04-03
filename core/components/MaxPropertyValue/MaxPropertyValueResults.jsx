@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import Calculator from 'core/utils/Calculator';
-import { RESIDENCE_TYPE } from '../../api/constants';
-import T from '../Translation';
-import Select from '../Select';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
+import Calculator from '../../utils/Calculator';
 import Button from '../Button';
 import Icon from '../Icon';
+import Select from '../Select';
+import T from '../Translation';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 import MaxPropertyValueSharing from './MaxPropertyValueSharing';
 

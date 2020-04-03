@@ -1,11 +1,11 @@
 import React from 'react';
+
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import {
-  USERS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
-import { insuranceRequestUpdateStatus } from 'core/api/methods/index';
+
 import SingleInsuranceRequestCustomName from './SingleInsuranceRequestCustomName';
 
 const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {

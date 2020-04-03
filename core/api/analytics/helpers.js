@@ -1,7 +1,7 @@
 import { matchPath } from 'react-router-dom';
 
-import { parseCookies } from 'core/utils/cookiesHelpers';
-import { analyticsCTA } from '../methods';
+import { parseCookies } from '../../utils/cookiesHelpers';
+import { analyticsCTA } from './methodDefinitions';
 
 export const getMatchingPath = ({
   pathname,

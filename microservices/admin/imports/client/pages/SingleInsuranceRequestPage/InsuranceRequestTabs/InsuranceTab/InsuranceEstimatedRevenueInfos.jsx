@@ -1,13 +1,13 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { Money, Percent } from 'core/components/Translation';
-import { INSURANCE_PREMIUM_FREQUENCY } from 'core/api/constants';
 import {
-  getFrequency,
   getDuration,
   getEffectiveDuration,
+  getFrequency,
 } from 'core/api/insurances/helpers';
+import { INSURANCE_PREMIUM_FREQUENCY } from 'core/api/insurances/insuranceConstants';
+import { Money, Percent } from 'core/components/Translation';
 
 const InsuranceEstimatedRevenueInfos = props => {
   const {

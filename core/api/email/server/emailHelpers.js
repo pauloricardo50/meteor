@@ -7,7 +7,7 @@ import ReactDOMServer from 'react-dom/server';
 import SecurityService from '../../security';
 import Intl, { ServerIntlProvider } from '../../../utils/server/intl';
 import ServerEventService from '../../events/server/ServerEventService';
-import { ROLES } from '../../constants';
+import { ROLES } from '../../users/userConstants';
 import {
   FROM_DEFAULT,
   CTA_URL_DEFAULT,

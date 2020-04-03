@@ -1,16 +1,16 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWave';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import {
-  ORGANISATIONS_COLLECTION,
-  REVENUE_TYPES,
-  INSURANCES_COLLECTION,
-} from 'core/api/constants';
-import { Money } from 'core/components/Translation';
+import React, { useState } from 'react';
+import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWave';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import Loading from 'core/components/Loading';
+import { Money } from 'core/components/Translation';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import InsuranceEstimatedRevenueInfos from './InsuranceEstimatedRevenueInfos';
 

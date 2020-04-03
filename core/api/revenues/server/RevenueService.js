@@ -1,7 +1,10 @@
-import { COMMISSION_STATUS } from 'imports/core/api/constants';
+import {
+  COMMISSION_STATUS,
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+} from '../revenueConstants';
 import Revenues from '../revenues';
 import CollectionService from '../../helpers/server/CollectionService';
-import { REVENUE_STATUS, REVENUE_TYPES } from '../revenueConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
 
 class RevenueService extends CollectionService {

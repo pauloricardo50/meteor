@@ -1,16 +1,20 @@
-import { compose, mapProps, branch, renderComponent } from 'recompose';
 import omit from 'lodash/omit';
+import { branch, compose, mapProps, renderComponent } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import { adminLoan } from 'core/api/fragments';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
+import {
+  LOANS_COLLECTION,
+  LOAN_CATEGORIES,
+} from 'core/api/loans/loanConstants';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import updateForProps from 'core/containers/updateForProps';
 import {
   injectCalculator,
   withCalculator,
 } from 'core/containers/withCalculator';
-import updateForProps from 'core/containers/updateForProps';
-import { LOAN_CATEGORIES, LOANS_COLLECTION } from 'core/api/constants';
-import { adminLoan } from 'core/api/fragments';
+
 import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
 const withInterestRates = withSmartQuery({

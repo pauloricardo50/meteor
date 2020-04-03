@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/constants';
-import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
-import RevenuesTable from '../../../../components/RevenuesTable';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+
 import AssigneesManager from '../../../../components/AssigneesManager';
+import RevenuesTable from '../../../../components/RevenuesTable';
+import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import RevenueSuggestions from './RevenueSuggestions';
 
 const RevenuesTab = ({ loan }) => {

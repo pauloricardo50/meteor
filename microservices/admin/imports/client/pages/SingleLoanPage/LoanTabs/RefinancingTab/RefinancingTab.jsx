@@ -1,9 +1,9 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import AutoForm from 'core/components/AutoForm2';
+import { loanUpdate } from 'core/api/loans/';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import { loanUpdate } from 'core/api/loans/index';
+import AutoForm from 'core/components/AutoForm2';
 
 const grapherLinks = [
   'user',

@@ -1,6 +1,6 @@
-import { withProps, compose, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { proSetShareCustomers } from 'core/api/methods';
+import { proSetShareCustomers } from 'core/api/users/methodDefinitions';
 
 export default compose(
   withState('openDialog', 'setOpenDialog', false),

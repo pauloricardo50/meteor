@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import { withProps } from 'recompose';
+
 import {
-  ACTIVITY_TYPES,
   ACTIVITIES_COLLECTION,
+  ACTIVITY_TYPES,
 } from 'core/api/activities/activityConstants';
+import { activity as activityFragment } from 'core/api/fragments';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import {
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-  TASKS_COLLECTION,
-  TASK_STATUS,
-} from 'core/api/constants';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import {
-  taskInsert,
-  taskUpdate,
   taskChangeStatus,
   taskComplete,
-} from 'core/api/methods';
-import { activity as activityFragment } from 'core/api/fragments';
+  taskInsert,
+  taskUpdate,
+} from 'core/api/tasks/methodDefinitions';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 const formatType = type => {
   if (type.$in && type.$in.includes('COMMUNICATION')) {

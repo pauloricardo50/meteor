@@ -1,10 +1,9 @@
 import React from 'react';
-
 import pick from 'lodash/pick';
 import moment from 'moment';
 
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 import T, { Money, Percent } from '../Translation';
-import { INTEREST_RATES } from '../../api/constants';
 
 const OfferRecapDialogContent = ({ offer = {} }) => {
   const {

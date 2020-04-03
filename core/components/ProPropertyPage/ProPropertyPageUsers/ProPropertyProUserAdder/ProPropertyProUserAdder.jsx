@@ -1,13 +1,14 @@
 import React from 'react';
 
-import DialogSimple from 'core/components/DialogSimple';
-import T from 'core/components/Translation';
-import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
-import { userSearch } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
-import { addProUserToProperty, getUserByEmail } from 'core/api';
-import { getUserNameAndOrganisation } from 'core/api/helpers';
-import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
+import withContextConsumer from '../../../../api/containerToolkit/withContextConsumer';
+import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { addProUserToProperty } from '../../../../api/properties/methodDefinitions';
+import { getUserByEmail } from '../../../../api/users/methodDefinitions';
+import { userSearch } from '../../../../api/users/queries';
+import { ROLES } from '../../../../api/users/userConstants';
+import CollectionSearch from '../../../CollectionSearch';
+import DialogSimple from '../../../DialogSimple';
+import T from '../../../Translation';
 import { ProPropertyPageContext } from '../../ProPropertyPageContext';
 
 const ProPropertyProUserAdder = ({ property, permissions: { isAdmin } }) => {

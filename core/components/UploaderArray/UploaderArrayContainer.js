@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { withProps, compose } from 'recompose';
+
 import { injectIntl } from 'react-intl';
-import { documentHasTooltip } from 'core/api/files/documents';
-import { DOCUMENTS } from '../../api/constants';
+import { compose, withProps } from 'recompose';
+
+import { documentHasTooltip } from '../../api/files/documents';
+import { DOCUMENTS } from '../../api/files/fileConstants';
 
 const getFileMetadata = (documentArray = [], id) => {
   const { metadata = {} } =

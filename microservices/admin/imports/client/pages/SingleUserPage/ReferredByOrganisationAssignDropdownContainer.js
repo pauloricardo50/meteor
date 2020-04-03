@@ -1,8 +1,8 @@
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
-import { setUserReferredByOrganisation } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminOrganisations } from 'core/api/organisations/queries';
+import { setUserReferredByOrganisation } from 'core/api/users/methodDefinitions';
 
 const getMenuItems = ({
   organisations,

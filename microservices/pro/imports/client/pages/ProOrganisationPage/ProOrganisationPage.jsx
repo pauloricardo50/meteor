@@ -1,6 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+
 import ProOrganisationPageTabs from './ProOrganisationPageTabs';
 import ShareCustomersToggle from './ShareCustomersToggle';
 
@@ -44,7 +45,7 @@ const ProOrganisationPage = ({ currentUser }) => {
         <label htmlFor="" className="mb-8">
           Code referral de {organisation.name}
         </label>
-        <b>{organisation._id}</b>
+        <b className="organisation-id">{organisation._id}</b>
       </div>
       <ProOrganisationPageTabs
         organisation={organisation}

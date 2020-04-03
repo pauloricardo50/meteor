@@ -1,13 +1,14 @@
 import React from 'react';
 
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import { CONTACTS_COLLECTION } from 'core/api/constants';
+
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import OffersTable from '../SingleOrganisationPage/OffersTable/OffersTable';
 import SingleContactPageContainer from './SingleContactPageContainer';
 import SingleContactPageHeader from './SingleContactPageHeader';
 import SingleContactPageInfos from './SingleContactPageInfos';
-import OffersTable from '../SingleOrganisationPage/OffersTable/OffersTable';
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const tabs = props =>
   [

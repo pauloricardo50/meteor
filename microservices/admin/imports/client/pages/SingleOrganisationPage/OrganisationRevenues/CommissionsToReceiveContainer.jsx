@@ -1,9 +1,10 @@
 import React from 'react';
 import { compose, withProps } from 'recompose';
 
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import StatusLabel from 'core/components/StatusLabel';
 import { Money, Percent } from 'core/components/Translation';
-import { REVENUES_COLLECTION } from 'core/api/constants';
+
 import RevenuesTableContainer from '../../../components/RevenuesTable/RevenuesTableContainer';
 
 const makeAddCommissionStatus = organisationId => ({

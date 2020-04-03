@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 import sinon from 'sinon';
 
+import { OWN_FUNDS_TYPES } from '../../../../../../api/borrowers/borrowerConstants';
+import { shallow } from '../../../../../../utils/testHelpers/enzyme';
 import T from '../../../../../Translation';
 import { CurrentOwnFunds } from '../CurrentOwnFunds';
-import { OWN_FUNDS_TYPES } from '../../../../../../api/constants';
 
 describe('CurrentOwnFunds', () => {
   let props;

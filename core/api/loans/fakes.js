@@ -1,4 +1,5 @@
-import { RESIDENCE_TYPE, STEPS } from '../constants';
+import { STEPS } from './loanConstants';
+import { RESIDENCE_TYPE } from '../properties/propertyConstants';
 
 export const emptyLoan = {
   step: STEPS.SOLVENCY,

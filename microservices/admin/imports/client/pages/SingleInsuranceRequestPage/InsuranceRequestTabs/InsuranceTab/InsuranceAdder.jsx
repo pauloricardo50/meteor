@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Icon from 'core/components/Icon';
+import { INSURANCE_REQUEST_STATUS } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import { INSURANCE_REQUEST_STATUS } from 'imports/core/api/constants';
+import Icon from 'core/components/Icon';
+
 import InsuranceForm from './InsuranceForm';
 
 const InsuranceAdder = ({

@@ -1,6 +1,6 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { adminOrganisations } from 'core/api/organisations/queries';
@@ -8,9 +8,9 @@ import {
   adminCreateUser,
   updateUser,
   userUpdateOrganisations,
-} from 'core/api/methods';
-import { ROLES } from 'core/api/users/userConstants';
+} from 'core/api/users/methodDefinitions';
 import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({

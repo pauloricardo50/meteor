@@ -1,22 +1,22 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import StickyPopover from 'core/components/StickyPopover';
+import {
+  LOAN_CATEGORIES,
+  LOAN_STATUS_ORDER,
+  STEP_ORDER,
+} from 'core/api/loans/loanConstants';
+import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
+import { ROLES } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import RadioButtons from 'core/components/RadioButtons';
-import {
-  STEP_ORDER,
-  LOAN_STATUS_ORDER,
-  PROMOTION_STATUS,
-  LOAN_CATEGORIES,
-  ROLES,
-} from 'core/api/constants';
+import StickyPopover from 'core/components/StickyPopover';
+import T from 'core/components/Translation';
 
-import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
-import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
 import { LiveQueryMonitor } from '../../liveSync';
+import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import { additionalLoanBoardFields } from '../loanBoardHelpers';
+import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
+import { CANTONS } from 'core/api/loans/loanConstants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import Button from 'core/components/Button';
 import PercentInput from 'core/components/PercentInput';
-import Toggle from 'core/components/Toggle';
 import Select from 'core/components/Select';
+import Toggle from 'core/components/Toggle';
 import T from 'core/components/Translation';
-import { RESIDENCE_TYPE, CANTONS } from 'imports/core/api/constants';
+
+import LenderSolvency from './LenderSolvency/LenderSolvency';
 import SolvencyContainer from './SolvencyContainer';
 import SolvencyResults from './SolvencyResults';
-import LenderSolvency from './LenderSolvency/LenderSolvency';
 
 const Solvency = ({
   loan,

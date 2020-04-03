@@ -1,5 +1,6 @@
 import { withProps } from 'recompose';
-import { propertyInsert } from 'core/api';
+
+import { propertyInsert } from '../../api/properties/methodDefinitions';
 import PropertyForm from './PropertyForm';
 
 const PropertyAdderContainer = withProps(

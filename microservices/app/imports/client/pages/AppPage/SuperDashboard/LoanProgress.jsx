@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { STEP_ORDER } from 'core/api/constants';
+import { STEP_ORDER } from 'core/api/loans/loanConstants';
 import T from 'core/components/Translation';
 
 const isDone = (currentStep, step) => {

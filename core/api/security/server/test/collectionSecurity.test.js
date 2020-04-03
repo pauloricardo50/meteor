@@ -1,21 +1,25 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
+/* eslint-env mocha */
+import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { PROMOTION_PERMISSIONS } from 'core/api/promotions/promotionConstants';
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
-import SecurityService, { SECURITY_ERROR } from '../..';
-import { ROLES } from '../../../constants';
-import PromotionService from '../../../promotions/server/PromotionService';
-import LoanService from '../../../loans/server/LoanService';
+import Borrowers from '../../../borrowers';
 import generator from '../../../factories/server';
-import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
-import { clearBucket } from '../../../files/server/test/S3Service.test';
 import S3Service from '../../../files/server/S3Service';
-import { Loans, Borrowers, Properties, Promotions } from '../../..';
+import { clearBucket } from '../../../files/server/test/S3Service.test';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import Loans from '../../../loans/loans';
+import LoanService from '../../../loans/server/LoanService';
+import Promotions from '../../../promotions';
+import { PROMOTION_PERMISSIONS } from '../../../promotions/promotionConstants';
+import PromotionService from '../../../promotions/server/PromotionService';
+import Properties from '../../../properties';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { ROLES } from '../../../users/userConstants';
+import SecurityService, { SECURITY_ERROR } from '../..';
 
 const uploadFile = (key, metadata = {}) => {
   const json = { hello: 'world' };

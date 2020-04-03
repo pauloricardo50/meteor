@@ -1,10 +1,9 @@
 import React from 'react';
 
-import {
-  PROPERTIES_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
 import T from 'core/components/Translation';
+
 import PropertyCard from './PropertyCard';
 import PromotionCard from './PropertyCard/PromotionCard';
 import PropertyCardSubtitle from './PropertyCard/PropertyCardSubtitle';
@@ -13,7 +12,6 @@ const Properties = ({ loan }) => {
   const {
     properties = [],
     promotions = [],
-    _id: loanId,
     shareSolvency,
     maxPropertyValue,
     residenceType,

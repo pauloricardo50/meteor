@@ -1,10 +1,13 @@
-import { withProps, compose, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
-import { lenderInsert, lenderRemove } from 'core/api/methods';
 import { lenderRules } from 'core/api/fragments';
+import { lenderInsert, lenderRemove } from 'core/api/lenders/methodDefinitions';
+import {
+  ORGANISATION_FEATURES,
+  ORGANISATION_TAGS,
+} from 'core/api/organisations/organisationConstants';
+import { adminOrganisations } from 'core/api/organisations/queries';
 
 const formatOrganisations = orgs =>
   orgs.reduce(

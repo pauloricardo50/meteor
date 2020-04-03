@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
+import { insuranceRequestLinkLoan } from 'core/api/insuranceRequests/methodDefinitions';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loanSearch } from 'core/api/loans/queries';
-import { LOANS_COLLECTION } from 'core/api/constants';
 import Button from 'core/components/Button';
 import CollectionSearch from 'core/components/CollectionSearch';
+import Icon from 'core/components/Icon';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import Dialog from 'core/components/Material/Dialog';
-import Icon from 'core/components/Icon';
-import { insuranceRequestLinkLoan } from 'core/api/methods/index';
 
 const InsuranceRequestLoanLinker = props => {
   const { insuranceRequest } = props;

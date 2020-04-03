@@ -1,7 +1,6 @@
-import CommissionRates from './commissionRates';
-import { Organisations } from '..';
-
 import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations';
+import CommissionRates from './commissionRates';
 
 LinkInitializer.directInit(() => {
   CommissionRates.addLinks({

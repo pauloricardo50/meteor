@@ -1,18 +1,19 @@
 import { Mongo } from 'meteor/mongo';
 
-import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
+import intersection from 'lodash/intersection';
 import moment from 'moment';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import LoanService from 'core/api/loans/server/LoanService';
-import Intl from '../../../utils/server/intl';
 import { toMoney } from '../../../utils/conversionFunctions';
 import { percentFormatters } from '../../../utils/formHelpers';
-import { BORROWERS_COLLECTION, PROPERTIES_COLLECTION } from '../../constants';
+import Intl from '../../../utils/server/intl';
+import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import CollectionService from '../../helpers/server/CollectionService';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import LoanService from '../../loans/server/LoanService';
+import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
 import { updateWatcherNotification } from '../../slack/server/slackNotifications';
 import UserService from '../../users/server/UserService';
-import CollectionService from '../../helpers/server/CollectionService';
 import UpdateWatchers from './updateWatchers';
 
 class UpdateWatcherService extends CollectionService {

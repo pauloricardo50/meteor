@@ -1,10 +1,10 @@
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import { PROMOTION_USERS_ROLES } from 'core/api/constants';
-import { updatePromotionUserRoles } from 'core/api/promotions/methodDefinitions';
-import AutoForm from 'core/components/AutoForm2';
+import { updatePromotionUserRoles } from '../../../../../api/promotions/methodDefinitions';
+import { PROMOTION_USERS_ROLES } from '../../../../../api/promotions/promotionConstants';
+import AutoForm from '../../../../AutoForm2';
 
 const schema = new SimpleSchema({
   roles: { type: Array },

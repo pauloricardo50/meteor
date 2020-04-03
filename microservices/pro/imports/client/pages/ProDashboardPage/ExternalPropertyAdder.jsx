@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { insertExternalProperty } from 'core/api/methods';
-import { AutoFormDialog } from 'core/components/AutoForm2';
+import { insertExternalProperty } from 'core/api/properties/methodDefinitions';
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
-import T from 'core/components/Translation';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 
 const schema = PropertySchema.pick(
   'address1',

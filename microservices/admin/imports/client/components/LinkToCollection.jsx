@@ -1,22 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import T from 'core/components/Translation';
 import IconLink from 'core/components/IconLink';
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-} from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 
 const getCollectionIcon = collection => {
   switch (collection) {

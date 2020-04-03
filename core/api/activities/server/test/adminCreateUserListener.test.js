@@ -1,15 +1,17 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import { ROLES } from 'core/api/users/userConstants';
-import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { adminCreateUser } from '../../../methods';
+
 import generator from '../../../factories/server';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { adminCreateUser } from '../../../users/methodDefinitions';
 import UserService from '../../../users/server/UserService';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
 } from '../../activityConstants';
 
 describe('adminCreateUserListener', () => {

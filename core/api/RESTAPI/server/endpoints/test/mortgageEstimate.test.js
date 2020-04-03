@@ -1,17 +1,18 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import generator from '../../../../factories/server';
-import { TRENDS } from '../../../../constants';
+import { TRENDS } from '../../../../interestRates/interestRatesConstants';
+import { PURCHASE_TYPE } from '../../../../loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../../properties/propertyConstants';
 import RESTAPI from '../../RESTAPI';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
 import { mortgageEstimateAPI } from '..';
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import CountUp from 'react-countup';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { LOANS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const LoansWithoutAssignees = ({ showAll }) => {

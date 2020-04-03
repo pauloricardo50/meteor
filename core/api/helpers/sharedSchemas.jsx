@@ -1,15 +1,14 @@
+import countries from 'i18n-iso-countries';
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import countries from 'i18n-iso-countries';
 
-import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/autoFormConstants';
 import {
-  getSortedCountriesCodes,
   COMMON_COUNTRIES,
+  getSortedCountriesCodes,
 } from '../../utils/countriesUtils';
-import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
-
+import { CANTONS } from '../loans/loanConstants';
 import { autoValueSentenceCase } from './sharedSchemaValues';
 
 export const createdAt = {

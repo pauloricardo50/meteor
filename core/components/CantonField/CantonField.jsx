@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl';
 
 import T from '../Translation';
 import AutoFormTextInput from '../AutoForm/AutoFormTextInput';
-import { CANTONS } from '../../api/constants';
+import { CANTONS } from '../../api/loans/loanConstants';
 
 const CantonField = ({ canton, intl: { formatMessage } }) => (
   <AutoFormTextInput

@@ -1,15 +1,15 @@
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
+import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import IconButton from 'core/components/IconButton';
-import { Money } from 'core/components/Translation';
-import { consolidateRevenue } from 'core/api/revenues/index';
 import { decimalNegativeMoneyField } from 'core/api/helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { consolidateRevenue } from 'core/api/revenues/';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import IconButton from 'core/components/IconButton';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import { Money } from 'core/components/Translation';
 
 const schema = new SimpleSchema({
   amount: {

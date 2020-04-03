@@ -1,13 +1,13 @@
 import faker from 'faker/locale/fr';
 import random from 'lodash/random';
 
-import OrganisationService from '../api/organisations/server/OrganisationService';
 import ContactService from '../api/contacts/server/ContactService';
 import {
-  ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
   ORGANISATION_TAGS,
-} from '../api/constants';
+  ORGANISATION_TYPES,
+} from '../api/organisations/organisationConstants';
+import OrganisationService from '../api/organisations/server/OrganisationService';
 import { createLenderRules } from './lenderRulesFixtures';
 
 const orgs = [

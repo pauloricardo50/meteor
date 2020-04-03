@@ -1,12 +1,11 @@
+import { Meteor } from 'meteor/meteor';
+
 import { withProps } from 'recompose';
 
-import {
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  MORTGAGE_NOTES_COLLECTION,
-} from '../../api/constants';
-import * as methods from '../../api/methods';
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { MORTGAGE_NOTES_COLLECTION } from '../../api/mortgageNotes/mortgageNoteConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
@@ -19,7 +18,11 @@ const makeFunc = ({ idKey, beforeUpdate, func, override }) => rawParams => {
     beforeUpdate(params);
   }
 
-  return methods[func].run(params);
+  return new Promise((resolve, reject) =>
+    Meteor.call(func, params, (err, result) =>
+      err ? reject(err) : resolve(result),
+    ),
+  );
 };
 
 const AutoFormContainer = withProps(

@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
-import { Money } from 'core/components/Translation';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import {
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
-  COMMISSION_RATES_TYPE,
-} from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { Money } from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const OrgItem = ({ orgName, revenues }) => (

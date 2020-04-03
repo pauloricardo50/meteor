@@ -1,31 +1,29 @@
 import {
   compose,
-  withProps,
-  withStateHandlers,
-  withState,
   lifecycle,
+  withProps,
+  withState,
+  withStateHandlers,
 } from 'recompose';
 
-import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
+import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
 import {
   borrowerUpdate,
   pushBorrowerValue,
-  updateStructure,
-} from '../../../../../api';
-import {
-  OWN_FUNDS_USAGE_TYPES,
-  RESIDENCE_TYPE,
-  OWN_FUNDS_TYPES,
-} from '../../../../../api/constants';
+} from '../../../../../api/borrowers/methodDefinitions';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import { updateStructure } from '../../../../../api/loans/methodDefinitions';
+import { RESIDENCE_TYPE } from '../../../../../api/properties/propertyConstants';
+import { MIN_INSURANCE2_WITHDRAW } from '../../../../../config/financeConstants';
 import Calculator from '../../../../../utils/Calculator';
-import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
+import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import {
   chooseOwnFundsTypes,
-  shouldAskForUsageType,
-  makeNewOwnFundsArray,
-  getOwnFundsOfTypeAndBorrower,
   getAvailableFundsOfTypeAndBorrower,
+  getOwnFundsOfTypeAndBorrower,
+  makeNewOwnFundsArray,
+  shouldAskForUsageType,
 } from './FinancingOwnFundsPickerHelpers';
 
 export const FIELDS = {

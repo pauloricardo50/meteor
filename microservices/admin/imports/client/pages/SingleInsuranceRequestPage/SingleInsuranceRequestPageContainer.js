@@ -1,8 +1,9 @@
 import { compose } from 'recompose';
-import withMatchParam from 'core/containers/withMatchParam';
+
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/constants';
-import { adminRevenue, adminBorrower } from 'core/api/fragments';
+import { adminBorrower, adminRevenue } from 'core/api/fragments';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
   withMatchParam('insuranceRequestId'),

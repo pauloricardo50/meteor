@@ -2,25 +2,25 @@ import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 
-import { exposeQuery } from '../../queries/queryHelpers';
-import { ROLES } from '../../constants';
-import SecurityService from '../../security';
 import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
+import SecurityService from '../../security';
 import {
   adminUsers,
   appUser,
   currentUser,
+  incoherentAssignees,
   proReferredByUsers,
+  proUser,
   userEmails,
   userSearch,
-  proUser,
-  incoherentAssignees,
 } from '../queries';
-import UserService from './UserService';
+import { ROLES } from '../userConstants';
 import { incoherentAssigneesResolver } from './resolvers';
+import UserService from './UserService';
 
 exposeQuery({
   query: adminUsers,

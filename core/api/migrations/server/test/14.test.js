@@ -1,10 +1,11 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { Properties } from '../../..';
-import { up, down } from '../14';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import Properties from '../../../properties';
 import PropertyService from '../../../properties/server/PropertyService';
+import { down, up } from '../14';
 
 describe('Migration 14', () => {
   beforeEach(() => {

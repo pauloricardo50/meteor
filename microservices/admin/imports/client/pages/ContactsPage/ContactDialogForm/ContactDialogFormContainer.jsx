@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
+import {
+  contactChangeOrganisations,
+  contactInsert,
+  contactRemove,
+  contactUpdate,
+} from 'core/api/contacts/methodDefinitions';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { address } from 'core/api/helpers/sharedSchemas';
-import {
-  contactInsert,
-  contactUpdate,
-  contactRemove,
-  contactChangeOrganisations,
-} from 'core/api/methods';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import T from 'core/components/Translation';
 import useSearchParams from 'core/hooks/useSearchParams';

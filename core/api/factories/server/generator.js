@@ -1,54 +1,74 @@
 import { Factory } from 'meteor/dburles:factory';
 import { Mongo } from 'meteor/mongo';
-import pick from 'lodash/pick';
+
 import omit from 'lodash/omit';
+import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 
+import { ACTIVITIES_COLLECTION } from '../../activities/activityConstants';
+import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import { COMMISSION_RATES_COLLECTION } from '../../commissionRates/commissionRateConstants';
+import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
 import CollectionService from '../../helpers/server/CollectionService';
-import { COLLECTIONS } from '../../constants';
+import { INSURANCE_PRODUCTS_COLLECTION } from '../../insuranceProducts/insuranceProductConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../insurances/insuranceConstants';
+import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import { LOTS_COLLECTION } from '../../lots/lotConstants';
+import { MORTGAGE_NOTES_COLLECTION } from '../../mortgageNotes/mortgageNoteConstants';
+import { NOTIFICATIONS_COLLECTION } from '../../notifications/notificationConstants';
+import { OFFERS_COLLECTION } from '../../offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { PROMOTION_LOTS_COLLECTION } from '../../promotionLots/promotionLotConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from '../../promotionOptions/promotionOptionConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
+import { TASKS_COLLECTION } from '../../tasks/taskConstants';
+import { USERS_COLLECTION } from '../../users/userConstants';
 
 const getSingularFactoryName = collection => {
   switch (collection) {
-    case COLLECTIONS.LOANS_COLLECTION:
+    case LOANS_COLLECTION:
       return 'loan';
-    case COLLECTIONS.BORROWERS_COLLECTION:
+    case BORROWERS_COLLECTION:
       return 'borrower';
-    case COLLECTIONS.PROPERTIES_COLLECTION:
+    case PROPERTIES_COLLECTION:
       return 'property';
-    case COLLECTIONS.USERS_COLLECTION:
+    case USERS_COLLECTION:
       return 'user';
-    case COLLECTIONS.TASKS_COLLECTION:
+    case TASKS_COLLECTION:
       return 'task';
-    case COLLECTIONS.OFFERS_COLLECTION:
+    case OFFERS_COLLECTION:
       return 'offer';
-    case COLLECTIONS.PROMOTIONS_COLLECTION:
+    case PROMOTIONS_COLLECTION:
       return 'promotion';
-    case COLLECTIONS.PROMOTION_OPTIONS_COLLECTION:
+    case PROMOTION_OPTIONS_COLLECTION:
       return 'promotionOption';
-    case COLLECTIONS.PROMOTION_LOTS_COLLECTION:
+    case PROMOTION_LOTS_COLLECTION:
       return 'promotionLot';
-    case COLLECTIONS.LOTS_COLLECTION:
+    case LOTS_COLLECTION:
       return 'lot';
-    case COLLECTIONS.MORTGAGE_NOTES_COLLECTION:
+    case MORTGAGE_NOTES_COLLECTION:
       return 'mortgageNote';
-    case COLLECTIONS.ORGANISATIONS_COLLECTION:
+    case ORGANISATIONS_COLLECTION:
       return 'organisation';
-    case COLLECTIONS.LENDERS_COLLECTION:
+    case LENDERS_COLLECTION:
       return 'lender';
-    case COLLECTIONS.CONTACTS_COLLECTION:
+    case CONTACTS_COLLECTION:
       return 'contact';
-    case COLLECTIONS.NOTIFICATIONS_COLLECTION:
+    case NOTIFICATIONS_COLLECTION:
       return 'notification';
-    case COLLECTIONS.ACTIVITIES_COLLECTION:
+    case ACTIVITIES_COLLECTION:
       return 'activity';
-    case COLLECTIONS.INSURANCE_REQUESTS_COLLECTION:
+    case INSURANCE_REQUESTS_COLLECTION:
       return 'insuranceRequest';
-    case COLLECTIONS.INSURANCES_COLLECTION:
+    case INSURANCES_COLLECTION:
       return 'insurance';
-    case COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION:
+    case INSURANCE_PRODUCTS_COLLECTION:
       return 'insuranceProduct';
-    case COLLECTIONS.COMMISSION_RATES_COLLECTION:
+    case COMMISSION_RATES_COLLECTION:
       return 'commissionRate';
     default:
       throw new Error(

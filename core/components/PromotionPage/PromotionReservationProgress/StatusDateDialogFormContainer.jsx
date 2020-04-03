@@ -1,15 +1,15 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { withProps } from 'recompose';
 
-import { setPromotionOptionProgress } from '../../../api/methods';
+import { setPromotionOptionProgress } from '../../../api/promotionOptions/methodDefinitions';
+import { PROMOTION_OPTION_BANK_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import PromotionOptionSchema from '../../../api/promotionOptions/schemas/PromotionOptionSchema';
-import { PROMOTION_OPTION_BANK_STATUS } from '../../../api/constants';
 import T from '../../Translation';
 import {
   getEmailsToBeSent,
   getEmailsToBeSentWarning,
-  openPreConfirmDialog,
   openPostConfirmDialog,
+  openPreConfirmDialog,
 } from './statusDateFormDialogHelpers';
 
 export default withProps(

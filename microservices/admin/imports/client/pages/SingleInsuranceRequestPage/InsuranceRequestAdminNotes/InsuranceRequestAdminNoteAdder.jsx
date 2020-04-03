@@ -1,22 +1,21 @@
 import React, { useMemo } from 'react';
+import omit from 'lodash/omit';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import omit from 'lodash/omit';
-
-import { AdminNoteSetter } from 'core/components/AdminNote/AdminNoteAdder';
-import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
-import {
-  INSURANCES_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from 'core/api/constants';
-import {
-  insuranceRequestSetAdminNote,
-  insuranceSetAdminNote,
-  insuranceRequestRemoveAdminNote,
-  insuranceRemoveAdminNote,
-} from 'core/api/methods';
 
 import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import {
+  insuranceRequestRemoveAdminNote,
+  insuranceRequestSetAdminNote,
+} from 'core/api/insuranceRequests/methodDefinitions';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import {
+  insuranceRemoveAdminNote,
+  insuranceSetAdminNote,
+} from 'core/api/insurances/methodDefinitions';
+import { AdminNoteSetter } from 'core/components/AdminNote/AdminNoteAdder';
+import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
 
 const documentSelectSchema = (availableDocuments = []) =>
   new SimpleSchema({

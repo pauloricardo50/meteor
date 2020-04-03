@@ -1,7 +1,7 @@
-import { withProps } from 'recompose';
 import moment from 'moment';
+import { withProps } from 'recompose';
 
-import { setCommissionRates } from 'core/api/methods';
+import { setCommissionRates } from 'core/api/organisations/methodDefinitions';
 
 export default withProps(({ organisationId }) => ({
   onSubmit: ({ type, rates }) =>

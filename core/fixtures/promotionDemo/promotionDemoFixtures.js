@@ -1,27 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 
-import range from 'lodash/range';
-import random from 'lodash/random';
-import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
+import random from 'lodash/random';
+import range from 'lodash/range';
+import shuffle from 'lodash/shuffle';
 
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import LoanService from '../../api/loans/server/LoanService';
+import { LOT_TYPES } from '../../api/lots/lotConstants';
+import LotService from '../../api/lots/server/LotService';
+import { ORGANISATION_TYPES } from '../../api/organisations/organisationConstants';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
+import PromotionLotService from '../../api/promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_TYPES,
+  PROMOTION_USERS_ROLES,
+} from '../../api/promotions/promotionConstants';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';
-import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
-import PromotionLotService from '../../api/promotionLots/server/PromotionLotService';
-import LotService from '../../api/lots/server/LotService';
-import {
-  LOT_TYPES,
-  PROMOTION_TYPES,
-  PROMOTION_STATUS,
-  ROLES,
-  PROMOTION_USERS_ROLES,
-  ORGANISATION_TYPES,
-} from '../../api/constants';
-import { properties } from './data';
+import { ROLES } from '../../api/users/userConstants';
 import { addUser } from '../userFixtures';
+import { properties } from './data';
 
 const DEMO_PROMOTION = {
   name: 'Pré Polly',

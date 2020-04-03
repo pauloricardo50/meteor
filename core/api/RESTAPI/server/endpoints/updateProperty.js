@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { apiProperty } from 'core/api/fragments';
+import { apiProperty } from '../../../fragments';
+import { propertyUpdate } from '../../../properties/methodDefinitions';
 import PropertyService from '../../../properties/server/PropertyService';
-import { propertyUpdate } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { checkQuery, impersonateSchema } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, impersonateSchema } from './helpers';
 
 const updatePropertyAPI = ({
   user: { _id: userId },

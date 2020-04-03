@@ -1,17 +1,19 @@
 import { Meteor } from 'meteor/meteor';
+
 import { withProps } from 'recompose';
+
+import { INSURANCE_REQUESTS_COLLECTION } from '../../api/insuranceRequests/insuranceRequestConstants';
 import {
-  loanSetAdminNote,
-  loanRemoveAdminNote,
-  insuranceRequestSetAdminNote,
   insuranceRequestRemoveAdminNote,
-} from 'core/api/methods';
+  insuranceRequestSetAdminNote,
+} from '../../api/insuranceRequests/methodDefinitions';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
 import {
-  LOANS_COLLECTION,
-  INSURANCE_REQUESTS_COLLECTION,
-} from '../../api/constants';
-import useLoanContacts from './useLoanContacts';
+  loanRemoveAdminNote,
+  loanSetAdminNote,
+} from '../../api/loans/methodDefinitions';
 import useInsuranceRequestContacts from './useInsuranceRequestContacts';
+import useLoanContacts from './useLoanContacts';
 
 const AUTHORIZED_COLLECTIONS = [
   LOANS_COLLECTION,

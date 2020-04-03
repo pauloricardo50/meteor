@@ -1,9 +1,9 @@
 import merge from 'lodash/merge';
 
-import { ORGANISATION_FEATURES } from '../../imports/core/api/organisations/organisationConstants';
-import { INSURANCE_PRODUCT_FEATURES } from '../../imports/core/api/insuranceProducts/insuranceProductConstants';
-import { COMMISSION_RATES_TYPE } from '../../imports/core/api/commissionRates/commissionRateConstants';
 import { GENDER } from '../../imports/core/api/borrowers/borrowerConstants';
+import { COMMISSION_RATES_TYPE } from '../../imports/core/api/commissionRates/commissionRateConstants';
+import { INSURANCE_PRODUCT_FEATURES } from '../../imports/core/api/insuranceProducts/insuranceProductConstants';
+import { ORGANISATION_FEATURES } from '../../imports/core/api/organisations/organisationConstants';
 import {
   ADMIN_EMAIL,
   USER_PASSWORD,
@@ -34,7 +34,7 @@ const scenario = {
         INSURANCE_PRODUCT_FEATURES.GUARANTEED_CAPITAL,
         INSURANCE_PRODUCT_FEATURES.NON_GUARANTEED_CAPITAL,
       ],
-      category: '3A',
+      category: '3A_INSURANCE',
     },
     commissionRates: {
       _id: 'rateId',

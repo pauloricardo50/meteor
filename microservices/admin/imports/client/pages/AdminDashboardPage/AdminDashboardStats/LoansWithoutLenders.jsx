@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import CountUp from 'react-countup';
 import groupBy from 'lodash/groupBy';
+import CountUp from 'react-countup';
 
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const LoansWithoutLenders = ({ showAll }) => {

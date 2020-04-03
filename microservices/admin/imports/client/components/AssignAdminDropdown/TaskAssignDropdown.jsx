@@ -1,5 +1,7 @@
 import { withProps } from 'recompose';
-import { setAssigneeOfTask } from 'core/api/methods';
+
+import { setAssigneeOfTask } from 'core/api/tasks/methodDefinitions';
+
 import AssignAdminDropdown from './AssignAdminDropdown';
 
 export default withProps({

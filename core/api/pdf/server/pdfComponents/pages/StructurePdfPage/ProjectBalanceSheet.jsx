@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Percent from 'core/components/Translation/numberComponents/Percent';
-import { OWN_FUNDS_TYPES, OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
+import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from 'core/api/loans/loanConstants';
 import T, { Money } from '../../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';

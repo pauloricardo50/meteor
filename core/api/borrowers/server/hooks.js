@@ -1,4 +1,4 @@
-import { ROLES } from '../../constants';
+import { ROLES } from '../../users/userConstants';
 import { additionalDocumentsHook } from '../../helpers/sharedHooks';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
 import SecurityService from '../../security';

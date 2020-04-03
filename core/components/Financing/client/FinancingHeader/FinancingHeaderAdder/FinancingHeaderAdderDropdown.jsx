@@ -1,10 +1,11 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
-import T from 'core/components/Translation';
-import { RESIDENCE_TYPE, CANTONS } from 'core/api/constants';
+import { CANTONS } from '../../../../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../../../api/properties/propertyConstants';
+import { AutoFormDialog } from '../../../../AutoForm2/AutoFormDialog';
 import DropdownMenu from '../../../../DropdownMenu';
+import T from '../../../../Translation';
 
 const getSchema = ({ residenceType }) =>
   new SimpleSchema({

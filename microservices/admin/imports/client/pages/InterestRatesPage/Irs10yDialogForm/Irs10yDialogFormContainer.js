@@ -1,12 +1,13 @@
+import { compose, withProps, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { withProps, compose, withState } from 'recompose';
+
 import {
   irs10yInsert,
-  irs10yUpdate,
   irs10yRemove,
-} from 'imports/core/api/methods/index';
-import PercentInput from 'imports/core/components/PercentInput';
+  irs10yUpdate,
+} from 'core/api/irs10y/methodDefinitions';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import PercentInput from 'core/components/PercentInput';
 
 const irs10ySchema = new SimpleSchema({
   date: {

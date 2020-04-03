@@ -1,11 +1,11 @@
 import React from 'react';
-
 import { withProps } from 'recompose';
 
-import Calculator from 'core/utils/Calculator';
-import T from 'core/components/Translation';
+import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import { borrowerUpdate } from 'core/api/methods/index';
+import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
+
 import BorrowerAdder from '../../../../components/BorrowerAdder';
 import BorrowerForm from './BorrowerForm';
 

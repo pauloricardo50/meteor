@@ -1,13 +1,13 @@
 /* eslint-env mocha */
-import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { ROLES } from '../../api/users/userConstants';
 import { getRedirectIfInRoleForOtherApp } from '../redirection';
-import { ROLES } from '../../api/constants';
 
 describe('getRedirectIfInRoleForOtherApp', () => {
   const token = Random.id();

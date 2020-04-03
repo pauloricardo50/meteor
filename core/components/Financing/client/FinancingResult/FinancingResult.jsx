@@ -1,29 +1,29 @@
 import React from 'react';
 
+import { OWN_FUNDS_TYPES } from '../../../../api/borrowers/borrowerConstants';
 import T from '../../../Translation';
-import { OWN_FUNDS_TYPES } from '../../../../api/constants';
 import FinancingSection, { FinmaRatio } from '../FinancingSection';
+import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
+import FinancingPropertyExpenses from './FinancingPropertyExpenses';
+import FinancingResultAmortization from './FinancingResultAmortization';
 import {
-  getInterests,
+  FinancingResultFutureTitle,
+  FinancingResultFutureValue,
+} from './FinancingResultFuture';
+import {
   getAmortization,
+  getIncomeRatio,
+  getIncomeRatioStatus,
+  getInterests,
+  getRemainingBank3A,
   getRemainingCash,
   getRemainingInsurance2,
   getRemainingInsurance3A,
-  getRemainingBank3A,
   getRemainingInsurance3B,
-  getIncomeRatio,
-  getIncomeRatioStatus,
   makeHasOwnFundsOfType,
 } from './financingResultHelpers';
 import FinancingResultInterests from './FinancingResultInterests';
-import FinancingResultAmortization from './FinancingResultAmortization';
-import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
 import FinancingResultSummary from './FinancingResultSummary';
-import FinancingPropertyExpenses from './FinancingPropertyExpenses';
-import {
-  FinancingResultFutureValue,
-  FinancingResultFutureTitle,
-} from './FinancingResultFuture';
 
 const FinancingResult = ({ error }) =>
   error ? (

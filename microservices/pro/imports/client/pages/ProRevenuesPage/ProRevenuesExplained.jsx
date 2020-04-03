@@ -1,11 +1,10 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import Icon from 'core/components/Icon';
 import StatusLabel from 'core/components/StatusLabel';
-import { LOAN_STATUS } from 'core/api/constants';
-import { LOANS_COLLECTION } from 'imports/core/api/constants';
+import T from 'core/components/Translation';
 
 const ProRevenuesPageExplained = () => (
   <DialogSimple

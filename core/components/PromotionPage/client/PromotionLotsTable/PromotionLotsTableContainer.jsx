@@ -1,21 +1,19 @@
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
+import { withSmartQuery } from '../../../../api/containerToolkit';
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/promotionLots/promotionLotConstants';
 import {
-  proPromotionLots,
   appPromotionLots,
-} from 'core/api/promotionLots/queries';
-import T, { Money } from '../../../Translation';
-import LotChip from './LotChip';
-import PromotionLotSelector from './PromotionLotSelector';
+  proPromotionLots,
+} from '../../../../api/promotionLots/queries';
+import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import StatusLabel from '../../../StatusLabel';
-import {
-  PROMOTION_LOTS_COLLECTION,
-  PROMOTION_STATUS,
-} from '../../../../api/constants';
+import T, { Money } from '../../../Translation';
 import PromotionCustomer from '../PromotionCustomer';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
+import LotChip from './LotChip';
+import PromotionLotSelector from './PromotionLotSelector';
 
 const proColumnOptions = [
   { id: 'name' },

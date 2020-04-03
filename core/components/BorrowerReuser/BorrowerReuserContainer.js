@@ -1,6 +1,7 @@
-import { compose, withProps, lifecycle, withState } from 'recompose';
+import { compose, lifecycle, withProps, withState } from 'recompose';
 
-import { getReusableBorrowers, switchBorrower } from '../../api';
+import { getReusableBorrowers } from '../../api/borrowers/methodDefinitions';
+import { switchBorrower } from '../../api/loans/methodDefinitions';
 
 export default compose(
   withState('borrowers', 'setBorrowers', []),

@@ -1,15 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
+import React from 'react';
 
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 import { CollectionIconLink } from 'core/components/IconLink';
 import BorrowersSummary from 'core/components/BorrowersSummary';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import {
   PROPERTY_CATEGORY,
   PROPERTIES_COLLECTION,
-} from 'imports/core/api/constants';
+} from 'core/api/properties/propertyConstants';
+
 import LoanSummaryColumns from './LoanSummaryColumns';
 
 const getLoanName = ({ name, customName }) => {

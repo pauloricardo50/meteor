@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import ButtonSwitch from 'core/components/ButtonSwitch';
-import { loanUpdate } from 'core/api/methods/index';
 
 const SimpleFormSwitch = ({ simpleForm, loanId }) => (
   <ButtonSwitch

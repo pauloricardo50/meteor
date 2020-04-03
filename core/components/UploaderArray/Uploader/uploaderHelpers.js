@@ -1,16 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 
-import { withStateHandlers, withProps, lifecycle } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
+import { lifecycle, withProps, withStateHandlers } from 'recompose';
 
-import {
-  FILE_STATUS,
-  ALLOWED_FILE_TYPES,
-  MAX_FILE_SIZE,
-} from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
+import {
+  ALLOWED_FILE_TYPES,
+  FILE_STATUS,
+  MAX_FILE_SIZE,
+} from '../../../api/files/fileConstants';
 
 export const checkFile = (file, currentValue = [], tempFiles = []) => {
   if (file.type && ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {

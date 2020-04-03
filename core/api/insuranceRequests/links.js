@@ -1,15 +1,12 @@
-import InsuranceRequests from './insuranceRequests';
-import {
-  Borrowers,
-  Revenues,
-  Tasks,
-  Users,
-  Activities,
-  Insurances,
-  Loans,
-} from '..';
-
+import Activities from '../activities';
+import Borrowers from '../borrowers';
+import Insurances from '../insurances';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Revenues from '../revenues';
+import Tasks from '../tasks/tasks';
+import Users from '../users/users';
+import InsuranceRequests from './insuranceRequests';
 
 const userCache = {
   _id: 1,
@@ -27,16 +24,6 @@ const tasksCache = {
   title: 1,
   isPrivate: 1,
   assigneeLink: 1,
-};
-
-const loanCache = {
-  name: 1,
-  user: { name: 1 },
-  assigneeLinks: { _id: 1 },
-};
-
-const insurancesCache = {
-  organisationLink: 1,
 };
 
 LinkInitializer.directInit(() => {

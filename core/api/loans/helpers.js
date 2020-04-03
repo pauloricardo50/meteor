@@ -1,5 +1,5 @@
 import Calculator from '../../utils/Calculator';
-import { ANONYMIZED_STRING } from '../security/constants';
+import { ANONYMIZED_STRING } from '../security/securityConstants';
 
 export const getLoanProgress = loan => ({
   info: Calculator.getValidFieldsRatio({ loan }),

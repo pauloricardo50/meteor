@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
 import { compose, lifecycle } from 'recompose';
 
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { loanSetStatus } from 'core/api/loans/';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { getLoanLinkTitle } from 'core/components/IconLink/collectionIconLinkHelpers';
-import StatusLabel from 'core/components/StatusLabel';
-import { loanSetStatus } from 'core/api/loans/index';
 import { ModalManagerContext } from 'core/components/ModalManager';
-import LoanBoardCardActions from './LoanBoardCardActions';
-import LoanBoardCardTitle from './LoanBoardCardTitle';
-import LoanBoardCardAssignee from './LoanBoardCardAssignee';
+import StatusLabel from 'core/components/StatusLabel';
+
 import LoanStatusModifierContainer from '../../../SingleLoanPage/LoanStatusModifier/LoanStatusModifierContainer';
+import LoanBoardCardActions from './LoanBoardCardActions';
+import LoanBoardCardAssignee from './LoanBoardCardAssignee';
+import LoanBoardCardTitle from './LoanBoardCardTitle';
 
 const LoanBoardCardTop = ({
   hasRenderedComplexOnce,

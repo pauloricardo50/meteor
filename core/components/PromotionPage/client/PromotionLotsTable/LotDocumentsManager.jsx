@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { S3_ACLS, PROPERTIES_COLLECTION } from '../../../../api/constants';
+import { S3_ACLS } from '../../../../api/files/fileConstants';
+import { PROPERTIES_COLLECTION } from '../../../../api/properties/propertyConstants';
 import DialogSimple from '../../../DialogSimple';
-import UploaderArray from '../../../UploaderArray';
 import T from '../../../Translation';
+import UploaderArray from '../../../UploaderArray';
 
 const promotionPropertyDocuments = [
   {

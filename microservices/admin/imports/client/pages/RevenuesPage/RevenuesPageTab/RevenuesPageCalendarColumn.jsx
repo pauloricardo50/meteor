@@ -1,9 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import Tooltip from 'core/components/Material/Tooltip';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { REVENUE_STATUS } from 'core/api/constants';
+
 import RevenueCard from './RevenueCard';
 
 const RevenuesPageCalendarColumn = ({

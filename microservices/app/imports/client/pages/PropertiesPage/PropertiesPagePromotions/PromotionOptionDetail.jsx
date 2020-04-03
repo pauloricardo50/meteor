@@ -1,9 +1,9 @@
 import React from 'react';
 
-import T, { Money } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
+import { PROMOTION_LOTS_COLLECTION } from 'core/api/promotionLots/promotionLotConstants';
 import { getPromotionLotValue } from 'core/components/PromotionPage/client/PromotionManagement/helpers';
+import StatusLabel from 'core/components/StatusLabel';
+import T, { Money } from 'core/components/Translation';
 
 const PromotionOptionDetail = ({ promotionOption, loanId }) => {
   const {

@@ -1,58 +1,49 @@
-import { Meteor } from 'meteor/meteor';
-
 import '../initialization';
-
 import '../../fixtures/server/fixtureMethods';
-
 import '../users/server/accounts-server-config';
-
 import '../methods/server';
 import '../methods';
-
 import '../factories';
-
 import '../files/server/methods';
 import '../files/server/meteor-slingshot-server';
-
 import '../email/server';
-
 import '../events/server/registerServerListeners';
-
 import '../links';
 import '../reducers/registerReducers';
-
 import './grapher-live';
 import './hooks';
 import '../queries/server';
 import './reducers';
 import './mongoIndexes';
 import './caches';
+import './serverCollections';
 
-import { COLLECTIONS } from '../constants';
+import { Meteor } from 'meteor/meteor';
+
 import BorrowerService from '../borrowers/server/BorrowerService';
+import CommissionRateService from '../commissionRates/server/CommissionRateService';
 import ContactService from '../contacts/server/ContactService';
+import InsuranceProductService from '../insuranceProducts/server/InsuranceProductService';
+import InsuranceRequestService from '../insuranceRequests/server/InsuranceRequestService';
+import InsuranceService from '../insurances/server/InsuranceService';
 import InterestRatesService from '../interestRates/server/InterestRatesService';
 import Irs10yService from '../irs10y/server/Irs10yService';
+import LenderRulesService from '../lenderRules/server/LenderRulesService';
 import LenderService from '../lenders/server/LenderService';
 import LoanService from '../loans/server/LoanService';
 import LotService from '../lots/server/LotService';
 import MortgageNoteService from '../mortgageNotes/server/MortgageNoteService';
 import OfferService from '../offers/server/OfferService';
+import OrganisationService from '../organisations/server/OrganisationService';
 import PromotionLotService from '../promotionLots/server/PromotionLotService';
 import PromotionOptionService from '../promotionOptions/server/PromotionOptionService';
 import PromotionService from '../promotions/server/PromotionService';
 import PropertyService from '../properties/server/PropertyService';
+import RevenueService from '../revenues/server/RevenueService';
+import SlackService from '../slack/server/SlackService';
 import TaskService from '../tasks/server/TaskService';
 import UserService from '../users/server/UserService';
-import SlackService from '../slack/server/SlackService';
-import LenderRulesService from '../lenderRules/server/LenderRulesService';
-import RevenueService from '../revenues/server/RevenueService';
-import OrganisationService from '../organisations/server/OrganisationService';
-import InsuranceRequestService from '../insuranceRequests/server/InsuranceRequestService';
-import InsuranceService from '../insurances/server/InsuranceService';
-import InsuranceProductService from '../insuranceProducts/server/InsuranceProductService';
-import CommissionRateService from '../commissionRates/server/CommissionRateService';
-import './serverCollections';
+import { COLLECTIONS } from './serverConstants';
 
 process.on('uncaughtException', error => {
   if (!Meteor.isProduction) {

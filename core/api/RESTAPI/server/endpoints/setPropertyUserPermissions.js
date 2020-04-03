@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+
 import SimpleSchema from 'simpl-schema';
 
-import { checkQuery, impersonateSchema } from './helpers';
-import PropertyService from '../../../properties/server/PropertyService';
-import { withMeteorUserId } from '../helpers';
+import { setProPropertyPermissions } from '../../../properties/methodDefinitions';
 import { propertyPermissionsSchema } from '../../../properties/schemas/PropertySchema';
+import PropertyService from '../../../properties/server/PropertyService';
 import UserService from '../../../users/server/UserService';
-import { setProPropertyPermissions } from '../../../methods';
+import { withMeteorUserId } from '../helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, impersonateSchema } from './helpers';
 
 const bodySchema = new SimpleSchema({
   email: String,

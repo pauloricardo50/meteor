@@ -1,8 +1,8 @@
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/loans/loanConstants';
 import Calculator, {
   Calculator as CalculatorClass,
-} from 'core/utils/Calculator';
+} from '../../../../utils/Calculator';
 import FinanceCalculator, { getProperty } from '../FinancingCalculator';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
 
 const initCalc = ({
   loan,

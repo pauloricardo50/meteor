@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES } from 'core/api/users/userConstants';
 import Icon from 'core/components/Icon/Icon';
+
 import GetLoanPDFContainer from './GetLoanPDFContainer';
 import PdfDownloadDialog from './PdfDownloadDialog';
 

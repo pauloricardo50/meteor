@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { withState, compose } from 'recompose';
+import { compose, withState } from 'recompose';
 
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { LOAN_STATUS } from '../../../../api/constants';
 import { withSmartQuery } from '../../../../api/containerToolkit';
+import { LOAN_STATUS } from '../../../../api/loans/loanConstants';
 import { proPromotionLoans } from '../../../../api/loans/queries';
+import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import T from '../../../Translation';
 import PromotionCustomersTable from './PromotionCustomersTable';
 

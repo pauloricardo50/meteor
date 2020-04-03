@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Button from 'core/components/Button';
-import { CollectionIconLink } from 'core/components/IconLink';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
-import { loanSearch } from 'core/api/loans/queries';
+import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
+import { loanSearch } from '../../../../api/loans/queries';
+import Button from '../../../Button';
+import CollectionSearch from '../../../CollectionSearch/CollectionSearch';
+import { CollectionIconLink } from '../../../IconLink';
 import PromotionLoanLinkerContainer from './PromotionLoanLinkerContainer';
 
 const PromotionLoanLinker = ({

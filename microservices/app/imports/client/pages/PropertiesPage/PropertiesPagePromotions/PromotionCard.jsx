@@ -1,10 +1,14 @@
 import React from 'react';
-import Link from 'core/components/Link';
 import cx from 'classnames';
 
-import { createRoute } from 'core/utils/routerUtils';
+import {
+  PROMOTIONS_COLLECTION,
+  PROMOTION_STATUS,
+} from 'core/api/promotions/promotionConstants';
+import Link from 'core/components/Link';
 import StatusLabel from 'core/components/StatusLabel';
-import { PROMOTIONS_COLLECTION, PROMOTION_STATUS } from 'core/api/constants';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 const PromotionCard = ({ promotion, loanId }) => {

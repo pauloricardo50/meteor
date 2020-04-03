@@ -1,14 +1,15 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import StickyPopover from 'core/components/StickyPopover';
+import { INSURANCE_REQUEST_STATUS_ORDER } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { ROLES } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import RadioButtons from 'core/components/RadioButtons';
-import { INSURANCE_REQUEST_STATUS_ORDER, ROLES } from 'core/api/constants';
+import StickyPopover from 'core/components/StickyPopover';
+import T from 'core/components/Translation';
 
-import { ACTIONS, GROUP_BY } from '../insuranceRequestBoardConstants';
 import LoanBoardOptionsCheckboxes from '../../LoanBoard/LoanBoardOptions/LoanBoardOptionsCheckboxes';
+import { ACTIONS, GROUP_BY } from '../insuranceRequestBoardConstants';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {
