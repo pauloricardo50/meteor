@@ -9,7 +9,6 @@ import {
   getProCommissionStatus,
 } from 'core/api/revenues/revenueHelpers';
 import Select from 'core/components/Select';
-import StatusLabel from 'core/components/StatusLabel';
 import Table from 'core/components/Table';
 import T, { Money, Percent } from 'core/components/Translation';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
@@ -34,15 +33,29 @@ const columnOptions = [
   label: <T id={`ProRevenuesTable.${obj.id}`} />,
 }));
 
+const formatRevenue = revenue => {
+  const { loan, insuranceRequest } = revenue;
+  const user = loan ? loan.user : insuranceRequest?.user;
+  const name = loan
+    ? loan.name
+    : insuranceRequest?.name
+        ?.split('-')
+        ?.slice(0, 2)
+        ?.join('-');
+
+  return { ...revenue, user, name };
+};
+
 const mapRevenueToRow = (
   {
     _id,
     amount,
     organisationLinks,
     status: revenueStatus,
-    loan,
     expectedAt,
     paidAt: revenuePaidAt,
+    user,
+    name,
   },
   mainOrg,
 ) => {
@@ -70,17 +83,9 @@ const mapRevenueToRow = (
     id: _id,
     commissionAmount,
     columns: [
-      {
-        raw: loan.name,
-        label: (
-          <span>
-            {loan.name}&nbsp;
-            <StatusLabel status={loan.status} collection={LOANS_COLLECTION} />
-          </span>
-        ),
-      },
-      loan.user?.name,
-      loan?.user?.referredByUser?.name,
+      name,
+      user?.name,
+      user?.referredByUser?.name,
       { raw: status, label: <T id={`Forms.status.${status}`} /> },
       {
         raw: date?.getTime(),
@@ -108,9 +113,12 @@ const ProRevenuesTable = () => {
     },
     [proCommissionStatus],
   );
-
+  console.log('revenues:', revenues);
   // Do this because revenues can be null
-  const rows = (revenues || []).reduce(
+  const formattedRevenues = (revenues || []).map(formatRevenue);
+  console.log('formattedRevenues:', formattedRevenues);
+
+  const rows = formattedRevenues.reduce(
     (arr, revenue) => [...arr, mapRevenueToRow(revenue, mainOrg)],
     [],
   );
