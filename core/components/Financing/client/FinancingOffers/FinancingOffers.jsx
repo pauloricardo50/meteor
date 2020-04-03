@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { STEPS } from '../../../../api/loans/loanConstants';
-import { setLoanStep } from '../../../../loans/methodDefinitions';
+import { setLoanStep } from '../../../../api/loans/methodDefinitions';
 import ConfirmMethod from '../../../ConfirmMethod';
 import T from '../../../Translation';
 import FinancingSection from '../FinancingSection';
