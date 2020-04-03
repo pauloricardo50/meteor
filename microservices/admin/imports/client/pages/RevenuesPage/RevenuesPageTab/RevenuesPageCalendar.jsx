@@ -125,6 +125,7 @@ const RevenuesPageCalendar = props => {
           borrower: { name: 1 },
           insuranceRequest: { user: { name: 1 } },
         },
+        insuranceRequest: { name: 1 },
       },
     },
     [

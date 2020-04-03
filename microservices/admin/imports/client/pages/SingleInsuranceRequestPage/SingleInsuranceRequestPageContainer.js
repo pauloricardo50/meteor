@@ -49,6 +49,7 @@ export default compose(
           category: 1,
           features: 1,
           revaluationFactor: 1,
+          maxProductionYears: 1,
         },
         revenues: adminRevenue(),
       },

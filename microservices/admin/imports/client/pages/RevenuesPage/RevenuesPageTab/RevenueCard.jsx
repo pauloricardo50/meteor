@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
@@ -33,7 +34,14 @@ const RevenueCard = ({
   setOpenModifier = () => ({}),
   refetch = () => ({}),
 }) => {
-  const { amount, loan, description, sourceOrganisation, insurance } = revenue;
+  const {
+    amount,
+    loan,
+    description,
+    sourceOrganisation,
+    insurance,
+    insuranceRequest,
+  } = revenue;
 
   return (
     <div
@@ -50,7 +58,12 @@ const RevenueCard = ({
           relatedDoc={
             loan
               ? { ...loan, collection: LOANS_COLLECTION }
-              : { ...insurance, collection: INSURANCES_COLLECTION }
+              : insurance
+              ? { ...insurance, collection: INSURANCES_COLLECTION }
+              : {
+                  ...insuranceRequest,
+                  collection: INSURANCE_REQUESTS_COLLECTION,
+                }
           }
         />
         <div className="flex center-align">

@@ -1,6 +1,11 @@
 import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import { getDuration, getFrequency } from 'core/api/insurances/helpers';
+import {
+  getDuration,
+  getEffectiveDuration,
+  getFrequency,
+} from 'core/api/insurances/helpers';
 import { INSURANCE_PREMIUM_FREQUENCY } from 'core/api/insurances/insuranceConstants';
 import { Money, Percent } from 'core/components/Translation';
 
@@ -11,7 +16,19 @@ const InsuranceEstimatedRevenueInfos = props => {
     duration,
     revaluationFactor,
     productionRate,
+    maxProductionYears,
   } = props;
+
+  const effectiveDuration = getEffectiveDuration({
+    duration,
+    premiumFrequency,
+    maxProductionYears,
+  });
+  const formattedDuration = getDuration({
+    premiumFrequency,
+    duration: effectiveDuration,
+  });
+  const durationIsShortened = effectiveDuration < duration;
 
   return (
     <table className="insurance-estimated-revenue-infos" cellSpacing={16}>
@@ -43,7 +60,17 @@ const InsuranceEstimatedRevenueInfos = props => {
           </td>
           {premiumFrequency !== INSURANCE_PREMIUM_FREQUENCY.SINGLE && (
             <td>
-              <span>{getDuration({ premiumFrequency, duration })}</span>
+              {durationIsShortened ? (
+                <Tooltip
+                  title={`La durée maximale de production pour le produit étant de ${maxProductionYears} ans, la durée prise en compte est réduite de ${getDuration(
+                    { premiumFrequency, duration },
+                  )} à ${formattedDuration}`}
+                >
+                  <span>{formattedDuration}</span>
+                </Tooltip>
+              ) : (
+                <span>{formattedDuration}</span>
+              )}
             </td>
           )}
           <td>

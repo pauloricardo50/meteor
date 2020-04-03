@@ -128,6 +128,7 @@ export default compose(
       loan,
       insurance,
       revenue,
+      insuranceRequest,
       setSubmitting,
       setOpen,
       onSubmitted = () => null,
@@ -142,8 +143,9 @@ export default compose(
           revenueInsert
             .run({
               revenue: model,
-              loanId: loan && loan._id,
+              loanId: loan?._id,
               insuranceId: insurance?._id,
+              insuranceRequestId: insuranceRequest?._id,
             })
             .then(() => setOpen && setOpen(false)),
         modifyRevenue: ({ _id: revenueId, ...object }) => {

@@ -4,7 +4,13 @@ import { formatMessage } from 'core/utils/intl';
 import InsuranceProductModifier from './InsuranceProductModifier';
 
 const InsuranceProduct = ({ insuranceProduct }) => {
-  const { features = [], category, name, revaluationFactor } = insuranceProduct;
+  const {
+    features = [],
+    category,
+    name,
+    revaluationFactor,
+    maxProductionYears,
+  } = insuranceProduct;
   const [openModifier, setOpenModifier] = useState(false);
   return (
     <div
@@ -33,6 +39,8 @@ const InsuranceProduct = ({ insuranceProduct }) => {
         </span>
         <h4>Facteur de revalorisation</h4>
         <span>{revaluationFactor}</span>
+        <h4>Durée maximale de production</h4>
+        <span>{maxProductionYears} ans</span>
       </div>
     </div>
   );

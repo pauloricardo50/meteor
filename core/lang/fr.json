@@ -1,5 +1,7 @@
 {
   "ProRevenuesTable.removedLoan": "Dossier supprimé",
+  "Forms.maxProductionYears": "Durée maximale de production (années)",
+  "Forms.maxProductionYears.placeholder": "35",
   "InsuranceProduct.features.GUARANTEED_CAPITAL": "Capital garanti",
   "InsuranceProduct.features.NON_GUARANTEED_CAPITAL": "Capital non garanti",
   "InsuranceProduct.features.DEATH_CAPITAL": "Capital décès",
@@ -20,7 +22,7 @@
   "Forms.rates": "Structure de commissionnement",
   "Forms.rates.rate": "Taux",
   "Forms.rates.threshold": "Seuil",
-  "Forms.rates.date": "Effectif à partir du",
+  "Forms.rates.startDate": "Effectif à partir du",
   "Forms.type.DEATH": "Décès",
   "Forms.type.LIFE": "Vie",
   "Forms.type.DISABILITY": "Rente d'incapacité de gain",

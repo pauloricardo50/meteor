@@ -20,7 +20,7 @@ const InsuranceEstimatedRevenue = ({
     premium,
     premiumFrequency,
     organisation: { _id: organisationId },
-    insuranceProduct: { name, revaluationFactor },
+    insuranceProduct: { name, revaluationFactor, maxProductionYears },
   },
   insuranceRequest,
 }) => {
@@ -78,6 +78,7 @@ const InsuranceEstimatedRevenue = ({
         duration={duration}
         revaluationFactor={revaluationFactor}
         productionRate={productionRate}
+        maxProductionYears={maxProductionYears}
       />
       <h3 className="mr-8">
         Revenu estimé&nbsp;
@@ -90,7 +91,7 @@ const InsuranceEstimatedRevenue = ({
         setOpen={setOpenRevenueAdder}
         revenue={{
           sourceOrganisationLink: { _id: organisationId },
-          decription: name,
+          description: name,
           amount: estimatedRevenue,
           type: REVENUE_TYPES.INSURANCE,
           assigneeLink: { _id: Meteor.userId() || mainAssignee?._id },

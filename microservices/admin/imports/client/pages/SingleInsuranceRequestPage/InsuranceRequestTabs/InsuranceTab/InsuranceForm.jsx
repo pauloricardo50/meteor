@@ -67,6 +67,7 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
         features: 1,
         category: 1,
         revaluationFactor: 1,
+        maxProductionYears: 1,
       },
     },
   });

@@ -277,4 +277,5 @@ Factory.define('insuranceProduct', InsuranceProducts, {
   features: [INSURANCE_PRODUCT_FEATURES.CAPITALIZATION],
   category: INSURANCE_PRODUCT_CATEGORIES['3A_INSURANCE'],
   revaluationFactor: 2,
+  maxProductionYears: 35,
 });

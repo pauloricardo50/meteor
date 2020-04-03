@@ -485,5 +485,123 @@ describe('collectionServerHelpers', () => {
         { _id: 'admin', percent: 100, isMain: true },
       ]);
     });
+
+    it('does not update the linked insurance requests main assignee', async () => {
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'admin' },
+          { _id: 'admin2', _factory: 'admin' },
+        ],
+        loans: {
+          _id: 'id',
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assigneeLinks: [{ _id: 'admin2', percent: 100, isMain: true }],
+            },
+          ],
+        },
+      });
+
+      await setAssignees({
+        docId: 'id',
+        collection: LOANS_COLLECTION,
+        assignees: [
+          { _id: 'admin', percent: 50, isMain: true },
+          { _id: 'admin2', percent: 50, isMain: false },
+        ],
+      });
+
+      const iR1 = InsuranceRequestService.get('iR1', { assigneeLinks: 1 });
+      const loan = LoanService.get('id', { assigneeLinks: 1 });
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 50, isMain: true },
+        { _id: 'admin2', percent: 50, isMain: false },
+      ]);
+      expect(iR1.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 50, isMain: false },
+        { _id: 'admin2', percent: 50, isMain: true },
+      ]);
+    });
+
+    it('updates the linked insurance requests main assignee if the current does no longer exists', async () => {
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'admin' },
+          { _id: 'admin2', _factory: 'admin' },
+        ],
+        loans: {
+          _id: 'id',
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assigneeLinks: [{ _id: 'admin2', percent: 100, isMain: true }],
+            },
+          ],
+        },
+      });
+
+      await setAssignees({
+        docId: 'id',
+        collection: LOANS_COLLECTION,
+        assignees: [{ _id: 'admin', percent: 100, isMain: true }],
+      });
+
+      const iR1 = InsuranceRequestService.get('iR1', { assigneeLinks: 1 });
+      const loan = LoanService.get('id', { assigneeLinks: 1 });
+
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 100, isMain: true },
+      ]);
+      expect(iR1.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 100, isMain: true },
+      ]);
+    });
+
+    it('does not update the main assignee of the linked loan and other insurance requests', async () => {
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'admin' },
+          { _id: 'admin2', _factory: 'admin' },
+        ],
+        loans: {
+          _id: 'id',
+          insuranceRequests: [
+            { _id: 'iR1' },
+            {
+              _id: 'iR2',
+              assigneeLinks: [{ _id: 'admin', percent: 100, isMain: true }],
+            },
+          ],
+          assigneeLinks: [{ _id: 'admin', percent: 100, isMain: true }],
+        },
+      });
+
+      await setAssignees({
+        docId: 'iR1',
+        collection: INSURANCE_REQUESTS_COLLECTION,
+        assignees: [
+          { _id: 'admin', percent: 50, isMain: false },
+          { _id: 'admin2', percent: 50, isMain: true },
+        ],
+      });
+
+      const loan = LoanService.get('id', { assigneeLinks: 1 });
+      const iR1 = InsuranceRequestService.get('iR1', { assigneeLinks: 1 });
+      const iR2 = InsuranceRequestService.get('iR2', { assigneeLinks: 1 });
+
+      expect(iR1.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 50, isMain: false },
+        { _id: 'admin2', percent: 50, isMain: true },
+      ]);
+      expect(loan.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 50, isMain: true },
+        { _id: 'admin2', percent: 50, isMain: false },
+      ]);
+      expect(iR2.assigneeLinks).to.deep.equal([
+        { _id: 'admin', percent: 50, isMain: true },
+        { _id: 'admin2', percent: 50, isMain: false },
+      ]);
+    });
   });
 });

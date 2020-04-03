@@ -22,7 +22,11 @@ describe('InsuranceService', () => {
         _factory: 'organisation',
         features: [ORGANISATION_FEATURES.INSURANCE],
         commissionRates: { _factory: 'commissionRate' },
-        insuranceProducts: { _id: 'product', _factory: 'insuranceProduct' },
+        insuranceProducts: {
+          _id: 'product',
+          _factory: 'insuranceProduct',
+          maxProductionYears: 10,
+        },
       },
       insuranceRequests: {
         _id: 'insuranceRequest',
@@ -310,6 +314,30 @@ describe('InsuranceService', () => {
       });
 
       expect(estimatedRevenue).to.equal(20);
+    });
+
+    it('uses the product maxProductionYears', () => {
+      const insuranceId = InsuranceService.insert({
+        insuranceRequestId: 'insuranceRequest',
+        borrowerId: 'borrower',
+        organisationId: 'org',
+        insuranceProductId: 'product',
+        insurance: {
+          status: INSURANCE_STATUS.POLICED,
+          startDate: new Date(),
+          endDate: moment()
+            .add(15, 'year')
+            .toDate(),
+          premiumFrequency: INSURANCE_PREMIUM_FREQUENCY.MONTHLY,
+          premium: 1000,
+        },
+      });
+
+      const { estimatedRevenue } = InsuranceService.get(insuranceId, {
+        estimatedRevenue: 1,
+      });
+
+      expect(estimatedRevenue).to.equal(2400);
     });
   });
 });

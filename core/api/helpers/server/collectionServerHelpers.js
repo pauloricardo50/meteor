@@ -221,11 +221,36 @@ export const setAssignees = ({
       break;
   }
 
-  documents.forEach(({ _id, collection: docCollection }) => {
+  documents.forEach(({ _id, collection: docCollection }, index) => {
     const Service = Services[docCollection];
+    let formattedAssignees;
+
+    // Don't update main assignee for linked documents
+    if (index === 0) {
+      formattedAssignees = assignees;
+    } else {
+      const { assigneeLinks: currentAssignees = [] } = Service.get(_id, {
+        assigneeLinks: 1,
+      });
+      if (!currentAssignees.length) {
+        formattedAssignees = assignees;
+      } else {
+        const [currentMain] = currentAssignees.filter(a => a.isMain);
+        const currentMainIsInAssignees = assignees.find(
+          ({ _id: assigneeId }) => assigneeId === currentMain._id,
+        );
+
+        formattedAssignees = currentMainIsInAssignees
+          ? assignees.map(assignee => {
+              const isMain = assignee._id === currentMain._id;
+              return { ...assignee, isMain };
+            })
+          : assignees;
+      }
+    }
     Service._update({
       id: _id,
-      object: { assigneeLinks: assignees },
+      object: { assigneeLinks: formattedAssignees },
     });
   });
 
