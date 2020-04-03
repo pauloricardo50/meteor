@@ -1,5 +1,5 @@
+import useInterval from 'react-use/lib/useInterval';
 import { useState } from 'react';
-import { useInterval } from 'react-use';
 
 const POLLING_INTERVAL = 100;
 const STABILIZATION_TIME = 300;
