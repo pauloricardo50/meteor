@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { borrowerSearch } from 'core/api/borrowers/queries';
 import { insuranceRequestLinkBorrower } from 'core/api/insuranceRequests/methodDefinitions';
 import Button from 'core/components/Button';
@@ -55,10 +54,7 @@ const InsuranceRequestBorrowerReuser = ({
           type="list"
           renderItem={borrower => (
             <div className="flex center-align sb" style={{ width: '100%' }}>
-              <CollectionIconLink
-                relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
-                placement="left"
-              />
+              <CollectionIconLink relatedDoc={borrower} placement="left" />
               <Button
                 onClick={() =>
                   insuranceRequestLinkBorrower

@@ -1,17 +1,12 @@
 import React from 'react';
 
-import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import { lenderLinkOrganisationAndContact } from 'core/api/lenders/methodDefinitions';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { CollectionIconLink } from 'core/components/IconLink';
 
 const LenderContact = ({ contact, contacts, lenderId }) => (
   <div className="flex center">
-    {contact && (
-      <CollectionIconLink
-        relatedDoc={{ ...contact, collection: CONTACTS_COLLECTION }}
-      />
-    )}
+    {contact && <CollectionIconLink relatedDoc={contact} />}
     <DropdownMenu
       iconType="edit"
       buttonProps={{ size: 'small' }}

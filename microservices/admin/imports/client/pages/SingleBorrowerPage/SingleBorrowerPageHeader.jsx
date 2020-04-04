@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import { borrowerDelete } from 'core/api/borrowers/methodDefinitions';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import FullDate from 'core/components/dateComponents/FullDate';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -50,21 +49,12 @@ const SingleBorrowerHeader = ({
 
     <div className="bottom">
       <p className="created-at">
-        {user && (
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        )}
+        {user && <CollectionIconLink relatedDoc={user} />}
         {user && user.assignedEmployee && (
           <span>
             <T id="SingleBorrowerPageHeader.assignedTo" />
             &nbsp;
-            <CollectionIconLink
-              relatedDoc={{
-                ...user.assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
+            <CollectionIconLink relatedDoc={user.assignedEmployee} />
           </span>
         )}
         <span>

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import moment from 'moment';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { proRevenues } from 'core/api/revenues/queries';
 import { PRO_COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
 import {
@@ -113,10 +112,8 @@ const ProRevenuesTable = () => {
     },
     [proCommissionStatus],
   );
-  console.log('revenues:', revenues);
   // Do this because revenues can be null
   const formattedRevenues = (revenues || []).map(formatRevenue);
-  console.log('formattedRevenues:', formattedRevenues);
 
   const rows = formattedRevenues.reduce(
     (arr, revenue) => [...arr, mapRevenueToRow(revenue, mainOrg)],

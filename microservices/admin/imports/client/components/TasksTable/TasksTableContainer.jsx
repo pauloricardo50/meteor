@@ -2,20 +2,13 @@ import React from 'react';
 import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
-import T from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import { CollectionIconLink } from 'core/components/IconLink';
-import { ORDER } from 'core/utils/sortArrayOfObjects';
-import Linkify from 'core/components/Linkify';
-import { employeesById } from 'core/arrays/epotekEmployees';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { employeesById } from 'core/arrays/epotekEmployees';
+import { CollectionIconLink } from 'core/components/IconLink';
+import Linkify from 'core/components/Linkify';
+import StatusLabel from 'core/components/StatusLabel';
+import T from 'core/components/Translation';
+import { ORDER } from 'core/utils/sortArrayOfObjects';
 
 import TasksTableActions from './TasksTableActions';
 
@@ -77,31 +70,31 @@ const getRelatedDoc = ({
   insurance,
 }) => {
   if (user) {
-    return { ...user, collection: USERS_COLLECTION };
+    return user;
   }
 
   if (loan) {
-    return { ...loan, collection: LOANS_COLLECTION };
+    return loan;
   }
 
   if (promotion) {
-    return { ...promotion, collection: PROMOTIONS_COLLECTION };
+    return promotion;
   }
 
   if (organisation) {
-    return { ...organisation, collection: ORGANISATIONS_COLLECTION };
+    return organisation;
   }
 
   if (lender) {
-    return { ...lender, collection: LENDERS_COLLECTION };
+    return lender;
   }
 
   if (insurance) {
-    return { ...insurance, collection: INSURANCES_COLLECTION };
+    return insurance;
   }
 
   if (insuranceRequest) {
-    return { ...insuranceRequest, collection: INSURANCE_REQUESTS_COLLECTION };
+    return insuranceRequest;
   }
 };
 
@@ -184,9 +177,7 @@ const makeMapTask = ({
       {
         label:
           assignee && assignee._id ? (
-            <CollectionIconLink
-              relatedDoc={{ ...assignee, collection: USERS_COLLECTION }}
-            />
+            <CollectionIconLink relatedDoc={assignee} />
           ) : null,
         raw: assignee && assignee.name,
       },

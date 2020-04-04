@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { insuranceRequestLinkLoan } from 'core/api/insuranceRequests/methodDefinitions';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loanSearch } from 'core/api/loans/queries';
 import Button from 'core/components/Button';
 import CollectionSearch from 'core/components/CollectionSearch';
@@ -45,10 +44,7 @@ const InsuranceRequestLoanLinker = props => {
           type="list"
           renderItem={loan => (
             <div className="flex center-align sb" style={{ width: '100%' }}>
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                placement="left"
-              />
+              <CollectionIconLink relatedDoc={loan} placement="left" />
               <Button
                 onClick={() =>
                   insuranceRequestLinkLoan

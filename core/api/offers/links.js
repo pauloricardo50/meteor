@@ -13,11 +13,5 @@ Offers.addLinks({
     collection: Lenders,
     type: 'one',
     metadata: true,
-    denormalize: {
-      field: 'lenderCache',
-      body: {
-        loanLink: 1,
-      },
-    },
   },
 });

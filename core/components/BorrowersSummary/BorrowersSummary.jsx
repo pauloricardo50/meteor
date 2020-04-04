@@ -1,15 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
+import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 import Icon from '../Icon';
 import { CollectionIconLink } from '../IconLink';
 import T from '../Translation';
-import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 
 const BorrowersSummary = ({
   borrowers,
@@ -26,9 +25,7 @@ const BorrowersSummary = ({
         {borrowers.length > 0
           ? borrowers.map((borrower, index) =>
               isAdmin ? (
-                <CollectionIconLink
-                  relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
-                />
+                <CollectionIconLink relatedDoc={borrower} />
               ) : (
                 <Chip
                   style={{ margin: 8 }}

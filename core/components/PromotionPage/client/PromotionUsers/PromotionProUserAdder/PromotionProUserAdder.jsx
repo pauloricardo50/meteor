@@ -1,10 +1,7 @@
 import React from 'react';
 
 import { userSearch } from '../../../../../api/users/queries';
-import {
-  ROLES,
-  USERS_COLLECTION,
-} from '../../../../../api/users/userConstants';
+import { ROLES } from '../../../../../api/users/userConstants';
 import Button from '../../../../Button';
 import CollectionSearch from '../../../../CollectionSearch';
 import DialogSimple from '../../../../DialogSimple';
@@ -27,9 +24,7 @@ const PromotionProUserAdder = ({ addUser, promotion }) => (
         title="Rechercher un compte Pro"
         renderItem={user => (
           <div className="user-search-item">
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-            />
+            <CollectionIconLink relatedDoc={user} />
             <Button
               onClick={() => addUser({ userId: user._id })}
               primary

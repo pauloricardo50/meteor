@@ -75,10 +75,7 @@ const PromotionAdministration = ({
             title="Rechercher un utilisateur PRO"
             renderItem={user => (
               <div className="user-search-item">
-                <CollectionIconLink
-                  relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-                  placement="left"
-                />
+                <CollectionIconLink relatedDoc={user} placement="left" />
                 <Button
                   onClick={() =>
                     addProUserToPromotion.run({

@@ -1,28 +1,32 @@
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { adminLoans } from 'core/api/loans/queries';
-
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
+import { useStaticMeteorData } from '../../hooks/useMeteorData';
 import { getLoanContacts } from './helpers';
 
 const useLoanContacts = loanId => {
   const { loading, data: loanWithContacts } = useStaticMeteorData({
-    query: adminLoans,
+    query: LOANS_COLLECTION,
     params: {
-      _id: loanId,
-      $body: {
-        user: {
-          email: 1,
-          phoneNumber: 1,
-          name: 1,
-          referredByUser: { email: 1, phoneNumber: 1, name: 1 },
-          referredByOrganisation: { name: 1, emails: 1 },
-        },
-        borrowers: { email: 1, phoneNumber: 1, name: 1 },
-        promotions: { _id: 1, users: { name: 1, email: 1, phoneNumber: 1 } },
-        contacts: 1,
-        lenders: {
-          organisation: { name: 1 },
-          contact: { name: 1, email: 1, phoneNumber: 1 },
-        },
+      $filters: {
+        _id: loanId,
+      },
+      user: {
+        email: 1,
+        phoneNumber: 1,
+        name: 1,
+        referredByUser: { email: 1, phoneNumber: 1, name: 1 },
+        referredByOrganisation: { name: 1, emails: 1 },
+      },
+      borrowers: { email: 1, phoneNumber: 1, name: 1 },
+      promotions: { _id: 1, users: { name: 1, email: 1, phoneNumber: 1 } },
+      contacts: 1,
+      lenders: {
+        organisation: { name: 1 },
+        contact: { name: 1, email: 1, phoneNumber: 1 },
+      },
+      properties: {
+        $filters: { category: PROPERTY_CATEGORY.PRO },
+        users: { name: 1, email: 1, phoneNumber: 1 },
       },
     },
     type: 'single',

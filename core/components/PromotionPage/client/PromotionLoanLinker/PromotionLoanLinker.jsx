@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
 import { loanSearch } from '../../../../api/loans/queries';
 import Button from '../../../Button';
 import CollectionSearch from '../../../CollectionSearch/CollectionSearch';
@@ -20,12 +19,7 @@ const PromotionLoanLinker = ({
           <p className="secondary center" style={{ marginTop: 0 }}>
             Dossier lié:&nbsp;
           </p>
-          <CollectionIconLink
-            relatedDoc={{
-              ...promotion.promotionLoan,
-              collection: LOANS_COLLECTION,
-            }}
-          />
+          <CollectionIconLink relatedDoc={promotion.promotionLoan} />
           <Button
             onClick={() =>
               unlinkPromotionLoan({ loanId: promotion.promotionLoan._id })
@@ -60,9 +54,7 @@ const PromotionLoanLinker = ({
           className="flex-row"
           style={{ width: '100%', justifyContent: 'space-between' }}
         >
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
+          <CollectionIconLink relatedDoc={loan} />
           <Button
             onClick={() =>
               linkPromotionLoan({ loanId: loan._id }).then(hideResults)

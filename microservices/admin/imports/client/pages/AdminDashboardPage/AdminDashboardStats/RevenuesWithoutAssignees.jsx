@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -53,10 +52,7 @@ const RevenuesWithoutAssignees = ({ showAll }) => {
                 revenues.map(
                   ({ loan }) =>
                     loan && (
-                      <CollectionIconLink
-                        key={loan._id}
-                        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                      />
+                      <CollectionIconLink key={loan._id} relatedDoc={loan} />
                     ),
                 )}
             </div>

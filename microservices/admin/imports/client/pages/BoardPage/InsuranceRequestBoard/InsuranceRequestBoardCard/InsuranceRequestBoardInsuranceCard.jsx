@@ -24,9 +24,7 @@ const InsuranceRequestBoardInsuranceCard = ({ insurance }) => {
           />
           <p>{insuranceProduct?.name}</p>
         </div>
-        <CollectionIconLink
-          relatedDoc={{ ...insurance, collection: INSURANCES_COLLECTION }}
-        />
+        <CollectionIconLink relatedDoc={insurance} />
       </div>
     </div>
   );

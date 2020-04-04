@@ -64,7 +64,7 @@ const getColumns = ({
       raw: loanName,
       label: (
         <CollectionIconLink
-          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          relatedDoc={loan}
           noRoute={Meteor.microservice === 'pro'}
         />
       ),

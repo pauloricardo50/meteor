@@ -1,12 +1,11 @@
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { withProps } from 'recompose';
 
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 
 const columnOptions = [
   { id: 'Dossier' },
@@ -32,22 +31,12 @@ const getRows = ({ insuranceRequests = [], history }) =>
       columns: [
         {
           raw: name,
-          label: (
-            <CollectionIconLink
-              relatedDoc={{
-                ...insuranceRequest,
-                collection: INSURANCE_REQUESTS_COLLECTION,
-              }}
-            />
-          ),
+          label: <CollectionIconLink relatedDoc={insuranceRequest} />,
         },
         {
           raw: user?.name,
           label: user ? (
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-              key="user"
-            />
+            <CollectionIconLink relatedDoc={user} key="user" />
           ) : (
             'Pas de compte'
           ),

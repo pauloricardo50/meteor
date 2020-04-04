@@ -57,10 +57,7 @@ const LoansWithoutAssignees = ({ showAll }) => {
 
               <div>
                 {loans.map(loan => (
-                  <CollectionIconLink
-                    key={loan._id}
-                    relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                  />
+                  <CollectionIconLink key={loan._id} relatedDoc={loan} />
                 ))}
               </div>
             </>

@@ -55,10 +55,7 @@ const IncoherentAssignees = ({ showAll }) => {
               <div className="flex-col">
                 {!loading &&
                   users.map(user => (
-                    <CollectionIconLink
-                      key={user._id}
-                      relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-                    />
+                    <CollectionIconLink key={user._id} relatedDoc={user} />
                   ))}
               </div>
             </>

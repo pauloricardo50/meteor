@@ -23,7 +23,7 @@ const columnOptions = [
   label: label || <T id={`ProCustomersTable.${id}`} />,
 }));
 
-const makeMapLoan = ({ proUser, isAdmin }) => loan => {
+const makeMapLoan = ({ isAdmin }) => loan => {
   const {
     _id: loanId,
     anonymous,
@@ -41,13 +41,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
     columns: [
       {
         raw: loanName,
-        label: isAdmin ? (
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
-        ) : (
-          loanName
-        ),
+        label: isAdmin ? <CollectionIconLink relatedDoc={loan} /> : loanName,
       },
       {
         raw: status,

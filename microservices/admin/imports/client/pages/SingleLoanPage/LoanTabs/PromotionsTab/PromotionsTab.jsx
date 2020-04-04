@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 
@@ -11,7 +10,7 @@ const PromotionsTab = ({ loan }) => {
     <>
       <h2>
         <CollectionIconLink
-          relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
+          relatedDoc={promotion}
           iconStyle={{ maxWidth: 'unset' }}
         />
       </h2>

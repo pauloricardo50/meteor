@@ -7,9 +7,5 @@ LenderRules.addLinks({
     type: 'one',
     metadata: true,
     collection: Organisations,
-    denormalize: {
-      field: 'organisationCache',
-      body: { _id: 1, name: 1 },
-    },
   },
 });

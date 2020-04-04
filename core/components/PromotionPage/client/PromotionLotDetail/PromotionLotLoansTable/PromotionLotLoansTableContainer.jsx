@@ -37,7 +37,7 @@ const getColumns = ({ promotionLot, promotionOption }) => {
   return [
     <CollectionIconLink
       key="loan"
-      relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+      relatedDoc={loan}
       noRoute={Meteor.microservice === 'pro'}
     />,
     {

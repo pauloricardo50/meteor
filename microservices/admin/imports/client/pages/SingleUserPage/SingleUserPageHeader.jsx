@@ -8,12 +8,11 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   sendEnrollmentEmail,
   toggleAccount,
 } from 'core/api/users/methodDefinitions';
-import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import { ROLES } from 'core/api/users/userConstants';
 import Users from 'core/api/users/users';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import EmailModifier from 'core/components/EmailModifier';
@@ -94,10 +93,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
               items={organisations.map(organisation => (
                 <CollectionIconLink
                   key={organisation._id}
-                  relatedDoc={{
-                    ...organisation,
-                    collection: ORGANISATIONS_COLLECTION,
-                  }}
+                  relatedDoc={organisation}
                 />
               ))}
               title="Organisations"
@@ -150,12 +146,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
               {assignedEmployee && (
                 <>
                   <T id="UsersTable.assignedTo" />
-                  <CollectionIconLink
-                    relatedDoc={{
-                      ...assignedEmployee,
-                      collection: USERS_COLLECTION,
-                    }}
-                  />
+                  <CollectionIconLink relatedDoc={assignedEmployee} />
                 </>
               )}
               <UserAssignDropdown doc={user} />

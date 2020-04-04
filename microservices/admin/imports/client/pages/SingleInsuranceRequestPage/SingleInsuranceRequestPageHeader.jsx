@@ -2,7 +2,6 @@ import React from 'react';
 
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
 
@@ -20,11 +19,7 @@ const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
       <div className="left">
         <div className="left-top">
           <h1>{name}</h1>
-          {user && (
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-            />
-          )}
+          {user && <CollectionIconLink relatedDoc={user} />}
           <span className="ml-16">
             <StatusLabel
               collection={INSURANCE_REQUESTS_COLLECTION}

@@ -12,22 +12,12 @@ import Sessions from '../sessions';
 import Tasks from '../tasks/tasks';
 import Users from './users';
 
-const assignedEmployeeCache = {
-  _id: 1,
-  firstName: 1,
-  lastName: 1,
-};
-
 LinkInitializer.directInit(() => {
   Users.addLinks({
     assignedEmployee: {
       collection: Users,
       field: 'assignedEmployeeId',
       type: 'one',
-      denormalize: {
-        field: 'assignedEmployeeCache',
-        body: assignedEmployeeCache,
-      },
     },
     borrowers: {
       collection: Borrowers,

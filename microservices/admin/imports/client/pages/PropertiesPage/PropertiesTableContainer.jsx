@@ -35,10 +35,7 @@ const mapProperty = history => ({
     />,
     name || [address1, city].filter(x => x).join(', '),
     category !== PROPERTY_CATEGORY.PROMOTION && (
-      <CollectionIconLink
-        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-        key="user"
-      />
+      <CollectionIconLink relatedDoc={user} key="user" />
     ),
     {
       raw: createdAt && createdAt.getTime(),

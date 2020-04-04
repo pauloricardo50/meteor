@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
+import cx from 'classnames';
 
 import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 import { CONTACTS_COLLECTION } from '../../api/contacts/contactsConstants';
@@ -26,7 +27,7 @@ import IconLink from './IconLink';
 
 const showPopups = Meteor.microservice === 'admin';
 
-const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
+const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
   if (!docId) {
     return {
       link: '/',
@@ -35,7 +36,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     };
   }
 
-  switch (collection) {
+  switch (_collection) {
     case LOANS_COLLECTION: {
       let text;
 
@@ -155,7 +156,6 @@ const CollectionIconLink = ({
   relatedDoc,
   showIcon,
   stopPropagation,
-  variant,
   placement,
   data,
   replacementPopup,
@@ -164,7 +164,7 @@ const CollectionIconLink = ({
   children,
   onClick,
 }) => {
-  const { collection, _id: docId } = relatedDoc;
+  const { _collection, _id: docId } = relatedDoc;
 
   if (!docId) {
     return null;
@@ -172,10 +172,10 @@ const CollectionIconLink = ({
 
   const {
     link,
-    icon = collectionIcons[collection],
+    icon = collectionIcons[_collection],
     text,
     hasPopup,
-  } = getIconConfig(relatedDoc, variant);
+  } = getIconConfig(relatedDoc);
 
   if ((showPopups && hasPopup) || replacementPopup) {
     return (
@@ -191,7 +191,9 @@ const CollectionIconLink = ({
           link={link}
           icon={icon}
           text={text}
-          className="collection-icon"
+          className={cx('collection-icon', {
+            'font-awesome': typeof icon !== 'string',
+          })}
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
           iconStyle={iconStyle}
@@ -211,7 +213,9 @@ const CollectionIconLink = ({
       icon={icon}
       text={text}
       stopPropagation={stopPropagation}
-      className="collection-icon"
+      className={cx('collection-icon', {
+        'font-awesome': typeof icon !== 'string',
+      })}
       iconClassName={iconClassName}
       iconStyle={iconStyle}
       showIcon={showIcon}

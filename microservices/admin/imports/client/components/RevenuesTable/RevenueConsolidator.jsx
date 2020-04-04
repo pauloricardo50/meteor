@@ -3,7 +3,6 @@ import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
 
 import { decimalNegativeMoneyField } from 'core/api/helpers/sharedSchemas';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { consolidateRevenue } from 'core/api/revenues/methodDefinitions';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
@@ -37,12 +36,7 @@ const RevenueConsolidator = ({
             {sourceOrganisation && (
               <>
                 &nbsp;
-                <CollectionIconLink
-                  relatedDoc={{
-                    ...sourceOrganisation,
-                    collection: ORGANISATIONS_COLLECTION,
-                  }}
-                />
+                <CollectionIconLink relatedDoc={sourceOrganisation} />
               </>
             )}
           </small>

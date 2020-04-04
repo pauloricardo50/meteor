@@ -11,7 +11,6 @@ const InsuranceRequestBoardCardTop = props => {
   const { insuranceRequest, renderComplex } = props;
   const {
     _id: insuranceRequestId,
-    name: insuranceRequestName,
     status,
     assigneeLinks = [],
   } = insuranceRequest;
@@ -39,12 +38,7 @@ const InsuranceRequestBoardCardTop = props => {
           assigneeLinks={assigneeLinks}
         />
 
-        <CollectionIconLink
-          relatedDoc={{
-            ...insuranceRequest,
-            collection: INSURANCE_REQUESTS_COLLECTION,
-          }}
-        />
+        <CollectionIconLink relatedDoc={insuranceRequest} />
       </div>
     </>
   );

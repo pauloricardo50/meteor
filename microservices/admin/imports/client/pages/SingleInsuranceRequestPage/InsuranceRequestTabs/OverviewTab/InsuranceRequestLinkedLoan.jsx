@@ -2,7 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { insuranceRequestLinkNewLoan } from 'core/api/insuranceRequests/methodDefinitions';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -19,9 +18,7 @@ const InsuranceRequestLinkedLoan = ({ insuranceRequest }) => {
     <div className="flex-col mr-16">
       <h4>Dossier hypothécaire lié</h4>
       {loan ? (
-        <CollectionIconLink
-          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-        />
+        <CollectionIconLink relatedDoc={loan} />
       ) : (
         <div className="flex-col">
           <p className="description">

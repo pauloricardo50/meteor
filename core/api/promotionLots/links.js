@@ -6,11 +6,6 @@ import Promotions from '../promotions';
 import Properties from '../properties';
 import PromotionLots from '.';
 
-const promotionCache = {
-  _id: 1,
-  name: 1,
-};
-
 PromotionLots.addLinks({
   properties: {
     collection: Properties,
@@ -37,10 +32,6 @@ LinkInitializer.inversedInit(() => {
     promotion: {
       collection: Promotions,
       inversedBy: 'promotionLots',
-      denormalize: {
-        field: 'promotionCache',
-        body: promotionCache,
-      },
     },
     promotionOptions: {
       collection: PromotionOptions,

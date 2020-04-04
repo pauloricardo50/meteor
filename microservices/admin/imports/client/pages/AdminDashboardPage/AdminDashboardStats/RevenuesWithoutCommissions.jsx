@@ -28,15 +28,7 @@ const OrgItem = ({ orgName, revenues }) => (
       <div className="flex-col">
         {revenues.map(
           ({ loan }) =>
-            loan && (
-              <CollectionIconLink
-                key={loan._id}
-                relatedDoc={{
-                  ...loan,
-                  collection: LOANS_COLLECTION,
-                }}
-              />
-            ),
+            loan && <CollectionIconLink key={loan._id} relatedDoc={loan} />,
         )}
       </div>
     </DialogSimple>

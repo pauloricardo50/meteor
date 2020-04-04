@@ -61,7 +61,7 @@ export const openPreConfirmDialog = async ({
     text: (
       <>
         <p>
-          Passer le status&nbsp;
+          Passer le statut&nbsp;
           <T id={`Forms.${id}`} />
           &nbsp;à&nbsp;
           <T id={`Forms.status.${status}`} />

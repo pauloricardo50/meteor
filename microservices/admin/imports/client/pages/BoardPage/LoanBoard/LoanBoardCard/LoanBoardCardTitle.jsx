@@ -27,7 +27,7 @@ const LoanBoardCardTitle = ({ borrowers = [], hasUser, name, title, user }) => {
             relatedDoc={{
               ...user,
               name: title,
-              collection: USERS_COLLECTION,
+              _collection: USERS_COLLECTION,
               additionalPopoverContent: borrowerContent,
             }}
             showIcon={false}

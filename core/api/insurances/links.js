@@ -8,15 +8,6 @@ import Revenues from '../revenues';
 import Tasks from '../tasks/tasks';
 import Insurances from './insurances';
 
-const tasksCache = {
-  createdAt: 1,
-  dueAt: 1,
-  status: 1,
-  title: 1,
-  isPrivate: 1,
-  assigneeLink: 1,
-};
-
 LinkInitializer.directInit(() => {
   Insurances.addLinks({
     borrower: {
@@ -58,10 +49,6 @@ LinkInitializer.inversedInit(() => {
       inversedBy: 'insuranceRequest',
       collection: Tasks,
       autoremove: true,
-      denormalize: {
-        field: 'tasksCache',
-        body: tasksCache,
-      },
     },
     activities: {
       inversedBy: 'insurance',

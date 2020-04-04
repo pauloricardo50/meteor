@@ -1,9 +1,10 @@
-import InsuranceProductSchema from './schemas/InsuranceProductSchema';
-import { INSURANCE_PRODUCTS_COLLECTION } from './insuranceProductConstants';
-
 import { createCollection } from '../helpers/collectionHelpers';
+import { INSURANCE_PRODUCTS_COLLECTION } from './insuranceProductConstants';
+import InsuranceProductSchema from './schemas/InsuranceProductSchema';
 
-const InsuranceProducts = createCollection(INSURANCE_PRODUCTS_COLLECTION);
+const InsuranceProducts = createCollection(
+  INSURANCE_PRODUCTS_COLLECTION,
+  InsuranceProductSchema,
+);
 
-InsuranceProducts.attachSchema(InsuranceProductSchema);
 export default InsuranceProducts;
