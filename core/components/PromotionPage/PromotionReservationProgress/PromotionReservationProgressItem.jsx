@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState } from 'react';
-import moment from 'moment';
 import cx from 'classnames';
+import moment from 'moment';
 
 import Icon from '../../Icon';
 import T from '../../Translation';
@@ -22,18 +22,25 @@ const IconTooltip = ({
   note,
   placeholder,
   renderStatus = defaultRenderStatus,
-}) => (
-  <div className="promotion-reservation-progress-item-tooltip">
-    <b className="flex sb">
-      <T id={`Forms.${id}`} />
-      &nbsp;
-      {date && (
-        <i className="secondary">{moment(date).format("H:mm, D MMM 'YY")}</i>
-      )}
-    </b>
-    {renderStatus({ id, note, placeholder, status })}
-  </div>
-);
+}) => {
+  // Adjust timezone
+  const timezonedDate =
+    date && new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+  return (
+    <div className="promotion-reservation-progress-item-tooltip">
+      <b className="flex sb">
+        <T id={`Forms.${id}`} />
+        &nbsp;
+        {date && (
+          <i className="secondary">
+            {moment(timezonedDate).format("H:mm, D MMM 'YY")}
+          </i>
+        )}
+      </b>
+      {renderStatus({ id, note, placeholder, status })}
+    </div>
+  );
+};
 
 const PromotionReservationProgressItem = ({
   icon,
