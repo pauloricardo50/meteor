@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 
@@ -14,12 +13,7 @@ const ReferredByOrganisationAssignDropdown = ({
     {referredByOrganisation ? (
       <span className="flex-row center space-children">
         Référé par l'organisation&nbsp;
-        <CollectionIconLink
-          relatedDoc={{
-            ...referredByOrganisation,
-            collection: ORGANISATIONS_COLLECTION,
-          }}
-        />
+        <CollectionIconLink relatedDoc={referredByOrganisation} />
       </span>
     ) : (
       <span className="flex-row center space-children">

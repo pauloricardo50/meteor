@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation/Translation';
@@ -38,10 +37,7 @@ const makeMapUser = ({ history }) => user => {
             items={organisations.map(organisation => (
               <CollectionIconLink
                 key={organisation._id}
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
+                relatedDoc={organisation}
               />
             ))}
             title="Organisations"

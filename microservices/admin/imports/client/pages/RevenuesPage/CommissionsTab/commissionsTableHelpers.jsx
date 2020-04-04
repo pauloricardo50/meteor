@@ -59,14 +59,7 @@ export const mapRevenueIntoCommissions = ({
       columns: [
         {
           raw: organisationName,
-          label: (
-            <CollectionIconLink
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          ),
+          label: <CollectionIconLink relatedDoc={organisation} />,
         },
         {
           raw: user?.referredByUser?.name,

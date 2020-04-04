@@ -205,10 +205,7 @@ const MonitoringActivity = ({
                               .map(l => (
                                 <CollectionIconLink
                                   key={l._id}
-                                  relatedDoc={{
-                                    ...l,
-                                    collection: LOANS_COLLECTION,
-                                  }}
+                                  relatedDoc={l}
                                 />
                               ))
                           : '-'}

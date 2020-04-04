@@ -1,26 +1,26 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
-import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWave';
-import { faUserShield } from '@fortawesome/pro-light-svg-icons/faUserShield';
 import { faShieldCheck } from '@fortawesome/pro-light-svg-icons/faShieldCheck';
+import { faUserShield } from '@fortawesome/pro-light-svg-icons/faUserShield';
+import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
-import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
-import { INTEREST_RATES_COLLECTION } from 'core/api/interestRates/interestRatesConstants';
-import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { INTEREST_RATES_COLLECTION } from 'core/api/interestRates/interestRatesConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 export default {
   [BORROWERS_COLLECTION]: 'people',

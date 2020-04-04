@@ -2,7 +2,6 @@ import React from 'react';
 import cx from 'classnames';
 
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -17,9 +16,7 @@ const getTitle = ({ id, groupBy, admins, promotions }) => {
     case GROUP_BY.PROMOTION: {
       const promotion = promotions.find(({ _id }) => id === _id);
       return promotion ? (
-        <CollectionIconLink
-          relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
-        />
+        <CollectionIconLink relatedDoc={promotion} />
       ) : (
         'Sans promo'
       );

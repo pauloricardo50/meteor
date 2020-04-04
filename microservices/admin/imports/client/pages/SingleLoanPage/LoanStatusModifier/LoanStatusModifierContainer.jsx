@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import Button from 'core/components/Button';
 import { CollectionIconLink } from 'core/components/IconLink';
 import DialogForm from 'core/components/ModalManager/DialogForm';
@@ -88,9 +88,7 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
           >
             <div className="flex-row center">
               <p>Vous vous apprêtez à passer le dossier&nbsp;</p>
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-              />
+              <CollectionIconLink relatedDoc={loan} />
               <p>&nbsp;en sans suite.</p>
             </div>
           </DialogForm>,

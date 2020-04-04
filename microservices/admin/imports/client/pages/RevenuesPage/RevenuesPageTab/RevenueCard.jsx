@@ -1,10 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import Icon from 'core/components/Icon';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -55,16 +51,7 @@ const RevenueCard = ({
     >
       <div className="flex sb">
         <CollectionIconLink
-          relatedDoc={
-            loan
-              ? { ...loan, collection: LOANS_COLLECTION }
-              : insurance
-              ? { ...insurance, collection: INSURANCES_COLLECTION }
-              : {
-                  ...insuranceRequest,
-                  collection: INSURANCE_REQUESTS_COLLECTION,
-                }
-          }
+          relatedDoc={loan || insurance || insuranceRequest}
         />
         <div className="flex center-align">
           <span className="mr-8">{toMoney(amount)}</span>
@@ -80,12 +67,7 @@ const RevenueCard = ({
       <div>{description}</div>
       {sourceOrganisation && (
         <div className="source-organisation">
-          <CollectionIconLink
-            relatedDoc={{
-              ...sourceOrganisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
+          <CollectionIconLink relatedDoc={sourceOrganisation} />
         </div>
       )}
     </div>

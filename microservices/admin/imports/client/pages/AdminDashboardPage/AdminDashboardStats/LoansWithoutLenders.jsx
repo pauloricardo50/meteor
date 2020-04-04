@@ -68,10 +68,7 @@ const LoansWithoutLenders = ({ showAll }) => {
                     <div key={assignee}>
                       <h3>{assignee}</h3>
                       {groupedLoans[assignee].map(loan => (
-                        <CollectionIconLink
-                          key={loan._id}
-                          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                        />
+                        <CollectionIconLink key={loan._id} relatedDoc={loan} />
                       ))}
                     </div>
                   ))}

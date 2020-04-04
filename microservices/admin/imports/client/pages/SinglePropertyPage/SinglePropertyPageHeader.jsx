@@ -50,21 +50,12 @@ const SinglePropertyHeader = ({
 
     <div className="bottom">
       <p className="created-at">
-        {user && (
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        )}
+        {user && <CollectionIconLink relatedDoc={user} />}
         {user && user.assignedEmployee && (
           <span>
             <T id="SinglePropertyPageHeader.assignedTo" />
             &nbsp;
-            <CollectionIconLink
-              relatedDoc={{
-                ...user.assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
+            <CollectionIconLink relatedDoc={user.assignedEmployee} />
           </span>
         )}
         <span>

@@ -10,7 +10,7 @@ const PromotionList = ({ promotions }) => (
     {promotions.map(({ name, status, _id }) => (
       <div key={_id}>
         <CollectionIconLink
-          relatedDoc={{ _id, name, collection: PROMOTIONS_COLLECTION }}
+          relatedDoc={{ _id, name, _collection: PROMOTIONS_COLLECTION }}
         />
         <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
       </div>

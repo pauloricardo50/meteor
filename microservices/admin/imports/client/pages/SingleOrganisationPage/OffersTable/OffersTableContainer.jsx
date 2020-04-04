@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
-import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import HtmlPreview from 'core/components/HtmlPreview';
@@ -36,11 +35,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
       },
       {
         raw: loan.name,
-        label: (
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
-        ),
+        label: <CollectionIconLink relatedDoc={loan} />,
       },
       {
         raw: loan.status,
@@ -50,11 +45,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
       },
       {
         raw: contact.name,
-        label: (
-          <CollectionIconLink
-            relatedDoc={{ ...contact, collection: CONTACTS_COLLECTION }}
-          />
-        ),
+        label: <CollectionIconLink relatedDoc={contact} />,
       },
       {
         raw: feedback,

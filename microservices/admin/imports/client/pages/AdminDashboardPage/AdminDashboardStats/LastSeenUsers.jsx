@@ -15,7 +15,7 @@ const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
       relatedDoc={{
         _id: id,
         name: $name,
-        collection: USERS_COLLECTION,
+        _collection: USERS_COLLECTION,
       }}
     />
     <span> {moment($last_seen).fromNow()}</span>

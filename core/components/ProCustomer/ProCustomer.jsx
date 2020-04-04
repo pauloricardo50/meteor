@@ -39,10 +39,7 @@ const ProCustomer = ({ user, invitedByUser }) => {
               <div className="flex center-align">
                 <b>Conseiller:</b>&nbsp;
                 <CollectionIconLink
-                  relatedDoc={{
-                    ...assignedEmployee,
-                    collection: USERS_COLLECTION,
-                  }}
+                  relatedDoc={assignedEmployee}
                   noRoute
                   replacementPopup={
                     isPro && (

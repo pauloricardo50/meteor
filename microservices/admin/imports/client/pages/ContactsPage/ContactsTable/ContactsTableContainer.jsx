@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
@@ -43,10 +42,7 @@ const makeMapContact = ({ history }) => contact => {
             ? organisations.map(organisation => (
                 <CollectionIconLink
                   key={organisation._id}
-                  relatedDoc={{
-                    ...organisation,
-                    collection: ORGANISATIONS_COLLECTION,
-                  }}
+                  relatedDoc={organisation}
                 />
               ))
             : "N'appartient à aucune organisation pour l'instant",

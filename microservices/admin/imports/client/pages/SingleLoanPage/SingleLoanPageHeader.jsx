@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { LOAN_CATEGORIES, LOAN_STATUS } from 'core/api/loans/loanConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
@@ -65,20 +64,10 @@ const SingleLoanPageHeader = ({
           />
         )}
         {loan.hasPromotion && (
-          <CollectionIconLink
-            relatedDoc={{
-              ...loan.promotions[0],
-              collection: PROMOTIONS_COLLECTION,
-            }}
-          />
+          <CollectionIconLink relatedDoc={loan.promotions[0]} />
         )}
         {loan.financedPromotion && (
-          <CollectionIconLink
-            relatedDoc={{
-              ...loan.financedPromotion,
-              collection: PROMOTIONS_COLLECTION,
-            }}
-          />
+          <CollectionIconLink relatedDoc={loan.financedPromotion} />
         )}
       </div>
       {withPdf && (

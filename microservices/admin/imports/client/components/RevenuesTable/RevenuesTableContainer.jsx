@@ -1,19 +1,15 @@
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
-import T, { Money } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   REVENUES_COLLECTION,
   REVENUE_STATUS,
 } from 'core/api/revenues/revenueConstants';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import StatusLabel from 'core/components/StatusLabel';
+import T, { Money } from 'core/components/Translation';
 
 import RevenueConsolidator from './RevenueConsolidator';
 
@@ -69,31 +65,18 @@ export const makeMapRevenue = ({
   if (loan) {
     title = {
       raw: loan && loan.name,
-      label: loan && (
-        <CollectionIconLink
-          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-        />
-      ),
+      label: loan && <CollectionIconLink relatedDoc={loan} />,
     };
   } else if (insurance) {
     title = {
       raw: insurance && insurance.name,
-      label: insurance && (
-        <CollectionIconLink
-          relatedDoc={{ ...insurance, collection: INSURANCES_COLLECTION }}
-        />
-      ),
+      label: insurance && <CollectionIconLink relatedDoc={insurance} />,
     };
   } else if (insuranceRequest) {
     title = {
       raw: insuranceRequest && insuranceRequest.name,
       label: insuranceRequest && (
-        <CollectionIconLink
-          relatedDoc={{
-            ...insuranceRequest,
-            collection: INSURANCE_REQUESTS_COLLECTION,
-          }}
-        />
+        <CollectionIconLink relatedDoc={insuranceRequest} />
       ),
     };
   }
@@ -123,14 +106,7 @@ export const makeMapRevenue = ({
       description,
       {
         raw: sourceOrganisation && sourceOrganisation.name,
-        label: (
-          <CollectionIconLink
-            relatedDoc={{
-              ...sourceOrganisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
-        ),
+        label: <CollectionIconLink relatedDoc={sourceOrganisation} />,
       },
       {
         raw: amount,

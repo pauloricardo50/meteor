@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
 
-import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
 import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
 import CollectionIconLink from '../../IconLink/CollectionIconLink';
@@ -74,7 +73,7 @@ const PromotionPageHeader = ({ promotion }) => {
               <h4>Dossier de développement:</h4>
               <CollectionIconLink
                 key={promotionLoan._id}
-                relatedDoc={{ ...promotionLoan, collection: LOANS_COLLECTION }}
+                relatedDoc={promotionLoan}
               />
             </div>
           )}

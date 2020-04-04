@@ -6,8 +6,6 @@ import { compose, withProps } from 'recompose';
 import { adminBorrowers as query } from 'core/api/borrowers/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { baseBorrower } from 'core/api/fragments';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
@@ -18,23 +16,19 @@ const columnOptions = [
   { id: 'Modifié le' },
 ];
 
-const mapBorrower = ({ history }) => (
-  { _id: borrowerId, name, createdAt, updatedAt, user = {}, loans = [] },
-  index,
-) => ({
+const mapBorrower = ({ history }) => ({
+  _id: borrowerId,
+  name,
+  createdAt,
+  updatedAt,
+  user = {},
+  loans = [],
+}) => ({
   id: borrowerId,
   columns: [
     name || 'Emprunteur sans nom',
-    <CollectionIconLink
-      relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-      key="user"
-    />,
-    loans.map(loan => (
-      <CollectionIconLink
-        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-        key={loan._id}
-      />
-    )),
+    <CollectionIconLink relatedDoc={user} key="user" />,
+    loans.map(loan => <CollectionIconLink relatedDoc={loan} key={loan._id} />),
     {
       raw: createdAt && createdAt.getTime(),
       label: moment(createdAt).fromNow(),

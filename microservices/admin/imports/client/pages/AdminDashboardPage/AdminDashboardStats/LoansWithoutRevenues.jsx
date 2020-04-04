@@ -32,12 +32,7 @@ const LoansTable = ({ loans }) => (
         id: _id,
         columns: [
           {
-            label: (
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                key="loan"
-              />
-            ),
+            label: <CollectionIconLink relatedDoc={loan} key="loan" />,
             raw: name,
           },
           <StatusLabel
@@ -51,7 +46,7 @@ const LoansTable = ({ loans }) => (
                 relatedDoc={{
                   ...userCache,
                   name: userName,
-                  collection: USERS_COLLECTION,
+                  _collection: USERS_COLLECTION,
                 }}
               />
             ) : (
@@ -66,7 +61,7 @@ const LoansTable = ({ loans }) => (
                   relatedDoc={{
                     ...userCache.assignedEmployeeCache,
                     name: assigneeName,
-                    collection: USERS_COLLECTION,
+                    _collection: USERS_COLLECTION,
                   }}
                 />
               ) : (

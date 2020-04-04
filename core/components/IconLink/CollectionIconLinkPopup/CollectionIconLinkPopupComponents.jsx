@@ -58,10 +58,10 @@ const Information = ({
   );
 };
 
-const LinkList = ({ docs, collection }) => (
+const LinkList = ({ docs }) => (
   <TooltipArray
     items={docs.map(doc => (
-      <CollectionIconLink key={doc._id} relatedDoc={{ ...doc, collection }} />
+      <CollectionIconLink key={doc._id} relatedDoc={doc} />
     ))}
     displayLimit={2}
     className="flex wrap"
@@ -190,11 +190,7 @@ export const components = {
 
         <Information
           label="Promotion"
-          value={
-            <CollectionIconLink
-              relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={promotion} />}
           shouldDisplay={!!promotion}
         />
 
@@ -217,25 +213,14 @@ export const components = {
         <Information
           className="flex center-align"
           label="Compte"
-          value={
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={user} />}
           isEmpty={!user || !user._id}
           emptyText="Sans compte"
         />
 
         <Information
           label="Conseiller"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...mainAssignee,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={mainAssignee} />}
           isEmpty={!mainAssignee}
         />
       </div>
@@ -309,40 +294,19 @@ export const components = {
 
         <Information
           label="Conseiller"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={assignedEmployee} />}
           isEmpty={!assignedEmployee}
         />
 
         <Information
           label="Référé par compte"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...referredByUser,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={referredByUser} />}
           isEmpty={!referredByUser.name}
         />
 
         <Information
           label="Référé par organisation"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...referredByOrganisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={referredByOrganisation} />}
           isEmpty={!referredByOrganisation.name}
         />
 
@@ -383,11 +347,7 @@ export const components = {
 
       <Information
         label="Compte"
-        value={
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        }
+        value={<CollectionIconLink relatedDoc={user} />}
         isEmpty={!user}
         emptyText="Sans compte"
       />
@@ -395,14 +355,7 @@ export const components = {
       {!!user && (
         <Information
           label="Conseiller"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...user.assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={user.assignedEmployee} />}
           isEmpty={!(user && user.assignedEmployee)}
         />
       )}
@@ -443,7 +396,7 @@ export const components = {
                   relatedDoc={{
                     _id: allOrgs[0]._id,
                     name: allOrgs[0].name,
-                    collection: ORGANISATIONS_COLLECTION,
+                    _collection: ORGANISATIONS_COLLECTION,
                   }}
                 />
               }
@@ -496,14 +449,7 @@ export const components = {
       {children}
       <Information
         label="Prêteur"
-        value={
-          <CollectionIconLink
-            relatedDoc={{
-              ...lenderOrganisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
-        }
+        value={<CollectionIconLink relatedDoc={lenderOrganisation} />}
         isEmpty={!lenderOrganisation}
         emptyText="Pas choisi"
       />
