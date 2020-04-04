@@ -1,7 +1,7 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { loanUpdate } from 'core/api/loans/';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import AutoForm from 'core/components/AutoForm2';
 

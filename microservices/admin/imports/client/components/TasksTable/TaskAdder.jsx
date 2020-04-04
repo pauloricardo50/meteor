@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { taskInsert } from 'core/api/tasks/';
+import { taskInsert } from 'core/api/tasks/methodDefinitions';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
 

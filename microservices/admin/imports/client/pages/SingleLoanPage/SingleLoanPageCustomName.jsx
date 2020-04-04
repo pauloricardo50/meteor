@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { loanUpdate } from 'core/api/loans/';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import ClickToEditField from 'core/components/ClickToEditField';
 import Icon from 'core/components/Icon';
 

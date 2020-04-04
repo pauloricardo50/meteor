@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { consolidateCommission } from 'core/api/revenues/';
+import { consolidateCommission } from 'core/api/revenues/methodDefinitions';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import IconButton from 'core/components/IconButton';

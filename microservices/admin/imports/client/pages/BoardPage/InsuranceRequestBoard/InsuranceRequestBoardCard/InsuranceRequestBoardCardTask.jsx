@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-import { taskChangeStatus, taskComplete } from 'core/api/tasks/';
+import {
+  taskChangeStatus,
+  taskComplete,
+} from 'core/api/tasks/methodDefinitions';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import IconButton from 'core/components/IconButton';
 
