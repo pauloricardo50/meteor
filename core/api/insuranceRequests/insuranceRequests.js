@@ -1,8 +1,10 @@
-import InsuranceRequestSchema from './schemas/InsuranceRequestSchema';
-import { INSURANCE_REQUESTS_COLLECTION } from './insuranceRequestConstants';
 import { createCollection } from '../helpers/collectionHelpers';
+import { INSURANCE_REQUESTS_COLLECTION } from './insuranceRequestConstants';
+import InsuranceRequestSchema from './schemas/InsuranceRequestSchema';
 
-const InsuranceRequests = createCollection(INSURANCE_REQUESTS_COLLECTION);
+const InsuranceRequests = createCollection(
+  INSURANCE_REQUESTS_COLLECTION,
+  InsuranceRequestSchema,
+);
 
-InsuranceRequests.attachSchema(InsuranceRequestSchema);
 export default InsuranceRequests;

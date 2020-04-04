@@ -6,6 +6,7 @@ export const makeCollectionTransform = collectionName => doc => ({
 });
 
 export const initializeCollection = (collectionName, schema) => {
+  console.log('initializeCollection:', collectionName);
   const Collection = new Mongo.Collection(collectionName, {
     transform: makeCollectionTransform(collectionName),
   });
