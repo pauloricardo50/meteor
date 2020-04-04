@@ -1,14 +1,15 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 
 import { getInsuranceDocuments } from 'core/api/files/documents';
-import { REVENUE_TYPES } from 'core/api/constants';
-
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import SingleFileTab from 'core/components/FileTabs/SingleFileTab';
-import InsuranceModifier from './InsuranceModifier';
-import InsuranceEstimatedRevenue from './InsuranceEstimatedRevenue';
+
 import RevenuesTable from '../../../../components/RevenuesTable';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
+import InsuranceEstimatedRevenue from './InsuranceEstimatedRevenue';
+import InsuranceModifier from './InsuranceModifier';
 
 const InsuranceTab = props => {
   const { insurance, insuranceRequest, currentUser } = props;
