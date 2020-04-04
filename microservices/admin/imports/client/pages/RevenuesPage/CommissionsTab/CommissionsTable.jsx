@@ -6,6 +6,7 @@ import Table from 'core/components/Table';
 import T, { Money } from 'core/components/Translation';
 
 import {
+  formatRevenue,
   mapRevenueIntoCommissions,
   useCommissionsTableData,
 } from './commissionsTableHelpers';
@@ -31,7 +32,9 @@ const CommissionsTable = () => {
     orgId,
   );
 
-  const rows = (revenues || []).reduce(
+  const formattedRevenues = (revenues || []).map(formatRevenue);
+
+  const rows = formattedRevenues.reduce(
     (arr, revenue) => [...arr, ...mapRevenueIntoCommissions(revenue)],
     [],
   );
