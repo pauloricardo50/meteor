@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 
-import { REVENUE_TYPES } from 'core/api/constants';
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
+
 import RevenuesTable from '../../../../components/RevenuesTable';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 
