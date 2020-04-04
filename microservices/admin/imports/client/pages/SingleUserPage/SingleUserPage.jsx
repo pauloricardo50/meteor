@@ -86,7 +86,6 @@ const SingleUserPage = ({
           />
         </>
       )}
-
       {isPro && (
         <>
           <h3>Dossiers</h3>

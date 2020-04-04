@@ -1,16 +1,17 @@
 import omit from 'lodash/omit';
-import Loans from '.';
+
 import { formatLoanWithStructure } from '../../utils/loanFunctions';
-import { STEPS, STEP_ORDER } from './loanConstants';
-import { fullOffer, userProperty, loanPromotionOption } from '../fragments';
-import {
-  PROPERTY_CATEGORY,
-  PROPERTIES_COLLECTION,
-} from '../properties/propertyConstants';
+import { fullOffer, loanPromotionOption, userProperty } from '../fragments';
 import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_CATEGORY,
+} from '../properties/propertyConstants';
 import mainAssigneeReducer from '../reducers/mainAssigneeReducer';
-import proNotesReducer from '../reducers/proNotesReducer';
 import nextDueTaskReducer from '../reducers/nextDueTaskReducer';
+import proNotesReducer from '../reducers/proNotesReducer';
+import { STEPS, STEP_ORDER } from './loanConstants';
+import Loans from '.';
 
 Loans.addReducers({
   structure: {
@@ -62,8 +63,8 @@ Loans.addReducers({
     reduce: ({ properties = [], promotions = [] }) => [
       ...properties
         .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
-        .map(p => ({ ...p, collection: PROPERTIES_COLLECTION })),
-      ...promotions.map(p => ({ ...p, collection: PROMOTIONS_COLLECTION })),
+        .map(p => ({ ...p, _collection: PROPERTIES_COLLECTION })),
+      ...promotions.map(p => ({ ...p, _collection: PROMOTIONS_COLLECTION })),
     ],
   },
   proNotes: proNotesReducer,

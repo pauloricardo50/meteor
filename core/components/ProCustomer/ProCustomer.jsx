@@ -15,7 +15,7 @@ const ProCustomer = ({ user, invitedByUser }) => {
 
   return (
     <CollectionIconLink
-      relatedDoc={{ name, _id, collection: USERS_COLLECTION }}
+      relatedDoc={{ name, _id, _collection: USERS_COLLECTION }}
       noRoute={isPro}
       replacementPopup={
         isPro && (

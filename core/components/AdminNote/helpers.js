@@ -1,12 +1,17 @@
 import uniqBy from 'lodash/uniqBy';
 
-import collectionIcons from 'core/arrays/collectionIcons';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import collectionIcons from 'core/arrays/collectionIcons';
 
-const getCommonContacts = ({ user, borrowers = [], contacts = [] }) => {
+const getCommonContacts = ({
+  user,
+  borrowers = [],
+  contacts = [],
+  properties = [],
+}) => {
   const contactsArray = [];
 
   if (user) {
@@ -64,6 +69,19 @@ const getCommonContacts = ({ user, borrowers = [], contacts = [] }) => {
       title: `Contact perso - ${contact.title}`,
       icon: collectionIcons[CONTACTS_COLLECTION],
       phoneNumber: contact.phoneNumber,
+    });
+  });
+
+  properties.forEach(property => {
+    property.users.forEach(pro => {
+      contactsArray.push({
+        name: pro.name,
+        email: pro.email,
+        title: `Courtier immobilier`,
+        icon: collectionIcons[USERS_COLLECTION],
+        phoneNumber: pro.phoneNumber,
+        isEmailable: true,
+      });
     });
   });
 
