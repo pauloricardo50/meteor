@@ -1,3 +1,6 @@
+import Lenders from '../../lenders';
+import Tasks from '../../tasks';
+import Users from '../../users';
 import LoanService from './LoanService';
 
 LoanService.cacheField(
@@ -17,18 +20,50 @@ LoanService.cacheField(
   // },
 );
 
-LoanService.migrateCache(
-  { cacheField: 'userCache' },
-  // { 'userCache.referredByUserLink': { $exists: false } },
+LoanService.cache(
+  {
+    cacheField: 'userCache',
+    type: 'one',
+    collection: Users,
+    fields: {
+      _id: 1,
+      firstName: 1,
+      lastName: 1,
+      referredByOrganisationLink: 1,
+      referredByUserLink: 1,
+      assignedEmployeeCache: 1,
+    },
+    referenceField: 'userId',
+  },
+  // {},
 );
 
-LoanService.migrateCache(
-  { cacheField: 'tasksCache' },
+LoanService.cache(
+  {
+    cacheField: 'tasksCache',
+    collection: Tasks,
+    type: 'inversed',
+    fields: {
+      createdAt: 1,
+      dueAt: 1,
+      status: 1,
+      title: 1,
+      isPrivate: 1,
+      assigneeLink: 1,
+    },
+    referenceField: 'loanLink._id',
+  },
   // { tasksCache: { $exists: false } },
 );
 
-LoanService.migrateCache(
-  { cacheField: 'lendersCache' },
+LoanService.cache(
+  {
+    cacheField: 'lendersCache',
+    collection: Lenders,
+    type: 'inversed',
+    fields: { status: 1, contactLink: 1, organisationLink: 1, offersCache: 1 },
+    referenceField: 'loanLink._id',
+  },
   // {
   // $nor: [
   //   { lendersCache: { $exists: false } },

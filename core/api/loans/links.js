@@ -13,31 +13,6 @@ import Tasks from '../tasks/tasks';
 import Users from '../users/users';
 import Loans from './loans';
 
-export const userCache = {
-  _id: 1,
-  firstName: 1,
-  lastName: 1,
-  referredByOrganisationLink: 1,
-  referredByUserLink: 1,
-  assignedEmployeeCache: 1,
-};
-
-export const lendersCache = {
-  status: 1,
-  contactLink: 1,
-  organisationLink: 1,
-  offersCache: 1,
-};
-
-export const tasksCache = {
-  createdAt: 1,
-  dueAt: 1,
-  status: 1,
-  title: 1,
-  isPrivate: 1,
-  assigneeLink: 1,
-};
-
 LinkInitializer.directInit(() => {
   Loans.addLinks({
     activities: {
@@ -79,10 +54,6 @@ LinkInitializer.directInit(() => {
       field: 'userId',
       collection: Users,
       type: 'one',
-      denormalize: {
-        field: 'userCache',
-        body: userCache,
-      },
     },
     financedPromotion: {
       field: 'financedPromotionLink',
@@ -125,19 +96,11 @@ LinkInitializer.inversedInit(() => {
       inversedBy: 'loan',
       unique: true,
       autoremove: true,
-      denormalize: {
-        field: 'lendersCache',
-        body: lendersCache,
-      },
     },
     tasks: {
       collection: Tasks,
       inversedBy: 'loan',
       autoremove: true,
-      denormalize: {
-        field: 'tasksCache',
-        body: tasksCache,
-      },
     },
   });
 });
