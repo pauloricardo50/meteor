@@ -1,5 +1,5 @@
-import InsuranceRequestService from './InsuranceRequestService';
 import Insurances from '../../insurances';
+import InsuranceRequestService from './InsuranceRequestService';
 
 InsuranceRequestService.cache(
   {
@@ -9,5 +9,5 @@ InsuranceRequestService.cache(
     type: 'many',
     referenceField: 'insuranceLinks:_id',
   },
-  {},
+  // {},
 );
