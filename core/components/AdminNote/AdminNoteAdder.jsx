@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
-
 import useSearchParams from 'core/hooks/useSearchParams';
+
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 import AdminNoteAdderContainer from './AdminNoteAdderContainer';
@@ -112,7 +112,15 @@ export const AdminNoteSetter = ({
           </Button>
         );
       }}
-      onOpen={() => setDate(new Date())}
+      onOpen={() => {
+        // Make sure we have local time
+        const now = new Date();
+        const timezonedDate = new Date(
+          now.getTime() - now.getTimezoneOffset() * 60000,
+        );
+
+        return setDate(timezonedDate);
+      }}
     />
   );
 };
