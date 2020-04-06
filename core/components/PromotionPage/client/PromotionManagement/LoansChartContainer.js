@@ -1,5 +1,5 @@
-import { withProps } from 'recompose';
 import moment from 'moment';
+import { withProps } from 'recompose';
 
 const getData = (loans = []) => {
   const dates = loans.map(({ createdAt }) =>

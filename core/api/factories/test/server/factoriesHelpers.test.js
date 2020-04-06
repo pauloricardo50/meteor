@@ -1,8 +1,9 @@
+import { Factory } from 'meteor/dburles:factory';
 /* eslint-env mocha */
 import { Mongo } from 'meteor/mongo';
-import { Factory } from 'meteor/dburles:factory';
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
+import { expect } from 'chai';
 
 import generator from '../../server';
 

@@ -1,14 +1,13 @@
 import SimpleSchema from 'simpl-schema';
 
 import {
-  updatedAt,
-  createdAt,
-  cacheField,
-  adminNotesSchema,
   additionalDocuments,
+  adminNotesSchema,
+  cacheField,
+  createdAt,
   documentsField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
-
 import { INSURANCE_REQUEST_STATUS } from '../insuranceRequestConstants';
 
 const InsuranceRequestSchema = new SimpleSchema({

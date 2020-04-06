@@ -1,5 +1,5 @@
-import useDebounce from 'react-use/lib/useDebounce';
 import { useState } from 'react';
+import useDebounce from 'react-use/lib/useDebounce';
 
 const useDebouncedInput = ({
   value,

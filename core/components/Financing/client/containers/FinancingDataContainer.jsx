@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Consumer } from './loan-context';
 import memoizeOne from '../../../../utils/memoizeOne';
+import { Consumer } from './loan-context';
 
 const filterOffers = memoizeOne(offers =>
   offers && !!offers.length

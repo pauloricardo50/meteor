@@ -1,4 +1,4 @@
-import PromotionLots from '../promotionLots';
 import assigneeReducer from '../../reducers/assigneeReducer';
+import PromotionLots from '../promotionLots';
 
 PromotionLots.addReducers({ ...assigneeReducer() });

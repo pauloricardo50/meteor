@@ -1,5 +1,5 @@
-import { OTHER_INCOME, EXPENSES } from './borrowerConstants';
 import { RESIDENCE_TYPE } from '../properties/propertyConstants';
+import { EXPENSES, OTHER_INCOME } from './borrowerConstants';
 
 export const emptyFakeBorrower = {};
 

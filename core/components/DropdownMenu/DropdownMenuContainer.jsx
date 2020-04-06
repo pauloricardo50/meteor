@@ -1,13 +1,13 @@
 import React from 'react';
-import { compose, withProps, withStateHandlers, withState } from 'recompose';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
+import { compose, withProps, withState, withStateHandlers } from 'recompose';
 
+import Icon from '../Icon';
 import Link from '../Link';
 import Divider from '../Material/Divider';
 import MenuItem from '../Material/MenuItem';
-import Icon from '../Icon';
 
 const styles = theme => ({
   menuItem: {

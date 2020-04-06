@@ -1,10 +1,9 @@
 import React from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTasks } from '@fortawesome/pro-light-svg-icons/faTasks';
 import { faFile } from '@fortawesome/pro-light-svg-icons/faFile';
-import Tooltip from '../Material/Tooltip';
+import { faTasks } from '@fortawesome/pro-light-svg-icons/faTasks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import Tooltip from '../Material/Tooltip';
 import T from '../Translation';
 
 const LoanProgressHeader = props => (

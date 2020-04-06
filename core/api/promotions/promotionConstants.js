@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export const PROMOTIONS_COLLECTION = 'promotions';

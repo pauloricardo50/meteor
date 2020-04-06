@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
+
+import { cacheField, createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
-import { createdAt, updatedAt, cacheField } from '../../helpers/sharedSchemas';
 
 const PromotionLotSchema = new SimpleSchema({
   createdAt,

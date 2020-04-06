@@ -1,19 +1,18 @@
 import SimpleSchema from 'simpl-schema';
 
 import {
-  updatedAt,
-  createdAt,
-  decimalMoneyField,
-  dateField,
-  cacheField,
-  adminNotesSchema,
   additionalDocuments,
+  adminNotesSchema,
+  cacheField,
+  createdAt,
+  dateField,
+  decimalMoneyField,
   documentsField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
-
 import {
-  INSURANCE_STATUS,
   INSURANCE_PREMIUM_FREQUENCY,
+  INSURANCE_STATUS,
 } from '../insuranceConstants';
 
 const InsuranceSchema = new SimpleSchema({

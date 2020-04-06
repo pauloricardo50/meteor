@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -7,12 +8,12 @@ import {
 } from '../../../config/financeConstants';
 import {
   createdAt,
-  updatedAt,
   percentageField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
 import {
-  INCOME_CONSIDERATION_TYPES,
   EXPENSE_TYPES_WITHOUT_DELTAS,
+  INCOME_CONSIDERATION_TYPES,
 } from '../lenderRulesConstants';
 
 // When adding new rules to lenderRules, make sure to edit the

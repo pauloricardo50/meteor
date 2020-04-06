@@ -1,9 +1,9 @@
 import React from 'react';
-import { withState } from 'recompose';
 import cx from 'classnames';
+import { withState } from 'recompose';
 
-import Keys from './Keys';
 import KeyPairGenerator from './KeyPairGenerator';
+import Keys from './Keys';
 
 const GenerateApiKeyPair = ({ keyPair = {}, user, setKeyPair }) => (
   <div className="api-keyPair-generator">

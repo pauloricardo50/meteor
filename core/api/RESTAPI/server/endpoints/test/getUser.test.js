@@ -1,16 +1,17 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
 import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
-import { getUserAPI } from '..';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
+import { getUserAPI } from '..';
 
 const api = new RESTAPI();
 api.addEndpoint('/users', 'GET', getUserAPI, {

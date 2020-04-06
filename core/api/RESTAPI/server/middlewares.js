@@ -1,33 +1,33 @@
 import bodyParser from 'body-parser';
-import moment from 'moment';
 import multipart from 'connect-multiparty';
+import moment from 'moment';
 
 import SlackService from '../../slack/server/SlackService';
-import {
-  REST_API_ERRORS,
-  BODY_SIZE_LIMIT,
-  FILE_UPLOAD_DIR,
-} from './restApiConstants';
 import UserService from '../../users/server/UserService';
 import {
-  getRequestPath,
-  getHeader,
-  getRequestMethod,
-  getErrorObject,
-  getPublicKey,
-  verifySignature,
-  getSignature,
-  logRequest,
-  trackRequest,
-  getMatchingPathOptions,
-  getSimpleAuthToken,
-  getRequestType,
-  requestTypeIsAllowed,
-  shouldSkipMiddleware,
   checkCustomAuth,
   getAnalyticsParams,
+  getErrorObject,
+  getHeader,
+  getMatchingPathOptions,
+  getPublicKey,
+  getRequestMethod,
+  getRequestPath,
+  getRequestType,
+  getSignature,
+  getSimpleAuthToken,
+  logRequest,
+  requestTypeIsAllowed,
+  shouldSkipMiddleware,
+  trackRequest,
+  verifySignature,
 } from './helpers';
-import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
+import { NONCE_TTL, addNonce, nonceExists } from './noncesHandler';
+import {
+  BODY_SIZE_LIMIT,
+  FILE_UPLOAD_DIR,
+  REST_API_ERRORS,
+} from './restApiConstants';
 
 const bodyParserJsonMiddleware = () =>
   bodyParser.json({ limit: BODY_SIZE_LIMIT });

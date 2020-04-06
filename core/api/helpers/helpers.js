@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
-import Loans from '../loans';
 import Borrowers from '../borrowers';
-import Properties from '../properties';
+import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
+import Loans from '../loans';
+import { LOANS_COLLECTION } from '../loans/loanConstants';
 import Offers from '../offers';
+import Properties from '../properties';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
 import Tasks from '../tasks';
 import Users from '../users';
-import { LOANS_COLLECTION } from '../loans/loanConstants';
-import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
 
 export const getDocFromCollection = (collectionName, docId) => {
   let collection;

@@ -1,26 +1,27 @@
 import { Meteor } from 'meteor/meteor';
+
 import moment from 'moment';
 
+import FileService from '../../files/server/FileService';
 import { asyncForEach } from '../../helpers';
-import {
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_DOCUMENTS,
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-} from '../promotionOptionConstants';
+import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import CollectionService from '../../helpers/server/CollectionService';
-import PromotionOptions from '../promotionOptions';
-import FileService from '../../files/server/FileService';
 import {
-  PROMOTION_USERS_ROLES,
   PROMOTION_EMAIL_RECIPIENTS,
+  PROMOTION_USERS_ROLES,
 } from '../../promotions/promotionConstants';
 import { shouldAnonymize } from '../../promotions/server/promotionServerHelpers';
+import {
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../promotionOptionConstants';
+import PromotionOptions from '../promotionOptions';
 import { expirePromotionOptionReservation } from './serverMethods';
 
 class PromotionOptionService extends CollectionService {

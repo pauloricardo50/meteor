@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
+import ServerEventService from '../../events/server/ServerEventService';
 import { createMeteorAsyncFunction } from '../../helpers';
 import SlackService from '../../slack/server/SlackService';
-import ServerEventService from '../../events/server/ServerEventService';
 import { Method } from '../methods';
 
 const logMethod = ({ context, config, params, result, error }) => {

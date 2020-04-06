@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+
 import Intl from '../intl';
 
 const translate = ({ key }) => {

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { BaseResultCacher } from 'meteor/cultofcoders:grapher';
 import { EJSON } from 'meteor/ejson';
+
 import hashObject from 'object-hash';
 
 const cloneDeep = require('lodash/cloneDeep');

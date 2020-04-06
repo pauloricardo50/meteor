@@ -1,17 +1,18 @@
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import moment from 'moment';
 
-import InsuranceService from '../InsuranceService';
-import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
 import generator from '../../../factories/server';
+import { INSURANCE_REQUEST_STATUS } from '../../../insuranceRequests/insuranceRequestConstants';
+import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
 import { ORGANISATION_FEATURES } from '../../../organisations/organisationConstants';
 import {
-  INSURANCE_STATUS,
   INSURANCE_PREMIUM_FREQUENCY,
+  INSURANCE_STATUS,
 } from '../../insuranceConstants';
-import { INSURANCE_REQUEST_STATUS } from '../../../insuranceRequests/insuranceRequestConstants';
+import InsuranceService from '../InsuranceService';
 
 describe('InsuranceService', () => {
   beforeEach(() => {

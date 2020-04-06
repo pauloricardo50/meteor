@@ -1,8 +1,8 @@
 import React from 'react';
 
-import T from '../../../Translation';
 import DialogSimple from '../../../DialogSimple';
 import OfferList from '../../../OfferList/OfferList';
+import T from '../../../Translation';
 
 const OfferListDialog = ({ offers, disabled }) => (
   <DialogSimple

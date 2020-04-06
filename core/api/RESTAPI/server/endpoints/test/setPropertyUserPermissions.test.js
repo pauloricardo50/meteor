@@ -1,19 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
 import generator from '../../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
+import PropertyService from '../../../../properties/server/PropertyService';
+import RESTAPI from '../../RESTAPI';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
-  getTimestampAndNonce,
   fetchAndCheckResponse,
+  getTimestampAndNonce,
   makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import RESTAPI from '../../RESTAPI';
-
 import setPropertyUserPermissionsAPI from '../setPropertyUserPermissions';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
-import PropertyService from '../../../../properties/server/PropertyService';
 
 const api = new RESTAPI();
 api.addEndpoint(

@@ -2,16 +2,16 @@
 import { expect } from 'chai';
 
 import {
-  makeWidget1Selector,
-  makeSelectValue,
-  selectFields,
-  selectAutoValues,
-} from '../widget1Selectors';
-import {
-  PURCHASE_TYPE,
   ACQUISITION_FIELDS,
+  PURCHASE_TYPE,
   REFINANCING_FIELDS,
 } from '../widget1Constants';
+import {
+  makeSelectValue,
+  makeWidget1Selector,
+  selectAutoValues,
+  selectFields,
+} from '../widget1Selectors';
 
 describe('selectors', () => {
   describe('makeWidget1Selector', () => {

@@ -3,8 +3,8 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { check } from 'meteor/check';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { adminLoan, loanBase } from '../../api/fragments';
 import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';

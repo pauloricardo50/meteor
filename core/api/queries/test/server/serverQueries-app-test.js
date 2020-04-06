@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 import { Match } from 'meteor/check';
+
+import { exposeQuery } from '../../queryHelpers';
 import {
   query1,
   query2,
@@ -7,7 +9,6 @@ import {
   query4,
   testCollectionInsert,
 } from '../collection-app-test';
-import { exposeQuery } from '../../queryHelpers';
 
 const TestCollection = require('../collection-app-test').default;
 

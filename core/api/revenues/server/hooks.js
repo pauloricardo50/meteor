@@ -1,6 +1,6 @@
 import NotificationService from '../../notifications/server/NotificationService';
-import Revenues from '..';
 import { REVENUE_STATUS } from '../revenueConstants';
+import Revenues from '..';
 
 Revenues.before.update(
   (userId, { _id: revenueId, expectedAt: oldDate }, fieldNames, modifier) => {

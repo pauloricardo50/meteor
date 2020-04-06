@@ -1,8 +1,8 @@
-import FileService from '../../files/server/FileService';
-import Promotions from '../promotions';
 import formatNumbersHook, {
   formatPhoneNumber,
 } from '../../../utils/phoneFormatting';
+import FileService from '../../files/server/FileService';
+import Promotions from '../promotions';
 
 Promotions.after.remove((userId, { _id }) =>
   FileService.deleteAllFilesForDoc(_id),

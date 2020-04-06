@@ -1,6 +1,7 @@
 import React from 'react';
-import { classes, ROW_TYPES } from '../PdfTable/PdfTable';
+
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import { ROW_TYPES, classes } from '../PdfTable/PdfTable';
 
 const makeTableContent = (leftRows, rightRows) => {
   const lines = Math.max(rightRows.length, leftRows.length);

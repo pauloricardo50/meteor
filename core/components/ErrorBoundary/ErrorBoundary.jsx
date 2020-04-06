@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { compose, withProps } from 'recompose';
+
+import { logError } from '../../api/slack/methodDefinitions';
+import withErrorCatcher from '../../containers/withErrorCatcher';
+import FrontError from './FrontError';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
-import withErrorCatcher from '../../containers/withErrorCatcher';
-import { logError } from '../../api/slack/methodDefinitions';
-import FrontError from './FrontError';
 
 const sendToKadira = error => {
   // Error should also log to kadira

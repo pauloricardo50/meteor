@@ -1,16 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+import { Match, check } from 'meteor/check';
 import { Random } from 'meteor/random';
-import { check, Match } from 'meteor/check';
 
+import fs from 'fs';
 import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
-import fs from 'fs';
 
-import { adminLoans } from '../../loans/queries';
 import { lenderRules } from '../../fragments';
+import { adminLoans } from '../../loans/queries';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import LoanBankPDF from './pdfComponents/LoanBankPDF';
 import { PDF_TYPES } from '../pdfConstants';
+import LoanBankPDF from './pdfComponents/LoanBankPDF';
 import { validateLoanPdf } from './pdfValidators';
 
 const PDF_URL = 'https://docraptor.com/docs';

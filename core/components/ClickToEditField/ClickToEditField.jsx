@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'classnames';
 
-import Tooltip from '@material-ui/core/Tooltip';
 import Input from '../Material/Input';
-import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 import T from '../Translation';
+import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 
 class ClickToEditField extends Component {
   constructor(props) {

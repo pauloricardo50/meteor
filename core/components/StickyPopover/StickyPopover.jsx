@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import PropTypes from 'prop-types';
 
 export default class PopoverStickOnHover extends React.Component {
   constructor(props) {

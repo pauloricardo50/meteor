@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Calculator from '../../../../utils/Calculator';
-import T, { Percent } from '../../../Translation';
 import Icon from '../../../Icon';
-import { CalculatedValue } from '../FinancingSection/components';
+import T, { Percent } from '../../../Translation';
 import { getInterestRates } from '../FinancingCalculator';
+import { CalculatedValue } from '../FinancingSection/components';
 
 const getTooltipTitle = ({ structure, loan, structureId }) => {
   const { offerId } = structure;

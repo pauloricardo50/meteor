@@ -1,15 +1,15 @@
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import SecurityService from '../../security';
-import BorrowerService from './BorrowerService';
 import {
+  borrowerDelete,
   borrowerInsert,
   borrowerUpdate,
-  borrowerDelete,
-  pushBorrowerValue,
+  getReusableBorrowers,
   popBorrowerValue,
   pullBorrowerValue,
-  getReusableBorrowers,
+  pushBorrowerValue,
 } from '../methodDefinitions';
-import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import BorrowerService from './BorrowerService';
 
 borrowerInsert.setHandler((context, { borrower, userId }) =>
   BorrowerService.insert({

@@ -1,28 +1,28 @@
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
 import {
-  anonymousCreateUser,
-  proInviteUser,
-  adminCreateUser,
-  proInviteUserToOrganisation,
-} from '../../users/methodDefinitions';
+  anonymousLoanInsert,
+  loanInsertBorrowers,
+  loanSetStatus,
+  setMaxPropertyValueWithoutBorrowRatio,
+} from '../../loans/methodDefinitions';
+import LoanService from '../../loans/server/LoanService';
+import PromotionService from '../../promotions/server/PromotionService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { followImpersonatedSession } from '../../sessions/methodDefinitions';
 import SessionService from '../../sessions/server/SessionService';
 import {
-  loanSetStatus,
-  loanInsertBorrowers,
-  setMaxPropertyValueWithoutBorrowRatio,
-  anonymousLoanInsert,
-} from '../../loans/methodDefinitions';
-import { followImpersonatedSession } from '../../sessions/methodDefinitions';
-import LoanService from '../../loans/server/LoanService';
+  adminCreateUser,
+  anonymousCreateUser,
+  proInviteUser,
+  proInviteUserToOrganisation,
+} from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import EVENTS from '../events';
 import {
+  analyticsCTA,
   analyticsLogin,
   analyticsPage,
   analyticsVerifyEmail,
-  analyticsCTA,
 } from '../methodDefinitions';
 import { addAnalyticsListener } from './analyticsHelpers';
 

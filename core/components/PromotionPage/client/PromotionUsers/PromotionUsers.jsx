@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 
 import Table from '../../../Table';
 import T from '../../../Translation';
+import PromotionMetadataContext from '../PromotionMetadata';
 import PromotionProUserAdder from './PromotionProUserAdder';
 import PromotionUsersContainer from './PromotionUsersContainer';
-import PromotionMetadataContext from '../PromotionMetadata';
 
 const PromotionUsers = ({ promotion, rows, columnOptions }) => {
   const {

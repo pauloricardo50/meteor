@@ -1,8 +1,8 @@
 import React from 'react';
 
-import OfferPickerList from './OfferPickerList';
-import OfferPickerContainer from './OfferPickerContainer';
 import OfferListDialog from '../OfferListDialog';
+import OfferPickerContainer from './OfferPickerContainer';
+import OfferPickerList from './OfferPickerList';
 
 const OfferPicker = props => (
   <div className="offerId">

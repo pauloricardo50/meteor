@@ -1,13 +1,14 @@
+import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
-import TaskService from '../../../tasks/server/TaskService';
 import OfferService from '../../../offers/server/OfferService';
 import OrganisationService from '../../../organisations/server/OrganisationService';
+import TaskService from '../../../tasks/server/TaskService';
 import LenderService from '../LenderService';
 
 describe('LenderService', () => {

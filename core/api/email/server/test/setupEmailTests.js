@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+
 import { isEmailTestEnv } from '../EmailService';
 
 let emailTestCollection;

@@ -1,6 +1,6 @@
 import { BONUS_ALGORITHMS } from '../../config/financeConstants';
-import { RESIDENCE_TYPE } from '../properties/propertyConstants';
 import { EXPENSES } from '../borrowers/borrowerConstants';
+import { RESIDENCE_TYPE } from '../properties/propertyConstants';
 
 export const LENDER_RULES_COLLECTION = 'lenderRules';
 

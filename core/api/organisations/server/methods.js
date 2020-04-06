@@ -1,10 +1,10 @@
 import SecurityService from '../../security';
 import {
-  organisationInsert,
-  organisationUpdate,
-  organisationRemove,
   addContactToOrgnaisation,
   addUserToOrganisation,
+  organisationInsert,
+  organisationRemove,
+  organisationUpdate,
   removeUserFromOrganisation,
   setCommissionRates,
 } from '../methodDefinitions';

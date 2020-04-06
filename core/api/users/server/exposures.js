@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import { Match } from 'meteor/check';
 
 import {
   createRegexQuery,
