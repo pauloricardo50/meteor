@@ -103,7 +103,9 @@ export const loansWithoutRevenuesResolver = () => {
     },
   };
   const filterHasRevenues = { $match: { revenues: { $size: 0 } } };
-  const project = { $project: { status: 1, _id: 1, name: 1, userCache: 1 } };
+  const project = {
+    $project: { status: 1, _id: 1, name: 1, userCache: 1 },
+  };
   const sort = { $sort: { status: 1 } };
 
   return LoanService.aggregate([
@@ -112,5 +114,6 @@ export const loansWithoutRevenuesResolver = () => {
     filterHasRevenues,
     project,
     sort,
+    { $addFields: { _collection: 'loans' } },
   ]);
 };
