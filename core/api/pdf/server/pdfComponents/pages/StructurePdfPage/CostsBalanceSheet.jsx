@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/loans/loanConstants';
 import T, { Money, Percent } from '../../../../../../components/Translation';
-import { shouldRenderRow } from '../../PdfTable/PdfTable';
+import { OWN_FUNDS_TYPES } from '../../../../../borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../loans/loanConstants';
 import BalanceSheetTable from '../../BalanceSheetTable';
+import { shouldRenderRow } from '../../PdfTable/PdfTable';
 
 const getCostLines = ({ loan, structureId, calculator }) => {
   const fees = calculator.getFees({ loan, structureId });

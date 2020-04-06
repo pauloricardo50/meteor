@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import https from 'https';
 import queryString from 'query-string';
-import SlackService from 'core/api/slack/server/SlackService';
+
+import { SlackService } from '../../slack/server/SlackService';
 
 const CRONITOR_URL = 'https://cronitor.io';
 const ACTIONS = {

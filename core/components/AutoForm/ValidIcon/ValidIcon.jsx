@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-import Icon from 'core/components/Icon';
-import colors from 'core/config/colors';
+import colors from '../../../config/colors';
+import Icon from '../../Icon';
 import ValidIconContainer, { STATUS } from './ValidIconContainer';
 
 const ValidIcon = ({ status, style, fade, hide }) => {

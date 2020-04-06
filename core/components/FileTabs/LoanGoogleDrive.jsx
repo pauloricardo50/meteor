@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
-import { loanGoogleDriveFiles } from 'core/api/googleDrive/queries';
+import { withSmartQuery } from '../../api/containerToolkit';
+import { loanGoogleDriveFiles } from '../../api/googleDrive/queries';
 import GoogleDriveList from '../GoogleDriveList';
 
 const LoanGoogleDrive = ({ googleDrive, name }) => {

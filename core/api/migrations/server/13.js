@@ -1,12 +1,12 @@
-import { Migrations } from 'meteor/percolate:migrations';
 import { Mongo } from 'meteor/mongo';
+import { Migrations } from 'meteor/percolate:migrations';
 
-import FileService from 'core/api/files/server/FileService';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import FileService from '../../files/server/FileService';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
 
 const collections = [
   LOANS_COLLECTION,

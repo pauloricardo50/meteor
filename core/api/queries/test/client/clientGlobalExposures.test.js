@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
+import { expect } from 'chai';
+
 import {
-  userLogin,
-  resetDatabase,
   generateScenario,
-} from 'core/utils/testHelpers';
-import { ROLES } from 'core/api/users/userConstants';
+  resetDatabase,
+  userLogin,
+} from '../../../../utils/testHelpers';
+import { ROLES } from '../../../users/userConstants';
 
 describe('Global Exposures', () => {
   beforeEach(() => {

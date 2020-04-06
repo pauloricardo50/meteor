@@ -1,9 +1,9 @@
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 
-import messagesFR from 'core/lang/fr.json';
+import messagesFR from '../../lang/fr.json';
 import { Intl } from '../intl';
-import { getUserLocale, getFormats } from '../localization';
+import { getFormats, getUserLocale } from '../localization';
 
 /**
  * formatMessage - A method to use the intl package

@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { STEPS } from 'core/api/loans/loanConstants';
-import { initialDocuments as propertyDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
+import { STEPS } from '../../../loans/loanConstants';
+import { initialDocuments as propertyDocuments } from '../../../properties/propertiesAdditionalDocuments';
 import {
-  getPropertyDocuments,
   getBorrowerDocuments,
   getLoanDocuments,
+  getPropertyDocuments,
 } from '../../documents';
 import { DOCUMENTS } from '../../fileConstants';
 

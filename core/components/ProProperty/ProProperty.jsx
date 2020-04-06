@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
 
-import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import ProPropertyheader from './ProPropertyHeader';
 import DocumentDownloadList from '../DocumentDownloadList';
+import MapWithMarkerWrapper from '../maps/MapWithMarkerWrapper';
 import ProPropertyContainer from './ProPropertyContainer';
+import ProPropertyheader from './ProPropertyHeader';
 
 const ProProperty = ({ property, simple, loan, documents }) => {
   const { address1, city, zipCode } = property;

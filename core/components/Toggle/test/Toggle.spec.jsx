@@ -2,9 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 
-import Switch from '@material-ui/core/Switch';
-
-import { shallow } from 'core/utils/testHelpers/enzyme';
+import { shallow } from '../../../utils/testHelpers';
 import Toggle from '../Toggle';
 
 const requiredProps = { toggle: false, onToggle: () => {} };

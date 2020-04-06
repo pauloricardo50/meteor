@@ -1,11 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+
 import omit from 'lodash/omit';
 import SimpleSchema from 'simpl-schema';
 
-import PropertyService from 'core/api/properties/server/PropertyService';
-import { Meteor } from 'meteor/meteor';
-import { getImpersonateUserId, checkQuery } from './helpers';
 import { proProperties } from '../../../properties/queries';
+import PropertyService from '../../../properties/server/PropertyService';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, getImpersonateUserId } from './helpers';
 
 const querySchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },

@@ -8,17 +8,16 @@ import {
   GENDER,
   OTHER_INCOME,
   RESIDENCY_PERMIT,
-} from 'core/api/borrowers/borrowerConstants';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
-import CantonField from 'core/components/CantonField/CantonField';
-import T, { Money } from 'core/components/Translation';
-import Calculator from 'core/utils/Calculator';
+} from '../api/borrowers/borrowerConstants';
+import { RESIDENCE_TYPE } from '../api/properties/propertyConstants';
+import BorrowerAddPartner from '../components/BorrowerAddPartner';
+import CantonField from '../components/CantonField/CantonField';
+import T, { Money } from '../components/Translation';
+import Calculator from '../utils/Calculator';
 import {
   COMMON_COUNTRIES,
   getSortedCountriesCodes,
-} from 'core/utils/countriesUtils';
-
-import BorrowerAddPartner from '../components/BorrowerAddPartner';
+} from '../utils/countriesUtils';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
   civilStatus === CIVIL_STATUS.MARRIED && !multiple && isFirst;

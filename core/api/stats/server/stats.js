@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { LOAN_STATUS } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 

@@ -1,6 +1,6 @@
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
-import Security from '../Security';
+import { LOAN_STATUS } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
+import Security from '../Security';
 
 class LoanSecurity {
   static isAllowedToInsert() {

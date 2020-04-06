@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { withProps } from 'recompose';
 
-import { ModalManagerContext } from 'core/components/ModalManager';
-import Calculator from 'core/utils/Calculator';
+import Calculator from '../../../utils/Calculator';
 import Button from '../../Button';
+import { ModalManagerContext } from '../../ModalManager';
 import ZipLoanModal from './ZipLoanModal';
 
 const ZipLoan = ({ shouldDisableButton, loan }) => {

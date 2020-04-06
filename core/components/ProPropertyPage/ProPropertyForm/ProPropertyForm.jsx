@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PropertySchema from 'core/api/properties/schemas/PropertySchema';
+import PropertySchema from '../../../api/properties/schemas/PropertySchema';
 import { AutoFormDialog } from '../../AutoForm2';
 
 const proPropertySchema = PropertySchema.pick(

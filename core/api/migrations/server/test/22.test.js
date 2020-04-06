@@ -1,15 +1,16 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import Activities from 'core/api/activities';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import Activities from '../../../activities';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
-} from 'core/api/activities/activityConstants';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { up, down } from '../22';
+  ACTIVITY_TYPES,
+} from '../../../activities/activityConstants';
 import ActivityService from '../../../activities/server/ActivityService';
+import { EMAIL_IDS } from '../../../email/emailConstants';
+import { down, up } from '../22';
 
 describe('Migration 22', () => {
   beforeEach(() => resetDatabase());

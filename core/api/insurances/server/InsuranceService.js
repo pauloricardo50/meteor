@@ -1,16 +1,11 @@
 import { Random } from 'meteor/random';
-import moment from 'moment';
 
-import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
+import { getNewName } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
-import Insurances from '../insurances';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
-import {
-  INSURANCE_STATUS,
-  INSURANCES_COLLECTION,
-  INSURANCE_PREMIUM_FREQUENCY,
-} from '../insuranceConstants';
 import { getEffectiveDuration } from '../helpers';
+import { INSURANCES_COLLECTION, INSURANCE_STATUS } from '../insuranceConstants';
+import Insurances from '../insurances';
 
 class InsuranceService extends CollectionService {
   constructor() {

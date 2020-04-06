@@ -1,16 +1,16 @@
 import archiver from 'archiver';
 
-import Intl from 'core/utils/server/intl';
-import LoanService from '../../../../loans/server/LoanService';
-import { zipDocuments } from './zipHelpers';
+import Intl from '../../../../../utils/server/intl';
 import {
   DOCUMENTS,
   DOCUMENTS_CATEGORIES,
 } from '../../../../files/fileConstants';
+import FileService from '../../../../files/server/FileService';
+import LoanService from '../../../../loans/server/LoanService';
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
-import FileService from '../../../../files/server/FileService';
-import FilesBinPacker, { MIME_ENCODING_SIZE_FACTOR } from './FilesBinPacker';
+import FilesBinPacker from './FilesBinPacker';
+import { zipDocuments } from './zipHelpers';
 
 export const getFileName = ({
   Key,

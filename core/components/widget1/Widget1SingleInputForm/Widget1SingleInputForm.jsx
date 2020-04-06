@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import Loading from 'core/components/Loading/Loading';
-import Widget1SingleInput from '../Widget1SingleInput';
-import Widget1SingleInputFormContainer from './Widget1SingleInputFormContainer';
-import Widget1SingleInputFormButtons from './Widget1SingleInputFormButtons';
 import { persistor } from '../../../../startup/shared/setupStore';
+import Loading from '../../Loading';
+import Widget1SingleInput from '../Widget1SingleInput';
+import Widget1SingleInputFormButtons from './Widget1SingleInputFormButtons';
+import Widget1SingleInputFormContainer from './Widget1SingleInputFormContainer';
 
 const Widget1SingleInputForm = ({
   name,

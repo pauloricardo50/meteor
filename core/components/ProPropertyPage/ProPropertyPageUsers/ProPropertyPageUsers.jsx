@@ -1,10 +1,10 @@
 import React from 'react';
 
-import withHider from 'core/containers/withHider';
-import Table from 'core/components/Table';
+import withHider from '../../../containers/withHider';
+import Table from '../../Table';
+import T from '../../Translation';
 import ProPropertyPageUsersContainer from './ProPropertyPageUsersContainer';
 import ProPropertyProUserAdder from './ProPropertyProUserAdder/ProPropertyProUserAdder';
-import T from '../../Translation';
 
 const HiddenUsers = withHider(hide => ({
   label: hide ? 'Afficher les comptes Pro' : 'Masquer les comptes Pro',

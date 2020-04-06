@@ -1,26 +1,26 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
-import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
-import Intl from 'core/utils/server/intl';
-import CollectionService from '../../helpers/server/CollectionService';
-import InsuranceRequests from '../insuranceRequests';
+import Intl from '../../../utils/server/intl';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
   getNewName,
   setAssignees,
 } from '../../helpers/server/collectionServerHelpers';
-import UserService from '../../users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
+import CollectionService from '../../helpers/server/CollectionService';
+import { INSURANCE_STATUS } from '../../insurances/insuranceConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
+import LoanService from '../../loans/server/LoanService';
+import { REVENUE_STATUS } from '../../revenues/revenueConstants';
+import UserService from '../../users/server/UserService';
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUEST_STATUS_ORDER,
 } from '../insuranceRequestConstants';
-import ActivityService from '../../activities/server/ActivityService';
-import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import InsuranceRequests from '../insuranceRequests';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
 

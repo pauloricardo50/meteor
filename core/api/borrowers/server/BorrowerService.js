@@ -1,8 +1,8 @@
-import { adminBorrower } from 'core/api/fragments';
-import Borrowers from '../borrowers';
-import LoanService from '../../loans/server/LoanService';
+import { adminBorrower } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
+import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
+import Borrowers from '../borrowers';
 
 export class BorrowerService extends CollectionService {
   constructor() {

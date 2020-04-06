@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Percent from 'core/components/Translation/numberComponents/Percent';
 import T, { Money } from '../../../../../../components/Translation';
+import Percent from '../../../../../../components/Translation/numberComponents/Percent';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
-import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import BalanceSheetTable from '../../BalanceSheetTable';
+import { shouldRenderRow } from '../../PdfTable/PdfTable';
 
 const renderExpenses = expenses =>
   Object.keys(expenses).map(expenseType => {

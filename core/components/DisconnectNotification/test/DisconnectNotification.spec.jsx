@@ -1,8 +1,8 @@
 /* eslint-env mocha */
-import { expect } from 'chai';
 import Snackbar from '@material-ui/core/Snackbar';
+import { expect } from 'chai';
 
-import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
+import { getMountedComponent } from '../../../utils/testHelpers';
 import { DisconnectNotification } from '../DisconnectNotification';
 
 describe('DisconnectNotification', () => {

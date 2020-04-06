@@ -1,8 +1,8 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { BORROWER_DOCUMENTS } from 'core/api/files/fileConstants';
-import { EXPENSES } from 'core/api/borrowers/borrowerConstants';
 import Borrowers from '../../borrowers';
+import { EXPENSES } from '../../borrowers/borrowerConstants';
+import { BORROWER_DOCUMENTS } from '../../files/fileConstants';
 
 export const up = async () => {
   const allBorrowers = Borrowers.find({}).fetch();

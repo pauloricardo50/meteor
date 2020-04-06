@@ -1,4 +1,4 @@
-import FrontService from 'core/api/front/server/FrontService';
+import { FrontService } from '../../../front/server/FrontService';
 
 const frontWebhookAPI = ({ body, params = {} }) => {
   try {

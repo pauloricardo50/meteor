@@ -1,10 +1,11 @@
 import React from 'react';
-import { toMoney } from 'core/utils/conversionFunctions';
+
+import { toMoney } from '../../../../../utils/conversionFunctions';
+import T from '../../../../Translation';
 import {
   getBorrowRatio,
   getBorrowRatioStatus,
 } from '../../FinancingResult/financingResultHelpers';
-import T from '../../../../Translation';
 import { FinmaRatio } from '.';
 
 const formatValues = values => {
