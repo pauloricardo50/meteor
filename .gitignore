@@ -1,7 +1,22 @@
-npm-debug.log
+# Dependencies
 node_modules/
-**/.DS_Store
+
+# Compiled language files
 microservices/**/lang/*
+
+# IntelliJ config files
 .idea/
-**/commit.txt
+
+# Compiled plugin files
 core/assets/public/files/frontPlugin/*.js
+
+# Mac files
+**/.DS_Store
+
+# dotenv environment variable files
+**/.env*
+
+# Logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*

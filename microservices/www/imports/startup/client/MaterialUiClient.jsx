@@ -11,7 +11,11 @@ const MaterialUiClient = ({ children }) => {
     }
   }, []);
 
-  return <MuiThemeProvider theme={createTheme()}>{children}</MuiThemeProvider>;
+  return (
+    <MuiThemeProvider theme={createTheme({ fontSize: 16 })}>
+      {children}
+    </MuiThemeProvider>
+  );
 };
 
 MaterialUiClient.propTypes = {

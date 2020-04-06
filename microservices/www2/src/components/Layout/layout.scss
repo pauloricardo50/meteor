@@ -1,0 +1,19 @@
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100%;
+
+  main {
+    flex-grow: 1;
+  }
+
+  .layout-nav {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid grey;
+  }
+}

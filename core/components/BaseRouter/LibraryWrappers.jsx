@@ -6,7 +6,7 @@ import { withProps } from 'recompose';
 
 import createTheme from '../../config/muiCustom';
 
-const MaterialUiTheme = withProps({ theme: createTheme() })(MuiThemeProvider);
+const MaterialUiTheme = withProps({ theme: createTheme({}) })(MuiThemeProvider);
 
 const LibraryWrappers = ({
   i18n: { locale, messages, formats },
