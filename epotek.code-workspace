@@ -8,6 +8,9 @@
       "path": "./core"
     },
     {
+      "path": "microservices/www2"
+    },
+    {
       "path": "microservices/backend"
     },
     {

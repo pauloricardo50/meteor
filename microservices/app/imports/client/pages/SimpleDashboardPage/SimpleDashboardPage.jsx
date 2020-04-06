@@ -35,7 +35,7 @@ const SimpleDashboardPage = props => {
 
           <div className="simple-dashboard-page-borrowers-right">
             {isMobile ? (
-              <MuiThemeProvider theme={createTheme()}>
+              <MuiThemeProvider theme={createTheme({})}>
                 <SimpleMaxPropertyValueSticky {...props} />
               </MuiThemeProvider>
             ) : (
