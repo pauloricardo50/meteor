@@ -7,7 +7,7 @@ import T from 'core/components/Translation';
 import ContactButtonContent from './ContactButtonContent';
 
 const ContactButtonOverlay = ({
-  staff: { src, name, phoneNumber, email, gender } = {},
+  staff: { src, name, phoneNumber, email, gender, calendly } = {},
   openContact,
   handleCloseContact,
 }) => (
@@ -42,6 +42,21 @@ const ContactButtonOverlay = ({
           href={`mailto:${email}`}
           label={email}
         />
+        {calendly ? (
+          <ContactButtonContent
+            titleId="ContactButton.calendly"
+            icon={<Icon type="event" className="icon" />}
+            href={calendly}
+            label="Programmer un rendez-vous"
+          />
+        ) : (
+          <ContactButtonContent
+            titleId="ContactButton.calendly"
+            icon={<Icon type="event" className="icon" />}
+            href="https://calendly.com/epotek-geneve"
+            label="Programmer un rendez-vous"
+          />
+        )}
       </div>
     </Grow>
   </ClickAwayListener>

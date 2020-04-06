@@ -23,6 +23,7 @@ const ContactButtonContainer = compose(
         ...employeesByEmail['lydia@e-potek.ch'],
         phoneNumber: EPOTEK_NUMBER,
         email: 'financement@e-potek.ch',
+        calendly: undefined,
       };
     }
     return { staff };
