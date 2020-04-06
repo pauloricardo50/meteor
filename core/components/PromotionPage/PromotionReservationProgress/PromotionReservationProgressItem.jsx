@@ -22,26 +22,18 @@ const IconTooltip = ({
   note,
   placeholder,
   renderStatus = defaultRenderStatus,
-}) => {
-  // Adjust timezone
-  const timezonedDate =
-    date && new Date(date.getTime() + date.getTimezoneOffset() * 60000);
-  return (
-    <div className="promotion-reservation-progress-item-tooltip">
-      <b className="flex sb">
-        <T id={`Forms.${id}`} />
-        &nbsp;
-        {date && (
-          <i className="secondary">
-            {moment(timezonedDate).format("H:mm, D MMM 'YY")}
-          </i>
-        )}
-      </b>
-      {renderStatus({ id, note, placeholder, status })}
-    </div>
-  );
-};
-
+}) => (
+  <div className="promotion-reservation-progress-item-tooltip">
+    <b className="flex sb">
+      <T id={`Forms.${id}`} />
+      &nbsp;
+      {date && (
+        <i className="secondary">{moment(date).format("H:mm, D MMM 'YY")}</i>
+      )}
+    </b>
+    {renderStatus({ id, note, placeholder, status })}
+  </div>
+);
 const PromotionReservationProgressItem = ({
   icon,
   color,

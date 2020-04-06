@@ -7,6 +7,10 @@ import useSearchParams from 'core/hooks/useSearchParams';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 import AdminNoteAdderContainer from './AdminNoteAdderContainer';
+import {
+  subtractTimezoneOffset,
+  addTimezoneOffset,
+} from '../../utils/dateHelpers';
 
 const getUpdateSchema = () =>
   new SimpleSchema(adminNotesSchema)
@@ -75,11 +79,11 @@ export const AdminNoteSetter = ({
       buttonProps={buttonProps}
       schema={schema}
       openOnMount={!adminNote && searchParams?.addNote}
-      onSubmit={({ notifyPros = [], ...values }) =>
+      onSubmit={({ notifyPros = [], date: noteDate, ...values }) =>
         setAdminNote.run({
           ...methodParams,
           adminNoteId: isInsert ? undefined : adminNote.id,
-          note: values,
+          note: { ...values, date: addTimezoneOffset(noteDate) },
           notifyPros: notifyPros.map(email => ({
             email,
             withCta: contacts.find(contact => email === contact.email).withCta,
@@ -115,9 +119,7 @@ export const AdminNoteSetter = ({
       onOpen={() => {
         // Make sure we have local time
         const now = new Date();
-        const timezonedDate = new Date(
-          now.getTime() - now.getTimezoneOffset() * 60000,
-        );
+        const timezonedDate = subtractTimezoneOffset(now);
 
         return setDate(timezonedDate);
       }}

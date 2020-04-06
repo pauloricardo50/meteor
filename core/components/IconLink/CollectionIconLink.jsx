@@ -153,7 +153,7 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
 const CollectionIconLink = ({
   forceOpen,
   iconClassName,
-  relatedDoc,
+  relatedDoc = {},
   showIcon,
   stopPropagation,
   placement,
