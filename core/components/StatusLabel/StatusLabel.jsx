@@ -6,7 +6,10 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
 } from '../../api/insuranceRequests/insuranceRequestConstants';
-import { INSURANCES_COLLECTION } from '../../api/insurances/insuranceConstants';
+import {
+  INSURANCES_COLLECTION,
+  INSURANCE_STATUS,
+} from '../../api/insurances/insuranceConstants';
 import {
   LENDERS_COLLECTION,
   LENDER_STATUS,
