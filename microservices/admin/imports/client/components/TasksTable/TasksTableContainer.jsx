@@ -1,21 +1,15 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import T from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import { CollectionIconLink } from 'core/components/IconLink';
-import {
-  USERS_COLLECTION,
-  TASKS_COLLECTION,
-  LOANS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  LENDERS_COLLECTION,
-} from 'core/api/constants';
-import { ORDER } from 'core/utils/sortArrayOfObjects';
-import Linkify from 'core/components/Linkify';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { employeesById } from 'core/arrays/epotekEmployees';
+import { CollectionIconLink } from 'core/components/IconLink';
+import Linkify from 'core/components/Linkify';
+import StatusLabel from 'core/components/StatusLabel';
+import T from 'core/components/Translation';
+import { ORDER } from 'core/utils/sortArrayOfObjects';
+
 import TasksTableActions from './TasksTableActions';
 
 const now = moment();
@@ -66,25 +60,41 @@ const getColumnOptions = ({ relatedTo = true, showStatusColumn }) =>
     { id: 'actions', label: 'Actions', style: { width: 96 } },
   ].filter(x => x);
 
-const getRelatedDoc = ({ user, loan, promotion, organisation, lender }) => {
+const getRelatedDoc = ({
+  user,
+  loan,
+  promotion,
+  organisation,
+  lender,
+  insuranceRequest,
+  insurance,
+}) => {
   if (user) {
-    return { ...user, collection: USERS_COLLECTION };
+    return user;
   }
 
   if (loan) {
-    return { ...loan, collection: LOANS_COLLECTION };
+    return loan;
   }
 
   if (promotion) {
-    return { ...promotion, collection: PROMOTIONS_COLLECTION };
+    return promotion;
   }
 
   if (organisation) {
-    return { ...organisation, collection: ORGANISATIONS_COLLECTION };
+    return organisation;
   }
 
   if (lender) {
-    return { ...lender, collection: LENDERS_COLLECTION };
+    return lender;
+  }
+
+  if (insurance) {
+    return insurance;
+  }
+
+  if (insuranceRequest) {
+    return insuranceRequest;
   }
 };
 
@@ -109,6 +119,8 @@ const makeMapTask = ({
     priority,
     createdAt,
     createdBy,
+    insuranceRequest,
+    insurance,
   } = task;
 
   const createdByFirstName =
@@ -122,13 +134,22 @@ const makeMapTask = ({
       : '';
   const createdAtLabel = moment(createdAt).fromNow();
 
+  const selectedRelatedTo =
+    loan ||
+    user ||
+    promotion ||
+    organisation ||
+    lender ||
+    insuranceRequest ||
+    insurance;
+
   return {
     id: taskId,
     priority,
     columns: [
       relatedTo && {
-        raw: loan || user || promotion || organisation || lender,
-        label: (loan || user || promotion || organisation || lender) && (
+        raw: selectedRelatedTo,
+        label: selectedRelatedTo && (
           <CollectionIconLink
             relatedDoc={getRelatedDoc(task)}
             variant="TASKS_TABLE"
@@ -156,9 +177,7 @@ const makeMapTask = ({
       {
         label:
           assignee && assignee._id ? (
-            <CollectionIconLink
-              relatedDoc={{ ...assignee, collection: USERS_COLLECTION }}
-            />
+            <CollectionIconLink relatedDoc={assignee} />
           ) : null,
         raw: assignee && assignee.name,
       },

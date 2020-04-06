@@ -21,8 +21,8 @@ class AutoFormDateInput extends Component {
         savingIconStyle={{ top: 10 }}
         inputProps={{
           ...inputProps,
-          date: true,
           inputType: 'date',
+          date: true,
           inputComponent: DatePicker,
           // onDateChange: date => onChange(date ? date.toDate() : undefined, id),
           onFocusChange: ({ focused: nextFocused }) =>

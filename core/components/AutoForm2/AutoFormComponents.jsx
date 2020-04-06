@@ -4,21 +4,21 @@ import { compose, getContext } from 'recompose';
 import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
 
+import { ignoreProps } from '../../containers/updateForProps';
 import DateField from '../DateField';
+import HtmlPreview from '../HtmlPreview';
+import MoneyInput from '../MoneyInput';
 import PercentInput from '../PercentInput';
 import {
-  CUSTOM_AUTOFIELD_TYPES,
   COMPONENT_TYPES,
+  CUSTOM_AUTOFIELD_TYPES,
   FIELDS_TO_IGNORE,
-} from './constants';
-import CustomSelectField from './CustomSelectField';
+} from './autoFormConstants';
+import { getLabel, getPlaceholder } from './autoFormHelpers';
+import CustomBooleanRadioField from './CustomBooleanRadioField';
 import { OptimizedListField } from './CustomListField';
 import CustomNestField from './CustomNestField';
-import { getLabel, getPlaceholder } from './autoFormHelpers';
-import MoneyInput from '../MoneyInput';
-import HtmlPreview from '../HtmlPreview';
-import { ignoreProps } from '../../containers/updateForProps';
-import CustomBooleanRadioField from './CustomBooleanRadioField';
+import CustomSelectField from './CustomSelectField';
 import FileUploadField from './FileUploadField';
 
 const container = ignoreProps(FIELDS_TO_IGNORE);
@@ -47,10 +47,11 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
+    const { getProps = () => {} } = uniforms;
     return {
       Component: OptimizedDateField,
       type: COMPONENT_TYPES.DATE,
-      props: { placeholder: null, variant: 'outlined' },
+      props: { placeholder: null, variant: 'outlined', getProps },
     };
   }
 

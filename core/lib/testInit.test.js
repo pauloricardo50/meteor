@@ -2,7 +2,7 @@
 // Leave this imported here for autoforms to work
 require('uniforms-bridge-simple-schema-2');
 const SimpleSchema = require('simpl-schema').default;
-
+const IntlMessageFormat = require('intl-messageformat').default;
 const uniforms = require('uniforms-material');
 
 SimpleSchema.extendOptions([

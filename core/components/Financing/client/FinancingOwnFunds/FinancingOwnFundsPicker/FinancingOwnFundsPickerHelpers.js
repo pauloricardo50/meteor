@@ -1,7 +1,5 @@
-import {
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../../api/constants';
+import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
 import Calculator from '../../../../../utils/Calculator';
 
 export const chooseOwnFundsTypes = ({ loan: { residenceType } }) =>

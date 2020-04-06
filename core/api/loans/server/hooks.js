@@ -1,30 +1,24 @@
-import LenderService from 'core/api/lenders/server/LenderService';
-import FileService from '../../files/server/FileService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
-import PropertyService from '../../properties/server/PropertyService';
-import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
-import ActivityService from '../../activities/server/ActivityService';
-import SecurityService from '../../security';
-import { ROLES, PROPERTY_CATEGORY } from '../../constants';
-import Loans from '../loans';
 import formatNumbersHook, {
   formatPhoneNumber,
 } from '../../../utils/phoneFormatting';
-import LoanService from './LoanService';
+import ActivityService from '../../activities/server/ActivityService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import FileService from '../../files/server/FileService';
 import FrontService from '../../front/server/FrontService';
+import LenderService from '../../lenders/server/LenderService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import SecurityService from '../../security';
+import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
+import { ROLES } from '../../users/userConstants';
+import Loans from '../loans';
+import LoanService from './LoanService';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
-  borrowerIds.forEach(borrowerId => {
-    const { loans } = BorrowerService.createQuery({
-      $filters: { _id: borrowerId },
-      loans: { _id: 1 },
-    }).fetchOne();
-
-    if (loans.length === 1) {
-      BorrowerService.remove({ borrowerId });
-    }
-  });
+  borrowerIds.forEach(borrowerId =>
+    BorrowerService.cleanUpBorrowers({ borrowerId }),
+  );
   propertyIds.forEach(propertyId => {
     const { loans, category } = PropertyService.createQuery({
       $filters: { _id: propertyId },

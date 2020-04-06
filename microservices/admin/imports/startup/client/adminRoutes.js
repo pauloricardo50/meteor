@@ -14,17 +14,18 @@ import SingleOrganisationPage from '../../client/pages/SingleOrganisationPage/lo
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
-import LoanBoardPage from '../../client/pages/LoanBoardPage/loadable';
+import BoardPage from '../../client/pages/BoardPage/loadable';
 import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
 import OtherPage from '../../client/pages/OtherPage/loadable';
 import WikiPage from '../../client/pages/WikiPage/loadable';
+import InsuranceRequestsPage from '../../client/pages/InsuranceRequestsPage/loadable';
+import SingleInsuranceRequestPage from '../../client/pages/SingleInsuranceRequestPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },
   LOAN_BOARD_PAGE: {
-    component: LoanBoardPage,
-    path: '/loan-board',
-    exact: true,
+    component: BoardPage,
+    path: '/board/:boardId?',
   },
 
   //   "All" pages
@@ -51,6 +52,11 @@ const ADMIN_ROUTES = {
   WIKI_PAGE: {
     component: WikiPage,
     path: '/wiki/:tabId?',
+  },
+  INSURANCE_REQUESTS_PAGE: {
+    component: InsuranceRequestsPage,
+    path: '/insuranceRequests',
+    exact: true,
   },
 
   //   "Single" pages
@@ -80,6 +86,14 @@ const ADMIN_ROUTES = {
   ADMIN_PROMOTION_PAGE: {
     component: AdminPromotionPage,
     path: '/promotions/:promotionId/:tabId?',
+  },
+  SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES: {
+    component: SingleInsuranceRequestPage,
+    path: '/insuranceRequests/:insuranceRequestId/insurances/:tabId?',
+  },
+  SINGLE_INSURANCE_REQUEST_PAGE: {
+    component: SingleInsuranceRequestPage,
+    path: '/insuranceRequests/:insuranceRequestId/:tabId?',
   },
 
   //   Other

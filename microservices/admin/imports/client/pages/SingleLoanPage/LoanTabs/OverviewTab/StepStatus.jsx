@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'core/components/Icon';
 
+import { STEP_ORDER } from 'core/api/loans/loanConstants';
+import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import { STEP_ORDER } from 'core/api/constants';
 
 const StepStatus = props => {
   const currentStep = STEP_ORDER.indexOf(props.loan.step);

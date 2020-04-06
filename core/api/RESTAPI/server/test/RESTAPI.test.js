@@ -679,6 +679,7 @@ describe('RESTAPI', function() {
         'updatedAt',
         'roles',
         'isDisabled',
+        'defaultBoardId',
       ]);
       return fetchAndCheckResponse({
         url: '/fiberAPIUser',

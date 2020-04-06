@@ -1,31 +1,38 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 
-import colors from '../../../config/colors';
+import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../../../api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../../api/insuranceRequests/insuranceRequestConstants';
+import { getDuration, getFrequency } from '../../../api/insurances/helpers';
+import { INSURANCES_COLLECTION } from '../../../api/insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
   LOAN_CATEGORIES,
-  PROPERTY_CATEGORY,
+} from '../../../api/loans/loanConstants';
+import { OFFERS_COLLECTION } from '../../../api/offers/offerConstants';
+import {
+  ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
-} from '../../../api/constants';
-import StatusLabel from '../../StatusLabel';
-import Roles from '../../Roles';
-import PremiumBadge from '../../PremiumBadge';
-import T, { Money, IntlDate } from '../../Translation';
-import CollectionIconLink from '../CollectionIconLink';
-import TooltipArray from '../../TooltipArray';
+} from '../../../api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_CATEGORY,
+} from '../../../api/properties/propertyConstants';
+import { USERS_COLLECTION } from '../../../api/users/userConstants';
+import colors from '../../../config/colors';
 import FullDate from '../../dateComponents/FullDate';
+import PremiumBadge from '../../PremiumBadge';
+import Roles from '../../Roles';
+import StatusLabel from '../../StatusLabel';
+import TooltipArray from '../../TooltipArray';
+import T, { IntlDate, Money } from '../../Translation';
+import CollectionIconLink from '../CollectionIconLink';
 
 const Information = ({
   label,
@@ -51,10 +58,10 @@ const Information = ({
   );
 };
 
-const LinkList = ({ docs, collection }) => (
+const LinkList = ({ docs }) => (
   <TooltipArray
     items={docs.map(doc => (
-      <CollectionIconLink key={doc._id} relatedDoc={{ ...doc, collection }} />
+      <CollectionIconLink key={doc._id} relatedDoc={doc} />
     ))}
     displayLimit={2}
     className="flex wrap"
@@ -147,6 +154,20 @@ export const titles = {
       </span>
     </span>
   ),
+  [INSURANCES_COLLECTION]: ({ name, status }) => (
+    <span>
+      {name}
+      &nbsp;
+      <StatusLabel status={status} collection={INSURANCES_COLLECTION} />
+    </span>
+  ),
+  [INSURANCE_REQUESTS_COLLECTION]: ({ name, status }) => (
+    <span>
+      {name}
+      &nbsp;
+      <StatusLabel status={status} collection={INSURANCE_REQUESTS_COLLECTION} />
+    </span>
+  ),
 };
 
 export const components = {
@@ -169,11 +190,7 @@ export const components = {
 
         <Information
           label="Promotion"
-          value={
-            <CollectionIconLink
-              relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={promotion} />}
           shouldDisplay={!!promotion}
         />
 
@@ -196,25 +213,14 @@ export const components = {
         <Information
           className="flex center-align"
           label="Compte"
-          value={
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={user} />}
           isEmpty={!user || !user._id}
           emptyText="Sans compte"
         />
 
         <Information
           label="Conseiller"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...mainAssignee,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={mainAssignee} />}
           isEmpty={!mainAssignee}
         />
       </div>
@@ -288,40 +294,19 @@ export const components = {
 
         <Information
           label="Conseiller"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={assignedEmployee} />}
           isEmpty={!assignedEmployee}
         />
 
         <Information
           label="Référé par compte"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...referredByUser,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={referredByUser} />}
           isEmpty={!referredByUser.name}
         />
 
         <Information
           label="Référé par organisation"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...referredByOrganisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={referredByOrganisation} />}
           isEmpty={!referredByOrganisation.name}
         />
 
@@ -362,11 +347,7 @@ export const components = {
 
       <Information
         label="Compte"
-        value={
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        }
+        value={<CollectionIconLink relatedDoc={user} />}
         isEmpty={!user}
         emptyText="Sans compte"
       />
@@ -374,14 +355,7 @@ export const components = {
       {!!user && (
         <Information
           label="Conseiller"
-          value={
-            <CollectionIconLink
-              relatedDoc={{
-                ...user.assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
-          }
+          value={<CollectionIconLink relatedDoc={user.assignedEmployee} />}
           isEmpty={!(user && user.assignedEmployee)}
         />
       )}
@@ -422,7 +396,7 @@ export const components = {
                   relatedDoc={{
                     _id: allOrgs[0]._id,
                     name: allOrgs[0].name,
-                    collection: ORGANISATIONS_COLLECTION,
+                    _collection: ORGANISATIONS_COLLECTION,
                   }}
                 />
               }
@@ -475,14 +449,7 @@ export const components = {
       {children}
       <Information
         label="Prêteur"
-        value={
-          <CollectionIconLink
-            relatedDoc={{
-              ...lenderOrganisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
-        }
+        value={<CollectionIconLink relatedDoc={lenderOrganisation} />}
         isEmpty={!lenderOrganisation}
         emptyText="Pas choisi"
       />
@@ -605,4 +572,95 @@ export const components = {
       />
     </div>
   ),
+  [INSURANCE_REQUESTS_COLLECTION]: ({
+    children,
+    borrowers = [],
+    user,
+    mainAssignee,
+  }) => (
+    <div>
+      {children}
+
+      <Information
+        label="Assurés"
+        value={<LinkList docs={borrowers} collection={BORROWERS_COLLECTION} />}
+        isEmpty={borrowers.length === 0}
+      />
+
+      <Information
+        className="flex center-align"
+        label="Compte"
+        value={
+          <CollectionIconLink
+            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+          />
+        }
+        isEmpty={!user || !user._id}
+        emptyText="Sans compte"
+      />
+
+      <Information
+        label="Conseiller"
+        value={
+          <CollectionIconLink
+            relatedDoc={{
+              ...mainAssignee,
+              collection: USERS_COLLECTION,
+            }}
+          />
+        }
+        isEmpty={!mainAssignee}
+      />
+    </div>
+  ),
+  [INSURANCES_COLLECTION]: ({
+    borrower,
+    insuranceProduct,
+    organisation,
+    children,
+    premium,
+    premiumFrequency,
+    duration,
+  }) => {
+    const { name: productName } = insuranceProduct;
+    return (
+      <div>
+        {children}
+
+        <Information
+          label="Assuré"
+          value={
+            <CollectionIconLink
+              relatedDoc={{ ...borrower, collection: BORROWERS_COLLECTION }}
+            />
+          }
+        />
+        <Information
+          label="Assureur"
+          value={
+            <CollectionIconLink
+              relatedDoc={{
+                ...organisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+            />
+          }
+        />
+        <Information label="Produit" value={productName} />
+        <Information
+          label="Prime"
+          value={
+            <span>
+              <Money value={premium} />
+              {getFrequency(premiumFrequency)}
+            </span>
+          }
+        />
+        <Information
+          label="Durée"
+          value={getDuration({ premiumFrequency, duration })}
+        />
+      </div>
+    );
+  },
 };

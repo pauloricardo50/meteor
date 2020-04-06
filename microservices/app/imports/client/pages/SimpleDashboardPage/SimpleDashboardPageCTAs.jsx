@@ -1,14 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { loanUpdate } from 'core/api/methods';
-import { APPLICATION_TYPES, STEPS } from 'core/api/constants';
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
+import { APPLICATION_TYPES, STEPS } from 'core/api/loans/loanConstants';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
-import { createRoute } from 'core/utils/routerUtils';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 import pollUntilReady from 'core/utils/pollUntilReady';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import UserCreator from '../../components/UserCreator/UserCreator';
 

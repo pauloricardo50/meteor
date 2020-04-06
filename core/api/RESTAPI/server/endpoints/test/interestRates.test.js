@@ -1,15 +1,19 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import moment from 'moment';
 
 import generator from '../../../../factories/server';
-import { TRENDS, INTEREST_RATES } from '../../../../constants';
+import {
+  INTEREST_RATES,
+  TRENDS,
+} from '../../../../interestRates/interestRatesConstants';
 import RESTAPI from '../../RESTAPI';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
 import { interestRatesAPI } from '..';
 

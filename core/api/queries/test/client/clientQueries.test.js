@@ -3,14 +3,14 @@ import { Meteor } from 'meteor/meteor';
 
 import { expect } from 'chai';
 
-import { userLogin, resetDatabase } from 'core/utils/testHelpers/index';
+import { userLogin, resetDatabase } from 'core/utils/testHelpers';
 import {
   query1,
   query2,
   query3,
   query4,
   testCollectionInsert,
-} from '../collection.app-test';
+} from '../collection-app-test';
 
 const insertTestData = n => {
   const promises = [...Array(n)].map((_, index) =>

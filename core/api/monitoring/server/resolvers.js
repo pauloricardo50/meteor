@@ -2,10 +2,12 @@ import { Meteor } from 'meteor/meteor';
 
 import merge from 'lodash/merge';
 
-import { REVENUE_STATUS, LOAN_STATUS } from 'core/api/constants';
+import {
+  REVENUE_STATUS,
+  COMMISSION_STATUS,
+} from 'core/api/revenues/revenueConstants';
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
 import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
-import { LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
-import { COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import LoanService from '../../loans/server/LoanService';
 

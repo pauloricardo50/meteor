@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { MORTGAGE_NOTES_COLLECTION } from '../../api/constants';
+import { MORTGAGE_NOTES_COLLECTION } from '../../api/mortgageNotes/mortgageNoteConstants';
 import AutoForm from '../AutoForm';
-import T from '../Translation';
 import Button from '../Button';
+import T from '../Translation';
 import MortgageNotesFormContainer from './MortgageNotesFormContainer';
 
 const MortgageNotesForm = ({

@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const RevenuesWithoutAssignees = ({ showAll }) => {
@@ -51,10 +52,7 @@ const RevenuesWithoutAssignees = ({ showAll }) => {
                 revenues.map(
                   ({ loan }) =>
                     loan && (
-                      <CollectionIconLink
-                        key={loan._id}
-                        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                      />
+                      <CollectionIconLink key={loan._id} relatedDoc={loan} />
                     ),
                 )}
             </div>

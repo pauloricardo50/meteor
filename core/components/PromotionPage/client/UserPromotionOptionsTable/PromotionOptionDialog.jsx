@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { promotionOptionRemove } from 'core/api/methods';
-import T from '../../../Translation';
+import { promotionOptionRemove } from '../../../../api/promotionOptions/methodDefinitions';
 import Checkbox from '../../../Checkbox';
+import T from '../../../Translation';
 import PromotionLotDetail from '../PromotionLotDetail';
 import RequestReservation from './RequestReservation';
 

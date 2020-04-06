@@ -1,17 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import intl, { formatMessage as clientFormatMessage } from '../../utils/intl';
 import {
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-  LOANS_COLLECTION,
-} from '../constants';
-import {
   DOCUMENTS,
   BORROWER_DOCUMENTS,
   PROPERTY_DOCUMENTS,
   LOAN_DOCUMENTS,
+  INSURANCE_REQUEST_DOCUMENTS,
+  INSURANCE_DOCUMENTS,
   BASIC_DOCUMENTS_LIST,
 } from './fileConstants';
+import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
+import { LOANS_COLLECTION } from '../loans/loanConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../insurances/insuranceConstants';
 
 export const documentHasTooltip = documentId => {
   let formatMessage = clientFormatMessage;
@@ -50,6 +52,12 @@ export const allDocuments = ({ doc, collection }) => {
       break;
     case LOANS_COLLECTION:
       documents = makeAllObjectDocuments(LOAN_DOCUMENTS);
+      break;
+    case INSURANCE_REQUESTS_COLLECTION:
+      documents = makeAllObjectDocuments(INSURANCE_REQUEST_DOCUMENTS);
+      break;
+    case INSURANCES_COLLECTION:
+      documents = makeAllObjectDocuments(INSURANCE_DOCUMENTS);
       break;
     default:
       break;
@@ -109,3 +117,7 @@ const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
 export const getPropertyDocuments = makeGetDocuments(PROPERTIES_COLLECTION);
 export const getBorrowerDocuments = makeGetDocuments(BORROWERS_COLLECTION);
 export const getLoanDocuments = makeGetDocuments(LOANS_COLLECTION);
+export const getInsuranceRequestDocuments = makeGetDocuments(
+  INSURANCE_REQUESTS_COLLECTION,
+);
+export const getInsuranceDocuments = makeGetDocuments(INSURANCES_COLLECTION);

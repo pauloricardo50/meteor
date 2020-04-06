@@ -1,7 +1,7 @@
-import * as cantonConfigs from './cantonConfigs';
-import Calculator from '../Calculator';
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { NOTARY_FEES } from '../../config/financeConstants';
-import { PURCHASE_TYPE } from '../../api/constants';
+import Calculator from '../Calculator';
+import * as cantonConfigs from './cantonConfigs';
 
 const roundToCents = val => Number(val.toFixed(2));
 

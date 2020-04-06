@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import SingleLoanPageHeader from '../SingleLoanPageHeader';
-import PremiumLoanTabs from './PremiumLoanTabs';
-import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
+
 import CollectionTasksTable from '../../../components/TasksTable/CollectionTasksTable';
 import SingleLoanPageContacts from '../SingleLoanPageContacts';
+import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
+import SingleLoanPageHeader from '../SingleLoanPageHeader';
+import PremiumLoanTabs from './PremiumLoanTabs';
 
 const PremiumSingleLoanPage = props => {
   const { loan } = props;

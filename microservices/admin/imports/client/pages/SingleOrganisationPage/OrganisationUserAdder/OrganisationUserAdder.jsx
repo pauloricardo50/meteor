@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { ListItemText, ListItemSecondaryAction } from 'core/components/List';
-import DialogSimple from 'core/components/DialogSimple';
-import Button from 'core/components/Button/Button';
-import T from 'core/components/Translation';
-import TextField from 'imports/core/components/Material/TextField';
 import { userSearch } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
+import Button from 'core/components/Button/Button';
 import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
-import { ROLES } from 'core/api/constants';
+import DialogSimple from 'core/components/DialogSimple';
 import Icon from 'core/components/Icon';
+import { ListItemSecondaryAction, ListItemText } from 'core/components/List';
+import TextField from 'core/components/Material/TextField';
+import T from 'core/components/Translation';
+
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';
 
 const renderUserSearcher = ({ organisation, setUserId }) => (

@@ -1,19 +1,20 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import Tabs from 'core/components/Tabs';
-import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import { loanUpdate } from 'core/api/loans/index';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
 import BorrowerSchema from 'core/api/borrowers/schemas/BorrowerSchema';
-import PropertySchema from 'core/api/properties/schemas/PropertySchema';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
+import LoanSchema from 'core/api/loans/schemas/LoanSchema';
+import { offerUpdate } from 'core/api/offers/methodDefinitions';
+import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
 import { OfferSchema } from 'core/api/offers/offers';
-import { propertyUpdate, borrowerUpdate, offerUpdate } from 'core/api';
-import {
-  LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-  OFFERS_COLLECTION,
-} from 'core/api/constants';
+import { propertyUpdate } from 'core/api/properties/methodDefinitions';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import PropertySchema from 'core/api/properties/schemas/PropertySchema';
+import Tabs from 'core/components/Tabs';
+
 import SingleDevTab from './SingleDevTab';
 
 const DevTab = ({ loan }) => {

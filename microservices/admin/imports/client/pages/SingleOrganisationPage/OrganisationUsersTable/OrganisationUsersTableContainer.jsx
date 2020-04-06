@@ -1,11 +1,10 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
-import T from 'core/components/Translation/Translation';
-import TooltipArray from 'core/components/TooltipArray';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import TooltipArray from 'core/components/TooltipArray';
+import T from 'core/components/Translation/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 
 const columnOptions = [
@@ -38,10 +37,7 @@ const makeMapUser = ({ history }) => user => {
             items={organisations.map(organisation => (
               <CollectionIconLink
                 key={organisation._id}
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
+                relatedDoc={organisation}
               />
             ))}
             title="Organisations"

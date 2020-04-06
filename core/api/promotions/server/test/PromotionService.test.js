@@ -1,20 +1,20 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import generator from 'core/api/factories/server';
-import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
-import { PROMOTION_STATUS } from '../../../constants';
-import UserService from '../../../users/server/UserService';
-import { ROLES } from '../../../users/userConstants';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
-import PromotionService from '../PromotionService';
+import LotService from '../../../lots/server/LotService';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
-import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
-import { PROMOTION_TYPES } from '../../promotionConstants';
+import UserService from '../../../users/server/UserService';
+import { ROLES } from '../../../users/userConstants';
+import { PROMOTION_STATUS, PROMOTION_TYPES } from '../../promotionConstants';
+import PromotionService from '../PromotionService';
 
 describe('PromotionService', function() {
   this.timeout(10000);

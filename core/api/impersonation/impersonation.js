@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES } from 'core/api/users/userConstants';
 
 const APP_URL = Meteor.settings.public.subdomains.app;
 const PRO_URL = Meteor.settings.public.subdomains.pro;

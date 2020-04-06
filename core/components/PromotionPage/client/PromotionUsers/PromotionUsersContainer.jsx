@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { withProps } from 'recompose';
 
-import { removeProFromPromotion } from '../../../../api/methods';
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
-import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
+import { removeProFromPromotion } from '../../../../api/promotions/methodDefinitions';
 import IconButton from '../../../IconButton';
-import T from '../../../Translation';
-import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
-import PromotionUserRolesModifier from './PromotionUserRolesModifier';
-import PromotionMetadataContext from '../PromotionMetadata';
+import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
 import ProCustomer from '../../../ProCustomer';
 import TooltipArray from '../../../TooltipArray';
+import T from '../../../Translation';
+import PromotionMetadataContext from '../PromotionMetadata';
+import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
+import PromotionUserRolesModifier from './PromotionUserRolesModifier';
 
 const makeColumnOptions = ({ canManageProUsers }) =>
   [

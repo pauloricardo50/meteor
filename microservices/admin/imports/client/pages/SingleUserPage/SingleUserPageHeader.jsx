@@ -1,37 +1,37 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { Helmet } from 'react-helmet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'classnames';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
+import {
+  sendEnrollmentEmail,
+  toggleAccount,
+} from 'core/api/users/methodDefinitions';
+import { ROLES } from 'core/api/users/userConstants';
+import Users from 'core/api/users/users';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import EmailModifier from 'core/components/EmailModifier';
+import Icon from 'core/components/Icon';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import Roles from 'core/components/Roles';
+import Toggle from 'core/components/Toggle';
 import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
-import Roles from 'core/components/Roles';
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import Toggle from 'core/components/Toggle';
-import { sendEnrollmentEmail, toggleAccount } from 'core/api';
-import {
-  ROLES,
-  USERS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  ACQUISITION_CHANNELS,
-} from 'core/api/constants';
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import EmailModifier from 'core/components/EmailModifier';
 import UpdateField from 'core/components/UpdateField';
-import RolePicker from '../../components/RolePicker';
+
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
+import RolePicker from '../../components/RolePicker';
 import { UserModifier } from '../../components/UserDialogForm';
-import UserDeleter from './UserDeleter';
+import LastSeen from './LastSeen';
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
 import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
-import LastSeen from './LastSeen';
+import UserDeleter from './UserDeleter';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
@@ -93,10 +93,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
               items={organisations.map(organisation => (
                 <CollectionIconLink
                   key={organisation._id}
-                  relatedDoc={{
-                    ...organisation,
-                    collection: ORGANISATIONS_COLLECTION,
-                  }}
+                  relatedDoc={organisation}
                 />
               ))}
               title="Organisations"
@@ -149,12 +146,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
               {assignedEmployee && (
                 <>
                   <T id="UsersTable.assignedTo" />
-                  <CollectionIconLink
-                    relatedDoc={{
-                      ...assignedEmployee,
-                      collection: USERS_COLLECTION,
-                    }}
-                  />
+                  <CollectionIconLink relatedDoc={assignedEmployee} />
                 </>
               )}
               <UserAssignDropdown doc={user} />
@@ -167,7 +159,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             </div>
             <div>
               <UpdateField
-                collection={USERS_COLLECTION}
+                collection={Users}
                 doc={user}
                 fields={['acquisitionChannel']}
                 autosaveDelay={250}

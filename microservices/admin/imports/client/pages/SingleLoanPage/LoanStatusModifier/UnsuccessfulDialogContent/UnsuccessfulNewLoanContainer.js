@@ -1,16 +1,16 @@
-import { withProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+import { activityInsert } from 'core/api/activities/methodDefinitions';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import {
   adminLoanInsert,
-  reuseProperty,
-  loanUpdate,
   loanSetCreatedAtActivityDescription,
-} from 'core/api';
-import { LOAN_STATUS } from 'imports/core/api/constants';
-import { PROPERTY_CATEGORY } from 'core/api/constants';
-import { activityInsert } from 'core/api/activities/methodDefinitions';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+  loanUpdate,
+  reuseProperty,
+} from 'core/api/loans/methodDefinitions';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 
 const insertNewLoan = ({
   loan,

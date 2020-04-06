@@ -1,13 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import Link from 'core/components/Link';
-import { createRoute } from 'core/utils/routerUtils';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
-import APP_ROUTES from 'imports/startup/client/appRoutes';
-import { PROMOTION_STATUS } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
+import { createRoute } from 'core/utils/routerUtils';
+
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
 const DashboardRecapPromotion = ({ loan, promotion }) => {
   const { status } = promotion;

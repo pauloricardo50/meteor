@@ -1,13 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useContext } from 'react';
 
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
-import AdminNote from 'core/components/AdminNote';
-import UpdateField from 'core/components/UpdateField';
-import LoanNotes from 'core/components/LoanNotes/LoanNotes';
-import LotsChart from './LotsChart';
-import LoansChart from './LoansChart';
+import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
+import Promotions from '../../../../api/promotions';
+import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
+import AdminNote from '../../../AdminNote';
+import AdminNotes from '../../../AdminNotes';
+import UpdateField from '../../../UpdateField';
 import PromotionMetadataContext from '../PromotionMetadata';
+import LoansChart from './LoansChart';
+import LotsChart from './LotsChart';
 import LotsValueChart from './LotsValueChart';
 import PromotionRecap from './PromotionRecap';
 
@@ -27,7 +30,7 @@ const PromotionManagement = ({ promotion }) => {
       {Meteor.microservice === 'admin' && (
         <div className="promotion-management-statuses">
           <UpdateField
-            collection={PROMOTIONS_COLLECTION}
+            collection={Promotions}
             doc={promotion}
             fields={['projectStatus', 'authorizationStatus']}
           />
@@ -40,8 +43,9 @@ const PromotionManagement = ({ promotion }) => {
         <LoansChart loans={loans} />
       </div>
       {promotionLoan && (
-        <LoanNotes
-          loan={promotionLoan}
+        <AdminNotes
+          doc={promotionLoan}
+          collection={LOANS_COLLECTION}
           title="Notes sur le dossier de développement"
         />
       )}

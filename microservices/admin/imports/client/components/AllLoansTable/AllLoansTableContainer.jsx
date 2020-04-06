@@ -1,11 +1,11 @@
 import React from 'react';
-import { mapProps } from 'recompose';
 import moment from 'moment';
+import { mapProps } from 'recompose';
 
-import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
-import T, { Money } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
 const columnOptions = [
@@ -53,10 +53,7 @@ const getRows = ({ loans, history }) =>
           label: anonymous ? (
             'Anonyme'
           ) : (
-            <CollectionIconLink
-              relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-              key="user"
-            />
+            <CollectionIconLink relatedDoc={user} key="user" />
           ),
         },
         {

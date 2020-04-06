@@ -3,9 +3,11 @@ import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 
-import { ROLES, PROPERTIES_COLLECTION } from 'core/api/constants';
-import { pullPropertyValue, pullBorrowerValue } from 'core/api';
-import ConfirmMethod from 'core/components/ConfirmMethod';
+import { pullBorrowerValue } from '../../../api/borrowers/methodDefinitions';
+import { pullPropertyValue } from '../../../api/properties/methodDefinitions';
+import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
+import { ROLES } from '../../../api/users/userConstants';
+import ConfirmMethod from '../../ConfirmMethod';
 
 const AdditionalDocDeleter = ({
   isAdditionalDoc,

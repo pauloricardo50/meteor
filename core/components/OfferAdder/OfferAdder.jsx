@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
-import T from '../Translation';
-import OfferAdderContainer from './OfferAdderContainer';
-import { INTEREST_RATES } from '../../api/constants';
 import Box from '../Box';
 import Icon from '../Icon';
+import T from '../Translation';
+import OfferAdderContainer from './OfferAdderContainer';
 
 const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
   (obj, rate) => ({

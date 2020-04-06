@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { LENDER_RULES_VARIABLES } from '../../../api/lenderRules/lenderRulesConstants';
 import { Calculator } from '..';
-import { LENDER_RULES_VARIABLES } from '../../../api/constants';
 
 describe('LenderRulesInitializator', () => {
   let loan;

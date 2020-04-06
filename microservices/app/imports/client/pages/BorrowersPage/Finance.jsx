@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import VerticalAligner from 'core/components/VerticalAligner';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import AutoForm from 'core/components/AutoForm';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
-import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import Recap from 'core/components/Recap';
-import * as financeConstants from 'core/config/financeConstants';
 import T from 'core/components/Translation';
-import { BORROWERS_COLLECTION } from 'core/api/constants';
-import withMatchParam from 'core/containers/withMatchParam';
+import VerticalAligner from 'core/components/VerticalAligner';
+import * as financeConstants from 'core/config/financeConstants';
 import { withCalculator } from 'core/containers/withCalculator';
+import withMatchParam from 'core/containers/withMatchParam';
 
 const BorrowerFinancePage = props => {
   const {

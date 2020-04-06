@@ -1,6 +1,9 @@
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { removeLoanFromPromotion, editPromotionLoan } from '../../../../api';
+import {
+  editPromotionLoan,
+  removeLoanFromPromotion,
+} from '../../../../api/promotions/methodDefinitions';
 
 export default compose(
   withState('openDialog', 'setOpenDialog', false),

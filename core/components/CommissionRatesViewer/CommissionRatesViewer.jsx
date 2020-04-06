@@ -1,15 +1,20 @@
 import React from 'react';
 
+import { COMMISSION_RATES_TYPE } from '../../api/commissionRates/commissionRateConstants';
 import { getCurrentRate } from '../../api/organisations/helpers';
-import T, { Percent, Money } from '../Translation';
-import CommissionRatesViewerList from './CommissionRatesViewerList';
+import T, { Money, Percent } from '../Translation';
 import CommissionRatesViewerContainer from './CommissionRatesViewerContainer';
+import CommissionRatesViewerList from './CommissionRatesViewerList';
 
 const CommissionRatesViewer = ({
-  commissionRates = [],
+  commissionRates: { rates = [], type } = {},
   generatedRevenues = 0,
+  generatedProductions = 0,
 }) => {
-  const currentRate = getCurrentRate(commissionRates, generatedRevenues);
+  const currentRate =
+    type === COMMISSION_RATES_TYPE.COMMISSIONS
+      ? getCurrentRate(rates, generatedRevenues)
+      : getCurrentRate(rates, generatedProductions);
 
   return (
     <div>
@@ -19,15 +24,21 @@ const CommissionRatesViewer = ({
       <h1>
         <Percent value={currentRate} />
       </h1>
-      {commissionRates.length > 1 && (
+      {rates.length > 1 && (
         <>
           <h3 className="secondary">
             <T id="CommissionRatesViewer.referredRevenues" />
           </h3>
           <h1>
-            <Money value={generatedRevenues} />
+            <Money
+              value={
+                type === COMMISSION_RATES_TYPE.COMMISSIONS
+                  ? generatedRevenues
+                  : generatedProductions
+              }
+            />
           </h1>
-          <CommissionRatesViewerList commissionRates={commissionRates} />
+          <CommissionRatesViewerList commissionRates={rates} />
         </>
       )}
     </div>

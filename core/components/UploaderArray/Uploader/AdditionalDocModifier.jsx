@@ -1,14 +1,15 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { setAdditionalDoc, removeAdditionalDoc } from '../../../api/methods';
-import AutoFormDialog from '../../AutoForm2/AutoFormDialog';
-import T from '../../Translation';
-import Button from '../../Button';
+import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
 import {
-  PROPERTIES_COLLECTION,
-  BORROWERS_COLLECTION,
-} from '../../../api/constants';
+  removeAdditionalDoc,
+  setAdditionalDoc,
+} from '../../../api/methods/methodDefinitions';
+import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
+import AutoFormDialog from '../../AutoForm2/AutoFormDialog';
+import Button from '../../Button';
+import T from '../../Translation';
 
 export const getAdditionalDocSchema = collection => {
   let allowedValues = [];

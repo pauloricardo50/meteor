@@ -1,26 +1,28 @@
 import { Meteor } from 'meteor/meteor';
+
 import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
-import Security from '../Security';
-import { Properties, Promotions } from '../..';
+
+import LoanService from '../../loans/server/LoanService';
+import PromotionService from '../../promotions/server/PromotionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
+import PropertyService from '../../properties/server/PropertyService';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
-import PromotionSecurity from './PromotionSecurity';
-import PropertyService from '../../properties/server/PropertyService';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import {
-  isAllowedToViewProProperty,
-  isAllowedToModifyProProperty,
-  isAllowedToInviteCustomersToProProperty,
-  isAllowedToInviteProUsersToProProperty,
-  isAllowedToRemoveCustomerFromProProperty,
   isAllowedToBookProProperty,
   isAllowedToBookProPropertyToCustomer,
+  isAllowedToInviteCustomersToProProperty,
+  isAllowedToInviteProUsersToProProperty,
+  isAllowedToManageProPropertyPermissions,
+  isAllowedToModifyProProperty,
+  isAllowedToRemoveCustomerFromProProperty,
   isAllowedToSellProProperty,
   isAllowedToSellProPropertyToCustomer,
-  isAllowedToManageProPropertyPermissions,
+  isAllowedToViewProProperty,
 } from '../clientSecurityHelpers';
-import LoanService from '../../loans/server/LoanService';
-import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
+import Security from '../Security';
+import PromotionSecurity from './PromotionSecurity';
 
 class PropertySecurity {
   static getProperty({ propertyId }) {
@@ -100,7 +102,10 @@ class PropertySecurity {
   }
 
   static checkBelongsToPromotion(propertyId, userId) {
-    const promotion = Promotions.findOne({ 'propertyLinks._id': propertyId });
+    const promotion = PromotionService.get(
+      { 'propertyLinks._id': propertyId },
+      { _id: 1 },
+    );
     if (promotion) {
       PromotionSecurity.isAllowedToModify({
         promotionId: promotion._id,
@@ -113,7 +118,7 @@ class PropertySecurity {
   }
 
   static isProUserAllowedToUpdate({ propertyId, userId }) {
-    const { category } = Properties.findOne(propertyId);
+    const { category } = PropertyService.get(propertyId, { category: 1 });
     if (category === PROPERTY_CATEGORY.PRO) {
       this.checkPermissions({
         propertyId,
@@ -138,7 +143,10 @@ class PropertySecurity {
     if (Security.hasMinimumRole({ role: ROLES.PRO, userId })) {
       this.isProUserAllowedToUpdate({ propertyId, userId });
     } else {
-      const property = Properties.findOne(propertyId);
+      const property = PropertyService.get(propertyId, {
+        userId: 1,
+        userLinks: 1,
+      });
       Security.checkOwnership(property, userId);
     }
   }
@@ -148,7 +156,10 @@ class PropertySecurity {
       return;
     }
 
-    const property = Properties.findOne(propertyId);
+    const property = PropertyService.get(propertyId, {
+      userId: 1,
+      userLinks: 1,
+    });
     Security.checkOwnership(property);
   }
 

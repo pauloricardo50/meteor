@@ -4,7 +4,7 @@ import {
   lenderRulesInitialize,
   lenderRulesInsert,
   lenderRulesUpdate,
-} from 'core/api/methods';
+} from 'core/api/lenderRules/methodDefinitions';
 
 export default withProps(({ organisationId }) => ({
   initializeLenderRules: () => lenderRulesInitialize.run({ organisationId }),

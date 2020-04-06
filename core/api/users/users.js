@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
 import { ROLES, ACQUISITION_CHANNELS } from './userConstants';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import { makeCollectionTransform } from '../helpers/collectionHelpers';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -114,9 +115,16 @@ export const UserSchema = new SimpleSchema({
     },
   },
   frontUserId: { type: String, optional: true },
+  defaultBoardId: {
+    type: String,
+    optional: true,
+    allowedValues: ['loans', 'insuranceRequests'],
+    defaultValue: 'loans',
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);
+Meteor.users._transform = makeCollectionTransform('users');
 
 const Users = Meteor.users;
 export default Users;

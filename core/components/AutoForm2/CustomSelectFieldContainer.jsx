@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 
-import T from '../Translation';
-import Chip from '../Material/Chip';
 import Loading from '../Loading';
-import { OTHER_ALLOWED_VALUE } from './constants';
+import Chip from '../Material/Chip';
+import T from '../Translation';
+import { OTHER_ALLOWED_VALUE } from './autoFormConstants';
 
 export default Component => {
   class CustomSelectFieldContainer extends PureComponent {

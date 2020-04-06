@@ -1,10 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { BORROWERS_COLLECTION } from 'core/api/constants';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+
 import BorrowersTable from './BorrowersTable';
 
 const BorrowersPage = props => (

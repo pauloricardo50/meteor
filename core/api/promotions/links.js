@@ -1,17 +1,13 @@
-import Promotions from '.';
-
-import {
-  Properties,
-  Lots,
-  PromotionLots,
-  Users,
-  Loans,
-  Organisations,
-  PromotionOptions,
-} from '..';
-import Tasks from '../tasks';
-
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Lots from '../lots/lots';
+import Organisations from '../organisations';
+import PromotionLots from '../promotionLots';
+import PromotionOptions from '../promotionOptions';
+import Properties from '../properties';
+import Tasks from '../tasks';
+import Users from '../users/users';
+import Promotions from '.';
 
 Promotions.addLinks({
   properties: {

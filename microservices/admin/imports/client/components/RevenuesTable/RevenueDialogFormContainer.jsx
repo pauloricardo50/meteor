@@ -1,22 +1,22 @@
 import React, { useContext, useMemo } from 'react';
-import { compose, withProps, withState } from 'recompose';
 import merge from 'lodash/merge';
+import { compose, withProps, withState } from 'recompose';
 
-import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
-import {
-  revenueInsert,
-  revenueUpdate,
-  revenueRemove,
-} from 'core/api/revenues/index';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { adminOrganisations } from 'core/api/organisations/queries';
+import {
+  revenueInsert,
+  revenueRemove,
+  revenueUpdate,
+} from 'core/api/revenues/methodDefinitions';
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
 import { adminUsers } from 'core/api/users/queries';
-import T from 'core/components/Translation';
-import Box from 'core/components/Box';
 import { ROLES } from 'core/api/users/userConstants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import Box from 'core/components/Box';
+import T from 'core/components/Translation';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { REVENUE_STATUS } from 'core/api/constants';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(
@@ -98,7 +98,7 @@ const revenueFormLayout = [
     title: <h4>Général</h4>,
     className: 'mb-32',
     layout: [
-      { className: 'grid-col', fields: ['amount', 'type', 'secondaryType'] },
+      { className: 'grid-col', fields: ['amount', 'type'] },
       'description',
     ],
   },
@@ -124,7 +124,15 @@ const revenueFormLayout = [
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(
-    ({ loan, revenue, setSubmitting, setOpen, onSubmitted = () => null }) => {
+    ({
+      loan,
+      insurance,
+      revenue,
+      insuranceRequest,
+      setSubmitting,
+      setOpen,
+      onSubmitted = () => null,
+    }) => {
       const currentUser = useContext(CurrentUserContext);
       const schema = useMemo(() => getSchema(currentUser), [currentUser]);
 
@@ -133,7 +141,12 @@ export default compose(
         model: revenue,
         insertRevenue: model =>
           revenueInsert
-            .run({ revenue: model, loanId: loan && loan._id })
+            .run({
+              revenue: model,
+              loanId: loan?._id,
+              insuranceId: insurance?._id,
+              insuranceRequestId: insuranceRequest?._id,
+            })
             .then(() => setOpen && setOpen(false)),
         modifyRevenue: ({ _id: revenueId, ...object }) => {
           setSubmitting(true);

@@ -4,54 +4,53 @@ import { check } from 'meteor/check';
 import range from 'lodash/range';
 
 import LoanService from 'core/api/loans/server/LoanService';
+
 import {
+  completeFakeBorrower,
+  emptyFakeBorrower,
+} from '../../api/borrowers/fakes';
+import Borrowers from '../../api/borrowers';
+import Contacts from '../../api/contacts';
+import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
+import {
+  APPLICATION_TYPES,
+  PURCHASE_TYPE,
   STEPS,
   STEP_ORDER,
-  ROLES,
-  PURCHASE_TYPE,
-  APPLICATION_TYPES,
-  ORGANISATION_TYPES,
-} from '../../api/constants';
-import {
-  Borrowers,
-  Contacts,
-  Loans,
-  Lots,
-  Offers,
-  Organisations,
-  PromotionLots,
-  PromotionOptions,
-  Promotions,
-  Properties,
-  Tasks,
-  Users,
-} from '../../api';
+} from '../../api/loans/loanConstants';
+import Loans from '../../api/loans/loans';
+import Lots from '../../api/lots/lots';
+import Offers from '../../api/offers';
+import Organisations from '../../api/organisations';
+import { ORGANISATION_TYPES } from '../../api/organisations/organisationConstants';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
+import PromotionLots from '../../api/promotionLots';
+import PromotionOptions from '../../api/promotionOptions';
+import Promotions from '../../api/promotions';
+import { fakeProperty } from '../../api/properties/fakes';
+import Properties from '../../api/properties';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
+import Tasks from '../../api/tasks/tasks';
+import { ROLES } from '../../api/users/userConstants';
+import Users from '../../api/users/users';
 import {
-  USER_COUNT,
-  UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
+  UNOWNED_LOANS_COUNT,
+  USER_COUNT,
 } from '../fixtureConfig';
-import { createFakeLoan, addLoanWithData } from '../loanFixtures';
-import {
-  createDevs,
-  createAdmins,
-  getFakeUsersIds,
-  createUser,
-  createFakeUsers,
-} from '../userFixtures';
-import { createFakeOffer } from '../offerFixtures';
 import { E2E_USER_EMAIL } from '../fixtureConstants';
-import { createOrganisations } from '../organisationFixtures';
 import { createFakeInterestRates } from '../interestRatesFixtures';
+import { addLoanWithData, createFakeLoan } from '../loanFixtures';
+import { createFakeOffer } from '../offerFixtures';
+import { createOrganisations } from '../organisationFixtures';
 import {
-  emptyFakeBorrower,
-  completeFakeBorrower,
-} from '../../api/borrowers/fakes';
-import { fakeProperty } from '../../api/properties/fakes';
-import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
-import OrganisationService from '../../api/organisations/server/OrganisationService';
+  createAdmins,
+  createDevs,
+  createFakeUsers,
+  createUser,
+  getFakeUsersIds,
+} from '../userFixtures';
 
 const isAuthorizedToRun = () =>
   !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;

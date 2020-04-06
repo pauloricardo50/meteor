@@ -2,13 +2,15 @@
 import { expect } from 'chai';
 
 import {
-  OWN_FUNDS_USAGE_TYPES,
-  INTEREST_RATES,
   EXPENSES,
   OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
+} from '../../../api/borrowers/borrowerConstants';
+import { INTEREST_RATES } from '../../../api/interestRates/interestRatesConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../api/loans/loanConstants';
+import {
   PROPERTY_CATEGORY,
-} from '../../../api/constants';
+  RESIDENCE_TYPE,
+} from '../../../api/properties/propertyConstants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('LoanCalculator', () => {
@@ -419,6 +421,9 @@ describe('LoanCalculator', () => {
     });
 
     it('should amortize faster if borrowers are old', () => {
+      const sixtyYearsAgo = new Date();
+      sixtyYearsAgo.setFullYear(sixtyYearsAgo.getFullYear() - 60);
+
       // I.e. amortize in 5 years
       expect(
         Calculator.getAmortization({
@@ -428,7 +433,7 @@ describe('LoanCalculator', () => {
               propertyWork: 0,
               property: { value: 1200000 },
             },
-            borrowers: [{ age: 60 }],
+            borrowers: [{ birthDate: sixtyYearsAgo }],
           },
         }),
       ).to.equal(3000);

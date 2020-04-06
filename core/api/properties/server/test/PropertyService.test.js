@@ -1,13 +1,14 @@
+import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 
-import LoanService from '../../../loans/server/LoanService';
-import PropertyService from '../PropertyService';
-import UserService from '../../../users/server/UserService';
 import generator from '../../../factories/server';
+import LoanService from '../../../loans/server/LoanService';
+import UserService from '../../../users/server/UserService';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
+import PropertyService from '../PropertyService';
 
 describe('PropertyService', function() {
   this.timeout(10000);
@@ -217,6 +218,7 @@ describe('PropertyService', function() {
 
       expect(prop.organisation).to.deep.equal({
         _id: 'org',
+        _collection: 'organisations',
         name: 'Org1',
         userLinks: [{ _id: 'proId', shareCustomers: true }],
       });

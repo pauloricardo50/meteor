@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
 import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
@@ -5,31 +8,29 @@ import {
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
 import {
-  INCOME_CONSIDERATION_TYPES,
   EXPENSE_TYPES,
-  OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
-} from '../../api/constants';
+  INCOME_CONSIDERATION_TYPES,
+} from '../../api/lenderRules/lenderRulesConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
-  getBorrowerInfoArray,
   getBorrowerFinanceArray,
+  getBorrowerInfoArray,
   getBorrowerSimpleArray,
 } from '../../arrays/BorrowerFormArray';
 import {
+  AMORTIZATION_YEARS_INVESTMENT,
   BONUS_ALGORITHMS,
   REAL_ESTATE_INCOME_ALGORITHMS,
-  AMORTIZATION_YEARS_INVESTMENT,
 } from '../../config/financeConstants';
-import { arrayify, getPercent } from '../general';
 import {
   getCountedArray,
-  getMissingFieldIds,
   getFormValuesHashMultiple,
+  getMissingFieldIds,
   getRequiredFieldIds,
 } from '../formArrayHelpers';
+import { arrayify, getPercent } from '../general';
 import MiddlewareManager from '../MiddlewareManager';
 import { borrowerExtractorMiddleware } from './middleware';
-import { getAgeFromBirthDate } from '../borrowerUtils';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -435,18 +436,20 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getRetirement({ borrowers }) {
       const argMap = borrowers.reduce(
-        (obj, { birthDate, age, gender }, index) => {
-          const finalAge = age || getAgeFromBirthDate(birthDate);
-          return {
-            ...obj,
-            [`${`age${index + 1}`}`]: finalAge,
-            [`${`gender${index + 1}`}`]: gender,
-          };
-        },
+        (obj, borrower, index) => ({
+          ...obj,
+          [`${`retirementDate${index + 1}`}`]: this.getRetirementDate(borrower),
+        }),
         {},
       );
 
       return this.getYearsToRetirement(argMap);
+    }
+
+    getRetirementDate(borrower) {
+      const { birthDate } = borrower;
+      const retirementAge = this.getRetirementForGender(borrower);
+      return moment(birthDate).add(retirementAge, 'years');
     }
 
     getAmortizationYears({ loan, structureId, offerOverride, borrowers }) {

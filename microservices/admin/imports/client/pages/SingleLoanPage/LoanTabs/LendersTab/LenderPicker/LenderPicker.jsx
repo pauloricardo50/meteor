@@ -1,10 +1,11 @@
 import React from 'react';
 
-import DialogSimple from 'core/components/DialogSimple';
-import T from 'core/components/Translation';
-import { ORGANISATION_TAGS } from 'core/api/constants';
+import { ORGANISATION_TAGS } from 'core/api/organisations/organisationConstants';
 import Checkbox from 'core/components/Checkbox';
+import DialogSimple from 'core/components/DialogSimple';
 import Select from 'core/components/Select';
+import T from 'core/components/Translation';
+
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
 

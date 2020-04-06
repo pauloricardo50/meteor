@@ -1,10 +1,13 @@
-import Tasks from './tasks';
-import { Users, Loans } from '..';
-import Notifications from '../notifications';
-import Promotions from '../promotions';
-import Organisations from '../organisations';
-import Lenders from '../lenders';
 import Contacts from '../contacts';
+import InsuranceRequests from '../insuranceRequests';
+import Insurances from '../insurances';
+import Lenders from '../lenders';
+import Loans from '../loans/loans';
+import Notifications from '../notifications';
+import Organisations from '../organisations';
+import Promotions from '../promotions';
+import Users from '../users/users';
+import Tasks from './tasks';
 
 Tasks.addLinks({
   assignee: {
@@ -51,6 +54,18 @@ Tasks.addLinks({
   contact: {
     field: 'contactLink',
     collection: Contacts,
+    type: 'one',
+    metadata: true,
+  },
+  insuranceRequest: {
+    field: 'insuranceRequestLink',
+    collection: InsuranceRequests,
+    type: 'one',
+    metadata: true,
+  },
+  insurance: {
+    field: 'insuranceLink',
+    collection: Insurances,
     type: 'one',
     metadata: true,
   },

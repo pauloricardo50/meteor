@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { removeUser } from 'core/api/users/methodDefinitions';
+import { ROLES } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import { ROLES } from 'core/api/constants';
-import { removeUser } from 'core/api';
 
 const UserDeleter = ({ currentUser, user }) => {
   if (!currentUser || !currentUser.roles.includes(ROLES.DEV)) {

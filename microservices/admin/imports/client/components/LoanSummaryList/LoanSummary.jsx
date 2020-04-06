@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
 
-import T from 'core/components/Translation';
-import { CollectionIconLink } from 'core/components/IconLink';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import BorrowersSummary from 'core/components/BorrowersSummary';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
-import {
-  PROPERTY_CATEGORY,
-  PROPERTIES_COLLECTION,
-} from 'imports/core/api/constants';
+import { CollectionIconLink } from 'core/components/IconLink';
+import Link from 'core/components/Link';
+import T from 'core/components/Translation';
+
 import LoanSummaryColumns from './LoanSummaryColumns';
 
 const getLoanName = ({ name, customName }) => {
@@ -51,12 +48,7 @@ const LoanSummary = ({ loan }) => {
             <h5>
               <T id="collections.promotions" />
             </h5>
-            <CollectionIconLink
-              relatedDoc={{
-                ...promotions[0],
-                collection: PROMOTIONS_COLLECTION,
-              }}
-            />
+            <CollectionIconLink relatedDoc={promotions[0]} />
           </div>
         )}
 
@@ -66,13 +58,7 @@ const LoanSummary = ({ loan }) => {
               <T id="collections.properties" />
             </h5>
             {proProperties.map(prop => (
-              <CollectionIconLink
-                key={prop._id}
-                relatedDoc={{
-                  ...prop,
-                  collection: PROPERTIES_COLLECTION,
-                }}
-              />
+              <CollectionIconLink key={prop._id} relatedDoc={prop} />
             ))}
           </div>
         )}

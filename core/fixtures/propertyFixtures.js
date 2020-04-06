@@ -1,14 +1,13 @@
 import faker from 'faker/locale/fr';
 
-import PropertyService from '../api/properties/server/PropertyService';
 import {
-  PROPERTY_STATUS,
-  RESIDENCE_TYPE,
-  PROPERTY_TYPE,
-  VOLUME_NORM,
   MINERGIE_CERTIFICATE,
+  PROPERTY_STATUS,
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+  VOLUME_NORM,
 } from '../api/properties/propertyConstants';
-import { Properties } from '../api';
+import PropertyService from '../api/properties/server/PropertyService';
 
 const statuses = Object.values(PROPERTY_STATUS);
 const residenceTypes = Object.values(RESIDENCE_TYPE);
@@ -47,6 +46,6 @@ export const createFakeProperty = userId => {
 };
 
 export const getRelatedPropertyIds = usersIds =>
-  Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+  PropertyService.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
     .fetch()
     .map(item => item._id);

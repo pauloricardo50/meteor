@@ -1,25 +1,21 @@
-import {
-  OWN_FUNDS_TYPES,
-  SUCCESS,
-  WARNING,
-  ERROR,
-  OWN_FUNDS_USAGE_TYPES,
-  RESIDENCE_TYPE,
-} from 'core/api/constants';
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
+import { ERROR, SUCCESS, WARNING } from '../../api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
+import { OWN_FUNDS_USAGE_TYPES } from '../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
-import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
-import { getCountedArray } from '../formArrayHelpers';
-import { getPercent } from '../general';
 import {
   MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
   MIN_INSURANCE2_WITHDRAW,
 } from '../../config/financeConstants';
+import { getCountedArray } from '../formArrayHelpers';
+import { getPercent } from '../general';
+import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -788,11 +784,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getPropertyValidFieldsRatio({ loan }) {
+    getPropertyValidFieldsRatio({ loan, property }) {
       const { hasPromotion, properties = [] } = loan;
 
       if (
-        !this.isUserProperty({ loan }) ||
+        !this.isUserProperty({ loan, property }) ||
         hasPromotion ||
         properties.length === 0
       ) {
@@ -801,6 +797,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return this.getValidPropertyFieldsRatio({
         loan,
+        property,
       });
     }
 
@@ -829,18 +826,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return getRequiredDocumentIds(getLoanDocuments({ loan }, this));
     }
 
-    getPropertyValidDocumentsRatio({ loan }) {
+    getPropertyValidDocumentsRatio({ loan, property }) {
       const { hasPromotion, properties = [] } = loan;
 
       if (
-        !this.isUserProperty({ loan }) ||
+        !this.isUserProperty({ loan, property }) ||
         hasPromotion ||
         properties.length === 0
       ) {
         return null;
       }
 
-      return this.getValidPropertyDocumentsRatio({ loan });
+      return this.getValidPropertyDocumentsRatio({ loan, property });
     }
 
     getValidFieldsRatio({ loan }) {

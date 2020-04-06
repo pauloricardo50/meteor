@@ -1,18 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
-import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
-import UserService from '../../users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/server/CollectionService';
-import PropertyService from '../../properties/server/PropertyService';
+import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import {
-  PROMOTION_STATUS,
-  PROMOTION_PERMISSIONS_FULL_ACCESS,
-} from '../../constants';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
+import {
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_STATUS,
+} from '../promotionConstants';
 import Promotions from '../promotions';
 
 class PromotionService extends CollectionService {

@@ -1,13 +1,15 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
-import { IntlNumber } from 'core/components/Translation';
-import { CollectionIconLink } from 'core/components/IconLink';
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import { adminProperties } from 'core/api/properties/queries';
-import { USERS_COLLECTION, PROPERTY_CATEGORY } from 'core/api/constants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { CollectionIconLink } from 'core/components/IconLink';
+import { IntlNumber } from 'core/components/Translation';
+
 import PropertyRelatedDoc from './PropertyRelatedDoc';
 
 const mapProperty = history => ({
@@ -33,10 +35,7 @@ const mapProperty = history => ({
     />,
     name || [address1, city].filter(x => x).join(', '),
     category !== PROPERTY_CATEGORY.PROMOTION && (
-      <CollectionIconLink
-        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-        key="user"
-      />
+      <CollectionIconLink relatedDoc={user} key="user" />
     ),
     {
       raw: createdAt && createdAt.getTime(),

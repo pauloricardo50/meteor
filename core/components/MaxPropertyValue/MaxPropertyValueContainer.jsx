@@ -1,10 +1,13 @@
 import React from 'react';
+import { compose, withProps, withState } from 'recompose';
 
-import { withProps, compose, withState } from 'recompose';
-
-import { setMaxPropertyValueWithoutBorrowRatio } from 'core/api/methods';
-import Calculator from 'core/utils/Calculator';
-import { RESIDENCE_TYPE, PROPERTY_CATEGORY, CANTONS } from 'core/api/constants';
+import { CANTONS } from '../../api/loans/loanConstants';
+import { setMaxPropertyValueWithoutBorrowRatio } from '../../api/loans/methodDefinitions';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../api/properties/propertyConstants';
+import Calculator from '../../utils/Calculator';
 import T from '../Translation';
 
 export const STATE = {

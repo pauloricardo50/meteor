@@ -1,20 +1,23 @@
 import React from 'react';
-import { compose, mapProps, withState } from 'recompose';
-import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withState } from 'recompose';
 
-import { PROPERTY_SOLVENCY, LOANS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+
 import { withSmartQuery } from '../../../api/containerToolkit';
+import { getReferredBy } from '../../../api/helpers';
+import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { proPropertyLoans } from '../../../api/loans/queries';
+import { removeCustomerFromProperty } from '../../../api/properties/methodDefinitions';
+import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
+import { PROPERTY_SOLVENCY } from '../../../api/properties/propertyConstants';
+import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
-import T from '../../Translation';
-import { removeCustomerFromProperty, getReferredBy } from '../../../api';
-import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
-import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import Icon from '../../Icon';
 import ProCustomer from '../../ProCustomer';
+import T from '../../Translation';
 
 const columnOptions = [
   { id: 'loanName' },

@@ -1,15 +1,14 @@
+import countries from 'i18n-iso-countries';
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import countries from 'i18n-iso-countries';
 
-import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/autoFormConstants';
 import {
-  getSortedCountriesCodes,
   COMMON_COUNTRIES,
+  getSortedCountriesCodes,
 } from '../../utils/countriesUtils';
-import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
-
+import { CANTONS } from '../loans/loanConstants';
 import { autoValueSentenceCase } from './sharedSchemaValues';
 
 export const createdAt = {
@@ -230,4 +229,17 @@ export const negativeMoneyField = {
   type: Number,
   min: -1000000000,
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE },
+};
+
+export const adminNotesSchema = {
+  adminNotes: { type: Array, defaultValue: [] },
+  'adminNotes.$': Object,
+  'adminNotes.$.id': String,
+  'adminNotes.$.note': {
+    type: String,
+    uniforms: { multiline: true, rows: 3 },
+  },
+  'adminNotes.$.date': { type: Date, defaultValue: new Date() },
+  'adminNotes.$.updatedBy': String,
+  'adminNotes.$.isSharedWithPros': { type: Boolean, defaultValue: false },
 };

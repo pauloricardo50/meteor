@@ -1,7 +1,6 @@
-// import merge from 'lodash/merge';
-
 import { Meteor } from 'meteor/meteor';
-import { INTEREST_RATES } from './constants';
+
+import { INTEREST_RATES } from './interestRates/interestRatesConstants';
 
 // //
 // // activity fragments
@@ -20,6 +19,10 @@ export const activity = () => ({
   metadata: 1,
   isServerGenerated: 1,
   isImportant: 1,
+  loanLink: 1,
+  userLink: 1,
+  insuranceRequestLink: 1,
+  insuranceLink: 1,
 });
 
 // //
@@ -193,7 +196,7 @@ export const adminLender = () => {
     offers: adminOffer(),
     organisation: {
       ...lenderFragment.organisation,
-      commissionRates: 1,
+      commissionRates: { type: 1, rates: 1 },
     },
     status: 1,
   };
@@ -394,6 +397,13 @@ export const adminLoan = ({ withSort } = {}) => ({
   userCache: 1,
   user: adminUser(),
   selectedLenderOrganisation: { name: 1 },
+  insuranceRequests: {
+    status: 1,
+    name: 1,
+    borrowers: { name: 1 },
+    createdAt: 1,
+    updatedAt: 1,
+  },
 });
 
 export const adminLoans = () => ({
@@ -553,10 +563,12 @@ export const baseOrganisation = () => ({
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
   commissionRate: 1,
-  commissionRates: 1,
+  productionRate: 1,
+  commissionRates: { type: 1, rates: 1 },
   contacts: contact(),
   documents: 1,
   generatedRevenues: 1,
+  generatedProductions: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
   offers: 1,
@@ -576,6 +588,13 @@ export const adminOrganisation = () => ({
   adminNote: 1,
   documents: 1,
   referredCustomers: { _id: 1 },
+  insuranceProducts: {
+    features: 1,
+    name: 1,
+    category: 1,
+    revaluationFactor: 1,
+    maxProductionYears: 1,
+  },
 });
 
 // //
@@ -1006,6 +1025,7 @@ export const fullUser = () => ({
   loans: loanBase(),
   updatedAt: 1,
   organisations: fullOrganisation(),
+  defaultBoardId: 1,
 });
 
 export const adminUser = () => ({
@@ -1023,6 +1043,14 @@ export const adminUser = () => ({
   referredByOrganisation: { name: 1, emails: 1 },
   referredByOrganisationLink: 1,
   acquisitionChannel: 1,
+  borrowers: { name: 1 },
+  insuranceRequests: {
+    name: 1,
+    borrowers: { name: 1 },
+    createdAt: 1,
+    updatedAt: 1,
+    status: 1,
+  },
 });
 
 export const appUser = () => ({
@@ -1073,16 +1101,23 @@ export const adminRevenue = () => ({
   loan: {
     name: 1,
     borrowers: { name: 1 },
-    user: { name: 1, referredByOrganisation: { name: 1, commissionRates: 1 } },
+    user: {
+      name: 1,
+      referredByOrganisation: {
+        name: 1,
+        commissionRates: { type: 1, rates: 1 },
+      },
+    },
     userCache: 1,
     assigneeLinks: 1,
     hasPromotion: 1,
   },
+  insurance: { name: 1, insuranceRequest: { _id: 1 }, borrower: { name: 1 } },
+  insuranceRequest: { name: 1 },
   // Keep these in the right order
   organisationLinks: 1,
   organisations: { name: 1 },
   paidAt: 1,
-  secondaryType: 1,
   // Keep these in the right order
   sourceOrganisationLink: 1,
   sourceOrganisation: { name: 1 },
@@ -1094,6 +1129,16 @@ export const proRevenue = () => ({
   amount: 1,
   expectedAt: 1,
   loan: {
+    name: 1,
+    status: 1,
+    user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },
+  },
+  insurance: {
+    name: 1,
+    status: 1,
+    borrower: { name: 1 },
+  },
+  insuranceRequest: {
     name: 1,
     status: 1,
     user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },

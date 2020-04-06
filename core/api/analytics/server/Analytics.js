@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import DefaultNodeAnalytics from 'analytics-node';
+import NodeAnalytics from 'analytics-node';
 import curryRight from 'lodash/curryRight';
 
 import SlackService from 'core/api/slack/server/SlackService';
@@ -10,38 +10,23 @@ import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import UserService from '../../users/server/UserService';
 import { isAPI } from '../../RESTAPI/server/helpers';
 import SessionService from '../../sessions/server/SessionService';
-import MiddlewareManager from '../../../utils/MiddlewareManager';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import EVENTS from '../events';
 import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';
-import { impersonateMiddleware } from './analyticsHelpers';
-import TestAnalytics from './TestAnalytics';
+import NoOpAnalytics from './NoOpAnalytics';
 
 const curryPick = curryRight((obj, keys) =>
   keys.reduce((o, k) => ({ ...o, [k]: obj[k] }), {}),
 );
-
-class NodeAnalytics extends DefaultNodeAnalytics {
-  constructor(...args) {
-    super(...args);
-    this.middlewareManager = new MiddlewareManager(this);
-  }
-
-  initAnalytics(context) {
-    ['identify', 'track', 'page', 'alias'].forEach(method => {
-      this.middlewareManager.applyToMethod(
-        method,
-        impersonateMiddleware(context),
-      );
-    });
-  }
-}
 
 const { Segment = {} } = Meteor.settings.public.analyticsSettings;
 const { key } = Segment;
 if (Meteor.isProduction && !key) {
   throw new Meteor.Error('No segment key found !');
 }
+
+const nodeAnalytics = new NodeAnalytics(key);
+const noOpAnalytics = new NoOpAnalytics();
 
 class Analytics {
   constructor(context = {}) {
@@ -51,10 +36,16 @@ class Analytics {
   init(context) {
     this.events = EVENTS_CONFIG;
     this.checkEventsConfig();
-    if (Meteor.isTest || Meteor.isAppTest || Meteor.isDevelopment) {
-      this.analytics = new TestAnalytics();
+
+    const isImpersonating = SessionService.isImpersonatedSession(
+      context?.connection?.id,
+    );
+    const isTest = Meteor.isTest || Meteor.isAppTest;
+
+    if (isImpersonating || isTest || Meteor.isDevelopment) {
+      this.analytics = noOpAnalytics;
     } else {
-      this.analytics = new NodeAnalytics(key);
+      this.analytics = nodeAnalytics;
     }
 
     this.context(context);
@@ -114,12 +105,6 @@ class Analytics {
     this.userAgent = userAgent;
     this.referrer = referrer;
     this.connectionId = connectionId;
-
-    this.analytics.initAnalytics({
-      ...context,
-      clientAddress: this.clientAddress,
-      host: this.host,
-    });
   }
 
   createAnalyticsUser(userId, data) {

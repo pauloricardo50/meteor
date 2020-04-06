@@ -1,6 +1,9 @@
+import Contacts from '../contacts';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Offers from '../offers';
+import Organisations from '../organisations';
 import Tasks from '../tasks';
-import { Contacts, Organisations, Loans, Offers } from '..';
 import Lenders from '.';
 
 LinkInitializer.directInit(() => {

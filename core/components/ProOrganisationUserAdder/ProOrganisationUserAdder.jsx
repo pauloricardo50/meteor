@@ -1,9 +1,9 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import Icon from 'core/components/Icon';
-import { proInviteUserToOrganisation } from 'core/api/methods';
+import { proInviteUserToOrganisation } from '../../api/users/methodDefinitions';
+import AutoFormDialog from '../AutoForm2/AutoFormDialog';
+import Icon from '../Icon';
 import T from '../Translation';
 
 const schema = new SimpleSchema({

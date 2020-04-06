@@ -1,32 +1,32 @@
 import SimpleSchema from 'simpl-schema';
 
 import {
-  createdAt,
-  updatedAt,
-  contactsSchema,
   additionalDocuments,
-  documentsField,
+  adminNotesSchema,
   cacheField,
+  contactsSchema,
+  createdAt,
+  documentsField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
+import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import {
-  LOAN_STATUS,
-  PURCHASE_TYPE,
-  OWNER,
-  CANTONS,
-  STEPS,
   APPLICATION_TYPES,
+  CANTONS,
   LOAN_CATEGORIES,
+  LOAN_STATUS,
+  OWNER,
+  PURCHASE_TYPE,
+  STEPS,
 } from '../loanConstants';
-import { RESIDENCE_TYPE } from '../../constants';
-import StructureSchema from './StructureSchema';
-import promotionSchema from './promotionSchema';
 import {
   borrowerIdsSchema,
-  propertyIdsSchema,
-  previousLoanTranchesSchema,
   maxPropertyValueSchema,
-  adminNotesSchema,
+  previousLoanTranchesSchema,
+  propertyIdsSchema,
 } from './otherSchemas';
+import promotionSchema from './promotionSchema';
+import StructureSchema from './StructureSchema';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -162,6 +162,9 @@ const LoanSchema = new SimpleSchema({
     },
   },
   frontTagId: { type: String, optional: true },
+  insuranceRequestLinks: { type: Array, optional: true, defaultValue: [] },
+  'insuranceRequestLinks.$': Object,
+  'insuranceRequestLinks.$._id': String,
 });
 
 export default LoanSchema;

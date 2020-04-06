@@ -1,45 +1,45 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import {
-  loanSetStatus,
-  setLoanStep,
-  sendNegativeFeedbackToAllLenders,
-  loanSetAdminNote,
-} from '../../../methods/index';
-import Analytics from '../../../analytics/server/Analytics';
+import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
 import { checkEmails } from '../../../../utils/testHelpers';
-import generator from '../../../factories/server';
-import LoanService from '../LoanService';
-import {
-  OWN_FUNDS_TYPES,
-  STEPS,
-  EMAIL_IDS,
-  ORGANISATION_TYPES,
-  ORGANISATION_FEATURES,
-  LOAN_STATUS,
-  PROPERTY_CATEGORY,
-} from '../../../constants';
-import UserService from '../../../users/server/UserService';
+import Analytics from '../../../analytics/server/Analytics';
+import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
-import PropertyService from '../../../properties/server/PropertyService';
+import { EMAIL_IDS } from '../../../email/emailConstants';
+import generator from '../../../factories/server';
 import LenderService from '../../../lenders/server/LenderService';
-import OfferService from '../../../offers/server/OfferService';
-import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
-import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
-import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { generateDisbursedSoonLoansTasks } from '../methods';
-import TaskService from '../../../tasks/server/TaskService';
+import OfferService from '../../../offers/server/OfferService';
+import {
+  ORGANISATION_FEATURES,
+  ORGANISATION_TYPES,
+} from '../../../organisations/organisationConstants';
+import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../../properties/propertyConstants';
+import PropertyService from '../../../properties/server/PropertyService';
 import SlackService from '../../../slack/server/SlackService';
+import TaskService from '../../../tasks/server/TaskService';
+import UserService from '../../../users/server/UserService';
+import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import {
+  loanSetAdminNote,
+  loanSetStatus,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+} from '../../methodDefinitions';
+import LoanService from '../LoanService';
+import { generateDisbursedSoonLoansTasks } from '../methods';
 
 describe('LoanService', function() {
   this.timeout(10000);
@@ -498,58 +498,6 @@ describe('LoanService', function() {
     });
   });
 
-  describe('getNewLoanName', () => {
-    it('returns 20-0001 for the very first loan', () => {
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0001');
-    });
-
-    it('returns 20-0002 for the second loan', () => {
-      loanId = LoanService.insert({ loan: {} });
-      loan = LoanService.get(loanId, { name: 1 });
-      expect(loan.name).to.equal('20-0001');
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0002');
-    });
-
-    it('sorts loans properly 1', () => {
-      Factory.create('loan', { name: '20-0009' });
-      Factory.create('loan', { name: '20-0010' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0011');
-    });
-
-    it('sorts loans properly even if created in different order', () => {
-      Factory.create('loan', { name: '20-0955' });
-      Factory.create('loan', { name: '20-0153' });
-      Factory.create('loan', { name: '10-0001' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0956');
-    });
-
-    it('returns 20-1234 for the nth loan', () => {
-      Factory.create('loan', { name: '20-1233' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-1234');
-    });
-
-    it('does not break if a 10000th loan is added', () => {
-      Factory.create('loan', { name: '20-9999' });
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-10000');
-    });
-
-    it('handles new year properly', () => {
-      Factory.create('loan', { name: '20-0003' });
-      const name = LoanService.getNewLoanName(new Date(2021, 1, 1));
-      expect(name).to.equal('21-0001');
-    });
-  });
-
   describe('loan name regEx', () => {
     it('allows loan names with correct format', () => {
       expect(() => Factory.create('loan', { name: '18-0202' })).to.not.throw();
@@ -827,7 +775,7 @@ describe('LoanService', function() {
         referredByOrganisationLink: 1,
       });
 
-      expect(user).to.deep.equal({
+      expect(user).to.deep.include({
         _id: 'userId',
         referredByUserLink: 'proId1',
       });
@@ -2157,134 +2105,6 @@ describe('LoanService', function() {
       });
 
       expect(selectedLenderOrganisation).to.equal(undefined);
-    });
-  });
-
-  describe('setAssignees', () => {
-    it('throws if no assignees are set', () => {
-      generator({ loans: { _id: 'id' } });
-
-      expect(() =>
-        LoanService.setAssignees({ loanId: 'id', assignees: [] }),
-      ).to.throw('entre 1 et 3');
-
-      expect(() =>
-        LoanService.setAssignees({ loanId: 'id', assignees: [{}, {}, {}, {}] }),
-      ).to.throw('entre 1 et 3');
-    });
-
-    it('throws if the total percentages is not 100', () => {
-      generator({ loans: { _id: 'id' } });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [{ percent: 80 }],
-        }),
-      ).to.throw('100%');
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [{ percent: 80 }, { percent: 30 }],
-        }),
-      ).to.throw('100%');
-    });
-
-    it('throws if a decimal value is used for percent', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { _id: 'admin1', percent: 79.5, isMain: true },
-            { _id: 'admin2', percent: 20.5 },
-          ],
-        }),
-      ).to.throw('integer');
-    });
-
-    it('throws if a percentage less than 10 is used', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { _id: 'admin1', percent: 8, isMain: true },
-            { _id: 'admin2', percent: 92 },
-          ],
-        }),
-      ).to.throw('at least 10');
-    });
-
-    it('forces isMain to a boolean', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      LoanService.setAssignees({
-        loanId: 'id',
-        assignees: [
-          { _id: 'admin1', percent: 10, isMain: true },
-          { _id: 'admin2', percent: 90 },
-        ],
-      });
-
-      expect(
-        LoanService.get('id', { assigneeLinks: 1 }).assigneeLinks,
-      ).to.deep.equal([
-        {
-          _id: 'admin1',
-          isMain: true,
-          percent: 10,
-        },
-        { _id: 'admin2', isMain: false, percent: 90 },
-      ]);
-    });
-
-    it('throws if there is more or less than 1 main assignee', () => {
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [{ percent: 100 }],
-        }),
-      ).to.throw('un seul');
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { percent: 80, isMain: true },
-            { percent: 20, isMain: true },
-          ],
-        }),
-      ).to.throw('un seul');
-    });
-
-    it('does not allow non multiples of 10', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { _id: 'admin1', percent: 25, isMain: true },
-            { _id: 'admin2', percent: 75 },
-          ],
-        }),
-      ).to.throw('25 is not an allowed');
     });
   });
 });

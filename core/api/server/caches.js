@@ -1,3 +1,5 @@
+import '../insuranceRequests/server/caches';
+import '../insurances/server/caches';
 import '../lenderRules/server/caches';
 import '../lenders/server/caches';
 import '../loans/server/caches';

@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-
 import sinon from 'sinon';
+
+import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
 import Calculator from 'core/utils/Calculator';
-import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
+
 import {
-  dashboardTodosObject,
   checkArrayIsDone,
-  getDashboardTodosArray,
+  dashboardTodosObject,
   defaultTodoList,
+  getDashboardTodosArray,
 } from '../dashboardTodos';
 
 describe('dashboardTodos', () => {

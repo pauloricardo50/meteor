@@ -1,13 +1,14 @@
-import { withProps, compose, withState, lifecycle } from 'recompose';
+import { compose, lifecycle, withProps, withState } from 'recompose';
 
-import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { anonymousLoan } from 'core/api/loans/queries';
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
-import { anonymousLoanInsert } from 'core/api/methods';
-import { createRoute } from 'core/utils/routerUtils';
-import { parseCookies } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
+import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
+import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
+import { anonymousLoanInsert } from 'core/api/loans/methodDefinitions';
+import { anonymousLoan } from 'core/api/loans/queries';
+import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
+import { parseCookies } from 'core/utils/cookiesHelpers';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export const withAnonymousLoan = compose(

@@ -1,5 +1,6 @@
 import { withProps } from 'recompose';
-import { propertyUpdate } from 'core/api';
+
+import { propertyUpdate } from '../../api/properties/methodDefinitions';
 import PropertyForm from './PropertyForm';
 
 const PropertyModifierContainer = withProps(

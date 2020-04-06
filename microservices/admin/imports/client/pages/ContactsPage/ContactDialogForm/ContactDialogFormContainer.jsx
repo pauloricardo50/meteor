@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
+import {
+  contactChangeOrganisations,
+  contactInsert,
+  contactRemove,
+  contactUpdate,
+} from 'core/api/contacts/methodDefinitions';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { address } from 'core/api/helpers/sharedSchemas';
-import {
-  contactInsert,
-  contactUpdate,
-  contactRemove,
-  contactChangeOrganisations,
-} from 'core/api/methods';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import T from 'core/components/Translation';
 import useSearchParams from 'core/hooks/useSearchParams';
@@ -115,15 +115,17 @@ export default compose(
     smallLoader: true,
   }),
   withState('submitting', 'setSubmitting', false),
-  withProps(({ existingOrganisations }) => {
+  withProps(({ existingOrganisations, model }) => {
     const initialSearchParams = useSearchParams();
     const [searchParams, setSearchParams] = useState(initialSearchParams);
     const { email, ...newContact } = searchParams || {};
 
-    const model = searchParams && {
-      ...newContact,
-      emails: email && [{ address: email }],
-    };
+    const finalModel = Object.keys(searchParams).length
+      ? {
+          ...newContact,
+          emails: email && [{ address: email }],
+        }
+      : model;
 
     return {
       schema: schema(existingOrganisations),
@@ -151,7 +153,7 @@ export default compose(
           );
       },
       removeContact: contactId => contactRemove.run({ contactId }),
-      model,
+      model: finalModel,
       openOnMount: searchParams.addContact,
       resetForm: () => setSearchParams({}),
     };

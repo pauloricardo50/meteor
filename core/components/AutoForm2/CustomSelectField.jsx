@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -8,14 +7,15 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import { filterDOMProps, connectField } from 'uniforms';
-import { wrapField } from 'uniforms-material';
+import React, { useState } from 'react';
 import { compose } from 'recompose';
+import { connectField, filterDOMProps } from 'uniforms';
+import { wrapField } from 'uniforms-material';
 
-import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 import { ignoreProps } from '../../containers/updateForProps';
-import { OTHER_ALLOWED_VALUE } from './constants';
 import TextInput from '../TextInput';
+import { OTHER_ALLOWED_VALUE } from './autoFormConstants';
+import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 
 const xor = (item, array) => {
   const index = array.indexOf(item);

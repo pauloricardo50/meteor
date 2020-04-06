@@ -1,10 +1,10 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { borrowerDelete } from '../../api/borrowers';
-import T from '../Translation';
+import { borrowerDelete } from '../../api/borrowers/methodDefinitions';
 import ConfirmMethod from '../ConfirmMethod';
 import Icon from '../Icon';
+import T from '../Translation';
 
 const BorrowerRemover = ({ handleClick, simple = false, buttonProps }) => (
   <div className="borrower-remover">

@@ -2,7 +2,7 @@ import React from 'react';
 
 import DropdownMenu from 'core/components/DropdownMenu';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { USERS_COLLECTION } from 'core/api/constants';
+
 import ReferredByAssignDropdownContainer from './ReferredByAssignDropdownContainer';
 
 const ReferredByAssignDropdown = ({ options, referredByUser }) => (
@@ -10,9 +10,7 @@ const ReferredByAssignDropdown = ({ options, referredByUser }) => (
     <span className="flex-row center space-children">
       Référé par&nbsp;
       {referredByUser ? (
-        <CollectionIconLink
-          relatedDoc={{ ...referredByUser, collection: USERS_COLLECTION }}
-        />
+        <CollectionIconLink relatedDoc={referredByUser} />
       ) : (
         'personne'
       )}

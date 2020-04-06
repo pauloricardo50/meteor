@@ -1,16 +1,17 @@
-import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
-import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import Navs from './Navs';
-import AppLayoutContainer from './AppLayoutContainer';
+
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
+import AppLayoutContainer from './AppLayoutContainer';
+import Navs from './Navs';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];

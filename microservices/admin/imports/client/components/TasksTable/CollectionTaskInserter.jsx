@@ -1,20 +1,21 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { taskInsert } from 'core/api';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { taskInsert } from 'core/api/tasks/methodDefinitions';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import T from 'core/components/Translation';
-import {
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  LENDERS_COLLECTION,
-  CONTACTS_COLLECTION,
-} from 'core/api/constants';
 import Icon from 'core/components/Icon';
-import { schema, taskFormLayout } from './TaskModifier';
+import T from 'core/components/Translation';
+
+import { taskFormLayout, schema as taskSchema } from './TaskModifier';
 
 const getCollectionLabel = collection => {
   switch (collection) {
@@ -30,20 +31,23 @@ const getCollectionLabel = collection => {
       return 'ce prêteur';
     case CONTACTS_COLLECTION:
       return 'ce contact';
+    case INSURANCE_REQUESTS_COLLECTION:
+      return 'ce dossier assurance';
     default:
       return 'rien';
   }
 };
 
-const CollectionTaskInserterForm = ({
+export const CollectionTaskInserterForm = ({
   title,
   description,
   label,
+  schema,
   ...props
 }) => (
   <div className="collection-task-inserter-form mr-8">
     <AutoFormDialog
-      schema={schema.omit('status')}
+      schema={schema || taskSchema.omit('status')}
       title={title}
       description={description}
       buttonProps={{

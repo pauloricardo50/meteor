@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
-import { ROLES } from 'core/api/constants';
-import { COLLECTIONS } from '../../constants';
+import { ROLES } from '../../users/userConstants';
 import SecurityService from '../../security';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
@@ -39,10 +38,6 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
         'Login Required',
         'Please login before uploading files',
       );
-    }
-
-    if (!Object.values(COLLECTIONS).includes(collection)) {
-      throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }
 
     SecurityService.isAllowedToModifyFiles({

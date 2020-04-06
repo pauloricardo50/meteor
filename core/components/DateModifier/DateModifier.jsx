@@ -1,11 +1,11 @@
 import React from 'react';
-import moment from 'moment';
-import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
+
+import { updateDocument } from '../../api/methods/methodDefinitions';
 import AutoForm, { CustomAutoField } from '../AutoForm2';
-import { updateDocument } from '../../api';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 import T from '../Translation';
-import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
 const DateModifier = ({ schema, model, onSubmit, field }) => (
   <AutoForm

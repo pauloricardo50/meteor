@@ -3,7 +3,7 @@ import { IntlProvider } from 'react-intl';
 
 import messagesFR from 'core/lang/fr.json';
 import { Intl } from '../intl';
-import { getUserLocale, getFormats } from '../localization/index';
+import { getUserLocale, getFormats } from '../localization';
 
 /**
  * formatMessage - A method to use the intl package

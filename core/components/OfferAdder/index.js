@@ -1,2 +1,2 @@
 export { default } from './OfferAdder';
-export * from './constants';
+export * from './offerAdderConstants';

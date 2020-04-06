@@ -2,9 +2,10 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import { LENDER_RULES_VARIABLES } from 'core/api/constants';
-import LenderRulesFormValue from './LenderRulesFormValue';
+import { LENDER_RULES_VARIABLES } from 'core/api/lenderRules/lenderRulesConstants';
+
 import LenderRulesFormOperator from './LenderRulesFormOperator';
+import LenderRulesFormValue from './LenderRulesFormValue';
 
 const shouldRenderAdditionalFields = (model, index) =>
   model.rules && model.rules[index] && model.rules[index].variable;

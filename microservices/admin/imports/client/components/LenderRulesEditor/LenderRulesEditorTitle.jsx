@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { LENDER_RULES_OPERATORS } from 'core/api/constants';
 import T, { Percent, Money } from 'core/components/Translation';
 import { parseFilter } from 'core/api/lenderRules/helpers';
 import Chip from 'core/components/Material/Chip';
-import { LENDER_RULES_VARIABLES } from 'imports/core/api/constants';
+import {
+  LENDER_RULES_OPERATORS,
+  LENDER_RULES_VARIABLES,
+} from 'core/api/lenderRules/lenderRulesConstants';
 
 const operatorText = {
   [LENDER_RULES_OPERATORS.EQUALS]: '=',

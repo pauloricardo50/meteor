@@ -1,7 +1,7 @@
 import React from 'react';
 import { mapProps } from 'recompose';
 
-import { propertyUpdate } from '../../../api/methods';
+import { propertyUpdate } from '../../../api/properties/methodDefinitions';
 import T from '../../Translation';
 import ProPropertyForm from './ProPropertyForm';
 

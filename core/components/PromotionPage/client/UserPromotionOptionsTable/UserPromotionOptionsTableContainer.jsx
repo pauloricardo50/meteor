@@ -1,18 +1,16 @@
 import React from 'react';
-import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withState } from 'recompose';
 
+import { PROMOTION_OPTIONS_COLLECTION } from '../../../../api/promotionOptions/promotionOptionConstants';
+import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import { toMoney } from '../../../../utils/conversionFunctions';
-import T from '../../../Translation';
 import StatusLabel from '../../../StatusLabel';
-import {
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_STATUS,
-} from '../../../../api/constants';
-import PrioritySetter from './PrioritySetter';
-import RequestReservation from './RequestReservation';
+import T from '../../../Translation';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
+import PrioritySetter from './PrioritySetter';
+import RequestReservation from './RequestReservation';
 
 const makeMapPromotionOption = ({
   isLoading,

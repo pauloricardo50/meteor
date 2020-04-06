@@ -1,16 +1,18 @@
 import {
   branch,
-  renderComponent,
   compose,
+  renderComponent,
   withProps,
   withState,
 } from 'recompose';
 
-import { userLoanInsert, referralExists } from 'core/api/methods/index';
+import { userLoanInsert } from 'core/api/loans/methodDefinitions';
+import { referralExists } from 'core/api/methods/methodDefinitions';
 import {
-  LOCAL_STORAGE_REFERRAL,
   LOCAL_STORAGE_OLD_REFERRAL,
-} from 'core/api/constants';
+  LOCAL_STORAGE_REFERRAL,
+} from 'core/api/users/userConstants';
+
 import AnonymousAppPage from './AnonymousAppPage';
 import PropertyStartPage from './PropertyStartPage';
 

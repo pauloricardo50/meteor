@@ -4,9 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
+import { sendVerificationLink } from 'core/api/users/methodDefinitions';
 import T from 'core/components/Translation';
 import colors from 'core/config/colors';
-import { sendVerificationLink } from 'core/api/methods';
 
 const handleClick = (event, props) => {
   event.preventDefault();

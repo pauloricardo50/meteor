@@ -1,13 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
-import PromotionsPageContainer from './PromotionsPageContainer';
+
 import AllPromotionsTable from './AllPromotionsTable';
+import PromotionsPageContainer from './PromotionsPageContainer';
 
 const PromotionsPage = ({ addPromotion }) => (
   <section className="card1 card-top promotions-page">

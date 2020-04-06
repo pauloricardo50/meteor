@@ -2,11 +2,15 @@ import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { REVENUE_STATUS, REVENUES_COLLECTION } from 'core/api/constants';
+import {
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from 'core/api/revenues/revenueConstants';
 import Button from 'core/components/Button';
-import { createRoute } from 'core/utils/routerUtils';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { toMoney } from 'core/utils/conversionFunctions';
+import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 

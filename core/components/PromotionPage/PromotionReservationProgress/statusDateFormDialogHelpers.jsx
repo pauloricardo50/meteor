@@ -1,11 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 
-import {
-  loanUpdate,
-  getPromotionOptionProgressEmails,
-} from '../../../api/methods';
-import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../api/constants';
+import { loanUpdate } from '../../../api/loans/methodDefinitions';
+import { getPromotionOptionProgressEmails } from '../../../api/promotionOptions/methodDefinitions';
+import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../Translation';
 
 export const getEmailsToBeSent = async ({ id, status, nextStatus }) => {
@@ -63,7 +61,7 @@ export const openPreConfirmDialog = async ({
     text: (
       <>
         <p>
-          Passer le status&nbsp;
+          Passer le statut&nbsp;
           <T id={`Forms.${id}`} />
           &nbsp;à&nbsp;
           <T id={`Forms.status.${status}`} />

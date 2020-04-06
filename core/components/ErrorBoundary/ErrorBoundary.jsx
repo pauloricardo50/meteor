@@ -12,7 +12,7 @@ const sendToKadira = error => {
   // Error should also log to kadira
   const { Kadira } = window;
   if (Kadira && Kadira.trackError) {
-    Kadira.trackError('react', error.stack.toString());
+    Kadira.trackError('react', error?.stack?.toString());
   }
 };
 export class ErrorBoundary extends Component {

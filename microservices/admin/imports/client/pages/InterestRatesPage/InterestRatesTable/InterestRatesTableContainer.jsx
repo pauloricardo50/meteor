@@ -1,11 +1,11 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import T from 'imports/core/components/Translation/Translation';
-import InterestsTableTrend from 'imports/core/components/InterestRatesTable/InterestsTableTrend';
-import { INTEREST_RATES } from 'imports/core/api/interestRates/interestRatesConstants';
-import Percent from 'imports/core/components/Translation/numberComponents/Percent';
+import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
+import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
+import Percent from 'core/components/Translation/numberComponents/Percent';
+import T from 'core/components/Translation/Translation';
 
 const columnOptions = [
   { id: 'date', label: <T id="Forms.date" /> },

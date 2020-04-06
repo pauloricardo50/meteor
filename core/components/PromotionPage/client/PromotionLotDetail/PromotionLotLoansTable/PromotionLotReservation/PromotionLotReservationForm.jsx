@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
+import SimpleSchema from 'simpl-schema';
 
-import { promotionOptionUploadAgreement } from '../../../../../../api/methods';
+import { promotionOptionUploadAgreement } from '../../../../../../api/promotionOptions/methodDefinitions';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../../../AutoForm2/autoFormConstants';
 import AutoFormDialog from '../../../../../AutoForm2/AutoFormDialog';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../../../AutoForm2/constants';
 import T from '../../../../../Translation';
 
 const getSchema = (agreementDuration = 0) =>
@@ -43,7 +43,8 @@ const PromotionLotReservationForm = ({
   buttonProps,
 }) => {
   const [schema] = useState(getSchema(agreementDuration));
-  const [today] = useState(new Date());
+  const [today, setToday] = useState(new Date());
+
   return (
     <AutoFormDialog
       model={{ startDate: today }}
@@ -59,6 +60,7 @@ const PromotionLotReservationForm = ({
         })
       }
       title="Réserver"
+      onOpen={() => setToday(new Date())}
     />
   );
 };

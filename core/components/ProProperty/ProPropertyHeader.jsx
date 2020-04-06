@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { PROPERTY_DOCUMENTS, COLLECTIONS } from 'core/api/constants';
-import { Money } from '../Translation';
+import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
+import Loans from '../../api/loans';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
-import ProPropertyRecap from './ProPropertyRecap';
+import { Money } from '../Translation';
 import UpdateField from '../UpdateField';
+import ProPropertyRecap from './ProPropertyRecap';
 
 const getImages = (documents = {}, imageUrls = []) => {
   let images = [];
@@ -65,7 +66,7 @@ const ProPropertyheader = ({ property, loan }) => {
             <UpdateField
               doc={loan}
               fields={['residenceType']}
-              collection={COLLECTIONS.LOANS_COLLECTION}
+              collection={Loans}
               className="residence-type-setter"
             />
           )}

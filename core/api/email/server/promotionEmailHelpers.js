@@ -1,20 +1,22 @@
-import { ROLES } from 'core/api/users/userConstants';
+import { getUserNameAndOrganisation } from '../../helpers/helpers';
 import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-} from '../../promotionOptions/promotionOptionConstants';
-import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
-import {
-  reservePromotionLot,
   cancelPromotionLotReservation,
+  reservePromotionLot,
+} from '../../promotionLots/methodDefinitions';
+import {
+  promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
   setPromotionOptionProgress,
-  promotionOptionActivateReservation,
-} from '../../methods';
-import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
+} from '../../promotionOptions/methodDefinitions';
+import {
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+} from '../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
+import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
 import UserService from '../../users/server/UserService';
-import { getUserNameAndOrganisation } from '../../helpers/helpers';
+import { ROLES } from '../../users/userConstants';
 import { EMAIL_IDS } from '../emailConstants';
 import { sendEmail } from './methods';
 

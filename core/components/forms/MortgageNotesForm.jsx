@@ -1,15 +1,17 @@
 import React from 'react';
 import cx from 'classnames';
 
+import {
+  mortgageNoteRemove,
+  mortgageNoteUpdate,
+} from '../../api/mortgageNotes/methodDefinitions';
 import MortgageNoteSchema from '../../api/mortgageNotes/schemas/MortgageNoteSchema';
-import { mortgageNoteUpdate, mortgageNoteRemove } from '../../api';
 import AutoForm from '../AutoForm2';
 import { CustomAutoField } from '../AutoForm2/AutoFormComponents';
 import CustomAutoFields from '../AutoForm2/CustomAutoFields';
+import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 import Button from '../Button';
 import T from '../Translation';
-import Box from '../Box';
-import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 
 const handleSubmitMortgageNote = mortgageNoteId => doc => {
   let message;

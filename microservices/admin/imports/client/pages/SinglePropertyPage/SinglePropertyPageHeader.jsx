@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { T, Money } from 'core/components/Translation';
-import FullDate from 'core/components/dateComponents/FullDate';
+import { propertyDelete } from 'core/api/properties/methodDefinitions';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import { propertyDelete } from 'core/api/methods';
-import { USERS_COLLECTION } from 'core/api/constants';
+import FullDate from 'core/components/dateComponents/FullDate';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { getPropertyAddress } from './SinglePropertyPage';
+import { Money, T } from 'core/components/Translation';
 
 const SinglePropertyHeader = ({
   property: {
@@ -51,21 +50,12 @@ const SinglePropertyHeader = ({
 
     <div className="bottom">
       <p className="created-at">
-        {user && (
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        )}
+        {user && <CollectionIconLink relatedDoc={user} />}
         {user && user.assignedEmployee && (
           <span>
             <T id="SinglePropertyPageHeader.assignedTo" />
             &nbsp;
-            <CollectionIconLink
-              relatedDoc={{
-                ...user.assignedEmployee,
-                collection: USERS_COLLECTION,
-              }}
-            />
+            <CollectionIconLink relatedDoc={user.assignedEmployee} />
           </span>
         )}
         <span>

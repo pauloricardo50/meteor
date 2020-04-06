@@ -1,8 +1,8 @@
 import { compose, mapProps, withState } from 'recompose';
 
-import { lenderRules } from 'core/api/fragments';
 import { withSmartQuery } from '../../../../api/containerToolkit';
-import { ORGANISATION_FEATURES } from '../../../../api/constants';
+import { lenderRules } from '../../../../api/fragments';
+import { ORGANISATION_FEATURES } from '../../../../api/organisations/organisationConstants';
 import { adminOrganisations } from '../../../../api/organisations/queries';
 
 export default compose(

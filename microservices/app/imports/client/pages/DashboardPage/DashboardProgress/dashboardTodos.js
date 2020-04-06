@@ -1,6 +1,8 @@
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { PURCHASE_TYPE, PROPERTY_CATEGORY } from 'core/api/constants';
+
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 const createFinancingLink = ({ _id: loanId }) =>

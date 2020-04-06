@@ -4,8 +4,10 @@ import { Roles } from 'meteor/alanning:roles';
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
-import { ROLES, COLLECTIONS } from '../constants';
-import { DOCUMENT_USER_PERMISSIONS } from './constants';
+import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
+import { ROLES } from '../users/userConstants';
+import { DOCUMENT_USER_PERMISSIONS } from './securityConstants';
 
 export const SECURITY_ERROR = 'NOT_AUTHORIZED';
 
@@ -233,14 +235,14 @@ export default class Security {
     } catch (error) {}
 
     switch (collection) {
-      case COLLECTIONS.PROMOTIONS_COLLECTION: {
+      case PROMOTIONS_COLLECTION: {
         this.promotions.isAllowedToManageDocuments({
           promotionId: docId,
           userId,
         });
         break;
       }
-      case COLLECTIONS.PROPERTIES_COLLECTION: {
+      case PROPERTIES_COLLECTION: {
         if (this.properties.isPromotionLot(docId)) {
           this.promotions.isAllowedToManagePromotionLotDocuments({
             propertyId: docId,

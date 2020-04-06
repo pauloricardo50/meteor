@@ -1,16 +1,17 @@
 /* eslint-env mocha */
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import moment from 'moment';
 import { expect } from 'chai';
+import moment from 'moment';
 
+import { loanSetStatus } from 'core/api/loans/methodDefinitions';
 import LoanService from 'core/api/loans/server/LoanService';
-import {
-  REVENUE_STATUS,
-  COMMISSION_STATUS,
-} from 'core/api/revenues/revenueConstants';
-import { loanSetStatus } from 'core/api/loans/index';
 import { ddpWithUserId } from 'core/api/methods/methodHelpers';
+import {
+  COMMISSION_STATUS,
+  REVENUE_STATUS,
+} from 'core/api/revenues/revenueConstants';
+
 import generator from '../../../factories/server';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
 import { loanMonitoring, loanStatusChanges } from '../resolvers';

@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
-import { matchPath } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
+import { matchPath } from 'react-router-dom';
 
 import { fetchBlogPostMeta } from 'core/api/blog';
-import BlogPostSeo from 'imports/ui/pages/BlogPostPage/BlogPostSeo';
 import { defaultOgTags } from 'core/components/MicroserviceHead/MicroserviceHead';
+
+import BlogPostSeo from '../../ui/pages/BlogPostPage/BlogPostSeo';
 
 const setBlogHeaders = (sink, url) => {
   const {

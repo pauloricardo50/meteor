@@ -1,9 +1,10 @@
-import { withProps, compose } from 'recompose';
 import { useHistory } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
-import { promotionInsert } from 'core/api/methods/index';
+import { promotionInsert } from 'core/api/promotions/methodDefinitions';
 import { createRoute } from 'core/utils/routerUtils';
-import ADMIN_ROUTES from 'imports/startup/client/adminRoutes';
+
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 export default compose(
   withProps(() => {

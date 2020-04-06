@@ -1,7 +1,8 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-import { Loans } from '../..';
+
+import Loans from '../../loans/loans';
 
 export const up = () => {
   const allLoans = Loans.find({}).fetch();

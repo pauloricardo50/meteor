@@ -1,12 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import PropTypes from 'prop-types';
 
+import { CollectionIconLink } from 'core/components/IconLink';
+import { titles } from 'core/components/IconLink/CollectionIconLinkPopup/CollectionIconLinkPopupComponents';
 import Loading from 'core/components/Loading';
 import T from 'core/components/Translation';
-import { titles } from 'core/components/IconLink/CollectionIconLinkPopup/CollectionIconLinkPopupComponents';
-import { CollectionIconLink } from 'core/components/IconLink';
+
 import LinkToCollection from '../../LinkToCollection';
 import AdminSearchResultsContainer from './AdminSearchResultsContainer';
 
@@ -61,7 +62,7 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
             <div className="flex-col">
               {resultsFromThisCollection.map(result => (
                 <CollectionIconLink
-                  relatedDoc={{ ...result, collection: collectionName }}
+                  relatedDoc={{ ...result, _collection: collectionName }}
                   key={result._id}
                   onClick={closeSearch}
                 >

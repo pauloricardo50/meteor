@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import { ROLES } from 'core/api/constants';
-import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
+import { ROLES } from 'core/api/users/userConstants';
+
 import DashboardUnverified from '../../components/DashboardUnverified';
+import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
 import SuperDashboard from './SuperDashboard';

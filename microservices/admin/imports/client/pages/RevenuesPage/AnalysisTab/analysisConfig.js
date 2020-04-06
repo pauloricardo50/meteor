@@ -1,17 +1,21 @@
 import moment from 'moment';
 
 import {
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
-  USERS_COLLECTION,
-  LOAN_STATUS_ORDER,
-  BORROWERS_COLLECTION,
-  REVENUE_STATUS,
   ACTIVITIES_COLLECTION,
-  TASKS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
   ACTIVITY_TYPES,
-} from 'core/api/constants';
+} from 'core/api/activities/activityConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import {
+  LOANS_COLLECTION,
+  LOAN_STATUS_ORDER,
+} from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import {
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from 'core/api/revenues/revenueConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
@@ -155,7 +159,6 @@ const analysisConfig = {
   [REVENUES_COLLECTION]: {
     amount: { id: 'Forms.amount' },
     type: { id: 'Forms.type' },
-    secondaryType: { id: 'Forms.secondaryType' },
     status: { id: 'Forms.status' },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
     paidAt: {

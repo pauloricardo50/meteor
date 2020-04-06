@@ -1,10 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
-import { USERS_COLLECTION } from 'core/api/constants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+
 import UsersTable from './UsersTable';
 
 const UsersPage = () => (

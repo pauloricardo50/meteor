@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { SUCCESS } from 'core/api/constants';
+import { SUCCESS } from '../../../../../api/constants';
 import LenderListItem from './LenderListItem';
 import { mapOrganisation } from './LenderListItemRules';
 

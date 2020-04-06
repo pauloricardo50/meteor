@@ -1,7 +1,9 @@
-import PromotionOptions from '.';
-
-import { PromotionLots, Lots, Loans, Promotions } from '..';
 import LinkInitializer from '../links/LinkInitializer';
+import Loans from '../loans/loans';
+import Lots from '../lots/lots';
+import PromotionLots from '../promotionLots';
+import Promotions from '../promotions';
+import PromotionOptions from '.';
 
 PromotionOptions.addLinks({
   promotionLots: {

@@ -1,15 +1,14 @@
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 import moment from 'moment';
+import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import IconButton from 'core/components/IconButton';
-import { Money, Percent } from 'core/components/Translation';
-import { consolidateCommission } from 'core/api/revenues/index';
 import { percentageField } from 'core/api/helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import { consolidateCommission } from 'core/api/revenues/methodDefinitions';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import IconButton from 'core/components/IconButton';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import { Money, Percent } from 'core/components/Translation';
 
 const schema = new SimpleSchema({
   commissionRate: {
@@ -43,12 +42,7 @@ const CommissionsConsolidator = ({
             {organisation && (
               <>
                 &nbsp;
-                <CollectionIconLink
-                  relatedDoc={{
-                    ...organisation,
-                    collection: ORGANISATIONS_COLLECTION,
-                  }}
-                />
+                <CollectionIconLink relatedDoc={organisation} />
               </>
             )}
           </small>

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { lifecycle } from 'recompose';
 
-import Select from 'core/components/Select';
-import T, { Percent } from 'core/components/Translation';
-import { INTEREST_RATES } from 'core/api/constants';
+import { INTEREST_RATES } from '../../../api/interestRates/interestRatesConstants';
+import Select from '../../Select';
+import T, { Percent } from '../../Translation';
 
 const displayedRates = [
   INTEREST_RATES.LIBOR,

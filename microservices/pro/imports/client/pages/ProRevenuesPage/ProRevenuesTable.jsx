@@ -1,18 +1,17 @@
 import React, { useContext, useState } from 'react';
 import moment from 'moment';
 
-import Table from 'core/components/Table';
-import Select from 'core/components/Select';
-import T, { Percent, Money } from 'core/components/Translation';
 import { proRevenues } from 'core/api/revenues/queries';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { LOANS_COLLECTION, PRO_COMMISSION_STATUS } from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
+import { PRO_COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
 import {
-  getProCommissionStatus,
   getProCommissionDate,
+  getProCommissionStatus,
 } from 'core/api/revenues/revenueHelpers';
+import Select from 'core/components/Select';
+import Table from 'core/components/Table';
+import T, { Money, Percent } from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -33,15 +32,29 @@ const columnOptions = [
   label: <T id={`ProRevenuesTable.${obj.id}`} />,
 }));
 
+const formatRevenue = revenue => {
+  const { loan, insuranceRequest } = revenue;
+  const user = loan ? loan.user : insuranceRequest?.user;
+  const name = loan
+    ? loan.name
+    : insuranceRequest?.name
+        ?.split('-')
+        ?.slice(0, 2)
+        ?.join('-');
+
+  return { ...revenue, user, name };
+};
+
 const mapRevenueToRow = (
   {
     _id,
     amount,
     organisationLinks,
     status: revenueStatus,
-    loan,
     expectedAt,
     paidAt: revenuePaidAt,
+    user,
+    name,
   },
   mainOrg,
 ) => {
@@ -69,17 +82,9 @@ const mapRevenueToRow = (
     id: _id,
     commissionAmount,
     columns: [
-      {
-        raw: loan.name,
-        label: (
-          <span>
-            {loan.name}&nbsp;
-            <StatusLabel status={loan.status} collection={LOANS_COLLECTION} />
-          </span>
-        ),
-      },
-      loan.user?.name,
-      loan?.user?.referredByUser?.name,
+      name,
+      user?.name,
+      user?.referredByUser?.name,
       { raw: status, label: <T id={`Forms.status.${status}`} /> },
       {
         raw: date?.getTime(),
@@ -107,9 +112,10 @@ const ProRevenuesTable = () => {
     },
     [proCommissionStatus],
   );
-
   // Do this because revenues can be null
-  const rows = (revenues || []).reduce(
+  const formattedRevenues = (revenues || []).map(formatRevenue);
+
+  const rows = formattedRevenues.reduce(
     (arr, revenue) => [...arr, mapRevenueToRow(revenue, mainOrg)],
     [],
   );

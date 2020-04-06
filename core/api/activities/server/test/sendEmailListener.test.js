@@ -1,13 +1,13 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { checkEmails } from '../../../../utils/testHelpers/index';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import { checkEmails } from '../../../../utils/testHelpers';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import { sendEmail, sendEmailToAddress } from '../../../email/server/methods';
 import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
-
 import { ACTIVITY_TYPES } from '../../activityConstants';
 import ActivityService from '../ActivityService';
 

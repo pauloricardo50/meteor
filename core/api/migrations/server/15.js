@@ -1,7 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Loans } from '../..';
 import { LOAN_CATEGORIES } from '../../loans/loanConstants';
+import Loans from '../../loans/loans';
 
 export const up = async () => {
   await Loans.rawCollection().update(

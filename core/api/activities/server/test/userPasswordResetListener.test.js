@@ -1,18 +1,18 @@
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import { userPasswordReset } from '../../../methods';
 import generator from '../../../factories/server';
-import UserService from '../../../users/server/UserService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-import ActivityService from '../ActivityService';
-
+import { userPasswordReset } from '../../../users/methodDefinitions';
+import UserService from '../../../users/server/UserService';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
 } from '../../activityConstants';
+import ActivityService from '../ActivityService';
 
 describe('userPasswordResetListener', () => {
   beforeEach(() => {

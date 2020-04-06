@@ -1,14 +1,14 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import { LOANS_COLLECTION, CONTACTS_COLLECTION } from 'core/api/constants';
-import T from 'core/components/Translation';
-import { CollectionIconLink } from 'core/components/IconLink';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import HtmlPreview from 'core/components/HtmlPreview';
-import StatusLabel from 'core/components/StatusLabel';
+import { CollectionIconLink } from 'core/components/IconLink';
 import OfferDocuments from 'core/components/OfferList/OfferDocuments';
+import StatusLabel from 'core/components/StatusLabel';
+import T from 'core/components/Translation';
 
 const columnOptions = [
   { id: 'createdAt', label: <T id="offer.createdAt" /> },
@@ -35,11 +35,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
       },
       {
         raw: loan.name,
-        label: (
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
-        ),
+        label: <CollectionIconLink relatedDoc={loan} />,
       },
       {
         raw: loan.status,
@@ -49,11 +45,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
       },
       {
         raw: contact.name,
-        label: (
-          <CollectionIconLink
-            relatedDoc={{ ...contact, collection: CONTACTS_COLLECTION }}
-          />
-        ),
+        label: <CollectionIconLink relatedDoc={contact} />,
       },
       {
         raw: feedback,

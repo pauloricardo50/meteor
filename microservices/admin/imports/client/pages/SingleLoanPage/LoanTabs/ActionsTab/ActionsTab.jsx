@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { assignLoanToUser, loanDelete } from 'core/api/loans/methodDefinitions';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
-import { loanDelete, assignLoanToUser } from 'core/api';
-import LoanRenamer from './LoanRenamer';
+
 import LoanCreatedAtModifier from './LoanCreatedAtModifier';
+import LoanRenamer from './LoanRenamer';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">

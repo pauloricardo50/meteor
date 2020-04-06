@@ -1,20 +1,19 @@
+import Button from '@material-ui/core/Button';
+import { expect } from 'chai';
 /* eslint-env mocha */
 import React from 'react';
-import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
-import Button from '@material-ui/core/Button';
 import { TextField } from 'uniforms-material';
 
-import Loading from '../../../Loading';
 import pollUntilReady from '../../../../utils/pollUntilReady';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
-
-import AutoForm from '../../AutoForm';
-import CustomSelectField from '../../CustomSelectField';
 import DateField from '../../../DateField';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../constants';
+import Loading from '../../../Loading';
 import PercentInput from '../../../PercentInput';
+import AutoForm from '../../AutoForm';
 import { CustomAutoField } from '../../AutoFormComponents';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../autoFormConstants';
+import CustomSelectField from '../../CustomSelectField';
 
 let props;
 const component = () => getMountedComponent({ Component: AutoForm, props });
@@ -275,9 +274,7 @@ describe('AutoForm', () => {
   describe('placeholders', () => {
     it('does not set a placeholder if placeholder is false on the autoform', () => {
       props = {
-        schema: new SimpleSchema({
-          myText: { type: String },
-        }),
+        schema: new SimpleSchema({ myText: { type: String } }),
         placeholder: false,
       };
 
@@ -326,9 +323,7 @@ describe('AutoForm', () => {
 
     it('sets a default placeholder', () => {
       props = {
-        schema: new SimpleSchema({
-          myText: { type: String },
-        }),
+        schema: new SimpleSchema({ myText: { type: String } }),
         placeholder: true,
       };
 
@@ -364,9 +359,7 @@ describe('AutoForm', () => {
 
       it('does not set a placeholder for a list item field', () => {
         props = {
-          schema: new SimpleSchema({
-            myText: [String],
-          }),
+          schema: new SimpleSchema({ myText: [String] }),
           placeholder: false,
         };
 

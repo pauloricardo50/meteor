@@ -1,15 +1,13 @@
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
-  OWN_FUNDS_ROUNDING_AMOUNT,
   MIN_INSURANCE2_WITHDRAW,
+  OWN_FUNDS_ROUNDING_AMOUNT,
 } from '../../config/financeConstants';
-import {
-  OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../api/constants';
-import { arrayify } from '../general';
-import { NotaryFeesCalculator } from '../notaryFees/index';
 import { roundValue } from '../conversionFunctions';
+import { arrayify } from '../general';
+import { NotaryFeesCalculator } from '../notaryFees';
 
 const INITIAL_MIN_BOUND = 0;
 const INITIAL_MAX_BOUND = 1000000;

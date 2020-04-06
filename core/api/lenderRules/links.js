@@ -1,5 +1,5 @@
+import Organisations from '../organisations';
 import LenderRules from '.';
-import { Organisations } from '..';
 
 LenderRules.addLinks({
   organisation: {
@@ -7,9 +7,5 @@ LenderRules.addLinks({
     type: 'one',
     metadata: true,
     collection: Organisations,
-    denormalize: {
-      field: 'organisationCache',
-      body: { _id: 1, name: 1 },
-    },
   },
 });

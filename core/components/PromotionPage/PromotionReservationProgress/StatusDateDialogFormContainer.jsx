@@ -1,27 +1,19 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { withProps } from 'recompose';
 
-import { setPromotionOptionProgress } from '../../../api/methods';
+import { setPromotionOptionProgress } from '../../../api/promotionOptions/methodDefinitions';
+import { PROMOTION_OPTION_BANK_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import PromotionOptionSchema from '../../../api/promotionOptions/schemas/PromotionOptionSchema';
-import { PROMOTION_OPTION_BANK_STATUS } from '../../../api/constants';
 import T from '../../Translation';
 import {
   getEmailsToBeSent,
   getEmailsToBeSentWarning,
-  openPreConfirmDialog,
   openPostConfirmDialog,
+  openPreConfirmDialog,
 } from './statusDateFormDialogHelpers';
 
 export default withProps(
-  ({
-    promotionOptionId,
-    loanId,
-    id,
-    status,
-    date,
-    openDialog,
-    setOpenDialog,
-  }) => {
+  ({ promotionOptionId, loanId, id, status, openDialog, setOpenDialog }) => {
     const isBankStatus = id === 'bank';
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [confirmDialogActions, setConfirmDialogActions] = useState({
@@ -51,7 +43,7 @@ export default withProps(
     return {
       schema,
       title: <T id={`Forms.${id}`} />,
-      model: { status, date },
+      model: { status },
       open: openDialog,
       setOpen: setOpenDialog,
       layout: [

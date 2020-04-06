@@ -1,15 +1,16 @@
 import React from 'react';
+import { faBook } from '@fortawesome/pro-light-svg-icons/faBook';
+import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { NavLink } from 'react-router-dom';
-import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
-import { faBook } from '@fortawesome/pro-light-svg-icons/faBook';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
+
 import PRO_ROUTES from '../../startup/client/proRoutes';
 
 const getItems = (currentUser = {}) => {

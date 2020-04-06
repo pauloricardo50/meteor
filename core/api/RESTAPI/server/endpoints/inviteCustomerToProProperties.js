@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
-import PropertyService from 'core/api/properties/server/PropertyService';
-import { arrayify } from 'core/utils/general';
-import { proInviteUser } from '../../../methods';
+import { arrayify } from '../../../../utils/general';
 import PropertySchema, {
   userAllowedKeys,
 } from '../../../properties/schemas/PropertySchema';
-import { withMeteorUserId, updateCustomerReferral } from '../helpers';
+import PropertyService from '../../../properties/server/PropertyService';
+import { proInviteUser } from '../../../users/methodDefinitions';
+import { updateCustomerReferral, withMeteorUserId } from '../helpers';
 import { checkQuery, impersonateSchema } from './helpers';
 
 const formatPropertyIds = propertyIds => {

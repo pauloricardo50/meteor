@@ -1,16 +1,17 @@
 import React from 'react';
+import moment from 'moment';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
-import moment from 'moment';
 
-import { newUsers, userHistogram } from 'core/api/stats/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { Percent } from 'core/components/Translation';
-import Select from 'core/components/Select';
+import { newUsers, userHistogram } from 'core/api/stats/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import Histogram from 'core/components/charts/Histogram';
-import IconButton from 'core/components/IconButton';
 import DialogSimple from 'core/components/DialogSimple';
-import { ROLES } from 'imports/core/api/constants';
+import IconButton from 'core/components/IconButton';
+import Select from 'core/components/Select';
+import { Percent } from 'core/components/Translation';
+
 import StatItem from './StatItem';
 
 const formatDate = date =>

@@ -1,22 +1,15 @@
 import React from 'react';
-import { PROPERTY_CATEGORY } from 'imports/core/api/constants';
+
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 
 const PropertyRelatedDoc = ({ loans = [], promotion, category }) => {
   if (category === PROPERTY_CATEGORY.PROMOTION) {
-    return (
-      <CollectionIconLink
-        relatedDoc={{ ...promotion, collection: PROMOTIONS_COLLECTION }}
-      />
-    );
+    return <CollectionIconLink relatedDoc={promotion} />;
   }
 
   return loans.map(loan => (
-    <CollectionIconLink
-      key={loan._id}
-      relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-    />
+    <CollectionIconLink key={loan._id} relatedDoc={loan} />
   ));
 };
 
