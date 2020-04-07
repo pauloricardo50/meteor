@@ -18,7 +18,6 @@ import RevenuesTab from './RevenuesTab';
 
 const getTabs = props => {
   const { insuranceRequest = {} } = props;
-  console.log('insuranceRequest:', insuranceRequest);
   const { insurances = [], borrowers = [] } = insuranceRequest;
   return [
     {

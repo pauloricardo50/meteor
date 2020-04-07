@@ -13,7 +13,7 @@ const InsuranceRequestRemover = ({ insuranceRequestId }) => (
       className: 'insurance-request-remover',
     }}
     title="Supprimer le dossier"
-    description="Êtes-vous sûr ? Supprimera toutes les assurances, tous les revenus attendus ainsi que tous les documents."
+    description="Êtes-vous sûr ? Supprimera toutes les assurances ainsi que tous les documents."
   />
 );
 

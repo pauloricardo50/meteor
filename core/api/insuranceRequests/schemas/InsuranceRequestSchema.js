@@ -1,14 +1,13 @@
 import SimpleSchema from 'simpl-schema';
 
 import {
-  updatedAt,
-  createdAt,
-  cacheField,
-  adminNotesSchema,
   additionalDocuments,
+  adminNotesSchema,
+  cacheField,
+  createdAt,
   documentsField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
-
 import { INSURANCE_REQUEST_STATUS } from '../insuranceRequestConstants';
 
 const InsuranceRequestSchema = new SimpleSchema({
@@ -25,8 +24,8 @@ const InsuranceRequestSchema = new SimpleSchema({
   'userLink._id': String,
   userCache: cacheField,
   borrowerLinks: { type: Array, optional: true, defaultValue: [] },
-  'borrowerLinks.$': Object,
-  'borrowerLinks.$._id': String,
+  'borrowerLinks.$': { type: Object, optional: true },
+  'borrowerLinks.$._id': { type: String, optional: true },
   assigneeLinks: { type: Array, optional: true },
   'assigneeLinks.$': Object,
   'assigneeLinks.$._id': String,

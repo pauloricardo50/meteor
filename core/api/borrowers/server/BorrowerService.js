@@ -140,19 +140,6 @@ export class BorrowerService extends CollectionService {
     const hasOneInsuranceRequest = insuranceRequests.length === 1;
 
     if (hasOneLoan ? !hasOneInsuranceRequest : hasOneInsuranceRequest) {
-      if (hasOneLoan) {
-        LoanService.removeLink({
-          id: loans[0]._id,
-          linkName: 'borrowers',
-          linkId: borrowerId,
-        });
-      } else if (hasOneInsuranceRequest) {
-        InsuranceRequestService.removeLink({
-          id: insuranceRequests[0]._id,
-          linkName: 'borrowers',
-          linkId: borrowerId,
-        });
-      }
       this.remove({ borrowerId });
     }
   }

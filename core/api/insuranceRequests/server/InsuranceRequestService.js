@@ -388,16 +388,29 @@ class InsuranceRequestService extends CollectionService {
 
   remove({ insuranceRequestId }) {
     const { insurances = [], revenues = [] } = this.get(insuranceRequestId, {
-      insurances: { _id: 1 },
-      revenues: { status: 1, status: 1 },
+      insurances: { _id: 1, revenues: { status: 1 } },
+      revenues: { status: 1 },
     });
+
+    if (
+      insurances
+        .reduce(
+          (insurancesRevenues, { revenues: insuranceRevenues = [] }) => [
+            ...insurancesRevenues,
+            ...insuranceRevenues,
+          ],
+          revenues,
+        )
+        .filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
+    ) {
+      throw new Meteor.Error(
+        'Des revenus sont attendus pour ce dossier assurance. Merci de les supprimer manuellement avant de supprimer le dossier',
+      );
+    }
 
     insurances.forEach(({ _id: insuranceId }) =>
       InsuranceService.remove({ insuranceId }),
     );
-    revenues
-      .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
-      .forEach(({ _id: revenueId }) => RevenueService.remove({ revenueId }));
 
     return super.remove(insuranceRequestId);
   }

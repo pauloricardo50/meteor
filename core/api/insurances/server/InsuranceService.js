@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
@@ -228,23 +229,17 @@ class InsuranceService extends CollectionService {
   }
 
   remove({ insuranceId }) {
-    const { revenues = [], borrower } = this.get(insuranceId, {
+    const { revenues = [] } = this.get(insuranceId, {
       revenues: { status: 1 },
-      borrower: { _id: 1 },
     });
 
-    if (borrower?._id) {
-      console.log('remove borrower');
-      this.removeLink({
-        id: insuranceId,
-        linkName: 'borrower',
-        linkId: borrower._id,
-      });
+    if (
+      revenues.filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
+    ) {
+      throw new Meteor.Error(
+        "Des revenus sont attendus pour cette assurance. Merci de les supprimer manuellement avant de supprimer l'assurance",
+      );
     }
-
-    revenues
-      .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
-      .forEach(({ _id: revenueId }) => RevenueService.remove({ revenueId }));
 
     return super.remove(insuranceId);
   }
