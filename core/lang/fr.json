@@ -1,4 +1,6 @@
 {
+  "collections.insuranceRequests": "Dossiers assurance",
+  "collections.insurances": "Assurances",
   "ProRevenuesTable.removedLoan": "Dossier supprimé",
   "Forms.maxProductionYears": "Durée maximale de production (années)",
   "Forms.maxProductionYears.placeholder": "35",

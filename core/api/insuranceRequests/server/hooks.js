@@ -3,7 +3,7 @@ import BorrowerService from '../../borrowers/server/BorrowerService';
 import FileService from '../../files/server/FileService';
 import InsuranceRequests from '..';
 
-InsuranceRequests.before.remove((userId, { borrowerLinks }) => {
+InsuranceRequests.before.remove((userId, { borrowerLinks = [] }) => {
   borrowerLinks.forEach(({ _id: borrowerId }) =>
     BorrowerService.cleanUpBorrowers({ borrowerId }),
   );

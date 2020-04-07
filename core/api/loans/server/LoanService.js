@@ -36,6 +36,7 @@ import {
   RESIDENCE_TYPE,
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
+import { REVENUE_STATUS } from '../../revenues/revenueConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,
@@ -99,7 +100,17 @@ class LoanService extends CollectionService {
   update = ({ loanId, object, operator = '$set' }) =>
     Loans.update(loanId, { [operator]: object });
 
-  remove = ({ loanId }) => super.remove(loanId);
+  remove = ({ loanId }) => {
+    const { revenues = [] } = this.get(loanId, { revenues: { status: 1 } });
+    if (
+      revenues.filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
+    ) {
+      throw new Meteor.Error(
+        'Des revenus sont attendus pour ce dossier. Merci de les supprimer manuellement avant de supprimer le dossier',
+      );
+    }
+    return super.remove(loanId);
+  };
 
   fullLoanInsert = ({ userId, loan = {} }) => {
     const loanId = this.insert({

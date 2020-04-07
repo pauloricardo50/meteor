@@ -41,3 +41,10 @@ export const insuranceRemoveAdminNote = new Method({
     adminNoteId: String,
   },
 });
+
+export const insuranceRemove = new Method({
+  name: 'insuranceRemove',
+  params: {
+    insuranceId: String,
+  },
+});

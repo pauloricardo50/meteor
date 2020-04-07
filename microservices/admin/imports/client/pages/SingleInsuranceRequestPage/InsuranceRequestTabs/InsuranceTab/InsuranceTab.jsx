@@ -10,6 +10,7 @@ import RevenuesTable from '../../../../components/RevenuesTable';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
 import InsuranceEstimatedRevenue from './InsuranceEstimatedRevenue';
 import InsuranceModifier from './InsuranceModifier';
+import InsuranceRemover from './InsuranceRemover';
 
 const InsuranceTab = props => {
   const { insurance, insuranceRequest, currentUser } = props;
@@ -56,9 +57,13 @@ const InsuranceTab = props => {
         )}
       </div>
 
-      <div className="flex-col card1 p-16">
+      <div className="insurance-modifier flex-col card1 p-16">
         <h3 className="mt-0 mb-32">{insurance.name}</h3>
         <div className="flex-row sa">
+          <InsuranceRemover
+            insuranceId={insurance._id}
+            insuranceRequestId={insuranceRequest._id}
+          />
           <InsuranceModifier
             insuranceRequest={insuranceRequest}
             insurance={insurance}

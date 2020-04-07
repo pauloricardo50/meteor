@@ -284,4 +284,4 @@ export class SlackServiceClass {
   };
 }
 
-export default new SlackService({ serverSide: Meteor.isServer });
+export default new SlackServiceClass({ serverSide: Meteor.isServer });

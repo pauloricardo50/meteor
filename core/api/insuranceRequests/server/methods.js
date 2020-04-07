@@ -19,9 +19,9 @@ insuranceRequestInsert.setHandler(({ userId }, params) => {
   return InsuranceRequestService.insert(params);
 });
 
-insuranceRequestRemove.setHandler(({ userId }, { insuranceRequestId }) => {
+insuranceRequestRemove.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
-  return InsuranceRequestService.remove(insuranceRequestId);
+  return InsuranceRequestService.remove(params);
 });
 
 insuranceRequestUpdate.setHandler(

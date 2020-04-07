@@ -1,6 +1,7 @@
 import Intl from '../../../utils/server/intl';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
+import FileService from '../../files/server/FileService';
 import UserService from '../../users/server/UserService';
 import Insurances from '../insurances';
 
@@ -32,4 +33,8 @@ Insurances.before.update(
       createdBy: userId,
     });
   },
+);
+
+Insurances.after.remove((userId, { _id }) =>
+  FileService.deleteAllFilesForDoc(_id),
 );

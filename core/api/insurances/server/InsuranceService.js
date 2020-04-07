@@ -1,8 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import { getNewName } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
+import { REVENUE_STATUS } from '../../revenues/revenueConstants';
 import { getEffectiveDuration } from '../helpers';
 import { INSURANCES_COLLECTION, INSURANCE_STATUS } from '../insuranceConstants';
 import Insurances from '../insurances';
@@ -222,6 +224,22 @@ class InsuranceService extends CollectionService {
     return Math.round(
       premium * effectiveDuration * revaluationFactor * productionRate,
     );
+  }
+
+  remove({ insuranceId }) {
+    const { revenues = [] } = this.get(insuranceId, {
+      revenues: { status: 1 },
+    });
+
+    if (
+      revenues.filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
+    ) {
+      throw new Meteor.Error(
+        "Des revenus sont attendus pour cette assurance. Merci de les supprimer manuellement avant de supprimer l'assurance",
+      );
+    }
+
+    return super.remove(insuranceId);
   }
 }
 

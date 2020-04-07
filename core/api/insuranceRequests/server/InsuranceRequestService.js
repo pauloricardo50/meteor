@@ -53,11 +53,6 @@ class InsuranceRequestService extends CollectionService {
 
     if (loan) {
       this.linkLoan({ insuranceRequestId, loanId });
-      // LoanService.addLink({
-      //   id: loanId,
-      //   linkName: 'insuranceRequests',
-      //   linkId: insuranceRequestId,
-      // });
       const { user: { _id: loanUserId } = {} } = loan;
       if (loanUserId) {
         this.addLink({
@@ -77,13 +72,8 @@ class InsuranceRequestService extends CollectionService {
     }
 
     if (borrowerIds?.length) {
-      borrowerIds.forEach(
-        borrowerId => this.linkBorrower({ insuranceRequestId, borrowerId }),
-        // this.addLink({
-        //   id: insuranceRequestId,
-        //   linkName: 'borrowers',
-        //   linkId: borrowerId,
-        // }),
+      borrowerIds.forEach(borrowerId =>
+        this.linkBorrower({ insuranceRequestId, borrowerId }),
       );
     }
 
@@ -392,6 +382,35 @@ class InsuranceRequestService extends CollectionService {
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
 
     return loanId;
+  }
+
+  remove({ insuranceRequestId }) {
+    const { insurances = [], revenues = [] } = this.get(insuranceRequestId, {
+      insurances: { _id: 1, revenues: { status: 1 } },
+      revenues: { status: 1 },
+    });
+
+    if (
+      insurances
+        .reduce(
+          (insurancesRevenues, { revenues: insuranceRevenues = [] }) => [
+            ...insurancesRevenues,
+            ...insuranceRevenues,
+          ],
+          revenues,
+        )
+        .filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
+    ) {
+      throw new Meteor.Error(
+        'Des revenus sont attendus pour ce dossier assurance. Merci de les supprimer manuellement avant de supprimer le dossier',
+      );
+    }
+
+    insurances.forEach(({ _id: insuranceId }) =>
+      InsuranceService.remove({ insuranceId }),
+    );
+
+    return super.remove(insuranceRequestId);
   }
 }
 

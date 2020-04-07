@@ -25,7 +25,7 @@ const InsuranceSchema = new SimpleSchema({
     defaultValue: INSURANCE_STATUS.SUGGESTED,
   },
   borrowerLink: { type: Object, optional: true },
-  'borrowerLink._id': String,
+  'borrowerLink._id': { type: String, optional: true },
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
   premium: decimalMoneyField,
