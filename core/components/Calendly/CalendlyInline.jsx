@@ -29,7 +29,6 @@ class CalendlyInline extends React.Component {
     const { styles, url } = this.props;
     return (
       <div
-        className="calendly-inline-widget"
         style={styles || defaultStyles}
         data-url={url}
         ref={this.parentContainerRef}
