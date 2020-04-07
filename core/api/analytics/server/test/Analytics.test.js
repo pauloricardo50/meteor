@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import SessionService from '../../../sessions/server/SessionService';
-import { SlackService } from '../../../slack/server/SlackService';
+import SlackService from '../../../slack/server/SlackService';
 import EVENTS from '../../events';
 import Analytics, { checkEventsConfig } from '../Analytics';
 import NoOpAnalytics from '../NoOpAnalytics';

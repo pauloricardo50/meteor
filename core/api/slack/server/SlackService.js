@@ -19,7 +19,7 @@ const LOGO_URL =
 const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
-export class SlackService {
+export class SlackServiceClass {
   send = ({
     channel = '#clients_general',
     username = 'e-Potek Bot',
