@@ -57,6 +57,16 @@ module.exports = {
       { name: 'Link', linkAttribute: 'to' },
     ],
   },
+  ignorePatterns: [
+    '**/*.json',
+    '**/node_modules',
+    'core/assets',
+    'core/lang',
+    'microservices/**/core/assets',
+    'microservices/**/core/lang',
+    'microservices/**/public',
+    'microservices/www2/.cache'
+  ],
   rules: {
     // Setup prettier through eslint, instead of as a formatter in vscode
     'prettier/prettier': ['error', prettierOptions],
