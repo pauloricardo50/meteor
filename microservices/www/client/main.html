@@ -1,9 +1,10 @@
 <head>
   <!-- Necessary for the waves -->
-  <script src="https://cdn.jsdelivr.net/gh/jarek-foksa/path-data-polyfill.js@master/path-data-polyfill.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/jarek-foksa/path-data-polyfill.js@master/path-data-polyfill.js"></script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84358947-1"></script>
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84358947-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     window.GA_TAG = 'UA-84358947-1';
@@ -14,8 +15,20 @@
     }
     gtag('js', new Date());
     gtag('config',  window.GA_TAG);
-  </script>
-  
+  </script> -->
+
+  <!-- Google Tag Manager -->
+  <script>
+    if (process.env.NODE_ENV === 'production') {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W8KXQ9V');
+  }
+      </script>
+  <!-- End Google Tag Manager -->
+
 
   <!-- is executed when the browser doesn't support/or disables JS -->
   <noscript>
@@ -34,10 +47,10 @@
   </noscript>
 
   <div id="jss-head"></div>
-  
-  <meteor-bundled-css />
-</head>
 
-<body>
-  <div id="react-root"></div>
-</body>
+  <meteor-bundled-css />
+  </head>
+
+  <body>
+    <div id="react-root"></div>
+  </body>
