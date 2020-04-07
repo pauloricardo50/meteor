@@ -3,12 +3,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { setAPIUser } from 'core/api/RESTAPI/server/helpers';
-
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { setAPIUser } from '../../../RESTAPI/server/helpers';
 import { proInviteUser } from '../../../users/methodDefinitions';
 import UserService from '../../../users/server/UserService';
 import {

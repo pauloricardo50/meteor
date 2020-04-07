@@ -6,18 +6,18 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { checkEmails } from '../../../../utils/testHelpers';
-import { ddpWithUserId } from '../../../methods/methodHelpers';
-import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
-import PropertyService from '../../../properties/server/PropertyService';
+import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
-import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
-import { ROLES } from '../../userConstants';
-import UserService, { UserServiceClass } from '../UserService';
+import PropertyService from '../../../properties/server/PropertyService';
 import { proInviteUser } from '../../methodDefinitions';
+import { ROLES } from '../../userConstants';
 import { assigneesByOrg } from '../assigneesByOrg';
+import UserService, { UserServiceClass } from '../UserService';
 
 describe('UserService', function() {
   this.timeout(10000);

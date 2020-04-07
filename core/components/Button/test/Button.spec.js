@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 import { expect } from 'chai';
 
-import Button from 'core/components/Button';
+import { shallow } from '../../../utils/testHelpers/index';
+import Button from '../Button';
 
 describe('Button', () => {
   // Label removes testing warnings

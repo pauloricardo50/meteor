@@ -1,10 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { compose } from 'recompose';
+
+import { precisionMiddleware } from '../../FinanceCalculator/financeCalculatorMiddlewares';
 import memoizeOne, { memoizeOneObjectArg } from '../../memoizeOne';
 import MiddlewareManager from '../../MiddlewareManager';
 import { borrowerExtractorMiddleware } from '../middleware';
-import { precisionMiddleware } from '../../FinanceCalculator/financeCalculatorMiddlewares';
 
 class RootCalculator {
   constructor() {

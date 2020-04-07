@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import usePrevious from 'core/hooks/usePrevious';
+
+import usePrevious from '../hooks/usePrevious';
 
 /* Every route change should scroll to top, which isn't automatic */
 const ScrollToTop = ({ children, location }) => {

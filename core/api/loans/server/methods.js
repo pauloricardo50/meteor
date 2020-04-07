@@ -1,50 +1,50 @@
 import { Meteor } from 'meteor/meteor';
 
-import UserService from 'core/api/users/server/UserService';
-import { adminLoan, adminUser } from 'core/api/fragments';
+import ActivityService from '../../activities/server/ActivityService';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
-import Security from '../../security/Security';
-import ActivityService from '../../activities/server/ActivityService';
-import SecurityService from '../../security';
-import {
-  loanUpdate,
-  loanDelete,
-  pushLoanValue,
-  popLoanValue,
-  adminLoanInsert,
-  addNewStructure,
-  removeStructure,
-  updateStructure,
-  selectStructure,
-  duplicateStructure,
-  assignLoanToUser,
-  switchBorrower,
-  sendNegativeFeedbackToAllLenders,
-  loanUpdatePromotionInvitedBy,
-  reuseProperty,
-  setMaxPropertyValueWithoutBorrowRatio,
-  addNewMaxStructure,
-  setLoanStep,
-  loanShareSolvency,
-  anonymousLoanInsert,
-  userLoanInsert,
-  loanInsertBorrowers,
-  adminLoanReset,
-  loanLinkPromotion,
-  loanUnlinkPromotion,
-  loanSetCreatedAtActivityDescription,
-  loanSetStatus,
-  loanUpdateCreatedAt,
-  sendLoanChecklist,
-  loanSetAdminNote,
-  loanRemoveAdminNote,
-  loanSetDisbursementDate,
-  loanSetAssignees,
-} from '../methodDefinitions';
-import { STEPS, LOAN_STATUS } from '../loanConstants';
-import LoanService from './LoanService';
+import { adminLoan } from '../../fragments';
 import { Method } from '../../methods/methods';
+import SecurityService from '../../security';
+import Security from '../../security/Security';
+import UserService from '../../users/server/UserService';
+import { LOAN_STATUS, STEPS } from '../loanConstants';
+import {
+  addNewMaxStructure,
+  addNewStructure,
+  adminLoanInsert,
+  adminLoanReset,
+  anonymousLoanInsert,
+  assignLoanToUser,
+  duplicateStructure,
+  loanDelete,
+  loanInsertBorrowers,
+  loanLinkPromotion,
+  loanRemoveAdminNote,
+  loanSetAdminNote,
+  loanSetAssignees,
+  loanSetCreatedAtActivityDescription,
+  loanSetDisbursementDate,
+  loanSetStatus,
+  loanShareSolvency,
+  loanUnlinkPromotion,
+  loanUpdate,
+  loanUpdateCreatedAt,
+  loanUpdatePromotionInvitedBy,
+  popLoanValue,
+  pushLoanValue,
+  removeStructure,
+  reuseProperty,
+  selectStructure,
+  sendLoanChecklist,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+  setMaxPropertyValueWithoutBorrowRatio,
+  switchBorrower,
+  updateStructure,
+  userLoanInsert,
+} from '../methodDefinitions';
+import LoanService from './LoanService';
 
 loanUpdate.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);

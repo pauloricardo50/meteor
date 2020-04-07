@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-import Insurances from '.';
 import proNotesReducer from '../reducers/proNotesReducer';
 import { INSURANCE_PREMIUM_FREQUENCY } from './insuranceConstants';
+import Insurances from '.';
 
 Insurances.addReducers({
   proNotes: proNotesReducer,

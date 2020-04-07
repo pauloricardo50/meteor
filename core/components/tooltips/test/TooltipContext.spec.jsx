@@ -1,8 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+
 import { mount, shallow } from '../../../utils/testHelpers/enzyme';
-import { TooltipProvider, TooltipContainer } from '../TooltipContext';
+import { TooltipContainer, TooltipProvider } from '../TooltipContext';
 
 describe('TooltipContext', () => {
   it.skip('passes tooltips down', () => {

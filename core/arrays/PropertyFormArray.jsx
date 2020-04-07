@@ -1,12 +1,6 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
 
-import CantonField from 'core/components/CantonField/CantonField';
-import {
-  COMMON_COUNTRIES,
-  getSortedCountriesCodes,
-} from 'core/utils/countriesUtils';
-
 import { OWNER, PURCHASE_TYPE } from '../api/loans/loanConstants';
 import {
   FLAT_TYPE,
@@ -16,6 +10,11 @@ import {
   RESIDENCE_TYPE,
   VOLUME_NORM,
 } from '../api/properties/propertyConstants';
+import CantonField from '../components/CantonField/CantonField';
+import {
+  COMMON_COUNTRIES,
+  getSortedCountriesCodes,
+} from '../utils/countriesUtils';
 
 const mapInput = input => {
   const intlSafeObject = { ...input };

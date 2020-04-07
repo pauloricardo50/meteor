@@ -4,16 +4,15 @@ import React from 'react';
 import cx from 'classnames';
 
 import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
-import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
-import AdditionalDocAdder from './AdditionalDocAdder';
 import {
-  getBorrowerDocuments,
-  getPropertyDocuments,
-  getLoanDocuments,
   allDocuments,
+  getBorrowerDocuments,
+  getLoanDocuments,
+  getPropertyDocuments,
 } from '../../api/files/documents';
-
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import AdditionalDocAdder from './AdditionalDocAdder';
 import UploaderCategories from './UploaderCategories';
 
 const documentsToDisplay = ({ collection, loan, id }) => {

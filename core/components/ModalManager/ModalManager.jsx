@@ -1,8 +1,8 @@
 import React, { useReducer } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 
-import ModalManagerContext from './ModalManagerContext';
 import DialogComponents from './DialogComponents';
+import ModalManagerContext from './ModalManagerContext';
 
 // Open modals from anywhere in React:
 

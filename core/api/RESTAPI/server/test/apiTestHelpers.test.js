@@ -1,13 +1,13 @@
 import { expect } from 'chai';
+import { createReadStream, statSync } from 'fs';
+import mime from 'mime-types';
 import fetch from 'node-fetch';
 import NodeRSA from 'node-rsa';
-import queryString from 'query-string';
-import { createReadStream, statSync } from 'fs';
 import path from 'path';
-import mime from 'mime-types';
+import queryString from 'query-string';
 
-import { sortObject } from 'core/api/helpers';
-import UserService from 'core/api/users/server/UserService';
+import { sortObject } from '../../../helpers/index';
+import UserService from '../../../users/server/UserService';
 import { OBJECT_FORMATS, formatObject } from '../helpers';
 
 const FormData = require('form-data');

@@ -1,13 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { FinancingField } from '../FinancingSection';
+import Calculator from '../../../../utils/Calculator';
 import DialogSimple from '../../../DialogSimple';
 import IconButton from '../../../IconButton';
-import T from '../../../Translation';
 import Recap from '../../../Recap';
+import T from '../../../Translation';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import Calculator from '../../../../utils/Calculator';
+import { FinancingField } from '../FinancingSection';
 
 const FinancingProjectFees = ({ className, ...props }) => {
   const { loan, structureId } = props;

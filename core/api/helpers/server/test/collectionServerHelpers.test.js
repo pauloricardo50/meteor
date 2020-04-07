@@ -1,16 +1,17 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { getNewName, setAssignees } from '../collectionServerHelpers';
-import LoanService from '../../../loans/server/LoanService';
-import UserService from '../../../users/server/UserService';
-import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import generator from '../../../factories/server/generator';
-import { LOANS_COLLECTION } from '../../../loans/loanConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../../insuranceRequests/insuranceRequestConstants';
+import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
 import { INSURANCES_COLLECTION } from '../../../insurances/insuranceConstants';
+import { LOANS_COLLECTION } from '../../../loans/loanConstants';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import UserService from '../../../users/server/UserService';
+import { getNewName, setAssignees } from '../collectionServerHelpers';
 
 describe('collectionServerHelpers', () => {
   beforeEach(() => {

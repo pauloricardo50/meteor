@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 
+import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 import AutoFormLayout from '../../AutoFormLayout';
 
 const AutoField = props => <span {...props} />;

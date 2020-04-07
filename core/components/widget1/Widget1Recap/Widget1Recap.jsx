@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-import RecapSimple from 'core/components/Recap/RecapSimple';
-import Widget1RecapContainer from './Widget1RecapContainer';
+import RecapSimple from '../../Recap/RecapSimple';
+import T from '../../Translation';
 import Widget1Finma from './Widget1Finma';
 import Widget1LenderCount from './Widget1LenderCount';
+import Widget1RecapContainer from './Widget1RecapContainer';
 
 const Widget1Recap = ({ array, finma }) => (
   <div className="card1 widget1-recap">

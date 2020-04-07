@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
 import { widget1Constants } from '../../../redux/widget1';
+import T from '../../Translation';
 import Widget1OptionsContainer from './Widget1OptionsContainer';
 
 const Widget1Options = ({ purchaseType, setPurchaseType }) => {

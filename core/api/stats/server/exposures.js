@@ -1,17 +1,17 @@
 import { exposeQuery } from '../../queries/queryHelpers';
 import {
-  newLoans,
   loanHistogram,
   loansWithoutRevenues,
+  newLoans,
   newUsers,
   userHistogram,
 } from '../queries';
 import {
-  newLoansResolver,
   loanHistogramResolver,
+  loansWithoutRevenuesResolver,
+  newLoansResolver,
   newUsersResolver,
   userHistogramResolver,
-  loansWithoutRevenuesResolver,
 } from './stats';
 
 exposeQuery({

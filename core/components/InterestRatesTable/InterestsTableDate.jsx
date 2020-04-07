@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IntlDate } from 'core/components/Translation';
+import { IntlDate } from '../Translation';
 
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;

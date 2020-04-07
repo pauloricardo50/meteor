@@ -1,7 +1,7 @@
 import faker from 'faker/locale/fr';
 
-import BorrowerService from '../api/borrowers/server/BorrowerService';
 import { completeFakeBorrower } from '../api/borrowers/fakes';
+import BorrowerService from '../api/borrowers/server/BorrowerService';
 
 const insertFakeBorrower = userId => {
   const firstName = faker.name.firstName();

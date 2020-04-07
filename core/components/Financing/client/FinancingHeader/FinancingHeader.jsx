@@ -1,10 +1,10 @@
 import React from 'react';
 import { ScrollSyncPane } from 'react-scroll-sync';
 
-import FinancingLabels from '../FinancingLabels';
-import FinancingSingleHeader from './FinancingSingleHeader';
-import FinancingHeaderAdder from './FinancingHeaderAdder';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
+import FinancingLabels from '../FinancingLabels';
+import FinancingHeaderAdder from './FinancingHeaderAdder';
+import FinancingSingleHeader from './FinancingSingleHeader';
 
 const FinancingHeader = ({
   selectedStructure,

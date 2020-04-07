@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AutoFormTextInput from './AutoFormTextInput';
 
 const AutoFormPercentInput = props => {

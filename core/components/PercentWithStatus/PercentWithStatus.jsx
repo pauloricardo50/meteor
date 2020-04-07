@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Percent } from '../Translation';
+import { ERROR, SUCCESS } from '../../api/constants';
 import StatusIcon from '../StatusIcon';
-import { SUCCESS, ERROR } from '../../api/constants';
+import { Percent } from '../Translation';
 
 const PercentWithStatus = ({
   value,

@@ -2,10 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 import { IntlProvider, intlShape } from 'react-intl';
-import { mount } from 'core/utils/testHelpers/enzyme';
 
-import DefaultTranchePicker, { TranchePicker } from '../../TranchePicker';
+import { mount } from '../../../../utils/testHelpers/index';
 import Tranche from '../../Tranche';
+import DefaultTranchePicker, { TranchePicker } from '../../TranchePicker';
 
 describe('TranchePicker', () => {
   let props;

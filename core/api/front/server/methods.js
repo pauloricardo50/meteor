@@ -1,6 +1,5 @@
 import SecurityService from '../../security';
 import { frontTagLoan, frontUntagLoan } from '../methodDefiinitions';
-
 import FrontService from './FrontService';
 
 frontTagLoan.setHandler(({ userId }, params) => {

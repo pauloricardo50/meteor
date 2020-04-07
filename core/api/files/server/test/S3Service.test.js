@@ -1,7 +1,7 @@
+import { Meteor } from 'meteor/meteor';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-
-import { Meteor } from 'meteor/meteor';
 
 import S3Service from '../S3Service';
 

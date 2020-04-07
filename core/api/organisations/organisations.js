@@ -1,18 +1,18 @@
 import SimpleSchema from 'simpl-schema';
 
+import { createCollection } from '../helpers/collectionHelpers';
 import {
   address,
-  percentageField,
-  moneyField,
   documentsField,
+  moneyField,
+  percentageField,
 } from '../helpers/sharedSchemas';
 import {
   ORGANISATIONS_COLLECTION,
-  ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
   ORGANISATION_TAGS,
+  ORGANISATION_TYPES,
 } from './organisationConstants';
-import { createCollection } from '../helpers/collectionHelpers';
 
 const Organisations = createCollection(ORGANISATIONS_COLLECTION);
 

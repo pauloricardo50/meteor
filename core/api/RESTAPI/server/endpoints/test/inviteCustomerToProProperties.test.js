@@ -1,26 +1,27 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import UserService from '../../../../users/server/UserService';
-import PropertyService from '../../../../properties/server/PropertyService';
+import { checkEmails } from '../../../../../utils/testHelpers';
+import generator from '../../../../factories/server';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_STATUS,
 } from '../../../../properties/propertyConstants';
+import PropertyService from '../../../../properties/server/PropertyService';
 import SlackService from '../../../../slack/server/SlackService';
-import generator from '../../../../factories/server';
+import UserService from '../../../../users/server/UserService';
 import RESTAPI from '../../RESTAPI';
-import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
-import { checkEmails } from '../../../../../utils/testHelpers';
+import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
 
 const customerToInvite = {
   email: 'test@example.com',

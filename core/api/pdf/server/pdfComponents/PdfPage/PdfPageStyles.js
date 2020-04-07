@@ -1,4 +1,4 @@
-import { CONTENT_HEIGHT, BORDER_BLUE } from '../../../pdfConstants';
+import { BORDER_BLUE, CONTENT_HEIGHT } from '../../../pdfConstants';
 
 const PdfPageStyles = `
     .page {

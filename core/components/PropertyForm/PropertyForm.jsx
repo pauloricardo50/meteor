@@ -1,10 +1,10 @@
 import * as React from 'react';
 import cx from 'classnames';
 
-import T from '../Translation';
-import Icon from '../Icon';
 import PropertySchema from '../../api/properties/schemas/PropertySchema';
 import { AutoFormDialog } from '../AutoForm2';
+import Icon from '../Icon';
+import T from '../Translation';
 
 export const propertyFormSchema = PropertySchema.pick(
   'address1',

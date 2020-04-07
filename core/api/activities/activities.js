@@ -1,14 +1,14 @@
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../helpers/sharedSchemas';
-import {
-  ACTIVITY_TYPES,
-  ACTIVITIES_COLLECTION,
-  ACTIVITY_EVENT_METADATA,
-} from './activityConstants';
-import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 import { EMAIL_IDS } from '../email/emailConstants';
 import { createCollection } from '../helpers/collectionHelpers';
+import { createdAt, updatedAt } from '../helpers/sharedSchemas';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import {
+  ACTIVITIES_COLLECTION,
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from './activityConstants';
 
 const Activities = createCollection(ACTIVITIES_COLLECTION);
 

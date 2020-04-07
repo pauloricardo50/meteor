@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
+import { OWN_FUNDS_TYPES } from '../../borrowers/borrowerConstants';
 import Loans from '../../loans';
 
 export const up = async () => {

@@ -3,9 +3,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import DialogSimple from '../DialogSimple';
 import T from '../Translation';
 import BorrowerReuserContainer from './BorrowerReuserContainer';
-import DialogSimple from '../DialogSimple';
 
 const BorrowerReuser = ({
   borrowers,

@@ -1,5 +1,4 @@
-import { apiProperty } from 'core/api/fragments';
-
+import { apiProperty } from '../../../fragments';
 import { proPropertyInsert } from '../../../properties/methodDefinitions';
 import PropertyService from '../../../properties/server/PropertyService';
 import Security from '../../../security';

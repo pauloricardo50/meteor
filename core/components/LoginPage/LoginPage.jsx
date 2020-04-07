@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { Redirect } from 'react-router-dom';
 
+import { CurrentUserContext } from '../../containers/CurrentUserContext';
 import PageHead from '../PageHead';
 import LoginPageLeft from './LoginPageLeft';
 import LoginPageRight from './LoginPageRight';
-import { CurrentUserContext } from '../../containers/CurrentUserContext';
 
 const LoginPage = ({ location: { search }, history: { push } }) => {
   const currentUser = useContext(CurrentUserContext);

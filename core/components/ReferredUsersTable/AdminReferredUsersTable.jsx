@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ReferredUsersTable from './ReferredUsersTable';
 
 const AdminReferredUsersTable = props => (

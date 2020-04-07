@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import cx from 'classnames';
-import { AutoForm } from 'uniforms-material';
+import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { compose, withProps } from 'recompose';
+import { AutoForm } from 'uniforms-material';
 
-import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
+import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingInput from './FinancingInput';
 
 export const FinancingField = ({

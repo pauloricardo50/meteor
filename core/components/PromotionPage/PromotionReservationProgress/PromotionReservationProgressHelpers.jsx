@@ -1,14 +1,15 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
-import PromotionReservationProgressItem from './PromotionReservationProgressItem';
 import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../../../api/promotionOptions/promotionOptionConstants';
+import PromotionReservationProgressItem from './PromotionReservationProgressItem';
 
 const iconConfig = {
   simpleVerification: {

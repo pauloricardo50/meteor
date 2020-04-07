@@ -3,13 +3,11 @@ import { check } from 'meteor/check';
 
 import range from 'lodash/range';
 
-import LoanService from 'core/api/loans/server/LoanService';
-
+import Borrowers from '../../api/borrowers';
 import {
   completeFakeBorrower,
   emptyFakeBorrower,
 } from '../../api/borrowers/fakes';
-import Borrowers from '../../api/borrowers';
 import Contacts from '../../api/contacts';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 import {
@@ -19,6 +17,7 @@ import {
   STEP_ORDER,
 } from '../../api/loans/loanConstants';
 import Loans from '../../api/loans/loans';
+import LoanService from '../../api/loans/server/LoanService';
 import Lots from '../../api/lots/lots';
 import Offers from '../../api/offers';
 import Organisations from '../../api/organisations';
@@ -27,8 +26,8 @@ import OrganisationService from '../../api/organisations/server/OrganisationServ
 import PromotionLots from '../../api/promotionLots';
 import PromotionOptions from '../../api/promotionOptions';
 import Promotions from '../../api/promotions';
-import { fakeProperty } from '../../api/properties/fakes';
 import Properties from '../../api/properties';
+import { fakeProperty } from '../../api/properties/fakes';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
 import Tasks from '../../api/tasks/tasks';

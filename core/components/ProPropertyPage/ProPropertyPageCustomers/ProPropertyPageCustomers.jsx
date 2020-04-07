@@ -2,9 +2,9 @@ import React from 'react';
 
 import Select from '../../Select';
 import Table from '../../Table';
-import ProPropertyPageCustomersContainer from './ProPropertyPageCustomersContainer';
-import PropertyCustomerAdder from '../PropertyCustomerAdder';
 import T from '../../Translation';
+import PropertyCustomerAdder from '../PropertyCustomerAdder';
+import ProPropertyPageCustomersContainer from './ProPropertyPageCustomersContainer';
 import ProPropertyPublicLinkGenerator from './ProPropertyPublicLinkGenerator';
 
 const ProPropertyPageCustomers = ({

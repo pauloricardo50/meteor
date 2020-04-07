@@ -1,6 +1,6 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
+import T from '../../Translation';
 import Key from './Key';
 
 const Keys = ({ keyPair = {} }) => {

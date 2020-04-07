@@ -1,11 +1,11 @@
-import Properties from '.';
-import { PROPERTY_QUERIES } from './propertyConstants';
 import {
   adminProperty,
-  userProperty as userPropertyFragment,
   proProperty,
   proUser,
+  userProperty as userPropertyFragment,
 } from '../fragments';
+import { PROPERTY_QUERIES } from './propertyConstants';
+import Properties from '.';
 
 export const adminProperties = Properties.createQuery(
   PROPERTY_QUERIES.ADMIN_PROPERTIES,

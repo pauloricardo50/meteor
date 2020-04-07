@@ -1,8 +1,8 @@
 import React from 'react';
 
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
-import ProPropertyUserPermissionsContainer from './ProPropertyUserPermissionsContainer';
 import T from '../Translation';
+import ProPropertyUserPermissionsContainer from './ProPropertyUserPermissionsContainer';
 
 const ProPropertyUserPermissionsModifier = ({ schema, model, onSubmit }) => (
   <AutoFormDialog

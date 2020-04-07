@@ -1,10 +1,10 @@
 import React from 'react';
 
+import PercentWithStatus from '../../../../../../components/PercentWithStatus';
 import { Calculator } from '../../../../../../utils/Calculator';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
-import PercentWithStatus from '../../../../../../components/PercentWithStatus';
 import { ERROR, SUCCESS } from '../../../../../constants';
-import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
+import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 
 const columnsConfig = [
   {

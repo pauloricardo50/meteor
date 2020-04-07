@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
-import { currentInterestRates } from 'core/api/interestRates/queries';
+import { withSmartQuery } from '../../../api/containerToolkit';
+import { currentInterestRates } from '../../../api/interestRates/queries';
+import { commonTypes } from '../../../redux/common';
+import { widget1Constants } from '../../../redux/widget1';
 import {
   getLoanValue,
   getSimpleYearlyInterests,
-  getYearlyAmortization,
   getSimpleYearlyMaintenance,
+  getYearlyAmortization,
 } from '../widget1Math';
-import { widget1Constants } from '../../../redux/widget1';
-import { commonTypes } from '../../../redux/common';
 
 const mapStateToProps = ({
   widget1: {

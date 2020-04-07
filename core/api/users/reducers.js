@@ -1,4 +1,4 @@
-import { getUserDisplayName } from 'core/utils/userFunctions';
+import { getUserDisplayName } from '../../utils/userFunctions';
 import Users from './users';
 
 Users.addReducers({

@@ -1,7 +1,7 @@
 import { Factory } from 'meteor/dburles:factory';
 
-import Loans from '../../../../loans';
 import Borrowers from '../../../../borrowers';
+import Loans from '../../../../loans';
 import Properties from '../../../../properties';
 import { FAKE_LOAN_NAME } from './fakes';
 

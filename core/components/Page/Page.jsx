@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
 import PageHead from '../PageHead';

@@ -55,9 +55,6 @@ if [[ $DO_CLEAN == true ]];
 then
   echo "Cleaning and installing root npm packages"
   ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
-
-  echo "Cleaning up all CSS"
-  ./clean-css.sh
 fi
 
 echo "Installing npm packages in root"

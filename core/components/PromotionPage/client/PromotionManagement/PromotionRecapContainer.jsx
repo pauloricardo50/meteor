@@ -1,18 +1,18 @@
 import React from 'react';
-import { withProps } from 'recompose';
 import moment from 'moment';
+import { withProps } from 'recompose';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import {
-  getTotalLandValue,
-  getTotalConstructionValue,
-  getTotalAdditionalMargin,
-  getTotalAdditionalLotsValue,
-  getTotalValue,
-  getTotalUndetailedValue,
-  getGroupedLots,
-} from './helpers';
+import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
+import {
+  getGroupedLots,
+  getTotalAdditionalLotsValue,
+  getTotalAdditionalMargin,
+  getTotalConstructionValue,
+  getTotalLandValue,
+  getTotalUndetailedValue,
+  getTotalValue,
+} from './helpers';
 
 const getRecapArray = (promotion = {}) => {
   const {

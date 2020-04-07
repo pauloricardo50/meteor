@@ -1,9 +1,8 @@
-
 // Map loan onto FinanceCalculator
 
-import { makeArgumentMapper } from '../MiddlewareManager';
-import memoizeOne from '../memoizeOne';
 import { arrayify } from '../general';
+import memoizeOne from '../memoizeOne';
+import { makeArgumentMapper } from '../MiddlewareManager';
 
 const argumentMappings = {};
 

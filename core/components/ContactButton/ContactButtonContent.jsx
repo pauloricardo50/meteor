@@ -1,5 +1,6 @@
 import React from 'react';
-import T from 'core/components/Translation';
+
+import T from '../Translation';
 
 const ContactButtonContent = ({ titleId, icon, href, label }) => (
   <a href={href} className="contact-button-content primary">

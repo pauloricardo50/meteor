@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DropdownMenu from 'core/components/DropdownMenu';
-import T from 'core/components/Translation';
+import DropdownMenu from '../../../DropdownMenu';
+import T from '../../../Translation';
 import InvitedByAssignDropdownContainer from './InvitedByAssignDropdownContainer';
 
 const InvitedByAssignDropdown = ({ options, invitedByName }) => (

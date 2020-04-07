@@ -1,6 +1,6 @@
+import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import FileService from '../../files/server/FileService';
-import ActivityService from '../../activities/server/ActivityService';
 import InsuranceRequests from '..';
 
 InsuranceRequests.before.remove((userId, { borrowerLinks }) => {

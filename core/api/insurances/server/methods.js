@@ -1,10 +1,10 @@
+import Security from '../../security/Security';
 import {
   insuranceInsert,
   insuranceModify,
-  insuranceSetAdminNote,
   insuranceRemoveAdminNote,
+  insuranceSetAdminNote,
 } from '../methodDefinitions';
-import Security from '../../security/Security';
 import InsuranceService from './InsuranceService';
 
 insuranceInsert.setHandler(({ userId }, params) => {

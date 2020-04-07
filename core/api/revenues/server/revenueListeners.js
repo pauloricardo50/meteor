@@ -1,7 +1,7 @@
 import ServerEventService from '../../events/server/ServerEventService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
-import RevenueService from './RevenueService';
 import { consolidateRevenue } from '../methodDefinitions';
+import RevenueService from './RevenueService';
 
 ServerEventService.addAfterMethodListener(
   consolidateRevenue,

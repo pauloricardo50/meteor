@@ -1,10 +1,10 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { updateUser } from 'core/api/users/methodDefinitions';
-import { UserSchema } from 'core/api/users/users';
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import T from 'core/components/Translation';
+import { updateUser } from '../../api/users/methodDefinitions';
+import { UserSchema } from '../../api/users/users';
+import AutoFormDialog from '../AutoForm2/AutoFormDialog';
+import T from '../Translation';
 
 const AccountModifier = ({ schema, onSubmit, buttonProps, currentUser }) => (
   <AutoFormDialog

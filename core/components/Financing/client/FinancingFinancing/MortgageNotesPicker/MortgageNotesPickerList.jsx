@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Icon from 'core/components/Icon/Icon';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import Icon from '../../../../Icon';
+import IconButton from '../../../../IconButton';
 import List, {
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
+  ListItemText,
 } from '../../../../List';
 import T from '../../../../Translation';
-import IconButton from '../../../../IconButton';
 
 const MortgageNotesPickerList = ({
   mortgageNotes,

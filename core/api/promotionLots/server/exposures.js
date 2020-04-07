@@ -1,10 +1,10 @@
 import { Match } from 'meteor/check';
 
-import { makePromotionLotAnonymizer } from 'core/api/promotions/server/promotionServerHelpers';
+import { makePromotionLotAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-import { appPromotionLots, proPromotionLots } from '../queries';
 import UserService from '../../users/server/UserService';
+import { appPromotionLots, proPromotionLots } from '../queries';
 
 const promotionLotSecurity = ({ _id, userId, promotionId }) => {
   if (_id) {

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
-import StatusIcon from 'core/components/StatusIcon';
+import { ERROR, SUCCESS, WARNING } from '../../../api/constants';
+import Icon from '../../Icon';
+import StatusIcon from '../../StatusIcon';
+import T from '../../Translation';
 import { hideFinmaValues } from '../widget1Helpers';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];

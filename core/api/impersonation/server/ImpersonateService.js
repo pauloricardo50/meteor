@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+
 import Security from '../../security';
 import SessionService from '../../sessions/server/SessionService';
 import UserService from '../../users/server/UserService';

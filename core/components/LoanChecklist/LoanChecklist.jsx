@@ -6,8 +6,8 @@ import {
   getChecklistMissingInformations,
   isAnyBasicDocumentRequested,
 } from './helpers';
-import LoanChecklistSection from './LoanChecklistSection';
 import LoanChecklistList from './LoanChecklistList';
+import LoanChecklistSection from './LoanChecklistSection';
 
 const LoanChecklist = ({ intl: { formatMessage }, ...props }) => {
   const { fields, documents } = getChecklistMissingInformations(

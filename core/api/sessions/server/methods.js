@@ -1,7 +1,7 @@
 import {
-  shareImpersonatedSession,
   followImpersonatedSession,
   setUserConnected,
+  shareImpersonatedSession,
 } from '../methodDefinitions';
 import SessionService from './SessionService';
 

@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
-import { AutoForm } from 'uniforms-material';
-import pickBy from 'lodash/pickBy';
-import pick from 'lodash/pick';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { withProps } from 'recompose';
 import cx from 'classnames';
+import pick from 'lodash/pick';
+import pickBy from 'lodash/pickBy';
+import { withProps } from 'recompose';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+import { AutoForm } from 'uniforms-material';
 
-import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
+import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
+import AutoFormLayout from './AutoFormLayout';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
-import AutoFormLayout from './AutoFormLayout';
 
 const CustomAutoForm = ({
   autoFieldProps,

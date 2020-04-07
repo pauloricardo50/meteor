@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Icon from '../../../../Icon';
-import { Calculator } from '../../../../../utils/Calculator';
-import T, { Money, Percent } from '../../../../Translation';
 import { ERROR, SUCCESS } from '../../../../../api/constants';
-import StatusIcon from '../../../../StatusIcon';
 import colors from '../../../../../config/colors';
+import { Calculator } from '../../../../../utils/Calculator';
+import Icon from '../../../../Icon';
+import StatusIcon from '../../../../StatusIcon';
+import T, { Money, Percent } from '../../../../Translation';
 
 export const mapOrganisation = ({ loan, structureId, organisation }) => {
   const calc = new Calculator({

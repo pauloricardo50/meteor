@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import T, { Percent, Money } from '../Translation';
+import T, { Money, Percent } from '../Translation';
 
 const CommissionRatesViewerList = ({ commissionRates }) => (
   <div>

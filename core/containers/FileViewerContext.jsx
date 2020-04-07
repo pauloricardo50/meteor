@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStateHandlers, compose } from 'recompose';
+import { compose, withStateHandlers } from 'recompose';
 
 export const FileViewerContext = React.createContext();
 export const { Consumer, Provider } = FileViewerContext;

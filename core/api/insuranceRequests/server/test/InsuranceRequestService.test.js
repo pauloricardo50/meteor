@@ -1,7 +1,8 @@
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { expect } from 'chai';
-import generator from '../../../factories/server';
 
+import { expect } from 'chai';
+
+import generator from '../../../factories/server';
 import InsuranceRequestService from '../InsuranceRequestService';
 
 describe('InsuranceRequestService', () => {

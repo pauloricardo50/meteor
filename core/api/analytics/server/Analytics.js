@@ -4,12 +4,12 @@ import { Random } from 'meteor/random';
 import NodeAnalytics from 'analytics-node';
 import curryRight from 'lodash/curryRight';
 
-import SlackService from 'core/api/slack/server/SlackService';
-import { getClientHost } from '../../../utils/server/getClientUrl';
 import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
-import UserService from '../../users/server/UserService';
+import { getClientHost } from '../../../utils/server/getClientUrl';
 import { isAPI } from '../../RESTAPI/server/helpers';
 import SessionService from '../../sessions/server/SessionService';
+import SlackService from '../../slack/server/SlackService';
+import UserService from '../../users/server/UserService';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import EVENTS from '../events';
 import { EVENTS_CONFIG, TRACKING_ORIGIN } from './eventsConfig';

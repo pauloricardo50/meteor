@@ -1,12 +1,12 @@
 import React from 'react';
 
-import T from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
-import FinancingOwnFundsDialogContainer from './FinancingOwnFundsDialogContainer';
+import T from '../../../../Translation';
 import FinancingOwnFundsDialog from './FinancingOwnFundsDialog';
+import FinancingOwnFundsDialogContainer from './FinancingOwnFundsDialogContainer';
 import {
-  getOwnFundsOfTypeAndBorrower,
   getAvailableFundsOfTypeAndBorrower,
+  getOwnFundsOfTypeAndBorrower,
 } from './FinancingOwnFundsPickerHelpers';
 
 const hasEnoughFundsOfType = ({ structure, type, borrowerId, borrowers }) =>

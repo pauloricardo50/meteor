@@ -1,8 +1,8 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
+import { COMMISSION_RATES_TYPE } from '../../commissionRates/commissionRateConstants';
 import CommissionRateService from '../../commissionRates/server/CommissionRateService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import { COMMISSION_RATES_TYPE } from '../../commissionRates/commissionRateConstants';
 
 export const up = () => {
   const organisationsWithCommissionRates = OrganisationService.find({})

@@ -1,5 +1,5 @@
-import { compose, withStateHandlers, withProps } from 'recompose';
 import isEqual from 'lodash/isEqual';
+import { compose, withProps, withStateHandlers } from 'recompose';
 
 const withToggleState = withStateHandlers(
   { anchorEl: null },

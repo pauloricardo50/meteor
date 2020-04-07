@@ -1,6 +1,6 @@
+import { PROPERTY_DOCUMENTS } from '../files/fileConstants';
 import addressReducer from '../reducers/addressReducer';
 import Properties from '.';
-import { PROPERTY_DOCUMENTS } from '../files/fileConstants';
 
 Properties.addReducers({
   ...addressReducer,

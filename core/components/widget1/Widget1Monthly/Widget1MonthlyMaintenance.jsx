@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButtons from 'core/components/RadioButtons';
-import T from 'core/components/Translation';
+
+import RadioButtons from '../../RadioButtons';
+import T from '../../Translation';
 
 const Widget1MonthlyMaintenance = ({ onChange, value }) => (
   <RadioButtons

@@ -1,20 +1,20 @@
-import SecurityService from '../../security';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import SecurityService from '../../security';
 import {
+  addProUserToProperty,
+  evaluateProperty,
+  insertExternalProperty,
+  popPropertyValue,
+  proPropertyInsert,
+  propertyDataIsInvalid,
+  propertyDelete,
   propertyInsert,
   propertyUpdate,
-  propertyDelete,
-  pushPropertyValue,
-  popPropertyValue,
   pullPropertyValue,
-  evaluateProperty,
-  propertyDataIsInvalid,
-  addProUserToProperty,
-  proPropertyInsert,
-  setProPropertyPermissions,
-  removeProFromProperty,
+  pushPropertyValue,
   removeCustomerFromProperty,
-  insertExternalProperty,
+  removeProFromProperty,
+  setProPropertyPermissions,
 } from '../methodDefinitions';
 import PropertyService from './PropertyService';
 

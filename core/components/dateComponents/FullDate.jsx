@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IntlDate } from 'core/components/Translation';
+
+import IntlDate from '../Translation/formattingComponents/IntlDate';
 
 const FullDate = ({ date }) => (
   <IntlDate

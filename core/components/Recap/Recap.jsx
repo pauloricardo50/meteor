@@ -1,18 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
-import RecapSimple from './RecapSimple';
 import {
-  getDashboardArray,
   getBorrowerArray,
-  getStructureArray,
-  getPropertyArray,
+  getDashboardArray,
   getNotaryFeesArray,
   getPremiumArray,
+  getPropertyArray,
+  getStructureArray,
 } from './recapArrays';
+import RecapSimple from './RecapSimple';
 
 const arraySwitch = props => {
   switch (props.arrayName) {

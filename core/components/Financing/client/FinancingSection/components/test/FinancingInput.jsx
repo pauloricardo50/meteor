@@ -2,10 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { mount } from 'core/utils/testHelpers/enzyme';
 
-import { FinancingInput } from '../FinancingInput';
+import { mount } from '../../../../../../utils/testHelpers';
 import MoneyInput from '../../../../../MoneyInput';
+import { FinancingInput } from '../FinancingInput';
 
 describe('FinancingInput', () => {
   let props;

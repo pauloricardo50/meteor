@@ -1,44 +1,44 @@
 /* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 import { Meteor } from 'meteor/meteor';
+import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import { checkEmails } from '../../../../utils/testHelpers';
-import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
-import PromotionService from '../../../promotions/server/PromotionService';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
-import LoanService from '../../../loans/server/LoanService';
-import PromotionOptionService from '../PromotionOptionService';
-import {
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTION_DOCUMENTS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-} from '../../promotionOptionConstants';
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
-import TaskService from '../../../tasks/server/TaskService';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import {
-  PROMOTION_USERS_ROLES,
-  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_EMAIL_RECIPIENTS,
   PROMOTION_INVITED_BY_TYPE,
   PROMOTION_PERMISSIONS,
-  PROMOTION_EMAIL_RECIPIENTS,
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_USERS_ROLES,
 } from '../../../promotions/promotionConstants';
-
-import { generateExpiringSoonReservationTasks } from '../methods';
+import PromotionService from '../../../promotions/server/PromotionService';
+import TaskService from '../../../tasks/server/TaskService';
 import {
-  setPromotionOptionProgress,
   promotionOptionActivateReservation,
+  setPromotionOptionProgress,
 } from '../../methodDefinitions';
+import {
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../promotionOptionConstants';
+import { generateExpiringSoonReservationTasks } from '../methods';
+import PromotionOptionService from '../PromotionOptionService';
 
 const makePromotionLotWithReservation = ({
   key,

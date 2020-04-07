@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { userSearch } from 'core/api/users/queries';
+import { userSearch } from '../../api/users/queries';
+import CollectionSearch from '../CollectionSearch';
 import DialogSimple from '../DialogSimple';
 import { ListItemText } from '../List';
-import CollectionSearch from '../CollectionSearch/CollectionSearch';
 
 const UserAssigner = ({
   userId,

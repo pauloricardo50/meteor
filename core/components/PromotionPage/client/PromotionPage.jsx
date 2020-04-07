@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
 import T from '../../Translation';
-import PromotionPageTabs from './PromotionPageTabs';
-import PromotionPageHeader from './PromotionPageHeader';
-import PromotionPageContent from './PromotionPageContent';
 import PromotionMetadataContext from './PromotionMetadata';
+import PromotionPageContent from './PromotionPageContent';
+import PromotionPageHeader from './PromotionPageHeader';
+import PromotionPageTabs from './PromotionPageTabs';
 
 const shouldDisplayFilesTab = documents =>
   documents?.promotionDocuments?.length;

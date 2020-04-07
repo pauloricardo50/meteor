@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState } from 'react';
-import moment from 'moment';
 import cx from 'classnames';
+import moment from 'moment';
+
 import { employeesById } from '../../arrays/epotekEmployees';
 import AdminNoteAdder from '../AdminNote/AdminNoteAdder';
 import Button from '../Button';

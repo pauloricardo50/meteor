@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
-import SecurityService from 'core/api/security';
 import { Method } from '../../methods/methods';
+import SecurityService from '../../security';
 import EmailService from './EmailService';
 
 export const sendEmail = new Method({

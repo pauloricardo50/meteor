@@ -1,14 +1,15 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import cx from 'classnames';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
 import CounterpartsOfferIcon from '../CounterpartsOfferIcon';
+import OfferDocuments from './OfferDocuments';
+import OfferFeedback from './OfferFeedback';
 import OfferField from './OfferField';
 import OfferModifier from './OfferModifier';
-import OfferFeedback from './OfferFeedback';
-import OfferDocuments from './OfferDocuments';
 
 const Offer = ({ offer, offerValues }) => {
   const { enableOffer = true } = offer;

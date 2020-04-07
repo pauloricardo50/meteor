@@ -1,8 +1,8 @@
 import React from 'react';
 
-import T, { Money } from '../../../../Translation';
-import Button from '../../../../Button';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import Button from '../../../../Button';
+import T, { Money } from '../../../../Translation';
 
 const MortgageNotesPickerSummary = ({
   borrowerMortgageNotes,

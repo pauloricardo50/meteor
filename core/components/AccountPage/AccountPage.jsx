@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Page from '../Page';
 import AccountPageBare from './AccountPageBare';

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import BorrowersRecap from './BorrowersRecap';
+import T from '../../../../../../components/Translation';
 import PdfPage from '../../PdfPage';
+import BorrowersRecap from './BorrowersRecap';
 
 const BorrowersPdfPage = ({
   loan: { borrowers },
