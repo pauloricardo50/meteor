@@ -1,26 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
-import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import Intl from 'core/utils/server/intl';
-import CollectionService from '../../helpers/server/CollectionService';
-import InsuranceRequests from '../insuranceRequests';
+
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
   getNewName,
   setAssignees,
 } from '../../helpers/server/collectionServerHelpers';
-import UserService from '../../users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
+import CollectionService from '../../helpers/server/CollectionService';
+import { INSURANCE_STATUS } from '../../insurances/insuranceConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
+import LoanService from '../../loans/server/LoanService';
+import { REVENUE_STATUS } from '../../revenues/revenueConstants';
+import RevenueService from '../../revenues/server/RevenueService';
+import UserService from '../../users/server/UserService';
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUEST_STATUS_ORDER,
 } from '../insuranceRequestConstants';
-import ActivityService from '../../activities/server/ActivityService';
-import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import InsuranceRequests from '../insuranceRequests';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
 
@@ -53,11 +55,6 @@ class InsuranceRequestService extends CollectionService {
 
     if (loan) {
       this.linkLoan({ insuranceRequestId, loanId });
-      // LoanService.addLink({
-      //   id: loanId,
-      //   linkName: 'insuranceRequests',
-      //   linkId: insuranceRequestId,
-      // });
       const { user: { _id: loanUserId } = {} } = loan;
       if (loanUserId) {
         this.addLink({
@@ -77,13 +74,8 @@ class InsuranceRequestService extends CollectionService {
     }
 
     if (borrowerIds?.length) {
-      borrowerIds.forEach(
-        borrowerId => this.linkBorrower({ insuranceRequestId, borrowerId }),
-        // this.addLink({
-        //   id: insuranceRequestId,
-        //   linkName: 'borrowers',
-        //   linkId: borrowerId,
-        // }),
+      borrowerIds.forEach(borrowerId =>
+        this.linkBorrower({ insuranceRequestId, borrowerId }),
       );
     }
 
@@ -392,6 +384,22 @@ class InsuranceRequestService extends CollectionService {
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
 
     return loanId;
+  }
+
+  remove({ insuranceRequestId }) {
+    const { insurances = [], revenues = [] } = this.get(insuranceRequestId, {
+      insurances: { _id: 1 },
+      revenues: { status: 1, status: 1 },
+    });
+
+    insurances.forEach(({ _id: insuranceId }) =>
+      InsuranceService.remove({ insuranceId }),
+    );
+    revenues
+      .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
+      .forEach(({ _id: revenueId }) => RevenueService.remove({ revenueId }));
+
+    return super.remove(insuranceRequestId);
   }
 }
 

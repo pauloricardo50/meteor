@@ -1,16 +1,14 @@
 import { Random } from 'meteor/random';
-import moment from 'moment';
 
 import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
+
 import CollectionService from '../../helpers/server/CollectionService';
-import Insurances from '../insurances';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
-import {
-  INSURANCE_STATUS,
-  INSURANCES_COLLECTION,
-  INSURANCE_PREMIUM_FREQUENCY,
-} from '../insuranceConstants';
+import { REVENUE_STATUS } from '../../revenues/revenueConstants';
+import RevenueService from '../../revenues/server/RevenueService';
 import { getEffectiveDuration } from '../helpers';
+import { INSURANCES_COLLECTION, INSURANCE_STATUS } from '../insuranceConstants';
+import Insurances from '../insurances';
 
 class InsuranceService extends CollectionService {
   constructor() {
@@ -227,6 +225,28 @@ class InsuranceService extends CollectionService {
     return Math.round(
       premium * effectiveDuration * revaluationFactor * productionRate,
     );
+  }
+
+  remove({ insuranceId }) {
+    const { revenues = [], borrower } = this.get(insuranceId, {
+      revenues: { status: 1 },
+      borrower: { _id: 1 },
+    });
+
+    if (borrower?._id) {
+      console.log('remove borrower');
+      this.removeLink({
+        id: insuranceId,
+        linkName: 'borrower',
+        linkId: borrower._id,
+      });
+    }
+
+    revenues
+      .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
+      .forEach(({ _id: revenueId }) => RevenueService.remove({ revenueId }));
+
+    return super.remove(insuranceId);
   }
 }
 

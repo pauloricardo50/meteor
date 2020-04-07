@@ -1,3 +1,14 @@
+.insurance-modifier {
+    position: relative;
+
+    .insurance-remover {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+}
+    
+
 .insurance-estimated-revenue-infos {
     th {
         max-width: 100px;

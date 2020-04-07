@@ -1,8 +1,10 @@
 import Intl from 'core/utils/server/intl';
-import Insurances from '../insurances';
-import UserService from '../../users/server/UserService';
-import ActivityService from '../../activities/server/ActivityService';
+
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import FileService from '../../files/server/FileService';
+import UserService from '../../users/server/UserService';
+import Insurances from '../insurances';
 
 const formatMessage = Intl.formatMessage.bind(Intl);
 
@@ -32,4 +34,8 @@ Insurances.before.update(
       createdBy: userId,
     });
   },
+);
+
+Insurances.after.remove((userId, { _id }) =>
+  FileService.deleteAllFilesForDoc(_id),
 );

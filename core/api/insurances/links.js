@@ -43,7 +43,6 @@ LinkInitializer.inversedInit(() => {
     insuranceRequest: {
       inversedBy: 'insurances',
       collection: InsuranceRequests,
-      autoremove: true,
     },
     tasks: {
       inversedBy: 'insuranceRequest',
