@@ -1,8 +1,9 @@
 import React from 'react';
+
 import T from 'core/components/Translation';
 
-const ContactButtonContent = ({ titleId, icon, href, label }) => (
-  <a href={href} className="contact-button-content primary">
+const ContactButtonContent = ({ titleId, icon, href, label, onClick }) => (
+  <a href={href} className="contact-button-content primary" onClick={onClick}>
     <div className="iconDiv">{icon}</div>
     <div className="text">
       <p className="bold">

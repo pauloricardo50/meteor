@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard } from '@fortawesome/pro-light-svg-icons/faAddressCard';
+import { faChartLineDown } from '@fortawesome/pro-light-svg-icons/faChartLineDown';
 import { faCogs } from '@fortawesome/pro-light-svg-icons/faCogs';
 import { faHandsHelping } from '@fortawesome/pro-light-svg-icons/faHandsHelping';
-import { faChartLineDown } from '@fortawesome/pro-light-svg-icons/faChartLineDown';
 import { faLanguage } from '@fortawesome/pro-light-svg-icons/faLanguage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import T from 'core/components/Translation';

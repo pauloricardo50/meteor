@@ -58,6 +58,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 90',
     _id: 'dcXkoTWLZPemu9x9a',
     gender: 'M',
+    calendly: 'https://calendly.com/epotek-yannis',
   },
   {
     email: 'jeanluc@e-potek.ch',
