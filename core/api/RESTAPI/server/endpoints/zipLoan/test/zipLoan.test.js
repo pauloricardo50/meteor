@@ -2,11 +2,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { DOCUMENTS } from 'core/api/files/fileConstants';
+import { DOCUMENTS, FILE_STATUS } from '../../../../../files/fileConstants';
 import S3Service from '../../../../../files/server/S3Service';
 import { zipDocuments } from '../zipHelpers';
-import { getFileName, generateLoanZip } from '../zipLoan';
-import { FILE_STATUS } from '../../../../../files/fileConstants';
+import { generateLoanZip, getFileName } from '../zipLoan';
 
 class ZipMock {
   constructor() {

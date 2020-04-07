@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
 import Calculator from '../../../utils/Calculator';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/server/CollectionService';
-import PromotionLots from '../promotionLots';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import PromotionLots from '../promotionLots';
 
 class PromotionLotService extends CollectionService {
   constructor() {

@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
-import omit from 'lodash/omit';
 
-import { getImpersonateUserId, checkQuery, checkAccessToUser } from './helpers';
+import omit from 'lodash/omit';
+import SimpleSchema from 'simpl-schema';
+
 import UserService from '../../../users/server/UserService';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkAccessToUser, checkQuery, getImpersonateUserId } from './helpers';
 
 const querySchema = new SimpleSchema({
   email: { type: String, optional: false },

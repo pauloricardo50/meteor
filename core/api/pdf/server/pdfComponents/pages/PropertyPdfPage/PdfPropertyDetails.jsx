@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Calculator from '../../../../../../utils/Calculator';
 import T from '../../../../../../components/Translation';
-import {
-  PROPERTY_TYPE,
-  FLAT_TYPE,
-} from '../../../../../properties/propertyConstants';
+import Calculator from '../../../../../../utils/Calculator';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
+import {
+  FLAT_TYPE,
+  PROPERTY_TYPE,
+} from '../../../../../properties/propertyConstants';
 import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 const getPropertyRows = loan => {

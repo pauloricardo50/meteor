@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Linkify from 'core/components/Linkify';
+import Linkify from '../Linkify';
 
 const TimelineDescription = ({
   activity: { description },

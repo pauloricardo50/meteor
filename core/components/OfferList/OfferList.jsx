@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import ConditionsButton from 'core/components/ConditionsButton';
-import T from 'core/components/Translation';
-import makeSort from 'core/utils/sorting';
+import makeSort from '../../utils/sorting';
+import ConditionsButton from '../ConditionsButton';
+import T from '../Translation';
 import Offer from './Offer';
 import OfferListSorting from './OfferListSorting';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TempFile from './TempFile';
-import FileAdder from './FileAdder';
 import File from './File';
+import FileAdder from './FileAdder';
+import TempFile from './TempFile';
 
 const UploaderBottom = ({
   currentValue,

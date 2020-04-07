@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-
-import TextInput from 'core/components/TextInput';
-import Loadable from 'core/utils/loadable';
 import { withStyles } from '@material-ui/core/styles';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+
+import Loadable from '../../utils/loadable';
+import TextInput from '../TextInput';
 
 const DatePicker = Loadable({
   loader: () => import('./DatePicker'),

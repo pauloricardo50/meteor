@@ -1,13 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import { toMoney } from '../../../utils/conversionFunctions';
-import InputAdornment from '../../Material/InputAdornment';
-import Input from '../../Material/Input';
-import T from '../../Translation';
 import IconButton from '../../IconButton';
+import Input from '../../Material/Input';
+import InputAdornment from '../../Material/InputAdornment';
+import T from '../../Translation';
 
 const useStyles = makeStyles(theme => ({
   root: {},

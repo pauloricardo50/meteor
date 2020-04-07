@@ -1,16 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import UserService from 'core/api/users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
-import PropertyService from '../../properties/server/PropertyService';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import { FILE_ROLES } from '../../files/fileConstants';
-import PromotionService from '../../promotions/server/PromotionService';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import S3Service from '../../files/server/S3Service';
 import FileService from '../../files/server/FileService';
+import S3Service from '../../files/server/S3Service';
+import LoanService from '../../loans/server/LoanService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import PromotionService from '../../promotions/server/PromotionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import UserService from '../../users/server/UserService';
 import Security from '../Security';
 
 class FileSecurity {

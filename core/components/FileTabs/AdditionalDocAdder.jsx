@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { AutoFormDialog } from '../AutoForm2';
-import AdditionalDocAdderContainer from './AdditionalDocAdderContainer';
 import { getAdditionalDocSchema } from '../UploaderArray/Uploader/AdditionalDocModifier';
+import AdditionalDocAdderContainer from './AdditionalDocAdderContainer';
 
 const AdditionalDocAdder = ({ onSubmit, collection }) => (
   <AutoFormDialog

@@ -3,17 +3,16 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { checkEmails } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import {
   LOAN_CATEGORIES,
   LOAN_STATUS,
   STEPS,
-} from 'core/api/loans/loanConstants';
-import { cleanAllData } from 'core/api/migrations/server/dataCleaning';
-import { checkEmails } from 'core/utils/testHelpers';
-
-import { EMAIL_IDS } from '../../../email/emailConstants';
+} from '../../../loans/loanConstants';
 import Loans from '../../../loans/loans';
 import LoanService from '../../../loans/server/LoanService';
+import { cleanAllData } from '../../../migrations/server/dataCleaning';
 import { submitContactForm } from '../../methodDefinitions';
 
 describe('methods', function() {

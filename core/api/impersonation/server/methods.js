@@ -1,6 +1,6 @@
-import SecurityService from 'core/api/security';
-import SessionService from 'core/api/sessions/server/SessionService';
-import { impersonateUser, impersonateAdmin } from '../methodDefinitions';
+import SecurityService from '../../security';
+import SessionService from '../../sessions/server/SessionService';
+import { impersonateAdmin, impersonateUser } from '../methodDefinitions';
 import ImpersonateService from './ImpersonateService';
 
 impersonateUser.setHandler((context, { authToken, userId, adminId }) => {

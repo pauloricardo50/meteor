@@ -1,5 +1,3 @@
-import { Migrations } from 'meteor/percolate:migrations';
-
 import './1';
 import './2';
 import './3';
@@ -34,6 +32,9 @@ import './31';
 import './32';
 import './33';
 import './34';
+
+import { Migrations } from 'meteor/percolate:migrations';
+
 // To migrate to a specific version
 // Migrations.migrateTo(2);
 // To redo a migration

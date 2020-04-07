@@ -1,5 +1,5 @@
-import Insurances from '..';
 import InsuranceService from './InsuranceService';
+import Insurances from '..';
 
 Insurances.addReducers({
   estimatedRevenue: {

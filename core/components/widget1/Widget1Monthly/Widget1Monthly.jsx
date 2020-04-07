@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-import DonutChart from 'core/components/charts/DonutChart';
-import { toMoney } from 'core/utils/conversionFunctions';
+import { toMoney } from '../../../utils/conversionFunctions';
+import DonutChart from '../../charts/DonutChart';
+import T from '../../Translation';
 import Widget1MonthlyContainer from './Widget1MonthlyContainer';
 import Widget1MonthlyInterests from './Widget1MonthlyInterests';
 import Widget1MonthlyMaintenance from './Widget1MonthlyMaintenance';

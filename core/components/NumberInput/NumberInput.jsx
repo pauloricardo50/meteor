@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Input from '../Material/Input';
 import { numberFormatters } from '../../utils/formHelpers';
+import Input from '../Material/Input';
 
 const NumberInput = ({ onChange, value, ...props }) => (
   <Input

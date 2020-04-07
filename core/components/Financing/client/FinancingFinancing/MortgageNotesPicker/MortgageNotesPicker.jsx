@@ -2,9 +2,9 @@ import React from 'react';
 
 import DialogSimple from '../../../../DialogSimple';
 import T from '../../../../Translation';
-import MortgageNotesPickerSummary from './MortgageNotesPickerSummary';
 import MortgageNotesPickerContainer from './MortgageNotesPickerContainer';
 import MortgageNotesPickerDialog from './MortgageNotesPickerDialog';
+import MortgageNotesPickerSummary from './MortgageNotesPickerSummary';
 
 const MortgageNotesPicker = props => {
   const {

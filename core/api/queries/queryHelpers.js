@@ -1,8 +1,8 @@
+import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
-import { Meteor } from 'meteor/meteor';
-import Security from '../security';
 import QueryCacher from '../helpers/server/QueryCacher';
+import Security from '../security';
 
 const defaultParams = options => {
   const { allowFilterById = false } = options;

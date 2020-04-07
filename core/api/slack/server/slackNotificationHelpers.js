@@ -1,5 +1,4 @@
 import PropertyService from '../../properties/server/PropertyService';
-
 import { propertyInviteNotification } from './slackNotifications';
 
 export const sendPropertyInvitations = (

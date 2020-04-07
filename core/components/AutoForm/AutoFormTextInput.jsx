@@ -1,15 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
-import * as constants from '../../config/constants';
 import colors from '../../config/colors';
+import * as constants from '../../config/constants';
 import {
-  toNumber,
   toDecimalNumber,
   toNegativeNumber,
+  toNumber,
 } from '../../utils/conversionFunctions';
 import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';

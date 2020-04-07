@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import {
-  PROMOTION_LOT_STATUS,
   PROMOTION_LOT_REDUCED_STATUS,
-} from 'core/api/promotionLots/promotionLotConstants';
+  PROMOTION_LOT_STATUS,
+} from './promotionLotConstants';
 import PromotionLots from './promotionLots';
 
 PromotionLots.addReducers({

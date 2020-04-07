@@ -1,12 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
-
 import LoanService from '../../loans/server/LoanService';
 import PromotionService from '../../promotions/server/PromotionService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
 import PropertyService from '../../properties/server/PropertyService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import {

@@ -1,8 +1,9 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from 'core/api/factories/server';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import generator from '../../../factories/server';
 import { getBestPromotionLotStatus } from '../promotionServerHelpers';
 
 describe('promotionServerHelpers', () => {

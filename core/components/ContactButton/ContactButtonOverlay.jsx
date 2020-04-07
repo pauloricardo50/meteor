@@ -2,8 +2,8 @@ import React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 
-import Icon from 'core/components/Icon';
-import T from 'core/components/Translation';
+import Icon from '../Icon';
+import T from '../Translation';
 import ContactButtonContent from './ContactButtonContent';
 
 const ContactButtonOverlay = ({

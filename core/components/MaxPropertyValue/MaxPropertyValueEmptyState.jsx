@@ -1,14 +1,14 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 
 import { createRoute } from '../../utils/routerUtils';
 import Button from '../Button';
+import Icon from '../Icon';
 import Select from '../Select';
 import T from '../Translation';
 import { STATE } from './MaxPropertyValueContainer';
-import Icon from '../Icon';
 
 export const getReadyToCalculateTitle = props => {
   const { loan, lockCanton, canton } = props;

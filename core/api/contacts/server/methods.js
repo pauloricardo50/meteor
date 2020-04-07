@@ -1,9 +1,9 @@
 import SecurityService from '../../security';
 import {
+  contactChangeOrganisations,
   contactInsert,
   contactRemove,
   contactUpdate,
-  contactChangeOrganisations,
 } from '../methodDefinitions';
 import ContactService from './ContactService';
 

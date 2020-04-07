@@ -1,9 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { shareImpersonatedSession } from 'core/api/sessions/methodDefinitions';
-import Icon from '../Icon/Icon';
+import { shareImpersonatedSession } from '../../api/sessions/methodDefinitions';
 import Button from '../Button';
+import Icon from '../Icon';
 import { styles } from './fabStyles';
 
 const getIcon = ({ followed, shared, userIsConnected }) => {

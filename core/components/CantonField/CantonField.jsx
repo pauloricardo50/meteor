@@ -1,9 +1,9 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 
-import T from '../Translation';
-import AutoFormTextInput from '../AutoForm/AutoFormTextInput';
 import { CANTONS } from '../../api/loans/loanConstants';
+import AutoFormTextInput from '../AutoForm/AutoFormTextInput';
+import T from '../Translation';
 
 const CantonField = ({ canton, intl: { formatMessage } }) => (
   <AutoFormTextInput

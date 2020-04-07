@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { migrate } from 'meteor/herteby:denormalize';
+import { Random } from 'meteor/random';
 
 import { createMeteorAsyncFunction } from '../helpers';
 

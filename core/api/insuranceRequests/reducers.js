@@ -1,7 +1,7 @@
-import InsuranceRequests from '.';
 import mainAssigneeReducer from '../reducers/mainAssigneeReducer';
-import proNotesReducer from '../reducers/proNotesReducer';
 import nextDueTaskReducer from '../reducers/nextDueTaskReducer';
+import proNotesReducer from '../reducers/proNotesReducer';
+import InsuranceRequests from '.';
 
 InsuranceRequests.addReducers({
   mainAssignee: mainAssigneeReducer,

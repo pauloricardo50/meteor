@@ -1,15 +1,15 @@
 import { Match } from 'meteor/check';
 
-import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
+import { ORGANISATION_FEATURES } from '../organisationConstants';
 import {
   adminOrganisations,
   organisationSearch,
   proOrganisation,
   userOrganisations,
 } from '../queries';
-import { ORGANISATION_FEATURES } from '../organisationConstants';
 
 const makeFilter = ({ param, field, filters }) => {
   if (param && !(Array.isArray(param) && !param.length)) {

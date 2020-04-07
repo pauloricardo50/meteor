@@ -1,19 +1,20 @@
 import { Meteor } from 'meteor/meteor';
+
 import intl, { formatMessage as clientFormatMessage } from '../../utils/intl';
-import {
-  DOCUMENTS,
-  BORROWER_DOCUMENTS,
-  PROPERTY_DOCUMENTS,
-  LOAN_DOCUMENTS,
-  INSURANCE_REQUEST_DOCUMENTS,
-  INSURANCE_DOCUMENTS,
-  BASIC_DOCUMENTS_LIST,
-} from './fileConstants';
 import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
-import { LOANS_COLLECTION } from '../loans/loanConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from '../insurances/insuranceConstants';
+import { LOANS_COLLECTION } from '../loans/loanConstants';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
+import {
+  BASIC_DOCUMENTS_LIST,
+  BORROWER_DOCUMENTS,
+  DOCUMENTS,
+  INSURANCE_DOCUMENTS,
+  INSURANCE_REQUEST_DOCUMENTS,
+  LOAN_DOCUMENTS,
+  PROPERTY_DOCUMENTS,
+} from './fileConstants';
 
 export const documentHasTooltip = documentId => {
   let formatMessage = clientFormatMessage;

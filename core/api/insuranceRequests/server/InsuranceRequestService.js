@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import Intl from 'core/utils/server/intl';
-
+import Intl from '../../../utils/server/intl';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
@@ -15,7 +14,6 @@ import { INSURANCE_STATUS } from '../../insurances/insuranceConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
 import LoanService from '../../loans/server/LoanService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
-import RevenueService from '../../revenues/server/RevenueService';
 import UserService from '../../users/server/UserService';
 import {
   INSURANCE_REQUESTS_COLLECTION,

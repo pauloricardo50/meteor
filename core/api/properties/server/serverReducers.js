@@ -1,7 +1,7 @@
-import Properties from '../properties';
-import assigneeReducer from '../../reducers/assigneeReducer';
-import { createMeteorAsyncFunction } from '../../helpers';
 import { getOpenGraphMeta } from '../../../utils/openGraph';
+import { createMeteorAsyncFunction } from '../../helpers';
+import assigneeReducer from '../../reducers/assigneeReducer';
+import Properties from '../properties';
 
 Properties.addReducers({
   ...assigneeReducer(),

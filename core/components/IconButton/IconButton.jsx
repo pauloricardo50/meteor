@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import cx from 'classnames';
-import { capitalize } from '@material-ui/core/utils';
-
 import MuiIconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import { capitalize } from '@material-ui/core/utils';
+import cx from 'classnames';
+import PropTypes from 'prop-types';
+
 import Icon from '../Icon';
 
 const styles = theme => ({

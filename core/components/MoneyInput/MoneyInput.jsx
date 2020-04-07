@@ -1,19 +1,19 @@
 import React from 'react';
-import MaskedInput from 'react-text-mask';
 import cx from 'classnames';
+import MaskedInput from 'react-text-mask';
 
-import InputAdornment from '../Material/InputAdornment';
-import FormHelperText from '../Material/FormHelperText';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
-import FormControl from '../Material/FormControl';
-import Input from '../Material/Input';
+import { toDecimalNumber, toNumber } from '../../utils/conversionFunctions';
 import {
+  swissFrancDecimalNegativeMask,
   swissFrancMask,
   swissFrancMaskDecimal,
-  swissFrancDecimalNegativeMask,
   swissFrancNegativeMask,
 } from '../../utils/textMasks';
-import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
+import FormControl from '../Material/FormControl';
+import FormHelperText from '../Material/FormHelperText';
+import Input from '../Material/Input';
+import InputAdornment from '../Material/InputAdornment';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 
 const MoneyInput = ({
   decimal = false,

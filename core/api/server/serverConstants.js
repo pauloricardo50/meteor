@@ -1,7 +1,11 @@
 import { ACTIVITIES_COLLECTION } from '../activities/activityConstants';
 import { ANALYSIS_REPORTS_COLLECTION } from '../analysisReports/analysisReportConstants';
 import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
+import { COMMISSION_RATES_COLLECTION } from '../commissionRates/commissionRateConstants';
 import { CONTACTS_COLLECTION } from '../contacts/contactsConstants';
+import { INSURANCE_PRODUCTS_COLLECTION } from '../insuranceProducts/insuranceProductConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../insurances/insuranceConstants';
 import { INTEREST_RATES_COLLECTION } from '../interestRates/interestRatesConstants';
 import { IRS10Y_COLLECTION } from '../irs10y/irs10yConstants';
 import { LENDER_RULES_COLLECTION } from '../lenderRules/lenderRulesConstants';
@@ -9,6 +13,7 @@ import { LENDERS_COLLECTION } from '../lenders/lenderConstants';
 import { LOANS_COLLECTION } from '../loans/loanConstants';
 import { LOTS_COLLECTION } from '../lots/lotConstants';
 import { MORTGAGE_NOTES_COLLECTION } from '../mortgageNotes/mortgageNoteConstants';
+import { NOTIFICATIONS_COLLECTION } from '../notifications/notificationConstants';
 import { OFFERS_COLLECTION } from '../offers/offerConstants';
 import { ORGANISATIONS_COLLECTION } from '../organisations/organisationConstants';
 import { PROMOTION_LOTS_COLLECTION } from '../promotionLots/promotionLotConstants';
@@ -20,11 +25,6 @@ import { SESSIONS_COLLECTION } from '../sessions/sessionConstants';
 import { TASKS_COLLECTION } from '../tasks/taskConstants';
 import { UPDATE_WATCHERS_COLLECTION } from '../updateWatchers/updateWatcherConstants';
 import { USERS_COLLECTION } from '../users/userConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequests/insuranceRequestConstants';
-import { INSURANCES_COLLECTION } from '../insurances/insuranceConstants';
-import { INSURANCE_PRODUCTS_COLLECTION } from '../insuranceProducts/insuranceProductConstants';
-import { COMMISSION_RATES_COLLECTION } from '../commissionRates/commissionRateConstants';
-import { NOTIFICATIONS_COLLECTION } from '../notifications/notificationConstants';
 
 export const COLLECTIONS = {
   ACTIVITIES_COLLECTION,

@@ -1,15 +1,15 @@
-import { ROLES } from '../../users/userConstants';
-import { additionalDocumentsHook } from '../../helpers/sharedHooks';
-import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
-import SecurityService from '../../security';
 import FileService from '../../files/server/FileService';
-import { BorrowerSchemaAdmin } from '../schemas/BorrowerSchema';
-import Borrowers from '../borrowers';
+import { additionalDocumentsHook } from '../../helpers/sharedHooks';
+import SecurityService from '../../security';
+import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
+import { ROLES } from '../../users/userConstants';
 import { BORROWERS_COLLECTION } from '../borrowerConstants';
+import Borrowers from '../borrowers';
 import {
-  initialDocuments,
   conditionalDocuments,
+  initialDocuments,
 } from '../borrowersAdditionalDocuments';
+import { BorrowerSchemaAdmin } from '../schemas/BorrowerSchema';
 import BorrowerService from './BorrowerService';
 
 Borrowers.after.insert(

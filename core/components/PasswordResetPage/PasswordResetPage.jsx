@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Redirect } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
+import AutoForm from '../AutoForm2';
 import Loading from '../Loading/Loading';
 import T from '../Translation';
-import AutoForm from '../AutoForm2';
 import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 SimpleSchema.setDefaultMessages({

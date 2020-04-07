@@ -1,10 +1,10 @@
 import { Match } from 'meteor/check';
 
-import { exposeQuery } from '../../queries/queryHelpers';
 import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import { adminBorrowers, borrowerSearch } from '../queries';
 
 exposeQuery({

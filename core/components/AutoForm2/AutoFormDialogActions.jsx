@@ -3,10 +3,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import { withState } from 'recompose';
 
-import AutoFormDialogChildren from './AutoFormDialogChildren';
 import Button from '../Button';
-import CustomSubmitField from './CustomSubmitField';
 import T from '../Translation';
+import AutoFormDialogChildren from './AutoFormDialogChildren';
+import CustomSubmitField from './CustomSubmitField';
 
 const AutoFormDialogActions = (
   {

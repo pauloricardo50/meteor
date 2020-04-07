@@ -1,5 +1,5 @@
-import countries from 'i18n-iso-countries';
 import React from 'react';
+import countries from 'i18n-iso-countries';
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/autoFormConstants';

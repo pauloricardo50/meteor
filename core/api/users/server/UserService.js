@@ -1,23 +1,23 @@
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
+import { Roles } from 'meteor/alanning:roles';
 
-import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
+import NodeRSA from 'node-rsa';
 
-import { fullUser } from 'core/api/fragments';
-import { selectorForFastCaseInsensitiveLookup } from 'core/api/helpers/server/mongoServerHelpers';
+import { fullUser } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
+import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
 import LoanService from '../../loans/server/LoanService';
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import SecurityService from '../../security';
-import { ROLES, ACQUISITION_CHANNELS } from '../userConstants';
-import Users from '../users';
-import roundRobinAdvisors from './roundRobinAdvisors';
+import PromotionService from '../../promotions/server/PromotionService';
+import PropertyService from '../../properties/server/PropertyService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+import SecurityService from '../../security';
+import { ACQUISITION_CHANNELS, ROLES } from '../userConstants';
+import Users from '../users';
 import { assigneesByOrg } from './assigneesByOrg';
+import roundRobinAdvisors from './roundRobinAdvisors';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {

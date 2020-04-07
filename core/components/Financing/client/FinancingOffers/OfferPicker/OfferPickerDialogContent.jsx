@@ -1,8 +1,8 @@
 import React from 'react';
 
-import T, { Percent, Money } from '../../../../Translation';
-import { RecapSimple } from '../../../../Recap';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import { RecapSimple } from '../../../../Recap';
+import T, { Money, Percent } from '../../../../Translation';
 import { getProperty } from '../../FinancingCalculator';
 
 const OfferPickerDialogContent = props => {

@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import { DOCUMENTS } from 'core/api/files/fileConstants';
-import BorrowerService from '../BorrowerService';
-import { initialDocuments } from '../../borrowersAdditionalDocuments';
-import * as borrowerConstants from '../../borrowerConstants';
+import { DOCUMENTS } from '../../../files/fileConstants';
 import LoanService from '../../../loans/server/LoanService';
 import MortgageNoteService from '../../../mortgageNotes/server/MortgageNoteService';
+import * as borrowerConstants from '../../borrowerConstants';
+import { initialDocuments } from '../../borrowersAdditionalDocuments';
+import BorrowerService from '../BorrowerService';
 
 const checkDocuments = ({
   additionalDocuments,

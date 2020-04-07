@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
 
-import SimpleSchema from 'simpl-schema';
-import { withProps } from 'recompose';
+import React from 'react';
 import uniqBy from 'lodash/uniqBy';
+import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
 const makeGeneratePublicLink = propertyId => ref => {
   const propertyLink = `${Meteor.settings.public.subdomains.app}/?property-id=${propertyId}`;

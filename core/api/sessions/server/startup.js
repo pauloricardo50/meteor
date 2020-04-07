@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mutation } from 'meteor/cultofcoders:mutations';
 
-import SessionService from 'core/api/sessions/server/SessionService';
-import { getClientMicroservice } from 'core/utils/server/getClientUrl';
+import { getClientMicroservice } from '../../../utils/server/getClientUrl';
+import SessionService from './SessionService';
 
 Meteor.startup(() => {
   Meteor.onConnection(connection => {

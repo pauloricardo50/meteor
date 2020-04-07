@@ -1,7 +1,5 @@
-import { adminBorrower } from 'core/api/fragments';
-
+import { adminBorrower } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
-import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import Borrowers from '../borrowers';

@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor';
+
 import AWS from 'aws-sdk';
+
 import {
-  TEST_BUCKET_NAME,
-  S3_ENDPOINT,
   OBJECT_STORAGE_PATH,
+  S3_ENDPOINT,
+  TEST_BUCKET_NAME,
 } from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;

@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 
 import {
-  getBorrowerInfoArray,
   getBorrowerFinanceArray,
+  getBorrowerInfoArray,
 } from '../BorrowerFormArray';
 
 describe('BorrowerFormArrays', () => {

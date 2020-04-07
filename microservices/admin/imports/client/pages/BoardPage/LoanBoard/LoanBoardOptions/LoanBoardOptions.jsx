@@ -1,8 +1,8 @@
-import LoanBoardOptionsContent from './LoanBoardOptionsContent';
 import React from 'react';
 import cx from 'classnames';
 import { injectIntl } from 'react-intl';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
+import LoanBoardOptionsContent from './LoanBoardOptionsContent';
 
 const LoanBoardOptions = props => {
   const { y } = useWindowScroll();

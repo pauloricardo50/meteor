@@ -1,10 +1,10 @@
 import React from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import cx from 'classnames';
 
-import T from 'core/components/Translation';
+import T from '../../../../Translation';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 
 const RadioButtons = ({ value, updateStructure, options, className }) => (

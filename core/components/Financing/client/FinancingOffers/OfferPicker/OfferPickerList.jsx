@@ -1,9 +1,9 @@
 import React from 'react';
-import { withState, compose } from 'recompose';
 import FlipMove from 'react-flip-move';
+import { compose, withState } from 'recompose';
 
-import OfferPickerListItem from './OfferPickerListItem';
 import OfferPickerDialog from './OfferPickerDialog';
+import OfferPickerListItem from './OfferPickerListItem';
 
 const OfferPickerList = ({
   offers,

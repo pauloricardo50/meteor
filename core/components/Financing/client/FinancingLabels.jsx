@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
 
-import T from 'core/components/Translation';
-import { makeFilterConfig } from './FinancingSection/financingSectionHelpers';
-import FinancingLabel from './FinancingLabel';
+import T from '../../Translation';
 import FinancingDataContainer from './containers/FinancingDataContainer';
+import FinancingLabel from './FinancingLabel';
+import { makeFilterConfig } from './FinancingSection/financingSectionHelpers';
 
 const renderLabel = configItem => {
   const { label, id } = configItem;

@@ -1,8 +1,8 @@
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import ServerEventService from '../../events/server/ServerEventService';
-import LoanService from './LoanService';
-import { setMaxPropertyValueWithoutBorrowRatio } from '../methodDefinitions';
 import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../promotionOptions/promotionOptionConstants';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { setMaxPropertyValueWithoutBorrowRatio } from '../methodDefinitions';
+import LoanService from './LoanService';
 
 export const disableUserFormsListener = ({ params: { loanId } }) => {
   LoanService.update({ loanId, object: { userFormsEnabled: false } });

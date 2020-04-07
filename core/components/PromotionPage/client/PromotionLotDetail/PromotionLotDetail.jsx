@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
-import T from '../../../Translation';
 import Box from '../../../Box';
 import DocumentDownloadList from '../../../DocumentDownloadList';
+import T from '../../../Translation';
 import PromotionMetadataContext from '../PromotionMetadata';
 import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
+import PromotionLotLoansTable from './PromotionLotLoansTable';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
-import PromotionLotLoansTable from './PromotionLotLoansTable';
 
 const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const {

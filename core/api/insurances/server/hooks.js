@@ -1,5 +1,4 @@
-import Intl from 'core/utils/server/intl';
-
+import Intl from '../../../utils/server/intl';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import FileService from '../../files/server/FileService';

@@ -3,8 +3,8 @@ import cx from 'classnames';
 
 import MaxPropertyValueContainer, { STATE } from './MaxPropertyValueContainer';
 import MaxPropertyValueEmptyState from './MaxPropertyValueEmptyState';
-import MaxPropertyValueResults from './MaxPropertyValueResults';
 import MaxPropertyValueLoading from './MaxPropertyValueLoading';
+import MaxPropertyValueResults from './MaxPropertyValueResults';
 
 const renderState = props => {
   const { state, loading, loan } = props;

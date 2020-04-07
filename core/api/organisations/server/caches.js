@@ -1,6 +1,6 @@
 import LenderRules from '../../lenderRules';
-import Users from '../../users';
 import Revenues from '../../revenues';
+import Users from '../../users';
 import OrganisationService from './OrganisationService';
 
 OrganisationService.cacheCount(

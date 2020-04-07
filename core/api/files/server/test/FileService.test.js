@@ -1,13 +1,14 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
-import sinon from 'sinon';
-import moment from 'moment';
 
-import generator from '../../../factories/server';
+import { expect } from 'chai';
+import moment from 'moment';
+import sinon from 'sinon';
+
 import { BORROWERS_COLLECTION } from '../../../borrowers/borrowerConstants';
+import generator from '../../../factories/server';
 import { asyncForEach } from '../../../helpers';
-import { FILE_STATUS, BORROWER_DOCUMENTS } from '../../fileConstants';
+import { BORROWER_DOCUMENTS, FILE_STATUS } from '../../fileConstants';
 import FileService from '../FileService';
 import S3Service from '../S3Service';
 import { clearBucket } from './S3Service.test';

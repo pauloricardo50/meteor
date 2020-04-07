@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import T from '../Translation';
-import AutoFormTextInput from './AutoFormTextInput';
 import AutoFormDateInput from './AutoFormDateInput';
 import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
+import AutoFormTextInput from './AutoFormTextInput';
 import ValidIcon from './ValidIcon';
 
 const styles = {

@@ -1,15 +1,14 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import { toMoney } from 'core/utils/conversionFunctions';
-import Tooltip from 'core/components/Material/Tooltip';
-import FinancingSection, { CalculatedValue } from '../FinancingSection';
-
-import RequiredOwnFunds from './RequiredOwnFunds';
-import FinancingOwnFundsPicker from './FinancingOwnFundsPicker';
 import Calculator from '../../../../utils/Calculator';
-import FinancingOwnFundsStatus from './FinancingOwnFundsStatus';
+import { toMoney } from '../../../../utils/conversionFunctions';
+import Tooltip from '../../../Material/Tooltip';
+import T from '../../../Translation';
+import FinancingSection, { CalculatedValue } from '../FinancingSection';
 import { FORMATS } from '../FinancingSection/components/CalculatedValue';
+import FinancingOwnFundsPicker from './FinancingOwnFundsPicker';
+import FinancingOwnFundsStatus from './FinancingOwnFundsStatus';
+import RequiredOwnFunds from './RequiredOwnFunds';
 
 const feesTooltip = props => {
   const value = Calculator.getNotaryFeesTooltipValue(props);

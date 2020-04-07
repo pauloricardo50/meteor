@@ -32,7 +32,6 @@ module.exports = {
     'prettier/react',
     'plugin:meteor/recommended',
     'plugin:react/recommended',
-    'plugin:flowtype/recommended',
     'plugin:cypress/recommended',
   ],
   plugins: [
@@ -41,7 +40,6 @@ module.exports = {
     'meteor',
     'react',
     'react-hooks',
-    'flowtype',
     'cypress',
     'prettier',
   ],
@@ -53,13 +51,22 @@ module.exports = {
   },
   globals: {},
   settings: {
-    flowtype: { onlyFilesWithFlowAnnotation: true },
     react: { version: 'detect' },
     linkComponents: [
       // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
       { name: 'Link', linkAttribute: 'to' },
     ],
   },
+  ignorePatterns: [
+    '**/*.json',
+    '**/node_modules',
+    'core/assets',
+    'core/lang',
+    'microservices/**/core/assets',
+    'microservices/**/core/lang',
+    'microservices/**/public',
+    'microservices/www2/.cache'
+  ],
   rules: {
     // Setup prettier through eslint, instead of as a formatter in vscode
     'prettier/prettier': ['error', prettierOptions],

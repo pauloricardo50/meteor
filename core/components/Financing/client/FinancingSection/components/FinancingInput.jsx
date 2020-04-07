@@ -1,12 +1,12 @@
 import React from 'react';
-import { connectField } from 'uniforms';
 import { compose } from 'recompose';
+import { connectField } from 'uniforms';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import { percentFormatters } from 'core/utils/formHelpers';
-import T, { Money, Percent } from '../../../../Translation';
+import { toMoney } from '../../../../../utils/conversionFunctions';
+import { percentFormatters } from '../../../../../utils/formHelpers';
 import MoneyInput from '../../../../MoneyInput';
 import PercentInput from '../../../../PercentInput';
+import T, { Money, Percent } from '../../../../Translation';
 
 const valueIsNotDefined = value =>
   value === '' || value === undefined || value === null;

@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
+
 import { getPercent } from '../../utils/general';
-import { FILE_STATUS, FILE_ROLES } from './fileConstants';
 import { documentIsBasic } from './documents';
+import { FILE_ROLES, FILE_STATUS } from './fileConstants';
 
 const documentIsRequired = required => required !== false;
 

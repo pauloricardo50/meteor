@@ -3,8 +3,8 @@ import { GoogleMaps } from 'meteor/epotek:google-maps';
 import { Tracker } from 'meteor/tracker';
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import Loading from '../Loading';
 

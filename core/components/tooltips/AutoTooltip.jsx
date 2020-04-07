@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import reactStringReplace from 'react-string-replace';
 
-import { tooltips, TOOLTIP_LISTS } from '../../arrays/tooltips';
+import { TOOLTIP_LISTS, tooltips } from '../../arrays/tooltips';
 import TextWithTooltip from './TextWithTooltip';
 import { TooltipContainer } from './TooltipContext';
 

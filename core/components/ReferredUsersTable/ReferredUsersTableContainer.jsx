@@ -1,6 +1,6 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
 import { proReferredByUsers } from '../../api/users/queries';

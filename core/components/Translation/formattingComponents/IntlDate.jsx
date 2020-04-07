@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedDate, FormattedTime, FormattedRelative } from 'react-intl';
+import { FormattedDate, FormattedRelative, FormattedTime } from 'react-intl';
 
 export const IntlDate = ({ type, ...props }) => {
   switch (type) {

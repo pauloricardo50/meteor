@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import degressive from '../degressive';
 import { VD } from '../cantonConstants';
+import degressive from '../degressive';
 
 describe('degressive', () => {
   it('returns 0 for amount of 0', () => {

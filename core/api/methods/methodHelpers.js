@@ -1,5 +1,5 @@
-import { DDPCommon } from 'meteor/ddp-common';
 import { DDP } from 'meteor/ddp-client';
+import { DDPCommon } from 'meteor/ddp-common';
 
 export const ddpWithUserId = (userId, func) => {
   const invocation = new DDPCommon.MethodInvocation({

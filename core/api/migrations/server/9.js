@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { STEPS } from 'core/api/loans/loanConstants';
-
+import { STEPS } from '../../loans/loanConstants';
 import Loans from '../../loans/loans';
 
 const mapStepUp = step => {

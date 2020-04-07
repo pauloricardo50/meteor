@@ -1,11 +1,11 @@
 import shuffle from 'lodash/shuffle';
 
-import { adminLoan, adminProperty } from 'core/api/fragments';
+import { adminLoan, adminProperty } from '../api/fragments';
+import LenderService from '../api/lenders/server/LenderService';
+import LoanService from '../api/loans/server/LoanService';
 import { getRandomOffer } from '../api/offers/fakes';
 import OfferService from '../api/offers/server/OfferService';
-import LenderService from '../api/lenders/server/LenderService';
 import OrganisationService from '../api/organisations/server/OrganisationService';
-import LoanService from '../api/loans/server/LoanService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createOrganisations } from './organisationFixtures';
 

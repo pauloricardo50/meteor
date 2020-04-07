@@ -1,11 +1,11 @@
 import { widget1Constants } from '../../redux/widget1';
 import {
   getBorrowRatio,
-  getRefinancingBorrowRatio,
-  getIncomeRatio,
   getFinmaMonthlyCost,
-  validateIncomeRatio,
+  getIncomeRatio,
+  getRefinancingBorrowRatio,
   validateBorrowRatio,
+  validateIncomeRatio,
 } from './widget1Math';
 
 export const hideFinmaValues = (borrowRatio, incomeRatio) =>

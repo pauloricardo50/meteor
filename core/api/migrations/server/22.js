@@ -1,7 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { ACTIVITY_TYPES } from '../../activities/activityConstants';
 import Activities from '../../activities';
+import { ACTIVITY_TYPES } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 
 export const up = () => {

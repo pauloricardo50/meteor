@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from 'core/components/Button';
+import Button from '../../Button';
 
 const Widget1SingleInputFormButtons = ({ disableSubmit, onDoNotKnow }) => (
   <div className="buttons">

@@ -1,5 +1,5 @@
-import * as styles from '../../utils/styleHelpers';
 import { BORDER_BLUE } from '../../../../pdfConstants';
+import * as styles from '../../utils/styleHelpers';
 
 const stylesheet = `
     .cover-page {

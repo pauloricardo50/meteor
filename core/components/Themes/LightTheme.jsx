@@ -1,8 +1,8 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
-import createTheme from '../../config/muiCustom';
 import colors from '../../config/colors';
+import createTheme from '../../config/muiCustom';
 
 const defaultTheme = createTheme({});
 

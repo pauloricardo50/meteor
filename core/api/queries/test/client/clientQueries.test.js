@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { expect } from 'chai';
 
-import { userLogin, resetDatabase } from 'core/utils/testHelpers';
+import { resetDatabase, userLogin } from '../../../../utils/testHelpers';
 import {
   query1,
   query2,

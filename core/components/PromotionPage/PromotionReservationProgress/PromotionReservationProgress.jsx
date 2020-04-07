@@ -5,11 +5,11 @@ import { withProps } from 'recompose';
 import { getLoanProgress } from '../../../api/loans/helpers';
 import ProgressCircle from '../../ProgressCircle';
 import {
-  makeGetProgressItem,
-  getPromotionReservationIcon,
   getAdminNoteIcon,
   getPercent,
+  getPromotionReservationIcon,
   getRatio,
+  makeGetProgressItem,
 } from './PromotionReservationProgressHelpers';
 
 const PromotionReservationProgressComponent = ({

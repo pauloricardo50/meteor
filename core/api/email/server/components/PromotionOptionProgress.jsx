@@ -1,11 +1,11 @@
 import React from 'react';
 
-import T from '../../../../components/Translation';
 import PromotionReservationProgress from '../../../../components/PromotionPage/PromotionReservationProgress';
-import colors from '../../../../config/colors';
-import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import { getPromotionReservationIcon } from '../../../../components/PromotionPage/PromotionReservationProgress/PromotionReservationProgressHelpers';
+import T from '../../../../components/Translation';
+import colors from '../../../../config/colors';
 import { proPromotionOption } from '../../../fragments';
+import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 
 export const promotionOptionProgressStyles = `
   .secondary {

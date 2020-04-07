@@ -1,9 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import omit from 'lodash/omit';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
+
 import { defaultDatePickerProps } from './dateInputConstants';
 
 // Given a min and/or max date, it blocks unavailable dates

@@ -1,14 +1,14 @@
-import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
+import { compose, withProps } from 'recompose';
 
-import { toMoney } from 'core/utils/conversionFunctions';
+import { toMoney } from '../../../../utils/conversionFunctions';
 import {
   getTotalAdditionalLotsValue,
-  getTotalLandValue,
-  getTotalConstructionValue,
   getTotalAdditionalMargin,
-  getTotalValue,
+  getTotalConstructionValue,
+  getTotalLandValue,
   getTotalUndetailedValue,
+  getTotalValue,
 } from './helpers';
 
 const getData = (promotionLots = []) => {

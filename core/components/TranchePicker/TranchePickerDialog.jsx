@@ -1,7 +1,8 @@
 import React from 'react';
-import { TranchePicker } from './TranchePicker';
-import DialogSimple from '../DialogSimple';
+
 import Button from '../Button';
+import DialogSimple from '../DialogSimple';
+import { TranchePicker } from './TranchePicker';
 import TranchePickerContainer from './TranchePickerContainer';
 
 const tranchesAreValid = tranches => {

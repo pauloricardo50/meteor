@@ -1,4 +1,4 @@
-import Intl from 'core/utils/server/intl';
+import Intl from '../../../utils/server/intl';
 
 const formatKey = key => {
   const i18nKey = `Forms.${key}`;

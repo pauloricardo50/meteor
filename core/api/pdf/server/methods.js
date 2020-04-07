@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 
 import fs from 'fs';
 
+import Loans from '../../loans';
+import LoanService from '../../loans/server/LoanService';
+import Organisations from '../../organisations';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import { generatePDF } from '../methodDefinitions';
-import PDFService from './PDFService';
 import { PDF_TYPES } from '../pdfConstants';
-import Loans from '../../loans';
-import Organisations from '../../organisations';
-import LoanService from '../../loans/server/LoanService';
-import OrganisationService from '../../organisations/server/OrganisationService';
+import PDFService from './PDFService';
 
 generatePDF.setHandler((context, params) => {
   context.unblock();

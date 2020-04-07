@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { FILE_UPLOAD_DIR } from 'core/api/RESTAPI/server/restApiConstants';
+import { FILE_UPLOAD_DIR } from '../api/RESTAPI/server/restApiConstants';
 
 export const readFileBuffer = filePath => fs.readFileSync(filePath);
 export const removeFile = filePath => fs.unlinkSync(filePath);

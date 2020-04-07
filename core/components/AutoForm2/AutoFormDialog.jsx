@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { compose, withProps, withState } from 'recompose';
-import pick from 'lodash/pick';
 import MuiDialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import pick from 'lodash/pick';
+import { compose, withProps, withState } from 'recompose';
 
 import Button from '../Button';
 import AutoForm from './AutoForm';
-import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
-import AutoFormDialogContent from './AutoFormDialogContent';
+import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
 import AutoFormDialogActions from './AutoFormDialogActions';
+import AutoFormDialogContent from './AutoFormDialogContent';
 
 const getAutoFormProps = props =>
   pick(props, [

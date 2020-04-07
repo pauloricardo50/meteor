@@ -1,20 +1,20 @@
-import { PROMOTION_EMAILS } from 'core/api/email/server/promotionEmailHelpers';
-import SecurityService from '../../security';
-import PromotionOptionService from './PromotionOptionService';
+import { PROMOTION_EMAILS } from '../../email/server/promotionEmailHelpers';
 import LoanService from '../../loans/server/LoanService';
+import { Method } from '../../methods/methods';
+import SecurityService from '../../security';
 import {
-  promotionOptionInsert,
-  promotionOptionUpdate,
-  promotionOptionRemove,
+  getPromotionOptionProgressEmails,
   increaseOptionPriority,
+  promotionOptionActivateReservation,
+  promotionOptionAddToWaitList,
+  promotionOptionInsert,
+  promotionOptionRemove,
+  promotionOptionUpdate,
+  promotionOptionUploadAgreement,
   reducePriorityOrder,
   setPromotionOptionProgress,
-  promotionOptionActivateReservation,
-  promotionOptionUploadAgreement,
-  promotionOptionAddToWaitList,
-  getPromotionOptionProgressEmails,
 } from '../methodDefinitions';
-import { Method } from '../../methods/methods';
+import PromotionOptionService from './PromotionOptionService';
 import { expirePromotionOptionReservation } from './serverMethods';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {

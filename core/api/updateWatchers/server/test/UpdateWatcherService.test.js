@@ -1,8 +1,9 @@
+import { Factory } from 'meteor/dburles:factory';
+import { Mongo } from 'meteor/mongo';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Mongo } from 'meteor/mongo';
-import { Factory } from 'meteor/dburles:factory';
 
 import UpdateWatcherService from '../UpdateWatcherService';
 

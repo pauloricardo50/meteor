@@ -1,12 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import { getNewName } from 'core/api/helpers/server/collectionServerHelpers';
-
+import { getNewName } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
-import RevenueService from '../../revenues/server/RevenueService';
 import { getEffectiveDuration } from '../helpers';
 import { INSURANCES_COLLECTION, INSURANCE_STATUS } from '../insuranceConstants';
 import Insurances from '../insurances';

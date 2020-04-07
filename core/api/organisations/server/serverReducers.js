@@ -1,9 +1,9 @@
-import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
-import InsuranceService from 'core/api/insurances/server/InsuranceService';
-import Organisations from '..';
+import { COMMISSION_RATES_TYPE } from '../../commissionRates/commissionRateConstants';
+import CommissionRateService from '../../commissionRates/server/CommissionRateService';
+import InsuranceService from '../../insurances/server/InsuranceService';
 import RevenueService from '../../revenues/server/RevenueService';
 import { getCurrentRate } from '../helpers';
-import CommissionRateService from '../../commissionRates/server/CommissionRateService';
+import Organisations from '..';
 
 Organisations.addReducers({
   generatedRevenues: {

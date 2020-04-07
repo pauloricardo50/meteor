@@ -1,5 +1,5 @@
-import Lots from '.';
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
+import Lots from '.';
 
 Lots.addReducers({
   status: {

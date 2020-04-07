@@ -4,8 +4,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import DialogSimple from '../DialogSimple';
-import T, { Money } from '../Translation';
 import Icon from '../Icon';
+import T, { Money } from '../Translation';
 import PropertyReuserContainer from './PropertyReuserContainer';
 
 const PropertyReuser = ({ properties, handleSelectProperty, disabled }) => (

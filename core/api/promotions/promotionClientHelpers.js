@@ -1,5 +1,5 @@
-import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
+import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
 
 export const getCurrentUserPermissionsForPromotion = ({
   currentUser: { promotions = [] } = {},

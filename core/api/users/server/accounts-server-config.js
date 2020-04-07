@@ -1,5 +1,6 @@
-import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+
 import pick from 'lodash/pick';
 
 Accounts.onCreateUser((options, user) => {

@@ -3,8 +3,6 @@ import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withState } from 'recompose';
 
-import StatusLabel from 'core/components/StatusLabel/StatusLabel';
-
 import { withSmartQuery } from '../../../api/containerToolkit';
 import { getReferredBy } from '../../../api/helpers';
 import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
@@ -17,6 +15,7 @@ import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
 import Icon from '../../Icon';
 import ProCustomer from '../../ProCustomer';
+import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 
 const columnOptions = [

@@ -1,10 +1,10 @@
 import React from 'react';
 
 import colors from '../../../../../config/colors';
-import ConfirmMethod from '../../../../ConfirmMethod';
-import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
 import Button from '../../../../Button';
+import ConfirmMethod from '../../../../ConfirmMethod';
 import T from '../../../../Translation';
+import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
 import PromotionReservationDetailActionsContainer from './PromotionReservationDetailActionsContainer';
 
 const PromotionReservationDetailActions = ({

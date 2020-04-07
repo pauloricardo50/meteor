@@ -1,8 +1,8 @@
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
-import { employeesByEmail, EPOTEK_NUMBER } from 'core/arrays/epotekEmployees';
-import { userImpersonatedSession } from 'core/api/sessions/queries';
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
+import { withSmartQuery } from '../../api/containerToolkit';
+import { userImpersonatedSession } from '../../api/sessions/queries';
+import { EPOTEK_NUMBER, employeesByEmail } from '../../arrays/epotekEmployees';
 
 const withImpersonatedSession = withSmartQuery({
   query: userImpersonatedSession,

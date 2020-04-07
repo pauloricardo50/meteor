@@ -1,13 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from '../../../utils/testHelpers/enzyme';
 
+import { TOOLTIP_LISTS } from '../../../arrays/tooltips';
+import { shallow } from '../../../utils/testHelpers/enzyme';
 import {
   AutoTooltip,
   createRegexThatFindsAnyWordFromList,
 } from '../AutoTooltip';
-import { TOOLTIP_LISTS } from '../../../arrays/tooltips';
 
 describe('<AutoTooltip />', () => {
   let props;

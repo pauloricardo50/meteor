@@ -1,5 +1,5 @@
-import Activities from '../activities';
 import NotificationService from '../../notifications/server/NotificationService';
+import Activities from '../activities';
 
 Activities.after.update(
   function(userId, doc, fieldNames) {

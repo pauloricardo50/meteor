@@ -1,10 +1,11 @@
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
-import OrganisationService from '../../../organisations/server/OrganisationService';
+import { expect } from 'chai';
+
+import { COMMISSION_RATES_TYPE } from '../../../commissionRates/commissionRateConstants';
 import CommissionRateService from '../../../commissionRates/server/CommissionRateService';
-import { up, down } from '../34';
+import OrganisationService from '../../../organisations/server/OrganisationService';
+import { down, up } from '../34';
 
 describe('Migration 34', () => {
   beforeEach(() => resetDatabase());

@@ -2,16 +2,16 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import Calculator from 'core/utils/Calculator';
 import {
-  PROMOTION_OPTION_DOCUMENTS,
   PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import Calculator from '../../../../../utils/Calculator';
 import UploaderArray from '../../../../UploaderArray';
-import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
 import PromotionReservationDeadline from '../PromotionReservationDeadline';
 import PromotionReservationDetailActions from './PromotionReservationDetailActions';
+import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
 
 const promotionReservationsArray = [
   {

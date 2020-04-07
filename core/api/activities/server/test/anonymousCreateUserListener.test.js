@@ -3,9 +3,8 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-
 import { checkEmails } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import { anonymousCreateUser } from '../../../users/methodDefinitions';
 import UserService from '../../../users/server/UserService';

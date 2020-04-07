@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { withProps, compose } from 'recompose';
 
-import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
+import { compose, withProps } from 'recompose';
+
+import { LOCAL_STORAGE_ANONYMOUS_LOAN } from '../../api/loans/loanConstants';
 
 const DevPageContainer = compose(
   withProps(({ currentUser: { _id: userId } }) => ({
