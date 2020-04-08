@@ -4,7 +4,6 @@ import cx from 'classnames';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import AutoForm from 'core/components/AutoForm';
 import BorrowerRemover from 'core/components/BorrowerRemover';
-import BorrowerReuser from 'core/components/BorrowerReuser';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import VerticalAligner from 'core/components/VerticalAligner';
@@ -38,16 +37,6 @@ const BorrowersTabForm = ({
         {borrower.name || `Emprunteur ${index + 1}`}
       </h2>
       <div className="flex c space-children">
-        <BorrowerReuser
-          loanId={loanId}
-          borrowerId={borrower._id}
-          buttonProps={{
-            raised: false,
-            size: 'small',
-            primary: true,
-            label: 'Réutiliser emprunteur',
-          }}
-        />
         {borrowers && borrowers.length > 1 && (
           <BorrowerRemover
             borrower={borrower}

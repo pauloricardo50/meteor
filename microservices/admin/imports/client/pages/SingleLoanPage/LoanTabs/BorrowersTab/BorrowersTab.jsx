@@ -7,6 +7,8 @@ import {
   getBorrowerInfoArray,
   getBorrowerInsuranceArray,
 } from 'core/arrays/BorrowerFormArray';
+import BorrowerAdder from 'core/components/BorrowerAdder/BorrowerAdder';
+import Button from 'core/components/Button';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import Icon from 'core/components/Icon';
 import RadioTabs from 'core/components/RadioButtons/RadioTabs';
@@ -107,7 +109,7 @@ const BorrowersTab = props => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <ConfirmMethod
+      {/* <ConfirmMethod
         disabled={borrowers.length >= 2}
         method={() => addBorrower.run({ loanId: loan._id })}
         label="Emprunteur"
@@ -117,6 +119,19 @@ const BorrowersTab = props => {
           style: { position: 'absolute', right: 8, top: 0, zIndex: 1 },
           icon: <Icon type="add" />,
         }}
+      /> */}
+      <BorrowerAdder
+        disabled={borrowers.length >= 2}
+        loanId={loanId}
+        TriggerComponent={
+          <Button
+            label="Emprunteur"
+            raised
+            primary
+            style={{ position: 'absolute', right: 8, top: 0, zIndex: 1 }}
+            icon={<Icon type="add" />}
+          />
+        }
       />
 
       <div style={{ marginBottom: 16 }} className="flex-col center-align">

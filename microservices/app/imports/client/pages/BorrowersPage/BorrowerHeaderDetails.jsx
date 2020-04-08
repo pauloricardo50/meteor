@@ -1,10 +1,11 @@
 import React from 'react';
-
-import T from 'core/components/Translation';
-import BorrowerReuser from 'core/components/BorrowerReuser';
-import BorrowerRemover from 'core/components/BorrowerRemover';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// import BorrowerReuser from 'core/components/BorrowerReuser';
+import BorrowerRemover from 'core/components/BorrowerRemover';
+import T from 'core/components/Translation';
+
 import Progress from './Progress';
 
 const BorrowerHeaderDetails = ({
@@ -42,9 +43,9 @@ const BorrowerHeaderDetails = ({
       )}
     </div>
     <Progress borrower={borrower} tabId={tabId} />
-    {tabId === 'personal' && (
+    {/* {tabId === 'personal' && (
       <BorrowerReuser loanId={loanId} borrowerId={borrower._id} />
-    )}
+    )} */}
   </div>
 );
 
