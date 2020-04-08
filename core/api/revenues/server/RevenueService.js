@@ -1,5 +1,6 @@
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceService from '../../insurances/server/InsuranceService';
+import LoanService from '../../loans/server/LoanService';
 import {
   COMMISSION_STATUS,
   REVENUE_STATUS,
@@ -71,7 +72,9 @@ class RevenueService extends CollectionService {
   }
 
   consolidateRevenue({ revenueId, amount, paidAt }) {
-    return this._update({
+    const { loan } = this.get(revenueId, { loan: { _id: 1 } });
+
+    const response = this._update({
       id: revenueId,
       object: {
         amount,
@@ -79,6 +82,12 @@ class RevenueService extends CollectionService {
         status: REVENUE_STATUS.CLOSED,
       },
     });
+
+    if (loan) {
+      LoanService.setStatusToFinalizedIfRequired({ loanId: loan._id });
+    }
+
+    return response;
   }
 
   consolidateCommission({ revenueId, organisationId, paidAt, commissionRate }) {

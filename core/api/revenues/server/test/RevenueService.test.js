@@ -4,6 +4,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
 import generator from '../../../factories/server';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
 import LoanService from '../../../loans/server/LoanService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenueConstants';
 import RevenueService from '../RevenueService';
@@ -186,6 +187,25 @@ describe('RevenueService', () => {
       });
 
       expect(result.loan._collection).to.equal('loans');
+    });
+  });
+
+  describe('consolidateRevenue', () => {
+    it('sets loan status to FINALIZED if required', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: { _id: 'revenue', status: REVENUE_STATUS.EXPECTED },
+        },
+      });
+
+      RevenueService.consolidateRevenue({
+        revenueId: 'revenue',
+        amount: 10,
+        paidAt: new Date(),
+      });
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.FINALIZED);
     });
   });
 });
