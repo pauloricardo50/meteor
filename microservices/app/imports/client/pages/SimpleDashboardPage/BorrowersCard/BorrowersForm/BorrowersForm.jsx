@@ -1,9 +1,11 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
-import BorrowersAdder from '../../../../components/BorrowersAdder';
-import BorrowersFormContainer from './BorrowersFormContainer';
+
+import BorrowersAdder from '../../../../components/BorrowersAdder/BorrowersAdder';
 import SimpleFormSwitch from '../SimpleFormSwitch';
+// import BorrowersAdder from '../../../../components/BorrowersAdder';
+import BorrowersFormContainer from './BorrowersFormContainer';
 
 const BorrowersForm = props => {
   const { loan, tabs, openBorrowersForm } = props;

@@ -2,11 +2,12 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
+import BorrowerAdder from 'core/components/BorrowerAdder';
+import Button from 'core/components/Button';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
-import BorrowerAdder from '../../../../components/BorrowerAdder';
 import BorrowerForm from './BorrowerForm';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
@@ -90,7 +91,14 @@ const getBorrowersTabs = ({ loan }) => {
       : {
           id: 'borrower2',
           content: null,
-          label: <BorrowerAdder loanId={loan._id} />,
+          label: (
+            <BorrowerAdder
+              loanId={loan?._id}
+              TriggerComponent={
+                <Button primary label={<T id="BorrowerAdder.label" />} />
+              }
+            />
+          ),
         },
   ].filter(x => x);
 };
