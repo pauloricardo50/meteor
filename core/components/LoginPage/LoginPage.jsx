@@ -8,7 +8,11 @@ import PageHead from '../PageHead';
 import LoginPageLeft from './LoginPageLeft';
 import LoginPageRight from './LoginPageRight';
 
-const LoginPage = ({ location: { search }, history: { push } }) => {
+const LoginPage = ({
+  location: { search },
+  history: { push },
+  onSignInSuccess,
+}) => {
   const currentUser = useContext(CurrentUserContext);
   const { path } = queryString.parse(search);
 
@@ -20,7 +24,11 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
     <section className="login-page animated fadeIn">
       <PageHead titleId="LoginPage" />
       <LoginPageLeft />
-      <LoginPageRight path={path} push={push} />
+      <LoginPageRight
+        path={path}
+        push={push}
+        onSignInSuccess={onSignInSuccess}
+      />
     </section>
   );
 };
