@@ -11,7 +11,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { render } from 'react-dom';
 
-import initGoogleTagManager from 'core/utils/googleTagManager';
+import { initGoogleTagManager } from 'core/utils/googleTagManager';
 import initHotjar from 'core/utils/hotjar';
 
 import AppRouter from './AppRouter';

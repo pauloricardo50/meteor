@@ -43,6 +43,7 @@ const BaseRouter = ({
   hasLogin,
   routes,
   currentUser,
+  loginPageProps,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
@@ -77,7 +78,12 @@ const BaseRouter = ({
                     />
                     {/* LoginPage has to be above / path */}
                     {hasLogin && (
-                      <Route exact path="/login" component={LoginPage} />
+                      <Route
+                        exact
+                        path="/login"
+                        component={LoginPage}
+                        {...loginPageProps}
+                      />
                     )}
                     {isDev && (
                       <Route exact path="/grapher" component={GrapherPage} />
