@@ -1100,6 +1100,10 @@ class LoanService extends CollectionService {
 
     return assignees.find(({ $metadata: { isMain } }) => isMain);
   }
+
+  linkBorrower({ loanId, borrowerId }) {
+    this.addLink({ id: loanId, linkName: 'borrowers', linkId: borrowerId });
+  }
 }
 
 export default new LoanService({});

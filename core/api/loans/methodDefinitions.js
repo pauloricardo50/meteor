@@ -242,3 +242,8 @@ export const loanSetAssignees = new Method({
     updateUserAssignee: Match.Optional(Boolean),
   },
 });
+
+export const loanLinkBorrower = new Method({
+  name: 'loanLinkBorrower',
+  params: { loanId: String, borrowerId: String },
+});
