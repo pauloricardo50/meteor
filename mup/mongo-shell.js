@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
+const chalk = require('chalk');
 
 const { argv } = yargs
   .string('environment')
@@ -10,7 +11,7 @@ const { argv } = yargs
 
 if (!fs.existsSync('./configs/mongo-auth.json')) {
   console.error(
-    'Please create a database user in Atlas, as described in the docs.',
+    chalk.redBright`Please create the './configs/mongo-auth.json' file as described in the Atlas Database User section of the docs`,
   );
   process.exit(1);
 }

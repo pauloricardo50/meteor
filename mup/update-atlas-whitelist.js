@@ -1,10 +1,23 @@
 const sh = require('shelljs');
 const DigestFetch = require('digest-fetch');
+const chalk = require('chalk');
+const fs = require('fs');
+
+if (!fs.existsSync('./configs/atlas-auth2.json')) {
+  console.error(
+    chalk.redBright`Please create the './configs/atlas-auth.json' file as described in the Atlas API Keys section of the docs`,
+  );
+  process.exit(1);
+}
+
 const auth = require('./configs/atlas-auth.json');
 
 sh.exec('node update-servers');
 
 const { log, error: logError } = console;
+
+log('');
+log(chalk.blue(`=> Updating Atlas IP Address Whitelist for the VM's`));
 
 const neededStagingIps = [
   require('./configs/staging-servers.json'),
@@ -15,7 +28,11 @@ const neededStagingIps = [
   .flat()
   .map(({ host }) => host);
 
-log('needed', neededStagingIps);
+const formattedNeeded = [
+  neededStagingIps.slice(0, 1),
+  ...neededStagingIps.slice(1).map(item => item.padStart(8 + item.length, ' ')),
+].join('\n');
+log(chalk.dim(`needed: ${formattedNeeded}`));
 
 const PUBLIC_KEY = auth.publicKey;
 const PRIVATE_KEY = auth.privateKey;
@@ -45,7 +62,7 @@ async function updateWhitelist() {
     .map(item => item.ipAddress);
   const neededToAdd = neededStagingIps.filter(ip => !stagingIps.includes(ip));
 
-  log('missing addresses:', neededToAdd);
+  log(chalk.dim(`missing addresses: ${neededToAdd.join(', ') || 'none'}`));
 
   if (neededToAdd.length > 0) {
     const result = await client
