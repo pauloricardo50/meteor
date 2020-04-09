@@ -131,7 +131,7 @@ const config = {
     {
       id: 'www',
       path: __dirname + '/../microservices/www',
-      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1'],
+      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1', 'ContactButton'],
     },
   ],
   // List of strings that don't have a component file associated to them, so

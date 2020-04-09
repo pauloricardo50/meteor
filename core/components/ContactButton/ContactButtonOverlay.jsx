@@ -12,6 +12,7 @@ const ContactButtonOverlay = ({
   staff: { src, name, phoneNumber, email, gender, calendly } = {},
   openContact,
   handleCloseContact,
+  style,
 }) => {
   const [openCalendly, setOpenCalendy] = useState(false);
 
@@ -24,7 +25,7 @@ const ContactButtonOverlay = ({
       touchEvent={openContact ? undefined : false}
     >
       <Grow in={openContact} style={{ 'transform-origin': 'bottom right' }}>
-        <div className="card1 shadow-2 card-top contact-button-overlay">
+        <div className="card1 shadow-2 card-top contact-button-overlay" style={style}>
           <div className="top">
             <img src={src} alt={name} />
             <div className="text">

@@ -2,7 +2,8 @@ import { compose, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { userImpersonatedSession } from 'core/api/sessions/queries';
-import { EPOTEK_NUMBER, employeesByEmail } from 'core/arrays/epotekEmployees';
+
+import SimpleContactButtonContainer from './SimpleContactButtonContainer'
 
 const withImpersonatedSession = withSmartQuery({
   query: userImpersonatedSession,
@@ -13,16 +14,7 @@ const withImpersonatedSession = withSmartQuery({
 
 const ContactButtonContainer = compose(
   withImpersonatedSession,
-  withProps(({ currentUser }) => {
-    let staff;
-    if (currentUser && currentUser.assignedEmployee) {
-      staff = employeesByEmail[currentUser.assignedEmployee.email];
-    }
-    if (!staff) {
-      staff = employeesByEmail['financement@e-potek.ch'];
-    }
-    return { staff };
-  }),
+  SimpleContactButtonContainer,
 );
 
 export default ContactButtonContainer;

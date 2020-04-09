@@ -9,8 +9,15 @@ import Dialog from '../Material/Dialog';
 
 const CALENDLY_EVENT_SCHEDULED = 'calendly_event_scheduled';
 
+let sessionStorage;
+if(typeof window === undefined){
+  sessionStorage = null;
+} else {
+  sessionStorage = window.sessionStorage;
+}
+
 const makeCloseModal = ({onClose, setEventScheduled}) => () => {
-  if (sessionStorage.getItem(CALENDLY_EVENT_SCHEDULED) === "true") {
+  if (sessionStorage?.getItem(CALENDLY_EVENT_SCHEDULED) === "true") {
     setEventScheduled(true);
   }
   onClose();
@@ -18,7 +25,7 @@ const makeCloseModal = ({onClose, setEventScheduled}) => () => {
 
 const CalendlyModal = props => {
   const { link, open, onClose } = props;
-  const [eventScheduled, setEventScheduled] = useState(sessionStorage.getItem(CALENDLY_EVENT_SCHEDULED) === "true");
+  const [eventScheduled, setEventScheduled] = useState(sessionStorage?.getItem(CALENDLY_EVENT_SCHEDULED) === "true");
   const [buttonProps, setButtonProps] = useState({ primary: true });
   const fullScreen = useMedia({maxWidth: 768});
 
@@ -47,7 +54,7 @@ const CalendlyModal = props => {
         </div> :
         <CalendlyInline
           url={link}
-          onEventScheduled={() => { sessionStorage.setItem(CALENDLY_EVENT_SCHEDULED, "true"); setButtonProps({ secondary: true }) }}
+          onEventScheduled={() => { sessionStorage?.setItem(CALENDLY_EVENT_SCHEDULED, "true"); setButtonProps({ secondary: true }) }}
         />
       }
     </Dialog>

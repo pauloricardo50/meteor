@@ -6,9 +6,9 @@ const ContactButtonContent = ({ titleId, icon, href, label, onClick }) => (
   <a href={href} className="contact-button-content primary" onClick={onClick}>
     <div className="iconDiv">{icon}</div>
     <div className="text">
-      <p className="bold">
+      <b className="bold">
         <T id={titleId} />
-      </p>
+      </b><br/>
       {label}
     </div>
   </a>
