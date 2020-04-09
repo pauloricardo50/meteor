@@ -38,7 +38,7 @@ async function updateForGroup(name) {
     const internal = metadata[0].networkInterfaces[0].networkIP;
     console.log(vm.id, 'external:', external, 'internal', internal);
 
-    const serverName = `${i}`;
+    const serverName = vm.name;
     servers[serverName] = {
       host: external,
       username: 'mup',
