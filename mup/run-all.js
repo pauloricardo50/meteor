@@ -117,6 +117,12 @@ function runInParallel() {
         command: getFullCommand(
           `--config ${app}.mup.js ${mupCommands.join(' ')}`,
         ),
+
+        // If it starts with an option, we just show everything
+        // instead of trying to identify what is the command or what is a value to an option
+        prettyCommand: mupCommands[0].startsWith('-')
+          ? mupCommands.join(' ')
+          : mupCommands[0],
       });
     });
   });
