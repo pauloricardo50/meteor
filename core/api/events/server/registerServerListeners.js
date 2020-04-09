@@ -7,4 +7,3 @@ import '../../loans/server/loanListeners';
 import '../../notifications/server/notificationListeners';
 import '../../slack/server/slackListeners';
 import '../../tasks/server/taskListeners';
-import '../../revenues/server/revenueListeners';

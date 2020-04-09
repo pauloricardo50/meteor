@@ -1,4 +1,5 @@
 import CollectionService from '../../helpers/server/CollectionService';
+import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import InsuranceService from '../../insurances/server/InsuranceService';
 import LoanService from '../../loans/server/LoanService';
 import {
@@ -72,7 +73,14 @@ class RevenueService extends CollectionService {
   }
 
   consolidateRevenue({ revenueId, amount, paidAt }) {
-    const { loan } = this.get(revenueId, { loan: { _id: 1 } });
+    const { loan, insuranceRequest, sourceOrganisationLink } = this.get(
+      revenueId,
+      {
+        loan: { _id: 1 },
+        insuranceRequest: { _id: 1 },
+        sourceOrganisationLink: { _id: 1 },
+      },
+    );
 
     const response = this._update({
       id: revenueId,
@@ -85,6 +93,13 @@ class RevenueService extends CollectionService {
 
     if (loan) {
       LoanService.setStatusToFinalizedIfRequired({ loanId: loan._id });
+    } else if (insuranceRequest) {
+      InsuranceRequestService.calculateNewStatus({
+        insuranceRequestId: insuranceRequest._id,
+      });
+      this.updateOrganisationRevenues({
+        organisationId: sourceOrganisationLink._id,
+      });
     }
 
     return response;
