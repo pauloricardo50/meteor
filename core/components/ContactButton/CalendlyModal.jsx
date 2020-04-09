@@ -6,6 +6,7 @@ import Button from '../Button';
 import CalendlyInline from '../Calendly/CalendlyInline';
 import Icon from '../Icon'
 import Dialog from '../Material/Dialog';
+import T from '../Translation';
 
 const CALENDLY_EVENT_SCHEDULED = 'calendly_event_scheduled';
 
@@ -34,19 +35,19 @@ const CalendlyModal = props => {
     <Dialog
       fullScreen={fullScreen}
       fullWidth
-      title="Programmer un rendez-vous"
-      actions={[<Button onClick={closeModal} label="Fermer" raised {...buttonProps} />]}
+      title={<T id="CalendlyModal.title" />}
+      actions={[<Button onClick={closeModal} label={<T id="general.close" />} raised {...buttonProps} />]}
       open={open}
       onClose={closeModal}
     >
       {eventScheduled ?
         <div className="flex-col center">
           <Icon type="eventAvailable" style={{ width: '100px', height: '100px', color: colors.success }} />
-          <h3>Vous avez déjà programmé un rendez-vous</h3>
-          <p className="description">Voulez-vous en programmer un autre ?</p>
+          <h3><T id="CalendlyModal.eventScheduled.title" /></h3>
+          <p className="description"><T id="CalendlyModal.eventScheduled.description" /></p>
           <Button
             onClick={() => setEventScheduled(false)}
-            label="Rendez-vous"
+            label={<T id="CalendlyModal.eventScheduled.button" />}
             icon={<Icon type="add" />}
             secondary
             raised

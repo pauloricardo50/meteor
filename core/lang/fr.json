@@ -1,4 +1,8 @@
 {
+  "CalendlyModal.title": "Programmer un rendez-vous",
+  "CalendlyModal.eventScheduled.title": "Vous avez déjà programmé un rendez-vous",
+  "CalendlyModal.eventScheduled.description": "Voulez-vous en programmer un autre ?",
+  "CalendlyModal.eventScheduled.button": "Rendez-vous",
   "ContactButton.calendly": "Rendez-vous",
   "ProRevenuesTable.removedLoan": "Dossier supprimé",
   "Forms.maxProductionYears": "Durée maximale de production (années)",
