@@ -58,7 +58,7 @@ const getTabs = props => {
 const BorrowersPage = props => {
   const {
     tabId,
-    loan: { borrowers, _id: loanId },
+    loan: { borrowers, _id: loanId, user: { _id: userId } = {} },
   } = props;
 
   if (borrowers.length === 0) {
@@ -69,7 +69,7 @@ const BorrowersPage = props => {
           style={{ width: '50px', height: '50px', color: 'rgba(0,0,0,0.5)' }}
         />
         <h3 className="secondary">Aucun emprunteur pour l'instant</h3>
-        <BorrowerAdder loanId={loanId} />
+        <BorrowerAdder loanId={loanId} userId={userId} />
       </div>
     );
   }

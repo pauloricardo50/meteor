@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '../Button';
 import Icon from '../Icon';
+import T from '../Translation';
 import BorrowerAdderContainer from './BorrowerAdderContainer';
 import BorrowerReuser from './BorrowerReuser';
 
@@ -12,7 +13,7 @@ const BorrowerAdder = ({
   reusableBorrowers,
   insertBorrower,
   linkBorrower,
-  borrowerLabel,
+  isBorrower,
   TriggerComponent,
   disabled,
 }) => (
@@ -23,16 +24,14 @@ const BorrowerAdder = ({
       reusableBorrowers={reusableBorrowers}
       openModal={openModal}
       setOpenModal={setOpenModal}
-      borrowerLabel={borrowerLabel}
+      isBorrower={isBorrower}
     />
     {TriggerComponent ? (
       React.cloneElement(TriggerComponent, { onClick, disabled })
     ) : (
       <Button
         onClick={onClick}
-        label={
-          borrowerLabel.charAt(0).toUpperCase() + borrowerLabel.substring(1)
-        }
+        label={<T id="BorrowerAdder.buttonLabel" values={{ isBorrower }} />}
         primary
         raised
         icon={<Icon type="add" />}

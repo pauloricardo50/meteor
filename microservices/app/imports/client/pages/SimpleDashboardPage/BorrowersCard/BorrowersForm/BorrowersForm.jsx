@@ -4,7 +4,6 @@ import Tabs from 'core/components/Tabs';
 
 import BorrowersAdder from '../../../../components/BorrowersAdder/BorrowersAdder';
 import SimpleFormSwitch from '../SimpleFormSwitch';
-// import BorrowersAdder from '../../../../components/BorrowersAdder';
 import BorrowersFormContainer from './BorrowersFormContainer';
 
 const BorrowersForm = props => {

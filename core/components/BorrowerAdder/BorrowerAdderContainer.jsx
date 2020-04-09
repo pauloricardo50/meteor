@@ -22,14 +22,14 @@ const makeInsertBorrower = ({
     return loanInsertBorrowers
       .run({ loanId, amount: 1 })
       .then(afterInsert)
-      .then(() => setOpenModal(false));
+      .finally(() => setOpenModal(false));
   }
 
   if (insuranceRequestId) {
     return insuranceRequestInsertBorrower
       .run({ insuranceRequestId })
       .then(afterInsert)
-      .then(() => setOpenModal(false));
+      .finally(() => setOpenModal(false));
   }
 };
 
@@ -43,14 +43,14 @@ const makeLinkBorrower = ({
     return loanLinkBorrower
       .run({ loanId, borrowerId })
       .then(afterInsert)
-      .then(() => setOpenModal(false));
+      .finally(() => setOpenModal(false));
   }
 
   if (insuranceRequestId) {
     return insuranceRequestLinkBorrower
       .run({ insuranceRequestId, borrowerId })
       .then(afterInsert)
-      .then(() => setOpenModal(false));
+      .finally(() => setOpenModal(false));
   }
 };
 
@@ -60,22 +60,23 @@ const makeOnClick = ({
   setOpenModal,
   setReusableBorrowers,
   insertBorrower,
-}) => async () => {
-  const reusableBorrowers = await getReusableBorrowers.run({
-    loanId,
-    insuranceRequestId,
-  });
+  userId,
+}) => () =>
+  userId
+    ? getReusableBorrowers
+        .run({ loanId, insuranceRequestId })
+        .then((reusableBorrowers = []) => {
+          if (reusableBorrowers?.length) {
+            setReusableBorrowers(reusableBorrowers);
+            return setOpenModal(true);
+          }
 
-  if (reusableBorrowers?.length) {
-    setReusableBorrowers(reusableBorrowers);
-    return setOpenModal(true);
-  }
-
-  return insertBorrower();
-};
+          return insertBorrower();
+        })
+    : insertBorrower();
 
 export default withProps(
-  ({ loanId, insuranceRequestId, afterInsert = () => ({}) }) => {
+  ({ loanId, insuranceRequestId, userId, afterInsert = () => ({}) }) => {
     const [reusableBorrowers, setReusableBorrowers] = useState();
     const [openModal, setOpenModal] = useState(false);
     const insertBorrower = makeInsertBorrower({
@@ -84,26 +85,30 @@ export default withProps(
       loanId,
       insuranceRequestId,
     });
+    const linkBorrower = makeLinkBorrower({
+      afterInsert,
+      setOpenModal,
+      loanId,
+      insuranceRequestId,
+    });
+
+    const onClick = makeOnClick({
+      loanId,
+      insuranceRequestId,
+      setOpenModal,
+      setReusableBorrowers,
+      insertBorrower,
+      userId,
+    });
 
     return {
-      onClick: makeOnClick({
-        loanId,
-        insuranceRequestId,
-        setOpenModal,
-        setReusableBorrowers,
-        insertBorrower,
-      }),
+      onClick,
       openModal,
       setOpenModal,
       reusableBorrowers,
       insertBorrower,
-      linkBorrower: makeLinkBorrower({
-        afterInsert,
-        setOpenModal,
-        loanId,
-        insuranceRequestId,
-      }),
-      borrowerLabel: loanId ? 'emprunteur' : 'assuré',
+      linkBorrower,
+      isBorrower: !!loanId,
     };
   },
 );

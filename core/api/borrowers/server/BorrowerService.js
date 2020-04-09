@@ -110,16 +110,16 @@ export class BorrowerService extends CollectionService {
       insuranceRequests: { _id: 1, name: 1 },
     });
 
-    const filteredBorrowers = borrowers?.length
-      ? borrowers.filter(({ loans = [], insuranceRequests = [] }) => {
-          const isInLoan = loanId && loans.some(({ _id }) => _id === loanId);
-          const isInInsuranceRequest =
-            insuranceRequestId &&
-            insuranceRequests.some(({ _id }) => _id === insuranceRequestId);
+    const filteredBorrowers = borrowers.filter(
+      ({ loans = [], insuranceRequests = [] }) => {
+        const isInLoan = loanId && loans.some(({ _id }) => _id === loanId);
+        const isInInsuranceRequest =
+          insuranceRequestId &&
+          insuranceRequests.some(({ _id }) => _id === insuranceRequestId);
 
-          return !isInLoan && !isInInsuranceRequest;
-        })
-      : [];
+        return !isInLoan && !isInInsuranceRequest;
+      },
+    );
 
     return filteredBorrowers;
   }

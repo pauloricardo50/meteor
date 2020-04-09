@@ -44,7 +44,12 @@ const overrides = {
 };
 
 const getBorrowersTabs = ({ loan }) => {
-  const { borrowers, userFormsEnabled, simpleBorrowersForm } = loan;
+  const {
+    borrowers,
+    userFormsEnabled,
+    simpleBorrowersForm,
+    user: { _id: userId } = {},
+  } = loan;
   const twoBorrowers = borrowers.length === 2;
 
   return [
@@ -94,6 +99,7 @@ const getBorrowersTabs = ({ loan }) => {
           label: (
             <BorrowerAdder
               loanId={loan?._id}
+              userId={userId}
               TriggerComponent={
                 <Button primary label={<T id="BorrowerAdder.label" />} />
               }

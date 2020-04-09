@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { insuranceRequestInsertBorrower } from 'core/api/insuranceRequests/methodDefinitions';
 import BorrowerAdder from 'core/components/BorrowerAdder';
 import Button from 'core/components/Button';
 import { BorrowerForm } from 'core/components/forms';
@@ -12,7 +11,7 @@ const Borrower = withTranslationContext(({ borrower }) => ({
   gender: borrower.gender,
 }))(BorrowerForm);
 
-const getTabs = ({ borrowers, insuranceRequest }) =>
+const getTabs = ({ borrowers, insuranceRequest, userId }) =>
   [
     ...borrowers.map((borrower, index) => ({
       id: borrower._id,
@@ -24,6 +23,7 @@ const getTabs = ({ borrowers, insuranceRequest }) =>
       label: (
         <BorrowerAdder
           insuranceRequestId={insuranceRequest._id}
+          userId={userId}
           TriggerComponent={
             <Button
               fab
@@ -42,7 +42,11 @@ const getTabs = ({ borrowers, insuranceRequest }) =>
 
 const BorrowersTab = props => {
   const { insuranceRequest } = props;
-  const { borrowers = [], _id: insuranceRequestId } = insuranceRequest;
+  const {
+    borrowers = [],
+    _id: insuranceRequestId,
+    user: { _id: userId } = {},
+  } = insuranceRequest;
 
   if (!borrowers.length) {
     return (
@@ -52,12 +56,15 @@ const BorrowersTab = props => {
           style={{ width: '50px', height: '50px', color: 'rgba(0,0,0,0.5)' }}
         />
         <h3 className="secondary">Aucun assuré pour l'instant</h3>
-        <BorrowerAdder insuranceRequestId={insuranceRequestId} />
+        <BorrowerAdder
+          insuranceRequestId={insuranceRequestId}
+          userId={userId}
+        />
       </div>
     );
   }
 
-  const tabs = getTabs({ borrowers, insuranceRequest });
+  const tabs = getTabs({ borrowers, insuranceRequest, userId });
 
   return <Tabs tabs={tabs} disableTouchRipple />;
 };

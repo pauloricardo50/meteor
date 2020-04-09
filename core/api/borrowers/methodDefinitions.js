@@ -38,5 +38,5 @@ export const getReusableBorrowers = new Method({
     loanId: Match.Maybe(String),
     insuranceRequestId: Match.Maybe(String),
   },
-  // doNotRefetchQueries: true,
+  doNotRefetchQueries: true,
 });

@@ -7,7 +7,10 @@ import T from 'core/components/Translation';
 
 import BorrowerHeaderDetails from './BorrowerHeaderDetails';
 
-const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
+const BorrowerHeader = ({
+  tabId,
+  loan: { _id: loanId, borrowers, user: { _id: userId } = {} },
+}) => (
   <header className="borrower-header borrower-header">
     <div className="borrower-header__row flex">
       {borrowers.map((borrower, borrowerIndex) => (
@@ -24,6 +27,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
         <div className="borrower-adder col--50">
           <BorrowerAdder
             loanId={loanId}
+            userId={userId}
             TriggerComponent={
               <Button primary label={<T id="BorrowerAdder.label" />} />
             }
