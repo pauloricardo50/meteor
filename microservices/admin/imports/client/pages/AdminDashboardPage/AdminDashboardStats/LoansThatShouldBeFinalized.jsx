@@ -19,7 +19,7 @@ const LoansThatShouldBeFinalized = ({ showAll }) => {
     params: {
       $filters: {
         anonymous: { $ne: true },
-        status: { $ne: LOAN_STATUS.FINALIZED },
+        status: { $in: [LOAN_STATUS.BILLING] },
       },
       name: 1,
       borrowers: { name: 1 },
