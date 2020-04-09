@@ -3,7 +3,7 @@ const yargs = require('yargs');
 const fs = require('fs');
 const ejs = require('ejs');
 const { spawnSync } = require('child_process');
-const microservices = require('./microservices');
+const microservices = require('./utils/microservices');
 const { runMup, getFullCommand } = require('./utils/run-mup');
 const { removePrepareBundleLock } = require('./utils/prepare-bundle-lock');
 

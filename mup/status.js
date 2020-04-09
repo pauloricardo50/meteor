@@ -1,5 +1,5 @@
 const sh = require('shelljs');
-const microservices = require('./microservices');
+const microservices = require('./utils/microservices');
 const { runMup } = require('./utils/run-mup');
 
 const environments = Object.keys(microservices);
