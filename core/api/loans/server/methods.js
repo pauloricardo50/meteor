@@ -19,6 +19,7 @@ import {
   duplicateStructure,
   loanDelete,
   loanInsertBorrowers,
+  loanLinkBorrower,
   loanLinkPromotion,
   loanRemoveAdminNote,
   loanSetAdminNote,
@@ -342,4 +343,9 @@ generateDisbursedSoonLoansTasks.setHandler(context => {
 loanSetAssignees.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.setAssignees(params);
+});
+
+loanLinkBorrower.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  return LoanService.linkBorrower(params);
 });

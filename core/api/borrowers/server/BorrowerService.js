@@ -1,5 +1,8 @@
+import { Meteor } from 'meteor/meteor';
+
 import { adminBorrower } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
+import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import Borrowers from '../borrowers';
@@ -84,27 +87,41 @@ export class BorrowerService extends CollectionService {
   pullValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pull: object });
 
-  getReusableBorrowers({ loanId, borrowerId }) {
-    // borrowerId can be the previous removed borrower, and therefore
-    // this line will fail if we don't provide a default empty object
-    const { userId, loans } = this.get(borrowerId, adminBorrower()) || {};
-    if (!userId) {
-      return { borrowers: [], isLastLoan: true };
+  getReusableBorrowers({ loanId, insuranceRequestId }) {
+    let userId;
+    if (loanId) {
+      const { user } = LoanService.get(loanId, { user: { _id: 1 } });
+      userId = user?._id;
+    } else if (insuranceRequestId) {
+      const { user } = InsuranceRequestService.get(insuranceRequestId, {
+        user: { _id: 1 },
+      });
+      userId = user?._id;
     }
 
-    const userBorrowers = this.fetch({
+    if (!userId) {
+      throw new Meteor.Error('No userId found');
+    }
+
+    const borrowers = this.fetch({
       $filters: { userId },
       name: 1,
-      loans: { name: 1 },
+      loans: { _id: 1, name: 1 },
+      insuranceRequests: { _id: 1, name: 1 },
     });
-    const loan = LoanService.get(loanId, { borrowerIds: 1 });
-    const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 
-    const borrowersNotOnLoan = userBorrowers.filter(
-      ({ _id }) => !loan.borrowerIds.includes(_id),
+    const filteredBorrowers = borrowers.filter(
+      ({ loans = [], insuranceRequests = [] }) => {
+        const isInLoan = loanId && loans.some(({ _id }) => _id === loanId);
+        const isInInsuranceRequest =
+          insuranceRequestId &&
+          insuranceRequests.some(({ _id }) => _id === insuranceRequestId);
+
+        return !isInLoan && !isInInsuranceRequest;
+      },
     );
 
-    return { borrowers: borrowersNotOnLoan, isLastLoan };
+    return filteredBorrowers;
   }
 
   cleanUpMortgageNotes({ borrowerId }) {

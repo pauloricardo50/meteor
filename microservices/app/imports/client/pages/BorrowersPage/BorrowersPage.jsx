@@ -1,20 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import BorrowerAdder from 'core/components/BorrowerAdder';
+import Icon from 'core/components/Icon';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import PercentWithStatus from 'core/components/PercentWithStatus';
 import Calculator from 'core/utils/Calculator';
-import BorrowersAdder from '../../components/BorrowersAdder/BorrowersAdder';
-import ReturnToDashboard from '../../components/ReturnToDashboard';
-import PageApp from '../../components/PageApp';
-import Info from './Info';
-import Finance from './Finance';
-import BorrowerHeader from './BorrowerHeader';
-import BorrowersPageTitle from './BorrowersPageTitle';
-import BorrowersPageNextTab from './BorrowersPageNextTab';
-import BorrowersPageContainer from './BorrowersPageContainer';
+
 import DeactivatedFormInfo from '../../components/DeactivatedFormInfo';
+import PageApp from '../../components/PageApp';
+import ReturnToDashboard from '../../components/ReturnToDashboard';
+import BorrowerHeader from './BorrowerHeader';
+import BorrowersPageContainer from './BorrowersPageContainer';
+import BorrowersPageNextTab from './BorrowersPageNextTab';
+import BorrowersPageTitle from './BorrowersPageTitle';
+import Finance from './Finance';
+import Info from './Info';
 
 const getTabs = props => {
   const { loan } = props;
@@ -56,11 +58,20 @@ const getTabs = props => {
 const BorrowersPage = props => {
   const {
     tabId,
-    loan: { borrowers, _id: loanId },
+    loan: { borrowers, _id: loanId, user: { _id: userId } = {} },
   } = props;
 
   if (borrowers.length === 0) {
-    return <BorrowersAdder loanId={loanId} />;
+    return (
+      <div className="flex-col center center-align">
+        <Icon
+          type="people"
+          style={{ width: '50px', height: '50px', color: 'rgba(0,0,0,0.5)' }}
+        />
+        <h3 className="secondary">Aucun emprunteur pour l'instant</h3>
+        <BorrowerAdder loanId={loanId} userId={userId} />
+      </div>
+    );
   }
 
   const tabs = getTabs(props);

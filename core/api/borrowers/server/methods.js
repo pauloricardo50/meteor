@@ -47,7 +47,14 @@ pullBorrowerValue.setHandler((context, params) => {
   return BorrowerService.pullValue(params);
 });
 
-getReusableBorrowers.setHandler((context, params) => {
-  SecurityService.loans.isAllowedToUpdate(params.loanId);
-  return BorrowerService.getReusableBorrowers({ ...params });
+getReusableBorrowers.setHandler(({ userId }, params) => {
+  const { loanId, insuranceRequestId } = params;
+
+  if (loanId) {
+    SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  } else if (insuranceRequestId) {
+    SecurityService.checkUserIsAdmin(userId);
+  }
+
+  return BorrowerService.getReusableBorrowers(params);
 });
