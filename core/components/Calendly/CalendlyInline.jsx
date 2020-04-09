@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CalendlyContainer from './CalendlyContainer';
 
@@ -7,34 +7,29 @@ const defaultStyles = {
   height: '630px',
 };
 
-class CalendlyInline extends React.Component {
-  constructor(props) {
-    super(props);
-    this.parentContainerRef = React.createRef();
-  }
+const CalendlyInline = ({ url, scriptLoaded, loadScript, styles, onEventScheduled = () => ({}), prefill }) => {
+  const parentContainerRef = React.createRef();
 
-  componentDidMount() {
-    const { url, scriptSource, loadScript } = this.props;
-    if (!document.querySelector(`script[src="${scriptSource}"]`)) {
+  useEffect(() => {
+    if (!scriptLoaded) {
       loadScript();
     } else {
       window.Calendly.initInlineWidget({
         url,
-        parentElement: this.parentContainerRef.current,
+        parentElement: parentContainerRef.current,
+        prefill,
       });
     }
-  }
+  });
 
-  render() {
-    const { styles, url } = this.props;
-    return (
-      <div
-        style={styles || defaultStyles}
-        data-url={url}
-        ref={this.parentContainerRef}
-      />
-    );
-  }
+  return (
+    <div
+      style={styles || defaultStyles}
+      data-url={url}
+      ref={parentContainerRef}
+    />
+  );
+
 }
 
 export default CalendlyContainer(CalendlyInline);

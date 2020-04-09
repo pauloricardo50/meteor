@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { withState } from 'recompose';
+import React, { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import CountUp from 'react-countup';
+import { withState } from 'recompose';
 
 import useMedia from '../../hooks/useMedia';
 import Calculator from '../../utils/Calculator';
-import Toggle from '../Toggle';
 import Button from '../Button';
+import Toggle from '../Toggle';
 import T, { Money } from '../Translation';
 
 const MaxPropertyValueResultsToggle = ({

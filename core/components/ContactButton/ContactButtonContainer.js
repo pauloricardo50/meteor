@@ -1,8 +1,8 @@
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
-import { employeesByEmail, EPOTEK_NUMBER } from 'core/arrays/epotekEmployees';
-import { userImpersonatedSession } from 'core/api/sessions/queries';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
+import { userImpersonatedSession } from 'core/api/sessions/queries';
+import { EPOTEK_NUMBER, employeesByEmail } from 'core/arrays/epotekEmployees';
 
 const withImpersonatedSession = withSmartQuery({
   query: userImpersonatedSession,
@@ -19,12 +19,7 @@ const ContactButtonContainer = compose(
       staff = employeesByEmail[currentUser.assignedEmployee.email];
     }
     if (!staff) {
-      staff = {
-        ...employeesByEmail['lydia@e-potek.ch'],
-        phoneNumber: EPOTEK_NUMBER,
-        email: 'financement@e-potek.ch',
-        calendly: undefined,
-      };
+      staff = employeesByEmail['financement@e-potek.ch'];
     }
     return { staff };
   }),

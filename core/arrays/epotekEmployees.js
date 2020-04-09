@@ -89,6 +89,13 @@ const employees = [
     title: 'Comptabilité & Finance',
     gender: 'F',
   },
+  {
+    email: 'financement@e-potek.ch',
+    src: '/img/epotek-logo.png',
+    name: 'e-Potek',
+    phoneNumber: EPOTEK_NUMBER,
+    calendly: 'https://calendly.com/epotek-geneve',
+  }
 ];
 
 export const employeesByEmail = employees.reduce(
