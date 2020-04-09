@@ -7,7 +7,7 @@ import Link from '../Link';
 import T from '../Translation';
 import Accounts from './Accounts';
 
-const LoginPageRight = ({ path, push }) => {
+const LoginPageRight = ({ path, push, onSignInSuccess }) => {
   const isApp = Meteor.microservice === 'app';
   return (
     <div className="right">
@@ -38,7 +38,12 @@ const LoginPageRight = ({ path, push }) => {
           )}
         </span>
         <Accounts.ui.LoginForm
-          onSignedInHook={() => push(path || '/')}
+          onSignedInHook={() => {
+            push(path || '/');
+            if (onSignInSuccess) {
+              onSignInSuccess();
+            }
+          }}
           onPostSignUpHook={() => {
             push(path || '/');
             sendVerificationLink.run({});
