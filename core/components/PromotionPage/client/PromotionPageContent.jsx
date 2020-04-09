@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { createRoute } from '../../../utils/routerUtils';
-import Switch from '../../BaseRouter/Switch';
 import Route from '../../BaseRouter/Route';
+import Switch from '../../BaseRouter/Switch';
+import PromotionCustomers from './PromotionCustomers/loadable';
+import PromotionFiles from './PromotionFiles';
+import PromotionManagement from './PromotionManagement/loadable';
+import PromotionMap from './PromotionMap/loadable';
 import PromotionPageOverview from './PromotionPageOverview';
 import PromotionPartners from './PromotionPartners';
-import PromotionFiles from './PromotionFiles';
 import PromotionUsers from './PromotionUsers/loadable';
-import PromotionCustomers from './PromotionCustomers/loadable';
-import PromotionMap from './PromotionMap/loadable';
-import PromotionManagement from './PromotionManagement/loadable';
 
 const TABS_COMPONENTS = {
   map: PromotionMap,

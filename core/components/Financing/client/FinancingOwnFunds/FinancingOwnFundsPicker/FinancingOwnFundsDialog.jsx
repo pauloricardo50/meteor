@@ -1,18 +1,18 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import T from '../../../../Translation';
+import FinancingOwnFundsActions from './FinancingOwnFundsActions';
 import FinancingOwnFundsPickerContainer, {
   FIELDS,
 } from './FinancingOwnFundsPickerContainer';
-import FinancingOwnFundsActions from './FinancingOwnFundsActions';
 import FinancingOwnFundsPickerForm from './FinancingOwnFundsPickerForm';
-import OwnFundsCompleter from './OwnFundsCompleter';
+import { calculateRemainingFunds } from './FinancingOwnFundsPickerHelpers';
 import FinancingOwnFundsPledgeWarning from './FinancingOwnFundsPledgeWarning';
 import FinancingOwnFundsWithdrawWarning from './FinancingOwnFundsWithdrawWarning';
-import { calculateRemainingFunds } from './FinancingOwnFundsPickerHelpers';
+import OwnFundsCompleter from './OwnFundsCompleter';
 
 const FinancingOwnFundsDialog = props => {
   const {

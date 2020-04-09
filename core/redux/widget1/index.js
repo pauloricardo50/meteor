@@ -1,6 +1,6 @@
-import * as _widget1Selectors from './widget1Selectors';
 import * as _widget1Actions from './widget1Actions';
 import * as _widget1Constants from './widget1Constants';
+import * as _widget1Selectors from './widget1Selectors';
 import * as _widget1Types from './widget1Types';
 
 export { default as Widget1Suggester } from './Widget1Suggester';

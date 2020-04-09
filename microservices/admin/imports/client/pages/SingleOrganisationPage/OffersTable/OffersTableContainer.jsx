@@ -26,6 +26,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
     lender: { contact, loan },
     feedback,
   } = offer;
+
   return {
     id: offerId,
     columns: [
@@ -44,8 +45,8 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
         ),
       },
       {
-        raw: contact.name,
-        label: <CollectionIconLink relatedDoc={contact} />,
+        raw: contact?.name,
+        label: contact && <CollectionIconLink relatedDoc={contact} />,
       },
       {
         raw: feedback,

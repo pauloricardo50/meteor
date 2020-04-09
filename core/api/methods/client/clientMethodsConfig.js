@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { Method } from '../methods';
+
 import ClientEventService, {
   CALLED_METHOD,
 } from '../../events/ClientEventService';
 import { logError } from '../../slack/methodDefinitions';
 import { refetchQueries } from '../clientQueryManager';
+import { Method } from '../methods';
 
 const shouldLogErrorsToConsole =
   (Meteor.isDevelopment || Meteor.isStaging || Meteor.isDevEnvironment) &&

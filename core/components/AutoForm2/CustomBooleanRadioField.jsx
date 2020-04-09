@@ -1,8 +1,8 @@
+import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioMaterial from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import React from 'react';
 import { connectField, filterDOMProps } from 'uniforms';
 import { wrapField } from 'uniforms-material';
 

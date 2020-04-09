@@ -3,11 +3,11 @@ import { Mongo } from 'meteor/mongo';
 
 import moment from 'moment';
 
-import { readFileBuffer, removeFile } from 'core/utils/filesUtils';
-import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
-import { getSimpleAuthToken } from 'core/api/RESTAPI/server/helpers';
-import Intl from 'core/utils/server/intl';
-import { asyncForEach } from 'core/api/helpers';
+import { readFileBuffer, removeFile } from '../../../utils/filesUtils';
+import Intl from '../../../utils/server/intl';
+import { asyncForEach } from '../../helpers/index';
+import { getSimpleAuthToken } from '../../RESTAPI/server/helpers';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
 

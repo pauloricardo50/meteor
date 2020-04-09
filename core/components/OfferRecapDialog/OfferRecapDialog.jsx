@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Dialog from '../Material/Dialog';
 import Button from '../Button';
+import Dialog from '../Material/Dialog';
 import T from '../Translation';
 import OfferRecapDialogContainer from './OfferRecapDialogContainer';
 import OfferRecapDialogContent from './OfferRecapDialogContent';

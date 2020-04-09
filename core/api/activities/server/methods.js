@@ -3,8 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import SecurityService from '../../security';
 import {
   activityInsert,
-  activityUpdate,
   activityRemove,
+  activityUpdate,
 } from '../methodDefinitions';
 import ActivityService from './ActivityService';
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import T from '../Translation';
-import TableHeader from './TableHeader';
 import TableBody from './TableBody';
-import TableFooter from './TableFooter';
-import { ORDER, sortData } from './tableHelpers';
 import TableCustom from './TableCustom';
+import TableFooter from './TableFooter';
+import TableHeader from './TableHeader';
+import { ORDER, sortData } from './tableHelpers';
 
 export default class Table extends Component {
   constructor(props) {

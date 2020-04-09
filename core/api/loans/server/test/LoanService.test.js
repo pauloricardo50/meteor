@@ -28,6 +28,10 @@ import {
   RESIDENCE_TYPE,
 } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
+import {
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+} from '../../../revenues/revenueConstants';
 import SlackService from '../../../slack/server/SlackService';
 import TaskService from '../../../tasks/server/TaskService';
 import UserService from '../../../users/server/UserService';
@@ -2105,6 +2109,105 @@ describe('LoanService', function() {
       });
 
       expect(selectedLenderOrganisation).to.equal(undefined);
+    });
+  });
+
+  describe('setStatusToFinalizedIfRequired', () => {
+    it('sets the status to FINALIZED if every revenue is CLOSED', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: [
+            { status: REVENUE_STATUS.CLOSED },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.FINALIZED);
+    });
+
+    it('adds the activity', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          status: LOAN_STATUS.BILLING,
+          revenues: [
+            { status: REVENUE_STATUS.CLOSED },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { activities = [] } = LoanService.get('loan', {
+        activities: { title: 1, description: 1 },
+      });
+      expect(activities.length).to.equal(2);
+      expect(activities[1]).to.deep.include({
+        title: 'Statut modifié',
+        description:
+          'Facturation -> Finalisé, automatiquement car tous les revenus ont été encaissés',
+      });
+    });
+
+    it('does not set the status to FINALIZED if every revenue is not CLOSED', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: [
+            { status: REVENUE_STATUS.EXPECTED },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.LEAD);
+    });
+
+    it('does not set the status to FINALIZED if there is an insurance revenue', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: [
+            { status: REVENUE_STATUS.EXPECTED },
+            { status: REVENUE_STATUS.CLOSED, type: REVENUE_TYPES.INSURANCE },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.LEAD);
+    });
+
+    it('does not add the activity if the status is already FINALIZED', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          status: LOAN_STATUS.FINALIZED,
+          revenues: [
+            { status: REVENUE_STATUS.EXPECTED },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      const { status, activities = [] } = LoanService.get('loan', {
+        status: 1,
+        activities: { _id: 1 },
+      });
+      expect(status).to.equal(LOAN_STATUS.FINALIZED);
+      expect(activities.length).to.equal(1);
     });
   });
 });

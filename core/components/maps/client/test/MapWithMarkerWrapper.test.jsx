@@ -2,11 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 
-import { shallow } from 'core/utils/testHelpers/enzyme';
-import MapWithMarkerWrapper from '../../MapWithMarkerWrapper';
-import MapWithMarker from '../../MapWithMarker';
-
+import { shallow } from '../../../../utils/testHelpers';
 import { getAddressString } from '../../googleMapsHelpers';
+import MapWithMarker from '../../MapWithMarker';
+import MapWithMarkerWrapper from '../../MapWithMarkerWrapper';
 
 const component = props => shallow(<MapWithMarkerWrapper {...props} />);
 

@@ -1,6 +1,5 @@
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../api/insuranceRequests/insuranceRequestConstants';
+import { useStaticMeteorData } from '../../hooks/useMeteorData';
 import { getInsuranceRequestContacts } from './helpers';
 
 const useInsuranceRequestContacts = insuranceRequestId => {

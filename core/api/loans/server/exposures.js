@@ -1,11 +1,12 @@
-import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
+import { LOAN_STATUS } from '../loanConstants';
 import {
   adminLoans,
   anonymousLoan,
@@ -17,12 +18,11 @@ import {
   proPropertyLoans,
   userLoans,
 } from '../queries';
-import { LOAN_STATUS } from '../loanConstants';
+import { getProLoanFilters } from './exposureHelpers';
 import {
   proPromotionLoansResolver,
   proPropertyLoansResolver,
 } from './resolvers';
-import { getProLoanFilters } from './exposureHelpers';
 
 exposeQuery({
   query: adminLoans,

@@ -1,17 +1,18 @@
 import { compose } from 'recompose';
+
 import {
-  makeSelectValue,
-  selectAutoValues,
-  makeWidget1Selector,
-} from './widget1Selectors';
-import {
-  SALARY,
+  CURRENT_LOAN,
   FORTUNE,
   PROPERTY,
-  CURRENT_LOAN,
-  WANTED_LOAN,
   PURCHASE_TYPE,
+  SALARY,
+  WANTED_LOAN,
 } from './widget1Constants';
+import {
+  makeSelectValue,
+  makeWidget1Selector,
+  selectAutoValues,
+} from './widget1Selectors';
 import Widget1Suggester from './Widget1Suggester';
 
 // For each name, there are 3 suggesters, based on which other values are

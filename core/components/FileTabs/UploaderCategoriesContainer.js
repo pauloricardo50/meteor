@@ -1,4 +1,5 @@
 import { withProps } from 'recompose';
+
 import { DOCUMENTS_CATEGORIES } from '../../api/files/fileConstants';
 
 const getDocumentsForCategory = ({ documents, documentsCategory, category }) =>

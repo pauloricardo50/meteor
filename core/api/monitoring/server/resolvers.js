@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 
 import merge from 'lodash/merge';
 
-import {
-  REVENUE_STATUS,
-  COMMISSION_STATUS,
-} from 'core/api/revenues/revenueConstants';
-import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
+import {
+  COMMISSION_STATUS,
+  REVENUE_STATUS,
+} from '../../revenues/revenueConstants';
 
 const defaultFilters = {
   status: { $nin: [LOAN_STATUS.TEST] },

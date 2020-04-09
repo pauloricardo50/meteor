@@ -3,9 +3,8 @@ import { injectIntl } from 'react-intl';
 import { scroller } from 'react-scroll';
 import { compose, withProps } from 'recompose';
 
-import withHider from 'core/containers/withHider';
-
 import { PROMOTION_LOTS_COLLECTION } from '../../../../api/promotionLots/promotionLotConstants';
+import withHider from '../../../../containers/withHider';
 import Chip from '../../../Material/Chip';
 import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';

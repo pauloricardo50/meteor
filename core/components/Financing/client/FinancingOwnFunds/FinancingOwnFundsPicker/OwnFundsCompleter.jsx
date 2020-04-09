@@ -1,9 +1,8 @@
 import React from 'react';
 
-import T from '../../../../Translation';
-
-import OwnFundsCompleterContainer from './OwnFundsCompleterContainer';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import T from '../../../../Translation';
+import OwnFundsCompleterContainer from './OwnFundsCompleterContainer';
 
 const OwnFundsCompleter = ({ required, current }) => (
   <div className="own-funds-completer">

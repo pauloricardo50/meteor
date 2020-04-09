@@ -1,10 +1,10 @@
-import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../../pdfConstants';
+import { MARGIN_BOTTOM, MARGIN_SIDE, MARGIN_TOP } from '../../../pdfConstants';
 import BorrowersPageStyles from '../pages/BorrowersPdfPage/styles';
-import PDFTableStyles from '../PdfTable/PdfTableStyles';
-import PdfPageStyles from '../PdfPage/PdfPageStyles';
+import LenderRulesPageStyles from '../pages/LenderRulesPdfPage/stylesheet';
 import PropertyPageStyles from '../pages/PropertyPdfPage/stylesheet';
 import StructurePageStyles from '../pages/StructurePdfPage/stylesheet';
-import LenderRulesPageStyles from '../pages/LenderRulesPdfPage/stylesheet';
+import PdfPageStyles from '../PdfPage/PdfPageStyles';
+import PDFTableStyles from '../PdfTable/PdfTableStyles';
 import { LoanBankCoverStyles } from './LoanBankCover';
 
 const stylesheet = `

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import T from '../../../Translation';
 import TableWithModal from '../../../Table/TableWithModal';
-import UserPromotionOptionsTableContainer from './UserPromotionOptionsTableContainer';
+import T from '../../../Translation';
 import PromotionOptionDialog from './PromotionOptionDialog';
+import UserPromotionOptionsTableContainer from './UserPromotionOptionsTableContainer';
 
 const UserPromotionOptionsTable = ({
   rows,

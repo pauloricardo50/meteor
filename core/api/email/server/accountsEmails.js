@@ -1,9 +1,9 @@
-import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
-import ActivityService from 'core/api/activities/server/ActivityService';
-import { createMeteorAsyncFunction } from 'core/api/helpers';
-import { FROM_DEFAULT, EMAIL_IDS, EMAIL_PARTS } from '../emailConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import { createMeteorAsyncFunction } from '../../helpers';
+import { EMAIL_IDS, EMAIL_PARTS, FROM_DEFAULT } from '../emailConstants';
 import EmailService from './EmailService';
 
 // Meteor default emails
@@ -72,7 +72,8 @@ Accounts.generateOptionsForEmail = (email, user, url, reason) => {
 
   // Don't do this in tests, as it throws in nodemailer
   // https://github.com/nodemailer/nodemailer/issues/615
-  if (reason === 'enrollAccount' && !Meteor.isTest) {
+  // Don't do this locally either, there's no point
+  if (reason === 'enrollAccount' && !Meteor.isTest && !Meteor.isDevelopment) {
     return {
       ...defaultOptions,
       attachments: [

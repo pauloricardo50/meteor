@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button';
-import { expect } from 'chai';
 /* eslint-env mocha */
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
 import { TextField } from 'uniforms-material';
 

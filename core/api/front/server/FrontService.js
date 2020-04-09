@@ -5,11 +5,11 @@ import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 import queryString from 'query-string';
 
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
-import { ddpWithUserId } from '../../methods/methodHelpers';
 import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
+import { ddpWithUserId } from '../../methods/methodHelpers';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 
 const EPOTEK_IPS = ['213.3.47.70'];
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;

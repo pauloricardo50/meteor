@@ -1,9 +1,9 @@
 import React from 'react';
-
 import { lifecycle } from 'recompose';
+
+import Button from '../../../../Button';
 import Dialog from '../../../../Material/Dialog';
 import T from '../../../../Translation';
-import Button from '../../../../Button';
 import OfferPickerDialogContent from './OfferPickerDialogContent';
 
 const OfferPickerDialog = props => {

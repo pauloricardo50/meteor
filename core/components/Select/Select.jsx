@@ -1,13 +1,12 @@
 import React from 'react';
+import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 
-import MenuItem from '@material-ui/core/MenuItem';
-
-import MuiSelect from '../Material/Select';
-import FormHelperText from '../Material/FormHelperText';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 import FormControl from '../Material/FormControl';
+import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import MuiSelect from '../Material/Select';
 import SelectContainer from './SelectContainer';
 
 const makeRenderValue = ({ multiple, rawOptions }) => {

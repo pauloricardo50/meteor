@@ -1,8 +1,8 @@
-import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 import {
-  MORTGAGE_NOTE_TYPES,
   MORTGAGE_NOTE_CATEGORIES,
-} from 'core/api/helpers/sharedSchemaConstants';
+  MORTGAGE_NOTE_TYPES,
+} from '../api/helpers/sharedSchemaConstants';
+import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
 
 const getRefinancingFormArray = ({ loan }) => [
   {

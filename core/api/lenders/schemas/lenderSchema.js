@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { LENDER_STATUS } from '../lenderConstants';
 

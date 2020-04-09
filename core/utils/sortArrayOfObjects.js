@@ -1,6 +1,6 @@
-import orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import orderBy from 'lodash/orderBy';
 
 export const ORDER = {
   ASC: 'asc',

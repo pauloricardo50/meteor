@@ -3,8 +3,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { STEPS } from 'core/api/loans/loanConstants';
-
+import { STEPS } from '../../../loans/loanConstants';
 import Loans from '../../../loans/loans';
 import { down, up } from '../9';
 

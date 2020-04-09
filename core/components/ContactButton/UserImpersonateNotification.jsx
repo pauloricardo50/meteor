@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
-import { employeesById } from 'core/arrays/epotekEmployees';
-import { followImpersonatedSession } from 'core/api/sessions/methodDefinitions';
-import Dialog from '../Material/Dialog';
+import { followImpersonatedSession } from '../../api/sessions/methodDefinitions';
+import { employeesById } from '../../arrays/epotekEmployees';
 import Button from '../Button';
 import Icon from '../Icon';
-import { styles } from './fabStyles';
+import Dialog from '../Material/Dialog';
 import T from '../Translation';
+import { styles } from './fabStyles';
 
 const useStyles = makeStyles(styles);
 

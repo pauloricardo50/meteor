@@ -1,10 +1,10 @@
-import TaskService from '../../tasks/server/TaskService';
-import { TASK_STATUS } from '../../tasks/taskConstants';
 import ActivityService from '../../activities/server/ActivityService';
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
 import CollectionService from '../../helpers/server/CollectionService';
 import RevenueService from '../../revenues/server/RevenueService';
+import TaskService from '../../tasks/server/TaskService';
+import { TASK_STATUS } from '../../tasks/taskConstants';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 import Notifications from '../notifications';
 
 class NotificationService extends CollectionService {

@@ -2,23 +2,23 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import React, { useContext, useState } from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
-import Tooltip from '@material-ui/core/Tooltip';
 
-import DialogForm from '../../ModalManager/DialogForm';
-import { shouldDisplayFile } from '../../../api/files/fileHelpers';
-import { ModalManagerContext } from '../../ModalManager';
-import { ROLES } from '../../../api/users/userConstants';
 import { FILE_STATUS } from '../../../api/files/fileConstants';
+import { shouldDisplayFile } from '../../../api/files/fileHelpers';
 import { getSignedUrl } from '../../../api/files/methodDefinitions';
+import { ROLES } from '../../../api/users/userConstants';
 import { FileViewerContext } from '../../../containers/FileViewerContext';
-import T from '../../Translation';
-import IconButton from '../../IconButton';
-import Downloader from '../../Downloader';
-import FileStatusSetter from './FileStatusSetter';
 import Button from '../../Button';
+import Downloader from '../../Downloader';
+import IconButton from '../../IconButton';
+import { ModalManagerContext } from '../../ModalManager';
+import DialogForm from '../../ModalManager/DialogForm';
+import T from '../../Translation';
 import FileRolesSetter from './FileRolesSetter';
+import FileStatusSetter from './FileStatusSetter';
 
 const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();

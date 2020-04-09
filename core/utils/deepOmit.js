@@ -1,5 +1,5 @@
-import unset from 'lodash/unset';
 import isObject from 'lodash/isObject';
+import unset from 'lodash/unset';
 
 // Omit keys from an object recursively
 const deepOmit = (object, keys) => {

@@ -1,6 +1,6 @@
-import PromotionSchema from './schemas/PromotionSchema';
-import { PROMOTIONS_COLLECTION } from './promotionConstants';
 import { createCollection } from '../helpers/collectionHelpers';
+import { PROMOTIONS_COLLECTION } from './promotionConstants';
+import PromotionSchema from './schemas/PromotionSchema';
 
 const Promotions = createCollection(PROMOTIONS_COLLECTION);
 

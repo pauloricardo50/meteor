@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const borrowerInsert = new Method({
@@ -33,6 +34,9 @@ export const pullBorrowerValue = new Method({
 
 export const getReusableBorrowers = new Method({
   name: 'getReusableBorrowers',
-  params: { loanId: String, borrowerId: String },
+  params: {
+    loanId: Match.Maybe(String),
+    insuranceRequestId: Match.Maybe(String),
+  },
   doNotRefetchQueries: true,
 });

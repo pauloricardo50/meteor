@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import RequiredOwnFundsBody from '../RequiredOwnFundsBody';
 import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../../../../config/financeConstants';
 import { Calculator } from '../../../../../utils/Calculator';
+import { shallow } from '../../../../../utils/testHelpers/enzyme';
+import RequiredOwnFundsBody from '../RequiredOwnFundsBody';
 
 describe('RequiredOwnFunds', () => {
   let props;

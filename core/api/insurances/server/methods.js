@@ -1,10 +1,11 @@
+import Security from '../../security/Security';
 import {
   insuranceInsert,
   insuranceModify,
-  insuranceSetAdminNote,
+  insuranceRemove,
   insuranceRemoveAdminNote,
+  insuranceSetAdminNote,
 } from '../methodDefinitions';
-import Security from '../../security/Security';
 import InsuranceService from './InsuranceService';
 
 insuranceInsert.setHandler(({ userId }, params) => {
@@ -25,4 +26,9 @@ insuranceSetAdminNote.setHandler(({ userId }, params) => {
 insuranceRemoveAdminNote.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return InsuranceService.removeAdminNote(params);
+});
+
+insuranceRemove.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  return InsuranceService.remove(params);
 });

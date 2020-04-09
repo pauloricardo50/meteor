@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import IconButton from 'core/components/IconButton';
+import IconButton from '../../IconButton';
 import Widget1InputsResetContainer from './Widget1InputsResetContainer';
 
 const Widget1InputsReset = ({ onClick }) => (

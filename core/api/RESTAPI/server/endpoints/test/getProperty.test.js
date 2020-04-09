@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Random } from 'meteor/random';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import { appendFileSync } from 'fs';

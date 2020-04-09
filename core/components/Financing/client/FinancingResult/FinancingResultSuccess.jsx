@@ -1,14 +1,14 @@
 import React from 'react';
-import { compose } from 'recompose';
 import cx from 'classnames';
+import { compose } from 'recompose';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import SingleStructureContainer from '../containers/SingleStructureContainer';
+import { toMoney } from '../../../../utils/conversionFunctions';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
+import SingleStructureContainer from '../containers/SingleStructureContainer';
 import {
   getAmortization,
-  getPropertyExpenses,
   getInterests,
+  getPropertyExpenses,
 } from './financingResultHelpers';
 
 const FinancingResultSuccess = ({ className, ...props }) => {

@@ -1,4 +1,4 @@
-import loadable from 'core/utils/loadable';
+import loadable from '../../utils/loadable';
 
 export default loadable({
   req: () => require('./index'),

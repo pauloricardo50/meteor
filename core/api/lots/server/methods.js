@@ -1,6 +1,6 @@
-import SecurityService from '../../security';
 import PromotionService from '../../promotions/server/PromotionService';
-import { lotInsert, lotUpdate, lotRemove } from '../methodDefinitions';
+import SecurityService from '../../security';
+import { lotInsert, lotRemove, lotUpdate } from '../methodDefinitions';
 import LotService from './LotService';
 
 lotInsert.setHandler(({ userId }, { promotionId, lot }) => {

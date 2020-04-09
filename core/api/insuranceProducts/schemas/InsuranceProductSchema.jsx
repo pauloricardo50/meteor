@@ -1,12 +1,12 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { updatedAt, createdAt } from '../../helpers/sharedSchemas';
+import T from '../../../components/Translation';
+import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import {
   INSURANCE_PRODUCT_CATEGORIES,
   INSURANCE_PRODUCT_FEATURES,
 } from '../insuranceProductConstants';
-import T from '../../../components/Translation';
 
 const InsuranceProductSchema = new SimpleSchema({
   createdAt,

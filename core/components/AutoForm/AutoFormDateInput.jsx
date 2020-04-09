@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import AutoFormTextInput from './AutoFormTextInput';
 import DatePicker from '../DateInput/DatePicker';
+import AutoFormTextInput from './AutoFormTextInput';
 
 class AutoFormDateInput extends Component {
   constructor() {

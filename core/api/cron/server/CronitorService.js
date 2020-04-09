@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import https from 'https';
 import queryString from 'query-string';
-import SlackService from 'core/api/slack/server/SlackService';
+
+import SlackService from '../../slack/server/SlackService';
 
 const CRONITOR_URL = 'https://cronitor.io';
 const ACTIONS = {
@@ -10,7 +12,7 @@ const ACTIONS = {
   PAUSE: 'pause',
   FAIL: 'fail',
 };
-const REQ_TIMEOUT = 10000;
+const REQ_TIMEOUT = 30000;
 
 export default class CronitorService {
   constructor({ id, authKey, name }) {
@@ -98,13 +100,16 @@ export default class CronitorService {
         });
     });
 
-    const timeout = new Promise(resolve =>
-      Meteor.setTimeout(() => {
+    let timer;
+    const timeout = new Promise(resolve => {
+      timer = Meteor.setTimeout(() => {
         resolve('timeout');
-      }, REQ_TIMEOUT),
-    );
+      }, REQ_TIMEOUT);
+    });
 
     return Promise.race([promise, timeout]).then(result => {
+      Meteor.clearTimeout(timer);
+
       if (result === 'timeout') {
         throw new Meteor.Error(`${this.name} CRON timed out`);
       }

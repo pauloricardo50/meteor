@@ -1,6 +1,6 @@
-import Organisations from '../organisations';
-import CollectionService from '../../helpers/server/CollectionService';
 import CommissionRateService from '../../commissionRates/server/CommissionRateService';
+import CollectionService from '../../helpers/server/CollectionService';
+import Organisations from '../organisations';
 
 class OrganisationService extends CollectionService {
   constructor() {

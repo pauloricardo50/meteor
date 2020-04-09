@@ -1,6 +1,6 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
+import T from '../../Translation';
 import DeveloperSectionContainer from './DeveloperSectionContainer';
 import GenerateApiKeyPair from './GenerateApiKeyPair';
 

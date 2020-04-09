@@ -1,1 +1,1 @@
-export {default} from './InsuranceRequestTasksTable'
+export { default } from './InsuranceRequestTasksTable';

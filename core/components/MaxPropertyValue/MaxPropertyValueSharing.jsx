@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Button from '../Button';
-import Toggle from '../Toggle';
 import Icon from '../Icon';
+import Dialog from '../Material/Dialog';
+import Toggle from '../Toggle';
 import T from '../Translation';
 import MaxPropertyValueSharingContainer from './MaxPropertyValueSharingContainer';
-import Dialog from '../Material/Dialog';
 
 const getTrigger = ({
   shareSolvency,

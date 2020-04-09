@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 
-import { ModalManagerContext } from 'core/components/ModalManager';
-import DialogForm from 'core/components/ModalManager/DialogForm';
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
+import Button from '../../../Button';
+import { ModalManagerContext } from '../../../ModalManager';
+import DialogForm from '../../../ModalManager/DialogForm';
 import ProPropertyPublicLinkGeneratorContainer from './ProPropertyPublicLinkGeneratorContainer';
 import PublicLink from './PublicLink';
 

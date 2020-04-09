@@ -1,10 +1,10 @@
+import Security from '../../security/Security';
 import {
   insuranceProductInsert,
   insuranceProductRemove,
   insuranceProductUpdate,
 } from '../methodDefinitions';
 import InsuranceProductService from './InsuranceProductService';
-import Security from '../../security/Security';
 
 insuranceProductInsert.setHandler((context, { insuranceProduct }) => {
   Security.checkCurrentUserIsAdmin();

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();

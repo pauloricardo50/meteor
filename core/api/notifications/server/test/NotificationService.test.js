@@ -1,13 +1,14 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import TaskService from 'core/api/tasks/server/TaskService';
-import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import NotificationService from '../NotificationService';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
+import ActivityService from '../../../activities/server/ActivityService';
 import generator from '../../../factories/server';
+import TaskService from '../../../tasks/server/TaskService';
+import { TASK_STATUS } from '../../../tasks/taskConstants';
+import NotificationService from '../NotificationService';
 
 describe('NotificationService', () => {
   const tomorrow = new Date();

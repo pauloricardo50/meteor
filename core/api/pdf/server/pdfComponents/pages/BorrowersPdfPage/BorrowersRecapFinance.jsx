@@ -1,19 +1,19 @@
 import React from 'react';
 import cx from 'classnames';
 
-import T from 'core/components/Translation';
-import PdfTable from '../../PdfTable';
-import { ROW_TYPES } from '../../PdfTable/PdfTable';
+import T from '../../../../../../components/Translation';
 import {
   OTHER_INCOME,
   OWN_FUNDS_TYPES,
 } from '../../../../../borrowers/borrowerConstants';
 import { EXPENSE_TYPES } from '../../../../../lenderRules/lenderRulesConstants';
+import PdfTable from '../../PdfTable';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 import {
-  getBorrowersInfos,
-  makeTableMoneyLine,
-  getFormattedMoneyArray,
   addTableEmptyLine,
+  getBorrowersInfos,
+  getFormattedMoneyArray,
+  makeTableMoneyLine,
   shouldRenderArray,
 } from './borrowersRecapHelpers';
 

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
-import { logError } from 'core/api/slack/methodDefinitions';
+import { logError } from '../../api/slack/methodDefinitions';
+import Button from '../Button';
 import Link from '../Link';
+import T from '../Translation';
 
 const styles = {
   section: {

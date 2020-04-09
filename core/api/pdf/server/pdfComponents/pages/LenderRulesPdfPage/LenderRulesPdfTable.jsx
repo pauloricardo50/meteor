@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
+import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 
 const LenderRulesPdfTable = ({ rows }) => (
   <table className="pdf-table lender-rules-table">

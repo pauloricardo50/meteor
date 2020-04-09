@@ -4,15 +4,15 @@ import { Roles } from 'meteor/alanning:roles';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import SecurityService from '../../security';
 import Intl, { ServerIntlProvider } from '../../../utils/server/intl';
 import ServerEventService from '../../events/server/ServerEventService';
+import SecurityService from '../../security';
 import { ROLES } from '../../users/userConstants';
 import {
-  FROM_DEFAULT,
   CTA_URL_DEFAULT,
   EMAIL_I18N_NAMESPACE,
   EMAIL_PARTS,
+  FROM_DEFAULT,
 } from '../emailConstants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;

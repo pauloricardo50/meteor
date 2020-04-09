@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { ERROR, SUCCESS } from 'core/api/constants';
+
+import { ERROR, SUCCESS } from '../../api/constants';
 import Calculator from '../../utils/Calculator';
-import { T, Percent, MetricArea } from '../Translation';
 import { toMoney } from '../../utils/conversionFunctions';
 import PercentWithStatus from '../PercentWithStatus/PercentWithStatus';
+import { MetricArea, Percent, T } from '../Translation';
 
 export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const bonusIncome = calc.getBonusIncome({ loan });

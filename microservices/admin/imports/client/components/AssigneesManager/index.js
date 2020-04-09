@@ -1,1 +1,1 @@
-export {default} from './AssigneesManager'
+export { default } from './AssigneesManager';

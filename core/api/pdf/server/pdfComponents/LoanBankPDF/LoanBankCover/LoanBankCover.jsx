@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 
-import { PROPERTY_TYPE } from 'core/api/properties/propertyConstants';
 import T from '../../../../../../components/Translation';
 import Calculator from '../../../../../../utils/Calculator';
+import { PROPERTY_TYPE } from '../../../../../properties/propertyConstants';
 import PdfPage from '../../PdfPage';
 import LoanBankCoverHeader from './LoanBankCoverHeader';
 import StructureRecapTable from './StructureRecapTable';

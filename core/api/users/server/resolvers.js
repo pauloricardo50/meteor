@@ -59,4 +59,5 @@ export const incoherentAssigneesResolver = () =>
       },
     },
     { $match: { distinct: 0 } },
+    { $addFields: { _collection: 'users' } },
   ]);

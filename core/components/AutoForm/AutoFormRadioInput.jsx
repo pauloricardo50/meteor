@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import T from '../Translation';
 import RadioButtons from '../RadioButtons';
+import T from '../Translation';
 import ValidIcon from './ValidIcon';
 
 export default class AutoFormRadioInput extends Component {

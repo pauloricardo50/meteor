@@ -1,29 +1,33 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import omit from 'lodash/omit';
-import { appendFileSync } from 'fs';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
+import { expect } from 'chai';
+import { appendFileSync } from 'fs';
+import omit from 'lodash/omit';
+
 import {
-  REST_API_ERRORS,
-  HTTP_STATUS_CODES,
-  FILE_UPLOAD_DIR,
-} from '../restApiConstants';
-import RESTAPI from '../RESTAPI';
+  flushFileUploadDir,
+  makeFileUploadDir,
+} from '../../../../utils/filesUtils';
 import {
-  withMeteorUserId,
   OBJECT_FORMATS,
+  getAPIUser,
   getMatchingPathOptions,
   isAPI,
-  getAPIUser,
+  withMeteorUserId,
 } from '../helpers';
+import RESTAPI from '../RESTAPI';
+import {
+  FILE_UPLOAD_DIR,
+  HTTP_STATUS_CODES,
+  REST_API_ERRORS,
+} from '../restApiConstants';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
   signRequest,
   uploadFile,
 } from './apiTestHelpers.test';

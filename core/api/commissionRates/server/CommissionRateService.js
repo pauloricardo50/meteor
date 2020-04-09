@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import CommissionRates from '../commissionRates';
 import CollectionService from '../../helpers/server/CollectionService';
+import CommissionRates from '../commissionRates';
 
 class CommissionRateService extends CollectionService {
   constructor() {

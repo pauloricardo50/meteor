@@ -1,10 +1,11 @@
 import React from 'react';
-import Button from 'core/components/Button/Button';
+
+import Button from '../../../Button';
 
 const copyLinkToClipboard = link => {
   navigator.clipboard
     .writeText(link)
-    .then(() => import('core/utils/message'))
+    .then(() => import('../../../../utils/message'))
     .then(({ default: message }) => {
       message.success('Lien copié dans le presse-papier !');
     });

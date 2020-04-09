@@ -4,19 +4,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Router } from 'react-router-dom';
 
-import history from '../../utils/history';
 import { InjectCurrentUser } from '../../containers/CurrentUserContext';
-import ErrorBoundary from '../ErrorBoundary';
-import ScrollToTop from '../ScrollToTop';
-import LoginPage from '../LoginPage/loadable';
+import history from '../../utils/history';
 import DisconnectNotification from '../DisconnectNotification';
+import ErrorBoundary from '../ErrorBoundary';
+import LoginPage from '../LoginPage/loadable';
 import MicroserviceHead from '../MicroserviceHead';
-import Switch from './Switch';
-import Route from './Route';
-import LibraryWrappers from './LibraryWrappers';
+import ModalManager from '../ModalManager';
+import ScrollToTop from '../ScrollToTop';
 import GrapherPage from './GrapherPageLoadable';
 import HistoryWatcher from './HistoryWatcher';
-import ModalManager from '../ModalManager';
+import LibraryWrappers from './LibraryWrappers';
+import Route from './Route';
+import Switch from './Switch';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -43,6 +43,7 @@ const BaseRouter = ({
   hasLogin,
   routes,
   currentUser,
+  loginPageProps,
 }) => (
   <ErrorBoundary helper="root">
     <MicroserviceHead />
@@ -77,7 +78,12 @@ const BaseRouter = ({
                     />
                     {/* LoginPage has to be above / path */}
                     {hasLogin && (
-                      <Route exact path="/login" component={LoginPage} />
+                      <Route
+                        exact
+                        path="/login"
+                        component={LoginPage}
+                        {...loginPageProps}
+                      />
                     )}
                     {isDev && (
                       <Route exact path="/grapher" component={GrapherPage} />

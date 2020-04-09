@@ -1,5 +1,6 @@
 import React from 'react';
-import Recap from 'core/components/Recap/Recap';
+
+import Recap from '../../../Recap';
 import PromotionRecapContainer from './PromotionRecapContainer';
 
 const PromotionRecap = ({ recapArray }) => (

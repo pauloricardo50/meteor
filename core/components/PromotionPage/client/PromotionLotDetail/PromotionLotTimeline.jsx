@@ -1,10 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 
-import T, { Money } from '../../../Translation';
 import ConstructionTimeline, {
   ConstructionTimelineItem,
 } from '../../../ConstructionTimeline';
+import T, { Money } from '../../../Translation';
 import { getItemDate } from '../PromotionTimeline';
 
 const PromotionLotTimeline = ({

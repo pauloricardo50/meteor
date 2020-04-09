@@ -1,27 +1,27 @@
+import Security from '../../security/Security';
 import {
   insuranceRequestInsert,
-  insuranceRequestRemove,
-  insuranceRequestUpdate,
-  insuranceRequestSetAdminNote,
-  insuranceRequestRemoveAdminNote,
-  insuranceRequestSetAssignees,
-  insuranceRequestUpdateStatus,
   insuranceRequestInsertBorrower,
   insuranceRequestLinkBorrower,
   insuranceRequestLinkLoan,
   insuranceRequestLinkNewLoan,
+  insuranceRequestRemove,
+  insuranceRequestRemoveAdminNote,
+  insuranceRequestSetAdminNote,
+  insuranceRequestSetAssignees,
+  insuranceRequestUpdate,
+  insuranceRequestUpdateStatus,
 } from '../methodDefinitions';
 import InsuranceRequestService from './InsuranceRequestService';
-import Security from '../../security/Security';
 
 insuranceRequestInsert.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return InsuranceRequestService.insert(params);
 });
 
-insuranceRequestRemove.setHandler(({ userId }, { insuranceRequestId }) => {
+insuranceRequestRemove.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
-  return InsuranceRequestService.remove(insuranceRequestId);
+  return InsuranceRequestService.remove(params);
 });
 
 insuranceRequestUpdate.setHandler(

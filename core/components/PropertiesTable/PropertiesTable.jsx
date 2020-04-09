@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Table from '../Table';
-import PropertiesTableContainer from './PropertiesTableContainer';
-import T from '../Translation';
+import { toMoney } from '../../utils/conversionFunctions';
 import Select from '../Select';
 import MongoRange from '../Slider/MongoRange';
-import { toMoney } from '../../utils/conversionFunctions';
+import Table from '../Table';
 import TableSearch from '../Table/TableSearch';
+import T from '../Translation';
+import PropertiesTableContainer from './PropertiesTableContainer';
 
 export const PropertiesTable = ({
   fetchOrganisationProperties,

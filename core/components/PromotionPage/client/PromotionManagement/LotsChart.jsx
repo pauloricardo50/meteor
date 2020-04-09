@@ -1,8 +1,8 @@
 import React from 'react';
 import { faChartPie } from '@fortawesome/pro-light-svg-icons/faChartPie';
 
-import BaseChart from 'core/components/charts/BaseChart';
-import EmptyChartState from 'core/components/charts/EmptyChartState';
+import BaseChart from '../../../charts/BaseChart';
+import EmptyChartState from '../../../charts/EmptyChartState';
 import LotsChartContainer from './LotsChartContainer';
 
 const LotsChart = ({ config, data = [] }) => (

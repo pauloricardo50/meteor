@@ -1,15 +1,15 @@
 import SecurityService from '../../security';
-import PromotionLotService from './PromotionLotService';
 import {
-  promotionLotInsert,
-  promotionLotUpdate,
-  promotionLotRemove,
   addLotToPromotionLot,
+  cancelPromotionLotReservation,
+  promotionLotInsert,
+  promotionLotRemove,
+  promotionLotUpdate,
   removeLotLink,
   reservePromotionLot,
-  cancelPromotionLotReservation,
   sellPromotionLot,
 } from '../methodDefinitions';
+import PromotionLotService from './PromotionLotService';
 
 promotionLotInsert.setHandler(({ userId }, { promotionLot, promotionId }) => {
   SecurityService.promotions.isAllowedToAddLots({ promotionId, userId });

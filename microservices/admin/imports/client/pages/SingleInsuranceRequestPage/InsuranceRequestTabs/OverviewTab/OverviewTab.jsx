@@ -8,12 +8,14 @@ import AssigneesManager from '../../../../components/AssigneesManager';
 import InsuranceRequestAdminNotes from '../../InsuranceRequestAdminNotes';
 import InsuranceRequestTimeline from '../../InsuranceRequestTimeline';
 import InsuranceRequestLinkedLoan from './InsuranceRequestLinkedLoan';
+import InsuranceRequestRemover from './InsuranceRequestRemover';
 
 const OverviewTab = props => {
   const { insuranceRequest, currentUser } = props;
 
   return (
     <div className="overview-tab">
+      <InsuranceRequestRemover insuranceRequestId={insuranceRequest._id} />
       <div className="admin-section card1" style={{ alignSelf: 'center' }}>
         <div className="flex center-align p-16 sb">
           <InsuranceRequestLinkedLoan insuranceRequest={insuranceRequest} />

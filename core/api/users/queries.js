@@ -4,7 +4,6 @@ import {
   fullUser,
   proUser as proUserFragment,
 } from '../fragments';
-
 import { USER_QUERIES } from './userConstants';
 import Users from '.';
 

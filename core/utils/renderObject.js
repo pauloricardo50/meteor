@@ -1,8 +1,8 @@
 import React from 'react';
-import moment from 'moment';
 import startCase from 'lodash/startCase';
+import moment from 'moment';
 
-import { toMoney } from 'core/utils/conversionFunctions';
+import { toMoney } from './conversionFunctions';
 
 const renderObject = (key, obj) => {
   const value = obj[key];

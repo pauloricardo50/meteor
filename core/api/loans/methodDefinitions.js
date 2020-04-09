@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const loanUpdate = new Method({
@@ -240,4 +241,9 @@ export const loanSetAssignees = new Method({
     note: String,
     updateUserAssignee: Match.Optional(Boolean),
   },
+});
+
+export const loanLinkBorrower = new Method({
+  name: 'loanLinkBorrower',
+  params: { loanId: String, borrowerId: String },
 });

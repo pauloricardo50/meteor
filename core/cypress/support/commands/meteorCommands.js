@@ -1,5 +1,5 @@
 import pollUntilReady from '../../../utils/pollUntilReady';
-import { USER_PASSWORD, USER_EMAIL } from '../../server/e2eConstants';
+import { USER_EMAIL, USER_PASSWORD } from '../../server/e2eConstants';
 // import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
 // You have to have visited the app before this can work

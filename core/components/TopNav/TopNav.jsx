@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
-import TopNavLogo from './TopNavLogo';
 import TopNavButtons from './TopNavButtons';
+import TopNavLogo from './TopNavLogo';
 
 const TopNav = ({ className, rightChildren, children }) => (
   // This overflowX hidden prevents any icon from having tooltips

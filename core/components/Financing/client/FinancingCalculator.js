@@ -1,6 +1,6 @@
-import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
-import Calculator from 'core/utils/Calculator';
-import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
+import Calculator from '../../../utils/Calculator';
+import Calc, { FinanceCalculator } from '../../../utils/FinanceCalculator';
+import { makeArgumentMapper } from '../../../utils/MiddlewareManager/index';
 
 export const getProperty = ({ loan, structureId }) =>
   Calculator.selectProperty({ loan, structureId });

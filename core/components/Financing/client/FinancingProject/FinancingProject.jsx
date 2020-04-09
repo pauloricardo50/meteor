@@ -1,13 +1,13 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import FinancingSection, {
-  FinancingField,
-  CalculatedValue,
-} from '../FinancingSection';
-import FinancingPropertyPicker from './FinancingPropertyPicker';
-import FinancingProjectFees from './FinancingProjectFees';
 import Calculator from '../../../../utils/Calculator';
+import T from '../../../Translation';
+import FinancingSection, {
+  CalculatedValue,
+  FinancingField,
+} from '../FinancingSection';
+import FinancingProjectFees from './FinancingProjectFees';
+import FinancingPropertyPicker from './FinancingPropertyPicker';
 
 const MAX_NOTARY_FEES_RATE = 0.1;
 

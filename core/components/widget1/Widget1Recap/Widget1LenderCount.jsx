@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-import { WARNING, ERROR, SUCCESS } from 'core/api/constants';
+import { ERROR, SUCCESS, WARNING } from '../../../api/constants';
+import T from '../../Translation';
 
 const getLenderCount = (borrowStatus, incomeStatus) => {
   if (borrowStatus !== ERROR && incomeStatus === SUCCESS) {

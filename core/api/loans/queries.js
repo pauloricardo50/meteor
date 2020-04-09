@@ -1,13 +1,13 @@
 import omit from 'lodash/omit';
 
-import Loans from '.';
-import { LOAN_QUERIES } from './loanConstants';
 import {
   adminLoan,
-  userLoan,
   proLoanWithRevenues,
   proLoans as proLoansFragments,
+  userLoan,
 } from '../fragments';
+import { LOAN_QUERIES } from './loanConstants';
+import Loans from '.';
 
 export const adminLoans = Loans.createQuery(
   LOAN_QUERIES.ADMIN_LOANS,

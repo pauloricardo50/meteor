@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, lifecycle, withProps, withState } from 'recompose';
 
-import { compose, withState, lifecycle, withProps } from 'recompose';
-import T from '../Translation';
 import { withLoading } from '../Loading';
-import GoogleMapContainer from './GoogleMapContainer';
+import T from '../Translation';
 import GoogleMap from './GoogleMap';
+import GoogleMapContainer from './GoogleMapContainer';
 import { getLatLngFromAddress } from './googleMapsHelpers';
 
 const MapWithMarker = props => {

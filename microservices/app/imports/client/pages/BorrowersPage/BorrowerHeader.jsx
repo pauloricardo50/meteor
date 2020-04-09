@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BorrowerAdder from '../../components/BorrowerAdder';
+import BorrowerAdder from 'core/components/BorrowerAdder';
+import Button from 'core/components/Button';
+import T from 'core/components/Translation';
+
 import BorrowerHeaderDetails from './BorrowerHeaderDetails';
 
-const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
+const BorrowerHeader = ({
+  tabId,
+  loan: { _id: loanId, borrowers, user: { _id: userId } = {} },
+}) => (
   <header className="borrower-header borrower-header">
     <div className="borrower-header__row flex">
       {borrowers.map((borrower, borrowerIndex) => (
@@ -19,7 +25,13 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
       ))}
       {borrowers.length === 1 && (
         <div className="borrower-adder col--50">
-          <BorrowerAdder loanId={loanId} />
+          <BorrowerAdder
+            loanId={loanId}
+            userId={userId}
+            TriggerComponent={
+              <Button primary label={<T id="BorrowerAdder.label" />} />
+            }
+          />
         </div>
       )}
     </div>

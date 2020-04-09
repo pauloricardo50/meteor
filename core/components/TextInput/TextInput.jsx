@@ -1,27 +1,27 @@
 import React from 'react';
+import classnames from 'classnames';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
-import moment from 'moment';
-import classnames from 'classnames';
 
-import InputAdornment from '../Material/InputAdornment';
-import FormHelperText from '../Material/FormHelperText';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
-import FormControl from '../Material/FormControl';
-import Input from '../Material/Input';
 import {
-  swissFrancMask,
+  toDecimalNumber,
+  toNegativeNumber,
+  toNumber,
+} from '../../utils/conversionFunctions';
+import {
   percentMask,
   swissFrancDecimalNegativeMask,
-  swissFrancNegativeMask,
+  swissFrancMask,
   swissFrancMaskDecimal,
+  swissFrancNegativeMask,
 } from '../../utils/textMasks';
-import {
-  toNumber,
-  toNegativeNumber,
-  toDecimalNumber,
-} from '../../utils/conversionFunctions';
+import FormControl from '../Material/FormControl';
+import FormHelperText from '../Material/FormHelperText';
+import Input from '../Material/Input';
+import InputAdornment from '../Material/InputAdornment';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 
 const getDefaults = ({
   type,

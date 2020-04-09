@@ -4,11 +4,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import UserService from 'core/api/users/server/UserService';
 import generator from '../../../factories/server';
-import { LOANS_TAG_URL, FrontService } from '../FrontService';
-import { ROLES } from '../../../users/userConstants';
 import LoanService from '../../../loans/server/LoanService';
+import UserService from '../../../users/server/UserService';
+import { ROLES } from '../../../users/userConstants';
+import { FrontService, LOANS_TAG_URL } from '../FrontService';
 
 const fetchStub = sinon.stub();
 const service = new FrontService({ fetch: fetchStub, isEnabled: true });

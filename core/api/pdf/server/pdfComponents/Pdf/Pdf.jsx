@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ServerIntlProvider } from 'core/utils/server/intl';
+import { ServerIntlProvider } from '../../../../../utils/server/intl';
 
 export const LastPageContext = React.createContext();
 

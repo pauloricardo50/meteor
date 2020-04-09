@@ -1,11 +1,11 @@
 import React from 'react';
 
-import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
+import ResidenceTypeSetter from '../../../ResidenceTypeSetter';
+import T from '../../../Translation';
+import { AppPromotionLotsTable } from '../PromotionLotsTable';
 import UserPromotionOptionsTable from '../UserPromotionOptionsTable';
 import UserReservation from '../UserReservation';
-import { AppPromotionLotsTable } from '../PromotionLotsTable';
-import ResidenceTypeSetter from '../../../ResidenceTypeSetter';
 
 const AppPromotionPageOverview = ({ loan, promotion }) => {
   const { residenceType, promotionOptions } = loan;

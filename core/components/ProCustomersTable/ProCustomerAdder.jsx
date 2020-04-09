@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import ProCustomerAdderContainer from './ProCustomerAdderContainer';
-import T from '../Translation';
+import { AutoFormDialog } from '../AutoForm2';
 import Icon from '../Icon';
+import T from '../Translation';
+import ProCustomerAdderContainer from './ProCustomerAdderContainer';
 
 const ProCustomerAdder = ({ schema, onSubmit }) => (
   <AutoFormDialog

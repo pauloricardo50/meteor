@@ -1,19 +1,18 @@
 import SimpleSchema from 'simpl-schema';
 
 import {
-  updatedAt,
-  createdAt,
-  decimalMoneyField,
-  dateField,
-  cacheField,
-  adminNotesSchema,
   additionalDocuments,
+  adminNotesSchema,
+  cacheField,
+  createdAt,
+  dateField,
+  decimalMoneyField,
   documentsField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
-
 import {
-  INSURANCE_STATUS,
   INSURANCE_PREMIUM_FREQUENCY,
+  INSURANCE_STATUS,
 } from '../insuranceConstants';
 
 const InsuranceSchema = new SimpleSchema({
@@ -26,7 +25,7 @@ const InsuranceSchema = new SimpleSchema({
     defaultValue: INSURANCE_STATUS.SUGGESTED,
   },
   borrowerLink: { type: Object, optional: true },
-  'borrowerLink._id': String,
+  'borrowerLink._id': { type: String, optional: true },
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
   premium: decimalMoneyField,

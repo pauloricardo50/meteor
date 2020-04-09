@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import T from 'core/components/Translation';
-import StatusIcon from 'core/components/StatusIcon';
+import { shallow } from '../../../../utils/testHelpers/index';
+import StatusIcon from '../../../StatusIcon';
+import T from '../../../Translation';
 import Widget1InputsError from '../Widget1InputsError';
 
 describe('Widget1InputsError', () => {

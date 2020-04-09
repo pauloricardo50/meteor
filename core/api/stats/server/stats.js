@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { LOAN_STATUS } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 
@@ -103,7 +103,9 @@ export const loansWithoutRevenuesResolver = () => {
     },
   };
   const filterHasRevenues = { $match: { revenues: { $size: 0 } } };
-  const project = { $project: { status: 1, _id: 1, name: 1, userCache: 1 } };
+  const project = {
+    $project: { status: 1, _id: 1, name: 1, userCache: 1 },
+  };
   const sort = { $sort: { status: 1 } };
 
   return LoanService.aggregate([
@@ -112,5 +114,6 @@ export const loansWithoutRevenuesResolver = () => {
     filterHasRevenues,
     project,
     sort,
+    { $addFields: { _collection: 'loans' } },
   ]);
 };

@@ -1,9 +1,10 @@
 import { Migrations } from 'meteor/percolate:migrations';
-import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
-import { PROPERTY_STATUS } from 'core/api/properties/propertyConstants';
-import { asyncForEach } from 'core/api/helpers';
+
+import { asyncForEach } from '../../helpers';
+import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import PromotionService from '../../promotions/server/PromotionService';
+import { PROPERTY_STATUS } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 
 const handleUpPromotionLots = async () =>

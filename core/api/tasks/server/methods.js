@@ -1,13 +1,13 @@
 import SecurityService from '../../security';
-import TaskService from './TaskService';
 import {
+  proAddLoanTask,
+  setAssigneeOfTask,
+  taskChangeStatus,
+  taskComplete,
   taskInsert,
   taskUpdate,
-  taskComplete,
-  taskChangeStatus,
-  setAssigneeOfTask,
-  proAddLoanTask,
 } from '../methodDefinitions';
+import TaskService from './TaskService';
 
 taskInsert.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);

@@ -1,10 +1,11 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'core/utils/testHelpers/enzyme';
 import { MemoryRouter, Route } from 'react-router-dom';
 
+import { mount } from '../../utils/testHelpers';
 import withMatchParam from '../withMatchParam';
 
 let Component1 = withMatchParam('loanId')(props => <div {...props} />);

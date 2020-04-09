@@ -1,6 +1,6 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
+import T from '../Translation';
 
 const ContactButtonContent = ({ titleId, icon, href, label, onClick }) => (
   <a href={href} className="contact-button-content primary" onClick={onClick}>
@@ -8,7 +8,8 @@ const ContactButtonContent = ({ titleId, icon, href, label, onClick }) => (
     <div className="text">
       <b className="bold">
         <T id={titleId} />
-      </b><br/>
+      </b>
+      <br />
       {label}
     </div>
   </a>

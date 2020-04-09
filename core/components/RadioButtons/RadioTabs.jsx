@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { withStyles } from '@material-ui/core/styles';
-import colors from 'core/config/colors';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+
+import colors from '../../config/colors';
 
 const StyledTabs = withStyles({
   root: {

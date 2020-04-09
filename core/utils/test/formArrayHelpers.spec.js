@@ -2,10 +2,10 @@
 import { expect } from 'chai';
 
 import {
-  shouldCountField,
   getCountedArray,
-  getMissingFieldIds,
   getFormValuesHash,
+  getMissingFieldIds,
+  shouldCountField,
 } from '../formArrayHelpers';
 
 describe('formArrayHelpers', () => {

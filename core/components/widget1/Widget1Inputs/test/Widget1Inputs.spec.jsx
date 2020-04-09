@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import { Widget1Inputs } from '../Widget1Inputs';
+import { shallow } from '../../../../utils/testHelpers/index';
 import Widget1SingleInput from '../../Widget1SingleInput';
+import { Widget1Inputs } from '../Widget1Inputs';
 
 describe('Widget1Input', () => {
   let props;

@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Radio, { RadioGroup } from 'core/components/Material/Radio';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import PropTypes from 'prop-types';
 
+import Radio, { RadioGroup } from '../Material/Radio';
 import T from '../Translation';
 
 const safeChange = (value, id, onChange, options) => {

@@ -6,10 +6,10 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import SessionService from 'core/api/sessions/server/SessionService';
-import SlackService from 'core/api/slack/server/SlackService';
-import Analytics, { checkEventsConfig } from '../Analytics';
+import SessionService from '../../../sessions/server/SessionService';
+import SlackService from '../../../slack/server/SlackService';
 import EVENTS from '../../events';
+import Analytics, { checkEventsConfig } from '../Analytics';
 import NoOpAnalytics from '../NoOpAnalytics';
 
 describe('Analytics', () => {

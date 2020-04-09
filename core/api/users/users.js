@@ -1,10 +1,11 @@
-import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
-import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
-import { ROLES, ACQUISITION_CHANNELS } from './userConstants';
-import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import SimpleSchema from 'simpl-schema';
+
 import { makeCollectionTransform } from '../helpers/collectionHelpers';
+import { cacheField, createdAt, updatedAt } from '../helpers/sharedSchemas';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import { ACQUISITION_CHANNELS, ROLES } from './userConstants';
 
 export const UserSchema = new SimpleSchema({
   username: {

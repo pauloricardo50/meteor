@@ -37,7 +37,7 @@ export default compose(
           loanId: loanId || undefined,
           ctaId,
         })
-        .then(() => {
+        .finally(() => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
           history.push(

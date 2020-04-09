@@ -4,16 +4,15 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 import moment from 'moment';
 
-import { loanSetStatus } from 'core/api/loans/methodDefinitions';
-import LoanService from 'core/api/loans/server/LoanService';
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
+import generator from '../../../factories/server';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import { loanSetStatus } from '../../../loans/methodDefinitions';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import {
   COMMISSION_STATUS,
   REVENUE_STATUS,
-} from 'core/api/revenues/revenueConstants';
-
-import generator from '../../../factories/server';
-import { LOAN_STATUS } from '../../../loans/loanConstants';
+} from '../../../revenues/revenueConstants';
 import { loanMonitoring, loanStatusChanges } from '../resolvers';
 
 describe('monitoring', () => {

@@ -1,21 +1,21 @@
 import SecurityService from '../../security';
-import PromotionService from './PromotionService';
 import {
-  promotionInsert,
-  promotionUpdate,
-  promotionRemove,
-  insertPromotionProperty,
-  setPromotionUserPermissions,
   addProUserToPromotion,
-  removeProFromPromotion,
-  sendPromotionInvitationEmail,
-  removeLoanFromPromotion,
   editPromotionLoan,
+  insertPromotionProperty,
+  promotionInsert,
+  promotionRemove,
+  promotionSetStatus,
+  promotionUpdate,
+  removeLoanFromPromotion,
+  removeProFromPromotion,
   reuseConstructionTimeline,
+  sendPromotionInvitationEmail,
+  setPromotionUserPermissions,
   toggleNotifications,
   updatePromotionUserRoles,
-  promotionSetStatus,
 } from '../methodDefinitions';
+import PromotionService from './PromotionService';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
   SecurityService.checkUserIsPro(userId);

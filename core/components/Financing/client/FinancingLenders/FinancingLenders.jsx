@@ -2,9 +2,9 @@ import React from 'react';
 
 import Button from '../../../Button';
 import FinancingSection from '../FinancingSection';
+import FinancingLendersContainer from './FinancingLendersContainer';
 import FinancingLendersHeader from './FinancingLendersHeader';
 import LenderList from './LenderList';
-import FinancingLendersContainer from './FinancingLendersContainer';
 
 const FinancingLenders = ({ showAllLenders, setShowAllLenders, ...props }) => (
   <>

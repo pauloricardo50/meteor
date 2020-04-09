@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
-import Fab from '@material-ui/core/Fab';
 import { Meteor } from 'meteor/meteor';
 
-import Icon from 'core/components/Icon';
-import { setUserConnected } from 'core/api/sessions/methodDefinitions';
-import ContactButtonContainer from './ContactButtonContainer';
-import ContactButtonOverlay from './ContactButtonOverlay';
-import { ContactButtonContext } from './ContactButtonContext';
+import React, { useContext } from 'react';
+import Fab from '@material-ui/core/Fab';
+
+import { setUserConnected } from '../../api/sessions/methodDefinitions';
+import Icon from '../Icon';
 import AdminImpersonateNotification from './AdminImpersonateNotification';
+import ContactButtonContainer from './ContactButtonContainer';
+import { ContactButtonContext } from './ContactButtonContext';
+import ContactButtonOverlay from './ContactButtonOverlay';
 import UserImpersonateNotification from './UserImpersonateNotification';
 
 export const ContactButton = props => {

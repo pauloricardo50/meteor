@@ -1,8 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
+import { createCollection } from '../../helpers/collectionHelpers';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { UPDATE_WATCHERS_COLLECTION } from '../updateWatcherConstants';
-import { createCollection } from '../../helpers/collectionHelpers';
 
 const UpdateWatchers = createCollection(UPDATE_WATCHERS_COLLECTION);
 

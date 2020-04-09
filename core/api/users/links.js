@@ -107,7 +107,6 @@ LinkInitializer.inversedInit(() => {
     insuranceRequests: {
       collection: InsuranceRequests,
       inversedBy: 'user',
-      autoremove: true,
     },
     assignedInsuranceRequests: {
       collection: InsuranceRequests,

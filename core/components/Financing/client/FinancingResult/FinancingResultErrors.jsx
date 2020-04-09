@@ -1,6 +1,6 @@
 import Calculator from '../../../../utils/Calculator';
-import { getIncomeRatio, getMaxIncomeRatio } from './financingResultHelpers';
 import FinanceCalculator from '../FinancingCalculator';
+import { getIncomeRatio, getMaxIncomeRatio } from './financingResultHelpers';
 
 export const ERROR_TYPES = {
   BREAKING: 'BREAKING',

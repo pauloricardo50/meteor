@@ -1,27 +1,28 @@
-import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-import {
-  EMAIL_TEMPLATES,
-  EMAIL_IDS,
-  CTA_URL_DEFAULT,
-  FOOTER_TYPES,
-  EPOTEK_PHONE,
-  FROM_EMAIL,
-} from '../emailConstants';
-import {
-  getAccountsUrl,
-  notificationTemplateDefaultOverride,
-  notificationAndCtaTemplateDefaultOverride,
-  renderEmailComponent,
-} from './emailHelpers';
-import PromotionLogos from './components/PromotionLogos';
+import moment from 'moment';
+
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import {
+  CTA_URL_DEFAULT,
+  EMAIL_IDS,
+  EMAIL_TEMPLATES,
+  EPOTEK_PHONE,
+  FOOTER_TYPES,
+  FROM_EMAIL,
+} from '../emailConstants';
+import PromotionLogos from './components/PromotionLogos';
 import PromotionOptionProgress, {
-  promotionOptionProgressStyles,
   getPromotionProgressData,
+  promotionOptionProgressStyles,
 } from './components/PromotionOptionProgress';
+import {
+  getAccountsUrl,
+  notificationAndCtaTemplateDefaultOverride,
+  notificationTemplateDefaultOverride,
+  renderEmailComponent,
+} from './emailHelpers';
 
 const emailConfigs = {};
 

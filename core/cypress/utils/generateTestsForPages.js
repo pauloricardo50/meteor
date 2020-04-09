@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 import capitalize from 'lodash/capitalize';
+
 import { getTestUserByRole } from './e2eHelpers';
 
 let testData;

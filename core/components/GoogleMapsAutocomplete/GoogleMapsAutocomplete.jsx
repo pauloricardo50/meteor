@@ -3,7 +3,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
 import GoogleMapContainer from '../maps/GoogleMapContainer';
 import GoogleMapsAutocompleteInput from './GoogleMapsAutocompleteInput';

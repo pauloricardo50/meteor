@@ -1,21 +1,21 @@
 import SecurityService from '../../security';
+import { FILE_STATUS } from '../fileConstants';
 import {
+  autoRenameFile,
   deleteFile,
-  setFileStatus,
-  setFileError,
+  deleteTempFile,
   downloadFile,
   getSignedUrl,
-  updateDocumentsCache,
   getZipLoanUrl,
-  setFileAdminName,
   moveFile,
-  deleteTempFile,
-  autoRenameFile,
+  setFileAdminName,
+  setFileError,
   setFileRoles,
+  setFileStatus,
+  updateDocumentsCache,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
-import { FILE_STATUS } from '../fileConstants';
 
 deleteFile.setHandler((context, { collection, docId, fileKey }) => {
   context.unblock();

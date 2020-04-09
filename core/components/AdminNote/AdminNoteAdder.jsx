@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { adminNotesSchema } from 'core/api/helpers/sharedSchemas';
-import useSearchParams from 'core/hooks/useSearchParams';
-
+import { adminNotesSchema } from '../../api/helpers/sharedSchemas';
+import useSearchParams from '../../hooks/useSearchParams';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 import AdminNoteAdderContainer from './AdminNoteAdderContainer';

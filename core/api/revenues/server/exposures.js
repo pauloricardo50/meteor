@@ -1,11 +1,11 @@
-import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
 import { proRevenues } from '../queries';
 import { REVENUE_STATUS } from '../revenueConstants';
-import UserService from '../../users/server/UserService';
 import { getCommissionFilters } from '../revenueHelpers';
 
 exposeQuery({

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 
-import Icon from 'core/components/Icon';
-import T from 'core/components/Translation';
-
+import Icon from '../Icon';
+import T from '../Translation';
 import CalendlyModal from './CalendlyModal';
 import ContactButtonContent from './ContactButtonContent';
 
@@ -25,7 +24,10 @@ const ContactButtonOverlay = ({
       touchEvent={openContact ? undefined : false}
     >
       <Grow in={openContact} style={{ 'transform-origin': 'bottom right' }}>
-        <div className="card1 shadow-2 card-top contact-button-overlay" style={style}>
+        <div
+          className="card1 shadow-2 card-top contact-button-overlay"
+          style={style}
+        >
           <div className="top">
             <img src={src} alt={name} />
             <div className="text">

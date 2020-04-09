@@ -1,19 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import cx from 'classnames';
+import get from 'lodash/get';
+import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-import ZipAutoComplete from 'core/components/ZipAutoComplete';
-
-import AutoFormTextInput from './AutoFormTextInput';
+import T from '../Translation';
+import ArrayInput from './ArrayInput';
+import AutoFormConditionalInput from './AutoFormConditionalInput';
+import AutoFormContainer from './AutoFormContainer';
+import AutoFormDateInput from './AutoFormDateInput';
+import AutoFormPercentInput from './AutoFormPercentInput';
 import AutoFormRadioInput from './AutoFormRadioInput';
 import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
-import AutoFormConditionalInput from './AutoFormConditionalInput';
-import AutoFormDateInput from './AutoFormDateInput';
-import ArrayInput from './ArrayInput';
-import AutoFormContainer from './AutoFormContainer';
-import AutoFormPercentInput from './AutoFormPercentInput';
+import AutoFormTextInput from './AutoFormTextInput';
 
 const styles = {
   subtitle: {
@@ -41,7 +39,6 @@ const inputSwitch = (childProps, index, parentProps) => {
     label,
     text,
     component,
-    componentProps,
     height,
     className = '',
   } = childProps.inputProps;
@@ -88,9 +85,6 @@ const inputSwitch = (childProps, index, parentProps) => {
     case 'arrayInput':
       return <ArrayInput {...childProps} />;
     case 'custom':
-      if (component === 'ZipAutoComplete') {
-        return <ZipAutoComplete {...childProps} {...componentProps} />;
-      }
       return component;
     case 'percent':
       return <AutoFormPercentInput {...childProps} />;
