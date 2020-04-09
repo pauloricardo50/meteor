@@ -11,7 +11,7 @@ import {
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../utils/Calculator';
-import Intl from '../../../utils/server/intl';
+import { formatMessage } from '../../../utils/server/intl';
 import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
@@ -36,7 +36,7 @@ import {
   RESIDENCE_TYPE,
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
-import { REVENUE_STATUS } from '../../revenues/revenueConstants';
+import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,
@@ -101,7 +101,8 @@ class LoanService extends CollectionService {
     Loans.update(loanId, { [operator]: object });
 
   remove = ({ loanId }) => {
-    const { revenues = [] } = this.get(loanId, { revenues: { status: 1 } });
+    const { revenues = [] } =
+      this.get(loanId, { revenues: { status: 1 } }) || {};
     if (
       revenues.filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
     ) {
@@ -580,7 +581,7 @@ class LoanService extends CollectionService {
       feedback: makeFeedback({
         offer: { ...offer, property },
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-        formatMessage: Intl.formatMessage.bind(Intl),
+        formatMessage,
       }),
       offerId: offer._id,
     }));
@@ -1099,6 +1100,46 @@ class LoanService extends CollectionService {
     });
 
     return assignees.find(({ $metadata: { isMain } }) => isMain);
+  }
+
+  setStatusToFinalizedIfRequired({ loanId }) {
+    const { revenues = [], status: prevStatus, mainAssignee = {} } = this.get(
+      loanId,
+      {
+        revenues: { status: 1, type: 2 },
+        status: 1,
+        mainAssignee: 1,
+      },
+    );
+
+    const shouldBeFinalized =
+      prevStatus !== LOAN_STATUS.FINALIZED &&
+      revenues.length &&
+      revenues.every(
+        ({ status, type }) =>
+          status === REVENUE_STATUS.CLOSED && type !== REVENUE_TYPES.INSURANCE,
+      );
+
+    if (shouldBeFinalized) {
+      this.update({ loanId, object: { status: LOAN_STATUS.FINALIZED } });
+      const formattedPrevStatus = formatMessage({
+        id: `Forms.status.${prevStatus}`,
+      });
+      const formattedNexStatus = formatMessage({
+        id: `Forms.status.${LOAN_STATUS.FINALIZED}`,
+      });
+      const { _id: adminId } = mainAssignee;
+
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+        details: { prevStatus, nextStatus: LOAN_STATUS.FINALIZED },
+        isServerGenerated: true,
+        loanLink: { _id: loanId },
+        title: 'Statut modifié',
+        description: `${formattedPrevStatus} -> ${formattedNexStatus}, automatiquement car tous les revenus ont été encaissés`,
+        createdBy: adminId,
+      });
+    }
   }
 }
 
