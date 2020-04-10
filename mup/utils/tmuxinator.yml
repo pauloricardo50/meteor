@@ -10,9 +10,9 @@ windows:
         - instructions:
             - tmux set pane-border-status bottom
             - tmux select-pane -t 0 -T Instructions
-            - echo 'When all panels show "DONE", press ctr + b and type ":kill-session" to continue'
-        <% apps.forEach(({ app, environment, configFolder, command, prettyCommand }, i) => { %>
+            - node ./utils/tmux-instructions.js
 
+        <% apps.forEach(({ app, environment, configFolder, command, prettyCommand }, i) => { %>
         - <%- app %>-<%- environment %>:
             - tmux set pane-border-status bottom
             - export NPM_CONFIG_PREFIX=""
@@ -20,4 +20,5 @@ windows:
             - cd <%- configFolder %>
             - METEOR_ALLOW_SUPERUSER=true EPOTEK_RUN_PARALLEL=true <%- command %> || echo "FAILED"
             - echo "DONE"
+
            <% }) %>
