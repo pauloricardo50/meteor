@@ -346,7 +346,7 @@ ServerEventService.addAfterMethodListener(
     const formattedPrevStatus = formatMessage({
       id: `Forms.status.${prevStatus}`,
     });
-    const formattedNexStatus = formatMessage({
+    const formattedNextStatus = formatMessage({
       id: `Forms.status.${nextStatus}`,
     });
     const { name: adminName } = UserService.get(userId, { name: 1 });
@@ -357,7 +357,7 @@ ServerEventService.addAfterMethodListener(
       isServerGenerated: true,
       loanLink: { _id: loanId },
       title: 'Statut modifié',
-      description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
+      description: `${formattedPrevStatus} -> ${formattedNextStatus}, par ${adminName}`,
       createdBy: userId,
     });
   },

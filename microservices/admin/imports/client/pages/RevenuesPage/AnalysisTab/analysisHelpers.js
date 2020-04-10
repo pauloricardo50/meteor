@@ -14,7 +14,9 @@ import analysisConfig from './analysisConfig';
 export const analysisCollections = Object.keys(analysisConfig);
 
 export const createBodyFromMap = map => {
-  const body = {};
+  const body = {
+    // $options: { limit: 10 },
+  };
 
   Object.keys(map).forEach(path => {
     const config = map[path];

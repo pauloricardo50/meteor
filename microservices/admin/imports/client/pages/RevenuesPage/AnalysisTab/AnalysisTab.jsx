@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import PivotTableUI from 'react-pivottable/PivotTableUI';
 import 'react-pivottable/pivottable.css';
+
+import React, { useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
+import PivotTableUI from 'react-pivottable/PivotTableUI';
+import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
 import TableRenderers from 'react-pivottable/TableRenderers';
 import Plot from 'react-plotly.js';
-import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
-import { injectIntl } from 'react-intl';
 
 import Loading from 'core/components/Loading';
 
+import AnalysisActions from './AnalysisActions';
 import { useAnalysisData } from './AnalysisTabContainer';
 import SavedAnalyses from './SavedAnalyses';
-import AnalysisActions from './AnalysisActions';
 
 const PlotlyRenderers = createPlotlyRenderers(Plot);
 
