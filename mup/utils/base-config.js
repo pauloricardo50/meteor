@@ -67,6 +67,9 @@ module.exports = function createConfig({
         prepareBundle: true,
         useBuildKit: true,
         stopAppDuringPrepareBundle: false,
+
+        // Needed for core dumps
+        args: ['--cap-add=SYS_PTRACE', '--ulimit core=-1'],
       },
       deployCheckWaitTime: 300,
       enableUploadProgressBar: true,

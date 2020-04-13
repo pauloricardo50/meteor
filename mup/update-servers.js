@@ -1,10 +1,13 @@
 const Compute = require('@google-cloud/compute');
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
+
+console.log(chalk.blue('=> Updating the <env>-servers.json files'));
 
 if (!fs.existsSync('./configs/credentials.json')) {
   console.error(
-    'Please create the engine credentials as described in the docs',
+    chalk.redBright`Please create the './configs/credentials.json' file as described in the Engine Credentials section of the docs`,
   );
   process.exit(1);
 }
@@ -31,14 +34,17 @@ async function updateForGroup(name) {
     if (!external) {
       // server is stopped or doesn't have an external IP address
       console.warn(
-        `!!!! Server "${metadata[0].name}" does not have an external address !!!!`,
+        chalk.bgYellowBright
+          .black`!!!! Server "${vm.name}" does not have an external address !!!!`,
       );
     }
 
     const internal = metadata[0].networkInterfaces[0].networkIP;
-    console.log(vm.id, 'external:', external, 'internal', internal);
+    console.log(
+      chalk.dim(`${vm.id} - external: ${external} - internal ${internal}`),
+    );
 
-    const serverName = `${i}`;
+    const serverName = vm.name;
     servers[serverName] = {
       host: external,
       username: 'mup',
