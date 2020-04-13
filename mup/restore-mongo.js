@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
+const chalk = require('chalk');
 
 const { argv } = yargs
   .string('environment')
@@ -12,7 +13,7 @@ const { argv } = yargs
 
 if (!fs.existsSync('./configs/mongo-auth.json')) {
   console.error(
-    'Please create a database user in Atlas, as described in the docs.',
+    chalk.redBright`Please create the './configs/mongo-auth.json' file as described in the Atlas Database User section of the docs`,
   );
   process.exit(1);
 }
@@ -45,7 +46,7 @@ if (argv.environment === 'staging') {
 const { archivePath } = argv;
 const fromName = fs.readFileSync(`${archivePath}.db-name.txt`, 'utf-8');
 
-console.log('Restoring from database', fromName, 'to', dbName);
+console.log(chalk.blue(`Restoring from ${fromName} database to ${dbName}`));
 
 const options = [
   ...additionalOptions,
@@ -66,12 +67,23 @@ const options = [
   `"${dbName}.*"`,
 ];
 
-console.log('Running ');
-console.log(`  mongorestore ${options.join(' ')}`);
+console.log(chalk.dim('Running '));
+console.log(chalk.dim(`  mongorestore ${options.join(' ')}`));
 console.log('');
 console.log('');
 
-spawnSync('mongorestore', options, { stdio: 'inherit' });
+const result = spawnSync('mongorestore', options, { stdio: 'inherit' });
+
+if (result.error instanceof Error || result.status > 0) {
+  console.log(chalk.bgRed.white('Error restoring database.'));
+  [
+    ' - Make sure the mongo tools are installed',
+    ' - If restoring locally, make sure the backend app is running',
+    ' - If restoring to staging, make sure your IP Address is whitelisted in Atlas or you are using the VPN',
+  ].forEach(line => console.log(chalk.yellow(line)));
+
+  process.exit(1);
+}
 
 console.log('');
 console.log('Finished restore');

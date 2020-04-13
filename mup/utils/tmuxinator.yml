@@ -8,11 +8,17 @@ windows:
       layout: tiled
       panes:
         - instructions:
-            - echo 'When all panels show "DONE", press ctr + b and type ":kill-session" to continue'
-        <% apps.forEach(({ app, environment, configFolder, command }) => { %>
+            - tmux set pane-border-status bottom
+            - tmux select-pane -t 0 -T Instructions
+            - node ./utils/tmux-instructions.js
 
+        <% apps.forEach(({ app, environment, configFolder, command, prettyCommand }, i) => { %>
         - <%- app %>-<%- environment %>:
+            - tmux set pane-border-status bottom
+            - export NPM_CONFIG_PREFIX=""
+            - tmux select-pane -t <%- i + 1 %> -T "<%- prettyCommand %> - <%- app %>"
             - cd <%- configFolder %>
             - METEOR_ALLOW_SUPERUSER=true EPOTEK_RUN_PARALLEL=true <%- command %> || echo "FAILED"
             - echo "DONE"
+
            <% }) %>

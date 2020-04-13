@@ -3,7 +3,8 @@ const yargs = require('yargs');
 const fs = require('fs');
 const ejs = require('ejs');
 const { spawnSync } = require('child_process');
-const microservices = require('./microservices');
+const chalk = require('chalk');
+const microservices = require('./utils/microservices');
 const { runMup, getFullCommand } = require('./utils/run-mup');
 const { removePrepareBundleLock } = require('./utils/prepare-bundle-lock');
 
@@ -76,12 +77,11 @@ sh.set('-e');
 
 if (!fs.existsSync('./configs/registry-key.json')) {
   console.error(
-    'Private Repository Credentials (registry-key.json) do not exist. Please create as described in the docs.',
+    chalk.redBright`Please create the './configs/registry-key.json' file as described in the Private Repository Credentials section of the docs`,
   );
   process.exit(1);
 }
 
-log('updating servers');
 sh.exec('node update-servers');
 
 if (mupCommands[0] === 'deploy') {
@@ -101,7 +101,8 @@ function runInParallel() {
     try {
       sh.exec('tmuxinator -v');
     } catch (_e) {
-      console.log('Please install tmuxinator');
+      console.error(_e);
+      console.error(chalk.red('Please install tmuxinator'));
       process.exit(1);
     }
   }
@@ -117,6 +118,12 @@ function runInParallel() {
         command: getFullCommand(
           `--config ${app}.mup.js ${mupCommands.join(' ')}`,
         ),
+
+        // If it starts with an option, we just show everything
+        // instead of trying to identify what is the command or what is a value to an option
+        prettyCommand: mupCommands[0].startsWith('-')
+          ? mupCommands.join(' ')
+          : mupCommands[0],
       });
     });
   });
@@ -137,10 +144,12 @@ function runInParallel() {
 
 function runInSerial() {
   environments.forEach(environment => {
-    sh.cd(environment);
     if (!(environment in microservices)) {
-      error(`Unknown environment: ${environment}`);
+      error(chalk.red(`Unknown environment: ${environment}`));
+      process.exit(1);
     }
+
+    sh.cd(environment);
 
     const apps = filterApps(
       microservices[environment],
@@ -149,7 +158,12 @@ function runInSerial() {
     );
 
     apps.forEach(name => {
-      log(`*** Running For ${name} - ${environment} ***`);
+      log('');
+      log(
+        chalk.underline.blueBright(
+          `*** Running for ${name} - ${environment} ***`.toUpperCase(),
+        ),
+      );
       runMup(`--config ${name}.mup.js ${mupCommands.join(' ')}`);
     });
     sh.cd('..');

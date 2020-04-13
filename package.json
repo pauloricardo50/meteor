@@ -43,6 +43,7 @@
     "@cypress/browserify-preprocessor": "^2.1.1",
     "@google-cloud/compute": "^1.2.0",
     "babel-eslint": "^10.0.3",
+    "chalk": "^4.0.0",
     "change-case": "^4.1.1",
     "csscomb": "^4.3.0",
     "cypress": "^3.8.1",
