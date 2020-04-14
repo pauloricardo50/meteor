@@ -1,15 +1,16 @@
 import React, { useRef } from 'react';
-import CollectionSearch from '../../../core/components/CollectionSearch';
-import { getLoanLinkTitle } from '../../../core/components/IconLink/collectionIconLinkHelpers';
-import LoanTagger from '../FrontContactLoans/LoanTagger';
-import StatusLabel from '../../../core/components/StatusLabel';
-import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
+
 import {
   LOANS_COLLECTION,
   LOAN_CATEGORIES,
 } from '../../../core/api/loans/loanConstants';
+import CollectionSearch from '../../../core/components/CollectionSearch';
+import { getLoanLinkTitle } from '../../../core/components/IconLink/collectionIconLinkHelpers';
+import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
+import StatusLabel from '../../../core/components/StatusLabel';
+import LoanTagger from '../FrontContactLoans/LoanTagger';
 
-const Loan = ({ conversation, tags, setTags, result: loan }) => {
+const Loan = ({ conversation, tagIds, setTagIds, result: loan, refetch }) => {
   const ref = useRef(null);
   const { name, status, category } = loan;
   const title = getLoanLinkTitle(loan);
@@ -25,8 +26,9 @@ const Loan = ({ conversation, tags, setTags, result: loan }) => {
         loan={loan}
         conversation={conversation}
         withLabel={false}
-        tags={tags}
-        setTags={setTags}
+        tagIds={tagIds}
+        setTagIds={setTagIds}
+        refetch={refetch}
       />
       <span style={{ width: '80%' }}>
         <div className="flex sb center-align">
@@ -48,14 +50,20 @@ const Loan = ({ conversation, tags, setTags, result: loan }) => {
 const FrontConversationTaggerResults = ({
   fetchLoans,
   conversation,
-  tags,
-  setTags,
+  tagIds,
+  setTagIds,
+  refetch,
 }) => (
   <div className="flex-col mt-16 center-align">
     <CollectionSearch
       func={fetchLoans}
       renderItem={
-        <Loan conversation={conversation} tags={tags} setTags={setTags} />
+        <Loan
+          conversation={conversation}
+          tagIds={tagIds}
+          setTagIds={setTagIds}
+          refetch={refetch}
+        />
       }
       type="list"
       className="flex-col"

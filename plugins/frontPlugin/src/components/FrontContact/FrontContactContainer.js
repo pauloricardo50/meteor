@@ -47,6 +47,7 @@ export default withProps(({ contact }) => {
         category: 1,
         mainAssignee: 1,
         adminNotes: 1,
+        frontTagId: 1,
       },
       roles: 1,
       acquisitionChannel: 1,

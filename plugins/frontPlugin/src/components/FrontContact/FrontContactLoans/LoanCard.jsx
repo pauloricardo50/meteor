@@ -1,20 +1,27 @@
 import React from 'react';
 
-import FrontCard from '../../FrontCard/FrontCard';
-import StatusLabel from '../../../core/components/StatusLabel';
 import {
   LOANS_COLLECTION,
   LOAN_CATEGORIES,
 } from '../../../core/api/loans/loanConstants';
-import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
+import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
+import StatusLabel from '../../../core/components/StatusLabel';
+import FrontCard from '../../FrontCard/FrontCard';
 import FrontContactTasks from '../FrontContactTasks/FrontContactTasks';
 import LoanNotes from './LoanNotes';
 import LoanTagger from './LoanTagger';
 
 const { Front, subdomains } = window;
 
-const LoanCard = ({ loan, expanded, refetch, conversation, tags, setTags }) => {
+const LoanCard = ({
+  loan,
+  expanded,
+  refetch,
+  conversation,
+  tagIds,
+  setTagIds,
+}) => {
   const {
     _id,
     name,
@@ -67,8 +74,9 @@ const LoanCard = ({ loan, expanded, refetch, conversation, tags, setTags }) => {
       <LoanTagger
         loan={loan}
         conversation={conversation}
-        tags={tags}
-        setTags={setTags}
+        tagIds={tagIds}
+        setTagIds={setTagIds}
+        refetch={refetch}
       />
       <LoanNotes notes={adminNotes} />
       <FrontContactTasks tasks={tasks} refetch={refetch} />
