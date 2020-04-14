@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { PURCHASE_TYPE } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
 import T from '../../../Translation';
 import FinancingSection, {
@@ -17,7 +18,7 @@ const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
   MAX_NOTARY_FEES_RATE;
 
-const FinancingProject = props => (
+const FinancingProject = ({ purchaseType }) => (
   <FinancingSection
     summaryConfig={[
       {
@@ -36,6 +37,12 @@ const FinancingProject = props => (
       {
         Component: FinancingField,
         id: 'propertyValue',
+        intlProps: {
+          values: { purchaseType },
+          tooltip: purchaseType === PURCHASE_TYPE.REFINANCING && (
+            <T id="Financing.propertyValue.refinancingTooltip" />
+          ),
+        },
         calculatePlaceholder: data => Calculator.selectPropertyValue(data),
         max: 100000000,
         allowUndefined: true,
@@ -45,6 +52,7 @@ const FinancingProject = props => (
         Component: FinancingField,
         id: 'propertyWork',
         max: 10000000,
+        condition: purchaseType === PURCHASE_TYPE.ACQUISITION,
       },
       {
         Component: FinancingProjectFees,

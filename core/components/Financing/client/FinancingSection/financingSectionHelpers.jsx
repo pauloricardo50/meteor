@@ -1,13 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 
-export const makeFilterConfig = structures => ({ condition }) => {
+export const makeFilterConfig = props => ({ condition }) => {
   if (!condition) {
     // Render components without condition property
     return true;
   }
   if (typeof condition === 'function') {
-    return condition(structures);
+    return condition(props);
   }
   return !!condition;
 };

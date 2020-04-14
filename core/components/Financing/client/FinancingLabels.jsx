@@ -7,9 +7,9 @@ import FinancingLabel from './FinancingLabel';
 import { makeFilterConfig } from './FinancingSection/financingSectionHelpers';
 
 const renderLabel = configItem => {
-  const { label, id } = configItem;
+  const { label, id, intlProps } = configItem;
   if (!label) {
-    return <T id={`Financing.${id}`} />;
+    return <T id={`Financing.${id}`} {...intlProps} />;
   }
 
   if (typeof label === 'function') {

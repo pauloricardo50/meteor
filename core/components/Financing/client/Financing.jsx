@@ -46,7 +46,7 @@ const Financing = ({ loan }) => {
 
         <FinancingDetails />
 
-        <FinancingProject />
+        <FinancingProject purchaseType={loan.purchaseType} />
 
         <FinancingFinancing purchaseType={loan.purchaseType} />
 
