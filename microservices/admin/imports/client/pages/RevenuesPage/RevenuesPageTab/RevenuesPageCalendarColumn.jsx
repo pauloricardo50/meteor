@@ -13,6 +13,7 @@ const RevenuesPageCalendarColumn = ({
   setRevenueToModify,
   setOpenModifier,
   refetch,
+  consolidatedDate,
 }) => {
   const { openAmount, closedAmount, totalAmount } = revenues.reduce(
     (obj, { status, amount }) => {
@@ -60,6 +61,7 @@ const RevenuesPageCalendarColumn = ({
           setRevenueToModify={setRevenueToModify}
           setOpenModifier={setOpenModifier}
           refetch={refetch}
+          consolidatedDate={consolidatedDate}
         />
       ))}
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ListItemText from '@material-ui/core/ListItemText';
+import { INSURANCE_PRODUCT_FEATURES } from 'imports/core/api/insuranceProducts/insuranceProductConstants';
 import SimpleSchema from 'simpl-schema';
 
 import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
@@ -121,9 +122,48 @@ export const getSchema = ({ borrowers, organisations }) =>
         },
       },
     },
-  }).extend(
-    InsuranceSchema.pick('premium', 'premiumFrequency', 'startDate', 'endDate'),
-  );
+  })
+    .extend(
+      InsuranceSchema.pick(
+        'premium',
+        'premiumFrequency',
+        'startDate',
+        'endDate',
+        'guaranteedCapital',
+        'nonGuaranteedCapital',
+        'deathCapital',
+        'disabilityPension',
+      ),
+    )
+    .extend(
+      [
+        ['guaranteedCapital', INSURANCE_PRODUCT_FEATURES.GUARANTEED_CAPITAL],
+        [
+          'nonGuaranteedCapital',
+          INSURANCE_PRODUCT_FEATURES.NON_GUARANTEED_CAPITAL,
+        ],
+        ['deathCapital', INSURANCE_PRODUCT_FEATURES.DEATH_CAPITAL],
+        ['disabilityPension', INSURANCE_PRODUCT_FEATURES.DISABILITY_PENSION],
+      ].reduce(
+        (fields, [field, feature]) => ({
+          ...fields,
+          [field]: {
+            condition: ({ organisationId, insuranceProductId, ...rest }) => {
+              const { features = [] } =
+                organisations
+                  .find(({ _id }) => _id === organisationId)
+                  ?.insuranceProducts?.find(
+                    ({ _id }) => _id === insuranceProductId,
+                  ) || {};
+
+              // If the insurance product is changed, still display the old feature value so it can be removed
+              return features.includes(feature) || !!rest[field];
+            },
+          },
+        }),
+        {},
+      ),
+    );
 
 export const makeInsuranceMethod = ({
   insuranceRequestId,
@@ -139,6 +179,10 @@ export const makeInsuranceMethod = ({
   premiumFrequency,
   startDate,
   endDate,
+  guaranteedCapital,
+  nonGuaranteedCapital,
+  deathCapital,
+  disabilityPension,
 }) => {
   if (type === 'insert') {
     return insuranceInsert
@@ -153,6 +197,10 @@ export const makeInsuranceMethod = ({
           startDate,
           endDate,
           premiumFrequency,
+          guaranteedCapital,
+          nonGuaranteedCapital,
+          deathCapital,
+          disabilityPension,
         },
       })
       .then(insuranceId =>
@@ -180,6 +228,10 @@ export const makeInsuranceMethod = ({
         startDate,
         endDate,
         premiumFrequency,
+        guaranteedCapital,
+        nonGuaranteedCapital,
+        deathCapital,
+        disabilityPension,
       },
     });
   }
