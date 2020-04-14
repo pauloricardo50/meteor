@@ -135,62 +135,35 @@ export const getSchema = ({ borrowers, organisations }) =>
         'disabilityPension',
       ),
     )
-    .extend({
-      guaranteedCapital: {
-        condition: ({ organisationId, insuranceProductId }) => {
-          const { features = [] } =
-            organisations
-              .find(({ _id }) => _id === organisationId)
-              ?.insuranceProducts?.find(
-                ({ _id }) => _id === insuranceProductId,
-              ) || {};
+    .extend(
+      [
+        ['guaranteedCapital', INSURANCE_PRODUCT_FEATURES.GUARANTEED_CAPITAL],
+        [
+          'nonGuaranteedCapital',
+          INSURANCE_PRODUCT_FEATURES.NON_GUARANTEED_CAPITAL,
+        ],
+        ['deathCapital', INSURANCE_PRODUCT_FEATURES.DEATH_CAPITAL],
+        ['disabilityPension', INSURANCE_PRODUCT_FEATURES.DISABILITY_PENSION],
+      ].reduce(
+        (fields, [field, feature]) => ({
+          ...fields,
+          [field]: {
+            condition: ({ organisationId, insuranceProductId, ...rest }) => {
+              const { features = [] } =
+                organisations
+                  .find(({ _id }) => _id === organisationId)
+                  ?.insuranceProducts?.find(
+                    ({ _id }) => _id === insuranceProductId,
+                  ) || {};
 
-          return features.includes(
-            INSURANCE_PRODUCT_FEATURES.GUARANTEED_CAPITAL,
-          );
-        },
-      },
-      nonGuaranteedCapital: {
-        condition: ({ organisationId, insuranceProductId }) => {
-          const { features = [] } =
-            organisations
-              .find(({ _id }) => _id === organisationId)
-              ?.insuranceProducts?.find(
-                ({ _id }) => _id === insuranceProductId,
-              ) || {};
-
-          return features.includes(
-            INSURANCE_PRODUCT_FEATURES.NON_GUARANTEED_CAPITAL,
-          );
-        },
-      },
-      deathCapital: {
-        condition: ({ organisationId, insuranceProductId }) => {
-          const { features = [] } =
-            organisations
-              .find(({ _id }) => _id === organisationId)
-              ?.insuranceProducts?.find(
-                ({ _id }) => _id === insuranceProductId,
-              ) || {};
-
-          return features.includes(INSURANCE_PRODUCT_FEATURES.DEATH_CAPITAL);
-        },
-      },
-      disabilityPension: {
-        condition: ({ organisationId, insuranceProductId }) => {
-          const { features = [] } =
-            organisations
-              .find(({ _id }) => _id === organisationId)
-              ?.insuranceProducts?.find(
-                ({ _id }) => _id === insuranceProductId,
-              ) || {};
-
-          return features.includes(
-            INSURANCE_PRODUCT_FEATURES.DISABILITY_PENSION,
-          );
-        },
-      },
-    });
+              // If the insurance product is changed, still display the old feature value so it can be removed
+              return features.includes(feature) || !!rest[field];
+            },
+          },
+        }),
+        {},
+      ),
+    );
 
 export const makeInsuranceMethod = ({
   insuranceRequestId,
