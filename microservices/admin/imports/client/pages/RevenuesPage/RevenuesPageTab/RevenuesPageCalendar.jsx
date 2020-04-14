@@ -82,6 +82,7 @@ const RevenuesPageCalendar = props => {
   });
   const [openModifier, setOpenModifier] = useState(false);
   const [revenueToModify, setRevenueToModify] = useState(null);
+  const [consolidatedDate, setConsolidatedDate] = useState();
 
   const months = getMonths(revenueDateRange);
 
@@ -230,6 +231,7 @@ const RevenuesPageCalendar = props => {
             sourceOrganisationId={sourceOrganisationId}
             setSourceOrganisationId={setSourceOrganisationId}
             setType={setType}
+            setConsolidatedDate={setConsolidatedDate}
           />
         )}
       </div>
@@ -253,6 +255,7 @@ const RevenuesPageCalendar = props => {
               setRevenueToModify={setRevenueToModify}
               setOpenModifier={setOpenModifier}
               refetch={refetch}
+              consolidatedDate={consolidatedDate}
             />
           ))}
         </div>

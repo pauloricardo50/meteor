@@ -29,6 +29,7 @@ const RevenueCard = ({
   setRevenueToModify = () => ({}),
   setOpenModifier = () => ({}),
   refetch = () => ({}),
+  consolidatedDate,
 }) => {
   const {
     amount,
@@ -57,7 +58,10 @@ const RevenueCard = ({
           <span className="mr-8">{toMoney(amount)}</span>
           <Icon {...getIconConfig(revenue)} />
           {withActions && revenue.status === REVENUE_STATUS.EXPECTED && (
-            <RevenueConsolidator revenue={revenue} onSubmitted={refetch} />
+            <RevenueConsolidator
+              revenue={{ ...revenue, paidAt: consolidatedDate }}
+              onSubmitted={refetch}
+            />
           )}
           {withActions && revenue.status === REVENUE_STATUS.EXPECTED && (
             <RevenuePostponer revenue={revenue} />

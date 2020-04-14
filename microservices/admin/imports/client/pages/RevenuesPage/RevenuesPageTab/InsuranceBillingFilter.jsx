@@ -44,6 +44,7 @@ const InsuranceBillingFilter = props => {
     sourceOrganisationId,
     sourceOrganisations,
     setType,
+    setConsolidatedDate,
   } = props;
   const [label, setLabel] = useState('Réceptionner décompte assurance');
   const schema = useMemo(() => getSchema(sourceOrganisations), [
@@ -74,6 +75,7 @@ const InsuranceBillingFilter = props => {
               sourceOrganisations.find(({ _id }) => _id === organisationId).name
             } ${moment(date).format('MMM YYYY')}`,
           );
+          setConsolidatedDate(new Date());
           resolve();
         })
       }
