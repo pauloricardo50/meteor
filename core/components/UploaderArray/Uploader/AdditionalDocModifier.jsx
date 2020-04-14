@@ -19,7 +19,7 @@ export const getAdditionalDocSchema = collection => {
       'PROPERTY',
       'COPROPERTY',
       'INVESTMENT_BUILDING',
-      'TAKEOVER',
+      'REFINANCING',
       'SHARE',
       'OTHER',
     ];
