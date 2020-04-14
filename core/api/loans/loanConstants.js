@@ -28,7 +28,7 @@ export const PURCHASE_TYPE = {
   ACQUISITION: 'ACQUISITION',
   REFINANCING: 'REFINANCING',
   // TODO: Figure out what needs to be changed for this
-  CONSTRUCTION: 'CONSTRUCTION',
+  // CONSTRUCTION: 'CONSTRUCTION',
 };
 
 // Keep these sorted alphabetically for zipcode search to work

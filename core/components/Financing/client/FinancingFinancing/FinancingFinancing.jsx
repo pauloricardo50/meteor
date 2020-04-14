@@ -71,14 +71,14 @@ const enableOffers = ({ loan }) => loan.enableOffers;
 const oneStructureHasLoan = ({ loan: { structures } }) =>
   structures.some(({ wantedLoan }) => wantedLoan);
 
-const FinancingFinancing = props => (
+const FinancingFinancing = ({ purchaseType }) => (
   <FinancingSection
     summaryConfig={[
       {
         id: 'mortgageLoan',
         label: (
           <span className="section-title">
-            <T id="FinancingFinancing.title" />
+            <T id="FinancingFinancing.title" values={{ purchaseType }} />
           </span>
         ),
         Component: props => (

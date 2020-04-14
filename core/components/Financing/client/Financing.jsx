@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ScrollSync } from 'react-scroll-sync';
 
 import Loans from '../../../api/loans';
-import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
 import Loading from '../../Loading';
 import T from '../../Translation';
 import UpdateField from '../../UpdateField';
@@ -18,7 +17,6 @@ import FinancingLenders from './FinancingLenders';
 import FinancingOffers from './FinancingOffers';
 import FinancingOwnFunds from './FinancingOwnFunds';
 import FinancingProject from './FinancingProject';
-import FinancingRefinancing from './FinancingRefinancing';
 import FinancingResult from './FinancingResult';
 
 const Financing = ({ loan }) => {
@@ -50,11 +48,7 @@ const Financing = ({ loan }) => {
 
         <FinancingProject />
 
-        {loan.purchaseType === PURCHASE_TYPE.REFINANCING && (
-          <FinancingRefinancing />
-        )}
-
-        <FinancingFinancing />
+        <FinancingFinancing purchaseType={loan.purchaseType} />
 
         <FinancingOwnFunds />
 

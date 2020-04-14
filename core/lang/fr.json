@@ -2016,7 +2016,7 @@
   "Financing.wantedLoan": "Prêt hypothécaire",
   "FinancingFinancing.DIRECT": "Direct",
   "FinancingFinancing.INDIRECT": "Indirect",
-  "FinancingFinancing.title": "PRÊT HYPOTHÉCAIRE",
+  "FinancingFinancing.title": "{purchaseType, select, REFINANCING {REFINANCEMENT} other {PRÊT HYPOTHÉCAIRE}}",
   "FinancingHeaderAdder.label": "Ajouter plan financier",
   "FinancingOwnFunds.title": "FONDS PROPRES",
   "FinancingProject.title": "COÛT DU PROJET",
