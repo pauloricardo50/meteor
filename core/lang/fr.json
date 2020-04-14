@@ -1,4 +1,12 @@
 {
+  "Forms.guaranteedCapital": "Capital garanti",
+  "Forms.guaranteedCapital.placeholder": "200 000",
+  "Forms.nonGuaranteedCapital": "Capital non garanti",
+  "Forms.nonGuaranteedCapital.placeholder": "200 000",
+  "Forms.deathCapital": "Capital décès",
+  "Forms.deathCapital.placeholder": "200 000",
+  "Forms.disabilityPension": "Rente d'incapacité de gain (mensuelle)",
+  "Forms.disabilityPension.placeholder": "500",
   "BorrowerAdder.buttonLabel": "{isBorrower, select, true {Emprunteur} other {Assuré}}",
   "BorrowerAdder.reuser.dialogTitle": "Ajouter un {isBorrower, select, true {emprunteur} other {assuré}}",
   "BorrowerAdder.reuser.dialogDescription": "Vous pouvez ajouter un nouvel {isBorrower, select, true {emprunteur} other {assuré}} ou en réutiliser un déjà existant",
