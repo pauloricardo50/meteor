@@ -245,8 +245,8 @@ export class FrontService {
       ...(body ? { body: JSON.stringify(body) } : {}),
     })
       .then(async result => {
-        const response = await result.text();
         try {
+          const response = await result.text();
           return JSON.parse(response);
         } catch (e) {
           // Sometimes Front response cannot be parsed...
