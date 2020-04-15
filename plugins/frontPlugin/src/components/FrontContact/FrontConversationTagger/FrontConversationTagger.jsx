@@ -38,7 +38,7 @@ const FrontConversationTagger = ({
     };
 
     getTags(tagIds);
-  }, []);
+  }, [tagIds]);
 
   const hasLoanTags =
     tags.filter(({ parentTag }) => parentTag?.name?.includes('loan')).length >
