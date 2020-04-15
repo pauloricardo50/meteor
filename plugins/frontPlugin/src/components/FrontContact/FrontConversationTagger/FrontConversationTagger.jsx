@@ -29,16 +29,13 @@ const FrontConversationTagger = ({
   useEffect(() => {
     const getTags = async ids => {
       const fetchedTags = await Promise.all(
-        ids.map(async tagId => {
-          const tag = EpotekFrontApi.callMethod('frontGetTag', { tagId });
-          return tag;
-        }),
+        ids.map(tagId => EpotekFrontApi.callMethod('frontGetTag', { tagId })),
       );
       setTags(fetchedTags);
     };
 
     getTags(tagIds);
-  }, [tagIds]);
+  }, [tagIds.join(',')]);
 
   const hasLoanTags =
     tags.filter(({ parentTag }) => parentTag?.name?.includes('loan')).length >
