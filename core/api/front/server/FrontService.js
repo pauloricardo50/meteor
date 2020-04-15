@@ -66,6 +66,10 @@ const frontEndpoints = {
     makeEndpoint: ({ conversationId }) =>
       `/conversations/${conversationId}/assignee`,
   },
+  getTag: {
+    method: 'GET',
+    makeEndpoint: ({ tagId }) => `/tags/${tagId}`,
+  },
 };
 
 const WEBHOOKS = {
@@ -240,7 +244,15 @@ export class FrontService {
       },
       ...(body ? { body: JSON.stringify(body) } : {}),
     })
-      .then(result => result.json())
+      .then(async result => {
+        try {
+          const response = await result.text();
+          return JSON.parse(response);
+        } catch (e) {
+          // Sometimes Front response cannot be parsed...
+          return {};
+        }
+      })
       .then(result => {
         console.log('callFrontApi result:', endpoint);
         console.log('params:', params);
@@ -426,8 +438,14 @@ export class FrontService {
       endpoint: 'getConversation',
       params: { conversationId },
     });
+    const { tags: currentTags = [] } = conversation;
 
-    return this.updateConversationTags({ conversation, tags: [frontTagId] });
+    return this.updateConversationTags({
+      conversation,
+      tags: [frontTagId],
+    }).then(() => ({
+      tagIds: [...currentTags.map(({ id }) => id), frontTagId],
+    }));
   }
 
   async untagLoan({ loanId, conversationId }) {
@@ -452,7 +470,9 @@ export class FrontService {
       conversation,
       tags: newTags,
       appendTags: false,
-    });
+    }).then(() => ({
+      tagIds: newTags,
+    }));
   }
 
   updateConversationAssignee({ conversationId, assigneeId = null }) {
@@ -506,6 +526,25 @@ export class FrontService {
     }
 
     return this.updateConversationAssignee({ conversationId, assigneeId });
+  }
+
+  async getTag({ tagId }) {
+    let parentTag = {};
+    const tag = await this.callFrontApi({
+      endpoint: 'getTag',
+      params: { tagId },
+    });
+
+    const { _links: { related } = {} } = tag;
+
+    if (related?.parent_tag) {
+      parentTag = await this.callFrontApi({
+        endpoint: 'getTag',
+        params: { tagId: related.parent_tag.split('/').slice(-1)[0] },
+      });
+    }
+
+    return { ...tag, parentTag };
   }
 }
 
