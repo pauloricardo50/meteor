@@ -80,7 +80,7 @@ Here we can keep track of bundle size changes over time.
 | 18/12/2018 |        | 4.04MB |         |        | Added `loadable` on all of `app`'s pages |
 | 18/12/2018 |        |        |         | 3.67MB | Added `loadable` on all of `pro`'s pages |
 | 18/04/2019 | 2.03MB | 2.46MB | 3.59MB  | 2.30MB | PR #456                                  |
-| 3/04/2019  | 4.45MB | 2.46MB | 8.65MB  | 3.36MB |                                 |
+| 15/04/2020 | 3.34MB | 4.36MB | 8.63MB  | 3.72MB |                                          |
 
 Main things to optimize:
 
