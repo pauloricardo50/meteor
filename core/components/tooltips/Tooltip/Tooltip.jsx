@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import Button from '../../Button';
 import DialogSimple from '../../DialogSimple/loadable';
 import T from '../../Translation';
-import defaultIntlValues from '../../Translation/defaultIntlValues';
 import TooltipSynonyms from '../TooltipSynonyms';
 
 const getTooltip1Id = id => (id.includes('tooltip') ? id : `tooltip.${id}`);
@@ -51,7 +50,7 @@ const Tooltip = ({
           <TooltipSynonyms tooltipId={id} match={match} />
           <br />
           <br />
-          <T id={getTooltip2Id(id)} values={defaultIntlValues} />
+          <T id={getTooltip2Id(id)} />
         </DialogSimple>
       </span>
     );

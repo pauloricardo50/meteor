@@ -1,4 +1,6 @@
 {
+  "Forms.originalValue": "Coût d'acquisition initial",
+  "Forms.originalPurchaseYear": "Année d'acquisition",
   "Financing.propertyValue.refinancingTooltip": "Veuillez indiquer la valeur estimée de votre bien immobilier à l'heure actuelle, pas lors de l'acquisition.",
   "BorrowerAdder.buttonLabel": "{isBorrower, select, true {Emprunteur} other {Assuré}}",
   "BorrowerAdder.reuser.dialogTitle": "Ajouter un {isBorrower, select, true {emprunteur} other {assuré}}",
@@ -2725,7 +2727,7 @@
   "Recap.property": "Bien immobilier",
   "Recap.propertyValue": "Valeur du bien",
   "Recap.propertyWork": "Travaux de plus-value",
-  "Recap.purchasePrice": "Prix d'achat",
+  "Recap.purchasePrice": "{purchaseType, select, REFINANCING {Valeur du bien} other {Prix d'achat}}",
   "Recap.realEstate": "Biens immobiliers",
   "Recap.realEstateLoans": "Emprunts actuels",
   "Recap.receivedRent": "Loyer perçu",

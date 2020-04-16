@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import AutoTooltip from '../tooltips/AutoTooltip';
-import defaultIntlValues from './defaultIntlValues';
 import FormattedMessage from './FormattedMessage';
 
 const makeAutoTooltip = props => (content, key) => (
@@ -33,11 +32,7 @@ export const T = props => {
   const Auto = makeAutoTooltip(props);
 
   return (
-    <FormattedMessage
-      id={id}
-      values={{ ...defaultIntlValues, ...values }}
-      {...rest}
-    >
+    <FormattedMessage id={id} values={values} {...rest}>
       {(...formattedMessage) => formattedMessage.map((msg, i) => Auto(msg, i))}
     </FormattedMessage>
   );
