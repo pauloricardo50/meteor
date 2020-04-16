@@ -37,8 +37,6 @@ import ActivityService from './ActivityService';
 
 const { formatMessage } = intl;
 
-// const formatMessage = Intl.formatMessage.bind(Intl);
-
 ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
   ({ params: { loanId, promotionId }, context }) => {
