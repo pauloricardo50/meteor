@@ -14,7 +14,7 @@ import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import FilesPage from '../../client/pages/FilesPage/loadable';
 import FinancingPage from '../../client/pages/FinancingPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
-import RefinancingPage from '../../client/pages/RefinancingPage/RefinancingPage';
+import RefinancingPage from '../../client/pages/RefinancingPage/RefinancingPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
