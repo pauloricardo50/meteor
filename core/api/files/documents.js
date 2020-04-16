@@ -1,6 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-
-import intl, { formatMessage as clientFormatMessage } from '../../utils/intl';
+import intl from '../../utils/intl';
 import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from '../insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from '../insurances/insuranceConstants';
@@ -17,13 +15,7 @@ import {
 } from './fileConstants';
 
 export const documentHasTooltip = documentId => {
-  let formatMessage = clientFormatMessage;
-  if (Meteor.isServer || Meteor.isTest) {
-    // email checklist is called on server and needs messages
-    const messagesFR = require('../../lang/fr.json');
-    intl.init(messagesFR);
-    formatMessage = intl.formatMessage.bind(intl);
-  }
+  const { formatMessage } = intl;
   return (
     formatMessage({ id: `files.${documentId}.tooltip` }) !==
     `files.${documentId}.tooltip`

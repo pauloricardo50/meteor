@@ -7,9 +7,11 @@ import { EMAIL_IDS } from '../../../../../api/email/emailConstants';
 import generator from '../../../../../api/factories/server';
 import { sendLoanChecklist } from '../../../../../api/loans/methodDefinitions';
 import { ddpWithUserId } from '../../../../../api/methods/methodHelpers';
-import { formatMessage } from '../../../../../utils/server/intl';
+import intl from '../../../../../utils/intl';
 import { checkEmails } from '../../../../../utils/testHelpers';
 import { getChecklistMissingInformations } from '../../../helpers';
+
+const { formatMessage } = intl;
 
 describe('LoanChecklist', function() {
   this.timeout(5000);

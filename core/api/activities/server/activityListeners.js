@@ -1,6 +1,6 @@
 import pick from 'lodash/pick';
 
-import Intl from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import ServerEventService from '../../events/server/ServerEventService';
 import { getUserNameAndOrganisation } from '../../helpers';
@@ -35,7 +35,9 @@ import UserService from '../../users/server/UserService';
 import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
 import ActivityService from './ActivityService';
 
-const formatMessage = Intl.formatMessage.bind(Intl);
+const { formatMessage } = intl;
+
+// const formatMessage = Intl.formatMessage.bind(Intl);
 
 ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
