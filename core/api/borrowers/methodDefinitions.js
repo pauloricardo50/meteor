@@ -35,8 +35,8 @@ export const pullBorrowerValue = new Method({
 export const getReusableBorrowers = new Method({
   name: 'getReusableBorrowers',
   params: {
-    loanId: Match.Maybe(String),
-    insuranceRequestId: Match.Maybe(String),
+    loanId: Match.Maybe(Match.OneOf(String, undefined)),
+    insuranceRequestId: Match.Maybe(Match.OneOf(String, undefined)),
   },
   doNotRefetchQueries: true,
 });

@@ -23,7 +23,16 @@ const layout = [
     title: <h4>Assurance</h4>,
     layout: [
       {
-        fields: ['organisationId', 'type', 'category', 'insuranceProductId'],
+        fields: [
+          'organisationId',
+          'type',
+          'category',
+          'insuranceProductId',
+          'guaranteedCapital',
+          'nonGuatanteedCapital',
+          'deathCapital',
+          'disabilityPension',
+        ],
         Component: Box,
         className: 'grid-row mt-16',
         title: (

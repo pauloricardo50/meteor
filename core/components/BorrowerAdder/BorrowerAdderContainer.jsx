@@ -64,7 +64,7 @@ const makeOnClick = ({
 }) => () =>
   userId
     ? getReusableBorrowers
-        .run({ loanId, insuranceRequestId })
+        .run(loanId ? { loanId } : { insuranceRequestId })
         .then((reusableBorrowers = []) => {
           if (reusableBorrowers?.length) {
             setReusableBorrowers(reusableBorrowers);

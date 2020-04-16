@@ -3,6 +3,7 @@ const fs = require('fs');
 const { spawnSync } = require('child_process');
 const os = require('os');
 const path = require('path');
+const chalk = require('chalk');
 
 const { argv } = yargs
   .string('environment')
@@ -14,7 +15,7 @@ const { argv } = yargs
 
 if (!fs.existsSync('./configs/mongo-auth.json')) {
   console.error(
-    'Please create a database user in Atlas, as described in the docs.',
+    chalk.redBright`Please create the './configs/mongo-auth.json' file as described in the Atlas Database User section of the docs`,
   );
   process.exit(1);
 }
@@ -30,6 +31,8 @@ if (argv.environment === 'prod') {
   console.error(`Unknown environment: ${argv.environment}`);
   process.exit(1);
 }
+
+console.log(chalk.blue(`=> Pulling ${dbName} Database`));
 
 const outPath =
   argv.out ||
@@ -52,8 +55,21 @@ const args = [
   `--archive=${outPath}`,
   '--gzip',
 ];
-console.log({ args });
-spawnSync('mongodump', args, { stdio: 'inherit' });
+
+console.log(chalk.dim(`Using args: ${JSON.stringify(args, null, 2)}`));
+
+const result = spawnSync('mongodump', args, { stdio: 'inherit' });
+
+if (result.error instanceof Error || result.status > 0) {
+  console.log(chalk.bgRed.white('Error dumping database.'));
+  [
+    ' - Make sure the mongo tools are installed',
+    ' - Make sure your IP Address is whitelisted in Atlas, or you are using the VPN',
+  ].forEach(line => console.log(chalk.yellow(line)));
+
+  process.exit(1);
+}
+
 fs.writeFileSync(dbNameFile, dbName);
 
-console.log(`Finished pulling. File at ${outPath}`);
+console.log(chalk.blue(`Finished pulling. File at ${outPath}`));

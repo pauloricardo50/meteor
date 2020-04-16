@@ -21,7 +21,7 @@ Go to the `private-registry` [service account](https://console.cloud.google.com/
 
 This is used on the servers to authenticate docker with the private registry.
 
-## Atlas API keys
+## Atlas API Keys
 
 Go to https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#access/apiKeys > `Manage` > `Create API Key`.
 

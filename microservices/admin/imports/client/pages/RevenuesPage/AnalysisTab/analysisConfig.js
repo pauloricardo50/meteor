@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import {
   ACTIVITIES_COLLECTION,
+  ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,
 } from 'core/api/activities/activityConstants';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
@@ -155,6 +156,21 @@ const analysisConfig = {
         }
       },
     },
+    activities: {
+      fragment: {
+        metadata: { event: 1 },
+        date: 1,
+        $options: { sort: { date: -1 } },
+      },
+      label: 'Dernier changement de statut',
+      format: ({ activities = [] }) => {
+        const lastChangedStatus = activities.find(
+          ({ metadata }) =>
+            metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+        );
+        return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+      },
+    },
   },
   [REVENUES_COLLECTION]: {
     amount: { id: 'Forms.amount' },
@@ -274,11 +290,19 @@ const analysisConfig = {
         format: ({ type, metadata }) =>
           type === ACTIVITY_TYPES.EVENT ? metadata.event : undefined,
       },
+      {
+        label: 'Changement de statut',
+        format: ({ metadata }) => metadata?.details?.nextStatus,
+      },
     ],
     loan: [
       {
         label: 'Conseiller du dossier',
-        fragment: { category: 1, assignees: { name: 1 } },
+        fragment: {
+          category: 1,
+          assignees: { name: 1 },
+          structureCache: { wantedLoan: 1 },
+        },
         format: ({ loan: { assignees = [] } = {} }) =>
           assignees.length
             ? assignees.find(({ $metadata }) => $metadata.isMain).name
@@ -287,6 +311,10 @@ const analysisConfig = {
       {
         label: 'Catégorie du dossier',
         format: ({ loan }) => loan?.category,
+      },
+      {
+        id: 'Forms.wantedLoan',
+        format: ({ loan }) => loan?.structureCache?.wantedLoan,
       },
     ],
   },
