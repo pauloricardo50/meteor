@@ -875,6 +875,8 @@ export const fullProperty = ({ withSort } = {}) => ({
   mortgageNotes: mortgageNote(),
   name: 1,
   numberOfFloors: 1,
+  originalValue: 1,
+  originalPurchaseYear: 1,
   parkingInside: 1,
   parkingOutside: 1,
   pictures: 1,

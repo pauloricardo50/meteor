@@ -139,6 +139,18 @@ export const getPropertyArray = ({ loan, property }) => {
   const array = [
     { id: 'value', type: 'textInput', money: true },
     {
+      id: 'originalValue',
+      type: 'textInput',
+      money: true,
+      condition: r.purchaseType === PURCHASE_TYPE.REFINANCING,
+    },
+    {
+      id: 'originalPurchaseYear',
+      type: 'textInput',
+      number: true,
+      condition: r.purchaseType === PURCHASE_TYPE.REFINANCING,
+    },
+    {
       id: 'investmentRent',
       type: 'textInput',
       money: true,
