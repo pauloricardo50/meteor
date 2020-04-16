@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import Checkbox from 'core/components/Checkbox';
+import T from 'core/components/Translation';
 
 const WelcomeScreenTop = ({
   handleClick,

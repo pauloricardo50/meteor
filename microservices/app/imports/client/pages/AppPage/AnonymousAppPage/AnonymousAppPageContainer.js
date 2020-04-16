@@ -46,7 +46,7 @@ export const withAnonymousLoan = compose(
 export default compose(
   withAnonymousLoan,
   withProps(({ history }) => ({
-    insertAnonymousLoan: () =>
+    insertAnonymousLoan: ({ purchaseType } = {}) =>
       anonymousLoanInsert
         .run({
           trackingId: parseCookies()[TRACKING_COOKIE],
@@ -54,6 +54,7 @@ export default compose(
           existingAnonymousLoanId: localStorage.getItem(
             LOCAL_STORAGE_ANONYMOUS_LOAN,
           ),
+          purchaseType,
         })
         .then(loanId => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
