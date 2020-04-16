@@ -4,11 +4,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import pick from 'lodash/pick';
 import { compose, withProps, withState } from 'recompose';
 
+import Loadable from '../../utils/loadable';
 import Button from '../Button';
-import AutoForm from './AutoForm';
 import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
 import AutoFormDialogActions from './AutoFormDialogActions';
 import AutoFormDialogContent from './AutoFormDialogContent';
+
+const AutoForm = Loadable({
+  loader: () => import('./AutoForm'),
+});
 
 const getAutoFormProps = props =>
   pick(props, [

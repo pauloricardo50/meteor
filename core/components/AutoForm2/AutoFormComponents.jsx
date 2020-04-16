@@ -5,6 +5,7 @@ import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
 
 import { ignoreProps } from '../../containers/updateForProps';
+import Loadable from '../../utils/loadable';
 import DateField from '../DateField';
 import HtmlPreview from '../HtmlPreview';
 import MoneyInput from '../MoneyInput';
@@ -18,8 +19,13 @@ import { getLabel, getPlaceholder } from './autoFormHelpers';
 import CustomBooleanRadioField from './CustomBooleanRadioField';
 import { OptimizedListField } from './CustomListField';
 import CustomNestField from './CustomNestField';
-import CustomSelectField from './CustomSelectField';
-import FileUploadField from './FileUploadField';
+
+const CustomSelectField = Loadable({
+  loader: () => import('./CustomSelectField'),
+});
+const FileUploadField = Loadable({
+  loader: () => import('./FileUploadField'),
+});
 
 const container = ignoreProps(FIELDS_TO_IGNORE);
 
