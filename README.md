@@ -81,6 +81,7 @@ Here we can keep track of bundle size changes over time.
 | 18/12/2018 |        |        |         | 3.67MB | Added `loadable` on all of `pro`'s pages |
 | 18/04/2019 | 2.03MB | 2.46MB | 3.59MB  | 2.30MB | PR #456                                  |
 | 15/04/2020 | 3.34MB | 4.36MB | 8.63MB  | 3.72MB |                                          |
+| 16/04/2020 | 1.93MB | 3.08MB | 3.11MB  | 2.27MB | Remove `req` from all `loadable`         |
 
 Main things to optimize:
 
