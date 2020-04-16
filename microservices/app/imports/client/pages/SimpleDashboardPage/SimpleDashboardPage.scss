@@ -38,7 +38,7 @@
       flex-direction: column;
     }
 
-    .borrowers-card,
+    &-left,
     &-right {
       display: flex;
       flex-basis: 50%;
@@ -48,9 +48,7 @@
       box-sizing: content-box;
       width: 50%;
       max-width: $borrowers-item-width;
-      padding: 32px;
 
-      border-radius: 8px;
 
       @include screen(wide) {
         max-width: unset;
@@ -60,23 +58,12 @@
       }
     }
 
-    &-right {
-      height: 50%;
-      margin-top: 0;
-      margin-left: 24px;
-      padding: 0;
-
-      @include screen(wide) {
-        width: 100%;
-        margin-left: 0;
-      }
-    }
-
-    .borrowers-card {
+    &-left {
       max-width: 50%;
       height: 50%;
-
-      background: white;
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
 
       @include screen(wide) {
         align-self: center;
@@ -86,6 +73,37 @@
         width: 100%;
         max-width: 100%;
       }
+
+      .property-form {
+        align-items: stretch;
+
+        .plus {
+          padding: 40px;
+          color: $primary;
+
+          font-size: 4em;
+        }
+      }
+    }
+
+    &-right {
+      height: 50%;
+      margin-top: 0;
+      margin-left: 24px;
+      padding: 0;
+      border-radius: 8px;
+
+      @include screen(wide) {
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+
+
+    .borrowers-card {
+      background: white;
+      border-radius: 8px;
+
       @include screen(small) {
         padding: 16px;
       }

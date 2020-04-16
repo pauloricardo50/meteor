@@ -1,4 +1,5 @@
 {
+  "SimpleDashboardPage.refinancingProperty": "Ajouter un bien immobilier à refinancer",
   "Forms.originalValue": "Coût d'acquisition initial",
   "Forms.originalPurchaseYear": "Année d'acquisition",
   "Financing.propertyValue.refinancingTooltip": "Veuillez indiquer la valeur estimée de votre bien immobilier à l'heure actuelle, pas lors de l'acquisition.",
