@@ -1,4 +1,9 @@
 {
+  "CalendlyModal.title": "Programmer un rendez-vous",
+  "CalendlyModal.eventScheduled.title": "Vous avez déjà programmé un rendez-vous",
+  "CalendlyModal.eventScheduled.description": "Voulez-vous en programmer un autre ?",
+  "CalendlyModal.eventScheduled.button": "Rendez-vous",
+  "ContactButton.calendly": "Rendez-vous",
   "Forms.guaranteedCapital": "Capital garanti",
   "Forms.guaranteedCapital.placeholder": "200 000",
   "Forms.nonGuaranteedCapital": "Capital non garanti",
