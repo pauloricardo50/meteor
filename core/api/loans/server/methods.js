@@ -84,25 +84,28 @@ export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 
-userLoanInsert.setHandler(({ userId }, { test, proPropertyId }) => {
-  SecurityService.checkLoggedIn();
+userLoanInsert.setHandler(
+  ({ userId }, { test, proPropertyId, purchaseType }) => {
+    SecurityService.checkLoggedIn();
 
-  if (proPropertyId) {
-    return LoanService.insertPropertyLoan({
+    if (proPropertyId) {
+      return LoanService.insertPropertyLoan({
+        userId,
+        propertyIds: [proPropertyId],
+        loan: { displayWelcomeScreen: false },
+      });
+    }
+
+    return LoanService.fullLoanInsert({
       userId,
-      propertyIds: [proPropertyId],
-      loan: { displayWelcomeScreen: false },
+      loan: {
+        displayWelcomeScreen: false,
+        status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
+        purchaseType,
+      },
     });
-  }
-
-  return LoanService.fullLoanInsert({
-    userId,
-    loan: {
-      displayWelcomeScreen: false,
-      status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
-    },
-  });
-});
+  },
+);
 
 export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -202,12 +205,7 @@ loanShareSolvency.setHandler((context, params) => {
 });
 
 anonymousLoanInsert.setHandler((context, params) => {
-  const {
-    proPropertyId,
-    existingAnonymousLoanId,
-    referralId,
-    trackingId,
-  } = params;
+  const { proPropertyId, existingAnonymousLoanId } = params;
   if (proPropertyId) {
     SecurityService.properties.isAllowedToAddAnonymousLoan({
       propertyId: proPropertyId,

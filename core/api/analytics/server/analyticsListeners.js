@@ -332,7 +332,7 @@ addAnalyticsListener({
   method: anonymousLoanInsert,
   func: ({
     analytics,
-    params: { proPropertyId, referralId, trackingId },
+    params: { proPropertyId, referralId, trackingId, purchaseType },
     result: loanId,
   }) => {
     const { name: loanName } = LoanService.get(loanId, { name: 1 });
@@ -344,6 +344,7 @@ addAnalyticsListener({
         referralId,
         anonymous: true,
         loanName,
+        purchaseType,
       },
       trackingId,
     );

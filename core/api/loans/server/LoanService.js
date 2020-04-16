@@ -81,7 +81,7 @@ class LoanService extends CollectionService {
   setAssignees = ({ loanId, ...params }) =>
     setAssignees({ docId: loanId, collection: LOANS_COLLECTION, ...params });
 
-  insertAnonymousLoan = ({ proPropertyId, referralId }) => {
+  insertAnonymousLoan = ({ proPropertyId, referralId, purchaseType }) => {
     let loanId;
     if (proPropertyId) {
       loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
@@ -91,7 +91,12 @@ class LoanService extends CollectionService {
 
     this.update({
       loanId,
-      object: { anonymous: true, displayWelcomeScreen: false, referralId },
+      object: {
+        anonymous: true,
+        displayWelcomeScreen: false,
+        referralId,
+        purchaseType,
+      },
     });
 
     return loanId;

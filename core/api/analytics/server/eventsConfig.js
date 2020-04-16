@@ -79,6 +79,7 @@ export const EVENTS_CONFIG = {
       { name: 'promotionId', optional: true },
       { name: 'referralId', optional: true },
       { name: 'anonymous', optional: true },
+      { name: 'purchaseType', optional: true },
     ],
   },
   [EVENTS.LOAN_STATUS_CHANGED]: {

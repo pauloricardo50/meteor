@@ -45,6 +45,7 @@ export const userLoanInsert = new Method({
   params: {
     proPropertyId: Match.Maybe(String),
     test: Match.Optional(Boolean),
+    purchaseType: Match.Maybe(String),
   },
 });
 
@@ -151,6 +152,7 @@ export const anonymousLoanInsert = new Method({
     proPropertyId: Match.Maybe(String),
     referralId: Match.Maybe(String),
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
+    purchaseType: Match.Maybe(String),
   },
 });
 
