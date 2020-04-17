@@ -9,7 +9,7 @@ import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
 import WelcomeScreenCtas from '../../components/WelcomeScreen/WelcomeScreenCtas';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
-import SuperDashboard from './SuperDashboard';
+import SuperDashboard from './SuperDashboard/loadable';
 
 export const AppPage = ({ currentUser, insertLoan, loading }) => {
   const { emails, loans, roles } = currentUser;

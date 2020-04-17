@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import moment from 'moment';
-import DefaultDateRangePicker from 'react-dates/lib/components/DateRangePicker';
 
+import Loadable from '../../utils/loadable';
 import { defaultDatePickerProps } from './dateInputConstants';
+
+const DefaultDateRangePicker = Loadable({
+  loader: () => import('react-dates/lib/components/DateRangePicker'),
+});
 
 const DateRangePicker = ({ range, onChange, ...rest }) => {
   const { startDate, endDate } = range;

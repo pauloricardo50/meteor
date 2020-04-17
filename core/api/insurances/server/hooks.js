@@ -1,11 +1,11 @@
-import Intl from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import FileService from '../../files/server/FileService';
 import UserService from '../../users/server/UserService';
 import Insurances from '../insurances';
 
-const formatMessage = Intl.formatMessage.bind(Intl);
+const { formatMessage } = intl;
 
 Insurances.before.update(
   (userId, { _id: insuranceId, status: prevStatus }, fieldNames, modifier) => {

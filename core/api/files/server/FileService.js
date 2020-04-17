@@ -4,14 +4,14 @@ import { Mongo } from 'meteor/mongo';
 import moment from 'moment';
 
 import { readFileBuffer, removeFile } from '../../../utils/filesUtils';
-import Intl from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import { asyncForEach } from '../../helpers/index';
 import { getSimpleAuthToken } from '../../RESTAPI/server/helpers';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import { FILE_STATUS, S3_ACLS } from '../fileConstants';
 import S3Service from './S3Service';
 
-const formatMessage = Intl.formatMessage.bind(Intl);
+const { formatMessage } = intl;
 
 class FileService {
   listFilesForDoc = (docId, subdocument) => {

@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+
 import T from 'core/components/Translation';
-import { formatMessage } from 'core/utils/intl';
+import intl from 'core/utils/intl';
+
 import InsuranceProductModifier from './InsuranceProductModifier';
+
+const { formatMessage } = intl;
 
 const InsuranceProduct = ({ insuranceProduct }) => {
   const {

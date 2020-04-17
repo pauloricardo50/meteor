@@ -1,5 +1,9 @@
-import _ from 'lodash';
 import { Mongo } from 'meteor/mongo';
+
+import clone from 'lodash/clone';
+import each from 'lodash/each';
+import find from 'lodash/find';
+
 import settings from './cache.js';
 
 export const MigrationHistory = new Mongo.Collection('_cacheMigrations');
@@ -7,7 +11,7 @@ export const MigrationHistory = new Mongo.Collection('_cacheMigrations');
 const migrations = [];
 
 export function addMigration(collection, insertFn, options) {
-  let opts = _.clone(options);
+  let opts = clone(options);
   if (opts.collection) {
     // prevent Error: Converting circular structure to JSON
     opts.collection = opts.collection._name;
@@ -23,7 +27,7 @@ export function addMigration(collection, insertFn, options) {
 }
 
 export function migrate(collectionName, cacheField, selector) {
-  const migration = _.find(migrations, { collectionName, cacheField });
+  const migration = find(migrations, { collectionName, cacheField });
   if (!migration) {
     throw new Error(`no migration found for ${collectionName} - ${cacheField}`);
   } else {
@@ -43,7 +47,7 @@ export function migrate(collectionName, cacheField, selector) {
 }
 
 export function autoMigrate() {
-  _.each(migrations, migration => {
+  each(migrations, migration => {
     if (
       !MigrationHistory.findOne({
         collectionName: migration.collectionName,

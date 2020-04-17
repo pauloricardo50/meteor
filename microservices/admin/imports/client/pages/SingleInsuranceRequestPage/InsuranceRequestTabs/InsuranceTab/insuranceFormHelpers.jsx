@@ -11,11 +11,13 @@ import {
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import { formatMessage } from 'core/utils/intl';
+import intl from 'core/utils/intl';
 import { createRoute } from 'core/utils/routerUtils';
 
 import ADMIN_ROUTES from '../../../../../startup/client/adminRoutes';
 import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
+
+const { formatMessage } = intl;
 
 export const getSchema = ({ borrowers, organisations }) =>
   new SimpleSchema({

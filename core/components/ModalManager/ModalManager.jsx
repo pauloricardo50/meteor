@@ -4,33 +4,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogComponents from './DialogComponents';
 import ModalManagerContext from './ModalManagerContext';
 
-// Open modals from anywhere in React:
-
-// const { openModal } = useContext(ModalManagerContext);
-
-// // Open a simple modal that says hello world
-// <Button onClick={() => openModal({ title: 'Hello world' })}>
-//   Open modal
-// </Button>
-
-// // Open two modals that share data
-// <Button onClick={() => openModal([
-//   {
-//     title: <div>Hello world</div>,
-//     actions: ({ closeModal }) => (
-//       <button
-//        onClick={() => new Promise((res) => res('Promise worked!')).then(closeModal)}
-//       >
-//         Close me
-//       </button>
-//     ),
-//   },
-//   { title: ({ returnValue }) => <div>{returnValue}</div> },
-// ])}
-// >
-//   Open modal
-// </Button>
-
 const initialState = { activeModal: null };
 
 let id = 0;

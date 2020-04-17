@@ -8,16 +8,16 @@ import { connectField } from 'uniforms';
 import {
   FILE_STATUS,
   SLINGSHOT_DIRECTIVE_NAME_TEMP,
-} from '../../api/files/fileConstants';
-import { deleteTempFile } from '../../api/files/methodDefinitions';
-import BaseUploader from '../UploaderArray/Uploader/BaseUploader';
+} from '../../../api/files/fileConstants';
+import { deleteTempFile } from '../../../api/files/methodDefinitions';
+import BaseUploader from '../../UploaderArray/Uploader/BaseUploader';
 import {
   addProps,
   displayFullState,
   tempFileState,
   willReceiveProps,
   withMergedSuccessfulFiles,
-} from '../UploaderArray/Uploader/uploaderHelpers';
+} from '../../UploaderArray/Uploader/uploaderHelpers';
 
 export default compose(
   connectField,
