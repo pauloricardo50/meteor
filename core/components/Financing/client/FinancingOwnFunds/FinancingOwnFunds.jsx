@@ -64,7 +64,7 @@ const FinancingOwnFunds = props => {
                     <div className="flex-col center">
                       <T
                         id="Financing.reimbursementRequiredOwnFunds.description"
-                        values={{ isMissingOwnFunds: value > 0 }}
+                        values={{ isMissingOwnFunds: value < 0 }}
                         style={{ color: '#444444' }}
                       />
                       <span>
@@ -147,7 +147,7 @@ const FinancingOwnFunds = props => {
               <b style={{ color: '#444444' }}>
                 <T
                   id="Financing.reimbursementRequiredOwnFunds.description"
-                  values={{ isMissingOwnFunds: value > 0 }}
+                  values={{ isMissingOwnFunds: value < 0 }}
                 />
               </b>
               <span>
