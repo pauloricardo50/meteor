@@ -540,28 +540,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(array);
     }
 
+    getBorrowerFormArraysForHash({ borrowers }) {
+      return borrowers.reduce(
+        (arr, borrower) => [
+          ...arr,
+          {
+            formArray: getBorrowerFinanceArray({
+              borrowers,
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+          {
+            formArray: getBorrowerInfoArray({
+              borrowers,
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+        ],
+        [],
+      );
+    }
+
     getBorrowerFormHash({ borrowers }) {
       return getFormValuesHashMultiple(
-        borrowers.reduce(
-          (arr, borrower) => [
-            ...arr,
-            {
-              formArray: getBorrowerFinanceArray({
-                borrowers,
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-            {
-              formArray: getBorrowerInfoArray({
-                borrowers,
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-          ],
-          [],
-        ),
+        this.getBorrowerFormArraysForHash({ borrowers }),
       );
     }
 
@@ -815,23 +819,5 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           ...otherIncomeOfType.map(({ comment }) => comment),
         ].filter(x => x);
       }, []);
-    }
-
-    canCalculateSolvency({ borrowers }) {
-      if (!borrowers.length) {
-        return false;
-      }
-
-      const bankFortune = this.getFortune({ borrowers });
-      if (!bankFortune) {
-        return false;
-      }
-
-      const salary = this.getSalary({ borrowers });
-      if (!salary || salary === 0) {
-        return false;
-      }
-
-      return true;
     }
   };

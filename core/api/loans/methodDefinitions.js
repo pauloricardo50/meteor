@@ -122,8 +122,8 @@ export const reuseProperty = new Method({
   params: { loanId: String, propertyId: String },
 });
 
-export const setMaxPropertyValueWithoutBorrowRatio = new Method({
-  name: 'setMaxPropertyValueWithoutBorrowRatio',
+export const setMaxPropertyValueOrBorrowRatio = new Method({
+  name: 'setMaxPropertyValueOrBorrowRatio',
   params: { loanId: String, canton: String },
 });
 

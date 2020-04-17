@@ -11,7 +11,7 @@ export const up = () => {
       const { maxSolvency } = loan;
       if (maxSolvency) {
         const { canton } = maxSolvency;
-        return LoanService.setMaxPropertyValueWithoutBorrowRatio({
+        return LoanService.setMaxPropertyValueOrBorrowRatio({
           loanId: loan._id,
           canton,
         }).then(() =>

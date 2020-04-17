@@ -5,7 +5,7 @@ import { getUserNameAndOrganisation } from '../../helpers';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import {
   loanShareSolvency,
-  setMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueOrBorrowRatio,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import { generateDisbursedSoonLoansTasks } from '../../loans/server/methods';
@@ -222,7 +222,7 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  setMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueOrBorrowRatio,
   ({ params, result: { isRecalculate } }) => {
     const { loanId } = params;
     const {

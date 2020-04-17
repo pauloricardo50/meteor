@@ -31,7 +31,11 @@ export const GE = {
     mortgageNoteIncrease * cantons.GE.MORTGAGE_NOTE_REGISTRATION_TAX,
   landRegistryMortgageNoteTax: ({ mortgageNoteIncrease }) =>
     mortgageNoteIncrease * cantons.GE.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
-  buyersContractDeductions: ({ residenceType, propertyValue, transferTax }) =>
+  buyersContractDeductions: ({
+    residenceType,
+    propertyValue,
+    transferTax = 0,
+  }) =>
     isCasatax({ residenceType, propertyValue })
       ? Math.min(cantons.GE.CASATAX_PROPERTY_DEDUCTION, transferTax)
       : 0,

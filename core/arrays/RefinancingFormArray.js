@@ -1,5 +1,3 @@
-import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
-
 const getRefinancingFormArray = () => [
   {
     id: 'previousLender',
@@ -11,9 +9,8 @@ const getRefinancingFormArray = () => [
     inputs: [
       {
         id: 'type',
-        type: 'selectInput',
-        options: Object.values(INTEREST_RATES),
-        intlId: 'loanTranches',
+        type: 'textInput',
+        number: true,
       },
       { id: 'value', type: 'textInput', money: true },
       { id: 'dueDate', type: 'dateInput' },

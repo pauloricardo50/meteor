@@ -3,6 +3,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import cx from 'classnames';
 import { compose } from 'recompose';
 
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import MaxPropertyValueContainer from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
@@ -12,14 +13,26 @@ import { toMoney } from 'core/utils/conversionFunctions';
 
 import { SimpleMaxPropertyValue } from './SimpleMaxPropertyValue';
 
-const displayPropertyValueRange = values => {
+const displayRange = (values, purchaseType) => {
   const { min, max } = values;
+  let minVal;
+  let maxVal;
 
-  if (min) {
-    return `${toMoney(min.propertyValue)} - ${toMoney(max.propertyValue)}`;
+  if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+    minVal = min?.propertyValue;
+    maxVal = max?.propertyValue;
   }
 
-  return toMoney(max.propertyValue);
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    minVal = min?.propertyValue * min?.borrowRatio;
+    maxVal = max?.propertyValue * max?.borrowRatio;
+  }
+
+  if (min) {
+    return `${toMoney(minVal)} - ${toMoney(maxVal)}`;
+  }
+
+  return toMoney(maxVal);
 };
 
 const getFooter = ({
@@ -27,6 +40,7 @@ const getFooter = ({
   residenceType,
   maxPropertyValueExists,
   canCalculateSolvency,
+  purchaseType,
 }) => {
   if (maxPropertyValueExists) {
     return <h2>Votre capacité d'achat</h2>;
@@ -49,20 +63,19 @@ const getFooter = ({
   return (
     <div className="sticky-result">
       <label>
-        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
+        <T id="MaxPropertyValue.title" values={{ purchaseType }} /> -{' '}
+        <T id={`Forms.canton.${canton}`} /> -{' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
-      <h3>{displayPropertyValueRange(values)}</h3>
+      <h3>{displayRange(values, purchaseType)}</h3>
     </div>
   );
 };
 
 const SimpleMaxPropertyValueSticky = props => {
-  const {
-    loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
-    residenceType,
-  } = props;
-  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+  const { loan, residenceType } = props;
+  const { maxPropertyValue, maxPropertyValueExists, purchaseType } = loan;
+  const canCalculateSolvency = Calculator.canCalculateSolvency({ loan });
   const shouldCalculate = !maxPropertyValue && canCalculateSolvency;
 
   return (
@@ -80,6 +93,7 @@ const SimpleMaxPropertyValueSticky = props => {
             residenceType,
             maxPropertyValueExists,
             canCalculateSolvency,
+            purchaseType,
           })}
         </ButtonBase>
       )}

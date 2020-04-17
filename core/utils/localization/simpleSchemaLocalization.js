@@ -10,7 +10,10 @@ const translate = ({ key }) => {
     .split('.')
     .filter(subKey => subKey.length !== 1)
     .join('.');
-  return formatMessage({ id: `Forms.${keyWithoutNumbers}` });
+  return formatMessage({
+    id: `Forms.${keyWithoutNumbers}`,
+    messages: window.intlMessages,
+  });
 };
 
 const translateSimpleSchema = () => {

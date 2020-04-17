@@ -1404,7 +1404,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
+  describe('setMaxPropertyValueOrBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
@@ -1431,7 +1431,7 @@ describe('LoanService', function() {
         ],
       });
 
-      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+      LoanService.setMaxPropertyValueOrBorrowRatio({
         loanId: 'loanId',
         canton: 'GE',
       });
@@ -1473,7 +1473,7 @@ describe('LoanService', function() {
         },
       });
 
-      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+      LoanService.setMaxPropertyValueOrBorrowRatio({
         loanId: 'loanId',
         canton: 'GE',
       });
@@ -1492,6 +1492,54 @@ describe('LoanService', function() {
       expect(second.min).to.equal(undefined);
       expect(second.max.borrowRatio).to.equal(0.7);
       expect(second.max.propertyValue).to.equal(1420000);
+    });
+
+    it('calculates the max borrow ratio for refinancings', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          purchaseType: PURCHASE_TYPE.REFINANCING,
+          borrowers: {
+            bankFortune: [{ value: 500000 }],
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+          properties: {
+            value: 1000000,
+          },
+          previousLoanTranches: [{ value: 600000, rate: 0.01 }],
+        },
+        organisations: [
+          ...generateOrganisationsWithLenderRules({
+            number: 5,
+            mainBorrowRatio: { min: 0.65, max: 0.9 },
+            secondaryBorrowRatio: { min: 0.5, max: 0.7 },
+          }),
+          {
+            name: 'no lender rules',
+            type: ORGANISATION_TYPES.BANK,
+            features: [ORGANISATION_FEATURES.LENDER],
+          },
+        ],
+      });
+
+      LoanService.setMaxPropertyValueOrBorrowRatio({
+        loanId: 'loanId',
+        canton: 'GE',
+      });
+
+      const {
+        maxPropertyValue: { canton, date, main, second },
+      } = LoanService.get('loanId', { maxPropertyValue: 1 });
+
+      expect(main.min.borrowRatio).to.equal(0.65);
+      expect(main.min.propertyValue).to.equal(1000000);
+      expect(main.max.borrowRatio).to.equal(0.8375);
+      expect(main.max.propertyValue).to.equal(1000000);
+      expect(second.min.borrowRatio).to.equal(0.5);
+      expect(second.min.propertyValue).to.equal(1000000);
+      expect(second.max.borrowRatio).to.equal(0.65);
+      expect(second.max.propertyValue).to.equal(1000000);
     });
   });
 

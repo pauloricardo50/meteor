@@ -1,13 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-import MaxPropertyValueResults from 'core/components/MaxPropertyValue/MaxPropertyValueResults';
-import MaxPropertyValueLoading from 'core/components/MaxPropertyValue/MaxPropertyValueLoading';
 import MaxPropertyValueContainer, {
   STATE,
 } from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
-import SimpleMaxPropertyValueSignup from './SimpleMaxPropertyValueSignup';
+import MaxPropertyValueLoading from 'core/components/MaxPropertyValue/MaxPropertyValueLoading';
+import MaxPropertyValueResults from 'core/components/MaxPropertyValue/MaxPropertyValueResults';
+
 import SimpleMaxPropertyValueEmptyState from './SimpleMaxPropertyValueEmptyState';
+import SimpleMaxPropertyValueSignup from './SimpleMaxPropertyValueSignup';
 
 const getContent = props => {
   const { state, loading, loan } = props;

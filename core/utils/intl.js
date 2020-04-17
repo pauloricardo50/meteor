@@ -11,7 +11,7 @@ const defaultValues = Object.keys(defaultIntlValues).reduce((obj, key) => {
 }, {});
 
 const formatMessage = (
-  { id, values = {}, fallback, messages } = {},
+  { id, values = {}, fallback, messages = {} } = {},
   legacyValues = {},
 ) => {
   const allValues = { ...values, ...legacyValues };
