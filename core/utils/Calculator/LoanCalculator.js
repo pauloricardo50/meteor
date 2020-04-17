@@ -903,4 +903,17 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return fees;
     }
+
+    getPreviousLoanValue({ loan: { previousLoanTranches = [] } }) {
+      return previousLoanTranches.reduce(
+        (total, { value = 0 }) => total + value,
+        0,
+      );
+    }
+
+    getPreviousOwnFunds({ loan, structureId }) {
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const previousLoanValue = this.getPreviousLoanValue({ loan });
+      return propertyValue - previousLoanValue;
+    }
   };
