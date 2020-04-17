@@ -6,6 +6,7 @@ import CountUp from 'react-countup';
 import { withState } from 'recompose';
 
 import useMedia from '../../hooks/useMedia';
+import { PURCHASE_TYPE } from '../../redux/widget1/widget1Constants';
 import Calculator from '../../utils/Calculator';
 import Button from '../Button';
 import Toggle from '../Toggle';
@@ -51,6 +52,16 @@ const MaxPropertyValueResultsToggle = ({
   />
 );
 
+const shouldShowToggle = ({ purchaseType, min, max }) => {
+  if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+    return !!min.propertyValue && min.propertyValue !== max.propertyValue;
+  }
+
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return !!min.borrowRatio && min.borrowRatio !== max.borrowRatio;
+  }
+};
+
 const MaxPropertyValueResultsTable = ({
   min = {},
   max,
@@ -58,6 +69,7 @@ const MaxPropertyValueResultsTable = ({
   canton,
   showBest,
   setShowBest,
+  purchaseType,
 }) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
@@ -81,6 +93,7 @@ const MaxPropertyValueResultsTable = ({
       wantedLoan: minLoan,
       propertyValue: minPropertyValue,
       canton,
+      purchaseType,
     }),
   }).total;
   const maxNotaryFees = Calculator.getFees({
@@ -89,6 +102,7 @@ const MaxPropertyValueResultsTable = ({
       wantedLoan: maxLoan,
       propertyValue: maxPropertyValue,
       canton,
+      purchaseType,
     }),
   }).total;
 
@@ -100,15 +114,18 @@ const MaxPropertyValueResultsTable = ({
   const ownFunds = showBest ? maxOwnFunds : minOwnFunds;
   const loan = showBest ? maxLoan : minLoan;
 
+  const valueToDisplay =
+    purchaseType === PURCHASE_TYPE.REFINANCING ? loan : propertyValue;
+
   const prevValueRef = useRef();
   useEffect(() => {
-    prevValueRef.current = propertyValue;
-  }, [propertyValue]);
+    prevValueRef.current = valueToDisplay;
+  }, [valueToDisplay]);
 
   if (showRecap) {
     return (
       <>
-        {!!min.propertyValue && min.propertyValue !== max.propertyValue && (
+        {shouldShowToggle({ purchaseType, min, max }) && (
           <MaxPropertyValueResultsToggle
             showBest={showBest}
             setShowBest={setShowBest}
@@ -119,7 +136,7 @@ const MaxPropertyValueResultsTable = ({
         )}
         <CountUp
           start={prevValueRef.current}
-          end={propertyValue}
+          end={valueToDisplay}
           className="recap-value text-center animated fadeIn"
           duration={1}
           prefix="CHF "

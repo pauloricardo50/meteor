@@ -36,7 +36,7 @@ const MaxPropertyValueResults = ({
     _id: loanId,
     purchaseType,
   } = loan;
-  const hash = Calculator.getBorrowerFormHash({ loan });
+  const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
   return (
@@ -84,6 +84,7 @@ const MaxPropertyValueResults = ({
           {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
           residenceType={residenceType}
           canton={canton}
+          purchaseType={purchaseType}
         />
       </div>
       <Button

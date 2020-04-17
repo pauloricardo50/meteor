@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import { CANTONS } from '../../api/loans/loanConstants';
+import { CANTONS, PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { setMaxPropertyValueOrBorrowRatio } from '../../api/loans/methodDefinitions';
 import {
   PROPERTY_CATEGORY,
@@ -36,6 +36,7 @@ const getInitialCanton = ({ loan = {} }) => {
     hasProProperty,
     promotions = [],
     properties = [],
+    purchaseType,
   } = loan;
 
   if (hasPromotion) {
@@ -46,6 +47,10 @@ const getInitialCanton = ({ loan = {} }) => {
     return !!properties.length && properties[0].canton;
   }
 
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return Calculator.selectPropertyKey({ loan, key: 'canton' });
+  }
+
   return canton;
 };
 
@@ -53,9 +58,10 @@ const shouldFilterCantonOptions = ({
   hasPromotion,
   hasProProperty,
   properties = [],
+  purchaseType,
 }) => {
-  if (!hasPromotion && !hasProProperty) {
-    return false;
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return true;
   }
 
   if (hasPromotion) {
@@ -71,12 +77,14 @@ const shouldFilterCantonOptions = ({
   }
 };
 
-const getCantonOptions = ({
-  hasPromotion,
-  hasProProperty,
-  properties = [],
-  promotions = [],
-}) => {
+const getCantonOptions = ({ loan }) => {
+  const {
+    hasPromotion,
+    hasProProperty,
+    properties = [],
+    promotions = [],
+    purchaseType,
+  } = loan;
   let cantons = Object.keys(CANTONS);
 
   if (
@@ -85,6 +93,7 @@ const getCantonOptions = ({
       hasProProperty,
       properties,
       promotions,
+      purchaseType,
     })
   ) {
     if (hasPromotion) {
@@ -98,6 +107,14 @@ const getCantonOptions = ({
           .includes(canton),
       );
     }
+
+    if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      const propertyCanton = Calculator.selectPropertyKey({
+        loan,
+        key: 'canton',
+      });
+      cantons = cantons.filter(canton => canton === propertyCanton);
+    }
   }
 
   return cantons.map(shortCanton => {
@@ -110,8 +127,8 @@ export default compose(
   withState(
     'residenceType',
     'setResidenceType',
-    ({ loan: { residenceType } }) =>
-      residenceType || RESIDENCE_TYPE.MAIN_RESIDENCE,
+    ({ loan: { residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE } }) =>
+      residenceType,
   ),
   withState('canton', 'setCanton', getInitialCanton),
   withState('loading', 'setLoading', null),
@@ -125,14 +142,8 @@ export default compose(
       setOpenBorrowersForm,
       setError,
     }) => {
-      const {
-        _id: loanId,
-        maxPropertyValue,
-        hasPromotion,
-        hasProProperty,
-        properties,
-        promotions,
-      } = loan;
+      const { _id: loanId, maxPropertyValue } = loan;
+      const cantonOptions = getCantonOptions({ loan });
 
       return {
         state: getState({ loan }),
@@ -163,19 +174,8 @@ export default compose(
               .finally(() => setLoading(false));
           }
         },
-        cantonOptions: getCantonOptions({
-          hasPromotion,
-          hasProProperty,
-          properties,
-          promotions,
-        }),
-        lockCanton:
-          getCantonOptions({
-            hasPromotion,
-            hasProProperty,
-            properties,
-            promotions,
-          }).length === 1,
+        cantonOptions,
+        lockCanton: cantonOptions.length === 1,
       };
     },
   ),

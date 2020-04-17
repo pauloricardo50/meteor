@@ -103,6 +103,7 @@
     .borrowers-card {
       background: white;
       border-radius: 8px;
+      padding: 32px;
 
       @include screen(small) {
         padding: 16px;

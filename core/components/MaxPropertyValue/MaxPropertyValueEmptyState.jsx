@@ -3,6 +3,7 @@ import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { createRoute } from '../../utils/routerUtils';
 import Button from '../Button';
 import Icon from '../Icon';
@@ -17,6 +18,7 @@ export const getReadyToCalculateTitle = props => {
     hasProProperty,
     properties = [],
     promotions = [],
+    purchaseType,
   } = loan;
 
   if (!lockCanton) {
@@ -41,6 +43,10 @@ export const getReadyToCalculateTitle = props => {
     return (
       <T id="MaxPropertyValue.empty.proProperty" values={{ propertyName }} />
     );
+  }
+
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return <T id="MaxPropertyValue.empty.refinancing" />;
   }
 };
 

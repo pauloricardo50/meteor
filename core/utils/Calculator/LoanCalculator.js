@@ -946,6 +946,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       ]);
     }
 
+    getMaxPropertyValueHash({ loan }) {
+      const { purchaseType } = loan;
+
+      if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+        return this.getBorrowerHash({ loan });
+      }
+
+      if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+        return this.getRefinancingHash({ loan });
+      }
+    }
+
     canCalculateSolvency({ loan, borrowers }) {
       if (!borrowers.length) {
         return false;

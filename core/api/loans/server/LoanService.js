@@ -736,15 +736,7 @@ class LoanService extends CollectionService {
       canton,
     });
 
-    let borrowerHash;
-
-    if (loan.purchaseType === PURCHASE_TYPE.ACQUISITION) {
-      borrowerHash = Calculator.getBorrowerFormHash({ loan });
-    }
-
-    if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
-      borrowerHash = Calculator.getRefinancingHash({ loan });
-    }
+    const borrowerHash = Calculator.getMaxPropertyValueHash({ loan });
 
     this.update({
       loanId: loan._id,
