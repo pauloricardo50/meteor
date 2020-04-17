@@ -59,4 +59,5 @@ service-configuration@1.0.11
 matb33:collection-hooks
 percolate:migrations
 cultofcoders:grapher-react
-zodern:standard-minifier-js@4.0.0-beta.5
+standard-minifier-js
+#zodern:standard-minifier-js@4.0.0-beta.5

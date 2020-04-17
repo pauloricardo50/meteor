@@ -11,7 +11,7 @@ import getMountedComponent from '../../../../utils/testHelpers/getMountedCompone
 import DateField from '../../../DateField';
 import Loading from '../../../Loading';
 import PercentInput from '../../../PercentInput';
-import AutoForm from '../../AutoForm/AutoForm';
+import AutoForm from '../../AutoForm';
 import { CustomAutoField } from '../../AutoFormComponents';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../autoFormConstants';
 import CustomSelectField from '../../CustomSelectField';

@@ -6,10 +6,10 @@ import { withProps } from 'recompose';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm } from 'uniforms-material';
 
-import { CustomAutoField, makeCustomAutoField } from '../AutoFormComponents';
-import AutoFormLayout from '../AutoFormLayout';
-import CustomAutoFields from '../CustomAutoFields';
-import CustomSubmitField from '../CustomSubmitField';
+import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
+import AutoFormLayout from './AutoFormLayout';
+import CustomAutoFields from './CustomAutoFields';
+import CustomSubmitField from './CustomSubmitField';
 
 const CustomAutoForm = ({
   autoFieldProps,

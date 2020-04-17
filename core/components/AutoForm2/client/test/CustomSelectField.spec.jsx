@@ -6,7 +6,7 @@ import SimpleSchema from 'simpl-schema';
 import pollUntilReady from '../../../../utils/pollUntilReady';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 import TextInput from '../../../TextInput';
-import AutoForm from '../../AutoForm/AutoForm';
+import AutoForm from '../../AutoForm';
 import CustomSelectField from '../../CustomSelectField';
 
 let props;

@@ -6,7 +6,6 @@ import { compose, withProps, withState } from 'recompose';
 
 import loadable from '../../utils/loadable';
 import Button from '../Button';
-import AutoForm from './AutoForm/loadable';
 import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
 import AutoFormDialogActions from './AutoFormDialogActions';
 import AutoFormDialogContent from './AutoFormDialogContent';
@@ -16,6 +15,9 @@ const MuiDialog = loadable({
 });
 const DialogTitle = loadable({
   loader: () => import('@material-ui/core/DialogTitle'),
+});
+const AutoForm = loadable({
+  loader: () => import('./AutoForm'),
 });
 
 const getAutoFormProps = props =>
