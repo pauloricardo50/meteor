@@ -58,11 +58,9 @@ const getFooter = ({
 };
 
 const SimpleMaxPropertyValueSticky = props => {
-  const {
-    loan: { maxPropertyValue, borrowers, maxPropertyValueExists },
-    residenceType,
-  } = props;
-  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+  const { loan, residenceType } = props;
+  const { maxPropertyValue, maxPropertyValueExists } = loan;
+  const canCalculateSolvency = Calculator.canCalculateSolvency({ loan });
   const shouldCalculate = !maxPropertyValue && canCalculateSolvency;
 
   return (

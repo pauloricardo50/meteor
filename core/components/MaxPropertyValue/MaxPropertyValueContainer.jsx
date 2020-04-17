@@ -16,8 +16,9 @@ export const STATE = {
   DONE: 'DONE',
 };
 
-const getState = ({ borrowers, maxPropertyValue, maxPropertyValueExists }) => {
-  if (!Calculator.canCalculateSolvency({ borrowers })) {
+const getState = ({ loan }) => {
+  const { maxPropertyValue, maxPropertyValueExists } = loan;
+  if (!Calculator.canCalculateSolvency({ loan })) {
     return STATE.MISSING_INFOS;
   }
 
@@ -117,63 +118,65 @@ export default compose(
   withState('error', 'setError', null),
   withProps(
     ({
-      loan: {
-        _id: loanId,
-        borrowers = [],
-        maxPropertyValue,
-        maxPropertyValueExists,
-        hasPromotion,
-        hasProProperty,
-        properties,
-        promotions,
-      },
+      loan,
       setLoading,
       setCanton,
       canton,
       setOpenBorrowersForm,
       setError,
-    }) => ({
-      state: getState({ borrowers, maxPropertyValue, maxPropertyValueExists }),
-      recalculate: () => {
-        if (!canton) {
-          setError(<T id="MaxPropertyValue.noCantonError" />);
-          return;
-        }
-        setLoading(true);
-        if (setOpenBorrowersForm) {
-          setOpenBorrowersForm(false);
-        }
-        return setMaxPropertyValueOrBorrowRatio
-          .run({ canton, loanId })
-          .finally(() => {
-            setLoading(false);
-          });
-      },
-      onChangeCanton: newCanton => {
-        setCanton(newCanton);
-        setError(undefined);
-        const { canton: existingCanton } = maxPropertyValue || {};
-
-        if (existingCanton && newCanton !== existingCanton) {
-          setLoading(true);
-          return setMaxPropertyValueOrBorrowRatio
-            .run({ canton: newCanton, loanId })
-            .finally(() => setLoading(false));
-        }
-      },
-      cantonOptions: getCantonOptions({
+    }) => {
+      const {
+        _id: loanId,
+        maxPropertyValue,
         hasPromotion,
         hasProProperty,
         properties,
         promotions,
-      }),
-      lockCanton:
-        getCantonOptions({
+      } = loan;
+
+      return {
+        state: getState({ loan }),
+        recalculate: () => {
+          if (!canton) {
+            setError(<T id="MaxPropertyValue.noCantonError" />);
+            return;
+          }
+          setLoading(true);
+          if (setOpenBorrowersForm) {
+            setOpenBorrowersForm(false);
+          }
+          return setMaxPropertyValueOrBorrowRatio
+            .run({ canton, loanId })
+            .finally(() => {
+              setLoading(false);
+            });
+        },
+        onChangeCanton: newCanton => {
+          setCanton(newCanton);
+          setError(undefined);
+          const { canton: existingCanton } = maxPropertyValue || {};
+
+          if (existingCanton && newCanton !== existingCanton) {
+            setLoading(true);
+            return setMaxPropertyValueOrBorrowRatio
+              .run({ canton: newCanton, loanId })
+              .finally(() => setLoading(false));
+          }
+        },
+        cantonOptions: getCantonOptions({
           hasPromotion,
           hasProProperty,
           properties,
           promotions,
-        }).length === 1,
-    }),
+        }),
+        lockCanton:
+          getCantonOptions({
+            hasPromotion,
+            hasProProperty,
+            properties,
+            promotions,
+          }).length === 1,
+      };
+    },
   ),
 );

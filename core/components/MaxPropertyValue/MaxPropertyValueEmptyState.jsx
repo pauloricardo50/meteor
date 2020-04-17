@@ -97,7 +97,10 @@ export const MaxPropertyValueEmptyStateReady = ({
 );
 
 const MaxPropertyValueEmptyState = props => {
-  const { loan, state } = props;
+  const {
+    loan: { _id: loanId, purchaseType },
+    state,
+  } = props;
   return (
     <div className="max-property-value-empty-state animated fadeIn">
       <FontAwesomeIcon className="icon" icon={faScroll} />
@@ -108,14 +111,12 @@ const MaxPropertyValueEmptyState = props => {
               <T id="MaxPropertyValue.completeInfo" />
             </h2>
             <p className="description">
-              <T id="MaxPropertyValue.missingInfos" />
+              <T id="MaxPropertyValue.missingInfos" values={{ purchaseType }} />
             </p>
             <Button
               link
               primary
-              to={createRoute('/loans/:loanId/borrowers/finance', {
-                loanId: loan._id,
-              })}
+              to={createRoute('/loans/:loanId/borrowers/finance', { loanId })}
             >
               <T id="collections.borrowers" />
             </Button>

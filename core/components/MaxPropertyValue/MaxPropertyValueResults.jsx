@@ -34,6 +34,7 @@ const MaxPropertyValueResults = ({
     hasPromotion,
     shareSolvency,
     _id: loanId,
+    purchaseType,
   } = loan;
   const hash = Calculator.getBorrowerFormHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
@@ -43,7 +44,7 @@ const MaxPropertyValueResults = ({
       <div className="top">
         <div>
           <h2>
-            <T id="MaxPropertyValue.title" />
+            <T id="MaxPropertyValue.title" values={{ purchaseType }} />
           </h2>
         </div>
         <div className="max-property-value-results-selects">
