@@ -1,4 +1,7 @@
 {
+  "Financing.loanEvolution": "Évolution du crédit",
+  "Financing.loanEvolution.description": "{isLoanIncreased, select, true {Augmentation de} other {Diminution de}}",
+  "Financing.previousLoanValue": "Ancienne dette",
   "Financing.refinancingDate": "Date de reprise",
   "FinancingProject.refinancing.title": "Détails du projet",
   "SimpleDashboardPage.refinancingProperty": "Ajouter un bien immobilier à refinancer",
@@ -2032,7 +2035,7 @@
   "Financing.requiredOwnFunds.high.tooltip": "Vous avez alloué {value} de fonds propres en trop sur ce plan financier, enlevez-en pour l'équilibrer, ou réduisez votre prêt hypothécaire",
   "Financing.requiredOwnFunds.valid.tooltip": "Tout va bien!",
   "Financing.totalFiscal": "Total",
-  "Financing.wantedLoan": "Prêt hypothécaire",
+  "Financing.wantedLoan": "{purchaseType, select, REFINANCING {Nouveau prêt hypothécaire} other {Prêt hypothécaire}}",
   "FinancingFinancing.DIRECT": "Direct",
   "FinancingFinancing.INDIRECT": "Indirect",
   "FinancingFinancing.title": "{purchaseType, select, REFINANCING {REFINANCEMENT} other {PRÊT HYPOTHÉCAIRE}}",
