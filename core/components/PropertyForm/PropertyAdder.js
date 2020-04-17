@@ -8,8 +8,8 @@ const PropertyAdderContainer = withProps(
     loanId,
     propertyUserId,
     category,
-    buttonLabelId,
     onSubmitSuccess = x => x,
+    ...rest
   }) => ({
     onSubmit: property =>
       propertyInsert
@@ -19,10 +19,11 @@ const PropertyAdderContainer = withProps(
           userId: propertyUserId,
         })
         .then(onSubmitSuccess),
-    buttonLabelId: buttonLabelId || 'PropertyForm.adderLabel',
+    buttonLabelId: 'PropertyForm.adderLabel',
     form: 'add-property',
     formTitleId: 'PropertyForm.adderDialogTitle',
     formDescriptionId: 'PropertyForm.adderDialogDescription',
+    ...rest,
   }),
 );
 

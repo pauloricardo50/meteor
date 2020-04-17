@@ -1,4 +1,8 @@
 {
+  "Forms.previousLoanTranches.duration.placeholder": "10",
+  "Forms.previousLoanTranches.duration": "Durée initiale de la tranche en années",
+  "Forms.previousLoanTranches.value.placeholder": "CHF 100 000",
+  "PropertyForm.refinancingDescription": "Saisissez les détails de votre bien immobilier à refinancer, ainsi que les informations sur votre prêt hypothécaire actuel.",
   "SimpleDashboardPage.refinancingProperty": "Ajouter un bien immobilier à refinancer",
   "Forms.originalValue": "Coût d'acquisition initial",
   "Forms.originalPurchaseYear": "Année d'acquisition",

@@ -9,13 +9,13 @@ import createTheme from 'core/config/muiCustom';
 import useMedia from 'core/hooks/useMedia';
 import Calculator from 'core/utils/Calculator';
 
-import { PropertyAdder } from '../../../core/components/PropertyForm';
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
 import SimpleMaxPropertyValueSticky from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueSticky';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
 import BorrowersCard from './BorrowersCard/BorrowersCard';
 import Properties from './Properties';
 import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
+import SimpleDashboardPagePropertyAdder from './SimpleDashboardPagePropertyAdder';
 
 const defaultTheme = createTheme({});
 
@@ -44,22 +44,10 @@ const SimpleDashboardPage = props => {
         />
         <div className="simple-dashboard-page-borrowers">
           <div className="simple-dashboard-page-borrowers-left">
-            {purchaseType === PURCHASE_TYPE.REFINANCING && !properties.length && (
-              <PropertyAdder
-                loanId={loanId}
-                triggerComponent={handleOpen => (
-                  <div
-                    className="card1 card-top card-hover mb-16 text-center pointer flex-col"
-                    onClick={handleOpen}
-                  >
-                    <span className="plus">+</span>
-                    <h3>
-                      <T id="SimpleDashboardPage.refinancingProperty" />
-                    </h3>
-                  </div>
-                )}
-              />
-            )}
+            {purchaseType === PURCHASE_TYPE.REFINANCING &&
+              !properties.length && (
+                <SimpleDashboardPagePropertyAdder loanId={loanId} />
+              )}
             <BorrowersCard {...props} />
           </div>
 
