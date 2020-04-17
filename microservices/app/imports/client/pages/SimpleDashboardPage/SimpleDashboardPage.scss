@@ -30,7 +30,7 @@
 
     width: 100%;
     max-width: calc(#{$borrowers-item-width} * 2);
-    margin-top: 40px;
+    // margin-top: 32px;
 
     border-radius: 8px;
 
@@ -334,6 +334,7 @@
     width: 100%;
     max-width: calc(#{$borrowers-item-width} * 2);
     margin-top: 16px;
+    margin-bottom: 32px;
 
     @include screen(custom, max, 370) {
       align-items: stretch;
