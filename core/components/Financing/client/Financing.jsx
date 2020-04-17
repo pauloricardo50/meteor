@@ -50,7 +50,7 @@ const Financing = ({ loan }) => {
 
         <FinancingFinancing purchaseType={loan.purchaseType} />
 
-        <FinancingOwnFunds />
+        <FinancingOwnFunds purchaseType={loan.purchaseType} />
 
         {(Meteor.microservice === 'admin' || loan.enableOffers) && (
           <FinancingOffers loan={loan} />

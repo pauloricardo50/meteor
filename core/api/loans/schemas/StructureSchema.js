@@ -78,6 +78,7 @@ export const structureSchema = {
   yearlyAmortization: moneyField,
   ...loanTranchesSchema,
   refinancingDate: { type: Date, optional: true },
+  reimbursementPenalty: moneyField,
 };
 
 export default new SimpleSchema(structureSchema);

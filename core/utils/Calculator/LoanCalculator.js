@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
 import { ERROR, SUCCESS, WARNING } from '../../api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
@@ -915,5 +917,54 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const propertyValue = this.selectPropertyValue({ loan, structureId });
       const previousLoanValue = this.getPreviousLoanValue({ loan });
       return propertyValue - previousLoanValue;
+    }
+
+    getReimbursementPenalty({ loan, structureId }) {
+      const refinancingDate = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'refinancingDate',
+      });
+      const { previousLoanTranches } = loan;
+      return previousLoanTranches
+        .filter(({ dueDate }) =>
+          moment(dueDate).isAfter(moment(refinancingDate)),
+        )
+        .reduce((total, { value = 0, rate, dueDate }) => {
+          const remainingYears =
+            moment(dueDate).diff(moment(refinancingDate), 'months') / 12;
+
+          return total + remainingYears * value * rate;
+        }, 0);
+    }
+
+    getLoanEvolution({ loan, structureId }) {
+      const wantedLoan = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedLoan',
+      });
+
+      return wantedLoan - this.getPreviousLoanValue({ loan });
+    }
+
+    getReimbursementRequiredOwnFunds({ loan, structureId }) {
+      let reimbursementPenalty = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'reimbursementPenalty',
+      });
+
+      if (!(reimbursementPenalty === 0 || reimbursementPenalty)) {
+        reimbursementPenalty = this.getReimbursementPenalty({
+          loan,
+          structureId,
+        });
+      }
+
+      const notaryFees = this.getFees({ loan, structureId }).total;
+      const loanEvolution = this.getLoanEvolution({ loan, structureId });
+
+      return loanEvolution - notaryFees - reimbursementPenalty;
     }
   };
