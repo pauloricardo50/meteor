@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
@@ -13,6 +13,9 @@ const LibraryWrappers = ({
   children,
   withMui = true,
 }) => {
+  useEffect(() => {
+    window.intlMessages = messages;
+  }, [messages]);
   const content = (
     <IntlProvider
       locale={locale}
