@@ -945,17 +945,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         }, 0);
     }
 
-    getLoanEvolution({ loan, structureId }) {
-      const wantedLoan = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'wantedLoan',
-      });
-
-      return wantedLoan - this.getPreviousLoanValue({ loan });
-    }
-
-    getReimbursementRequiredOwnFunds({ loan, structureId }) {
+    selectReimbursementPenalty({ loan, structureId }) {
       let reimbursementPenalty = this.selectStructureKey({
         loan,
         structureId,
@@ -968,6 +958,25 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           structureId,
         });
       }
+
+      return reimbursementPenalty;
+    }
+
+    getLoanEvolution({ loan, structureId }) {
+      const wantedLoan = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedLoan',
+      });
+
+      return wantedLoan - this.getPreviousLoanValue({ loan });
+    }
+
+    getReimbursementRequiredOwnFunds({ loan, structureId }) {
+      const reimbursementPenalty = this.selectReimbursementPenalty({
+        loan,
+        structureId,
+      });
 
       const notaryFees = this.getFees({ loan, structureId }).total;
       const loanEvolution = this.getLoanEvolution({ loan, structureId });

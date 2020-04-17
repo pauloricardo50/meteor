@@ -1,4 +1,8 @@
 {
+  "Forms.reimbursementPenalty": "Pénalités de remboursement",
+  "Forms.refinancingTotal": "{isLoanIncreased, select, true {Augmentation de crédit} other {Diminution de crédit}}",
+  "Forms.newWantedLoan": "Nouveau prêt",
+  "Forms.previousLoan": "Ancien prêt",
   "Financing.reimbursementRequiredOwnFunds": "Restant",
   "Financing.reimbursementRequiredOwnFunds.description": "{isMissingOwnFunds, select, true {Fonds propres requis} other {Levée de}}",
   "general.reimbursementPenalty": "Pénalités de remoursement",
