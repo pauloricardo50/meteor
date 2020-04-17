@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AutoForm from 'core/components/AutoForm2/AutoForm';
+import AutoForm from 'core/components/AutoForm2/AutoForm/loadable';
 import { dataLayer } from 'core/utils/googleTagManager';
 
 import UserCreatorContainer from './UserCreatorContainer';
