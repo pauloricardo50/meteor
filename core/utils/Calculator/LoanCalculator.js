@@ -1013,7 +1013,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const { purchaseType } = loan;
 
       if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
-        return this.getBorrowerHash({ loan });
+        return this.getBorrowerFormHash({ loan });
       }
 
       if (purchaseType === PURCHASE_TYPE.REFINANCING) {

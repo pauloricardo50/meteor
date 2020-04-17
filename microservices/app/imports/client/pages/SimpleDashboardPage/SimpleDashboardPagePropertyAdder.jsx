@@ -24,7 +24,6 @@ const propertyFormLayout = [
   {
     Component: Box,
     title: <h4>Prêt à refinancer</h4>,
-    // fields: ['previousLoanTranches.$.value'],
     fields: ['previousLoanTranches'],
   },
 ];
@@ -36,7 +35,10 @@ const schema = new SimpleSchema({
   value: {
     ...moneyField,
     optional: false,
-    uniforms: { helperText: "La valeur estimée aujourd'hui" },
+    uniforms: {
+      helperText: "La valeur estimée aujourd'hui",
+      ...moneyField.uniforms,
+    },
   },
   zipCode: { ...address.zipCode, optional: false },
   residenceType: {

@@ -69,7 +69,7 @@ const SinglePropertyPage = props => {
           }
           label={<T id="general.delete" />}
         >
-          {loans.length > 1 && (
+          {loans?.length > 1 && (
             <p>
               Si ce bien immobilier est utilisé dans plusieurs de vos dossiers,
               il ne sera pas supprimé dans les autres dossiers
