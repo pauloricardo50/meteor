@@ -1,6 +1,10 @@
 import SimpleSchema from 'simpl-schema';
 
-import { moneyField, percentageField } from '../../helpers/sharedSchemas';
+import {
+  dateField,
+  moneyField,
+  percentageField,
+} from '../../helpers/sharedSchemas';
 import { INTEREST_RATES } from '../../interestRates/interestRatesConstants';
 import { CANTONS, SOLVENCY_TYPE } from '../loanConstants';
 
@@ -36,16 +40,15 @@ export const previousLoanTranchesSchema = {
   'previousLoanTranches.$': Object,
   'previousLoanTranches.$.value': {
     ...moneyField,
-    type: Number, // Can be specified as percentages or monetary amounts
     optional: false,
   },
   'previousLoanTranches.$.dueDate': {
-    type: Date,
+    ...dateField,
+    optional: false,
   },
   'previousLoanTranches.$.rate': {
-    type: Number,
-    min: 0,
-    max: 1,
+    ...percentageField,
+    optional: false,
   },
   'previousLoanTranches.$.duration': {
     type: SimpleSchema.Integer,
