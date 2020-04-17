@@ -2,10 +2,14 @@ import React from 'react';
 import omit from 'lodash/omit';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
 
+import Loadable from '../../utils/loadable';
 import { defaultDatePickerProps } from './dateInputConstants';
+
+const SingleDatePicker = Loadable({
+  loader: () => import('react-dates/lib/components/SingleDatePicker'),
+});
 
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = undefined, maxDate = undefined) => day =>

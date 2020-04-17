@@ -4,7 +4,8 @@ import { Roles } from 'meteor/alanning:roles';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import Intl, { ServerIntlProvider } from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
+import { ServerIntlProvider } from '../../../utils/server/intl';
 import ServerEventService from '../../events/server/ServerEventService';
 import SecurityService from '../../security';
 import { ROLES } from '../../users/userConstants';
@@ -20,6 +21,8 @@ const APP_URL = Meteor.settings.public.subdomains.app;
 const ADMIN_URL = Meteor.settings.public.subdomains.admin;
 const PRO_URL = Meteor.settings.public.subdomains.pro;
 
+const { formatMessage } = intl;
+
 /**
  * emailFooter - Returns the default email footer for all emails
  *
@@ -28,12 +31,12 @@ const PRO_URL = Meteor.settings.public.subdomains.pro;
  * @return {type} a HTML string
  */
 export const getEmailFooter = (footerType, allowUnsubscribe) =>
-  Intl.formatMessage({
+  formatMessage({
     id: `emails.${footerType}`,
     values: {
       url: `<a href="${WWW_URL}" target="_blank" style="color:inherit;">e-potek.ch</a><br />`,
       unsubscribe: allowUnsubscribe
-        ? `<a href="*|UNSUB|*" style="color:inherit;">${Intl.formatMessage({
+        ? `<a href="*|UNSUB|*" style="color:inherit;">${formatMessage({
             id: 'emails.unsubscribe',
           })}</a>`
         : '',
@@ -46,7 +49,7 @@ export const getEmailPart = ({
   intlValues = {},
   intlFallback = '',
 }) =>
-  Intl.formatMessage({
+  formatMessage({
     id: `${EMAIL_I18N_NAMESPACE}.${emailId}.${part}`,
     values: intlValues,
     fallback: intlFallback,

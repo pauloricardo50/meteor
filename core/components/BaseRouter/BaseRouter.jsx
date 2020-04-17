@@ -10,7 +10,7 @@ import DisconnectNotification from '../DisconnectNotification';
 import ErrorBoundary from '../ErrorBoundary';
 import LoginPage from '../LoginPage/loadable';
 import MicroserviceHead from '../MicroserviceHead';
-import ModalManager from '../ModalManager';
+import ModalManager from '../ModalManager/loadable';
 import ScrollToTop from '../ScrollToTop';
 import GrapherPage from './GrapherPageLoadable';
 import HistoryWatcher from './HistoryWatcher';

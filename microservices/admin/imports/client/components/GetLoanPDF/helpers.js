@@ -1,5 +1,7 @@
-import { formatMessage } from 'core/utils/intl';
 import { getChecklistMissingInformations } from 'core/components/LoanChecklist/helpers';
+import intl from 'core/utils/intl';
+
+const { formatMessage } = intl;
 
 export const BACKGROUND_INFO_TYPE = {
   TEMPLATE: 'TEMPLATE',

@@ -1,4 +1,5 @@
 import '../initialization';
+import '../../utils/server/initialization';
 import '../../fixtures/server/fixtureMethods';
 import '../users/server/accounts-server-config';
 import '../methods/server';

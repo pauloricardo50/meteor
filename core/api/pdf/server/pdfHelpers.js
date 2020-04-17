@@ -1,8 +1,10 @@
-import Intl from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
+
+const { formatMessage } = intl;
 
 const formatKey = key => {
   const i18nKey = `Forms.${key}`;
-  const translated = Intl.formatMessage({
+  const translated = formatMessage({
     id: `Forms.${key}`,
     values: { purchaseType: 'ACQUISITION' }, // Do this to avoid purchaseType error
   });

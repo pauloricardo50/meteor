@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { formatMessage } from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import {
   getChecklistMissingInformations,
   isAnyBasicDocumentRequested,
 } from '../helpers';
 import LoanChecklistEmailSection from './LoanChecklistEmailSection';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
+
+const { formatMessage } = intl;
 
 const LoanChecklistEmail = props => {
   const { fields, documents } = getChecklistMissingInformations(
