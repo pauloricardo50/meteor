@@ -67,9 +67,12 @@ popLoanValue.setHandler((context, { loanId, object }) => {
   return LoanService.popValue({ loanId, object });
 });
 
-export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
+export const adminLoanInsertHandler = (
+  { userId: adminUserId },
+  { userId, loan },
+) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  const loanId = LoanService.fullLoanInsert({ userId });
+  const loanId = LoanService.fullLoanInsert({ userId, loan });
 
   if (!userId) {
     // Make sure new, loose, loans are assigned to the one creating them

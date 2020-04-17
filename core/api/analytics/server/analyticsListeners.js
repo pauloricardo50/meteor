@@ -1,8 +1,10 @@
 import {
+  adminLoanInsert,
   anonymousLoanInsert,
   loanInsertBorrowers,
   loanSetStatus,
   setMaxPropertyValueWithoutBorrowRatio,
+  userLoanInsert,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -329,13 +331,16 @@ addAnalyticsListener({
 });
 
 addAnalyticsListener({
-  method: anonymousLoanInsert,
+  method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert],
   func: ({
     analytics,
-    params: { proPropertyId, referralId, trackingId, purchaseType },
+    params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
-    const { name: loanName } = LoanService.get(loanId, { name: 1 });
+    const { name: loanName, purchaseType } = LoanService.get(loanId, {
+      name: 1,
+      purchaseType: 1,
+    });
     analytics.track(
       EVENTS.LOAN_CREATED,
       {
