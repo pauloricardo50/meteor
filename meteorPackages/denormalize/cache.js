@@ -1,14 +1,28 @@
-import _ from 'lodash';
-import { addMigration, migrate, autoMigrate } from './migrations.js';
+import clone from 'lodash/clone';
+import difference from 'lodash/difference';
+import each from 'lodash/each';
+import findIndex from 'lodash/findIndex';
+import flatten from 'lodash/flatten';
+import get from 'lodash/get';
+import includes from 'lodash/includes';
+import intersection from 'lodash/intersection';
+import isArray from 'lodash/isArray';
+import map from 'lodash/map';
+import pick from 'lodash/pick';
+import pull from 'lodash/pull';
+import union from 'lodash/union';
+import uniq from 'lodash/uniq';
+
+import { addMigration, autoMigrate, migrate } from './migrations.js';
 
 export { migrate, autoMigrate };
 
 function flattenFields(object, prefix) {
   prefix = prefix || '';
   let fields = [];
-  _.each(object, (val, key) => {
+  each(object, (val, key) => {
     if (typeof val === 'object') {
-      fields = _.union(fields, flattenFields(val, `${prefix + key}.`));
+      fields = union(fields, flattenFields(val, `${prefix + key}.`));
     } else {
       fields.push(prefix + key);
     }
@@ -54,19 +68,19 @@ Mongo.Collection.prototype.cache = function(options) {
     );
   }
 
-  if (!_.isArray(watchedFields)) {
+  if (!isArray(watchedFields)) {
     watchedFields = flattenFields(watchedFields);
   }
 
-  const childFields = _.clone(watchedFields);
+  const childFields = clone(watchedFields);
   if (type !== 'one') {
-    if (!_.includes(childFields, '_id')) {
+    if (!includes(childFields, '_id')) {
       childFields.push('_id');
     }
-    _.pull(childFields, referenceField);
+    pull(childFields, referenceField);
   }
   const childOpts = { transform: null, fields: { _id: 0 } };
-  _.each(childFields, field => (childOpts.fields[field] = 1));
+  each(childFields, field => (childOpts.fields[field] = 1));
 
   const parentOpts = { transform: null, fields: { _id: 1, [cacheField]: 1 } };
   if (type !== 'inversed' && type !== 'many-inversed') {
@@ -83,27 +97,27 @@ Mongo.Collection.prototype.cache = function(options) {
 
   if (
     type == 'inversed' ||
-    (type == 'many-inversed' && !_.includes(watchedFields, referencePath))
+    (type == 'many-inversed' && !includes(watchedFields, referencePath))
   ) {
     watchedFields.push(referencePath || referenceField);
   }
 
-  const topFields = _.uniq(watchedFields.map(field => field.split('.')[0]));
+  const topFields = uniq(watchedFields.map(field => field.split('.')[0]));
 
   function getNestedReferences(document) {
     // Used for nested references in "many" links
-    let references = _.get(document, referenceField) || [];
+    let references = get(document, referenceField) || [];
     if (idField && references.length) {
-      references = _.map(references, item => _.get(item, idField));
+      references = map(references, item => get(item, idField));
     }
-    return _.uniq(_.flatten(references));
+    return uniq(flatten(references));
   }
 
   if (type == 'one') {
     const insert = function insert(userId, parent) {
-      if (_.get(parent, referenceField)) {
+      if (get(parent, referenceField)) {
         const child = childCollection.findOne(
-          _.get(parent, referenceField),
+          get(parent, referenceField),
           childOpts,
         );
         if (child) {
@@ -117,10 +131,10 @@ Mongo.Collection.prototype.cache = function(options) {
     parentCollection.after.insert(insert);
 
     parentCollection.after.update(function(userId, parent, changedFields) {
-      if (_.includes(changedFields, referenceField.split('.')[0])) {
+      if (includes(changedFields, referenceField.split('.')[0])) {
         const child =
-          _.get(parent, referenceField) &&
-          childCollection.findOne(_.get(parent, referenceField), childOpts);
+          get(parent, referenceField) &&
+          childCollection.findOne(get(parent, referenceField), childOpts);
         if (child) {
           parentCollection.update(parent._id, {
             $set: { [cacheField]: child },
@@ -132,7 +146,7 @@ Mongo.Collection.prototype.cache = function(options) {
     });
 
     childCollection.after.insert(function(userId, child) {
-      const pickedChild = _.pick(child, childFields);
+      const pickedChild = pick(child, childFields);
       parentCollection.update(
         { [referenceField]: child._id },
         { $set: { [cacheField]: pickedChild } },
@@ -141,8 +155,8 @@ Mongo.Collection.prototype.cache = function(options) {
     });
 
     childCollection.after.update(function(userId, child, changedFields) {
-      if (_.intersection(changedFields, topFields).length) {
-        const pickedChild = _.pick(child, childFields);
+      if (intersection(changedFields, topFields).length) {
+        const pickedChild = pick(child, childFields);
         parentCollection.update(
           { [referenceField]: child._id },
           { $set: { [cacheField]: pickedChild } },
@@ -176,7 +190,7 @@ Mongo.Collection.prototype.cache = function(options) {
     parentCollection.after.insert(insert);
 
     parentCollection.after.update(function(userId, parent, changedFields) {
-      if (_.includes(changedFields, referencePath.split('.')[0])) {
+      if (includes(changedFields, referencePath.split('.')[0])) {
         const references = getNestedReferences(parent);
         if (references.length) {
           const children = childCollection
@@ -192,7 +206,7 @@ Mongo.Collection.prototype.cache = function(options) {
     });
 
     childCollection.after.insert(function(userId, child) {
-      const pickedChild = _.pick(child, childFields);
+      const pickedChild = pick(child, childFields);
       parentCollection.update(
         { [referencePath]: child._id },
         { $push: { [cacheField]: pickedChild } },
@@ -201,12 +215,12 @@ Mongo.Collection.prototype.cache = function(options) {
     });
 
     childCollection.after.update(function(userId, child, changedFields) {
-      if (_.intersection(changedFields, topFields).length) {
-        const pickedChild = _.pick(child, childFields);
+      if (intersection(changedFields, topFields).length) {
+        const pickedChild = pick(child, childFields);
         parentCollection
           .find({ [referencePath]: child._id }, parentOpts)
           .forEach(parent => {
-            const index = _.findIndex(_.get(parent, cacheField), {
+            const index = findIndex(get(parent, cacheField), {
               _id: child._id,
             });
             if (index > -1) {
@@ -241,8 +255,8 @@ Mongo.Collection.prototype.cache = function(options) {
     parentCollection.after.insert(insert);
 
     parentCollection.after.update(function(userId, parent, changedFields) {
-      if (_.includes(changedFields, referenceField.split('.')[0])) {
-        if (_.get(parent, referenceField)) {
+      if (includes(changedFields, referenceField.split('.')[0])) {
+        if (get(parent, referenceField)) {
           const children = childCollection
             .find({ [referenceField]: parent._id }, childOpts)
             .fetch();
@@ -256,30 +270,29 @@ Mongo.Collection.prototype.cache = function(options) {
     });
 
     childCollection.after.insert(function(userId, child) {
-      const pickedChild = _.pick(child, childFields);
-      if (_.get(child, referenceField)) {
+      const pickedChild = pick(child, childFields);
+      if (get(child, referenceField)) {
         parentCollection.update(
-          { _id: _.get(child, referenceField) },
+          { _id: get(child, referenceField) },
           { $push: { [cacheField]: pickedChild } },
         );
       }
     });
 
     childCollection.after.update(function(userId, child, changedFields) {
-      if (_.intersection(changedFields, topFields).length) {
-        const pickedChild = _.pick(child, childFields);
-        const previousId =
-          this.previous && _.get(this.previous, referenceField);
-        if (previousId && previousId !== _.get(child, referenceField)) {
+      if (intersection(changedFields, topFields).length) {
+        const pickedChild = pick(child, childFields);
+        const previousId = this.previous && get(this.previous, referenceField);
+        if (previousId && previousId !== get(child, referenceField)) {
           parentCollection.update(
             { _id: previousId },
             { $pull: { [cacheField]: { _id: child._id } } },
           );
         }
         parentCollection
-          .find({ _id: _.get(child, referenceField) }, parentOpts)
+          .find({ _id: get(child, referenceField) }, parentOpts)
           .forEach(parent => {
-            const index = _.findIndex(_.get(parent, cacheField), {
+            const index = findIndex(get(parent, cacheField), {
               _id: child._id,
             });
             if (index > -1) {
@@ -297,7 +310,7 @@ Mongo.Collection.prototype.cache = function(options) {
 
     childCollection.after.remove(function(userId, child) {
       parentCollection.update(
-        { _id: _.get(child, referenceField) },
+        { _id: get(child, referenceField) },
         { $pull: { [cacheField]: { _id: child._id } } },
       );
     });
@@ -313,7 +326,7 @@ Mongo.Collection.prototype.cache = function(options) {
     parentCollection.after.insert(insert);
 
     parentCollection.after.update(function(userId, parent, changedFields) {
-      if (_.includes(changedFields, referencePath.split('.')[0])) {
+      if (includes(changedFields, referencePath.split('.')[0])) {
         const children = childCollection
           .find({ [referencePath]: parent._id }, childOpts)
           .fetch();
@@ -326,7 +339,7 @@ Mongo.Collection.prototype.cache = function(options) {
     childCollection.after.insert(function(userId, child) {
       const references = getNestedReferences(child);
       if (references.length) {
-        const pickedChild = _.pick(child, childFields);
+        const pickedChild = pick(child, childFields);
         parentCollection.update(
           { _id: { $in: references } },
           { $push: { [cacheField]: pickedChild } },
@@ -336,10 +349,10 @@ Mongo.Collection.prototype.cache = function(options) {
     });
 
     childCollection.after.update(function(userId, child, changedFields) {
-      if (_.intersection(changedFields, topFields).length) {
+      if (intersection(changedFields, topFields).length) {
         const references = getNestedReferences(child);
         let previousIds = this.previous && getNestedReferences(this.previous);
-        previousIds = _.difference(previousIds, references);
+        previousIds = difference(previousIds, references);
         if (previousIds.length) {
           parentCollection.update(
             { _id: { $in: previousIds } },
@@ -348,11 +361,11 @@ Mongo.Collection.prototype.cache = function(options) {
           );
         }
         if (references.length) {
-          const pickedChild = _.pick(child, childFields);
+          const pickedChild = pick(child, childFields);
           parentCollection
             .find({ _id: { $in: references } }, parentOpts)
             .forEach(parent => {
-              const index = _.findIndex(_.get(parent, cacheField), {
+              const index = findIndex(get(parent, cacheField), {
                 _id: child._id,
               });
               if (index > -1) {

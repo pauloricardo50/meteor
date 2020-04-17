@@ -10,29 +10,23 @@ const defaultValues = Object.keys(defaultIntlValues).reduce((obj, key) => {
   return { ...obj, [key]: ReactDOMServer.renderToString(value) };
 }, {});
 
-export class Intl {
-  constructor(messages) {
-    this.init(messages);
+const formatMessage = (
+  { id, values = {}, fallback, messages } = {},
+  legacyValues = {},
+) => {
+  const allValues = { ...values, ...legacyValues };
+  if (id === undefined) {
+    throw new Error('an id is required in formatMessage');
   }
 
-  init(messages) {
-    this.messages = messages;
-  }
+  const message = new IntlMessageFormat(
+    messages[id] || (fallback !== undefined ? fallback : id),
+    getUserLocale(),
+  );
 
-  formatMessage({ id, values = {}, fallback } = {}, legacyValues = {}) {
-    const allValues = { ...values, ...legacyValues };
-    if (id === undefined) {
-      throw new Error('an id is required in formatMessage');
-    }
+  return message.format({ ...defaultValues, ...allValues });
+};
 
-    const message = new IntlMessageFormat(
-      this.messages[id] || (fallback !== undefined ? fallback : id),
-      getUserLocale(),
-    );
-    return message.format({ ...defaultValues, ...allValues });
-  }
-}
+const intl = { formatMessage };
 
-const intl = new Intl({});
-export const formatMessage = intl.formatMessage.bind(intl);
 export default intl;

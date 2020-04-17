@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import Intl from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
@@ -22,7 +22,7 @@ import {
 } from '../insuranceRequestConstants';
 import InsuranceRequests from '../insuranceRequests';
 
-const formatMessage = Intl.formatMessage.bind(Intl);
+const { formatMessage } = intl;
 
 class InsuranceRequestService extends CollectionService {
   constructor() {

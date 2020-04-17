@@ -3,12 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
-import Loadable from '../../utils/loadable';
 import TextInput from '../TextInput';
-
-const DatePicker = Loadable({
-  loader: () => import('./DatePicker'),
-});
+import DatePicker from './DatePicker';
 
 // Make sure the underline shows
 const styles = {

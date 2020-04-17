@@ -18,8 +18,8 @@ import { getLabel, getPlaceholder } from './autoFormHelpers';
 import CustomBooleanRadioField from './CustomBooleanRadioField';
 import { OptimizedListField } from './CustomListField';
 import CustomNestField from './CustomNestField';
-import CustomSelectField from './CustomSelectField';
-import FileUploadField from './FileUploadField';
+import CustomSelectField from './CustomSelectField/loadable';
+import FileUploadField from './FileUploadField/loadable';
 
 const container = ignoreProps(FIELDS_TO_IGNORE);
 

@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { formatMessage } from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import LoanChecklistEmailTable from './LoanChecklistEmailTable';
+
+const { formatMessage } = intl;
 
 const EmailLoanChecklist = ({ labels, title }) => (
   <>

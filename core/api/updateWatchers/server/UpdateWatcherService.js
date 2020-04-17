@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { toMoney } from '../../../utils/conversionFunctions';
 import { percentFormatters } from '../../../utils/formHelpers';
-import Intl from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
 import CollectionService from '../../helpers/server/CollectionService';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
@@ -15,6 +15,8 @@ import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
 import { updateWatcherNotification } from '../../slack/server/slackNotifications';
 import UserService from '../../users/server/UserService';
 import UpdateWatchers from './updateWatchers';
+
+const { formatMessage } = intl;
 
 class UpdateWatcherService extends CollectionService {
   constructor() {
@@ -240,7 +242,7 @@ class UpdateWatcherService extends CollectionService {
         return this.formatArrayDiff(fieldName, previousValue, currentValue);
       }
 
-      return `*${Intl.formatMessage({
+      return `*${formatMessage({
         id: `Forms.${fieldName}`,
       })}*: ${this.formatValue(previousValue, fieldName)} -> ${this.formatValue(
         currentValue,
@@ -248,7 +250,7 @@ class UpdateWatcherService extends CollectionService {
       )}`;
     }
 
-    return `*${Intl.formatMessage({
+    return `*${formatMessage({
       id: `Forms.${fieldName}`,
     })}*: ${this.formatValue(currentValue, fieldName)}`;
   }
@@ -302,7 +304,7 @@ class UpdateWatcherService extends CollectionService {
             .join('\n')
         : '';
 
-    return `*${Intl.formatMessage({
+    return `*${formatMessage({
       id: `Forms.${fieldName}`,
     })}*:\n${diff}${removedValues}`;
   }
@@ -318,12 +320,12 @@ class UpdateWatcherService extends CollectionService {
         }
 
         if (previous !== undefined) {
-          return `*${Intl.formatMessage({
+          return `*${formatMessage({
             id: `Forms.${parentName}.${key}`,
           })}*: ${previous} -> ${value}`;
         }
 
-        return `*${Intl.formatMessage({
+        return `*${formatMessage({
           id: `Forms.${parentName}.${key}`,
         })}*: ${value}`;
       })
@@ -367,7 +369,7 @@ class UpdateWatcherService extends CollectionService {
             return this.formatValue(val, `${parentKey}.${key}`);
           }
 
-          return `*${Intl.formatMessage({
+          return `*${formatMessage({
             id: `Forms.${parentKey}.${key}`,
           })}*: ${this.formatValue(val, `${parentKey}.${key}`)}`;
         })

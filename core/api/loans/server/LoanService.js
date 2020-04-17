@@ -11,7 +11,7 @@ import {
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../utils/Calculator';
-import { formatMessage } from '../../../utils/server/intl';
+import intl from '../../../utils/intl';
 import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
@@ -49,6 +49,8 @@ import {
 } from '../loanConstants';
 import Loans from '../loans';
 import { fullLoan } from '../queries';
+
+const { formatMessage } = intl;
 
 class LoanService extends CollectionService {
   constructor() {

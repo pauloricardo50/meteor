@@ -1,17 +1,9 @@
-import { Meteor } from 'meteor/meteor';
-
 import React, { useEffect, useState } from 'react';
 import Loadable from 'react-loadable';
 
 import { logError } from '../api/slack/methodDefinitions';
 import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
-
-const ENABLE_LOADABLE = true;
-
-if (!ENABLE_LOADABLE && Meteor.isProduction) {
-  throw new Error('ENABLE_LOADABLE should be true in production');
-}
 
 const LoadableLoading = ({ error, retry, pastDelay }) => {
   const [hasLoggedAnError, setHasLoggedError] = useState(false);
@@ -46,15 +38,10 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
   return null;
 };
 
-export default ({ req, loader, ...options }) => {
-  if (!ENABLE_LOADABLE && req) {
-    return req();
-  }
-
-  return Loadable({
+export default ({ loader, ...options }) =>
+  Loadable({
     loading: LoadableLoading,
     delay: 200, // Hides the loading component for 200ms, to avoid flickering
     loader,
     ...options,
   });
-};

@@ -1,11 +1,17 @@
 import { Mongo } from 'meteor/mongo';
-import _ from 'lodash';
-import { MigrationHistory, migrate, autoMigrate } from './migrations.js';
+
+import each from 'lodash/each';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import _keys from 'lodash/keys';
+import union from 'lodash/union';
+
+import { MigrationHistory, autoMigrate, migrate } from './migrations.js';
 
 function report(result, expected, path = '') {
-  const keys = _.union(_.keys(result), _.keys(expected));
-  _.each(keys, key => {
-    if (!_.isEqual(result[key], expected[key])) {
+  const keys = union(_keys(result), _keys(expected));
+  each(keys, key => {
+    if (!isEqual(result[key], expected[key])) {
       console.log('MISMATCH:', key);
       console.log('Expected:', JSON.stringify(expected[key], null, ' '));
       console.log('     Got:', JSON.stringify(result[key], null, ' '));
@@ -43,7 +49,7 @@ describe('setup', function() {
   });
   it('clear hooks', function() {
     // Remove all collection hooks so that migration tests work properly
-    _.each([Posts, Comments, Users, Images, Tags, Likes], collection => {
+    each([Posts, Comments, Users, Images, Tags, Likes], collection => {
       collection._hookAspects.insert.after = [];
       collection._hookAspects.update.after = [];
       collection._hookAspects.remove.after = [];
@@ -132,8 +138,8 @@ describe('setup', function() {
       transform(doc) {
         return [
           doc.username,
-          _.get(doc, 'profile.first_name'),
-          _.get(doc, 'profile.last_name'),
+          get(doc, 'profile.first_name'),
+          get(doc, 'profile.last_name'),
         ];
       },
     });
@@ -1414,7 +1420,7 @@ describe('Recursive caching', function() {
     Items.remove({});
   });
   it('clear hooks', function() {
-    _.each([Customers, Bills, Items], collection => {
+    each([Customers, Bills, Items], collection => {
       collection._hookAspects.insert.after = [];
       collection._hookAspects.update.after = [];
       collection._hookAspects.remove.after = [];
@@ -1457,7 +1463,7 @@ describe('Recursive caching', function() {
       fields: ['_items'],
       cacheField: '_sum',
       transform(doc) {
-        const price = _.sum(_.map(doc._items, 'price'));
+        const price = sum(map(doc._items, 'price'));
         return price;
       },
     });

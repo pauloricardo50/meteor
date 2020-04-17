@@ -4,17 +4,14 @@ import moment from 'moment';
 import { addLocaleData } from 'react-intl';
 import fr from 'react-intl/locale-data/fr';
 
-import Intl from '../intl';
 import { setupMoment } from './localizationHelpers';
 import translateSimpleSchema from './simpleSchemaLocalization';
 
 export const localizationStartup = ({
   setupAccounts = true,
-  messages,
   setupCountries = true,
 } = {}) => {
   // Add locales used in app here
-  Intl.init(messages);
   addLocaleData(fr);
 
   setupMoment();

@@ -1,6 +1,6 @@
 import archiver from 'archiver';
 
-import Intl from '../../../../../utils/server/intl';
+import intl from '../../../../../utils/intl';
 import {
   DOCUMENTS,
   DOCUMENTS_CATEGORIES,
@@ -11,6 +11,8 @@ import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
 import FilesBinPacker from './FilesBinPacker';
 import { zipDocuments } from './zipHelpers';
+
+const { formatMessage } = intl;
 
 export const getFileName = ({
   Key,
@@ -65,7 +67,7 @@ export const getFileName = ({
       )
       .includes(documentId)
     ? `${root}${binPath}${prefix}${fileName}${suffix}.${extension}`
-    : `${root}${binPath}${prefix}${Intl.formatMessage({
+    : `${root}${binPath}${prefix}${formatMessage({
         id: `files.${documentId}`,
       })}${suffix}.${extension}`;
 };
