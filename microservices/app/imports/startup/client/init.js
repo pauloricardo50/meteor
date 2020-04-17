@@ -1,3 +1,5 @@
 import { localizationStartup } from 'core/utils/localization';
 
-localizationStartup();
+import messagesFR from '../../../lang/fr.json';
+
+localizationStartup({ messages: messagesFR });
