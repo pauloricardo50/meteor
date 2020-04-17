@@ -1,4 +1,8 @@
 {
+  "Forms.reimbursementPenalty": "Pénalités de remboursement",
+  "Forms.refinancingTotal": "{isLoanIncreased, select, true {Augmentation de crédit} other {Diminution de crédit}}",
+  "Forms.newWantedLoan": "Nouveau prêt",
+  "Forms.previousLoan": "Ancien prêt",
   "Forms.previousLoan": "Prêt hypothécaire actuel",
   "MaxPropertyValueResults.maxLoanValue": "Capacité d'emprunt max.",
   "MaxPropertyValueResults.previousLoan": "Dette actuelle",
