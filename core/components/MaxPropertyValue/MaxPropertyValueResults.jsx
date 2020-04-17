@@ -37,7 +37,10 @@ const MaxPropertyValueResults = ({
     purchaseType,
   } = loan;
   const previousLoan = Calculator.getPreviousLoanValue({ loan });
-  const reimbursementPenalty = 42;
+  const reimbursementPenalty = Calculator.getReimbursementPenalty({
+    loan,
+    refinancingDate: new Date(),
+  });
   const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 

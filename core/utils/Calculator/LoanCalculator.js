@@ -926,12 +926,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return propertyValue - previousLoanValue;
     }
 
-    getReimbursementPenalty({ loan, structureId }) {
-      const refinancingDate = this.selectStructureKey({
+    getReimbursementPenalty({
+      loan,
+      structureId,
+      refinancingDate = this.selectStructureKey({
         loan,
         structureId,
         key: 'refinancingDate',
-      });
+      }),
+    }) {
       const { previousLoanTranches } = loan;
       return previousLoanTranches
         .filter(({ dueDate }) =>
