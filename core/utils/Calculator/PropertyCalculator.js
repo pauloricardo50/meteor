@@ -245,8 +245,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     isNewProperty({ loan, structureId }) {
       return !!(
         this.isPromotionProperty({ loan, structureId }) ||
-        this.selectPropertyKey({ loan, structureId, key: 'isNew' }) ||
-        loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
+        this.selectPropertyKey({ loan, structureId, key: 'isNew' })
       );
     }
 
