@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 export const makeFilterConfig = props => ({ condition }) => {
-  if (!condition) {
+  if (condition === undefined) {
     // Render components without condition property
     return true;
   }
