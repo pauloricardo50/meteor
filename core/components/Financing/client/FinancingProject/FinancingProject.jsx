@@ -5,6 +5,7 @@ import Calculator from '../../../../utils/Calculator';
 import T from '../../../Translation';
 import FinancingSection, {
   CalculatedValue,
+  FinancingDateField,
   FinancingField,
 } from '../FinancingSection';
 import FinancingProjectFees from './FinancingProjectFees';
@@ -18,51 +19,70 @@ const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
   MAX_NOTARY_FEES_RATE;
 
-const FinancingProject = ({ purchaseType }) => (
-  <FinancingSection
-    summaryConfig={[
-      {
-        id: 'project',
-        label: (
-          <span className="section-title">
-            <T id="FinancingProject.title" />
-          </span>
-        ),
-        Component: CalculatedValue,
-        value: Calculator.getProjectValue,
-      },
-    ]}
-    detailConfig={[
-      { Component: FinancingPropertyPicker, id: 'propertyId' },
-      {
-        Component: FinancingField,
-        id: 'propertyValue',
-        intlProps: {
-          values: { purchaseType },
-          tooltip: purchaseType === PURCHASE_TYPE.REFINANCING && (
-            <T id="Financing.propertyValue.refinancingTooltip" />
+const FinancingProject = ({ purchaseType }) => {
+  const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
+
+  return (
+    <FinancingSection
+      summaryConfig={[
+        {
+          id: 'project',
+          label: (
+            <span className="section-title">
+              {isRefinancing ? (
+                <T id="FinancingProject.refinancing.title" />
+              ) : (
+                <T id="FinancingProject.title" />
+              )}
+            </span>
           ),
+          Component: CalculatedValue,
+          value: isRefinancing
+            ? Calculator.selectPropertyValue
+            : Calculator.getProjectValue,
         },
-        calculatePlaceholder: data => Calculator.selectPropertyValue(data),
-        max: 100000000,
-        allowUndefined: true,
-        forceUndefined: true,
-      },
-      {
-        Component: FinancingField,
-        id: 'propertyWork',
-        max: 10000000,
-        condition: purchaseType === PURCHASE_TYPE.ACQUISITION,
-      },
-      {
-        Component: FinancingProjectFees,
-        id: 'notaryFees',
-        calculatePlaceholder: calculateDefaultNotaryFees,
-        max: calculateMaxNotaryFees,
-        allowUndefined: true,
-      },
-    ]}
-  />
-);
+      ]}
+      detailConfig={[
+        {
+          Component: FinancingPropertyPicker,
+          id: 'propertyId',
+        },
+        {
+          Component: FinancingField,
+          id: 'propertyValue',
+          intlProps: {
+            values: { purchaseType },
+            tooltip: isRefinancing && (
+              <T id="Financing.propertyValue.refinancingTooltip" />
+            ),
+          },
+          calculatePlaceholder: data => Calculator.selectPropertyValue(data),
+          max: 100000000,
+          allowUndefined: true,
+          forceUndefined: true,
+        },
+        {
+          Component: FinancingField,
+          id: 'propertyWork',
+          max: 10000000,
+          condition: !isRefinancing,
+        },
+        {
+          Component: FinancingProjectFees,
+          id: 'notaryFees',
+          calculatePlaceholder: calculateDefaultNotaryFees,
+          max: calculateMaxNotaryFees,
+          allowUndefined: true,
+          condition: !isRefinancing,
+        },
+        {
+          id: 'refinancingDate',
+          Component: FinancingDateField,
+          condition: isRefinancing,
+        },
+      ]}
+    />
+  );
+};
 
 export default FinancingProject;
