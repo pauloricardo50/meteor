@@ -540,28 +540,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(array);
     }
 
+    getBorrowerFormArraysForHash({ borrowers }) {
+      return borrowers.reduce(
+        (arr, borrower) => [
+          ...arr,
+          {
+            formArray: getBorrowerFinanceArray({
+              borrowers,
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+          {
+            formArray: getBorrowerInfoArray({
+              borrowers,
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+        ],
+        [],
+      );
+    }
+
     getBorrowerFormHash({ borrowers }) {
       return getFormValuesHashMultiple(
-        borrowers.reduce(
-          (arr, borrower) => [
-            ...arr,
-            {
-              formArray: getBorrowerFinanceArray({
-                borrowers,
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-            {
-              formArray: getBorrowerInfoArray({
-                borrowers,
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-          ],
-          [],
-        ),
+        this.getBorrowerFormArraysForHash({ borrowers }),
       );
     }
 

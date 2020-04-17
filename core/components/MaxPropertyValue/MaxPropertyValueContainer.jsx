@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
 import { CANTONS } from '../../api/loans/loanConstants';
-import { setMaxPropertyValueWithoutBorrowRatio } from '../../api/loans/methodDefinitions';
+import { setMaxPropertyValueOrBorrowRatio } from '../../api/loans/methodDefinitions';
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
@@ -143,7 +143,7 @@ export default compose(
         if (setOpenBorrowersForm) {
           setOpenBorrowersForm(false);
         }
-        return setMaxPropertyValueWithoutBorrowRatio
+        return setMaxPropertyValueOrBorrowRatio
           .run({ canton, loanId })
           .finally(() => {
             setLoading(false);
@@ -156,7 +156,7 @@ export default compose(
 
         if (existingCanton && newCanton !== existingCanton) {
           setLoading(true);
-          return setMaxPropertyValueWithoutBorrowRatio
+          return setMaxPropertyValueOrBorrowRatio
             .run({ canton: newCanton, loanId })
             .finally(() => setLoading(false));
         }

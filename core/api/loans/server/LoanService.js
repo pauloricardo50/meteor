@@ -2,12 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import omit from 'lodash/omit';
+import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
 import {
   FEEDBACK_OPTIONS,
   makeFeedback,
 } from '../../../components/OfferList/feedbackHelpers';
+import { PURCHASE_TYPE } from '../../../redux/widget1/widget1Constants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../utils/Calculator';
@@ -615,6 +617,16 @@ class LoanService extends CollectionService {
 
   getMaxPropertyValueRange({ organisations, loan, residenceType, canton }) {
     const { borrowers = [] } = loan;
+    let func;
+
+    if (loan.purchaseType === PURCHASE_TYPE.ACQUISITION) {
+      func = 'getMaxPropertyValueWithoutBorrowRatio';
+    }
+
+    if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+      func = 'getMaxBorrowRatioForLoan';
+    }
+
     const loanObject = Calculator.createLoanObject({
       residenceType,
       borrowers,
@@ -627,11 +639,8 @@ class LoanService extends CollectionService {
           lenderRules,
         });
 
-        const {
-          borrowRatio,
-          propertyValue,
-        } = calculator.getMaxPropertyValueWithoutBorrowRatio({
-          borrowers,
+        const { borrowRatio, propertyValue } = calculator[func]({
+          loan,
           residenceType,
           canton,
         });
@@ -643,10 +652,10 @@ class LoanService extends CollectionService {
       })
       .filter(x => x);
 
-    const sortedValues = maxPropertyValues.sort(
-      ({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
-        propertyValueA - propertyValueB,
-    );
+    const sortedValues = sortBy(maxPropertyValues, [
+      'propertyValue',
+      'borrowRatio',
+    ]);
 
     if (sortedValues.length === 0) {
       throw new Meteor.Error(
@@ -683,7 +692,7 @@ class LoanService extends CollectionService {
     };
   }
 
-  getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
+  getMaxPropertyValue({ loan, canton, residenceType }) {
     let query = {
       features: ORGANISATION_FEATURES.LENDER,
       lenderRulesCount: { $gte: 1 },
@@ -711,33 +720,34 @@ class LoanService extends CollectionService {
     });
   }
 
-  setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const loan = this.get(loanId, userLoan());
+  setMaxPropertyValue({ loan, canton }) {
     const isRecalculate = !!(
       loan.maxPropertyValue && loan.maxPropertyValue.date
     );
 
-    const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
-      {
-        loan,
-        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-        canton,
-      },
-    );
-    const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
-      {
-        loan,
-        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
-        canton,
-      },
-    );
-
-    const borrowerHash = Calculator.getBorrowerFormHash({
-      borrowers: loan.borrowers,
+    const mainMaxPropertyValueRange = this.getMaxPropertyValue({
+      loan,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      canton,
+    });
+    const secondMaxPropertyValueRange = this.getMaxPropertyValue({
+      loan,
+      residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+      canton,
     });
 
+    let borrowerHash;
+
+    if (loan.purchaseType === PURCHASE_TYPE.ACQUISITION) {
+      borrowerHash = Calculator.getBorrowerFormHash({ loan });
+    }
+
+    if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+      borrowerHash = Calculator.getRefinancingHash({ loan });
+    }
+
     this.update({
-      loanId,
+      loanId: loan._id,
       object: {
         maxPropertyValue: {
           main: mainMaxPropertyValueRange,
@@ -750,6 +760,12 @@ class LoanService extends CollectionService {
     });
 
     return Promise.resolve({ isRecalculate });
+  }
+
+  setMaxPropertyValueOrBorrowRatio({ loanId, canton }) {
+    const loan = this.get(loanId, userLoan());
+
+    return this.setMaxPropertyValue({ loan, canton });
   }
 
   addNewMaxStructure({ loanId, residenceType: newResidenceType, canton }) {

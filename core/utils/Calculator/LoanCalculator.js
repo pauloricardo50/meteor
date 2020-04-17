@@ -8,12 +8,16 @@ import {
 } from '../../api/files/fileHelpers';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
+import { getPropertyArray } from '../../arrays/PropertyFormArray';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import {
   MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
   MIN_INSURANCE2_WITHDRAW,
 } from '../../config/financeConstants';
-import { getCountedArray } from '../formArrayHelpers';
+import {
+  getCountedArray,
+  getFormValuesHashMultiple,
+} from '../formArrayHelpers';
 import { getPercent } from '../general';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
@@ -915,5 +919,27 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const propertyValue = this.selectPropertyValue({ loan, structureId });
       const previousLoanValue = this.getPreviousLoanValue({ loan });
       return propertyValue - previousLoanValue;
+    }
+
+    getRefinancingHash({ loan }) {
+      const property = this.selectProperty({ loan });
+
+      const borrowerFormArray = this.getBorrowerFormArraysForHash({ loan });
+
+      const propertyFormArray = {
+        formArray: getPropertyArray({ loan, property }),
+        doc: property,
+      };
+
+      const loanFormArray = {
+        formArray: getRefinancingFormArray(),
+        doc: loan,
+      };
+
+      return getFormValuesHashMultiple([
+        ...borrowerFormArray,
+        propertyFormArray,
+        loanFormArray,
+      ]);
     }
   };

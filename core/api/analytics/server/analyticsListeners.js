@@ -3,7 +3,7 @@ import {
   anonymousLoanInsert,
   loanInsertBorrowers,
   loanSetStatus,
-  setMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueOrBorrowRatio,
   userLoanInsert,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
@@ -199,7 +199,7 @@ addAnalyticsListener({
 });
 
 addAnalyticsListener({
-  method: setMaxPropertyValueWithoutBorrowRatio,
+  method: setMaxPropertyValueOrBorrowRatio,
   func: ({ analytics, params: { loanId } }) => {
     const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
@@ -209,6 +209,7 @@ addAnalyticsListener({
       anonymous: 1,
       promotions: { _id: 1, name: 1 },
       name: 1,
+      purchaseType: 1,
     });
     const {
       maxPropertyValue = {},
@@ -218,6 +219,7 @@ addAnalyticsListener({
       promotions = [],
       hasPromotion,
       name: loanName,
+      purchaseType,
     } = loan;
     const { canton, main = {}, second = {}, type } = maxPropertyValue;
     const {
@@ -263,6 +265,7 @@ addAnalyticsListener({
       canton,
       type,
       anonymous,
+      purchaseType,
       proPropertyValue: property.value,
       proProperty: property._id,
       proPropertyAddress: property.address,

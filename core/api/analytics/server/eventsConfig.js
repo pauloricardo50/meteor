@@ -102,6 +102,7 @@ export const EVENTS_CONFIG = {
       'loanName',
       'canton',
       'type',
+      'purchaseType',
       { name: 'anonymous', optional: true },
       { name: 'proProperty', optional: true },
       { name: 'proPropertyValue', optional: true },

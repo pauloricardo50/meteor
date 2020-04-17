@@ -1,7 +1,7 @@
 import ServerEventService from '../../events/server/ServerEventService';
 import { PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS } from '../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import { setMaxPropertyValueWithoutBorrowRatio } from '../methodDefinitions';
+import { setMaxPropertyValueOrBorrowRatio } from '../methodDefinitions';
 import LoanService from './LoanService';
 
 export const disableUserFormsListener = ({ params: { loanId } }) => {
@@ -9,7 +9,7 @@ export const disableUserFormsListener = ({ params: { loanId } }) => {
 };
 
 ServerEventService.addAfterMethodListener(
-  setMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueOrBorrowRatio,
   ({ context, params }) => {
     const { loanId } = params;
     const loan = LoanService.get(loanId, {
