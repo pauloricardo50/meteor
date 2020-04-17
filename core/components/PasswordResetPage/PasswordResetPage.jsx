@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Redirect } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
-import AutoForm from '../AutoForm2';
+import AutoForm from '../AutoForm2/AutoForm/AutoForm';
 import Loading from '../Loading/Loading';
 import T from '../Translation';
 import PasswordResetPageContainer from './PasswordResetPageContainer';

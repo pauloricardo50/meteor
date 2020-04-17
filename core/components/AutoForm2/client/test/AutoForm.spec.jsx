@@ -2,6 +2,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { expect } from 'chai';
+import Loadable from 'react-loadable';
 import SimpleSchema from 'simpl-schema';
 import { TextField } from 'uniforms-material';
 
@@ -10,10 +11,12 @@ import getMountedComponent from '../../../../utils/testHelpers/getMountedCompone
 import DateField from '../../../DateField';
 import Loading from '../../../Loading';
 import PercentInput from '../../../PercentInput';
-import AutoForm from '../../AutoForm';
+import AutoForm from '../../AutoForm/AutoForm';
 import { CustomAutoField } from '../../AutoFormComponents';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../autoFormConstants';
 import CustomSelectField from '../../CustomSelectField';
+
+Loadable.preloadAll();
 
 let props;
 const component = () => getMountedComponent({ Component: AutoForm, props });
