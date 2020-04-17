@@ -1,5 +1,7 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import InputAdornment from '../../../components/Material/InputAdornment';
 import {
   additionalDocuments,
   adminNotesSchema,
@@ -59,6 +61,16 @@ const InsuranceSchema = new SimpleSchema({
   },
   ...additionalDocuments([]),
   documents: documentsField,
+  guaranteedCapital: decimalMoneyField,
+  nonGuaranteedCapital: decimalMoneyField,
+  deathCapital: decimalMoneyField,
+  disabilityPension: {
+    ...decimalMoneyField,
+    uniforms: {
+      ...decimalMoneyField.uniforms,
+      endAdornment: <InputAdornment position="end">/ mois</InputAdornment>,
+    },
+  },
 });
 
 export default InsuranceSchema;

@@ -30,6 +30,7 @@ import DragHandle from '@material-ui/icons/DragHandle';
 import Edit from '@material-ui/icons/Edit';
 import ErrorIcon from '@material-ui/icons/Error';
 import Event from '@material-ui/icons/Event';
+import EventAvailable from '@material-ui/icons/EventAvailable';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FaceIcon from '@material-ui/icons/Face';
@@ -189,6 +190,7 @@ export const iconMap = {
   accessibleForward: AccessibleForward,
   meetingRoom: MeetingRoom,
   security: Security,
+  eventAvailable: EventAvailable,
 };
 
 const getColorStyle = color => ({ color: colors[color], fill: colors[color] });

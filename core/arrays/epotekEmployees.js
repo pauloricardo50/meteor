@@ -9,6 +9,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 92',
     _id: 'LGGMr68iXXtW6bQEx',
     gender: 'F',
+    calendly: 'https://calendly.com/epotek-lydia',
   },
   {
     email: 'badr@e-potek.ch',
@@ -46,6 +47,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 98',
     _id: 'gTB7r7E5j5YGiseoF',
     gender: 'F',
+    calendly: 'https://calendly.com/epotek-elise',
   },
   {
     email: 'yannis@e-potek.ch',
@@ -56,6 +58,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 90',
     _id: 'dcXkoTWLZPemu9x9a',
     gender: 'M',
+    calendly: 'https://calendly.com/epotek-yannis',
   },
   {
     email: 'jeanluc@e-potek.ch',
@@ -66,6 +69,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 94',
     _id: 'efe2jpwvRh8J4z4p8',
     gender: 'M',
+    calendly: 'https://calendly.com/epotek-jeanluc',
   },
   {
     email: 'max@e-potek.ch',
@@ -76,6 +80,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 95',
     _id: 'NumFEubdw2nra6Su8',
     gender: 'M',
+    calendly: 'https://calendly.com/epotek-max',
   },
   {
     email: '',
@@ -84,6 +89,13 @@ const employees = [
     title: 'Comptabilité & Finance',
     gender: 'F',
   },
+  {
+    email: 'financement@e-potek.ch',
+    src: '/img/epotek-logo.png',
+    name: 'e-Potek',
+    phoneNumber: EPOTEK_NUMBER,
+    calendly: 'https://calendly.com/epotek-geneve',
+  }
 ];
 
 export const employeesByEmail = employees.reduce(
