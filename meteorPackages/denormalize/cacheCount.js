@@ -1,4 +1,10 @@
-import _ from 'lodash';
+import get from 'lodash/get';
+import intersection from 'lodash/intersection';
+import keys from 'lodash/keys';
+import merge from 'lodash/merge';
+import union from 'lodash/union';
+import uniq from 'lodash/uniq';
+
 import { addMigration } from './migrations.js';
 
 Mongo.Collection.prototype.cacheCount = function(options) {
@@ -18,8 +24,8 @@ Mongo.Collection.prototype.cacheCount = function(options) {
   const selector = options.selector || {};
   const { cacheField } = options;
   const { referenceField } = options;
-  const watchedFields = _.union([referenceField], _.keys(selector));
-  const topFields = _.uniq(watchedFields.map(field => field.split('.')[0]));
+  const watchedFields = union([referenceField], keys(selector));
+  const topFields = uniq(watchedFields.map(field => field.split('.')[0]));
 
   if (referenceField.split(/[.:]/)[0] == cacheField.split(/[.:]/)[0]) {
     throw new Error(
@@ -28,9 +34,9 @@ Mongo.Collection.prototype.cacheCount = function(options) {
   }
 
   function update(child) {
-    const ref = _.get(child, referenceField);
+    const ref = get(child, referenceField);
     if (ref) {
-      const select = _.merge(selector, { [referenceField]: ref });
+      const select = merge(selector, { [referenceField]: ref });
       parentCollection.update(
         { _id: ref },
         { $set: { [cacheField]: childCollection.find(select).count() } },
@@ -39,7 +45,7 @@ Mongo.Collection.prototype.cacheCount = function(options) {
   }
 
   function insert(userId, parent) {
-    const select = _.merge(selector, { [referenceField]: parent._id });
+    const select = merge(selector, { [referenceField]: parent._id });
     parentCollection.update(parent._id, {
       $set: { [cacheField]: childCollection.find(select).count() },
     });
@@ -54,7 +60,7 @@ Mongo.Collection.prototype.cacheCount = function(options) {
   });
 
   childCollection.after.update((userId, child, changedFields) => {
-    if (_.intersection(changedFields, topFields).length) {
+    if (intersection(changedFields, topFields).length) {
       update(child);
       update(this.previous);
     }

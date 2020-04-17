@@ -1,4 +1,11 @@
-import _ from 'lodash';
+import compact from 'lodash/compact';
+import get from 'lodash/get';
+import includes from 'lodash/includes';
+import intersection from 'lodash/intersection';
+import map from 'lodash/map';
+import pick from 'lodash/pick';
+import uniq from 'lodash/uniq';
+
 import { addMigration } from './migrations.js';
 
 Mongo.Collection.prototype.cacheField = function(options) {
@@ -15,15 +22,15 @@ Mongo.Collection.prototype.cacheField = function(options) {
       : this;
   const { cacheField } = options;
   const { fields } = options;
-  const topFields = _.uniq(_.map(fields, field => field.split('.')[0]));
+  const topFields = uniq(map(fields, field => field.split('.')[0]));
   let { transform } = options;
   if (!transform) {
     transform = function(doc) {
-      return _.compact(_.map(fields, field => _.get(doc, field))).join(', ');
+      return compact(map(fields, field => get(doc, field))).join(', ');
     };
   }
 
-  if (_.includes(topFields, cacheField.split(/[.:]/)[0])) {
+  if (includes(topFields, cacheField.split(/[.:]/)[0])) {
     throw new Error(
       'watching the cacheField for changes would cause an infinite loop',
     );
@@ -31,7 +38,7 @@ Mongo.Collection.prototype.cacheField = function(options) {
 
   function insertHook(userid, doc) {
     collection.update(doc._id, {
-      $set: { [cacheField]: transform(_.pick(doc, fields)) },
+      $set: { [cacheField]: transform(pick(doc, fields)) },
     });
   }
 
@@ -40,10 +47,10 @@ Mongo.Collection.prototype.cacheField = function(options) {
   collection.after.insert(insertHook);
 
   collection.after.update((userId, doc, changedFields) => {
-    if (_.intersection(changedFields, topFields).length) {
+    if (intersection(changedFields, topFields).length) {
       Meteor.defer(() => {
         collection.update(doc._id, {
-          $set: { [cacheField]: transform(_.pick(doc, fields)) },
+          $set: { [cacheField]: transform(pick(doc, fields)) },
         });
       });
     }
