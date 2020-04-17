@@ -1,4 +1,5 @@
 {
+  "MaxPropertyValue.ownFundsRaise": "Levée de fonds potentielle de {raise}",
   "MaxPropertyValue.empty.refinancing": "Calculez votre capacité d'emprunt auprès de tous les prêteurs du marché",
   "Forms.previousLoanTranches.duration.placeholder": "10",
   "Forms.previousLoanTranches.duration": "Durée initiale de la tranche en années",

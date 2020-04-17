@@ -36,6 +36,8 @@ const MaxPropertyValueResults = ({
     _id: loanId,
     purchaseType,
   } = loan;
+  const previousLoan = Calculator.getPreviousLoanValue({ loan });
+  const reimbursementPenalty = 42;
   const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
@@ -85,6 +87,8 @@ const MaxPropertyValueResults = ({
           residenceType={residenceType}
           canton={canton}
           purchaseType={purchaseType}
+          previousLoan={previousLoan}
+          reimbursementPenalty={reimbursementPenalty}
         />
       </div>
       <Button
