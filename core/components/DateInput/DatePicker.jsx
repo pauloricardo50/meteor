@@ -18,7 +18,7 @@ const setDateRange = (minDate = undefined, maxDate = undefined) => day =>
 
 const returnYears = () => {
   const years = [];
-  for (let i = moment().year() - 100; i <= moment().year(); i++) {
+  for (let i = moment().year() - 100; i <= moment().year() + 50; i++) {
     years.push(<option value={i}>{i}</option>);
   }
   return years;

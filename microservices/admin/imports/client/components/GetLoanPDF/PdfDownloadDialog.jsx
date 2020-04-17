@@ -1,10 +1,12 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import T from 'core/components/Translation';
 import Box from 'core/components/Box';
-import { makeGenerateBackgroundInfo, BACKGROUND_INFO_TYPE } from './helpers';
+import T from 'core/components/Translation';
+
+import { BACKGROUND_INFO_TYPE, makeGenerateBackgroundInfo } from './helpers';
 
 const makeSchema = loan =>
   new SimpleSchema({
@@ -106,44 +108,53 @@ const PdfDownloadDialog = ({
   buttonLabel,
   icon,
   dialogTitle,
-}) => (
-  <AutoFormDialog
-    title={dialogTitle}
-    schema={makeSchema(loan)}
-    onSubmit={onSubmit}
-    buttonProps={{
-      raised: true,
-      primary: true,
-      label: buttonLabel,
-      icon,
-      style: { marginRight: 4 },
-    }}
-    model={{ structureIds: loan.structures.map(({ id }) => id) }}
-    layout={[
-      {
-        Component: Box,
-        title: <h4>Général</h4>,
-        className: 'mb-32',
-        fields: ['structureIds', 'organisationId'],
-      },
-      {
-        Component: Box,
-        title: <h4>Contexte</h4>,
-        layout: [
-          {
-            className: 'mb-32',
-            fields: ['backgroundInfoType', 'additionalInfo'],
-          },
-          {
-            className: 'grid-2',
-            fields: ['askForMaxLoan', 'includeMissingDocuments'],
-          },
-          'customBackgroundInfo',
-          'backgroundInfoPreview',
-        ],
-      },
-    ]}
-  />
-);
+}) => {
+  const { purchaseType } = loan;
+
+  const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
+  return (
+    <AutoFormDialog
+      title={dialogTitle}
+      schema={makeSchema(loan)}
+      onSubmit={onSubmit}
+      buttonProps={{
+        raised: true,
+        primary: true,
+        label: buttonLabel,
+        icon,
+        style: { marginRight: 4 },
+        disabled: isRefinancing,
+        tooltip:
+          isRefinancing &&
+          'Les PDF pour les refinancements ne sont pas encore disponibles',
+      }}
+      model={{ structureIds: loan.structures.map(({ id }) => id) }}
+      layout={[
+        {
+          Component: Box,
+          title: <h4>Général</h4>,
+          className: 'mb-32',
+          fields: ['structureIds', 'organisationId'],
+        },
+        {
+          Component: Box,
+          title: <h4>Contexte</h4>,
+          layout: [
+            {
+              className: 'mb-32',
+              fields: ['backgroundInfoType', 'additionalInfo'],
+            },
+            {
+              className: 'grid-2',
+              fields: ['askForMaxLoan', 'includeMissingDocuments'],
+            },
+            'customBackgroundInfo',
+            'backgroundInfoPreview',
+          ],
+        },
+      ]}
+    />
+  );
+};
 
 export default PdfDownloadDialog;

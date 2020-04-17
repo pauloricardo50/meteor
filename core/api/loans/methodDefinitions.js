@@ -37,6 +37,7 @@ export const adminLoanInsert = new Method({
   name: 'adminLoanInsert',
   params: {
     userId: Match.Optional(String),
+    loan: Match.Optional(Object),
   },
 });
 
