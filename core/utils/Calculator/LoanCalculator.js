@@ -6,7 +6,10 @@ import {
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
-import { OWN_FUNDS_USAGE_TYPES } from '../../api/loans/loanConstants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+} from '../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import { getPropertyArray } from '../../arrays/PropertyFormArray';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
@@ -941,5 +944,35 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         propertyFormArray,
         loanFormArray,
       ]);
+    }
+
+    canCalculateSolvency({ loan, borrowers }) {
+      if (!borrowers.length) {
+        return false;
+      }
+
+      const bankFortune = this.getFortune({ borrowers });
+      if (!bankFortune) {
+        return false;
+      }
+
+      const salary = this.getSalary({ borrowers });
+      if (!salary || salary === 0) {
+        return false;
+      }
+
+      if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+        const property = this.selectProperty({ loan });
+
+        if (!property?.value) {
+          return false;
+        }
+
+        if (!property?.canton) {
+          return false;
+        }
+      }
+
+      return true;
     }
   };

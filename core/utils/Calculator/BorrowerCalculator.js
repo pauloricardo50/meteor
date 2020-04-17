@@ -820,22 +820,4 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         ].filter(x => x);
       }, []);
     }
-
-    canCalculateSolvency({ borrowers }) {
-      if (!borrowers.length) {
-        return false;
-      }
-
-      const bankFortune = this.getFortune({ borrowers });
-      if (!bankFortune) {
-        return false;
-      }
-
-      const salary = this.getSalary({ borrowers });
-      if (!salary || salary === 0) {
-        return false;
-      }
-
-      return true;
-    }
   };
