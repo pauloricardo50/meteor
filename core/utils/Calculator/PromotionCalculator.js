@@ -116,10 +116,6 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     shouldUseConstructionNotaryFees({ loan, structureId }) {
       const { promotions } = loan;
 
-      if (loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION) {
-        return true;
-      }
-
       if (!this.isPromotionProperty({ loan, structureId })) {
         return false;
       }
@@ -128,7 +124,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      const promotion = promotions[0];
+      const [promotion] = promotions;
 
       return promotion.type === PROMOTION_TYPES.SHARE;
     }

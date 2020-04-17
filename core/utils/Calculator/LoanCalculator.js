@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
 import { ERROR, SUCCESS, WARNING } from '../../api/constants';
 import { getLoanDocuments } from '../../api/files/documents';
@@ -6,14 +8,21 @@ import {
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
-import { OWN_FUNDS_USAGE_TYPES } from '../../api/loans/loanConstants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+} from '../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
+import { getPropertyArray } from '../../arrays/PropertyFormArray';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import {
   MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
   MIN_INSURANCE2_WITHDRAW,
 } from '../../config/financeConstants';
-import { getCountedArray } from '../formArrayHelpers';
+import {
+  getCountedArray,
+  getFormValuesHashMultiple,
+} from '../formArrayHelpers';
 import { getPercent } from '../general';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
@@ -902,5 +911,143 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }
 
       return fees;
+    }
+
+    getPreviousLoanValue({ loan: { previousLoanTranches = [] } }) {
+      return previousLoanTranches.reduce(
+        (total, { value = 0 }) => total + value,
+        0,
+      );
+    }
+
+    getPreviousOwnFunds({ loan, structureId }) {
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const previousLoanValue = this.getPreviousLoanValue({ loan });
+      return propertyValue - previousLoanValue;
+    }
+
+    getReimbursementPenalty({
+      loan,
+      structureId,
+      refinancingDate = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'refinancingDate',
+      }),
+    }) {
+      const { previousLoanTranches } = loan;
+      return previousLoanTranches
+        .filter(({ dueDate }) =>
+          moment(dueDate).isAfter(moment(refinancingDate)),
+        )
+        .reduce((total, { value = 0, rate, dueDate }) => {
+          const remainingYears =
+            moment(dueDate).diff(moment(refinancingDate), 'months') / 12;
+
+          return total + remainingYears * value * rate;
+        }, 0);
+    }
+
+    selectReimbursementPenalty({ loan, structureId }) {
+      let reimbursementPenalty = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'reimbursementPenalty',
+      });
+
+      if (!(reimbursementPenalty === 0 || reimbursementPenalty)) {
+        reimbursementPenalty = this.getReimbursementPenalty({
+          loan,
+          structureId,
+        });
+      }
+
+      return reimbursementPenalty;
+    }
+
+    getLoanEvolution({ loan, structureId }) {
+      const wantedLoan = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedLoan',
+      });
+
+      return wantedLoan - this.getPreviousLoanValue({ loan });
+    }
+
+    getReimbursementRequiredOwnFunds({ loan, structureId }) {
+      const reimbursementPenalty = this.selectReimbursementPenalty({
+        loan,
+        structureId,
+      });
+
+      const notaryFees = this.getFees({ loan, structureId }).total;
+      const loanEvolution = this.getLoanEvolution({ loan, structureId });
+
+      return loanEvolution - notaryFees - reimbursementPenalty;
+    }
+
+    getRefinancingHash({ loan }) {
+      const property = this.selectProperty({ loan });
+
+      const borrowerFormArray = this.getBorrowerFormArraysForHash({ loan });
+
+      const propertyFormArray = {
+        formArray: getPropertyArray({ loan, property }),
+        doc: property,
+      };
+
+      const loanFormArray = {
+        formArray: getRefinancingFormArray(),
+        doc: loan,
+      };
+
+      return getFormValuesHashMultiple([
+        ...borrowerFormArray,
+        propertyFormArray,
+        loanFormArray,
+      ]);
+    }
+
+    getMaxPropertyValueHash({ loan }) {
+      const { purchaseType } = loan;
+
+      if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+        return this.getBorrowerHash({ loan });
+      }
+
+      if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+        return this.getRefinancingHash({ loan });
+      }
+    }
+
+    canCalculateSolvency({ loan, borrowers }) {
+      if (!borrowers.length) {
+        return false;
+      }
+
+      const bankFortune = this.getFortune({ borrowers });
+      if (!bankFortune) {
+        return false;
+      }
+
+      const salary = this.getSalary({ borrowers });
+      if (!salary || salary === 0) {
+        return false;
+      }
+
+      if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+        const property = this.selectProperty({ loan });
+
+        if (!property?.value) {
+          return false;
+        }
+
+        if (!property?.canton) {
+          return false;
+        }
+      }
+
+      return true;
     }
   };

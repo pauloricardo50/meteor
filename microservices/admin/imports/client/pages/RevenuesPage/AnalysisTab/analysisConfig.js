@@ -52,7 +52,12 @@ const analysisConfig = {
       },
       {
         id: 'Compte vérifié',
-        format: ({ user }) => (user?.emails?.[0]?.verified ? 'Oui' : 'Non'),
+        format: ({ user }) =>
+          user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'A un compte',
+        format: ({ user }) => (user ? 'Oui' : 'Non'),
       },
     ],
     createdAt: [
@@ -249,6 +254,11 @@ const analysisConfig = {
     ],
   },
   [USERS_COLLECTION]: {
+    emails: {
+      label: 'Email vérifié',
+      format: ({ emails }) =>
+        emails.some(({ verified }) => verified) ? 'Oui' : 'Non',
+    },
     roles: { id: 'Forms.roles' },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
     'referredByUser.name': { label: 'Référé par compte' },

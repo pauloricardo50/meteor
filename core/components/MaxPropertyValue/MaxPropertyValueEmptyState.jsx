@@ -3,6 +3,7 @@ import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { createRoute } from '../../utils/routerUtils';
 import Button from '../Button';
 import Icon from '../Icon';
@@ -17,6 +18,7 @@ export const getReadyToCalculateTitle = props => {
     hasProProperty,
     properties = [],
     promotions = [],
+    purchaseType,
   } = loan;
 
   if (!lockCanton) {
@@ -41,6 +43,10 @@ export const getReadyToCalculateTitle = props => {
     return (
       <T id="MaxPropertyValue.empty.proProperty" values={{ propertyName }} />
     );
+  }
+
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return <T id="MaxPropertyValue.empty.refinancing" />;
   }
 };
 
@@ -97,7 +103,10 @@ export const MaxPropertyValueEmptyStateReady = ({
 );
 
 const MaxPropertyValueEmptyState = props => {
-  const { loan, state } = props;
+  const {
+    loan: { _id: loanId, purchaseType },
+    state,
+  } = props;
   return (
     <div className="max-property-value-empty-state animated fadeIn">
       <FontAwesomeIcon className="icon" icon={faScroll} />
@@ -108,14 +117,12 @@ const MaxPropertyValueEmptyState = props => {
               <T id="MaxPropertyValue.completeInfo" />
             </h2>
             <p className="description">
-              <T id="MaxPropertyValue.missingInfos" />
+              <T id="MaxPropertyValue.missingInfos" values={{ purchaseType }} />
             </p>
             <Button
               link
               primary
-              to={createRoute('/loans/:loanId/borrowers/finance', {
-                loanId: loan._id,
-              })}
+              to={createRoute('/loans/:loanId/borrowers/finance', { loanId })}
             >
               <T id="collections.borrowers" />
             </Button>

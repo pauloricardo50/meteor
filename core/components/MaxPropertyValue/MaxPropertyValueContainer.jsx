@@ -1,8 +1,8 @@
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import { CANTONS } from '../../api/loans/loanConstants';
-import { setMaxPropertyValueWithoutBorrowRatio } from '../../api/loans/methodDefinitions';
+import { CANTONS, PURCHASE_TYPE } from '../../api/loans/loanConstants';
+import { setMaxPropertyValueOrBorrowRatio } from '../../api/loans/methodDefinitions';
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
@@ -16,8 +16,9 @@ export const STATE = {
   DONE: 'DONE',
 };
 
-const getState = ({ borrowers, maxPropertyValue, maxPropertyValueExists }) => {
-  if (!Calculator.canCalculateSolvency({ borrowers })) {
+const getState = ({ loan }) => {
+  const { maxPropertyValue, maxPropertyValueExists } = loan;
+  if (!Calculator.canCalculateSolvency({ loan })) {
     return STATE.MISSING_INFOS;
   }
 
@@ -35,6 +36,7 @@ const getInitialCanton = ({ loan = {} }) => {
     hasProProperty,
     promotions = [],
     properties = [],
+    purchaseType,
   } = loan;
 
   if (hasPromotion) {
@@ -45,6 +47,10 @@ const getInitialCanton = ({ loan = {} }) => {
     return !!properties.length && properties[0].canton;
   }
 
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return Calculator.selectPropertyKey({ loan, key: 'canton' });
+  }
+
   return canton;
 };
 
@@ -52,9 +58,10 @@ const shouldFilterCantonOptions = ({
   hasPromotion,
   hasProProperty,
   properties = [],
+  purchaseType,
 }) => {
-  if (!hasPromotion && !hasProProperty) {
-    return false;
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return true;
   }
 
   if (hasPromotion) {
@@ -70,12 +77,14 @@ const shouldFilterCantonOptions = ({
   }
 };
 
-const getCantonOptions = ({
-  hasPromotion,
-  hasProProperty,
-  properties = [],
-  promotions = [],
-}) => {
+const getCantonOptions = ({ loan }) => {
+  const {
+    hasPromotion,
+    hasProProperty,
+    properties = [],
+    promotions = [],
+    purchaseType,
+  } = loan;
   let cantons = Object.keys(CANTONS);
 
   if (
@@ -84,6 +93,7 @@ const getCantonOptions = ({
       hasProProperty,
       properties,
       promotions,
+      purchaseType,
     })
   ) {
     if (hasPromotion) {
@@ -97,6 +107,14 @@ const getCantonOptions = ({
           .includes(canton),
       );
     }
+
+    if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      const propertyCanton = Calculator.selectPropertyKey({
+        loan,
+        key: 'canton',
+      });
+      cantons = cantons.filter(canton => canton === propertyCanton);
+    }
   }
 
   return cantons.map(shortCanton => {
@@ -109,71 +127,56 @@ export default compose(
   withState(
     'residenceType',
     'setResidenceType',
-    ({ loan: { residenceType } }) =>
-      residenceType || RESIDENCE_TYPE.MAIN_RESIDENCE,
+    ({ loan: { residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE } }) =>
+      residenceType,
   ),
   withState('canton', 'setCanton', getInitialCanton),
   withState('loading', 'setLoading', null),
   withState('error', 'setError', null),
   withProps(
     ({
-      loan: {
-        _id: loanId,
-        borrowers = [],
-        maxPropertyValue,
-        maxPropertyValueExists,
-        hasPromotion,
-        hasProProperty,
-        properties,
-        promotions,
-      },
+      loan,
       setLoading,
       setCanton,
       canton,
       setOpenBorrowersForm,
       setError,
-    }) => ({
-      state: getState({ borrowers, maxPropertyValue, maxPropertyValueExists }),
-      recalculate: () => {
-        if (!canton) {
-          setError(<T id="MaxPropertyValue.noCantonError" />);
-          return;
-        }
-        setLoading(true);
-        if (setOpenBorrowersForm) {
-          setOpenBorrowersForm(false);
-        }
-        return setMaxPropertyValueWithoutBorrowRatio
-          .run({ canton, loanId })
-          .finally(() => {
-            setLoading(false);
-          });
-      },
-      onChangeCanton: newCanton => {
-        setCanton(newCanton);
-        setError(undefined);
-        const { canton: existingCanton } = maxPropertyValue || {};
+    }) => {
+      const { _id: loanId, maxPropertyValue } = loan;
+      const cantonOptions = getCantonOptions({ loan });
 
-        if (existingCanton && newCanton !== existingCanton) {
+      return {
+        state: getState({ loan }),
+        recalculate: () => {
+          if (!canton) {
+            setError(<T id="MaxPropertyValue.noCantonError" />);
+            return;
+          }
           setLoading(true);
-          return setMaxPropertyValueWithoutBorrowRatio
-            .run({ canton: newCanton, loanId })
-            .finally(() => setLoading(false));
-        }
-      },
-      cantonOptions: getCantonOptions({
-        hasPromotion,
-        hasProProperty,
-        properties,
-        promotions,
-      }),
-      lockCanton:
-        getCantonOptions({
-          hasPromotion,
-          hasProProperty,
-          properties,
-          promotions,
-        }).length === 1,
-    }),
+          if (setOpenBorrowersForm) {
+            setOpenBorrowersForm(false);
+          }
+          return setMaxPropertyValueOrBorrowRatio
+            .run({ canton, loanId })
+            .finally(() => {
+              setLoading(false);
+            });
+        },
+        onChangeCanton: newCanton => {
+          setCanton(newCanton);
+          setError(undefined);
+          const { canton: existingCanton } = maxPropertyValue || {};
+
+          if (existingCanton && newCanton !== existingCanton) {
+            setLoading(true);
+            return setMaxPropertyValueOrBorrowRatio
+              .run({ canton: newCanton, loanId })
+              .finally(() => setLoading(false));
+          }
+        },
+        cantonOptions,
+        lockCanton: cantonOptions.length === 1,
+      };
+    },
   ),
 );

@@ -1,55 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useEffect, useRef, useState } from 'react';
-import cx from 'classnames';
 import CountUp from 'react-countup';
 import { withState } from 'recompose';
 
-import useMedia from '../../hooks/useMedia';
-import Calculator from '../../utils/Calculator';
-import Button from '../Button';
-import Toggle from '../Toggle';
-import T, { Money } from '../Translation';
+import useMedia from '../../../hooks/useMedia';
+import { PURCHASE_TYPE } from '../../../redux/widget1/widget1Constants';
+import Calculator from '../../../utils/Calculator';
+import Button from '../../Button';
+import T, { Money } from '../../Translation';
+import MaxPropertyValueResultsTableAcquisition from './MaxPropertyValueResultsTableAcquisition';
+import MaxPropertyValueResultsTableRefinancing from './MaxPropertyValueResultsTableRefinancing';
+import MaxPropertyValueResultsToggle from './MaxPropertyValueResultsToggle';
 
-const MaxPropertyValueResultsToggle = ({
-  showBest,
-  setShowBest,
-  isSmallMobile,
-  minOrganisationName,
-  maxOrganisationName,
-}) => (
-  <Toggle
-    className="show-best-toggle"
-    toggled={showBest}
-    onToggle={setShowBest}
-    labelLeft={
-      <div className="flex-col">
-        <span className={cx({ secondary: showBest })}>
-          {isSmallMobile ? 'Le moins compétitif' : 'Prêteur le - compétitif'}
-        </span>
-        {Meteor.microservice === 'admin' && (
-          <span>
-            [ADMIN]&nbsp;
-            {minOrganisationName}
-          </span>
-        )}
-      </div>
-    }
-    labelRight={
-      <div className="flex-col">
-        <span className={cx({ secondary: !showBest })}>
-          {isSmallMobile ? 'Le plus compétitif' : 'Prêteur le + compétitif'}
-        </span>
-        {Meteor.microservice === 'admin' && (
-          <span>
-            [ADMIN]&nbsp;
-            {maxOrganisationName}
-          </span>
-        )}
-      </div>
-    }
-  />
-);
+const shouldShowToggle = ({ purchaseType, min, max }) => {
+  if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+    return !!min.propertyValue && min.propertyValue !== max.propertyValue;
+  }
+
+  if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+    return !!min.borrowRatio && min.borrowRatio !== max.borrowRatio;
+  }
+};
 
 const MaxPropertyValueResultsTable = ({
   min = {},
@@ -58,6 +30,9 @@ const MaxPropertyValueResultsTable = ({
   canton,
   showBest,
   setShowBest,
+  purchaseType,
+  previousLoan,
+  reimbursementPenalty,
 }) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
@@ -81,6 +56,7 @@ const MaxPropertyValueResultsTable = ({
       wantedLoan: minLoan,
       propertyValue: minPropertyValue,
       canton,
+      purchaseType,
     }),
   }).total;
   const maxNotaryFees = Calculator.getFees({
@@ -89,6 +65,7 @@ const MaxPropertyValueResultsTable = ({
       wantedLoan: maxLoan,
       propertyValue: maxPropertyValue,
       canton,
+      purchaseType,
     }),
   }).total;
 
@@ -99,16 +76,20 @@ const MaxPropertyValueResultsTable = ({
   const notaryFees = showBest ? maxNotaryFees : minNotaryFees;
   const ownFunds = showBest ? maxOwnFunds : minOwnFunds;
   const loan = showBest ? maxLoan : minLoan;
+  const raise = loan - previousLoan;
+
+  const valueToDisplay =
+    purchaseType === PURCHASE_TYPE.REFINANCING ? loan : propertyValue;
 
   const prevValueRef = useRef();
   useEffect(() => {
-    prevValueRef.current = propertyValue;
-  }, [propertyValue]);
+    prevValueRef.current = valueToDisplay;
+  }, [valueToDisplay]);
 
   if (showRecap) {
     return (
       <>
-        {!!min.propertyValue && min.propertyValue !== max.propertyValue && (
+        {shouldShowToggle({ purchaseType, min, max }) && (
           <MaxPropertyValueResultsToggle
             showBest={showBest}
             setShowBest={setShowBest}
@@ -119,13 +100,21 @@ const MaxPropertyValueResultsTable = ({
         )}
         <CountUp
           start={prevValueRef.current}
-          end={propertyValue}
+          end={valueToDisplay}
           className="recap-value text-center animated fadeIn"
           duration={1}
           prefix="CHF "
           preserveValue
           separator=" "
         />
+        {purchaseType === PURCHASE_TYPE.REFINANCING && raise > 0 && (
+          <span className="text-center mt-16">
+            <T
+              id="MaxPropertyValue.ownFundsRaise"
+              values={{ raise: <Money value={raise} /> }}
+            />
+          </span>
+        )}
         <Button
           className="show-recap-button"
           onClick={() => setShowRecap(false)}
@@ -157,31 +146,23 @@ const MaxPropertyValueResultsTable = ({
           </span>
         )}
 
-      <div className="balance-sheet animated fadeIn">
-        <div className="left">
-          <span className="label">Prix d'achat max.</span>
-          <Money className="money bold" value={propertyValue} />
-          <span className="label">Frais de notaire</span>
-          <Money className="money bold" value={notaryFees} />
-        </div>
-        <div className="right">
-          <span className="label">Fonds propres</span>
-          <Money className="money bold" value={ownFunds} />
-          <span className="label">Hypothèque</span>
-          <Money className="money bold" value={loan} />
-        </div>
-      </div>
-      <hr />
-      <div className="sums  animated fadeIn">
-        <div className="left">
-          <span className="label">Coût total</span>
-          <Money className="money bold" value={propertyValue + notaryFees} />
-        </div>
-        <div className="right">
-          <span className="label">Financement total</span>
-          <Money className="money bold" value={ownFunds + loan} />
-        </div>
-      </div>
+      {purchaseType === PURCHASE_TYPE.ACQUISITION && (
+        <MaxPropertyValueResultsTableAcquisition
+          propertyValue={propertyValue}
+          notaryFees={notaryFees}
+          ownFunds={ownFunds}
+          loan={loan}
+        />
+      )}
+
+      {purchaseType === PURCHASE_TYPE.REFINANCING && (
+        <MaxPropertyValueResultsTableRefinancing
+          loan={loan}
+          previousLoan={previousLoan}
+          reimbursementPenalty={reimbursementPenalty}
+        />
+      )}
+
       <Button
         className="show-recap-button"
         onClick={() => setShowRecap(true)}

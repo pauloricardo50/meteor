@@ -106,6 +106,13 @@ export const PropertySchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   value: moneyField,
+  originalValue: moneyField,
+  originalPurchaseYear: {
+    type: SimpleSchema.Integer,
+    min: 0,
+    max: 2020,
+    optional: true,
+  },
   status: {
     type: String,
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,

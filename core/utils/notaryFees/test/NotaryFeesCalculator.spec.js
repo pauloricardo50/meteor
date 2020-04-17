@@ -115,7 +115,8 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(55159.1);
     });
 
-    it('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
+    // FIXME: Skip these until we officially handle construction loans
+    it.skip('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
       loan.structure.property.value = 0;
       loan.structure.property.totalValue = 1000000;
@@ -127,7 +128,7 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.buyersContractFees.total).to.equal(28269.5);
     });
 
-    it('calculates casatax properly for a construction', () => {
+    it.skip('calculates casatax properly for a construction', () => {
       loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
       loan.structure.property.value = 0;

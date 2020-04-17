@@ -47,7 +47,6 @@ const OverviewTab = props => {
             doc={loan}
             fields={['purchaseType']}
             collection={Loans}
-            // disabled
           />
           <UpdateField
             doc={loan}

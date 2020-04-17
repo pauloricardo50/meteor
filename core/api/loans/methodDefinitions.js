@@ -37,6 +37,7 @@ export const adminLoanInsert = new Method({
   name: 'adminLoanInsert',
   params: {
     userId: Match.Optional(String),
+    loan: Match.Optional(Object),
   },
 });
 
@@ -45,6 +46,7 @@ export const userLoanInsert = new Method({
   params: {
     proPropertyId: Match.Maybe(String),
     test: Match.Optional(Boolean),
+    purchaseType: Match.Maybe(String),
   },
 });
 
@@ -120,8 +122,8 @@ export const reuseProperty = new Method({
   params: { loanId: String, propertyId: String },
 });
 
-export const setMaxPropertyValueWithoutBorrowRatio = new Method({
-  name: 'setMaxPropertyValueWithoutBorrowRatio',
+export const setMaxPropertyValueOrBorrowRatio = new Method({
+  name: 'setMaxPropertyValueOrBorrowRatio',
   params: { loanId: String, canton: String },
 });
 
@@ -151,6 +153,7 @@ export const anonymousLoanInsert = new Method({
     proPropertyId: Match.Maybe(String),
     referralId: Match.Maybe(String),
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
+    purchaseType: Match.Maybe(String),
   },
 });
 

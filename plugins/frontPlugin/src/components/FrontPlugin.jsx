@@ -6,13 +6,14 @@ import messages from '../core/lang/fr.json';
 import {
   getFormats,
   getUserLocale,
+  localizationStartup,
 } from '../core/utils/localization';
 import FrontContact from './FrontContact/FrontContact';
 import FrontContactSelect from './FrontContactSelect';
 
 const { Front } = window;
 
-localizationStartup({ setupAccounts: false, setupCountries: false });
+localizationStartup({ setupAccounts: false, setupCountries: false, messages });
 
 const getContacts = data => {
   const {

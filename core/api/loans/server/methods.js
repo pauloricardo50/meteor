@@ -40,7 +40,7 @@ import {
   sendLoanChecklist,
   sendNegativeFeedbackToAllLenders,
   setLoanStep,
-  setMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueOrBorrowRatio,
   switchBorrower,
   updateStructure,
   userLoanInsert,
@@ -67,9 +67,12 @@ popLoanValue.setHandler((context, { loanId, object }) => {
   return LoanService.popValue({ loanId, object });
 });
 
-export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
+export const adminLoanInsertHandler = (
+  { userId: adminUserId },
+  { userId, loan },
+) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  const loanId = LoanService.fullLoanInsert({ userId });
+  const loanId = LoanService.fullLoanInsert({ userId, loan });
 
   if (!userId) {
     // Make sure new, loose, loans are assigned to the one creating them
@@ -84,25 +87,28 @@ export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 
-userLoanInsert.setHandler(({ userId }, { test, proPropertyId }) => {
-  SecurityService.checkLoggedIn();
+userLoanInsert.setHandler(
+  ({ userId }, { test, proPropertyId, purchaseType }) => {
+    SecurityService.checkLoggedIn();
 
-  if (proPropertyId) {
-    return LoanService.insertPropertyLoan({
+    if (proPropertyId) {
+      return LoanService.insertPropertyLoan({
+        userId,
+        propertyIds: [proPropertyId],
+        loan: { displayWelcomeScreen: false },
+      });
+    }
+
+    return LoanService.fullLoanInsert({
       userId,
-      propertyIds: [proPropertyId],
-      loan: { displayWelcomeScreen: false },
+      loan: {
+        displayWelcomeScreen: false,
+        status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
+        purchaseType,
+      },
     });
-  }
-
-  return LoanService.fullLoanInsert({
-    userId,
-    loan: {
-      displayWelcomeScreen: false,
-      status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
-    },
-  });
-});
+  },
+);
 
 export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -170,9 +176,9 @@ reuseProperty.setHandler((context, params) => {
   LoanService.reuseProperty(params);
 });
 
-setMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
+setMaxPropertyValueOrBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
-  return LoanService.setMaxPropertyValueWithoutBorrowRatio(params);
+  return LoanService.setMaxPropertyValueOrBorrowRatio(params);
 });
 
 addNewMaxStructure.setHandler((context, params) => {
@@ -202,12 +208,7 @@ loanShareSolvency.setHandler((context, params) => {
 });
 
 anonymousLoanInsert.setHandler((context, params) => {
-  const {
-    proPropertyId,
-    existingAnonymousLoanId,
-    referralId,
-    trackingId,
-  } = params;
+  const { proPropertyId, existingAnonymousLoanId } = params;
   if (proPropertyId) {
     SecurityService.properties.isAllowedToAddAnonymousLoan({
       propertyId: proPropertyId,

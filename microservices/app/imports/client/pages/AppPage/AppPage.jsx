@@ -6,6 +6,7 @@ import { ROLES } from 'core/api/users/userConstants';
 
 import DashboardUnverified from '../../components/DashboardUnverified';
 import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
+import WelcomeScreenCtas from '../../components/WelcomeScreen/WelcomeScreenCtas';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
 import SuperDashboard from './SuperDashboard/loadable';
@@ -35,7 +36,7 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
       {loans.length === 0 && (
         <WelcomeScreen
           displayCheckbox={false}
-          handleClick={insertLoan}
+          cta={<WelcomeScreenCtas loading={loading} insertLoan={insertLoan} />}
           buttonProps={{ loading }}
         />
       )}

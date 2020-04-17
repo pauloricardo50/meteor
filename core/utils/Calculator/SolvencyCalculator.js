@@ -88,14 +88,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       residenceType,
       notaryFees: forcedNotaryFees,
-      maxBorrowRatio = this.getMaxBorrowRatio({
+      borrowRatio = this.getMaxBorrowRatio({
         loan: this.createLoanObject({ residenceType }),
       }),
     }) {
       let notaryFees;
 
       const finalLoanValue =
-        loanValue || Math.round(propertyValue * maxBorrowRatio);
+        loanValue || Math.round(propertyValue * borrowRatio);
 
       if (forcedNotaryFees >= 0) {
         notaryFees = forcedNotaryFees;
@@ -230,6 +230,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       ownFunds = [],
       loanTranches = [],
+      notaryFees,
       ...rest
     }) {
       return {
@@ -241,6 +242,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           property: { canton },
           ownFunds,
           loanTranches,
+          notaryFees,
         },
         ...rest,
       };
@@ -253,12 +255,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       residenceType,
       ownFunds,
-      maxBorrowRatio = this.getMaxBorrowRatio({
+      borrowRatio = this.getMaxBorrowRatio({
         loan: this.createLoanObject({ residenceType }),
       }),
+      purchaseType,
+      notaryFees,
     }) {
       const finalLoanValue =
-        loanValue || Math.round(propertyValue * maxBorrowRatio);
+        loanValue || Math.round(propertyValue * borrowRatio);
       const loanObject = this.createLoanObject({
         residenceType,
         borrowers,
@@ -266,6 +270,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         propertyValue,
         canton,
         ownFunds,
+        purchaseType,
+        notaryFees,
       });
 
       // If the calculator has been initialized, reinitialize it according to this new potential loan
@@ -319,7 +325,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
         const ownFunds = this.suggestStructure({
           borrowers,
-          maxBorrowRatio,
+          borrowRatio: maxBorrowRatio,
           canton,
           residenceType,
           propertyValue: nextPropertyValue,
@@ -328,7 +334,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         if (
           this.suggestedStructureIsValid({
             borrowers,
-            maxBorrowRatio,
+            borrowRatio: maxBorrowRatio,
             canton,
             residenceType,
             propertyValue: nextPropertyValue,
@@ -542,6 +548,68 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         maxBorrowRatio,
         canton,
       });
+    }
+
+    getMaxBorrowRatioForLoan({
+      loan,
+      structureId,
+      canton = this.selectPropertyKey({ loan, structureId, key: 'canton' }),
+      residenceType = loan.residenceType,
+    }) {
+      const { borrowers = [], purchaseType } = loan;
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+      const previousOwnFunds = this.getPreviousOwnFunds({ loan, structureId });
+      const borrowRatioStepSize = 0.005;
+      const updatedBorrowers = borrowers.map(
+        ({ bankFortune = [], ...borrower }, index) => {
+          if (index === 0) {
+            // Inject the current own funds of the property in the borrowers bankFortune
+            // this is not entirely accurate, but we're assuming that there is enough fortune in there
+            // to cover the required 10% cash needed
+            return {
+              ...borrower,
+              bankFortune: [...bankFortune, { value: previousOwnFunds }],
+            };
+          }
+          return borrower;
+        },
+      );
+      let borrowRatio = maxBorrowRatio;
+      let foundStructure = false;
+
+      while (borrowRatio > 0 && !foundStructure) {
+        const ownFunds = this.suggestStructure({
+          borrowers: updatedBorrowers,
+          borrowRatio,
+          canton,
+          residenceType,
+          propertyValue,
+          // FIXME: There could be notary fees related to increasing the mortgage note
+          // this is currently not handled and a potential flaw to take into
+          // account
+          notaryFees: 0,
+        });
+
+        if (
+          this.suggestedStructureIsValid({
+            borrowers: updatedBorrowers,
+            borrowRatio,
+            canton,
+            residenceType,
+            propertyValue,
+            ownFunds,
+            purchaseType,
+            notaryFees: 0,
+          })
+        ) {
+          foundStructure = true;
+        } else {
+          borrowRatio -= borrowRatioStepSize;
+        }
+      }
+
+      return { borrowRatio, propertyValue };
     }
 
     suggestStructureForLoan({ loan, structureId }) {

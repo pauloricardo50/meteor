@@ -34,8 +34,14 @@ const MaxPropertyValueResults = ({
     hasPromotion,
     shareSolvency,
     _id: loanId,
+    purchaseType,
   } = loan;
-  const hash = Calculator.getBorrowerFormHash({ loan });
+  const previousLoan = Calculator.getPreviousLoanValue({ loan });
+  const reimbursementPenalty = Calculator.getReimbursementPenalty({
+    loan,
+    refinancingDate: new Date(),
+  });
+  const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
   return (
@@ -43,7 +49,7 @@ const MaxPropertyValueResults = ({
       <div className="top">
         <div>
           <h2>
-            <T id="MaxPropertyValue.title" />
+            <T id="MaxPropertyValue.title" values={{ purchaseType }} />
           </h2>
         </div>
         <div className="max-property-value-results-selects">
@@ -83,6 +89,9 @@ const MaxPropertyValueResults = ({
           {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
           residenceType={residenceType}
           canton={canton}
+          purchaseType={purchaseType}
+          previousLoan={previousLoan}
+          reimbursementPenalty={reimbursementPenalty}
         />
       </div>
       <Button

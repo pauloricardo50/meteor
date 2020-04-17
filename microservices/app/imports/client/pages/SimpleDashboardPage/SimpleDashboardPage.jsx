@@ -1,22 +1,34 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { withState, withProps, compose } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import T from 'core/components/Translation';
-import Calculator from 'core/utils/Calculator';
-import useMedia from 'core/hooks/useMedia';
-import createTheme from 'core/config/muiCustom';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { LightTheme } from 'core/components/Themes';
+import T from 'core/components/Translation';
+import createTheme from 'core/config/muiCustom';
+import useMedia from 'core/hooks/useMedia';
+import Calculator from 'core/utils/Calculator';
+
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
+import SimpleMaxPropertyValueSticky from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueSticky';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
+import BorrowersCard from './BorrowersCard/BorrowersCard';
 import Properties from './Properties';
 import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
-import BorrowersCard from './BorrowersCard/BorrowersCard';
-import SimpleMaxPropertyValueSticky from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueSticky';
+import SimpleDashboardPagePropertyAdder from './SimpleDashboardPagePropertyAdder';
+
+const defaultTheme = createTheme({});
 
 const SimpleDashboardPage = props => {
-  const { loan, currentUser, openBorrowersForm, progress } = props;
-  const { _id: loanId, name, customName, maxPropertyValue } = loan;
+  const { loan, currentUser } = props;
+  const {
+    _id: loanId,
+    name,
+    customName,
+    maxPropertyValue,
+    purchaseType,
+    properties,
+  } = loan;
 
   const isMobile = useMedia({ maxWidth: 1200 });
 
@@ -31,11 +43,17 @@ const SimpleDashboardPage = props => {
           maxPropertyValue={maxPropertyValue}
         />
         <div className="simple-dashboard-page-borrowers">
-          <BorrowersCard {...props} />
+          <div className="simple-dashboard-page-borrowers-left">
+            {purchaseType === PURCHASE_TYPE.REFINANCING &&
+              !properties.length && (
+                <SimpleDashboardPagePropertyAdder loanId={loanId} />
+              )}
+            <BorrowersCard {...props} />
+          </div>
 
           <div className="simple-dashboard-page-borrowers-right">
             {isMobile ? (
-              <MuiThemeProvider theme={createTheme({})}>
+              <MuiThemeProvider theme={defaultTheme}>
                 <SimpleMaxPropertyValueSticky {...props} />
               </MuiThemeProvider>
             ) : (

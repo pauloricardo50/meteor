@@ -6,7 +6,10 @@ import {
   DEFAULT_SECONDARY_RESIDENCE_RULES,
   INCOME_CONSIDERATION_TYPES,
 } from '../../../api/lenderRules/lenderRulesConstants';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../api/loans/loanConstants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+} from '../../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import { MIN_INSURANCE2_WITHDRAW } from '../../../config/financeConstants';
 import Calculator, { Calculator as CalculatorClass } from '..';
@@ -428,6 +431,44 @@ describe('SolvencyCalculator', () => {
         ],
       });
       expect(result.propertyValue).to.equal(818000);
+    });
+  });
+
+  describe('getMaxBorrowRatio', () => {
+    it('suggests a higher loan value', () => {
+      const loan = {
+        borrowers: [{ _id: 'borrowerId', salary: 500000 }],
+        properties: [{ value: 1000000, canton: 'GE' }],
+        previousLoanTranches: [{ value: 650000 }],
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        purchaseType: PURCHASE_TYPE.REFINANCING,
+      };
+
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxBorrowRatioForLoan({ loan });
+
+      expect(propertyValue).to.equal(1000000);
+      expect(borrowRatio).to.equal(0.8);
+    });
+
+    it('suggests a higher loan value, limited by income', () => {
+      const loan = {
+        borrowers: [{ _id: 'borrowerId', salary: 150000 }],
+        properties: [{ value: 1000000, canton: 'GE' }],
+        previousLoanTranches: [{ value: 650000 }],
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        purchaseType: PURCHASE_TYPE.REFINANCING,
+      };
+
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxBorrowRatioForLoan({ loan });
+
+      expect(propertyValue).to.equal(1000000);
+      expect(borrowRatio).to.equal(0.71);
     });
   });
 });

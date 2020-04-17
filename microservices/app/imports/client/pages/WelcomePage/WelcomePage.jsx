@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
+
 import WelcomeScreen from '../../components/WelcomeScreen';
 
 const WelcomePage = props => {
