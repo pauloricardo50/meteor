@@ -7,14 +7,14 @@ const getRefinancingFormArray = () => [
     id: 'previousLoanTranches',
     type: 'arrayInput',
     inputs: [
-      {
-        id: 'type',
-        type: 'textInput',
-        number: true,
-      },
       { id: 'value', type: 'textInput', money: true },
       { id: 'dueDate', type: 'dateInput' },
       { id: 'rate', type: 'textInput', percent: true },
+      {
+        id: 'duration',
+        type: 'textInput',
+        number: true,
+      },
     ],
   },
 ];

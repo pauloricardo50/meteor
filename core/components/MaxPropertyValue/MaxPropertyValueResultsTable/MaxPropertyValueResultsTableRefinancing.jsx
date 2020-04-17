@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Money } from '../../Translation';
+import T, { Money } from '../../Translation';
 
 const MaxPropertyValueResultsTableRefinancing = ({
   loan,
@@ -12,13 +12,24 @@ const MaxPropertyValueResultsTableRefinancing = ({
     <>
       <div className="balance-sheet animated fadeIn">
         <div className="left">
-          <span className="label">Capacité d'emprunt max.</span>
+          <span className="label">
+            <T id="MaxPropertyValueResults.maxLoanValue" />
+          </span>
           <Money className="money bold" value={loan} />
-          <span className="label">Dette actuelle</span>
+          <span className="label">
+            <T id="MaxPropertyValueResults.previousLoan" />
+          </span>
           <Money className="money bold" value={previousLoan} />
         </div>
         <div className="right">
-          <span className="label">Pénalités estimées</span>
+          <span className="label">
+            <T
+              id="MaxPropertyValueResults.reimbursementPenalty"
+              tooltip={
+                <T id="MaxPropertyValueResults.reimbursementPenalty.tooltip" />
+              }
+            />
+          </span>
           <Money className="money bold" value={reimbursementPenalty} />
         </div>
       </div>
@@ -26,7 +37,14 @@ const MaxPropertyValueResultsTableRefinancing = ({
       {shouldShowOwnFunds && (
         <div className="sums  animated fadeIn">
           <div className="left">
-            <span className="label">Levée de fonds potentielle</span>
+            <span className="label">
+              <T
+                id="MaxPropertyValueResults.potentialRaise"
+                tooltip={
+                  <T id="MaxPropertyValueResults.potentialRaise.tooltip" />
+                }
+              />
+            </span>
             <Money className="money bold" value={loan - previousLoan} />
           </div>
           <div className="right" />

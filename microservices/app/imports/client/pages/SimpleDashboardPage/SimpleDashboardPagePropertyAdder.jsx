@@ -33,7 +33,11 @@ const schema = new SimpleSchema({
   address1: String,
   city: String,
   country: { ...address.country, optional: false },
-  value: { ...moneyField, optional: false },
+  value: {
+    ...moneyField,
+    optional: false,
+    uniforms: { helperText: "La valeur estimée aujourd'hui" },
+  },
   zipCode: { ...address.zipCode, optional: false },
   residenceType: {
     type: String,
