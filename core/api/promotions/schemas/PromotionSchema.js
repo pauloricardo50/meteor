@@ -174,11 +174,17 @@ const PromotionSchema = new SimpleSchema({
     min: 0,
     max: 30,
   },
+  isTest: {
+    type: Boolean,
+    defaultValue: false,
+    uniforms: { label: 'Promotion test' },
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
   'name',
   'type',
+  'isTest',
   'address1',
   'address2',
   'zipCode',
