@@ -10,6 +10,7 @@ import {
   getLoanDocuments,
   getPropertyDocuments,
 } from '../../api/files/documents';
+import { BASIC_DOCUMENTS_LIST } from '../../api/files/fileConstants';
 import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
 import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import AdditionalDocAdder from './AdditionalDocAdder';
