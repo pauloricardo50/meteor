@@ -60,8 +60,8 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
 
-echo "Installing npm packages in .deployment"
-( cd ../.deployment && meteor npm i -q );
+echo "Installing npm packages in .circleci"
+( cd ../.circleci && meteor npm i -q );
 
 echo "Creating language files"
 meteor npx babel-node ./createLanguages.js
