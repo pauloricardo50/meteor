@@ -138,7 +138,7 @@ export default compose(
       loan,
       setLoading,
       setCanton,
-      canton,
+      canton = getInitialCanton({ loan }),
       setOpenBorrowersForm,
       setError,
     }) => {
