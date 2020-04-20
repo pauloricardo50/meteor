@@ -38,3 +38,13 @@ export const proPromotionUsers = Promotions.createQuery(
     },
   },
 );
+
+export const promotionsList = Promotions.createQuery(
+  PROMOTION_QUERIES.PROMOTIONS_LIST,
+  {
+    name: 1,
+    address: 1,
+    documents: { promotionImage: 1 },
+    lotsCount: 1,
+  },
+);
