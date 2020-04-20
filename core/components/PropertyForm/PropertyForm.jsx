@@ -2,7 +2,7 @@ import * as React from 'react';
 import cx from 'classnames';
 
 import PropertySchema from '../../api/properties/schemas/PropertySchema';
-import { AutoFormDialog } from '../AutoForm2';
+import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
 import Icon from '../Icon';
 import T from '../Translation';
 
@@ -27,6 +27,7 @@ const PropertyForm = ({
   className = '',
   disabled,
   buttonProps,
+  schema,
   ...props
 }) => (
   <div
@@ -40,7 +41,7 @@ const PropertyForm = ({
     }}
   >
     <AutoFormDialog
-      schema={propertyFormSchema}
+      schema={schema || propertyFormSchema}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
       buttonProps={{
@@ -56,5 +57,4 @@ const PropertyForm = ({
     />
   </div>
 );
-
 export default PropertyForm;

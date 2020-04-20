@@ -1160,6 +1160,40 @@ class LoanService extends CollectionService {
       });
     }
   }
+
+  getReusableProperties({ loanId }) {
+    const {
+      user: { _id: userId } = {},
+      properties: currentProperties = [],
+    } = this.get(loanId, { user: { _id: 1 }, properties: { _id: 1 } });
+
+    if (!userId) {
+      throw new Meteor.Error('No userId found');
+    }
+
+    const loans = this.fetch({
+      $filters: { userId },
+      properties: { address: 1, totalValue: 1 },
+    });
+
+    const reusableProperties = loans
+      .reduce(
+        (allProperties, { properties = [] }) => [
+          ...allProperties,
+          ...properties,
+        ],
+        [],
+      )
+      .filter(
+        ({ _id }) => !currentProperties.some(property => _id === property._id),
+      );
+
+    return reusableProperties;
+  }
+
+  linkProperty({ loanId, propertyId }) {
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
 }
 
 export default new LoanService({});

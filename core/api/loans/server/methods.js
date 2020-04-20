@@ -18,9 +18,11 @@ import {
   assignLoanToUser,
   duplicateStructure,
   loanDelete,
+  loanGetReusableProperties,
   loanInsertBorrowers,
   loanLinkBorrower,
   loanLinkPromotion,
+  loanLinkProperty,
   loanRemoveAdminNote,
   loanSetAdminNote,
   loanSetAssignees,
@@ -349,4 +351,14 @@ loanSetAssignees.setHandler(({ userId }, params) => {
 loanLinkBorrower.setHandler(({ userId }, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   return LoanService.linkBorrower(params);
+});
+
+loanGetReusableProperties.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  return LoanService.getReusableProperties(params);
+});
+
+loanLinkProperty.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  return LoanService.linkProperty(params);
 });

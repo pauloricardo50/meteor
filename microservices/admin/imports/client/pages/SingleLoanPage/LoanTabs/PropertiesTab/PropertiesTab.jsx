@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Tabs from 'core/components/Tabs';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
+import { PropertyAdder } from 'core/components/PropertyForm';
+import Tabs from 'core/components/Tabs';
 import Calculator from 'core/utils/Calculator';
+
 import SinglePropertyPage from '../../../SinglePropertyPage';
 
 const propertiesTabLabel = (loan, property, index) => {
@@ -30,16 +31,9 @@ const PropertiesTab = ({ loan }) => {
       <div className="buttons">
         <PropertyAdder
           loanId={loanId}
-          propertyUserId={userId}
+          userId={userId}
           disabled={hasPromotion}
         />
-        {userId && (
-          <PropertyReuser
-            loanId={loanId}
-            propertyUserId={userId}
-            disabled={hasPromotion}
-          />
-        )}
       </div>
       {properties && properties.length > 0 && (
         <Tabs

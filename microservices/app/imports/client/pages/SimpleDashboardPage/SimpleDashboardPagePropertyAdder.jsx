@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { address, moneyField } from 'core/api/helpers/sharedSchemas';
@@ -9,6 +9,7 @@ import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import Box from 'core/components/Box';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import T from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 
 const propertyFormLayout = [
   {
@@ -49,6 +50,8 @@ const schema = new SimpleSchema({
 });
 
 const SimpleDashboardPagePropertyAdder = ({ loanId }) => {
+  const currentUser = useContext(CurrentUserContext);
+
   const handleSubmit = ({ residenceType, previousLoanTranches, ...property }) =>
     loanUpdate
       .run({
@@ -62,18 +65,16 @@ const SimpleDashboardPagePropertyAdder = ({ loanId }) => {
   return (
     <PropertyAdder
       loanId={loanId}
+      userId={currentUser?._id}
       formDescriptionId="PropertyForm.refinancingDescription"
-      triggerComponent={handleOpen => (
-        <div
-          className="card1 card-top card-hover mb-16 text-center pointer flex-col"
-          onClick={handleOpen}
-        >
+      TriggerComponent={
+        <div className="card1 card-top card-hover mb-16 text-center pointer flex-col">
           <span className="plus">+</span>
           <h3>
             <T id="SimpleDashboardPage.refinancingProperty" />
           </h3>
         </div>
-      )}
+      }
       schema={schema}
       layout={propertyFormLayout}
       onSubmit={handleSubmit}
