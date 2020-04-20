@@ -12,6 +12,7 @@ import {
   proPromotionUsers,
   proPromotions,
   promotionSearch,
+  promotionsList,
 } from '../queries';
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
@@ -171,4 +172,16 @@ exposeQuery({
     },
   },
   options: { allowFilterById: true },
+});
+
+exposeQuery({
+  query: promotionsList,
+  overrides: {
+    firewall() {},
+    embody: body => {
+      body.$filter = ({ filters }) => {
+        filters.isTest = { $ne: true };
+      };
+    },
+  },
 });

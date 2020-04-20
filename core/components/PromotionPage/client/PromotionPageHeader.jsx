@@ -7,6 +7,7 @@ import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstant
 import CollectionIconLink from '../../IconLink/CollectionIconLink';
 import ImageCarrousel from '../../ImageCarrousel';
 import StatusLabel from '../../StatusLabel';
+import TestBadge from '../../TestBadge';
 import { LightTheme } from '../../Themes';
 import T from '../../Translation';
 import CustomerAdder from './CustomerAdder';
@@ -55,6 +56,9 @@ const PromotionPageHeader = ({ promotion }) => {
                 promotionSetStatus.run({ promotionId, status: nextStatus })
               }
             />
+            {Meteor.microservice !== 'app' && promotion?.isTest && (
+              <TestBadge />
+            )}
           </div>
           <h4>
             <T
