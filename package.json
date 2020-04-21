@@ -19,7 +19,7 @@
     "run": "cd scripts/ && ./run.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
     "setup": "cd scripts/ && ./setup.sh",
-    "test-all": "cd scripts/ && ./test-all.sh",
+    "test-all": "cd scripts/ && ./test-all.sh"
   },
   "repository": {
     "type": "git",
