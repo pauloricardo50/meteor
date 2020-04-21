@@ -4,21 +4,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 
-import StatusLabel from 'core/components/StatusLabel/StatusLabel';
-import Loading from 'core/components/Loading';
-import Roles from 'core/components/Roles';
-import { toMoney } from 'core/utils/conversionFunctions';
-import Calculator from 'core/utils/Calculator';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import Loading from 'core/components/Loading';
+import Roles from 'core/components/Roles';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import TestBadge from 'core/components/TestBadge';
+import Calculator from 'core/utils/Calculator';
+import { toMoney } from 'core/utils/conversionFunctions';
 
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { anonymous, canton, city, name, roles, status, structure, user },
+  { anonymous, canton, city, name, roles, status, structure, user, isTest },
 ) => {
   switch (collectionName) {
     case USERS_COLLECTION:
@@ -46,7 +47,12 @@ const getListItemDetails = (
     }
     case PROMOTIONS_COLLECTION:
       return {
-        primary: name || 'Promotion sans nom',
+        primary: (
+          <span>
+            {name || 'Promotion sans nom'}
+            {isTest && <TestBadge />}
+          </span>
+        ),
         secondary: (
           <div>
             <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
