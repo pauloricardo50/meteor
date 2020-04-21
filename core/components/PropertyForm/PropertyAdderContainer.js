@@ -14,7 +14,7 @@ const makeLinkProperty = ({
   loanLinkProperty
     .run({ loanId, propertyId })
     .then(afterInsert)
-    .finally(() => setOpenModal(false));
+    .then(() => setOpenModal(false));
 
 const makeOnClick = ({
   loanId,
