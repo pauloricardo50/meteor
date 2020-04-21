@@ -1,5 +1,3 @@
-import merge from 'lodash/merge';
-
 import { GENDER } from '../../imports/core/api/borrowers/borrowerConstants';
 import { COMMISSION_RATES_TYPE } from '../../imports/core/api/commissionRates/commissionRateConstants';
 import { INSURANCE_PRODUCT_FEATURES } from '../../imports/core/api/insuranceProducts/insuranceProductConstants';
@@ -103,13 +101,13 @@ describe('Single Insurance Request Page', () => {
       .should('have.length', 2);
 
     // Check each tab
-    cy.contains('.core-tabs-top', 'Assurés').click();
+    cy.contains('.core-tabs-tab', 'Assurés').click();
     cy.contains("Aucun assuré pour l'instant").should('exist');
 
-    cy.contains('.core-tabs-top', 'Revenus').click();
+    cy.contains('.core-tabs-tab', 'Revenus').click();
     cy.contains('Rien à afficher').should('exist');
 
-    cy.contains('.core-tabs-top', 'Documents').click();
+    cy.contains('.core-tabs-tab', 'Documents').click();
     cy.contains('Autres documents').should('exist');
   });
 
@@ -185,18 +183,18 @@ describe('Single Insurance Request Page', () => {
     cy.contains('.revenues-table tr', '8 160').should('exist');
 
     // Check revenues tab
-    cy.contains('.core-tabs-top', 'Revenus').click();
+    cy.contains('.core-tabs-tab', 'Revenus').click();
     cy.contains('.revenues-table tr', '8 160').should('exist');
   });
 
   it('Can link insuranceRequests and loans', () => {
     // Create insuranceRequest
-    cy.callMethod('generateScenario', {
-      scenario: merge({}, scenario, {}),
-    }).then(({ ids: { insuranceRequests } }) => {
-      const [id] = insuranceRequests;
-      cy.routeTo(`/insuranceRequests/${id}`);
-    });
+    cy.callMethod('generateScenario', { scenario }).then(
+      ({ ids: { insuranceRequests } }) => {
+        const [id] = insuranceRequests;
+        cy.routeTo(`/insuranceRequests/${id}`);
+      },
+    );
     cy.url().should('include', '/insuranceRequests/');
 
     // Link existing loan
@@ -204,7 +202,7 @@ describe('Single Insurance Request Page', () => {
     cy.get('[role="dialog"] input')
       .its(1)
       .type(' ');
-    cy.contains('[role="dialog"]', 'Réutiliser')
+    cy.contains('[role="dialog"] button', 'Réutiliser')
       .first()
       .click();
 

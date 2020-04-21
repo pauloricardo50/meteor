@@ -86,7 +86,7 @@ const enterConstructionTimeline = (timeline = constructionTimeline) => {
   cy.get('button[type=submit]').click();
 };
 
-describe('Admin promotion', () => {
+describe.only('Admin promotion', () => {
   before(() => {
     cy.initiateTest();
 
@@ -193,7 +193,7 @@ describe('Admin promotion', () => {
       cy.setSelect('promotionLotIds', 1);
       cy.get('[role=dialog] form').submit();
 
-      cy.contains('Acquéreurs').click();
+      cy.contains('.core-tabs-tab', 'Acquéreurs').click();
       cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
 
       cy.get('.actions')

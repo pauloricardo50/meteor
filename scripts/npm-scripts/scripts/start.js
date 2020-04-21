@@ -1,6 +1,6 @@
 import { MICROSERVICE_PORTS } from '../constants';
-import runBackend from './run-backend';
 import Process from './Process';
+import runBackend from './run-backend';
 
 const path = require('path');
 
@@ -13,7 +13,7 @@ const backend = new Process();
 const prestart = new Process();
 const start = new Process();
 
-runBackend(backend);
+runBackend({ process: backend });
 
 const runMicroservice = () => {
   process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;

@@ -6,6 +6,8 @@ class Process {
       stdio: ['inherit', 'inherit', 'pipe'],
       ...options,
     });
+
+    return this.process;
   }
 
   kill() {
