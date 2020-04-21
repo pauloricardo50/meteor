@@ -96,24 +96,44 @@ describe('PromotionLotService', function() {
         promotionLots: {
           _id: 'promotionLotId',
           propertyLinks: [{ _id: 'propId' }],
-          promotionOptions: {
-            _id: 'pOptId',
-            loan: { _id: 'loanId' },
-            promotion: { _id: 'promoId' },
-            reservationAgreement: {
-              status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+          promotionOptions: [
+            {
+              _id: 'pOptId',
+              loan: { _id: 'loanId' },
+              promotion: { _id: 'promoId' },
+              reservationAgreement: {
+                status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+              },
+              reservationDeposit: {
+                status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+              },
+              bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+              simpleVerification: {
+                status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+              },
+              fullVerification: {
+                status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+              },
             },
-            reservationDeposit: {
-              status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+            {
+              _id: 'pOptId2',
+              loan: { _id: 'loanId' },
+              promotion: { _id: 'promoId' },
+              reservationAgreement: {
+                status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+              },
+              reservationDeposit: {
+                status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+              },
+              bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+              simpleVerification: {
+                status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+              },
+              fullVerification: {
+                status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+              },
             },
-            bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
-            simpleVerification: {
-              status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
-            },
-            fullVerification: {
-              status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
-            },
-          },
+          ],
         },
         assignedEmployee: { _id: 'adminId2' },
       },
@@ -270,6 +290,37 @@ describe('PromotionLotService', function() {
       pO = PromotionOptionService.get('pOptId', { status: 1 });
       pL = PromotionLotService.get('promotionLotId', { status: 1 });
       expect(pO.status).to.equal(PROMOTION_OPTION_STATUS.RESERVED);
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
+    });
+  });
+
+  describe('cancelPromotionLotReservation', () => {
+    it('makes the lot available again if the canceled reservation is RESERVED', () => {
+      PromotionLotService.reservePromotionLot({
+        promotionOptionId: 'pOptId',
+      });
+
+      PromotionLotService.cancelPromotionLotReservation({
+        promotionOptionId: 'pOptId',
+      });
+
+      const pL = PromotionLotService.get('promotionLotId', { status: 1 });
+      expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
+    });
+
+    it('does not make the lot available again if the canceled reservation is RESERVATION_ACTIVE', () => {
+      PromotionLotService.reservePromotionLot({
+        promotionOptionId: 'pOptId',
+      });
+
+      PromotionOptionService.activateReservation({
+        promotionOptionId: 'pOptId2',
+      });
+      PromotionLotService.cancelPromotionLotReservation({
+        promotionOptionId: 'pOptId2',
+      });
+
+      const pL = PromotionLotService.get('promotionLotId', { status: 1 });
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
     });
   });
