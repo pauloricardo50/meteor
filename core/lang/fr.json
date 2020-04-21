@@ -1376,7 +1376,7 @@
   "emails.SELL_PROMOTION_LOT_USER.from": "e-Potek",
   "emails.SELL_PROMOTION_LOT_USER.SUBJECT": "{promotionName}, Vente du lot {promotionLotName}",
   "emails.SELL_PROMOTION_LOT_USER.TITLE": "Le lot {promotionLotName} dans la promotion {promotionName} est désormais vous a été vendu.",
-  "emails.CANCEL_PROMOTION_LOT_RESERVATION.BODY": "La réservation pour le lot {promotionLotName} a été annulée par {userName}. Il est à nouveau disponible à la commercialisation.",
+  "emails.CANCEL_PROMOTION_LOT_RESERVATION.BODY": "La réservation pour le lot {promotionLotName} a été annulée par {userName}.",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.CTA": "Voir la promotion",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.from": "e-Potek",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION.SUBJECT": "{promotionName}, Réservation annulée",
