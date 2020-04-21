@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Calculator from '../../../utils/Calculator';
 import CollectionService from '../../helpers/server/CollectionService';
+import { PROMOTION_OPTION_STATUS } from '../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 import PromotionLots from '../promotionLots';
@@ -73,21 +74,32 @@ class PromotionLotService extends CollectionService {
   }
 
   cancelPromotionLotReservation({ promotionOptionId }) {
-    const { promotionLots } = PromotionOptionService.get(promotionOptionId, {
-      loan: { _id: 1 },
-      promotionLots: { _id: 1 },
-    });
+    const { promotionLots, status } = PromotionOptionService.get(
+      promotionOptionId,
+      {
+        loan: { _id: 1 },
+        promotionLots: { _id: 1 },
+        status: 1,
+      },
+    );
 
-    const [{ _id: promotionLotId }] = promotionLots;
+    // Make promotion lot available again only if it was sold or reserved
+    if (
+      [PROMOTION_OPTION_STATUS.SOLD, PROMOTION_OPTION_STATUS.RESERVED].includes(
+        status,
+      )
+    ) {
+      const [{ _id: promotionLotId }] = promotionLots;
 
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
-    });
-    this.removeLink({
-      id: promotionLotId,
-      linkName: 'attributedTo',
-    });
+      this.update({
+        promotionLotId,
+        object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
+      });
+      this.removeLink({
+        id: promotionLotId,
+        linkName: 'attributedTo',
+      });
+    }
 
     return PromotionOptionService.cancelReservation({
       promotionOptionId,
