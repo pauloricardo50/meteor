@@ -772,13 +772,14 @@ class LoanService extends CollectionService {
     // Get the highest property value
     const {
       max: { borrowRatio, propertyValue, organisationName },
-    } = this.getMaxPropertyValueWithoutBorrowRatio({
+    } = this.getMaxPropertyValue({
       loan,
       canton,
+      residenceType,
     });
-    const firstOrganisationName = organisationName.split(
+    const [firstOrganisationName] = organisationName.split(
       ORGANISATION_NAME_SEPARATOR,
-    )[0];
+    );
 
     const organisation = OrganisationService.get(
       { name: firstOrganisationName },
