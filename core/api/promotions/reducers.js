@@ -21,4 +21,8 @@ Promotions.addReducers({
   availablePromotionLots: promotionLotStatusReducer(
     PROMOTION_LOT_STATUS.AVAILABLE,
   ),
+  lotsCount: {
+    body: { promotionLots: { _id: 1 } },
+    reduce: ({ promotionLots = [] }) => promotionLots.length,
+  },
 });

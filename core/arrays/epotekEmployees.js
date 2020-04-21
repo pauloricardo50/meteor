@@ -83,6 +83,17 @@ const employees = [
     calendly: 'https://calendly.com/epotek-max',
   },
   {
+    email: 'patrick@e-potek.ch',
+    src: '/img/team/patrick.jpg',
+    name: 'Patrick Luongo',
+    title: 'Directeur des Financements et de l’agence de Lausanne',
+    appTitle: 'Financement & Prévoyance',
+    phoneNumber: '+41 22 566 82 96',
+    _id: 'RjzusumG8ngdWQ3Jz',
+    gender: 'M',
+    calendly: 'https://calendly.com/epotek-patrick',
+  },
+  {
     email: '',
     src: '/img/team/seila.jpg',
     name: 'Seila Rada',
@@ -95,7 +106,7 @@ const employees = [
     name: 'e-Potek',
     phoneNumber: EPOTEK_NUMBER,
     calendly: 'https://calendly.com/epotek-geneve',
-  }
+  },
 ];
 
 export const employeesByEmail = employees.reduce(

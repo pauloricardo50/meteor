@@ -1,4 +1,4 @@
-import { writeYAML } from '../.deployment/utils';
+import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '~/app';
 const CACHE_VERSION = 'master_9'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
