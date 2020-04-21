@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import Tabs from 'core/components/Tabs';
@@ -23,7 +24,7 @@ const propertiesTabLabel = (loan, property, index) => {
 };
 
 const PropertiesTab = ({ loan }) => {
-  const { properties, userId, _id: loanId, hasPromotion } = loan;
+  const { properties, userId, _id: loanId, hasPromotion, purchaseType } = loan;
   return (
     <div className="properties-tab">
       {hasPromotion &&
@@ -33,6 +34,7 @@ const PropertiesTab = ({ loan }) => {
           loanId={loanId}
           userId={userId}
           disabled={hasPromotion}
+          isRefinancing={purchaseType === PURCHASE_TYPE.REFINANCING}
         />
       </div>
       {properties && properties.length > 0 && (

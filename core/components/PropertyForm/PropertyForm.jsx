@@ -27,7 +27,7 @@ const PropertyForm = ({
   className = '',
   disabled,
   buttonProps,
-  schema,
+  schema = propertyFormSchema,
   ...props
 }) => (
   <div
@@ -41,7 +41,7 @@ const PropertyForm = ({
     }}
   >
     <AutoFormDialog
-      schema={schema || propertyFormSchema}
+      schema={schema}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
       buttonProps={{

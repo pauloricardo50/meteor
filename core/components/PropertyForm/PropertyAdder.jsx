@@ -1,41 +1,11 @@
 import React from 'react';
-import { withProps } from 'recompose';
 
-import { propertyInsert } from '../../api/properties/methodDefinitions';
 import Button from '../Button';
 import Icon from '../Icon';
 import T from '../Translation';
 import PropertyAdderContainer from './PropertyAdderContainer';
-import PropertyForm from './PropertyForm';
+import PropertyAdderDialog from './PropertyAdderDialog';
 import PropertyReuser from './PropertyReuser';
-
-const PropertyAdderDialog = withProps(
-  ({
-    loanId,
-    propertyUserId,
-    category,
-    onSubmitSuccess = x => x,
-    setOpen,
-    ...rest
-  }) => ({
-    onSubmit: property =>
-      propertyInsert
-        .run({
-          property: { category, ...property },
-          loanId,
-          userId: propertyUserId,
-        })
-        .then(onSubmitSuccess)
-        .finally(() => setOpen(false)),
-    form: 'add-property',
-    formTitleId: 'PropertyForm.adderDialogTitle',
-    formDescriptionId: 'PropertyForm.adderDialogDescription',
-    noButton: true,
-    setOpen,
-    onSubmitSuccess: x => x,
-    ...rest,
-  }),
-)(PropertyForm);
 
 const PropertyAdder = ({
   onClick,
@@ -45,10 +15,9 @@ const PropertyAdder = ({
   linkProperty,
   setOpenPropertyAdder,
   openPropertyAdder,
-  TriggerComponent,
+  triggerComponent,
   disabled,
   loanId,
-  schema,
   buttonProps = {},
   ...props
 }) => (
@@ -62,13 +31,12 @@ const PropertyAdder = ({
     />
     <PropertyAdderDialog
       loanId={loanId}
-      schema={schema}
       open={openPropertyAdder}
       setOpen={setOpenPropertyAdder}
       {...props}
     />
-    {TriggerComponent ? (
-      React.cloneElement(TriggerComponent, { onClick, disabled })
+    {triggerComponent ? (
+      triggerComponent({ onClick, disabled })
     ) : (
       <Button
         onClick={onClick}
