@@ -30,7 +30,7 @@ describe('Promotion pages', () => {
   });
 
   it('can add users', () => {
-    cy.get('.pro-customers').contains('Rien à afficher');
+    cy.contains('.pro-customers', 'Rien à afficher');
 
     inviteUser({
       email: 'test@e-potek.ch',
@@ -42,7 +42,7 @@ describe('Promotion pages', () => {
 
     cy.get('form').submit();
 
-    cy.get('.pro-customers').contains('Jean Dupont');
+    cy.contains('.pro-customers', 'Jean Dupont');
   });
 
   it('can add users to a property', () => {
@@ -66,14 +66,12 @@ describe('Promotion pages', () => {
     cy.get('body').trigger('keydown', { keyCode: 27, which: 27 }); // Hit escape to restore keyboard control
     cy.get('input[name="phoneNumber"]').type('{enter}');
 
-    cy.get('.pro-customers').contains('Marie Dupont');
-    cy.get('.pro-customers').contains('Rue du test 1');
+    cy.contains('.pro-customers', 'Marie Dupont');
+    cy.contains('.pro-customers', 'Rue du test 1');
   });
 
   it('can access the revenues page only if commissions exist on org', () => {
-    cy.get('.pro-side-nav')
-      .contains('Revenus')
-      .should('not.exist');
+    cy.contains('.pro-side-nav', 'Revenus').should('not.exist');
 
     inviteUser({
       email: 'test3@e-potek.ch',
@@ -82,9 +80,7 @@ describe('Promotion pages', () => {
       phoneNumber: '022 566 01 10',
     });
     cy.get('form').submit();
-    cy.get('.pro-side-nav')
-      .contains('Organisation')
-      .click();
+    cy.contains('.pro-side-nav', 'Organisation').click();
 
     cy.get('.organisation-id')
       .invoke('text')
@@ -104,13 +100,9 @@ describe('Promotion pages', () => {
 
     cy.refetch();
 
-    cy.get('.pro-side-nav')
-      .contains('Revenus')
-      .should('exist');
+    cy.contains('.pro-side-nav', 'Revenus').should('exist');
 
-    cy.get('.pro-side-nav')
-      .contains('Revenus')
-      .click();
+    cy.contains('.pro-side-nav', 'Revenus').click();
 
     cy.get(':nth-child(1) > .col-LEAD').should('have.text', '1');
     cy.get(':nth-child(1) > .col-ONGOING').should('have.text', '0');
@@ -123,12 +115,8 @@ describe('Promotion pages', () => {
       status: LOAN_STATUS.ONGOING,
     });
 
-    cy.get('.pro-side-nav')
-      .contains('Dashboard')
-      .click();
-    cy.get('.pro-side-nav')
-      .contains('Revenus')
-      .click();
+    cy.contains('.pro-side-nav', 'Dashboard').click();
+    cy.contains('.pro-side-nav', 'Revenus').click();
 
     cy.get(':nth-child(1) > .col-LEAD').should('have.text', '0');
     cy.get(':nth-child(1) > .col-ONGOING').should('have.text', '1');

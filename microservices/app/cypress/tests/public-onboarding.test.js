@@ -1,10 +1,10 @@
 import {
-  LOCAL_STORAGE_ANONYMOUS_LOAN,
   LOAN_STATUS,
+  LOCAL_STORAGE_ANONYMOUS_LOAN,
 } from '../../imports/core/api/loans/loanConstants';
 import {
-  USER_PASSWORD,
   USER_EMAIL,
+  USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Public onboarding', () => {
@@ -114,14 +114,10 @@ describe('Public onboarding', () => {
     cy.get('[name=newPassword]').type(USER_PASSWORD);
     cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
     cy.get('[type="checkbox"]').check();
-    cy.get('.password-reset-page')
-      .contains('Continuer')
-      .click();
+    cy.contains('.password-reset-page', 'Continuer').click();
 
     cy.url().should('include', '/loans/');
-    cy.get('.max-property-value-results')
-      .contains('CHF 798 000')
-      .should('exist');
+    cy.contains('.max-property-value-results', 'CHF 798 000').should('exist');
   });
 
   it('Should attach an anonymous loan to a new user account', () => {
@@ -153,9 +149,7 @@ describe('Public onboarding', () => {
     cy.get('[name=newPassword]').type(USER_PASSWORD);
     cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
     cy.get('[type="checkbox"]').check();
-    cy.get('.password-reset-page')
-      .contains('Continuer')
-      .click();
+    cy.contains('.password-reset-page', 'Continuer').click();
 
     cy.url().should('include', '/loans/');
     cy.contains('Continuer').click();
@@ -193,9 +187,7 @@ describe('Public onboarding', () => {
     cy.contains('Ajouter à mon compte').click();
     cy.url().should('include', '/loans/');
     cy.contains('Dossier anonyme').should('not.exist');
-    cy.get('.borrowers-progress')
-      .contains('300')
-      .should('exist');
+    cy.contains('.borrowers-progress', '300').should('exist');
 
     cy.get('.logo-home').click();
     cy.get('.loan-card').should('have.length', 2);
@@ -248,9 +240,7 @@ describe('Public onboarding', () => {
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
-    cy.get('.welcome-screen')
-      .contains('Login')
-      .click();
+    cy.contains('.welcome-screen', 'Login').click();
     cy.get('input[name="email"]').type(USER_EMAIL);
     cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);
     cy.get('@propertyId').then(propertyId => {

@@ -22,17 +22,16 @@ describe('Single Loan Page', () => {
   });
 
   it('creates and routes to a loan from the dashboard', () => {
-    cy.get('button')
-      .contains('Hypothèque')
-      .click();
+    cy.contains('button', 'Hypothèque').click();
+    cy.contains('button', 'Acquisition').click();
     cy.url().should('include', '/loans/');
     cy.contains('Pas de compte');
   });
 
   it('changes status', () => {
-    cy.get('button')
-      .contains('Hypothèque')
-      .click();
+    cy.contains('button', 'Hypothèque').click();
+    cy.contains('button', 'Acquisition').click();
+
     cy.get('.status-label').should('contain', 'Prospect');
     cy.contains('Prospect').click();
     cy.contains('Qualifié').click({ force: true });
@@ -54,27 +53,22 @@ describe('Single Loan Page', () => {
   });
 
   it('should add a task to the loan', () => {
-    cy.get('button')
-      .contains('Hypothèque')
-      .click();
+    cy.contains('button', 'Hypothèque').click();
+    cy.contains('button', 'Acquisition').click();
 
     cy.get('.tasks-table').should('not.exist');
 
-    cy.get('.single-loan-page-tasks button')
-      .contains('Tâche')
-      .click();
+    cy.contains('.single-loan-page-tasks button', 'Tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
     cy.get('.tasks-table tr').should('have.length', 2);
-    cy.get('.tasks-table')
-      .contains('Cypress Task')
-      .should('exist');
+    cy.contains('.tasks-table', 'Cypress Task').should('exist');
   });
 
   it('should add lenders', () => {
-    cy.get('button')
-      .contains('Hypothèque')
-      .click();
+    cy.contains('button', 'Hypothèque').click();
+    cy.contains('button', 'Acquisition').click();
+
     cy.contains('Prospect').click();
     cy.contains('Qualifié').click({ force: true });
 

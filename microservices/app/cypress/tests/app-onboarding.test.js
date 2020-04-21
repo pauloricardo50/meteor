@@ -27,7 +27,7 @@ describe('App onboarding', () => {
           cy.visit(`/enroll-account/${loginToken}`);
         });
 
-        cy.get('.password-reset-page').contains('Test User');
+        cy.contains('.password-reset-page', 'Test User');
 
         cy.get('[name=newPassword]').type(USER_PASSWORD);
         cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
@@ -61,7 +61,7 @@ describe('App onboarding', () => {
           .find('button')
           .first()
           .click();
-        cy.get('.borrowers-card').contains('29%');
+        cy.contains('.borrowers-card', '29%');
 
         cy.get('input#birthDate').type('01/03/2018');
         cy.get('input#salary').type('180000');
@@ -71,7 +71,7 @@ describe('App onboarding', () => {
           .check();
         cy.get('input#bankFortuneSimple').type('250000');
 
-        cy.get('.borrowers-card').contains('100%');
+        cy.contains('.borrowers-card', '100%');
       });
     });
   });

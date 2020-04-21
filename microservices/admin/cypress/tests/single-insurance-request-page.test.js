@@ -70,9 +70,7 @@ describe('Single Insurance Request Page', () => {
 
   it('creates and routes to an insuranceRequest from the dashboard', () => {
     // Create a user account
-    cy.get('button')
-      .contains('Compte')
-      .click();
+    cy.contains('button', 'Compte').click();
     cy.get('input[name=firstName]').type('John');
     cy.get('input[name=lastName]').type('The tester');
     cy.get('input[name=email]').type('test-insurance@e-potek.ch{enter}');
@@ -96,30 +94,22 @@ describe('Single Insurance Request Page', () => {
     cy.url().should('include', '/insuranceRequests/');
 
     // Check page is correct
-    cy.get('.single-insurance-request-page-header')
-      .contains('Prospect')
-      .should('exist');
-    cy.get('.timeline')
-      .contains('Dossier créé')
-      .should('exist');
+    cy.contains('.single-insurance-request-page-header', 'Prospect').should(
+      'exist',
+    );
+    cy.contains('.timeline', 'Dossier créé').should('exist');
     cy.get('.assignees')
       .children()
       .should('have.length', 2);
 
     // Check each tab
-    cy.get('.core-tabs-top')
-      .contains('Assurés')
-      .click();
+    cy.contains('.core-tabs-top', 'Assurés').click();
     cy.contains("Aucun assuré pour l'instant").should('exist');
 
-    cy.get('.core-tabs-top')
-      .contains('Revenus')
-      .click();
+    cy.contains('.core-tabs-top', 'Revenus').click();
     cy.contains('Rien à afficher').should('exist');
 
-    cy.get('.core-tabs-top')
-      .contains('Documents')
-      .click();
+    cy.contains('.core-tabs-top', 'Documents').click();
     cy.contains('Autres documents').should('exist');
   });
 
@@ -134,23 +124,17 @@ describe('Single Insurance Request Page', () => {
     cy.url().should('include', '/insuranceRequests/');
 
     // Add a task
-    cy.get('.single-insurance-request-page-tasks button')
-      .contains('Tâche')
-      .click();
+    cy.contains('.single-insurance-request-page-tasks button', 'Tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
     cy.get('.tasks-table tr').should('have.length', 2);
-    cy.get('.tasks-table')
-      .contains('Cypress Task')
-      .should('exist');
+    cy.contains('.tasks-table', 'Cypress Task').should('exist');
 
     // Add activity
     cy.get('.timeline')
       .children()
       .should('have.length', 1);
-    cy.get('.single-insurance-request-page button')
-      .contains('Activité')
-      .click();
+    cy.contains('.single-insurance-request-page button', 'Activité').click();
     cy.get('input[name=docId]').check();
     cy.get('input[name=title]').type('Cypress Activity');
     cy.setSelect('type', 6);
@@ -179,9 +163,7 @@ describe('Single Insurance Request Page', () => {
     cy.get('[tooltip="Ajouter une assurance"]').click();
     cy.setSelect('borrowerId', 0);
     cy.setSelect('organisationId', 0);
-    cy.get('[role="dialog"] label')
-      .contains('Produit')
-      .should('exist');
+    cy.contains('[role="dialog"] label', 'Produit').should('exist');
     cy.setSelect('insuranceProductId', 0);
     cy.get('input[name="premium"]').type(100);
     cy.get('input[name="premiumFrequency"]')
@@ -193,28 +175,18 @@ describe('Single Insurance Request Page', () => {
 
     // Add revenue
     cy.contains('8 160').should('exist');
-    cy.get('button')
-      .contains('Revenu estimé')
-      .click();
-    cy.get('[role="dialog"]')
-      .contains('Org 1')
-      .should('exist');
+    cy.contains('button', 'Revenu estimé').click();
+    cy.contains('[role="dialog"]', 'Org 1').should('exist');
     cy.get('input[name="expectedAt"]').type('2020-03-01');
     cy.get('[role="dialog"] form').submit();
 
     // Check revenues
     cy.get('.revenues-table tr').should('have.length', 2);
-    cy.get('.revenues-table tr')
-      .contains('8 160')
-      .should('exist');
+    cy.contains('.revenues-table tr', '8 160').should('exist');
 
     // Check revenues tab
-    cy.get('.core-tabs-top')
-      .contains('Revenus')
-      .click();
-    cy.get('.revenues-table tr')
-      .contains('8 160')
-      .should('exist');
+    cy.contains('.core-tabs-top', 'Revenus').click();
+    cy.contains('.revenues-table tr', '8 160').should('exist');
   });
 
   it('Can link insuranceRequests and loans', () => {
@@ -232,8 +204,7 @@ describe('Single Insurance Request Page', () => {
     cy.get('[role="dialog"] input')
       .its(1)
       .type(' ');
-    cy.get('[role="dialog"]')
-      .contains('Réutiliser')
+    cy.contains('[role="dialog"]', 'Réutiliser')
       .first()
       .click();
 
