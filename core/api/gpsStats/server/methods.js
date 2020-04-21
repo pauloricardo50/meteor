@@ -1,4 +1,4 @@
 import { getGpsStats } from '../methodDefinitions';
 import { getStats } from './gpsStats';
 
-getGpsStats.setHandler((context, params) => getStats());
+getGpsStats.setHandler((context, params) => getStats(params));

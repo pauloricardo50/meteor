@@ -1,6 +1,10 @@
-const citiesCoordinates = require('./citiesCoordinates').default;
-const mainCities = require('./mainCities').default;
 const fs = require('fs');
+// const mainCitiesJSON = require('./mainCities');
+
+const mainCities = JSON.parse(fs.readFileSync('./mainCities.json', 'utf-8'));
+const citiesCoordinates = JSON.parse(
+  fs.readFileSync('./citiesCoordinates.json', 'utf-8'),
+);
 
 const R = 6371e3;
 
@@ -29,7 +33,7 @@ const getClosestMainCity = ({ city, cities }) => {
   const best = { dist: Infinity, mainCity: undefined };
   const { lat: cityLat, long: cityLong } = city;
 
-  mainCities.forEach(zip => {
+  mainCities.forEach(({ zipCode: zip, skip }) => {
     const mainCity = cities.find(({ zipCode }) => zipCode === zip);
     const { lat: mainCityLat, long: mainCityLong } = mainCity;
 
@@ -42,7 +46,7 @@ const getClosestMainCity = ({ city, cities }) => {
 
     if (distance < best.dist) {
       best.dist = distance;
-      best.mainCity = mainCity;
+      best.mainCity = { ...mainCity, skip: !!skip };
     }
   });
 
@@ -50,7 +54,7 @@ const getClosestMainCity = ({ city, cities }) => {
 };
 
 const classifyCity = (city, index, cities) => {
-  const isMainCity = mainCities.some(zipCode => zipCode === city.zipCode);
+  const isMainCity = mainCities.some(({ zipCode }) => zipCode === city.zipCode);
   let closestMainCity;
 
   if (isMainCity) {
@@ -63,9 +67,7 @@ const classifyCity = (city, index, cities) => {
 };
 
 const classifyCities = () => {
-  const classifiedCities = JSON.stringify({
-    cities: citiesCoordinates.map(classifyCity),
-  });
+  const classifiedCities = JSON.stringify(citiesCoordinates.map(classifyCity));
   fs.writeFileSync(
     '../../core/api/gpsStats/server/classifiedCities.json',
     classifiedCities,

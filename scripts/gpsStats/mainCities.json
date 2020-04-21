@@ -1,0 +1,206 @@
+[
+  {
+    "zipCode": 1001,
+    "city": "Lausanne"
+  },
+  {
+    "zipCode": 1110,
+    "city": "Morges"
+  },
+  {
+    "zipCode": 1200,
+    "city": "Genève"
+  },
+  {
+    "zipCode": 1400,
+    "city": "Yverdon-les-Bains"
+  },
+  {
+    "zipCode": 1630,
+    "city": "Bulle"
+  },
+  {
+    "zipCode": 1700,
+    "city": "Fribourg"
+  },
+  {
+    "zipCode": 1820,
+    "city": "Montreux"
+  },
+  {
+    "zipCode": 1870,
+    "city": "Monthey"
+  },
+  {
+    "zipCode": 1920,
+    "city": "Martigny"
+  },
+  {
+    "zipCode": 1950,
+    "city": "Sion"
+  },
+  {
+    "zipCode": 2000,
+    "city": "Neuchâtel"
+  },
+  {
+    "zipCode": 2300,
+    "city": "La Chaux-de-Fonds"
+  },
+  {
+    "zipCode": 2500,
+    "city": "Bienne"
+  },
+  {
+    "zipCode": 2540,
+    "city": "Granges",
+    "skip": true
+  },
+  {
+    "zipCode": 2800,
+    "city": "Delémont"
+  },
+  {
+    "zipCode": 3000,
+    "city": "Berne"
+  },
+  {
+    "zipCode": 3600,
+    "city": "Thoune",
+    "skip": true
+  },
+  {
+    "zipCode": 3800,
+    "city": "Interlaken",
+    "skip": true
+  },
+  {
+    "zipCode": 3900,
+    "city": "Viège",
+    "skip": true
+  },
+  {
+    "zipCode": 3960,
+    "city": "Sierre"
+  },
+  {
+    "zipCode": 4000,
+    "city": "Bâle",
+    "skip": true
+  },
+  {
+    "zipCode": 4332,
+    "city": "Stein",
+    "skip": true
+  },
+  {
+    "zipCode": 4500,
+    "city": "Soleure",
+    "skip": true
+  },
+  {
+    "zipCode": 4600,
+    "city": "Olten",
+    "skip": true
+  },
+  {
+    "zipCode": 5000,
+    "city": "Aarau",
+    "skip": true
+  },
+  {
+    "zipCode": 5400,
+    "city": "Baden",
+    "skip": true
+  },
+  {
+    "zipCode": 5600,
+    "city": "Ammerswil",
+    "skip": true
+  },
+  {
+    "zipCode": 6000,
+    "city": "Lucerne",
+    "skip": true
+  },
+  {
+    "zipCode": 6300,
+    "city": "Zoug",
+    "skip": true
+  },
+  {
+    "zipCode": 6460,
+    "city": "Altdorf",
+    "skip": true
+  },
+  {
+    "zipCode": 6500,
+    "city": "Bellinzone",
+    "skip": true
+  },
+  {
+    "zipCode": 6600,
+    "city": "Locarno",
+    "skip": true
+  },
+  {
+    "zipCode": 6830,
+    "city": "Chiasso",
+    "skip": true
+  },
+  {
+    "zipCode": 6900,
+    "city": "Lugano",
+    "skip": true
+  },
+  {
+    "zipCode": 7000,
+    "city": "Coire",
+    "skip": true
+  },
+  {
+    "zipCode": 8000,
+    "city": "Zürich",
+    "skip": true
+  },
+  {
+    "zipCode": 8200,
+    "city": "Schaffhouse",
+    "skip": true
+  },
+  {
+    "zipCode": 8400,
+    "city": "Winterthur",
+    "skip": true
+  },
+  {
+    "zipCode": 8500,
+    "city": "Frauenfeld",
+    "skip": true
+  },
+  {
+    "zipCode": 8640,
+    "city": "Rapperswil",
+    "skip": true
+  },
+  {
+    "zipCode": 8750,
+    "city": "Glaris",
+    "skip": true
+  },
+  {
+    "zipCode": 8853,
+    "city": "Lachen",
+    "skip": true
+  },
+  {
+    "zipCode": 9000,
+    "city": "St. Gall",
+    "skip": true
+  },
+  {
+    "zipCode": 9320,
+    "city": "Arbon",
+    "skip": true
+  }
+]

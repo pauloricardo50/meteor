@@ -1,4 +1,4 @@
-const citiesCoordinates = [
+[
   {
     "zipCode": 1000,
     "city": "Lausanne 25",
@@ -10279,18 +10279,6 @@ const citiesCoordinates = [
   },
   {
     "zipCode": 3800,
-    "city": "Matten b. Interlaken",
-    "lat": 46.6783,
-    "long": 7.8689
-  },
-  {
-    "zipCode": 3800,
-    "city": "Sundlauenen",
-    "lat": 46.6863,
-    "long": 7.7931
-  },
-  {
-    "zipCode": 3800,
     "city": "Interlaken",
     "lat": 46.6839,
     "long": 7.8664
@@ -14251,15 +14239,9 @@ const citiesCoordinates = [
   },
   {
     "zipCode": 5600,
-    "city": "Ammerswil AG",
+    "city": "Ammerswil",
     "lat": 47.3682,
     "long": 8.2074
-  },
-  {
-    "zipCode": 5600,
-    "city": "Lenzbourg",
-    "lat": 47.3885,
-    "long": 8.175
   },
   {
     "zipCode": 5603,
@@ -25842,5 +25824,3 @@ const citiesCoordinates = [
     "long": 9.354
   }
  ]
-
- module.exports = {default: citiesCoordinates}
