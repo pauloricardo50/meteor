@@ -48,7 +48,7 @@ class AutoFormTextInput extends Component {
   constructor(props) {
     super(props);
 
-    const { currentValue, number, decimal, negative } = props.inputProps;
+    const { currentValue, number, decimal, negative } = props.InputProps;
 
     this.state = {
       // Make sure 0 values are displayed properly
@@ -78,18 +78,18 @@ class AutoFormTextInput extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const valueIsDifferent =
-      nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
+      nextProps.InputProps.currentValue !== this.props.InputProps.currentValue;
     if (valueIsDifferent) {
       // To handle race conditions, check if the new value from the DB
       // has been typed in the past
       // If it has, then don't update the textfield
       // If it hasn't, override it, because the backend says it should be a new value
       const valueExistsInHistory = this.state.history.includes(
-        nextProps.inputProps.currentValue,
+        nextProps.InputProps.currentValue,
       );
 
       if (!valueExistsInHistory) {
-        this.handleChange(nextProps.inputProps.currentValue);
+        this.handleChange(nextProps.InputProps.currentValue);
       }
     }
   }
@@ -105,7 +105,7 @@ class AutoFormTextInput extends Component {
     const {
       saveOnChange,
       showValidIconOnChange,
-      inputProps: { currentValue, inputType },
+      InputProps: { currentValue, inputType },
     } = this.props;
 
     // Make sure value is a number if this is a number or money input
@@ -137,7 +137,7 @@ class AutoFormTextInput extends Component {
     const {
       updateFunc,
       docId,
-      inputProps: { id, currentValue, inputType },
+      InputProps: { id, currentValue, inputType },
     } = this.props;
     const { value } = this.state;
 
@@ -164,7 +164,7 @@ class AutoFormTextInput extends Component {
 
   render() {
     const {
-      inputProps: {
+      InputProps: {
         style,
         label,
         placeholder,
@@ -181,6 +181,8 @@ class AutoFormTextInput extends Component {
         onFocusChange,
         focused,
         todo,
+        inputProps,
+        readOnly,
 
         // Destructure these props to avoid warnings
         inputRef,
@@ -189,13 +191,14 @@ class AutoFormTextInput extends Component {
         decimal,
         intlId,
         saveOnChange,
-        inputLabelProps,
+        InputLabelProps,
 
         ...otherProps
       },
-      inputLabelProps: inputLabelPropsOverride,
+      InputLabelProps: InputLabelPropsOverride,
       savingIconStyle,
       admin,
+      inputComponent,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
 
@@ -216,24 +219,27 @@ class AutoFormTextInput extends Component {
       <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <MyTextInput
           {...otherProps}
-          InputProps={{ onFocusChange, focused }}
-          label={label}
-          placeholder={placeholder}
-          value={value}
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          type={type}
-          id={id}
-          multiline={multiline}
-          rows={rows}
-          info={errorText || (showInfo && info)}
-          error={!!errorText}
           disabled={disabled}
-          style={{ width: '100%', ...style, marginBottom: 16 }}
-          noValidate
+          error={!!errorText}
           fullWidth
-          inputLabelProps={inputLabelPropsOverride || inputLabelProps}
+          id={id}
+          info={errorText || (showInfo && info)}
+          inputComponent={inputComponent}
+          InputLabelProps={InputLabelPropsOverride || InputLabelProps}
+          InputProps={{
+            readOnly,
+            inputProps,
+          }}
+          label={label}
+          multiline={multiline}
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+          onFocus={this.handleFocus}
+          placeholder={placeholder}
+          rows={rows}
+          style={{ width: '100%', ...style, marginBottom: 16 }}
+          type={type}
+          value={value}
         />
         <ValidIcon
           saving={saving}
@@ -260,7 +266,7 @@ AutoFormTextInput.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
-  inputProps: PropTypes.shape({
+  InputProps: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.node.isRequired,
     placeholder: PropTypes.node.isRequired,

@@ -9,7 +9,7 @@ export default class AutoFormConditionalInput extends Component {
 
   // Set the state of the conditional on load
   componentDidMount() {
-    this.setConditional(this.props.children[0].props.inputProps.currentValue);
+    this.setConditional(this.props.children[0].props.InputProps.currentValue);
   }
 
   onConditionalChange = value => {
@@ -37,10 +37,10 @@ export default class AutoFormConditionalInput extends Component {
           // The conditional input
           children[0],
           {
-            inputProps: {
+            InputProps: {
               // Merge with old props because React.cloneElement only uses
               // a shallow merge here
-              ...children[0].props.inputProps,
+              ...children[0].props.InputProps,
               onConditionalChange: this.onConditionalChange,
             },
           },
@@ -51,7 +51,7 @@ export default class AutoFormConditionalInput extends Component {
             {/* Don't show a validator for conditional child elements */}
             {React.Children.map(conditionalChildren, child =>
               React.cloneElement(child, {
-                inputProps: child.props.inputProps,
+                InputProps: child.props.InputProps,
               }),
             )}
           </div>
