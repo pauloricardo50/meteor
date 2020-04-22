@@ -8,6 +8,23 @@ const writeToPublic = (name, data) => {
   fs.writeFileSync(`../../../../../public/${name}`, data);
 };
 
+// Returns a csv from an array of objects with
+// values separated by tabs and rows separated by newlines
+const arrayToCsv = array => {
+  // Use first element to choose the keys and the order
+  const keys = Object.keys(array[0]);
+
+  // Build header
+  let result = `${keys.join('\t')}\n`;
+
+  // Add the rows
+  array.forEach(obj => {
+    result += `${keys.map(k => obj[k]).join('\t')}\n`;
+  });
+
+  return result;
+};
+
 // These samples below
 
 // const exportProsForMarketing = () => {
@@ -30,7 +47,7 @@ const writeToPublic = (name, data) => {
 //     };
 //   });
 
-//   writeToPublic('users.json', JSON.stringify(result, null, 2));
+//   writeToPublic('users.csv', arrayToCsv(result));
 // };
 
 // export const exportUsersForMarketing = () => {
@@ -54,7 +71,7 @@ const writeToPublic = (name, data) => {
 //     };
 //   });
 
-//   writeToPublic('users.json', JSON.stringify(result, null, 2));
+//   writeToPublic('users.csv', arrayToCsv(result));
 // };
 
 export default writeToPublic;
