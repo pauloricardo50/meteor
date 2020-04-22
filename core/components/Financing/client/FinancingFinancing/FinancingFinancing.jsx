@@ -5,7 +5,6 @@ import {
   PURCHASE_TYPE,
 } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
-import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import Calc, { getOffer } from '../FinancingCalculator';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
@@ -75,9 +74,6 @@ const enableOffers = ({ loan }) => loan.enableOffers;
 const oneStructureHasLoan = ({ loan: { structures } }) =>
   structures.some(({ wantedLoan }) => wantedLoan);
 
-const getLoanEvolution = ({ loan, structure: { wantedLoan } }) =>
-  wantedLoan - Calculator.getPreviousLoanValue({ loan });
-
 const FinancingFinancing = ({ purchaseType }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
 
@@ -138,6 +134,7 @@ const FinancingFinancing = ({ purchaseType }) => {
           calculatePlaceholder: calculateLoan,
           min: calculateLoan,
           allowUndefined: true,
+          condition: !isRefinancing,
         },
         {
           Component: MortgageNotesPicker,
@@ -165,27 +162,6 @@ const FinancingFinancing = ({ purchaseType }) => {
           condition: isRefinancing,
           value: Calculator.getPreviousLoanValue,
           className: 'flex-col center previousLoanValue',
-        },
-        {
-          id: 'loanEvolution',
-          Component: CalculatedValue,
-          condition: isRefinancing,
-          value: getLoanEvolution,
-          className: 'flex-col center loanEvolution',
-          children: value => (
-            <div className="flex-col center">
-              <b style={{ color: '#444444' }}>
-                <T
-                  id="Financing.loanEvolution.description"
-                  values={{ isLoanIncreased: value > 0 }}
-                />
-              </b>
-              <span>
-                <span className="chf">CHF</span>
-                {toMoney(Math.abs(value))}
-              </span>
-            </div>
-          ),
         },
       ]}
     />

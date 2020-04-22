@@ -72,11 +72,12 @@ const FinancingOwnFunds = props => {
                 >
                   {value => (
                     <div className="flex-col center">
-                      <T
-                        id="Financing.reimbursementRequiredOwnFunds.description"
-                        values={{ isMissingOwnFunds: value < 0 }}
-                        style={{ color: '#444444' }}
-                      />
+                      <span style={{ color: '#444444', marginBottom: 8 }}>
+                        <T
+                          id="Financing.reimbursementRequiredOwnFunds.description"
+                          values={{ isMissingOwnFunds: value < 0 }}
+                        />
+                      </span>
                       <span>
                         <span className="chf">CHF</span>
                         {toMoney(Math.abs(value))}
@@ -152,8 +153,11 @@ const FinancingOwnFunds = props => {
           value: Calculator.getReimbursementRequiredOwnFunds,
           className: 'flex-col center reimbursementRequiredOwnFunds',
           children: value => (
-            <div className="flex-col center">
-              <b style={{ color: '#444444' }}>
+            <div
+              className="flex-col center"
+              style={{ marginTop: 8, marginBottom: 8 }}
+            >
+              <b style={{ color: '#444444', marginBottom: 4 }}>
                 <T
                   id="Financing.reimbursementRequiredOwnFunds.description"
                   values={{ isMissingOwnFunds: value < 0 }}
