@@ -1,4 +1,10 @@
 {
+  "Recap.refinancing": "Refinancement",
+  "Recap.previousLender": "Prêteur précédent",
+  "Recap.previousLoan": "Hypothèque précédente",
+  "Recap.reimbursementPenalty": "Pénalité de remboursement",
+  "Recap.ownFundsIncrease": "Dégagement de liquidités",
+  "Recap.ownFundsDecrease": "Amortissement extraordinaire",
   "MaxPropertyValue.stickyFooterTitle": "Votre capacité d'achat",
   "MaxPropertyValue.stickyFooterEmpty": "Renseignez vos revenus et fortune",
   "MaxPropertyValue.stickyFooterCalculate": "Calculer",

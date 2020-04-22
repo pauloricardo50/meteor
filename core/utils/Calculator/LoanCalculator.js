@@ -356,6 +356,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     loanHasMinimalInformation({ loan }) {
       const structure = this.selectStructure({ loan });
+      const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+
+      if (isRefinancing) {
+        return (
+          this.selectPropertyValue({ loan }) && this.selectLoanValue({ loan })
+        );
+      }
 
       return !!(
         structure.ownFunds &&
