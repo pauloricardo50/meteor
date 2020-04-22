@@ -15,7 +15,7 @@ import { wrapField } from 'uniforms-material';
 import { ignoreProps } from '../../../containers/updateForProps';
 import TextInput from '../../TextInput';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
-import CustomSelectFieldContainer from '../CustomSelectFieldContainer';
+import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 
 const xor = (item, array) => {
   const index = array.indexOf(item);

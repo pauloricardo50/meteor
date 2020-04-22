@@ -5,7 +5,7 @@ import { logError } from '../api/slack/methodDefinitions';
 import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
 
-const LoadableLoading = ({ error, retry, pastDelay }) => {
+const LoadableLoading = ({ error, retry, pastDelay, loaderProps }) => {
   const [hasLoggedAnError, setHasLoggedError] = useState(false);
   useEffect(() => {
     if (error && !hasLoggedAnError) {
@@ -32,15 +32,15 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
   }
 
   if (pastDelay) {
-    return <Loading />;
+    return <Loading {...loaderProps} />;
   }
 
   return null;
 };
 
-export default ({ loader, ...options }) =>
+export default ({ loader, loaderProps, ...options }) =>
   Loadable({
-    loading: LoadableLoading,
+    loading: props => <LoadableLoading {...props} loaderProps={loaderProps} />,
     delay: 200, // Hides the loading component for 200ms, to avoid flickering
     loader,
     ...options,

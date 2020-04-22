@@ -1,18 +1,15 @@
 import React, { PureComponent } from 'react';
 
-import Loading from '../Loading';
-import Chip from '../Material/Chip';
-import T from '../Translation';
-import { OTHER_ALLOWED_VALUE } from './autoFormConstants';
+import Loading from '../../Loading';
+import Chip from '../../Material/Chip';
+import T from '../../Translation';
+import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
 
 export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
     constructor(props) {
       super(props);
       this.state = { values: props.allowedValues, data: null, error: null };
-    }
-
-    componentDidMount() {
       this.getAllowedValues(this.props);
     }
 

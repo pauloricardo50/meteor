@@ -4,10 +4,22 @@ import pick from 'lodash/pick';
 import { updateDocument } from '../../api/methods/methodDefinitions';
 import AutoForm, { CustomAutoField } from '../AutoForm2';
 
-const makeOnSubmit = ({ collection, doc, fields, onSuccess }) => values =>
-  updateDocument
-    .run({ collection, docId: doc._id, object: pick(values, fields) })
+const shallowCompare = (obj1, obj2) =>
+  Object.keys(obj1).length === Object.keys(obj2).length &&
+  Object.keys(obj1).every(key => obj1[key] === obj2[key]);
+
+const makeOnSubmit = ({ collection, doc, fields, onSuccess }) => values => {
+  const oldValues = pick(doc, fields);
+  const newValues = pick(values, fields);
+
+  if (shallowCompare(oldValues, newValues)) {
+    return Promise.resolve();
+  }
+
+  return updateDocument
+    .run({ collection, docId: doc._id, object: newValues })
     .then(() => (onSuccess ? onSuccess(values) : null));
+};
 
 const UpdateField = ({
   collection,
@@ -36,7 +48,7 @@ const UpdateField = ({
     <AutoForm
       autosave
       schema={schema}
-      model={doc}
+      model={pick(doc, fields)}
       onSubmit={values => onSubmit(values).then(onSubmitCallback)}
       className="update-field"
       {...props}
