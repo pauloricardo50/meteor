@@ -1,142 +1,11 @@
 import React from 'react';
-import classnames from 'classnames';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
-import MaskedInput from 'react-text-mask';
+import cx from 'classnames';
 
-import {
-  toDecimalNumber,
-  toNegativeNumber,
-  toNumber,
-} from '../../utils/conversionFunctions';
-import {
-  percentMask,
-  swissFrancDecimalNegativeMask,
-  swissFrancMask,
-  swissFrancMaskDecimal,
-  swissFrancNegativeMask,
-} from '../../utils/textMasks';
-import FormControl from '../Material/FormControl';
-import FormHelperText from '../Material/FormHelperText';
-import Input from '../Material/Input';
 import InputAdornment from '../Material/InputAdornment';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import TextField from '../Material/TextField';
 
-const getDefaults = ({
-  type,
-  id,
-  onChange,
-  value,
-  simpleOnChange,
-  negative,
-  decimal,
-}) => {
-  if (simpleOnChange) {
-    return { onChangeHandler: onChange, value };
-  }
-
-  switch (type) {
-    case 'money': {
-      let mask;
-      let conversionFunction;
-      if (decimal) {
-        conversionFunction = toDecimalNumber;
-        if (negative) {
-          mask = swissFrancDecimalNegativeMask;
-        } else {
-          mask = swissFrancMaskDecimal;
-        }
-      } else if (negative) {
-        mask = swissFrancNegativeMask;
-        conversionFunction = toNegativeNumber;
-      } else {
-        mask = swissFrancMask;
-        conversionFunction = toNumber;
-      }
-      return {
-        onChangeHandler: event =>
-          onChange(conversionFunction(event.target.value), id, event),
-        showMask: true,
-        mask,
-        placeholder: 0,
-        value,
-      };
-    }
-    case 'percent':
-      return {
-        onChangeHandler: event =>
-          onChange(
-            Math.round(parseFloat(event.target.value) * 100) / 10000,
-            id,
-            event,
-          ),
-        showMask: true,
-        mask: percentMask,
-        placeholder: '%',
-        value: (value * 100).toFixed(2),
-      };
-    case 'number':
-      return {
-        onChangeHandler: event =>
-          onChange(toNumber(event.target.value), id, event),
-        showMask: false,
-        value,
-      };
-    case 'date':
-      return {
-        onChangeHandler: event => onChange(event.target.value, id, event),
-        onDateChange: val => {
-          // This specific format should be used for the server to get the
-          // date in the right order
-          const date = moment(val).format('YYYY-MM-DD');
-          // Allow setting a date to null
-          onChange(val ? date : null, id, {});
-        },
-        showMask: false,
-        value: value ? moment(value) : null,
-      };
-    default:
-      return {
-        // Pass event as third argument, for some components which need it
-        // like react-autosuggest
-        onChangeHandler: event => onChange(event.target.value, id, event),
-        showMask: false,
-        value,
-      };
-  }
-};
-
-export const getFinalPlaceholder = ({
-  noIntl,
-  placeholder,
-  defaultPlaceholder,
-  intl,
-  type,
-}) => {
-  let finalPlaceholder;
-  if (noIntl) {
-    finalPlaceholder = placeholder || defaultPlaceholder;
-  } else {
-    finalPlaceholder =
-      placeholder && typeof placeholder === 'string'
-        ? `${intl.formatMessage({
-            id: 'Forms.textInput.placeholderPrefix',
-          })} ${intl.formatMessage({ id: placeholder })}`
-        : defaultPlaceholder;
-  }
-
-  // Ignore placeholder for money inputs, and just show the currency
-  // Showing an amount is confusing
-  if (type === 'money') {
-    finalPlaceholder = defaultPlaceholder;
-  }
-
-  return finalPlaceholder;
-};
-
-const getStartAdornment = ({ type, startAdornment }) => {
-  if (type === 'money') {
+const getStartAdornment = ({ dataType, startAdornment }) => {
+  if (dataType === 'money') {
     return <InputAdornment position="start">CHF</InputAdornment>;
   }
 
@@ -169,120 +38,66 @@ const TextInput = props => {
   const {
     classes,
     className,
+    dataType,
+    endAdornment,
     error,
     fullWidth,
     id,
     info,
+    helperText = info,
     inputComponent,
-    InputProps,
+    InputLabelProps,
     inputProps,
+    InputProps = {},
     inputRef,
-    intl,
     label,
     labelStyle,
-    noIntl,
+    notched,
     onChange,
     placeholder,
-    simpleOnChange,
+    required,
+    startAdornment,
     style,
-    type,
-    inputType,
-    inputLabelProps,
-    endAdornment,
-    notched,
+    type = 'text',
+    value,
     ...otherProps
   } = props;
 
-  const {
-    onChangeHandler,
-    onDateChange,
-    showMask,
-    mask,
-    placeholder: defaultPlaceholder,
-    value,
-  } = getDefaults(props);
-  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
-
   return (
-    <FormControl
-      error={error}
-      className={classnames('mui-text-input', className)}
-      style={style}
+    <TextField
+      className={cx('mui-text-input', className)}
+      error={!!error}
       fullWidth={fullWidth}
-    >
-      {label && (
-        <InputLabel
-          ref={inputLabelRef}
-          htmlFor={id}
-          style={labelStyle}
-          shrink={shouldShrinkLabel(value)}
-          {...inputLabelProps}
-        >
-          {label}
-        </InputLabel>
-      )}
-      <Input
-        {...otherProps}
-        labelWidth={labelWidth}
-        className={classes ? Object.values(classes).join(' ') : ''}
-        id={id}
-        onChange={onChangeHandler}
-        type={inputType || 'text'}
-        style={{ fontSize: 'inherit' }}
-        inputComponent={showMask ? MaskedInput : inputComponent || undefined}
-        notched={shouldShrinkLabel(value, notched)}
-        inputProps={{
-          ...inputProps, // Backwards compatible
-          ...InputProps,
-          value,
-          placeholder: getFinalPlaceholder({
-            noIntl,
-            placeholder,
-            defaultPlaceholder,
-            intl,
-            type,
-          }),
-          noValidate: true,
-          mask: mask || undefined,
-          pattern: mask ? '[0-9]*' : undefined,
-          onDateChange: inputType === 'date' ? onDateChange : undefined,
-        }}
-        startAdornment={getStartAdornment(props)}
-        endAdornment={getEndAdornment(props)}
-      />
-      {info && <FormHelperText>{info}</FormHelperText>}
-    </FormControl>
+      helperText={helperText}
+      id={id}
+      InputLabelProps={{
+        style: labelStyle,
+        shrink: shouldShrinkLabel(value),
+        ...InputLabelProps,
+      }}
+      InputProps={{
+        className: classes ? Object.values(classes).join(' ') : '',
+        style: { fontSize: 'inherit' },
+        startAdornment: getStartAdornment({ dataType, startAdornment }),
+        endAdornment: getEndAdornment({ endAdornment }),
+        notched: shouldShrinkLabel(value, notched),
+        inputComponent,
+        ...InputProps,
+        inputProps: {
+          ...inputProps,
+          ...InputProps.inputProps,
+        },
+      }}
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+      style={style}
+      type={type}
+      value={value}
+      required={required}
+      {...otherProps}
+    />
   );
 };
 
-TextInput.propTypes = {
-  error: PropTypes.bool,
-  id: PropTypes.string,
-  info: PropTypes.node,
-  inputComponent: PropTypes.func,
-  inputProps: PropTypes.object,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  noIntl: PropTypes.bool,
-  onChange: PropTypes.func,
-  placeholder: PropTypes.node,
-  simpleOnChange: PropTypes.bool, // Removes all onChange modifications
-  type: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-};
-
-TextInput.defaultProps = {
-  error: false,
-  id: undefined,
-  info: undefined,
-  inputComponent: null,
-  inputProps: undefined,
-  label: '',
-  noIntl: false,
-  onChange: undefined,
-  placeholder: undefined,
-  simpleOnChange: false,
-  type: undefined,
-  value: undefined,
-};
-
-export default injectIntl(TextInput);
+export default TextInput;

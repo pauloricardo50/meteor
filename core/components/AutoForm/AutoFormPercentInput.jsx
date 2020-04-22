@@ -3,20 +3,20 @@ import React from 'react';
 import AutoFormTextInput from './AutoFormTextInput';
 
 const AutoFormPercentInput = props => {
-  const { inputProps } = props;
+  const { InputProps } = props;
 
   return (
     <AutoFormTextInput
       {...props}
       showValidIconOnChange
-      inputProps={{
-        ...inputProps,
+      InputProps={{
+        ...InputProps,
         inputType: 'percent',
         percent: true,
         placeholder: '100',
         notched: true,
       }}
-      inputLabelProps={{ shrink: true }}
+      InputLabelProps={{ shrink: true }}
     />
   );
 };

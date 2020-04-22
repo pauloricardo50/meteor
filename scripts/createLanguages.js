@@ -59,6 +59,7 @@ const config = {
         'steps',
         'Table',
         'Uploader',
+        'PropertyAdder',
       ],
     },
     {
@@ -101,6 +102,7 @@ const config = {
         'Uploader',
         'UserReservation',
         'Widget1',
+        'PropertyAdder',
       ],
     },
     {

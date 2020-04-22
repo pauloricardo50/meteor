@@ -1,10 +1,10 @@
 import React from 'react';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { widget1Constants } from '../../../redux/widget1';
+import Tab from '../../Material/Tab';
+import Tabs from '../../Material/Tabs';
 import T from '../../Translation';
 import Widget1OptionsContainer from './Widget1OptionsContainer';
 

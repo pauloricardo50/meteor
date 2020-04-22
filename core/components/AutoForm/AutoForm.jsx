@@ -41,7 +41,7 @@ const inputSwitch = (childProps, index, parentProps) => {
     component,
     height,
     className = '',
-  } = childProps.inputProps;
+  } = childProps.InputProps;
 
   switch (type) {
     case 'textInput':
@@ -97,7 +97,7 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   const childProps = {
     ...parentProps,
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
-    inputProps: {
+    InputProps: {
       ...singleInput,
       placeholder:
         singleInput.placeholder ||
@@ -110,51 +110,43 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   };
 
   if (parentProps.noPlaceholders) {
-    childProps.inputProps.placeholder = '';
+    childProps.InputProps.placeholder = '';
   }
 
   // Prevent undefined condition to trigger as well
-  if (childProps.inputProps.condition === false) {
+  if (childProps.InputProps.condition === false) {
     return null;
   }
 
-  if (childProps.inputProps.required === true) {
-    childProps.inputProps.label = (
-      <span>
-        <T
-          id={`Forms.${childProps.inputProps.intlId ||
-            childProps.inputProps.id}`}
-          values={childProps.inputProps.intlValues}
-        />
-        <span style={{ color: 'red' }}> *</span>
-      </span>
-    );
-  } else {
-    childProps.inputProps.label = (
+  childProps.InputProps.label = (
+    <>
       <T
-        id={`Forms.${childProps.inputProps.intlId || childProps.inputProps.id}`}
-        values={childProps.inputProps.intlValues}
+        id={`Forms.${childProps.InputProps.intlId || childProps.InputProps.id}`}
+        values={childProps.InputProps.intlValues}
       />
-    );
-  }
+      {childProps.InputProps.required && (
+        <span style={{ color: 'red' }}>{'\u00a0*'}</span>
+      )}
+    </>
+  );
 
   // Support options that are only string/boolean ids instead of objects
   // check for undefined because of boolean false ids
   if (
-    childProps.inputProps.type === 'radioInput' ||
-    childProps.inputProps.type === 'selectFieldInput'
+    childProps.InputProps.type === 'radioInput' ||
+    childProps.InputProps.type === 'selectFieldInput'
   ) {
-    childProps.inputProps.options = childProps.inputProps.options.map(o =>
+    childProps.InputProps.options = childProps.InputProps.options.map(o =>
       o.id === undefined ? { id: o } : o,
     );
   }
 
   // if info is true, map it to a i18n string
-  if (childProps.inputProps.info) {
-    childProps.inputProps.info = (
+  if (childProps.InputProps.info) {
+    childProps.InputProps.info = (
       <T
-        id={`Forms.${childProps.inputProps.intlId ||
-          childProps.inputProps.id}.info`}
+        id={`Forms.${childProps.InputProps.intlId ||
+          childProps.InputProps.id}.info`}
       />
     );
   }
