@@ -18,11 +18,12 @@ class LoanTagger extends React.Component {
       setLoading,
       isTagged,
       loanId,
-      conversationId,
       setTagIds,
       refetch,
+      conversation,
     } = this.props;
     const { user: { alias } = {} } = Front;
+    const { id: conversationId, assignee } = conversation;
 
     setLoading(true);
     if (isTagged) {
@@ -45,7 +46,9 @@ class LoanTagger extends React.Component {
       setLoading(false);
       setTagIds(newTagIds);
       Front.moveToInbox('team');
-      Front.assign(alias);
+      if (!assignee) {
+        Front.assign(alias);
+      }
       refetch();
     });
   };
@@ -86,6 +89,7 @@ export default withProps(({ loan, conversation, setRef, tagIds }) => {
     setLoading,
     isTagged,
     loanId,
+    conversation,
     conversationId,
     loading,
     ref: setRef,
