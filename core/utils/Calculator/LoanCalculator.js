@@ -1035,12 +1035,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     canCalculateSolvency({ loan, borrowers }) {
+      const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
       if (!borrowers.length) {
         return false;
       }
 
       const bankFortune = this.getFortune({ borrowers });
-      if (!bankFortune) {
+      if (!bankFortune && !isRefinancing) {
         return false;
       }
 
@@ -1049,7 +1050,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+      if (isRefinancing) {
         const property = this.selectProperty({ loan });
 
         if (!property?.value) {
