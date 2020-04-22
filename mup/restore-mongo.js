@@ -2,6 +2,7 @@ const yargs = require('yargs');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
 const chalk = require('chalk');
+const { retrieveSecret } = require('./utils/secrets');
 
 const { argv } = yargs
   .string('environment')
@@ -11,14 +12,7 @@ const { argv } = yargs
   .string('archivePath')
   .describe('archivePath', 'file location to store archive at');
 
-if (!fs.existsSync('./configs/mongo-auth.json')) {
-  console.error(
-    chalk.redBright`Please create the './configs/mongo-auth.json' file as described in the Atlas Database User section of the docs`,
-  );
-  process.exit(1);
-}
-
-const { username, password } = require('./configs/mongo-auth.json');
+const { username, password } = retrieveSecret('mongo-user');
 
 let dbHost =
   'Cluster0-shard-0/cluster0-shard-00-00-rcyrm.gcp.mongodb.net:27017,cluster0-shard-00-01-rcyrm.gcp.mongodb.net:27017,cluster0-shard-00-02-rcyrm.gcp.mongodb.net:27017';

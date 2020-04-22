@@ -75,13 +75,6 @@ const isDeploying = mupCommands.includes('deploy');
 
 sh.set('-e');
 
-if (!fs.existsSync('./configs/registry-key.json')) {
-  console.error(
-    chalk.redBright`Please create the './configs/registry-key.json' file as described in the Private Repository Credentials section of the docs`,
-  );
-  process.exit(1);
-}
-
 sh.exec('node update-servers');
 
 if (mupCommands[0] === 'deploy') {

@@ -1,60 +1,92 @@
 # Authentication
 
+## Google Cloud
+
+Your Google Cloud account is used to access secrets stored in the Google Cloud Secret Manager using the Cloud SDK.
+
+1. [Install](https://cloud.google.com/sdk/docs) the Cloud SDK
+2. Run `gcloud init`. The default project isn't important since the deploy scripts will always configure it to use the correct one.
+
 ## SSH
+
+// TODO: update this section
 
 The `mup` scripts look for an ssh key at `~/.ssh/epotek`. You can create it by running `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`. Please note that `ssh-keygen` doesn't accept paths with the `~` character, so you will need to use the full path to your home folder.
 
 Add the public key to Google Cloud by going to https://console.cloud.google.com/compute/metadata/sshKeys?project=e-potek-1499177443071 and adding your ssh key.
 
-## Google Cloud API
 
-Both of these are needed to deploy.
 
-### Engine Credentials
-Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey and `Compute Engine`, and `JSON` key type, and download it. Move the file to `mup/configs/credentials.json`.
+## Updating Secret Access
 
-This is used for updating the lists of servers.
+To give an account access to a secret:
+1. Go to the [Secret Manager](https://console.cloud.google.com/security/secret-manager?project=e-potek-1499177443071) page
+2. Select the secret
+3. In the sidebar, click `Add Member`
+4. Put in the user's email and add the `Secret Manager Secret Accessor` row
 
-### Private Repository Credentials
+If you are not able to add a service account, make sure the service account appears in the [IAM](https://console.cloud.google.com/iam-admin/iam?project=e-potek-1499177443071) page. If not, select `Add` to add the service account.
 
-Go to the `private-registry` [service account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/113489271703975496945?project=e-potek-1499177443071), select `Edit`, and click on `Create Key`. Download the key and move it to `mup/configs/registry-key.json`.
+To remove a user's access to a secret, open the secret's sidebar, expand `Secret Manager Secret Accessor`, and use the trash icon to remove access.
 
-This is used on the servers to authenticate docker with the private registry.
+## Secrets
 
-## Atlas API Keys
+### production-meteor-settings
+**Who has access:** Anyone who deploys to production<br />
+**Rotate Instructions:** TODO. Contains many separate secrets and api keys for various services. 
+<br />
 
-Go to https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#access/apiKeys > `Manage` > `Create API Key`.
+### staging-meteor-settings
+**Who has acces:** Anyone who deploys to staging<br />
+**Rotate Instructions:** TODO. Contains many separate secrets and api keys for various services.
+
+
+### base-mongo-url
+**Who has acces:** Anyone who deploys to any environment<br />
+**Rotate Instructions:** Create a new Mongo user on Atlas, and set the secret's value to the current value updated with the new user's credentials. After `node run-all -e all reconfig` is run, the old user can be deleted on Atlas.
+
+### deploy-engine-credentials
+**Use:** Access the Google Cloud Engine API to get the list of servers in instance groups<br/>
+**Who has acces:** Anyone who needs to run deploy scripts<br />
+**Rotate Instructions:** Go to https://console.cloud.google.com/apis/credentials/serviceaccountkey, select `Compute Engine` and the `JSON` key type, and download it. Set the secret value to the contents of the file. TODO: check if it is safe to delete all old keys.
+
+### registry-password
+**Use:** Read/Write access to the Google Cloud Storage bucket the Docker Registry images are stored in.<br/>
+**Who has acces:** Anyone who sets up new servers or deploys<br />
+**Rotate Instructions:** Go to the `private-registry` [service account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/113489271703975496945?project=e-potek-1499177443071), select `Edit`, and click on `Create Key`. Download the key and set the secret's value to the file's content. Afterward, run `node run-all -e all docker setup` and delete the old keys in the service account.
+
+### atlas-project-owner-api
+**Use:** API credentials for project owner access. Used to update the IP address whitelist.<br/>
+**Who has access:** Anyone who creates new servers <br />
+**Rotate Instructions:** Go to https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#access/apiKeys > `Manage` > `Create API Key`. Give it a description with `shared credentials for local scripts`.
 
 The api key must have the `Project Owner` permission to be able to update the IP whitelist.
 
-Store the keys in `configs/atlas-auth.json` in the format:
-```
+Create a new value for the secret in the format:
+```json
 {
   "publicKey": "abcdefg",
   "privateKey": "1111111-aaaa-1111-11aa-11111111111"
 }
-
 ```
 
-This is used to authenticate 
+Aftewards, delete the old API key with the `shared credentials for local scripts` description.
 
-## Atlas Database User
-
-This user is needed to connect to Atlas for the `atlas-migrate.sh` script or to connect with the mongo shell.
-
+### mongo-user
+**Use:** MongoDB user who has read/write access to the production and staging databases<br/>
+**Who has acces:** Anyone who runs the mongo scripts to access the production or staging databases<br />
+**Rotate Instructions:**
 1. Go to the [Database Access](https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#security/database/users) page for the Atlas cluster
-2. Click Add New User
-3. Put in a username that shows it is yours, and create a password. You will not be shown the password later, though you can change it.
-4. Select `Read and Write to any database`
-5. Create a file in `mup/configs/mongo-auth.json` with the content:
+2. Select `Edit` for the `migration-admin` user
+3. Click `Edit Password` and `Autogenerate Secure Password`
+4. Copy the password for future access, and click `Update User`
+5. Create a new value for the secret in the format:
 ```json
 {
-  "username": "username",
-  "password": "password"
+  "username": "migration-admin",
+  "password": "< new password >"
 }
 ```
-
-To connect to the database from your computer, you also need to [whitelist your IP address](https://cloud.mongodb.com/v2/5e31aad95538553602af0c98#security/network/whitelist). 
 
 # VM Instances
 
