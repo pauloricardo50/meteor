@@ -390,7 +390,7 @@ export const getBorrowerFortuneArray = ({ purchaseType } = {}) => {
           id: 'theoreticalExpenses',
           type: 'custom',
           Component: ({
-            inputProps: { currentValue, label, itemValue = {} },
+            InputProps: { currentValue, label, itemValue = {} },
           }) => (
             <div className="flex-col" style={{ paddingLeft: 12 }}>
               <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>

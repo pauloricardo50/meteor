@@ -5,4 +5,12 @@
   .user-form {
     max-width: 400px;
   }
+
+  &-title {
+    display: flex;
+    small {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
