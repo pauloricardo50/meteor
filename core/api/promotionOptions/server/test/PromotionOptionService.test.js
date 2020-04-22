@@ -419,9 +419,10 @@ describe('PromotionOptionService', function() {
       ).to.throw('ne peut pas être dans le futur');
     });
 
-    it('does not throw if start date is today', () => {
+    it('does not throw if start date is later today', () => {
       const startDate = moment()
-        .add(1, 'hour')
+        .endOf('day')
+        .subtract(1, 'minutes')
         .toDate();
 
       expect(() =>

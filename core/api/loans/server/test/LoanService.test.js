@@ -1507,7 +1507,9 @@ describe('LoanService', function() {
           properties: {
             value: 1000000,
           },
-          previousLoanTranches: [{ value: 600000, rate: 0.01 }],
+          previousLoanTranches: [
+            { value: 600000, rate: 0.01, dueDate: new Date() },
+          ],
         },
         organisations: [
           ...generateOrganisationsWithLenderRules({

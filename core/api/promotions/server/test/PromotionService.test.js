@@ -9,6 +9,7 @@ import LoanService from '../../../loans/server/LoanService';
 import LotService from '../../../lots/server/LotService';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
+import { PROMOTION_OPTION_STATUS } from '../../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import PropertyService from '../../../properties/server/PropertyService';
 import UserService from '../../../users/server/UserService';
@@ -337,6 +338,7 @@ describe('PromotionService', function() {
                 _id: 'promotionOptionId',
                 loan: { _id: 'loanId' },
                 promotion: { _id: 'promotionId' },
+                status: PROMOTION_OPTION_STATUS.SOLD,
               },
               propertyLinks: [{ _id: 'prop1' }],
               attributedTo: { _id: 'loanId' },
