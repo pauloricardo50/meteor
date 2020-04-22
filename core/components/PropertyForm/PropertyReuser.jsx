@@ -3,40 +3,62 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import DialogSimple from '../DialogSimple';
+import Button from '../Button';
 import Icon from '../Icon';
+import Dialog from '../Material/Dialog';
 import T, { Money } from '../Translation';
-import PropertyReuserContainer from './PropertyReuserContainer';
 
-const PropertyReuser = ({ properties, handleSelectProperty, disabled }) => (
-  <DialogSimple
-    buttonProps={{
-      raised: true,
-      primary: true,
-      label: <T id="PropertiesPageAdder.reuseProperty" />,
-      icon: <Icon type="loop" />,
-      disabled,
-    }}
-    title={<T id="PropertiesPageAdder.reuseProperty" />}
+const PropertyReuser = ({
+  setOpenPropertyAdder,
+  reusableProperties = [],
+  openModal,
+  setOpenModal,
+  linkProperty,
+}) => (
+  <Dialog
+    title={<T id="PropertyAdder.reuser.dialogTitle" />}
+    open={openModal}
+    actions={[
+      <Button
+        key="cancel"
+        onClick={() => setOpenModal(false)}
+        label="Annuler"
+        raised
+        primary
+      />,
+    ]}
   >
-    {!properties ||
-      (properties.length === 0 && (
-        <p>
-          Vous n'avez pas de bien immobiliers à réutiliser dans d'autres
-          dossiers
-        </p>
-      ))}
-    <List className="flex-col">
-      {properties.map(({ totalValue, address, _id }) => (
-        <ListItem button key={_id} onClick={() => handleSelectProperty(_id)}>
-          <ListItemText
-            primary={address}
-            secondary={<Money value={totalValue} />}
-          />
-        </ListItem>
-      ))}
-    </List>
-  </DialogSimple>
+    <div className="flex-col center">
+      <p className="description">
+        <T id="PropertyAdder.reuser.dialogDescription" />
+      </p>
+      <Button
+        onClick={() => {
+          setOpenModal(false);
+          setOpenPropertyAdder(true);
+        }}
+        label={<T id="PropertyAdder.reuser.newProperty" />}
+        secondary
+        raised
+        icon={<Icon type="add" />}
+        className="mb-32"
+        style={{ maxWidth: '250px' }}
+      />
+      <h4>
+        <T id="PropertyAdder.reuser.reusePropertyTitle" />
+      </h4>
+      <List className="flex-col" style={{ width: '100%' }}>
+        {reusableProperties.map(({ _id, address, totalValue }) => (
+          <ListItem key={_id} button onClick={() => linkProperty(_id)}>
+            <ListItemText
+              primary={address}
+              secondary={<Money value={totalValue} />}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  </Dialog>
 );
 
-export default PropertyReuserContainer(PropertyReuser);
+export default PropertyReuser;

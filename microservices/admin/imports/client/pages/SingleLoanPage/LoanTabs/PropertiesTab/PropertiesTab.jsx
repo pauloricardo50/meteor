@@ -1,9 +1,11 @@
 import React from 'react';
 
-import Tabs from 'core/components/Tabs';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
+import { PropertyAdder } from 'core/components/PropertyForm';
+import Tabs from 'core/components/Tabs';
 import Calculator from 'core/utils/Calculator';
+
 import SinglePropertyPage from '../../../SinglePropertyPage';
 
 const propertiesTabLabel = (loan, property, index) => {
@@ -22,7 +24,7 @@ const propertiesTabLabel = (loan, property, index) => {
 };
 
 const PropertiesTab = ({ loan }) => {
-  const { properties, userId, _id: loanId, hasPromotion } = loan;
+  const { properties, userId, _id: loanId, hasPromotion, purchaseType } = loan;
   return (
     <div className="properties-tab">
       {hasPromotion &&
@@ -30,16 +32,10 @@ const PropertiesTab = ({ loan }) => {
       <div className="buttons">
         <PropertyAdder
           loanId={loanId}
-          propertyUserId={userId}
+          userId={userId}
           disabled={hasPromotion}
+          isRefinancing={purchaseType === PURCHASE_TYPE.REFINANCING}
         />
-        {userId && (
-          <PropertyReuser
-            loanId={loanId}
-            propertyUserId={userId}
-            disabled={hasPromotion}
-          />
-        )}
       </div>
       {properties && properties.length > 0 && (
         <Tabs

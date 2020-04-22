@@ -250,3 +250,13 @@ export const loanLinkBorrower = new Method({
   name: 'loanLinkBorrower',
   params: { loanId: String, borrowerId: String },
 });
+
+export const loanGetReusableProperties = new Method({
+  name: 'loanGetReusableProperties',
+  params: { loanId: String },
+});
+
+export const loanLinkProperty = new Method({
+  name: 'loanLinkProperty',
+  params: { loanId: String, propertyId: String },
+});

@@ -1,4 +1,9 @@
 {
+  "PropertyAdder.buttonLabel": "Bien immobilier",
+  "PropertyAdder.reuser.dialogTitle": "Ajouter un bien immobilier",
+  "PropertyAdder.reuser.dialogDescription": "Vous pouvez ajouter un nouveau bien immobilier ou en réutiliser un déjà existant",
+  "PropertyAdder.reuser.newProperty": "Nouveau bien immobilier",
+  "PropertyAdder.reuser.reusePropertyTitle": "Réutiliser un bien immobilier existant",
   "Forms.reimbursementPenalty": "Pénalités de remboursement",
   "Forms.refinancingTotal": "{isLoanIncreased, select, true {Augmentation de crédit} other {Diminution de crédit}}",
   "Forms.newWantedLoan": "Nouveau prêt",

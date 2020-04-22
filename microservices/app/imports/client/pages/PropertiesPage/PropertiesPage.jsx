@@ -52,7 +52,11 @@ const PropertiesPage = ({ loan, currentUser }) => {
           ))}
 
           {!hasPromotion && (
-            <PropertiesPageAdder loanId={loanId} currentUser={currentUser} />
+            <PropertiesPageAdder
+              loanId={loanId}
+              currentUser={currentUser}
+              purchaseType={purchaseType}
+            />
           )}
         </div>
       </section>
