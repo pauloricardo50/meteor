@@ -10,10 +10,7 @@ const writeToPublic = (name, data) => {
 
 // Returns a csv from an array of objects with
 // values separated by tabs and rows separated by newlines
-const arrayToCsv = array => {
-  // Use first element to choose the keys and the order
-  const keys = Object.keys(array[0]);
-
+const arrayToCsv = (array, keys) => {
   // Build header
   let result = `${keys.join('\t')}\n`;
 
@@ -47,7 +44,7 @@ const arrayToCsv = array => {
 //     };
 //   });
 
-//   writeToPublic('users.csv', arrayToCsv(result));
+//   writeToPublic('users.csv', arrayToCsv(result, ['firstName', 'lastName', 'email', 'organisation', 'title']));
 // };
 
 // export const exportUsersForMarketing = () => {
@@ -71,7 +68,7 @@ const arrayToCsv = array => {
 //     };
 //   });
 
-//   writeToPublic('users.csv', arrayToCsv(result));
+//   writeToPublic('users.csv', arrayToCsv(result, ['firstName', 'lastName', 'email', 'status']));
 // };
 
 export default writeToPublic;
