@@ -4,6 +4,11 @@ const getRefinancingFormArray = () => [
     type: 'textInput',
   },
   {
+    id: 'previousLoanAmortization',
+    type: 'textInput',
+    money: true,
+  },
+  {
     id: 'previousLoanTranches',
     type: 'arrayInput',
     inputs: [
