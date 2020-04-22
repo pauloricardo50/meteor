@@ -50,7 +50,6 @@ const FinancingProject = ({ purchaseType }) => {
         {
           Component: FinancingField,
           id: 'propertyValue',
-          // intlProps: { values: { purchaseType } },
           calculatePlaceholder: data => Calculator.selectPropertyValue(data),
           max: 100000000,
           allowUndefined: true,

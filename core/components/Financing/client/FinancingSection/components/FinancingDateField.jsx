@@ -36,30 +36,19 @@ export const FinancingDateField = ({
 export default compose(
   FinancingDataContainer,
   StructureUpdateContainer,
-  withProps(
-    ({
-      max,
-      min,
-      calculatePlaceholder,
-      placeholder,
-      id,
-      allowUndefined,
-      updateStructure,
-      ...props
-    }) => {
-      // The schema never changes
-      const [schema] = useState(
-        new SimpleSchema2Bridge(
-          new SimpleSchema({
-            [id]: { type: Date, optional: true },
-          }),
-        ),
-      );
+  withProps(({ id, updateStructure }) => {
+    // The schema never changes
+    const [schema] = useState(
+      new SimpleSchema2Bridge(
+        new SimpleSchema({
+          [id]: { type: Date, optional: true },
+        }),
+      ),
+    );
 
-      return {
-        schema,
-        handleSubmit: updateStructure,
-      };
-    },
-  ),
+    return {
+      schema,
+      handleSubmit: updateStructure,
+    };
+  }),
 )(FinancingDateField);
