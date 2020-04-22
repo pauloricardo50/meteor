@@ -6,7 +6,7 @@ import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 
 const triggerComponent = ({ onClick }) => (
   <div
-    className="card1 card-top card-hover mb-16 text-center pointer flex-col"
+    className="card1 card-top card-hover mb-16 text-center pointer flex-col property-form"
     onClick={onClick}
   >
     <span className="plus">+</span>
