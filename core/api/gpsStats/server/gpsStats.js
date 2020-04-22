@@ -1,9 +1,20 @@
+import { LOAN_STATUS } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 
 const classifiedCities = require('./classifiedCities.json');
 
 export const getStats = ({ romandyOnly = true }) => {
   const loans = LoanService.fetch({
+    $filters: {
+      status: {
+        $in: [
+          LOAN_STATUS.ONGOING,
+          LOAN_STATUS.CLOSING,
+          LOAN_STATUS.BILLING,
+          LOAN_STATUS.FINALIZED,
+        ],
+      },
+    },
     structure: { property: { zipCode: 1, country: 1 } },
   });
 
