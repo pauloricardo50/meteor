@@ -40,6 +40,7 @@ const analysisConfig = {
         `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
     },
     residenceType: { id: 'Forms.residenceType' },
+    purchaseType: { id: 'Forms.purchaseType' },
     user: [
       {
         id: 'Forms.roles',
@@ -226,6 +227,7 @@ const analysisConfig = {
           user: {
             referredByOrganisation: { name: 1 },
           },
+          purchaseType: 1,
         },
         format: ({ loan }) => loan && loan.category,
       },
@@ -250,6 +252,10 @@ const analysisConfig = {
       {
         id: 'Référé par',
         format: ({ loan }) => loan?.user?.referredByOrganisation?.name,
+      },
+      {
+        id: 'Type du dossier',
+        format: ({ loan }) => loan?.purchaseType,
       },
     ],
   },
@@ -312,6 +318,7 @@ const analysisConfig = {
           category: 1,
           assignees: { name: 1 },
           structureCache: { wantedLoan: 1 },
+          purchaseType: 1,
         },
         format: ({ loan: { assignees = [] } = {} }) =>
           assignees.length
@@ -321,6 +328,10 @@ const analysisConfig = {
       {
         label: 'Catégorie du dossier',
         format: ({ loan }) => loan?.category,
+      },
+      {
+        label: 'Type du dossier',
+        format: ({ loan }) => loan?.purchaseType,
       },
       {
         id: 'Forms.wantedLoan',
