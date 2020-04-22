@@ -44,12 +44,13 @@ const FinancingResult = ({ error }) =>
       ]}
       detailConfig={[
         {
-          id: 'cost',
+          id: 'cost-title',
           label: (
-            <h4 className="section-subtitle">
+            <h4>
               <T id="FinancingResult.cost" />
             </h4>
           ),
+          Component: () => <span className="cost-title" />,
         },
         {
           id: 'interestsCost',
@@ -66,12 +67,17 @@ const FinancingResult = ({ error }) =>
           Component: FinancingPropertyExpenses,
         },
         {
-          id: 'finma',
+          id: 'spacing',
+          label: <span />,
+        },
+        {
+          id: 'finma-title',
           label: (
-            <h4 className="section-subtitle">
+            <h4>
               <T id="FinancingResult.finma" />
             </h4>
           ),
+          Component: () => <span className="finma-title" />,
         },
         {
           id: 'borrowRatio',
