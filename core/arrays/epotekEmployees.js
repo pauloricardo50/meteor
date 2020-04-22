@@ -88,7 +88,7 @@ const employees = [
     name: 'Patrick Luongo',
     title: 'Directeur des Financements et de l’agence de Lausanne',
     appTitle: 'Financement & Prévoyance',
-    phoneNumber: '+41 22 566 82 96',
+    phoneNumber: '+41 21 566 25 24',
     _id: 'RjzusumG8ngdWQ3Jz',
     gender: 'M',
     calendly: 'https://calendly.com/epotek-patrick',
