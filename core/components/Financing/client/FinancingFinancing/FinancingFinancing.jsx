@@ -5,6 +5,9 @@ import {
   PURCHASE_TYPE,
 } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
+import { createRoute } from '../../../../utils/routerUtils';
+import IconButton from '../../../IconButton';
+import Link from '../../../Link';
 import T from '../../../Translation';
 import Calc, { getOffer } from '../FinancingCalculator';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
@@ -158,7 +161,18 @@ const FinancingFinancing = ({ purchaseType }) => {
         },
         {
           id: 'previousLoanValue',
-          Component: CalculatedValue,
+          Component: props => (
+            <span className="flex center-align previousLoanValue">
+              <CalculatedValue {...props} />
+              <Link
+                to={createRoute('/loans/:loanId/refinancing', {
+                  loanId: props.loan._id,
+                })}
+              >
+                <IconButton type="edit" size="small" className="ml-8" />
+              </Link>
+            </span>
+          ),
           condition: isRefinancing,
           value: Calculator.getPreviousLoanValue,
           className: 'flex-col previousLoanValue',
