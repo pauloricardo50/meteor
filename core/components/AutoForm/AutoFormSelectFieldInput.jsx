@@ -10,10 +10,10 @@ export default class AutoFormSelectFieldInput extends Component {
     super(props);
 
     const {
-      inputProps: { defaultValue },
+      InputProps: { defaultValue },
     } = this.props;
     this.state = {
-      value: this.props.inputProps.currentValue || defaultValue || '',
+      value: this.props.InputProps.currentValue || defaultValue || '',
       errorText: '',
       saving: false,
     };
@@ -23,7 +23,7 @@ export default class AutoFormSelectFieldInput extends Component {
 
   saveValue = () => {
     const {
-      inputProps: { id },
+      InputProps: { id },
       updateFunc,
       docId,
     } = this.props;
@@ -38,11 +38,11 @@ export default class AutoFormSelectFieldInput extends Component {
   };
 
   mapOptions = (transform = () => null) =>
-    this.props.inputProps.options.map(
+    this.props.InputProps.options.map(
       ({ id, intlId, intlValues, label, ref, ...otherProps }) => ({
         label: label || transform(id) || (
           <T
-            id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
+            id={`Forms.${intlId || this.props.InputProps.id}.${id}`}
             values={intlValues}
           />
         ),
@@ -53,7 +53,7 @@ export default class AutoFormSelectFieldInput extends Component {
 
   render() {
     const {
-      inputProps: {
+      InputProps: {
         style,
         label,
         disabled,
@@ -95,7 +95,7 @@ export default class AutoFormSelectFieldInput extends Component {
 AutoFormSelectFieldInput.propTypes = {
   currentValue: PropTypes.any,
   docId: PropTypes.string.isRequired,
-  inputProps: PropTypes.shape({
+  InputProps: PropTypes.shape({
     label: PropTypes.node.isRequired,
     disabled: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Tab from '@material-ui/core/Tab';
 import MuiTabs from '@material-ui/core/Tabs';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 
 import Link from '../Link';
+import Tab from '../Material/Tab';
 import TabsContainer from './TabsContainer';
 
 class Tabs extends Component {

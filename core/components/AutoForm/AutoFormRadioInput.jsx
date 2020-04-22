@@ -9,8 +9,8 @@ export default class AutoFormRadioInput extends Component {
   constructor(props) {
     super(props);
     // Set initial state to be the 1st option
-    if (this.props.inputProps.currentValue !== undefined) {
-      this.state = { value: this.props.inputProps.currentValue };
+    if (this.props.InputProps.currentValue !== undefined) {
+      this.state = { value: this.props.InputProps.currentValue };
     } else {
       // this.state = { value: this.props.options[0].id };
       this.state = { value: undefined, saving: false };
@@ -30,8 +30,8 @@ export default class AutoFormRadioInput extends Component {
     }
     return (
       <T
-        id={`Forms.${this.props.inputProps.intlId ||
-          this.props.inputProps.id}.${optionId}`}
+        id={`Forms.${this.props.InputProps.intlId ||
+          this.props.InputProps.id}.${optionId}`}
         values={intlValues}
       />
     );
@@ -49,7 +49,7 @@ export default class AutoFormRadioInput extends Component {
     }
 
     // Save data to DB
-    const object = { [this.props.inputProps.id]: safeValue };
+    const object = { [this.props.InputProps.id]: safeValue };
     this.props
       .updateFunc({ object, id: this.props.docId })
       .finally(() => this.setState({ saving: false }));
@@ -57,7 +57,7 @@ export default class AutoFormRadioInput extends Component {
 
   render() {
     const {
-      inputProps: {
+      InputProps: {
         id,
         style,
         label,
@@ -110,7 +110,7 @@ AutoFormRadioInput.propTypes = {
     PropTypes.number,
   ]),
   docId: PropTypes.string.isRequired,
-  inputProps: PropTypes.shape({
+  InputProps: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     options: PropTypes.arrayOf(PropTypes.object).isRequired,

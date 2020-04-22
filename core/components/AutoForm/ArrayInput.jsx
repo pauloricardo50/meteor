@@ -25,7 +25,7 @@ class ArrayInput extends Component {
   constructor(props) {
     super(props);
 
-    const count = (this.props.inputProps.currentValue || []).length;
+    const count = (this.props.InputProps.currentValue || []).length;
 
     this.state = {
       count,
@@ -36,7 +36,7 @@ class ArrayInput extends Component {
   getArray = () => {
     const array = [];
     const {
-      inputProps: { id, currentValue, inputs },
+      InputProps: { id, currentValue, inputs },
       disabled,
     } = this.props;
 
@@ -48,14 +48,14 @@ class ArrayInput extends Component {
         transform,
         intlId,
         Component: CustomComponent,
-        inputLabelProps: { shrink } = {},
+        InputLabelProps: { shrink } = {},
         adminOnly,
       } = input;
       const finalCurrentValue =
         currentValue && currentValue[i] && currentValue[i][inputId];
       const childProps = {
         ...this.props,
-        inputProps: {
+        InputProps: {
           notched: shrink,
           ...input,
           id: `${id}.${i}.${inputId}`,
@@ -79,7 +79,7 @@ class ArrayInput extends Component {
       if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
-        childProps.inputProps.options = options.map(opt =>
+        childProps.InputProps.options = options.map(opt =>
           opt.id === undefined
             ? {
                 id: opt,
@@ -134,14 +134,14 @@ class ArrayInput extends Component {
     this.state.count > 0 &&
     this.props
       .popFunc({
-        object: { [`${this.props.inputProps.id}`]: 1 },
+        object: { [`${this.props.InputProps.id}`]: 1 },
         id: this.props.docId,
       })
       .then(() => this.setState({ count: this.state.count - 1 }));
 
   render() {
     const {
-      inputProps: {
+      InputProps: {
         style,
         label,
         disabled,
