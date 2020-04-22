@@ -1,12 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 
 import { createCollection } from '../helpers/collectionHelpers';
-import {
-  address,
-  documentsField,
-  moneyField,
-  percentageField,
-} from '../helpers/sharedSchemas';
+import { address, documentsField } from '../helpers/sharedSchemas';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
