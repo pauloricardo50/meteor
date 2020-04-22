@@ -23,12 +23,7 @@ const MaxPropertyValueResultsTableRefinancing = ({ loan, previousLoan }) => {
         <div className="sums  animated fadeIn">
           <div className="left">
             <span className="label">
-              <T
-                id="MaxPropertyValueResults.potentialRaise"
-                tooltip={
-                  <T id="MaxPropertyValueResults.potentialRaise.tooltip" />
-                }
-              />
+              <T id="MaxPropertyValueResults.potentialRaise" />
             </span>
             <Money className="money bold" value={loan - previousLoan} />
           </div>
