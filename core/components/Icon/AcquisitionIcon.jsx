@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const AcquisitionIcon = ({ fontSize }) => (
   <span className="fa-layers fa-fw" style={{ fontSize }}>
     <FontAwesomeIcon icon={faHomeLg} transform="shrink-3 down-2 left-2" />
-    <FontAwesomeIcon icon={faPlus} inverse transform="shrink-6 up-5 right-6" />
+    <FontAwesomeIcon icon={faPlus} transform="shrink-6 up-5 right-6" />
   </span>
 );
 
