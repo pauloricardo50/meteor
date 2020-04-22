@@ -42,12 +42,8 @@ function format(styleApi) {
   } = styleApi;
 
   return [
-    // import "foo"
-    { match: and(hasNoMember, isAbsoluteModule) },
-    { separator: true },
-
     // import "./foo"
-    { match: and(hasNoMember, isRelativeModule) },
+    { match: hasNoMember },
     { separator: true },
 
     // Meteor itself
