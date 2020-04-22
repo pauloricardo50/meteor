@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import { route, generateTestsForPages } from '../../imports/core/cypress/utils';
+import { generateTestsForPages, route } from '../../imports/core/cypress/utils';
 
 const pages = {
   public: {
