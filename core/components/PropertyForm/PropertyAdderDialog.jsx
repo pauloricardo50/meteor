@@ -10,6 +10,15 @@ import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import Box from '../Box';
 import PropertyForm from './PropertyForm';
 
+SimpleSchema.setDefaultMessages({
+  messages: {
+    fr: {
+      loanValueTooHigh:
+        'Vos tranches de prêt hypothécaire dépassent la valeur de votre bien',
+    },
+  },
+});
+
 const PropertyAdderDialog = withProps(
   ({
     loanId,
@@ -40,6 +49,17 @@ const PropertyAdderDialog = withProps(
             allowedValues: Object.values(RESIDENCE_TYPE),
           },
           ...previousLoanTranchesSchema,
+          previousLoanTranches: {
+            ...previousLoanTranchesSchema.previousLoanTranches,
+            custom() {
+              const propertyValue = this.field('value').value;
+              const tranches = this.value || [];
+              const loanValue = tranches.reduce((t, { value }) => t + value, 0);
+              if (loanValue > propertyValue) {
+                return 'loanValueTooHigh';
+              }
+            },
+          },
         }),
       [],
     );
