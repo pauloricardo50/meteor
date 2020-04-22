@@ -117,7 +117,7 @@ const FinancingOwnFunds = props => {
           value: getLoanEvolution,
           className: 'flex-col center ownFundsLoanEvolution',
           children: value => (
-            <div className="flex-col center">
+            <div className="flex-col">
               <b style={{ color: '#444444' }}>
                 <T
                   id="Financing.loanEvolution.description"
@@ -151,12 +151,9 @@ const FinancingOwnFunds = props => {
           Component: CalculatedValue,
           condition: isRefinancing,
           value: Calculator.getReimbursementRequiredOwnFunds,
-          className: 'flex-col center reimbursementRequiredOwnFunds',
+          className: 'flex-col reimbursementRequiredOwnFunds',
           children: value => (
-            <div
-              className="flex-col center"
-              style={{ marginTop: 8, marginBottom: 8 }}
-            >
+            <div className="flex-col" style={{ marginTop: 8, marginBottom: 8 }}>
               <b style={{ color: '#444444', marginBottom: 4 }}>
                 <T
                   id="Financing.reimbursementRequiredOwnFunds.description"

@@ -161,7 +161,7 @@ const FinancingFinancing = ({ purchaseType }) => {
           Component: CalculatedValue,
           condition: isRefinancing,
           value: Calculator.getPreviousLoanValue,
-          className: 'flex-col center previousLoanValue',
+          className: 'flex-col previousLoanValue',
         },
       ]}
     />
