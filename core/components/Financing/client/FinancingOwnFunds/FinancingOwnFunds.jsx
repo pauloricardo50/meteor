@@ -115,10 +115,10 @@ const FinancingOwnFunds = props => {
           Component: CalculatedValue,
           condition: isRefinancing,
           value: getLoanEvolution,
-          className: 'flex-col center ownFundsLoanEvolution',
+          className: 'flex-col ownFundsLoanEvolution',
           children: value => (
-            <div className="flex-col">
-              <b style={{ color: '#444444' }}>
+            <div className="flex-col mb-8">
+              <b style={{ color: '#444444', marginBottom: 4 }}>
                 <T
                   id="Financing.loanEvolution.description"
                   values={{ isLoanIncreased: value > 0 }}
