@@ -6,7 +6,10 @@ import { toMoney } from '../../../../utils/conversionFunctions';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
 import FinancingProjectFees from '../FinancingProject/FinancingProjectFees';
-import FinancingSection, { CalculatedValue } from '../FinancingSection';
+import FinancingSection, {
+  CalculatedValue,
+  FinancingField,
+} from '../FinancingSection';
 import { FORMATS } from '../FinancingSection/components/CalculatedValue';
 import FinancingOwnFundsPicker from './FinancingOwnFundsPicker';
 import FinancingOwnFundsStatus from './FinancingOwnFundsStatus';
@@ -41,6 +44,11 @@ const getLoanEvolution = ({ loan, structure: { wantedLoan } }) =>
 const calculateDefaultReimbursementPenalty = data =>
   Calculator.getReimbursementPenalty(data);
 
+const oneStructureIncreasesLoan = ({ loan }) => {
+  const previousLoan = Calculator.getPreviousLoanValue({ loan });
+  return loan.structures.some(({ wantedLoan }) => wantedLoan > previousLoan);
+};
+
 const FinancingOwnFunds = props => {
   const { purchaseType } = props;
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
@@ -60,7 +68,9 @@ const FinancingOwnFunds = props => {
               {isRefinancing ? (
                 <CalculatedValue
                   value={Calculator.getReimbursementRequiredOwnFunds}
-                  children={value => (
+                  {...props}
+                >
+                  {value => (
                     <div className="flex-col center">
                       <T
                         id="Financing.reimbursementRequiredOwnFunds.description"
@@ -73,8 +83,7 @@ const FinancingOwnFunds = props => {
                       </span>
                     </div>
                   )}
-                  {...props}
-                />
+                </CalculatedValue>
               ) : (
                 <>
                   <CalculatedValue
@@ -162,6 +171,17 @@ const FinancingOwnFunds = props => {
           id: 'requiredOwnFunds',
           calculateValue: Calculator.getMissingOwnFunds,
           condition: !isRefinancing,
+        },
+        {
+          Component: FinancingField,
+          id: 'ownFundsUseDescription',
+          condition: p => isRefinancing && oneStructureIncreasesLoan(p),
+          type: 'text',
+          multiline: true,
+          rows: 2,
+          allowUndefined: true,
+          placeholder: 'Financing.ownFundsUseDescription.placeholder',
+          noIntl: true,
         },
         {
           Component: FinancingOwnFundsPicker,
