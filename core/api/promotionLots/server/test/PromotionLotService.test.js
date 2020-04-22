@@ -295,7 +295,7 @@ describe('PromotionLotService', function() {
   });
 
   describe('cancelPromotionLotReservation', () => {
-    it('makes the lot available again if the canceled reservation is RESERVED', () => {
+    it('makes the lot available again', () => {
       PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',
       });
@@ -308,7 +308,7 @@ describe('PromotionLotService', function() {
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
     });
 
-    it('does not make the lot available again if the canceled reservation is RESERVATION_ACTIVE', () => {
+    it('does not make the lot available again if another reservation is RESERVED', () => {
       PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pOptId',
       });

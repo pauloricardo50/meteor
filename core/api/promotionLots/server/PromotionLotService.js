@@ -74,23 +74,24 @@ class PromotionLotService extends CollectionService {
   }
 
   cancelPromotionLotReservation({ promotionOptionId }) {
-    const { promotionLots, status } = PromotionOptionService.get(
-      promotionOptionId,
-      {
-        loan: { _id: 1 },
-        promotionLots: { _id: 1 },
-        status: 1,
-      },
-    );
+    const { promotionLots } = PromotionOptionService.get(promotionOptionId, {
+      loan: { _id: 1 },
+      promotionLots: { _id: 1, promotionOptions: { status: 1 } },
+    });
 
-    // Make promotion lot available again only if it was sold or reserved
+    const [{ _id: promotionLotId, promotionOptions = [] }] = promotionLots;
+
+    // Make promotion lot available again only if no other promotion option status is SOLD or RESERVED
     if (
-      [PROMOTION_OPTION_STATUS.SOLD, PROMOTION_OPTION_STATUS.RESERVED].includes(
-        status,
-      )
+      !promotionOptions
+        .filter(({ _id }) => _id !== promotionOptionId)
+        .some(({ status: promotionOptionStatus }) =>
+          [
+            PROMOTION_OPTION_STATUS.SOLD,
+            PROMOTION_OPTION_STATUS.RESERVED,
+          ].includes(promotionOptionStatus),
+        )
     ) {
-      const [{ _id: promotionLotId }] = promotionLots;
-
       this.update({
         promotionLotId,
         object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
