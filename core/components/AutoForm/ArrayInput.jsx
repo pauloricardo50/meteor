@@ -148,6 +148,7 @@ class ArrayInput extends Component {
         renderRecap,
         currentValue,
         required,
+        description,
       },
     } = this.props;
     const { count, showRecap } = this.state;
@@ -162,6 +163,8 @@ class ArrayInput extends Component {
         <label htmlFor="" style={{ marginBottom: 8 }}>
           {label}
         </label>
+
+        {description && <p className="description">{description}</p>}
 
         {shouldShowRecap ? (
           <div
