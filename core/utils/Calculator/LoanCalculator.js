@@ -575,6 +575,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getRequiredOwnFunds({ loan, structureId }) {
       const projectValue = this.getProjectValue({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
+      const previousLoanValue = this.getPreviousLoanValue({ loan });
+
+      if (previousLoanValue > 0) {
+        return Math.max(previousLoanValue - loanValue, 0);
+      }
+
       return projectValue - loanValue;
     }
 
