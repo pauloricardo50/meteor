@@ -1,6 +1,6 @@
 import React from 'react';
 
-import T from '../../../../../../components/Translation';
+import T, { Money } from '../../../../../../components/Translation';
 import Calculator from '../../../../../../utils/Calculator';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import {
@@ -32,6 +32,7 @@ const getPropertyRows = loan => {
     minergie,
     yearlyExpenses,
     promotion,
+    totalValue,
   } = Calculator.selectProperty({ loan });
   const { residenceType } = loan;
 
@@ -40,6 +41,10 @@ const getPropertyRows = loan => {
       label: 'Bien immobilier',
       colspan: 2,
       type: ROW_TYPES.TITLE,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.totalValue" />,
+      data: <Money value={totalValue} />,
     },
     {
       label: <T id="PDF.projectInfos.property.promotionName" />,
