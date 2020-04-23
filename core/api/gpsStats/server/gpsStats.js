@@ -1,19 +1,12 @@
-import { LOAN_STATUS } from '../../loans/loanConstants';
+import getCanton from '../../../utils/zipcodes';
 import LoanService from '../../loans/server/LoanService';
 
 const classifiedCities = require('./classifiedCities.json');
 
-export const getStats = ({ romandyOnly = true }) => {
+export const getStats = ({ cantons = [] }) => {
   const loans = LoanService.fetch({
     $filters: {
-      status: {
-        $in: [
-          LOAN_STATUS.ONGOING,
-          LOAN_STATUS.CLOSING,
-          LOAN_STATUS.BILLING,
-          LOAN_STATUS.FINALIZED,
-        ],
-      },
+      'structureCache.propertyId': { $exists: true },
     },
     structure: { property: { zipCode: 1, country: 1 } },
   });
@@ -54,6 +47,8 @@ export const getStats = ({ romandyOnly = true }) => {
       },
       [],
     )
-    .filter(({ skip }) => (romandyOnly ? !skip : true))
-    .map(({ skip, ...rest }) => rest);
+    .filter(({ zipCode }) => {
+      const canton = getCanton(zipCode);
+      return cantons.includes(canton);
+    });
 };

@@ -1,5 +1,4 @@
 const fs = require('fs');
-// const mainCitiesJSON = require('./mainCities');
 
 const mainCities = JSON.parse(fs.readFileSync('./mainCities.json', 'utf-8'));
 const citiesCoordinates = JSON.parse(
@@ -46,7 +45,7 @@ const getClosestMainCity = ({ city, cities }) => {
 
     if (distance < best.dist) {
       best.dist = distance;
-      best.mainCity = { ...mainCity, skip: !!skip };
+      best.mainCity = mainCity;
     }
   });
 
@@ -54,6 +53,7 @@ const getClosestMainCity = ({ city, cities }) => {
 };
 
 const classifyCity = (city, index, cities) => {
+  process.stdout.write(`Processing city "${city.city}"`);
   const isMainCity = mainCities.some(({ zipCode }) => zipCode === city.zipCode);
   let closestMainCity;
 
@@ -62,16 +62,21 @@ const classifyCity = (city, index, cities) => {
   } else {
     closestMainCity = getClosestMainCity({ city, cities });
   }
+  console.log(` --> ${closestMainCity.city}`);
 
   return { ...city, closestMainCity };
 };
 
 const classifyCities = () => {
+  console.log('Classifying cities...');
   const classifiedCities = JSON.stringify(citiesCoordinates.map(classifyCity));
   fs.writeFileSync(
     '../../core/api/gpsStats/server/classifiedCities.json',
     classifiedCities,
     'utf-8',
+  );
+  console.log(
+    '\nDone classifying ! Result saved at "core/api/gpsStats/server/classifiedCities.json"',
   );
 };
 

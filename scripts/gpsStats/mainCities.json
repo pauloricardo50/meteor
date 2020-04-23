@@ -53,8 +53,7 @@
   },
   {
     "zipCode": 2540,
-    "city": "Granges",
-    "skip": true
+    "city": "Granges"
   },
   {
     "zipCode": 2800,
@@ -66,18 +65,15 @@
   },
   {
     "zipCode": 3600,
-    "city": "Thoune",
-    "skip": true
+    "city": "Thoune"
   },
   {
     "zipCode": 3800,
-    "city": "Interlaken",
-    "skip": true
+    "city": "Interlaken"
   },
   {
     "zipCode": 3900,
-    "city": "Viège",
-    "skip": true
+    "city": "Viège"
   },
   {
     "zipCode": 3960,
@@ -85,122 +81,98 @@
   },
   {
     "zipCode": 4000,
-    "city": "Bâle",
-    "skip": true
+    "city": "Bâle"
   },
   {
     "zipCode": 4332,
-    "city": "Stein",
-    "skip": true
+    "city": "Stein"
   },
   {
     "zipCode": 4500,
-    "city": "Soleure",
-    "skip": true
+    "city": "Soleure"
   },
   {
     "zipCode": 4600,
-    "city": "Olten",
-    "skip": true
+    "city": "Olten"
   },
   {
     "zipCode": 5000,
-    "city": "Aarau",
-    "skip": true
+    "city": "Aarau"
   },
   {
     "zipCode": 5400,
-    "city": "Baden",
-    "skip": true
+    "city": "Baden"
   },
   {
     "zipCode": 5600,
-    "city": "Ammerswil",
-    "skip": true
+    "city": "Ammerswil"
   },
   {
     "zipCode": 6000,
-    "city": "Lucerne",
-    "skip": true
+    "city": "Lucerne"
   },
   {
     "zipCode": 6300,
-    "city": "Zoug",
-    "skip": true
+    "city": "Zoug"
   },
   {
     "zipCode": 6460,
-    "city": "Altdorf",
-    "skip": true
+    "city": "Altdorf"
   },
   {
     "zipCode": 6500,
-    "city": "Bellinzone",
-    "skip": true
+    "city": "Bellinzone"
   },
   {
     "zipCode": 6600,
-    "city": "Locarno",
-    "skip": true
+    "city": "Locarno"
   },
   {
     "zipCode": 6830,
-    "city": "Chiasso",
-    "skip": true
+    "city": "Chiasso"
   },
   {
     "zipCode": 6900,
-    "city": "Lugano",
-    "skip": true
+    "city": "Lugano"
   },
   {
     "zipCode": 7000,
-    "city": "Coire",
-    "skip": true
+    "city": "Coire"
   },
   {
     "zipCode": 8000,
-    "city": "Zürich",
-    "skip": true
+    "city": "Zürich"
   },
   {
     "zipCode": 8200,
-    "city": "Schaffhouse",
-    "skip": true
+    "city": "Schaffhouse"
   },
   {
     "zipCode": 8400,
-    "city": "Winterthur",
-    "skip": true
+    "city": "Winterthur"
   },
   {
     "zipCode": 8500,
-    "city": "Frauenfeld",
-    "skip": true
+    "city": "Frauenfeld"
   },
   {
     "zipCode": 8640,
-    "city": "Rapperswil",
-    "skip": true
+    "city": "Rapperswil"
   },
   {
     "zipCode": 8750,
-    "city": "Glaris",
-    "skip": true
+    "city": "Glaris"
   },
   {
     "zipCode": 8853,
-    "city": "Lachen",
-    "skip": true
+    "city": "Lachen"
   },
   {
     "zipCode": 9000,
-    "city": "St. Gall",
-    "skip": true
+    "city": "St. Gall"
   },
   {
     "zipCode": 9320,
-    "city": "Arbon",
-    "skip": true
+    "city": "Arbon"
   }
 ]
