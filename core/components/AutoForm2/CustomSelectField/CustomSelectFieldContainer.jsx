@@ -10,12 +10,17 @@ export default Component => {
     constructor(props) {
       super(props);
       this.state = {
-        values: this.getAllowedValues(props),
         data: null,
         error: null,
         loading: false,
       };
-      this.getCustomAllowedValues(this.props);
+
+      const allowedValues = this.getAllowedValues(props);
+      if (allowedValues) {
+        this.state.values = allowedValues;
+      } else {
+        this.getCustomAllowedValues(this.props);
+      }
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
