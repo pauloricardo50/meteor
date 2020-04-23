@@ -36,10 +36,15 @@ insuranceRequestSetAdminNote.setHandler(({ userId }, params) => {
   InsuranceRequestService.setAdminNote({ ...params, userId });
 });
 
-insuranceRequestRemoveAdminNote.setHandler(({ userId }, params) => {
-  Security.checkUserIsAdmin(userId);
-  return InsuranceRequestService.removeAdminNote(params);
-});
+insuranceRequestRemoveAdminNote.setHandler(
+  ({ userId }, { insuranceRequestId, ...params }) => {
+    Security.checkUserIsAdmin(userId);
+    return InsuranceRequestService.removeAdminNote({
+      docId: insuranceRequestId,
+      ...params,
+    });
+  },
+);
 
 insuranceRequestSetAssignees.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);

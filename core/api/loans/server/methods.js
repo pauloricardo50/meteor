@@ -323,9 +323,9 @@ loanSetAdminNote.setHandler(({ userId }, params) => {
   return LoanService.setAdminNote({ ...params, userId });
 });
 
-loanRemoveAdminNote.setHandler(({ userId }, params) => {
+loanRemoveAdminNote.setHandler(({ userId }, { loanId, ...params }) => {
   SecurityService.checkUserIsAdmin(userId);
-  return LoanService.removeAdminNote(params);
+  return LoanService.removeAdminNote({ docId: loanId, ...params });
 });
 
 loanSetDisbursementDate.setHandler(({ userId }, params) => {

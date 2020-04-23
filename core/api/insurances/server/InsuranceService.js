@@ -1,7 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 
-import { getNewName } from '../../helpers/server/collectionServerHelpers';
+import {
+  getNewName,
+  removeAdminNote,
+  setAdminNote,
+  updateProNote,
+} from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
@@ -112,92 +116,50 @@ class InsuranceService extends CollectionService {
   };
 
   setAdminNote({ insuranceId, adminNoteId, note, userId }) {
-    let result;
-    const now = new Date();
-    const formattedNote = {
-      ...note,
-      updatedBy: userId,
-      date: note.date || now,
-    };
-
-    if (formattedNote.date.getTime() > now.getTime()) {
-      throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
-    }
-
-    const { adminNotes: currentAdminNotes = [] } = this.get(insuranceId, {
-      adminNotes: 1,
+    const result = setAdminNote.bind(this)({
+      docId: insuranceId,
+      adminNoteId,
+      note,
+      userId,
     });
 
-    const adminNoteExists =
-      adminNoteId && currentAdminNotes.find(({ id }) => id === adminNoteId);
+    const { _id: insuranceRequestId } =
+      InsuranceRequestService.get(
+        { 'adminNotes.id': adminNoteId },
+        { _id: 1 },
+      ) || {};
 
-    if (adminNoteExists) {
-      result = this.baseUpdate(
-        { _id: insuranceId, 'adminNotes.id': adminNoteId },
-        { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
-      );
-    } else {
-      const { _id: insuranceRequestId } = adminNoteId
-        ? InsuranceRequestService.get(
-            { 'adminNotes.id': adminNoteId },
-            { _id: 1 },
-          )
-        : {};
-
-      if (insuranceRequestId) {
-        InsuranceRequestService.removeAdminNote({
-          insuranceRequestId,
-          adminNoteId,
-        });
-      }
-
-      result = this._update({
-        id: insuranceId,
-        operator: '$push',
-        object: { adminNotes: { ...formattedNote, id: Random.id() } },
+    // The admin note was linked to the insurance request
+    if (insuranceRequestId) {
+      InsuranceRequestService.removeAdminNote({
+        docId: insuranceRequestId,
+        adminNoteId,
       });
     }
 
-    // Sort adminNotes by date for faster retrieval of recent notes
-    // Most recent is always at the top
-    const { adminNotes } = this.get(insuranceId, { adminNotes: 1 });
-    this._update({
-      id: insuranceId,
-      object: {
-        adminNotes: adminNotes.sort(
-          ({ date: a }, { date: b }) => new Date(b) - new Date(a),
-        ),
-      },
-    });
+    const { _id: oldInsuranceId } =
+      this.get(
+        { _id: { $ne: insuranceId }, 'adminNotes.id': adminNoteId },
+        { _id: 1 },
+      ) || {};
 
-    this.updateProNote({ insuranceId });
-
-    return result;
-  }
-
-  removeAdminNote({ insuranceId, adminNoteId }) {
-    const result = this.baseUpdate(insuranceId, {
-      $pull: { adminNotes: { id: adminNoteId } },
-    });
-
-    this.updateProNote({ insuranceId });
-
-    return result;
-  }
-
-  updateProNote({ insuranceId }) {
-    const { adminNotes } = this.get(insuranceId, { adminNotes: 1 });
-    const proNote = adminNotes.find(note => note.isSharedWithPros);
-
-    if (proNote) {
-      return this._update({ id: insuranceId, object: { proNote } });
+    // The admin note was linked to another insurance in the same insurance request
+    if (oldInsuranceId) {
+      this.removeAdminNote({
+        docId: oldInsuranceId,
+        adminNoteId,
+      });
     }
 
-    return this._update({
-      id: insuranceId,
-      operator: '$unset',
-      object: { proNote: true },
-    });
+    return result;
+  }
+
+  removeAdminNote(...args) {
+    return removeAdminNote.bind(this)(...args);
+  }
+
+  updateProNote(...args) {
+    return updateProNote.bind(this)(...args);
   }
 
   getEstimatedRevenue({ insuranceId }) {
