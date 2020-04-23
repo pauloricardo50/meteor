@@ -86,7 +86,7 @@ const enterConstructionTimeline = (timeline = constructionTimeline) => {
   cy.get('button[type=submit]').click();
 };
 
-describe.only('Admin promotion', () => {
+describe('Admin promotion', () => {
   before(() => {
     cy.initiateTest();
 
