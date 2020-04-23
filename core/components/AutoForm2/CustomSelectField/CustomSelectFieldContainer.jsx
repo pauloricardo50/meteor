@@ -9,8 +9,13 @@ export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
     constructor(props) {
       super(props);
-      this.state = { values: props.allowedValues, data: null, error: null };
-      this.getAllowedValues(this.props);
+      this.state = {
+        values: this.getAllowedValues(props),
+        data: null,
+        error: null,
+        loading: false,
+      };
+      this.getCustomAllowedValues(this.props);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -18,7 +23,10 @@ export default Component => {
       const { model, handleClick, name } = this.props;
 
       if (model !== nextModel) {
-        this.getAllowedValues(nextProps);
+        this.setState({
+          values: this.getAllowedValues(nextProps),
+        });
+        this.getCustomAllowedValues(nextProps);
       }
 
       if (typeof handleClick === 'function') {
@@ -30,16 +38,16 @@ export default Component => {
       }
     }
 
-    getAllowedValues = props => {
+    getAllowedValues(props) {
       const {
-        customAllowedValues,
-        model,
-        parent,
+        allowedValues,
         recommendedValues,
         withCustomOther,
         value,
       } = props;
-      const { values } = this.state;
+      if (allowedValues) {
+        return allowedValues;
+      }
 
       if (recommendedValues) {
         const filteredRecommendValues = [
@@ -49,28 +57,30 @@ export default Component => {
           .filter((val, index, array) => array.indexOf(val) === index)
           .filter(x => x);
 
-        return this.setState({
-          values: withCustomOther
-            ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
-            : filteredRecommendValues,
-        });
+        return withCustomOther
+          ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
+          : filteredRecommendValues;
+      }
+    }
+
+    getCustomAllowedValues = props => {
+      const { customAllowedValues, model, parent } = props;
+      const { values } = this.state;
+
+      if (!customAllowedValues) {
+        return;
       }
 
-      if (customAllowedValues) {
-        this.setState({ loading: !values || !values.length });
-      }
+      this.setState({ loading: !values || !values.length });
 
-      if (customAllowedValues && typeof customAllowedValues === 'function') {
+      if (typeof customAllowedValues === 'function') {
         Promise.resolve()
           .then(() =>
             customAllowedValues(model, parent && Number(parent.name.slice(-1))),
           )
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
-      } else if (
-        customAllowedValues &&
-        typeof customAllowedValues === 'object'
-      ) {
+      } else if (customAllowedValues === 'object') {
         const { query, params = () => ({}), allowNull } = customAllowedValues;
 
         query.clone(params(model)).fetch((error, data) => {
