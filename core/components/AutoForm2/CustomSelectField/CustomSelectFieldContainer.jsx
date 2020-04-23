@@ -23,10 +23,12 @@ export default Component => {
       const { model, handleClick, name } = this.props;
 
       if (model !== nextModel) {
-        this.setState({
-          values: this.getAllowedValues(nextProps),
-        });
-        this.getCustomAllowedValues(nextProps);
+        const allowedValues = this.getAllowedValues(nextProps);
+        if (allowedValues) {
+          this.setState({ values: allowedValues });
+        } else {
+          this.getCustomAllowedValues(nextProps);
+        }
       }
 
       if (typeof handleClick === 'function') {
