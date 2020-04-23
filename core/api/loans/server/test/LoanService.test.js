@@ -1833,7 +1833,7 @@ describe('LoanService', function() {
       const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
 
       LoanService.removeAdminNote({
-        loanId: 'loanId',
+        docId: 'loanId',
         adminNoteId: adminNotes[1].id,
       });
 
@@ -1867,7 +1867,7 @@ describe('LoanService', function() {
       expect(proNote.note).to.equal('world');
 
       LoanService.removeAdminNote({
-        loanId: 'loanId',
+        docId: 'loanId',
         adminNoteId: adminNotes[0].id,
       });
 

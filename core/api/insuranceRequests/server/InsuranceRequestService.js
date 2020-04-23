@@ -120,93 +120,25 @@ class InsuranceRequestService extends CollectionService {
     });
 
   setAdminNote({ insuranceRequestId, adminNoteId, note, userId }) {
-    let result;
-    const now = new Date();
-    const formattedNote = {
-      ...note,
-      updatedBy: userId,
-      date: note.date || now,
-    };
+    const result = super.setAdminNote({
+      docId: insuranceRequestId,
+      adminNoteId,
+      note,
+      userId,
+    });
 
-    if (formattedNote.date.getTime() > now.getTime()) {
-      throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
-    }
+    const { _id: insuranceId } =
+      InsuranceService.get({ 'adminNotes.id': adminNoteId }, { _id: 1 }) || {};
 
-    const { adminNotes: currentAdminNotes = [] } = this.get(
-      insuranceRequestId,
-      {
-        adminNotes: 1,
-      },
-    );
-
-    const adminNoteExists =
-      adminNoteId && currentAdminNotes.find(({ id }) => id === adminNoteId);
-
-    if (adminNoteExists) {
-      result = this.baseUpdate(
-        { _id: insuranceRequestId, 'adminNotes.id': adminNoteId },
-        { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
-      );
-    } else {
-      const { _id: insuranceId } = adminNoteId
-        ? InsuranceService.get({ 'adminNotes.id': adminNoteId }, { _id: 1 })
-        : {};
-
-      if (insuranceId) {
-        InsuranceService.removeAdminNote({
-          insuranceId,
-          adminNoteId,
-        });
-      }
-
-      result = this._update({
-        id: insuranceRequestId,
-        operator: '$push',
-        object: { adminNotes: { ...formattedNote, id: Random.id() } },
+    // The admin note was linked to an insurance in this insurance request
+    if (insuranceId) {
+      InsuranceService.removeAdminNote({
+        docId: insuranceId,
+        adminNoteId,
       });
     }
 
-    // Sort adminNotes by date for faster retrieval of recent notes
-    // Most recent is always at the top
-    const { adminNotes } = this.get(insuranceRequestId, { adminNotes: 1 });
-    this._update({
-      id: insuranceRequestId,
-      object: {
-        adminNotes: adminNotes.sort(
-          ({ date: a }, { date: b }) =>
-            new Date(b).getTime() - new Date(a).getTime(),
-        ),
-      },
-    });
-
-    this.updateProNote({ insuranceRequestId });
-
     return result;
-  }
-
-  removeAdminNote({ insuranceRequestId, adminNoteId }) {
-    const result = this.baseUpdate(insuranceRequestId, {
-      $pull: { adminNotes: { id: adminNoteId } },
-    });
-
-    this.updateProNote({ insuranceRequestId });
-
-    return result;
-  }
-
-  updateProNote({ insuranceRequestId }) {
-    const { adminNotes } = this.get(insuranceRequestId, { adminNotes: 1 });
-    const proNote = adminNotes.find(note => note.isSharedWithPros);
-
-    if (proNote) {
-      return this._update({ id: insuranceRequestId, object: { proNote } });
-    }
-
-    return this._update({
-      id: insuranceRequestId,
-      operator: '$unset',
-      object: { proNote: true },
-    });
   }
 
   verifyStatusChange({ insuranceRequestId, status, isServerCall = false }) {

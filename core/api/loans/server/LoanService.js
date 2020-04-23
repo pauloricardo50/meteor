@@ -1026,71 +1026,7 @@ class LoanService extends CollectionService {
   }
 
   setAdminNote({ loanId, adminNoteId, note, userId }) {
-    let result;
-    const now = new Date();
-    const formattedNote = {
-      ...note,
-      updatedBy: userId,
-      date: note.date || now,
-    };
-
-    if (formattedNote.date.getTime() > now.getTime()) {
-      throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
-    }
-
-    if (adminNoteId) {
-      result = this.baseUpdate(
-        { _id: loanId, 'adminNotes.id': adminNoteId },
-        { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
-      );
-    } else {
-      result = this.update({
-        loanId,
-        operator: '$push',
-        object: { adminNotes: { ...formattedNote, id: Random.id() } },
-      });
-    }
-
-    // Sort adminNotes by date for faster retrieval of recent notes
-    // Most recent is always at the top
-    const { adminNotes } = this.get(loanId, { adminNotes: 1 });
-    this.update({
-      loanId,
-      object: {
-        adminNotes: adminNotes.sort(
-          ({ date: a }, { date: b }) => new Date(b) - new Date(a),
-        ),
-      },
-    });
-
-    this.updateProNote({ loanId });
-
-    return result;
-  }
-
-  removeAdminNote({ loanId, adminNoteId }) {
-    const result = this.baseUpdate(loanId, {
-      $pull: { adminNotes: { id: adminNoteId } },
-    });
-
-    this.updateProNote({ loanId });
-
-    return result;
-  }
-
-  updateProNote({ loanId }) {
-    const { adminNotes } = this.get(loanId, { adminNotes: 1 });
-    const proNote = adminNotes.find(note => note.isSharedWithPros);
-
-    if (proNote) {
-      return this.update({ loanId, object: { proNote } });
-    }
-
-    return this.update({
-      loanId,
-      operator: '$unset',
-      object: { proNote: true },
-    });
+    return super.setAdminNote({ docId: loanId, adminNoteId, note, userId });
   }
 
   getDisbursedSoonLoans() {

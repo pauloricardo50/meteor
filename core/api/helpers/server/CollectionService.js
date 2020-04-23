@@ -2,7 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { migrate } from 'meteor/herteby:denormalize';
 import { Random } from 'meteor/random';
 
+import { COLLECTIONS } from '../../server/serverConstants';
 import { createMeteorAsyncFunction } from '../helpers';
+
+const ADMIN_NOTES_ALLOWED_COLLECTIONS = [
+  COLLECTIONS.LOANS_COLLECTION,
+  COLLECTIONS.INSURANCE_REQUESTS_COLLECTION,
+  COLLECTIONS.INSURANCES_COLLECTION,
+];
 
 class CollectionService {
   constructor(collection, { autoValues } = {}) {
@@ -309,6 +316,98 @@ class CollectionService {
         migrate(this.collection._name, options.cacheField, migrationSelector);
       });
     }
+  }
+
+  setAdminNote({ docId, adminNoteId, note, userId }) {
+    if (!ADMIN_NOTES_ALLOWED_COLLECTIONS.includes(this.collection._name)) {
+      throw new Meteor.Error(
+        `Collection ${this.collection._name} is not allowed to have admin notes`,
+      );
+    }
+    let result;
+    const now = new Date();
+    const formattedNote = {
+      ...note,
+      updatedBy: userId,
+      date: note.date || now,
+    };
+
+    if (formattedNote.date.getTime() > now.getTime()) {
+      throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
+    }
+
+    const { adminNotes: currentAdminNotes = [] } = this.get(docId, {
+      adminNotes: 1,
+    });
+
+    const adminNoteExists =
+      adminNoteId && currentAdminNotes.find(({ id }) => id === adminNoteId);
+
+    if (adminNoteExists) {
+      result = this.baseUpdate(
+        { _id: docId, 'adminNotes.id': adminNoteId },
+        { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
+      );
+    } else {
+      result = this._update({
+        id: docId,
+        operator: '$push',
+        object: { adminNotes: { ...formattedNote, id: Random.id() } },
+      });
+    }
+
+    // Sort adminNotes by date for faster retrieval of recent notes
+    // Most recent is always at the top
+    const { adminNotes } = this.get(docId, { adminNotes: 1 });
+    this._update({
+      id: docId,
+      object: {
+        adminNotes: adminNotes.sort(
+          ({ date: a }, { date: b }) =>
+            new Date(b).getTime() - new Date(a).getTime(),
+        ),
+      },
+    });
+
+    this.updateProNote({ docId });
+
+    return result;
+  }
+
+  removeAdminNote({ docId, adminNoteId }) {
+    if (!ADMIN_NOTES_ALLOWED_COLLECTIONS.includes(this.collection._name)) {
+      throw new Meteor.Error(
+        `Collection ${this.collection._name} is not allowed to have admin notes`,
+      );
+    }
+
+    const result = this.baseUpdate(docId, {
+      $pull: { adminNotes: { id: adminNoteId } },
+    });
+
+    this.updateProNote({ docId });
+
+    return result;
+  }
+
+  updateProNote({ docId }) {
+    if (!ADMIN_NOTES_ALLOWED_COLLECTIONS.includes(this.collection._name)) {
+      throw new Meteor.Error(
+        `Collection ${this.collection._name} is not allowed to have admin notes`,
+      );
+    }
+    const { adminNotes = [] } = this.get(docId, { adminNotes: 1 }) || {};
+    const proNote = adminNotes.find(note => note.isSharedWithPros);
+
+    if (proNote) {
+      return this._update({ id: docId, object: { proNote } });
+    }
+
+    return this._update({
+      id: docId,
+      operator: '$unset',
+      object: { proNote: true },
+    });
   }
 }
 
