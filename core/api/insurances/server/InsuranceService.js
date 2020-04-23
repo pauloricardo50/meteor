@@ -1,7 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 
-import { getNewName } from '../../helpers/server/collectionServerHelpers';
+import {
+  getNewName,
+  removeAdminNote,
+  setAdminNote,
+  updateProNote,
+} from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
@@ -112,7 +116,7 @@ class InsuranceService extends CollectionService {
   };
 
   setAdminNote({ insuranceId, adminNoteId, note, userId }) {
-    const result = super.setAdminNote({
+    const result = setAdminNote.bind(this)({
       docId: insuranceId,
       adminNoteId,
       note,
@@ -148,6 +152,14 @@ class InsuranceService extends CollectionService {
     }
 
     return result;
+  }
+
+  removeAdminNote(...args) {
+    return removeAdminNote.bind(this)(...args);
+  }
+
+  updateProNote(...args) {
+    return updateProNote.bind(this)(...args);
   }
 
   getEstimatedRevenue({ insuranceId }) {

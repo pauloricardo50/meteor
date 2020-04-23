@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 
 import intl from '../../../utils/intl';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
@@ -7,7 +6,10 @@ import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
   getNewName,
+  removeAdminNote,
+  setAdminNote,
   setAssignees,
+  updateProNote,
 } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import { INSURANCE_STATUS } from '../../insurances/insuranceConstants';
@@ -120,7 +122,7 @@ class InsuranceRequestService extends CollectionService {
     });
 
   setAdminNote({ insuranceRequestId, adminNoteId, note, userId }) {
-    const result = super.setAdminNote({
+    const result = setAdminNote.bind(this)({
       docId: insuranceRequestId,
       adminNoteId,
       note,
@@ -139,6 +141,14 @@ class InsuranceRequestService extends CollectionService {
     }
 
     return result;
+  }
+
+  removeAdminNote(...args) {
+    return removeAdminNote.bind(this)(...args);
+  }
+
+  updateProNote(...args) {
+    return updateProNote.bind(this)(...args);
   }
 
   verifyStatusChange({ insuranceRequestId, status, isServerCall = false }) {

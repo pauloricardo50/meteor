@@ -25,7 +25,10 @@ import {
 } from '../../fragments';
 import {
   getNewName,
+  removeAdminNote,
+  setAdminNote,
   setAssignees,
+  updateProNote,
 } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import LenderRulesService from '../../lenderRules/server/LenderRulesService';
@@ -1026,7 +1029,20 @@ class LoanService extends CollectionService {
   }
 
   setAdminNote({ loanId, adminNoteId, note, userId }) {
-    return super.setAdminNote({ docId: loanId, adminNoteId, note, userId });
+    return setAdminNote.bind(this)({
+      docId: loanId,
+      adminNoteId,
+      note,
+      userId,
+    });
+  }
+
+  removeAdminNote(...args) {
+    return removeAdminNote.bind(this)(...args);
+  }
+
+  updateProNote(...args) {
+    return updateProNote.bind(this)(...args);
   }
 
   getDisbursedSoonLoans() {

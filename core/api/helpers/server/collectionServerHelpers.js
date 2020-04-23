@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 
 import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
@@ -263,4 +264,73 @@ export const setAssignees = ({
   }
 
   return Promise.resolve();
+};
+
+export const setAdminNote = function({ docId, adminNoteId, note, userId }) {
+  let result;
+  const now = new Date();
+  const formattedNote = {
+    ...note,
+    updatedBy: userId,
+    date: note.date || now,
+  };
+
+  if (formattedNote.date.getTime() > now.getTime()) {
+    throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
+  }
+
+  const { adminNotes: currentAdminNotes = [] } = this.get(docId, {
+    adminNotes: 1,
+  });
+
+  let newAdminNotes = currentAdminNotes;
+
+  const currentAdminNoteIndex = currentAdminNotes.findIndex(
+    ({ id }) => id === adminNoteId,
+  );
+
+  if (currentAdminNoteIndex !== -1) {
+    newAdminNotes.splice(currentAdminNoteIndex, 1);
+    newAdminNotes = [...newAdminNotes, { ...formattedNote, id: adminNoteId }];
+  } else {
+    newAdminNotes = [...newAdminNotes, { ...formattedNote, id: Random.id() }];
+  }
+
+  newAdminNotes = newAdminNotes.sort(
+    ({ date: a }, { date: b }) => new Date(b).getTime() - new Date(a).getTime(),
+  );
+
+  this._update({
+    id: docId,
+    object: { adminNotes: newAdminNotes },
+  });
+
+  this.updateProNote({ docId });
+
+  return result;
+};
+
+export const removeAdminNote = function({ docId, adminNoteId }) {
+  const result = this.baseUpdate(docId, {
+    $pull: { adminNotes: { id: adminNoteId } },
+  });
+
+  this.updateProNote({ docId });
+
+  return result;
+};
+
+export const updateProNote = function({ docId }) {
+  const { adminNotes = [] } = this.get(docId, { adminNotes: 1 }) || {};
+  const proNote = adminNotes.find(note => note.isSharedWithPros);
+
+  if (proNote) {
+    return this._update({ id: docId, object: { proNote } });
+  }
+
+  return this._update({
+    id: docId,
+    operator: '$unset',
+    object: { proNote: true },
+  });
 };
