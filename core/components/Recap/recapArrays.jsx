@@ -19,7 +19,7 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const loanValue = calc.selectLoanValue({ loan });
   const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
   const monthly = calc.getMonthly({ loan });
-  const notaryFees = calc.getFees({ loan }).total;
+  const notaryFees = calc.getNotaryFees({ loan }).total;
   const otherIncome = calc.getOtherIncome({ loan });
   const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
   const ownFundsPledged = calc.getTotalPledged({ loan });
@@ -504,7 +504,7 @@ export const getStructureArray = props => {
   const propAndWork = Calculator.getPropAndWork(props);
   const propertyWork = Calculator.makeSelectStructureKey('propertyWork')(props);
   const totalUsed = Calculator.getTotalUsed(props);
-  const notaryFees = Calculator.getFees(props).total;
+  const notaryFees = Calculator.getNotaryFees(props).total;
 
   return [
     {
@@ -600,7 +600,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     loan,
     structureId,
   });
-  const calc = Calculator.getFeesCalculator({ loan, structureId });
+  const calc = Calculator.getNotaryFeesCalculator({ loan, structureId });
   const {
     total,
     estimate,
@@ -699,7 +699,7 @@ export const getPremiumArray = ({ Calculator: calc = Calculator, loan }) => {
   const borrowRatio = calc.getBorrowRatio({ loan });
   const loanValue = calc.selectLoanValue({ loan });
   const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
-  const notaryFees = calc.getFees({ loan }).total;
+  const notaryFees = calc.getNotaryFees({ loan }).total;
   const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
   const project = calc.getProjectValue({ loan });
   const propAndWork = calc.getPropAndWork({ loan });

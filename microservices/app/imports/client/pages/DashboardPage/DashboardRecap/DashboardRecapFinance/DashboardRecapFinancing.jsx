@@ -18,7 +18,7 @@ const getRecapArray = ({ loan, isRefinancing }) => {
       },
       {
         label: 'general.notaryFees',
-        value: toMoney(Calculator.getFees({ loan }).total),
+        value: toMoney(Calculator.getNotaryFees({ loan }).total),
       },
     ];
   }
@@ -48,13 +48,13 @@ const DashboardRecapFinancing = props => {
               id="Financing.reimbursementRequiredOwnFunds.description"
               values={{
                 isMissingOwnFunds:
-                  Calculator.getReimbursementRequiredOwnFunds({ loan }) < 0,
+                  Calculator.getRefinancingRequiredOwnFunds({ loan }) < 0,
               }}
             />
           </h4>
           <h3 className="value">
             {toMoney(
-              Math.abs(Calculator.getReimbursementRequiredOwnFunds({ loan })),
+              Math.abs(Calculator.getRefinancingRequiredOwnFunds({ loan })),
             )}
           </h3>
         </div>

@@ -109,7 +109,7 @@ const mortgageEstimateAPI = ({ query }) => {
   const interestsLibor = getInterestsForType(INTEREST_RATES.LIBOR);
   const amortization = roundToCents(calc.getAmortization({ loan: loanObject }));
   const notaryFees = includeNotaryFees
-    ? calc.getFees({ loan: loanObject })
+    ? calc.getNotaryFees({ loan: loanObject })
     : null;
   const totalValue = roundToCents(
     propertyValue + (notaryFees ? notaryFees.total : 0),

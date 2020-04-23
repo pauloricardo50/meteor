@@ -32,7 +32,7 @@ const feesTooltip = props => {
   return null;
 };
 
-const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
+const calculateDefaultNotaryFees = data => Calculator.getNotaryFees(data).total;
 
 const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
@@ -48,6 +48,12 @@ const oneStructureIncreasesLoan = ({ loan }) => {
   const previousLoan = Calculator.getPreviousLoanValue({ loan });
   return loan.structures.some(({ wantedLoan }) => wantedLoan > previousLoan);
 };
+
+const oneStructureRequiresOwnFunds = ({ loan }) =>
+  loan.structures.some(
+    ({ id: structureId }) =>
+      Calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) < 0,
+  );
 
 const FinancingOwnFunds = props => {
   const { purchaseType } = props;
@@ -67,7 +73,7 @@ const FinancingOwnFunds = props => {
             <div className="financing-ownFunds-summary ownFunds">
               {isRefinancing ? (
                 <CalculatedValue
-                  value={Calculator.getReimbursementRequiredOwnFunds}
+                  value={Calculator.getRefinancingRequiredOwnFunds}
                   {...props}
                 >
                   {value => (
@@ -150,7 +156,7 @@ const FinancingOwnFunds = props => {
           id: 'reimbursementRequiredOwnFunds',
           Component: CalculatedValue,
           condition: isRefinancing,
-          value: Calculator.getReimbursementRequiredOwnFunds,
+          value: Calculator.getRefinancingRequiredOwnFunds,
           className: 'flex-col reimbursementRequiredOwnFunds',
           children: value => (
             <div className="flex-col" style={{ marginTop: 8, marginBottom: 8 }}>
@@ -176,7 +182,7 @@ const FinancingOwnFunds = props => {
         {
           Component: FinancingField,
           id: 'ownFundsUseDescription',
-          condition: p => isRefinancing && oneStructureIncreasesLoan(p),
+          condition: p => isRefinancing && oneStructureRequiresOwnFunds(p),
           type: 'text',
           multiline: true,
           rows: 2,
@@ -187,7 +193,7 @@ const FinancingOwnFunds = props => {
         {
           Component: FinancingOwnFundsPicker,
           id: 'ownFundsPicker',
-          condition: !isRefinancing,
+          condition: p => !isRefinancing || oneStructureIncreasesLoan(p),
         },
       ]}
     />

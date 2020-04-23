@@ -60,6 +60,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getFees({ loan, structureId }) {
+      const notaryFees = this.getNotaryFees({ loan, structureId });
+      const reimbursementPenalty = this.selectReimbursementPenalty({
+        loan,
+        structureId,
+      });
+
+      return {
+        total: notaryFees.total + reimbursementPenalty,
+        notaryFees,
+        reimbursementPenalty,
+      };
+    }
+
+    getNotaryFees({ loan, structureId }) {
       const notaryFees = this.selectStructureKey({
         loan,
         structureId,
@@ -71,7 +85,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return { total: notaryFees };
       }
 
-      const calculator = this.getFeesCalculator({ loan, structureId });
+      const calculator = this.getNotaryFeesCalculator({ loan, structureId });
 
       const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
@@ -81,7 +95,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return calculatedNotaryFees;
     }
 
-    getFeesCalculator({ loan, structureId }) {
+    getNotaryFeesCalculator({ loan, structureId }) {
       const canton = this.selectPropertyKey({
         loan,
         structureId,
@@ -910,7 +924,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getNotaryFeesTooltipValue({ loan, structureId }) {
-      const fees = this.getFees({ loan, structureId }).total;
+      const fees = this.getNotaryFees({ loan, structureId }).total;
       const requiredOwnFunds =
         this.getRequiredOwnFunds({ loan, structureId }) - fees;
       const totalUsed = this.getNonPledgedOwnFunds({ loan, structureId });
@@ -948,7 +962,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         key: 'refinancingDate',
       }),
     }) {
-      const { previousLoanTranches } = loan;
+      const { previousLoanTranches = [] } = loan;
       return previousLoanTranches
         .filter(({ dueDate }) =>
           moment(dueDate).isAfter(moment(refinancingDate)),
@@ -962,6 +976,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     selectReimbursementPenalty({ loan, structureId }) {
+      if (loan.purchaseType !== PURCHASE_TYPE.REFINANCING) {
+        return 0;
+      }
+
       let reimbursementPenalty = this.selectStructureKey({
         loan,
         structureId,
@@ -988,7 +1006,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return wantedLoan - this.getPreviousLoanValue({ loan });
     }
 
-    getReimbursementRequiredOwnFunds({ loan, structureId }) {
+    getRefinancingRequiredOwnFunds({ loan, structureId }) {
       const reimbursementPenalty = this.selectReimbursementPenalty({
         loan,
         structureId,

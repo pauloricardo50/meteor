@@ -22,7 +22,7 @@ const FinancingProjectFees = ({ className, ...props }) => {
     key: 'notaryFees',
   });
   const hasNotaryFeesOverride = notaryFees >= 0 && notaryFees !== null;
-  const hasDetailedFees = Calculator.getFeesCalculator({
+  const hasDetailedFees = Calculator.getNotaryFeesCalculator({
     loan,
     structureId,
   }).hasDetailedConfig();

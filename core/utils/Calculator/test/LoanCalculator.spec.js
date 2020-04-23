@@ -6,7 +6,10 @@ import {
   OWN_FUNDS_TYPES,
 } from '../../../api/borrowers/borrowerConstants';
 import { INTEREST_RATES } from '../../../api/interestRates/interestRatesConstants';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../api/loans/loanConstants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+} from '../../../api/loans/loanConstants';
 import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
@@ -33,6 +36,21 @@ describe('LoanCalculator', () => {
         }),
       ).to.equal(155);
     });
+
+    it('adds reimbursement penalty when needed', () => {
+      expect(
+        Calculator.getProjectValue({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            structure: {
+              property: { value: 100 },
+              reimbursementPenalty: 15,
+              notaryFees: 10,
+            },
+          },
+        }),
+      ).to.equal(125);
+    });
   });
 
   describe('getTotalUsed', () => {
@@ -53,10 +71,10 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe('getFees', () => {
+  describe('getNotaryFees', () => {
     it('calculates fees if no notary fees exist', () => {
       expect(
-        Calculator.getFees({
+        Calculator.getNotaryFees({
           loan: {
             structure: {
               propertyId: 'prop',
@@ -69,7 +87,7 @@ describe('LoanCalculator', () => {
 
     it('uses provided notary fees if they are defined', () => {
       expect(
-        Calculator.getFees({
+        Calculator.getNotaryFees({
           loan: { structure: { property: { value: 100 }, notaryFees: 123 } },
         }).total,
       ).to.equal(123);
@@ -77,7 +95,7 @@ describe('LoanCalculator', () => {
 
     it('uses provided notary fees if they are 0', () => {
       expect(
-        Calculator.getFees({
+        Calculator.getNotaryFees({
           loan: { structure: { property: { value: 100 }, notaryFees: 0 } },
         }).total,
       ).to.equal(0);
@@ -85,7 +103,7 @@ describe('LoanCalculator', () => {
 
     it('returns accurate notary fees if data is sufficient', () => {
       expect(
-        Calculator.getFees({
+        Calculator.getNotaryFees({
           loan: {
             structure: {
               propertyId: 'prop',
@@ -99,7 +117,7 @@ describe('LoanCalculator', () => {
 
     it('calculates accurate fees for a promotionOption', () => {
       expect(
-        Calculator.getFees({
+        Calculator.getNotaryFees({
           loan: {
             structures: [
               {
@@ -123,6 +141,14 @@ describe('LoanCalculator', () => {
           structureId: 'struct1',
         }),
       ).to.deep.include({ total: 55159.1 });
+    });
+
+    it('does not return null', () => {
+      expect(
+        Calculator.getNotaryFees({
+          loan: { structure: { property: { value: 100 }, notaryFees: null } },
+        }).total,
+      ).to.equal(5);
     });
   });
 
@@ -978,7 +1004,7 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe('calculateMissingOwnFunds', () => {
+  describe('getMissingOwnFunds', () => {
     it('returns a standard amount', () => {
       expect(
         Calculator.getMissingOwnFunds({
@@ -1201,6 +1227,54 @@ describe('LoanCalculator', () => {
           structureId: 'struct1',
         }),
       ).to.equal(50000);
+    });
+
+    it('takes into account reimbursement penalties and notaryfees when reducing loan', () => {
+      expect(
+        Calculator.getMissingOwnFunds({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
+            structures: [
+              {
+                id: 'struct1',
+                wantedLoan: 600000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+                notaryFees: 4000,
+                reimbursementPenalty: 4000,
+              },
+            ],
+            borrowers: [{}],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        }),
+      ).to.equal(58000);
+    });
+
+    it('takes into account reimbursement penalties and notaryfees when increasing loan', () => {
+      expect(
+        Calculator.getMissingOwnFunds({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
+            structures: [
+              {
+                id: 'struct1',
+                wantedLoan: 600000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+                notaryFees: 4000,
+                reimbursementPenalty: 4000,
+              },
+            ],
+            borrowers: [{}],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        }),
+      ).to.equal(58000);
     });
   });
 
