@@ -14,6 +14,7 @@ import CommissionRates from './CommissionRates';
 import InsuranceProducts from './InsuranceProducts';
 import OffersTable from './OffersTable/OffersTable';
 import OrganisationInfo from './OrganisationInfo';
+import OrganisationInsurancesTable from './OrganisationInsurancesTable';
 import OrganisationRevenues from './OrganisationRevenues';
 import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
@@ -32,9 +33,16 @@ const tabs = ({ organisation, currentUser }) =>
       Component: InsuranceProducts,
     },
     {
+      id: 'insurances',
+      condition: organisation.features.includes(
+        ORGANISATION_FEATURES.INSURANCE,
+      ),
+      Component: OrganisationInsurancesTable,
+    },
+    {
       id: 'offers',
       Component: OffersTable,
-      condition: organisation.offers && !!organisation.offers.length,
+      condition: organisation.features.includes(ORGANISATION_FEATURES.LENDER),
     },
     {
       id: 'lenderRules',

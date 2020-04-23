@@ -155,14 +155,11 @@ class PromotionService extends CollectionService {
       },
     });
 
-    loans.forEach(({ _id: loanId }) => {
-      this.updateLinkMetadata({
-        id: promotionId,
-        linkName: 'loans',
-        linkId: loanId,
-        metadata: { invitedBy: undefined },
-      });
-    });
+    if (loans?.length) {
+      throw new Meteor.Error(
+        'Ce compte Pro a toujours des clients dans cette promotion.',
+      );
+    }
 
     return this.removeLink({
       id: promotionId,

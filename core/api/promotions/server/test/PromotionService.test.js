@@ -457,7 +457,6 @@ describe('PromotionService', function() {
           {
             _id: 'promotionId',
             users: { _id: 'proId', _factory: 'pro' },
-            loans: { _id: 'loanId', $metadata: { invitedBy: 'proId' } },
           },
           {
             _id: 'promotionId2',
@@ -486,11 +485,31 @@ describe('PromotionService', function() {
         PromotionService.get('promotionId2', { userLinks: 1 }).userLinks.length,
       ).to.equal(1);
       expect(
-        LoanService.get('loanId', { promotionLinks: 1 }).promotionLinks[0]
-          .invitedBy,
-      ).to.equal(undefined);
-      expect(
         LoanService.get('loanId2', { promotionLinks: 2 }).promotionLinks[0]
+          .invitedBy,
+      ).to.equal('proId');
+    });
+
+    it('throws if it has customers in promotion', () => {
+      generator({
+        promotions: [
+          {
+            _id: 'promotionId',
+            users: { _id: 'proId' },
+            loans: { _id: 'loanId', $metadata: { invitedBy: 'proId' } },
+          },
+        ],
+      });
+
+      expect(() =>
+        PromotionService.removeProUser({
+          promotionId: 'promotionId',
+          userId: 'proId',
+        }),
+      ).to.throw('des clients dans cette promotion');
+
+      expect(
+        LoanService.get('loanId', { promotionLinks: 2 }).promotionLinks[0]
           .invitedBy,
       ).to.equal('proId');
     });
