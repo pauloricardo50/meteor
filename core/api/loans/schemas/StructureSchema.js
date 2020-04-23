@@ -70,6 +70,10 @@ export const structureSchema = {
     type: String,
     optional: true,
   },
+  ownFundsUseDescription: {
+    type: String,
+    optional: true,
+  },
   wantedLoan: {
     ...roundedInteger({ digits: 3, func: 'floor', min: 100000 }),
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },

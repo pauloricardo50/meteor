@@ -1,6 +1,5 @@
-import 'core/startup/server';
-
 import '../shared-startup';
+import 'core/startup/server';
 
 import { Accounts } from 'meteor/accounts-base';
 import { Inject } from 'meteor/meteorhacks:inject-initial';

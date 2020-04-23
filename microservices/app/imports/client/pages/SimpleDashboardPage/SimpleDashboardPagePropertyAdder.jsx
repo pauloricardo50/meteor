@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import T from 'core/components/Translation';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useMedia from 'core/hooks/useMedia';
 
 const triggerComponent = ({ onClick }) => (
   <div
@@ -18,6 +19,7 @@ const triggerComponent = ({ onClick }) => (
 
 const SimpleDashboardPagePropertyAdder = ({ loanId }) => {
   const currentUser = useContext(CurrentUserContext);
+  const fullScreen = useMedia({ maxWidth: 768 });
 
   return (
     <PropertyAdder
@@ -25,6 +27,7 @@ const SimpleDashboardPagePropertyAdder = ({ loanId }) => {
       userId={currentUser?._id}
       triggerComponent={triggerComponent}
       isRefinancing
+      fullScreen={fullScreen}
     />
   );
 };

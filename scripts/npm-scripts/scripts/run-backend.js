@@ -41,14 +41,6 @@ const runBackend = ({ process, args = [], env }) => {
             child.on('error', error => {
               console.log('CHILD error event:', error);
             });
-
-            child.on('close', code => {
-              console.log(`child process close all stdio with code ${code}`);
-            });
-
-            child.on('exit', code => {
-              console.log(`child process exited with code ${code}`);
-            });
           } catch (error) {
             console.log('CHILD error:', error);
           }

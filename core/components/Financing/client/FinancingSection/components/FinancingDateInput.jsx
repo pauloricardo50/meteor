@@ -21,9 +21,8 @@ export const FinancingInput = props => {
       }}
       disabled={disabled}
       margin="dense"
-      label=" "
-      shrink
-      labelWidth={0}
+      label={null}
+      className="date-input"
     />
   );
 };

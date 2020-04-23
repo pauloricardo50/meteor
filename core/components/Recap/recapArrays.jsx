@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { ERROR, SUCCESS } from '../../api/constants';
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import Calculator from '../../utils/Calculator';
 import { toMoney } from '../../utils/conversionFunctions';
 import PercentWithStatus from '../PercentWithStatus/PercentWithStatus';
@@ -38,6 +39,10 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const totalFinancing = calc.getTotalFinancing({ loan });
   const totalFunds = calc.getTotalFunds({ loan });
   const totalIncome = calc.getTotalIncome({ loan });
+  const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+  const previousLoanValue = calc.getPreviousLoanValue({ loan });
+  const loanEvolution = calc.getLoanEvolution({ loan });
+  const reimbursementPenalty = calc.selectReimbursementPenalty({ loan });
 
   return [
     {
@@ -90,6 +95,26 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
     },
     {
       title: true,
+      label: 'Recap.refinancing',
+      hide: !isRefinancing,
+    },
+    {
+      label: 'Recap.previousLender',
+      hide: !isRefinancing || !loan.previousLender,
+      value: loan.previousLender,
+    },
+    {
+      label: 'Recap.previousLoan',
+      hide: !isRefinancing,
+      value: toMoney(previousLoanValue),
+    },
+    {
+      label: 'Recap.reimbursementPenalty',
+      hide: !isRefinancing,
+      value: toMoney(reimbursementPenalty),
+    },
+    {
+      title: true,
       label: 'Recap.financing',
     },
     {
@@ -110,6 +135,16 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       spacingTop: true,
       spacing: true,
       bold: true,
+    },
+    {
+      label: 'Recap.ownFundsIncrease',
+      value: toMoney(loanEvolution),
+      hide: !isRefinancing || loanEvolution < 0,
+    },
+    {
+      label: 'Recap.ownFundsDecrease',
+      value: toMoney(Math.abs(loanEvolution)),
+      hide: !isRefinancing || loanEvolution > 0,
     },
     {
       label: 'Recap.monthlyCost',

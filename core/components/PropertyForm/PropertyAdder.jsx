@@ -8,17 +8,17 @@ import PropertyAdderDialog from './PropertyAdderDialog';
 import PropertyReuser from './PropertyReuser';
 
 const PropertyAdder = ({
+  buttonProps = {},
+  disabled,
+  linkProperty,
+  loanId,
   onClick,
   openModal,
-  setOpenModal,
-  reusableProperties,
-  linkProperty,
-  setOpenPropertyAdder,
   openPropertyAdder,
+  reusableProperties,
+  setOpenModal,
+  setOpenPropertyAdder,
   triggerComponent,
-  disabled,
-  loanId,
-  buttonProps = {},
   ...props
 }) => (
   <>

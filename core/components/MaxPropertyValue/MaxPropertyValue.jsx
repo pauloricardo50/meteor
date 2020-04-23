@@ -7,7 +7,7 @@ import MaxPropertyValueLoading from './MaxPropertyValueLoading';
 import MaxPropertyValueResults from './MaxPropertyValueResults';
 
 const renderState = props => {
-  const { state, loading, loan } = props;
+  const { state, loading } = props;
 
   if (loading) {
     return <MaxPropertyValueLoading />;

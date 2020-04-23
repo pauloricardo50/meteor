@@ -32,7 +32,6 @@ const MaxPropertyValueResultsTable = ({
   setShowBest,
   purchaseType,
   previousLoan,
-  reimbursementPenalty,
 }) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
@@ -159,7 +158,6 @@ const MaxPropertyValueResultsTable = ({
         <MaxPropertyValueResultsTableRefinancing
           loan={loan}
           previousLoan={previousLoan}
-          reimbursementPenalty={reimbursementPenalty}
         />
       )}
 

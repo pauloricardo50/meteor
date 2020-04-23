@@ -1160,6 +1160,48 @@ describe('LoanCalculator', () => {
         }),
       ).to.be.within(720693, 720694);
     });
+
+    it('works for refinancing when increasing your loan', () => {
+      expect(
+        Calculator.getMissingOwnFunds({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
+            structures: [
+              {
+                id: 'struct1',
+                wantedLoan: 800000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+              },
+            ],
+            borrowers: [{}],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        }),
+      ).to.equal(0);
+    });
+
+    it('works for refinancing when reducing your loan', () => {
+      expect(
+        Calculator.getMissingOwnFunds({
+          loan: {
+            properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
+            structures: [
+              {
+                id: 'struct1',
+                wantedLoan: 600000,
+                propertyId: 'propertyId',
+                ownFunds: [],
+              },
+            ],
+            borrowers: [{}],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        }),
+      ).to.equal(50000);
+    });
   });
 
   describe('getBorrowRatioStatus', () => {

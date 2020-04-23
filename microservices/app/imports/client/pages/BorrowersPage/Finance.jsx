@@ -15,7 +15,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 
 const BorrowerFinancePage = props => {
   const {
-    loan: { userFormsEnabled, borrowers },
+    loan: { userFormsEnabled, borrowers, purchaseType },
     Calculator,
   } = props;
 
@@ -48,7 +48,11 @@ const BorrowerFinancePage = props => {
 
                 <AutoForm
                   formClasses="user-form user-form__finance"
-                  inputs={getBorrowerFinanceArray({ borrowers, borrowerId })}
+                  inputs={getBorrowerFinanceArray({
+                    borrowers,
+                    borrowerId,
+                    purchaseType,
+                  })}
                   borrowers={borrowers}
                   docId={borrowerId}
                   collection={BORROWERS_COLLECTION}

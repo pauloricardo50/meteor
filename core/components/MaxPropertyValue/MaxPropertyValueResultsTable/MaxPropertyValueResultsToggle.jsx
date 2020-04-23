@@ -4,6 +4,7 @@ import React from 'react';
 import cx from 'classnames';
 
 import Toggle from '../../Toggle';
+import T from '../../Translation';
 
 const MaxPropertyValueResultsToggle = ({
   showBest,
@@ -19,7 +20,13 @@ const MaxPropertyValueResultsToggle = ({
     labelLeft={
       <div className="flex-col">
         <span className={cx({ secondary: showBest })}>
-          {isSmallMobile ? 'Le moins compétitif' : 'Prêteur le - compétitif'}
+          <T
+            id={
+              isSmallMobile
+                ? 'MaxPropertyValueResultsToggle.leastCompetitiveShort'
+                : 'MaxPropertyValueResultsToggle.leastCompetitive'
+            }
+          />
         </span>
         {Meteor.microservice === 'admin' && (
           <span>
@@ -32,7 +39,13 @@ const MaxPropertyValueResultsToggle = ({
     labelRight={
       <div className="flex-col">
         <span className={cx({ secondary: !showBest })}>
-          {isSmallMobile ? 'Le plus compétitif' : 'Prêteur le + compétitif'}
+          <T
+            id={
+              isSmallMobile
+                ? 'MaxPropertyValueResultsToggle.mostCompetitiveShort'
+                : 'MaxPropertyValueResultsToggle.mostCompetitive'
+            }
+          />
         </span>
         {Meteor.microservice === 'admin' && (
           <span>

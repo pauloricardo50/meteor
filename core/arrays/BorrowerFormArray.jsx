@@ -13,6 +13,7 @@ import { RESIDENCE_TYPE } from '../api/properties/propertyConstants';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 import CantonField from '../components/CantonField/CantonField';
 import T, { Money } from '../components/Translation';
+import { PURCHASE_TYPE } from '../redux/widget1/widget1Constants';
 import Calculator from '../utils/Calculator';
 import {
   COMMON_COUNTRIES,
@@ -347,72 +348,79 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
   },
 ];
 
-export const getBorrowerFortuneArray = () => [
-  {
-    type: 'h3',
-    id: 'fortune',
-    ignore: true,
-    required: false,
-    className: 'v-align-fortune',
-  },
-  makeArrayOfObjectsInput('bankFortune', true),
-  makeArrayOfObjectsInput('donation'),
-  {
-    id: 'realEstate',
-    type: 'arrayInput',
-    required: false,
-    inputs: [
-      { id: 'name', type: 'textInput' },
-      {
-        id: 'description',
-        type: 'selectInput',
-        options: Object.values(RESIDENCE_TYPE),
-      },
-      { id: 'value', type: 'textInput', money: true },
-      { id: 'loan', type: 'textInput', money: true },
-      { id: 'income', type: 'textInput', money: true, required: false },
-      {
-        id: 'theoreticalExpenses',
-        intlId: 'adminTheoreticalExpenses',
-        type: 'textInput',
-        money: true,
-        adminOnly: true,
-      },
-      {
-        id: 'theoreticalExpenses',
-        type: 'custom',
-        Component: ({
-          inputProps: { currentValue, label, itemValue = {} },
-        }) => (
-          <div className="flex-col" style={{ paddingLeft: 12 }}>
-            <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
-              {label}
-            </label>
-            <b>
-              <Money
-                id="theoreticalExpenses"
-                value={Calculator.getRealEstateCost(itemValue)}
-                tooltip={
-                  currentValue ? (
-                    undefined
-                  ) : (
-                    <T id="Forms.theoreticalExpenses.tooltip" />
-                  )
-                }
-              />
-              <span>
-                &nbsp;/
-                <T id="general.month" />
-              </span>
-            </b>
-          </div>
-        ),
-      },
-    ],
-  },
-  makeArrayOfObjectsInput('otherFortune'),
-];
-
+export const getBorrowerFortuneArray = ({ purchaseType } = {}) => {
+  const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
+  return [
+    {
+      type: 'h3',
+      id: 'fortune',
+      ignore: true,
+      required: false,
+      className: 'v-align-fortune',
+    },
+    makeArrayOfObjectsInput('bankFortune', true),
+    makeArrayOfObjectsInput('donation'),
+    {
+      id: 'realEstate',
+      description: isRefinancing && (
+        <span className="secondary">
+          <T id="Forms.realEstate.refinancingDescription" />
+        </span>
+      ),
+      type: 'arrayInput',
+      required: false,
+      inputs: [
+        { id: 'name', type: 'textInput' },
+        {
+          id: 'description',
+          type: 'selectInput',
+          options: Object.values(RESIDENCE_TYPE),
+        },
+        { id: 'value', type: 'textInput', money: true },
+        { id: 'loan', type: 'textInput', money: true },
+        { id: 'income', type: 'textInput', money: true, required: false },
+        {
+          id: 'theoreticalExpenses',
+          intlId: 'adminTheoreticalExpenses',
+          type: 'textInput',
+          money: true,
+          adminOnly: true,
+        },
+        {
+          id: 'theoreticalExpenses',
+          type: 'custom',
+          Component: ({
+            InputProps: { currentValue, label, itemValue = {} },
+          }) => (
+            <div className="flex-col" style={{ paddingLeft: 12 }}>
+              <label htmlFor="theoreticalExpenses" style={{ marginBottom: 4 }}>
+                {label}
+              </label>
+              <b>
+                <Money
+                  id="theoreticalExpenses"
+                  value={Calculator.getRealEstateCost(itemValue)}
+                  tooltip={
+                    currentValue ? (
+                      undefined
+                    ) : (
+                      <T id="Forms.theoreticalExpenses.tooltip" />
+                    )
+                  }
+                />
+                <span>
+                  &nbsp;/
+                  <T id="general.month" />
+                </span>
+              </b>
+            </div>
+          ),
+        },
+      ],
+    },
+    makeArrayOfObjectsInput('otherFortune'),
+  ];
+};
 export const getBorrowerInsuranceArray = () => [
   {
     type: 'h3',
@@ -427,7 +435,11 @@ export const getBorrowerInsuranceArray = () => [
   makeArrayOfObjectsInput('insurance3B'),
 ];
 
-export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
+export const getBorrowerFinanceArray = ({
+  borrowers,
+  borrowerId,
+  purchaseType,
+}) => {
   const b = borrowers.find(({ _id }) => _id === borrowerId);
 
   if (!b) {
@@ -436,7 +448,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
 
   const incomeArray = getBorrowerIncomeArray({ borrower: b });
 
-  const fortuneArray = getBorrowerFortuneArray();
+  const fortuneArray = getBorrowerFortuneArray({ purchaseType });
 
   const insuranceArray = getBorrowerInsuranceArray();
 

@@ -265,6 +265,7 @@ export const loan = () => ({
   otherOwner: 1,
   previousLender: 1,
   previousLoanTranches: 1,
+  previousLoanAmortization: 1,
   promotions: {
     address: 1,
     canton: 1,

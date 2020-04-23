@@ -12,7 +12,7 @@ const generateTestsForPages = (pages, getTestData) => {
   });
 
   Object.keys(pages)
-    // .filter(page => page === 'public')
+    // .filter(page => page === 'user')
     .forEach(pageAuthentication => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
@@ -26,7 +26,7 @@ const generateTestsForPages = (pages, getTestData) => {
 
         it('Pages should render without errors', () => {
           Object.keys(pages[pageAuthentication])
-            // .filter(page => page === 'Reset Password')
+            // .filter(page => page === 'Loan Properties')
             .forEach(pageName => {
               const testName = `${pageName} Page`;
 

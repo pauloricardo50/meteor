@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import cx from 'classnames';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -45,15 +45,21 @@ export default compose(
       id,
       allowUndefined,
       updateStructure,
+      type,
       ...props
     }) => {
       // The schema never changes
-      const [schema] = useState(
-        new SimpleSchema2Bridge(
-          new SimpleSchema({
-            [id]: { type: Number, optional: allowUndefined },
-          }),
-        ),
+      const schema = useMemo(
+        () =>
+          new SimpleSchema2Bridge(
+            new SimpleSchema({
+              [id]: {
+                type: type === 'text' ? String : Number,
+                optional: allowUndefined,
+              },
+            }),
+          ),
+        [],
       );
 
       return {

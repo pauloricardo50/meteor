@@ -43,15 +43,27 @@ const getFooter = ({
   purchaseType,
 }) => {
   if (maxPropertyValueExists) {
-    return <h2>Votre capacité d'achat</h2>;
+    return (
+      <h2>
+        <T id="MaxPropertyValue.stickyFooterTitle" />
+      </h2>
+    );
   }
 
   if (!maxPropertyValue && !canCalculateSolvency) {
-    return <h2>Renseignez vos revenus et fortune</h2>;
+    return (
+      <h2>
+        <T id="MaxPropertyValue.stickyFooterEmpty" />
+      </h2>
+    );
   }
 
   if (!maxPropertyValue && canCalculateSolvency) {
-    return <h2 className="animated bounceIn calculate">Calculer</h2>;
+    return (
+      <h2 className="animated bounceIn calculate">
+        <T id="MaxPropertyValue.stickyFooterCalculate" />
+      </h2>
+    );
   }
 
   const { canton } = maxPropertyValue;

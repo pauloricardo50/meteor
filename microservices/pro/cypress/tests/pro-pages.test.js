@@ -15,7 +15,7 @@ const inviteUser = ({ firstName, lastName, email, phoneNumber }) => {
   cy.get('input[name="phoneNumber"]').type(phoneNumber);
 };
 
-describe('Promotion pages', () => {
+describe('Pro pages', () => {
   before(() => {
     cy.initiateTest();
   });
@@ -80,7 +80,9 @@ describe('Promotion pages', () => {
       phoneNumber: '022 566 01 10',
     });
     cy.get('form').submit();
-    cy.contains('.pro-side-nav', 'Organisation').click();
+    cy.get('.pro-side-nav')
+      .contains('Organisation')
+      .click();
 
     cy.get('.organisation-id')
       .invoke('text')
@@ -100,9 +102,13 @@ describe('Promotion pages', () => {
 
     cy.refetch();
 
-    cy.contains('.pro-side-nav', 'Revenus').should('exist');
+    cy.get('.pro-side-nav')
+      .contains('Revenus')
+      .should('exist');
 
-    cy.contains('.pro-side-nav', 'Revenus').click();
+    cy.get('.pro-side-nav')
+      .contains('Revenus')
+      .click();
 
     cy.get(':nth-child(1) > .col-LEAD').should('have.text', '1');
     cy.get(':nth-child(1) > .col-ONGOING').should('have.text', '0');
@@ -115,8 +121,12 @@ describe('Promotion pages', () => {
       status: LOAN_STATUS.ONGOING,
     });
 
-    cy.contains('.pro-side-nav', 'Dashboard').click();
-    cy.contains('.pro-side-nav', 'Revenus').click();
+    cy.get('.pro-side-nav')
+      .contains('Dashboard')
+      .click();
+    cy.get('.pro-side-nav')
+      .contains('Revenus')
+      .click();
 
     cy.get(':nth-child(1) > .col-LEAD').should('have.text', '0');
     cy.get(':nth-child(1) > .col-ONGOING').should('have.text', '1');

@@ -356,6 +356,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     loanHasMinimalInformation({ loan }) {
       const structure = this.selectStructure({ loan });
+      const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+
+      if (isRefinancing) {
+        return (
+          this.selectPropertyValue({ loan }) && this.selectLoanValue({ loan })
+        );
+      }
 
       return !!(
         structure.ownFunds &&
@@ -575,6 +582,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getRequiredOwnFunds({ loan, structureId }) {
       const projectValue = this.getProjectValue({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
+      const previousLoanValue = this.getPreviousLoanValue({ loan });
+
+      if (previousLoanValue > 0) {
+        return Math.max(previousLoanValue - loanValue, 0);
+      }
+
       return projectValue - loanValue;
     }
 
@@ -1022,12 +1035,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     canCalculateSolvency({ loan, borrowers }) {
+      const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
       if (!borrowers.length) {
         return false;
       }
 
       const bankFortune = this.getFortune({ borrowers });
-      if (!bankFortune) {
+      if (!bankFortune && !isRefinancing) {
         return false;
       }
 
@@ -1036,7 +1050,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+      if (isRefinancing) {
         const property = this.selectProperty({ loan });
 
         if (!property?.value) {

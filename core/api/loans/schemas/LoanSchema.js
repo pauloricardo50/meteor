@@ -7,6 +7,7 @@ import {
   contactsSchema,
   createdAt,
   documentsField,
+  moneyField,
   updatedAt,
 } from '../../helpers/sharedSchemas';
 import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
@@ -79,7 +80,6 @@ const LoanSchema = new SimpleSchema({
     optional: true,
   },
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
-  previousLender: { type: String, optional: true },
   customName: { type: String, optional: true },
   applicationType: {
     type: String,
@@ -87,6 +87,8 @@ const LoanSchema = new SimpleSchema({
     defaultValue: APPLICATION_TYPES.SIMPLE,
     uniforms: { placeholder: null },
   },
+  previousLender: { type: String, optional: true },
+  previousLoanAmortization: moneyField,
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),

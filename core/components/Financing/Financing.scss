@@ -42,7 +42,7 @@ $result-section-negative-offset: -32px;
   flex-direction: column;
 
   .money-input,
-  .percent-input {
+  .percent-input, .date-input {
     width: 100%;
     margin: 0;
   }
@@ -257,9 +257,6 @@ $result-section-negative-offset: -32px;
     color: #69707a;
   }
 
-  .section-subtitle {
-    margin-top: 32px;
-  }
 }
 
 .financing-structures-labels {
@@ -423,4 +420,8 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   align-self: center;
 
   margin-bottom: 16px;
+}
+
+.previousLoanValue {
+  flex-direction: row !important;
 }

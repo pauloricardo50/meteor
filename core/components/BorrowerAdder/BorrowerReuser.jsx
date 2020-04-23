@@ -37,7 +37,7 @@ const BorrowerReuser = ({
         />
       </p>
       <Button
-        onClick={() => insertBorrower}
+        onClick={insertBorrower}
         label={
           <T id="BorrowerAdder.reuser.newBorrower" values={{ isBorrower }} />
         }
