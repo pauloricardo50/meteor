@@ -303,7 +303,8 @@ export class UserServiceClass extends CollectionService {
     const mainOrgs = newOrganisations.filter(
       ({ metadata }) => metadata?.isMain,
     );
-    if (mainOrgs.length !== 1) {
+
+    if (newOrganisations.length && mainOrgs.length !== 1) {
       throw new Meteor.Error(
         'Une des organisations doit être choisie comme "principale"',
       );
