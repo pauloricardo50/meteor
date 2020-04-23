@@ -23,7 +23,7 @@ export const getStats = ({ cantons = [] }) => {
         { structure: { property: { zipCode: propertyZipCode } = {} } },
       ) => {
         const city = classifiedCities.find(
-          ({ zipCode }) => Number(zipCode) === Number(propertyZipCode),
+          ({ zipCode }) => zipCode === propertyZipCode,
         );
 
         if (!city) {
@@ -33,7 +33,7 @@ export const getStats = ({ cantons = [] }) => {
         const { closestMainCity } = city;
 
         const currentStatIndex = gpsStats.findIndex(
-          ({ zipCode }) => Number(zipCode) === Number(closestMainCity.zipCode),
+          ({ zipCode }) => zipCode === closestMainCity.zipCode,
         );
 
         if (currentStatIndex !== -1) {
