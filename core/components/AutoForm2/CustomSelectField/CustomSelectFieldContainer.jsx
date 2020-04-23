@@ -87,12 +87,12 @@ export default Component => {
           )
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
-      } else if (customAllowedValues === 'object') {
+      } else if (typeof customAllowedValues === 'object') {
         const { query, params = () => ({}), allowNull } = customAllowedValues;
 
         query.clone(params(model)).fetch((error, data) => {
           if (error) {
-            return this.setState({ error });
+            return this.setState({ error, loading: false });
           }
 
           const ids = data.map(({ _id }) => _id);
