@@ -1625,4 +1625,77 @@ describe('LoanCalculator', () => {
       expect(ratio).to.equal(null);
     });
   });
+
+  describe.only('getCashRatio', () => {
+    it('returns an accurate percentage', () => {
+      const cashRatio = Calculator.getCashRatio({
+        loan: {
+          structure: {
+            notaryFees: 50000,
+            propertyValue: 1000000,
+            wantedLoan: 800000,
+            ownFunds: [{ value: 100000, type: OWN_FUNDS_TYPES.BANK_FORTUNE }],
+          },
+        },
+      });
+      expect(cashRatio).to.equal(0.05);
+    });
+
+    it('includes everything but insurance2', () => {
+      const cashRatio = Calculator.getCashRatio({
+        loan: {
+          structure: {
+            notaryFees: 0,
+            propertyValue: 1000000,
+            wantedLoan: 800000,
+            ownFunds: [
+              { value: 10000, type: OWN_FUNDS_TYPES.BANK_FORTUNE },
+              { value: 10000, type: OWN_FUNDS_TYPES.BANK_3A },
+              { value: 10000, type: OWN_FUNDS_TYPES.DONATION },
+              { value: 10000, type: OWN_FUNDS_TYPES.INSURANCE_3A },
+              { value: 10000, type: OWN_FUNDS_TYPES.INSURANCE_3B },
+              { value: 10000, type: OWN_FUNDS_TYPES.INSURANCE_2 },
+            ],
+          },
+        },
+      });
+      expect(cashRatio).to.equal(0.05);
+    });
+
+    it('does not include pledged funds', () => {
+      const cashRatio = Calculator.getCashRatio({
+        loan: {
+          structure: {
+            notaryFees: 50000,
+            propertyValue: 1000000,
+            wantedLoan: 800000,
+            ownFunds: [
+              { value: 100000, type: OWN_FUNDS_TYPES.BANK_FORTUNE },
+              {
+                value: 100000,
+                type: OWN_FUNDS_TYPES.INSURANCE_3A,
+                usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+              },
+            ],
+          },
+        },
+      });
+      expect(cashRatio).to.equal(0.05);
+    });
+
+    it('works for refinancings that reduce their loan', () => {
+      const cashRatio = Calculator.getCashRatio({
+        loan: {
+          previousLoanTranches: [{ value: 650000 }],
+          structure: {
+            notaryFees: 50000,
+            propertyValue: 1000000,
+            wantedLoan: 600000,
+            ownFunds: [{ value: 100000, type: OWN_FUNDS_TYPES.BANK_FORTUNE }],
+          },
+        },
+      });
+      expect(cashRatio).to.equal(0.05);
+    });
+  });
 });

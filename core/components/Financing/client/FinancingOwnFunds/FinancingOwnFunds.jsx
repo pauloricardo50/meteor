@@ -49,11 +49,10 @@ const oneStructureIncreasesLoan = ({ loan }) => {
   return loan.structures.some(({ wantedLoan }) => wantedLoan > previousLoan);
 };
 
-const oneStructureRequiresOwnFunds = ({ loan }) =>
-  loan.structures.some(
-    ({ id: structureId }) =>
-      Calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) < 0,
-  );
+const oneStructureDecreasesLoan = ({ loan }) => {
+  const previousLoan = Calculator.getPreviousLoanValue({ loan });
+  return loan.structures.some(({ wantedLoan }) => wantedLoan < previousLoan);
+};
 
 const FinancingOwnFunds = props => {
   const { purchaseType } = props;
@@ -182,7 +181,7 @@ const FinancingOwnFunds = props => {
         {
           Component: FinancingField,
           id: 'ownFundsUseDescription',
-          condition: p => isRefinancing && oneStructureRequiresOwnFunds(p),
+          condition: p => isRefinancing && oneStructureIncreasesLoan(p),
           type: 'text',
           multiline: true,
           rows: 2,
@@ -193,7 +192,7 @@ const FinancingOwnFunds = props => {
         {
           Component: FinancingOwnFundsPicker,
           id: 'ownFundsPicker',
-          condition: p => !isRefinancing || oneStructureIncreasesLoan(p),
+          condition: p => !isRefinancing || oneStructureDecreasesLoan(p),
         },
       ]}
     />

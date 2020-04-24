@@ -594,14 +594,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getRequiredOwnFunds({ loan, structureId }) {
-      const projectValue = this.getProjectValue({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
       const previousLoanValue = this.getPreviousLoanValue({ loan });
 
       if (previousLoanValue > 0) {
-        return Math.max(previousLoanValue - loanValue, 0);
+        const fees = this.getFees({ loan, structureId }).total;
+        return Math.max(previousLoanValue - loanValue + fees, 0);
       }
 
+      const projectValue = this.getProjectValue({ loan, structureId });
       return projectValue - loanValue;
     }
 
@@ -963,11 +964,16 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }),
     }) {
       const { previousLoanTranches = [] } = loan;
+
+      if (!refinancingDate) {
+        return 0;
+      }
+
       return previousLoanTranches
         .filter(({ dueDate }) =>
           moment(dueDate).isAfter(moment(refinancingDate)),
         )
-        .reduce((total, { value = 0, rate, dueDate }) => {
+        .reduce((total, { value = 0, rate = 0, dueDate }) => {
           const remainingYears =
             moment(dueDate).diff(moment(refinancingDate), 'months') / 12;
 
@@ -980,14 +986,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return 0;
       }
 
-      let reimbursementPenalty = this.selectStructureKey({
+      const reimbursementPenalty = this.selectStructureKey({
         loan,
         structureId,
         key: 'reimbursementPenalty',
       });
 
       if (!(reimbursementPenalty === 0 || reimbursementPenalty)) {
-        reimbursementPenalty = this.getReimbursementPenalty({
+        return this.getReimbursementPenalty({
           loan,
           structureId,
         });

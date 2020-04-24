@@ -1,8 +1,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
+import moment from 'moment';
 
 import { OWN_FUNDS_TYPES } from '../../../../../../api/borrowers/borrowerConstants';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../../../api/loans/loanConstants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+} from '../../../../../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../../../../../api/properties/propertyConstants';
 import { getRequiredAndCurrentFunds } from '../OwnFundsCompleterContainer';
 
@@ -295,6 +299,39 @@ describe('OwnFundsCompleter', () => {
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
           required: 125000,
           current: 125000,
+        });
+      });
+
+      describe('refinancings', () => {
+        it('works for a loan reduction', () => {
+          structure.wantedLoan = 600000;
+          structure.notaryFees = 5000;
+          props.loan.purchaseType = PURCHASE_TYPE.REFINANCING;
+          props.loan.previousLoanTranches = [{ value: 650000 }];
+          expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+            required: 55000,
+            current: 0,
+          });
+        });
+
+        it('includes reimbursementPenalties', () => {
+          structure.wantedLoan = 600000;
+          structure.notaryFees = 5000;
+          structure.refinancingDate = new Date();
+          props.loan.purchaseType = PURCHASE_TYPE.REFINANCING;
+          props.loan.previousLoanTranches = [
+            {
+              value: 650000,
+              dueDate: moment()
+                .add(4, 'months')
+                .toDate(),
+              rate: 0.015,
+            },
+          ];
+          expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+            required: 58250,
+            current: 0,
+          });
         });
       });
     });
