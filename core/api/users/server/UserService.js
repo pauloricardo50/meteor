@@ -813,7 +813,6 @@ export class UserServiceClass extends CollectionService {
     }
 
     const newAssignee = this.getAssigneeForNewUser(user);
-    console.log('newAssignee:', newAssignee);
 
     if (newAssignee) {
       this.addLink({
