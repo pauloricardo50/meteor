@@ -41,7 +41,7 @@
     "chalk": "^4.0.0",
     "change-case": "^4.1.1",
     "csscomb": "^4.3.0",
-    "cypress": "^3.8.1",
+    "cypress": "^4.4.1",
     "digest-fetch": "^1.0.9",
     "ejs": "^3.0.1",
     "eslint": "6.8.0",
