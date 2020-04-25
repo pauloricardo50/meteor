@@ -256,7 +256,6 @@ class NotaryFeesCalculator {
     propertyTransferTax,
     purchaseType,
   }) {
-    console.log('purchaseType:', purchaseType);
     const buyersContractDeductions = this.buyersContractDeductions
       ? this.buyersContractDeductions({
           residenceType,

@@ -1411,6 +1411,7 @@ describe('LoanService', function() {
       generator({
         loans: {
           _id: 'loanId',
+          purchaseType: PURCHASE_TYPE.ACQUISITION,
           borrowers: {
             bankFortune: [{ value: 500000 }],
             salary: 1000000,

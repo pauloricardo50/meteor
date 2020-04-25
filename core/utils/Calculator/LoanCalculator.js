@@ -61,12 +61,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getFees({ loan, structureId }) {
       const notaryFees = this.getNotaryFees({ loan, structureId });
-      console.log('notaryFees:', notaryFees);
       const reimbursementPenalty = this.selectReimbursementPenalty({
         loan,
         structureId,
       });
-      console.log('reimbursementPenalty:', reimbursementPenalty);
 
       return {
         total: notaryFees.total + reimbursementPenalty,

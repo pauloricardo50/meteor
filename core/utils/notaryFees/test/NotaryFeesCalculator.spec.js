@@ -115,7 +115,7 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(55159.1);
     });
 
-    it.only('should not return NaN when no wantedLoan is set', () => {
+    it('should not return NaN when no wantedLoan is set', () => {
       loan.structure.wantedLoan = undefined;
 
       const fees = calc.getNotaryFeesForLoan({ loan });

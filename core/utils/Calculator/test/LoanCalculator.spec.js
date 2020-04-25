@@ -1212,6 +1212,7 @@ describe('LoanCalculator', () => {
       expect(
         Calculator.getMissingOwnFunds({
           loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
             properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
             structures: [
               {
@@ -1219,6 +1220,8 @@ describe('LoanCalculator', () => {
                 wantedLoan: 600000,
                 propertyId: 'propertyId',
                 ownFunds: [],
+                notaryFees: 15000,
+                reimbursementPenalty: 10000,
               },
             ],
             borrowers: [{}],
@@ -1226,7 +1229,7 @@ describe('LoanCalculator', () => {
           },
           structureId: 'struct1',
         }),
-      ).to.equal(50000);
+      ).to.equal(75000);
     });
 
     it('takes into account reimbursement penalties and notaryfees when reducing loan', () => {
@@ -1626,7 +1629,7 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe.only('getCashRatio', () => {
+  describe('getCashRatio', () => {
     it('returns an accurate percentage', () => {
       const cashRatio = Calculator.getCashRatio({
         loan: {

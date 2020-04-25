@@ -350,6 +350,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             propertyValue: nextPropertyValue,
             ownFunds,
+            purchaseType,
           })
         ) {
           minBound = nextPropertyValue;
