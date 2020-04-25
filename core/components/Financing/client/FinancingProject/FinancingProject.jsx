@@ -13,7 +13,7 @@ import FinancingPropertyPicker from './FinancingPropertyPicker';
 
 const MAX_NOTARY_FEES_RATE = 0.1;
 
-const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
+const calculateDefaultNotaryFees = data => Calculator.getNotaryFees(data).total;
 
 const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *

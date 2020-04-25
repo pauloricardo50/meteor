@@ -60,6 +60,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getFees({ loan, structureId }) {
+      const notaryFees = this.getNotaryFees({ loan, structureId });
+      const reimbursementPenalty = this.selectReimbursementPenalty({
+        loan,
+        structureId,
+      });
+
+      return {
+        total: notaryFees.total + reimbursementPenalty,
+        notaryFees,
+        reimbursementPenalty,
+      };
+    }
+
+    getNotaryFees({ loan, structureId }) {
       const notaryFees = this.selectStructureKey({
         loan,
         structureId,
@@ -71,7 +85,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return { total: notaryFees };
       }
 
-      const calculator = this.getFeesCalculator({ loan, structureId });
+      const calculator = this.getNotaryFeesCalculator({ loan, structureId });
 
       const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
@@ -81,7 +95,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return calculatedNotaryFees;
     }
 
-    getFeesCalculator({ loan, structureId }) {
+    getNotaryFeesCalculator({ loan, structureId }) {
       const canton = this.selectPropertyKey({
         loan,
         structureId,
@@ -580,14 +594,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getRequiredOwnFunds({ loan, structureId }) {
-      const projectValue = this.getProjectValue({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
       const previousLoanValue = this.getPreviousLoanValue({ loan });
 
       if (previousLoanValue > 0) {
-        return Math.max(previousLoanValue - loanValue, 0);
+        const fees = this.getFees({ loan, structureId }).total;
+        return Math.max(previousLoanValue - loanValue + fees, 0);
       }
 
+      const projectValue = this.getProjectValue({ loan, structureId });
       return projectValue - loanValue;
     }
 
@@ -910,7 +925,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getNotaryFeesTooltipValue({ loan, structureId }) {
-      const fees = this.getFees({ loan, structureId }).total;
+      const fees = this.getNotaryFees({ loan, structureId }).total;
       const requiredOwnFunds =
         this.getRequiredOwnFunds({ loan, structureId }) - fees;
       const totalUsed = this.getNonPledgedOwnFunds({ loan, structureId });
@@ -948,12 +963,17 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         key: 'refinancingDate',
       }),
     }) {
-      const { previousLoanTranches } = loan;
+      const { previousLoanTranches = [] } = loan;
+
+      if (!refinancingDate) {
+        return 0;
+      }
+
       return previousLoanTranches
         .filter(({ dueDate }) =>
           moment(dueDate).isAfter(moment(refinancingDate)),
         )
-        .reduce((total, { value = 0, rate, dueDate }) => {
+        .reduce((total, { value = 0, rate = 0, dueDate }) => {
           const remainingYears =
             moment(dueDate).diff(moment(refinancingDate), 'months') / 12;
 
@@ -962,14 +982,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     selectReimbursementPenalty({ loan, structureId }) {
-      let reimbursementPenalty = this.selectStructureKey({
+      if (loan.purchaseType !== PURCHASE_TYPE.REFINANCING) {
+        return 0;
+      }
+
+      const reimbursementPenalty = this.selectStructureKey({
         loan,
         structureId,
         key: 'reimbursementPenalty',
       });
 
       if (!(reimbursementPenalty === 0 || reimbursementPenalty)) {
-        reimbursementPenalty = this.getReimbursementPenalty({
+        return this.getReimbursementPenalty({
           loan,
           structureId,
         });
@@ -988,7 +1012,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return wantedLoan - this.getPreviousLoanValue({ loan });
     }
 
-    getReimbursementRequiredOwnFunds({ loan, structureId }) {
+    getRefinancingRequiredOwnFunds({ loan, structureId }) {
       const reimbursementPenalty = this.selectReimbursementPenalty({
         loan,
         structureId,
