@@ -193,7 +193,9 @@ describe('Admin promotion', () => {
       cy.setSelect('promotionLotIds', 1);
       cy.get('[role=dialog] form').submit();
 
-      cy.contains('.core-tabs-tab', 'Acquéreurs').click();
+      cy.get('.core-tabs-tab')
+        .contains('Acquéreurs')
+        .click();
       cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
 
       cy.get('.actions')

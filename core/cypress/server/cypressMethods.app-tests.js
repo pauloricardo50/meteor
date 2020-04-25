@@ -341,8 +341,7 @@ Meteor.methods({
       Accounts.setPassword(userId, USER_PASSWORD);
     }
 
-    const loginToken = UserService.getLoginToken({ userId });
-    return loginToken;
+    return UserService.getLoginToken({ userId });
   },
   removeTestUser(email) {
     const user = UserService.getByEmail(email);

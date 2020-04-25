@@ -380,9 +380,13 @@ export class UserServiceClass extends CollectionService {
     proUserId,
     sendInvitation = true,
     adminId,
+    promotionId,
   }) => {
     let pro;
-    let assignedEmployeeId;
+
+    const isNewUser = !this.doesUserExist({ email });
+    let userId;
+    let admin;
 
     if (proUserId) {
       pro = this.get(proUserId, {
@@ -390,17 +394,13 @@ export class UserServiceClass extends CollectionService {
         assignedEmployeeId: 1,
         organisations: { name: 1 },
       });
-
-      const { assignedEmployeeId: proAssignedEmployeeId } = pro;
-
-      assignedEmployeeId = proAssignedEmployeeId;
-    } else if (adminId) {
-      assignedEmployeeId = adminId;
     }
 
-    const isNewUser = !this.doesUserExist({ email });
-    let userId;
-    let admin;
+    const assignedEmployeeId = this.getAssigneeForProInvitedUser({
+      pro,
+      adminId,
+      promotionId,
+    });
 
     if (isNewUser) {
       admin = this.get(assignedEmployeeId, { name: 1 });
@@ -428,6 +428,20 @@ export class UserServiceClass extends CollectionService {
     return { userId, admin, pro, isNewUser };
   };
 
+  getAssigneeForProInvitedUser({ pro, adminId, promotionId }) {
+    if (promotionId) {
+      const promotion = PromotionService.get(promotionId, {
+        assignedEmployeeId: 1,
+      });
+      return promotion.assignedEmployeeId;
+    }
+    if (pro?.assignedEmployeeId) {
+      return pro.assignedEmployeeId;
+    }
+
+    return adminId;
+  }
+
   proInviteUser = ({
     user,
     propertyIds = [],
@@ -450,10 +464,11 @@ export class UserServiceClass extends CollectionService {
     const { userId, admin, pro, isNewUser } = this.proCreateUser({
       user,
       proUserId: proUserId || invitedBy,
-      adminId,
       // Invitation will be sent by the propertyInvitationEmail or
       // promotionInvitationEmail
       sendInvitation: false,
+      adminId,
+      promotionId: promotionIds?.length === 1 && promotionIds[0],
     });
 
     let promises = [];
