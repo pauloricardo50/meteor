@@ -30,37 +30,41 @@ const PropertyAdderDialog = withProps(
   }) => {
     const schema = useMemo(
       () =>
-        isRefinancing &&
-        new SimpleSchema({
-          address1: String,
-          city: String,
-          country: { ...address.country, optional: false },
-          value: {
-            ...moneyField,
-            optional: false,
-            uniforms: {
-              helperText: "La valeur estimée aujourd'hui",
-              ...moneyField.uniforms,
-            },
-          },
-          zipCode: { ...address.zipCode, optional: false },
-          residenceType: {
-            type: String,
-            allowedValues: Object.values(RESIDENCE_TYPE),
-          },
-          ...previousLoanTranchesSchema,
-          previousLoanTranches: {
-            ...previousLoanTranchesSchema.previousLoanTranches,
-            custom() {
-              const propertyValue = this.field('value').value;
-              const tranches = this.value || [];
-              const loanValue = tranches.reduce((t, { value }) => t + value, 0);
-              if (loanValue > propertyValue) {
-                return 'loanValueTooHigh';
-              }
-            },
-          },
-        }),
+        isRefinancing
+          ? new SimpleSchema({
+              address1: String,
+              city: String,
+              country: { ...address.country, optional: false },
+              value: {
+                ...moneyField,
+                optional: false,
+                uniforms: {
+                  helperText: "La valeur estimée aujourd'hui",
+                  ...moneyField.uniforms,
+                },
+              },
+              zipCode: { ...address.zipCode, optional: false },
+              residenceType: {
+                type: String,
+                allowedValues: Object.values(RESIDENCE_TYPE),
+              },
+              ...previousLoanTranchesSchema,
+              previousLoanTranches: {
+                ...previousLoanTranchesSchema.previousLoanTranches,
+                custom() {
+                  const propertyValue = this.field('value').value;
+                  const tranches = this.value || [];
+                  const loanValue = tranches.reduce(
+                    (t, { value }) => t + value,
+                    0,
+                  );
+                  if (loanValue > propertyValue) {
+                    return 'loanValueTooHigh';
+                  }
+                },
+              },
+            })
+          : undefined,
       [],
     );
 
