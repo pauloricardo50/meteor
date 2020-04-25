@@ -146,6 +146,15 @@ describe('NotaryFeesCalculator', () => {
       ).to.equal(fees.deductions.mortgageNoteDeductions);
       expect(fees.buyersContractFees.total).to.equal(27034.85);
     });
+
+    it('ignores casatax in refinancings', () => {
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      loan.purchaseType = PURCHASE_TYPE.REFINANCING;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.deductions.mortgageNoteDeductions).to.equal(0);
+    });
   });
 
   describe('VD', () => {

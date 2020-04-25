@@ -24,6 +24,7 @@ const SolvencyItem = ({
       residenceType,
       borrowers: loan.borrowers,
       canton,
+      purchaseType: loan.purchaseType,
     });
 
     const calc = new CalculatorClass({ loan: loanObject, lenderRules });

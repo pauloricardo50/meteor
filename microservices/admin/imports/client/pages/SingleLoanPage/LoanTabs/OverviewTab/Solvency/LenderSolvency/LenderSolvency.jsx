@@ -20,6 +20,7 @@ const LenderSolvency = ({
     borrowers: loan.borrowers,
     residenceType,
     canton,
+    purchaseType: loan.purchaseType,
   });
 
   return (

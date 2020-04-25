@@ -770,7 +770,13 @@ class LoanService extends CollectionService {
     }
 
     const loan = this.get(loanId, userLoan());
-    const { properties = [], userId, borrowers, residenceType } = loan;
+    const {
+      properties = [],
+      userId,
+      borrowers,
+      residenceType,
+      purchaseType,
+    } = loan;
 
     // Get the highest property value
     const {
@@ -801,6 +807,7 @@ class LoanService extends CollectionService {
       loanValue: Math.round(propertyValue * borrowRatio),
       canton,
       residenceType,
+      purchaseType,
     });
 
     let propertyWithCanton = properties.find(

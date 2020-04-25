@@ -91,6 +91,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       borrowRatio = this.getMaxBorrowRatio({
         loan: this.createLoanObject({ residenceType }),
       }),
+      purchaseType,
     }) {
       let notaryFees;
 
@@ -105,6 +106,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           propertyValue,
           mortgageNoteIncrease: finalLoanValue,
           residenceType,
+          purchaseType,
         }).total;
       }
 
@@ -231,10 +233,12 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       ownFunds = [],
       loanTranches = [],
       notaryFees,
+      purchaseType,
       ...rest
     }) {
       return {
         residenceType,
+        purchaseType,
         borrowers,
         structure: {
           wantedLoan,
@@ -294,7 +298,13 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       return true;
     }
 
-    getMaxPropertyValue({ borrowers, maxBorrowRatio, canton, residenceType }) {
+    getMaxPropertyValue({
+      borrowers,
+      maxBorrowRatio,
+      canton,
+      residenceType,
+      purchaseType,
+    }) {
       // Immediately stop iterating if maxBorrowRatio is above what is allowed
       if (
         this.getMaxBorrowRatio({
@@ -329,6 +339,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           canton,
           residenceType,
           propertyValue: nextPropertyValue,
+          purchaseType,
         });
 
         if (
@@ -374,6 +385,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       direction,
       cache,
+      purchaseType,
     }) {
       let newStepSize = stepSize;
       let foundBetterValue;
@@ -388,6 +400,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
               residenceType,
               maxBorrowRatio: currentBorrowRatio + stepSize,
               canton,
+              purchaseType,
             });
         } else {
           nextValue =
@@ -397,6 +410,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
               residenceType,
               maxBorrowRatio: currentBorrowRatio - stepSize,
               canton,
+              purchaseType,
             });
         }
 
@@ -418,6 +432,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       borrowers,
       residenceType,
       canton,
+      purchaseType,
     }) {
       let borrowRatio = 0.7;
       let foundValue = false;
@@ -453,6 +468,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             maxBorrowRatio: borrowRatio,
             canton,
+            purchaseType,
           });
         setMax(borrowRatio, center);
 
@@ -463,6 +479,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             maxBorrowRatio: borrowRatio - deltaX,
             canton,
+            purchaseType,
           });
         setMax(borrowRatio - deltaX, yLeft);
         const yRight =
@@ -472,6 +489,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             maxBorrowRatio: borrowRatio + deltaX,
             canton,
+            purchaseType,
           });
         setMax(borrowRatio + deltaX, yRight);
 
@@ -493,6 +511,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             canton,
             direction: 'upwards',
             cache,
+            purchaseType,
           });
           borrowRatio += stepSize;
         } else {
@@ -505,6 +524,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             canton,
             direction: 'downwards',
             cache,
+            purchaseType,
           });
           borrowRatio -= stepSize;
         }
@@ -527,6 +547,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           residenceType,
           maxBorrowRatio: finalBorrowRatio,
           canton,
+          purchaseType,
         });
 
       return {
@@ -541,12 +562,17 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       residenceType,
     }) {
-      const { borrowers, residenceType: loanResidenceType } = loan;
+      const {
+        borrowers,
+        residenceType: loanResidenceType,
+        purchaseType,
+      } = loan;
       return this.getMaxPropertyValue({
         borrowers,
         residenceType: residenceType || loanResidenceType,
         maxBorrowRatio,
         canton,
+        purchaseType,
       });
     }
 
@@ -589,6 +615,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           // this is currently not handled and a potential flaw to take into
           // account
           notaryFees: 0,
+          purchaseType,
         });
 
         if (
@@ -616,13 +643,15 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       const propertyValue = this.getPropAndWork({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
       const notaryFees = this.getFees({ loan, structureId }).total;
+      const { borrowers, residenceType, purchaseType } = loan;
 
       return this.suggestStructure({
-        borrowers: loan.borrowers,
+        borrowers,
         propertyValue,
         loanValue,
-        residenceType: loan.residenceType,
+        residenceType,
         notaryFees,
+        purchaseType,
       });
     }
   };
