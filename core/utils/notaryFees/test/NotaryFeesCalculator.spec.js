@@ -115,6 +115,14 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(55159.1);
     });
 
+    it.only('should not return NaN when no wantedLoan is set', () => {
+      loan.structure.wantedLoan = undefined;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.total).to.equal(39100.4);
+    });
+
     // FIXME: Skip these until we officially handle construction loans
     it.skip('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;

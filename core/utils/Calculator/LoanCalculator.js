@@ -61,10 +61,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getFees({ loan, structureId }) {
       const notaryFees = this.getNotaryFees({ loan, structureId });
+      console.log('notaryFees:', notaryFees);
       const reimbursementPenalty = this.selectReimbursementPenalty({
         loan,
         structureId,
       });
+      console.log('reimbursementPenalty:', reimbursementPenalty);
 
       return {
         total: notaryFees.total + reimbursementPenalty,
@@ -493,7 +495,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         key: 'wantedMortgageNote',
       });
 
-      return Math.max(0, (wantedMortgageNote || loanValue) - mortgageNoteValue);
+      return (
+        Math.max(0, (wantedMortgageNote || loanValue) - mortgageNoteValue) || 0
+      );
     }
 
     getCashUsed({ loan, structureId }) {
