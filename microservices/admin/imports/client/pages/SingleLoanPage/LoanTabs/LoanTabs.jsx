@@ -15,6 +15,7 @@ import { ROLES } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import FileTabs from 'core/components/FileTabs/loadable';
 import Icon from 'core/components/Icon';
+import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
@@ -59,6 +60,7 @@ const getTabs = props => {
       id: 'refinancing',
       Component: RefinancingTab,
       style: { color: 'red' },
+      icon: <RefinancingIcon style={{ width: 20, height: 20 }} />,
     },
     {
       id: 'borrowers',

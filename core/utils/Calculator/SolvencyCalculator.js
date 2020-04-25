@@ -642,7 +642,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     suggestStructureForLoan({ loan, structureId }) {
       const propertyValue = this.getPropAndWork({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
-      const notaryFees = this.getFees({ loan, structureId }).total;
+      const notaryFees = this.getNotaryFees({ loan, structureId }).total;
       const { borrowers, residenceType, purchaseType } = loan;
 
       return this.suggestStructure({

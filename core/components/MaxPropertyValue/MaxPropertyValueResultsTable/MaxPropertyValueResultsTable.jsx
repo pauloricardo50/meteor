@@ -49,7 +49,7 @@ const MaxPropertyValueResultsTable = ({
   const minLoan = minPropertyValue * minBorrowRatio;
   const maxLoan = maxPropertyValue * maxBorrowRatio;
 
-  const minNotaryFees = Calculator.getFees({
+  const minNotaryFees = Calculator.getNotaryFees({
     loan: Calculator.createLoanObject({
       residenceType,
       wantedLoan: minLoan,
@@ -58,7 +58,7 @@ const MaxPropertyValueResultsTable = ({
       purchaseType,
     }),
   }).total;
-  const maxNotaryFees = Calculator.getFees({
+  const maxNotaryFees = Calculator.getNotaryFees({
     loan: Calculator.createLoanObject({
       residenceType,
       wantedLoan: maxLoan,
