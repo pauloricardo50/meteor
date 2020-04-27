@@ -62,6 +62,7 @@ const getQueryFilters = ({
   promotionId,
   lenderId,
   category,
+  purchaseType,
 }) => {
   const $or = [];
 
@@ -95,6 +96,7 @@ const getQueryFilters = ({
     ...(noPromotionIsChecked(promotionId)
       ? { promotionLinks: { $in: [[], null] } }
       : {}),
+    purchaseType,
   };
 };
 

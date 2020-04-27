@@ -3,6 +3,7 @@ import React from 'react';
 import {
   LOAN_CATEGORIES,
   LOAN_STATUS_ORDER,
+  PURCHASE_TYPE,
   STEP_ORDER,
 } from 'core/api/loans/loanConstants';
 import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
@@ -62,6 +63,7 @@ const LoanBoardOptionsContent = ({
     category,
     promotionStatus,
     additionalFields,
+    purchaseType,
   } = options;
   const assignedEmployeeValue = assignedEmployeeId
     ? assignedEmployeeId.$in
@@ -72,6 +74,8 @@ const LoanBoardOptionsContent = ({
   const stepValue = step ? step.$in : [null];
   const promotionIdValue = promotionId ? promotionId.$in : [null];
   const lenderIdValue = lenderId ? lenderId.$in : [null];
+  const purchaseTypeValue = purchaseType ? purchaseType.$in : [null];
+
   const groupByOptions = [
     { id: GROUP_BY.STATUS, label: 'Par statut' },
     { id: GROUP_BY.PROMOTION, label: 'Par promo' },
@@ -127,6 +131,14 @@ const LoanBoardOptionsContent = ({
     ({ id, label, labelId }) => ({ id, label: label || <T id={labelId} /> }),
   );
 
+  const purchaseTypeOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(PURCHASE_TYPE).map(s => ({
+      id: s,
+      label: <T id={`Forms.purchaseType.${s}`} />,
+    })),
+  ];
+
   return (
     <>
       <div className="left">
@@ -162,6 +174,15 @@ const LoanBoardOptionsContent = ({
           options={categoryOptions}
           onChange={next =>
             makeOnChange('category', dispatch)(categoryValue, next)
+          }
+        />
+
+        <LoanBoardOptionsCheckboxes
+          label="Type de prêt"
+          value={purchaseTypeValue}
+          options={purchaseTypeOptions}
+          onChange={next =>
+            makeOnChange('purchaseType', dispatch)(purchaseTypeValue, next)
           }
         />
 

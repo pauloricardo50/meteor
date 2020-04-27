@@ -1,11 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 
-import { Meteor } from 'meteor/meteor';
-import LoanBoardCardTop from './LoanBoardCardTop';
-import LoanBoardCardTasks from './LoanBoardCardTasks';
-import LoanBoardCardDescription from './LoanBoardCardDescription';
-import LoanBoardCardBottom from './LoanBoardCardBottom';
 import LoanBoardCardAdditionalInfo from './LoanBoardCardAdditionalInfo';
+import LoanBoardCardBottom from './LoanBoardCardBottom';
+import LoanBoardCardDescription from './LoanBoardCardDescription';
+import LoanBoardCardTasks from './LoanBoardCardTasks';
+import LoanBoardCardTop from './LoanBoardCardTop';
 
 const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
   const [renderComplex, setRenderComplex] = useState(false);
@@ -21,6 +22,7 @@ const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
     structures = [],
     tasksCache: tasks,
     selectedLenderOrganisation,
+    purchaseType,
   } = loan;
   const structure = structures.find(({ id }) => id === selectedStructure);
   const adminNote = adminNotes[0] && adminNotes[0].note;
@@ -64,6 +66,7 @@ const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
         customName={customName}
         structure={structure}
         renderComplex={renderComplex}
+        purchaseType={purchaseType}
       />
     </div>
   );
