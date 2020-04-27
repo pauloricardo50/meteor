@@ -1,9 +1,15 @@
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import { VAT } from '../../config/financeConstants';
 import * as cantons from './cantonConstants';
 import degressive from './degressive';
 
-const isCasatax = ({ residenceType, propertyValue }) =>
+const isCasatax = ({
+  residenceType,
+  propertyValue,
+  purchaseType = PURCHASE_TYPE.ACQUISITION,
+}) =>
+  purchaseType === PURCHASE_TYPE.ACQUISITION &&
   residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE &&
   propertyValue <= cantons.GE.CASATAX_CUTOFF;
 
@@ -35,8 +41,9 @@ export const GE = {
     residenceType,
     propertyValue,
     transferTax = 0,
+    purchaseType,
   }) =>
-    isCasatax({ residenceType, propertyValue })
+    isCasatax({ residenceType, propertyValue, purchaseType })
       ? Math.min(cantons.GE.CASATAX_PROPERTY_DEDUCTION, transferTax)
       : 0,
   additionalFees: () => cantons.GE.ADDITIONAL_FEES,
@@ -44,8 +51,9 @@ export const GE = {
     residenceType,
     propertyValue,
     mortgageNoteRegistrationTax,
+    purchaseType,
   }) =>
-    isCasatax({ residenceType, propertyValue })
+    isCasatax({ residenceType, propertyValue, purchaseType })
       ? mortgageNoteRegistrationTax * cantons.GE.MORTGAGE_NOTE_CASATAX_DEDUCTION
       : 0,
 };

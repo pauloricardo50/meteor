@@ -631,8 +631,9 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       title: true,
       label: 'Recap.buyersContract',
       intlValues: { value: toMoney(propertyValue) },
+      hide: !buyersContractFees,
     },
-    ...getRecapForObject(buyersContractValues),
+    ...(buyersContractFees ? getRecapForObject(buyersContractValues) : []),
     {
       label: 'Recap.propertyRegistrationTaxDeductions',
       value: `-${toMoney(buyersContractDeductions)}`,
@@ -653,13 +654,15 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       ),
       spacingTop: true,
       spacing: true,
+      hide: !buyersContractFees,
     },
     {
       title: true,
       label: 'Recap.mortgageNote',
       intlValues: { value: toMoney(mortgageNoteIncrease) },
+      hide: !mortgageNoteFees,
     },
-    ...getRecapForObject(mortgageNoteValues),
+    ...(mortgageNoteFees ? getRecapForObject(mortgageNoteValues) : []),
     {
       label: 'Recap.mortgageNoteRegistrationTaxDeductions',
       value: `-${toMoney(mortgageNoteDeductions)}`,
@@ -680,6 +683,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       ),
       spacingTop: true,
       spacing: true,
+      hide: !mortgageNoteFees,
     },
     {
       label: 'Recap.total',

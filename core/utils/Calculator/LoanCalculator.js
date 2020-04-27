@@ -493,7 +493,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         key: 'wantedMortgageNote',
       });
 
-      return Math.max(0, (wantedMortgageNote || loanValue) - mortgageNoteValue);
+      return (
+        Math.max(0, (wantedMortgageNote || loanValue) - mortgageNoteValue) || 0
+      );
     }
 
     getCashUsed({ loan, structureId }) {

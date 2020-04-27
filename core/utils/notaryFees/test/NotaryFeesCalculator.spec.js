@@ -115,6 +115,14 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(55159.1);
     });
 
+    it('should not return NaN when no wantedLoan is set', () => {
+      loan.structure.wantedLoan = undefined;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.total).to.equal(39100.4);
+    });
+
     // FIXME: Skip these until we officially handle construction loans
     it.skip('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
@@ -145,6 +153,15 @@ describe('NotaryFeesCalculator', () => {
           GE.MORTGAGE_NOTE_CASATAX_DEDUCTION,
       ).to.equal(fees.deductions.mortgageNoteDeductions);
       expect(fees.buyersContractFees.total).to.equal(27034.85);
+    });
+
+    it('ignores casatax in refinancings', () => {
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      loan.purchaseType = PURCHASE_TYPE.REFINANCING;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.deductions.mortgageNoteDeductions).to.equal(0);
     });
   });
 

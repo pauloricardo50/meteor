@@ -619,21 +619,13 @@ class LoanService extends CollectionService {
   }
 
   getMaxPropertyValueRange({ organisations, loan, residenceType, canton }) {
-    const { borrowers = [] } = loan;
-    let func;
-
-    if (loan.purchaseType === PURCHASE_TYPE.ACQUISITION) {
-      func = 'getMaxPropertyValueWithoutBorrowRatio';
-    }
-
-    if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
-      func = 'getMaxBorrowRatioForLoan';
-    }
+    const { borrowers = [], purchaseType } = loan;
 
     const loanObject = Calculator.createLoanObject({
       residenceType,
       borrowers,
       canton,
+      purchaseType,
     });
     const maxPropertyValues = organisations
       .map(({ lenderRules, name }) => {
@@ -641,12 +633,29 @@ class LoanService extends CollectionService {
           loan: loanObject,
           lenderRules,
         });
+        let borrowRatio;
+        let propertyValue;
 
-        const { borrowRatio, propertyValue } = calculator[func]({
-          loan,
-          residenceType,
-          canton,
-        });
+        if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+          const result = calculator.getMaxPropertyValueWithoutBorrowRatio({
+            borrowers,
+            residenceType,
+            canton,
+            purchaseType,
+          });
+          borrowRatio = result.borrowRatio;
+          propertyValue = result.propertyValue;
+        }
+
+        if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+          const result = calculator.getMaxBorrowRatioForLoan({
+            loan,
+            canton,
+          });
+          borrowRatio = result.borrowRatio;
+          propertyValue = result.propertyValue;
+        }
+
         if (propertyValue > 0 && borrowRatio > 0) {
           return { borrowRatio, propertyValue, organisationName: name };
         }
@@ -770,7 +779,13 @@ class LoanService extends CollectionService {
     }
 
     const loan = this.get(loanId, userLoan());
-    const { properties = [], userId, borrowers, residenceType } = loan;
+    const {
+      properties = [],
+      userId,
+      borrowers,
+      residenceType,
+      purchaseType,
+    } = loan;
 
     // Get the highest property value
     const {
@@ -801,6 +816,7 @@ class LoanService extends CollectionService {
       loanValue: Math.round(propertyValue * borrowRatio),
       canton,
       residenceType,
+      purchaseType,
     });
 
     let propertyWithCanton = properties.find(
