@@ -51,7 +51,7 @@ const ContactButtonOverlay = ({
             label={email}
           />
           <CalendlyModal
-            link={calendly || 'https://calendly.com/epotek-geneve'}
+            link={calendly}
             open={openCalendly}
             onClose={() => setOpenCalendy(false)}
           />
