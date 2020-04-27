@@ -10,7 +10,10 @@ import { CANTONS } from '../../loans/loanConstants';
 const MortgageNoteSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  value: moneyField,
+  value: {
+    ...moneyField,
+    uniforms: { ...moneyField.uniforms, label: 'Montant de la cédule' },
+  },
   rank: { type: Number, min: 0, max: 10, optional: true },
   type: {
     type: String,
