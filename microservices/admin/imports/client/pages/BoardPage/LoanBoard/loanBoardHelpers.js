@@ -185,6 +185,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   loanId: '',
   promotionStatus: undefined,
   additionalFields: [],
+  purchaseType: undefined,
 });
 
 export const filterReducer = (state, { type, payload }) => {
