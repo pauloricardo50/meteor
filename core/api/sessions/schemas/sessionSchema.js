@@ -10,7 +10,7 @@ const SessionSchema = new SimpleSchema({
   microservice: { type: String, optional: true },
   ip: String,
   userId: { type: String, optional: true },
-  role: { type: String, allowedValues: ROLES, optional: true },
+  role: { type: String, allowedValues: Object.values(ROLES), optional: true },
   isImpersonate: { type: Boolean, defaultValue: false },
   shared: { type: Boolean, optional: true, defaultValue: false },
   lastPageVisited: { type: String, optional: true },
