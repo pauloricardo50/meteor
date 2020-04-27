@@ -6,6 +6,13 @@ import Icon from 'core/components/Icon';
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 
+const PurchaseTypeIcon = ({ isRefinancing }) =>
+  isRefinancing ? (
+    <RefinancingIcon className="refinancing-icon" />
+  ) : (
+    <AcquisitionIcon className="acquisition-icon" />
+  );
+
 const LoanBoardCardBottom = ({
   category,
   promotions,
@@ -33,6 +40,15 @@ const LoanBoardCardBottom = ({
 
   return (
     <div className="card-bottom">
+      {renderComplex ? (
+        <Tooltip title={isRefinancing ? 'Refinancement' : 'Acquisition'}>
+          <span className="flex center">
+            <PurchaseTypeIcon isRefinancing={isRefinancing} />
+          </span>
+        </Tooltip>
+      ) : (
+        <PurchaseTypeIcon isRefinancing={isRefinancing} />
+      )}
       {showPremium && (
         <span className="premium-badge">
           <Icon
@@ -42,13 +58,6 @@ const LoanBoardCardBottom = ({
           />
         </span>
       )}
-      <Tooltip title={isRefinancing ? 'Refinancement' : 'Acquisition'}>
-        {isRefinancing ? (
-          <RefinancingIcon className="refinancing-icon" />
-        ) : (
-          <AcquisitionIcon className="acquisition-icon" />
-        )}
-      </Tooltip>
       {content}
     </div>
   );
