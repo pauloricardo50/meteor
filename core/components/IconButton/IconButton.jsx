@@ -42,6 +42,7 @@ class IconButton extends Component {
       size = 'medium',
       className,
       loading,
+      controlledTooltipProps = {},
       ...rest
     } = this.props;
 
@@ -69,7 +70,11 @@ class IconButton extends Component {
 
     if (tooltip) {
       return (
-        <Tooltip placement={tooltipPlacement} title={tooltip}>
+        <Tooltip
+          placement={tooltipPlacement}
+          title={tooltip}
+          {...controlledTooltipProps}
+        >
           {button}
         </Tooltip>
       );
