@@ -105,7 +105,6 @@ const employees = [
     src: '/img/epotek-logo.png',
     name: 'e-Potek',
     phoneNumber: EPOTEK_NUMBER,
-    calendly: 'https://calendly.com/epotek-geneve',
   },
 ];
 

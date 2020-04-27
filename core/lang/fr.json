@@ -1,4 +1,6 @@
 {
+  "CalendlyModal.officeChooser.title": "Sélectionnez votre agence",
+  "CalendlyModal.officeChooser.description": "Choisissez l'agence e-Potek qui vous convient le mieux",
   "Forms.previousLoanTranches.remainingMonths": "Échéance dans",
   "Forms.previousLoanAmortization": "Amortissement actuel, annuel",
   "Financing.ownFundsUseDescription.placeholder": "Placement en bourse",
