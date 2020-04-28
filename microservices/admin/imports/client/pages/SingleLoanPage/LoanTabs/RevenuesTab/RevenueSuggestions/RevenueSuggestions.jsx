@@ -18,6 +18,9 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
   const { lenders, structure, revenues } = loan;
   const { wantedLoan } = structure;
   const hasReferral = !!referralOrganisation;
+  const referralIsCommissionned =
+    hasReferral &&
+    referralOrganisation?.enabledCommissions.includes(REVENUE_TYPES.MORTGAGE);
 
   if (!lenders || !lenders.length) {
     return (
@@ -53,7 +56,7 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
                   expectedAt: getLastDateinXMonths(3),
                   amount: hasCommissionRate ? amount : 0,
                   sourceOrganisationLink: { _id: lender.organisation._id },
-                  organisationLinks: hasReferral
+                  organisationLinks: referralIsCommissionned
                     ? [
                         {
                           _id: referralOrganisation._id,
@@ -89,8 +92,12 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
               )}
               <div>
                 Retrocession pour:{' '}
-                <b>{hasReferral ? referralOrganisation.name : 'Personne'}</b>{' '}
-                {hasReferral && (
+                <b>
+                  {referralIsCommissionned
+                    ? referralOrganisation.name
+                    : 'Personne'}
+                </b>{' '}
+                {referralIsCommissionned && (
                   <Percent value={referralOrganisation.commissionRate} />
                 )}
               </div>
@@ -110,7 +117,7 @@ export default withSmartQuery({
         user.referredByOrganisation &&
         user.referredByOrganisation._id) ||
       'none',
-    $body: { name: 1, commissionRate: 1 },
+    $body: { name: 1, commissionRate: 1, enabledCommissions: 1 },
   }),
   dataName: 'referralOrganisation',
   queryOptions: { single: true },
