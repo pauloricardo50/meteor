@@ -7,7 +7,8 @@ import TranchePickerContainer from './TranchePickerContainer';
 
 const tranchesAreValid = tranches => {
   const sum = tranches.reduce((total, { value }) => total + value, 0);
-  const sumIsOne = sum === 1;
+  // Ensure that values from 0.9995 are rounded to 1, (i.e. in case user wants 3x 33.33%)
+  const sumIsOne = Math.round((sum + Number.EPSILON) * 1000) / 1000 === 1;
   const allTypesAreDefined = tranches.every(({ type }) => !!type);
 
   return sumIsOne && allTypesAreDefined;
