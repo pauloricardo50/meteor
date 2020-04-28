@@ -1,7 +1,10 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import T from '../../components/Translation';
 import { createCollection } from '../helpers/collectionHelpers';
 import { address, documentsField } from '../helpers/sharedSchemas';
+import { REVENUE_TYPES } from '../revenues/revenueConstants';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
@@ -70,6 +73,19 @@ export const OrganisationSchema = new SimpleSchema({
   insuranceProductLinks: { type: Array, defaultValue: [] },
   'insuranceProductLinks.$': Object,
   'insuranceProductLinks.$._id': String,
+  enabledCommissions: {
+    type: Array,
+    defaultValue: [REVENUE_TYPES.MORTGAGE],
+    uniforms: { displayEmpty: false, placeholder: '' },
+    optional: true,
+  },
+  'enabledCommissions.$': {
+    type: String,
+    allowedValues: Object.values(REVENUE_TYPES),
+    uniforms: {
+      transform: type => <T id={`Forms.type.${type}`} />,
+    },
+  },
 });
 
 Organisations.attachSchema(OrganisationSchema);

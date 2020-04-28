@@ -1,14 +1,24 @@
 import React from 'react';
 
 import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
+
 import CommissionRatesForm from './CommissionRatesForm';
+import EnabledCommissionsForm from './EnabledCommissionsForm';
 
 const CommissionsEditor = props => {
-  const { commissionRates = {}, _id: organisationId, emptyState } = props;
+  const {
+    commissionRates = {},
+    _id: organisationId,
+    emptyState,
+    enabledCommissions,
+  } = props;
   const { rates = [] } = commissionRates;
 
   return (
     <div>
+      <EnabledCommissionsForm
+        organisation={{ _id: organisationId, enabledCommissions }}
+      />
       <CommissionRatesForm
         commissionRates={commissionRates}
         organisationId={organisationId}
