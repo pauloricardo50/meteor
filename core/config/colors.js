@@ -13,8 +13,8 @@ const colors = {
   charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#005bea'],
   iconColor: '#444',
   iconHoverColor: '#888',
-  body: '#666',
-  title: '#444',
+  body: '#2c2c2c',
+  title: '#2c2c2c',
   mui: {
     background: '#fff',
     contrastText: '#fff',
