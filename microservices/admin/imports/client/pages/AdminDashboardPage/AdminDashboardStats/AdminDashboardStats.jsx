@@ -14,6 +14,7 @@ import NewUsersStat from './NewUsersStat';
 import OutdatedRevenues from './OutdatedRevenues';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
+import RevenuesWithUnnecessaryCommissions from './RevenuesWithUnnecessaryCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
 
 const AdminDashboardStats = ({
@@ -54,6 +55,7 @@ const AdminDashboardStats = ({
           <LoansWithoutLenders showAll={showAll} />
           <LoansWithoutAssignees showAll={showAll} />
           <LoansThatShouldBeFinalized showAll={showAll} />
+          <RevenuesWithUnnecessaryCommissions showAll={showAll} />
         </div>
       </div>
     </div>

@@ -67,12 +67,14 @@ export default compose(
   withSmartQuery({
     query: ORGANISATIONS_COLLECTION,
     params: ({ insuranceRequest: { user } = {} }) => ({
-      $filters: { _id: user?.referredByOrganisation?._id || 'none' },
+      $filters: { _id: user?.referredByOrganisation?._id },
       commissionRate: 1,
       enabledCommissions: 1,
     }),
     dataName: 'referralOrganisation',
     queryOptions: { reactive: false, single: true },
+    skip: ({ insuranceRequest: { user } = {} }) =>
+      !user?.referredByOrganisation?._id,
   }),
   withProps(({ referralOrganisation }) => {
     const referralIsCommissionned = referralOrganisation?.enabledCommissions?.includes(
