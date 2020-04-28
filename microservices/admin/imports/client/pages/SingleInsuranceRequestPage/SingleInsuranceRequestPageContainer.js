@@ -1,8 +1,10 @@
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { adminBorrower, adminRevenue } from 'core/api/fragments';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
@@ -15,7 +17,7 @@ export default compose(
       documents: 1,
       name: 1,
       customName: 1,
-      user: { name: 1 },
+      user: { name: 1, referredByOrganisation: { _id: 1 } },
       status: 1,
       assigneeLinks: 1,
       assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
@@ -61,5 +63,22 @@ export default compose(
     }),
     dataName: 'insuranceRequest',
     queryOptions: { reactive: true, single: true },
+  }),
+  withSmartQuery({
+    query: ORGANISATIONS_COLLECTION,
+    params: ({ insuranceRequest: { user } = {} }) => ({
+      $filters: { _id: user?.referredByOrganisation?._id || 'none' },
+      commissionRate: 1,
+      enabledCommissions: 1,
+    }),
+    dataName: 'referralOrganisation',
+    queryOptions: { reactive: false, single: true },
+  }),
+  withProps(({ referralOrganisation }) => {
+    const referralIsCommissionned = referralOrganisation?.enabledCommissions?.includes(
+      REVENUE_TYPES.INSURANCE,
+    );
+
+    return { referralIsCommissionned };
   }),
 );

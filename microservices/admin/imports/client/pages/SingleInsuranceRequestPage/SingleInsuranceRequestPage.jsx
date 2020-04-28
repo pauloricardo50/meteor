@@ -1,11 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+import InsuranceRequestTabs from './InsuranceRequestTabs';
+import InsuranceRequestTasksTable from './InsuranceRequestTasksTable/InsuranceRequestTasksTable';
+import SingleInsuranceRequestPageContacts from './SingleInsuranceRequestPageContacts';
 import SingleInsuranceRequestPageContainer from './SingleInsuranceRequestPageContainer';
 import SingleInsuranceRequestPageHeader from './SingleInsuranceRequestPageHeader';
-import InsuranceRequestTabs from './InsuranceRequestTabs';
-import SingleInsuranceRequestPageContacts from './SingleInsuranceRequestPageContacts';
-import InsuranceRequestTasksTable from './InsuranceRequestTasksTable/InsuranceRequestTasksTable';
 
 const SingleInsuranceRequestPage = props => {
   const { insuranceRequest, enableTabRouting } = props;

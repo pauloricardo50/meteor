@@ -20,7 +20,7 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
   const hasReferral = !!referralOrganisation;
   const referralIsCommissionned =
     hasReferral &&
-    referralOrganisation?.enabledCommissions.includes(REVENUE_TYPES.MORTGAGE);
+    referralOrganisation?.enabledCommissions?.includes(REVENUE_TYPES.MORTGAGE);
 
   if (!lenders || !lenders.length) {
     return (
