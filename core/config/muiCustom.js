@@ -86,7 +86,7 @@ const createTheme = ({ fontSize = 14 }) =>
       },
     },
     typography: {
-      fontFamily: 'Manrope, Helvetica, sans-serif',
+      fontFamily: 'Manrope-variable, Helvetica, sans-serif',
       // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
       fontSize,
       fontWeightRegular: 300,
