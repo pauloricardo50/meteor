@@ -30,7 +30,7 @@ const RevenuesTab = ({ insuranceRequest }) => {
       <RevenuesTable
         insuranceRequest={insuranceRequest}
         filterRevenues={({ insuranceRequest: { _id } }) => ({
-          'insuranceRequestCache.0._id': _id,
+          'insuranceRequestCache._id': _id,
         })}
         firstColumnLabel="Assurance"
       />

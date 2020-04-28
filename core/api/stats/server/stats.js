@@ -72,7 +72,7 @@ export const newUsersResolver = ({ period, verified, roles } = {}) => {
   const resolver = makeCountResolver(UserService);
   return resolver({
     period,
-    filters: { roles, ...(verified ? { 'emails.0.verified': true } : {}) },
+    filters: { roles, ...(verified ? { 'emails.verified': true } : {}) },
   });
 };
 
@@ -80,7 +80,7 @@ export const userHistogramResolver = async ({ period, verified, roles }) => {
   const resolver = makeHistogramResolver(UserService);
   return resolver({
     period,
-    filters: { roles, ...(verified ? { 'emails.0.verified': true } : {}) },
+    filters: { roles, ...(verified ? { 'emails.verified': true } : {}) },
   });
 };
 
