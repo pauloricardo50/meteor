@@ -102,7 +102,7 @@ const RevnuesWithUnnecessaryCommissions = ({ showAll }) => {
             raised: false,
             primary: true,
           }}
-          title="Revenus sans commission"
+          title="Revenus avec des commissions pas nécessaires"
         >
           <div className="flex-col">
             {!loading &&
