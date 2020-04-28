@@ -47,7 +47,7 @@
 
     color: rgba(0, 0, 0, 0.2);
 
-    font-family: 'Eina04-Regular', 'Helvetica';
+    font-weight: 300;
   }
 
   &.selected {
@@ -66,8 +66,6 @@
 
     h3 {
       color: white;
-
-      font-family: 'Eina04-Bold', 'Helvetica';
     }
   }
 

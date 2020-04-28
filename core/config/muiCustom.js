@@ -86,12 +86,11 @@ const createTheme = ({ fontSize = 14 }) =>
       },
     },
     typography: {
-      fontFamily: 'Eina04-Regular, Helvetica',
+      fontFamily: 'Manrope, Helvetica, sans-serif',
       // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
       fontSize,
-      letterSpacing: '0.048em',
-      fontWeightRegular: 400,
-      fontWeightMedium: 600,
+      fontWeightRegular: 300,
+      fontWeightMedium: 400,
       button: {
         fontWeight: 400,
         textTransform: '',
