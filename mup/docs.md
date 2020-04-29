@@ -4,8 +4,14 @@
 
 Your Google Cloud account is used to access secrets stored in the Google Cloud Secret Manager using the Cloud SDK.
 
-1. [Install](https://cloud.google.com/sdk/docs) the Cloud SDK
-2. Run `gcloud init`. The default project isn't important since the deploy scripts will always configure it to use the correct one.
+1. [Install](https://cloud.google.com/sdk/docs) the Cloud SDK. On Linux or macOS you can use:
+```
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+```
+
+2. Run `gcloud init`. The default project isn't important since the deploy scripts will always configure it to use the correct project.
+3. Run `gcloud components install beta`. The beta component contains the secret manager commands.
 
 ## SSH
 
