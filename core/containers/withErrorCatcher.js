@@ -1,8 +1,14 @@
 import { lifecycle } from 'recompose';
 
-import { logError } from '../api/slack/methodDefinitions';
+import { logError } from '../api/errorLogger/methodDefinitions';
 
 const defaultHandleError = (error, additionalData) => {
+  // Error is fired twice, second time with an additionnal '_suppressLogging' property
+  const errorPropertyNames = Object.getOwnPropertyNames(error) || [];
+  if (errorPropertyNames.includes('_suppressLogging')) {
+    return true;
+  }
+
   const { Kadira } = window;
   if (Kadira && Kadira.trackError) {
     Kadira.trackError('react', error.stack.toString());
@@ -16,6 +22,8 @@ const defaultHandleError = (error, additionalData) => {
         ? window.location.href
         : '',
   });
+
+  return true;
 };
 
 let hasAddedListeners = false;
