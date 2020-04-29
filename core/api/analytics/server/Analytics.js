@@ -6,9 +6,9 @@ import curryRight from 'lodash/curryRight';
 
 import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import { getClientHost } from '../../../utils/server/getClientUrl';
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import { isAPI } from '../../RESTAPI/server/helpers';
 import SessionService from '../../sessions/server/SessionService';
-import SlackService from '../../slack/server/SlackService';
 import UserService from '../../users/server/UserService';
 import { TRACKING_COOKIE } from '../analyticsConstants';
 import EVENTS from '../events';
@@ -193,7 +193,7 @@ class Analytics {
         const error = new Meteor.Error(
           `Property ${name} in event ${eventName} is required !`,
         );
-        SlackService.sendError({
+        ErrorLogger.handleError({
           error,
           additionalData: [{ event, data, pickedProperties }],
         });

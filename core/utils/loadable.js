@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loadable from 'react-loadable';
 
-import { logError } from '../api/slack/methodDefinitions';
+import { logError } from '../api/errorLogger/methodDefinitions';
 import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
 

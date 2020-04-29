@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
+import { logError } from '../../errorLogger/methodDefinitions';
 import ClientEventService, {
   CALLED_METHOD,
 } from '../../events/ClientEventService';
-import { logError } from '../../slack/methodDefinitions';
 import { refetchQueries } from '../clientQueryManager';
 import { Method } from '../methods';
 

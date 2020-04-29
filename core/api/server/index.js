@@ -24,6 +24,7 @@ import { Meteor } from 'meteor/meteor';
 import BorrowerService from '../borrowers/server/BorrowerService';
 import CommissionRateService from '../commissionRates/server/CommissionRateService';
 import ContactService from '../contacts/server/ContactService';
+import ErrorLogger from '../errorLogger/server/ErrorLogger';
 import InsuranceProductService from '../insuranceProducts/server/InsuranceProductService';
 import InsuranceRequestService from '../insuranceRequests/server/InsuranceRequestService';
 import InsuranceService from '../insurances/server/InsuranceService';
@@ -41,7 +42,6 @@ import PromotionOptionService from '../promotionOptions/server/PromotionOptionSe
 import PromotionService from '../promotions/server/PromotionService';
 import PropertyService from '../properties/server/PropertyService';
 import RevenueService from '../revenues/server/RevenueService';
-import SlackService from '../slack/server/SlackService';
 import TaskService from '../tasks/server/TaskService';
 import UserService from '../users/server/UserService';
 import { COLLECTIONS } from './serverConstants';
@@ -50,7 +50,7 @@ process.on('uncaughtException', error => {
   if (!Meteor.isProduction) {
     console.log('uncaughtException error', JSON.stringify(error, null, 2));
   }
-  SlackService.sendError({
+  ErrorLogger.handleError({
     error,
     additionalData: ['Server uncaughtException'],
   });
@@ -61,7 +61,7 @@ process.on('unhandledRejection', error => {
   if (!Meteor.isProduction) {
     console.log('unhandledRejection error', JSON.stringify(error, null, 2));
   }
-  SlackService.sendError({
+  ErrorLogger.handleError({
     error,
     additionalData: ['Server unhandledRejection'],
   });

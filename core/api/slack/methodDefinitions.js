@@ -19,11 +19,11 @@ export const notifyOfUpload = new Method({
   },
 });
 
-export const logError = new Method({
-  name: 'logError',
-  params: {
-    error: Match.Any,
-    additionalData: Match.Maybe(Match.Any),
-    url: Match.Optional(String),
-  },
-});
+// export const logError = new Method({
+//   name: 'logError',
+//   params: {
+//     error: Match.Any,
+//     additionalData: Match.Maybe(Match.Any),
+//     url: Match.Optional(String),
+//   },
+// });
