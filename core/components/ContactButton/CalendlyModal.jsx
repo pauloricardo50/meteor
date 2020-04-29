@@ -14,7 +14,7 @@ let sessionStorage;
 if (typeof window === undefined) {
   sessionStorage = null;
 } else {
-  sessionStorage = window.sessionStorage;
+  sessionStorage = window?.sessionStorage;
 }
 
 const makeCloseModal = ({
