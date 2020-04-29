@@ -41,16 +41,16 @@ const RevenuesTab = ({ loan }) => {
           if (insuranceRequests.length) {
             return {
               $or: [
-                { 'loanCache.0._id': loanId },
+                { 'loanCache._id': loanId },
                 {
-                  'insuranceRequestCache.0._id': {
+                  'insuranceRequestCache._id': {
                     $in: insuranceRequests.map(({ _id }) => _id),
                   },
                 },
               ],
             };
           }
-          return { 'loanCache.0._id': loanId };
+          return { 'loanCache._id': loanId };
         }}
       />
     </div>

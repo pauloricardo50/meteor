@@ -46,7 +46,7 @@ const InsuranceTab = props => {
           <RevenuesTable
             insurance={insurance}
             filterRevenues={({ insurance: { _id: insuranceId } }) => ({
-              'insuranceCache.0._id': insuranceId,
+              'insuranceCache._id': insuranceId,
             })}
           />
         ) : (
