@@ -23,17 +23,17 @@ const Title = ({
         <FileStatusIcon files={currentValue} />
 
         <div className="text">
-          <h4 className="flex center">
+          <h3 className="font-size-5 flex center">
             {label || <T id={`files.${id}`} />}
             {required === false ? null : <span className="error">&nbsp;*</span>}
-          </h4>
-          <h5 className="secondary">
+          </h3>
+          <span className="secondary">
             <span style={{ padding: '0 4px' }}>&bull;</span>
             <T
               id="Uploader.fileCount"
               values={{ count: (currentValue && currentValue.length) || 0 }}
             />
-          </h5>
+          </span>
         </div>
         {uploaderTopRight}
 

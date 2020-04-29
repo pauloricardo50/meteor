@@ -5,6 +5,9 @@ import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { liveSyncs } from 'core/api/liveSync/liveSync';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon/Icon';
+
 import { ACTIONS } from './LoanBoard/loanBoardConstants';
 
 export const addLiveSync = Comp =>
@@ -100,15 +103,14 @@ export const LiveQueryMonitor = withSmartQuery({
     const currentUserId = Meteor.userId();
     return (
       <div>
-        <h4
-          style={{
-            margin: 0,
-            color: activateLoanBoardSync === true ? 'blue' : '',
-          }}
+        <Button
           onClick={() => setActivateLoanBoardSync(!activateLoanBoardSync)}
+          size="small"
+          primary
+          icon={activateLoanBoardSync ? <Icon type="check" /> : undefined}
         >
           Synchroniser
-        </h4>
+        </Button>
         {currentLiveSyncs
           .filter(({ userId }) => userId !== currentUserId)
           .map(({ userId }) => {

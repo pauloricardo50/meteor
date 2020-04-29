@@ -32,16 +32,17 @@ const InsuranceRequestBoardCardTasks = ({
   const isLate = nextDueTask.noDueDate || dueAtMoment < moment();
 
   const task = (
-    <h5 className="loan-board-card-tasks">
-      <span className={cx('date', { 'error-box': isLate, secondary: !isLate })}>
+    <div className="loan-board-card-tasks font-size-body">
+      <small
+        className={cx('date mr-4', { 'error-box': isLate, secondary: !isLate })}
+      >
         {nextDueTask.noDueDate ? 'Maintenant' : dueAtMoment.fromNow()}
-      </span>
-      &nbsp;
+      </small>
       <InsuranceRequestBoardCardTask
         title={nextDueTask.title}
         _id={nextDueTask._id}
       />
-    </h5>
+    </div>
   );
   const activeTasks = tasks.filter(
     ({ status }) => status === TASK_STATUS.ACTIVE,

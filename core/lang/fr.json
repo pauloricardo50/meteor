@@ -1,4 +1,5 @@
 {
+  "PromotionOptionDetail.title": "Lot {name}",
   "TranchePicker.title": "Choix des tranches",
   "TranchePicker.description": "Renseignez les tranches que vous désirez pour votre prêt",
   "Forms.enabledCommissionTypes": "Commissions activées pour les revenus de type",
@@ -1902,7 +1903,7 @@
   "DetailSideNavPagination.showMore": "Afficher plus",
   "DisableUserFormsToggle.canEdit": "Autoriser le client à modifier les champs",
   "Forms.userFormsEnabled": "Autoriser modifications",
-  "DropzoneArrayItem.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
+  "DropzoneArrayItem.fileCount": "{count, plural, =0 {0 fichiers} one {Un fichier} other {# fichiers}}",
   "DropzoneInput.cancelUpload": "Annuler l'upload",
   "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr ?",
   "DropzoneInput.invalidFileType": "Vous ne pouvez uploader que des fichiers PDF, JPG et PNG.",
@@ -2898,7 +2899,7 @@
   "TrancheCount.add": "Ajouter",
   "TrancheCount.description": "Nombre de tranches:",
   "TranchePicker.add": "+ Ajouter une tranche",
-  "Uploader.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
+  "Uploader.fileCount": "{count, plural, =0 {0 fichiers} one {Un fichier} other {# fichiers}}",
   "UsersTable.actions": "Actions",
   "UsersTable.assignedTo": "Assigné à",
   "UsersTable.createdAt": "Créé le",

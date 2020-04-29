@@ -1,7 +1,7 @@
 import React from 'react';
 
-import StickyPopover from 'core/components/StickyPopover';
 import CheckboxList from 'core/components/Checkbox/CheckboxList';
+import StickyPopover from 'core/components/StickyPopover';
 
 const renderCheckboxValue = (values, options) =>
   values.map(i => {
@@ -27,9 +27,9 @@ const LoanBoardOptionsCheckboxes = ({ label, options, value, onChange }) => {
         }
         placement="bottom"
       >
-        <b>{label}</b>
+        <div>{label}</div>
       </StickyPopover>
-      {renderCheckboxValue(value, options)}
+      <div className="secondary">{renderCheckboxValue(value, options)}</div>
     </div>
   );
 };

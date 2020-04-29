@@ -4,7 +4,6 @@ import employees from 'core/arrays/epotekEmployees';
 import T from 'core/components/Translation';
 
 import AboutPageTeamMember from './AboutPageTeamMember';
-import AboutPageTeamRecruiting from './AboutPageTeamRecruiting';
 
 const getLastName = string => string.split(' ').slice(-1)[0];
 
@@ -28,7 +27,6 @@ const AboutPageTeam = () => (
         .map(employee => (
           <AboutPageTeamMember key={employee.name} {...employee} />
         ))}
-      <AboutPageTeamRecruiting />
     </div>
   </div>
 );

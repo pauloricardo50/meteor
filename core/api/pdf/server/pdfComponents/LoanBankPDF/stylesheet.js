@@ -9,35 +9,16 @@ import { LoanBankCoverStyles } from './LoanBankCover';
 
 const stylesheet = `
     @font-face {
-        font-family: 'Eina04';
+        font-family: 'Manrope-variable';
         font-style: normal;
         font-weight: normal;
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot') format('embedded-opentype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.ttf') format('truetype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.woff') format('woff');
+        src: url('https://www.e-potek.ch/fonts/Manrope-variable.ttf') format('truetype');
+        font-weight: 1 999;
     }
-
-    @font-face {
-        font-family: 'Eina04';
-        font-style: normal;
-        font-weight: bold;
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot') format('embedded-opentype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.ttf') format('truetype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.woff') format('woff');
-    }
-
 
     html {
         font-size: 10px;
-        font-family: 'Eina04', sans-serif;
-    }
-
-
-    * {
-        // border: 1px solid red;
-        // border-radius: 8px;
+        font-family: 'Manrope-variable', 'Helvetica', sans-serif;
     }
 
     @page {
@@ -59,11 +40,6 @@ const stylesheet = `
         @bottom {
           content: flow(footer);
         }
-
-        // @bottom-right {
-        //    content: "Page " counter(page) "/" counter(pages);
-        //    font-family: Helvetica;
-        // }
     }
 
     .top-left {

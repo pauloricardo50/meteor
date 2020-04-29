@@ -7,7 +7,6 @@ const createTheme = ({ fontSize = 14 }) =>
     overrides: {
       MuiInput: {},
       MuiSelect: {},
-      MuiListItemText: {},
       MuiToolbar: {
         root: {
           position: '',
@@ -58,6 +57,22 @@ const createTheme = ({ fontSize = 14 }) =>
           minWidth: 40,
         },
       },
+      MuiListItem: {
+        root: {
+          margin: 4,
+          width: 'calc(100% - 8px)',
+          borderRadius: 4,
+        },
+      },
+      MuiList: {
+        padding: {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
+      MuiListItemText: {
+        secondary: { lineHeight: 'unset' },
+      },
     },
     palette: {
       primary: {
@@ -86,12 +101,11 @@ const createTheme = ({ fontSize = 14 }) =>
       },
     },
     typography: {
-      fontFamily: 'Eina04-Regular, Helvetica',
+      fontFamily: 'Manrope-variable, Helvetica, sans-serif',
       // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
       fontSize,
-      letterSpacing: '0.048em',
-      fontWeightRegular: 400,
-      fontWeightMedium: 600,
+      fontWeightRegular: 300,
+      fontWeightMedium: 400,
       button: {
         fontWeight: 400,
         textTransform: '',

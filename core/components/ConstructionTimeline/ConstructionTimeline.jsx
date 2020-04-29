@@ -11,8 +11,12 @@ export const ConstructionTimelineItem = ({
 }) => (
   <div className="construction-timeline-item">
     <div className="content">
-      <h5>{description}</h5>
-      <h4>{date}</h4>
+      <h4 className="content-description font-size-5">
+        <small>{description}</small>
+      </h4>
+      <h5 className="content-date secondary">
+        <small>{date}</small>
+      </h5>
       {value && <Money value={value} />}
     </div>
     {!isLast && <div className="line" />}

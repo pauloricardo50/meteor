@@ -136,40 +136,6 @@ hr {
   background-color: $warning;
 }
 
-// A pretty heart-beat animation on anything
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  25% {
-    transform: scale(0.97);
-  }
-  35% {
-    transform: scale(0.9);
-  }
-  45% {
-    transform: scale(1.1);
-  }
-  55% {
-    transform: scale(0.9);
-  }
-  65% {
-    transform: scale(1.1);
-  }
-  75% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.heart-beat {
-  animation-name: heartBeat;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-}
-
 // A .description <p /> is a nice styled paragraph optimized for reading
 p.description,
 .description p {
@@ -272,36 +238,6 @@ p.description,
   min-width: 120px;
 }
 
-// To display choices with proper hover effects
-.choice {
-  display: flex;
-
-  box-sizing: content-box;
-  margin-bottom: 16px;
-  padding: 16px;
-
-  border: solid 1px $grey1;
-  border-radius: 4px;
-}
-
-.choice:hover {
-  cursor: pointer;
-
-  border: solid 1px $primary;
-}
-
-.choice.chosen {
-  border: solid 2px $primary;
-}
-
-.choice.chosen.disabled {
-  border: solid 2px $success;
-}
-
-.choice.disabled {
-  cursor: default !important;
-}
-
 .text-center {
   text-align: center;
 }
@@ -358,6 +294,9 @@ p.description,
 }
 .m-16 {
   margin: 16px;
+}
+.p-4 {
+  padding: 4px;
 }
 .p-8 {
   padding: 8px;
@@ -494,7 +433,7 @@ p.description,
     thead {
       color: $title-text;
 
-      font-weight: bold;
+      font-weight: 400;
     }
 
     td,
@@ -518,4 +457,11 @@ p.description,
 
 .fs-150 {
   font-size: 1.5rem;
+}
+
+.ellipsis {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

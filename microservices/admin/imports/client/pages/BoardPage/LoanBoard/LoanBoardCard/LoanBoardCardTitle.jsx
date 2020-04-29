@@ -21,7 +21,7 @@ const LoanBoardCardTitle = ({ borrowers = [], hasUser, name, title, user }) => {
 
   return (
     <Tooltip title={name}>
-      <h4 className="title">
+      <div className="title font-size-body">
         {hasUser ? (
           <CollectionIconLink
             relatedDoc={{
@@ -35,7 +35,7 @@ const LoanBoardCardTitle = ({ borrowers = [], hasUser, name, title, user }) => {
         ) : (
           title
         )}
-      </h4>
+      </div>
     </Tooltip>
   );
 };

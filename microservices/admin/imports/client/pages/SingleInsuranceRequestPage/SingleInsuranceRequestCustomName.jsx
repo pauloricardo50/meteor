@@ -1,12 +1,12 @@
 import React from 'react';
 
-import ClickToEditField from 'core/components/ClickToEditField';
 import { insuranceRequestUpdate } from 'core/api/insuranceRequests/methodDefinitions';
+import ClickToEditField from 'core/components/ClickToEditField';
 
 const SingleInsuranceRequestCustomName = ({ insuranceRequest }) => {
   const { _id: insuranceRequestId, customName } = insuranceRequest;
   return (
-    <h3 className="secondary mt-4">
+    <h3 className="secondary mt-0">
       <ClickToEditField
         value={customName}
         onSubmit={value =>

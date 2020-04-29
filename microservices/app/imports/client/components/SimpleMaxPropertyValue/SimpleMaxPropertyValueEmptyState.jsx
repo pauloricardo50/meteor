@@ -22,9 +22,9 @@ const SimpleMaxPropertyValueEmptyState = props => {
           <>
             <FontAwesomeIcon className="icon" icon={faScroll} />
 
-            <h4 className="secondary">
+            <div className="font-size-5 secondary text-center mb-16">
               <T id="MaxPropertyValue.missingInfos" values={{ purchaseType }} />
-            </h4>
+            </div>
             <p className="secondary">
               <i>
                 <T id="MaxPropertyValue.informations" />

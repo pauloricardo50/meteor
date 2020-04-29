@@ -86,7 +86,7 @@ const WelcomeScreenLinks = () => {
       }).map(({ icon, label, items }, index) => (
         <div key={index} className="welcome-screen-links-link">
           <FontAwesomeIcon icon={icon} className="icon" />
-          <h4>
+          <h4 className="font-size-5">
             <T id={label} />
           </h4>
           <div className="welcome-screen-links-link-items">

@@ -25,9 +25,9 @@ const Widget1Options = ({ purchaseType, setPurchaseType }) => {
             label={
               <div className="label" id={option}>
                 <img src={`/img/widget1_${option}.svg`} alt={option} />
-                <h4>
+                <span className="tab-label font-size-5">
                   <T id={`Widget1OptionSelector.${option}`} />
-                </h4>
+                </span>
               </div>
             }
             className="widget1-option"
