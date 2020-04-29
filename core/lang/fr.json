@@ -1,4 +1,5 @@
 {
+  "PromotionOptionDetail.title": "Lot {name}",
   "CalendlyModal.officeChooser.title": "Sélectionnez votre agence",
   "CalendlyModal.officeChooser.description": "Choisissez l'agence e-Potek qui vous convient le mieux",
   "Forms.previousLoanTranches.remainingMonths": "Échéance dans",
@@ -1899,7 +1900,7 @@
   "DetailSideNavPagination.showMore": "Afficher plus",
   "DisableUserFormsToggle.canEdit": "Autoriser le client à modifier les champs",
   "Forms.userFormsEnabled": "Autoriser modifications",
-  "DropzoneArrayItem.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
+  "DropzoneArrayItem.fileCount": "{count, plural, =0 {0 fichiers} one {Un fichier} other {# fichiers}}",
   "DropzoneInput.cancelUpload": "Annuler l'upload",
   "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr ?",
   "DropzoneInput.invalidFileType": "Vous ne pouvez uploader que des fichiers PDF, JPG et PNG.",
@@ -2895,7 +2896,7 @@
   "TrancheCount.add": "Ajouter",
   "TrancheCount.description": "Nombre de tranches:",
   "TranchePicker.add": "+ Ajouter une tranche",
-  "Uploader.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
+  "Uploader.fileCount": "{count, plural, =0 {0 fichiers} one {Un fichier} other {# fichiers}}",
   "UsersTable.actions": "Actions",
   "UsersTable.assignedTo": "Assigné à",
   "UsersTable.createdAt": "Créé le",

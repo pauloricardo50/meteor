@@ -58,7 +58,7 @@ const ContactButtonOverlay = ({
             event.stopPropagation();
             setOpenCalendy(true);
           }}
-          label="Programmer un rendez-vous"
+          label="Programmer en ligne"
         />
       </div>
     </Grow>

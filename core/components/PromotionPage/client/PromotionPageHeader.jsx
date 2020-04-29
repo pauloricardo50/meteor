@@ -44,9 +44,9 @@ const PromotionPageHeader = ({ promotion }) => {
     >
       <div className="promotion-page-header-top">
         <div className="promotion-page-header-text">
-          <h4>{`${address1}, ${zipCode} ${city}`}</h4>
+          <h3 className="font-size-5 secondary">{`${address1}, ${zipCode} ${city}`}</h3>
           <div className="promotion-page-header-title flex center-align">
-            <h1>{name}</h1>
+            <h1 className="font-size-3">{name}</h1>
             <StatusLabel
               status={status}
               collection={PROMOTIONS_COLLECTION}
@@ -60,12 +60,12 @@ const PromotionPageHeader = ({ promotion }) => {
               <TestBadge />
             )}
           </div>
-          <h4>
+          <h2 className="font-size-4">
             <T
               id="PromotionPage.subtitle"
               values={{ promotionLotCount: promotionLots.length }}
             />
-          </h4>
+          </h2>
           <div className="promotion-page-header-linkers">
             <LightTheme>
               {canLinkAssignee && <PromotionAssignee promotion={promotion} />}

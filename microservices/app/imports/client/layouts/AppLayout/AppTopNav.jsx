@@ -3,11 +3,12 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
 import { withRouter } from 'react-router-dom';
 
-import TopNavlogo from 'core/components/TopNav/TopNavLogo';
-import TopNavButtons from 'core/components/TopNav/TopNavButtons';
 import IconButton from 'core/components/IconButton';
-import useMedia from 'core/hooks/useMedia';
+import TopNavButtons from 'core/components/TopNav/TopNavButtons';
+import TopNavlogo from 'core/components/TopNav/TopNavLogo';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useMedia from 'core/hooks/useMedia';
+
 import UserCreator from '../../components/UserCreator';
 
 const blacklist = ['/signup/', '/enroll-account/'];
@@ -42,13 +43,14 @@ const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
         <TopNavlogo />
 
         {renderButtons(history) && (
-          <div className="flex space-children">
+          <div className="flex">
             {!isMobile && !currentUser && (
               <UserCreator
                 buttonProps={{
                   raised: true,
                   primary: true,
                   label: 'Créez votre compte',
+                  className: 'mr-8',
                 }}
                 ctaId="topNav"
               />

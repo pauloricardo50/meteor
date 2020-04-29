@@ -162,15 +162,21 @@ const addPromotionPros = ({ promotionId }) => {
     { email: 'visitor1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.VISITOR] },
     { email: 'notary1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.NOTARY] },
   ];
+  let org1 = OrganisationService.get({ name: 'Promo org 1' }, { _id: 1 })?._id;
+  let org2 = OrganisationService.get({ name: 'Promo org 2' }, { _id: 1 })?._id;
 
-  const org1 = OrganisationService.insert({
-    name: 'Promo org 1',
-    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
-  });
-  const org2 = OrganisationService.insert({
-    name: 'Promo org 2',
-    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
-  });
+  if (!org1) {
+    org1 = OrganisationService.insert({
+      name: 'Promo org 1',
+      type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+    });
+  }
+  if (!org2) {
+    org2 = OrganisationService.insert({
+      name: 'Promo org 2',
+      type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+    });
+  }
 
   return users.map(({ email, roles }) => {
     const userId = addUser({ email, role: ROLES.PRO });

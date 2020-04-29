@@ -8,7 +8,7 @@ import T from 'core/components/Translation';
 
 const WelcomeScreenCtas = ({ insertLoan, loading }) => (
   <>
-    <h3>Quel est votre projet?</h3>
+    <h2 className="font-size-3">Quel est votre projet?</h2>
     <Button
       raised
       secondary

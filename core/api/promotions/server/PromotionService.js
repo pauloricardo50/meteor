@@ -317,6 +317,7 @@ class PromotionService extends CollectionService {
     }
 
     if (
+      !Meteor.isDevelopment &&
       !Meteor.isTest &&
       !Meteor.isAppTest &&
       (!documents.promotionGuide ||

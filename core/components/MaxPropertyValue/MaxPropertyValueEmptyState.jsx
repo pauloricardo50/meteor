@@ -113,9 +113,9 @@ const MaxPropertyValueEmptyState = props => {
       <div className="flex-col center">
         {state === STATE.MISSING_INFOS ? (
           <>
-            <h2>
+            <div className="font-size-5">
               <T id="MaxPropertyValue.completeInfo" />
-            </h2>
+            </div>
             <p className="description">
               <T id="MaxPropertyValue.missingInfos" values={{ purchaseType }} />
             </p>
