@@ -4,6 +4,7 @@ import { Method } from '../methods/methods';
 
 export const logError = new Method({
   name: 'logError',
+  doNotRefetchQueries: true,
   params: {
     error: Match.Any,
     additionalData: Match.Maybe(Match.Any),

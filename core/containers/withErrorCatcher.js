@@ -3,10 +3,12 @@ import { lifecycle } from 'recompose';
 import { logError } from '../api/errorLogger/methodDefinitions';
 
 const defaultHandleError = (error, additionalData) => {
-  // Error is fired twice, second time with an additionnal '_suppressLogging' property
-  const errorPropertyNames = Object.getOwnPropertyNames(error) || [];
-  if (errorPropertyNames.includes('_suppressLogging')) {
-    return true;
+  if (process.env.NODE_ENV === 'development') {
+    // Error is fired twice, second time with an additionnal '_suppressLogging' property
+    const errorPropertyNames = Object.getOwnPropertyNames(error) || [];
+    if (errorPropertyNames.includes('_suppressLogging')) {
+      return true;
+    }
   }
 
   const { Kadira } = window;

@@ -28,15 +28,15 @@ class ErrorLogger {
     );
     console.error(chalk.yellowBright.bold('ERROR'));
     console.error(error);
-    console.error('\n');
+    console.error('');
 
     console.error(chalk.yellowBright.bold('ADDITIONAL DATA'));
     console.error(additionalData);
-    console.error('\n');
+    console.error('');
 
     console.error(chalk.yellowBright.bold('USER ID'));
     console.error(userId);
-    console.error('\n');
+    console.error('');
 
     console.error(chalk.yellowBright.bold('URL'));
     console.error(url);
