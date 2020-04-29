@@ -9,7 +9,6 @@
 }
 
 html {
-  @include font-size($font-size-xs);
   color: $body-text;
 
   font-family: 'Manrope', 'Helvetica', sans-serif;
@@ -22,7 +21,7 @@ html {
 
 @supports (font-variation-settings: normal) {
   html {
-    font-family: 'Manrope-variable', 'Helvetica', sans-serif; //, 'Manrope', 'Helvetica', sans-serif;
+    font-family: 'Manrope-variable', 'Helvetica', sans-serif;
   }
 }
 
