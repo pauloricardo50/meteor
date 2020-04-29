@@ -1,4 +1,9 @@
-import { BORDER_BLUE, CONTENT_HEIGHT } from '../../../pdfConstants';
+import {
+  BOLD_WEIGHT,
+  BORDER_BLUE,
+  CONTENT_HEIGHT,
+  REGULAR_WEIGHT,
+} from '../../../pdfConstants';
 
 const PdfPageStyles = `
     .page {
@@ -29,7 +34,7 @@ const PdfPageStyles = `
     }
 
     .header .address .company-name {
-        font-weight: bold;
+        font-weight: ${BOLD_WEIGHT};
     }
 
     .pdf-page-title {
@@ -42,7 +47,7 @@ const PdfPageStyles = `
         justify-content: flex-start;
         margin: 0;
         color: ${BORDER_BLUE};
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .pdf-page-title img {
@@ -63,7 +68,7 @@ const PdfPageStyles = `
     }
 
     .bold {
-        font-weight: bold;
+        font-weight: ${BOLD_WEIGHT};
     }
 
     .secondary {

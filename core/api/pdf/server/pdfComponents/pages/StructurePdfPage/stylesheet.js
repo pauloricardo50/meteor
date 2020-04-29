@@ -1,3 +1,5 @@
+import { REGULAR_WEIGHT } from '../../../../pdfConstants';
+
 export default `
     .balance-sheet-table {
         width: 100%;
@@ -41,14 +43,14 @@ export default `
         display: flex;
         justify-content: center;
         align-items: center;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .wanted-loan {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .finma-ratio span {

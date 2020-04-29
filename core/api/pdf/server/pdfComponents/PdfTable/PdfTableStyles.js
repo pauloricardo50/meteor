@@ -1,4 +1,10 @@
-import { BORDER_BLUE, BORDER_GREY } from '../../../pdfConstants';
+import {
+  BOLD_WEIGHT,
+  BORDER_BLUE,
+  BORDER_GREY,
+  LIGHT_WEIGHT,
+  REGULAR_WEIGHT,
+} from '../../../pdfConstants';
 
 export default `
     .pdf-table {
@@ -29,7 +35,7 @@ export default `
     }
 
     .pdf-table tr.regular-row td {
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .pdf-table tr.subsection-row {
@@ -37,7 +43,7 @@ export default `
     }
 
     .pdf-table tr.subsection-row td {
-        font-weight: bold;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .pdf-table tr.title-row {
@@ -49,8 +55,7 @@ export default `
         margin: 0;
         padding: 8px 0;
         text-align: left;
-        font-weight: bold;
-        // width: 100%;
+        font-weight: ${BOLD_WEIGHT};
     }
 
     .pdf-table tr.tooltip {
@@ -58,7 +63,7 @@ export default `
     }
 
     .pdf-table tr.tooltip td {
-        font-weight: 200;
+        font-weight: ${LIGHT_WEIGHT};
         padding-top: 20px;
     }
 
@@ -85,6 +90,6 @@ export default `
     }
 
     .pdf-table tr.sum-row td {
-        font-weight: bold;
+        font-weight: ${BOLD_WEIGHT};
     }
 `;
