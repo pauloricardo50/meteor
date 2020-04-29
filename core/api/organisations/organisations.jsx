@@ -73,13 +73,13 @@ export const OrganisationSchema = new SimpleSchema({
   insuranceProductLinks: { type: Array, defaultValue: [] },
   'insuranceProductLinks.$': Object,
   'insuranceProductLinks.$._id': String,
-  enabledCommissions: {
+  enabledCommissionTypes: {
     type: Array,
     defaultValue: [REVENUE_TYPES.MORTGAGE],
     uniforms: { displayEmpty: false, placeholder: '' },
     optional: true,
   },
-  'enabledCommissions.$': {
+  'enabledCommissionTypes.$': {
     type: String,
     allowedValues: Object.values(REVENUE_TYPES),
     uniforms: {

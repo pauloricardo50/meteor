@@ -575,7 +575,7 @@ export const fullOrganisation = () => ({
   offers: 1,
   offerCount: 1,
   users: organisationUser(),
-  enabledCommissions: 1,
+  enabledCommissionTypes: 1,
 });
 
 export const userOrganisation = () => ({

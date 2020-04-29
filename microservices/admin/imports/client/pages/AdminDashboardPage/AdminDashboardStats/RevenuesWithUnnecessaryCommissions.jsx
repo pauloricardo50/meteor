@@ -51,7 +51,7 @@ const RevnuesWithUnnecessaryCommissions = ({ showAll }) => {
       organisations: {
         name: 1,
         commissionRates: { type: 1 },
-        enabledCommissions: 1,
+        enabledCommissionTypes: 1,
       },
       amount: 1,
       assigneeLink: 1,
@@ -71,8 +71,8 @@ const RevnuesWithUnnecessaryCommissions = ({ showAll }) => {
     ({ organisations = [], type: revenueType }) => {
       if (organisations.length) {
         return organisations.some(
-          ({ enabledCommissions = [] }) =>
-            !enabledCommissions.includes(revenueType),
+          ({ enabledCommissionTypes = [] }) =>
+            !enabledCommissionTypes.includes(revenueType),
         );
       }
 

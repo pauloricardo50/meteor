@@ -69,7 +69,7 @@ export default compose(
     params: ({ insuranceRequest: { user } = {} }) => ({
       $filters: { _id: user?.referredByOrganisation?._id },
       commissionRate: 1,
-      enabledCommissions: 1,
+      enabledCommissionTypes: 1,
     }),
     dataName: 'referralOrganisation',
     queryOptions: { reactive: false, single: true },
@@ -77,7 +77,7 @@ export default compose(
       !user?.referredByOrganisation?._id,
   }),
   withProps(({ referralOrganisation }) => {
-    const referralIsCommissionned = referralOrganisation?.enabledCommissions?.includes(
+    const referralIsCommissionned = referralOrganisation?.enabledCommissionTypes?.includes(
       REVENUE_TYPES.INSURANCE,
     );
 

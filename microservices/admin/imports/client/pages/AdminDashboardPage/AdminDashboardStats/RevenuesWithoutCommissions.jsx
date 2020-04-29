@@ -58,7 +58,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
           referredByOrganisation: {
             name: 1,
             commissionRates: { _id: 1, type: 1 },
-            enabledCommissions: 1,
+            enabledCommissionTypes: 1,
           },
         },
         borrowers: { name: 1 },
@@ -75,7 +75,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
           referredByOrganisation: {
             name: 1,
             commissionRates: { _id: 1, type: 1 },
-            enabledCommissions: 1,
+            enabledCommissionTypes: 1,
           },
         },
       },
@@ -88,7 +88,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
             referredByOrganisation: {
               name: 1,
               commissionRates: { _id: 1, type: 1 },
-              enabledCommissions: 1,
+              enabledCommissionTypes: 1,
             },
           },
         },
@@ -127,7 +127,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
             referredByOrganisation.commissionRates.some(
               ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
             ) &&
-            referredByOrganisation.enabledCommissions?.includes(revenueType)
+            referredByOrganisation.enabledCommissionTypes?.includes(revenueType)
           );
         }
         return false;

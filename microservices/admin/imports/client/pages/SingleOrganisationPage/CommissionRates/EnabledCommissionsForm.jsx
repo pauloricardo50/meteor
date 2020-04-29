@@ -4,7 +4,7 @@ import { organisationUpdate } from 'core/api/organisations/methodDefinitions';
 import { OrganisationSchema } from 'core/api/organisations/organisations';
 import AutoForm from 'core/components/AutoForm2';
 
-const schema = OrganisationSchema.pick('enabledCommissions');
+const schema = OrganisationSchema.pick('enabledCommissionTypes');
 
 const EnabledCommissionsForm = ({ organisation }) => {
   const { _id: organisationId } = organisation;

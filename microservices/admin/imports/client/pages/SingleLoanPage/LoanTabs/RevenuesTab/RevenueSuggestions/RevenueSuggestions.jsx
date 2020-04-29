@@ -20,7 +20,9 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
   const hasReferral = !!referralOrganisation;
   const referralIsCommissionned =
     hasReferral &&
-    referralOrganisation?.enabledCommissions?.includes(REVENUE_TYPES.MORTGAGE);
+    referralOrganisation?.enabledCommissionTypes?.includes(
+      REVENUE_TYPES.MORTGAGE,
+    );
 
   if (!lenders || !lenders.length) {
     return (
@@ -117,7 +119,7 @@ export default withSmartQuery({
         user.referredByOrganisation &&
         user.referredByOrganisation._id) ||
       'none',
-    $body: { name: 1, commissionRate: 1, enabledCommissions: 1 },
+    $body: { name: 1, commissionRate: 1, enabledCommissionTypes: 1 },
   }),
   dataName: 'referralOrganisation',
   queryOptions: { single: true },

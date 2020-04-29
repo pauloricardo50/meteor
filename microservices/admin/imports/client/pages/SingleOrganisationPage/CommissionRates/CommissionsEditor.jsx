@@ -10,14 +10,14 @@ const CommissionsEditor = props => {
     commissionRates = {},
     _id: organisationId,
     emptyState,
-    enabledCommissions,
+    enabledCommissionTypes,
   } = props;
   const { rates = [] } = commissionRates;
 
   return (
     <div>
       <EnabledCommissionsForm
-        organisation={{ _id: organisationId, enabledCommissions }}
+        organisation={{ _id: organisationId, enabledCommissionTypes }}
       />
       <CommissionRatesForm
         commissionRates={commissionRates}
