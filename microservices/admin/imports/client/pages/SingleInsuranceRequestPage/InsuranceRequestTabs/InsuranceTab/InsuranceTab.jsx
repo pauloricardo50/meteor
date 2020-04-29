@@ -13,7 +13,13 @@ import InsuranceModifier from './InsuranceModifier';
 import InsuranceRemover from './InsuranceRemover';
 
 const InsuranceTab = props => {
-  const { insurance, insuranceRequest, currentUser } = props;
+  const {
+    insurance,
+    insuranceRequest,
+    currentUser,
+    referralOrganisation,
+    referralIsCommissionned,
+  } = props;
   const {
     revenues = [],
     insuranceProduct: { name: insuranceProductName },
@@ -38,6 +44,14 @@ const InsuranceTab = props => {
               assigneeLink: { _id: Meteor.userId() || mainAssignee?._id },
               description: insuranceProductName,
               sourceOrganisationLink: { _id: organisationId },
+              organisationLinks: referralIsCommissionned
+                ? [
+                    {
+                      _id: referralOrganisation._id,
+                      commissionRate: referralOrganisation.commissionRate,
+                    },
+                  ]
+                : [],
             }}
             buttonProps={{ className: 'ml-8' }}
           />
@@ -53,6 +67,8 @@ const InsuranceTab = props => {
           <InsuranceEstimatedRevenue
             insurance={insurance}
             insuranceRequest={insuranceRequest}
+            referralOrganisation={referralOrganisation}
+            referralIsCommissionned={referralIsCommissionned}
           />
         )}
       </div>

@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
-import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
-import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import {
+  COMMISSION_STATUS,
+  REVENUES_COLLECTION,
+} from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { Money } from 'core/components/Translation';
@@ -22,11 +24,11 @@ const OrgItem = ({ orgName, revenues }) => (
     </div>
     <DialogSimple
       buttonProps={{ label: 'Afficher', raised: false }}
-      title={`Revenus sans commission de ${orgName}`}
+      title={`Revenus avec des commissions pas nécessaire de ${orgName}`}
     >
       <div className="flex-col">
-        {revenues.map(({ loan, insuranceRequest }) => {
-          const selectedDocument = insuranceRequest || loan;
+        {revenues.map(({ loan, insuranceRequest, insurance }) => {
+          const selectedDocument = insurance || insuranceRequest || loan;
           return (
             selectedDocument && (
               <CollectionIconLink
@@ -41,93 +43,52 @@ const OrgItem = ({ orgName, revenues }) => (
   </div>
 );
 
-const RevenuesWithoutCommissions = ({ showAll }) => {
+const RevenuesWithUnnecessaryCommissions = ({ showAll }) => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
     params: {
       $filters: {
-        $or: [
-          { organisationLinks: { $exists: false } },
-          { organisationLinks: { $size: 0 } },
-        ],
+        organisationLinks: { $exists: true },
+        'organisationLinks.status': COMMISSION_STATUS.TO_BE_PAID,
       },
-      loan: {
+      organisations: {
         name: 1,
-        user: {
-          referredByOrganisation: {
-            name: 1,
-            commissionRates: { _id: 1, type: 1 },
-            enabledCommissionTypes: 1,
-          },
-        },
-        borrowers: { name: 1 },
-        hasPromotion: 1,
+        enabledCommissionTypes: 1,
       },
-      organisationLinks: 1,
       amount: 1,
       assigneeLink: 1,
       type: 1,
-      insuranceRequest: {
+      loan: { name: 1, borrowers: { name: 1 } },
+      insuranceRequest: { name: 1, borrowers: { name: 1 } },
+      insurance: {
         name: 1,
-        borrowers: { name: 1 },
-        user: {
-          referredByOrganisation: {
-            name: 1,
-            commissionRates: { _id: 1, type: 1 },
-            enabledCommissionTypes: 1,
-          },
-        },
+        borrower: { name: 1 },
+        insuranceRequest: { name: 1 },
       },
     },
     refetchOnMethodCall: false,
   });
 
-  const filteredRevenues = revenues
-    .map(revenue => {
-      const { loan, insuranceRequest } = revenue;
+  const filteredRevenues = revenues.filter(
+    ({ organisations = [], type: revenueType }) => {
+      if (organisations.length) {
+        return organisations.some(
+          ({ enabledCommissionTypes = [] }) =>
+            !enabledCommissionTypes.includes(revenueType),
+        );
+      }
 
-      const relatedDoc = insuranceRequest || loan || {};
-      const {
-        user: { referredByOrganisation } = {},
-        hasPromotion,
-      } = relatedDoc;
-
-      return { ...revenue, referredByOrganisation, hasPromotion };
-    })
-    .filter(
-      ({
-        organisationLinks,
-        type: revenueType,
-        referredByOrganisation,
-        hasPromotion,
-      }) => {
-        if (
-          referredByOrganisation?.name &&
-          (!organisationLinks || organisationLinks.length === 0) &&
-          !hasPromotion
-        ) {
-          return (
-            referredByOrganisation.commissionRates?.length > 0 &&
-            referredByOrganisation.commissionRates.some(
-              ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
-            ) &&
-            referredByOrganisation.enabledCommissionTypes?.includes(revenueType)
-          );
-        }
-        return false;
-      },
-    );
+      return false;
+    },
+  );
 
   const ownRevenues = filteredRevenues.filter(
     ({ assigneeLink }) =>
       assigneeLink && currentUser && assigneeLink._id === currentUser._id,
   );
 
-  const groupedRevenues = groupBy(
-    filteredRevenues,
-    'referredByOrganisation.name',
-  );
+  const groupedRevenues = groupBy(filteredRevenues, 'organisations[0].name');
 
   if (!showAll && !filteredRevenues.length) {
     return null;
@@ -135,7 +96,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
 
   return (
     <StatItem
-      title="Revenus sans commission"
+      title="Revenus avec des commissions pas nécessaires"
       value={!loading && filteredRevenues.length}
       top={
         <DialogSimple
@@ -144,7 +105,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
             raised: false,
             primary: true,
           }}
-          title="Revenus sans commission"
+          title="Revenus avec des commissions pas nécessaires"
         >
           <div className="flex-col">
             {!loading &&
@@ -164,4 +125,4 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
   );
 };
 
-export default RevenuesWithoutCommissions;
+export default RevenuesWithUnnecessaryCommissions;
