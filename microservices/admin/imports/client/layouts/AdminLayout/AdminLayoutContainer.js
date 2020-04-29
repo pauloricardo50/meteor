@@ -1,23 +1,24 @@
 import { useContext } from 'react';
+import { withRouter } from 'react-router-dom';
 import {
   compose,
   shouldUpdate,
-  withState,
-  withReducer,
   withProps,
+  withReducer,
+  withState,
 } from 'recompose';
-import { withRouter } from 'react-router-dom';
 
-import { withFileViewer } from 'core/containers/FileViewerContext';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import {
-  filterReducer as loansFilterReducer,
-  getInitialOptions as loansGetInitialOptions,
-} from '../../pages/BoardPage/LoanBoard/loanBoardHelpers';
+import { withFileViewer } from 'core/containers/FileViewerContext';
+
 import {
   filterReducer as insuranceRequestsFilterReducer,
   getInitialOptions as insuranceRequestsGetInitialOptions,
 } from '../../pages/BoardPage/InsuranceRequestBoard/insuranceRequestBoardHelpers';
+import {
+  filterReducer as loansFilterReducer,
+  getInitialOptions as loansGetInitialOptions,
+} from '../../pages/BoardPage/LoanBoard/loanBoardHelpers';
 
 const loanBoardContainer = compose(
   withState('activateLoanBoardSync', 'setActivateLoanBoardSync', false),

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Select from 'core/components/Select';
-import T from 'core/components/Translation';
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { adminUsers } from 'core/api/users/queries';
 import { ROLES } from 'core/api/users/userConstants';
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
+import Select from 'core/components/Select';
+import T from 'core/components/Translation';
 
 const uptoDateOptions = [
   { id: 'TODAY', label: "-> Aujourd'hui" },

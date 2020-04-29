@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/pro-light-svg-icons/faInfoCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
+
 import UserCreator from '../../../../components/UserCreator';
 
 const BorrowersProgressSignup = props => {

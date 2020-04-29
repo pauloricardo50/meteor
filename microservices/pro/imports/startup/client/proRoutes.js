@@ -1,10 +1,11 @@
-import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
-import EmailVerificationPage from 'core/components/EmailVerificationPage/loadable';
-import AccountPage from 'core/components/AccountPage/loadable';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
+import AccountPage from 'core/components/AccountPage/loadable';
+import DevPage from 'core/components/DevPage/loadable';
+import EmailVerificationPage from 'core/components/EmailVerificationPage/loadable';
 import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage/loadable';
 import NotFound from 'core/components/NotFound/loadable';
-import DevPage from 'core/components/DevPage/loadable';
+import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
+
 import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
 import ProOrganisationPage from '../../client/pages/ProOrganisationPage/loadable';
 import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';

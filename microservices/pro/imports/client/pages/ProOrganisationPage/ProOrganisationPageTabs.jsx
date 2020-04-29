@@ -1,10 +1,11 @@
 import React from 'react';
 
+import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
+import ReferredUsersTable from 'core/components/ReferredUsersTable';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
 import { createRoute } from 'core/utils/routerUtils';
-import ReferredUsersTable from 'core/components/ReferredUsersTable';
+
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 import ProOrganisationUsersTable from './ProOrganisationUsersTable';
 

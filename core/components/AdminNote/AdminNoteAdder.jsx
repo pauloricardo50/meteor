@@ -3,13 +3,13 @@ import SimpleSchema from 'simpl-schema';
 
 import { adminNotesSchema } from '../../api/helpers/sharedSchemas';
 import useSearchParams from '../../hooks/useSearchParams';
+import {
+  addTimezoneOffset,
+  subtractTimezoneOffset,
+} from '../../utils/dateHelpers';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 import AdminNoteAdderContainer from './AdminNoteAdderContainer';
-import {
-  subtractTimezoneOffset,
-  addTimezoneOffset,
-} from '../../utils/dateHelpers';
 
 const getUpdateSchema = () =>
   new SimpleSchema(adminNotesSchema)

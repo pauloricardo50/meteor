@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { AutoFormDialog } from 'core/components/AutoForm2';
+
 import Assignees from './Assignees';
 import AssigneesManagerContainer from './AssigneesManagerContainer';
 

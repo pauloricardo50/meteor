@@ -4,10 +4,11 @@ import React from 'react';
 import omit from 'lodash/omit';
 import SimpleSchema from 'simpl-schema';
 
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
-import Select from 'core/components/Select';
 import { AutoFormDialog } from 'core/components/AutoForm2';
+import Button from 'core/components/Button';
+import Select from 'core/components/Select';
+import T from 'core/components/Translation';
+
 import { analysisCollections } from './analysisHelpers';
 
 const schema = new SimpleSchema({ name: String });

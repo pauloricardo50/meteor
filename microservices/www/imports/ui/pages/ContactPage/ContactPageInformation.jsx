@@ -1,7 +1,9 @@
 import React from 'react';
 import Mailto from 'react-protected-mailto';
+
 import Icon from 'core/components/Icon';
-import { PHONE, EMAIL } from './contactConstants';
+
+import { EMAIL, PHONE } from './contactConstants';
 
 const ContactPageInformation = () => [
   <div className="email" key="email">

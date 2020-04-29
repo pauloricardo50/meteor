@@ -1,25 +1,25 @@
-import NotFound from 'core/components/NotFound/loadable';
 import DevPage from 'core/components/DevPage/loadable';
+import NotFound from 'core/components/NotFound/loadable';
 
 import AdminAccountPage from '../../client/pages/AdminAccountPage/loadable';
 import AdminDashboardPage from '../../client/pages/AdminDashboardPage/loadable';
 import AdminPromotionPage from '../../client/pages/AdminPromotionPage/loadable';
+import BoardPage from '../../client/pages/BoardPage/loadable';
+import InsuranceRequestsPage from '../../client/pages/InsuranceRequestsPage/loadable';
 import LoansPage from '../../client/pages/LoansPage/loadable';
 import OrganisationsPage from '../../client/pages/OrganisationsPage/loadable';
+import OtherPage from '../../client/pages/OtherPage/loadable';
 import PromotionsPage from '../../client/pages/PromotionsPage/loadable';
+import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage/loadable';
 import SingleContactPage from '../../client/pages/SingleContactPage/loadable';
+import SingleInsuranceRequestPage from '../../client/pages/SingleInsuranceRequestPage/loadable';
 import SingleLoanPage from '../../client/pages/SingleLoanPage/loadable';
 import SingleOrganisationPage from '../../client/pages/SingleOrganisationPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SingleUserPage from '../../client/pages/SingleUserPage/loadable';
 import UsersPage from '../../client/pages/UsersPage/loadable';
-import BoardPage from '../../client/pages/BoardPage/loadable';
-import RevenuesPage from '../../client/pages/RevenuesPage/loadable';
-import OtherPage from '../../client/pages/OtherPage/loadable';
 import WikiPage from '../../client/pages/WikiPage/loadable';
-import InsuranceRequestsPage from '../../client/pages/InsuranceRequestsPage/loadable';
-import SingleInsuranceRequestPage from '../../client/pages/SingleInsuranceRequestPage/loadable';
 
 const ADMIN_ROUTES = {
   DASHBOARD_PAGE: { component: AdminDashboardPage, path: '/', exact: true },

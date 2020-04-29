@@ -1,12 +1,12 @@
 import React from 'react';
-import FacebookShareButton from 'react-share/lib/FacebookShareButton';
-import LinkedinShareButton from 'react-share/lib/LinkedinShareButton';
-import WhatsappShareButton from 'react-share/lib/WhatsappShareButton';
+import EmailIcon from 'react-share/lib/EmailIcon';
 import EmailShareButton from 'react-share/lib/EmailShareButton';
 import FacebookIcon from 'react-share/lib/FacebookIcon';
+import FacebookShareButton from 'react-share/lib/FacebookShareButton';
 import LinkedinIcon from 'react-share/lib/LinkedinIcon';
+import LinkedinShareButton from 'react-share/lib/LinkedinShareButton';
 import WhatsappIcon from 'react-share/lib/WhatsappIcon';
-import EmailIcon from 'react-share/lib/EmailIcon';
+import WhatsappShareButton from 'react-share/lib/WhatsappShareButton';
 
 const BlogPostPageShare = ({ title }) => {
   const url = window.location.href;

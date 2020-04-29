@@ -1,7 +1,8 @@
+import { Roles } from 'meteor/alanning:roles';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { Roles } from 'meteor/alanning:roles';
 
 import { getRedirect } from '../AppLayoutContainer';
 

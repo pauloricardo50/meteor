@@ -123,26 +123,33 @@ $button-height: 30px;
 
       max-width: 190px;
       height: 24px;
-      line-height: 16px;
 
       white-space: nowrap;
       text-overflow: ellipsis;
+
+      line-height: 16px;
     }
 
     .title-placeholder {
-      line-height: 24px;
-      height: 24px;
       display: block;
+
+      height: 24px;
       padding: 0 4px;
+
+      line-height: 24px;
     }
 
-    .icon-link, .icon-link > span {
-      white-space: pre-wrap;
-      line-height: 24px;
+    .icon-link,
+    .icon-link > span {
+      display: block;
+
       height: 24px;
       padding-top: 0;
       padding-bottom: 0;
-      display: block;
+
+      white-space: pre-wrap;
+
+      line-height: 24px;
     }
 
     .icon-link {
@@ -310,10 +317,13 @@ $button-height: 30px;
   }
 }
 
-.acquisition-icon, .refinancing-icon {
+.acquisition-icon,
+.refinancing-icon {
   display: inline-block;
-  padding: 4px;
+
   margin-right: 4px;
+  padding: 4px;
+
   color: $icon;
   border-radius: 4px;
 }

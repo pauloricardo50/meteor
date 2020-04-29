@@ -1,11 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Table from 'core/components/Table';
-import TasksTableContainer from './TasksTableContainer';
+
 import TaskModifier from './TaskModifier';
-import TaskTableFilters from './TaskTableFilters';
+import TasksTableContainer from './TasksTableContainer';
 import TasksTablePriority from './TasksTablePriority';
+import TaskTableFilters from './TaskTableFilters';
 
 export const taskTableFragment = {
   assigneeLink: 1,

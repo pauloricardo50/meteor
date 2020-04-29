@@ -4,9 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import LoanSummary from './LoanSummary';
-import LoanAdder from './LoanAdder';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
+import LoanAdder from './LoanAdder';
+import LoanSummary from './LoanSummary';
 
 const LoanSummaryList = ({ loans, userId, withAdder }) => {
   const history = useHistory();

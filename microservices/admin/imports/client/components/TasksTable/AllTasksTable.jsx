@@ -4,7 +4,7 @@ import moment from 'moment';
 import { compose, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
 
 import TasksTable, { taskTableFragment } from './TasksTable';
 

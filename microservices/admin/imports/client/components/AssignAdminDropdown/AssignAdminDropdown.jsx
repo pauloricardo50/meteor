@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
+
 import AssignAdminDropdownContainer from './AssignAdminDropdownContainer';
 
 const AssignAdminDropdown = props => {

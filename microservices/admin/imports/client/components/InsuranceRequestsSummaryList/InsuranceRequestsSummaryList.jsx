@@ -2,9 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { createRoute } from 'core/utils/routerUtils';
+
+import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import InsuranceRequestAdder from '../InsuranceRequestAdder';
 import InsuranceRequestSummary from './InsuranceRequestSummary';
-import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const InsuranceRequestsSummaryList = ({
   insuranceRequests = [],

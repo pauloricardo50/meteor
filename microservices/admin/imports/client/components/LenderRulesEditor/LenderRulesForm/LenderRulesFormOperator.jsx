@@ -1,8 +1,8 @@
 import React from 'react';
 
 import {
-  LENDER_RULES_VARIABLES,
   LENDER_RULES_OPERATORS,
+  LENDER_RULES_VARIABLES,
 } from 'core/api/lenderRules/lenderRulesConstants';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
 

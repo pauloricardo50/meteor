@@ -1,11 +1,11 @@
+import './src/styles/main.scss';
+
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
-import createTheme from './src/core/config/muiCustom';
 import Layout from './src/components/Layout';
+import createTheme from './src/core/config/muiCustom';
 import meteorClient, { MeteorClientContext } from './src/utils/meteorClient';
-
-import './src/styles/main.scss';
 
 const wrapPageElement = ({ element, props }) => (
   <Layout {...props}>{element}</Layout>

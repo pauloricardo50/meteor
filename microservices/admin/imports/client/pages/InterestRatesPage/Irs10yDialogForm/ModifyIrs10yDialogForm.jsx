@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+
 import Irs10yDialogFormContainer from './Irs10yDialogFormContainer';
 
 const ModifyIrs10ytRatesDialogForm = ({

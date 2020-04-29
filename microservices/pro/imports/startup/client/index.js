@@ -3,7 +3,6 @@ import 'core/api/api';
 import 'core/api/client/api';
 import 'core/api/files/meteor-slingshot';
 import 'core/startup/accounts-config';
-
 import '../shared-startup';
 import './init';
 import './css';

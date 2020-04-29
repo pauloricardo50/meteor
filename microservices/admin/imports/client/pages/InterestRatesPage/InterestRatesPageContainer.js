@@ -2,8 +2,8 @@ import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import {
-  interestRates,
   currentInterestRates,
+  interestRates,
 } from 'core/api/interestRates/queries';
 import { irs10y } from 'core/api/irs10y/queries';
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PasswordChange from 'core/components/AccountPage/PasswordChange';
+
 import SingleUserPage from '../SingleUserPage';
 import DefaultBoardIdModifier from './DefaultBoardIdModifier';
 

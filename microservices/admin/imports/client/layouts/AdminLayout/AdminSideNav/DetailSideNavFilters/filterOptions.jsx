@@ -3,13 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 
-import T from 'core/components/Translation';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import {
   PROMOTIONS_COLLECTION,
   PROMOTION_STATUS,
 } from 'core/api/promotions/promotionConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import T from 'core/components/Translation';
 
 const assignedToMeFilter = {
   label: <T id="DetailSideNavFilters.showAssignedToMe" />,

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
 import CommissionRateSchema from 'core/api/commissionRates/schemas/CommissionRateSchema';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+
 import CommissionRatesFormContainer from './CommissionRatesFormContainer';
 
 const schema = CommissionRateSchema.pick('type', 'rates');

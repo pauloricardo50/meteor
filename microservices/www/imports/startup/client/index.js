@@ -1,5 +1,4 @@
 import 'core/api/initialization';
-
 import '../shared/setup';
 import './ssr-client';
 

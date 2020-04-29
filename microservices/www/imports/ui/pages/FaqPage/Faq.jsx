@@ -1,11 +1,12 @@
 import React from 'react';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 
 import Icon from 'core/components/Icon';
 import Link from 'core/components/Link';
 import T from 'core/components/Translation';
-import { PHONE, PHONE_COMPACT, EMAIL } from '../ContactPage/contactConstants';
+
+import { EMAIL, PHONE, PHONE_COMPACT } from '../ContactPage/contactConstants';
 
 const answerValues = {
   contactPhone: <a href={`tel:${PHONE_COMPACT}`}>{PHONE}</a>,

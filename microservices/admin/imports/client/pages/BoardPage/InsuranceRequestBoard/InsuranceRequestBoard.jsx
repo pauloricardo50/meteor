@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Board from '../../../components/Board';
+import InsuranceRequestBoardCard from './InsuranceRequestBoardCard/InsuranceRequestBoardCard';
+import InsuranceRequestBoardColumnHeader from './InsuranceRequestBoardColumnHeader';
+import { ACTIONS } from './insuranceRequestBoardConstants';
 import InsuranceRequestBoardContainer from './InsuranceRequestBoardContainer';
 import InsuranceRequestBoardOptions from './InsuranceRequestBoardOptions/InsuranceRequestBoardOptions';
-import InsuranceRequestBoardColumnHeader from './InsuranceRequestBoardColumnHeader';
-import InsuranceRequestBoardCard from './InsuranceRequestBoardCard/InsuranceRequestBoardCard';
-import { ACTIONS } from './insuranceRequestBoardConstants';
 import InsuranceRequestModal from './InsuranceRequestModal';
 
 const InsuranceRequestBoard = props => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DefaultCalculator, { Calculator } from 'core/utils/Calculator';
 import { Money, Percent } from 'core/components/Translation';
+import DefaultCalculator, { Calculator } from 'core/utils/Calculator';
 
 const LenderSolvency = ({
   organisation: { lenderRules },

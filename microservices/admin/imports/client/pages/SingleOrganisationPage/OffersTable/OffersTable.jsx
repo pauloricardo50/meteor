@@ -1,6 +1,8 @@
 import React from 'react';
-import Table from 'core/components/Table';
+
 import OfferRecapDialog from 'core/components/OfferRecapDialog';
+import Table from 'core/components/Table';
+
 import OffersTableContainer from './OffersTableContainer';
 
 const OffersTable = ({ rows, columnOptions, setOfferDialog, offerDialog }) => (

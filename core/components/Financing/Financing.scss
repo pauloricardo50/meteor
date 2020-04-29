@@ -42,7 +42,8 @@ $result-section-negative-offset: -32px;
   flex-direction: column;
 
   .money-input,
-  .percent-input, .date-input {
+  .percent-input,
+  .date-input {
     width: 100%;
     margin: 0;
   }
@@ -256,7 +257,6 @@ $result-section-negative-offset: -32px;
 
     color: #69707a;
   }
-
 }
 
 .financing-structures-labels {

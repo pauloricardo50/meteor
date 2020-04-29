@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import Fab from '@material-ui/core/Fab';
+
 import Icon from 'core/components/Icon';
 
 import MotionCarousel from './MotionCarousel';

@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
-import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 
 const getRedirect = pathname => {
   const currentUser = useContext(CurrentUserContext);

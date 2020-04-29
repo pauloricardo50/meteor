@@ -1,8 +1,8 @@
 import React from 'react';
-
 import Drawer from '@material-ui/core/Drawer';
 
 import useMedia from 'core/hooks/useMedia';
+
 import SideNavUser from '../../components/SideNavUser';
 
 const PermanentSideNav = ({ open, closeDrawer, ...props }) => {

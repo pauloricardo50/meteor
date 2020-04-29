@@ -1,12 +1,12 @@
 import React from 'react';
 
 import Board from '../../../components/Board';
-import LoanBoardOptions from './LoanBoardOptions';
-import LoanBoardContainer from './LoanBoardContainer';
-import LoanBoardColumnHeader from './LoanBoardColumnHeader';
 import LoanBoardCard from './LoanBoardCard';
-import LoanModal from './LoanModal';
+import LoanBoardColumnHeader from './LoanBoardColumnHeader';
 import { ACTIONS } from './loanBoardConstants';
+import LoanBoardContainer from './LoanBoardContainer';
+import LoanBoardOptions from './LoanBoardOptions';
+import LoanModal from './LoanModal';
 
 const LoanBoard = ({
   dispatch,

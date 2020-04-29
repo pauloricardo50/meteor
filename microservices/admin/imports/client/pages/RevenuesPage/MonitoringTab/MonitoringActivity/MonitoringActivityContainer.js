@@ -1,8 +1,8 @@
-import { compose, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withState } from 'recompose';
 
-import { loanStatusChanges } from 'core/api/monitoring/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { loanStatusChanges } from 'core/api/monitoring/queries';
 
 export default compose(
   withState('activityRange', 'setActivityRange', {

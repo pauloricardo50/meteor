@@ -5,12 +5,13 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
+import './layout.scss';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './layout.scss';
-import LayoutNav from './LayoutNav';
 import LayoutFooter from './LayoutFooter';
+import LayoutNav from './LayoutNav';
 
 const Layout = ({ children, pageContext }) => {
   const { i18n } = pageContext;

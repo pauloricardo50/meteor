@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Waves from 'core/components/Waves';
-import WwwFooterTop from './WwwFooterTop';
-import WwwFooterLinks from './WwwFooterLinks';
+
 import WwwFooterCopyright from './WwwFooterCopyright';
+import WwwFooterLinks from './WwwFooterLinks';
 import WwwFooterSocial from './WwwFooterSocial';
+import WwwFooterTop from './WwwFooterTop';
 
 const WwwFooter = ({ transparent, children }) => (
   <footer className="www-footer home-page__footer">

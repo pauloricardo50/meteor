@@ -1,6 +1,6 @@
 import { defaultFilterOptions } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavFilters/filterOptions';
-import * as sidenavTypes from './sidenavTypes';
 import { defaultSortOption } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavSort/sortOptions';
+import * as sidenavTypes from './sidenavTypes';
 
 export const initialState = {
   showDetail: false,

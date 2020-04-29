@@ -2,6 +2,7 @@ import React from 'react';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Icon from 'core/components/Icon';
+
 import InsuranceRequestAdderContainer from './InsuranceRequestAdderContainer';
 
 const InsuranceRequestAdder = ({ schema, model, onSubmit, loading }) => {

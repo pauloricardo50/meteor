@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import Checkbox from 'core/components/Checkbox';
+import Select from 'core/components/Select';
 import Timeline from 'core/components/Timeline';
 import TimelineDescription from 'core/components/Timeline/TimelineDescription';
-import Select from 'core/components/Select';
 import T from 'core/components/Translation';
-import Checkbox from 'core/components/Checkbox';
+
+import AdminActivityAdder from './AdminActivityAdder';
 import AdminTimelineContainer, {
   activityFilterOptions,
 } from './AdminTimelineContainer';
-import AdminActivityAdder from './AdminActivityAdder';
 import AdminTimelineTitle from './AdminTimelineTitle';
 
 const now = new Date();

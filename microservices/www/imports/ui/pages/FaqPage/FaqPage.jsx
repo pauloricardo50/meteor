@@ -1,7 +1,8 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
 import PageHead from 'core/components/PageHead';
+import T from 'core/components/Translation';
+
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 import FaqPageList from './FaqPageList';

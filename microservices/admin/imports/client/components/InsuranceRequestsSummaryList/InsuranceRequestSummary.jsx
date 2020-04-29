@@ -1,10 +1,10 @@
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
 
-import Link from 'core/components/Link';
-import BorrowersSummary from 'core/components/BorrowersSummary';
-import StatusLabel from 'core/components/StatusLabel';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import BorrowersSummary from 'core/components/BorrowersSummary';
+import Link from 'core/components/Link';
+import StatusLabel from 'core/components/StatusLabel';
 
 const InsuranceRequestSummary = ({ insuranceRequest }) => {
   const {

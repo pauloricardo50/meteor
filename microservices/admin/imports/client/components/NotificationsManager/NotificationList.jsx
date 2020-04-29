@@ -1,13 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 
-import Loading from 'core/components/Loading';
-import { CollectionIconLink } from 'core/components/IconLink';
-import IconButton from 'core/components/IconButton';
 import {
   readNotification,
   snoozeNotification,
 } from 'core/api/notifications/methodDefinitions';
+import IconButton from 'core/components/IconButton';
+import { CollectionIconLink } from 'core/components/IconLink';
+import Loading from 'core/components/Loading';
 
 const getNotificationTitle = (title, createdAt) => (
   <>

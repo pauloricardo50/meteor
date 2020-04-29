@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Table, { ORDER } from 'core/components/Table';
+
 import InsuranceRequestsTableContainer from './InsuranceRequestsTableContainer';
 
 const InsuranceRequestsTable = ({ columnOptions, rows }) => (

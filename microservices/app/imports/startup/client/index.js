@@ -2,7 +2,6 @@ import 'url-search-params-polyfill';
 import 'core/api/api';
 import 'core/api/client/api';
 import 'core/startup/accounts-config';
-
 import '../shared-startup';
 import './init';
 import './css';

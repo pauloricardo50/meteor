@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import cx from 'classnames';
 
 import IconButton from 'core/components/IconButton/IconButton';
+
 import LenderPickerOrganisationRules from './LenderPickerOrganisationRules';
 
 const LenderPickerOrganisation = ({

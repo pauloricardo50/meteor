@@ -1,8 +1,8 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
 import { LENDER_RULES_VARIABLES } from 'core/api/lenderRules/lenderRulesConstants';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 
 import LenderRulesFormOperator from './LenderRulesFormOperator';
 import LenderRulesFormValue from './LenderRulesFormValue';

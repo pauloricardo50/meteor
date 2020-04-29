@@ -1,6 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+
 import BorrowersProgressRecap from './BorrowersProgressRecap';
 import BorrowersProgressSignup from './BorrowersProgressSignup';
 

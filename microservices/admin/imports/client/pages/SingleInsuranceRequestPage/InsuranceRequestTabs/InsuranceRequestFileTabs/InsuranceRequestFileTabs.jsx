@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Tabs from 'core/components/Tabs';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
-import RadioTabs from 'core/components/RadioButtons/RadioTabs';
-import VerticalAligner from 'core/components/VerticalAligner';
-import SingleFileTab from 'core/components/FileTabs/SingleFileTab';
 import {
   getBorrowerDocuments,
-  getInsuranceRequestDocuments,
   getInsuranceDocuments,
+  getInsuranceRequestDocuments,
 } from 'core/api/files/documents';
+import SingleFileTab from 'core/components/FileTabs/SingleFileTab';
+import RadioTabs from 'core/components/RadioButtons/RadioTabs';
+import Tabs from 'core/components/Tabs';
+import VerticalAligner from 'core/components/VerticalAligner';
 
 const InsuranceRequestFileTabs = ({
   insuranceRequest,

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { sidenavActions } from '../../../redux/sidenav';
 
 const AdminSideNavContainer = component =>

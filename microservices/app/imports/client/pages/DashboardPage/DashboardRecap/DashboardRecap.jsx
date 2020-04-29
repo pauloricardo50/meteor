@@ -3,8 +3,8 @@ import React from 'react';
 import T from 'core/components/Translation';
 
 import DashboardRecapFinance from './DashboardRecapFinance';
-import DashboardRecapProperty from './DashboardRecapProperty';
 import DashboardRecapPromotion from './DashboardRecapPromotion';
+import DashboardRecapProperty from './DashboardRecapProperty';
 
 const DashboardRecap = props => {
   const propertyToDisplay =

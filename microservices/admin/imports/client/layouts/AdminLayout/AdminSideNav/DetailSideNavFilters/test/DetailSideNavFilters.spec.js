@@ -3,12 +3,12 @@ import React from 'react';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { shallow } from 'core/utils/testHelpers/enzyme';
-import T from 'core/components/Translation';
-import DropdownSelect from 'core/components/DropdownSelect';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import DropdownSelect from 'core/components/DropdownSelect';
+import T from 'core/components/Translation';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import DetailSideNavFilters from '../DetailSideNavFilters';
 

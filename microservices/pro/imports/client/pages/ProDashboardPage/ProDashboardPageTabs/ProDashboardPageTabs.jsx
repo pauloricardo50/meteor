@@ -1,10 +1,11 @@
 import React from 'react';
 
-import Tabs from 'core/components/Tabs';
-import T from 'core/components/Translation';
+import collectionIcons from 'core/arrays/collectionIcons';
 import Icon from 'core/components/Icon';
 import ProCustomersTable from 'core/components/ProCustomersTable';
-import collectionIcons from 'core/arrays/collectionIcons';
+import Tabs from 'core/components/Tabs';
+import T from 'core/components/Translation';
+
 import ProPromotionsTable from './ProPromotionsTable';
 import ProPropertiesTable from './ProPropertiesTable';
 

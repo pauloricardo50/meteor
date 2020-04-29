@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
+import T from 'core/components/Translation';
+
 import DashboardInfoTeamForm from './DashboardInfoTeamForm';
 
 const DashboardInfoTeamMember = ({

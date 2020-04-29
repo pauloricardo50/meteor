@@ -1,7 +1,7 @@
 import React from 'react';
 
-import PageHead from 'core/components/PageHead';
 import Financing from 'core/components/Financing';
+import PageHead from 'core/components/PageHead';
 import { withCalculator } from 'core/containers/withCalculator';
 
 import PageApp from '../../components/PageApp';

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
 import RevenuesByStatus from 'core/components/RevenuesByStatus';
 import Select from 'core/components/Select';
-import ProRevenuesPipelineContainer from './ProRevenuesPipelineContainer';
+import T from 'core/components/Translation';
+
 import ProRevenuesPageExplained from './ProRevenuesExplained';
+import ProRevenuesPipelineContainer from './ProRevenuesPipelineContainer';
 
 const ProRevenuesPipeline = ({
   loans = [],

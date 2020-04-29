@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import WwwTopNavLinksSmall from './WwwTopNavLinksSmall';
 import WwwTopNavLinksLarge from './WwwTopNavLinksLarge';
+import WwwTopNavLinksSmall from './WwwTopNavLinksSmall';
 
 const WwwTopNavLinks = ({ variant }) => (
   <>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import Calculator from 'core/utils/Calculator';
 import { RecapSimple } from 'core/components/Recap';
 import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
+import { toMoney } from 'core/utils/conversionFunctions';
 
 const getBorrowerArray = borrower => {
   const totalFunds = Calculator.getTotalFunds({ borrowers: borrower });

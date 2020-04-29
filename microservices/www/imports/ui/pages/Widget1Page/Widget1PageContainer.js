@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { widget1Selectors } from 'core/redux/widget1';
 import { getFinmaValues } from 'core/components/widget1/widget1Helpers';
+import { widget1Selectors } from 'core/redux/widget1';
 
 export const mapStateToProps = state => {
   const {

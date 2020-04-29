@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import renderObject from 'core/utils/renderObject';
-import Button from 'core/components/Button';
 import { withState } from 'recompose';
+
+import Button from 'core/components/Button';
+import renderObject from 'core/utils/renderObject';
 
 const LoanObject = ({ showObject, setShowObject, loan }) => (
   <>

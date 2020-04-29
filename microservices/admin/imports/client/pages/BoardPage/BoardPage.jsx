@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { withProps, compose } from 'recompose';
-import withMatchParam from 'core/containers/withMatchParam';
+import { compose, withProps } from 'recompose';
+
 import RadioTabs from 'core/components/RadioButtons/RadioTabs';
-import LoanBoard from './LoanBoard/LoanBoard';
+import withMatchParam from 'core/containers/withMatchParam';
+
 import InsuranceRequestBoard from './InsuranceRequestBoard/InsuranceRequestBoard';
+import LoanBoard from './LoanBoard/LoanBoard';
 
 const BoardPage = ({
   currentUser,

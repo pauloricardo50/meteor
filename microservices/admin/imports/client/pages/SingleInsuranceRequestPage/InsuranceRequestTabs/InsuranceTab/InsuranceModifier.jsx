@@ -1,5 +1,7 @@
 import React from 'react';
+
 import AutoForm from 'core/components/AutoForm2/AutoForm';
+
 import InsuranceForm from './InsuranceForm';
 
 const InsuranceModifier = ({

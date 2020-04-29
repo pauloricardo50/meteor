@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 
 import { widget1Constants } from 'core/redux/widget1';
+
 import { mapStateToProps } from '../Widget1PageContainer';
 
 describe('Widget1PageContainer', () => {

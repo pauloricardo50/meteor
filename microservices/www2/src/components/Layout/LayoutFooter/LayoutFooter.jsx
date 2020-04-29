@@ -1,6 +1,7 @@
 import React from 'react';
-import LayoutFooterLinks from './LayoutFooterLinks';
+
 import LayoutFooterInfo from './LayoutFooterInfo';
+import LayoutFooterLinks from './LayoutFooterLinks';
 
 const LayoutFooter = ({ i18n }) => (
   <footer>

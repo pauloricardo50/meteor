@@ -2,8 +2,9 @@ import React from 'react';
 
 import Table from 'core/components/Table';
 import { Money } from 'core/components/Translation';
-import RevenuesTableContainer from './RevenuesTableContainer';
+
 import RevenueModifier from './RevenueModifier';
+import RevenuesTableContainer from './RevenuesTableContainer';
 
 export const RevenuesTable = ({
   loan,

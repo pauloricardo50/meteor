@@ -2,8 +2,8 @@ import React from 'react';
 
 import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import colors from 'core/config/colors';
-import { AdminActivityModifier } from '../../../components/AdminTimeline/AdminActivityAdder';
 
+import { AdminActivityModifier } from '../../../components/AdminTimeline/AdminActivityAdder';
 import { getIcon } from '../../../components/AdminTimeline/AdminTimelineTitle';
 
 const allowModify = (type, isServerGenerated) =>

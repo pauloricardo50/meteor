@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Table from 'core/components/Table';
 import ProOrganisationUserAdder from 'core/components/ProOrganisationUserAdder';
+import Table from 'core/components/Table';
+
 import ProOrganisationUsersTableContainer from './ProOrganisationUsersTableContainer';
 
 const ProOrganisationUsersTable = ({

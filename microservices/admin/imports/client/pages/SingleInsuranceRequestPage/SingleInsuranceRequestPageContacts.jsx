@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
+
 import RequestContact from '../../components/RequestContact';
 
 const SingleInsuranceRequestPageContacts = ({ insuranceRequestId }) => {

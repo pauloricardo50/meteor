@@ -1,5 +1,5 @@
-import { compose, withProps } from 'recompose';
 import { connect } from 'react-redux';
+import { compose, withProps } from 'recompose';
 
 import { appendFilters } from './DetailSideNavFilters/filterOptions';
 

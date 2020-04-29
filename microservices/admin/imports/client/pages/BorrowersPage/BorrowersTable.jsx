@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Table from 'core/components/Table';
+
 import BorrowersTableContainer from './BorrowersTableContainer';
 
 const BorrowersTable = ({ rows, columnOptions }) => (

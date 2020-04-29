@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'Manrope-variable';
-  font-style: normal;
   // Get full range of weights
   font-weight: 1 999;
+  font-style: normal;
+
   font-display: swap;
-  
   src: url('/fonts/Manrope-variable.ttf') format('truetype');
 }
 
@@ -14,8 +14,8 @@ html {
   font-family: 'Manrope', 'Helvetica', sans-serif;
   font-weight: $regular;
   line-height: 1.4375rem;
-  font-variant-numeric: tabular-nums;
 
+  font-variant-numeric: tabular-nums;
   @include font-size($font-size-xs);
 }
 
@@ -47,31 +47,36 @@ h6 {
   }
 }
 
-h1, .font-size-1 {
+h1,
+.font-size-1 {
   font-size: 2.5rem;
   line-height: 3.5rem;
 }
 
-h2, .font-size-2 {
+h2,
+.font-size-2 {
   font-size: 2rem;
   line-height: 3rem;
 }
 
-h3, .font-size-3 {
+h3,
+.font-size-3 {
   font-size: 1.75rem;
   line-height: 2.5rem;
 }
 
-h4, .font-size-4 {
+h4,
+.font-size-4 {
   font-size: 1.5rem;
-  line-height: 2.125rem;
   font-weight: $regular;
+  line-height: 2.125rem;
 }
 
-h5, .font-size-5 {
+h5,
+.font-size-5 {
   font-size: 1.25rem;
-  line-height: 1.75rem;
   font-weight: $regular;
+  line-height: 1.75rem;
 }
 
 b,
@@ -80,6 +85,7 @@ b,
 }
 
 // FIXME: Does not seem to work in google chrome
-i, .italic {
+i,
+.italic {
   font-style: oblique;
 }

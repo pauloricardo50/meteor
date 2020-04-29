@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 import { IntlDate } from 'core/components/Translation';
+
 import Event from './Event';
 
 const today = moment();

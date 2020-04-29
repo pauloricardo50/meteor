@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MaxPropertyValue from 'core/components/MaxPropertyValue';
+
 import PageApp from '../../components/PageApp';
 
 const SolvencyPage = props => (

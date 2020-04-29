@@ -1,17 +1,17 @@
 import React from 'react';
 
-import MoneyInput from 'core/components/MoneyInput';
-import RadioButtons from 'core/components/RadioButtons';
-import { NumberField } from 'core/components/NumberInput';
-import PercentInput from 'core/components/PercentInput';
+import { LENDER_RULES_VARIABLES } from 'core/api/lenderRules/lenderRulesConstants';
+import { CANTONS } from 'core/api/loans/loanConstants';
+import {
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+} from 'core/api/properties/propertyConstants';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
 import TextField from 'core/components/AutoForm2/CustomTextField';
-import { LENDER_RULES_VARIABLES } from 'core/api/lenderRules/lenderRulesConstants';
-import {
-  RESIDENCE_TYPE,
-  PROPERTY_TYPE,
-} from 'core/api/properties/propertyConstants';
-import { CANTONS } from 'core/api/loans/loanConstants';
+import MoneyInput from 'core/components/MoneyInput';
+import { NumberField } from 'core/components/NumberInput';
+import PercentInput from 'core/components/PercentInput';
+import RadioButtons from 'core/components/RadioButtons';
 
 const getSelectProps = variable => {
   if (variable === LENDER_RULES_VARIABLES.RESIDENCE_TYPE) {

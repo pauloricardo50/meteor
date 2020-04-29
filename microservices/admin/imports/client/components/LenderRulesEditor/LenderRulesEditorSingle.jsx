@@ -1,16 +1,16 @@
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { withState } from 'recompose';
 
 import { LenderRulesEditorSchema } from 'core/api/lenderRules/schemas/lenderRulesSchema';
+import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
 
-import DropdownMenu from 'core/components/DropdownMenu';
+import LenderRulesEditorSingleForm from './LenderRulesEditorSingleForm';
 import LenderRulesEditorTitle from './LenderRulesEditorTitle';
 import LenderRulesModifier from './LenderRulesForm/LenderRulesModifier';
-import LenderRulesEditorSingleForm from './LenderRulesEditorSingleForm';
 
 const getInitialFormKeys = ({ lenderRules }) =>
   Object.keys(lenderRules).filter(key => {

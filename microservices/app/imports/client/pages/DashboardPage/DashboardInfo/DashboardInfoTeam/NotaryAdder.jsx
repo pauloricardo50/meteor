@@ -1,9 +1,9 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import notaries from 'core/arrays/notaries';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
-import notaries from 'core/arrays/notaries';
 
 const findNotary = contacts =>
   contacts.some(

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+
 import LoanCards from './LoanCards';
 
 const SuperDashboard = ({ currentUser = {} }) => {

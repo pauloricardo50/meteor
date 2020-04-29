@@ -1,5 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
+
 import SingleInsuranceRequestPage from '../../SingleInsuranceRequestPage';
 
 const InsuranceRequestModal = ({

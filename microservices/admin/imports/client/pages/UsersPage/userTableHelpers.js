@@ -1,11 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import Link from 'core/components/Link';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import Link from 'core/components/Link';
+import Roles from 'core/components/Roles';
 import T from 'core/components/Translation/';
 import { isUser } from 'core/utils/userFunctions';
-import Roles from 'core/components/Roles';
 
 export const getColumnOptions = ({ showAssignee }) => {
   const columnOptions = [

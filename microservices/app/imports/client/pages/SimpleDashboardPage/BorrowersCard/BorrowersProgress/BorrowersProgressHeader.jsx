@@ -1,8 +1,8 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import PercentWithStatus from 'core/components/PercentWithStatus';
 import Button from 'core/components/Button';
+import PercentWithStatus from 'core/components/PercentWithStatus';
+import T from 'core/components/Translation';
 
 const BorrowersProgressHeader = ({
   loanId,

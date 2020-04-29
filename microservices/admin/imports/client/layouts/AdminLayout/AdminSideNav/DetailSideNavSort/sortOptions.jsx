@@ -1,9 +1,9 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import T from 'core/components/Translation';
 
 const createdAtSortOption = {
   label: <T id="TasksTable.createdAt" />,

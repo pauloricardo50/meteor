@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Table, { ORDER } from 'core/components/Table';
+
 import AllLoansTableContainer from './AllLoansTableContainer';
 
 const AllLoansTable = ({ columnOptions, rows }) => (

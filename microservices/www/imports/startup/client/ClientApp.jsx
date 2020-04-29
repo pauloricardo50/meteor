@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import withErrorCatcher from 'core/containers/withErrorCatcher';
-import MicroserviceHead from 'core/components/MicroserviceHead';
-import history from 'core/utils/history';
 import HistoryWatcher from 'core/components/BaseRouter/HistoryWatcher';
+import MicroserviceHead from 'core/components/MicroserviceHead';
+import withErrorCatcher from 'core/containers/withErrorCatcher';
+import history from 'core/utils/history';
+
 import App from '../shared/App';
 import { WWW_ROUTES } from '../shared/Routes';
 

@@ -2,11 +2,11 @@ import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { adminUsers } from 'core/api/users/queries';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
 

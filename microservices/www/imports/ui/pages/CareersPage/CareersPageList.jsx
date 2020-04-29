@@ -1,8 +1,9 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import jobs from './jobs';
+
 import CareersPageJob from './CareersPageJob';
+import jobs from './jobs';
 
 const CareersPageList = () => (
   <div className="careers-page-list">

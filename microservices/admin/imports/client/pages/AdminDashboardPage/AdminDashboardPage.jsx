@@ -1,12 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
 import Icon from 'core/components/Icon/Icon';
+import T from 'core/components/Translation';
+
+import LoanAdder from '../../components/LoanSummaryList/LoanAdder';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import { UserAdder } from '../../components/UserDialogForm';
 import AdminDashboardStats from './AdminDashboardStats';
-import LoanAdder from '../../components/LoanSummaryList/LoanAdder';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
   <>

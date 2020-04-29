@@ -1,20 +1,21 @@
 import { compose, withProps } from 'recompose';
 
-import { proPromotions } from 'core/api/promotions/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import withMatchParam from 'core/containers/withMatchParam';
+import { proPromotions } from 'core/api/promotions/queries';
 import {
-  isAllowedToModifyPromotion,
+  isAllowedToAddLotsToPromotion,
   isAllowedToInviteCustomersToPromotion,
   isAllowedToManagePromotionDocuments,
-  isAllowedToSeePromotionCustomers,
-  isAllowedToAddLotsToPromotion,
+  isAllowedToModifyPromotion,
   isAllowedToModifyPromotionLots,
   isAllowedToRemovePromotionLots,
   isAllowedToSeeManagement,
+  isAllowedToSeePromotionCustomers,
 } from 'core/api/security/clientSecurityHelpers';
-import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
 import PromotionPage from 'core/components/PromotionPage/client';
+import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import withMatchParam from 'core/containers/withMatchParam';
+
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const makePermissions = props => ({

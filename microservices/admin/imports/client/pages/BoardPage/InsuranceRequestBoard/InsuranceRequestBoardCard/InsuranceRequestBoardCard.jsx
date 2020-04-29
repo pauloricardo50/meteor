@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
-import InsuranceRequestBoardCardTop from './InsuranceRequestBoardCardTop';
+
+import InsuranceRequestBoardCardBottom from './InsuranceRequestBoardCardBottom';
 import InsuranceRequestBoardCardDescription from './InsuranceRequestBoardCardDescription';
 import InsuranceRequestBoardCardTasks from './InsuranceRequestBoardCardTasks';
-import InsuranceRequestBoardCardBottom from './InsuranceRequestBoardCardBottom';
+import InsuranceRequestBoardCardTop from './InsuranceRequestBoardCardTop';
 
 const InsuranceRequestBoardCard = ({
   data: insuranceRequest,

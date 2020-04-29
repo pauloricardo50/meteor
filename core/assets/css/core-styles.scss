@@ -461,7 +461,8 @@ p.description,
 
 .ellipsis {
   display: block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

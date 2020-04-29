@@ -1,6 +1,6 @@
 import React from 'react';
-import Link from 'core/components/Link';
 
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 
 const infoLinks = ['about', 'interests', 'faq', 'careers', 'contact'];

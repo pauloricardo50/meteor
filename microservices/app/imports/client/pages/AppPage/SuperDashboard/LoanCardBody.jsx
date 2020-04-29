@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { createRoute } from 'core/utils/routerUtils';
 import BorrowersSummary from 'core/components/BorrowersSummary';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import LoanProgress from './LoanProgress';
 
 const LoanCardBody = ({ loan, history }) => {

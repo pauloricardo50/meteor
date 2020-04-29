@@ -1,5 +1,5 @@
-import createContentfulPages from './src/utils/createContentfulPages';
 import createBlogPages from './src/utils/createBlogPages';
+import createContentfulPages from './src/utils/createContentfulPages';
 import setupRedirects from './src/utils/setupRedirects';
 
 const path = require('path');

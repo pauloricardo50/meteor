@@ -2,9 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 
-import { shallow } from 'core/utils/testHelpers/enzyme';
-import { T } from 'core/components/Translation';
 import Toggle from 'core/components/Toggle';
+import { T } from 'core/components/Translation';
+import { shallow } from 'core/utils/testHelpers/enzyme';
+
 import DisableUserFormsToggle from '../DisableUserFormsToggle';
 
 const component = (props = { loan: { userFormsEnabled: true } }) =>

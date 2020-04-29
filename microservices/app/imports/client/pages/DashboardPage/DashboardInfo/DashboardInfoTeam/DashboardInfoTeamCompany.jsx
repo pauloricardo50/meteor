@@ -5,6 +5,7 @@ import {
   employeesByEmail,
   placeholderEmployee,
 } from 'core/arrays/epotekEmployees';
+
 import DashboardInfoTeamMember from './DashboardInfoTeamMember';
 
 // Removes duplicates from an array of objects, by a key in the objects

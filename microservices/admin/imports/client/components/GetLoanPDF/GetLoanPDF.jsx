@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
 import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 
 import { ROLES } from 'core/api/users/userConstants';
 import Icon from 'core/components/Icon/Icon';

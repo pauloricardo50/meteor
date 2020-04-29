@@ -1,11 +1,12 @@
 import React from 'react';
 
-import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import { getUserLocale, getFormats } from 'core/utils/localization';
 import { currentUser } from 'core/api/users/queries';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
+import { getFormats, getUserLocale } from 'core/utils/localization';
+
 import messagesFR from '../../../lang/fr.json';
-import AdminLayout from '../../client/layouts/AdminLayout';
 import AdminStore from '../../client/components/AdminStore';
+import AdminLayout from '../../client/layouts/AdminLayout';
 import ADMIN_ROUTES from './adminRoutes';
 
 const AdminRoutes = props => (

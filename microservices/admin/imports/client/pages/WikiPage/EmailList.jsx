@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 
 const EmailList = ({ intl: { formatMessage: f } }) => {

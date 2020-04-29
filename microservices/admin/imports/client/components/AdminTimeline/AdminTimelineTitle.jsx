@@ -3,6 +3,7 @@ import React from 'react';
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import TimelineTitle from 'core/components/Timeline/TimelineTitle';
 import colors from 'core/config/colors';
+
 import { AdminActivityModifier } from './AdminActivityAdder';
 
 const icons = {

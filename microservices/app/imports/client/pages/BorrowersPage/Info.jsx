@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
+import AutoForm from 'core/components/AutoForm';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({

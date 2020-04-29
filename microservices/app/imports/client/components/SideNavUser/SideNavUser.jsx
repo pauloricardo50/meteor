@@ -1,11 +1,11 @@
 import React from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
 
 import LoanSelector from './LoanSelector';
-import SideNavHeader from './SideNavHeader';
 import LoanSideNav from './LoanSideNav';
+import SideNavHeader from './SideNavHeader';
 
 const SideNavUser = ({
   currentUser,

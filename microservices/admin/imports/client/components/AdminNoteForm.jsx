@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
+import TextField from 'core/components/Material/TextField';
 
 const styles = {
   buttonDiv: {

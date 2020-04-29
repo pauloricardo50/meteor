@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
-import CommissionsCommissionsEditor from './CommissionsCommissionsEditor';
+
 import CommissionsToReceive from '../OrganisationRevenues/CommissionsToReceive';
+import CommissionsCommissionsEditor from './CommissionsCommissionsEditor';
 
 const CommissionRates = props => {
   const { name } = props;

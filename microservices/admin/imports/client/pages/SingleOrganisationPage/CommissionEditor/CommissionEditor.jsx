@@ -1,6 +1,7 @@
 import React from 'react';
 
 import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
+
 import CommissionRatesForm from './CommissionRatesForm';
 
 const CommissionEditor = ({ commissionRates = [], _id: organisationId }) => {

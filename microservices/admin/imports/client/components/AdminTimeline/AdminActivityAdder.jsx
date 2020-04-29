@@ -2,20 +2,20 @@ import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import Icon from 'core/components/Icon';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
+import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import {
   activityInsert,
-  activityUpdate,
   activityRemove,
+  activityUpdate,
 } from 'core/api/activities/methodDefinitions';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 
 export const getActivitySchema = (activitiesFilter = () => true) =>
   new SimpleSchema({

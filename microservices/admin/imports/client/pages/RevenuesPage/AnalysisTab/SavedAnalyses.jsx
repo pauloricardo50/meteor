@@ -1,18 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { aggregators } from 'react-pivottable/Utilities';
 import SimpleSchema from 'simpl-schema';
 
-import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import TextInput from 'core/components/TextInput';
-import IconButton from 'core/components/IconButton';
-import RadioTabs from 'core/components/RadioButtons/RadioTabs';
 import { generateMatchAllWordsRegexp } from 'core/api/helpers/mongoHelpers';
 import { AutoFormDialog } from 'core/components/AutoForm2';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import IconButton from 'core/components/IconButton';
+import RadioTabs from 'core/components/RadioButtons/RadioTabs';
+import TextInput from 'core/components/TextInput';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 const schema = new SimpleSchema({ name: String });
 

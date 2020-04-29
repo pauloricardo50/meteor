@@ -1,4 +1,5 @@
 import React from 'react';
+
 import InsuranceRequestsSummaryList from '../../../../components/InsuranceRequestsSummaryList/InsuranceRequestsSummaryList';
 
 const InsuranceRequestsTab = ({ loan }) => {

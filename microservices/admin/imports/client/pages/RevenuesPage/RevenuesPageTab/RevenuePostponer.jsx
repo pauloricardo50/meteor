@@ -1,9 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 
-import ConfirmMethod from 'core/components/ConfirmMethod';
 import { revenueUpdate } from 'core/api/revenues/methodDefinitions';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import IconButton from 'core/components/IconButton';
+
 import RevenueCard from './RevenueCard';
 
 const Description = props => {

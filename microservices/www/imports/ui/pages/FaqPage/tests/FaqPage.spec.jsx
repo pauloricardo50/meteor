@@ -1,7 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+
 import { shallow } from 'core/utils/testHelpers/enzyme';
+
 import FaqPage from '../FaqPage';
 import FaqPageList from '../FaqPageList';
 

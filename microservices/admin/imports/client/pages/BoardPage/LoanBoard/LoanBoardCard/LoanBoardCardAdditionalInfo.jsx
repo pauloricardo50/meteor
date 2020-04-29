@@ -1,6 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+
 import { additionalLoanBoardFields } from '../loanBoardHelpers';
 
 const LoanBoardCardAdditionalInfo = ({ loan, additionalFields }) => {

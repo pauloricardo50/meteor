@@ -1,11 +1,11 @@
-import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
+import uniqBy from 'lodash/uniqBy';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { insuranceRequestInsert } from 'core/api/insuranceRequests/methodDefinitions';
-import { ROLES } from 'core/api/users/userConstants';
 import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
 
 const getSchema = ({ availableBorrowers = [], withKeepAssigneesCheckbox }) =>
   new SimpleSchema({

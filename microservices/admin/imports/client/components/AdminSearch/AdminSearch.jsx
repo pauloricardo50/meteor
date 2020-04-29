@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 import IconButton from 'core/components/IconButton';
 import Dialog from 'core/components/Material/Dialog';
-import AdminSearchResults from './AdminSearchResults/AdminSearchResults';
+
 import AdminSearchForm from './AdminSearchForm';
+import AdminSearchResults from './AdminSearchResults/AdminSearchResults';
 
 const AdminSearch = ({ setOpenSearch, openSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');

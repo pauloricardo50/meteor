@@ -29,7 +29,6 @@
 
 
 html {
-
   @include screen(med, min) {
     @include font-size($font-size-s);
   }

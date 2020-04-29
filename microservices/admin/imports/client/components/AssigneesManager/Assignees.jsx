@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { employeesById } from 'core/arrays/epotekEmployees';
-import { Percent } from 'core/components/Translation';
 import Tooltip from 'core/components/Material/Tooltip';
+import { Percent } from 'core/components/Translation';
 
 const Assignees = ({ assigneeLinks }) => {
   if (!assigneeLinks || assigneeLinks.length === 0) {

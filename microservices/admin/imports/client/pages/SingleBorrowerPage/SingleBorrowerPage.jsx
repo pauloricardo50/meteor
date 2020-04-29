@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Recap from 'core/components/Recap';
 import { BorrowerForm } from 'core/components/forms';
+import Recap from 'core/components/Recap';
+
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SingleBorrowerPageContainer from './SingleBorrowerPageContainer';
 import SingleBorrowerPageHeader from './SingleBorrowerPageHeader';

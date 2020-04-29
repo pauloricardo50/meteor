@@ -1,6 +1,6 @@
 import React from 'react';
-import { graphql } from 'gatsby';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { graphql } from 'gatsby';
 
 import WwwPage from '../WwwPage';
 
