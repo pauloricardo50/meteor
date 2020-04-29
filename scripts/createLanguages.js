@@ -60,6 +60,7 @@ const config = {
         'Table',
         'Uploader',
         'PropertyAdder',
+        'TranchePicker',
       ],
     },
     {
@@ -103,6 +104,7 @@ const config = {
         'UserReservation',
         'Widget1',
         'PropertyAdder',
+        'TranchePicker',
       ],
     },
     {

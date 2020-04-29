@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '../Button';
 import DialogSimple from '../DialogSimple';
+import T from '../Translation';
 import { TranchePicker } from './TranchePicker';
 import TranchePickerContainer from './TranchePickerContainer';
 
@@ -22,7 +23,15 @@ const TranchePickerDialog = ({
   ...props
 }) => (
   <DialogSimple
-    title={title}
+    title={title || <T id="TranchePicker.title" />}
+    text={
+      <span
+        className="description mb-16"
+        style={{ maxWidth: '300px', display: 'block' }}
+      >
+        <T id="TranchePicker.description" />
+      </span>
+    }
     actions={handleClose => [
       <Button key="cancel" onClick={handleClose}>
         Annuler
