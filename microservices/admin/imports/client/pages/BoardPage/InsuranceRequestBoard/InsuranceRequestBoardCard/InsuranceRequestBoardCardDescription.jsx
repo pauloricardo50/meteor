@@ -1,4 +1,5 @@
 import React from 'react';
+
 import InsuranceRequestBoardInsuranceCard from './InsuranceRequestBoardInsuranceCard';
 
 const InsuranceRequestBoardCardDescription = ({
@@ -21,7 +22,7 @@ const InsuranceRequestBoardCardDescription = ({
         />
       ))
     ) : (
-      <p>Pas encore d'assurance pour ce dossier</p>
+      <div>Pas encore d'assurance pour ce dossier</div>
     )}
   </>
 );

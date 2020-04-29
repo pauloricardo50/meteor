@@ -68,16 +68,18 @@ const InsuranceRequestBoardColumnHeader = ({
 
   return (
     <div className="loan-board-column-header">
-      <h4 className="title">
-        <span>{getTitle({ id, groupBy, admins })}</span>
-        &nbsp;
-        <span className="secondary">({count})</span>
-      </h4>
-      <DropdownMenu
-        iconType="sort"
-        buttonProps={{ className: 'sort' }}
-        options={getOptions(options, dispatch)}
-      />
+      <div className="flex align-center sb">
+        <div className="title">
+          <span className="mr-4">{getTitle({ id, groupBy, admins })}</span>
+          <span className="secondary">({count})</span>
+        </div>
+        <DropdownMenu
+          iconType="sort"
+          buttonProps={{ size: 'small' }}
+          options={getOptions(options, dispatch)}
+          noWrapper
+        />
+      </div>
     </div>
   );
 };

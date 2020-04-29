@@ -58,6 +58,19 @@ const createTheme = ({ fontSize = 14 }) =>
           minWidth: 40,
         },
       },
+      MuiListItem: {
+        root: {
+          margin: 4,
+          width: 'calc(100% - 8px)',
+          borderRadius: 4,
+        },
+      },
+      MuiList: {
+        padding: {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
     },
     palette: {
       primary: {

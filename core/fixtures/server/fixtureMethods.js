@@ -328,7 +328,11 @@ Meteor.methods({
 
     Organisations.update(
       { _id: orgId },
-      { $set: { userLinks: [{ _id: this.userId }] } },
+      {
+        $set: {
+          userLinks: [{ _id: this.userId, isMain: true, title: 'Dev </>' }],
+        },
+      },
     );
   },
 });

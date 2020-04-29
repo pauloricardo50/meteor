@@ -295,6 +295,9 @@ p.description,
 .m-16 {
   margin: 16px;
 }
+.p-4 {
+  padding: 4px;
+}
 .p-8 {
   padding: 8px;
 }
@@ -454,4 +457,11 @@ p.description,
 
 .fs-150 {
   font-size: 1.5rem;
+}
+
+.ellipsis {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

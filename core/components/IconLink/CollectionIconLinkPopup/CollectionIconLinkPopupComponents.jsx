@@ -77,7 +77,7 @@ export const titles = {
       {category === LOAN_CATEGORIES.PREMIUM && (
         <span>
           &nbsp;
-          <PremiumBadge small />
+          <PremiumBadge />
         </span>
       )}
     </span>

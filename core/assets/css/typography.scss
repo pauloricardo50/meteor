@@ -18,19 +18,17 @@ html {
   font-variant-numeric: tabular-nums;
 
   @include font-size($font-size-xs);
-
-  @include screen(med, min) {
-    @include font-size($font-size-s);
-  }
-  @include screen(xwide, min) {
-    @include font-size($font-size-m);
-  }
 }
 
 @supports (font-variation-settings: normal) {
   html {
     font-family: 'Manrope-variable', 'Helvetica', sans-serif; //, 'Manrope', 'Helvetica', sans-serif;
   }
+}
+
+.font-size-body {
+  font-size: 1rem;
+  line-height: 1.4375rem;
 }
 
 h1,

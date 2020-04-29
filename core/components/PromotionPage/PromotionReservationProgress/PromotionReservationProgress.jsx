@@ -68,7 +68,7 @@ const PromotionReservationProgressComponent = ({
             percent={getPercent(data)}
             ratio={getRatio(data)}
             options={{
-              squareSize: 20,
+              squareSize: 16,
               strokeWidth: 4,
               animated: true,
               withRatio: true,

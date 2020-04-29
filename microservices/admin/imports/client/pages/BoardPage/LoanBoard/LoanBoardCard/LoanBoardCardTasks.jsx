@@ -28,11 +28,12 @@ const LoanBoardCardTasks = ({ nextDueTask, tasks, renderComplex }) => {
   const isLate = nextDueTask.noDueDate || dueAtMoment < moment();
 
   const task = (
-    <h5 className="loan-board-card-tasks">
-      <span className={cx('date', { 'error-box': isLate, secondary: !isLate })}>
+    <h5 className="loan-board-card-tasks font-size-body">
+      <small
+        className={cx('date mr-4', { 'error-box': isLate, secondary: !isLate })}
+      >
         {nextDueTask.noDueDate ? 'Maintenant' : dueAtMoment.fromNow()}
-      </span>
-      &nbsp;
+      </small>
       <LoanBoardCardTask title={nextDueTask.title} _id={nextDueTask._id} />
     </h5>
   );

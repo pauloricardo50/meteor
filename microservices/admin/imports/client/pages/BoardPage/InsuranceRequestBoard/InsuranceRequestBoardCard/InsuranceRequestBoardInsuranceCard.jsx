@@ -9,8 +9,8 @@ const InsuranceRequestBoardInsuranceCard = ({ insurance }) => {
 
   return (
     <div className="card1 p-4 flex-col mb-4">
-      <div className="flex center-align sb">
-        <div className="flex center-align">
+      <div className="flex-col">
+        <div className="flex center-align nowrap">
           <StatusLabel
             variant="dot"
             status={status}
@@ -22,9 +22,13 @@ const InsuranceRequestBoardInsuranceCard = ({ insurance }) => {
             className="ml-4 mr-4"
             alt={organisation?.name}
           />
-          <p>{insuranceProduct?.name}</p>
+          <div className="ellipsis" style={{ width: 210 }}>
+            {insuranceProduct?.name}
+          </div>
         </div>
-        <CollectionIconLink relatedDoc={insurance} />
+        <div className="flex secondary">
+          <CollectionIconLink relatedDoc={insurance} />
+        </div>
       </div>
     </div>
   );

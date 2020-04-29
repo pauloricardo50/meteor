@@ -119,9 +119,11 @@ const insuranceRequestBoardContent = ({
             }
             placement="bottom"
           >
-            <b>Mode d'affichage</b>
+            <div>Mode d'affichage</div>
           </StickyPopover>
-          <div>{groupByOptions.find(({ id }) => id === groupBy).label}</div>
+          <div className="secondary">
+            {groupByOptions.find(({ id }) => id === groupBy).label}
+          </div>
         </div>
       </div>
 

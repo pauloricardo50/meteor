@@ -20,7 +20,6 @@
 
     margin-bottom: 1em;
     padding: 8px;
-    padding-right: 24px;
 
     background: #fff;
   }
@@ -67,13 +66,7 @@
       display: flex;
       align-items: center;
 
-      margin-top: 0;
-    }
-
-    .sort {
-      position: absolute;
-      top: 0;
-      right: 0;
+      margin: 0;
     }
   }
 
@@ -130,21 +123,31 @@ $button-height: 30px;
 
       max-width: 190px;
       height: 24px;
-      margin: auto 0;
+      line-height: 16px;
 
       white-space: nowrap;
       text-overflow: ellipsis;
     }
 
     .title-placeholder {
-      height: 16px;
-      padding: 4px;
+      line-height: 24px;
+      height: 24px;
+      display: block;
+      padding: 0 4px;
+    }
+
+    .icon-link, .icon-link > span {
+      white-space: pre-wrap;
+      line-height: 24px;
+      height: 24px;
+      padding-top: 0;
+      padding-bottom: 0;
+      display: block;
     }
 
     .icon-link {
-      height: 16px;
-
-      white-space: pre-wrap;
+      display: flex;
+      flex-direction: row;
     }
   }
 

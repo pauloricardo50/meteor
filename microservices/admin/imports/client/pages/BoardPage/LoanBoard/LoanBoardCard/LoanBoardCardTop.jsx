@@ -54,7 +54,9 @@ const LoanBoardCardTop = ({
             user={user}
           />
         ) : (
-          <h4 className="title title-placeholder">{title}</h4>
+          <div className="title font-size-body">
+            <span className="title-placeholder">{title}</span>
+          </div>
         )}
       </div>
 

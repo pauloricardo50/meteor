@@ -1,13 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
-import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { NavLink, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import { compose } from 'recompose';
 
 const styles = () => ({
   root: { justifyContent: 'center' },
@@ -68,9 +68,9 @@ const MainSideNavListItem = ({
       })}
     >
       {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
-      <h5 className="label">
+      <small className="label">
         {label || <T id={`collections.${collection}`} noTooltips />}
-      </h5>
+      </small>
     </div>
   </ListItem>
 );

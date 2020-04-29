@@ -15,12 +15,10 @@ import Calculator from 'core/utils/Calculator';
 import AdminTimeline from '../../../../components/AdminTimeline';
 import AssigneesManager from '../../../../components/AssigneesManager';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
-import LinkToFront from '../../../../components/LinkToFront';
 import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
-import Solvency from './Solvency';
 
 const OverviewTab = props => {
   const {
@@ -64,7 +62,6 @@ const OverviewTab = props => {
             loan={loan}
             currentUser={props.currentUser}
           />
-          <LinkToFront tagId={frontTagId} />
         </div>
       </div>
 

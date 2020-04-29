@@ -54,7 +54,7 @@ export default class PopoverStickOnHover extends React.Component {
     const { showPopover } = this.state;
     const show = forceOpen || showPopover;
 
-    const enhancedChildren = React.Children.map(children, child =>
+    const [enhancedChildren] = React.Children.map(children, child =>
       React.cloneElement(child, {
         onMouseEnter: this.handleMouseEnter,
         onMouseLeave: this.handleMouseLeave,
@@ -63,7 +63,7 @@ export default class PopoverStickOnHover extends React.Component {
         onBlur: this.handleMouseLeave,
         showPopover,
       }),
-    )[0];
+    );
 
     return (
       <>

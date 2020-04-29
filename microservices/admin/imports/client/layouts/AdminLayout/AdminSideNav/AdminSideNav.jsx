@@ -1,19 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 import AdminSideNavContainer from './AdminSideNavContainer';
-import MainSideNav from './MainSideNav';
 import DetailSideNav from './DetailSideNav';
+import MainSideNav from './MainSideNav';
 
 const useStyles = makeStyles(() => ({
   drawer: {
-    width: showDetail => (showDetail ? 420 : 120),
+    width: showDetail => (showDetail ? 400 : 100),
     flexShrink: 0,
   },
   drawerPaper: {
-    width: showDetail => (showDetail ? 420 : 120),
+    width: showDetail => (showDetail ? 400 : 100),
   },
 }));
 
