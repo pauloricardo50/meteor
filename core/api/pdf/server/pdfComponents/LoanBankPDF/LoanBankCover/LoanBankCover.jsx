@@ -73,14 +73,14 @@ const coverContent = ({
       )}
       <h1 className="title">Demande de financement hypothécaire</h1>
       {!anonymous && borrowersNames(borrowers)}
+      <hr />
       <h2 className="loan-type">
         <T id={`PDF.purchaseType.${purchaseType}`} />{' '}
         <T id={`PDF.residenceType.${residenceType}`} />
-      </h2>
-      <h2 className="property-type">
+        {' – '}
         {getPropertyType({ propertyType, flatType, houseType })}
       </h2>
-      <h2 className="address">{`${address1}, ${zipCode} ${city} (${canton})`}</h2>
+      <h3 className="address">{`${address1}, ${zipCode} ${city} (${canton})`}</h3>
       <h3 className="disbursement-date">
         <span>
           Déblocage des fonds prévu le{' '}
