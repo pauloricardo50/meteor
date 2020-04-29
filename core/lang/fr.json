@@ -1,4 +1,6 @@
 {
+  "TranchePicker.title": "Choix des tranches",
+  "TranchePicker.description": "Renseignez les tranches que vous désirez pour votre prêt",
   "Forms.enabledCommissionTypes": "Commissions activées pour les revenus de type",
   "CalendlyModal.officeChooser.title": "Sélectionnez votre agence",
   "CalendlyModal.officeChooser.description": "Choisissez l'agence e-Potek qui vous convient le mieux",
