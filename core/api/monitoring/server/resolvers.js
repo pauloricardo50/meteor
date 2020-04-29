@@ -260,7 +260,9 @@ const assigneeBreakdown = filters => [
     },
   },
   { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
+  { $addFields: { loan: { _collection: 'loans' } } },
   { $match: getLoanFilters(filters) },
+
   {
     $group: {
       _id: {
@@ -317,6 +319,7 @@ const assigneeBreakdown = filters => [
 
 const loanStatusChangePipeline = filters => [
   { $match: getFilters(filters) },
+  { $addFields: { _collection: 'loans' } },
   {
     $group: {
       _id: {
