@@ -19,9 +19,17 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import CommissionsConsolidator from '../../../components/RevenuesTable/CommissionConsolidator';
 
 export const formatRevenue = revenue => {
-  const { loan, insurance } = revenue;
-  const user = loan ? loan.user : insurance?.user;
-  const name = loan ? loan.name : insurance?.name;
+  const { loan, insurance, insuranceRequest } = revenue;
+  const user = loan
+    ? loan.user
+    : insurance?.insuranceRequest
+    ? insurance.insuranceRequest.user
+    : insuranceRequest?.user;
+  const name = loan
+    ? loan.name
+    : insurance
+    ? insurance.name
+    : insuranceRequest?.name;
 
   return { ...revenue, user, name };
 };
@@ -37,6 +45,7 @@ export const mapRevenueIntoCommissions = ({
   amount,
   loan,
   insuranceRequest,
+  insurance,
 }) =>
   organisations.map(organisation => {
     const {
@@ -76,7 +85,11 @@ export const mapRevenueIntoCommissions = ({
         { raw: date?.getTime(), label: moment(date).format('D MMMM YYYY') },
         {
           raw: name,
-          label: <CollectionIconLink relatedDoc={loan || insuranceRequest} />,
+          label: (
+            <CollectionIconLink
+              relatedDoc={loan || insurance || insuranceRequest}
+            />
+          ),
         },
         { raw: commissionRate, label: <Percent value={commissionRate} /> },
         { raw: commissionAmount, label: <Money value={commissionAmount} /> },
@@ -110,7 +123,6 @@ export const useCommissionsTableData = (proCommissionStatus, orgId) => {
         amount: 1,
         expectedAt: 1,
         loan: {
-          _id: 1,
           name: 1,
           borrowers: { name: 1 },
           user: { name: 1, referredByUser: { name: 1 } },
@@ -118,12 +130,20 @@ export const useCommissionsTableData = (proCommissionStatus, orgId) => {
           assigneeLinks: 1,
         },
         insuranceRequest: {
-          _id: 1,
           name: 1,
           borrowers: { name: 1 },
           user: { name: 1, referredByUser: { name: 1 } },
           userCache: 1,
           assigneeLinks: 1,
+        },
+        insurance: {
+          name: 1,
+          borrower: { name: 1 },
+          insuranceRequest: {
+            name: 1,
+            assigneeLinks: 1,
+            user: { name: 1, referredByUser: { name: 1 } },
+          },
         },
         paidAt: 1,
         status: 1,
