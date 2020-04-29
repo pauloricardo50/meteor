@@ -313,17 +313,7 @@ $button-height: 30px;
 .acquisition-icon, .refinancing-icon {
   display: inline-block;
   padding: 4px;
-  // font-size: 12px;
   margin-right: 4px;
-  color: white;
+  color: $icon;
   border-radius: 4px;
-  // font-weight: bold;
-}
-
-.acquisition-icon {
-  background-color: #21d3b5;
-}
-
-.refinancing-icon {
-  background-color: #005bea;
 }
