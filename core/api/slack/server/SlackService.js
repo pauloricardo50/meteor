@@ -68,10 +68,14 @@ export class SlackServiceClass {
 
   sendError = ({ error, additionalData = [], userId, url, connection }) => {
     if (Meteor.isDevelopment && !Meteor.isTest) {
-      console.log('error', error);
-      console.log('additionalData', additionalData);
-      console.log('userId', userId);
-      console.log('url', url);
+      console.error('\x1b[33mERROR\x1b[0m');
+      console.error('error', error);
+      console.error('\x1b[33mADDITIONAL DATA\x1b[0m');
+      console.error('additionalData', additionalData);
+      console.error('\x1b[33mUSER ID\x1b[0m');
+      console.error('userId', userId);
+      console.error('\x1b[33mURL\x1b[0m');
+      console.error('url', url);
     }
 
     if (
