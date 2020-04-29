@@ -11,7 +11,8 @@ import T from '../Translation';
 const CALENDLY_EVENT_SCHEDULED = 'calendly_event_scheduled';
 
 let sessionStorage;
-if (typeof window === undefined) {
+// Do this for server-side stuff to work well, including CI and deployment
+if (!global?.window || !window || typeof window === undefined) {
   sessionStorage = null;
 } else {
   sessionStorage = window?.sessionStorage;
