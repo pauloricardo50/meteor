@@ -7,7 +7,6 @@ const createTheme = ({ fontSize = 14 }) =>
     overrides: {
       MuiInput: {},
       MuiSelect: {},
-      MuiListItemText: {},
       MuiToolbar: {
         root: {
           position: '',
@@ -70,6 +69,9 @@ const createTheme = ({ fontSize = 14 }) =>
           paddingTop: 0,
           paddingBottom: 0,
         },
+      },
+      MuiListItemText: {
+        secondary: { lineHeight: 'unset' },
       },
     },
     palette: {

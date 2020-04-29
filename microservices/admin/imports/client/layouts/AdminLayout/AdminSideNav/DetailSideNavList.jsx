@@ -38,30 +38,33 @@ const getListItemDetails = (
           anonymous ? 'Anonyme' : user ? user.name : 'Pas de compte'
         }`,
         secondary: (
-          <span>
+          <div>
             <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
             {loanValueText}
-          </span>
+          </div>
         ),
       };
     }
     case PROMOTIONS_COLLECTION:
       return {
         primary: (
-          <span>
+          <div>
             {name || 'Promotion sans nom'}
             {isTest && <TestBadge />}
-          </span>
+          </div>
         ),
         secondary: (
-          <div>
-            <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
-            &nbsp;
-            <span>
+          <div className="flex center-align">
+            <StatusLabel
+              status={status}
+              collection={PROMOTIONS_COLLECTION}
+              className="mr-4"
+            />
+            <div>
               {city}
               &nbsp;
               {canton}
-            </span>
+            </div>
           </div>
         ),
       };

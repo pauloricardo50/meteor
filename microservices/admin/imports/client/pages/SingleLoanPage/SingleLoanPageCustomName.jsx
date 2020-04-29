@@ -5,7 +5,7 @@ import ClickToEditField from 'core/components/ClickToEditField';
 import Icon from 'core/components/Icon';
 
 const SingleLoanPageCustomName = ({ customName, loanId }) => (
-  <h3 className="secondary">
+  <h3 className="secondary mt-0">
     <ClickToEditField
       value={customName}
       onSubmit={value =>
