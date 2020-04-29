@@ -19,7 +19,6 @@ const InsuranceTab = props => {
     insuranceProduct: { name: insuranceProductName },
     organisation: { _id: organisationId },
   } = insurance;
-  console.log('revenues:', revenues);
   const { assignees = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
 
