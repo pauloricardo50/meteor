@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import ServerEventService from '../../events/server/ServerEventService';
 import { createMeteorAsyncFunction } from '../../helpers';
-import SlackService from '../../slack/server/SlackService';
 import { Method } from '../methods';
 
 const logMethod = ({ context, config, params, result, error }) => {
@@ -36,7 +36,7 @@ Method.addAfterExecution(
     logMethod({ context, config, params, result, error });
 
     if (error) {
-      SlackService.sendError({
+      ErrorLogger.handleError({
         error,
         additionalData: [
           `Server method error in method: "${config.name}"`,
