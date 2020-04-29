@@ -10,7 +10,11 @@ const CommissionRatesForm = ({ commissionRates, onSubmit }) => (
     schema={CommissionRateSchema.pick('rates')}
     model={commissionRates}
     onSubmit={onSubmit}
-    buttonProps={{ label: 'Modifier structure', raised: true, primary: true }}
+    buttonProps={{
+      label: 'Modifier commissionnement',
+      raised: true,
+      primary: true,
+    }}
     title="Structure de commissionnement"
   />
 );

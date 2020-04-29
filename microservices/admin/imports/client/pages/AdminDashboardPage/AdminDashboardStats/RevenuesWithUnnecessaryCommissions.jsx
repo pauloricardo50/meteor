@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
-import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import {
+  COMMISSION_STATUS,
+  REVENUES_COLLECTION,
+} from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { Money } from 'core/components/Translation';
@@ -40,17 +43,17 @@ const OrgItem = ({ orgName, revenues }) => (
   </div>
 );
 
-const RevnuesWithUnnecessaryCommissions = ({ showAll }) => {
+const RevenuesWithUnnecessaryCommissions = ({ showAll }) => {
   const currentUser = useContext(CurrentUserContext);
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
     params: {
       $filters: {
         organisationLinks: { $exists: true },
+        'organisationLinks.status': COMMISSION_STATUS.TO_BE_PAID,
       },
       organisations: {
         name: 1,
-        commissionRates: { type: 1 },
         enabledCommissionTypes: 1,
       },
       amount: 1,
@@ -122,4 +125,4 @@ const RevnuesWithUnnecessaryCommissions = ({ showAll }) => {
   );
 };
 
-export default RevnuesWithUnnecessaryCommissions;
+export default RevenuesWithUnnecessaryCommissions;

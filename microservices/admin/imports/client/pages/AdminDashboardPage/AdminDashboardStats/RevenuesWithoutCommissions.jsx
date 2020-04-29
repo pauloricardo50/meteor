@@ -25,8 +25,8 @@ const OrgItem = ({ orgName, revenues }) => (
       title={`Revenus sans commission de ${orgName}`}
     >
       <div className="flex-col">
-        {revenues.map(({ loan, insuranceRequest, insurance }) => {
-          const selectedDocument = insurance || insuranceRequest || loan;
+        {revenues.map(({ loan, insuranceRequest }) => {
+          const selectedDocument = insuranceRequest || loan;
           return (
             selectedDocument && (
               <CollectionIconLink
@@ -79,30 +79,15 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
           },
         },
       },
-      insurance: {
-        name: 1,
-        borrower: { name: 1 },
-        insuranceRequest: {
-          name: 1,
-          user: {
-            referredByOrganisation: {
-              name: 1,
-              commissionRates: { _id: 1, type: 1 },
-              enabledCommissionTypes: 1,
-            },
-          },
-        },
-      },
     },
     refetchOnMethodCall: false,
   });
 
   const filteredRevenues = revenues
     .map(revenue => {
-      const { loan, insurance, insuranceRequest } = revenue;
+      const { loan, insuranceRequest } = revenue;
 
-      const relatedDoc =
-        insurance?.insuranceRequest || insuranceRequest || loan || {};
+      const relatedDoc = insuranceRequest || loan || {};
       const {
         user: { referredByOrganisation } = {},
         hasPromotion,
