@@ -27,7 +27,9 @@ export function adjustLegend(that) {
 
 export const defaultConfig = {
   chart: {
-    style: { fontFamily: 'Manrope, Helvetica' },
+    style: {
+      fontFamily: 'Manrope, Helvetica',
+    },
     animation: { duration: 400 },
     backgroundColor: 'rgba(255, 255, 255, 0.0)',
   },
