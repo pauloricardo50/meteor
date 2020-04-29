@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import https from 'https';
 import queryString from 'query-string';
 
-import SlackService from '../../slack/server/SlackService';
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 
 const CRONITOR_URL = 'https://cronitor.io';
 const ACTIONS = {
@@ -92,7 +92,7 @@ export default class CronitorService {
           });
         })
         .on('error', error => {
-          SlackService.sendError({
+          ErrorLogger.handleError({
             error,
             additionalData: [`${this.name} CRON error`],
           });

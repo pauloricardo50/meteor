@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { logError } from '../../api/slack/methodDefinitions';
+import { logError } from '../../api/errorLogger/methodDefinitions';
 import Button from '../Button';
 import Link from '../Link';
 import T from '../Translation';

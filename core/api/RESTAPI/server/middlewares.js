@@ -2,7 +2,7 @@ import bodyParser from 'body-parser';
 import multipart from 'connect-multiparty';
 import moment from 'moment';
 
-import SlackService from '../../slack/server/SlackService';
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
 import {
   checkCustomAuth,
@@ -265,7 +265,7 @@ const errorMiddleware = options => (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
   const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
 
-  SlackService.sendError({
+  ErrorLogger.handleError({
     error,
     additionalData: [
       Object.keys(body).length > 0 && { body },

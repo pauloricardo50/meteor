@@ -6,8 +6,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
 
+import { logError } from '../../../api/errorLogger/methodDefinitions';
 import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/files/fileConstants';
-import { logError } from '../../../api/slack/methodDefinitions';
 
 export default class TempFile extends Component {
   constructor(props) {

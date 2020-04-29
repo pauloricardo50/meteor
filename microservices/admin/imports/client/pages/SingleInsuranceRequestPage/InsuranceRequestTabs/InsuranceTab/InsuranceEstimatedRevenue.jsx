@@ -23,6 +23,8 @@ const InsuranceEstimatedRevenue = ({
     insuranceProduct: { name, revaluationFactor, maxProductionYears },
   },
   insuranceRequest,
+  referralIsCommissionned,
+  referralOrganisation,
 }) => {
   const { assignees = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
@@ -95,6 +97,14 @@ const InsuranceEstimatedRevenue = ({
           amount: estimatedRevenue,
           type: REVENUE_TYPES.INSURANCE,
           assigneeLink: { _id: Meteor.userId() || mainAssignee?._id },
+          organisationLinks: referralIsCommissionned
+            ? [
+                {
+                  _id: referralOrganisation._id,
+                  commissionRate: referralOrganisation.commissionRate,
+                },
+              ]
+            : [],
         }}
         buttonProps={{
           label: 'Revenu estimé',

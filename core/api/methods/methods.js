@@ -9,7 +9,9 @@ import { internalMethod } from './methodHelpers';
 if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;
 } else {
-  Mutation.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
+  Mutation.isDebugEnabled = {
+    omit: ['analyticsPage', 'analyticsLogin', 'logError'],
+  };
 }
 
 export class Method extends Mutation {

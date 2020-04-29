@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { AutoFormDialog } from 'core/components/AutoForm2';
 import CommissionRateSchema from 'core/api/commissionRates/schemas/CommissionRateSchema';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+
 import CommissionRatesFormContainer from './CommissionRatesFormContainer';
 
 const CommissionRatesForm = ({ commissionRates, onSubmit }) => (
@@ -9,7 +10,11 @@ const CommissionRatesForm = ({ commissionRates, onSubmit }) => (
     schema={CommissionRateSchema.pick('rates')}
     model={commissionRates}
     onSubmit={onSubmit}
-    buttonProps={{ label: 'Modifier', raised: true, primary: true }}
+    buttonProps={{
+      label: 'Modifier commissionnement',
+      raised: true,
+      primary: true,
+    }}
     title="Structure de commissionnement"
   />
 );

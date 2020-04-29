@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
-import { logError, notifyAssignee, notifyOfUpload } from '../methodDefinitions';
+import { notifyAssignee, notifyOfUpload } from '../methodDefinitions';
 import { slackCurrentUserFragment } from './slackListeners';
 import SlackService from './SlackService';
 
@@ -23,9 +23,4 @@ notifyOfUpload.setHandler((context, params) => {
   SecurityService.checkLoggedIn();
   const user = UserService.get(context.userId, slackCurrentUserFragment);
   SlackService.notifyOfUpload({ currentUser: user, ...params });
-});
-
-logError.setHandler((context, params) => {
-  context.unblock();
-  SlackService.sendError({ ...params, connection: context.connection });
 });

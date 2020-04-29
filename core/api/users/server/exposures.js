@@ -201,7 +201,7 @@ exposeQuery({
         }
         filters.$or = [
           createRegexQuery('_id', searchQuery),
-          createRegexQuery('emails.0.address', searchQuery),
+          createRegexQuery('emails.address', searchQuery),
           createRegexQuery('firstName', searchQuery),
           createRegexQuery('lastName', searchQuery),
           {

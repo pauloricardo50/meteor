@@ -112,7 +112,7 @@ export class FrontService {
     const user =
       email &&
       UserService.get(
-        { 'emails.0.address': email, roles: { $in: [ROLES.DEV, ROLES.ADMIN] } },
+        { 'emails.address': email, roles: { $in: [ROLES.DEV, ROLES.ADMIN] } },
         { _id: 1 },
       );
 
