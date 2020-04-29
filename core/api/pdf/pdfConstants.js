@@ -46,3 +46,6 @@ export const CONTENT_HEIGHT =
   A4_HEIGHT - MARGIN_BOTTOM - MARGIN_TOP - WIGGLE_ROOM;
 export const BORDER_BLUE = '#213875';
 export const BORDER_GREY = '#DEE2E6';
+export const BOLD_WEIGHT = 800;
+export const REGULAR_WEIGHT = 400;
+export const LIGHT_WEIGHT = 300;
