@@ -61,7 +61,7 @@ const ProSideNav = ({ currentUser }) => {
                 ) : (
                   icon
                 )}
-                <h5>{label}</h5>
+                <small>{label}</small>
               </a>
             ) : (
               <NavLink to={to} exact={exact}>
@@ -70,7 +70,7 @@ const ProSideNav = ({ currentUser }) => {
                 ) : (
                   icon
                 )}
-                <h5>{label}</h5>
+                <small>{label}</small>
               </NavLink>
             )}
           </ListItem>
