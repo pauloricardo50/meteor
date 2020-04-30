@@ -26,4 +26,5 @@ export const SCRIPTS = {
   'test-e2e': 'test-e2e.js',
   'bundle-size': 'bundle-size.js',
   custom: 'custom/custom.js',
+  'update-meteor-packages': 'update-meteor-packages.js',
 };
