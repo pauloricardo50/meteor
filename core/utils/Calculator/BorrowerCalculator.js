@@ -46,18 +46,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       middlewareManager.applyToAllMethods([middleware]);
     }
 
-    getArrayValues({ borrowers, key, mapFunc }) {
+    getArrayValues({ borrowers, key, mapFunc = i => i?.value }) {
       let sum = 0;
 
       borrowers.forEach(borrower => {
-        if (!borrower[key]) {
+        if (!borrower[key] || borrower[key].length === 0) {
           return 0;
         }
-        sum += [
-          ...(borrower[key] && borrower[key].length > 0
-            ? borrower[key].map(mapFunc || (i => i.value))
-            : []),
-        ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+        sum += borrower[key].map(mapFunc).reduce((tot, val) => {
+          if (val > 0) {
+            return tot + val;
+          }
+
+          return tot;
+        }, 0);
       });
 
       return Math.max(0, Math.round(sum));
