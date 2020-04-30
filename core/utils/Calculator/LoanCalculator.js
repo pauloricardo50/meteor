@@ -600,8 +600,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const previousLoanValue = this.getPreviousLoanValue({ loan });
 
       if (previousLoanValue > 0) {
-        const fees = this.getFees({ loan, structureId }).total;
-        return Math.max(previousLoanValue - loanValue + fees, 0);
+        const requiredOwnFunds = this.getRefinancingRequiredOwnFunds({
+          loan,
+          structureId,
+        });
+        return Math.max(requiredOwnFunds, 0);
       }
 
       const projectValue = this.getProjectValue({ loan, structureId });
@@ -1018,7 +1021,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const fees = this.getFees({ loan, structureId }).total;
       const loanEvolution = this.getLoanEvolution({ loan, structureId });
 
-      return loanEvolution - fees;
+      return fees - loanEvolution;
     }
 
     getRefinancingHash({ loan }) {
