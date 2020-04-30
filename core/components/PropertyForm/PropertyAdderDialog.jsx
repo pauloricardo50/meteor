@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -9,6 +11,8 @@ import { propertyInsert } from '../../api/properties/methodDefinitions';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import Box from '../Box';
 import PropertyForm from './PropertyForm';
+
+const isAdmin = Meteor.microservice === 'admin';
 
 SimpleSchema.setDefaultMessages({
   messages: {
@@ -26,6 +30,7 @@ const PropertyAdderDialog = withProps(
     onSubmitSuccess = x => x,
     setOpen,
     isRefinancing,
+    userId,
     ...rest
   }) => {
     const schema = useMemo(
@@ -101,6 +106,7 @@ const PropertyAdderDialog = withProps(
           propertyInsert.run({
             property: { category, ...property },
             loanId,
+            userId: isAdmin ? userId : undefined,
           });
 
     return {
