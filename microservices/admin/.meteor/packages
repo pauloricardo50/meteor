@@ -28,7 +28,7 @@ tmeasday:acceptance-test-driver
 
 
 # User Accounts
-alanning:roles                  # Easy role management
+alanning:roles@1.2.19
 accounts-password@1.6.0
 epotek:accounts-ui
 email@1.2.3

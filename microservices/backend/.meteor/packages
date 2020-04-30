@@ -21,7 +21,7 @@ force-ssl@1.1.0                      # Automatically route users to https
 server-render@0.3.1
 
 # Accounts
-alanning:roles
+alanning:roles@1.2.19
 accounts-password@1.6.0
 epotek:accounts-ui
 
