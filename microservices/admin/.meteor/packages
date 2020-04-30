@@ -54,7 +54,7 @@ epotek:google-maps
 
 # Other
 underscore
-matb33:collection-hooks
+matb33:collection-hooks@1.0.1
 littledata:synced-cron
 cultofcoders:grapher-react
 montiapm:agent

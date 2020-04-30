@@ -55,7 +55,7 @@ underscore@1.0.10
 aldeed:schema-index
 aldeed:schema-deny
 service-configuration@1.0.11
-matb33:collection-hooks
+matb33:collection-hooks@1.0.1
 percolate:migrations
 cultofcoders:grapher-react
 zodern:standard-minifier-js@4.0.0-beta.5

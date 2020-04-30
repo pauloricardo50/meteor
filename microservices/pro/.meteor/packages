@@ -38,7 +38,7 @@ session@1.2.0                # Lets you use Session variables
 edgee:slingshot
 herteby:denormalize
 cultofcoders:grapher
-matb33:collection-hooks
+matb33:collection-hooks@1.0.1
 cultofcoders:mutations
 dburles:mongo-collection-instances
 

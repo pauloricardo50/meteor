@@ -41,7 +41,7 @@ montiapm:agent
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import@0.5.2
-matb33:collection-hooks
+matb33:collection-hooks@1.0.1
 percolate:migrations
 cultofcoders:grapher-react
 zodern:standard-minifier-js@4.0.0-beta.5
