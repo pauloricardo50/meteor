@@ -1,5 +1,5 @@
-import { withTracker } from 'meteor/react-meteor-data';
-import { ReactiveVar } from 'meteor/reactive-var';
+import {withTracker} from 'meteor/react-meteor-data';
+import {ReactiveVar} from 'meteor/reactive-var';
 
 /**
  * Wraps the query and provides reactive data fetching utility
@@ -9,47 +9,54 @@ import { ReactiveVar } from 'meteor/reactive-var';
  * @param QueryComponent
  */
 export default function withReactiveContainer(handler, config, QueryComponent) {
-  const subscriptionError = new ReactiveVar();
+    let subscriptionError = new ReactiveVar();
+    const { loadOnRefetch = true } = config;
+    let hasBeenReady = false;
+    
+    return withTracker((props) => {
+        const query = handler(props);
 
-  return withTracker(props => {
-    const query = handler(props);
+        const subscriptionHandle = query.subscribe({
+            onStop(err) {
+                if (err) {
+                    subscriptionError.set(err);
+                }
+            },
+            onReady() {
+                subscriptionError.set(null);
+            }
+        });
 
-    const subscriptionHandle = query.subscribe({
-      onStop(err) {
-        if (err) {
-          subscriptionError.set(err);
+        const isReady = subscriptionHandle.ready();
+        
+        if (!loadOnRefetch && !hasBeenReady && isReady) {
+            hasBeenReady = true;
         }
-      },
-      onReady() {
-        subscriptionError.set(null);
-      },
-    });
 
-    const isReady = subscriptionHandle.ready();
+        const data = query.fetch();
+        const isLoading = loadOnRefetch ? !isReady : !hasBeenReady && !isReady;
 
-    const data = query.fetch();
-
-    return {
-      grapher: {
-        isLoading: !isReady,
-        data,
-        error: subscriptionError,
-      },
-      query,
-      config,
-      props,
-    };
-  })(errorTracker(QueryComponent));
+        return {
+            grapher: {
+                isLoading,
+                data,
+                error: subscriptionError,
+            },
+            query,
+            config,
+            props,
+        }
+    })(errorTracker(QueryComponent))
 }
 
-const errorTracker = withTracker(props => {
-  const error = props.grapher.error.get();
+const errorTracker = withTracker((props) => {
+    const error = props.grapher.error.get();
 
-  return {
-    ...props,
-    grapher: {
-      ...props.grapher,
-      error,
-    },
-  };
+    return {
+        ...props,
+        grapher: {
+            ...props.grapher,
+            error,
+        }
+    };
 });

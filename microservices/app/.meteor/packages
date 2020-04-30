@@ -1,6 +1,6 @@
 # Basic meteor packages, not to be changes
 meteor-base@1.4.0              # Packages every Meteor app needs to have
-mongo@1.9.0                   # The database Meteor supports right now
+mongo@1.10.0                   # The database Meteor supports right now
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.2.0                  # Meteor's client-side reactive programming library
 static-html                     # Allows rendering HTML for initial files (main.html)
@@ -8,12 +8,11 @@ static-html                     # Allows rendering HTML for initial files (main.
 standard-minifier-css@1.6.0     # CSS minifier run for production mode
 
 es5-shim@4.8.0              # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.14.2             # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.14.3             # Enable ECMAScript2015+ syntax in app code
 shell-server@0.5.0           # Server-side component of the `meteor shell` command
 
 
 # Dev, place this on top to allow meteor toys to work
-meteortoys:allthings
 fourseven:scss
 
 # Put this before factory
@@ -26,7 +25,7 @@ meteortesting:mocha@1.0.1
 
 
 # User Accounts
-alanning:roles                  # Easy role management
+alanning:roles@1.2.19
 
 email@1.2.3
 
@@ -46,7 +45,7 @@ meteorhacks:inject-initial
 
 # Production
 force-ssl@1.1.0                      # Automatically route users to https
-dynamic-import@0.5.1
+dynamic-import@0.5.2
 accounts-password@1.6.0
 epotek:google-maps
 montiapm:agent
@@ -56,8 +55,7 @@ underscore@1.0.10
 aldeed:schema-index
 aldeed:schema-deny
 service-configuration@1.0.11
-matb33:collection-hooks
+matb33:collection-hooks@1.0.1
 percolate:migrations
 cultofcoders:grapher-react
-standard-minifier-js
-#zodern:standard-minifier-js@4.0.0-beta.5
+zodern:standard-minifier-js@4.0.0-beta.5

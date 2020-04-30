@@ -1,6 +1,6 @@
+import { startBrowser } from 'meteor/meteortesting:browser-tests';
 /* global Package */
 import { mochaInstance } from 'meteor/meteortesting:mocha-core';
-import { startBrowser } from 'meteor/meteortesting:browser-tests';
 
 import fs from 'fs';
 

@@ -1,13 +1,12 @@
 # Basic meteor packages, not to be changes
 
 meteor-base@1.4.0             # Packages every Meteor app needs to have
-mobile-experience@1.1.0       # Packages for a great mobile UX
-mongo@1.9.0                   # The database Meteor supports right now
+mongo@1.10.0                   # The database Meteor supports right now
 static-html             # Define static page content in .html files
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.2.0                 # Meteor's client-side reactive programming library
 es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
-ecmascript@0.14.2              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.14.3              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.5.0            # Server-side component of the `meteor shell` command
 server-render@0.3.1
 
@@ -26,11 +25,10 @@ meteortesting:mocha@1.0.1
 
 # Data
 cultofcoders:mutations
-ddp-rate-limiter@1.0.7
 
 
 # Accounts
-alanning:roles
+alanning:roles@1.2.19
 accounts-password@1.6.0
 
 
@@ -42,8 +40,8 @@ tmeasday:acceptance-test-driver
 montiapm:agent
 aldeed:schema-index
 aldeed:schema-deny
-dynamic-import@0.5.1
-matb33:collection-hooks
+dynamic-import@0.5.2
+matb33:collection-hooks@1.0.1
 percolate:migrations
 cultofcoders:grapher-react
 zodern:standard-minifier-js@4.0.0-beta.5

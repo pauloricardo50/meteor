@@ -1,7 +1,9 @@
+import './browser-shim';
+
 /* global Package: false */
 import { mocha } from 'meteor/meteortesting:mocha-core';
+
 import prepForHTMLReporter from './prepForHTMLReporter';
-import './browser-shim';
 
 let uncaughtExceptions = 0;
 window.addEventListener('error', () => {
