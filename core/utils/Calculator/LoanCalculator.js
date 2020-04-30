@@ -1015,15 +1015,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getRefinancingRequiredOwnFunds({ loan, structureId }) {
-      const reimbursementPenalty = this.selectReimbursementPenalty({
-        loan,
-        structureId,
-      });
-
       const notaryFees = this.getFees({ loan, structureId }).total;
       const loanEvolution = this.getLoanEvolution({ loan, structureId });
 
-      return loanEvolution - notaryFees - reimbursementPenalty;
+      return loanEvolution - notaryFees;
     }
 
     getRefinancingHash({ loan }) {
