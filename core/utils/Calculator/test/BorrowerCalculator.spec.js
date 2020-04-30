@@ -24,9 +24,7 @@ describe('BorrowerCalculator', () => {
     it("returns the sum of all value keys in an object's array", () => {
       expect(
         Calculator.getArrayValues({
-          borrowers: {
-            array: [{ value: 1 }, { value: 2 }],
-          },
+          borrowers: { array: [{ value: 1 }, { value: 2 }] },
           key: 'array',
         }),
       ).to.equal(3);
@@ -58,6 +56,15 @@ describe('BorrowerCalculator', () => {
           item => item.yo,
         ),
       ).to.equal(5);
+    });
+
+    it('does not throw if there is a null value in it', () => {
+      expect(
+        Calculator.getArrayValues({
+          borrowers: { array: [null, { value: 2 }] },
+          key: 'array',
+        }),
+      ).to.equal(2);
     });
   });
 
