@@ -8,7 +8,8 @@
     "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
     "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",
     "test-ci": "../../scripts/circleci/run-script-ci.sh test-ci",
-    "test-e2e-ci": "../../scripts/circleci/run-script-ci.sh test-e2e-ci"
+    "test-e2e-ci": "../../scripts/circleci/run-script-ci.sh test-e2e-ci",
+    "update-meteor-packages": "node -r esm ../../scripts/npm-scripts/run-script.js update-meteor-packages"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",
