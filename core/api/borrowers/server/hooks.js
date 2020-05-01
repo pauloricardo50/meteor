@@ -38,7 +38,7 @@ Borrowers.after.update(
       collection: BORROWERS_COLLECTION,
       initialDocuments,
       conditionalDocuments,
-    });
+    })(userId, borrower);
   },
   { fetchPrevious: false },
 );
