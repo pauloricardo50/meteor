@@ -48,7 +48,7 @@ const DashboardRecapFinancing = props => {
               id="Financing.reimbursementRequiredOwnFunds.description"
               values={{
                 isMissingOwnFunds:
-                  Calculator.getRefinancingRequiredOwnFunds({ loan }) < 0,
+                  Calculator.getRefinancingRequiredOwnFunds({ loan }) > 0,
               }}
             />
           </h4>
