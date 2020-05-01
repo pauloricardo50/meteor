@@ -234,7 +234,7 @@ describe('SolvencyCalculator', () => {
       expect(insurance2Suggestion.value).to.equal(MIN_INSURANCE2_WITHDRAW);
     });
 
-    describe.only('refinancings', () => {
+    describe('refinancings', () => {
       it('suggests an empty structure if there is a net loan increase', () => {
         const ownFunds = Calculator.suggestStructureForLoan({
           loan: {
