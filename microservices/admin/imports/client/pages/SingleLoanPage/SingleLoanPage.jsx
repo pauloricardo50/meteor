@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-
 import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContacts from './SingleLoanPageContacts';
@@ -21,7 +19,6 @@ const SingleLoanPage = props => {
       <div className="single-loan-page-sub-header">
         <CollectionTasksTable
           doc={loan}
-          collection={LOANS_COLLECTION}
           withTaskInsert
           withQueryTaskInsert
           className="single-loan-page-tasks card1 card-top"
