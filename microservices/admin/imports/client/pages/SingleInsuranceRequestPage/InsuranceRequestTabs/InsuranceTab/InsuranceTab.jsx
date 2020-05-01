@@ -93,7 +93,6 @@ const InsuranceTab = props => {
                 { id: insurance._id },
                 { doc: insurance },
               )}
-              collection="insurances"
               withAdditionalDocAdder={false}
             />
           </div>

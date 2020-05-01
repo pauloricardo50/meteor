@@ -107,7 +107,6 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                         >
                           <SingleFileTab
                             doc={borrower}
-                            collection="borrowers"
                             disabled={disabled}
                             currentUser={currentUser}
                             loan={loan}
@@ -160,7 +159,6 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                     content: (
                       <SingleFileTab
                         doc={property}
-                        collection="properties"
                         disabled={isPropertyFilesDisabled(disabled, property)}
                         currentUser={currentUser}
                         loan={loan}
@@ -178,7 +176,6 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
               content: (
                 <SingleFileTab
                   doc={loan}
-                  collection="loans"
                   disabled={disabled}
                   currentUser={currentUser}
                   loan={loan}
