@@ -1,4 +1,7 @@
 {
+  "files.HEATER_TYPE": "Type de chauffage",
+  "files.HEATER_TYPE.tooltip": "Information relative au type de chauffage (mazout, à distance, etc.) ainsi que sa distribution (au sol, radiateurs, etc.)",
+  "files.REIMBURSEMENT_PENALTIES": "Montant des pénalités en cas de reprise par anticipation",
   "PromotionOptionDetail.title": "Lot {name}",
   "TranchePicker.title": "Choix des tranches",
   "TranchePicker.description": "Renseignez les tranches que vous désirez pour votre prêt",

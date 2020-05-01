@@ -35,7 +35,7 @@ const getDocumentsToAdd = ({
   additionalDocuments,
   conditionalDocuments,
   doc,
-  otherCollectionDoc,
+  otherCollectionDoc = {},
 }) =>
   conditionalDocuments.reduce(
     (docs, { id, condition, requireOtherCollectionDoc }) => {
@@ -47,13 +47,15 @@ const getDocumentsToAdd = ({
         return docs;
       }
 
+      const otherCollectionDocExists = !!Object.keys(otherCollectionDoc).length;
+
       // Insert conditional documents
       if (!requireOtherCollectionDoc) {
-        if ((document && otherCollectionDoc) || condition({ doc })) {
+        if ((document && otherCollectionDocExists) || condition({ doc })) {
           return [...docs, { id }];
         }
       } else if (
-        (document && !otherCollectionDoc) ||
+        (document && !otherCollectionDocExists) ||
         condition({ doc: otherCollectionDoc })
       ) {
         return [...docs, { id }];
@@ -99,7 +101,10 @@ export const additionalDocumentsHook = ({
     otherCollectionDoc,
   });
 
-  documents = [...documents, ...documentsToAdd];
+  documents = [...documents, ...documentsToAdd].filter(
+    ({ id }, index, docs) =>
+      docs.findIndex(({ id: docId }) => docId === id) === index,
+  );
 
   // Update document
   Mongo.Collection.get(collection).direct.update(doc._id, {

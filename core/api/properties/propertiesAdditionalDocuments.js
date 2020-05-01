@@ -1,4 +1,5 @@
 import { DOCUMENTS } from '../files/fileConstants';
+import { PURCHASE_TYPE } from '../loans/loanConstants';
 import * as propertyConstants from './propertyConstants';
 
 export const initialDocuments = [
@@ -58,5 +59,30 @@ export const conditionalDocuments = [
     id: DOCUMENTS.PROPERTY_MINERGIE_CERTIFICATE,
     condition: ({ doc: { minergie } }) =>
       minergie !== propertyConstants.MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
+  },
+  // Conditional documents updated with loan changes
+  {
+    id: DOCUMENTS.PROPERTY_LAST_INTERESTS_SCHEDULE,
+    condition: ({ doc: { purchaseType } }) =>
+      purchaseType === PURCHASE_TYPE.REFINANCING,
+    requireOtherCollectionDoc: true,
+  },
+  {
+    id: DOCUMENTS.PROPERTY_CURRENT_MORTGAGE,
+    condition: ({ doc: { purchaseType } }) =>
+      purchaseType === PURCHASE_TYPE.REFINANCING,
+    requireOtherCollectionDoc: true,
+  },
+  {
+    id: DOCUMENTS.HEATER_TYPE,
+    condition: ({ doc: { purchaseType } }) =>
+      purchaseType === PURCHASE_TYPE.REFINANCING,
+    requireOtherCollectionDoc: true,
+  },
+  {
+    id: DOCUMENTS.REIMBURSEMENT_PENALTIES,
+    condition: ({ doc: { purchaseType } }) =>
+      purchaseType === PURCHASE_TYPE.REFINANCING,
+    requireOtherCollectionDoc: true,
   },
 ];
