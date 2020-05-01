@@ -5,8 +5,16 @@ import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import FileService from '../../files/server/FileService';
 import FrontService from '../../front/server/FrontService';
+import { additionalDocumentsHook } from '../../helpers/sharedHooks';
 import LenderService from '../../lenders/server/LenderService';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import {
+  conditionalDocuments,
+  initialDocuments,
+} from '../../properties/propertiesAdditionalDocuments';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_CATEGORY,
+} from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import SecurityService from '../../security';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
@@ -143,4 +151,25 @@ Loans.before.remove((userId, { frontTagId }) => {
       },
     );
   }
+});
+
+Loans.after.update((userId, loan) => {
+  const { propertyIds = [] } = loan;
+
+  const documentsHook = additionalDocumentsHook({
+    collection: PROPERTIES_COLLECTION,
+    initialDocuments,
+    conditionalDocuments,
+    otherCollectionDoc: loan,
+  });
+
+  propertyIds.forEach(propertyId => {
+    const property = PropertyService.get(propertyId, {
+      additionalDocuments: 1,
+      category: 1,
+    });
+    if (property?.category === PROPERTY_CATEGORY.USER) {
+      documentsHook(userId, property);
+    }
+  });
 });
