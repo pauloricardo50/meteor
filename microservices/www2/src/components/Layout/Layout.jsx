@@ -13,14 +13,12 @@ import PropTypes from 'prop-types';
 import LayoutFooter from './LayoutFooter';
 import LayoutNav from './LayoutNav';
 
-const Layout = ({ children, pageContext }) => {
-  const { i18n } = pageContext;
-
+const Layout = ({ children }) => {
   return (
     <div className="layout">
       <LayoutNav />
       <main>{children}</main>
-      <LayoutFooter i18n={i18n} />
+      <LayoutFooter />
     </div>
   );
 };

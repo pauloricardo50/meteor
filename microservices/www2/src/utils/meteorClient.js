@@ -1,5 +1,5 @@
 import React from 'react';
-import SimpleDDP from 'simpleDDP';
+import SimpleDDP from 'simpleddp';
 
 export const MeteorClientContext = React.createContext();
 
