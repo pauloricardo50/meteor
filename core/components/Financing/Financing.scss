@@ -425,3 +425,11 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 .previousLoanValue {
   flex-direction: row !important;
 }
+
+.structure {
+  .notaryFees, .reimbursementPenalty {
+    .financing-field {
+      flex-grow: 1;
+    }
+  }
+}
