@@ -1,7 +1,17 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+/* eslint-disable react/jsx-filename-extension */
+import React from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { registerLinkResolver } from 'gatsby-source-prismic-graphql';
 
-// You can delete this file if you're not using it
+import createTheme from './src/core/config/muiCustom';
+import { linkResolver } from './src/utils/linkResolver';
+
+registerLinkResolver(linkResolver);
+
+const theme = createTheme({ fontSize: 18 });
+
+const wrapRootElement = ({ element }) => (
+  <MuiThemeProvider theme={theme}>{element}</MuiThemeProvider>
+);
+
+export { wrapRootElement };
