@@ -3,6 +3,7 @@ import { Match, check } from 'meteor/check';
 import { Mutation } from 'meteor/cultofcoders:mutations';
 
 import { getCookie } from '../../utils/cookiesHelpers';
+import { setMethodLimiter } from '../../utils/rate-limit';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
 import { internalMethod } from './methodHelpers';
 
@@ -89,8 +90,12 @@ export class Method extends Mutation {
 
   setHandler(fn) {
     const { config } = this;
-    const { name, params } = config;
+    const { name, params, withRateLimiter, rateLimit } = config;
     const self = this;
+
+    if (withRateLimiter) {
+      setMethodLimiter({ name, rateLimit });
+    }
 
     Meteor.methods({
       [name](params = {}, additionalData = {}) {

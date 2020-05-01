@@ -45,6 +45,7 @@ export const throwDevError = new Method({
     promise: Match.Maybe(Boolean),
     promiseNoReturn: Match.Maybe(Boolean),
   },
+  withRateLimiter: true,
 });
 
 export const setAdditionalDoc = new Method({
