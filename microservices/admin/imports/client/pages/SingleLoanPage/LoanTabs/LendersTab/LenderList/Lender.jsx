@@ -8,7 +8,14 @@ import StatusLabel from 'core/components/StatusLabel';
 import LenderContact from './LenderContact';
 
 const Lender = ({ lender }) => {
-  const { organisation, status, contact, _id: lenderId, adminNote } = lender;
+  const {
+    organisation,
+    status,
+    contact,
+    _id: lenderId,
+    adminNote,
+    _collection,
+  } = lender;
   // Organisation is undefined at the start, before grapher data settles down
   if (!organisation) {
     return null;
@@ -24,7 +31,7 @@ const Lender = ({ lender }) => {
         </h3>
         <StatusLabel
           status={status}
-          collection={LENDERS_COLLECTION}
+          collection={_collection}
           allowModify
           docId={lenderId}
         />

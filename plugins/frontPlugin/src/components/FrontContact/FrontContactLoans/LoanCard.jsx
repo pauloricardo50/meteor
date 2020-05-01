@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  LOANS_COLLECTION,
-  LOAN_CATEGORIES,
-} from '../../../core/api/loans/loanConstants';
+import { LOAN_CATEGORIES } from '../../../core/api/loans/loanConstants';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
 import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
 import StatusLabel from '../../../core/components/StatusLabel';
@@ -30,6 +27,7 @@ const LoanCard = ({
     mainAssignee,
     tasks = [],
     adminNotes = [],
+    _collection,
   } = loan;
 
   return (
@@ -51,7 +49,7 @@ const LoanCard = ({
           <div className="flex-col start-align">
             <StatusLabel
               status={status}
-              collection={LOANS_COLLECTION}
+              collection={_collection}
               className="mb-4"
               small
             />

@@ -8,6 +8,7 @@ import StatusLabel from 'core/components/StatusLabel';
 
 const InsuranceRequestSummary = ({ insuranceRequest }) => {
   const {
+    _collection,
     _id: insuranceRequestId,
     name,
     borrowers = [],
@@ -25,10 +26,7 @@ const InsuranceRequestSummary = ({ insuranceRequest }) => {
       <div className="flex-row sb">
         <div className="flex-col">
           <b>Status</b>
-          <StatusLabel
-            status={status}
-            collection={INSURANCE_REQUESTS_COLLECTION}
-          />
+          <StatusLabel status={status} collection={_collection} />
         </div>
         <div className="flex-col">
           <b>Créé le</b>

@@ -23,7 +23,7 @@ const LoansTable = ({ loans }) => (
       { id: 'Conseiller' },
     ]}
     rows={loans.map(loan => {
-      const { _id, userCache, name, status } = loan;
+      const { _id, userCache, name, status, _collection } = loan;
       const userName = getUserDisplayName(userCache);
       const assigneeName = getUserDisplayName(
         userCache && userCache.assignedEmployeeCache,
@@ -35,11 +35,7 @@ const LoansTable = ({ loans }) => (
             label: <CollectionIconLink relatedDoc={loan} key="loan" />,
             raw: name,
           },
-          <StatusLabel
-            status={status}
-            collection={LOANS_COLLECTION}
-            key="status"
-          />,
+          <StatusLabel status={status} collection={_collection} key="status" />,
           {
             label: userCache ? (
               <CollectionIconLink

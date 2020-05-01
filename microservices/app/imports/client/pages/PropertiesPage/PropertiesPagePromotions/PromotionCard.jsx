@@ -1,10 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import {
-  PROMOTIONS_COLLECTION,
-  PROMOTION_STATUS,
-} from 'core/api/promotions/promotionConstants';
+import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import Link from 'core/components/Link';
 import StatusLabel from 'core/components/StatusLabel';
 import { createRoute } from 'core/utils/routerUtils';
@@ -12,7 +9,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 const PromotionCard = ({ promotion, loanId }) => {
-  const { name, documents, status } = promotion;
+  const { name, documents, status, _collection } = promotion;
   const { promotionImage = [] } = documents || {};
 
   return (
@@ -38,7 +35,7 @@ const PromotionCard = ({ promotion, loanId }) => {
         />
         <h2>
           <span>{name}</span>
-          <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+          <StatusLabel status={status} collection={_collection} />
         </h2>
         <h3 className="secondary">{promotion.address}</h3>
       </>
