@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 
@@ -32,12 +31,7 @@ const SingleContactPage = ({ contact }) => (
   <div className="card1 card-top">
     <SingleContactPageHeader contact={contact} />
     <SingleContactPageInfos contact={contact} />
-    <CollectionTasksTable
-      doc={contact}
-      collection={CONTACTS_COLLECTION}
-      withTaskInsert
-      withQueryTaskInsert
-    />
+    <CollectionTasksTable doc={contact} withTaskInsert withQueryTaskInsert />
     {contact.offers && !!contact.offers.length && (
       <Tabs tabs={tabs({ offers: contact.offers })} />
     )}

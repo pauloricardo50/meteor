@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { compose, lifecycle } from 'recompose';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loanSetStatus } from 'core/api/loans/methodDefinitions';
 import { getLoanLinkTitle } from 'core/components/IconLink/collectionIconLinkHelpers';
 import { ModalManagerContext } from 'core/components/ModalManager';
@@ -18,7 +17,15 @@ const LoanBoardCardTop = ({
   additionalActions,
   loan,
 }) => {
-  const { borrowers, _id: loanId, name, status, user, assigneeLinks } = loan;
+  const {
+    borrowers,
+    _id: loanId,
+    name,
+    status,
+    user,
+    assigneeLinks,
+    _collection,
+  } = loan;
   const userId = user?._id;
   const hasUser = !!userId;
   const title = getLoanLinkTitle({ user, name, borrowers });
@@ -30,7 +37,7 @@ const LoanBoardCardTop = ({
         <StatusLabel
           variant="dot"
           status={status}
-          collection={LOANS_COLLECTION}
+          collection={_collection}
           allowModify={renderComplex}
           docId={loanId}
           showTooltip={renderComplex}

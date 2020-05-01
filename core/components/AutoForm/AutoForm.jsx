@@ -177,7 +177,6 @@ const AutoForm = ({
 
 AutoForm.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object),
-  collection: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   docId: PropTypes.string.isRequired,
   formClasses: PropTypes.string,

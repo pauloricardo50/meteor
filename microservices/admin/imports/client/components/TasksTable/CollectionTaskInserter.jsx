@@ -62,11 +62,11 @@ export const CollectionTaskInserterForm = ({
 );
 
 const CollectionTaskInserter = withProps(
-  ({ doc: { _id: docId }, model = {}, resetForm = () => {}, collection }) => ({
+  ({ doc: { _id: docId, _collection }, model = {}, resetForm = () => {} }) => ({
     onSubmit: values =>
       taskInsert
         .run({
-          object: { docId, collection, ...values },
+          object: { docId, collection: _collection, ...values },
         })
         .then(() => resetForm()),
     model: {
@@ -80,7 +80,7 @@ const CollectionTaskInserter = withProps(
     description: (
       <T
         id="CollectionTaskInserter.description"
-        values={{ collectionLabel: getCollectionLabel(collection) }}
+        values={{ collectionLabel: getCollectionLabel(_collection) }}
       />
     ),
     layout: taskFormLayout,

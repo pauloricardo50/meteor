@@ -21,12 +21,11 @@ import useSearchParams from 'core/hooks/useSearchParams';
 import CollectionTaskInserter from './CollectionTaskInserter';
 import TasksTable, { taskTableFragment } from './TasksTable';
 
-const getFilters = ({ collection, doc, assignee, status }) => {
-  const { _id: docId } = doc;
-
+const getFilters = ({ doc, assignee, status }) => {
+  const { _id: docId, _collection } = doc;
   let filters = { 'assigneeLink._id': assignee, status };
 
-  switch (collection) {
+  switch (_collection) {
     case USERS_COLLECTION:
       filters = { ...filters, 'userLink._id': docId };
       break;
@@ -79,7 +78,6 @@ export const CollectionTasksTable = ({
             model={model}
             openOnMount={openOnMount}
             resetForm={resetForm}
-            collection={collection}
           />
         </>
       )}
@@ -92,8 +90,8 @@ export default compose(
   withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
   withSmartQuery({
     query: TASKS_COLLECTION,
-    params: ({ doc, assignee, status, collection }) => ({
-      $filters: getFilters({ collection, doc, assignee, status }),
+    params: ({ doc, assignee, status }) => ({
+      $filters: getFilters({ doc, assignee, status }),
       ...taskTableFragment,
     }),
     queryOptions: { reactive: false },

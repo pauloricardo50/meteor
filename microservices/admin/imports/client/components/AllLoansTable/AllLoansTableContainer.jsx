@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { mapProps } from 'recompose';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import T, { Money } from 'core/components/Translation';
@@ -34,6 +33,7 @@ const columnOptions = [
 const getRows = ({ loans, history }) =>
   loans.map(loan => {
     const {
+      _collection,
       _id: loanId,
       name,
       user,
@@ -62,7 +62,7 @@ const getRows = ({ loans, history }) =>
             <StatusLabel
               status={status}
               key="status"
-              collection={LOANS_COLLECTION}
+              collection={_collection}
             />
           ),
         },

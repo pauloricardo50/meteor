@@ -5,13 +5,13 @@ import { compose, mapProps } from 'recompose';
 
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
 import { proPromotions as promotionsFragment } from '../../api/fragments';
-import { PROMOTIONS_COLLECTION } from '../../api/promotions/promotionConstants';
 import { proPromotions } from '../../api/promotions/queries';
 import { createRoute } from '../../utils/routerUtils';
 import StatusLabel from '../StatusLabel';
 import T from '../Translation';
 
 const makeMapPromotion = history => ({
+  _collection,
   _id,
   name,
   status,
@@ -27,7 +27,7 @@ const makeMapPromotion = history => ({
     name,
     {
       raw: status,
-      label: <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />,
+      label: <StatusLabel status={status} collection={_collection} />,
     },
     {
       raw: createdAt && createdAt.getTime(),

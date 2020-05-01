@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loanSetStatus } from 'core/api/loans/methodDefinitions';
 import { ModalManagerContext } from 'core/components/ModalManager';
 import StatusLabel from 'core/components/StatusLabel';
@@ -12,7 +11,7 @@ const LoanStatusModifier = ({ loan, additionalActions, ...props }) => {
 
   return (
     <StatusLabel
-      collection={LOANS_COLLECTION}
+      collection={loan._collection}
       status={loan.status}
       allowModify
       docId={loan._id}

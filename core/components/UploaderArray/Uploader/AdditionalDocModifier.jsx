@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
@@ -67,12 +67,18 @@ export const getAdditionalDocSchema = collection => {
   });
 };
 
-const AdditionalDocModifier = ({ additionalDoc, docId, collection }) =>
-  additionalDoc.label ? (
+const AdditionalDocModifier = ({ additionalDoc, docId, collection }) => {
+  if (!additionalDoc.label) {
+    return null;
+  }
+
+  const schema = useMemo(() => getAdditionalDocSchema(collection), []);
+
+  return (
     <AutoFormDialog
       buttonProps={{ primary: true, label: <T id="general.modify" /> }}
       model={additionalDoc}
-      schema={getAdditionalDocSchema(collection)}
+      schema={schema}
       onSubmit={object =>
         setAdditionalDoc.run({
           collection,
@@ -102,6 +108,7 @@ const AdditionalDocModifier = ({ additionalDoc, docId, collection }) =>
         </Button>
       )}
     />
-  ) : null;
+  );
+};
 
 export default AdditionalDocModifier;

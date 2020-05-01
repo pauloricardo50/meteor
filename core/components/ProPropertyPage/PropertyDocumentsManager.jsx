@@ -6,7 +6,6 @@ import {
   PROPERTY_DOCUMENTS,
   S3_ACLS,
 } from '../../api/files/fileConstants';
-import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import DialogSimple from '../DialogSimple';
 import T from '../Translation';
 import UploaderArray from '../UploaderArray';
@@ -32,7 +31,6 @@ const PropertyDocumentsManager = ({ property, canModifyProperty }) => (
   >
     <UploaderArray
       doc={property}
-      collection={PROPERTIES_COLLECTION}
       documentArray={propertyDocuments(property)}
       allowRequireByAdmin={false}
       allowSetRoles={canModifyProperty}
