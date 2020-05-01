@@ -19,18 +19,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  {
-    anonymous,
-    canton,
-    city,
-    name,
-    roles,
-    status,
-    structure,
-    user,
-    isTest,
-    _collection,
-  },
+  { anonymous, canton, city, name, roles, status, structure, user, isTest },
 ) => {
   switch (collectionName) {
     case USERS_COLLECTION:
@@ -50,7 +39,7 @@ const getListItemDetails = (
         }`,
         secondary: (
           <div>
-            <StatusLabel status={status} collection={_collection} /> -{' '}
+            <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
             {loanValueText}
           </div>
         ),
@@ -68,7 +57,7 @@ const getListItemDetails = (
           <div className="flex center-align">
             <StatusLabel
               status={status}
-              collection={_collection}
+              collection={PROMOTIONS_COLLECTION}
               className="mr-4"
             />
             <div>

@@ -11,7 +11,7 @@ const UploaderContainer = withProps(({ collection, docId, disabled, doc }) => {
     deleteFile: fileKey => deleteFile.run({ collection, docId, fileKey }),
     userIsAdmin,
     disabled: userIsAdmin ? false : disabled,
-    collection: doc._collection,
+    collection: doc?._collection,
   };
 });
 
