@@ -544,6 +544,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     hasEnoughCash({ loan, structureId }) {
+      const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+
+      if (isRefinancing) {
+        return true;
+      }
+
       return this.getCashRatio({ loan, structureId }) >= this.minCash;
     }
 
