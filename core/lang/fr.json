@@ -1,4 +1,6 @@
 {
+  "FinancingOwnFundsTitle.tooltip": "Frais de notaire: CHF {value}",
+  "FinancingOwnFundsTitle.pledge": "Nantissement",
   "files.HEATER_TYPE": "Type de chauffage",
   "files.HEATER_TYPE.tooltip": "Information relative au type de chauffage (mazout, à distance, etc.) ainsi que sa distribution (au sol, radiateurs, etc.)",
   "files.REIMBURSEMENT_PENALTIES": "Montant des pénalités en cas de reprise par anticipation",
@@ -11,7 +13,7 @@
   "Forms.previousLoanTranches.remainingMonths": "Échéance dans",
   "Forms.previousLoanAmortization": "Amortissement actuel, annuel",
   "Financing.ownFundsUseDescription.placeholder": "Placement en bourse",
-  "Financing.ownFundsUseDescription": "Description",
+  "Financing.ownFundsUseDescription": "Utilisation",
   "Forms.realEstate.refinancingDescription": "Ne saisissez pas le bien immobilier que vous souhaitez refinancer",
   "Recap.refinancing": "Refinancement",
   "Recap.previousLender": "Prêteur précédent",
