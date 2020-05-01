@@ -1,4 +1,5 @@
 {
+  "FinancingOwnFundsTitle.tooltip": "Frais de notaire: CHF {value}",
   "FinancingOwnFundsTitle.pledge": "Nantissement",
   "PromotionOptionDetail.title": "Lot {name}",
   "TranchePicker.title": "Choix des tranches",
