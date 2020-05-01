@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-filename-extension */
-import './src/styles/main.scss';
-
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { registerLinkResolver } from 'gatsby-source-prismic-graphql';
