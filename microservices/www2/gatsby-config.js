@@ -13,7 +13,14 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     'gatsby-plugin-offline',
-    'gatsby-plugin-sass',
+    {
+      resolve: `gatsby-plugin-sass`,
+      options: {
+        // importing here allows variables and mixins to be used in any scss file
+        data:
+          '@import "src/core/assets/css/variables.scss";@import "src/core/assets/css/mixins.scss";',
+      },
+    },
     `gatsby-plugin-sitemap`,
     {
       resolve: 'gatsby-source-filesystem',
