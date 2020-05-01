@@ -1,4 +1,6 @@
-bash setup.sh
+echo "Preparing e-Potek :]"
+
+bash setup-root.sh
 
 # Setup all microservices
 for APP in 'admin' 'app' 'pro' 'www' 'www2' 'backend'

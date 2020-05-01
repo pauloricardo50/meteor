@@ -4,7 +4,6 @@
 # such as installing things, symlinks, copying necessary folders
 
 start=`date +%s`
-echo "Preparing e-Potek :]"
 DO_CLEAN=false
 
 # check for flag arguments

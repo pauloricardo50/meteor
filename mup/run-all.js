@@ -85,7 +85,7 @@ if (!fs.existsSync('./configs/registry-key.json')) {
 sh.exec('node update-servers');
 
 if (mupCommands[0] === 'deploy') {
-  sh.exec('bash ../scripts/setup.sh');
+  sh.exec('bash ../scripts/setup-root.sh');
 }
 
 // Remove a lock in case it wasn't properly removed at the end of the last deploy
