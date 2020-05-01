@@ -23,6 +23,52 @@ const feesTooltip = props => {
   return null;
 };
 
+const getRefinancingOwnFundsTitle = props => {
+  const pledgedOwnFunds = Calculator.getPledgedOwnFunds(props);
+  const nonPledgedOwnFunds = Calculator.getNonPledgedOwnFunds(props);
+
+  if (!pledgedOwnFunds && !nonPledgedOwnFunds) {
+    return (
+      <div className="calculated-value flex center-align">
+        <span className="mr-4">-</span>
+        <FinancingOwnFundsStatus
+          value={Calculator.getMissingOwnFunds(props)}
+          {...props}
+        />
+      </div>
+    );
+  }
+
+  if (!nonPledgedOwnFunds) {
+    return (
+      <div className="calculated-value" style={{ flexDirection: 'column' }}>
+        <div className="flex center-align">
+          <span className="chf">CHF</span>
+          {toMoney(Math.abs(pledgedOwnFunds))}
+          <FinancingOwnFundsStatus
+            value={Calculator.getMissingOwnFunds(props)}
+            {...props}
+          />
+        </div>
+        <div className="mt-8">
+          <T id="FinancingOwnFundsTitle.pledge" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="calculated-value">
+      <span className="chf">CHF</span>
+      {toMoney(Math.abs(nonPledgedOwnFunds))}
+      <FinancingOwnFundsStatus
+        value={Calculator.getMissingOwnFunds(props)}
+        {...props}
+      />
+    </div>
+  );
+};
+
 const FinancingOwnFundsTitle = props => {
   const {
     loan: { purchaseType },
@@ -30,27 +76,10 @@ const FinancingOwnFundsTitle = props => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
 
   if (isRefinancing) {
+    const title = getRefinancingOwnFundsTitle(props);
     return (
       <div className="financing-ownFunds-summary ownFunds">
-        <CalculatedValue
-          value={Calculator.getRefinancingRequiredOwnFunds}
-          {...props}
-        >
-          {value => (
-            <div className="flex-col center">
-              <span style={{ color: '#444444', marginBottom: 8 }}>
-                <T
-                  id="Financing.reimbursementRequiredOwnFunds.description"
-                  values={{ isMissingOwnFunds: value > 0 }}
-                />
-              </span>
-              <span>
-                <span className="chf">CHF</span>
-                {toMoney(Math.abs(value))}
-              </span>
-            </div>
-          )}
-        </CalculatedValue>
+        <div className="flex-col center">{title}</div>
       </div>
     );
   }

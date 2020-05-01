@@ -68,17 +68,14 @@ const getLabel = props => {
 };
 
 const RequiredOwnFundsBody = props => {
-  const {
-    value,
-    suggestStructure,
-    disableForms,
-    loan = {},
-    structureId,
-  } = props;
+  const { suggestStructure, disableForms, loan = {} } = props;
 
   const { borrowers = [] } = loan;
   return (
-    <div className="requiredOwnFunds-component-body">
+    <div
+      className="requiredOwnFunds-component-body"
+      style={{ alignItems: 'center' }}
+    >
       <div className="text-and-value">{getLabel(props)}</div>
       {!disableForms && !!borrowers.length && (
         <IconButton
