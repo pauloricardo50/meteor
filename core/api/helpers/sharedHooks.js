@@ -111,3 +111,11 @@ export const additionalDocumentsHook = ({
     $set: { additionalDocuments: documents },
   });
 };
+
+export const getFieldsToWatch = ({ conditionalDocuments = [] }) =>
+  conditionalDocuments
+    .reduce(
+      (fields, { fieldsToWatch = [] }) => [...fields, ...fieldsToWatch],
+      [],
+    )
+    .filter((field, index, fields) => fields.indexOf(field) === index);

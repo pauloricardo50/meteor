@@ -5,7 +5,10 @@ import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import FileService from '../../files/server/FileService';
 import FrontService from '../../front/server/FrontService';
-import { additionalDocumentsHook } from '../../helpers/sharedHooks';
+import {
+  additionalDocumentsHook,
+  getFieldsToWatch,
+} from '../../helpers/sharedHooks';
 import LenderService from '../../lenders/server/LenderService';
 import {
   conditionalDocuments,
@@ -153,23 +156,40 @@ Loans.before.remove((userId, { frontTagId }) => {
   }
 });
 
-Loans.after.update((userId, loan) => {
-  const { propertyIds = [] } = loan;
-
-  const documentsHook = additionalDocumentsHook({
-    collection: PROPERTIES_COLLECTION,
-    initialDocuments,
-    conditionalDocuments,
-    otherCollectionDoc: loan,
-  });
-
-  propertyIds.forEach(propertyId => {
-    const property = PropertyService.get(propertyId, {
-      additionalDocuments: 1,
-      category: 1,
+Loans.after.update(
+  (userId, loan, fieldNames = []) => {
+    const fieldsToWatch = getFieldsToWatch({
+      conditionalDocuments: conditionalDocuments.filter(
+        ({ requireOtherCollectionDoc }) => requireOtherCollectionDoc,
+      ),
     });
-    if (property?.category === PROPERTY_CATEGORY.USER) {
-      documentsHook(userId, property);
+
+    if (!fieldNames.some(field => fieldsToWatch.includes(field))) {
+      return;
     }
-  });
-});
+
+    const { propertyIds = [] } = loan;
+
+    const documentsHook = additionalDocumentsHook({
+      collection: PROPERTIES_COLLECTION,
+      initialDocuments,
+      conditionalDocuments,
+      otherCollectionDoc: loan,
+    });
+
+    if (propertyIds.length) {
+      const properties = PropertyService.fetch({
+        $filters: {
+          _id: { $in: propertyIds },
+          category: PROPERTY_CATEGORY.USER,
+        },
+        additionalDocuments: 1,
+      });
+
+      properties.forEach(property => {
+        documentsHook(userId, property);
+      });
+    }
+  },
+  { fetchPrevious: false },
+);
