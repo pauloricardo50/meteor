@@ -87,22 +87,23 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       loanValue,
       canton,
       residenceType,
-      notaryFees: forcedNotaryFees,
+      fees: forcedFees,
       borrowRatio = this.getMaxBorrowRatio({
         loan: this.createLoanObject({ residenceType }),
       }),
       purchaseType,
+      previousLoanTranches,
     }) {
-      let notaryFees;
+      let fees;
 
       const finalLoanValue =
         loanValue || Math.round(propertyValue * borrowRatio);
 
-      if (forcedNotaryFees >= 0) {
-        notaryFees = forcedNotaryFees;
+      if (forcedFees >= 0) {
+        fees = forcedFees;
       } else {
         const notaryCalc = new NotaryFeesCalculator({ canton });
-        notaryFees = notaryCalc.getNotaryFeesWithoutLoan({
+        fees = notaryCalc.getNotaryFeesWithoutLoan({
           propertyValue,
           mortgageNoteIncrease: finalLoanValue,
           residenceType,
@@ -111,7 +112,16 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       }
 
       let requiredOwnFunds = Math.round(
-        propertyValue + notaryFees - finalLoanValue,
+        this.getRequiredOwnFunds({
+          loan: this.createLoanObject({
+            residenceType,
+            purchaseType,
+            propertyValue,
+            wantedLoan: finalLoanValue,
+            notaryFees: fees, // This is a mix of notaryFees and reimbursementFees, but the math doesn't care about the split
+            previousLoanTranches,
+          }),
+        }),
       );
       let ownFunds = [];
 
@@ -234,12 +244,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       loanTranches = [],
       notaryFees,
       purchaseType,
+      previousLoanTranches,
       ...rest
     }) {
       return {
         residenceType,
         purchaseType,
         borrowers,
+        previousLoanTranches,
         structure: {
           wantedLoan,
           propertyValue,
@@ -615,7 +627,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           // FIXME: There could be notary fees related to increasing the mortgage note
           // this is currently not handled and a potential flaw to take into
           // account
-          notaryFees: 0,
+          fees: 0,
           purchaseType,
         });
 
@@ -643,16 +655,22 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     suggestStructureForLoan({ loan, structureId }) {
       const propertyValue = this.getPropAndWork({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
-      const notaryFees = this.getNotaryFees({ loan, structureId }).total;
-      const { borrowers, residenceType, purchaseType } = loan;
+      const fees = this.getFees({ loan, structureId }).total;
+      const {
+        borrowers,
+        residenceType,
+        purchaseType,
+        previousLoanTranches,
+      } = loan;
 
       return this.suggestStructure({
         borrowers,
         propertyValue,
         loanValue,
         residenceType,
-        notaryFees,
+        fees,
         purchaseType,
+        previousLoanTranches,
       });
     }
   };

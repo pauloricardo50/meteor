@@ -596,18 +596,21 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getRequiredOwnFunds({ loan, structureId }) {
-      const loanValue = this.selectLoanValue({ loan, structureId });
-      const previousLoanValue = this.getPreviousLoanValue({ loan });
+      const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 
-      if (previousLoanValue > 0) {
-        const requiredOwnFunds = this.getRefinancingRequiredOwnFunds({
-          loan,
-          structureId,
-        });
-        return Math.max(requiredOwnFunds, 0);
+      if (isRefinancing) {
+        const refinancingRequiredOwnFunds = this.getRefinancingRequiredOwnFunds(
+          {
+            loan,
+            structureId,
+          },
+        );
+        return Math.max(refinancingRequiredOwnFunds, 0);
       }
 
+      const loanValue = this.selectLoanValue({ loan, structureId });
       const projectValue = this.getProjectValue({ loan, structureId });
+
       return projectValue - loanValue;
     }
 
