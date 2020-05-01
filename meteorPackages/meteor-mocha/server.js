@@ -111,8 +111,8 @@ function serverTests(cb) {
   printHeader('SERVER');
 
   if (grep) mochaInstance.grep(grep);
-  if (invert) mochaInstance.options.invert = invert;
-  mochaInstance.options.useColors = true;
+  if (invert) mochaInstance.invert(invert);
+  mochaInstance.color(true);
 
   // We need to set the reporter when the tests actually run to ensure no conflicts with
   // other test driver packages that may be added to the app but are not actually being
@@ -134,6 +134,7 @@ function serverTests(cb) {
   });
 }
 
+// CUSTOM MADE BY EPOTEK
 function cleanClientOutput() {
   const output = fs.readFileSync(clientOutput);
   const cleanedOutput = output.slice(output.indexOf('<testsuite'), -1);
@@ -182,8 +183,10 @@ function clientTests() {
     },
     done(failureCount) {
       if (clientOutput) {
+        // CUSTOM MADE BY EPOTEK
         cleanClientOutput();
       }
+
       if (typeof failureCount !== 'number') {
         console.log(
           'The browser driver package did not return a failure count for server tests as expected',
