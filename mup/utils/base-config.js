@@ -43,7 +43,14 @@ module.exports = function createConfig({
   let lockRemoved = false;
 
   return {
-    servers,
+    servers: {
+      ...servers,
+      netdata: {
+        host: '34.65.136.43',
+        username: 'mup',
+        pem: '~/.ssh/epotek',
+      },
+    },
 
     app: {
       name,
@@ -95,6 +102,23 @@ module.exports = function createConfig({
           globalApiConfig,
         ),
       },
+    },
+
+    plugins: ['mup-netdata'],
+
+    netdata: {
+      servers: {
+        ...Object.keys(servers).reduce((result, serverName) => {
+          // eslint-disable-next-line no-param-reassign
+          result[serverName] = {};
+
+          return result;
+        }, {}),
+        netdata: {
+          master: true,
+        },
+      },
+      apiKey: '3e8f196e-38ad-4879-89e3-e5243bb07cb1',
     },
 
     hooks: {
