@@ -1,30 +1,37 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
-import './layout.scss';
-
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useStaticQuery, graphql } from 'gatsby';
+import { Helmet } from 'react-helmet';
+import Footer from '../Footer';
+import '../../styles/main.scss';
 
-import LayoutFooter from './LayoutFooter';
-import LayoutNav from './LayoutNav';
+export default ({ children }) => {
+  const data = useStaticQuery(graphql`
+    query SiteQuery {
+      site {
+        siteMetadata {
+          title
+          description
+        }
+      }
+    }
+  `);
 
-const Layout = ({ children }) => {
+  const { title, description } = data.site.siteMetadata;
+
+  // Load the Prismic edit button
+  if (typeof window !== 'undefined' && window.prismic) {
+    window.prismic.setupEditButton();
+  }
+
   return (
-    <div className="layout">
-      <LayoutNav />
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Helmet>
       <main>{children}</main>
-      <LayoutFooter />
-    </div>
+      <Footer />
+    </>
   );
 };
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default Layout;
