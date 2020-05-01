@@ -2,7 +2,6 @@ import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../../../api/containerToolkit';
-import { PROMOTION_LOTS_COLLECTION } from '../../../../api/promotionLots/promotionLotConstants';
 import {
   appPromotionLots,
   proPromotionLots,
@@ -67,6 +66,7 @@ const appColumnOptions = ({ promotionStatus }) =>
 
 const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
   const {
+    _collection,
     _id: promotionLotId,
     name,
     status,
@@ -93,11 +93,7 @@ const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
       {
         raw: status,
         label: (
-          <StatusLabel
-            status={status}
-            collection={PROMOTION_LOTS_COLLECTION}
-            key="status"
-          />
+          <StatusLabel status={status} collection={_collection} key="status" />
         ),
       },
       value,
@@ -127,6 +123,7 @@ const makeMapAppPromotionLot = ({
   promotionId,
 }) => promotionLot => {
   const {
+    _collection,
     _id: promotionLotId,
     name,
     status,
@@ -141,12 +138,7 @@ const makeMapAppPromotionLot = ({
       name,
       {
         raw: status,
-        label: (
-          <StatusLabel
-            status={reducedStatus}
-            collection={PROMOTION_LOTS_COLLECTION}
-          />
-        ),
+        label: <StatusLabel status={reducedStatus} collection={_collection} />,
       },
       getPromotionLotValue(promotionLot),
       {

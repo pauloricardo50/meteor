@@ -71,7 +71,7 @@ const OverviewTab = props => {
         frontTagId={frontTagId}
       />
 
-      <AdminNotes doc={loan} collection={LOANS_COLLECTION} />
+      <AdminNotes doc={loan} />
 
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />

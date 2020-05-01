@@ -80,7 +80,6 @@ const InsuranceRequestFileTabs = ({
                               { id: borrower._id },
                               { doc: borrower },
                             )}
-                            collection="borrowers"
                             withAdditionalDocAdder={false}
                           />
                         </VerticalAligner>
@@ -115,7 +114,6 @@ const InsuranceRequestFileTabs = ({
                       { id: insurance._id },
                       { doc: insurance },
                     )}
-                    collection="insurances"
                     withAdditionalDocAdder={false}
                   />
                 ),
@@ -132,7 +130,6 @@ const InsuranceRequestFileTabs = ({
                     { id: insuranceRequest._id },
                     { doc: insuranceRequest },
                   )}
-                  collection="insuranceRequests"
                   withAdditionalDocAdder={false}
                 />
               ),

@@ -24,8 +24,13 @@ const getColumns = ({ promotionLot, promotionOption }) => {
     _id: promotionLotId,
     promotion: { _id: promotionId },
   } = promotionLot;
-  const { loan, createdAt, status: promotionOptionStatus } = promotionOption;
-  const { status, user, promotionOptions = [], promotions } = loan;
+  const {
+    loan,
+    createdAt,
+    status: promotionOptionStatus,
+    _collection: _collection2,
+  } = promotionOption;
+  const { status, user, promotionOptions = [], promotions, _collection } = loan;
 
   const promotion = promotions.find(({ _id }) => _id === promotionId);
 
@@ -46,12 +51,12 @@ const getColumns = ({ promotionLot, promotionOption }) => {
         <>
           <StatusLabel
             status={status}
-            collection={LOANS_COLLECTION}
+            collection={_collection}
             className="mr-8"
           />
           <StatusLabel
             status={promotionOptionStatus}
-            collection={PROMOTION_OPTIONS_COLLECTION}
+            collection={_collection2}
           />
         </>
       ),

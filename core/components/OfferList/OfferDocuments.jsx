@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { OFFERS_COLLECTION } from '../../api/offers/offerConstants';
 import DialogSimple from '../DialogSimple';
 import UploaderArray from '../UploaderArray';
 
@@ -23,7 +22,6 @@ const OfferDocuments = ({ offer }) => {
     >
       <UploaderArray
         doc={offer}
-        collection={OFFERS_COLLECTION}
         documentArray={offerDocumentsArray}
         currentUser={currentUser}
         allowRequireByAdmin={false}

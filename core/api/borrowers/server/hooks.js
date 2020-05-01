@@ -1,5 +1,8 @@
 import FileService from '../../files/server/FileService';
-import { additionalDocumentsHook } from '../../helpers/sharedHooks';
+import {
+  additionalDocumentsHook,
+  getFieldsToWatch,
+} from '../../helpers/sharedHooks';
 import SecurityService from '../../security';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
 import { ROLES } from '../../users/userConstants';
@@ -21,11 +24,23 @@ Borrowers.after.insert(
 );
 
 Borrowers.after.update(
-  additionalDocumentsHook({
-    collection: BORROWERS_COLLECTION,
-    initialDocuments,
-    conditionalDocuments,
-  }),
+  (userId, borrower, fieldNames = []) => {
+    const fieldsToWatch = getFieldsToWatch({
+      conditionalDocuments: conditionalDocuments.filter(
+        ({ requireOtherCollectionDoc }) => !requireOtherCollectionDoc,
+      ),
+    });
+
+    if (!fieldNames.some(field => fieldsToWatch.includes(field))) {
+      return;
+    }
+    additionalDocumentsHook({
+      collection: BORROWERS_COLLECTION,
+      initialDocuments,
+      conditionalDocuments,
+    })(userId, borrower);
+  },
+  { fetchPrevious: false },
 );
 
 // Clean up mortgagenotes from all structures that come from this borrower

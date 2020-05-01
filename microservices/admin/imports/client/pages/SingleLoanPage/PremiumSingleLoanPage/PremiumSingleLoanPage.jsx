@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
 
 import CollectionTasksTable from '../../../components/TasksTable/CollectionTasksTable';
@@ -27,7 +26,6 @@ const PremiumSingleLoanPage = props => {
       <div className="single-loan-page-sub-header">
         <CollectionTasksTable
           doc={loan}
-          collection={LOANS_COLLECTION}
           withTaskInsert
           withQueryTaskInsert
           className="single-loan-page-tasks card1 card-top"

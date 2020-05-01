@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
-import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { employeesById } from 'core/arrays/epotekEmployees';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Linkify from 'core/components/Linkify';
@@ -105,6 +104,7 @@ const makeMapTask = ({
   showStatusColumn,
 }) => task => {
   const {
+    _collection,
     _id: taskId,
     title,
     description,
@@ -167,7 +167,7 @@ const makeMapTask = ({
       },
       showStatusColumn && {
         raw: status,
-        label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: createdAt && createdAt.getTime(),

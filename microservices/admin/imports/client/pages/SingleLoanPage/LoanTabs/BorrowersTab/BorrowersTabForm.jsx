@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import AutoForm from 'core/components/AutoForm';
 import BorrowerRemover from 'core/components/BorrowerRemover';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
@@ -56,7 +55,6 @@ const BorrowersTabForm = ({
           inputs={inputs}
           borrowers={borrowers}
           docId={borrower._id}
-          collection={BORROWERS_COLLECTION}
           doc={borrower}
           showDisclaimer={false}
         />

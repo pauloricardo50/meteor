@@ -45,7 +45,6 @@ const PromotionManagement = ({ promotion }) => {
       {promotionLoan && (
         <AdminNotes
           doc={promotionLoan}
-          collection={LOANS_COLLECTION}
           title="Notes sur le dossier de développement"
         />
       )}

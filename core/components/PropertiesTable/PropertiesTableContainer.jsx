@@ -5,7 +5,6 @@ import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
 import { proPropertySummary } from '../../api/fragments';
-import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import { proProperties } from '../../api/properties/queries';
 import { createRoute } from '../../utils/routerUtils';
 import StatusLabel from '../StatusLabel';
@@ -22,6 +21,7 @@ export const columnOptions = [
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 
 export const makeMapProperty = ({ history, currentUser }) => ({
+  _collection,
   _id: propertyId,
   address1,
   city,
@@ -36,7 +36,7 @@ export const makeMapProperty = ({ history, currentUser }) => ({
     [address1, city].filter(x => x).join(', '),
     {
       raw: status,
-      label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
+      label: <StatusLabel status={status} collection={_collection} />,
     },
     {
       raw: createdAt && createdAt.getTime(),

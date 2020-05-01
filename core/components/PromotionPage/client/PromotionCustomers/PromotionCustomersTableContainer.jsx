@@ -4,7 +4,6 @@ import React from 'react';
 import moment from 'moment';
 import { withProps } from 'recompose';
 
-import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
 import { CollectionIconLink } from '../../../IconLink';
 import StatusLabel from '../../../StatusLabel';
@@ -39,6 +38,7 @@ const getColumns = ({
   promotionLots,
 }) => {
   const {
+    _collection,
     _id: loanId,
     name: loanName,
     status,
@@ -71,7 +71,7 @@ const getColumns = ({
     },
     {
       raw: status,
-      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      label: <StatusLabel status={status} collection={_collection} />,
     },
     {
       raw: user.name,

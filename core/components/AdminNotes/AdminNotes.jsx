@@ -13,7 +13,6 @@ import AdminNotesContainer from './AdminNotesContainer';
 const isAdmin = Meteor.microservice === 'admin';
 
 export const AdminNotes = ({
-  collection,
   docId,
   proNotes,
   adminNotes,
@@ -49,8 +48,8 @@ export const AdminNotes = ({
                 icon: <Icon type="add" />,
               }}
               referredByUser={referredByUser}
-              collection={collection}
               doc={doc}
+              collection={doc._collection}
             />
           ) : (
             <AdminNoteAdder
@@ -62,7 +61,7 @@ export const AdminNotes = ({
                 icon: <Icon type="add" />,
               }}
               referredByUser={referredByUser}
-              collection={collection}
+              collection={doc._collection}
             />
           ))}
         {Filters}
@@ -108,7 +107,7 @@ export const AdminNotes = ({
                           className: 'mr-8',
                         }}
                         adminNote={shownNote}
-                        collection={collection}
+                        collection={doc._collection}
                         doc={doc}
                       />
                     ) : (
@@ -120,7 +119,7 @@ export const AdminNotes = ({
                           className: 'mr-8',
                         }}
                         adminNote={shownNote}
-                        collection={collection}
+                        collection={doc._collection}
                       />
                     ))}
                   {isAdmin && isSharedWithPros && (

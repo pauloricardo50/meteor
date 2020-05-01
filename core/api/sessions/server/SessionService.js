@@ -17,10 +17,10 @@ class SessionService extends CollectionService {
   setUser(connectionId, userId) {
     const user = UserService.get(userId, { roles: 1 });
     const { roles = [] } = user || {};
-    return this._update({
-      id: connectionId,
-      object: { userId, role: roles.length ? roles[0] : undefined },
-    });
+    return this.baseUpdate(
+      { connectionId },
+      { $set: { userId, role: roles.length ? roles[0] : undefined } },
+    );
   }
 
   setIsImpersonate(connectionId, isImpersonate) {

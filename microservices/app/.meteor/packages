@@ -21,7 +21,7 @@ aldeed:collection2@3.0.2
 # Testing
 dburles:factory
 xolvio:cleaner
-meteortesting:mocha@1.0.1
+meteortesting:mocha@2.0.0
 
 
 # User Accounts
