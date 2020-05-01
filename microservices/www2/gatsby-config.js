@@ -35,20 +35,19 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-source-contentful',
+      resolve: 'gatsby-source-prismic-graphql',
       options: {
-        spaceId: process.env.CONTENTFUL_SPACE_ID,
-        // Learn about environment variables: https://gatsby.dev/env-vars
-        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+        repositoryName: process.env.PRISMIC_REPO,
+        accessToken: process.env.PRISMIC_API_KEY,
+        langs: ['fr-ch', 'en-us'],
+        shortenUrlLangs: true,
+        path: '/preview',
+        previews: true,
+        sharpKeys: [
+          /image|photo|picture/, // (default)
+          'profilepic',
+        ],
       },
     },
-    {
-      resolve: 'gatsby-plugin-i18n',
-      options: {
-        langKeyDefault: 'fr',
-        useLangKeyLayout: false,
-      },
-    },
-    'gatsby-plugin-netlify', // Keep this one last in the array
   ],
 };

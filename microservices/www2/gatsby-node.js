@@ -1,14 +1,4 @@
-import createBlogPages from './src/utils/createBlogPages';
-import createContentfulPages from './src/utils/createContentfulPages';
-import setupRedirects from './src/utils/setupRedirects';
-
 const path = require('path');
-
-const createPages = async gatsbyNodeHelpers => {
-  setupRedirects(gatsbyNodeHelpers);
-  createContentfulPages(gatsbyNodeHelpers);
-  createBlogPages(gatsbyNodeHelpers);
-};
 
 const onCreateWebpackConfig = ({ actions: { setWebpackConfig } }) => {
   // This should stay in this file for the alias to work
@@ -22,4 +12,4 @@ const onCreateWebpackConfig = ({ actions: { setWebpackConfig } }) => {
   });
 };
 
-export { createPages, onCreateWebpackConfig };
+export { onCreateWebpackConfig };
