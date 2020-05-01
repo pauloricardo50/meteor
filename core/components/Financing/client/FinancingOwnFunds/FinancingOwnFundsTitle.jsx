@@ -41,7 +41,7 @@ const FinancingOwnFundsTitle = props => {
               <span style={{ color: '#444444', marginBottom: 8 }}>
                 <T
                   id="Financing.reimbursementRequiredOwnFunds.description"
-                  values={{ isMissingOwnFunds: value < 0 }}
+                  values={{ isMissingOwnFunds: value > 0 }}
                 />
               </span>
               <span>

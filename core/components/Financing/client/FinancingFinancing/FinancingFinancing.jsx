@@ -212,7 +212,7 @@ const FinancingFinancing = ({ purchaseType }) => {
               <b style={{ color: '#444444', marginBottom: 4 }}>
                 <T
                   id="Financing.reimbursementRequiredOwnFunds.description"
-                  values={{ isMissingOwnFunds: value < 0 }}
+                  values={{ isMissingOwnFunds: value > 0 }}
                 />
               </b>
               <span>
