@@ -1,0 +1,23 @@
+.team {
+  h1 {
+    font-size: 1.6em;
+    text-align: center;
+  }
+  .team-member {
+    display: flex;
+    padding: 10px;
+    &__image {
+      flex: 0 0 150px;
+      padding-top: 20px;
+    }
+    &__content {
+      flex: 1;
+    }
+  }
+}
+
+.profile-image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
