@@ -52,6 +52,12 @@ module.exports = {
         previews: true,
         pages: [
           {
+            type: 'Page',
+            match: '/:lang/:uid',
+            path: '/page-preview',
+            component: require.resolve('./src/templates/page.jsx'),
+          },
+          {
             type: 'Post',
             match: '/:lang/blog/:uid',
             path: '/blog-preview',
