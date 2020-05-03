@@ -50,6 +50,14 @@ module.exports = {
         shortenUrlLangs: true,
         path: '/preview',
         previews: true,
+        pages: [
+          {
+            type: 'Post',
+            match: '/:lang/blog/:uid',
+            path: '/blog-preview',
+            component: require.resolve('./src/templates/post.jsx'),
+          },
+        ],
         sharpKeys: [
           /image|photo|picture/, // (default)
           'profilepic',
