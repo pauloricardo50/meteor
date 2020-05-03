@@ -1,0 +1,44 @@
+.post {
+  .post-header {
+    margin-bottom: 3rem;
+
+    h2 {
+      margin: 0;
+      color: #353535;
+      text-align: left;
+    }
+
+    .blog-post-meta {
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #9a9a9a;
+    }
+  }
+}
+
+.post-header {
+  padding: 20px;
+
+  .back {
+    color: #9a9a9a;
+    display: block;
+    max-width: 700px;
+    margin: 0 auto 2em auto;
+    font-size: 16px;
+
+    &:before {
+      content: '←';
+      display: inline-block;
+      position: relative;
+      margin-right: 8px;
+    }
+
+    a {
+      color: #9a9a9a;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
