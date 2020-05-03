@@ -1,14 +1,9 @@
-import React from 'react';
 import SimpleDDP from 'simpleddp';
-
-export const MeteorClientContext = React.createContext();
+import ws from 'isomorphic-ws';
 
 const opts = {
-  endpoint:
-    process.env.NODE_ENV === 'production'
-      ? 'ws://backend.e-potek.ch/websocket'
-      : 'ws://localhost:5500/websocket',
-  SocketConstructor: WebSocket,
+  endpoint: 'wss://backend.e-potek.ch/websocket',
+  SocketConstructor: ws,
 };
 
 const meteorClient = new SimpleDDP(opts);
