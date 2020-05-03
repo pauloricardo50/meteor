@@ -1,0 +1,33 @@
+.testimonials {
+  h1 {
+    font-size: 1.6em;
+    text-align: center;
+  }
+  .testimonial {
+    display: flex;
+    padding: 10px;
+    &__image {
+      flex: 0 0 150px;
+      padding-top: 20px;
+    }
+    &__content {
+      flex: 1;
+    }
+    blockquote {
+      font-style: italic;
+      font-size: 24px;
+      color: #868686;
+
+      @media screen and (min-width: $wide) {
+        font-size: 30px;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.profile-image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
