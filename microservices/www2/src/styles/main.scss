@@ -18,5 +18,7 @@
 @import '../core/assets/css/typography.scss';
 @import '../core/assets/css/core-styles.scss';
 
+// gatsby / prismic specific styles
 @import './base';
+@import './404';
 @import './prismic-edit-button';
