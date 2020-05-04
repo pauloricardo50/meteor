@@ -24,7 +24,7 @@ import UserService from './UserService';
 exposeQuery({
   query: adminUsers,
   overrides: {
-    firewall(userId) {
+    firewall(userId, params) {
       SecurityService.checkUserIsAdmin(userId);
       params.userId = userId;
     },

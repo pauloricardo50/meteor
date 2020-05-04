@@ -8,7 +8,7 @@ import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import Loading from 'core/components/Loading';
 import List from 'core/components/Material/List';
 import ListItem from 'core/components/Material/ListItem';
-import Roles from 'core/components/Roles';
+import RolesList from 'core/components/RolesList';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import TestBadge from 'core/components/TestBadge';
 import Calculator from 'core/utils/Calculator';
@@ -25,7 +25,7 @@ const getListItemDetails = (
     case USERS_COLLECTION:
       return {
         primary: name,
-        secondary: <Roles roles={roles} />,
+        secondary: <RolesList roles={roles} />,
       };
     case LOANS_COLLECTION: {
       const loanValue =
