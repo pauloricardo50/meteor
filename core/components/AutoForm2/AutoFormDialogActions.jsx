@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import { withState } from 'recompose';
@@ -8,6 +8,32 @@ import T from '../Translation';
 import AutoFormDialogChildren from './AutoFormDialogChildren';
 import CustomSubmitField from './CustomSubmitField';
 
+const enhanceOnDelete = ({
+  onDelete,
+  setDisableActions,
+  handleClose,
+  setDeleting,
+}) => (...args) => {
+  const confirmed = window.confirm('Êtes-vous sûr?');
+
+  if (!confirmed) {
+    return;
+  }
+
+  setDeleting(true);
+  setDisableActions(true);
+  return onDelete(...args)
+    .then(result => {
+      handleClose();
+      return result;
+    })
+    .finally(result => {
+      setDisableActions(false);
+      setDeleting(false);
+      return result;
+    });
+};
+
 const AutoFormDialogActions = (
   {
     handleClose,
@@ -15,38 +41,54 @@ const AutoFormDialogActions = (
     renderAdditionalActions,
     disableActions,
     setDisableActions,
+    onDelete,
   },
   {
     uniforms: {
       state: { submitting },
     },
   },
-) => (
-  <DialogActions>
-    <AutoFormDialogChildren
-      renderFunc={() => (
-        <Button onClick={handleClose} disabled={submitting || disableActions}>
-          <T id="general.cancel" />
+) => {
+  const [deleting, setDeleting] = useState(false);
+  return (
+    <DialogActions>
+      <Button onClick={handleClose} disabled={submitting || disableActions}>
+        <T id="general.cancel" />
+      </Button>
+
+      {onDelete && (
+        <Button
+          onClick={enhanceOnDelete({
+            onDelete,
+            setDisableActions,
+            handleClose,
+            setDeleting,
+          })}
+          disabled={submitting || disableActions}
+          error
+          outlined
+          loading={deleting}
+        >
+          <T id="general.remove" />
         </Button>
       )}
-    />
 
-    {renderAdditionalActions && (
-      <AutoFormDialogChildren
-        renderFunc={renderAdditionalActions}
-        closeDialog={handleClose}
-        onSubmit={onSubmit}
+      {renderAdditionalActions && (
+        <AutoFormDialogChildren
+          renderFunc={renderAdditionalActions}
+          closeDialog={handleClose}
+          onSubmit={onSubmit}
+          setDisableActions={setDisableActions}
+          disabled={submitting || disableActions}
+        />
+      )}
+      <CustomSubmitField
         setDisableActions={setDisableActions}
-        disabled={submitting || disableActions}
+        disableActions={disableActions}
       />
-    )}
-    <CustomSubmitField
-      setDisableActions={setDisableActions}
-      disableActions={disableActions}
-    />
-  </DialogActions>
-);
-
+    </DialogActions>
+  );
+};
 AutoFormDialogActions.contextTypes = {
   uniforms: PropTypes.shape({
     state: PropTypes.shape({

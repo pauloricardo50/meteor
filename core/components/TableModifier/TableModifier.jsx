@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
-import Button from '../Button';
 import Table from '../Table';
-import T from '../Translation';
 
 const TableModifier = ({
   rows,
@@ -16,7 +14,6 @@ const TableModifier = ({
   allow,
   ...props
 }) => {
-  const [deleting, setDeleting] = useState(false);
   const [open, setOpen] = useState(false);
   const [model, setModel] = useState({});
 
@@ -54,35 +51,7 @@ const TableModifier = ({
           setOpen={setOpen}
           model={model}
           onSubmit={onSubmit}
-          renderAdditionalActions={({ setDisableActions, disabled }) =>
-            onDelete && (
-              <Button
-                onClick={() => {
-                  const confirm = window.confirm(
-                    'Êtes vous sûr de vouloir supprimer?',
-                  );
-
-                  if (!confirm) {
-                    return;
-                  }
-
-                  setDisableActions(true);
-                  setDeleting(true);
-                  return onDelete(model)
-                    .then(() => setOpen(false))
-                    .finally(() => {
-                      setDeleting(false);
-                      setDisableActions(true);
-                    });
-                }}
-                error
-                loading={deleting}
-                disabled={disabled}
-              >
-                <T id="general.delete" />
-              </Button>
-            )
-          }
+          onDelete={onDelete && (() => onDelete(model))}
         />
       )}
     </>
