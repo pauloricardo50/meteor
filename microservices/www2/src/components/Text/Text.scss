@@ -1,21 +1,45 @@
+.text {
+  // when section appears on a blog post
+  .post & {
+    max-width: 684px;
+    margin: 0 auto;
+    padding-left: 23px;
+    padding-right: 23px;
 
-.post-text {
-  a {
-    text-decoration: none;
-    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.8) 75%);
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.8) 75%);
-    background-repeat: repeat-x;
-    background-size: 2px 2px;
-    background-position: 0 23px;
-  }
-
-  .block-img {
-    img {
-      max-width: 100%;
+    // TODO: decide how to handle header variations in mobile/desktop, when Prismic outputs RichText
+    h4 {
+      width: 329px;
+      height: 112px;
+      font-family: Manrope_;
+      font-size: 20px;
+      font-weight: 300;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: var(--2c2c2c);
     }
 
-    a {
-      background: none;
+    // TODO: check this against typo - Mobile/Plain/M/Light, Manrope-Light
+    p {
+      font-size: 14px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #000000;
+    }
+
+    @media (min-width: $med) {
+      p {
+        font-size: 16px;
+        font-weight: 300;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        color: #000000;
+      }
     }
   }
 }

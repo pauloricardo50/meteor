@@ -107,6 +107,18 @@ const Post = ({ data }) => {
         </div>
 
         {blogPost.body && <PageSections sections={blogPost.body} />}
+
+        <div className="section-placeholder">
+          Coming soon... newsletter sign up section
+        </div>
+
+        <div className="section-placeholder">
+          Coming soon... related promotions
+        </div>
+
+        <div className="section-placeholder">
+          Coming soon... full width background image w/ CTA buttons
+        </div>
       </div>
     </Layout>
   );
