@@ -103,18 +103,22 @@ const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
         .map(formatAdditionalDoc)
     : [];
 
+  // Get all validated documents, ignoring if they are required by admin or not
   const validatedDocuments = documentsExist
     ? Object.keys(document.documents)
         .reduce((validDocuments, key) => {
-          const docs = document.documents[key] || [];
-          const oneDocIsValid = docs.some(
+          const files = document.documents[key] || [];
+          // At least one file is validated
+          const oneFileIsValid = files.some(
             ({ status }) => status === FILE_STATUS.VALID,
           );
-          return oneDocIsValid
+
+          return oneFileIsValid
             ? [...validDocuments, { id: key }]
             : validDocuments;
         }, [])
         .map(formatAdditionalDoc)
+        // Don't return a valid document already present in additionalDocuments
         .filter(
           ({ id: docId }) =>
             !additionalDocuments.some(
