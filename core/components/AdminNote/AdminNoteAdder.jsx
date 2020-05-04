@@ -56,6 +56,7 @@ export const AdminNoteSetter = ({
   methodParams,
   getInsertSchemaOverride,
   getUpdateSchemaOverride,
+  triggerComponent,
 }) => {
   const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
   const isInsert = !adminNote;
@@ -76,6 +77,7 @@ export const AdminNoteSetter = ({
     <AutoFormDialog
       title={isInsert ? 'Ajouter une note' : 'Modifier note'}
       buttonProps={buttonProps}
+      triggerComponent={triggerComponent}
       schema={schema}
       openOnMount={!adminNote && searchParams?.addNote}
       onSubmit={({ notifyPros = [], date: noteDate, ...values }) =>

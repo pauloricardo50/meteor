@@ -8,6 +8,7 @@ import { employeesById } from '../../arrays/epotekEmployees';
 import AdminNoteAdder from '../AdminNote/AdminNoteAdder';
 import Button from '../Button';
 import Icon from '../Icon';
+import IconButton from '../IconButton';
 import AdminNotesContainer from './AdminNotesContainer';
 
 const isAdmin = Meteor.microservice === 'admin';
@@ -101,25 +102,33 @@ export const AdminNotes = ({
                     (CustomNoteAdder ? (
                       <CustomNoteAdder
                         docId={docId}
-                        buttonProps={{
-                          label: 'Modifier',
-                          size: 'small',
-                          className: 'mr-8',
-                        }}
                         adminNote={shownNote}
                         collection={doc._collection}
                         doc={doc}
+                        triggerComponent={handleOpen => (
+                          <IconButton
+                            type="edit"
+                            size="small"
+                            tooltip="Modifier"
+                            onClick={handleOpen}
+                            className="mr-8"
+                          />
+                        )}
                       />
                     ) : (
                       <AdminNoteAdder
                         docId={docId}
-                        buttonProps={{
-                          label: 'Modifier',
-                          size: 'small',
-                          className: 'mr-8',
-                        }}
                         adminNote={shownNote}
                         collection={doc._collection}
+                        triggerComponent={handleOpen => (
+                          <IconButton
+                            type="edit"
+                            size="small"
+                            tooltip="Modifier"
+                            onClick={handleOpen}
+                            className="mr-8"
+                          />
+                        )}
                       />
                     ))}
                   {isAdmin && isSharedWithPros && (
