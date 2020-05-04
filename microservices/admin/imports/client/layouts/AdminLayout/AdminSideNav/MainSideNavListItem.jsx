@@ -1,5 +1,4 @@
 import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -7,6 +6,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import Icon from 'core/components/Icon';
+import ListItem from 'core/components/Material/ListItem';
 import T from 'core/components/Translation';
 
 const styles = () => ({

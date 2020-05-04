@@ -3,11 +3,11 @@ import { faBook } from '@fortawesome/pro-light-svg-icons/faBook';
 import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import { NavLink } from 'react-router-dom';
 
 import Icon from 'core/components/Icon';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 

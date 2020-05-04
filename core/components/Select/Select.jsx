@@ -1,5 +1,4 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 
 import Chip from '../Material/Chip';
@@ -7,6 +6,7 @@ import FormControl from '../Material/FormControl';
 import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import MenuItem from '../Material/MenuItem';
 import MuiSelect from '../Material/Select';
 import SelectContainer from './SelectContainer';
 

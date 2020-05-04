@@ -2,7 +2,6 @@ import React, { useContext, useMemo } from 'react';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
 import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import List from '@material-ui/core/List';
 import PropTypes from 'prop-types';
 
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
@@ -12,6 +11,7 @@ import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import List from 'core/components/Material/List';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { createRoute } from 'core/utils/routerUtils';
 

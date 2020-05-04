@@ -1,11 +1,11 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Button from '../Button';
 import Icon from '../Icon';
 import Dialog from '../Material/Dialog';
+import List from '../Material/List';
+import ListItem from '../Material/ListItem';
 import T, { Money } from '../Translation';
 
 const PropertyReuser = ({
