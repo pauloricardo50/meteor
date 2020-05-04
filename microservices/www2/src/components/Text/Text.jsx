@@ -6,7 +6,7 @@ import './Text.scss';
 
 const Text = ({ primary }) => (
   <div className="text container">
-    <div>{RichText.render(primary.content, linkResolver, htmlSerializer)}</div>
+    {RichText.render(primary.content, linkResolver, htmlSerializer)}
   </div>
 );
 
