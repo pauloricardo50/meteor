@@ -321,9 +321,23 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return propertyCost + expensesToAddToTheoreticalCost;
     }
 
+    getStructureIncome({ loan, structureId }) {
+      const borrowerIncome = this.getTotalIncome({ borrowers: loan.borrowers });
+      const propertyIncome =
+        this.selectPropertyKey({
+          loan,
+          structureId,
+          key: 'investmentRent',
+        }) || 0;
+
+      return (
+        borrowerIncome + propertyIncome * this.realEstateIncomeConsideration
+      );
+    }
+
     getIncomeRatio({ loan, structureId }) {
       const cost = this.getTheoreticalMonthly({ loan, structureId });
-      const income = this.getTotalIncome({ borrowers: loan.borrowers });
+      const income = this.getStructureIncome({ loan, structureId });
       const ratio = cost / (income / 12);
 
       if (ratio > 1 || ratio < 0) {

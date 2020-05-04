@@ -47,11 +47,6 @@ export const incomeConsideration = {
     uniforms: { placeholder: null },
   },
   realEstateIncomeConsideration: percentageField,
-  // realEstateIncomeConsiderationType: {
-  //   type: String,
-  //   allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
-  //   optional: true,
-  // },
   investmentIncomeConsideration: percentageField,
   expensesSubtractFromIncome: {
     type: Array,

@@ -654,7 +654,7 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe('getIncomeRatio', () => {
+  describe.only('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
       expect(
         Calculator.getIncomeRatio({
@@ -689,6 +689,26 @@ describe('LoanCalculator', () => {
           interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
         }),
       ).to.equal(1);
+    });
+
+    it('includes investmentRent on the property', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeConsideration: 0.5,
+      });
+      expect(
+        calc.getIncomeRatio({
+          loan: {
+            structure: {
+              wantedLoan: 800000,
+              property: { value: 1000000, investmentRent: 40000 },
+              propertyWork: 0,
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+            },
+            borrowers: [{ salary: 160000 }],
+          },
+          interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+        }),
+      ).to.be.within(0.33, 0.34);
     });
   });
 
