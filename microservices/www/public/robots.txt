@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /home
-Disallow: /mobile
-Noindex: /home
-Noindex: /mobile
