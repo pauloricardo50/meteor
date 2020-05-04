@@ -1,0 +1,19 @@
+.container {
+  // NOTE: not every section type should be constrained with top level container class (e.g. hero)
+  max-width: 1200px;
+  margin: auto;
+
+  @media (max-width: $med) {
+    padding: 0 20px;
+  }
+}
+
+section,
+.section {
+  // TODO: get standard section vertical spacing for mobile
+  padding: 50px 0;
+
+  @media (min-width: $med) {
+    padding: 128px 0;
+  }
+}

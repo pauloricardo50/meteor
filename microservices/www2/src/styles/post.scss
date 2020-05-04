@@ -1,44 +1,116 @@
 .post {
-  .post-header {
-    margin-bottom: 3rem;
+  &-header {
+    position: relative;
+    padding: 96px 23px 32px;
 
-    h2 {
-      margin: 0;
-      color: #353535;
-      text-align: left;
+    h1 {
+      // TODO: use @include h3 ? for mobile
+      // TODO remove breakpoint once typo inclusion settled
+      @media (max-width: $med - 1) {
+        margin-bottom: 12px;
+        font-size: 28px;
+        font-weight: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+      }
     }
 
-    .blog-post-meta {
-      margin-bottom: 8px;
-      font-size: 16px;
-      color: #9a9a9a;
+    .post-meta {
+      display: flex;
+      font-size: 14px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #000000;
+    }
+
+    .post-detail {
+      .date-spacer {
+        display: none;
+      }
+    }
+
+    .profile-photo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 13px;
+
+      img {
+        width: 34px;
+        max-width: 100%;
+        height: 34px;
+        border-radius: 32.8px;
+        box-shadow: 0 5px 6px -2px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    @media (min-width: $med) {
+      // max-width: ?
+      padding-top: 167px;
+      padding-bottom: 129px;
+
+      h1 {
+        // TODO: validate against h1 typo for desktop
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 784px;
+        font-size: 40px;
+        font-weight: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: center;
+      }
+
+      .post-meta {
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        color: #000000;
+      }
+
+      .post-detail {
+        display: flex;
+        align-items: center;
+
+        .date-spacer {
+          display: inline;
+          padding: 0 3px;
+        }
+      }
     }
   }
-}
 
-.post-header {
-  padding: 20px;
-
-  .back {
-    color: #9a9a9a;
-    display: block;
-    max-width: 700px;
-    margin: 0 auto 2em auto;
+  .back-to-blog {
+    position: absolute;
+    top: 25px;
     font-size: 16px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
 
+    @media (min-width: $med) {
+      top: 34px;
+    }
+
+    // TODO: replace with svg
     &:before {
       content: '←';
       display: inline-block;
       position: relative;
-      margin-right: 8px;
+      margin-right: 13px;
+      font-weight: bold;
+      color: #2e7eff;
     }
 
     a {
-      color: #9a9a9a;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      color: #000000;
     }
   }
 }

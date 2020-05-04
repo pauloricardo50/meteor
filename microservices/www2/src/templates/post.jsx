@@ -66,22 +66,43 @@ const Post = ({ data }) => {
 
   if (!blogPost) return null;
 
+  // TODO: add structured data - https://developers.google.com/search/docs/data-types/article
   return (
     <Layout>
-      <div className="container post" data-wio-id={blogPost._meta.id}>
+      <div className="post" data-wio-id={blogPost._meta.id}>
         <div className="post-header">
-          <div className="back">
+          <div className="back-to-blog">
             {/* TODO: add language prefix here, or send through resolver */}
             <Link to="/blog">Revenir à l'index</Link>
           </div>
 
-          {/* Render the edit button */}
-          <h1 data-wio-id={blogPost._meta.id}>
+          <h1 className="post-title">
             {blogPost.title ? RichText.asText(blogPost.title) : 'Untitled'}
           </h1>
 
           {blogPost.author && (
-            <div>{`${blogPost.author.name}, ${blogPost.author.title} - ${blogPost.date}`}</div>
+            <div className="post-meta">
+              {blogPost.author.profile_photo && (
+                <div className="profile-photo">
+                  <img
+                    src={blogPost.author.profile_photo.url}
+                    alt={blogPost.author.profile_photo.alt}
+                  />
+                </div>
+              )}
+
+              <div className="post-detail">
+                {blogPost.author.name && (
+                  <div className="post-author">
+                    {`${blogPost.author.name}, ${blogPost.author.title}`}
+                    <span className="date-spacer">•</span>
+                  </div>
+                )}
+                {/* TODO: correct usage of time tag */}
+                {/* TODO: localize date display */}
+                <time>{blogPost.date}</time>
+              </div>
+            </div>
           )}
         </div>
 
