@@ -91,7 +91,7 @@ const File = props => {
     <div className="flex-col">
       <div className="file">
         <h5
-          className="secondary bold file-name"
+          className="secondary bold file-name font-size-body"
           onClick={event => {
             if (Meteor.microservice === 'admin') {
               event.preventDefault();
