@@ -1,8 +1,8 @@
 import React from 'react';
 
 import useDebouncedInput from '../../hooks/useDebouncedInput';
-import TextInput from '../TextInput';
 import Icon from '../Icon';
+import TextInput from '../TextInput';
 
 const TableSearch = ({ search, onChange, ...props }) => {
   const [debouncedValue, debouncedOnChange] = useDebouncedInput({

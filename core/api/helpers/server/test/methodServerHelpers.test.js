@@ -1,10 +1,11 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
-
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
+/* eslint-env mocha */
+import { expect } from 'chai';
 import sinon from 'sinon';
+
 import { checkInsertUserId } from '../methodServerHelpers';
 
 describe('methodServerHelpers', () => {

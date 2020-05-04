@@ -1,5 +1,5 @@
-import PromotionOptions from '..';
 import assigneeReducer from '../../reducers/assigneeReducer';
+import PromotionOptions from '..';
 
 PromotionOptions.addReducers({
   ...assigneeReducer(

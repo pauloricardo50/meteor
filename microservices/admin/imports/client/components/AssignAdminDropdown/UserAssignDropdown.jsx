@@ -1,5 +1,7 @@
 import { withProps } from 'recompose';
-import { assignAdminToUser } from 'core/api/methods';
+
+import { assignAdminToUser } from 'core/api/users/methodDefinitions';
+
 import AssignAdminDropdown from './AssignAdminDropdown';
 
 const changeAssignedUser = ({ newAdmin, user }) => {

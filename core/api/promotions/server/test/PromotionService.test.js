@@ -1,20 +1,21 @@
+import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 
-import generator from 'core/api/factories/server';
-import { PROMOTION_LOT_STATUS } from 'core/api/promotionLots/promotionLotConstants';
-import { PROMOTION_STATUS } from '../../../constants';
+import generator from '../../../factories/server';
+import LoanService from '../../../loans/server/LoanService';
+import LotService from '../../../lots/server/LotService';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
+import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
+import { PROMOTION_OPTION_STATUS } from '../../../promotionOptions/promotionOptionConstants';
+import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
+import PropertyService from '../../../properties/server/PropertyService';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
-import LoanService from '../../../loans/server/LoanService';
+import { PROMOTION_STATUS, PROMOTION_TYPES } from '../../promotionConstants';
 import PromotionService from '../PromotionService';
-import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
-import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
-import LotService from '../../../lots/server/LotService';
-import PropertyService from '../../../properties/server/PropertyService';
-import { PROMOTION_TYPES } from '../../promotionConstants';
 
 describe('PromotionService', function() {
   this.timeout(10000);
@@ -337,6 +338,7 @@ describe('PromotionService', function() {
                 _id: 'promotionOptionId',
                 loan: { _id: 'loanId' },
                 promotion: { _id: 'promotionId' },
+                status: PROMOTION_OPTION_STATUS.SOLD,
               },
               propertyLinks: [{ _id: 'prop1' }],
               attributedTo: { _id: 'loanId' },
@@ -455,7 +457,6 @@ describe('PromotionService', function() {
           {
             _id: 'promotionId',
             users: { _id: 'proId', _factory: 'pro' },
-            loans: { _id: 'loanId', $metadata: { invitedBy: 'proId' } },
           },
           {
             _id: 'promotionId2',
@@ -484,11 +485,31 @@ describe('PromotionService', function() {
         PromotionService.get('promotionId2', { userLinks: 1 }).userLinks.length,
       ).to.equal(1);
       expect(
-        LoanService.get('loanId', { promotionLinks: 1 }).promotionLinks[0]
-          .invitedBy,
-      ).to.equal(undefined);
-      expect(
         LoanService.get('loanId2', { promotionLinks: 2 }).promotionLinks[0]
+          .invitedBy,
+      ).to.equal('proId');
+    });
+
+    it('throws if it has customers in promotion', () => {
+      generator({
+        promotions: [
+          {
+            _id: 'promotionId',
+            users: { _id: 'proId' },
+            loans: { _id: 'loanId', $metadata: { invitedBy: 'proId' } },
+          },
+        ],
+      });
+
+      expect(() =>
+        PromotionService.removeProUser({
+          promotionId: 'promotionId',
+          userId: 'proId',
+        }),
+      ).to.throw('des clients dans cette promotion');
+
+      expect(
+        LoanService.get('loanId', { promotionLinks: 2 }).promotionLinks[0]
           .invitedBy,
       ).to.equal('proId');
     });

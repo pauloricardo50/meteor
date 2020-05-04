@@ -1,10 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { withState, compose } from 'recompose';
+import { compose, withState } from 'recompose';
 
 import { createRoute } from 'core/utils/routerUtils';
-import LoanCardHeader from './LoanCardHeader';
+
 import LoanCardBody from './LoanCardBody';
+import LoanCardHeader from './LoanCardHeader';
 
 const handleCardClick = ({ history, linkDisabled, loanId }) => () => {
   if (!linkDisabled) {

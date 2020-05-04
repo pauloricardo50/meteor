@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
-import { AutoForm } from 'uniforms-material';
-import pickBy from 'lodash/pickBy';
+import cx from 'classnames';
 import pick from 'lodash/pick';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-
+import pickBy from 'lodash/pickBy';
 import { withProps } from 'recompose';
-import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+import { AutoForm } from 'uniforms-material';
+
+import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
+import AutoFormLayout from './AutoFormLayout';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
-import AutoFormLayout from './AutoFormLayout';
 
 const CustomAutoForm = ({
   autoFieldProps,
@@ -22,6 +23,7 @@ const CustomAutoForm = ({
   schema,
   schemaKeys,
   submitFieldProps,
+  className,
   ...props
 }) => {
   const handleSubmit = (...args) =>
@@ -54,7 +56,7 @@ const CustomAutoForm = ({
       showInlineError
       model={pickBy(model, (_, key) => !key.startsWith('$'))}
       placeholder={placeholder}
-      className="autoform"
+      className={cx('autoform', className)}
       onSubmit={handleSubmit}
       schema={bridgedSchema}
       {...props}

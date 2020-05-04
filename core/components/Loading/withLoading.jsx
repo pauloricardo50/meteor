@@ -1,5 +1,6 @@
 import React from 'react';
 import { branch, renderComponent } from 'recompose';
+
 import Loading from './Loading';
 
 export default (small, disableVar) =>

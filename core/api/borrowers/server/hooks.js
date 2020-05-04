@@ -1,15 +1,18 @@
-import { ROLES } from '../../constants';
-import { additionalDocumentsHook } from '../../helpers/sharedHooks';
-import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
-import SecurityService from '../../security';
 import FileService from '../../files/server/FileService';
-import { BorrowerSchemaAdmin } from '../schemas/BorrowerSchema';
-import Borrowers from '../borrowers';
-import { BORROWERS_COLLECTION } from '../borrowerConstants';
 import {
-  initialDocuments,
+  additionalDocumentsHook,
+  getFieldsToWatch,
+} from '../../helpers/sharedHooks';
+import SecurityService from '../../security';
+import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
+import { ROLES } from '../../users/userConstants';
+import { BORROWERS_COLLECTION } from '../borrowerConstants';
+import Borrowers from '../borrowers';
+import {
   conditionalDocuments,
+  initialDocuments,
 } from '../borrowersAdditionalDocuments';
+import { BorrowerSchemaAdmin } from '../schemas/BorrowerSchema';
 import BorrowerService from './BorrowerService';
 
 Borrowers.after.insert(
@@ -21,11 +24,23 @@ Borrowers.after.insert(
 );
 
 Borrowers.after.update(
-  additionalDocumentsHook({
-    collection: BORROWERS_COLLECTION,
-    initialDocuments,
-    conditionalDocuments,
-  }),
+  (userId, borrower, fieldNames = []) => {
+    const fieldsToWatch = getFieldsToWatch({
+      conditionalDocuments: conditionalDocuments.filter(
+        ({ requireOtherCollectionDoc }) => !requireOtherCollectionDoc,
+      ),
+    });
+
+    if (!fieldNames.some(field => fieldsToWatch.includes(field))) {
+      return;
+    }
+    additionalDocumentsHook({
+      collection: BORROWERS_COLLECTION,
+      initialDocuments,
+      conditionalDocuments,
+    })(userId, borrower);
+  },
+  { fetchPrevious: false },
 );
 
 // Clean up mortgagenotes from all structures that come from this borrower

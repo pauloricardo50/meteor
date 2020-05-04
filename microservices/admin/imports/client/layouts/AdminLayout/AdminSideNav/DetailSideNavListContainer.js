@@ -1,15 +1,13 @@
 import { withRouter } from 'react-router-dom';
-import { withState, withProps, lifecycle, compose } from 'recompose';
+import { compose, lifecycle, withProps, withState } from 'recompose';
 
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { adminLoans } from 'core/api/loans/queries';
-import { withSmartQuery } from 'core/api';
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { adminUsers } from 'core/api/users/queries';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 const PAGINATION_AMOUNT = 10;
 
@@ -31,7 +29,7 @@ const getQuery = collectionName => {
     case PROMOTIONS_COLLECTION:
       return {
         query: adminPromotions,
-        body: { name: 1, status: 1, city: 1, canton: 1 },
+        body: { name: 1, status: 1, city: 1, canton: 1, isTest: 1 },
       };
     default:
       return null;

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES } from '../users/userConstants';
 
 const APP_URL = Meteor.settings.public.subdomains.app;
 const PRO_URL = Meteor.settings.public.subdomains.pro;

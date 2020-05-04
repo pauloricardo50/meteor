@@ -1,6 +1,6 @@
-import { withProps, compose, withState } from 'recompose';
-import { injectIntl } from 'react-intl';
 import moment from 'moment';
+import { injectIntl } from 'react-intl';
+import { compose, withProps, withState } from 'recompose';
 
 import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 import colors from 'core/config/colors';

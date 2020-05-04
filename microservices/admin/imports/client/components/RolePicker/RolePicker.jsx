@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
+
 import RolePickerContainer from './RolePickerContainer';
 
 const RolePicker = ({ onChooseRole, roles }) => (

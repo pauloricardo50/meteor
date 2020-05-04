@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import Button from 'core/components/Button';
+import Button from '../Button';
 
 const ButtonSwitch = ({
   active,

@@ -1,23 +1,24 @@
 import { useContext } from 'react';
-import { compose, withProps, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withProps } from 'recompose';
 
-import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { userLoans } from 'core/api/loans/queries';
-import { currentInterestRates } from 'core/api/interestRates/queries';
-import getBaseRedirect, {
-  isOnAllowedRoute,
-  isLogin,
-} from 'core/utils/redirection';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
-import { injectCalculator } from 'core/containers/withCalculator';
 import { userLoan } from 'core/api/fragments';
+import { currentInterestRates } from 'core/api/interestRates/queries';
+import { userLoans } from 'core/api/loans/queries';
+import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { injectCalculator } from 'core/containers/withCalculator';
+import withMatchParam from 'core/containers/withMatchParam';
+import getBaseRedirect, {
+  isLogin,
+  isOnAllowedRoute,
+} from 'core/utils/redirection';
+
 import {
-  withSideNavContextProvider,
   withSideNavContext,
+  withSideNavContextProvider,
 } from './SideNavContext';
 
 const WITHOUT_LOAN = [

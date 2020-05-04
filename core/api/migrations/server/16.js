@@ -1,7 +1,8 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Users, Contacts } from '../..';
 import { formatPhoneNumber } from '../../../utils/phoneFormatting';
+import Contacts from '../../contacts';
+import Users from '../../users/users';
 
 export const up = async () => {
   const allUsers = Users.find({}, { fields: { phoneNumbers: 1 } }).fetch();

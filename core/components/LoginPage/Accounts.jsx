@@ -1,10 +1,11 @@
-import React from 'react';
 import { Accounts, STATES } from 'meteor/epotek:accounts-ui';
+
+import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import cx from 'classnames';
 
-import TextField from '../Material/TextField';
 import MuiButton from '../Button';
+import TextField from '../Material/TextField';
 
 const { LoginForm } = Accounts.ui;
 

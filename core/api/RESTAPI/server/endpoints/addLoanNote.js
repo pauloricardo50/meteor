@@ -1,15 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanService from 'core/api/loans/server/LoanService';
-import { proAddLoanTask } from '../../../methods';
+import LoanService from '../../../loans/server/LoanService';
+import { proAddLoanTask } from '../../../tasks/methodDefinitions';
 import { withMeteorUserId } from '../helpers';
-import {
-  checkQuery,
-  impersonateSchema,
-  checkAccessToUser,
-  getImpersonateUserId,
-} from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import {
+  checkAccessToUser,
+  checkQuery,
+  getImpersonateUserId,
+  impersonateSchema,
+} from './helpers';
 
 const addLoanNoteAPI = ({ user: { _id: userId }, body, query }) => {
   const { 'impersonate-user': impersonateUser } = checkQuery({

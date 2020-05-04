@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from './methods';
 
 export const getMixpanelAuthorization = new Method({

@@ -1,25 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import React, { useState, useEffect } from 'react';
-import { compose } from 'recompose';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
-import { getCookie } from 'core/utils/cookiesHelpers';
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
-import { analyticsVerifyEmail } from 'core/api/methods/index';
+import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
+import { analyticsVerifyEmail } from '../../api/analytics/methodDefinitions';
+import { notifyAssignee } from '../../api/slack/methodDefinitions';
 import {
   getUserByPasswordResetToken,
-  notifyAssignee,
   updateUser,
   userPasswordReset,
-} from '../../api';
+} from '../../api/users/methodDefinitions';
 import withMatchParam from '../../containers/withMatchParam';
+import { getCookie } from '../../utils/cookiesHelpers';
 
 export default compose(
   withMatchParam('token'),
   withRouter,
-  Component => ({ token, history, ...props }) => {
+  Component => ({ token, history }) => {
     const [user, setUser] = useState();
     const [error, setError] = useState();
     const [loading, setLoading] = useState();

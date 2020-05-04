@@ -1,14 +1,15 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import {
-  RESIDENCE_TYPE,
-  PROPERTY_CATEGORY,
-} from 'core/api/properties/propertyConstants';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import generator from '../../../factories/server';
-import { proPropertyLoans } from '../../queries';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../../properties/propertyConstants';
 import { SOLVENCY_TYPE } from '../../loanConstants';
+import { proPropertyLoans } from '../../queries';
 
 describe('proPropertyLoans', () => {
   beforeEach(() => {

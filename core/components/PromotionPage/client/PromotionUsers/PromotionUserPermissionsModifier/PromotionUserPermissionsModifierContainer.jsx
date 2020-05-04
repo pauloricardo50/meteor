@@ -1,14 +1,14 @@
-import SimpleSchema from 'simpl-schema';
-import { withProps } from 'recompose';
 import merge from 'lodash/merge';
+import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
+import { makePermissions } from '../../../../../api/helpers/sharedSchemas';
+import { setPromotionUserPermissions } from '../../../../../api/promotions/methodDefinitions';
 import {
-  PROMOTION_PERMISSIONS_BUNDLES,
   PROMOTION_PERMISSIONS,
-} from 'core/api/constants';
-import { makePermissions } from 'core/api/helpers/sharedSchemas';
-import { promotionPermissionsSchema } from 'core/api/promotions/schemas/PromotionSchema';
-import { setPromotionUserPermissions } from 'imports/core/api/methods/index';
+  PROMOTION_PERMISSIONS_BUNDLES,
+} from '../../../../../api/promotions/promotionConstants';
+import { promotionPermissionsSchema } from '../../../../../api/promotions/schemas/PromotionSchema';
 
 const bundlesSchema = {
   useBundles: { type: Boolean, defaultValue: false },

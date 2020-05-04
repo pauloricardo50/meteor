@@ -6,12 +6,10 @@ import Calculator, {
 } from '../../../../utils/Calculator';
 import zipcodes from '../../../../utils/zipcodes';
 import { address } from '../../../helpers/sharedSchemas';
-import {
-  RESIDENCE_TYPE,
-  INTEREST_RATES,
-  PURCHASE_TYPE,
-} from '../../../constants';
+import { INTEREST_RATES } from '../../../interestRates/interestRatesConstants';
 import { currentInterestRates } from '../../../interestRates/queries';
+import { PURCHASE_TYPE } from '../../../loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import { checkQuery } from './helpers';
 
 const LUXURY_VALUE_THRESHOLD = 2500000;
@@ -111,7 +109,7 @@ const mortgageEstimateAPI = ({ query }) => {
   const interestsLibor = getInterestsForType(INTEREST_RATES.LIBOR);
   const amortization = roundToCents(calc.getAmortization({ loan: loanObject }));
   const notaryFees = includeNotaryFees
-    ? calc.getFees({ loan: loanObject })
+    ? calc.getNotaryFees({ loan: loanObject })
     : null;
   const totalValue = roundToCents(
     propertyValue + (notaryFees ? notaryFees.total : 0),

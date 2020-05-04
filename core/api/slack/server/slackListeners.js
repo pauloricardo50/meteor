@@ -1,30 +1,34 @@
-import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import { promotionOptionUploadAgreement } from 'core/api/methods/index';
 import ServerEventService from '../../events/server/ServerEventService';
-import {
-  reservePromotionLot,
-  sellPromotionLot,
-  proInviteUser,
-  userLoanInsert,
-  anonymousCreateUser,
-  promotionOptionActivateReservation,
-} from '../../methods';
-import UserService from '../../users/server/UserService';
+import { userLoanInsert } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import {
+  reservePromotionLot,
+  sellPromotionLot,
+} from '../../promotionLots/methodDefinitions';
+import {
+  promotionOptionActivateReservation,
+  promotionOptionUploadAgreement,
+} from '../../promotionOptions/methodDefinitions';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import PromotionService from '../../promotions/server/PromotionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import {
+  anonymousCreateUser,
+  proInviteUser,
+} from '../../users/methodDefinitions';
+import UserService from '../../users/server/UserService';
+import { sendPropertyInvitations } from './slackNotificationHelpers';
+import {
+  newLoan,
+  newPromotionReservation,
+  newUser,
+  promotionAgreementUploaded,
+  promotionInviteNotification,
   promotionLotReserved,
   promotionLotSold,
   referralOnlyNotification,
-  newLoan,
-  newUser,
-  newPromotionReservation,
-  promotionInviteNotification,
-  promotionAgreementUploaded,
 } from './slackNotifications';
-import { sendPropertyInvitations } from './slackNotificationHelpers';
-import PromotionService from '../../promotions/server/PromotionService';
 
 export const slackCurrentUserFragment = {
   name: 1,

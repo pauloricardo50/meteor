@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 
-import { getCookie } from 'core/utils/cookiesHelpers';
+import { TRACKING_COOKIE } from '../../../../api/analytics/analyticsConstants';
+import { getCookie } from '../../../../utils/cookiesHelpers';
 import HistoryWatcher from '../../HistoryWatcher';
 
 const routes = {

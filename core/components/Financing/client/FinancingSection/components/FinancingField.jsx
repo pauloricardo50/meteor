@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import cx from 'classnames';
-import { AutoForm } from 'uniforms-material';
+import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { compose, withProps } from 'recompose';
+import { AutoForm } from 'uniforms-material';
 
-import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
+import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingInput from './FinancingInput';
 
 export const FinancingField = ({
@@ -39,24 +39,32 @@ export default compose(
   withProps(
     ({
       max,
+      min,
       calculatePlaceholder,
       placeholder,
       id,
       allowUndefined,
       updateStructure,
+      type,
       ...props
     }) => {
       // The schema never changes
-      const [schema] = useState(
-        new SimpleSchema2Bridge(
-          new SimpleSchema({
-            [id]: { type: Number, optional: allowUndefined },
-          }),
-        ),
+      const schema = useMemo(
+        () =>
+          new SimpleSchema2Bridge(
+            new SimpleSchema({
+              [id]: {
+                type: type === 'text' ? String : Number,
+                optional: allowUndefined,
+              },
+            }),
+          ),
+        [],
       );
 
       return {
         max: typeof max === 'function' ? max(props) : max,
+        min: typeof min === 'function' ? min(props) : min,
         placeholder: calculatePlaceholder
           ? calculatePlaceholder(props)
           : placeholder,

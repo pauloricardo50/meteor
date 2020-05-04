@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/loans/loanConstants';
 import T from '../../../../../../components/Translation';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../loans/loanConstants';
 import PdfTable from '../../PdfTable';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
 

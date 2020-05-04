@@ -1,6 +1,6 @@
-import Security from '../Security';
-import { ROLES } from '../../constants';
 import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
+import Security from '../Security';
 
 class UserSecurity {
   isAllowedToInsertByRole = ({ role }) => {

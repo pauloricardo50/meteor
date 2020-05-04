@@ -1,7 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
-import PdfTableTooltips from './PdfTableTooltips';
+
 import PdfTableRow from './PdfTableRow';
+import PdfTableTooltips from './PdfTableTooltips';
 
 export const ROW_TYPES = {
   TITLE: 'TITLE',

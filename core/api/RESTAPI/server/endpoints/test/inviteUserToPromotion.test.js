@@ -1,21 +1,22 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import { PROMOTION_STATUS } from '../../../../constants';
+import { checkEmails } from '../../../../../utils/testHelpers';
+import generator from '../../../../factories/server';
+import { PROMOTION_STATUS } from '../../../../promotions/promotionConstants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
-import inviteUserToPromotion from '../inviteUserToPromotion';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import generator from '../../../../factories/server';
-import { checkEmails } from '../../../../../utils/testHelpers';
+import inviteUserToPromotion from '../inviteUserToPromotion';
 
 let user;
 let promotionId;

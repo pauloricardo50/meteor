@@ -1,13 +1,10 @@
 import { compose, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
-import {
-  ORGANISATION_FEATURES,
-  RESIDENCE_TYPE,
-  CANTONS,
-} from 'core/api/constants';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { lenderRules } from 'core/api/fragments';
+import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
+import { adminOrganisations } from 'core/api/organisations/queries';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 
 export default compose(
   withSmartQuery({

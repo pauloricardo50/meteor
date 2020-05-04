@@ -1,7 +1,7 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withRouter } from 'react-router-dom';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';

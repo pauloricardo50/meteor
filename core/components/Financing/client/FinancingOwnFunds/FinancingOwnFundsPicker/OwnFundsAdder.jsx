@@ -2,8 +2,8 @@ import React from 'react';
 
 import Button from '../../../../Button';
 import T from '../../../../Translation';
-import FinancingOwnFundsDialogContainer from './FinancingOwnFundsDialogContainer';
 import FinancingOwnFundsDialog from './FinancingOwnFundsDialog';
+import FinancingOwnFundsDialogContainer from './FinancingOwnFundsDialogContainer';
 
 const OwnFundsAdder = ({
   handleOpen,

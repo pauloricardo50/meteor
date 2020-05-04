@@ -1,11 +1,13 @@
 import { borrowerSearch } from '../../borrowers/queries';
-import { loanSearch } from '../../loans/queries';
-import { propertySearch } from '../../properties/queries';
-import { userSearch } from '../../users/queries';
-import { promotionSearch } from '../../promotions/queries';
 import { contactSearch } from '../../contacts/queries';
+import { insuranceRequestSearch } from '../../insuranceRequests/queries';
+import { insuranceSearch } from '../../insurances/queries';
+import { loanSearch } from '../../loans/queries';
 import { organisationSearch } from '../../organisations/queries';
-import { COLLECTIONS } from '../../constants';
+import { promotionSearch } from '../../promotions/queries';
+import { propertySearch } from '../../properties/queries';
+import { COLLECTIONS } from '../../server/serverConstants';
+import { userSearch } from '../../users/queries';
 
 const collectionSearches = {
   [COLLECTIONS.USERS_COLLECTION]: searchQuery =>
@@ -35,6 +37,17 @@ const collectionSearches = {
       .fetch(),
   [COLLECTIONS.BORROWERS_COLLECTION]: searchQuery =>
     borrowerSearch.clone({ searchQuery, $body: { name: 1, age: 1 } }).fetch(),
+  [COLLECTIONS.INSURANCE_REQUESTS_COLLECTION]: searchQuery =>
+    insuranceRequestSearch
+      .clone({ searchQuery, $body: { name: 1, status: 1 } })
+      .fetch(),
+  [COLLECTIONS.INSURANCES_COLLECTION]: searchQuery =>
+    insuranceSearch
+      .clone({
+        searchQuery,
+        $body: { name: 1, status: 1, insuranceRequest: { _id: 1 } },
+      })
+      .fetch(),
 };
 
 export const searchDatabaseResolver = ({ searchQuery, collection }) => {

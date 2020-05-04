@@ -1,15 +1,16 @@
 import React from 'react';
+import moment from 'moment';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
-import moment from 'moment';
 
-import { newLoans, loanHistogram } from 'core/api/stats/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { Percent } from 'core/components/Translation';
-import Select from 'core/components/Select';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { loanHistogram, newLoans } from 'core/api/stats/queries';
 import Histogram from 'core/components/charts/Histogram';
-import IconButton from 'core/components/IconButton';
 import DialogSimple from 'core/components/DialogSimple';
+import IconButton from 'core/components/IconButton';
+import Select from 'core/components/Select';
+import { Percent } from 'core/components/Translation';
+
 import StatItem from './StatItem';
 
 const formatDate = date =>

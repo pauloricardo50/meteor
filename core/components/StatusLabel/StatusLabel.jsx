@@ -1,40 +1,47 @@
 import React from 'react';
-import cx from 'classnames';
 import Tooltip from '@material-ui/core/Tooltip';
+import cx from 'classnames';
 
-import colors from '../../config/colors';
 import {
-  PROMOTION_STATUS,
-  PROMOTIONS_COLLECTION,
-} from '../../api/promotions/promotionConstants';
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCE_REQUEST_STATUS,
+} from '../../api/insuranceRequests/insuranceRequestConstants';
 import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_LOT_REDUCED_STATUS,
+  INSURANCES_COLLECTION,
+  INSURANCE_STATUS,
+} from '../../api/insurances/insuranceConstants';
+import {
+  LENDERS_COLLECTION,
+  LENDER_STATUS,
+} from '../../api/lenders/lenderConstants';
+import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
+import { updateDocument } from '../../api/methods/methodDefinitions';
+import {
   PROMOTION_LOTS_COLLECTION,
+  PROMOTION_LOT_REDUCED_STATUS,
+  PROMOTION_LOT_STATUS,
 } from '../../api/promotionLots/promotionLotConstants';
 import {
   PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_OPTION_STATUS,
 } from '../../api/promotionOptions/promotionOptionConstants';
-import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
-import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
 import {
-  REVENUES_COLLECTION,
-  REVENUE_STATUS,
-  COMMISSION_STATUS,
-} from '../../api/revenues/revenueConstants';
+  PROMOTIONS_COLLECTION,
+  PROMOTION_STATUS,
+} from '../../api/promotions/promotionConstants';
 import {
   PROPERTIES_COLLECTION,
   PROPERTY_STATUS,
 } from '../../api/properties/propertyConstants';
 import {
-  LENDERS_COLLECTION,
-  LENDER_STATUS,
-} from '../../api/lenders/lenderConstants';
-
-import T from '../Translation';
+  COMMISSION_STATUS,
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from '../../api/revenues/revenueConstants';
+import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
+import colors from '../../config/colors';
 import DropdownMenu from '../DropdownMenu';
-import { updateDocument } from '../../api/methods/methodDefinitions';
+import T from '../Translation';
 
 export const getStatuses = collection => {
   switch (collection) {
@@ -49,6 +56,19 @@ export const getStatuses = collection => {
         [LOAN_STATUS.FINALIZED]: colors.success,
         [LOAN_STATUS.UNSUCCESSFUL]: colors.error,
         [LOAN_STATUS.TEST]: colors.warning,
+      };
+
+    case INSURANCE_REQUESTS_COLLECTION:
+      return {
+        [INSURANCE_REQUEST_STATUS.LEAD]: colors.mix,
+        [INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD]: colors.secondary,
+        [INSURANCE_REQUEST_STATUS.ONGOING]: colors.primary,
+        [INSURANCE_REQUEST_STATUS.PENDING]: colors.warning,
+        [INSURANCE_REQUEST_STATUS.CLOSING]: colors.tertiary,
+        [INSURANCE_REQUEST_STATUS.BILLING]: colors.success,
+        [INSURANCE_REQUEST_STATUS.FINALIZED]: colors.success,
+        [INSURANCE_REQUEST_STATUS.UNSUCCESSFUL]: colors.error,
+        [INSURANCE_REQUEST_STATUS.TEST]: colors.warning,
       };
 
     case PROMOTIONS_COLLECTION:
@@ -109,6 +129,14 @@ export const getStatuses = collection => {
         [PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST]: colors.warning,
         [PROMOTION_OPTION_STATUS.RESERVED]: colors.primary,
         [PROMOTION_OPTION_STATUS.SOLD]: colors.error,
+      };
+
+    case INSURANCES_COLLECTION:
+      return {
+        [INSURANCE_STATUS.SUGGESTED]: colors.mix,
+        [INSURANCE_STATUS.SIGNED]: colors.tertiary,
+        [INSURANCE_STATUS.DECLINED]: colors.error,
+        [INSURANCE_STATUS.POLICED]: colors.success,
       };
 
     default:

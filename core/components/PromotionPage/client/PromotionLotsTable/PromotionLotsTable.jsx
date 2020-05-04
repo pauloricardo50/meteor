@@ -1,19 +1,19 @@
 import React, { useContext } from 'react';
 import cx from 'classnames';
 
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
-import T from '../../../Translation';
-import TableWithModal from '../../../Table/TableWithModal';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
+import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import MongoSelect from '../../../Select/MongoSelect';
+import TableWithModal from '../../../Table/TableWithModal';
+import T from '../../../Translation';
+import PromotionLotDetail from '../PromotionLotDetail';
 import PromotionMetadataContext from '../PromotionMetadata';
+import LotDocumentsManager from './LotDocumentsManager';
+import PromotionLotModifier from './PromotionLotModifier';
 import {
   AppPromotionLotsTableContainer,
   ProPromotionLotsTableContainer,
 } from './PromotionLotsTableContainer';
-import PromotionLotModifier from './PromotionLotModifier';
-import LotDocumentsManager from './LotDocumentsManager';
-import PromotionLotDetail from '../PromotionLotDetail';
 
 const PromotionLotsTable = ({
   rows,

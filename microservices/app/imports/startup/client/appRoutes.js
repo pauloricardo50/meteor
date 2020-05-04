@@ -1,25 +1,24 @@
+import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import DevPage from 'core/components/DevPage/loadable';
-import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
 import EmailVerificationPage from 'core/components/EmailVerificationPage/loadable';
 import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage/loadable';
-import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import NotFound from 'core/components/NotFound/loadable';
-import RefinancingPage from '../../client/pages/RefinancingPage/RefinancingPage';
+import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
+
 import AppAccountPage from '../../client/pages/AppAccountPage/loadable';
+import AppPage from '../../client/pages/AppPage';
+import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
 import AppWidget1Page from '../../client/pages/AppWidget1Page/loadable';
 import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
+import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import FilesPage from '../../client/pages/FilesPage/loadable';
 import FinancingPage from '../../client/pages/FinancingPage/loadable';
-import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
-import AppPromotionLotPage from '../../client/pages/AppPromotionLotPage/loadable';
-import AppPromotionOptionPage from '../../client/pages/AppPromotionOptionPage/loadable';
-import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
-import WelcomePage from '../../client/pages/WelcomePage/loadable';
-import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
-import DashboardPage from '../../client/pages/DashboardPage/loadable';
+import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
-import AppPage from '../../client/pages/AppPage';
+import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
+import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
+import WelcomePage from '../../client/pages/WelcomePage/loadable';
 
 export default {
   REFINANCING_PAGE: {

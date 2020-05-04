@@ -1,32 +1,33 @@
 import SimpleSchema from 'simpl-schema';
 
 import {
-  createdAt,
-  updatedAt,
-  contactsSchema,
   additionalDocuments,
-  documentsField,
+  adminNotesSchema,
   cacheField,
+  contactsSchema,
+  createdAt,
+  documentsField,
+  moneyField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
+import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import {
-  LOAN_STATUS,
-  PURCHASE_TYPE,
-  OWNER,
-  CANTONS,
-  STEPS,
   APPLICATION_TYPES,
+  CANTONS,
   LOAN_CATEGORIES,
+  LOAN_STATUS,
+  OWNER,
+  PURCHASE_TYPE,
+  STEPS,
 } from '../loanConstants';
-import { RESIDENCE_TYPE } from '../../constants';
-import StructureSchema from './StructureSchema';
-import promotionSchema from './promotionSchema';
 import {
   borrowerIdsSchema,
-  propertyIdsSchema,
-  previousLoanTranchesSchema,
   maxPropertyValueSchema,
-  adminNotesSchema,
+  previousLoanTranchesSchema,
+  propertyIdsSchema,
 } from './otherSchemas';
+import promotionSchema from './promotionSchema';
+import StructureSchema from './StructureSchema';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -79,7 +80,6 @@ const LoanSchema = new SimpleSchema({
     optional: true,
   },
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
-  previousLender: { type: String, optional: true },
   customName: { type: String, optional: true },
   applicationType: {
     type: String,
@@ -87,25 +87,11 @@ const LoanSchema = new SimpleSchema({
     defaultValue: APPLICATION_TYPES.SIMPLE,
     uniforms: { placeholder: null },
   },
-  ...promotionSchema,
-  ...borrowerIdsSchema,
-  ...propertyIdsSchema,
+  previousLender: { type: String, optional: true },
+  previousLoanAmortization: moneyField,
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
-  revenueLinks: {
-    type: Array,
-    optional: true,
-    autoValue() {
-      // Avoid a weird edge case where removing revenues would cause this
-      // potential empty array to throw on MongoDB with: `E11000 duplicate key error collection: meteor.loans index: revenueLinks_1 dup key: { : undefined }`
-      if (this.isSet && Array.isArray(this.value) && this.value.length === 0) {
-        this.unset();
-      }
-    },
-  },
-  'revenueLinks.$': String,
-  userCache: cacheField,
   step: {
     type: String,
     defaultValue: STEPS.SOLVENCY,
@@ -128,12 +114,6 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(LOAN_CATEGORIES),
     uniforms: { placeholder: null },
   },
-  lendersCache: { type: Array, optional: true },
-  'lendersCache.$': cacheField,
-  tasksCache: { type: Array, optional: true },
-  'tasksCache.$': cacheField,
-  financedPromotionLink: { type: Object, optional: true },
-  'financedPromotionLink._id': { type: String, optional: true },
   simpleBorrowersForm: { type: Boolean, defaultValue: true },
   ...adminNotesSchema,
   proNote: {
@@ -141,6 +121,26 @@ const LoanSchema = new SimpleSchema({
     optional: true,
   },
   disbursementDate: { type: Date, optional: true },
+  frontTagId: { type: String, optional: true },
+
+  // Link storage fields
+  ...promotionSchema,
+  ...borrowerIdsSchema,
+  ...propertyIdsSchema,
+  revenueLinks: {
+    type: Array,
+    optional: true,
+    autoValue() {
+      // Avoid a weird edge case where removing revenues would cause this
+      // potential empty array to throw on MongoDB with: `E11000 duplicate key error collection: meteor.loans index: revenueLinks_1 dup key: { : undefined }`
+      if (this.isSet && Array.isArray(this.value) && this.value.length === 0) {
+        this.unset();
+      }
+    },
+  },
+  'revenueLinks.$': String,
+  financedPromotionLink: { type: Object, optional: true },
+  'financedPromotionLink._id': { type: String, optional: true },
   selectedLenderOrganisationLink: { type: Object, optional: true },
   'selectedLenderOrganisationLink._id': { type: String, optional: true },
   assigneeLinks: { type: Array, optional: true },
@@ -161,7 +161,16 @@ const LoanSchema = new SimpleSchema({
       }
     },
   },
-  frontTagId: { type: String, optional: true },
+  insuranceRequestLinks: { type: Array, optional: true, defaultValue: [] },
+  'insuranceRequestLinks.$': Object,
+  'insuranceRequestLinks.$._id': String,
+
+  // Cache fields
+  lendersCache: { type: Array, optional: true },
+  'lendersCache.$': cacheField,
+  tasksCache: { type: Array, optional: true },
+  'tasksCache.$': cacheField,
+  userCache: cacheField,
 });
 
 export default LoanSchema;

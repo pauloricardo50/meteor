@@ -4,12 +4,12 @@ import React, { useContext } from 'react';
 import { Element } from 'react-scroll';
 
 import T from '../../../Translation';
-import { ProPromotionLotsTable } from '../PromotionLotsTable';
 import LotsTable from '../LotsTable';
-import PromotionTimelineForm from '../PromotionTimelineForm';
+import { ProPromotionLotsTable } from '../PromotionLotsTable';
 import PromotionMetadataContext from '../PromotionMetadata';
-import PromotionTimeline from '../PromotionTimeline';
 import PromotionOptionsTable from '../PromotionOptionsTable';
+import PromotionTimeline from '../PromotionTimeline';
+import PromotionTimelineForm from '../PromotionTimelineForm';
 import AppPromotionPageOverview from './AppPromotionPageOverview';
 
 const PromotionPageOverview = ({ promotion, loan }) => {

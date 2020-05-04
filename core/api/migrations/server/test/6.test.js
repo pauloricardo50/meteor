@@ -1,12 +1,12 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from '../../../factories/server';
-import { Organisations } from '../../..';
-import OrganisationService from '../../../organisations/server/OrganisationService';
+/* eslint-env mocha */
+import { expect } from 'chai';
 
-import { up, down } from '../6';
+import generator from '../../../factories/server';
+import Organisations from '../../../organisations';
+import OrganisationService from '../../../organisations/server/OrganisationService';
+import { down, up } from '../6';
 
 describe('Migration 6', () => {
   beforeEach(() => {

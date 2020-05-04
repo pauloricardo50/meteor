@@ -19,6 +19,7 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.USER_LOGGED_IN]: {
     name: 'User Logged in',
+    properties: ['type'],
   },
   [EVENTS.USER_VERIFIED_EMAIL]: {
     name: 'User Verified',
@@ -78,6 +79,7 @@ export const EVENTS_CONFIG = {
       { name: 'promotionId', optional: true },
       { name: 'referralId', optional: true },
       { name: 'anonymous', optional: true },
+      { name: 'purchaseType', optional: true },
     ],
   },
   [EVENTS.LOAN_STATUS_CHANGED]: {
@@ -100,6 +102,7 @@ export const EVENTS_CONFIG = {
       'loanName',
       'canton',
       'type',
+      'purchaseType',
       { name: 'anonymous', optional: true },
       { name: 'proProperty', optional: true },
       { name: 'proPropertyValue', optional: true },

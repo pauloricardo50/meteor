@@ -1,28 +1,30 @@
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
 import {
-  anonymousCreateUser,
-  proInviteUser,
-  adminCreateUser,
-  proInviteUserToOrganisation,
-} from '../../users/methodDefinitions';
+  adminLoanInsert,
+  anonymousLoanInsert,
+  loanInsertBorrowers,
+  loanSetStatus,
+  setMaxPropertyValueOrBorrowRatio,
+  userLoanInsert,
+} from '../../loans/methodDefinitions';
+import LoanService from '../../loans/server/LoanService';
+import PromotionService from '../../promotions/server/PromotionService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { followImpersonatedSession } from '../../sessions/methodDefinitions';
 import SessionService from '../../sessions/server/SessionService';
 import {
-  loanSetStatus,
-  loanInsertBorrowers,
-  setMaxPropertyValueWithoutBorrowRatio,
-  anonymousLoanInsert,
-} from '../../loans/methodDefinitions';
-import { followImpersonatedSession } from '../../sessions/methodDefinitions';
-import LoanService from '../../loans/server/LoanService';
+  adminCreateUser,
+  anonymousCreateUser,
+  proInviteUser,
+  proInviteUserToOrganisation,
+} from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import EVENTS from '../events';
 import {
+  analyticsCTA,
   analyticsLogin,
   analyticsPage,
   analyticsVerifyEmail,
-  analyticsCTA,
 } from '../methodDefinitions';
 import { addAnalyticsListener } from './analyticsHelpers';
 
@@ -168,9 +170,9 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: analyticsLogin,
-  func: ({ analytics }) => {
+  func: ({ analytics, params }) => {
     analytics.identify();
-    analytics.track(EVENTS.USER_LOGGED_IN);
+    analytics.track(EVENTS.USER_LOGGED_IN, params);
   },
 });
 
@@ -197,7 +199,7 @@ addAnalyticsListener({
 });
 
 addAnalyticsListener({
-  method: setMaxPropertyValueWithoutBorrowRatio,
+  method: setMaxPropertyValueOrBorrowRatio,
   func: ({ analytics, params: { loanId } }) => {
     const loan = LoanService.get(loanId, {
       maxPropertyValue: 1,
@@ -207,6 +209,7 @@ addAnalyticsListener({
       anonymous: 1,
       promotions: { _id: 1, name: 1 },
       name: 1,
+      purchaseType: 1,
     });
     const {
       maxPropertyValue = {},
@@ -216,6 +219,7 @@ addAnalyticsListener({
       promotions = [],
       hasPromotion,
       name: loanName,
+      purchaseType,
     } = loan;
     const { canton, main = {}, second = {}, type } = maxPropertyValue;
     const {
@@ -261,6 +265,7 @@ addAnalyticsListener({
       canton,
       type,
       anonymous,
+      purchaseType,
       proPropertyValue: property.value,
       proProperty: property._id,
       proPropertyAddress: property.address,
@@ -329,13 +334,16 @@ addAnalyticsListener({
 });
 
 addAnalyticsListener({
-  method: anonymousLoanInsert,
+  method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert],
   func: ({
     analytics,
     params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
-    const { name: loanName } = LoanService.get(loanId, { name: 1 });
+    const { name: loanName, purchaseType } = LoanService.get(loanId, {
+      name: 1,
+      purchaseType: 1,
+    });
     analytics.track(
       EVENTS.LOAN_CREATED,
       {
@@ -344,6 +352,7 @@ addAnalyticsListener({
         referralId,
         anonymous: true,
         loanName,
+        purchaseType,
       },
       trackingId,
     );

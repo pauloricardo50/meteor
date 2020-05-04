@@ -1,7 +1,7 @@
 import React from 'react';
 
 import T from '../../../../Translation';
-import PromotionReservationProgress from '../PromotionReservationProgress';
+import PromotionReservationProgress from '../../../PromotionReservationProgress';
 
 const PromotionReservationProgressEditor = ({ promotionOption, loan }) => (
   <>

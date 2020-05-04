@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import Icon from 'core/components/Icon';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import { toMoney } from '../../../../../utils/conversionFunctions';
+import Icon from '../../../../Icon';
 import T from '../../../../Translation';
 import { getMaxPledge } from './FinancingOwnFundsPickerHelpers';
-import { toMoney } from '../../../../../utils/conversionFunctions';
 
 const FinancingOwnFundsPledgeWarning = props => {
   if (props.usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE) {

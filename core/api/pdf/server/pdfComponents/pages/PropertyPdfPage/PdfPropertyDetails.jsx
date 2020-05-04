@@ -1,12 +1,12 @@
 import React from 'react';
 
+import T, { Money } from '../../../../../../components/Translation';
 import Calculator from '../../../../../../utils/Calculator';
-import T from '../../../../../../components/Translation';
-import {
-  PROPERTY_TYPE,
-  FLAT_TYPE,
-} from '../../../../../properties/propertyConstants';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
+import {
+  FLAT_TYPE,
+  PROPERTY_TYPE,
+} from '../../../../../properties/propertyConstants';
 import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 const getPropertyRows = loan => {
@@ -32,6 +32,7 @@ const getPropertyRows = loan => {
     minergie,
     yearlyExpenses,
     promotion,
+    totalValue,
   } = Calculator.selectProperty({ loan });
   const { residenceType } = loan;
 
@@ -40,6 +41,10 @@ const getPropertyRows = loan => {
       label: 'Bien immobilier',
       colspan: 2,
       type: ROW_TYPES.TITLE,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.totalValue" />,
+      data: <Money value={totalValue} />,
     },
     {
       label: <T id="PDF.projectInfos.property.promotionName" />,

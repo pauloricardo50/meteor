@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
 import TextField from 'core/components/Material/TextField';
 import T from 'core/components/Translation';
 

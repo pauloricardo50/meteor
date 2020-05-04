@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
-import { compose, withProps, withState } from 'recompose';
+// import MuiDialog from '@material-ui/core/Dialog';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import pick from 'lodash/pick';
-import MuiDialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { compose, withProps, withState } from 'recompose';
 
+import loadable from '../../utils/loadable';
 import Button from '../Button';
-import AutoForm from './AutoForm';
-import { makeCustomAutoField, CustomAutoField } from './AutoFormComponents';
-import AutoFormDialogContent from './AutoFormDialogContent';
+import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
 import AutoFormDialogActions from './AutoFormDialogActions';
+import AutoFormDialogContent from './AutoFormDialogContent';
+
+const MuiDialog = loadable({
+  loader: () => import('@material-ui/core/Dialog'),
+});
+const DialogTitle = loadable({
+  loader: () => import('@material-ui/core/DialogTitle'),
+});
+const AutoForm = loadable({
+  loader: () => import('./AutoForm'),
+});
 
 const getAutoFormProps = props =>
   pick(props, [
@@ -20,6 +30,7 @@ const getAutoFormProps = props =>
     'showInlineError',
     'disabled',
     'onChangeModel',
+    'onSubmitSuccess',
   ]);
 
 export class AutoFormDialog extends Component {
@@ -51,6 +62,7 @@ export class AutoFormDialog extends Component {
       disableActions = false,
       layout,
       maxWidth = 'sm',
+      onOpen,
       ...otherProps
     } = this.props;
     const schemaKeys = this.props.schema._schemaKeys;
@@ -61,6 +73,10 @@ export class AutoFormDialog extends Component {
         event.preventDefault();
       }
       setOpen(true);
+
+      if (onOpen) {
+        onOpen();
+      }
     };
     const handleClose = event => {
       if (event && event.stopPropagation) {

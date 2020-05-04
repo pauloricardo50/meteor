@@ -1,23 +1,28 @@
-import ReactDOMServer from 'react-dom/server';
-import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-import {
-  EMAIL_TEMPLATES,
-  EMAIL_IDS,
-  CTA_URL_DEFAULT,
-  FOOTER_TYPES,
-  EPOTEK_PHONE,
-  FROM_EMAIL,
-} from '../emailConstants';
-import {
-  getAccountsUrl,
-  notificationTemplateDefaultOverride,
-  notificationAndCtaTemplateDefaultOverride,
-} from './emailHelpers';
-import PromotionLogos from './components/PromotionLogos';
+import moment from 'moment';
+
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import {
+  CTA_URL_DEFAULT,
+  EMAIL_IDS,
+  EMAIL_TEMPLATES,
+  EPOTEK_PHONE,
+  FOOTER_TYPES,
+  FROM_EMAIL,
+} from '../emailConstants';
+import PromotionLogos from './components/PromotionLogos';
+import PromotionOptionProgress, {
+  getPromotionProgressData,
+  promotionOptionProgressStyles,
+} from './components/PromotionOptionProgress';
+import {
+  getAccountsUrl,
+  notificationAndCtaTemplateDefaultOverride,
+  notificationTemplateDefaultOverride,
+  renderEmailComponent,
+} from './emailHelpers';
 
 const emailConfigs = {};
 
@@ -162,9 +167,10 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       templateContent: [
         {
           name: 'logos',
-          content: ReactDOMServer.renderToStaticMarkup(
-            PromotionLogos({ logoUrls }),
-          ),
+          content: renderEmailComponent({
+            Component: PromotionLogos,
+            props: { logoUrls },
+          }),
         },
       ],
     };
@@ -311,9 +317,10 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       templateContent: [
         {
           name: 'body-content-1',
-          content: ReactDOMServer.renderToStaticMarkup(
-            LoanChecklistEmail({ loan, basicDocumentsOnly }),
-          ),
+          content: renderEmailComponent({
+            Component: LoanChecklistEmail,
+            props: { loan, basicDocumentsOnly },
+          }),
         },
       ],
       senderName: assigneeName,
@@ -332,11 +339,10 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   }),
 });
 
-const promotionEmailOverridesPro = function(
-  { promotionId, fromEmail },
-  { title, body, cta },
-) {
+const promotionEmailOverridesPro = function(params, { title, body, cta }) {
+  const { promotionId, promotionOptionId, fromEmail, showProgress } = params;
   const { variables } = this.template;
+
   return {
     variables: [
       { name: variables.TITLE, content: title },
@@ -346,7 +352,19 @@ const promotionEmailOverridesPro = function(
         name: variables.CTA_URL,
         content: `${Meteor.settings.public.subdomains.pro}/promotions/${promotionId}`,
       },
+      { name: variables.CSS, content: promotionOptionProgressStyles },
     ],
+    templateContent: showProgress
+      ? [
+          {
+            name: 'body-content-1',
+            content: renderEmailComponent({
+              Component: PromotionOptionProgress,
+              props: getPromotionProgressData({ promotionOptionId }),
+            }),
+          },
+        ]
+      : undefined,
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };

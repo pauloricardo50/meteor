@@ -1,5 +1,7 @@
-import { formatMessage } from 'core/utils/intl';
 import { getChecklistMissingInformations } from 'core/components/LoanChecklist/helpers';
+import intl from 'core/utils/intl';
+
+const { formatMessage } = intl;
 
 export const BACKGROUND_INFO_TYPE = {
   TEMPLATE: 'TEMPLATE',
@@ -7,7 +9,7 @@ export const BACKGROUND_INFO_TYPE = {
 };
 
 const formatObjectMissingDocuments = ({ title, labels }) =>
-  labels.map(label => `- ${title}: ${label}`).join('\n');
+  labels.map(({ label }) => `- ${title}: ${label}`).join('\n');
 
 const formatMissingDocuments = loan => {
   const {

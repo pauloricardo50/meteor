@@ -1,16 +1,16 @@
 import { Match } from 'meteor/check';
 
-import UserService from '../../users/server/UserService';
-import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import Security from '../../security';
+import UserService from '../../users/server/UserService';
 import {
   adminProperties,
   anonymousProperty,
   proProperties,
-  userProperty,
   proPropertyUsers,
   propertySearch,
+  userProperty,
 } from '../queries';
 
 exposeQuery({ query: adminProperties, options: { allowFilterById: true } });

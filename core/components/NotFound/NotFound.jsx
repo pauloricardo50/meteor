@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
-import { logError } from 'core/api/slack/methodDefinitions';
+import { logError } from '../../api/errorLogger/methodDefinitions';
+import Button from '../Button';
 import Link from '../Link';
+import T from '../Translation';
 
 const styles = {
   section: {
@@ -36,7 +36,6 @@ export default class NotFound extends Component {
   }
 
   render() {
-    console.log('NOTFOUND???');
     const { to } = this.props;
     return (
       <section id="not-found-page" style={styles.section}>

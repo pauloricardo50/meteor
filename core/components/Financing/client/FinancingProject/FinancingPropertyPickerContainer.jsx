@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 import { compose, mapProps } from 'recompose';
 
-import { propertyInsert } from 'core/api/properties/methodDefinitions';
+import { updateStructure } from '../../../../api/loans/methodDefinitions';
+import { propertyInsert } from '../../../../api/properties/methodDefinitions';
 import T, { Money } from '../../../Translation';
-import SingleStructureContainer from '../containers/SingleStructureContainer';
-import { updateStructure } from '../../../../api';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
+import SingleStructureContainer from '../containers/SingleStructureContainer';
 
 const FinancingPropertyPickerContainer = compose(
   FinancingDataContainer,

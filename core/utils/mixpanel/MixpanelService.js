@@ -1,5 +1,5 @@
-import { ROLES } from 'core/api/constants';
-import { getMixpanelAuthorization } from '../../api';
+import { getMixpanelAuthorization } from '../../api/methods/methodDefinitions';
+import { ROLES } from '../../api/users/userConstants';
 
 const MIXPANEL_URL = 'https://mixpanel.com/api/2.0/';
 

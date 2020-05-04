@@ -1,8 +1,8 @@
 import React from 'react';
-import { withState } from 'recompose';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/pro-light-svg-icons/faKey';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import { withState } from 'recompose';
 
 import Button from '../../Button';
 import T from '../../Translation';

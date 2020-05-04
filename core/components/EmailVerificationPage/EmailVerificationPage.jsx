@@ -1,10 +1,13 @@
+import { Accounts } from 'meteor/accounts-base';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Accounts } from 'meteor/accounts-base';
 import { injectIntl } from 'react-intl';
-import { analyticsVerifyEmail, userVerifyEmail } from 'core/api/methods/index';
-import { getCookie } from 'core/utils/cookiesHelpers';
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
+
+import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
+import { analyticsVerifyEmail } from '../../api/analytics/methodDefinitions';
+import { userVerifyEmail } from '../../api/users/methodDefinitions';
+import { getCookie } from '../../utils/cookiesHelpers';
 
 class EmailVerificationPage extends Component {
   componentDidMount() {

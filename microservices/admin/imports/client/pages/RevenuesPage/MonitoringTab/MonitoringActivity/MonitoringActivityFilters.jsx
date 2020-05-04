@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 
-import DateRangePicker from 'core/components/DateInput/DateRangePicker';
-import Button from 'core/components/Button';
 import Box from 'core/components/Box';
+import Button from 'core/components/Button';
+import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 
 // Date at which we started enforcing continuous status changes
 const minDate = moment('15/11/2019', 'DD/MM/YYYY');

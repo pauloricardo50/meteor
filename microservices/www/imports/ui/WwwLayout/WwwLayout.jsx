@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import WwwTopNav from './WwwTopNav';
-import WwwFooter from './WwwFooter';
+
+import SimpleContactButton from 'core/components/ContactButton/SimpleContactButton';
+
 import WwwContent from './WwwContent';
+import WwwFooter from './WwwFooter';
+import WwwTopNav from './WwwTopNav';
 
 const WwwLayout = ({ children, className }) => (
-  <div className={`www-layout animated fadeIn ${className}`}>{children}</div>
+  <div className={`www-layout animated fadeIn ${className}`}>
+    {children}
+    <SimpleContactButton style={{ width: '250px', fontSize: '0.875rem' }} />
+  </div>
 );
 WwwLayout.propTypes = {
   children: PropTypes.node.isRequired,

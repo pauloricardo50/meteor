@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { shouldDisplayFile } from 'core/api/files/fileHelpers';
 import T from '../Translation';
 import Uploader from './Uploader';
-
 import UploaderArrayContainer from './UploaderArrayContainer';
 
 export const UploaderArray = ({
@@ -36,6 +34,7 @@ export const UploaderArray = ({
           key={doc._id + documentObject.id}
           currentValue={doc.documents && doc.documents[documentObject.id]}
           docId={doc._id}
+          doc={doc}
           allowRequireByAdmin={allowRequireByAdmin}
           {...props}
         />

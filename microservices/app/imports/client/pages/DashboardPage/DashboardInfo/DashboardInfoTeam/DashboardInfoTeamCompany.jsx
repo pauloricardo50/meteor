@@ -5,6 +5,7 @@ import {
   employeesByEmail,
   placeholderEmployee,
 } from 'core/arrays/epotekEmployees';
+
 import DashboardInfoTeamMember from './DashboardInfoTeamMember';
 
 // Removes duplicates from an array of objects, by a key in the objects
@@ -30,7 +31,7 @@ const getTeam = (mainAssignee, hasPromotion) => {
   return [assignee, employeesByEmail['jeanluc@e-potek.ch']];
 };
 
-const DashboardInfoTeamCompany = ({ hasPromotion, assignees }) => {
+const DashboardInfoTeamCompany = ({ hasPromotion, assignees = [] }) => {
   const mainAssignee = assignees.find(({ $metadata }) => $metadata?.isMain);
   const team = getTeam(mainAssignee, hasPromotion);
 

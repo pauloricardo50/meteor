@@ -1,7 +1,7 @@
 import {
-  RESIDENCE_TYPE,
-  PROPERTY_TYPE,
   MINERGIE_CERTIFICATE,
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
   VOLUME_NORM,
 } from './propertyConstants';
 

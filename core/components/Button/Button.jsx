@@ -1,13 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
 import MuiButton from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
-import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
+import omit from 'lodash/omit';
+import PropTypes from 'prop-types';
+import { compose, mapProps } from 'recompose';
 
 import Icon from '../Icon';
 import Link from '../Link';

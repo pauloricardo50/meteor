@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
 import OfferAdder from 'core/components/OfferAdder';
 import OfferList from 'core/components/OfferList';
-import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
-import LendersActivation from './LendersActivation';
+
 import LenderList from './LenderList';
 import LenderPicker from './LenderPicker';
+import LendersActivation from './LendersActivation';
 import LendersTabEmptyState from './LendersTabEmptyState';
 
 const shouldRenderTab = ({ status, lenders = [] }) => {

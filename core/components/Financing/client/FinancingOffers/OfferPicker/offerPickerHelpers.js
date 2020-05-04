@@ -1,5 +1,5 @@
-import FinancingCalculator from '../../FinancingCalculator';
 import Calculator from '../../../../../utils/Calculator';
+import FinancingCalculator from '../../FinancingCalculator';
 import { getPropertyExpenses } from '../../FinancingResult/financingResultHelpers';
 
 export const getAmortizationForStructureWithOffer = ({

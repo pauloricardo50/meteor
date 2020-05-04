@@ -1,5 +1,6 @@
 import React from 'react';
-import withHider from 'core/containers/withHider';
+
+import withHider from '../../containers/withHider';
 import UploaderArray from './UploaderArray';
 
 const HiddenDocuments = props => (

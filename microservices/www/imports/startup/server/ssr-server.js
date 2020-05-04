@@ -1,14 +1,14 @@
 import { onPageLoad } from 'meteor/server-render';
 
 import React from 'react';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 import { renderToString } from 'react-dom/server';
 import { Helmet } from 'react-helmet';
-import { ServerStyleSheets } from '@material-ui/core/styles';
 
 import createStore from '../../redux';
 import * as startupConstants from '../shared/startupConstants';
-import ServerApp from './ServerApp';
 import { setHeaders } from './seo';
+import ServerApp from './ServerApp';
 
 const prepareState = store => {
   const preloadedState = store.getState();

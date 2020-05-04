@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+
 import DashboardInfoTeamForm from './DashboardInfoTeamForm';
 
 const DashboardInfoTeamAdder = ({ addContact }) => (

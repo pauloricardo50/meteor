@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-import MixpanelService from 'core/utils/mixpanel';
 import Loading from 'core/components/Loading';
+import MixpanelService from 'core/utils/mixpanel';
 
 const LastSeen = ({ userId }) => {
   const [lastSeen, setLastSeen] = useState(null);

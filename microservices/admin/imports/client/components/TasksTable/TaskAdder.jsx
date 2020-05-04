@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-
-import { AutoFormDialog } from 'core/components/AutoForm2';
 import { withProps } from 'recompose';
-import { taskInsert } from 'core/api/tasks/index';
+
+import { taskInsert } from 'core/api/tasks/methodDefinitions';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
+
 import { schema, taskFormLayout } from './TaskModifier';
 
 const TaskAdder = ({

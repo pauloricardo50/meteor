@@ -1,16 +1,16 @@
 import React from 'react';
 import moment from 'moment';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import T from 'core/components/Translation';
-import { ROW_TYPES } from '../../PdfTable/PdfTable';
-import { EXPENSE_TYPES } from '../../../../../lenderRules/lenderRulesConstants';
+import T from '../../../../../../components/Translation';
+import { toMoney } from '../../../../../../utils/conversionFunctions';
 import {
+  BORROWER_ACTIVITY_TYPES,
+  CIVIL_STATUS,
   OTHER_INCOME,
   OWN_FUNDS_TYPES,
-  CIVIL_STATUS,
-  BORROWER_ACTIVITY_TYPES,
 } from '../../../../../borrowers/borrowerConstants';
+import { EXPENSE_TYPES } from '../../../../../lenderRules/lenderRulesConstants';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 const renderWithComments = (value, comments = []) => {
   if (comments.length === 0) {

@@ -1,15 +1,15 @@
 import pick from 'lodash/pick';
 
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import {
-  PROMOTION_TYPES,
-  PURCHASE_TYPE,
-  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
-} from '../../api/constants';
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../api/promotionOptions/promotionOptionConstants';
+import { PROMOTION_TYPES } from '../../api/promotions/promotionConstants';
 import { sortByStatus } from '../sorting';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
@@ -116,10 +116,6 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     shouldUseConstructionNotaryFees({ loan, structureId }) {
       const { promotions } = loan;
 
-      if (loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION) {
-        return true;
-      }
-
       if (!this.isPromotionProperty({ loan, structureId })) {
         return false;
       }
@@ -128,7 +124,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      const promotion = promotions[0];
+      const [promotion] = promotions;
 
       return promotion.type === PROMOTION_TYPES.SHARE;
     }

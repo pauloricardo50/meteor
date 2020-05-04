@@ -1,4 +1,5 @@
 import { Mongo } from 'meteor/mongo';
+
 import omit from 'lodash/omit';
 
 const skippedCollections = ['_cacheMigrations', 'grapher_counts'];

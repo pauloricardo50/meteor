@@ -1,13 +1,17 @@
 import React from 'react';
-import { compose, branch, renderNothing, mapProps } from 'recompose';
+import { branch, compose, mapProps, renderNothing } from 'recompose';
 
-import { lenderRulesRemove, lenderRulesUpdateFilter } from 'core/api/methods';
 import {
+  formatFilter,
   isAllRule,
   parseFilter,
-  formatFilter,
 } from 'core/api/lenderRules/helpers';
+import {
+  lenderRulesRemove,
+  lenderRulesUpdateFilter,
+} from 'core/api/lenderRules/methodDefinitions';
 import Button from 'core/components/Button';
+
 import LenderRulesForm from './LenderRulesForm';
 
 export default compose(

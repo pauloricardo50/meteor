@@ -1,21 +1,22 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Roles } from 'meteor/alanning:roles';
-import { Redirect } from 'react-router-dom';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
-import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import PageHead from 'core/components/PageHead';
-import getBaseRedirect from 'core/utils/redirection';
 import useMedia from 'core/hooks/useMedia';
+import { handleLoggedOut } from 'core/utils/history';
+import getBaseRedirect from 'core/utils/redirection';
+
 import FileViewer from '../../components/FileViewer';
-import AdminTopNav from './AdminTopNav';
-import AdminSideNav from './AdminSideNav';
-import AdminLayoutContainer from './AdminLayoutContainer';
 import AdminKeyboardShortcuts from './AdminKeyboardShortcuts';
+import AdminLayoutContainer from './AdminLayoutContainer';
+import AdminSideNav from './AdminSideNav';
+import AdminTopNav from './AdminTopNav';
 
 const getRedirect = ({ currentUser, history }) => {
   const baseRedirect = getBaseRedirect(currentUser, history.location.pathname);
@@ -41,7 +42,7 @@ const getRedirect = ({ currentUser, history }) => {
 };
 
 const routeHasNoPadding = pathname => {
-  if (pathname.startsWith('/loan-board')) {
+  if (pathname.startsWith('/board')) {
     return true;
   }
 };

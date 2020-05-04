@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import { NOTARY_FEES } from 'core/config/financeConstants';
-import { toMoney } from 'core/utils/conversionFunctions';
-import { getLoanValue } from '../widget1Math';
+import { NOTARY_FEES } from '../../../config/financeConstants';
 import {
+  Widget1Suggester,
   widget1Constants,
   widget1Selectors,
-  Widget1Suggester,
 } from '../../../redux/widget1';
+import { toMoney } from '../../../utils/conversionFunctions';
+import { getLoanValue } from '../widget1Math';
 
 const getAcquisitionArray = state => {
   const propertyValue = widget1Selectors.makeSelectValue('property')(state);

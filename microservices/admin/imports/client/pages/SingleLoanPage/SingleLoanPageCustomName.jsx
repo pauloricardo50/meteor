@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import ClickToEditField from 'core/components/ClickToEditField';
-import { loanUpdate } from 'core/api/loans/index';
 import Icon from 'core/components/Icon';
 
 const SingleLoanPageCustomName = ({ customName, loanId }) => (
-  <h3 className="secondary">
+  <h3 className="secondary mt-0">
     <ClickToEditField
       value={customName}
       onSubmit={value =>

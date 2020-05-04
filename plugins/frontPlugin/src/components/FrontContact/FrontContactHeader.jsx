@@ -3,8 +3,8 @@ import cx from 'classnames';
 
 import IconButton from '../../core/components/IconButton';
 import FrontContactAddUser from './FrontContactAddUser';
-import FrontContactTaskAdder from './FrontContactTasks/FrontContactTaskAdder';
 import FrontContactNoteAdder from './FrontContactNoteAdder';
+import FrontContactTaskAdder from './FrontContactTasks/FrontContactTaskAdder';
 import FrontConversationTagger from './FrontConversationTagger/FrontConversationTagger';
 
 const { Front, subdomains } = window;
@@ -29,8 +29,8 @@ const FrontContactHeader = ({
   collection,
   conversation,
   refetch,
-  tags,
-  setTags,
+  tagIds,
+  setTagIds,
 }) => {
   const { name, email, avatar } = contact;
 
@@ -57,8 +57,9 @@ const FrontContactHeader = ({
       <div className="flex-row center-align sb ">
         <FrontConversationTagger
           conversation={conversation}
-          tags={tags}
-          setTags={setTags}
+          tagIds={tagIds}
+          setTagIds={setTagIds}
+          refetch={refetch}
         />
         <FrontContactTaskAdder
           collection={collection}

@@ -1,9 +1,9 @@
 import SecurityService from '../../security';
 import {
   lenderInsert,
+  lenderLinkOrganisationAndContact,
   lenderRemove,
   lenderUpdate,
-  lenderLinkOrganisationAndContact,
 } from '../methodDefinitions';
 import LenderService from './LenderService';
 

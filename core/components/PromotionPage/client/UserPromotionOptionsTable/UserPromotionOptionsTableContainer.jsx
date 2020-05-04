@@ -1,18 +1,15 @@
 import React from 'react';
-import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withState } from 'recompose';
 
+import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import { toMoney } from '../../../../utils/conversionFunctions';
-import T from '../../../Translation';
 import StatusLabel from '../../../StatusLabel';
-import {
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_STATUS,
-} from '../../../../api/constants';
-import PrioritySetter from './PrioritySetter';
-import RequestReservation from './RequestReservation';
+import T from '../../../Translation';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
+import PrioritySetter from './PrioritySetter';
+import RequestReservation from './RequestReservation';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -24,6 +21,7 @@ const makeMapPromotionOption = ({
   isAdmin,
 }) => (promotionOption, index, arr) => {
   const {
+    _collection,
     _id: promotionOptionId,
     promotionLots,
     loan: {
@@ -54,12 +52,7 @@ const makeMapPromotionOption = ({
       { raw: name, label: name },
       !isDashboardTable && {
         raw: status,
-        label: (
-          <StatusLabel
-            status={status}
-            collection={PROMOTION_OPTIONS_COLLECTION}
-          />
-        ),
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: value,

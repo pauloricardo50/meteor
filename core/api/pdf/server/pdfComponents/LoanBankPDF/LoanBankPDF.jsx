@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Calculator } from '../../../../../utils/Calculator';
 import withTranslationContext from '../../../../../components/Translation/withTranslationContext';
-import Pdf from '../Pdf/Pdf';
-import PropertyPdfPage from '../pages/PropertyPdfPage';
-import StructurePdfPage from '../pages/StructurePdfPage';
-import LenderRulesPdfPage from '../pages/LenderRulesPdfPage';
+import { Calculator } from '../../../../../utils/Calculator';
 import BorrowersPdfPage from '../pages/BorrowersPdfPage';
-import stylesheet from './stylesheet';
-import LoanBankCover from './LoanBankCover';
+import LenderRulesPdfPage from '../pages/LenderRulesPdfPage';
+import PropertyPdfPage from '../pages/PropertyPdfPage';
 import StructureAppendixPdfPage from '../pages/StructureAppendixPdfPage/StructureAppendixPdfPage';
+import StructurePdfPage from '../pages/StructurePdfPage';
+import Pdf from '../Pdf/Pdf';
+import LoanBankCover from './LoanBankCover';
+import stylesheet from './stylesheet';
 
 const getPages = ({
   loan,

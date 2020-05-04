@@ -1,18 +1,48 @@
-import { COMMISSION_STATUS } from 'imports/core/api/constants';
-import Revenues from '../revenues';
 import CollectionService from '../../helpers/server/CollectionService';
-import { REVENUE_STATUS } from '../revenueConstants';
+import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
+import InsuranceService from '../../insurances/server/InsuranceService';
+import LoanService from '../../loans/server/LoanService';
+import {
+  COMMISSION_STATUS,
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+} from '../revenueConstants';
+import Revenues from '../revenues';
 
 class RevenueService extends CollectionService {
   constructor() {
     super(Revenues);
   }
 
-  insert({ revenue, loanId }) {
+  insert({ revenue, loanId, insuranceId, insuranceRequestId }) {
     const revenueId = this.collection.insert(revenue);
 
     if (loanId) {
       this.addLink({ id: revenueId, linkName: 'loan', linkId: loanId });
+    }
+
+    if (insuranceId) {
+      const { insuranceRequest } = InsuranceService.get(insuranceId, {
+        insuranceRequest: { _id: 1 },
+      });
+      this.addLink({
+        id: revenueId,
+        linkName: 'insurance',
+        linkId: insuranceId,
+      });
+      this.addLink({
+        id: revenueId,
+        linkName: 'insuranceRequest',
+        linkId: insuranceRequest._id,
+      });
+    }
+
+    if (insuranceRequestId) {
+      this.addLink({
+        id: revenueId,
+        linkName: 'insuranceRequest',
+        linkId: insuranceRequestId,
+      });
     }
 
     return revenueId;
@@ -43,7 +73,16 @@ class RevenueService extends CollectionService {
   }
 
   consolidateRevenue({ revenueId, amount, paidAt }) {
-    return this._update({
+    const { loan, insuranceRequest, sourceOrganisationLink } = this.get(
+      revenueId,
+      {
+        loan: { _id: 1 },
+        insuranceRequest: { _id: 1 },
+        sourceOrganisationLink: { _id: 1 },
+      },
+    );
+
+    const response = this._update({
       id: revenueId,
       object: {
         amount,
@@ -51,6 +90,19 @@ class RevenueService extends CollectionService {
         status: REVENUE_STATUS.CLOSED,
       },
     });
+
+    if (loan) {
+      LoanService.setStatusToFinalizedIfRequired({ loanId: loan._id });
+    } else if (insuranceRequest) {
+      InsuranceRequestService.calculateNewStatus({
+        insuranceRequestId: insuranceRequest._id,
+      });
+      this.updateOrganisationRevenues({
+        organisationId: sourceOrganisationLink._id,
+      });
+    }
+
+    return response;
   }
 
   consolidateCommission({ revenueId, organisationId, paidAt, commissionRate }) {
@@ -60,6 +112,33 @@ class RevenueService extends CollectionService {
       linkId: organisationId,
       metadata: { paidAt, status: COMMISSION_STATUS.PAID, commissionRate },
     });
+  }
+
+  updateOrganisationRevenues({ organisationId }) {
+    const revenues = this.fetch({
+      $filters: {
+        'sourceOrganisationLink._id': organisationId,
+        status: REVENUE_STATUS.EXPECTED,
+        type: REVENUE_TYPES.INSURANCE,
+      },
+      insurance: { _id: 1 },
+    });
+
+    if (revenues?.length) {
+      revenues.forEach(revenue => {
+        const { insurance, _id: revenueId } = revenue;
+
+        if (!insurance) {
+          return;
+        }
+
+        const { estimatedRevenue } = InsuranceService.get(insurance._id, {
+          estimatedRevenue: 1,
+        });
+
+        this._update({ id: revenueId, object: { amount: estimatedRevenue } });
+      });
+    }
   }
 }
 

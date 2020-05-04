@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 
-import { Money, Percent } from 'core/components/Translation';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import { employeesById } from 'core/arrays/epotekEmployees';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import IconButton from 'core/components/IconButton';
 import Tooltip from 'core/components/Material/Tooltip';
-import { REVENUES_COLLECTION } from 'core/api/constants';
+import { Money, Percent } from 'core/components/Translation';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 const groupRevenues = revenues =>
   revenues.reduce((obj, { amount, loan: { assigneeLinks = [] } = {} }) => {

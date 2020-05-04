@@ -2,11 +2,14 @@
 import React from 'react';
 import { expect } from 'chai';
 
+import {
+  INTEREST_RATES,
+  TRENDS,
+} from 'core/api/interestRates/interestRatesConstants';
 import InterestRatesTable from 'core/components/InterestRatesTable';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 import { getMountedComponent } from 'core/utils/testHelpers';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import { INTEREST_RATES, TRENDS } from 'core/api/constants';
 import { WwwInterestRatesTableForTests } from '../WwwInterestRatesTable';
 import { columnOptions, rows } from '../wwwInterestsTableHelpers';
 

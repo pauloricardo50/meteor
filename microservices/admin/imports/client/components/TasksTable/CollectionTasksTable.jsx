@@ -1,34 +1,31 @@
 import React, { useState } from 'react';
-import { withSmartQuery } from 'core/api';
-import { compose, shouldUpdate, withState, withProps } from 'recompose';
+import { compose, shouldUpdate, withProps, withState } from 'recompose';
+
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import {
-  taskInsert,
-  taskUpdate,
   taskChangeStatus,
   taskComplete,
-} from 'core/api/methods';
-import {
-  TASK_STATUS,
-  TASKS_COLLECTION,
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
+  taskInsert,
+  taskUpdate,
+} from 'core/api/tasks/methodDefinitions';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import useSearchParams from 'core/hooks/useSearchParams';
-import TasksTable, { taskTableFragment } from './TasksTable';
-import {
-  LENDERS_COLLECTION,
-  CONTACTS_COLLECTION,
-} from '../../../core/api/constants';
+
 import CollectionTaskInserter from './CollectionTaskInserter';
+import TasksTable, { taskTableFragment } from './TasksTable';
 
-const getFilters = ({ collection, doc, assignee, status }) => {
-  const { _id: docId } = doc;
-
+const getFilters = ({ doc, assignee, status }) => {
+  const { _id: docId, _collection } = doc;
   let filters = { 'assigneeLink._id': assignee, status };
 
-  switch (collection) {
+  switch (_collection) {
     case USERS_COLLECTION:
       filters = { ...filters, 'userLink._id': docId };
       break;
@@ -47,6 +44,9 @@ const getFilters = ({ collection, doc, assignee, status }) => {
     case CONTACTS_COLLECTION:
       filters = { ...filters, 'contactLink._id': docId };
       break;
+    case INSURANCE_REQUESTS_COLLECTION:
+      filters = { ...filters, 'insuranceRequestLink._id': docId };
+      break;
     default:
       break;
   }
@@ -54,7 +54,7 @@ const getFilters = ({ collection, doc, assignee, status }) => {
   return filters;
 };
 
-const CollectionTasksTable = ({
+export const CollectionTasksTable = ({
   doc,
   tasks,
   model,
@@ -64,6 +64,7 @@ const CollectionTasksTable = ({
   refetch,
   collection,
   className,
+  CustomTaskInserter = CollectionTaskInserter,
   ...rest
 }) => (
   <div className={className}>
@@ -71,13 +72,12 @@ const CollectionTasksTable = ({
       {withTaskInsert && (
         <>
           <h3>Tâches</h3>
-          <CollectionTaskInserter
+          <CustomTaskInserter
             doc={doc}
             refetch={refetch}
             model={model}
             openOnMount={openOnMount}
             resetForm={resetForm}
-            collection={collection}
           />
         </>
       )}
@@ -90,8 +90,8 @@ export default compose(
   withState('status', 'setStatus', { $in: [TASK_STATUS.ACTIVE] }),
   withSmartQuery({
     query: TASKS_COLLECTION,
-    params: ({ doc, assignee, status, collection }) => ({
-      $filters: getFilters({ collection, doc, assignee, status }),
+    params: ({ doc, assignee, status }) => ({
+      $filters: getFilters({ doc, assignee, status }),
       ...taskTableFragment,
     }),
     queryOptions: { reactive: false },

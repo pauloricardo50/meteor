@@ -3,6 +3,7 @@ import cx from 'classnames';
 
 import Recap from 'core/components/Recap';
 import useElementSize from 'core/hooks/useElementSize';
+
 import BorrowerAge from '../BorrowerAge';
 
 const BorrowersTabFormRecap = ({ borrower, Calculator, index }) => {

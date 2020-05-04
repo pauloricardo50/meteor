@@ -3,8 +3,8 @@ import { Random } from 'meteor/random';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import T from '../../Translation';
 import Button from '../../Button';
+import T from '../../Translation';
 
 const styles = {
   input: {

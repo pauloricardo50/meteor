@@ -1,12 +1,13 @@
 import React from 'react';
-import { connectField } from 'uniforms';
 import { compose } from 'recompose';
+import { connectField } from 'uniforms';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import { percentFormatters } from 'core/utils/formHelpers';
-import T, { Money, Percent } from '../../../../Translation';
+import { toMoney } from '../../../../../utils/conversionFunctions';
+import { percentFormatters } from '../../../../../utils/formHelpers';
 import MoneyInput from '../../../../MoneyInput';
 import PercentInput from '../../../../PercentInput';
+import TextInput from '../../../../TextInput';
+import T, { Money, Percent } from '../../../../Translation';
 
 const valueIsNotDefined = value =>
   value === '' || value === undefined || value === null;
@@ -15,14 +16,24 @@ const makeHandleTextChange = ({
   onChange,
   allowUndefined,
   forceUndefined,
-}) => value => {
-  if (allowUndefined && valueIsNotDefined(value)) {
-    return onChange('');
+  type,
+}) => {
+  if (type === 'text') {
+    return onChange;
   }
-  return onChange(value || (forceUndefined && allowUndefined ? '' : 0));
-};
 
-const setValue = (value, allowUndefined, forceUndefined) => {
+  return value => {
+    if (allowUndefined && valueIsNotDefined(value)) {
+      return onChange('');
+    }
+    return onChange(value || (forceUndefined && allowUndefined ? '' : 0));
+  };
+};
+const setValue = ({ value, allowUndefined, forceUndefined, type }) => {
+  if (type === 'text') {
+    return value;
+  }
+
   if (allowUndefined) {
     return forceUndefined && value === 0
       ? ''
@@ -31,8 +42,8 @@ const setValue = (value, allowUndefined, forceUndefined) => {
   return value || 0;
 };
 
-const defaultGetError = ({ value, max, FormatComponent }) => {
-  if (value > max) {
+const defaultGetError = ({ value, max, min, FormatComponent }) => {
+  if (typeof value === 'number' && value > max) {
     return (
       <T
         id="Financing.maxExceeded"
@@ -41,7 +52,42 @@ const defaultGetError = ({ value, max, FormatComponent }) => {
     );
   }
 
+  if (typeof value === 'number' && value < min) {
+    return (
+      <T
+        id="Financing.belowMin"
+        values={{ min: <FormatComponent value={min} /> }}
+      />
+    );
+  }
+
   return null;
+};
+
+const getInputConfig = type => {
+  if (type === 'money') {
+    return {
+      InputComponent: MoneyInput,
+      FormatComponent: Money,
+      formatFunc: toMoney,
+    };
+  }
+
+  if (type === 'percent') {
+    return {
+      InputComponent: PercentInput,
+      FormatComponent: Percent,
+      formatFunc: compose(v => `${v}%`, percentFormatters.format),
+    };
+  }
+
+  if (type === 'text') {
+    return {
+      InputComponent: TextInput,
+      FormatComponent: x => x,
+      formatFunc: x => x,
+    };
+  }
 };
 
 export const FinancingInput = props => {
@@ -58,23 +104,21 @@ export const FinancingInput = props => {
     type = 'money',
     getError = defaultGetError,
     helperText,
+    multiline,
+    rows,
   } = props;
-  const InputComponent = type === 'money' ? MoneyInput : PercentInput;
-  const FormatComponent = type === 'money' ? Money : Percent;
-  const formatFunc =
-    type === 'money'
-      ? toMoney
-      : compose(v => `${v}%`, percentFormatters.format);
+  const { InputComponent, FormatComponent, formatFunc } = getInputConfig(type);
   const dbValue = structure[name];
   const error = getError({ ...props, FormatComponent });
 
   return (
     <InputComponent
-      value={setValue(value, allowUndefined, forceUndefined)}
+      value={setValue({ value, allowUndefined, forceUndefined, type })}
       onChange={makeHandleTextChange({
         onChange,
         allowUndefined,
         forceUndefined,
+        type,
       })}
       onBlur={() => {
         if (formRef && formRef.current) {
@@ -93,6 +137,8 @@ export const FinancingInput = props => {
       helperText={error || helperText}
       margin="dense"
       shrink
+      multiline={multiline}
+      rows={rows}
     />
   );
 };

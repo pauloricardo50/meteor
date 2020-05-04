@@ -1,10 +1,10 @@
 import * as React from 'react';
 import cx from 'classnames';
 
-import T from '../Translation';
-import Icon from '../Icon';
 import PropertySchema from '../../api/properties/schemas/PropertySchema';
-import { AutoFormDialog } from '../AutoForm2';
+import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
+import Icon from '../Icon';
+import T from '../Translation';
 
 export const propertyFormSchema = PropertySchema.pick(
   'address1',
@@ -27,34 +27,39 @@ const PropertyForm = ({
   className = '',
   disabled,
   buttonProps,
+  schema = propertyFormSchema,
   ...props
-}) => (
-  <div
-    className={cx('property-form', className)}
-    onClick={event => {
-      // Prevent all event defaults except when submitting
-      // In this case, the skip is handled by DashboardRecapProperty
-      if (event.target.type !== 'submit') {
-        event.preventDefault();
-      }
-    }}
-  >
-    <AutoFormDialog
-      schema={propertyFormSchema}
-      title={<T id={formTitleId} />}
-      description={<T id={formDescriptionId} />}
-      buttonProps={{
-        raised: true,
-        primary: true,
-        icon: <Icon type="home" />,
-        label: <T id={buttonLabelId} />,
-        disabled,
-        ...buttonProps,
+}) => {
+  console.log('schema:', schema);
+
+  return (
+    <div
+      className={cx('property-form', className)}
+      onClick={event => {
+        // Prevent all event defaults except when submitting
+        // In this case, the skip is handled by DashboardRecapProperty
+        if (event.target.type !== 'submit') {
+          event.preventDefault();
+        }
       }}
-      layout={propertyFormLayout}
-      {...props}
-    />
-  </div>
-);
+    >
+      <AutoFormDialog
+        schema={schema}
+        title={<T id={formTitleId} />}
+        description={<T id={formDescriptionId} />}
+        buttonProps={{
+          raised: true,
+          primary: true,
+          icon: <Icon type="home" />,
+          label: <T id={buttonLabelId} />,
+          disabled,
+          ...buttonProps,
+        }}
+        layout={propertyFormLayout}
+        {...props}
+      />
+    </div>
+  );
+};
 
 export default PropertyForm;

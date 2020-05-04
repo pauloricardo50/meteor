@@ -2,10 +2,10 @@ import React from 'react';
 
 import T from '../../../../../../components/Translation';
 import PdfPage from '../../PdfPage';
-import ProjectBalanceSheet from './ProjectBalanceSheet';
 import CostsBalanceSheet from './CostsBalanceSheet';
-import SingleStructureRecapTable from './SingleStructureRecapTable';
 import PledgeTable from './PledgeTable';
+import ProjectBalanceSheet from './ProjectBalanceSheet';
+import SingleStructureRecapTable from './SingleStructureRecapTable';
 
 const StructurePdfPage = ({
   loan,

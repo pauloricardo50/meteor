@@ -2,15 +2,15 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { STEPS } from 'core/api/constants';
-import { setLoanStep } from 'core/api/loans/index';
-import T from '../../../Translation';
+import { STEPS } from '../../../../api/loans/loanConstants';
+import { setLoanStep } from '../../../../api/loans/methodDefinitions';
 import ConfirmMethod from '../../../ConfirmMethod';
+import T from '../../../Translation';
 import FinancingSection from '../FinancingSection';
-import FinancingOffersHeader from './FinancingOffersHeader';
-import OfferPicker from './OfferPicker';
-import FinancingOffersSorter from './FinancingOffersSorter';
 import FinancingOffersContainer from './FinancingOffersContainer';
+import FinancingOffersHeader from './FinancingOffersHeader';
+import FinancingOffersSorter from './FinancingOffersSorter';
+import OfferPicker from './OfferPicker';
 
 const FinancingOffers = ({ loan }) => {
   const { offers = [] } = loan;

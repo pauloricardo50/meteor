@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 // from https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
 const getDataTransferItems = event => {

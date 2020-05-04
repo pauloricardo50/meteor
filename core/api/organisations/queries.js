@@ -1,7 +1,7 @@
 import {
+  adminOrganisation,
   fullOrganisation,
   userOrganisation,
-  adminOrganisation,
 } from '../fragments';
 import { ORGANISATION_QUERIES } from './organisationConstants';
 import Organisations from '.';

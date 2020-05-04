@@ -1,6 +1,6 @@
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
 import moment from 'moment';
+import { injectIntl } from 'react-intl';
+import { compose, withProps } from 'recompose';
 
 import colors from 'core/config/colors';
 

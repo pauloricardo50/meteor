@@ -1,11 +1,11 @@
-import { PROMOTION_STATUS, ROLES } from '../../constants';
-import SecurityService from '../Security';
 import {
-  shouldAnonymize,
   getCurrentUserPermissionsForPromotion,
+  shouldAnonymize,
 } from '../../promotions/promotionClientHelpers';
+import { PROMOTION_STATUS } from '../../promotions/promotionConstants';
+import { ROLES } from '../../users/userConstants';
+import SecurityService from '../Security';
 import { hasMinimumRole } from './generalSecurityHelpers';
-import { ANONYMIZED_STRING } from '../constants';
 
 const checkPromotionPermissions = ({
   promotion,

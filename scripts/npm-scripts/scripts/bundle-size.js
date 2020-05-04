@@ -1,4 +1,5 @@
 import { MICROSERVICE_PORTS, PORT_OFFSETS } from '../constants';
+
 import Process from './Process';
 
 const path = require('path');
@@ -15,7 +16,7 @@ bundleSize.spawn({
   command: 'meteor',
   args: [
     '--extra-packages',
-    'bundle-visualizer',
+    'bundle-visualizer,standard-minifier-js',
     '--production',
     '--settings',
     'settings-dev.json',

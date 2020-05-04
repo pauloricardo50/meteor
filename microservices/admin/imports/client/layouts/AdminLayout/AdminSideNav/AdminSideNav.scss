@@ -1,4 +1,4 @@
-$admin-side-nav-width: 120px;
+$admin-side-nav-width: 100px;
 
 .admin-side-nav {
   display: flex;
@@ -23,7 +23,8 @@ $admin-side-nav-width: 120px;
 
   &-list-item {
     box-sizing: border-box;
-    width: $admin-side-nav-width;
+    padding-right: 8px;
+    padding-left: 8px;
 
     > div {
       display: flex;

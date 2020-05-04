@@ -1,5 +1,6 @@
 import { compose, withProps, withStateHandlers } from 'recompose';
-import { addUserToOrganisation } from 'core/api';
+
+import { addUserToOrganisation } from 'core/api/organisations/methodDefinitions';
 
 export default compose(
   withStateHandlers(

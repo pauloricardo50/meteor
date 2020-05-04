@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { getUserDisplayName } from '../../utils/userFunctions';
-import T from '../Translation';
 import Icon from '../Icon';
+import T from '../Translation';
 
 const AccountPageHeader = ({ currentUser }) => {
   const { organisations } = currentUser;

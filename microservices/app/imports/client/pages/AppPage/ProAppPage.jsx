@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
 
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
+
 import { DASHBOARD_PAGE } from '../../../startup/client/appRoutes';
 
 const ProAppPage = ({ loans, history, insertLoan }) => (

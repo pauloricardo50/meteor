@@ -1,11 +1,12 @@
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import generator from '../../../factories/server';
-import { currentInterestRates } from '../../queries';
 import { TRENDS } from '../../interestRatesConstants';
+import { currentInterestRates } from '../../queries';
 
 describe('currentInterestRates', () => {
   beforeEach(() => {

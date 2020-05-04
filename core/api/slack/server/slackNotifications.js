@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import moment from 'moment';
 
 import { LOANS_COLLECTION } from '../../loans/loanConstants';

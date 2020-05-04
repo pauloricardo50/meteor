@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { injectIntl } from 'react-intl';
 
 import { getMountedComponent } from '../../../../utils/testHelpers';
-import { makeFeedback, FEEDBACK_OPTIONS } from '../../feedbackHelpers';
 import HtmlPreview from '../../../HtmlPreview/HtmlPreview';
+import { FEEDBACK_OPTIONS, makeFeedback } from '../../feedbackHelpers';
 
 const DummyComponent = ({ intl: { formatMessage }, model, offer }) => (
   <HtmlPreview value={makeFeedback({ model, offer, formatMessage })} />

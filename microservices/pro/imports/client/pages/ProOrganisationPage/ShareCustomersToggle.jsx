@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Toggle from 'core/components/Toggle';
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
+import Toggle from 'core/components/Toggle';
 import T from 'core/components/Translation';
+
 import ShareCustomersToggleContainer from './ShareCustomersToggleContainer';
 
 const ShareCustomersToggle = ({

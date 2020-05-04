@@ -1,10 +1,10 @@
 import {
-  LOCAL_STORAGE_ANONYMOUS_LOAN,
   LOAN_STATUS,
+  LOCAL_STORAGE_ANONYMOUS_LOAN,
 } from '../../imports/core/api/loans/loanConstants';
 import {
-  USER_PASSWORD,
   USER_EMAIL,
+  USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Public onboarding', () => {
@@ -21,9 +21,7 @@ describe('Public onboarding', () => {
   it('should create a new loan when clicking on a cta', () => {
     cy.get('.welcome-screen').should('exist');
 
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -37,9 +35,7 @@ describe('Public onboarding', () => {
   it('should keep the loan in localstorage', () => {
     cy.get('.welcome-screen').should('exist');
 
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -58,9 +54,7 @@ describe('Public onboarding', () => {
   });
 
   it('localStorage is cleared if the loan is no more available', () => {
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then(window => {
@@ -80,9 +74,7 @@ describe('Public onboarding', () => {
 
   it('should create a new account before revealing maxPropertyValue', () => {
     cy.callMethod('generateProFixtures');
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -114,20 +106,14 @@ describe('Public onboarding', () => {
     cy.get('[name=newPassword]').type(USER_PASSWORD);
     cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
     cy.get('[type="checkbox"]').check();
-    cy.get('.password-reset-page')
-      .contains('Continuer')
-      .click();
+    cy.contains('button', 'Continuer').click();
 
     cy.url().should('include', '/loans/');
-    cy.get('.max-property-value-results')
-      .contains('CHF 798 000')
-      .should('exist');
+    cy.contains('.max-property-value-results', 'CHF 798 000').should('exist');
   });
 
   it('Should attach an anonymous loan to a new user account', () => {
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -153,9 +139,7 @@ describe('Public onboarding', () => {
     cy.get('[name=newPassword]').type(USER_PASSWORD);
     cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
     cy.get('[type="checkbox"]').check();
-    cy.get('.password-reset-page')
-      .contains('Continuer')
-      .click();
+    cy.contains('button', 'Continuer').click();
 
     cy.url().should('include', '/loans/');
     cy.contains('Continuer').click();
@@ -164,9 +148,7 @@ describe('Public onboarding', () => {
   });
 
   it('should ask to create an account if the user wants to go further', () => {
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
     cy.get('.simple-dashboard-page-ctas button')
       .last()
       .click();
@@ -176,9 +158,7 @@ describe('Public onboarding', () => {
 
   it('should attach an anonymous loan to an existing account', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
-    cy.get('.welcome-screen-top')
-      .find('button')
-      .click();
+    cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder')
       .find('button')
@@ -193,9 +173,7 @@ describe('Public onboarding', () => {
     cy.contains('Ajouter à mon compte').click();
     cy.url().should('include', '/loans/');
     cy.contains('Dossier anonyme').should('not.exist');
-    cy.get('.borrowers-progress')
-      .contains('300')
-      .should('exist');
+    cy.contains('.borrowers-progress', '300').should('exist');
 
     cy.get('.logo-home').click();
     cy.get('.loan-card').should('have.length', 2);
@@ -213,7 +191,7 @@ describe('Public onboarding', () => {
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
-    cy.contains('Démarrer').click();
+    cy.contains('button', 'Démarrer').click();
     cy.url().should('include', '/loans/');
 
     cy.get('.property-card').click();
@@ -251,6 +229,7 @@ describe('Public onboarding', () => {
     cy.get('.welcome-screen')
       .contains('Login')
       .click();
+    // cy.contains('.welcome-screen', 'Login').click(); // Why no work?
     cy.get('input[name="email"]').type(USER_EMAIL);
     cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);
     cy.get('@propertyId').then(propertyId => {
@@ -273,7 +252,7 @@ describe('Public onboarding', () => {
       cy.visit(`/?ref=${userId}`);
     });
 
-    cy.contains('Démarrer').click();
+    cy.contains('button', 'Acquisition').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then(window => {
@@ -290,7 +269,7 @@ describe('Public onboarding', () => {
     cy.visit('/?ref=abcdef');
     cy.wait(500);
 
-    cy.contains('Démarrer').click();
+    cy.contains('button', 'Acquisition').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then(window => {
@@ -403,5 +382,70 @@ describe('Public onboarding', () => {
     cy.get('.logo-home').click();
 
     cy.get('.loan-card').should('have.length', 2);
+  });
+
+  describe('refinancings', () => {
+    it('creates a refinancing loan and gets to the end', () => {
+      cy.callMethod('generateProFixtures');
+      cy.contains('button', 'Refinancement').click();
+
+      cy.contains('Ajouter un bien').click();
+      cy.get('[name="value"]').type('1000000');
+      cy.setSelect('residenceType', 1);
+      cy.get('[name="address1"]').type('Place de neuve 2');
+      cy.get('[name="zipCode"]').type('1204');
+      cy.get('[name="city"]').type('Genève');
+      cy.get('[name="previousLoanTranches.0.value"]').type('500000');
+      cy.get('[name="previousLoanTranches.0.dueDate"]').type('2020-01-01');
+      cy.get('[name="previousLoanTranches.0.rate"]').type('0.8');
+      cy.get('[name="previousLoanTranches.0.duration"]').type('10');
+      cy.get('.list-add-field').click();
+      cy.get('[name="previousLoanTranches.1.value"]').type('150000');
+      cy.get('[name="previousLoanTranches.1.dueDate"]').type('2020-01-01');
+      cy.get('[name="previousLoanTranches.1.rate"]').type('1.2');
+      cy.get('[name="previousLoanTranches.1.duration"]').type('5');
+      cy.get('[role="dialog"] form').submit();
+
+      cy.get('.borrowers-adder')
+        .find('button')
+        .first()
+        .click();
+
+      cy.get('input#salary').type('170000');
+      cy.wait(500);
+
+      cy.contains('Calculer').click();
+
+      cy.contains('Parfait').should('exist');
+
+      cy.get('[name="email"]').type('dev@e-potek.ch{enter}');
+
+      cy.url().should('include', '/signup/dev@e-potek.ch');
+      cy.get('.signup-success').should('exist');
+
+      cy.callMethod('getLoginToken', 'dev@e-potek.ch').then(loginToken => {
+        cy.visit(`/enroll-account/${loginToken}`);
+      });
+
+      cy.get('[name="firstName"]').type('Jean');
+      cy.get('[name="lastName"]').type('Dujardin');
+      cy.get('[name="phoneNumber"]').type('+41 22 566 01 10');
+      cy.get('[name=newPassword]').type(USER_PASSWORD);
+      cy.get('[name=newPassword2]').type(`${USER_PASSWORD}`);
+      cy.get('[type="checkbox"]').check();
+      cy.contains('button', 'Continuer').click();
+
+      cy.url().should('include', '/loans/');
+      cy.contains('.max-property-value-results-selects', 'Genève').should(
+        'exist',
+      );
+      cy.contains('.max-property-value-results', 'CHF 770 000').should('exist');
+      cy.contains('.max-property-value-results', '120 000').should('exist');
+
+      cy.contains('button', 'Afficher détails').click();
+      cy.contains('.max-property-value-results', '770 000').should('exist');
+      cy.contains('.max-property-value-results', '650 000').should('exist');
+      cy.contains('.max-property-value-results', '120 000').should('exist');
+    });
   });
 });

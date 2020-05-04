@@ -1,25 +1,22 @@
-import React, { useState, useContext } from 'react';
-import SimpleSchema from 'simpl-schema';
+import React, { useContext, useState } from 'react';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import {
-  toggleNotifications,
-  promotionUpdate,
-  insertPromotionProperty,
-  lotInsert,
-  promotionRemove,
-} from '../../../../api/methods';
-import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
-import {
-  S3_ACLS,
-  ONE_KB,
-  PROPERTY_TYPE,
-  LOT_TYPES,
-} from '../../../../api/constants';
+import { ONE_KB, S3_ACLS } from '../../../../api/files/fileConstants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
+import { LOT_TYPES } from '../../../../api/lots/lotConstants';
+import { lotInsert } from '../../../../api/lots/methodDefinitions';
+import {
+  insertPromotionProperty,
+  promotionRemove,
+  promotionUpdate,
+  toggleNotifications,
+} from '../../../../api/promotions/methodDefinitions';
+import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
+import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
-import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import { ModalManagerContext } from '../../../ModalManager';
+import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import DialogForm from '../../../ModalManager/DialogForm';
 import T from '../../../Translation';
 import PromotionMetadataContext from '../PromotionMetadata';

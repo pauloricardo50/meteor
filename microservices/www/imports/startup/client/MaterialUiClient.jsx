@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
 import createTheme from 'core/config/muiCustom';
 
 const MaterialUiClient = ({ children }) => {
@@ -11,7 +12,11 @@ const MaterialUiClient = ({ children }) => {
     }
   }, []);
 
-  return <MuiThemeProvider theme={createTheme()}>{children}</MuiThemeProvider>;
+  return (
+    <MuiThemeProvider theme={createTheme({ fontSize: 16 })}>
+      {children}
+    </MuiThemeProvider>
+  );
 };
 
 MaterialUiClient.propTypes = {

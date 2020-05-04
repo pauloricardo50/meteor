@@ -1,9 +1,9 @@
-import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
+import { compose, withProps } from 'recompose';
 
-import { PROMOTION_LOT_STATUS } from 'core/api/constants';
-import { toMoney } from 'core/utils/conversionFunctions';
-import { getTotalValueByStatus, getGroupedLots } from './helpers';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
+import { toMoney } from '../../../../utils/conversionFunctions';
+import { getGroupedLots, getTotalValueByStatus } from './helpers';
 
 const getData = (promotionLots = []) => {
   const { availableLots, reservedLots, soldLots } = getGroupedLots(

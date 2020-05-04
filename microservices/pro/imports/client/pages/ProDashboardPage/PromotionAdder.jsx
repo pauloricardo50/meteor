@@ -1,12 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import T from 'core/components/Translation';
-import { AutoFormDialog } from 'core/components/AutoForm2';
+import { promotionInsert } from 'core/api/promotions/methodDefinitions';
 import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
-import { promotionInsert } from 'core/api';
-import { createRoute } from 'core/utils/routerUtils';
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const PromotionAdder = ({ history }) => (

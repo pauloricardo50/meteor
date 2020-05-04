@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { MORTGAGE_NOTES_COLLECTION } from '../../api/constants';
 import AutoForm from '../AutoForm';
-import T from '../Translation';
 import Button from '../Button';
+import T from '../Translation';
 import MortgageNotesFormContainer from './MortgageNotesFormContainer';
 
 const MortgageNotesForm = ({
@@ -34,7 +33,6 @@ const MortgageNotesForm = ({
         formClasses="card1 card-top mb-16 user-form user-form__info user-form__finance"
         inputs={getInputs(mortgageNote)}
         docId={mortgageNote._id}
-        collection={MORTGAGE_NOTES_COLLECTION}
         doc={mortgageNote}
         disabled={disabled}
         showDisclaimer={false}

@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { SyncedCron } from 'meteor/littledata:synced-cron';
 
-import { logError } from 'core/api/methods';
-import SlackService from 'core/api/slack/server/SlackService';
+import { logError } from '../../errorLogger/methodDefinitions';
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import CronitorService from './CronitorService';
 
 const ACTIVATE_CRONITOR = !(
@@ -69,7 +69,7 @@ class CronService {
             await cronitor.fail(error.message);
           }
 
-          await SlackService.sendError({
+          await ErrorLogger.handleError({
             error,
             additionalData: [`${name} CRON error`],
           });

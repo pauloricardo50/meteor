@@ -1,29 +1,29 @@
 import { Meteor } from 'meteor/meteor';
 
-import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
+import FrontService from 'core/api/front/server/FrontService';
 import {
-  getPropertyLoansAPI,
-  getUserAPI,
-  interestRatesAPI,
-  inviteUserToPromotionAPI,
-  inviteCustomerToProPropertiesAPI,
-  mortgageEstimateAPI,
-  referCustomerAPI,
-  testEndpointAPI,
-  updatePropertyAPI,
-  insertPropertyAPI,
-  uploadFileAPI,
-  deleteFileAPI,
-  getPropertyAPI,
-  zipLoanAPI,
-  setPropertyUserPermissionsAPI,
-  addProUserToPropertyAPI,
   addLoanNoteAPI,
+  addProUserToPropertyAPI,
+  deleteFileAPI,
   frontPluginAPI,
   frontWebhookAPI,
+  getPropertyAPI,
+  getPropertyLoansAPI,
+  getUserAPI,
+  insertPropertyAPI,
+  interestRatesAPI,
+  inviteCustomerToProPropertiesAPI,
+  inviteUserToPromotionAPI,
+  mortgageEstimateAPI,
+  referCustomerAPI,
+  setPropertyUserPermissionsAPI,
+  testEndpointAPI,
+  updatePropertyAPI,
+  uploadFileAPI,
+  zipLoanAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
-import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
-import FrontService from 'core/api/front/server/FrontService';
+import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
+import { flushFileUploadDir, makeFileUploadDir } from 'core/utils/filesUtils';
 
 const api = new RESTAPI();
 api.addEndpoint(

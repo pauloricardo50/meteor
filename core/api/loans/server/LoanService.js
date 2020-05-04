@@ -1,63 +1,72 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+
 import omit from 'lodash/omit';
+import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
-import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
-import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
-import ActivityService from 'core/api/activities/server/ActivityService';
-import { assignAdminToUser } from '../../methods';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import Intl from '../../../utils/server/intl';
 import {
-  makeFeedback,
   FEEDBACK_OPTIONS,
+  makeFeedback,
 } from '../../../components/OfferList/feedbackHelpers';
+import { PURCHASE_TYPE } from '../../../redux/widget1/widget1Constants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../utils/Calculator';
+import intl from '../../../utils/intl';
 import { getZipcodeForCanton } from '../../../utils/zipcodes';
-import {
-  RESIDENCE_TYPE,
-  ORGANISATION_FEATURES,
-  LOAN_STATUS,
-  CANTONS,
-} from '../../constants';
-import OfferService from '../../offers/server/OfferService';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
   adminLoan,
   lenderRules as lenderRulesFragment,
   userLoan,
 } from '../../fragments';
-import CollectionService from '../../helpers/server/CollectionService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
-import UserService from '../../users/server/UserService';
-import OrganisationService from '../../organisations/server/OrganisationService';
-import Loans from '../loans';
 import {
+  getNewName,
+  removeAdminNote,
+  setAdminNote,
+  setAssignees,
+  updateProNote,
+} from '../../helpers/server/collectionServerHelpers';
+import CollectionService from '../../helpers/server/CollectionService';
+import LenderRulesService from '../../lenderRules/server/LenderRulesService';
+import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import PromotionService from '../../promotions/server/PromotionService';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
+import UserService from '../../users/server/UserService';
+import {
+  APPLICATION_TYPES,
+  CANTONS,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+  LOAN_STATUS_ORDER,
   ORGANISATION_NAME_SEPARATOR,
   STEPS,
-  APPLICATION_TYPES,
-  LOAN_STATUS_ORDER,
 } from '../loanConstants';
+import Loans from '../loans';
 import { fullLoan } from '../queries';
 
-// Pads a number with zeros: 4 --> 0004
-const zeroPadding = (num, places) => {
-  const zero = places - num.toString().length + 1;
-  return Array(+(zero > 0 && zero)).join('0') + num;
-};
+const { formatMessage } = intl;
 
 class LoanService extends CollectionService {
   constructor() {
     super(Loans);
   }
 
-  insert = ({ loan = {}, userId }) => {
-    const name = this.getNewLoanName();
+  insert = ({ loan = {}, userId, insuranceRequestId }) => {
+    const name = getNewName({
+      collection: LOANS_COLLECTION,
+      insuranceRequestId,
+    });
     const loanId = super.insert({ ...loan, name, userId });
 
     if (userId) {
@@ -76,7 +85,10 @@ class LoanService extends CollectionService {
     return loanId;
   };
 
-  insertAnonymousLoan = ({ proPropertyId, referralId }) => {
+  setAssignees = ({ loanId, ...params }) =>
+    setAssignees({ docId: loanId, collection: LOANS_COLLECTION, ...params });
+
+  insertAnonymousLoan = ({ proPropertyId, referralId, purchaseType }) => {
     let loanId;
     if (proPropertyId) {
       loanId = this.insertPropertyLoan({ propertyIds: [proPropertyId] });
@@ -86,39 +98,32 @@ class LoanService extends CollectionService {
 
     this.update({
       loanId,
-      object: { anonymous: true, displayWelcomeScreen: false, referralId },
+      object: {
+        anonymous: true,
+        displayWelcomeScreen: false,
+        referralId,
+        purchaseType,
+      },
     });
 
     return loanId;
   };
 
-  getNewLoanName = (now = new Date()) => {
-    const year = now.getYear();
-    const yearPrefix = year - 100;
-    const lastLoan = this.get(
-      {},
-      { name: 1, $options: { sort: { name: -1 } } },
-    );
-    if (!lastLoan) {
-      return `${yearPrefix}-0001`;
-    }
-    const [lastPrefix, count] = lastLoan.name
-      .split('-')
-      .map(numb => parseInt(numb, 10));
-
-    if (lastPrefix !== yearPrefix) {
-      return `${yearPrefix}-0001`;
-    }
-
-    const nextCountString = zeroPadding(count + 1, 4);
-
-    return `${yearPrefix}-${nextCountString}`;
-  };
-
   update = ({ loanId, object, operator = '$set' }) =>
     Loans.update(loanId, { [operator]: object });
 
-  remove = ({ loanId }) => super.remove(loanId);
+  remove = ({ loanId }) => {
+    const { revenues = [] } =
+      this.get(loanId, { revenues: { status: 1 } }) || {};
+    if (
+      revenues.filter(({ status }) => status === REVENUE_STATUS.EXPECTED).length
+    ) {
+      throw new Meteor.Error(
+        'Des revenus sont attendus pour ce dossier. Merci de les supprimer manuellement avant de supprimer le dossier',
+      );
+    }
+    return super.remove(loanId);
+  };
 
   fullLoanInsert = ({ userId, loan = {} }) => {
     const loanId = this.insert({
@@ -588,7 +593,7 @@ class LoanService extends CollectionService {
       feedback: makeFeedback({
         offer: { ...offer, property },
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-        formatMessage: Intl.formatMessage.bind(Intl),
+        formatMessage,
       }),
       offerId: offer._id,
     }));
@@ -614,11 +619,13 @@ class LoanService extends CollectionService {
   }
 
   getMaxPropertyValueRange({ organisations, loan, residenceType, canton }) {
-    const { borrowers = [] } = loan;
+    const { borrowers = [], purchaseType } = loan;
+
     const loanObject = Calculator.createLoanObject({
       residenceType,
       borrowers,
       canton,
+      purchaseType,
     });
     const maxPropertyValues = organisations
       .map(({ lenderRules, name }) => {
@@ -626,15 +633,29 @@ class LoanService extends CollectionService {
           loan: loanObject,
           lenderRules,
         });
+        let borrowRatio;
+        let propertyValue;
 
-        const {
-          borrowRatio,
-          propertyValue,
-        } = calculator.getMaxPropertyValueWithoutBorrowRatio({
-          borrowers,
-          residenceType,
-          canton,
-        });
+        if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+          const result = calculator.getMaxPropertyValueWithoutBorrowRatio({
+            borrowers,
+            residenceType,
+            canton,
+            purchaseType,
+          });
+          borrowRatio = result.borrowRatio;
+          propertyValue = result.propertyValue;
+        }
+
+        if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+          const result = calculator.getMaxBorrowRatioForLoan({
+            loan,
+            canton,
+          });
+          borrowRatio = result.borrowRatio;
+          propertyValue = result.propertyValue;
+        }
+
         if (propertyValue > 0 && borrowRatio > 0) {
           return { borrowRatio, propertyValue, organisationName: name };
         }
@@ -643,10 +664,10 @@ class LoanService extends CollectionService {
       })
       .filter(x => x);
 
-    const sortedValues = maxPropertyValues.sort(
-      ({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
-        propertyValueA - propertyValueB,
-    );
+    const sortedValues = sortBy(maxPropertyValues, [
+      'propertyValue',
+      'borrowRatio',
+    ]);
 
     if (sortedValues.length === 0) {
       throw new Meteor.Error(
@@ -683,7 +704,7 @@ class LoanService extends CollectionService {
     };
   }
 
-  getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
+  getMaxPropertyValue({ loan, canton, residenceType }) {
     let query = {
       features: ORGANISATION_FEATURES.LENDER,
       lenderRulesCount: { $gte: 1 },
@@ -711,33 +732,26 @@ class LoanService extends CollectionService {
     });
   }
 
-  setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const loan = this.get(loanId, userLoan());
+  setMaxPropertyValue({ loan, canton }) {
     const isRecalculate = !!(
       loan.maxPropertyValue && loan.maxPropertyValue.date
     );
 
-    const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
-      {
-        loan,
-        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-        canton,
-      },
-    );
-    const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio(
-      {
-        loan,
-        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
-        canton,
-      },
-    );
-
-    const borrowerHash = Calculator.getBorrowerFormHash({
-      borrowers: loan.borrowers,
+    const mainMaxPropertyValueRange = this.getMaxPropertyValue({
+      loan,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      canton,
+    });
+    const secondMaxPropertyValueRange = this.getMaxPropertyValue({
+      loan,
+      residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+      canton,
     });
 
+    const borrowerHash = Calculator.getMaxPropertyValueHash({ loan });
+
     this.update({
-      loanId,
+      loanId: loan._id,
       object: {
         maxPropertyValue: {
           main: mainMaxPropertyValueRange,
@@ -752,6 +766,12 @@ class LoanService extends CollectionService {
     return Promise.resolve({ isRecalculate });
   }
 
+  setMaxPropertyValueOrBorrowRatio({ loanId, canton }) {
+    const loan = this.get(loanId, userLoan());
+
+    return this.setMaxPropertyValue({ loan, canton });
+  }
+
   addNewMaxStructure({ loanId, residenceType: newResidenceType, canton }) {
     if (newResidenceType) {
       // Set residence type if it is given
@@ -759,18 +779,25 @@ class LoanService extends CollectionService {
     }
 
     const loan = this.get(loanId, userLoan());
-    const { properties = [], userId, borrowers, residenceType } = loan;
+    const {
+      properties = [],
+      userId,
+      borrowers,
+      residenceType,
+      purchaseType,
+    } = loan;
 
     // Get the highest property value
     const {
       max: { borrowRatio, propertyValue, organisationName },
-    } = this.getMaxPropertyValueWithoutBorrowRatio({
+    } = this.getMaxPropertyValue({
       loan,
       canton,
+      residenceType,
     });
-    const firstOrganisationName = organisationName.split(
+    const [firstOrganisationName] = organisationName.split(
       ORGANISATION_NAME_SEPARATOR,
-    )[0];
+    );
 
     const organisation = OrganisationService.get(
       { name: firstOrganisationName },
@@ -789,6 +816,7 @@ class LoanService extends CollectionService {
       loanValue: Math.round(propertyValue * borrowRatio),
       canton,
       residenceType,
+      purchaseType,
     });
 
     let propertyWithCanton = properties.find(
@@ -1017,71 +1045,20 @@ class LoanService extends CollectionService {
   }
 
   setAdminNote({ loanId, adminNoteId, note, userId }) {
-    let result;
-    const now = new Date();
-    const formattedNote = {
-      ...note,
-      updatedBy: userId,
-      date: note.date || now,
-    };
-
-    if (formattedNote.date.getTime() > now.getTime()) {
-      throw new Meteor.Error('Les dates dans le futur ne sont pas autorisées');
-    }
-
-    if (adminNoteId) {
-      result = this.baseUpdate(
-        { _id: loanId, 'adminNotes.id': adminNoteId },
-        { $set: { 'adminNotes.$': { ...formattedNote, id: adminNoteId } } },
-      );
-    } else {
-      result = this.update({
-        loanId,
-        operator: '$push',
-        object: { adminNotes: { ...formattedNote, id: Random.id() } },
-      });
-    }
-
-    // Sort adminNotes by date for faster retrieval of recent notes
-    // Most recent is always at the top
-    const { adminNotes } = this.get(loanId, { adminNotes: 1 });
-    this.update({
-      loanId,
-      object: {
-        adminNotes: adminNotes.sort(
-          ({ date: a }, { date: b }) => new Date(b) - new Date(a),
-        ),
-      },
+    return setAdminNote.bind(this)({
+      docId: loanId,
+      adminNoteId,
+      note,
+      userId,
     });
-
-    this.updateProNote({ loanId });
-
-    return result;
   }
 
-  removeAdminNote({ loanId, adminNoteId }) {
-    const result = this.baseUpdate(loanId, {
-      $pull: { adminNotes: { id: adminNoteId } },
-    });
-
-    this.updateProNote({ loanId });
-
-    return result;
+  removeAdminNote(...args) {
+    return removeAdminNote.bind(this)(...args);
   }
 
-  updateProNote({ loanId }) {
-    const { adminNotes } = this.get(loanId, { adminNotes: 1 });
-    const proNote = adminNotes.find(note => note.isSharedWithPros);
-
-    if (proNote) {
-      return this.update({ loanId, object: { proNote } });
-    }
-
-    return this.update({
-      loanId,
-      operator: '$unset',
-      object: { proNote: true },
-    });
+  updateProNote(...args) {
+    return updateProNote.bind(this)(...args);
   }
 
   getDisbursedSoonLoans() {
@@ -1101,50 +1078,90 @@ class LoanService extends CollectionService {
     return disbursedIn10Days.map(({ _id }) => _id);
   }
 
-  setAssignees({ loanId, assignees, updateUserAssignee }) {
-    if (assignees.length < 1 || assignees.length > 3) {
-      throw new Meteor.Error(
-        'Il doit y avoir entre 1 et 3 conseillers sur un dossier',
-      );
-    }
-
-    const total = assignees.reduce((t, v) => t + v.percent, 0);
-
-    if (total !== 100) {
-      throw new Meteor.Error('Les pourcentages doivent faire 100%');
-    }
-
-    const main = assignees.filter(a => a.isMain);
-
-    if (main.length !== 1) {
-      throw new Meteor.Error(
-        "Il ne peut y avoir qu'un seul conseiller principal",
-      );
-    }
-
-    const response = this.update({
-      loanId,
-      object: { assigneeLinks: assignees },
-    });
-
-    if (updateUserAssignee) {
-      const { user: { _id: userId } = {} } = this.get(loanId, {
-        user: { _id: 1 },
-      });
-      if (userId) {
-        assignAdminToUser.run({ userId, adminId: main[0]._id });
-      }
-    }
-
-    return response;
-  }
-
   getMainAssignee({ loanId }) {
     const { assignees = [] } = this.get(loanId, {
       assignees: { email: 1, name: 1 },
     });
 
     return assignees.find(({ $metadata: { isMain } }) => isMain);
+  }
+
+  linkBorrower({ loanId, borrowerId }) {
+    this.addLink({ id: loanId, linkName: 'borrowers', linkId: borrowerId });
+  }
+
+  setStatusToFinalizedIfRequired({ loanId }) {
+    const { revenues = [], status: prevStatus, mainAssignee = {} } = this.get(
+      loanId,
+      {
+        revenues: { status: 1, type: 2 },
+        status: 1,
+        mainAssignee: 1,
+      },
+    );
+
+    const shouldBeFinalized =
+      prevStatus !== LOAN_STATUS.FINALIZED &&
+      revenues.length &&
+      revenues.every(
+        ({ status, type }) =>
+          status === REVENUE_STATUS.CLOSED && type !== REVENUE_TYPES.INSURANCE,
+      );
+
+    if (shouldBeFinalized) {
+      this.update({ loanId, object: { status: LOAN_STATUS.FINALIZED } });
+      const formattedPrevStatus = formatMessage({
+        id: `Forms.status.${prevStatus}`,
+      });
+      const formattedNexStatus = formatMessage({
+        id: `Forms.status.${LOAN_STATUS.FINALIZED}`,
+      });
+      const { _id: adminId } = mainAssignee;
+
+      ActivityService.addEventActivity({
+        event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+        details: { prevStatus, nextStatus: LOAN_STATUS.FINALIZED },
+        isServerGenerated: true,
+        loanLink: { _id: loanId },
+        title: 'Statut modifié',
+        description: `${formattedPrevStatus} -> ${formattedNexStatus}, automatiquement car tous les revenus ont été encaissés`,
+        createdBy: adminId,
+      });
+    }
+  }
+
+  getReusableProperties({ loanId }) {
+    const {
+      user: { _id: userId } = {},
+      properties: currentProperties = [],
+    } = this.get(loanId, { user: { _id: 1 }, properties: { _id: 1 } });
+
+    if (!userId) {
+      throw new Meteor.Error('No userId found');
+    }
+
+    const loans = this.fetch({
+      $filters: { userId },
+      properties: { address: 1, totalValue: 1 },
+    });
+
+    const reusableProperties = loans
+      .reduce(
+        (allProperties, { properties = [] }) => [
+          ...allProperties,
+          ...properties,
+        ],
+        [],
+      )
+      .filter(
+        ({ _id }) => !currentProperties.some(property => _id === property._id),
+      );
+
+    return reusableProperties;
+  }
+
+  linkProperty({ loanId, propertyId }) {
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
   }
 }
 

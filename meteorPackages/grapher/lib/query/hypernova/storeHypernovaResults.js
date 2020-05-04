@@ -1,9 +1,24 @@
 import applyProps from '../lib/applyProps.js';
 import AggregateFilters from './aggregateSearchFilters.js';
-import assemble from './assembler.js';
 import assembleAggregateResults from './assembleAggregateResults.js';
+import assemble from './assembler.js';
 import buildAggregatePipeline from './buildAggregatePipeline.js';
 import snapBackDottedFields from './lib/snapBackDottedFields';
+
+function applyCollectionTransform(childCollectionNode, aggregateResults) {
+  if (!childCollectionNode.collection._transform) {
+    return aggregateResults;
+  }
+
+  return _.map(aggregateResults, aggregateResult => {
+    aggregateResult.data = _.map(aggregateResult.data, item =>
+      childCollectionNode.collection._transform.apply(childCollectionNode, [
+        item,
+      ]),
+    );
+    return aggregateResult;
+  });
+}
 
 export default function storeHypernovaResults(childCollectionNode, userId) {
   if (childCollectionNode.parent.results.length === 0) {
@@ -46,7 +61,12 @@ export default function storeHypernovaResults(childCollectionNode, userId) {
       userId,
     );
 
-    const aggregateResults = collection.aggregate(pipeline);
+    let aggregateResults = collection.aggregate(pipeline);
+
+    aggregateResults = applyCollectionTransform(
+      childCollectionNode,
+      aggregateResults,
+    );
 
     /**
      * If in aggregation it contains '.', we replace it with a custom string '___'

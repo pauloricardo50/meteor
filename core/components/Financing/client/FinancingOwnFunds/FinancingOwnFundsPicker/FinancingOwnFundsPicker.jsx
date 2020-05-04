@@ -1,14 +1,14 @@
 import React from 'react';
-import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
-import Button from 'core/components/Button';
-import { createRoute } from 'core/utils/routerUtils';
-import Icon from 'core/components/Icon';
+import { createRoute } from '../../../../../utils/routerUtils';
+import Button from '../../../../Button';
+import Icon from '../../../../Icon';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
-import OwnFundsAdder from './OwnFundsAdder';
 import CurrentOwnFunds from './CurrentOwnFunds';
+import OwnFundsAdder from './OwnFundsAdder';
 
 const FinancingOwnFundsPicker = ({
   structureId,

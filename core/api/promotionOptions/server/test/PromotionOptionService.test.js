@@ -1,43 +1,44 @@
 /* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 import { Meteor } from 'meteor/meteor';
+import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { checkEmails } from '../../../../utils/testHelpers/index';
-import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
-import PromotionService from '../../../promotions/server/PromotionService';
+import { checkEmails } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
-import LoanService from '../../../loans/server/LoanService';
-import PromotionOptionService from '../PromotionOptionService';
-import {
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTION_DOCUMENTS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-} from '../../promotionOptionConstants';
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
-import TaskService from '../../../tasks/server/TaskService';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import {
-  PROMOTION_USERS_ROLES,
-  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_EMAIL_RECIPIENTS,
   PROMOTION_INVITED_BY_TYPE,
   PROMOTION_PERMISSIONS,
-  PROMOTION_EMAIL_RECIPIENTS,
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_USERS_ROLES,
 } from '../../../promotions/promotionConstants';
-
-import { generateExpiringSoonReservationTasks } from '../methods';
+import PromotionService from '../../../promotions/server/PromotionService';
+import TaskService from '../../../tasks/server/TaskService';
 import {
-  setPromotionOptionProgress,
   promotionOptionActivateReservation,
+  setPromotionOptionProgress,
 } from '../../methodDefinitions';
+import {
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../promotionOptionConstants';
+import { generateExpiringSoonReservationTasks } from '../methods';
+import PromotionOptionService from '../PromotionOptionService';
 
 const makePromotionLotWithReservation = ({
   key,
@@ -251,6 +252,17 @@ describe('PromotionOptionService', function() {
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
       expect(loan.promotionLinks[0].priorityOrder[1]).to.equal(id);
     });
+
+    it('adds a loanCache', () => {
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
+      expect(
+        PromotionOptionService.get(id, { loanCache: 1 }).loanCache,
+      ).to.deep.equal([{ _id: loanId, status: LOAN_STATUS.LEAD }]);
+    });
   });
 
   describe('increasePriorityOrder', () => {
@@ -407,9 +419,10 @@ describe('PromotionOptionService', function() {
       ).to.throw('ne peut pas être dans le futur');
     });
 
-    it('does not throw if start date is today', () => {
+    it('does not throw if start date is later today', () => {
       const startDate = moment()
-        .add(1, 'hour')
+        .endOf('day')
+        .subtract(1, 'minutes')
         .toDate();
 
       expect(() =>
@@ -1398,6 +1411,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId',
@@ -1415,10 +1429,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1459,6 +1476,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: {
               _id: 'proId',
               _factory: 'pro',
@@ -1468,10 +1486,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1510,6 +1531,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId1',
@@ -1534,10 +1556,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId1' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1569,6 +1594,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId1',
@@ -1599,7 +1625,11 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId1' },
             },
             promotionOptions: { _id: 'pOptId' },

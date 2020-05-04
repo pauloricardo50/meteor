@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
 import PageHead from '../PageHead';
@@ -25,9 +25,9 @@ const Page = ({
           'full-width': topFullWidth || !shouldShowSideNav,
         })}
       >
-        <h3 className="title fixed-size bold secondary">
+        <h1 className="font-size-4 title fixed-size bold secondary">
           {title || <T id={`${id}.title`} />}
-        </h3>
+        </h1>
         {rightComponent}
       </div>
     )}

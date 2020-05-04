@@ -1,20 +1,21 @@
 import { combineReducers } from 'redux';
-import { DEFAULT_INTEREST_RATE } from 'core/config/financeConstants';
+
+import { DEFAULT_INTEREST_RATE } from '../../config/financeConstants';
 import { createValueReducer } from '../common/reducers';
 import {
-  SALARY,
-  PROPERTY,
-  FORTUNE,
-  PURCHASE_TYPE,
   CURRENT_LOAN,
+  FORTUNE,
+  PROPERTY,
+  PURCHASE_TYPE,
+  SALARY,
   WANTED_LOAN,
 } from './widget1Constants';
 import {
-  SET_VALUE,
-  SUGGEST_VALUE,
-  SET_AUTO,
   INCREASE_SLIDER_MAX,
   SET_ALLOW_EXTREME_LOAN,
+  SET_AUTO,
+  SET_VALUE,
+  SUGGEST_VALUE,
 } from './widget1Types';
 
 const roundedValue = value => value && Math.round(value);

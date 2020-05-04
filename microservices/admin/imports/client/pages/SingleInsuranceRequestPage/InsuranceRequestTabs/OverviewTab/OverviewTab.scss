@@ -1,0 +1,12 @@
+.overview-tab {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  .insurance-request-remover {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

@@ -1,17 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import TaskService from '../../../../tasks/server/TaskService';
 import generator from '../../../../factories/server';
+import TaskService from '../../../../tasks/server/TaskService';
+import RESTAPI from '../../RESTAPI';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
-  getTimestampAndNonce,
   fetchAndCheckResponse,
+  getTimestampAndNonce,
   makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import RESTAPI from '../../RESTAPI';
 import addLoanNoteAPI from '../addLoanNote';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
 
 const api = new RESTAPI();
 api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {

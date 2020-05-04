@@ -13,14 +13,15 @@ const colors = {
   charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#005bea'],
   iconColor: '#444',
   iconHoverColor: '#888',
-  body: '#666',
-  title: '#444',
+  body: '#2c2c2c',
+  title: '#2c2c2c',
   mui: {
     background: '#fff',
     contrastText: '#fff',
     darkPrimary: '#0048bb', // Darken 20%
     darkSuccess: '#1aa890', // Darken 20%
     darkError: '#b30c5e', // Darken 20%
+    lightPrimary: '#3d88fe', // Lighten 30%
   },
   interestRates: {
     [INTEREST_RATES.LIBOR]: '#0047AC',

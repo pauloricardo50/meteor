@@ -1,25 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import PropTypes from 'prop-types';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import Loading from 'core/components/Loading';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
 import Roles from 'core/components/Roles';
-import { toMoney } from 'core/utils/conversionFunctions';
-import {
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-} from 'core/api/constants';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import TestBadge from 'core/components/TestBadge';
 import Calculator from 'core/utils/Calculator';
-import StatusLabel from 'imports/core/components/StatusLabel/StatusLabel';
+import { toMoney } from 'core/utils/conversionFunctions';
+
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { anonymous, canton, city, name, roles, status, structure, user },
+  { anonymous, canton, city, name, roles, status, structure, user, isTest },
 ) => {
   switch (collectionName) {
     case USERS_COLLECTION:
@@ -38,25 +38,33 @@ const getListItemDetails = (
           anonymous ? 'Anonyme' : user ? user.name : 'Pas de compte'
         }`,
         secondary: (
-          <span>
+          <div>
             <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
             {loanValueText}
-          </span>
+          </div>
         ),
       };
     }
     case PROMOTIONS_COLLECTION:
       return {
-        primary: name || 'Promotion sans nom',
-        secondary: (
+        primary: (
           <div>
-            <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
-            &nbsp;
-            <span>
+            {name || 'Promotion sans nom'}
+            {isTest && <TestBadge />}
+          </div>
+        ),
+        secondary: (
+          <div className="flex center-align">
+            <StatusLabel
+              status={status}
+              collection={PROMOTIONS_COLLECTION}
+              className="mr-4"
+            />
+            <div>
               {city}
               &nbsp;
               {canton}
-            </span>
+            </div>
           </div>
         ),
       };

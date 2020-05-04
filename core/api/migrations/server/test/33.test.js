@@ -1,12 +1,13 @@
-/* eslint-env-mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import generator from '../../../factories/server';
-import { ACQUISITION_CHANNELS } from '../../../users/userConstants';
+/* eslint-env-mocha */
+import { expect } from 'chai';
+
 import ActivityService from '../../../activities/server/ActivityService';
+import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
-import { up, down } from '../33';
+import { ACQUISITION_CHANNELS } from '../../../users/userConstants';
+import { down, up } from '../33';
 
 describe('Migration 33', () => {
   beforeEach(() => {

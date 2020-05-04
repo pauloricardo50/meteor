@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
+
+import { createdAt, moneyField, updatedAt } from '../../helpers/sharedSchemas';
 import { LOT_TYPES } from '../lotConstants';
-import { createdAt, updatedAt, moneyField } from '../../helpers/sharedSchemas';
 
 const LotSchema = new SimpleSchema({
   createdAt,

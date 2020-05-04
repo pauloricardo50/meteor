@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const loanUpdate = new Method({
@@ -36,6 +37,7 @@ export const adminLoanInsert = new Method({
   name: 'adminLoanInsert',
   params: {
     userId: Match.Optional(String),
+    loan: Match.Optional(Object),
   },
 });
 
@@ -44,6 +46,7 @@ export const userLoanInsert = new Method({
   params: {
     proPropertyId: Match.Maybe(String),
     test: Match.Optional(Boolean),
+    purchaseType: Match.Maybe(String),
   },
 });
 
@@ -119,8 +122,8 @@ export const reuseProperty = new Method({
   params: { loanId: String, propertyId: String },
 });
 
-export const setMaxPropertyValueWithoutBorrowRatio = new Method({
-  name: 'setMaxPropertyValueWithoutBorrowRatio',
+export const setMaxPropertyValueOrBorrowRatio = new Method({
+  name: 'setMaxPropertyValueOrBorrowRatio',
   params: { loanId: String, canton: String },
 });
 
@@ -150,6 +153,7 @@ export const anonymousLoanInsert = new Method({
     proPropertyId: Match.Maybe(String),
     referralId: Match.Maybe(String),
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
+    purchaseType: Match.Maybe(String),
   },
 });
 
@@ -240,4 +244,19 @@ export const loanSetAssignees = new Method({
     note: String,
     updateUserAssignee: Match.Optional(Boolean),
   },
+});
+
+export const loanLinkBorrower = new Method({
+  name: 'loanLinkBorrower',
+  params: { loanId: String, borrowerId: String },
+});
+
+export const loanGetReusableProperties = new Method({
+  name: 'loanGetReusableProperties',
+  params: { loanId: String },
+});
+
+export const loanLinkProperty = new Method({
+  name: 'loanLinkProperty',
+  params: { loanId: String, propertyId: String },
 });

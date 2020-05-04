@@ -1,23 +1,23 @@
 import {
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_PLEDGE,
-} from 'core/config/financeConstants';
-import * as types from './widget1Types';
-import {
-  makeWidget1Selector,
-  selectFields,
-  makeSelectValue,
-} from './widget1Selectors';
+} from '../../config/financeConstants';
+import { commonTypes } from '../common';
 import {
   ALL_FIELDS,
-  FINAL_STEP,
-  PROPERTY,
   CAPPED_FIELDS,
   CURRENT_LOAN,
+  FINAL_STEP,
+  PROPERTY,
   PURCHASE_TYPE,
 } from './widget1Constants';
+import {
+  makeSelectValue,
+  makeWidget1Selector,
+  selectFields,
+} from './widget1Selectors';
 import suggestValue from './widget1Suggestion';
-import { commonTypes } from '../common';
+import * as types from './widget1Types';
 
 export const suggestValues = () => (dispatch, getState) => {
   const state = getState();

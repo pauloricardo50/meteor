@@ -1,10 +1,10 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import pick from 'lodash/pick';
-import uniq from 'lodash/uniq';
 import pickBy from 'lodash/pickBy';
+import uniq from 'lodash/uniq';
+import { compose, withProps } from 'recompose';
 
-import { INTEREST_RATES } from '../../../../api/constants';
+import { INTEREST_RATES } from '../../../../api/interestRates/interestRatesConstants';
 import T from '../../../Translation';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { Consumer } from './FinancingOffersContainer';

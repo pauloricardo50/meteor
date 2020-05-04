@@ -1,21 +1,21 @@
 import React from 'react';
+import { compose, withProps, withState } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import {
-  TRENDS,
   INTEREST_RATES,
+  TRENDS,
 } from 'core/api/interestRates/interestRatesConstants';
-import { withProps, compose, withState } from 'recompose';
 import {
   interestRatesInsert,
-  interestRatesUpdate,
   interestRatesRemove,
-} from 'core/api/methods/index';
+  interestRatesUpdate,
+} from 'core/api/interestRates/methodDefinitions';
 import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 import T from 'core/components/Translation';
 import Percent from 'core/components/Translation/numberComponents/Percent';
-import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 
 const singleInterestRate = type => ({
   [type]: { type: Object, optional: true },

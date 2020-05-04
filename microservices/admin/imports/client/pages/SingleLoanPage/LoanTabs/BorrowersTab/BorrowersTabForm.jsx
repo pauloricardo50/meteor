@@ -1,13 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
 
-import VerticalAligner from 'core/components/VerticalAligner';
 import AutoForm from 'core/components/AutoForm';
-import { BORROWERS_COLLECTION } from 'core/api/constants';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import BorrowerRemover from 'core/components/BorrowerRemover';
-import BorrowerReuser from 'core/components/BorrowerReuser';
+import MortgageNotesForm from 'core/components/MortgageNotesForm';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import VerticalAligner from 'core/components/VerticalAligner';
+
 import BorrowersTabFormRecap from './BorrowersTabFormRecap';
 
 const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
@@ -37,16 +36,6 @@ const BorrowersTabForm = ({
         {borrower.name || `Emprunteur ${index + 1}`}
       </h2>
       <div className="flex c space-children">
-        <BorrowerReuser
-          loanId={loanId}
-          borrowerId={borrower._id}
-          buttonProps={{
-            raised: false,
-            size: 'small',
-            primary: true,
-            label: 'Réutiliser emprunteur',
-          }}
-        />
         {borrowers && borrowers.length > 1 && (
           <BorrowerRemover
             borrower={borrower}
@@ -66,7 +55,6 @@ const BorrowersTabForm = ({
           inputs={inputs}
           borrowers={borrowers}
           docId={borrower._id}
-          collection={BORROWERS_COLLECTION}
           doc={borrower}
           showDisclaimer={false}
         />

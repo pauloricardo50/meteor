@@ -3,10 +3,10 @@ import cx from 'classnames';
 import { toClass } from 'recompose';
 
 import { toMoney } from '../../../../../utils/conversionFunctions';
-import T from '../../../../Translation';
 import CounterpartsOfferIcon from '../../../../CounterpartsOfferIcon';
-import OfferPickerListItemValue from './OfferPickerListItemValue';
+import T from '../../../../Translation';
 import OfferPickerListItemInterests from './OfferPickerListItemInterests';
+import OfferPickerListItemValue from './OfferPickerListItemValue';
 
 const OfferPickerListItem = props => {
   const { offer, selected, structure, handleClick, displayDetail } = props;

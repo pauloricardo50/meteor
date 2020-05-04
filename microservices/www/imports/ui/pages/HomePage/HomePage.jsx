@@ -1,11 +1,12 @@
 import React from 'react';
 
 import PageHead from 'core/components/PageHead';
-import HomePageHeader from './HomePageHeader';
-import HomePageDescription from './HomePageDescription';
-import HomePageReviews from './HomePageReviews';
+
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
+import HomePageDescription from './HomePageDescription';
+import HomePageHeader from './HomePageHeader';
+import HomePageReviews from './HomePageReviews';
 
 const HomePage = () => (
   <WwwLayout className="home-page">

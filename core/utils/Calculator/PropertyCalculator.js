@@ -1,21 +1,21 @@
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { PROPERTY_CATEGORY } from 'core/api/constants';
-import {
-  getPropertyArray,
-  getPropertyLoanArray,
-} from '../../arrays/PropertyFormArray';
-import { getPercent } from '../general';
-import {
-  getCountedArray,
-  getMissingFieldIds,
-  getRequiredFieldIds,
-} from '../formArrayHelpers';
+import { getPropertyDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
-import { getPropertyDocuments } from '../../api/files/documents';
+import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
+import {
+  getPropertyArray,
+  getPropertyLoanArray,
+} from '../../arrays/PropertyFormArray';
+import { PURCHASE_TYPE } from '../../redux/widget1/widget1Constants';
+import {
+  getCountedArray,
+  getMissingFieldIds,
+  getRequiredFieldIds,
+} from '../formArrayHelpers';
+import { getPercent } from '../general';
 import MiddlewareManager from '../MiddlewareManager';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
@@ -245,15 +245,15 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     isNewProperty({ loan, structureId }) {
       return !!(
         this.isPromotionProperty({ loan, structureId }) ||
-        this.selectPropertyKey({ loan, structureId, key: 'isNew' }) ||
-        loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
+        this.selectPropertyKey({ loan, structureId, key: 'isNew' })
       );
     }
 
-    isUserProperty({ loan, structureId }) {
+    isUserProperty({ loan, structureId, property }) {
       const propertyCategory = this.selectPropertyKey({
         loan,
         structureId,
+        property,
         key: 'category',
       });
 

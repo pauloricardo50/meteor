@@ -2,11 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 import { Component } from 'react';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
-import { analyticsPage } from 'core/api/methods';
-
-import { getCookie, setCookie, parseCookies } from 'core/utils/cookiesHelpers';
-import { getMatchingPath } from 'core/api/analytics/helpers';
+import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
+import { getMatchingPath } from '../../api/analytics/helpers';
+import { analyticsPage } from '../../api/analytics/methodDefinitions';
+import { getCookie, parseCookies, setCookie } from '../../utils/cookiesHelpers';
 import { impersonate } from '../Impersonate/ImpersonatePage/ImpersonatePage';
 
 export default class HistoryWatcher extends Component {

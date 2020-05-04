@@ -5,18 +5,18 @@ import { _ } from 'meteor/underscore';
 
 import crypto from 'crypto';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
-import {
-  OBJECT_STORAGE_PATH,
-  BUCKET_NAME,
-  OBJECT_STORAGE_REGION,
-  FILE_STATUS,
-  S3_ACLS,
-  MAX_FILE_SIZE,
-  ONE_KB,
-} from '../fileConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import Security from '../../security';
+import {
+  BUCKET_NAME,
+  FILE_STATUS,
+  MAX_FILE_SIZE,
+  OBJECT_STORAGE_PATH,
+  OBJECT_STORAGE_REGION,
+  ONE_KB,
+  S3_ACLS,
+} from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 

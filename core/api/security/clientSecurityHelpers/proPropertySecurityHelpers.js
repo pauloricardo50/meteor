@@ -1,11 +1,11 @@
-import { hasMinimumRole } from './generalSecurityHelpers';
-import { ROLES } from '../../users/userConstants';
-import SecurityService from '../Security';
-import { PROPERTY_STATUS } from '../../properties/propertyConstants';
 import {
   getCurrentUserPermissionsForProProperty,
   shouldAnonymize,
 } from '../../properties/propertyClientHelper';
+import { PROPERTY_STATUS } from '../../properties/propertyConstants';
+import { ROLES } from '../../users/userConstants';
+import SecurityService from '../Security';
+import { hasMinimumRole } from './generalSecurityHelpers';
 
 const checkProPropertyPermissions = ({
   property,

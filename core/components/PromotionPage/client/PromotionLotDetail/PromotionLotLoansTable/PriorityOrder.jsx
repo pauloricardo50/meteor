@@ -2,8 +2,8 @@ import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { createRoute } from '../../../../../utils/routerUtils';
-import Chip from '../../../../Material/Chip';
 import Link from '../../../../Link';
+import Chip from '../../../../Material/Chip';
 
 const getChipColor = ({ currentId, userId, promotionLots }) => {
   const attributedTo =

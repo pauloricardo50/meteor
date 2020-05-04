@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import widget1 from 'core/redux/widget1';
+
 import stepperReducer from './stepper';
 
 const createRootReducer = () =>

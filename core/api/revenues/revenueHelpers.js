@@ -1,6 +1,6 @@
 import {
-  PRO_COMMISSION_STATUS,
   COMMISSION_STATUS,
+  PRO_COMMISSION_STATUS,
   REVENUE_STATUS,
 } from './revenueConstants';
 

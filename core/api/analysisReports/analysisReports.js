@@ -1,9 +1,9 @@
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { createCollection } from '../helpers/collectionHelpers';
-import { ANALYSIS_REPORTS_COLLECTION } from './analysisReportConstants';
+import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 import Users from '../users/users';
+import { ANALYSIS_REPORTS_COLLECTION } from './analysisReportConstants';
 
 const AnalysisReports = createCollection(ANALYSIS_REPORTS_COLLECTION);
 

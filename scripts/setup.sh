@@ -55,16 +55,10 @@ if [[ $DO_CLEAN == true ]];
 then
   echo "Cleaning and installing root npm packages"
   ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
-
-  echo "Cleaning up all CSS"
-  ./clean-css.sh
 fi
 
 echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
-
-echo "Installing npm packages in .deployment"
-( cd ../.deployment && meteor npm i -q );
 
 echo "Creating language files"
 meteor npx babel-node ./createLanguages.js
@@ -74,6 +68,14 @@ echo "Preparing front app plugin"
 ( cd ../plugins/frontPlugin && npm i -q );
 ln -s ../../../core ../plugins/frontPlugin/src/core
 ( cd ../plugins/frontPlugin && meteor npm run build-production );
+
+
+echo "Preparing gatsby brand website"
+( cd ../microservices/www2 && npm i -q );
+ln -s ../../../core ../microservices/www2/src/core
+
+echo "Setting up sort-import style"
+ln -s ../plugins/import-sort-style-epotek ../node_modules/.
 
 end=`date +%s`
 runtime=$((end-start))

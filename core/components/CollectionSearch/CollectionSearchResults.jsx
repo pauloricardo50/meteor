@@ -1,12 +1,13 @@
 import React from 'react';
-
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
-import List, { ListItem } from '../List';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+
 import Loading from '../Loading/Loading';
+import List from '../Material/List';
+import ListItem from '../Material/ListItem';
+import MenuItem from '../Material/MenuItem';
 
 const ItemsPopper = ({
   showResults,

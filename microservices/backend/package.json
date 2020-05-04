@@ -3,23 +3,27 @@
   "private": true,
   "scripts": {
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
-    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505",
-    "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500",
-    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505"
+    "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505 --exclude-archs \"web.browser, web.cordova\"",
+    "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" FORCE_COLOR=3 meteor run --settings settings-dev.json --port 5500 --exclude-archs \"web.browser, web.browser.legacy, web.cordova\"",
+    "start2": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500 --exclude-archs \"web.browser, web.cordova\"",
+    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505 --exclude-archs \"web.browser, web.cordova\"",
+    "update-meteor-packages": "node -r esm ../../scripts/npm-scripts/run-script.js update-meteor-packages"
   },
   "dependencies": {
     "@babel/runtime": "7.8.3",
-    "@material-ui/core": "^4.8.3",
-    "@material-ui/icons": "^4.5.1",
-    "analytics-node": "^3.3.0",
+    "@material-ui/core": "^4.9.13",
+    "@material-ui/icons": "^4.9.1",
+    "analytics-node": "https://github.com/e-Potek/analytics-node/tarball/master",
     "antd": "^3.26.7",
     "archiver": "^3.1.1",
     "aws-sdk": "^2.604.0",
+    "axios": "0.18.1",
     "babel-polyfill": "^6.26.0",
     "base64topdf": "^1.1.8",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "btoa": "^1.2.1",
+    "chalk": "^4.0.0",
     "classnames": "^2.2.6",
     "connect-multiparty": "^2.2.0",
     "connect-route": "^0.1.5",
@@ -98,7 +102,6 @@
   },
   "meteor": {
     "mainModule": {
-      "client": "client/main.js",
       "server": "server/main.js"
     }
   }

@@ -2,10 +2,10 @@ import React from 'react';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
 
-import BlogAuthor from './BlogAuthor';
-import BlogPostSeo from './BlogPostSeo';
-import BlogPostPageShare from './BlogPostPageShare';
 import AutoTooltipInjector from './AutoTooltipInjector';
+import BlogAuthor from './BlogAuthor';
+import BlogPostPageShare from './BlogPostPageShare';
+import BlogPostSeo from './BlogPostSeo';
 
 export const htmlDecode = input => {
   const e = document.createElement('div');

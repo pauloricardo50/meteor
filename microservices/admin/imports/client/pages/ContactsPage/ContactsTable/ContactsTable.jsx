@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Table from 'core/components/Table';
-import ContactsTableContainer from './ContactsTableContainer';
+
 import InsertContactDialogForm from '../ContactDialogForm/InsertContactDialogForm';
+import ContactsTableContainer from './ContactsTableContainer';
 
 const ContactsTable = ({ rows, columnOptions, insertContactModel }) => (
   <div>

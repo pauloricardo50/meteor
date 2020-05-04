@@ -3,9 +3,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { ErrorsField } from 'uniforms-material';
 
-import CustomAutoFields from './CustomAutoFields';
 import AutoFormDialogChildren from './AutoFormDialogChildren';
 import AutoFormLayout from './AutoFormLayout';
+import CustomAutoFields from './CustomAutoFields';
 
 const AutoFormDialogContent = ({
   description,

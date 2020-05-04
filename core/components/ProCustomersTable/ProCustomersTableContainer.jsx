@@ -1,14 +1,14 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { proLoans2 } from 'core/api/loans/queries';
-import T from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import ProCustomer from 'core/components/ProCustomer';
-import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
-import { CollectionIconLink } from 'core/components/IconLink';
+import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
+import { LOAN_STATUS } from '../../api/loans/loanConstants';
+import { proLoans2 } from '../../api/loans/queries';
+import { CollectionIconLink } from '../IconLink';
+import ProCustomer from '../ProCustomer';
+import StatusLabel from '../StatusLabel';
+import T from '../Translation';
 import ProCustomersTableAssigneeInfo from './ProCustomersTableAssigneeInfo';
 
 const columnOptions = [
@@ -23,17 +23,18 @@ const columnOptions = [
   label: label || <T id={`ProCustomersTable.${id}`} />,
 }));
 
-const makeMapLoan = ({ proUser, isAdmin }) => loan => {
+const makeMapLoan = ({ isAdmin }) => loan => {
   const {
+    _collection,
     _id: loanId,
     anonymous,
     createdAt,
     name: loanName,
+    proNote = {},
     referredByText,
     relatedTo: relatedDocs = [],
     status,
     user,
-    proNote = {},
   } = loan;
 
   return {
@@ -41,17 +42,11 @@ const makeMapLoan = ({ proUser, isAdmin }) => loan => {
     columns: [
       {
         raw: loanName,
-        label: isAdmin ? (
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
-        ) : (
-          loanName
-        ),
+        label: isAdmin ? <CollectionIconLink relatedDoc={loan} /> : loanName,
       },
       {
         raw: status,
-        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: !anonymous && user.name,

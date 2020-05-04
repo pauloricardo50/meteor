@@ -1,6 +1,6 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Loans } from '../..';
+import Loans from '../../loans/loans';
 import LoanService from '../../loans/server/LoanService';
 
 export const up = () => {
@@ -11,7 +11,7 @@ export const up = () => {
       const { maxSolvency } = loan;
       if (maxSolvency) {
         const { canton } = maxSolvency;
-        return LoanService.setMaxPropertyValueWithoutBorrowRatio({
+        return LoanService.setMaxPropertyValueOrBorrowRatio({
           loanId: loan._id,
           canton,
         }).then(() =>

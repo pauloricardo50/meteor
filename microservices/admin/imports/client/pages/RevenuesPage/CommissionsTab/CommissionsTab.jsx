@@ -1,9 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import Icon from 'core/components/Icon/Icon';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { REVENUES_COLLECTION } from 'core/api/constants';
+import Icon from 'core/components/Icon/Icon';
+
 import CommissionsTable from './CommissionsTable';
 
 const CommissionsTab = props => (

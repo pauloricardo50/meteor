@@ -15,8 +15,11 @@ const AboutPageTeamMember = ({ name, src, title }) => (
   <div className="about-page-team-member">
     <img src={src} alt={name} className="about-page-team-member-image" />
     <div className="about-page-team-member-info">
-      <h4>{name}</h4>
-      <h5>{title}</h5>
+      <span className="mb-8">
+        <b>{name}</b>
+        <br />
+        <small className="secondary">{title}</small>
+      </span>
       <span className="about-page-team-member-contact">
         <a href={getMailTo(name)} className="email">
           <IconButton

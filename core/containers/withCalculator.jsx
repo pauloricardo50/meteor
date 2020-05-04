@@ -1,13 +1,13 @@
 import React from 'react';
-import { compose, wrapDisplayName } from 'recompose';
 import omit from 'lodash/omit';
+import { compose, wrapDisplayName } from 'recompose';
 
-import { lenderRules as lenderRulesFragment } from 'core/api/fragments';
-import memoizeOne from 'core/utils/memoizeOne';
-import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
 import { withSmartQuery } from '../api/containerToolkit';
-import Calculator, { Calculator as CalculatorClass } from '../utils/Calculator';
+import withContextConsumer from '../api/containerToolkit/withContextConsumer';
+import { lenderRules as lenderRulesFragment } from '../api/fragments';
 import { organisationLenderRules as query } from '../api/lenderRules/queries';
+import Calculator, { Calculator as CalculatorClass } from '../utils/Calculator';
+import memoizeOne from '../utils/memoizeOne';
 
 const Context = React.createContext();
 const { Provider } = Context;

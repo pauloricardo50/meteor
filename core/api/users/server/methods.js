@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
 import {
   adminCreateUser,
@@ -28,9 +29,8 @@ import {
   userUpdateOrganisations,
   userVerifyEmail,
 } from '../methodDefinitions';
-import UserService from './UserService';
-import PropertyService from '../../properties/server/PropertyService';
 import { ROLES } from '../userConstants';
+import UserService from './UserService';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }),
@@ -105,7 +105,9 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler(({ userId }, params) => {
+changeEmail.setHandler((context, params) => {
+  const { userId } = context;
+  context.unblock(); // This method will send an email to the user
   SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });

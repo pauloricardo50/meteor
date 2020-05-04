@@ -3,13 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 
-import OrganisationService from '../../organisations/server/OrganisationService';
-import UserService from '../../users/server/UserService';
-import assigneeReducer from '../../reducers/assigneeReducer';
 import { userLoan } from '../../fragments';
 import { isMeteorMethod } from '../../methods/methodHelpers';
-import Loans from '../loans';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import assigneeReducer from '../../reducers/assigneeReducer';
+import UserService from '../../users/server/UserService';
 import { getLoanProgress } from '../helpers';
+import Loans from '../loans';
 
 const body = merge(
   {},

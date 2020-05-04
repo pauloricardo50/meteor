@@ -1,13 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-import IconButton from 'core/components/IconButton';
-
-import DropzoneInput from 'core/components/AutoForm/DropzoneInput';
-import colors from 'core/config/colors';
-
-import T from 'core/components/Translation';
+import colors from '../../config/colors';
+import DropzoneInput from '../AutoForm/DropzoneInput';
+import IconButton from '../IconButton';
+import T from '../Translation';
 
 const getStyles = (props, currentValue) => ({
   article: {

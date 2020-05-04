@@ -4,12 +4,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import { ROLES } from 'core/api/constants';
-import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
+import { ROLES } from 'core/api/users/userConstants';
+
 import DashboardUnverified from '../../components/DashboardUnverified';
+import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
+import WelcomeScreenCtas from '../../components/WelcomeScreen/WelcomeScreenCtas';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
-import SuperDashboard from './SuperDashboard';
+import SuperDashboard from './SuperDashboard/loadable';
 
 export const AppPage = ({ currentUser, insertLoan, loading }) => {
   const { emails, loans } = currentUser;
@@ -36,7 +38,7 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
       {loans.length === 0 && (
         <WelcomeScreen
           displayCheckbox={false}
-          handleClick={insertLoan}
+          cta={<WelcomeScreenCtas loading={loading} insertLoan={insertLoan} />}
           buttonProps={{ loading }}
         />
       )}

@@ -1,7 +1,7 @@
 import { Match } from 'meteor/check';
 
-import { frontGetTaggedConversations } from '../queries';
 import { exposeQuery } from '../../queries/queryHelpers';
+import { frontGetTaggedConversations } from '../queries';
 import FrontService from './FrontService';
 
 const taggedConversationsResolver = data => {

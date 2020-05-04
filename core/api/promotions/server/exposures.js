@@ -1,20 +1,20 @@
 import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 
-import { ROLES } from 'core/api/users/userConstants';
-import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
+import { PROMOTION_STATUS } from '../promotionConstants';
 import {
   adminPromotions,
   appPromotion,
-  promotionSearch,
-  proPromotions,
   proPromotionUsers,
+  proPromotions,
+  promotionSearch,
+  promotionsList,
 } from '../queries';
-import { PROMOTION_STATUS } from '../promotionConstants';
-import UserService from '../../users/server/UserService';
-
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
 exposeQuery({
@@ -170,4 +170,16 @@ exposeQuery({
     },
   },
   options: { allowFilterById: true },
+});
+
+exposeQuery({
+  query: promotionsList,
+  overrides: {
+    firewall() {},
+    embody: body => {
+      body.$filter = ({ filters }) => {
+        filters.isTest = { $ne: true };
+      };
+    },
+  },
 });

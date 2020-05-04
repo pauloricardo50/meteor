@@ -1,5 +1,5 @@
 import pollUntilReady from '../../../utils/pollUntilReady';
-import { USER_PASSWORD, USER_EMAIL } from '../../server/e2eConstants';
+import { USER_EMAIL, USER_PASSWORD } from '../../server/e2eConstants';
 // import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
 // You have to have visited the app before this can work
@@ -60,19 +60,28 @@ Cypress.Commands.add('meteorLogout', () => {
   );
 });
 
+// We need to make sure we're properly logged in on the server, not only the
+// the client, as they can by out of sync with cypress
 const waitForLoggedIn = Meteor =>
   new Promise((resolve, reject) =>
     pollUntilReady(
       () =>
-        new Promise((resolve2, reject2) =>
+        new Promise((resolve2, reject2) => {
+          const timeout = setTimeout(() => {
+            // Sometimes the isLoggedIn call never reaches the server
+            // To avoid this, add a timeout that skips this specific call
+            resolve2(false);
+          }, 40);
+
           Meteor.call('isLoggedIn', (err, userId) => {
+            clearTimeout(timeout);
             if (err) {
               reject2(err);
             }
 
             resolve2(userId);
-          }),
-        ),
+          });
+        }),
     )
       .then(resolve)
       .catch(reject),
@@ -169,9 +178,7 @@ Cypress.Commands.add(
     cy.window().then(window => {
       const blob = new window.Blob(
         [JSON.stringify({ hello: 'world' }, undefined, 2)],
-        {
-          type: 'application/pdf',
-        },
+        { type: 'application/pdf' },
       );
       blob.lastModifiedDate = new Date();
       blob.name = fileName;

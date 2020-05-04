@@ -3,12 +3,12 @@ import React from 'react';
 import T from '../../../../../../components/Translation';
 import { Calculator } from '../../../../../../utils/Calculator';
 import PdfPage from '../../PdfPage';
-import LenderRulesPdfTable from './LenderRulesPdfTable';
 import {
+  getCutOffCriteriaRules,
   getExpenseRules,
   getTheoreticalExpenseRules,
-  getCutOffCriteriaRules,
 } from './lenderRulesArrays';
+import LenderRulesPdfTable from './LenderRulesPdfTable';
 
 const LenderRulesPdfPage = ({ pageNb, pageCount, organisation, loan }) => {
   const { lenderRules } = organisation || {};

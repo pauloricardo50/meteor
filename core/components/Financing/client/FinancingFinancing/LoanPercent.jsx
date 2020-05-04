@@ -3,14 +3,14 @@ import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import { connectField } from 'uniforms';
 
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/constants';
 import AutoForm from '../../../AutoForm2';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/autoFormConstants';
 import PercentInput from '../../../PercentInput';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import { getBorrowRatio } from '../FinancingResult/financingResultHelpers';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
-import FinancingCalculator from '../FinancingCalculator';
 import StructureUpdateContainer from '../containers/StructureUpdateContainer';
+import FinancingCalculator from '../FinancingCalculator';
+import { getBorrowRatio } from '../FinancingResult/financingResultHelpers';
 
 const LoanPercentField = connectField(
   ({ onChange, value, formRef, disabled }) => (

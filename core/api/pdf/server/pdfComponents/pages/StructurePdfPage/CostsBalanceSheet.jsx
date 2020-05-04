@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';
 import T, { Money, Percent } from '../../../../../../components/Translation';
-import { shouldRenderRow } from '../../PdfTable/PdfTable';
+import { OWN_FUNDS_TYPES } from '../../../../../borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../loans/loanConstants';
 import BalanceSheetTable from '../../BalanceSheetTable';
+import { shouldRenderRow } from '../../PdfTable/PdfTable';
 
 const getCostLines = ({ loan, structureId, calculator }) => {
-  const fees = calculator.getFees({ loan, structureId });
+  const notaryFees = calculator.getNotaryFees({ loan, structureId });
   const {
     total: totalFees,
     buyersContractFees: { total: totalBuyersContractFees = 0 } = {},
@@ -15,7 +16,7 @@ const getCostLines = ({ loan, structureId, calculator }) => {
       buyersContractDeductions = 0,
       mortgageNoteDeductions = 0,
     } = {},
-  } = fees;
+  } = notaryFees;
   const cashUsed = calculator.getCashUsed({ loan, structureId }) - totalFees;
   const insurance2Used = calculator.getUsedFundsOfType({
     loan,

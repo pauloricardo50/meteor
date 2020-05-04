@@ -1,10 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { RESIDENCE_TYPE } from 'core/api/constants';
-import NotaryFeesCalculator from '../NotaryFeesCalculator';
-import { PURCHASE_TYPE, PROMOTION_TYPES } from '../../../api/constants';
+import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
+import { PROMOTION_TYPES } from '../../../api/promotions/promotionConstants';
+import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import { GE } from '../cantonConstants';
+import NotaryFeesCalculator from '../NotaryFeesCalculator';
 
 describe('NotaryFeesCalculator', () => {
   let calc;
@@ -62,7 +63,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(31944.1);
+      expect(fees.total).to.equal(31660.1);
     });
 
     it('ignores propertyWork', () => {
@@ -71,7 +72,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.total).to.equal(31944.1);
+      expect(fees.total).to.equal(31660.1);
     });
 
     it('caps casatax deductions for very small properties', () => {
@@ -114,7 +115,16 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(55159.1);
     });
 
-    it('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
+    it('should not return NaN when no wantedLoan is set', () => {
+      loan.structure.wantedLoan = undefined;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.total).to.equal(39100.4);
+    });
+
+    // FIXME: Skip these until we officially handle construction loans
+    it.skip('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
       loan.structure.property.value = 0;
       loan.structure.property.totalValue = 1000000;
@@ -126,7 +136,7 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.buyersContractFees.total).to.equal(28269.5);
     });
 
-    it('calculates casatax properly for a construction', () => {
+    it.skip('calculates casatax properly for a construction', () => {
       loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
       loan.structure.property.value = 0;
@@ -143,6 +153,15 @@ describe('NotaryFeesCalculator', () => {
           GE.MORTGAGE_NOTE_CASATAX_DEDUCTION,
       ).to.equal(fees.deductions.mortgageNoteDeductions);
       expect(fees.buyersContractFees.total).to.equal(27034.85);
+    });
+
+    it('ignores casatax in refinancings', () => {
+      loan.residenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+      loan.purchaseType = PURCHASE_TYPE.REFINANCING;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.deductions.mortgageNoteDeductions).to.equal(0);
     });
   });
 
@@ -210,7 +229,7 @@ describe('NotaryFeesCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       });
 
-      expect(notaryFees.total).to.equal(31944.1);
+      expect(notaryFees.total).to.equal(31660.1);
     });
 
     it('should work for unknown cantons', () => {

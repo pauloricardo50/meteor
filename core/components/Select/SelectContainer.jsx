@@ -1,12 +1,12 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import { compose, mapProps } from 'recompose';
 
-import MenuItem from '../Material/MenuItem';
-import Divider from '../Material/Divider';
 import Icon from '../Icon';
+import Divider from '../Material/Divider';
+import MenuItem from '../Material/MenuItem';
 
 const mapOptions = options => {
   const array = [];

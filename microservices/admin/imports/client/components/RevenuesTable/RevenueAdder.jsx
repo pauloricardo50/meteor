@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Icon from 'core/components/Icon';
+
 import RevenueDialogFormContainer from './RevenueDialogFormContainer';
 
 const RevenueAdder = ({
@@ -12,6 +13,7 @@ const RevenueAdder = ({
   open,
   setOpen,
   model,
+  buttonProps,
 }) => (
   <AutoFormDialog
     schema={schema}
@@ -22,6 +24,7 @@ const RevenueAdder = ({
       raised: true,
       primary: true,
       icon: <Icon type="add" />,
+      ...buttonProps,
     }}
     title="Insérer un revenu"
     layout={layout}

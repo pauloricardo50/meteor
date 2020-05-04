@@ -1,7 +1,7 @@
-import { useTracker } from 'meteor/react-meteor-data';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
+import { useTracker } from 'meteor/react-meteor-data';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {

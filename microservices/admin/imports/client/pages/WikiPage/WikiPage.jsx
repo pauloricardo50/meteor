@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Tabs from 'core/components/Tabs';
 import Icon from 'core/components/Icon';
+import Tabs from 'core/components/Tabs';
 import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import EmailList from './EmailList';
 

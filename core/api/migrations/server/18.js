@@ -1,7 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Tasks } from '../..';
 import { TASK_PRIORITIES } from '../../tasks/taskConstants';
+import Tasks from '../../tasks/tasks';
 
 export const up = async () => {
   await Tasks.rawCollection().update(

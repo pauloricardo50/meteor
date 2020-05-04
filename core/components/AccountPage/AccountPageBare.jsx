@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import T from '../Translation';
 import EmailModifier from '../EmailModifier';
-import PasswordChange from './PasswordChange';
-import DeveloperSection from './DeveloperSection';
-import AccountPageHeader from './AccountPageHeader';
-import AccountModifier from './AccountModifier';
 import TooltipArray from '../TooltipArray';
+import T from '../Translation';
+import AccountModifier from './AccountModifier';
+import AccountPageHeader from './AccountPageHeader';
+import DeveloperSection from './DeveloperSection';
+import PasswordChange from './PasswordChange';
 
 const AccountPageBare = ({ currentUser }) => {
   const { email, _id: userId, phoneNumbers = [] } = currentUser;

@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 
-import { Money } from 'core/components/Translation';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import { LOANS_COLLECTION, REVENUES_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { Money } from 'core/components/Translation';
+import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const OrgItem = ({ orgName, revenues }) => (
@@ -23,18 +25,17 @@ const OrgItem = ({ orgName, revenues }) => (
       title={`Revenus sans commission de ${orgName}`}
     >
       <div className="flex-col">
-        {revenues.map(
-          ({ loan }) =>
-            loan && (
+        {revenues.map(({ loan, insuranceRequest }) => {
+          const selectedDocument = insuranceRequest || loan;
+          return (
+            selectedDocument && (
               <CollectionIconLink
-                key={loan._id}
-                relatedDoc={{
-                  ...loan,
-                  collection: LOANS_COLLECTION,
-                }}
+                key={selectedDocument._id}
+                relatedDoc={selectedDocument}
               />
-            ),
-        )}
+            )
+          );
+        })}
       </div>
     </DialogSimple>
   </div>
@@ -53,36 +54,70 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
       },
       loan: {
         name: 1,
-        user: { referredByOrganisation: { name: 1, commissionRates: 1 } },
+        user: {
+          referredByOrganisation: {
+            name: 1,
+            commissionRates: { _id: 1, type: 1 },
+            enabledCommissionTypes: 1,
+          },
+        },
         borrowers: { name: 1 },
         hasPromotion: 1,
       },
       organisationLinks: 1,
       amount: 1,
       assigneeLink: 1,
+      type: 1,
+      insuranceRequest: {
+        name: 1,
+        borrowers: { name: 1 },
+        user: {
+          referredByOrganisation: {
+            name: 1,
+            commissionRates: { _id: 1, type: 1 },
+            enabledCommissionTypes: 1,
+          },
+        },
+      },
     },
     refetchOnMethodCall: false,
   });
 
-  const filteredRevenues = revenues.filter(
-    ({
-      organisationLinks,
-      loan: { user: { referredByOrganisation } = {}, hasPromotion } = {},
-    }) => {
-      if (
-        referredByOrganisation &&
-        referredByOrganisation.name &&
-        (!organisationLinks || organisationLinks.length === 0) &&
-        !hasPromotion
-      ) {
-        return (
-          referredByOrganisation.commissionRates &&
-          referredByOrganisation.commissionRates.length > 0
-        );
-      }
-      return false;
-    },
-  );
+  const filteredRevenues = revenues
+    .map(revenue => {
+      const { loan, insuranceRequest } = revenue;
+
+      const relatedDoc = insuranceRequest || loan || {};
+      const {
+        user: { referredByOrganisation } = {},
+        hasPromotion,
+      } = relatedDoc;
+
+      return { ...revenue, referredByOrganisation, hasPromotion };
+    })
+    .filter(
+      ({
+        organisationLinks,
+        type: revenueType,
+        referredByOrganisation,
+        hasPromotion,
+      }) => {
+        if (
+          referredByOrganisation?.name &&
+          (!organisationLinks || organisationLinks.length === 0) &&
+          !hasPromotion
+        ) {
+          return (
+            referredByOrganisation.commissionRates?.length > 0 &&
+            referredByOrganisation.commissionRates.some(
+              ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
+            ) &&
+            referredByOrganisation.enabledCommissionTypes?.includes(revenueType)
+          );
+        }
+        return false;
+      },
+    );
 
   const ownRevenues = filteredRevenues.filter(
     ({ assigneeLink }) =>
@@ -91,7 +126,7 @@ const RevenuesWithoutCommissions = ({ showAll }) => {
 
   const groupedRevenues = groupBy(
     filteredRevenues,
-    'loan.user.referredByOrganisation.name',
+    'referredByOrganisation.name',
   );
 
   if (!showAll && !filteredRevenues.length) {

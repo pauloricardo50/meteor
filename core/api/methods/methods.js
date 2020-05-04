@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
+import { Mutation } from 'meteor/cultofcoders:mutations';
+
 import { getCookie } from '../../utils/cookiesHelpers';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
 import { internalMethod } from './methodHelpers';
@@ -8,7 +9,9 @@ import { internalMethod } from './methodHelpers';
 if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;
 } else {
-  Mutation.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
+  Mutation.isDebugEnabled = {
+    omit: ['analyticsPage', 'analyticsLogin', 'logError'],
+  };
 }
 
 export class Method extends Mutation {

@@ -1,11 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
-import Icon from 'core/components/Icon/Icon';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import Icon from 'core/components/Icon/Icon';
+import T from 'core/components/Translation';
+
 import AllLoansTable from '../../components/AllLoansTable';
 import LoansPageContainer from './LoansPageContainer';
 

@@ -1,6 +1,6 @@
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import Security from '../Security';
-import { LoanSecurity } from './index';
+import { LoanSecurity } from '.';
 
 class BorrowerSecurity {
   static isAllowedToInsert() {

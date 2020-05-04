@@ -1,13 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
-import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
+import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import { LOANS_COLLECTION } from 'core/api/constants';
 
-const getLoanSummaryColumns = ({ status, createdAt, updatedAt, ...loan }) => {
+const getLoanSummaryColumns = ({
+  _collection,
+  status,
+  createdAt,
+  updatedAt,
+  ...loan
+}) => {
   const ownFunds = Calculator.getNonPledgedOwnFunds({ loan });
   const ownFundsPledged = Calculator.getTotalPledged({ loan });
   const loanValue = Calculator.selectLoanValue({ loan });
@@ -15,7 +20,7 @@ const getLoanSummaryColumns = ({ status, createdAt, updatedAt, ...loan }) => {
   return [
     {
       translationId: 'LoanSummaryColumn.status',
-      content: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      content: <StatusLabel status={status} collection={_collection} />,
     },
     {
       translationId: 'LoanSummaryColumn.createdAt',

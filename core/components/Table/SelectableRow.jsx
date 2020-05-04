@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import PropTypes from 'prop-types';
 
 const styles = {
   cell: { textAlign: 'left' },

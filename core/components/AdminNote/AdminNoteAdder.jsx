@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { adminNotesSchema } from 'core/api/loans/schemas/otherSchemas';
+import { adminNotesSchema } from '../../api/helpers/sharedSchemas';
+import useSearchParams from '../../hooks/useSearchParams';
 import {
-  loanSetAdminNote,
-  loanRemoveAdminNote,
-} from 'core/api/loans/methodDefinitions';
-import useSearchParams from 'core/hooks/useSearchParams';
+  addTimezoneOffset,
+  subtractTimezoneOffset,
+} from '../../utils/dateHelpers';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
-import useLoanContacts from './useLoanContacts';
+import AdminNoteAdderContainer from './AdminNoteAdderContainer';
 
 const getUpdateSchema = () =>
   new SimpleSchema(adminNotesSchema)
@@ -46,23 +46,30 @@ const getInsertSchema = contacts =>
     },
   });
 
-const AdminNoteSetter = ({
+export const AdminNoteSetter = ({
   adminNote,
-  loanId,
+  docId,
   buttonProps,
-  referredByUser,
+  getContacts,
+  setAdminNote,
+  removeAdminNote,
+  methodParams,
+  getInsertSchemaOverride,
+  getUpdateSchemaOverride,
+  triggerComponent,
 }) => {
+  const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
   const isInsert = !adminNote;
-  const { loading, contacts } = useLoanContacts(loanId);
-  const schema = useMemo(
-    () =>
-      isInsert
-        ? getInsertSchema(
-            contacts.filter(({ isEmailable }) => isEmailable) || [],
-          )
-        : getUpdateSchema(),
-    [contacts],
-  );
+
+  const { loading, contacts } = getContacts(docId);
+  const schema = useMemo(() => {
+    const insertSchema = getInsertSchemaOverride || getInsertSchema;
+    const updateSchema = getUpdateSchemaOverride || getUpdateSchema;
+
+    return isInsert
+      ? insertSchema(contacts.filter(({ isEmailable }) => isEmailable) || [])
+      : updateSchema();
+  }, [contacts]);
 
   const searchParams = useSearchParams();
 
@@ -70,20 +77,21 @@ const AdminNoteSetter = ({
     <AutoFormDialog
       title={isInsert ? 'Ajouter une note' : 'Modifier note'}
       buttonProps={buttonProps}
+      triggerComponent={triggerComponent}
       schema={schema}
       openOnMount={!adminNote && searchParams?.addNote}
-      onSubmit={({ notifyPros = [], ...values }) =>
-        loanSetAdminNote.run({
-          loanId,
+      onSubmit={({ notifyPros = [], date: noteDate, ...values }) =>
+        setAdminNote.run({
+          ...methodParams,
           adminNoteId: isInsert ? undefined : adminNote.id,
-          note: values,
+          note: { ...values, date: addTimezoneOffset(noteDate) },
           notifyPros: notifyPros.map(email => ({
             email,
             withCta: contacts.find(contact => email === contact.email).withCta,
           })),
         })
       }
-      model={adminNote}
+      model={isInsert ? { date } : adminNote}
       renderAdditionalActions={({
         closeDialog,
         setDisableActions,
@@ -97,8 +105,8 @@ const AdminNoteSetter = ({
           <Button
             onClick={() => {
               setDisableActions(true);
-              loanRemoveAdminNote
-                .run({ loanId, adminNoteId: adminNote.id })
+              removeAdminNote
+                .run({ ...methodParams, adminNoteId: adminNote.id })
                 .then(closeDialog)
                 .finally(() => setDisableActions(false));
             }}
@@ -109,8 +117,15 @@ const AdminNoteSetter = ({
           </Button>
         );
       }}
+      onOpen={() => {
+        // Make sure we have local time
+        const now = new Date();
+        const timezonedDate = subtractTimezoneOffset(now);
+
+        return setDate(timezonedDate);
+      }}
     />
   );
 };
 
-export default AdminNoteSetter;
+export default AdminNoteAdderContainer(AdminNoteSetter);

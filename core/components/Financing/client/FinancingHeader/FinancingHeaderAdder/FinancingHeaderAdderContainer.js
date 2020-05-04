@@ -1,5 +1,9 @@
-import { withProps, compose, withState } from 'recompose';
-import { addNewStructure, addNewMaxStructure } from 'core/api';
+import { compose, withProps, withState } from 'recompose';
+
+import {
+  addNewMaxStructure,
+  addNewStructure,
+} from '../../../../../api/loans/methodDefinitions';
 
 const FinancingHeaderAdderContainer = compose(
   withState('isAdding', 'setIsAdding', false),

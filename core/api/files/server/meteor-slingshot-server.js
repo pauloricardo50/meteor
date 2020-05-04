@@ -1,19 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
-import { ROLES } from 'core/api/constants';
-import { COLLECTIONS } from '../../constants';
 import SecurityService from '../../security';
+import { ROLES } from '../../users/userConstants';
 import {
-  SLINGSHOT_DIRECTIVE_NAME,
-  SLINGSHOT_DIRECTIVE_NAME_TEMP,
-  MAX_FILE_SIZE,
   ALLOWED_FILE_TYPES,
   ALLOWED_FILE_TYPES_TEMP,
+  MAX_FILE_SIZE,
+  SLINGSHOT_DIRECTIVE_NAME,
+  SLINGSHOT_DIRECTIVE_NAME_TEMP,
 } from '../fileConstants';
+import FileService from './FileService';
 import uploadDirective from './uploadDirective';
 import uploadDirectiveTemp from './uploadDirectiveTemp';
-import FileService from './FileService';
 
 // export const getS3FileKey = (file, { docId, id }) =>
 //   `${docId}/${id}/${file.name
@@ -39,10 +38,6 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
         'Login Required',
         'Please login before uploading files',
       );
-    }
-
-    if (!Object.values(COLLECTIONS).includes(collection)) {
-      throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }
 
     SecurityService.isAllowedToModifyFiles({

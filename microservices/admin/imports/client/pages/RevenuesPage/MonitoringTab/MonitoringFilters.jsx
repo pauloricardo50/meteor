@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { LOAN_CATEGORIES, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
-import { LOAN_CATEGORIES } from 'imports/core/api/constants';
-import { LOAN_STATUS, REVENUE_TYPES } from 'core/api/constants';
 
 const MonitoringFilters = ({
   category,

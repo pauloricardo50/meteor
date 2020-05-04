@@ -2,9 +2,9 @@ import React from 'react';
 import { compose } from 'recompose';
 
 import T from '../../../Translation';
-import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import { getFinancingError, ERROR_TYPES } from './FinancingResultErrors';
+import SingleStructureContainer from '../containers/SingleStructureContainer';
+import { ERROR_TYPES, getFinancingError } from './FinancingResultErrors';
 import FinancingResultSuccess from './FinancingResultSuccess';
 
 export const FinancingResultSummary = props => {

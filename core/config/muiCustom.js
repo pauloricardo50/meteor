@@ -1,15 +1,12 @@
-import { Meteor } from 'meteor/meteor';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+
 import colors from './colors';
 
-const fontSize = () => (Meteor.microservice === 'www' ? 16 : 14);
-
-const createTheme = () =>
+const createTheme = ({ fontSize = 14 }) =>
   createMuiTheme({
     overrides: {
       MuiInput: {},
       MuiSelect: {},
-      MuiListItemText: {},
       MuiToolbar: {
         root: {
           position: '',
@@ -60,6 +57,54 @@ const createTheme = () =>
           minWidth: 40,
         },
       },
+      MuiListItem: {
+        root: {
+          margin: 4,
+          width: 'calc(100% - 8px)',
+          borderRadius: 4,
+        },
+      },
+      MuiList: {
+        padding: {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
+      MuiListItemText: {
+        secondary: { lineHeight: 'unset', opacity: 0.8 },
+      },
+      MuiMenuItem: {
+        root: {
+          '&:hover': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
+          '&:focus': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
+          '&.Mui-selected': {
+            backgroundColor: colors.mui.darkPrimary,
+            color: 'white',
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+            '&:hover': {
+              backgroundColor: colors.mui.darkPrimary,
+              color: 'white',
+              '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+                color: 'white',
+              },
+            },
+          },
+        },
+      },
     },
     palette: {
       primary: {
@@ -88,11 +133,11 @@ const createTheme = () =>
       },
     },
     typography: {
-      fontFamily: 'Eina04-Regular, Helvetica',
-      htmlFontSize: fontSize(),
-      letterSpacing: '0.048em',
-      fontWeightRegular: 400,
-      fontWeightMedium: 600,
+      fontFamily: 'Manrope-variable, Helvetica, sans-serif',
+      // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
+      fontSize,
+      fontWeightRegular: 300,
+      fontWeightMedium: 400,
       button: {
         fontWeight: 400,
         textTransform: '',

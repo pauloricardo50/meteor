@@ -1,17 +1,20 @@
-import { compose, mapProps, branch, renderComponent } from 'recompose';
 import omit from 'lodash/omit';
+import { branch, compose, mapProps, renderComponent } from 'recompose';
 
-import { adminLoans } from 'core/api/loans/queries';
-import { withSmartQuery } from 'core/api';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { adminLoan } from 'core/api/fragments';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
+import {
+  LOANS_COLLECTION,
+  LOAN_CATEGORIES,
+} from 'core/api/loans/loanConstants';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import updateForProps from 'core/containers/updateForProps';
 import {
   injectCalculator,
   withCalculator,
 } from 'core/containers/withCalculator';
-import updateForProps from 'core/containers/updateForProps';
-import { LOAN_CATEGORIES } from 'core/api/constants';
-import { adminLoan } from 'core/api/fragments';
+
 import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
 const withInterestRates = withSmartQuery({
@@ -43,10 +46,12 @@ const fullLoanFragment = {
 export default compose(
   updateForProps(['match.params.loanId']),
   withSmartQuery({
-    query: adminLoans,
+    query: LOANS_COLLECTION,
     params: ({ match, loanId }) => ({
-      _id: loanId || match.params.loanId,
-      $body: fullLoanFragment,
+      $filters: {
+        _id: loanId || match.params.loanId,
+      },
+      ...fullLoanFragment,
     }),
     queryOptions: { reactive: true, single: true },
     dataName: 'loan',

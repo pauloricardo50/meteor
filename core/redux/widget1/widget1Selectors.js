@@ -1,7 +1,8 @@
 import { createSelector, createStructuredSelector } from 'reselect';
+
 import {
-  PURCHASE_TYPE,
   ACQUISITION_FIELDS,
+  PURCHASE_TYPE,
   REFINANCING_FIELDS,
 } from './widget1Constants';
 

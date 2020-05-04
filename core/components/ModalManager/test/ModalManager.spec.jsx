@@ -1,10 +1,9 @@
 /* eslint-env mocha */
 import React, { useContext } from 'react';
-import { expect } from 'chai';
 import Dialog from '@material-ui/core/Dialog';
+import { expect } from 'chai';
 
-import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
-
+import { getMountedComponent } from '../../../utils/testHelpers';
 import ModalManager from '../ModalManager';
 import ModalManagerContext from '../ModalManagerContext';
 

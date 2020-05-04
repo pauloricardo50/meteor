@@ -1,4 +1,4 @@
-import colors from 'core/config/colors';
+import colors from '../../config/colors';
 
 export const styles = {
   success: {

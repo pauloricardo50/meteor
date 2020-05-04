@@ -2,8 +2,9 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
+import { withSmartQuery } from '../../../api/containerToolkit';
+import { promotionUpdate } from '../../../api/promotions/methodDefinitions';
 import { adminUsers as query } from '../../../api/users/queries';
-import { withSmartQuery, promotionUpdate } from '../../../api';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
 const getSchema = admins =>

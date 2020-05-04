@@ -1,13 +1,13 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 
-import T from '../Translation';
+import { CANTONS } from '../../api/loans/loanConstants';
 import AutoFormTextInput from '../AutoForm/AutoFormTextInput';
-import { CANTONS } from '../../api/constants';
+import T from '../Translation';
 
 const CantonField = ({ canton, intl: { formatMessage } }) => (
   <AutoFormTextInput
-    inputProps={{
+    InputProps={{
       currentValue:
         CANTONS[canton] || formatMessage({ id: 'Forms.canton.placeholder' }),
       label: <T id="Forms.canton" />,
@@ -16,6 +16,7 @@ const CantonField = ({ canton, intl: { formatMessage } }) => (
       required: true,
       todo: !canton,
       multiline: true,
+      id: 'canton',
     }}
     saveOnChange
     showValidIconOnChange

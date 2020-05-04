@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { ROLES, USERS_COLLECTION } from 'core/api/constants';
-import Select from 'core/components/Select';
-import T from 'core/components/Translation';
-import Loading from 'core/components/Loading';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
+import Loading from 'core/components/Loading';
+import Select from 'core/components/Select';
+import T from 'core/components/Translation';
 import MixpanelService from 'core/utils/mixpanel';
 
 const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
@@ -15,7 +15,7 @@ const mapUser = ({ $properties: { $name, $last_seen, id } }) => (
       relatedDoc={{
         _id: id,
         name: $name,
-        collection: USERS_COLLECTION,
+        _collection: USERS_COLLECTION,
       }}
     />
     <span> {moment($last_seen).fromNow()}</span>

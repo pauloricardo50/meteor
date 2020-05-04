@@ -1,14 +1,17 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { formatMessage } from 'core/utils/server/intl';
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import { sendLoanChecklist } from 'core/api/loans/index';
-import generator from 'core/api/factories/server';
-import { checkEmails } from 'core/utils/testHelpers/index';
-import { EMAIL_IDS } from 'core/api/constants';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import { EMAIL_IDS } from '../../../../../api/email/emailConstants';
+import generator from '../../../../../api/factories/server';
+import { sendLoanChecklist } from '../../../../../api/loans/methodDefinitions';
+import { ddpWithUserId } from '../../../../../api/methods/methodHelpers';
+import intl from '../../../../../utils/intl';
+import { checkEmails } from '../../../../../utils/testHelpers';
 import { getChecklistMissingInformations } from '../../../helpers';
+
+const { formatMessage } = intl;
 
 describe('LoanChecklist', function() {
   this.timeout(5000);

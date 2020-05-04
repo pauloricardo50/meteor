@@ -2,13 +2,16 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
+import PropTypes from 'prop-types';
 
-import { cleanDatabase, migrateToLatest } from 'core/api/methods/index';
+import {
+  cleanDatabase,
+  migrateToLatest,
+} from '../../api/methods/methodDefinitions';
 import Button from '../Button';
-import Icon from '../Icon';
 import ConfirmMethod from '../ConfirmMethod';
+import Icon from '../Icon';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
 

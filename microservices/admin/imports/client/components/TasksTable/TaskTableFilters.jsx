@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
-import { TASK_STATUS } from 'core/api/constants';
-import { withSmartQuery } from 'imports/core/api/containerToolkit/index';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'imports/core/api/constants';
 
 const uptoDateOptions = [
   { id: 'TODAY', label: "-> Aujourd'hui" },
@@ -21,6 +21,7 @@ const TaskTableFilters = ({
   setAssignee,
   uptoDate,
   setUptoDate,
+  additionalFilters,
 }) => {
   const assigneeOptions = [
     ...admins.map(({ _id, firstName }) => ({ id: _id, label: firstName })),
@@ -61,6 +62,8 @@ const TaskTableFilters = ({
           onChange={value => setUptoDate(value)}
         />
       )}
+
+      {additionalFilters}
     </div>
   );
 };

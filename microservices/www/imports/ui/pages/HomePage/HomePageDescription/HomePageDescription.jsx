@@ -1,9 +1,10 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import HomePageProgression from './HomePageProgression';
+
 import DescriptionItem from './DescriptionItem';
 import HomePageDescriptionSeo from './HomePageDescriptionSeo';
+import HomePageProgression from './HomePageProgression';
 
 const steps = [
   { id: 'eligibility' },

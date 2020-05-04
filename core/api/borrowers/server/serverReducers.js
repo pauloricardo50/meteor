@@ -1,4 +1,4 @@
-import Borrowers from '../borrowers';
 import assigneeReducer from '../../reducers/assigneeReducer';
+import Borrowers from '../borrowers';
 
 Borrowers.addReducers({ ...assigneeReducer() });

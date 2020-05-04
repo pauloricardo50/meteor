@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import withMatchParam from 'core/containers/withMatchParam';
 

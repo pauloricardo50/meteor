@@ -193,7 +193,9 @@ describe('Admin promotion', () => {
       cy.setSelect('promotionLotIds', 1);
       cy.get('[role=dialog] form').submit();
 
-      cy.contains('Acquéreurs').click();
+      cy.get('.core-tabs-tab')
+        .contains('Acquéreurs')
+        .click();
       cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
 
       cy.get('.actions')
@@ -216,7 +218,7 @@ describe('Admin promotion', () => {
         .should('have.length', 1)
         .click();
 
-      cy.contains('Attestation de financement').click();
+      cy.contains('Accord de principe').click();
 
       cy.get('input[name=status]')
         .parent()
@@ -232,7 +234,7 @@ describe('Admin promotion', () => {
         .contains('Oui')
         .click();
 
-      cy.contains('Attestation de financement')
+      cy.contains('Accord de principe')
         .parents('div')
         .contains('Validé')
         .should('exist');

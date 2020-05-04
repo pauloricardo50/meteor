@@ -1,0 +1,178 @@
+[
+  {
+    "zipCode": 1001,
+    "city": "Lausanne"
+  },
+  {
+    "zipCode": 1110,
+    "city": "Morges"
+  },
+  {
+    "zipCode": 1200,
+    "city": "Genève"
+  },
+  {
+    "zipCode": 1400,
+    "city": "Yverdon-les-Bains"
+  },
+  {
+    "zipCode": 1630,
+    "city": "Bulle"
+  },
+  {
+    "zipCode": 1700,
+    "city": "Fribourg"
+  },
+  {
+    "zipCode": 1820,
+    "city": "Montreux"
+  },
+  {
+    "zipCode": 1870,
+    "city": "Monthey"
+  },
+  {
+    "zipCode": 1920,
+    "city": "Martigny"
+  },
+  {
+    "zipCode": 1950,
+    "city": "Sion"
+  },
+  {
+    "zipCode": 2000,
+    "city": "Neuchâtel"
+  },
+  {
+    "zipCode": 2300,
+    "city": "La Chaux-de-Fonds"
+  },
+  {
+    "zipCode": 2500,
+    "city": "Bienne"
+  },
+  {
+    "zipCode": 2540,
+    "city": "Granges"
+  },
+  {
+    "zipCode": 2800,
+    "city": "Delémont"
+  },
+  {
+    "zipCode": 3000,
+    "city": "Berne"
+  },
+  {
+    "zipCode": 3600,
+    "city": "Thoune"
+  },
+  {
+    "zipCode": 3800,
+    "city": "Interlaken"
+  },
+  {
+    "zipCode": 3900,
+    "city": "Viège"
+  },
+  {
+    "zipCode": 3960,
+    "city": "Sierre"
+  },
+  {
+    "zipCode": 4000,
+    "city": "Bâle"
+  },
+  {
+    "zipCode": 4332,
+    "city": "Stein"
+  },
+  {
+    "zipCode": 4500,
+    "city": "Soleure"
+  },
+  {
+    "zipCode": 4600,
+    "city": "Olten"
+  },
+  {
+    "zipCode": 5000,
+    "city": "Aarau"
+  },
+  {
+    "zipCode": 5400,
+    "city": "Baden"
+  },
+  {
+    "zipCode": 5600,
+    "city": "Ammerswil"
+  },
+  {
+    "zipCode": 6000,
+    "city": "Lucerne"
+  },
+  {
+    "zipCode": 6300,
+    "city": "Zoug"
+  },
+  {
+    "zipCode": 6460,
+    "city": "Altdorf"
+  },
+  {
+    "zipCode": 6500,
+    "city": "Bellinzone"
+  },
+  {
+    "zipCode": 6600,
+    "city": "Locarno"
+  },
+  {
+    "zipCode": 6830,
+    "city": "Chiasso"
+  },
+  {
+    "zipCode": 6900,
+    "city": "Lugano"
+  },
+  {
+    "zipCode": 7000,
+    "city": "Coire"
+  },
+  {
+    "zipCode": 8000,
+    "city": "Zürich"
+  },
+  {
+    "zipCode": 8200,
+    "city": "Schaffhouse"
+  },
+  {
+    "zipCode": 8400,
+    "city": "Winterthur"
+  },
+  {
+    "zipCode": 8500,
+    "city": "Frauenfeld"
+  },
+  {
+    "zipCode": 8640,
+    "city": "Rapperswil"
+  },
+  {
+    "zipCode": 8750,
+    "city": "Glaris"
+  },
+  {
+    "zipCode": 8853,
+    "city": "Lachen"
+  },
+  {
+    "zipCode": 9000,
+    "city": "St. Gall"
+  },
+  {
+    "zipCode": 9320,
+    "city": "Arbon"
+  }
+]

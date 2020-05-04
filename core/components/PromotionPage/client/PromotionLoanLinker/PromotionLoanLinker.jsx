@@ -1,10 +1,9 @@
 import React from 'react';
 
-import Button from 'core/components/Button';
-import { CollectionIconLink } from 'core/components/IconLink';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
-import { loanSearch } from 'core/api/loans/queries';
+import { loanSearch } from '../../../../api/loans/queries';
+import Button from '../../../Button';
+import CollectionSearch from '../../../CollectionSearch/CollectionSearch';
+import { CollectionIconLink } from '../../../IconLink';
 import PromotionLoanLinkerContainer from './PromotionLoanLinkerContainer';
 
 const PromotionLoanLinker = ({
@@ -20,12 +19,7 @@ const PromotionLoanLinker = ({
           <p className="secondary center" style={{ marginTop: 0 }}>
             Dossier lié:&nbsp;
           </p>
-          <CollectionIconLink
-            relatedDoc={{
-              ...promotion.promotionLoan,
-              collection: LOANS_COLLECTION,
-            }}
-          />
+          <CollectionIconLink relatedDoc={promotion.promotionLoan} />
           <Button
             onClick={() =>
               unlinkPromotionLoan({ loanId: promotion.promotionLoan._id })
@@ -60,9 +54,7 @@ const PromotionLoanLinker = ({
           className="flex-row"
           style={{ width: '100%', justifyContent: 'space-between' }}
         >
-          <CollectionIconLink
-            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-          />
+          <CollectionIconLink relatedDoc={loan} />
           <Button
             onClick={() =>
               linkPromotionLoan({ loanId: loan._id }).then(hideResults)

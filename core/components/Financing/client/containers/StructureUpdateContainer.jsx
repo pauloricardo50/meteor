@@ -1,8 +1,8 @@
 import { compose, withProps } from 'recompose';
 
+import { updateStructure } from '../../../../api/loans/methodDefinitions';
 import SingleStructureContainer from './SingleStructureContainer';
 import withLoan from './withLoan';
-import { updateStructure } from '../../../../api';
 
 export default compose(
   withLoan,

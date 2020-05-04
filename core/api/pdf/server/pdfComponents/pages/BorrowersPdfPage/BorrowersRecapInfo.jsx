@@ -2,10 +2,10 @@ import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
 
-import T from 'core/components/Translation';
+import T from '../../../../../../components/Translation';
 import PdfTable from '../../PdfTable';
-import { getBorrowersInfos, shouldRenderArray } from './borrowersRecapHelpers';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
+import { getBorrowersInfos, shouldRenderArray } from './borrowersRecapHelpers';
 
 const getBorrowersInfosArray = ({ borrowers, calculator }) => {
   const borrowersInfos = getBorrowersInfos(borrowers, calculator);

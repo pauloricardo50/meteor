@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
 import Calculator from '../../../utils/Calculator';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/server/CollectionService';
-import PromotionLots from '../promotionLots';
+import { PROMOTION_OPTION_STATUS } from '../../promotionOptions/promotionOptionConstants';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import PromotionLots from '../promotionLots';
 
 class PromotionLotService extends CollectionService {
   constructor() {
@@ -75,19 +76,31 @@ class PromotionLotService extends CollectionService {
   cancelPromotionLotReservation({ promotionOptionId }) {
     const { promotionLots } = PromotionOptionService.get(promotionOptionId, {
       loan: { _id: 1 },
-      promotionLots: { _id: 1 },
+      promotionLots: { _id: 1, promotionOptions: { status: 1 } },
     });
 
-    const [{ _id: promotionLotId }] = promotionLots;
+    const [{ _id: promotionLotId, promotionOptions = [] }] = promotionLots;
 
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
-    });
-    this.removeLink({
-      id: promotionLotId,
-      linkName: 'attributedTo',
-    });
+    // Make promotion lot available again only if no other promotion option status is SOLD or RESERVED
+    if (
+      !promotionOptions
+        .filter(({ _id }) => _id !== promotionOptionId)
+        .some(({ status: promotionOptionStatus }) =>
+          [
+            PROMOTION_OPTION_STATUS.SOLD,
+            PROMOTION_OPTION_STATUS.RESERVED,
+          ].includes(promotionOptionStatus),
+        )
+    ) {
+      this.update({
+        promotionLotId,
+        object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
+      });
+      this.removeLink({
+        id: promotionLotId,
+        linkName: 'attributedTo',
+      });
+    }
 
     return PromotionOptionService.cancelReservation({
       promotionOptionId,

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Link from '../Link';
-import T from '../Translation';
 import Button from '../Button';
+import Link from '../Link';
 import Loading from '../Loading';
+import T from '../Translation';
 
 class MissingDoc extends Component {
   constructor() {

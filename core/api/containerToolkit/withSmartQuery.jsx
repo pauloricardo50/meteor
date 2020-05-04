@@ -1,14 +1,15 @@
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
-import {
-  mapProps,
-  compose,
-  branch,
-  renderComponent,
-  lifecycle,
-} from 'recompose';
 import React, { useEffect, useState } from 'react';
+import {
+  branch,
+  compose,
+  lifecycle,
+  mapProps,
+  renderComponent,
+} from 'recompose';
+
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
 import ClientEventService from '../events/ClientEventService';

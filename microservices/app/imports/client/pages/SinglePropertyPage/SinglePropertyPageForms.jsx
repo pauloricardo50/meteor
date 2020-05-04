@@ -1,16 +1,18 @@
 import React from 'react';
 
-import AutoForm from 'core/components/AutoForm';
-import MortgageNotesForm from 'core/components/MortgageNotesForm';
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import {
   getPropertyArray,
   getPropertyLoanArray,
 } from 'core/arrays/PropertyFormArray';
-import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
+import getRefinancingFormArray from 'core/arrays/RefinancingFormArray';
+import AutoForm from 'core/components/AutoForm';
+import MortgageNotesForm from 'core/components/MortgageNotesForm';
+
 import DeactivatedFormInfo from '../../components/DeactivatedFormInfo';
 
 const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
-  const { userFormsEnabled } = loan;
+  const { userFormsEnabled, applicationType } = loan;
   const { mortgageNotes, _id: propertyId } = property;
 
   return (
@@ -21,7 +23,6 @@ const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
         <AutoForm
           formClasses="user-form user-form__info"
           inputs={getPropertyLoanArray({ loan, borrowers })}
-          collection={LOANS_COLLECTION}
           doc={loan}
           docId={loan._id}
           disabled={!userFormsEnabled}
@@ -29,11 +30,31 @@ const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
         />
       </div>
 
+      {applicationType === APPLICATION_TYPES.SIMPLE && (
+        <div className="flex--helper flex-justify--center">
+          <AutoForm
+            formClasses="user-form user-form__info"
+            inputs={[
+              {
+                type: 'h3',
+                id: 'previousLoan',
+                ignore: true,
+                required: false,
+              },
+              ...getRefinancingFormArray({ loan }),
+            ]}
+            doc={loan}
+            docId={loan._id}
+            disabled={!userFormsEnabled}
+            showDisclaimer={false}
+          />
+        </div>
+      )}
+
       <div className="flex--helper flex-justify--center">
         <AutoForm
           formClasses="user-form user-form__info"
           inputs={getPropertyArray({ loan, property })}
-          collection={PROPERTIES_COLLECTION}
           doc={property}
           docId={property._id}
           disabled={!userFormsEnabled}

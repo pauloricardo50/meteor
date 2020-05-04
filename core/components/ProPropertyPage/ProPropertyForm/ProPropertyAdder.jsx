@@ -1,10 +1,10 @@
 import React from 'react';
-import { mapProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps } from 'recompose';
 
-import Icon from 'core/components/Icon';
-import { proPropertyInsert } from '../../../api/methods';
+import { proPropertyInsert } from '../../../api/properties/methodDefinitions';
 import { createRoute } from '../../../utils/routerUtils';
+import Icon from '../../Icon';
 import T from '../../Translation';
 import ProPropertyForm from './ProPropertyForm';
 

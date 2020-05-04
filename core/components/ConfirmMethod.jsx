@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Popover from './Material/Popover';
-import Dialog from './Material/Dialog';
 import Button from './Button';
+import Dialog from './Material/Dialog';
+import Popover from './Material/Popover';
 import TextField from './Material/TextField';
 import T from './Translation';
 

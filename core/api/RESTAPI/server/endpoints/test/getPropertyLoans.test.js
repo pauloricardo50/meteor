@@ -1,22 +1,23 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import PropertyService from '../../../../properties/server/PropertyService';
 import generator from '../../../../factories/server';
-import RESTAPI from '../../RESTAPI';
-import getPropertyLoansAPI from '../getPropertyLoans';
-import {
-  fetchAndCheckResponse,
-  makeHeaders,
-  getTimestampAndNonce,
-} from '../../test/apiTestHelpers.test';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
-} from '../../../../constants';
+} from '../../../../properties/propertyConstants';
+import PropertyService from '../../../../properties/server/PropertyService';
+import RESTAPI from '../../RESTAPI';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
+import {
+  fetchAndCheckResponse,
+  getTimestampAndNonce,
+  makeHeaders,
+} from '../../test/apiTestHelpers.test';
+import getPropertyLoansAPI from '../getPropertyLoans';
 
 const api = new RESTAPI();
 api.addEndpoint('/properties/:propertyId/loans', 'GET', getPropertyLoansAPI, {

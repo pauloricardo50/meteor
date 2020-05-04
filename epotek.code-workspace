@@ -8,6 +8,9 @@
       "path": "./core"
     },
     {
+      "path": "microservices/www2"
+    },
+    {
       "path": "microservices/backend"
     },
     {
@@ -34,6 +37,19 @@
       "**/.DS_Store": true
     },
     "debug.node.autoAttach": "on",
-    "search.followSymlinks": false
+    "search.followSymlinks": false,
+    "sort-imports.on-save": true,
+    "javascript.preferences.importModuleSpecifierEnding": "minimal",
+  },
+  "extensions": {
+    "recommendations": [
+      "amatiasq.sort-imports",
+      "bobmagicii.autofoldyeah",
+      "dbaeumer.vscode-eslint",
+      "formulahendry.auto-rename-tag",
+      "midnightsyntax.vscode-wrap-console-log",
+      "naumovs.color-highlight",
+      "pkief.material-icon-theme"
+    ]
   }
 }

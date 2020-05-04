@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { S3_ACLS, PROPERTIES_COLLECTION } from '../../../../api/constants';
+import { S3_ACLS } from '../../../../api/files/fileConstants';
 import DialogSimple from '../../../DialogSimple';
-import UploaderArray from '../../../UploaderArray';
 import T from '../../../Translation';
+import UploaderArray from '../../../UploaderArray';
 
 const promotionPropertyDocuments = [
   {
@@ -29,7 +29,6 @@ const LotDocumentsManager = ({ property, currentUser, documents }) => (
     >
       <UploaderArray
         doc={{ ...property, documents }}
-        collection={PROPERTIES_COLLECTION}
         documentArray={promotionPropertyDocuments}
         currentUser={currentUser}
         allowRequireByAdmin={false}

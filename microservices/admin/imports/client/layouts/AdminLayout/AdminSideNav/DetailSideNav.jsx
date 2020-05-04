@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import DetailSideNavContainer from './DetailSideNavContainer';
 import DetailSideNavHeader from './DetailSideNavHeader';
 import DetailSideNavList from './DetailSideNavList';
-import DetailSideNavContainer from './DetailSideNavContainer';
 
 const DetailSideNav = props => {
   const { filterOptions, sortOption } = props;

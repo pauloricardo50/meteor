@@ -1,11 +1,12 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
-import { borrowerUpdate, mortgageNoteInsert } from 'core/api';
+import { borrowerUpdate } from '../../api/borrowers/methodDefinitions';
+import { BorrowerSchemaAdmin } from '../../api/borrowers/schemas/BorrowerSchema';
+import { mortgageNoteInsert } from '../../api/mortgageNotes/methodDefinitions';
 import AutoForm from '../AutoForm2';
-import MortgageNotesForm from './MortgageNotesForm';
 import Box from '../Box';
+import MortgageNotesForm from './MortgageNotesForm';
 
 export const personalFields = [
   'firstName',

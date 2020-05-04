@@ -1,5 +1,4 @@
 import SecurityService from '../../security';
-import LenderRulesService from './LenderRulesService';
 import {
   lenderRulesInitialize,
   lenderRulesInsert,
@@ -8,6 +7,7 @@ import {
   lenderRulesUpdateFilter,
   setLenderRulesOrder,
 } from '../methodDefinitions';
+import LenderRulesService from './LenderRulesService';
 
 lenderRulesInitialize.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();

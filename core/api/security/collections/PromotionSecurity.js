@@ -1,29 +1,29 @@
-import PromotionService from '../../promotions/server/PromotionService';
+import LoanService from '../../loans/server/LoanService';
+import LotService from '../../lots/server/LotService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
-import Security from '../Security';
-import LoanSecurity from './LoanSecurity';
-import {
-  isAllowedToInviteCustomersToPromotion,
-  isAllowedToRemoveCustomerFromPromotion,
-  isAllowedToModifyPromotion,
-  isAllowedToManagePromotionDocuments,
-  isAllowedToAddLotsToPromotion,
-  isAllowedToModifyPromotionLots,
-  isAllowedToRemovePromotionLots,
-  isAllowedToViewPromotion,
-  isAllowedToReservePromotionLots,
-  isAllowedToReservePromotionLotToCustomer,
-  isAllowedToManageCustomerPromotionReservation,
-} from '../clientSecurityHelpers';
-import LoanService from '../../loans/server/LoanService';
 import {
   getPromotionCustomerOwnerType,
   makeLoanAnonymizer,
 } from '../../promotions/server/promotionServerHelpers';
-import LotService from '../../lots/server/LotService';
+import PromotionService from '../../promotions/server/PromotionService';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
+import {
+  isAllowedToAddLotsToPromotion,
+  isAllowedToInviteCustomersToPromotion,
+  isAllowedToManageCustomerPromotionReservation,
+  isAllowedToManagePromotionDocuments,
+  isAllowedToModifyPromotion,
+  isAllowedToModifyPromotionLots,
+  isAllowedToRemoveCustomerFromPromotion,
+  isAllowedToRemovePromotionLots,
+  isAllowedToReservePromotionLotToCustomer,
+  isAllowedToReservePromotionLots,
+  isAllowedToViewPromotion,
+} from '../clientSecurityHelpers';
+import Security from '../Security';
+import LoanSecurity from './LoanSecurity';
 
 class PromotionSecurity {
   static checkPermissions({

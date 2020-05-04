@@ -1,7 +1,7 @@
 import React from 'react';
 
-import T, { Money, Percent } from '../../../Translation';
 import Icon from '../../../Icon';
+import T, { Money, Percent } from '../../../Translation';
 import { CalculatedValue } from '../FinancingSection/components';
 
 const AmortizationTooltip = ({ Calculator, loan, structureId }) => {

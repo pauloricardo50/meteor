@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { offerDelete } from '../../api/offers/methodDefinitions';
 import { AutoFormDialog } from '../AutoForm2';
-import T from '../Translation';
 import Button from '../Button';
+import T from '../Translation';
 import OfferModiferContainer from './OfferModifierContainer';
-import { offerDelete } from '../../api';
 
 const OfferModifier = ({ onSubmit, offer, schema }) => (
   <AutoFormDialog

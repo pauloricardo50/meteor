@@ -1,13 +1,13 @@
 import { compose, withProps } from 'recompose';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import Calculator from '../../../../../utils/Calculator';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import {
   getCurrentPledgedFunds,
   getMaxPledge,
 } from './FinancingOwnFundsPickerHelpers';
-import Calculator from '../../../../../utils/Calculator';
 
 const removePreviousValueEffect = ({ props, ownFundsIndex, ownFunds }) => {
   let requiredChange = 0;

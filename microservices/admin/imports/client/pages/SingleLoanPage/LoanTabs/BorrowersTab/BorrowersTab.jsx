@@ -1,19 +1,19 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import { Percent } from 'core/components/Translation';
-import RadioTabs from 'core/components/RadioButtons/RadioTabs';
-import { addBorrower } from 'core/api/methods';
 import {
-  getBorrowerFinanceArray,
-  getBorrowerInfoArray,
-  getBorrowerIncomeArray,
   getBorrowerFortuneArray,
+  getBorrowerIncomeArray,
+  getBorrowerInfoArray,
   getBorrowerInsuranceArray,
 } from 'core/arrays/BorrowerFormArray';
+import BorrowerAdder from 'core/components/BorrowerAdder/BorrowerAdder';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
+import RadioTabs from 'core/components/RadioButtons/RadioTabs';
+import { Percent } from 'core/components/Translation';
 import { getCountedArray } from 'core/utils/formArrayHelpers';
 import { getPercent } from 'core/utils/general';
-import Icon from 'core/components/Icon';
+
 import BorrowersTabForm from './BorrowersTabForm';
 
 const personalArray = [
@@ -85,7 +85,7 @@ const getPercentage = (funcs, borrowers) => {
 const BorrowersTab = props => {
   const [formFilter, setFormFilter] = useState('all');
   const { loan, Calculator } = props;
-  const { borrowers = [], _id: loanId } = loan;
+  const { borrowers = [], _id: loanId, user: { _id: userId } = {} } = loan;
   const options = useMemo(
     () =>
       baseOptions
@@ -107,16 +107,19 @@ const BorrowersTab = props => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <ConfirmMethod
+      <BorrowerAdder
         disabled={borrowers.length >= 2}
-        method={() => addBorrower.run({ loanId: loan._id })}
-        label="Emprunteur"
-        buttonProps={{
-          raised: true,
-          primary: true,
-          style: { position: 'absolute', right: 8, top: 0, zIndex: 1 },
-          icon: <Icon type="add" />,
-        }}
+        loanId={loanId}
+        userId={userId}
+        TriggerComponent={
+          <Button
+            label="Emprunteur"
+            raised
+            primary
+            style={{ position: 'absolute', right: 8, top: 0, zIndex: 1 }}
+            icon={<Icon type="add" />}
+          />
+        }
       />
 
       <div style={{ marginBottom: 16 }} className="flex-col center-align">

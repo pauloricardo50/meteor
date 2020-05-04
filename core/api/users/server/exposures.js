@@ -1,25 +1,25 @@
-import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import { Match } from 'meteor/check';
 
-import { exposeQuery } from '../../queries/queryHelpers';
-import { ROLES } from '../../constants';
-import SecurityService from '../../security';
 import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
+import SecurityService from '../../security';
 import {
   adminUsers,
   appUser,
   currentUser,
+  incoherentAssignees,
   proReferredByUsers,
+  proUser,
   userEmails,
   userSearch,
-  proUser,
-  incoherentAssignees,
 } from '../queries';
-import UserService from './UserService';
+import { ROLES } from '../userConstants';
 import { incoherentAssigneesResolver } from './resolvers';
+import UserService from './UserService';
 
 exposeQuery({
   query: adminUsers,
@@ -205,7 +205,7 @@ exposeQuery({
         }
         filters.$or = [
           createRegexQuery('_id', searchQuery),
-          createRegexQuery('emails.0.address', searchQuery),
+          createRegexQuery('emails.address', searchQuery),
           createRegexQuery('firstName', searchQuery),
           createRegexQuery('lastName', searchQuery),
           {

@@ -1,24 +1,27 @@
 import React from 'react';
+import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
+import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
+import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
+// import { faCalculator } from '@fortawesome/pro-light-svg-icons/faCalculator';
+import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
+import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
+import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
+import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { withProps } from 'recompose';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
-import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
-import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
-import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
-import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
-// import { faCalculator } from '@fortawesome/pro-light-svg-icons/faCalculator';
-import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
-import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
-import Divider from '@material-ui/core/Divider';
 
+import { SUCCESS } from 'core/api/constants';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+import PercentWithStatus from 'core/components/PercentWithStatus/PercentWithStatus';
 import T from 'core/components/Translation';
-import { createRoute } from 'core/utils/routerUtils';
-import { SUCCESS, PURCHASE_TYPE, PROPERTY_CATEGORY } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../startup/client/appRoutes';
-import PercentWithStatus from '../../../core/components/PercentWithStatus/PercentWithStatus';
 
 const isOnProProperty = loan => {
   // If there's only one property, don't show the percentage

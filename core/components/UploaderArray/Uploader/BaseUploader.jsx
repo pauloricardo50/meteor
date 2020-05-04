@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FileDropper from './FileDropper';
-import UploaderTop from './UploaderTop';
 import UploaderBottom from './UploaderBottom';
+import UploaderTop from './UploaderTop';
 
 const BaseUploader = ({
   toggleDisplayFull,

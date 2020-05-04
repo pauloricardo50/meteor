@@ -1,6 +1,6 @@
+import { fullOffer } from '../fragments';
 import addressReducer from '../reducers/addressReducer';
 import Organisations from './organisations';
-import { fullOffer } from '../fragments';
 
 Organisations.addReducers({
   ...addressReducer,

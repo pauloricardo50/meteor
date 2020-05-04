@@ -3,16 +3,21 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-function generateConfig(configPath, baseDomain) {
+function generateConfig(configPath, baseDomain, globalApiConfig) {
   const contentPath = path.resolve(__dirname, configPath);
   const content = fs.readFileSync(contentPath).toString();
   const outputPath = path.resolve(os.tmpdir(), `nginx-config-${Math.random()}`);
 
-  const output = ejs.render(content, {
-    baseDomain
-  }, {
-    filename: contentPath
-  });
+  const output = ejs.render(
+    content,
+    {
+      baseDomain,
+      globalApiConfig,
+    },
+    {
+      filename: contentPath,
+    },
+  );
 
   fs.writeFileSync(outputPath, output);
 
@@ -25,4 +30,4 @@ function generateConfig(configPath, baseDomain) {
 
 module.exports = {
   generateConfig,
-}
+};

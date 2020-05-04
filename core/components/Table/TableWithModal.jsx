@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
-import Dialog from '../Material/Dialog';
-import Table from '.';
 import Button from '../Button';
+import Dialog from '../Material/Dialog';
 import T from '../Translation';
+import Table from '.';
 
 const getModal = ({
   modalType,

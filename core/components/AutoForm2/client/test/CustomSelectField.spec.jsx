@@ -1,13 +1,13 @@
+import MenuItem from '@material-ui/core/MenuItem';
 /* eslint-env mocha */
 import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
 
-import MenuItem from '@material-ui/core/MenuItem';
-import TextInput from 'core/components/TextInput/TextInput';
-import AutoForm from '../../AutoForm';
-import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
-import CustomSelectField from '../../CustomSelectField';
 import pollUntilReady from '../../../../utils/pollUntilReady';
+import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
+import TextInput from '../../../TextInput';
+import AutoForm from '../../AutoForm';
+import CustomSelectField from '../../CustomSelectField';
 
 let props;
 const component = () =>

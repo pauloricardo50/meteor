@@ -1,12 +1,13 @@
 import React from 'react';
-
 import { withProps } from 'recompose';
 
-import Calculator from 'core/utils/Calculator';
-import T from 'core/components/Translation';
+import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
+import BorrowerAdder from 'core/components/BorrowerAdder';
+import Button from 'core/components/Button';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import { borrowerUpdate } from 'core/api/methods/index';
-import BorrowerAdder from '../../../../components/BorrowerAdder';
+import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
+
 import BorrowerForm from './BorrowerForm';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
@@ -43,7 +44,12 @@ const overrides = {
 };
 
 const getBorrowersTabs = ({ loan }) => {
-  const { borrowers, userFormsEnabled, simpleBorrowersForm } = loan;
+  const {
+    borrowers,
+    userFormsEnabled,
+    simpleBorrowersForm,
+    user: { _id: userId } = {},
+  } = loan;
   const twoBorrowers = borrowers.length === 2;
 
   return [
@@ -90,7 +96,15 @@ const getBorrowersTabs = ({ loan }) => {
       : {
           id: 'borrower2',
           content: null,
-          label: <BorrowerAdder loanId={loan._id} />,
+          label: (
+            <BorrowerAdder
+              loanId={loan?._id}
+              userId={userId}
+              TriggerComponent={
+                <Button primary label={<T id="BorrowerAdder.label" />} />
+              }
+            />
+          ),
         },
   ].filter(x => x);
 };

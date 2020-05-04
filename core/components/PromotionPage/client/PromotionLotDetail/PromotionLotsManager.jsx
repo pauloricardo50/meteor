@@ -1,8 +1,8 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { addLotToPromotionLot } from '../../../../api/methods';
-import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
+import { addLotToPromotionLot } from '../../../../api/promotionLots/methodDefinitions';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import DropdownMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
 import LotChip from '../PromotionLotsTable/LotChip';

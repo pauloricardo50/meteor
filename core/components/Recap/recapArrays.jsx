@@ -1,11 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { ERROR, SUCCESS } from 'core/api/constants';
+
+import { ERROR, SUCCESS } from '../../api/constants';
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import Calculator from '../../utils/Calculator';
-import { T, Percent, MetricArea } from '../Translation';
 import { toMoney } from '../../utils/conversionFunctions';
 import PercentWithStatus from '../PercentWithStatus/PercentWithStatus';
+import { MetricArea, Percent, T } from '../Translation';
 
 export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const bonusIncome = calc.getBonusIncome({ loan });
@@ -17,7 +19,7 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const loanValue = calc.selectLoanValue({ loan });
   const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
   const monthly = calc.getMonthly({ loan });
-  const notaryFees = calc.getFees({ loan }).total;
+  const notaryFees = calc.getNotaryFees({ loan }).total;
   const otherIncome = calc.getOtherIncome({ loan });
   const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
   const ownFundsPledged = calc.getTotalPledged({ loan });
@@ -37,6 +39,10 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const totalFinancing = calc.getTotalFinancing({ loan });
   const totalFunds = calc.getTotalFunds({ loan });
   const totalIncome = calc.getTotalIncome({ loan });
+  const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+  const previousLoanValue = calc.getPreviousLoanValue({ loan });
+  const loanEvolution = calc.getLoanEvolution({ loan });
+  const reimbursementPenalty = calc.selectReimbursementPenalty({ loan });
 
   return [
     {
@@ -89,6 +95,26 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
     },
     {
       title: true,
+      label: 'Recap.refinancing',
+      hide: !isRefinancing,
+    },
+    {
+      label: 'Recap.previousLender',
+      hide: !isRefinancing || !loan.previousLender,
+      value: loan.previousLender,
+    },
+    {
+      label: 'Recap.previousLoan',
+      hide: !isRefinancing,
+      value: toMoney(previousLoanValue),
+    },
+    {
+      label: 'Recap.reimbursementPenalty',
+      hide: !isRefinancing,
+      value: toMoney(reimbursementPenalty),
+    },
+    {
+      title: true,
       label: 'Recap.financing',
     },
     {
@@ -109,6 +135,16 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       spacingTop: true,
       spacing: true,
       bold: true,
+    },
+    {
+      label: 'Recap.ownFundsIncrease',
+      value: toMoney(loanEvolution),
+      hide: !isRefinancing || loanEvolution < 0,
+    },
+    {
+      label: 'Recap.ownFundsDecrease',
+      value: toMoney(Math.abs(loanEvolution)),
+      hide: !isRefinancing || loanEvolution > 0,
     },
     {
       label: 'Recap.monthlyCost',
@@ -389,14 +425,11 @@ export const getPropertyArray = ({ property }) => {
     investmentRent,
   } = property;
 
-  return [
-    {
-      title: true,
-      label: 'Recap.details',
-    },
+  const dataArray = [
     {
       label: 'Forms.propertyType',
       value: <T id={`Forms.propertyType.${propertyType}`} />,
+      hide: !propertyType,
     },
     {
       label: 'Forms.roomCount',
@@ -442,6 +475,23 @@ export const getPropertyArray = ({ property }) => {
       spacingTop: true,
     },
   ];
+
+  return [
+    {
+      title: true,
+      label: 'Recap.details',
+    },
+    {
+      title: true,
+      label: (
+        <small className="secondary">
+          <T id="Recap.empty" />
+        </small>
+      ),
+      hide: dataArray.filter(({ hide }) => !hide).length > 0,
+    },
+    ...dataArray,
+  ];
 };
 
 export const getStructureArray = props => {
@@ -454,7 +504,7 @@ export const getStructureArray = props => {
   const propAndWork = Calculator.getPropAndWork(props);
   const propertyWork = Calculator.makeSelectStructureKey('propertyWork')(props);
   const totalUsed = Calculator.getTotalUsed(props);
-  const notaryFees = Calculator.getFees(props).total;
+  const notaryFees = Calculator.getNotaryFees(props).total;
 
   return [
     {
@@ -550,7 +600,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     loan,
     structureId,
   });
-  const calc = Calculator.getFeesCalculator({ loan, structureId });
+  const calc = Calculator.getNotaryFeesCalculator({ loan, structureId });
   const {
     total,
     estimate,
@@ -581,8 +631,9 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       title: true,
       label: 'Recap.buyersContract',
       intlValues: { value: toMoney(propertyValue) },
+      hide: !buyersContractFees,
     },
-    ...getRecapForObject(buyersContractValues),
+    ...(buyersContractFees ? getRecapForObject(buyersContractValues) : []),
     {
       label: 'Recap.propertyRegistrationTaxDeductions',
       value: `-${toMoney(buyersContractDeductions)}`,
@@ -603,13 +654,15 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       ),
       spacingTop: true,
       spacing: true,
+      hide: !buyersContractFees,
     },
     {
       title: true,
       label: 'Recap.mortgageNote',
       intlValues: { value: toMoney(mortgageNoteIncrease) },
+      hide: !mortgageNoteFees,
     },
-    ...getRecapForObject(mortgageNoteValues),
+    ...(mortgageNoteFees ? getRecapForObject(mortgageNoteValues) : []),
     {
       label: 'Recap.mortgageNoteRegistrationTaxDeductions',
       value: `-${toMoney(mortgageNoteDeductions)}`,
@@ -630,6 +683,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       ),
       spacingTop: true,
       spacing: true,
+      hide: !mortgageNoteFees,
     },
     {
       label: 'Recap.total',
@@ -649,7 +703,7 @@ export const getPremiumArray = ({ Calculator: calc = Calculator, loan }) => {
   const borrowRatio = calc.getBorrowRatio({ loan });
   const loanValue = calc.selectLoanValue({ loan });
   const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
-  const notaryFees = calc.getFees({ loan }).total;
+  const notaryFees = calc.getNotaryFees({ loan }).total;
   const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
   const project = calc.getProjectValue({ loan });
   const propAndWork = calc.getPropAndWork({ loan });

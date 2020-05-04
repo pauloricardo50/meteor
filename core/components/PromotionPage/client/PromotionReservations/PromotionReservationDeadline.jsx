@@ -1,20 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import moment from 'moment';
 import cx from 'classnames';
+import moment from 'moment';
 
-import { promotionOptionUpdate } from 'core/api/methods';
-import PromotionOptionSchema from 'core/api/promotionOptions/schemas/PromotionOptionSchema';
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import { getUserNameAndOrganisation } from 'core/api/helpers';
+import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { promotionOptionUpdate } from '../../../../api/promotionOptions/methodDefinitions';
 import {
-  PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../../../../api/promotionOptions/promotionOptionConstants';
+import PromotionOptionSchema from '../../../../api/promotionOptions/schemas/PromotionOptionSchema';
+import { AutoFormDialog } from '../../../AutoForm2';
+import IconButton from '../../../IconButton';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
-import IconButton from '../../../IconButton';
 
 const PromotionReservationDeadline = ({
   startDate,

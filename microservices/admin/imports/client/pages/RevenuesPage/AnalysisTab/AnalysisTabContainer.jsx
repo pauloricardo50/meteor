@@ -1,6 +1,7 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import { analysisBodies, mapData } from './analysisHelpers';
 
 export const useAnalysisData = ({ collection, formatMessage }) => {

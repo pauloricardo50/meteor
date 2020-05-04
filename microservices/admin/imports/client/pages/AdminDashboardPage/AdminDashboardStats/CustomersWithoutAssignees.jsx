@@ -1,10 +1,11 @@
 import React from 'react';
 
-import DialogSimple from 'core/components/DialogSimple';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { adminUsers } from 'core/api/users/queries';
-import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import { ROLES } from 'core/api/users/userConstants';
+import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const CustomersWithoutAssignees = ({ showAll }) => {
@@ -56,10 +57,7 @@ const CustomersWithoutAssignees = ({ showAll }) => {
             <div className="flex-col">
               {!isLoading &&
                 users.map(user => (
-                  <CollectionIconLink
-                    key={user._id}
-                    relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-                  />
+                  <CollectionIconLink key={user._id} relatedDoc={user} />
                 ))}
             </div>
           </DialogSimple>

@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import T from 'core/components/Translation';
 import Button from 'core/components/Button';
+import T from 'core/components/Translation';
+
 import ContactDialogFormContainer from './ContactDialogFormContainer';
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {

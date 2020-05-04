@@ -1,8 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import T, { Money } from 'core/components/Translation';
 import Button from 'core/components/Button';
+import T, { Money } from 'core/components/Translation';
+
 import { WelcomeScreen } from '../../../components/WelcomeScreen/WelcomeScreen';
 import PropertyStartPageContainer from './PropertyStartPageContainer';
 

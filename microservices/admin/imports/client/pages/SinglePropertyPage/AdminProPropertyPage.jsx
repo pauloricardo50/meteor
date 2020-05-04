@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import { ProPropertyPageContext } from 'core/components/ProPropertyPage/ProPropertyPageContext';
-import ProPropertyPage from 'core/components/ProPropertyPage/ProPropertyPage';
 import withContextProvider from 'core/api/containerToolkit/withContextProvider';
+import ProPropertyPage from 'core/components/ProPropertyPage/ProPropertyPage';
+import { ProPropertyPageContext } from 'core/components/ProPropertyPage/ProPropertyPageContext';
 
 const permissions = {
   canModifyProperty: true,

@@ -35,27 +35,42 @@ const getDocumentsToAdd = ({
   additionalDocuments,
   conditionalDocuments,
   doc,
+  otherCollectionDoc = {},
 }) =>
-  conditionalDocuments.reduce((docs, { id, condition }) => {
-    const document = additionalDocuments.find(
-      additionalDocument => additionalDocument.id === id,
-    );
+  conditionalDocuments.reduce(
+    (docs, { id, condition, requireOtherCollectionDoc }) => {
+      const document = additionalDocuments.find(
+        additionalDocument => additionalDocument.id === id,
+      );
 
-    if (document && document.requiredByAdmin !== undefined) {
+      if (document?.requiredByAdmin !== undefined) {
+        return docs;
+      }
+
+      const otherCollectionDocExists = !!Object.keys(otherCollectionDoc).length;
+
+      // Insert conditional documents
+      if (!requireOtherCollectionDoc) {
+        if ((document && otherCollectionDocExists) || condition({ doc })) {
+          return [...docs, { id }];
+        }
+      } else if (
+        (document && !otherCollectionDocExists) ||
+        condition({ doc: otherCollectionDoc })
+      ) {
+        return [...docs, { id }];
+      }
+
       return docs;
-    }
-    // Insert conditional documents
-    if (condition({ doc })) {
-      return [...docs, { id }];
-    }
-
-    return docs;
-  }, []);
+    },
+    [],
+  );
 
 export const additionalDocumentsHook = ({
   collection,
   initialDocuments,
   conditionalDocuments,
+  otherCollectionDoc,
 }) => (userId, doc) => {
   let documents = [];
   const { additionalDocuments = [] } = doc || {};
@@ -83,12 +98,24 @@ export const additionalDocumentsHook = ({
     additionalDocuments,
     conditionalDocuments,
     doc,
+    otherCollectionDoc,
   });
 
-  documents = [...documents, ...documentsToAdd];
+  documents = [...documents, ...documentsToAdd].filter(
+    ({ id }, index, docs) =>
+      docs.findIndex(({ id: docId }) => docId === id) === index,
+  );
 
   // Update document
   Mongo.Collection.get(collection).direct.update(doc._id, {
     $set: { additionalDocuments: documents },
   });
 };
+
+export const getFieldsToWatch = ({ conditionalDocuments = [] }) =>
+  conditionalDocuments
+    .reduce(
+      (fields, { fieldsToWatch = [] }) => [...fields, ...fieldsToWatch],
+      [],
+    )
+    .filter((field, index, fields) => fields.indexOf(field) === index);

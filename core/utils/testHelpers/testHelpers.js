@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
+import { Random } from 'meteor/random';
 
-import faker from 'faker';
 import { expect } from 'chai';
+import faker from 'faker';
 
-import { Users, testUserAccount } from '../../api';
-import { ROLES } from '../../api/constants';
+import { testUserAccount } from '../../api/users/methodDefinitions';
+import { ROLES } from '../../api/users/userConstants';
+import Users from '../../api/users/users';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id
@@ -112,6 +113,13 @@ export const checkEmails = (expected, options = {}) =>
 export const resetDatabase = () =>
   new Promise((resolve, reject) => {
     Meteor.call('resetDatabase', (err, res) =>
+      err ? reject(err) : resolve(res),
+    );
+  });
+
+export const generateScenario = scenario =>
+  new Promise((resolve, reject) => {
+    Meteor.call('generateScenario', { scenario }, (err, res) =>
       err ? reject(err) : resolve(res),
     );
   });

@@ -1,23 +1,22 @@
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
-} from 'core/api/promotionOptions/promotionOptionConstants';
-import PromotionService from '../../../promotions/server/PromotionService';
-import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import generator from '../../../factories/server';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
-} from '../../../constants';
-import { up, down } from '../27';
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../../promotionOptions/promotionOptionConstants';
+import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
+import PromotionService from '../../../promotions/server/PromotionService';
+import { down, up } from '../27';
 
 describe('Migration 27', () => {
   beforeEach(() => resetDatabase());

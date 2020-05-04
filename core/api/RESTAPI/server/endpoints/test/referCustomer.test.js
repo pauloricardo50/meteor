@@ -1,20 +1,21 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { checkEmails } from '../../../../../utils/testHelpers';
+import generator from '../../../../factories/server';
 import SlackService from '../../../../slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';
-import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
-import referCustomerAPI from '../referCustomer';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
+import referCustomerAPI from '../referCustomer';
 
 const customerToRefer = {
   email: 'test@example.com',

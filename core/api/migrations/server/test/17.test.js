@@ -1,9 +1,10 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import Activities from '../../../activities';
+import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
 import Loans from '../../../loans';
 import Users from '../../../users';
 import { up } from '../17';

@@ -2,15 +2,17 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
 
-import { shouldAnonymize } from 'core/api/promotions/promotionClientHelpers';
-import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import T from '../../../../../Translation';
+import { PROMOTION_OPTION_STATUS } from '../../../../../../api/promotionOptions/promotionOptionConstants';
+import {
+  getPromotionCustomerOwnerType,
+  shouldAnonymize,
+} from '../../../../../../api/promotions/promotionClientHelpers';
+import { CurrentUserContext } from '../../../../../../containers/CurrentUserContext';
 import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
-import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
+import T from '../../../../../Translation';
+import PromotionReservationProgress from '../../../../PromotionReservationProgress/PromotionReservationProgress';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
-import PromotionReservationProgress from '../../../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
 const isAdmin = Meteor.microservice === 'admin';
@@ -50,6 +52,7 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
         promotionOption={promotionOption}
         promotionLotName={promotionLot.name}
         status={status}
+        buttonProps={{ size: 'small' }}
       />
     );
   }

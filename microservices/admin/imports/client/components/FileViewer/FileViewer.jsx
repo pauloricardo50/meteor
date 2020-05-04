@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
 
-import Loadable from 'core/utils/loadable';
 import IconButton from 'core/components/IconButton';
 import { withFileViewerContext } from 'core/containers/FileViewerContext';
+import Loadable from 'core/utils/loadable';
 
 // import ReactFileViewer from 'react-file-viewer';
 

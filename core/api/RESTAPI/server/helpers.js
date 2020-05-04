@@ -2,27 +2,26 @@ import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Random } from 'meteor/random';
 
-import NodeRSA from 'node-rsa';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import NodeRSA from 'node-rsa';
 import hashObject from 'object-hash';
 
-import Analytics from 'core/api/analytics/server/Analytics';
-import EVENTS from 'core/api/analytics/events';
-import UserService from 'core/api/users/server/UserService';
-import { getClientHost } from 'core/utils/server/getClientUrl';
-import { storeOnFiber, getFromFiber } from 'core/utils/server/fiberStorage';
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
+import { getFromFiber, storeOnFiber } from '../../../utils/server/fiberStorage';
+import { getClientHost } from '../../../utils/server/getClientUrl';
+import EVENTS from '../../analytics/events';
+import Analytics from '../../analytics/server/Analytics';
 import { sortObject } from '../../helpers';
+import { ddpWithUserId } from '../../methods/methodHelpers';
+import UserService from '../../users/server/UserService';
+import { getImpersonateUserId } from './endpoints/helpers';
 import {
-  HTTP_STATUS_CODES,
-  SIMPLE_AUTH_SALT_GRAINS,
+  AUTHENTICATION_TYPES,
   AUTHORIZATION_HEADER,
   AUTHORIZATION_TYPES,
-  AUTHENTICATION_TYPES,
+  HTTP_STATUS_CODES,
+  SIMPLE_AUTH_SALT_GRAINS,
 } from './restApiConstants';
-import { getImpersonateUserId } from './endpoints/helpers';
-import { ROLES } from '../../users/userConstants';
 
 export const AUTH_ITEMS = {
   RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { google } from 'googleapis';
+
 import credentials from './credentials.json';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];

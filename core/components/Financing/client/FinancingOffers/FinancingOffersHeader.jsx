@@ -2,8 +2,8 @@ import React from 'react';
 import { compose } from 'recompose';
 
 import T from '../../../Translation';
-import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
+import SingleStructureContainer from '../containers/SingleStructureContainer';
 
 const FinancingOffersHeader = props => {
   const {

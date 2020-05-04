@@ -1,12 +1,12 @@
 import React from 'react';
-import { compose, withState, lifecycle } from 'recompose';
-import cx from 'classnames';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { withStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
+import { compose, lifecycle, withState } from 'recompose';
 
 import ClientEventService from '../../../../api/events/ClientEventService';
-import FinancingSectionSummary from './FinancingSectionSummary';
 import FinancingSectionDetails from './FinancingSectionDetails';
+import FinancingSectionSummary from './FinancingSectionSummary';
 
 const styles = {
   container: {

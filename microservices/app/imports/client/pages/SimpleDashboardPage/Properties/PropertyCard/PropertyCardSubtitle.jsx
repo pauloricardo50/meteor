@@ -1,11 +1,13 @@
 import React from 'react';
-import cx from 'classnames';
 import Tooltip from '@material-ui/core/Tooltip';
+import cx from 'classnames';
 
-import { RESIDENCE_TYPE } from 'core/api/constants';
-import T, { Money } from 'core/components/Translation';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from 'core/api/properties/propertyConstants';
 import Icon from 'core/components/Icon';
-import { PROPERTY_CATEGORY } from 'imports/core/api/constants';
+import T, { Money } from 'core/components/Translation';
 
 const PropertyCardSubtitle = ({
   maxPropertyValue,

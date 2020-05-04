@@ -1,11 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Table from 'core/components/Table';
-import TasksTableContainer from './TasksTableContainer';
+
 import TaskModifier from './TaskModifier';
-import TaskTableFilters from './TaskTableFilters';
+import TasksTableContainer from './TasksTableContainer';
 import TasksTablePriority from './TasksTablePriority';
+import TaskTableFilters from './TaskTableFilters';
 
 export const taskTableFragment = {
   assigneeLink: 1,
@@ -22,6 +23,8 @@ export const taskTableFragment = {
   status: 1,
   title: 1,
   user: { name: 1, roles: 1, organisations: { name: 1 } },
+  insuranceRequest: { name: 1 },
+  insurance: { name: 1, insuranceRequest: { _id: 1 } },
   isPrivate: 1,
 };
 
@@ -43,6 +46,7 @@ const TasksTable = ({
   uptoDate,
   setUptoDate,
   withPriority,
+  additionalFilters,
 }) => {
   const renderTable = !(hideIfNoData && !rows.length);
   const TableComponent = withPriority ? TasksTablePriority : Table;
@@ -59,6 +63,7 @@ const TasksTable = ({
             setAssignee={setAssignee}
             uptoDate={uptoDate}
             setUptoDate={setUptoDate}
+            additionalFilters={additionalFilters}
           />
         )}
       </div>

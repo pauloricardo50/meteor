@@ -2,10 +2,10 @@ import React from 'react';
 import moment from 'moment';
 import { compose } from 'recompose';
 
-import { userEmails } from 'core/api/users/queries';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import withHider from 'core/containers/withHider';
+import { userEmails } from 'core/api/users/queries';
 import Table from 'core/components/Table';
+import withHider from 'core/containers/withHider';
 
 const EmailList = ({ user: { sentEmails } }) => (
   <div style={{ marginTop: 40 }}>

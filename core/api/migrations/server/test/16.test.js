@@ -1,9 +1,11 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { Users, Contacts } from '../../..';
-import { up, down } from '../16';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import Contacts from '../../../contacts';
+import Users from '../../../users/users';
+import { down, up } from '../16';
 
 describe('Migration 16', () => {
   beforeEach(() => {

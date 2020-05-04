@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 import { Match, check } from 'meteor/check';
+import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
+
 import map from 'lodash/map';
 import zipObject from 'lodash/zipObject';
+
 import SecurityService from '../api/security/Security';
 
 if (Meteor.isServer) {

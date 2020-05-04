@@ -1,7 +1,7 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { loanUpdate } from 'core/api';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 
 const mergeContacts = ({ promotion, contacts }) => {
   const {

@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
+import { MemoryRouter } from 'react-router-dom';
 
-import { mount } from './enzyme';
-import { getUserLocale, getFormats } from '../localization';
 import messages from '../../lang/fr.json';
+import { getFormats, getUserLocale } from '../localization';
+import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = ({ Component, props = {}, withRouter, withStore }) => {

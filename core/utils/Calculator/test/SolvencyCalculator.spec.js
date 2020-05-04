@@ -1,15 +1,18 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import Calculator, { Calculator as CalculatorClass } from '..';
+import { OWN_FUNDS_TYPES } from '../../../api/borrowers/borrowerConstants';
 import {
-  OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
   INCOME_CONSIDERATION_TYPES,
-} from '../../../api/constants';
+} from '../../../api/lenderRules/lenderRulesConstants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+} from '../../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import { MIN_INSURANCE2_WITHDRAW } from '../../../config/financeConstants';
+import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('SolvencyCalculator', () => {
   describe('suggestStructure', () => {
@@ -126,7 +129,7 @@ describe('SolvencyCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         loanValue,
         canton: 'GE',
-        notaryFees: 31944.1,
+        fees: 31660.1,
       });
       const total = ownFunds.reduce((t, { value }) => t + value, 0);
 
@@ -230,6 +233,70 @@ describe('SolvencyCalculator', () => {
 
       expect(insurance2Suggestion.value).to.equal(MIN_INSURANCE2_WITHDRAW);
     });
+
+    describe('refinancings', () => {
+      it('suggests an empty structure if there is a net loan increase', () => {
+        const ownFunds = Calculator.suggestStructureForLoan({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            borrowers: [
+              {
+                bankFortune: [{ value: 500000 }],
+                salary: 180000,
+                _id: 'borrower1',
+              },
+            ],
+            structures: [
+              {
+                id: 'struct1',
+                propertyValue: 1000000,
+                wantedLoan: 700000,
+                notaryFees: 0,
+                reimbursementPenalty: 0,
+              },
+            ],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        });
+
+        expect(ownFunds).to.deep.equal([]);
+      });
+
+      it('suggests to cover fees', () => {
+        const ownFunds = Calculator.suggestStructureForLoan({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            borrowers: [
+              {
+                bankFortune: [{ value: 500000 }],
+                salary: 180000,
+                _id: 'borrower1',
+              },
+            ],
+            structures: [
+              {
+                id: 'struct1',
+                propertyValue: 1000000,
+                wantedLoan: 700000,
+                notaryFees: 30000,
+                reimbursementPenalty: 30000,
+              },
+            ],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        });
+
+        expect(ownFunds).to.deep.equal([
+          {
+            type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+            value: 10000,
+            borrowerId: 'borrower1',
+          },
+        ]);
+      });
+    });
   });
 
   describe('getMaxPropertyValueWithoutBorrowRatio', () => {
@@ -309,7 +376,7 @@ describe('SolvencyCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         canton: 'GE',
       });
-      expect(borrowRatio).to.equal(0.7313);
+      expect(borrowRatio).to.equal(0.7275);
       expect(propertyValue).to.equal(769000);
     });
 
@@ -428,6 +495,44 @@ describe('SolvencyCalculator', () => {
         ],
       });
       expect(result.propertyValue).to.equal(818000);
+    });
+  });
+
+  describe('getMaxBorrowRatio', () => {
+    it('suggests a higher loan value', () => {
+      const loan = {
+        borrowers: [{ _id: 'borrowerId', salary: 500000 }],
+        properties: [{ value: 1000000, canton: 'GE' }],
+        previousLoanTranches: [{ value: 650000 }],
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        purchaseType: PURCHASE_TYPE.REFINANCING,
+      };
+
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxBorrowRatioForLoan({ loan });
+
+      expect(propertyValue).to.equal(1000000);
+      expect(borrowRatio).to.equal(0.8);
+    });
+
+    it('suggests a higher loan value, limited by income', () => {
+      const loan = {
+        borrowers: [{ _id: 'borrowerId', salary: 150000 }],
+        properties: [{ value: 1000000, canton: 'GE' }],
+        previousLoanTranches: [{ value: 650000 }],
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        purchaseType: PURCHASE_TYPE.REFINANCING,
+      };
+
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxBorrowRatioForLoan({ loan });
+
+      expect(propertyValue).to.equal(1000000);
+      expect(borrowRatio).to.equal(0.71);
     });
   });
 });

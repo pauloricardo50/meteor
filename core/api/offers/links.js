@@ -1,5 +1,6 @@
+import Lenders from '../lenders';
+import Users from '../users/users';
 import Offers from './offers';
-import { Users, Lenders } from '..';
 
 Offers.addLinks({
   user: {
@@ -12,11 +13,5 @@ Offers.addLinks({
     collection: Lenders,
     type: 'one',
     metadata: true,
-    denormalize: {
-      field: 'lenderCache',
-      body: {
-        loanLink: 1,
-      },
-    },
   },
 });

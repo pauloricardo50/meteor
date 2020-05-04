@@ -1,17 +1,14 @@
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import moment from 'moment';
+import { compose, withProps } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { proPromotionOptions } from 'core/api/promotionOptions/queries';
-import {
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_OPTION_STATUS,
-} from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
-import T from 'core/components/Translation';
-import PromotionReservationProgress from '../PromotionReservations/PromotionReservationProgress';
-import { rawPromotionReservationProgress } from '../PromotionReservations/PromotionReservationProgress/PromotionReservationProgressHelpers';
+import withSmartQuery from '../../../../api/containerToolkit/withSmartQuery';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
+import { proPromotionOptions } from '../../../../api/promotionOptions/queries';
+import StatusLabel from '../../../StatusLabel';
+import T from '../../../Translation';
+import PromotionReservationProgress from '../../PromotionReservationProgress';
+import { rawPromotionReservationProgress } from '../../PromotionReservationProgress/PromotionReservationProgressHelpers';
 import PromotionCustomer from '../PromotionCustomer';
 
 const columnOptions = [
@@ -28,6 +25,7 @@ const columnOptions = [
 const makeMapPromotionOption = ({ promotion }) => promotionOption => {
   const { users: promotionUsers } = promotion;
   const {
+    _collection,
     _id: promotionOptionId,
     promotionLots,
     status,
@@ -48,12 +46,7 @@ const makeMapPromotionOption = ({ promotion }) => promotionOption => {
       promotionLot.name,
       {
         raw: status,
-        label: (
-          <StatusLabel
-            status={status}
-            collection={PROMOTION_OPTIONS_COLLECTION}
-          />
-        ),
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: loan.user.name,

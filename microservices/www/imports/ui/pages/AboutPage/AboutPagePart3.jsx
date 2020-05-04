@@ -1,7 +1,7 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
 import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 
 const AboutPagePart3 = () => (
   <div className="about-section about-page-part-3">

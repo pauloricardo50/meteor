@@ -1,6 +1,6 @@
 import { compose, lifecycle } from 'recompose';
-import { addNewStructure } from 'core/api';
 
+import { addNewStructure } from '../../../api/loans/methodDefinitions';
 import injectLoanContext from './containers/injectLoanContext';
 
 export default compose(

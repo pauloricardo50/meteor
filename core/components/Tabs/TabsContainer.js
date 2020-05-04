@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import withMatchParam from '../../containers/withMatchParam';
 

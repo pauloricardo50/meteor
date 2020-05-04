@@ -1,4 +1,4 @@
-import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
+import { makeCheckObjectStructure } from '../../../utils/checkObjectStructure';
 import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
 

@@ -8,7 +8,7 @@
 // Pages
 @import '../imports/client/pages/AdminDashboardPage/AdminDashboardPage.scss';
 @import '../imports/client/pages/AdminPromotionPage/AdminPromotionPage.scss';
-@import '../imports/client/pages/LoanBoardPage/LoanBoardPage.scss';
+@import '../imports/client/pages/BoardPage/BoardPage.scss';
 @import '../imports/client/pages/OrganisationsPage/OrganisationsPage.scss';
 @import '../imports/client/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
 @import '../imports/client/pages/SingleContactPage/SingleContactPage.scss';
@@ -19,6 +19,7 @@
 @import '../imports/client/pages/PropertiesPage/PropertiesPage.scss';
 @import '../imports/client/pages/OtherPage/OtherPage.scss';
 @import '../imports/client/pages/RevenuesPage/RevenuesPage.scss';
+@import '../imports/client/pages/SingleInsuranceRequestPage/SingleInsuranceRequestPage.scss';
 
 // Components
 @import '../imports/client/components/Board/Board.scss';
@@ -32,6 +33,7 @@
 @import '../imports/client/pages/InterestRatesPage/InterestRatesDialogForm/InterestRatesDialogForm.scss';
 @import '../imports/client/pages/InterestRatesPage/InterestRatesTable/InterestRatesTable.scss';
 @import '../imports/client/pages/SingleLoanPage/LoanStatusModifier/LoanStatusModifier.scss';
+@import '../imports/client/components/AdminTimeline/AdminTimeline.scss';
 
 .login-page.login-page {
   // Due to the "overflow: hidden" above, the login page does not display well on mobile

@@ -1,20 +1,46 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
 import { faTag } from '@fortawesome/pro-light-svg-icons/faTag';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import EpotekFrontApi from '../../../EpotekFrontApi';
+import FrontModal from '../../FrontModal';
 import FrontConversationTaggerContainer from './FrontConversationTaggerContainer';
 import FrontConversationTaggerResults from './FrontConversationTaggerResults';
-import FrontModal from '../../FrontModal';
 
-const formatTag = tag => tag.replace('/', ' > ').replace('_', '-');
+const formatTag = tag => {
+  const {
+    name,
+    parentTag: { name: parentName },
+  } = tag;
+  const fullName = parentName ? `${parentName}/${name}` : name;
+
+  return fullName.replace('/', ' > ').replace('_', '-');
+};
 
 const FrontConversationTagger = ({
   fetchLoans,
   conversation,
-  tags,
-  setTags,
+  tagIds,
+  setTagIds,
+  refetch,
 }) => {
-  const hasLoanTags = tags.filter(tag => tag.includes('loan')).length > 0;
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const getTags = async ids => {
+      const fetchedTags = await Promise.all(
+        ids.map(tagId => EpotekFrontApi.callMethod('frontGetTag', { tagId })),
+      );
+      setTags(fetchedTags);
+    };
+
+    getTags(tagIds);
+  }, [tagIds.join(',')]);
+
+  const hasLoanTags =
+    tags.filter(({ parentTag }) => parentTag?.name?.includes('loan')).length >
+    0;
+
   return (
     <FrontModal
       buttonProps={{
@@ -28,9 +54,9 @@ const FrontConversationTagger = ({
     >
       <div className="flex center-align">
         {tags
-          .filter(tag => tag.includes('loan'))
+          .filter(({ parentTag }) => parentTag?.name?.includes('loan'))
           .map(tag => (
-            <span key={tag} className="front-tag">
+            <span key={tag.id} className="front-tag">
               {formatTag(tag)}
             </span>
           ))}
@@ -42,8 +68,9 @@ const FrontConversationTagger = ({
       <FrontConversationTaggerResults
         fetchLoans={fetchLoans}
         conversation={conversation}
-        tags={tags}
-        setTags={setTags}
+        tagIds={tagIds}
+        setTagIds={setTagIds}
+        refetch={refetch}
       />
     </FrontModal>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import Chip from '@material-ui/core/Chip';
 
 import T from 'core/components/Translation';
+
 import getFilterOptions, {
   getFilterOptionFromValue,
 } from './DetailSideNavFilters/filterOptions';

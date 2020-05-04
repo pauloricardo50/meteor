@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PROPERTY_TYPE } from 'core/api/constants';
+import { PROPERTY_TYPE } from '../../api/properties/propertyConstants';
 import T from '../Translation';
 
 const INFOS_TO_DISPLAY = {

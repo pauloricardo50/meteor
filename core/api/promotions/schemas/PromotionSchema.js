@@ -1,22 +1,24 @@
 import { Meteor } from 'meteor/meteor';
+
 import SimpleSchema from 'simpl-schema';
-import {
-  PROMOTION_TYPES,
-  PROMOTION_STATUS,
-  PROMOTION_PERMISSIONS,
-  PROMOTION_AUTHORIZATION_STATUS,
-  PROMOTION_USERS_ROLES,
-} from '../promotionConstants';
+
 import {
   address,
   contactsSchema,
-  userLinksSchema,
   createdAt,
-  updatedAt,
+  dateField,
   documentsField,
   percentageField,
-  dateField,
+  updatedAt,
+  userLinksSchema,
 } from '../../helpers/sharedSchemas';
+import {
+  PROMOTION_AUTHORIZATION_STATUS,
+  PROMOTION_PERMISSIONS,
+  PROMOTION_STATUS,
+  PROMOTION_TYPES,
+  PROMOTION_USERS_ROLES,
+} from '../promotionConstants';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -172,11 +174,17 @@ const PromotionSchema = new SimpleSchema({
     min: 0,
     max: 30,
   },
+  isTest: {
+    type: Boolean,
+    defaultValue: false,
+    uniforms: { label: 'Promotion test' },
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
   'name',
   'type',
+  'isTest',
   'address1',
   'address2',
   'zipCode',

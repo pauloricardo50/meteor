@@ -1,24 +1,25 @@
 import React from 'react';
 
+import ContactCard from './ContactCard';
 import FrontContactContainer from './FrontContactContainer';
 import FrontContactHeader from './FrontContactHeader';
-import ContactCard from './ContactCard';
 import LoanCard from './FrontContactLoans/LoanCard';
-import { getLoanTag } from './FrontContactLoans/LoanTagger';
 
-const mapLoans = ({ loans = [], conversation, refetch, tags, setTags }) => {
+const mapLoans = ({ loans = [], conversation, refetch, tagIds, setTagIds }) => {
   if (!loans.length) {
     return null;
   }
 
   let sortedLoans = loans;
   let expandedLoan;
-  const loanTags = tags.filter(tag => tag.includes('loan'));
+  const loanTagIds = tagIds.filter(tag =>
+    loans.some(({ frontTagId }) => frontTagId === tag),
+  );
 
-  if (loanTags.length === 1) {
+  if (loanTagIds.length === 1) {
     expandedLoan = loans.find(loan => {
-      const loanTag = getLoanTag(loan);
-      return loanTag === loanTags[0];
+      const { frontTagId: loanTagId } = loan;
+      return loanTagId === loanTagIds[0];
     });
     sortedLoans = expandedLoan
       ? [
@@ -37,8 +38,8 @@ const mapLoans = ({ loans = [], conversation, refetch, tags, setTags }) => {
       }
       refetch={refetch}
       conversation={conversation}
-      tags={tags}
-      setTags={setTags}
+      tagIds={tagIds}
+      setTagIds={setTagIds}
     />
   ));
 };
@@ -50,8 +51,8 @@ const FrontContact = ({
   isEpotekResource,
   collection,
   refetch,
-  tags,
-  setTags,
+  tagIds,
+  setTagIds,
 }) => {
   if (loading) {
     return (
@@ -69,8 +70,8 @@ const FrontContact = ({
         collection={collection}
         refetch={refetch}
         conversation={conversation}
-        tags={tags}
-        setTags={setTags}
+        tagIds={tagIds}
+        setTagIds={setTagIds}
       />
       {isEpotekResource && (
         <ContactCard
@@ -87,8 +88,8 @@ const FrontContact = ({
           loans: finalContact?.loans,
           conversation,
           refetch,
-          tags,
-          setTags,
+          tagIds,
+          setTagIds,
         })}
     </div>
   );

@@ -1,5 +1,5 @@
+import Users from '../users/users';
 import Sessions from './sessions';
-import { Users } from '..';
 
 Sessions.addLinks({
   impersonatingAdmin: {

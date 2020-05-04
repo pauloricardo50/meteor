@@ -1,6 +1,6 @@
-import { parseFilter } from 'core/api/lenderRules/helpers';
-import { getMatchingRules } from '../../api/lenderRules/helpers';
-import { LENDER_RULES_VARIABLES, OWN_FUNDS_TYPES } from '../../api/constants';
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
+import { getMatchingRules, parseFilter } from '../../api/lenderRules/helpers';
+import { LENDER_RULES_VARIABLES } from '../../api/lenderRules/lenderRulesConstants';
 
 //
 

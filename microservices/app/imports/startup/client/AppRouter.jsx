@@ -1,12 +1,13 @@
 import React from 'react';
 
-import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import { getUserLocale, getFormats } from 'core/utils/localization';
 import { appUser } from 'core/api/users/queries';
-import messagesFR from '../../../lang/fr.json';
-import AppLayout from '../../client/layouts/AppLayout';
-import AppStore from '../../client/components/AppStore';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
+import { dataLayer } from 'core/utils/googleTagManager';
+import { getFormats, getUserLocale } from 'core/utils/localization';
 
+import messagesFR from '../../../lang/fr.json';
+import AppStore from '../../client/components/AppStore';
+import AppLayout from '../../client/layouts/AppLayout';
 import APP_ROUTES from './appRoutes';
 
 const AppRouter = () => (
@@ -16,6 +17,16 @@ const AppRouter = () => (
     formats={getFormats()}
     routes={APP_ROUTES}
     currentUser={{ query: appUser }}
+    loginPageProps={{
+      onSignInSuccess: () => {
+        if (dataLayer()) {
+          dataLayer().push({
+            event: 'formSubmission',
+            formType: 'Login',
+          });
+        }
+      },
+    }}
   >
     <AppStore>
       <AppLayout>

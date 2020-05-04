@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { Money } from 'core/components/Translation';
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';
-import { Money } from 'core/components/Translation';
 
 const SolvencyItem = ({
   loan,
@@ -24,6 +24,7 @@ const SolvencyItem = ({
       residenceType,
       borrowers: loan.borrowers,
       canton,
+      purchaseType: loan.purchaseType,
     });
 
     const calc = new CalculatorClass({ loan: loanObject, lenderRules });

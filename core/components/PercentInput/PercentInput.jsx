@@ -1,13 +1,13 @@
 import React from 'react';
-import MaskedInput from 'react-text-mask';
 import cx from 'classnames';
+import MaskedInput from 'react-text-mask';
 
-import { percentMask } from '../../utils/textMasks';
 import { percentFormatters } from '../../utils/formHelpers';
-import FormHelperText from '../Material/FormHelperText';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import { percentMask } from '../../utils/textMasks';
 import FormControl from '../Material/FormControl';
+import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 
 const PercentInputComponent = ({ onChange, value, ...props }) => (
   <Input

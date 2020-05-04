@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 
+import { adminOrganisations } from 'core/api/organisations/queries';
+import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import MonitoringActivity from './MonitoringActivity';
+
 import LoanMonitoringChart from './LoanMonitoringChart';
+import MonitoringActivity from './MonitoringActivity';
 
 const MonitoringTab = () => {
   const [revenueDateRange, setRevenueDateRange] = useState({

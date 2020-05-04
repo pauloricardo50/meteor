@@ -1,17 +1,18 @@
 import React, { useMemo } from 'react';
-import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import T from 'core/components/Translation';
-import Box from 'core/components/Box';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { withSmartQuery } from 'core/api';
-import useSearchParams from 'core/hooks/useSearchParams';
+import { adminUsers } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
+import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
+import Box from 'core/components/Box';
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+import useSearchParams from 'core/hooks/useSearchParams';
+
 import UserDialogFormContainer from './UserDialogFormContainer';
 
 export const userFormLayout = [

@@ -1,9 +1,9 @@
 import React from 'react';
-import HighchartsExporting from 'highcharts-exporting';
 import HighchartsExportData from 'highcharts-export-data';
+import HighchartsExporting from 'highcharts-exporting';
+import { injectIntl } from 'react-intl';
 
 import Chart from 'core/components/charts/Chart';
-import { injectIntl } from 'react-intl';
 import colors from 'core/config/colors';
 
 const getX = ({ data, groupBy, f }) => {

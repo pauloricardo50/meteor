@@ -1,10 +1,11 @@
 import { compose, withProps } from 'recompose';
 
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { appPromotion } from 'core/api/promotions/queries';
-import { withSmartQuery } from 'core/api';
+import PromotionPage from 'core/components/PromotionPage/client';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
-import PromotionPage from 'core/components/PromotionPage/client';
+
 import appRoutes from '../../../startup/client/appRoutes';
 import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 

@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import { route, generateTestsForPages } from '../../imports/core/cypress/utils';
+import { generateTestsForPages, route } from '../../imports/core/cypress/utils';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages

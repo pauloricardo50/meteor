@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { stepperActions } from '../redux/stepper';
 
 const StepperContainer = component =>

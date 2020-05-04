@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+
 import SimpleSchema from 'simpl-schema';
 
 import FileService from '../../../files/server/FileService';
-import Security from '../../../security';
-import PropertyService from '../../../properties/server/PropertyService';
 import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
+import PropertyService from '../../../properties/server/PropertyService';
+import Security from '../../../security';
 import { withMeteorUserId } from '../helpers';
-import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, getImpersonateUserId, impersonateSchema } from './helpers';
 
 const bodySchema = new SimpleSchema({
   propertyId: String,

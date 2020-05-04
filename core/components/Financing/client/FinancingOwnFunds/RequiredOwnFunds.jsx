@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { CalculatedValue } from '../FinancingSection';
-import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 import Calculator from '../../../../utils/Calculator';
+import StructureUpdateContainer from '../containers/StructureUpdateContainer';
+import { CalculatedValue } from '../FinancingSection';
 import RequiredOwnFundsBody from './RequiredOwnFundsBody';
 
 const RequiredOwnFunds = props => {

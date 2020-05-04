@@ -1,18 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { STEP_ORDER, STEPS, PROMOTION_OPTION_STATUS } from 'core/api/constants';
-import ProgressBar from 'core/components/ProgressBar';
+import { STEPS, STEP_ORDER } from 'core/api/loans/loanConstants';
+import { PROMOTION_OPTION_STATUS } from 'core/api/promotionOptions/promotionOptionConstants';
 import Icon from 'core/components/Icon';
+import ProgressBar from 'core/components/ProgressBar';
 import T from 'core/components/Translation';
 
 const DashboardProgressBar = ({ loan, variant }) => {
-  const {
-    step: currentStep,
-    promotionOptions = [],
-    promotions,
-    maxPropertyValue,
-  } = loan;
+  const { step: currentStep, promotionOptions = [], promotions } = loan;
   let currentIndex = STEP_ORDER.indexOf(currentStep);
   let steps = STEP_ORDER.map(step => ({
     label: <T id={`Forms.step.${step}`} />,

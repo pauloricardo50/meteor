@@ -1,15 +1,17 @@
 import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loansWithoutRevenues } from 'core/api/stats/queries';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import Table from 'core/components/Table';
-import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { USERS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
-import { getUserDisplayName } from 'core/utils/userFunctions';
+import StatusLabel from 'core/components/StatusLabel';
+import Table from 'core/components/Table';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import { getUserDisplayName } from 'core/utils/userFunctions';
+
 import StatItem from './StatItem';
 
 const LoansTable = ({ loans }) => (
@@ -21,7 +23,7 @@ const LoansTable = ({ loans }) => (
       { id: 'Conseiller' },
     ]}
     rows={loans.map(loan => {
-      const { _id, userCache, name, status } = loan;
+      const { _id, userCache, name, status, _collection } = loan;
       const userName = getUserDisplayName(userCache);
       const assigneeName = getUserDisplayName(
         userCache && userCache.assignedEmployeeCache,
@@ -30,26 +32,17 @@ const LoansTable = ({ loans }) => (
         id: _id,
         columns: [
           {
-            label: (
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                key="loan"
-              />
-            ),
+            label: <CollectionIconLink relatedDoc={loan} key="loan" />,
             raw: name,
           },
-          <StatusLabel
-            status={status}
-            collection={LOANS_COLLECTION}
-            key="status"
-          />,
+          <StatusLabel status={status} collection={_collection} key="status" />,
           {
             label: userCache ? (
               <CollectionIconLink
                 relatedDoc={{
                   ...userCache,
                   name: userName,
-                  collection: USERS_COLLECTION,
+                  _collection: USERS_COLLECTION,
                 }}
               />
             ) : (
@@ -64,7 +57,7 @@ const LoansTable = ({ loans }) => (
                   relatedDoc={{
                     ...userCache.assignedEmployeeCache,
                     name: assigneeName,
-                    collection: USERS_COLLECTION,
+                    _collection: USERS_COLLECTION,
                   }}
                 />
               ) : (

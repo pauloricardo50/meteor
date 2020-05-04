@@ -1,9 +1,9 @@
 import React from 'react';
 
-import AutoForm from 'core/components/AutoForm2';
-import CustomSubmitField from 'core/components/AutoForm2/CustomSubmitField';
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
+import AutoForm from '../../AutoForm2';
+import CustomSubmitField from '../../AutoForm2/CustomSubmitField';
+import Button from '../../Button';
+import T from '../../Translation';
 import ZipLoanModalContainer from './ZipLoanModalContainer';
 
 const ZipLoanModal = ({ closeModal, schema, model, fields, onSubmit }) => (

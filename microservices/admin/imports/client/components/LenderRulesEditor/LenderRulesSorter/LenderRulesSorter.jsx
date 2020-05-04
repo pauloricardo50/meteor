@@ -1,10 +1,11 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import IconButton from 'core/components/IconButton';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import LenderRulesSorterContainer from './LenderRulesSorterContainer';
+import IconButton from 'core/components/IconButton';
+
 import LenderRulesEditorTitle from '../LenderRulesEditorTitle';
+import LenderRulesSorterContainer from './LenderRulesSorterContainer';
 
 const emptySchema = new SimpleSchema({});
 

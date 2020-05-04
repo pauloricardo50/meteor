@@ -5,11 +5,11 @@ import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 import queryString from 'query-string';
 
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
-import { ddpWithUserId } from '../../methods/methodHelpers';
 import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
+import { ddpWithUserId } from '../../methods/methodHelpers';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 
 const EPOTEK_IPS = ['213.3.47.70'];
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
@@ -66,6 +66,10 @@ const frontEndpoints = {
     makeEndpoint: ({ conversationId }) =>
       `/conversations/${conversationId}/assignee`,
   },
+  getTag: {
+    method: 'GET',
+    makeEndpoint: ({ tagId }) => `/tags/${tagId}`,
+  },
 };
 
 const WEBHOOKS = {
@@ -109,7 +113,7 @@ export class FrontService {
       email &&
       UserService.get(
         {
-          'emails.0.address': email,
+          'emails.address': email,
           'roles._id': { $in: [ROLES.DEV, ROLES.ADMIN] },
         },
         { _id: 1 },
@@ -145,7 +149,11 @@ export class FrontService {
           ERROR_CODES.UNAUTHORIZED,
           'Front signature verification failed',
         ),
-      user: { _id: FRONT_WEBHOOK_ANALYTICS_USER_ID },
+      user: {
+        _id: FRONT_WEBHOOK_ANALYTICS_USER_ID,
+        name: 'Front webhook',
+        organisations: [{ name: 'Front webhook' }],
+      },
     };
   }
 
@@ -239,7 +247,15 @@ export class FrontService {
       },
       ...(body ? { body: JSON.stringify(body) } : {}),
     })
-      .then(result => result.json())
+      .then(async result => {
+        try {
+          const response = await result.text();
+          return JSON.parse(response);
+        } catch (e) {
+          // Sometimes Front response cannot be parsed...
+          return {};
+        }
+      })
       .then(result => {
         console.log('callFrontApi result:', endpoint);
         console.log('params:', params);
@@ -355,10 +371,14 @@ export class FrontService {
     const email = recipient?.handle;
     const recipientUser =
       email &&
-      UserService.getByEmail(email, {
-        assignedEmployee: { email: 1 },
-        loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
-      });
+      UserService.getByEmail(
+        email,
+        {
+          assignedEmployee: { email: 1 },
+          loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+        },
+        { roles: { $in: [ROLES.USER, ROLES.PRO] } },
+      );
 
     return recipientUser;
   }
@@ -421,8 +441,14 @@ export class FrontService {
       endpoint: 'getConversation',
       params: { conversationId },
     });
+    const { tags: currentTags = [] } = conversation;
 
-    return this.updateConversationTags({ conversation, tags: [frontTagId] });
+    return this.updateConversationTags({
+      conversation,
+      tags: [frontTagId],
+    }).then(() => ({
+      tagIds: [...currentTags.map(({ id }) => id), frontTagId],
+    }));
   }
 
   async untagLoan({ loanId, conversationId }) {
@@ -447,7 +473,9 @@ export class FrontService {
       conversation,
       tags: newTags,
       appendTags: false,
-    });
+    }).then(() => ({
+      tagIds: newTags,
+    }));
   }
 
   updateConversationAssignee({ conversationId, assigneeId = null }) {
@@ -501,6 +529,25 @@ export class FrontService {
     }
 
     return this.updateConversationAssignee({ conversationId, assigneeId });
+  }
+
+  async getTag({ tagId }) {
+    let parentTag = {};
+    const tag = await this.callFrontApi({
+      endpoint: 'getTag',
+      params: { tagId },
+    });
+
+    const { _links: { related } = {} } = tag;
+
+    if (related?.parent_tag) {
+      parentTag = await this.callFrontApi({
+        endpoint: 'getTag',
+        params: { tagId: related.parent_tag.split('/').slice(-1)[0] },
+      });
+    }
+
+    return { ...tag, parentTag };
   }
 }
 

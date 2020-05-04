@@ -2,11 +2,11 @@
 import { expect } from 'chai';
 
 import {
-  toMoney,
-  toNumber,
+  roundTo,
   toDecimalNumber,
   toDistanceString,
-  roundTo,
+  toMoney,
+  toNumber,
 } from '../conversionFunctions';
 
 describe('Conversion functions', () => {

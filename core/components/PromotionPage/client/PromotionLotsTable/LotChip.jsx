@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { removeLotLink } from '../../../../api';
-import T from '../../../Translation';
+import { removeLotLink } from '../../../../api/promotionLots/methodDefinitions';
+import { toMoney } from '../../../../utils/conversionFunctions';
 import Chip from '../../../Material/Chip';
 import Tooltip from '../../../Material/Tooltip';
-import { toMoney } from '../../../../utils/conversionFunctions';
+import T from '../../../Translation';
 
 const LotChip = ({
   lot: { type, _id, name, value },

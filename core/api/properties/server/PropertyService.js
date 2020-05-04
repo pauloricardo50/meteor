@@ -1,16 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanService from '../../loans/server/LoanService';
-import CollectionService from '../../helpers/server/CollectionService';
-import {
-  PROPERTY_PERMISSIONS_FULL_ACCESS,
-  PROPERTY_CATEGORY,
-} from '../propertyConstants';
-import Properties from '../properties';
-import UserService from '../../users/server/UserService';
-import { removePropertyFromLoan } from './propertyServerHelpers';
-import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import { adminLoan } from '../../fragments';
+import CollectionService from '../../helpers/server/CollectionService';
+import LoanService from '../../loans/server/LoanService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
+import UserService from '../../users/server/UserService';
+import Properties from '../properties';
+import {
+  PROPERTY_CATEGORY,
+  PROPERTY_PERMISSIONS_FULL_ACCESS,
+} from '../propertyConstants';
+import { removePropertyFromLoan } from './propertyServerHelpers';
 
 class PropertyService extends CollectionService {
   constructor() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { changeEmail } from '../api/methods';
+import { changeEmail } from '../api/users/methodDefinitions';
 import { AutoFormDialog } from './AutoForm2';
 
 SimpleSchema.setDefaultMessages({

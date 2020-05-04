@@ -3,8 +3,8 @@ import { Roles } from 'meteor/alanning:roles';
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { ROLES } from 'core/api/constants';
+import withSmartQuery from '../api/containerToolkit/withSmartQuery';
+import { ROLES } from '../api/users/userConstants';
 
 const formatCurrentUser = user => {
   if (user) {

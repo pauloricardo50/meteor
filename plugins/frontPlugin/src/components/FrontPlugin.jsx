@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StylesProvider } from '@material-ui/core/styles';
 
-import FrontContact from './FrontContact/FrontContact';
-import FrontContactSelect from './FrontContactSelect';
 import LibraryWrappers from '../core/components/BaseRouter/LibraryWrappers';
+import messages from '../core/lang/fr.json';
 import {
   getFormats,
-  localizationStartup,
   getUserLocale,
+  localizationStartup,
 } from '../core/utils/localization';
-import messages from '../core/lang/fr.json';
+import FrontContact from './FrontContact/FrontContact';
+import FrontContactSelect from './FrontContactSelect';
 
 const { Front } = window;
 
@@ -41,7 +41,7 @@ const getContacts = data => {
 const FrontPlugin = ({ resetError }) => {
   const [data, setData] = useState(null);
   const [contact, setContact] = useState(null);
-  const [tags, setTags] = useState([]);
+  const [tagIds, setTagIds] = useState([]);
 
   useEffect(() => {
     Front.setPanelWidth(500);
@@ -49,11 +49,11 @@ const FrontPlugin = ({ resetError }) => {
     Front.on('conversation', frontData => {
       const {
         contact: frontContact,
-        conversation: { tags: frontTags = [] } = {},
+        conversation: { tag_ids: frontTags = [] } = {},
       } = frontData;
       setContact(frontContact);
       setData(frontData);
-      setTags(frontTags);
+      setTagIds(frontTags);
     });
 
     Front.on('no_conversation', () => {
@@ -88,8 +88,8 @@ const FrontPlugin = ({ resetError }) => {
             contact={contact}
             key={contact.handle}
             conversation={data.conversation}
-            tags={tags}
-            setTags={setTags}
+            tagIds={tagIds}
+            setTagIds={setTagIds}
           />
         </div>
       </LibraryWrappers>

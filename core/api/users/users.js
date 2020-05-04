@@ -1,9 +1,11 @@
-import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
-import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
-import { ACQUISITION_CHANNELS } from './userConstants';
+import SimpleSchema from 'simpl-schema';
+
+import { makeCollectionTransform } from '../helpers/collectionHelpers';
+import { cacheField, createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import { ACQUISITION_CHANNELS, ROLES } from './userConstants';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -57,6 +59,10 @@ export const UserSchema = new SimpleSchema({
     optional: true,
     blackbox: true,
   },
+  'roles.$._id': {
+    type: String,
+    allowedValues: Object.values(ROLES),
+  },
   // In order to avoid an 'Exception in setInterval callback' from Meteor
   heartbeat: {
     type: Date,
@@ -104,9 +110,16 @@ export const UserSchema = new SimpleSchema({
     },
   },
   frontUserId: { type: String, optional: true },
+  defaultBoardId: {
+    type: String,
+    optional: true,
+    allowedValues: ['loans', 'insuranceRequests'],
+    defaultValue: 'loans',
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);
+Meteor.users._transform = makeCollectionTransform('users');
 
 const Users = Meteor.users;
 export default Users;

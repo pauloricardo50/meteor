@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import Table from 'core/components/Table';
+
 import UsersTableContainer from './UsersTableContainer';
 
 const UsersTable = ({ options: { columnOptions, rows } }) => (

@@ -1,9 +1,10 @@
 import { Slingshot } from 'meteor/edgee:slingshot';
+
 import {
-  SLINGSHOT_DIRECTIVE_NAME,
-  SLINGSHOT_DIRECTIVE_NAME_TEMP,
   ALLOWED_FILE_TYPES,
   MAX_FILE_SIZE,
+  SLINGSHOT_DIRECTIVE_NAME,
+  SLINGSHOT_DIRECTIVE_NAME_TEMP,
 } from './fileConstants';
 
 [SLINGSHOT_DIRECTIVE_NAME, SLINGSHOT_DIRECTIVE_NAME_TEMP].forEach(directive => {

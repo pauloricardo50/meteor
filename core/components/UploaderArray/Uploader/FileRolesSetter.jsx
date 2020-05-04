@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+
 import React, { useContext } from 'react';
 
+import { FILE_ROLES } from '../../../api/files/fileConstants';
+import { getFileRolesArray } from '../../../api/files/fileHelpers';
 import DropdownMenu from '../../DropdownMenu';
-import ConfirmModal from '../../ModalManager/ConfirmModal';
-import { FILE_ROLES } from '../../../api/constants';
-import T from '../../Translation';
 import IconButton from '../../IconButton';
 import { ModalManagerContext } from '../../ModalManager';
-import { getFileRolesArray } from '../../../api/files/fileHelpers';
+import ConfirmModal from '../../ModalManager/ConfirmModal';
+import T from '../../Translation';
 
 const getIconProps = roles => {
   if (roles.includes(FILE_ROLES.ADMIN)) {

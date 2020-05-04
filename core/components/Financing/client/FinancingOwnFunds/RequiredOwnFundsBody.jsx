@@ -1,13 +1,13 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagic } from '@fortawesome/pro-light-svg-icons/faMagic';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { WARNING } from 'core/api/constants';
-import T from '../../../Translation';
+import { WARNING } from '../../../../api/constants';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import IconButton from '../../../IconButton';
-import { getLabel as getRawLabel } from './financingOwnFundsHelpers';
+import T from '../../../Translation';
 import { getBorrowRatioStatus } from '../FinancingResult/financingResultHelpers';
+import { getLabel as getRawLabel } from './financingOwnFundsHelpers';
 
 const getLabel = props => {
   const { value } = props;
@@ -68,13 +68,7 @@ const getLabel = props => {
 };
 
 const RequiredOwnFundsBody = props => {
-  const {
-    value,
-    suggestStructure,
-    disableForms,
-    loan = {},
-    structureId,
-  } = props;
+  const { suggestStructure, disableForms, loan = {} } = props;
 
   const { borrowers = [] } = loan;
   return (

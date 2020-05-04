@@ -1,12 +1,12 @@
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 import { compose, withState } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import { proInviteUser } from 'core/api/methods';
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { proReferredByUsers } from 'core/api/users/queries';
-import DropdownMenu from 'core/components/DropdownMenu';
+import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
+import { proInviteUser } from '../../api/users/methodDefinitions';
+import { proReferredByUsers } from '../../api/users/queries';
 import { AutoFormDialog } from '../AutoForm2';
+import DropdownMenu from '../DropdownMenu';
 import T from '../Translation';
 
 const customerSchema = new SimpleSchema({

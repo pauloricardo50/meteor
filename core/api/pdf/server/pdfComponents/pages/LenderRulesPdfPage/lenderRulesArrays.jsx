@@ -3,11 +3,11 @@ import SimpleSchema from 'simpl-schema';
 
 import T, { Percent } from '../../../../../../components/Translation';
 import {
+  cutOffCriteria,
   incomeConsideration,
   theoreticalExpenses,
-  cutOffCriteria,
 } from '../../../../../lenderRules/schemas/lenderRulesSchema';
-import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
+import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 
 const RULE_TYPES = {
   SELECT: 'SELECT',

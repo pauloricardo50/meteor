@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import SimpleSchema from 'simpl-schema';
-import pick from 'lodash/pick';
 import merge from 'lodash/merge';
+import pick from 'lodash/pick';
+import SimpleSchema from 'simpl-schema';
 
+import { updateStructure } from 'core/api/loans/methodDefinitions';
 import { structureSchema } from 'core/api/loans/schemas/StructureSchema';
 import AutoForm from 'core/components/AutoForm2';
-import { updateStructure } from 'imports/core/api/methods/index';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 const getSchema = ({ offers }) =>

@@ -1,10 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import omit from 'lodash/omit';
-import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
+
+import Loadable from '../../utils/loadable';
 import { defaultDatePickerProps } from './dateInputConstants';
+
+const SingleDatePicker = Loadable({
+  loader: () => import('react-dates/lib/components/SingleDatePicker'),
+});
 
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = undefined, maxDate = undefined) => day =>
@@ -13,7 +18,7 @@ const setDateRange = (minDate = undefined, maxDate = undefined) => day =>
 
 const returnYears = () => {
   const years = [];
-  for (let i = moment().year() - 100; i <= moment().year(); i++) {
+  for (let i = moment().year() - 100; i <= moment().year() + 50; i++) {
     years.push(<option value={i}>{i}</option>);
   }
   return years;

@@ -1,10 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 
-import T from '../../Translation';
 import ConstructionTimeline, {
   ConstructionTimelineItem,
 } from '../../ConstructionTimeline';
+import T from '../../Translation';
 
 const getMonthDelta = count => `+${count} mois`;
 

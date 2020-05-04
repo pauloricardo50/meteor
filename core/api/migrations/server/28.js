@@ -1,7 +1,7 @@
-import { Random } from 'meteor/random';
 import { Migrations } from 'meteor/percolate:migrations';
+import { Random } from 'meteor/random';
 
-import { employeesByEmail } from 'core/arrays/epotekEmployees';
+import { employeesByEmail } from '../../../arrays/epotekEmployees';
 import LoanService from '../../loans/server/LoanService';
 
 export const up = () => {

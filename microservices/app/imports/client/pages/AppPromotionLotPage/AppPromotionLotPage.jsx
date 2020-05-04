@@ -1,22 +1,17 @@
 import React from 'react';
 
 import Button from 'core/components/Button';
-import T, { Money } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
-import ClickToEditField from 'core/components/ClickToEditField';
 import PromotionLotRecapTable from 'core/components/PromotionLotPage/PromotionLotRecapTable';
-import {
-  PROMOTION_LOTS_COLLECTION,
-  PROMOTION_STATUS,
-} from 'core/api/constants';
-import { createRoute } from 'core/utils/routerUtils';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
+import StatusLabel from 'core/components/StatusLabel';
+import T, { Money } from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
 export const AppPromotionLotPage = ({
-  promotionOption,
   promotionLot,
   loan: { _id: loanId },
   promotionId,
@@ -24,12 +19,11 @@ export const AppPromotionLotPage = ({
   const {
     name,
     reducedStatus,
-    promotion,
     lots,
     documents,
     properties,
+    _collection,
   } = promotionLot;
-  const { attributedToMe } = promotionOption || {};
   const property = properties.length > 0 && properties[0];
   const { description } = property;
 
@@ -54,10 +48,7 @@ export const AppPromotionLotPage = ({
           &nbsp;
           <Money value={promotionLot.value} />
           &nbsp;
-          <StatusLabel
-            status={reducedStatus}
-            collection={PROMOTION_LOTS_COLLECTION}
-          />
+          <StatusLabel status={reducedStatus} collection={_collection} />
         </h1>
         {description && <h3 className="secondary">{description}</h3>}
         {lots.length > 0 && (

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
 
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
-import DetailSideNavSort from './DetailSideNavSort';
-import DetailSideNavFilters from './DetailSideNavFilters';
+
 import CurrentFilters from './CurrentFilters';
+import DetailSideNavFilters from './DetailSideNavFilters';
+import DetailSideNavSort from './DetailSideNavSort';
 
 const DetailSideNavHeader = props => {
   const { collectionName, hideDetailNav, filters } = props;

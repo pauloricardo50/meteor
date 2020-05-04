@@ -1,43 +1,74 @@
-import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../../pdfConstants';
+import {
+  BOLD_WEIGHT,
+  MARGIN_BOTTOM,
+  MARGIN_SIDE,
+  MARGIN_TOP,
+  REGULAR_WEIGHT,
+} from '../../../pdfConstants';
 import BorrowersPageStyles from '../pages/BorrowersPdfPage/styles';
-import PDFTableStyles from '../PdfTable/PdfTableStyles';
-import PdfPageStyles from '../PdfPage/PdfPageStyles';
+import LenderRulesPageStyles from '../pages/LenderRulesPdfPage/stylesheet';
 import PropertyPageStyles from '../pages/PropertyPdfPage/stylesheet';
 import StructurePageStyles from '../pages/StructurePdfPage/stylesheet';
-import LenderRulesPageStyles from '../pages/LenderRulesPdfPage/stylesheet';
+import PdfPageStyles from '../PdfPage/PdfPageStyles';
+import PDFTableStyles from '../PdfTable/PdfTableStyles';
 import { LoanBankCoverStyles } from './LoanBankCover';
 
 const stylesheet = `
     @font-face {
-        font-family: 'Eina04';
+        font-family: 'Manrope-variable';
         font-style: normal;
         font-weight: normal;
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot') format('embedded-opentype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.ttf') format('truetype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.woff') format('woff');
+        src: url('https://www.e-potek.ch/fonts/Manrope-variable.ttf') format('truetype');
+        font-weight: 1 999;
     }
-
-    @font-face {
-        font-family: 'Eina04';
-        font-style: normal;
-        font-weight: bold;
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot') format('embedded-opentype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.ttf') format('truetype');
-        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.woff') format('woff');
-    }
-
 
     html {
         font-size: 10px;
-        font-family: 'Eina04', sans-serif;
+        font-family: 'Manrope-variable', 'Helvetica', sans-serif;
+        font-variant-numeric: tabular-nums;
+        font-weight: ${REGULAR_WEIGHT};
+        line-height: 1.4375rem;
+        color: #2c2c2c;
     }
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0.67em 0;
 
-    * {
-        // border: 1px solid red;
-        // border-radius: 8px;
+        color: #2c2c2c;
+
+        font-weight: ${BOLD_WEIGHT};
+    }
+
+    h1, .font-size-1 {
+        font-size: 2.5rem;
+        line-height: 3.5rem;
+    }
+
+    h2, .font-size-2 {
+        font-size: 2rem;
+        line-height: 3rem;
+    }
+
+    h3, .font-size-3 {
+        font-size: 1.75rem;
+        line-height: 2.5rem;
+    }
+
+    h4, .font-size-4 {
+        font-size: 1.5rem;
+        line-height: 2.125rem;
+        font-weight: ${REGULAR_WEIGHT};
+    }
+
+    h5, .font-size-5 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     @page {
@@ -59,11 +90,6 @@ const stylesheet = `
         @bottom {
           content: flow(footer);
         }
-
-        // @bottom-right {
-        //    content: "Page " counter(page) "/" counter(pages);
-        //    font-family: Helvetica;
-        // }
     }
 
     .top-left {

@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import Link from 'core/components/Link';
-
-import { createRoute } from 'core/utils/routerUtils';
-import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
-import DashboardRecapCost from './DashboardRecapCost';
-import DashboardRecapFinancing from './DashboardRecapFinancing';
-import DashboardRecapChart from './DashboardRecapChart';
-import APP_ROUTES from '../../../../../startup/client/appRoutes';
-import DashboardRecapFinanceEmpty from './DashboardRecapFinanceEmpty';
+import Calculator from 'core/utils/Calculator';
+import { createRoute } from 'core/utils/routerUtils';
 
-const shouldDisplayRecap = loan => Calculator.selectPropertyValue({ loan });
+import APP_ROUTES from '../../../../../startup/client/appRoutes';
+import DashboardRecapChart from './DashboardRecapChart';
+import DashboardRecapCost from './DashboardRecapCost';
+import DashboardRecapFinanceEmpty from './DashboardRecapFinanceEmpty';
+import DashboardRecapFinancing from './DashboardRecapFinancing';
+
+const shouldDisplayRecap = loan =>
+  Calculator.loanHasMinimalInformation({ loan });
 
 const DashboardRecapFinance = props => {
   const { loan } = props;

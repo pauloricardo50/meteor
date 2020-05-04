@@ -1,44 +1,17 @@
-import Loans from './loans';
-import {
-  Borrowers,
-  Lenders,
-  PromotionLots,
-  PromotionOptions,
-  Promotions,
-  Properties,
-  Revenues,
-  Tasks,
-  Users,
-  Organisations,
-} from '..';
-
-import LinkInitializer from '../links/LinkInitializer';
 import Activities from '../activities/activities';
-
-export const userCache = {
-  _id: 1,
-  firstName: 1,
-  lastName: 1,
-  referredByOrganisationLink: 1,
-  referredByUserLink: 1,
-  assignedEmployeeCache: 1,
-};
-
-export const lendersCache = {
-  status: 1,
-  contactLink: 1,
-  organisationLink: 1,
-  offersCache: 1,
-};
-
-export const tasksCache = {
-  createdAt: 1,
-  dueAt: 1,
-  status: 1,
-  title: 1,
-  isPrivate: 1,
-  assigneeLink: 1,
-};
+import Borrowers from '../borrowers';
+import InsuranceRequests from '../insuranceRequests';
+import Lenders from '../lenders';
+import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations';
+import PromotionLots from '../promotionLots';
+import PromotionOptions from '../promotionOptions';
+import Promotions from '../promotions';
+import Properties from '../properties';
+import Revenues from '../revenues';
+import Tasks from '../tasks/tasks';
+import Users from '../users/users';
+import Loans from './loans';
 
 LinkInitializer.directInit(() => {
   Loans.addLinks({
@@ -81,10 +54,6 @@ LinkInitializer.directInit(() => {
       field: 'userId',
       collection: Users,
       type: 'one',
-      denormalize: {
-        field: 'userCache',
-        body: userCache,
-      },
     },
     financedPromotion: {
       field: 'financedPromotionLink',
@@ -106,6 +75,13 @@ LinkInitializer.directInit(() => {
       type: 'many',
       metadata: true,
     },
+    insuranceRequests: {
+      field: 'insuranceRequestLinks',
+      collection: InsuranceRequests,
+      type: 'many',
+      metadata: true,
+      unique: true,
+    },
   });
 });
 
@@ -120,19 +96,11 @@ LinkInitializer.inversedInit(() => {
       inversedBy: 'loan',
       unique: true,
       autoremove: true,
-      denormalize: {
-        field: 'lendersCache',
-        body: lendersCache,
-      },
     },
     tasks: {
       collection: Tasks,
       inversedBy: 'loan',
       autoremove: true,
-      denormalize: {
-        field: 'tasksCache',
-        body: tasksCache,
-      },
     },
   });
 });

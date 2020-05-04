@@ -1,8 +1,8 @@
-import Users from '..';
 import { getEmailsForAddress } from '../../email/server/mandrill';
 import { createMeteorAsyncFunction } from '../../helpers';
 import assigneeReducer from '../../reducers/assigneeReducer';
 import UserService from './UserService';
+import Users from '..';
 
 Users.addReducers({
   ...assigneeReducer(),

@@ -1,35 +1,25 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { checkEmails } from 'core/utils/testHelpers/index';
-import { cleanAllData } from 'core/api/migrations/server/dataCleaning';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import { checkEmails } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import {
   LOAN_CATEGORIES,
   LOAN_STATUS,
   STEPS,
-} from 'core/api/loans/loanConstants';
-import methods from '../../registerMethodDefinitions';
-import { submitContactForm } from '../../methodDefinitions';
-import { EMAIL_IDS } from '../../../email/emailConstants';
-import { Loans } from '../../..';
+} from '../../../loans/loanConstants';
+import Loans from '../../../loans/loans';
 import LoanService from '../../../loans/server/LoanService';
+import { cleanAllData } from '../../../migrations/server/dataCleaning';
+import { submitContactForm } from '../../methodDefinitions';
 
 describe('methods', function() {
   this.timeout(10000);
 
   beforeEach(() => {
     resetDatabase();
-  });
-
-  Object.keys(methods).forEach(methodName => {
-    const method = methods[methodName];
-    describe(`method ${methodName}`, () => {
-      it('is defined', () =>
-        method.run({}).catch(error => {
-          expect(error.error).to.not.equal(404);
-        }));
-    });
   });
 
   describe('submitContactForm', () => {

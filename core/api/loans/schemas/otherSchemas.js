@@ -1,5 +1,12 @@
-import { INTEREST_RATES, SOLVENCY_TYPE, CANTONS } from '../../constants';
-import { moneyField, percentageField } from '../../helpers/sharedSchemas';
+import SimpleSchema from 'simpl-schema';
+
+import {
+  dateField,
+  moneyField,
+  percentageField,
+} from '../../helpers/sharedSchemas';
+import { INTEREST_RATES } from '../../interestRates/interestRatesConstants';
+import { CANTONS, SOLVENCY_TYPE } from '../loanConstants';
 
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
@@ -33,16 +40,21 @@ export const previousLoanTranchesSchema = {
   'previousLoanTranches.$': Object,
   'previousLoanTranches.$.value': {
     ...moneyField,
-    type: Number, // Can be specified as percentages or monetary amounts
+    optional: false,
   },
   'previousLoanTranches.$.dueDate': {
-    type: Date,
-    optional: true,
+    ...dateField,
+    optional: false,
   },
   'previousLoanTranches.$.rate': {
-    type: Number,
+    ...percentageField,
+    optional: false,
+  },
+  'previousLoanTranches.$.duration': {
+    type: SimpleSchema.Integer,
     min: 0,
-    max: 1,
+    max: 30,
+    optional: true,
   },
 };
 
@@ -82,17 +94,4 @@ export const maxPropertyValueSchema = {
   'maxPropertyValue.second.max.propertyValue': moneyField,
   'maxPropertyValue.second.max.borrowRatio': percentageField,
   'maxPropertyValue.second.max.organisationName': String,
-};
-
-export const adminNotesSchema = {
-  adminNotes: { type: Array, defaultValue: [] },
-  'adminNotes.$': Object,
-  'adminNotes.$.id': String,
-  'adminNotes.$.note': {
-    type: String,
-    uniforms: { multiline: true, rows: 3 },
-  },
-  'adminNotes.$.date': { type: Date, defaultValue: new Date() },
-  'adminNotes.$.updatedBy': String,
-  'adminNotes.$.isSharedWithPros': { type: Boolean, defaultValue: false },
 };

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-
-import OfferList from 'core/components/OfferList';
 import OfferAdder from 'core/components/OfferAdder';
+import OfferList from 'core/components/OfferList';
+import T from 'core/components/Translation';
 
 const OffersTab = props => {
   const {

@@ -1,12 +1,12 @@
 import React from 'react';
 
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import SingleLoanPageHeader from '../SingleLoanPageHeader';
-import PremiumLoanTabs from './PremiumLoanTabs';
-import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
+
 import CollectionTasksTable from '../../../components/TasksTable/CollectionTasksTable';
 import SingleLoanPageContacts from '../SingleLoanPageContacts';
+import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
+import SingleLoanPageHeader from '../SingleLoanPageHeader';
+import PremiumLoanTabs from './PremiumLoanTabs';
 
 const PremiumSingleLoanPage = props => {
   const { loan } = props;
@@ -26,7 +26,6 @@ const PremiumSingleLoanPage = props => {
       <div className="single-loan-page-sub-header">
         <CollectionTasksTable
           doc={loan}
-          collection={LOANS_COLLECTION}
           withTaskInsert
           withQueryTaskInsert
           className="single-loan-page-tasks card1 card-top"

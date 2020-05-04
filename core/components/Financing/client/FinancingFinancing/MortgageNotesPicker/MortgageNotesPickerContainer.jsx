@@ -1,5 +1,5 @@
 import React from 'react';
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import T from '../../../../Translation';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';

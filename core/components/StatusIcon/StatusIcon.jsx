@@ -1,10 +1,9 @@
 import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 
-import Tooltip from '@material-ui/core/Tooltip';
-
-import Icon from 'core/components/Icon';
-import { SUCCESS } from 'core/api/constants';
+import { SUCCESS } from '../../api/constants';
+import Icon from '../Icon';
 import T from '../Translation';
 
 const StatusIcon = React.forwardRef(

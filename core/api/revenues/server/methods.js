@@ -1,12 +1,12 @@
 import SecurityService from '../../security';
-import RevenueService from './RevenueService';
 import {
+  consolidateCommission,
+  consolidateRevenue,
   revenueInsert,
   revenueRemove,
   revenueUpdate,
-  consolidateRevenue,
-  consolidateCommission,
 } from '../methodDefinitions';
+import RevenueService from './RevenueService';
 
 revenueInsert.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();

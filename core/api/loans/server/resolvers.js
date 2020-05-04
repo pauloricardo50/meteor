@@ -2,16 +2,16 @@ import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDe
 
 import merge from 'lodash/merge';
 
+import { proLoans } from '../../fragments';
+import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import {
   PROPERTY_CATEGORY,
-  RESIDENCE_TYPE,
   PROPERTY_SOLVENCY,
+  RESIDENCE_TYPE,
 } from '../../properties/propertyConstants';
-import UserService from '../../users/server/UserService';
-import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
-import { proLoans } from '../../fragments';
-import SecurityService from '../../security';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
+import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
 import LoanService from './LoanService';
 
 const proLoansFragment = proLoans();

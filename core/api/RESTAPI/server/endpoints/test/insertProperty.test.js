@@ -1,17 +1,18 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import PropertyService from '../../../../properties/server/PropertyService';
 import generator from '../../../../factories/server';
 import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
+import PropertyService from '../../../../properties/server/PropertyService';
+import RESTAPI from '../../RESTAPI';
 import {
-  getTimestampAndNonce,
   fetchAndCheckResponse,
+  getTimestampAndNonce,
   makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import RESTAPI from '../../RESTAPI';
 import insertPropertyAPI from '../insertProperty';
 
 const api = new RESTAPI();

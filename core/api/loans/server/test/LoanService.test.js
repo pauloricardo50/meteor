@@ -1,45 +1,49 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import {
-  loanSetStatus,
-  setLoanStep,
-  sendNegativeFeedbackToAllLenders,
-  loanSetAdminNote,
-} from '../../../methods/index';
-import Analytics from '../../../analytics/server/Analytics';
+import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
 import { checkEmails } from '../../../../utils/testHelpers';
-import generator from '../../../factories/server';
-import LoanService from '../LoanService';
-import {
-  OWN_FUNDS_TYPES,
-  STEPS,
-  EMAIL_IDS,
-  ORGANISATION_TYPES,
-  ORGANISATION_FEATURES,
-  LOAN_STATUS,
-  PROPERTY_CATEGORY,
-} from '../../../constants';
-import UserService from '../../../users/server/UserService';
+import Analytics from '../../../analytics/server/Analytics';
+import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
-import PropertyService from '../../../properties/server/PropertyService';
+import { EMAIL_IDS } from '../../../email/emailConstants';
+import generator from '../../../factories/server';
 import LenderService from '../../../lenders/server/LenderService';
-import OfferService from '../../../offers/server/OfferService';
-import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
-import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
-import { LOAN_CATEGORIES } from '../../loanConstants';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { generateDisbursedSoonLoansTasks } from '../methods';
-import TaskService from '../../../tasks/server/TaskService';
+import OfferService from '../../../offers/server/OfferService';
+import {
+  ORGANISATION_FEATURES,
+  ORGANISATION_TYPES,
+} from '../../../organisations/organisationConstants';
+import { generateOrganisationsWithLenderRules } from '../../../organisations/server/test/testHelpers.test';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../../properties/propertyConstants';
+import PropertyService from '../../../properties/server/PropertyService';
+import {
+  REVENUE_STATUS,
+  REVENUE_TYPES,
+} from '../../../revenues/revenueConstants';
 import SlackService from '../../../slack/server/SlackService';
+import TaskService from '../../../tasks/server/TaskService';
+import UserService from '../../../users/server/UserService';
+import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import {
+  loanSetAdminNote,
+  loanSetStatus,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+} from '../../methodDefinitions';
+import LoanService from '../LoanService';
+import { generateDisbursedSoonLoansTasks } from '../methods';
 
 describe('LoanService', function() {
   this.timeout(10000);
@@ -498,58 +502,6 @@ describe('LoanService', function() {
     });
   });
 
-  describe('getNewLoanName', () => {
-    it('returns 20-0001 for the very first loan', () => {
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0001');
-    });
-
-    it('returns 20-0002 for the second loan', () => {
-      loanId = LoanService.insert({ loan: {} });
-      loan = LoanService.get(loanId, { name: 1 });
-      expect(loan.name).to.equal('20-0001');
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0002');
-    });
-
-    it('sorts loans properly 1', () => {
-      Factory.create('loan', { name: '20-0009' });
-      Factory.create('loan', { name: '20-0010' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0011');
-    });
-
-    it('sorts loans properly even if created in different order', () => {
-      Factory.create('loan', { name: '20-0955' });
-      Factory.create('loan', { name: '20-0153' });
-      Factory.create('loan', { name: '10-0001' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-0956');
-    });
-
-    it('returns 20-1234 for the nth loan', () => {
-      Factory.create('loan', { name: '20-1233' });
-
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-1234');
-    });
-
-    it('does not break if a 10000th loan is added', () => {
-      Factory.create('loan', { name: '20-9999' });
-      const name = LoanService.getNewLoanName();
-      expect(name).to.equal('20-10000');
-    });
-
-    it('handles new year properly', () => {
-      Factory.create('loan', { name: '20-0003' });
-      const name = LoanService.getNewLoanName(new Date(2021, 1, 1));
-      expect(name).to.equal('21-0001');
-    });
-  });
-
   describe('loan name regEx', () => {
     it('allows loan names with correct format', () => {
       expect(() => Factory.create('loan', { name: '18-0202' })).to.not.throw();
@@ -827,7 +779,7 @@ describe('LoanService', function() {
         referredByOrganisationLink: 1,
       });
 
-      expect(user).to.deep.equal({
+      expect(user).to.deep.include({
         _id: 'userId',
         referredByUserLink: 'proId1',
       });
@@ -1452,13 +1404,14 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueWithoutBorrowRatio', function() {
+  describe('setMaxPropertyValueOrBorrowRatio', function() {
     this.timeout(10000);
 
     it('finds the ideal borrowRatio', () => {
       generator({
         loans: {
           _id: 'loanId',
+          purchaseType: PURCHASE_TYPE.ACQUISITION,
           borrowers: {
             bankFortune: [{ value: 500000 }],
             salary: 1000000,
@@ -1479,7 +1432,7 @@ describe('LoanService', function() {
         ],
       });
 
-      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+      LoanService.setMaxPropertyValueOrBorrowRatio({
         loanId: 'loanId',
         canton: 'GE',
       });
@@ -1521,7 +1474,7 @@ describe('LoanService', function() {
         },
       });
 
-      LoanService.setMaxPropertyValueWithoutBorrowRatio({
+      LoanService.setMaxPropertyValueOrBorrowRatio({
         loanId: 'loanId',
         canton: 'GE',
       });
@@ -1540,6 +1493,56 @@ describe('LoanService', function() {
       expect(second.min).to.equal(undefined);
       expect(second.max.borrowRatio).to.equal(0.7);
       expect(second.max.propertyValue).to.equal(1420000);
+    });
+
+    it('calculates the max borrow ratio for refinancings', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          purchaseType: PURCHASE_TYPE.REFINANCING,
+          borrowers: {
+            bankFortune: [{ value: 500000 }],
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+          properties: {
+            value: 1000000,
+          },
+          previousLoanTranches: [
+            { value: 600000, rate: 0.01, dueDate: new Date() },
+          ],
+        },
+        organisations: [
+          ...generateOrganisationsWithLenderRules({
+            number: 5,
+            mainBorrowRatio: { min: 0.65, max: 0.9 },
+            secondaryBorrowRatio: { min: 0.5, max: 0.7 },
+          }),
+          {
+            name: 'no lender rules',
+            type: ORGANISATION_TYPES.BANK,
+            features: [ORGANISATION_FEATURES.LENDER],
+          },
+        ],
+      });
+
+      LoanService.setMaxPropertyValueOrBorrowRatio({
+        loanId: 'loanId',
+        canton: 'GE',
+      });
+
+      const {
+        maxPropertyValue: { canton, date, main, second },
+      } = LoanService.get('loanId', { maxPropertyValue: 1 });
+
+      expect(main.min.borrowRatio).to.equal(0.65);
+      expect(main.min.propertyValue).to.equal(1000000);
+      expect(main.max.borrowRatio).to.equal(0.8375);
+      expect(main.max.propertyValue).to.equal(1000000);
+      expect(second.min.borrowRatio).to.equal(0.5);
+      expect(second.min.propertyValue).to.equal(1000000);
+      expect(second.max.borrowRatio).to.equal(0.65);
+      expect(second.max.propertyValue).to.equal(1000000);
     });
   });
 
@@ -1833,7 +1836,7 @@ describe('LoanService', function() {
       const { adminNotes } = LoanService.get('loanId', { adminNotes: 1 });
 
       LoanService.removeAdminNote({
-        loanId: 'loanId',
+        docId: 'loanId',
         adminNoteId: adminNotes[1].id,
       });
 
@@ -1867,7 +1870,7 @@ describe('LoanService', function() {
       expect(proNote.note).to.equal('world');
 
       LoanService.removeAdminNote({
-        loanId: 'loanId',
+        docId: 'loanId',
         adminNoteId: adminNotes[0].id,
       });
 
@@ -2160,131 +2163,102 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setAssignees', () => {
-    it('throws if no assignees are set', () => {
-      generator({ loans: { _id: 'id' } });
-
-      expect(() =>
-        LoanService.setAssignees({ loanId: 'id', assignees: [] }),
-      ).to.throw('entre 1 et 3');
-
-      expect(() =>
-        LoanService.setAssignees({ loanId: 'id', assignees: [{}, {}, {}, {}] }),
-      ).to.throw('entre 1 et 3');
-    });
-
-    it('throws if the total percentages is not 100', () => {
-      generator({ loans: { _id: 'id' } });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [{ percent: 80 }],
-        }),
-      ).to.throw('100%');
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [{ percent: 80 }, { percent: 30 }],
-        }),
-      ).to.throw('100%');
-    });
-
-    it('throws if a decimal value is used for percent', () => {
+  describe('setStatusToFinalizedIfRequired', () => {
+    it('sets the status to FINALIZED if every revenue is CLOSED', () => {
       generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { _id: 'admin1', percent: 79.5, isMain: true },
-            { _id: 'admin2', percent: 20.5 },
+        loans: {
+          _id: 'loan',
+          revenues: [
+            { status: REVENUE_STATUS.CLOSED },
+            { status: REVENUE_STATUS.CLOSED },
           ],
-        }),
-      ).to.throw('integer');
-    });
-
-    it('throws if a percentage less than 10 is used', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { _id: 'admin1', percent: 8, isMain: true },
-            { _id: 'admin2', percent: 92 },
-          ],
-        }),
-      ).to.throw('at least 10');
-    });
-
-    it('forces isMain to a boolean', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
-      });
-
-      LoanService.setAssignees({
-        loanId: 'id',
-        assignees: [
-          { _id: 'admin1', percent: 10, isMain: true },
-          { _id: 'admin2', percent: 90 },
-        ],
-      });
-
-      expect(
-        LoanService.get('id', { assigneeLinks: 1 }).assigneeLinks,
-      ).to.deep.equal([
-        {
-          _id: 'admin1',
-          isMain: true,
-          percent: 10,
         },
-        { _id: 'admin2', isMain: false, percent: 90 },
-      ]);
-    });
-
-    it('throws if there is more or less than 1 main assignee', () => {
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [{ percent: 100 }],
-        }),
-      ).to.throw('un seul');
-
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { percent: 80, isMain: true },
-            { percent: 20, isMain: true },
-          ],
-        }),
-      ).to.throw('un seul');
-    });
-
-    it('does not allow non multiples of 10', () => {
-      generator({
-        loans: { _id: 'id' },
-        users: [{ _id: 'admin1' }, { _id: 'admin2' }],
       });
 
-      expect(() =>
-        LoanService.setAssignees({
-          loanId: 'id',
-          assignees: [
-            { _id: 'admin1', percent: 25, isMain: true },
-            { _id: 'admin2', percent: 75 },
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.FINALIZED);
+    });
+
+    it('adds the activity', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          status: LOAN_STATUS.BILLING,
+          revenues: [
+            { status: REVENUE_STATUS.CLOSED },
+            { status: REVENUE_STATUS.CLOSED },
           ],
-        }),
-      ).to.throw('25 is not an allowed');
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { activities = [] } = LoanService.get('loan', {
+        activities: { title: 1, description: 1 },
+      });
+      expect(activities.length).to.equal(2);
+      expect(activities[1]).to.deep.include({
+        title: 'Statut modifié',
+        description:
+          'Facturation -> Finalisé, automatiquement car tous les revenus ont été encaissés',
+      });
+    });
+
+    it('does not set the status to FINALIZED if every revenue is not CLOSED', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: [
+            { status: REVENUE_STATUS.EXPECTED },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.LEAD);
+    });
+
+    it('does not set the status to FINALIZED if there is an insurance revenue', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: [
+            { status: REVENUE_STATUS.EXPECTED },
+            { status: REVENUE_STATUS.CLOSED, type: REVENUE_TYPES.INSURANCE },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      LoanService.setStatusToFinalizedIfRequired({ loanId: 'loan' });
+
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.LEAD);
+    });
+
+    it('does not add the activity if the status is already FINALIZED', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          status: LOAN_STATUS.FINALIZED,
+          revenues: [
+            { status: REVENUE_STATUS.EXPECTED },
+            { status: REVENUE_STATUS.CLOSED },
+          ],
+        },
+      });
+
+      const { status, activities = [] } = LoanService.get('loan', {
+        status: 1,
+        activities: { _id: 1 },
+      });
+      expect(status).to.equal(LOAN_STATUS.FINALIZED);
+      expect(activities.length).to.equal(1);
     });
   });
 });

@@ -1,7 +1,8 @@
 import { withProps } from 'recompose';
-import { setRole } from 'core/api';
+
 import SecurityService from 'core/api/security/Security';
-import { ROLES } from 'core/api/constants';
+import { setRole } from 'core/api/users/methodDefinitions';
+import { ROLES } from 'core/api/users/userConstants';
 
 export default withProps(({ userId }) => ({
   roles: SecurityService.currentUserHasRole(ROLES.DEV)

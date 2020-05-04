@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-
-import TextInput from 'core/components/TextInput';
-import Loadable from 'core/utils/loadable';
 import { withStyles } from '@material-ui/core/styles';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
-const DatePicker = Loadable({
-  loader: () => import('./DatePicker'),
-});
+import TextInput from '../TextInput';
+import DatePicker from './DatePicker';
 
 // Make sure the underline shows
 const styles = {
@@ -47,18 +43,21 @@ class DateInput extends Component {
         type="date"
         placeholder={undefined}
         inputComponent={DatePicker}
-        inputProps={{
-          id,
-          focused,
-          minDate,
-          maxDate,
-          openDirection,
+        InputProps={{
           // Check if date exists to allow for empty state
           date: value ? moment(value) : undefined,
-          onDateChange: date => onChange(date ? date.toDate() : undefined, id),
-          onFocusChange: ({ focused: nextFocused }) =>
-            this.setState({ focused: nextFocused }),
-          ...datePickerProps,
+          inputProps: {
+            id,
+            focused,
+            openDirection,
+            minDate,
+            maxDate,
+            onDateChange: date =>
+              onChange(date ? date.toDate() : undefined, id),
+            onFocusChange: ({ focused: nextFocused }) =>
+              this.setState({ focused: nextFocused }),
+            ...datePickerProps,
+          },
         }}
         {...otherProps}
       />

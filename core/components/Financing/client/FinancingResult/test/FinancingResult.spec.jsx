@@ -4,17 +4,17 @@ import { expect } from 'chai';
 import { IntlProvider, intlShape } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 
-import { mount } from 'core/utils/testHelpers/enzyme';
-import messages from 'core/lang/fr.json';
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import MoneyInput from 'core/components/MoneyInput';
-import FinancingResult from '../FinancingResult';
-import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import messages from '../../../../../lang/fr.json';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../../utils/Calculator';
+import { mount } from '../../../../../utils/testHelpers/enzyme';
+import MoneyInput from '../../../../MoneyInput';
 import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
+import { Provider } from '../../containers/loan-context';
+import FinancingResult from '../FinancingResult';
 
 const expectResult = (component, name, value) => {
   const val = component()
@@ -69,7 +69,7 @@ describe('FinancingResult', () => {
         propertyId: 'house',
         propertyWork: 0,
         wantedLoan: 800000,
-        ownFunds: [{ type: 'bankFortune', value: 250000 }],
+        ownFunds: [{ type: 'bankFortune', value: 250000, borrowerId: 'john' }],
       };
       loan = {
         selectedStructure: 'a',
@@ -189,6 +189,7 @@ describe('FinancingResult', () => {
           {
             _id: 'Mary',
             salary: 200000,
+            bankFortune: [{ value: 50000 }],
             donation: [{ value: 200000 }],
             insurance2: [{ value: 2000 }],
             insurance3A: [{ value: 0 }],
@@ -262,10 +263,12 @@ describe('FinancingResult', () => {
 
     it('remainingCash', () => {
       expectResult(component, '.remainingCash', '100 000');
+      expectResult(component, '.remainingCash', '50 000');
     });
 
     it('remainingInsurance2', () => {
-      expectResult(component, '.remainingInsurance2', '3 000');
+      expectResult(component, '.remainingInsurance2', '1 000');
+      expectResult(component, '.remainingInsurance2', '2 000');
     });
 
     it('remainingInsurance3A', () => {

@@ -1,10 +1,11 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-import { Loans } from '../../..';
-import { up, down } from '../8';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+import { APPLICATION_TYPES } from '../../../loans/loanConstants';
+import Loans from '../../../loans/loans';
+import { down, up } from '../8';
 
 describe('Migration 8', () => {
   beforeEach(() => {

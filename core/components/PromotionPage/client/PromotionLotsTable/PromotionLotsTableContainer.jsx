@@ -1,21 +1,18 @@
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from '../../../../api/containerToolkit';
 import {
-  proPromotionLots,
   appPromotionLots,
-} from 'core/api/promotionLots/queries';
-import T, { Money } from '../../../Translation';
-import LotChip from './LotChip';
-import PromotionLotSelector from './PromotionLotSelector';
+  proPromotionLots,
+} from '../../../../api/promotionLots/queries';
+import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import StatusLabel from '../../../StatusLabel';
-import {
-  PROMOTION_LOTS_COLLECTION,
-  PROMOTION_STATUS,
-} from '../../../../api/constants';
+import T, { Money } from '../../../Translation';
 import PromotionCustomer from '../PromotionCustomer';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
+import LotChip from './LotChip';
+import PromotionLotSelector from './PromotionLotSelector';
 
 const proColumnOptions = [
   { id: 'name' },
@@ -69,6 +66,7 @@ const appColumnOptions = ({ promotionStatus }) =>
 
 const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
   const {
+    _collection,
     _id: promotionLotId,
     name,
     status,
@@ -95,11 +93,7 @@ const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
       {
         raw: status,
         label: (
-          <StatusLabel
-            status={status}
-            collection={PROMOTION_LOTS_COLLECTION}
-            key="status"
-          />
+          <StatusLabel status={status} collection={_collection} key="status" />
         ),
       },
       value,
@@ -129,6 +123,7 @@ const makeMapAppPromotionLot = ({
   promotionId,
 }) => promotionLot => {
   const {
+    _collection,
     _id: promotionLotId,
     name,
     status,
@@ -143,12 +138,7 @@ const makeMapAppPromotionLot = ({
       name,
       {
         raw: status,
-        label: (
-          <StatusLabel
-            status={reducedStatus}
-            collection={PROMOTION_LOTS_COLLECTION}
-          />
-        ),
+        label: <StatusLabel status={reducedStatus} collection={_collection} />,
       },
       getPromotionLotValue(promotionLot),
       {

@@ -1,7 +1,8 @@
 import { mapProps } from 'recompose';
 
-import { lenderRulesInsert } from 'core/api/methods';
 import { formatFilter } from 'core/api/lenderRules/helpers';
+import { lenderRulesInsert } from 'core/api/lenderRules/methodDefinitions';
+
 import LenderRulesForm from './LenderRulesForm';
 
 export default mapProps(({ organisationId }) => ({

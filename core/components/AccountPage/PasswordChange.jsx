@@ -3,9 +3,9 @@ import { Accounts } from 'meteor/accounts-base';
 import React, { Component } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import T from '../Translation';
 import { AutoFormDialog } from '../AutoForm2';
 import { passwordSchema } from '../PasswordResetPage/PasswordResetPage';
+import T from '../Translation';
 
 const schema = new SimpleSchema({
   oldPassword: {

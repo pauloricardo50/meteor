@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withProps } from 'recompose';
+
 import Checkbox from '../../../core/components/Checkbox';
 import EpotekFrontApi from '../../../EpotekFrontApi';
 
@@ -17,32 +18,38 @@ class LoanTagger extends React.Component {
       setLoading,
       isTagged,
       loanId,
-      conversationId,
-      tags,
-      setTags,
-      loanTag,
+      setTagIds,
+      refetch,
+      conversation,
     } = this.props;
+    const { user: { alias } = {} } = Front;
+    const { id: conversationId, assignee } = conversation;
 
     setLoading(true);
     if (isTagged) {
       return EpotekFrontApi.callMethod('frontUntagLoan', {
         loanId,
         conversationId,
-      }).then(() => {
-        setTags(
-          tags.filter(tag => tag !== loanTag && !tag.includes(`${loanTag} `)),
-        );
+      }).then(response => {
+        const { tagIds: newTagIds = [] } = response;
+        setTagIds(newTagIds);
         setLoading(false);
+        refetch();
       });
     }
 
     return EpotekFrontApi.callMethod('frontTagLoan', {
       loanId,
       conversationId,
-    }).then(() => {
+    }).then(response => {
+      const { tagIds: newTagIds = [] } = response;
       setLoading(false);
-      setTags([...tags, loanTag]);
+      setTagIds(newTagIds);
       Front.moveToInbox('team');
+      if (!assignee) {
+        Front.assign(alias);
+      }
+      refetch();
     });
   };
 
@@ -72,22 +79,19 @@ class LoanTagger extends React.Component {
   }
 }
 
-export default withProps(({ loan, conversation, setRef, tags }) => {
-  const { _id: loanId } = loan;
+export default withProps(({ loan, conversation, setRef, tagIds }) => {
+  const { _id: loanId, frontTagId: loanTagId } = loan;
   const { id: conversationId } = conversation;
-  const loanTag = getLoanTag(loan);
-  const isTagged = tags.some(
-    tag => tag === loanTag || tag.includes(`${loanTag} `),
-  );
+  const isTagged = tagIds.some(tag => tag === loanTagId);
   const [loading, setLoading] = useState(false);
 
   return {
     setLoading,
     isTagged,
     loanId,
+    conversation,
     conversationId,
     loading,
     ref: setRef,
-    loanTag,
   };
 })(LoanTagger);

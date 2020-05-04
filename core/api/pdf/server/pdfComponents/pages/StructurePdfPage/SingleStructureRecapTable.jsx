@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { toMoney } from '../../../../../../utils/conversionFunctions';
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
-import {
-  ERROR,
-  SUCCESS,
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../../constants';
-import { classes, ROW_TYPES } from '../../PdfTable/PdfTable';
+import { toMoney } from '../../../../../../utils/conversionFunctions';
+import { OWN_FUNDS_TYPES } from '../../../../../borrowers/borrowerConstants';
+import { ERROR, SUCCESS } from '../../../../../constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../loans/loanConstants';
+import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 
 const columnsConfig = [
   {

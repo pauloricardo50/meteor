@@ -2,8 +2,9 @@ import React from 'react';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
-import UserDialogFormContainer from './UserDialogFormContainer';
+
 import { userFormLayout } from './UserAdder';
+import UserDialogFormContainer from './UserDialogFormContainer';
 
 const UserModifier = ({ schema, user, editUser, labels }) => (
   <AutoFormDialog

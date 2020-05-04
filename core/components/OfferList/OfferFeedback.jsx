@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
-import OfferFeedbackContainer from './OfferFeedbackContainer';
 import HtmlPreview from '../HtmlPreview';
+import OfferFeedbackContainer from './OfferFeedbackContainer';
 
 const getButtonOtherProps = ({ offer }) => {
   let otherProps = {};

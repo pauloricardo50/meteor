@@ -1,8 +1,8 @@
 import React from 'react';
 
-import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import { getUserLocale, getFormats } from 'core/utils/localization';
 import { proUser } from 'core/api/users/queries';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
+import { getFormats, getUserLocale } from 'core/utils/localization';
 
 import messagesFR from '../../../lang/fr.json';
 import ProLayout from '../../client/layout/loadable';

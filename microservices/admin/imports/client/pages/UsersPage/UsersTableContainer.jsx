@@ -1,4 +1,5 @@
 import { compose, withProps } from 'recompose';
+
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminUsers } from 'core/api/users/queries';
 

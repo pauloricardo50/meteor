@@ -1,31 +1,31 @@
 import { Meteor } from 'meteor/meteor';
 
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import generator from '../../factories/server';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import LoanService from '../../loans/server/LoanService';
+import { migrate } from '../../migrations/server';
 import { cleanAllData } from '../../migrations/server/dataCleaning';
-import { LOANS_COLLECTION } from '../../constants';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import { Services } from '../../server';
-import LoanService from '../../loans/server/LoanService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
-import {
-  getMixpanelAuthorization,
-  addBorrower,
-  removeBorrower,
-  submitContactForm,
-  throwDevError,
-  setAdditionalDoc,
-  removeAdditionalDoc,
-  migrateToLatest,
-  updateDocument,
-  updateDocumentUnset,
-  generateScenario,
-  referralExists,
-  cleanDatabase,
-} from '../methodDefinitions';
-import generator from '../../factories/server';
-import { migrate } from '../../migrations/server';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
-import OrganisationService from '../../organisations/server/OrganisationService';
+import {
+  addBorrower,
+  cleanDatabase,
+  generateScenario,
+  getMixpanelAuthorization,
+  migrateToLatest,
+  referralExists,
+  removeAdditionalDoc,
+  removeBorrower,
+  setAdditionalDoc,
+  submitContactForm,
+  throwDevError,
+  updateDocument,
+  updateDocumentUnset,
+} from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();

@@ -1,15 +1,16 @@
 import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import { NavLink } from 'react-router-dom';
-import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faBook } from '@fortawesome/pro-light-svg-icons/faBook';
+import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Drawer from '@material-ui/core/Drawer';
+import { NavLink } from 'react-router-dom';
 
-import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
+import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
+
 import PRO_ROUTES from '../../startup/client/proRoutes';
 
 const getItems = (currentUser = {}) => {
@@ -60,7 +61,7 @@ const ProSideNav = ({ currentUser }) => {
                 ) : (
                   icon
                 )}
-                <h5>{label}</h5>
+                <small>{label}</small>
               </a>
             ) : (
               <NavLink to={to} exact={exact}>
@@ -69,7 +70,7 @@ const ProSideNav = ({ currentUser }) => {
                 ) : (
                   icon
                 )}
-                <h5>{label}</h5>
+                <small>{label}</small>
               </NavLink>
             )}
           </ListItem>

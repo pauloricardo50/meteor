@@ -1,31 +1,51 @@
 import React from 'react';
 import moment from 'moment';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import {
-  getCommissionFilters,
-  getProCommissionStatus,
-  getProCommissionDate,
-} from 'core/api/revenues/revenueHelpers';
 import {
   ORGANISATIONS_COLLECTION,
-  USERS_COLLECTION,
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
   ORGANISATION_FEATURES,
-} from 'core/api/constants';
+} from 'core/api/organisations/organisationConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import {
+  getCommissionFilters,
+  getProCommissionDate,
+  getProCommissionStatus,
+} from 'core/api/revenues/revenueHelpers';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import CommissionsConsolidator from 'imports/client/components/RevenuesTable/CommissionConsolidator';
-import T, { Percent, Money } from 'core/components/Translation';
+import T, { Money, Percent } from 'core/components/Translation';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
+import CommissionsConsolidator from '../../../components/RevenuesTable/CommissionConsolidator';
+
+export const formatRevenue = revenue => {
+  const { loan, insurance, insuranceRequest } = revenue;
+  const user = loan
+    ? loan.user
+    : insurance?.insuranceRequest
+    ? insurance.insuranceRequest.user
+    : insuranceRequest?.user;
+  const name = loan
+    ? loan.name
+    : insurance
+    ? insurance.name
+    : insuranceRequest?.name;
+
+  return { ...revenue, user, name };
+};
 
 export const mapRevenueIntoCommissions = ({
   _id: revenueId,
   organisations,
   status: revenueStatus,
-  loan,
+  user,
+  name,
   expectedAt,
   paidAt: revenuePaidAt,
   amount,
+  loan,
+  insuranceRequest,
+  insurance,
 }) =>
   organisations.map(organisation => {
     const {
@@ -48,21 +68,14 @@ export const mapRevenueIntoCommissions = ({
       columns: [
         {
           raw: organisationName,
-          label: (
-            <CollectionIconLink
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          ),
+          label: <CollectionIconLink relatedDoc={organisation} />,
         },
         {
-          raw: loan?.user?.referredByUser?.name,
-          label: loan?.user?.referredByUser?.name && (
+          raw: user?.referredByUser?.name,
+          label: user?.referredByUser?.name && (
             <CollectionIconLink
               relatedDoc={{
-                ...loan.user.referredByUser,
+                ...user.referredByUser,
                 collection: USERS_COLLECTION,
               }}
             />
@@ -71,10 +84,10 @@ export const mapRevenueIntoCommissions = ({
         { raw: status, label: <T id={`Forms.status.${status}`} /> },
         { raw: date?.getTime(), label: moment(date).format('D MMMM YYYY') },
         {
-          raw: loan?.name,
+          raw: name,
           label: (
             <CollectionIconLink
-              relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+              relatedDoc={loan || insurance || insuranceRequest}
             />
           ),
         },
@@ -115,6 +128,22 @@ export const useCommissionsTableData = (proCommissionStatus, orgId) => {
           user: { name: 1, referredByUser: { name: 1 } },
           userCache: 1,
           assigneeLinks: 1,
+        },
+        insuranceRequest: {
+          name: 1,
+          borrowers: { name: 1 },
+          user: { name: 1, referredByUser: { name: 1 } },
+          userCache: 1,
+          assigneeLinks: 1,
+        },
+        insurance: {
+          name: 1,
+          borrower: { name: 1 },
+          insuranceRequest: {
+            name: 1,
+            assigneeLinks: 1,
+            user: { name: 1, referredByUser: { name: 1 } },
+          },
         },
         paidAt: 1,
         status: 1,

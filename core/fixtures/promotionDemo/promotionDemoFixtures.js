@@ -1,27 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 
-import range from 'lodash/range';
-import random from 'lodash/random';
-import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
+import random from 'lodash/random';
+import range from 'lodash/range';
+import shuffle from 'lodash/shuffle';
 
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
 import LoanService from '../../api/loans/server/LoanService';
+import { LOT_TYPES } from '../../api/lots/lotConstants';
+import LotService from '../../api/lots/server/LotService';
+import { ORGANISATION_TYPES } from '../../api/organisations/organisationConstants';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
+import PromotionLotService from '../../api/promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_TYPES,
+  PROMOTION_USERS_ROLES,
+} from '../../api/promotions/promotionConstants';
 import PromotionService from '../../api/promotions/server/PromotionService';
 import UserService from '../../api/users/server/UserService';
-import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
-import PromotionLotService from '../../api/promotionLots/server/PromotionLotService';
-import LotService from '../../api/lots/server/LotService';
-import {
-  LOT_TYPES,
-  PROMOTION_TYPES,
-  PROMOTION_STATUS,
-  ROLES,
-  PROMOTION_USERS_ROLES,
-  ORGANISATION_TYPES,
-} from '../../api/constants';
-import { properties } from './data';
+import { ROLES } from '../../api/users/userConstants';
 import { addUser } from '../userFixtures';
+import { properties } from './data';
 
 const DEMO_PROMOTION = {
   name: 'Pré Polly',
@@ -162,15 +162,21 @@ const addPromotionPros = ({ promotionId }) => {
     { email: 'visitor1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.VISITOR] },
     { email: 'notary1@e-potek.ch', roles: [PROMOTION_USERS_ROLES.NOTARY] },
   ];
+  let org1 = OrganisationService.get({ name: 'Promo org 1' }, { _id: 1 })?._id;
+  let org2 = OrganisationService.get({ name: 'Promo org 2' }, { _id: 1 })?._id;
 
-  const org1 = OrganisationService.insert({
-    name: 'Promo org 1',
-    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
-  });
-  const org2 = OrganisationService.insert({
-    name: 'Promo org 2',
-    type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
-  });
+  if (!org1) {
+    org1 = OrganisationService.insert({
+      name: 'Promo org 1',
+      type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+    });
+  }
+  if (!org2) {
+    org2 = OrganisationService.insert({
+      name: 'Promo org 2',
+      type: ORGANISATION_TYPES.REAL_ESTATE_BROKER,
+    });
+  }
 
   return users.map(({ email, roles }) => {
     const userId = addUser({ email, role: ROLES.PRO });

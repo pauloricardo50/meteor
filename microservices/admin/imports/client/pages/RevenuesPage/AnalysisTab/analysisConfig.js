@@ -1,17 +1,22 @@
 import moment from 'moment';
 
 import {
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
-  USERS_COLLECTION,
-  LOAN_STATUS_ORDER,
-  BORROWERS_COLLECTION,
-  REVENUE_STATUS,
   ACTIVITIES_COLLECTION,
-  TASKS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
+  ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,
-} from 'core/api/constants';
+} from 'core/api/activities/activityConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import {
+  LOANS_COLLECTION,
+  LOAN_STATUS_ORDER,
+} from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import {
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from 'core/api/revenues/revenueConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
@@ -35,6 +40,7 @@ const analysisConfig = {
         `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
     },
     residenceType: { id: 'Forms.residenceType' },
+    purchaseType: { id: 'Forms.purchaseType' },
     user: [
       {
         id: 'Forms.roles',
@@ -47,7 +53,12 @@ const analysisConfig = {
       },
       {
         id: 'Compte vérifié',
-        format: ({ user }) => (user?.emails?.[0]?.verified ? 'Oui' : 'Non'),
+        format: ({ user }) =>
+          user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'A un compte',
+        format: ({ user }) => (user ? 'Oui' : 'Non'),
       },
     ],
     createdAt: [
@@ -151,11 +162,25 @@ const analysisConfig = {
         }
       },
     },
+    activities: {
+      fragment: {
+        metadata: { event: 1 },
+        date: 1,
+        $options: { sort: { date: -1 } },
+      },
+      label: 'Dernier changement de statut',
+      format: ({ activities = [] }) => {
+        const lastChangedStatus = activities.find(
+          ({ metadata }) =>
+            metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+        );
+        return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+      },
+    },
   },
   [REVENUES_COLLECTION]: {
     amount: { id: 'Forms.amount' },
     type: { id: 'Forms.type' },
-    secondaryType: { id: 'Forms.secondaryType' },
     status: { id: 'Forms.status' },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
     paidAt: {
@@ -195,7 +220,15 @@ const analysisConfig = {
     loan: [
       {
         label: 'Catégorie du dossier',
-        fragment: { category: 1, status: 1, promotions: { name: 1 } },
+        fragment: {
+          category: 1,
+          status: 1,
+          promotions: { name: 1 },
+          user: {
+            referredByOrganisation: { name: 1 },
+          },
+          purchaseType: 1,
+        },
         format: ({ loan }) => loan && loan.category,
       },
       {
@@ -216,9 +249,22 @@ const analysisConfig = {
           return promotion.name;
         },
       },
+      {
+        id: 'Référé par',
+        format: ({ loan }) => loan?.user?.referredByOrganisation?.name,
+      },
+      {
+        id: 'Type du dossier',
+        format: ({ loan }) => loan?.purchaseType,
+      },
     ],
   },
   [USERS_COLLECTION]: {
+    emails: {
+      label: 'Email vérifié',
+      format: ({ emails }) =>
+        emails.some(({ verified }) => verified) ? 'Oui' : 'Non',
+    },
     roles: { id: 'Forms.roles' },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
     'referredByUser.name': { label: 'Référé par compte' },
@@ -260,11 +306,20 @@ const analysisConfig = {
         format: ({ type, metadata }) =>
           type === ACTIVITY_TYPES.EVENT ? metadata.event : undefined,
       },
+      {
+        label: 'Changement de statut',
+        format: ({ metadata }) => metadata?.details?.nextStatus,
+      },
     ],
     loan: [
       {
         label: 'Conseiller du dossier',
-        fragment: { category: 1, assignees: { name: 1 } },
+        fragment: {
+          category: 1,
+          assignees: { name: 1 },
+          structureCache: { wantedLoan: 1 },
+          purchaseType: 1,
+        },
         format: ({ loan: { assignees = [] } = {} }) =>
           assignees.length
             ? assignees.find(({ $metadata }) => $metadata.isMain).name
@@ -273,6 +328,14 @@ const analysisConfig = {
       {
         label: 'Catégorie du dossier',
         format: ({ loan }) => loan?.category,
+      },
+      {
+        label: 'Type du dossier',
+        format: ({ loan }) => loan?.purchaseType,
+      },
+      {
+        id: 'Forms.wantedLoan',
+        format: ({ loan }) => loan?.structureCache?.wantedLoan,
       },
     ],
   },

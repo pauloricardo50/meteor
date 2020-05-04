@@ -1,10 +1,10 @@
 import React from 'react';
 
-import T from '../Translation';
 import DialogSimple from '../DialogSimple';
-import LoanChecklist from '.';
-import { getChecklistValidInformationsRatio } from './helpers';
 import Icon from '../Icon/Icon';
+import T from '../Translation';
+import { getChecklistValidInformationsRatio } from './helpers';
+import LoanChecklist from '.';
 
 const LoanChecklistDialog = ({ loan }) => {
   const { valid, required } = getChecklistValidInformationsRatio({ loan });

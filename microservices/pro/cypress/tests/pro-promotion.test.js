@@ -1,6 +1,6 @@
+import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
 /* eslint-env mocha */
 import { PROMOTION_PERMISSIONS } from '../../imports/core/api/promotions/promotionConstants';
-import { PROMOTION_LOT_STATUS } from '../../imports/core/api/promotionLots/promotionLotConstants';
 import {
   PRO_EMAIL,
   PRO_EMAIL_2,
@@ -233,7 +233,7 @@ describe('Pro promotion', () => {
       it('should add a promotion', () => {
         cy.contains('Promotions').click();
 
-        cy.get('.pro-dashboard-page').contains('Rien à afficher');
+        cy.contains('.pro-dashboard-page', 'Rien à afficher');
 
         cy.contains('Promotion immobilière').click();
 

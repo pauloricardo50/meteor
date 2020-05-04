@@ -1,23 +1,19 @@
 import React, { useContext } from 'react';
 
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
-import { addProUserToPromotion } from '../../../../api/methods';
-import {
-  PROMOTIONS_COLLECTION,
-  ROLES,
-  USERS_COLLECTION,
-} from '../../../../api/constants';
+import { addProUserToPromotion } from '../../../../api/promotions/methodDefinitions';
 import { userSearch } from '../../../../api/users/queries';
-import CollectionSearch from '../../../CollectionSearch';
-import CollectionIconLink from '../../../IconLink/CollectionIconLink';
+import { ROLES } from '../../../../api/users/userConstants';
+import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import Button from '../../../Button';
+import CollectionSearch from '../../../CollectionSearch';
 import DropdownMenu from '../../../DropdownMenu';
 import Icon from '../../../Icon';
+import CollectionIconLink from '../../../IconLink/CollectionIconLink';
+import Dialog from '../../../Material/Dialog';
 import T from '../../../Translation';
 import UploaderArray from '../../../UploaderArray';
-import Dialog from '../../../Material/Dialog';
-import PromotionAdministrationContainer from './PromotionAdministrationContainer';
 import PromotionLoanLinker from '../PromotionLoanLinker';
+import PromotionAdministrationContainer from './PromotionAdministrationContainer';
 
 const PromotionAdministration = ({
   promotion,
@@ -57,7 +53,6 @@ const PromotionAdministration = ({
       >
         <UploaderArray
           doc={promotion}
-          collection={PROMOTIONS_COLLECTION}
           documentArray={promotionDocuments}
           currentUser={currentUser}
           allowRequireByAdmin={false}
@@ -78,10 +73,7 @@ const PromotionAdministration = ({
             title="Rechercher un utilisateur PRO"
             renderItem={user => (
               <div className="user-search-item">
-                <CollectionIconLink
-                  relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-                  placement="left"
-                />
+                <CollectionIconLink relatedDoc={user} placement="left" />
                 <Button
                   onClick={() =>
                     addProUserToPromotion.run({

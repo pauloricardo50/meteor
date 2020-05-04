@@ -2,12 +2,14 @@ import { Meteor } from 'meteor/meteor';
 
 import merge from 'lodash/merge';
 
-import { REVENUE_STATUS, LOAN_STATUS } from 'core/api/constants';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
-import { LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
-import { COMMISSION_STATUS } from 'core/api/revenues/revenueConstants';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
+import {
+  COMMISSION_STATUS,
+  REVENUE_STATUS,
+} from '../../revenues/revenueConstants';
 
 const defaultFilters = {
   status: { $nin: [LOAN_STATUS.TEST] },
@@ -187,7 +189,16 @@ const buildPipeline = ({ filters, groupBy, value, revenueFilters }) =>
 
 export const loanMonitoring = args => {
   const pipeline = buildPipeline(args);
-  return LoanService.aggregate(pipeline);
+  const result = LoanService.aggregate(pipeline);
+
+  if (args.groupBy === 'status') {
+    return result.sort(
+      ({ _id: _idA }, { _id: _idB }) =>
+        LOAN_STATUS_ORDER.indexOf(_idA) - LOAN_STATUS_ORDER.indexOf(_idB),
+    );
+  }
+
+  return result;
 };
 
 const getFilters = ({ fromDate, toDate }) => {
@@ -249,7 +260,9 @@ const assigneeBreakdown = filters => [
     },
   },
   { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
+  { $addFields: { loan: { _collection: 'loans' } } },
   { $match: getLoanFilters(filters) },
+
   {
     $group: {
       _id: {
@@ -306,6 +319,7 @@ const assigneeBreakdown = filters => [
 
 const loanStatusChangePipeline = filters => [
   { $match: getFilters(filters) },
+  { $addFields: { _collection: 'loans' } },
   {
     $group: {
       _id: {

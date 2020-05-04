@@ -1,13 +1,14 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import Calculator from 'core/utils/Calculator';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import BorrowersProgress from './BorrowersProgress/BorrowersProgress';
-import BorrowersForm from './BorrowersForm/BorrowersForm';
-import BorrowersCardHeader from './BorrowersCardHeader';
+import Calculator from 'core/utils/Calculator';
+
 import { shouldHighlightNextStep } from '../SimpleDashboardPageCTAs';
+import BorrowersCardHeader from './BorrowersCardHeader';
+import BorrowersForm from './BorrowersForm/BorrowersForm';
+import BorrowersProgress from './BorrowersProgress/BorrowersProgress';
 
 const BorrowersCard = props => {
   const { loan, openBorrowersForm, setOpenBorrowersForm, progress } = props;

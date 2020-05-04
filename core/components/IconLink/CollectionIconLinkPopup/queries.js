@@ -1,15 +1,15 @@
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-} from '../../../api/constants';
+import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../../../api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../../api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../../api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
+import { OFFERS_COLLECTION } from '../../../api/offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../../../api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
+import { USERS_COLLECTION } from '../../../api/users/userConstants';
 
 const makeQuery = (collection, params, cb) =>
   createQuery({ [collection]: params }).fetchOne(cb);
@@ -136,6 +136,36 @@ export default {
         name: 1,
         organisations: { name: 1, logo: 1 },
         phoneNumbers: 1,
+      },
+      cb,
+    ),
+  [INSURANCES_COLLECTION]: (_id, cb) =>
+    makeQuery(
+      INSURANCES_COLLECTION,
+      {
+        $filters: { _id },
+        name: 1,
+        organisation: { name: 1, logo: 1 },
+        insuranceRequest: { _id: 1 },
+        status: 1,
+        premium: 1,
+        premiumFrequency: 1,
+        insuranceProduct: { name: 1 },
+        borrower: { name: 1 },
+        duration: 1,
+      },
+      cb,
+    ),
+  [INSURANCE_REQUESTS_COLLECTION]: (_id, cb) =>
+    makeQuery(
+      INSURANCE_REQUESTS_COLLECTION,
+      {
+        $filters: { _id },
+        name: 1,
+        status: 1,
+        borrowers: { name: 1 },
+        mainAssignee: { name: 1 },
+        user: { name: 1 },
       },
       cb,
     ),

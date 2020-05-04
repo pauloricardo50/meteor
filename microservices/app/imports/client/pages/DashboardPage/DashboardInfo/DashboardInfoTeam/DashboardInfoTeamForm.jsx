@@ -1,8 +1,8 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
-import { AutoFormDialog } from 'imports/core/components/AutoForm2';
 
 const dashboardContactSchema = new SimpleSchema({
   name: String,

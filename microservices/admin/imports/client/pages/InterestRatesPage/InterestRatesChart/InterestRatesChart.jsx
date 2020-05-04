@@ -1,10 +1,11 @@
 import React from 'react';
+import HighchartsExportData from 'highcharts-export-data';
 import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
-import HighchartsExportData from 'highcharts-export-data';
 
 import Chart from 'core/components/charts/Chart';
 import Toggle from 'core/components/Toggle';
+
 import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 const InterestRatesChart = ({

@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import { withState, compose } from 'recompose';
+import Drawer from '@material-ui/core/Drawer';
+import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import { compose, withState } from 'recompose';
 
-import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
+import Link from 'core/components/Link';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
+import T from 'core/components/Translation';
+
 import { links } from './WwwTopNavLinksList';
 
 const styles = {

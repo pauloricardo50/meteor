@@ -3,8 +3,8 @@ import { Match } from 'meteor/check';
 import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-import { appPromotionOption, proPromotionOptions } from '../queries';
 import UserService from '../../users/server/UserService';
+import { appPromotionOption, proPromotionOptions } from '../queries';
 
 exposeQuery({
   query: appPromotionOption,
@@ -59,7 +59,7 @@ exposeQuery({
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionLotId, status, promotionId } = params;
+        const { promotionLotId, status, promotionId, loanStatus } = params;
 
         if (status) {
           filters.status = status;
@@ -73,6 +73,10 @@ exposeQuery({
           filters.promotionLotLinks = {
             $elemMatch: { _id: promotionLotId },
           };
+        }
+
+        if (loanStatus) {
+          filters['loanCache.status'] = loanStatus;
         }
       };
 
@@ -93,6 +97,7 @@ exposeQuery({
       userId: String,
       anonymize: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
+      loanStatus: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

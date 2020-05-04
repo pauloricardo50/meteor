@@ -32,7 +32,6 @@ const BorrowerForm = ({
         })}
         formClasses="user-form user-form__info"
         docId={borrowerId}
-        collection="borrowers"
         doc={
           simple
             ? {

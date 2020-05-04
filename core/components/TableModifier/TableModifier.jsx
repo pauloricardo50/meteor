@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
-import Table from '../Table';
 import Button from '../Button';
+import Table from '../Table';
 import T from '../Translation';
 
 const TableModifier = ({

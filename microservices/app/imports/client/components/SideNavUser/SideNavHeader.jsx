@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Link from 'core/components/Link';
 import IconButton from 'core/components/IconButton';
+import Link from 'core/components/Link';
 import useMedia from 'core/hooks/useMedia';
 
 const SideNavHeader = ({ closeDrawer }) => {

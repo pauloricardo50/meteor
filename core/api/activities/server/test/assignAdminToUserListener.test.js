@@ -1,15 +1,15 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { assignAdminToUser } from '../../../methods';
-import generator from '../../../factories/server';
-import UserService from '../../../users/server/UserService';
-import { ddpWithUserId } from '../../../methods/methodHelpers';
+/* eslint-env mocha */
+import { expect } from 'chai';
 
+import generator from '../../../factories/server';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { assignAdminToUser } from '../../../users/methodDefinitions';
+import UserService from '../../../users/server/UserService';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
 } from '../../activityConstants';
 
 describe('assignAdminToUserListener', () => {

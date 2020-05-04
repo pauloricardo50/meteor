@@ -1,11 +1,12 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { EXPENSES } from 'core/api/borrowers/borrowerConstants';
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import Borrowers from '../../../borrowers';
-import { up, down } from '../20';
+import { EXPENSES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
+import { down, up } from '../20';
 
 describe('Migration 20', () => {
   beforeEach(() => {

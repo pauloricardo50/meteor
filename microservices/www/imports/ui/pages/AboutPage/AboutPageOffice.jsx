@@ -2,6 +2,7 @@ import React from 'react';
 
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import T from 'core/components/Translation';
+
 import ContactPageInformation from '../ContactPage/ContactPageInformation';
 
 export const ADDRESS = 'Place de Neuve 2, 1204 Genève';

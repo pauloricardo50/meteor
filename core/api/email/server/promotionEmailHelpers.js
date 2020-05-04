@@ -1,26 +1,32 @@
 import { Roles } from 'meteor/alanning:roles';
 
-import { ROLES } from 'core/api/users/userConstants';
+import { getUserNameAndOrganisation } from '../../helpers/helpers';
 import {
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-} from '../../promotionOptions/promotionOptionConstants';
-import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
-import {
-  reservePromotionLot,
   cancelPromotionLotReservation,
+  reservePromotionLot,
+} from '../../promotionLots/methodDefinitions';
+import {
+  promotionOptionActivateReservation,
   promotionOptionUploadAgreement,
   setPromotionOptionProgress,
-  promotionOptionActivateReservation,
-} from '../../methods';
-import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
+} from '../../promotionOptions/methodDefinitions';
+import {
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+} from '../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
+import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
 import UserService from '../../users/server/UserService';
-import { getUserNameAndOrganisation } from '../../helpers/helpers';
+import { ROLES } from '../../users/userConstants';
 import { EMAIL_IDS } from '../emailConstants';
 import { sendEmail } from './methods';
 
-const getPromotionOptionMailParams = ({ context, params }, recipient) => {
+const getPromotionOptionMailParams = (
+  { context, params },
+  recipient,
+  showProgress,
+) => {
   const { anonymize } = recipient;
   const { userId } = context;
   const { promotionOptionId } = params;
@@ -61,6 +67,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
   }
 
   return {
+    promotionOptionId,
     promotionId,
     promotionName,
     promotionLotName,
@@ -71,6 +78,7 @@ const getPromotionOptionMailParams = ({ context, params }, recipient) => {
       ? assignedEmployee.name
       : 'Le conseiller',
     invitedBy: getUserNameAndOrganisation({ user: invitedByUser }),
+    showProgress,
   };
 };
 
@@ -195,6 +203,7 @@ export const PROMOTION_EMAILS = [
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
       PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
     ],
+    showProgress: false,
   },
   {
     description:
@@ -212,6 +221,7 @@ export const mapConfigToListener = ({
   emailId,
   recipients,
   shouldSend = () => true,
+  showProgress = true,
 }) => (...args) => {
   if (!shouldSend(...args)) {
     return;
@@ -247,8 +257,8 @@ export const mapConfigToListener = ({
     emailRecipients[type].forEach(recipient => {
       const { userId } = recipient;
       const emailParams = getEmailParamsOverride
-        ? getEmailParamsOverride(...args, recipient)
-        : getPromotionOptionMailParams(...args, recipient);
+        ? getEmailParamsOverride(...args, recipient, showProgress)
+        : getPromotionOptionMailParams(...args, recipient, showProgress);
 
       sendEmail.serverRun({
         emailId: emailIdOverride || emailId,

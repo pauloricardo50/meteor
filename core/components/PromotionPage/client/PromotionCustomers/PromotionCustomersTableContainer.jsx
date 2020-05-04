@@ -1,18 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps } from 'recompose';
 import moment from 'moment';
+import { withProps } from 'recompose';
 
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
-import { LOANS_COLLECTION } from '../../../../api/constants';
-import T from '../../../Translation';
 import { CollectionIconLink } from '../../../IconLink';
 import StatusLabel from '../../../StatusLabel';
-import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
-import PromotionCustomersTableActions from './PromotionCustomersTableActions';
+import T from '../../../Translation';
 import PromotionCustomer from '../PromotionCustomer';
+import PriorityOrder from '../PromotionLotDetail/PromotionLotLoansTable/PriorityOrder';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
+import PromotionCustomersTableActions from './PromotionCustomersTableActions';
 
 const isAdmin = Meteor.microservice === 'admin';
 
@@ -39,6 +38,7 @@ const getColumns = ({
   promotionLots,
 }) => {
   const {
+    _collection,
     _id: loanId,
     name: loanName,
     status,
@@ -64,14 +64,14 @@ const getColumns = ({
       raw: loanName,
       label: (
         <CollectionIconLink
-          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          relatedDoc={loan}
           noRoute={Meteor.microservice === 'pro'}
         />
       ),
     },
     {
       raw: status,
-      label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      label: <StatusLabel status={status} collection={_collection} />,
     },
     {
       raw: user.name,

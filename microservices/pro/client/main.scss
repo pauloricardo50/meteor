@@ -9,3 +9,9 @@
 @import '../imports/client/pages/ProDashboardPage/ProDashboardPage.scss';
 @import '../imports/client/pages/ProOrganisationPage/ProOrganisationPage.scss';
 @import '../imports/client/pages/ProRevenuesPage/ProRevenuesPage.scss';
+
+html {
+  @include screen(med, min) {
+    @include font-size($font-size-s);
+  }
+}

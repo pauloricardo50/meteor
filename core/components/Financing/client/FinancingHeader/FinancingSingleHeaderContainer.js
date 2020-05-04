@@ -1,4 +1,5 @@
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
+
 import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 
 const FinancingSingleHeaderContainer = compose(

@@ -1,12 +1,16 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+/* eslint-env mocha */
+import { expect } from 'chai';
+
 import generator from '../../../factories/server';
-import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../../../constants';
-import { Loans } from '../../..';
-import { up, down } from '../5';
+import Loans from '../../../loans/loans';
 import LoanService from '../../../loans/server/LoanService';
+import {
+  ORGANISATION_FEATURES,
+  ORGANISATION_TYPES,
+} from '../../../organisations/organisationConstants';
+import { down, up } from '../5';
 
 // Tests are out of date with new max property calculation
 describe.skip('Migration 5', () => {

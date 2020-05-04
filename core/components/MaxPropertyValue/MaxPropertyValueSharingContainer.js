@@ -1,6 +1,6 @@
-import { withProps, compose, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { loanShareSolvency } from 'core/api/methods/index';
+import { loanShareSolvency } from '../../api/loans/methodDefinitions';
 
 export default compose(
   withState('openDialog', 'setOpenDialog', false),

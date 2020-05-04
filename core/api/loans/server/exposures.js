@@ -1,11 +1,12 @@
-import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
+import { LOAN_STATUS } from '../loanConstants';
 import {
   adminLoans,
   anonymousLoan,
@@ -17,12 +18,11 @@ import {
   proPropertyLoans,
   userLoans,
 } from '../queries';
-import { LOAN_STATUS } from '../loanConstants';
+import { getProLoanFilters } from './exposureHelpers';
 import {
   proPromotionLoansResolver,
   proPropertyLoansResolver,
 } from './resolvers';
-import { getProLoanFilters } from './exposureHelpers';
 
 exposeQuery({
   query: adminLoans,
@@ -87,14 +87,14 @@ exposeQuery({
 
         if (hasPromotion) {
           filters.$or = [
-            { 'promotionLinks.0._id': { $exists: true } },
+            { 'promotionLinks._id': { $exists: true } },
             { 'financedPromotionLink._id': { $exists: true } },
           ];
         }
 
         if (promotionId) {
           filters.$or = [
-            { 'promotionLinks.0._id': promotionId },
+            { 'promotionLinks._id': promotionId },
             { 'financedPromotionLink._id': promotionId },
           ];
         }
@@ -156,14 +156,23 @@ exposeQuery({
       SecurityService.checkUserIsAdmin(userId);
     },
     embody: body => {
-      body.$filter = ({ filters, params: { searchQuery } }) => {
-        Object.assign(
-          filters,
-          createSearchFilters(['name', '_id', 'customName'], searchQuery),
+      body.$filter = ({ filters, params: { searchQuery, userId } }) => {
+        const search = createSearchFilters(
+          ['name', '_id', 'customName'],
+          searchQuery,
         );
+
+        if (userId) {
+          filters.$and = [search, { userId }];
+        } else {
+          Object.assign(filters, search);
+        }
       };
     },
-    validateParams: { searchQuery: Match.Maybe(String) },
+    validateParams: {
+      searchQuery: Match.Maybe(String),
+      userId: Match.Maybe(String),
+    },
   },
 });
 

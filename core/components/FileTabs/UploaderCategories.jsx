@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
-import UploaderCategoriesContainer from './UploaderCategoriesContainer';
-import UploaderArray from '../UploaderArray/UploaderArray';
-import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 import T from '../Translation';
+import HiddenDocuments from '../UploaderArray/HiddenDocuments';
+import UploaderArray from '../UploaderArray/UploaderArray';
+import UploaderCategoriesContainer from './UploaderCategoriesContainer';
 
 const filterDocumentsForMicroservice = categories => category =>
   Meteor.microservice === 'admin'

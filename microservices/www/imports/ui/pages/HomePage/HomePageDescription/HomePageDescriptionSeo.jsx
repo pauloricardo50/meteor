@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { withState } from 'recompose';
-import T from 'core/components/Translation';
+
 import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 
 // TODO: Actually optimize this for SEO, don't hide it but show it with display none
 const HomePageDescriptionSeo = ({ showText, setShowText }) => {

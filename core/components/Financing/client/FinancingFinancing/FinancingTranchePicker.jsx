@@ -1,9 +1,9 @@
 import React from 'react';
-
 import { compose } from 'recompose';
+
 import { TranchePickerDialog } from '../../../TranchePicker';
-import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
+import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 
 const FinancingTranchePicker = ({
   structure: { loanTranches, disableForms },

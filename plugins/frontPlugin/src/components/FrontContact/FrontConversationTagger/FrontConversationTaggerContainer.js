@@ -1,4 +1,5 @@
 import { withProps } from 'recompose';
+
 import { createSearchFilters } from '../../../core/api/helpers';
 import EpotekFrontApi from '../../../EpotekFrontApi';
 

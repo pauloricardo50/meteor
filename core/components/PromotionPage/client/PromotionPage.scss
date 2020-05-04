@@ -68,6 +68,7 @@
     }
 
     h1,
+    h2,
     h3,
     h4 {
       margin: 0;
@@ -439,9 +440,10 @@
 
       &::after {
         position: absolute;
-        left: 12px;
+        top: -2px;
+        left: 10px;
 
-        height: 24px;
+        height: 44px;
 
         content: '';
 

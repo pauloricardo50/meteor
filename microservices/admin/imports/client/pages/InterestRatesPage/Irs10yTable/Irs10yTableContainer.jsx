@@ -1,9 +1,9 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import T from 'imports/core/components/Translation/Translation';
-import Percent from 'imports/core/components/Translation/numberComponents/Percent';
+import Percent from 'core/components/Translation/numberComponents/Percent';
+import T from 'core/components/Translation/Translation';
 
 const columnOptions = [
   { id: 'date', label: <T id="Forms.date" /> },

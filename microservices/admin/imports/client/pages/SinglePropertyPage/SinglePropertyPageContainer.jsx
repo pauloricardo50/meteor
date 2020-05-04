@@ -1,5 +1,5 @@
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { adminProperties } from 'core/api/properties/queries';
-import { withSmartQuery } from 'core/api';
 
 export default withSmartQuery({
   query: adminProperties,

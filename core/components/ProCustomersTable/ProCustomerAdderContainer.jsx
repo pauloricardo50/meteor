@@ -1,13 +1,13 @@
-import { withProps } from 'recompose';
 import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import {
   isAllowedToInviteCustomersToProProperty,
   isAllowedToInviteCustomersToPromotion,
-} from 'core/api/security/clientSecurityHelpers/index';
-import { proInviteUser } from 'core/api/methods/index';
-import { createRoute } from 'core/utils/routerUtils';
+} from '../../api/security/clientSecurityHelpers';
+import { proInviteUser } from '../../api/users/methodDefinitions';
+import { createRoute } from '../../utils/routerUtils';
 
 const schema = ({ proProperties, promotions, history }) =>
   new SimpleSchema({
@@ -91,7 +91,7 @@ export default withProps(({ currentUser }) => {
     .filter(property =>
       isAllowedToInviteCustomersToProProperty({ property, currentUser }),
     )
-    .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
+    .sort(({ address1: A = '' }, { address1: B = '' }) => A.localeCompare(B));
   const filteredPromotions = promotions
     .filter(promotion =>
       isAllowedToInviteCustomersToPromotion({ promotion, currentUser }),

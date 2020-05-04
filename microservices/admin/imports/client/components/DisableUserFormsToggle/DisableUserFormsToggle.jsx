@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { loanUpdate } from 'core/api/methods';
-import { T } from 'core/components/Translation';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import Toggle from 'core/components/Toggle';
+import { T } from 'core/components/Translation';
 
 const makeHandleForDisablingUserForms = ({ _id: loanId }) => value =>
   loanUpdate.run({ loanId, object: { userFormsEnabled: value } });

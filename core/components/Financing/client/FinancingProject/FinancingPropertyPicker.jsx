@@ -2,13 +2,13 @@ import React from 'react';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import {
-  propertyFormSchema,
   propertyFormLayout,
-} from 'core/components/PropertyForm/PropertyForm';
+  propertyFormSchema,
+} from '../../../PropertyForm/PropertyForm';
 import Select from '../../../Select';
 import T from '../../../Translation';
-import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import FinancingPropertyPickerContainer from './FinancingPropertyPickerContainer';
 
 const useStyles = makeStyles(() => ({

@@ -1,12 +1,10 @@
 import React from 'react';
 
-import {
-  LENDERS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
-import { CollectionIconLink } from 'core/components/IconLink';
+import { LENDERS_COLLECTION } from 'core/api/lenders/lenderConstants';
 import AdminNote from 'core/components/AdminNote';
+import { CollectionIconLink } from 'core/components/IconLink';
+import StatusLabel from 'core/components/StatusLabel';
+
 import LenderContact from './LenderContact';
 
 const Lender = ({ lender }) => {
@@ -15,8 +13,8 @@ const Lender = ({ lender }) => {
     status,
     contact,
     _id: lenderId,
-    offers = [],
     adminNote,
+    _collection,
   } = lender;
   // Organisation is undefined at the start, before grapher data settles down
   if (!organisation) {
@@ -29,16 +27,11 @@ const Lender = ({ lender }) => {
     <div className="lender card1 card-top">
       <div className="flex center">
         <h3>
-          <CollectionIconLink
-            relatedDoc={{
-              ...organisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
+          <CollectionIconLink relatedDoc={organisation} />
         </h3>
         <StatusLabel
           status={status}
-          collection={LENDERS_COLLECTION}
+          collection={_collection}
           allowModify
           docId={lenderId}
         />

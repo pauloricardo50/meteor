@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
-import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 import Chip from '@material-ui/core/Chip';
+import { expect } from 'chai';
 
+import { shallow } from '../../../../utils/testHelpers';
 import T from '../../../Translation';
 import BorrowersSummary from '../../BorrowersSummary';
 

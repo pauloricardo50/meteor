@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
 
 import AutoForm from 'core/components/AutoForm2';

@@ -4,10 +4,10 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
-import SlackService from '../SlackService';
-import UserService from '../../../users/server/UserService';
-import LoanService from '../../../loans/server/LoanService';
 import { fullUser } from '../../../fragments';
+import LoanService from '../../../loans/server/LoanService';
+import UserService from '../../../users/server/UserService';
+import SlackService from '../SlackService';
 
 const TEST_CHANNEL = 'test';
 

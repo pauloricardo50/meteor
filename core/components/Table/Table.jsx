@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import T from '../Translation';
-import TableHeader from './TableHeader';
 import TableBody from './TableBody';
-import TableFooter from './TableFooter';
-import { ORDER, sortData } from './tableHelpers';
 import TableCustom from './TableCustom';
+import TableFooter from './TableFooter';
+import TableHeader from './TableHeader';
+import { ORDER, sortData } from './tableHelpers';
 
 export default class Table extends Component {
   constructor(props) {
     super(props);
+    const { initialOrder, initialOrderBy, columnOptions } = props;
+    const orderBy = columnOptions.findIndex(({ id }) => id === initialOrderBy);
+
     this.state = {
       data: [],
       selected: [],
-      order: props.initialOrder,
-      orderBy: props.initialOrderBy,
+      order: initialOrder,
+      orderBy: orderBy >= 0 ? orderBy : 0,
       rowsPerPage: 25,
       page: 0,
     };
@@ -134,13 +137,15 @@ export default class Table extends Component {
       noIntl,
       clickable,
       className,
+      padding,
+      size = 'small',
     } = this.props;
     const { data, rowsPerPage, page, selected, order, orderBy } = this.state;
     const rowCount = data.length;
 
     return (
       <div className={classnames('mui-table', className)} style={style}>
-        <TableCustom>
+        <TableCustom padding={padding} size={size}>
           <TableHeader
             columnOptions={columnOptions}
             sortable={sortable}
@@ -155,7 +160,7 @@ export default class Table extends Component {
           />
           <TableBody
             data={data}
-            selectalbe={selectable}
+            selectable={selectable}
             columnOptions={columnOptions}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -189,7 +194,7 @@ Table.propTypes = {
   clickable: PropTypes.bool,
   columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
   initialOrder: PropTypes.string,
-  initialOrderBy: PropTypes.number,
+  initialOrderBy: PropTypes.string,
   multiSelectable: PropTypes.bool,
   noIntl: PropTypes.bool,
   onRowSelect: PropTypes.func,
@@ -204,7 +209,6 @@ Table.propTypes = {
 Table.defaultProps = {
   className: '',
   clickable: true,
-  initialOrderBy: 0,
   initialOrder: ORDER.ASC,
   multiSelectable: false,
   noIntl: false,

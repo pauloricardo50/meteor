@@ -1,5 +1,10 @@
+import colors from '../../../../../../config/colors';
+import {
+  BOLD_WEIGHT,
+  BORDER_BLUE,
+  REGULAR_WEIGHT,
+} from '../../../../pdfConstants';
 import * as styles from '../../utils/styleHelpers';
-import { BORDER_BLUE } from '../../../../pdfConstants';
 
 const stylesheet = `
     .cover-page {
@@ -12,7 +17,7 @@ const stylesheet = `
         ${styles.flexGrow(1)}
     } 
 
-    .cover-content h1,h2,h3,h4,h5 {
+    .cover-content h1 {
         color: ${BORDER_BLUE};
     }
 
@@ -36,37 +41,34 @@ const stylesheet = `
 
     .cover-content .loan-type {
         margin: 0;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
+        text-align: center;
+        opacity: 0.6;
     }
     
     .cover-content .address {
-        margin: 0;
+        margin: 8px;
         margin-top: 8px;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
+        text-align: center;
+        opacity: 0.6;
     }
 
     .cover-content .property-value {
         margin-top: 8px;
-        font-weight: normal;
-    }
-
-    .cover-content .property-type {
-        margin-top: 8px;
-        margin-bottom: 8px;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .cover-content .disbursement-date {
         margin: 0;
         margin-bottom: 20px;
         margin-top: 30px;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .cover-content .borrowers {
         margin: 0;
         margin-top: 8px;
-        margin-bottom: 32px;
         display: flex;
         justify-content: center;
     }
@@ -108,11 +110,11 @@ const stylesheet = `
 
     .cover-footer .assigned-employee >* {
         margin: 0px;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .cover-footer .assigned-employee .name {
-        font-weight: bold;
+        font-weight: ${BOLD_WEIGHT};
     }
 
     .cover-header {
@@ -135,7 +137,7 @@ const stylesheet = `
         justify-content: flex-start;
         margin: 0;
         color: ${BORDER_BLUE};
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .cover-header h3 {
@@ -144,7 +146,7 @@ const stylesheet = `
         flex-direction: column;
         justify-content: flex-start;
         margin: 0;
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
     }
 
     .cover-header .epotek-logo {
@@ -162,7 +164,7 @@ const stylesheet = `
 
     .e-potek-address h6 {
         color: ${BORDER_BLUE};
-        font-weight: normal;
+        font-weight: ${REGULAR_WEIGHT};
         margin: 0;
     }
 
@@ -173,6 +175,18 @@ const stylesheet = `
 
     .structure-recap-table svg {
         width: 24px;
+    }
+
+    .cover-content hr {
+        color: ${colors.borderGrey};
+        background-color: ${colors.borderGrey};
+        height: 1px;
+        width: 40%;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        margin-left: auto;
+        margin-right: auto;
+        border: none;
     }
 `;
 

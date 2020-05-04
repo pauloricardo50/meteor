@@ -1,11 +1,10 @@
 import React from 'react';
+import merge from 'lodash/merge';
 import PropTypes from 'prop-types';
 
-import merge from 'lodash/merge';
-
-import { defaultConfig } from './chartSettings';
-import chartContainer from './chartContainer';
 import BaseChart from './BaseChart';
+import chartContainer from './chartContainer';
+import { defaultConfig } from './chartSettings';
 
 const getConfig = ({ data, title, subtitle, config }) =>
   merge(

@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 import omit from 'lodash/omit';
 
-import { getMatchingRules } from '../../helpers';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
+import { getMatchingRules } from '../../helpers';
 
 const checkRules = (result, expected) => {
   // Don't check the names variable

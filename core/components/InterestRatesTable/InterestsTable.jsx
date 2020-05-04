@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Table from 'core/components/Table';
-import { IntlDate } from 'core/components/Translation';
+import Table from '../Table';
+import { IntlDate } from '../Translation';
 
 const InterestRatesTable = ({ columnOptions, rows, date }) => (
   <div className="interests-page-table">

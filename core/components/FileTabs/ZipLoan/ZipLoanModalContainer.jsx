@@ -2,11 +2,11 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import Calculator from 'core/utils/Calculator';
-import T from 'core/components/Translation';
-import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
-import { getZipLoanUrl } from 'core/api/methods/index';
-import { FILE_STATUS } from 'core/api/constants';
+import { FILE_STATUS } from '../../../api/files/fileConstants';
+import { getZipLoanUrl } from '../../../api/files/methodDefinitions';
+import Calculator from '../../../utils/Calculator';
+import { CustomAutoField } from '../../AutoForm2/AutoFormComponents';
+import T from '../../Translation';
 
 const getAllDocuments = loan => {
   const { borrowers = [], documents: loanDocs = {}, _id: loanId } = loan;

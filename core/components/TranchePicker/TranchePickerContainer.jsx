@@ -1,6 +1,7 @@
 import React from 'react';
-import { withStateHandlers, compose, withProps } from 'recompose';
-import { INTEREST_RATES } from '../../api/constants';
+import { compose, withProps, withStateHandlers } from 'recompose';
+
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 import T from '../Translation';
 
 const TranchePickerContainer = compose(

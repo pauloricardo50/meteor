@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { proInviteUser } from '../../../methods';
+import { proInviteUser } from '../../../users/methodDefinitions';
 import {
-  withMeteorUserId,
   literalToString,
   stringToLiteral,
   updateCustomerReferral,
+  withMeteorUserId,
 } from '../helpers';
 import { checkQuery, impersonateSchema } from './helpers';
 

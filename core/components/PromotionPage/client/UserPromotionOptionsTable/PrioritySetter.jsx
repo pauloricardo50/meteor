@@ -1,11 +1,11 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import IconButton from '../../../IconButton';
 import {
   increaseOptionPriority,
   reducePriorityOrder,
-} from '../../../../api/methods';
+} from '../../../../api/promotionOptions/methodDefinitions';
+import IconButton from '../../../IconButton';
 
 const PrioritySetter = ({
   index,

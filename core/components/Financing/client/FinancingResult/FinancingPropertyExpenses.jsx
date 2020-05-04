@@ -3,8 +3,8 @@ import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 
 import { propertyUpdate } from '../../../../api/properties/methodDefinitions';
-import T, { Money } from '../../../Translation';
 import { LightTheme } from '../../../Themes';
+import T, { Money } from '../../../Translation';
 import { FinancingField } from '../FinancingSection/components/FinancingField';
 
 const schema = new SimpleSchema2Bridge(

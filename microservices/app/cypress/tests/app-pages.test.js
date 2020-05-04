@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import { route, generateTestsForPages } from '../../imports/core/cypress/utils';
+import { generateTestsForPages, route } from '../../imports/core/cypress/utils';
 
 const pages = {
   public: {
@@ -34,11 +34,6 @@ const pages = {
 
     'Loan Files': ({ requestLoan: { _id } }) =>
       route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
-
-    'Loan Properties': ({ requestLoan: { _id } }) =>
-      route(`/loans/${_id}/properties`, {
-        shouldRender: '#PropertiesPage',
-      }),
 
     'Loan Single Property': ({ requestLoan: { _id, properties } }) =>
       route(`/loans/${_id}/properties/${properties[0]._id}`, {

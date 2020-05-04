@@ -1,18 +1,18 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
 import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import colors from 'core/config/colors';
-import { toMoney } from 'core/utils/conversionFunctions';
-import Tooltip from '../../../Material/Tooltip';
-import { getLabel } from './financingOwnFundsHelpers';
-import T, { Money } from '../../../Translation';
-import StatusIcon from '../../../StatusIcon';
 import { SUCCESS, WARNING } from '../../../../api/constants';
+import colors from '../../../../config/colors';
+import { toMoney } from '../../../../utils/conversionFunctions';
+import Tooltip from '../../../Material/Tooltip';
+import StatusIcon from '../../../StatusIcon';
+import T, { Money } from '../../../Translation';
 import { getBorrowRatioStatus } from '../FinancingResult/financingResultHelpers';
+import { getLabel } from './financingOwnFundsHelpers';
 
 const FinancingOwnFundsStatus = ({ value, ...props }) => {
   const {

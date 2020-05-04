@@ -2,11 +2,11 @@ import React from 'react';
 import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
 
-import Icon from 'core/components/Icon';
-import IconButton from 'core/components/IconButton';
-import { employeesById } from 'core/arrays/epotekEmployees';
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import { proAddLoanTask } from 'core/api/tasks/methodDefinitions';
+import { proAddLoanTask } from '../../api/tasks/methodDefinitions';
+import { employeesById } from '../../arrays/epotekEmployees';
+import { AutoFormDialog } from '../AutoForm2';
+import Icon from '../Icon';
+import IconButton from '../IconButton';
 
 const schema = new SimpleSchema({
   note: {
