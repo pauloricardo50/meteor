@@ -255,7 +255,7 @@ loanInsertBorrowers.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   LoanService.insertBorrowers(params);
 });
-loanInsertBorrowers.setRateLimit({ limit: 1, timeRange: 10000 }); // Once every 10sec
+loanInsertBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
 
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
