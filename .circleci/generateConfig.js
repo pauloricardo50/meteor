@@ -140,7 +140,7 @@ const makePrepareJob = () => ({
     ),
     runCommand(
       'Remove libc6-dev',
-      'sudo apt-get purge libc6-dev-amd64 && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f',
+      'sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f',
     ),
     runCommand(
       'Install expect',

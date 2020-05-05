@@ -77,8 +77,8 @@ jobs:
       - run:
           name: Remove libc6-dev
           command: >-
-            sudo apt-get purge libc6-dev-amd64 && sudo apt-get autoremove &&
-            sudo apt-get clean && sudo apt-get install -f
+            sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo
+            apt-get clean && sudo apt-get install -f
       - run:
           name: Install expect
           command: sudo apt-get update && sudo apt-get install expect
