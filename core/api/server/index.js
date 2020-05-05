@@ -20,7 +20,6 @@ import './caches';
 import './serverCollections';
 
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 
 import BorrowerService from '../borrowers/server/BorrowerService';
 import CommissionRateService from '../commissionRates/server/CommissionRateService';
@@ -92,7 +91,3 @@ export const Services = {
   [COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION]: InsuranceProductService,
   [COLLECTIONS.COMMISSION_RATES_COLLECTION]: CommissionRateService,
 };
-
-Meteor.startup(() => {
-  Roles._forwardMigrate();
-});
