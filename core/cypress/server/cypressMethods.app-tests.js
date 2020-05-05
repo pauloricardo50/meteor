@@ -6,7 +6,6 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 
-import { resetDatabase } from '../../../../utils/testHelpers';
 import { adminLoan, loanBase } from '../../api/fragments';
 import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';
 import Loans from '../../api/loans';
@@ -29,6 +28,7 @@ import { createAdmins, createEpotek } from '../../fixtures/userFixtures';
 import {
   createEmailVerificationToken,
   createLoginToken,
+  resetDatabase,
 } from '../../utils/testHelpers';
 import {
   ADMIN_EMAIL,
