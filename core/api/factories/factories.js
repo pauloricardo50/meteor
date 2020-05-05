@@ -142,7 +142,7 @@ Factory.define('promotion', Promotions, {
   city: 'Genève',
   assignedEmployeeId: () => {
     const adminId = Users.insert({
-      roles: [ROLES.ADMIN],
+      roles: [{ _id: ROLES.ADMIN }],
       emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
       lastName: TEST_LASTNAME,
       firstName: TEST_FIRSTNAME,

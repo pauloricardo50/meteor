@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import SlackService from '../../../../slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';

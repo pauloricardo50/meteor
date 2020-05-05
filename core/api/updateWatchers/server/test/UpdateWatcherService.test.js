@@ -1,10 +1,10 @@
 import { Factory } from 'meteor/dburles:factory';
 import { Mongo } from 'meteor/mongo';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import UpdateWatcherService from '../UpdateWatcherService';
 
 const collectionName = 'todos_test';

@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import {
@@ -129,7 +129,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName1',
       name: 'FirstName1 LastName1',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      roles: [{ _id: 'user' }],
       assignedEmployee: {
         _id: 'admin',
         _collection: 'users',
@@ -157,7 +157,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      roles: [{ _id: 'user' }],
     });
   });
 
@@ -175,7 +175,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      roles: [{ _id: 'user' }],
     });
   });
 
@@ -193,7 +193,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      roles: [{ _id: 'user' }],
     });
   });
 
@@ -231,7 +231,7 @@ describe('REST: getUser', function() {
       lastName: '4',
       name: 'Pro 4',
       phoneNumbers: ['+41 12345'],
-      roles: ['pro'],
+      roles: [{ _id: 'pro' }],
     });
   });
 });

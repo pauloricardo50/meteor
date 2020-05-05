@@ -50,7 +50,7 @@ export class UserServiceClass extends CollectionService {
     return user;
   }
 
-  createUser = ({ options, role }) => {
+  createUser = ({ options, role = ROLES.USER }) => {
     if (!options.password) {
       // password is not even allowed to be undefined,
       // it has to be stripped from the options object
@@ -59,9 +59,10 @@ export class UserServiceClass extends CollectionService {
 
     const newUserId = Accounts.createUser(options);
 
-    if (role) {
-      Roles.setUserRoles(newUserId, role);
+    if (!role) {
+      throw new Meteor.Error('New user must have a role');
     }
+    Roles.setUserRoles(newUserId, role);
 
     return newUserId;
   };

@@ -1,11 +1,10 @@
-/* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 import base64 from 'base64topdf';
 import { expect } from 'chai';
 import cheerio from 'cheerio';
 import fs from 'fs';
 
+/* eslint-env mocha */
+import { resetDatabase } from '../../../../utils/testHelpers';
 import { CIVIL_STATUS, GENDER } from '../../../borrowers/borrowerConstants';
 import { PURCHASE_TYPE } from '../../../loans/loanConstants';
 import {

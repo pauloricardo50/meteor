@@ -5,8 +5,8 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import { adminLoan, loanBase } from '../../api/fragments';
 import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';
 import Loans from '../../api/loans';

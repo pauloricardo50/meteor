@@ -1,10 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import { PROMOTION_STATUS } from '../../../../promotions/promotionConstants';
 import PromotionService from '../../../../promotions/server/PromotionService';

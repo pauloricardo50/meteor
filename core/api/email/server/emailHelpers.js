@@ -103,9 +103,7 @@ export const getEmailContent = (emailId, intlValues) => {
 export const getAccountsUrl = path => (user, url) => {
   const userIsUser = Roles.userIsInRole(user, ROLES.USER);
   const userIsPro = Roles.userIsInRole(user, ROLES.PRO);
-  const userIsAdmin =
-    Roles.userIsInRole(user, ROLES.ADMIN) ||
-    Roles.userIsInRole(user, ROLES.DEV);
+  const userIsAdmin = Roles.userIsInRole(user, [ROLES.ADMIN, ROLES.DEV]);
   const token = url.split(`/${path}/`)[1];
 
   if (userIsUser) {

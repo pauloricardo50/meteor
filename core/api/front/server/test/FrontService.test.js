@@ -1,9 +1,9 @@
 /* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';

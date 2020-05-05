@@ -1,4 +1,4 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { resetDatabase } from '../../../../utils/testHelpers';
 
 import { expect } from 'chai';
 

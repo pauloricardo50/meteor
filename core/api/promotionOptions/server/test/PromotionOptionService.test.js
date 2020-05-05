@@ -1,13 +1,12 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import FileService from '../../../files/server/FileService';

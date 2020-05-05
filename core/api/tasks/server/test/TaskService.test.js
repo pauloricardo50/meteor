@@ -1,10 +1,10 @@
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import { TASK_STATUS } from '../../taskConstants';
 import TaskService from '../TaskService';
 

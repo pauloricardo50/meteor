@@ -1,8 +1,6 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server/generator';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../../insuranceRequests/insuranceRequestConstants';
 import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
@@ -12,6 +10,9 @@ import LoanService from '../../../loans/server/LoanService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import UserService from '../../../users/server/UserService';
 import { getNewName, setAssignees } from '../collectionServerHelpers';
+
+/* eslint-env mocha */
+
 
 describe('collectionServerHelpers', () => {
   beforeEach(() => {

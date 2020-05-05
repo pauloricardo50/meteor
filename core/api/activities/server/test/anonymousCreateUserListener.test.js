@@ -1,9 +1,6 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import { anonymousCreateUser } from '../../../users/methodDefinitions';
@@ -12,6 +9,9 @@ import {
   ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,
 } from '../../activityConstants';
+
+/* eslint-env mocha */
+
 
 describe('anonymousCreateUserListener', function() {
   this.timeout(10000);

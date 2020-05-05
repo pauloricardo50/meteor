@@ -56,7 +56,7 @@ export default class Security {
   }
 
   static isUserAdmin(userId) {
-    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
+    return this.hasRole(userId, [ROLES.ADMIN, ROLES.DEV]);
   }
 
   static isUserDev(userId) {
@@ -64,16 +64,12 @@ export default class Security {
   }
 
   static isUserPro(userId) {
-    return (
-      this.hasRole(userId, ROLES.PRO) ||
-      this.hasRole(userId, ROLES.ADMIN) ||
-      this.hasRole(userId, ROLES.DEV)
-    );
+    return this.hasRole(userId, [ROLES.PRO, ROLES.ADMIN, ROLES.DEV]);
   }
 
   static currentUserIsAdmin() {
     const userId = Meteor.userId();
-    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
+    return this.isUserAdmin(userId);
   }
 
   static checkCurrentUserIsAdmin() {
