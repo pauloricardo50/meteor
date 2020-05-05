@@ -88,7 +88,6 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
 
   throw new Meteor.Error(400, 'Dev error!');
 });
-throwDevError.setRateLimit({ limit: 1, timeRange: 10000 });
 
 setAdditionalDoc.setHandler((context, { collection, ...rest }) => {
   SecurityService.checkCurrentUserIsAdmin();
