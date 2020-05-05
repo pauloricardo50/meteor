@@ -17,6 +17,7 @@ borrowerInsert.setHandler((context, { borrower, userId }) =>
     userId: checkInsertUserId(userId),
   }),
 );
+borrowerInsert.setRateLimit({ limit: 1, timeRange: 10000 }); // Once every 10sec
 
 borrowerUpdate.setHandler((context, params) => {
   SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);

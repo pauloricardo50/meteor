@@ -111,6 +111,7 @@ userLoanInsert.setHandler(
     });
   },
 );
+userLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -182,11 +183,13 @@ setMaxPropertyValueOrBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.setMaxPropertyValueOrBorrowRatio(params);
 });
+setMaxPropertyValueOrBorrowRatio.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 addNewMaxStructure.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.addNewMaxStructure(params);
 });
+addNewMaxStructure.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 setLoanStep.setHandler((context, params) => {
   const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
@@ -245,12 +248,14 @@ anonymousLoanInsert.setHandler((context, params) => {
 
   return loanId;
 });
+anonymousLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 loanInsertBorrowers.setHandler((context, params) => {
   const { loanId } = params;
   SecurityService.loans.isAllowedToUpdate(loanId);
   LoanService.insertBorrowers(params);
 });
+loanInsertBorrowers.setRateLimit({ limit: 1, timeRange: 10000 }); // Once every 10sec
 
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();

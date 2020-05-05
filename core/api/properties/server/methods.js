@@ -22,6 +22,7 @@ propertyInsert.setHandler((context, params) => {
   const userId = checkInsertUserId(params.userId);
   return PropertyService.insert({ ...params, userId });
 });
+propertyInsert.setRateLimit({ rate: 1, timeRange: 30000 }); // Once every 30sec
 
 propertyUpdate.setHandler(({ userId }, params) => {
   SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);

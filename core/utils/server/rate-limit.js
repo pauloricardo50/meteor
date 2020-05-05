@@ -7,17 +7,31 @@ DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
   return `Doucement, tu peux reessayer dans ${time} ${seconds}.`;
 });
 
+// 1 call every 30s
+const defaultLimit = 1;
+const defaultTimeRange = 30000;
+
+// 10 calls every 30s
+const defaultDevLimit = 10;
+const defaultDevTimerange = 30000;
+
 const shouldRateLimit = testRateLimit => !Meteor.isAppTest || testRateLimit;
-
-const defaultLimit = 5;
-const defaultTimeRange = 1000;
-
-export const setMethodLimiter = ({
-  name,
-  rateLimit: { limit = defaultLimit, timeRange = defaultTimeRange } = {},
-  testRateLimit,
+const getRateLimit = ({
+  limit = defaultLimit,
+  timeRange = defaultTimeRange,
 }) => {
+  const isDev = Meteor.isDevelopment;
+
+  if (isDev) {
+    return { limit: defaultDevLimit, timeRange: defaultDevTimerange };
+  }
+
+  return { limit, timeRange };
+};
+
+export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
   if (shouldRateLimit(testRateLimit)) {
+    const { limit, timeRange } = getRateLimit(rateLimit);
     DDPRateLimiter.addRule(
       {
         type: 'method',
