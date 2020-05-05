@@ -1,6 +1,4 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 
@@ -8,6 +6,8 @@ import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import Loading from 'core/components/Loading';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
 import Roles from 'core/components/Roles';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import TestBadge from 'core/components/TestBadge';

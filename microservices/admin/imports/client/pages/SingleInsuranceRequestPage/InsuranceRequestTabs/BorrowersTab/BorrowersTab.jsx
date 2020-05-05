@@ -29,7 +29,7 @@ const getTabs = ({ borrowers, insuranceRequest, userId }) =>
               fab
               primary
               label=""
-              icon={<Icon type="add" />}
+              icon={<Icon type="add" fontSize="small" />}
               className="ml-8"
               size="small"
               tooltip="Ajouter un assuré"

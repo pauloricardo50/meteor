@@ -57,7 +57,6 @@ lai:collection-extensions@0.2.1_1
 lamhieu:meteorx@2.1.1
 littledata:synced-cron@1.5.1
 livedata@1.0.18
-lmieulet:meteor-coverage@3.2.0
 localstorage@1.2.0
 logging@1.1.20
 matb33:collection-hooks@1.0.1
@@ -65,7 +64,7 @@ meteor@1.9.3
 meteor-base@1.4.0
 meteorhacks:inject-initial@1.0.4
 meteortesting:browser-tests@1.3.3
-meteortesting:mocha@1.1.5
+meteortesting:mocha@2.0.0
 meteortesting:mocha-core@7.1.2
 minifier-css@1.5.0
 minimongo@1.6.0

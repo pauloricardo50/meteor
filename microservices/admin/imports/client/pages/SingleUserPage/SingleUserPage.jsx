@@ -25,7 +25,6 @@ const SingleUserPage = ({
   currentUser,
   children,
   history,
-  activities,
 }) => {
   const {
     loans,
@@ -55,12 +54,7 @@ const SingleUserPage = ({
         collection={USERS_COLLECTION}
         withActivityAdder={false}
       />
-      <CollectionTasksTable
-        doc={user}
-        collection={USERS_COLLECTION}
-        withTaskInsert
-        withQueryTaskInsert
-      />
+      <CollectionTasksTable doc={user} withTaskInsert withQueryTaskInsert />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}

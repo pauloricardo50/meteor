@@ -18,7 +18,6 @@ const OrganisationInfo = ({ currentUser, adminNote, _id, documents }) => (
     />
     <UploaderArray
       doc={{ _id, documents }}
-      collection={ORGANISATIONS_COLLECTION}
       documentArray={organisationDocuments}
       currentUser={currentUser}
       allowRequireByAdmin={false}

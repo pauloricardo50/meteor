@@ -26,7 +26,6 @@ const Info = props => {
             })}
             formClasses="user-form"
             docId={borrower._id}
-            collection="borrowers"
             doc={borrower}
             disabled={!userFormsEnabled}
           />

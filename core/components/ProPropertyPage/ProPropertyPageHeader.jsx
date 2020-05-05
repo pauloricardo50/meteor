@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import { propertyDelete } from '../../api/properties/methodDefinitions';
-import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import { ROLES } from '../../api/users/userConstants';
 import ConfirmMethod from '../ConfirmMethod';
 import StatusLabel from '../StatusLabel';
@@ -12,7 +11,13 @@ import PropertyDocumentsManager from './PropertyDocumentsManager';
 import { ProPropertyModifier } from './ProPropertyForm';
 
 const ProPropertyPageHeader = ({ property, permissions }) => {
-  const { address, totalValue, _id: propertyId, status } = property;
+  const {
+    address,
+    totalValue,
+    _id: propertyId,
+    status,
+    _collection,
+  } = property;
   const { canModifyProperty } = permissions;
   const isDev = Meteor.user().roles.includes(ROLES.DEV);
 
@@ -23,7 +28,7 @@ const ProPropertyPageHeader = ({ property, permissions }) => {
           <h1>{address}</h1>
           <StatusLabel
             status={status}
-            collection={PROPERTIES_COLLECTION}
+            collection={_collection}
             allowModify={canModifyProperty}
             docId={propertyId}
           />

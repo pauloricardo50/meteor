@@ -1,4 +1,6 @@
 import React from 'react';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import { userSearch } from 'core/api/users/queries';
 import { ROLES } from 'core/api/users/userConstants';
@@ -6,7 +8,6 @@ import Button from 'core/components/Button/Button';
 import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
 import DialogSimple from 'core/components/DialogSimple';
 import Icon from 'core/components/Icon';
-import { ListItemSecondaryAction, ListItemText } from 'core/components/List';
 import TextField from 'core/components/Material/TextField';
 import T from 'core/components/Translation';
 

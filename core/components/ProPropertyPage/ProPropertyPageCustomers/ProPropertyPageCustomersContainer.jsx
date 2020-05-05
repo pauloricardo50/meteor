@@ -98,6 +98,7 @@ const makeMapLoan = ({
   property,
 }) => loan => {
   const {
+    _collection,
     _id: loanId,
     name: loanName,
     user,
@@ -125,7 +126,7 @@ const makeMapLoan = ({
       loanName,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: !anonymous && user.name,

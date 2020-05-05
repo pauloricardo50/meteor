@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { PROMOTION_LOTS_COLLECTION } from 'core/api/promotionLots/promotionLotConstants';
 import Button from 'core/components/Button';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
 import PromotionLotRecapTable from 'core/components/PromotionLotPage/PromotionLotRecapTable';
@@ -17,7 +16,14 @@ export const AppPromotionLotPage = ({
   loan: { _id: loanId },
   promotionId,
 }) => {
-  const { name, reducedStatus, lots, documents, properties } = promotionLot;
+  const {
+    name,
+    reducedStatus,
+    lots,
+    documents,
+    properties,
+    _collection,
+  } = promotionLot;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
 
@@ -42,10 +48,7 @@ export const AppPromotionLotPage = ({
           &nbsp;
           <Money value={promotionLot.value} />
           &nbsp;
-          <StatusLabel
-            status={reducedStatus}
-            collection={PROMOTION_LOTS_COLLECTION}
-          />
+          <StatusLabel status={reducedStatus} collection={_collection} />
         </h1>
         {description && <h3 className="secondary">{description}</h3>}
         {lots.length > 0 && (

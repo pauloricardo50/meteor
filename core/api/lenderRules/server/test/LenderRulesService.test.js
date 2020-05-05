@@ -31,6 +31,14 @@ describe('LenderRulesService', () => {
 
       expect(lenderRules.length).to.equal(3);
     });
+
+    it('throws if you try to do it twice', () => {
+      LenderRulesService.initialize({ organisationId });
+
+      expect(() => LenderRulesService.initialize({ organisationId })).to.throw(
+        '2 fois',
+      );
+    });
   });
 
   describe('insert', () => {

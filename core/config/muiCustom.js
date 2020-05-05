@@ -71,7 +71,39 @@ const createTheme = ({ fontSize = 14 }) =>
         },
       },
       MuiListItemText: {
-        secondary: { lineHeight: 'unset' },
+        secondary: { lineHeight: 'unset', opacity: 0.8 },
+      },
+      MuiMenuItem: {
+        root: {
+          '&:hover': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
+          '&:focus': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
+          '&.Mui-selected': {
+            backgroundColor: colors.mui.darkPrimary,
+            color: 'white',
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+            '&:hover': {
+              backgroundColor: colors.mui.darkPrimary,
+              color: 'white',
+              '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+                color: 'white',
+              },
+            },
+          },
+        },
       },
     },
     palette: {

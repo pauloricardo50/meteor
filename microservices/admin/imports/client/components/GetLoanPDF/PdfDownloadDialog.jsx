@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
@@ -110,12 +110,13 @@ const PdfDownloadDialog = ({
   dialogTitle,
 }) => {
   const { purchaseType } = loan;
-
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
+  const schema = useMemo(() => makeSchema(loan), [loan]);
+
   return (
     <AutoFormDialog
       title={dialogTitle}
-      schema={makeSchema(loan)}
+      schema={schema}
       onSubmit={onSubmit}
       buttonProps={{
         raised: true,

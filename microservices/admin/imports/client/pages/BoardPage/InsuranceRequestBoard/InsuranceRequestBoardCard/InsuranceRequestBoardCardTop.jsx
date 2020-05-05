@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import StatusLabel from 'core/components/StatusLabel';
@@ -10,6 +9,7 @@ import InsuranceRequestBoardCardAssignee from './InsuranceRequestBoardCardAssign
 const InsuranceRequestBoardCardTop = props => {
   const { insuranceRequest, renderComplex } = props;
   const {
+    _collection,
     _id: insuranceRequestId,
     status,
     assigneeLinks = [],
@@ -21,7 +21,7 @@ const InsuranceRequestBoardCardTop = props => {
         <StatusLabel
           variant="dot"
           status={status}
-          collection={INSURANCE_REQUESTS_COLLECTION}
+          collection={_collection}
           docId={insuranceRequestId}
           allowModify={renderComplex}
           showTooltip={renderComplex}

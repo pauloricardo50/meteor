@@ -1,16 +1,9 @@
 const sh = require('shelljs');
 const DigestFetch = require('digest-fetch');
 const chalk = require('chalk');
-const fs = require('fs');
+const { retrieveSecret } = require('./utils/secrets');
 
-if (!fs.existsSync('./configs/atlas-auth2.json')) {
-  console.error(
-    chalk.redBright`Please create the './configs/atlas-auth.json' file as described in the Atlas API Keys section of the docs`,
-  );
-  process.exit(1);
-}
-
-const auth = require('./configs/atlas-auth.json');
+const auth = retrieveSecret('atlas-project-owner-api-key');
 
 sh.exec('node update-servers');
 

@@ -46,6 +46,7 @@ export const makeMapRevenue = ({
   setRevenueToModify,
 }) => revenue => {
   const {
+    _collection,
     _id: revenueId,
     expectedAt,
     paidAt,
@@ -89,7 +90,7 @@ export const makeMapRevenue = ({
       title,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: date && date.getTime(),

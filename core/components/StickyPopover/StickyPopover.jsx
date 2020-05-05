@@ -93,7 +93,7 @@ export default class PopoverStickOnHover extends React.Component {
 
 PopoverStickOnHover.defaultProps = {
   delay: 0,
-  exitDelay: 100,
+  exitDelay: 200,
   onMouseEnter: undefined,
   placement: 'right-start',
   title: null,

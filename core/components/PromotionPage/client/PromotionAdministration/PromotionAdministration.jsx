@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 
 import { addProUserToPromotion } from '../../../../api/promotions/methodDefinitions';
-import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
 import { userSearch } from '../../../../api/users/queries';
-import { ROLES, USERS_COLLECTION } from '../../../../api/users/userConstants';
+import { ROLES } from '../../../../api/users/userConstants';
 import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
 import Button from '../../../Button';
 import CollectionSearch from '../../../CollectionSearch';
@@ -54,7 +53,6 @@ const PromotionAdministration = ({
       >
         <UploaderArray
           doc={promotion}
-          collection={PROMOTIONS_COLLECTION}
           documentArray={promotionDocuments}
           currentUser={currentUser}
           allowRequireByAdmin={false}

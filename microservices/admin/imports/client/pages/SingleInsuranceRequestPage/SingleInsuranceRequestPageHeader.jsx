@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
@@ -9,10 +8,11 @@ import SingleInsuranceRequestCustomName from './SingleInsuranceRequestCustomName
 
 const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
   const {
-    user,
-    status: insuranceRequestStatus,
-    name,
+    _collection,
     _id: insuranceRequestId,
+    name,
+    status: insuranceRequestStatus,
+    user,
   } = insuranceRequest;
   return (
     <div className="single-insurance-request-page-header">
@@ -22,7 +22,7 @@ const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
           {user && <CollectionIconLink relatedDoc={user} />}
           <span className="ml-16">
             <StatusLabel
-              collection={INSURANCE_REQUESTS_COLLECTION}
+              collection={_collection}
               status={insuranceRequestStatus}
               allowModify
               docId={insuranceRequestId}

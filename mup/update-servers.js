@@ -2,19 +2,14 @@ const Compute = require('@google-cloud/compute');
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const { retrieveSecret } = require('./utils/secrets.js');
 
 console.log(chalk.blue('=> Updating the <env>-servers.json files'));
 
-if (!fs.existsSync('./configs/credentials.json')) {
-  console.error(
-    chalk.redBright`Please create the './configs/credentials.json' file as described in the Engine Credentials section of the docs`,
-  );
-  process.exit(1);
-}
-
+const secret = retrieveSecret('deploy-engine-credentials');
 const compute = new Compute({
   projectId: 'e-potek-1499177443071',
-  keyFilename: './configs/credentials.json',
+  credentials: secret,
 });
 
 async function updateForGroup(name) {

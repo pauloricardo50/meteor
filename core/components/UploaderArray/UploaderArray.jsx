@@ -34,6 +34,7 @@ export const UploaderArray = ({
           key={doc._id + documentObject.id}
           currentValue={doc.documents && doc.documents[documentObject.id]}
           docId={doc._id}
+          doc={doc}
           allowRequireByAdmin={allowRequireByAdmin}
           {...props}
         />

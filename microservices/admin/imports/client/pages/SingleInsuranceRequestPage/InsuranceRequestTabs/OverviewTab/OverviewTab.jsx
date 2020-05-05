@@ -38,7 +38,6 @@ const OverviewTab = props => {
           { id: insuranceRequest._id },
           { doc: insuranceRequest },
         )}
-        collection="insuranceRequests"
         withAdditionalDocAdder={false}
       />
     </div>

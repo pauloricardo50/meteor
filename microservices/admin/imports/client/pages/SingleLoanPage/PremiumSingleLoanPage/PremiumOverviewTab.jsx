@@ -28,7 +28,7 @@ const PremiumOverviewTab = props => {
         collection={LOANS_COLLECTION}
         frontTagId={frontTagId}
       />
-      <AdminNotes doc={loan} collection={LOANS_COLLECTION} />
+      <AdminNotes doc={loan} />
 
       <div className="structure-form">
         <StructureForm {...props} />

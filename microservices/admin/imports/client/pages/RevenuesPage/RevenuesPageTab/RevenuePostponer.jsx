@@ -46,7 +46,7 @@ const RevenuePostponer = props => {
       TriggerComponent={IconButton}
       buttonProps={{
         tooltip: "Repousser d'un mois",
-        label: '',
+        label: null,
         primary: true,
         type: 'right',
         size: 'small',

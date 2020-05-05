@@ -1,11 +1,12 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 
+import Chip from '../Material/Chip';
 import FormControl from '../Material/FormControl';
 import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
+import MenuItem from '../Material/MenuItem';
 import MuiSelect from '../Material/Select';
 import SelectContainer from './SelectContainer';
 
@@ -17,11 +18,18 @@ const makeRenderValue = ({ multiple, rawOptions }) => {
     };
   }
 
-  return values =>
-    values.map((value, i) => {
-      const option = rawOptions.find(({ id }) => id === value);
-      return [i !== 0 && ', ', option && option.label];
-    });
+  return values => (
+    <div className="flex wrap">
+      {values.map((value, i) => {
+        const option = rawOptions.find(({ id }) => id === value);
+        return (
+          option && (
+            <Chip key={option.id} label={option.label} className="m-2" />
+          )
+        );
+      })}
+    </div>
+  );
 };
 
 const Select = ({

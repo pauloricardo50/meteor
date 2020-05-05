@@ -1191,6 +1191,7 @@ describe('LoanCalculator', () => {
       expect(
         Calculator.getMissingOwnFunds({
           loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
             properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
             structures: [
               {

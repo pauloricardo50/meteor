@@ -21,6 +21,7 @@ const colors = {
     darkPrimary: '#0048bb', // Darken 20%
     darkSuccess: '#1aa890', // Darken 20%
     darkError: '#b30c5e', // Darken 20%
+    lightPrimary: '#3d88fe', // Lighten 30%
   },
   interestRates: {
     [INTEREST_RATES.LIBOR]: '#0047AC',

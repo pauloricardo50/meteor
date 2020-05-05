@@ -1,11 +1,11 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import PropTypes from 'prop-types';
 
 import { CollectionIconLink } from 'core/components/IconLink';
 import { titles } from 'core/components/IconLink/CollectionIconLinkPopup/CollectionIconLinkPopupComponents';
 import Loading from 'core/components/Loading';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
 import T from 'core/components/Translation';
 
 import LinkToCollection from '../../LinkToCollection';

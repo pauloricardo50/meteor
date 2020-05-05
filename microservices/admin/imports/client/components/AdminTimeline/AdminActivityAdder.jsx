@@ -82,11 +82,12 @@ export const AdminActivityModifier = withProps(({ model }) => ({
   onSubmit: values =>
     activityUpdate.run({ activityId: model._id, object: values }),
   buttonProps: {
-    icon: <Icon type="edit" />,
+    icon: <Icon type="edit" fontSize="small" />,
     fab: true,
-    label: '',
+    label: null,
     style: {},
     tooltip: 'Modifier',
+    size: 'small',
   },
   renderAdditionalActions: ({ closeDialog, setDisableActions }) => (
     <Button
