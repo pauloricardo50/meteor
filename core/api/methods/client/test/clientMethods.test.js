@@ -1,7 +1,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { rateLimitedMethod } from '../../methods-app-test';
+import {
+  rateLimitedErrorMethod,
+  rateLimitedMethod,
+} from '../../methods-app-test';
 
 describe('clientMethods', function() {
   this.timeout(10000);
@@ -31,6 +34,26 @@ describe('clientMethods', function() {
         const res = await rateLimitedMethod.run({});
         expect(res).to.equal(true);
       }, 1000);
+    });
+
+    it('clears the rate limit if a server error is thrown', async () => {
+      try {
+        await rateLimitedErrorMethod.run({});
+      } catch (error) {
+        expect(error.message).to.contain('Error thrown');
+      }
+
+      try {
+        await rateLimitedErrorMethod.run({});
+      } catch (error) {
+        expect(error.message).to.contain('Error thrown');
+      }
+
+      try {
+        await rateLimitedErrorMethod.run({});
+      } catch (error) {
+        expect(error.message).to.contain('Error thrown');
+      }
     });
   });
 });

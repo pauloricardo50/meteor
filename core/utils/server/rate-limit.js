@@ -15,42 +15,60 @@ const defaultTimeRange = 30000;
 const defaultDevLimit = 10;
 const defaultDevTimerange = 30000;
 
-const shouldRateLimit = testRateLimit => !Meteor.isAppTest || testRateLimit;
-const getRateLimit = ({
-  limit = defaultLimit,
-  timeRange = defaultTimeRange,
-}) => {
-  const isDev = Meteor.isDevelopment;
-  const isTest = Meteor.isAppTest;
+export class RateLimiter {
+  constructor({
+    name,
+    rateLimit = {},
+    options: { testRateLimit = false, clearOnServerError = true } = {},
+  }) {
+    const { limit, timeRange } = this.getRateLimit(rateLimit);
+    this.options = { testRateLimit, clearOnServerError };
+    this.limit = limit;
+    this.timeRange = timeRange;
+    this.name = name;
+    this.setMethodLimiter();
+  }
 
-  if (isTest) {
+  getRateLimit({ limit = defaultLimit, timeRange = defaultTimeRange }) {
+    const isDev = Meteor.isDevelopment;
+    const isTest = Meteor.isAppTest;
+
+    if (isTest) {
+      return { limit, timeRange };
+    }
+
+    if (isDev) {
+      return { limit: defaultDevLimit, timeRange: defaultDevTimerange };
+    }
+
     return { limit, timeRange };
   }
 
-  if (isDev) {
-    return { limit: defaultDevLimit, timeRange: defaultDevTimerange };
+  shouldRateLimit() {
+    return !Meteor.isAppTest || this.options?.testRateLimit;
   }
 
-  return { limit, timeRange };
-};
-
-export const setMethodLimiter = ({
-  name,
-  rateLimit = {},
-  options: { testRateLimit } = {},
-}) => {
-  if (shouldRateLimit(testRateLimit)) {
-    const { limit, timeRange } = getRateLimit(rateLimit);
-    DDPRateLimiter.addRule(
-      {
-        type: 'method',
-        name,
-        connectionId() {
-          return true;
+  setMethodLimiter() {
+    if (this.shouldRateLimit()) {
+      const { name, limit, timeRange } = this;
+      this.ruleId = DDPRateLimiter.addRule(
+        {
+          type: 'method',
+          name,
+          connectionId() {
+            return true;
+          },
         },
-      },
-      limit,
-      timeRange,
-    );
+        limit,
+        timeRange,
+      );
+    }
   }
-};
+
+  clearMethodLimiter() {
+    if (this.options?.clearOnServerError) {
+      DDPRateLimiter.removeRule(this.ruleId);
+      this.setMethodLimiter();
+    }
+  }
+}
