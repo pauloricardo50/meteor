@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 
-import { isAPI } from '../../RESTAPI/server/helpers';
-
 DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
   const time = Math.ceil(timeToReset / 1000);
   const seconds = time === 1 ? 'seconde' : 'secondes';
@@ -36,7 +34,11 @@ const getRateLimit = ({
   return { limit, timeRange };
 };
 
-export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
+export const setMethodLimiter = ({
+  name,
+  rateLimit = {},
+  options: { testRateLimit } = {},
+}) => {
   if (shouldRateLimit(testRateLimit)) {
     const { limit, timeRange } = getRateLimit(rateLimit);
     DDPRateLimiter.addRule(
@@ -44,7 +46,7 @@ export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
         type: 'method',
         name,
         connectionId() {
-          return !isAPI();
+          return true;
         },
       },
       limit,
