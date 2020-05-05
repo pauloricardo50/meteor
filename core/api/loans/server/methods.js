@@ -183,13 +183,13 @@ setMaxPropertyValueOrBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.setMaxPropertyValueOrBorrowRatio(params);
 });
-setMaxPropertyValueOrBorrowRatio.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
+setMaxPropertyValueOrBorrowRatio.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
 addNewMaxStructure.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.addNewMaxStructure(params);
 });
-addNewMaxStructure.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
+addNewMaxStructure.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
 setLoanStep.setHandler((context, params) => {
   const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
