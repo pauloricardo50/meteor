@@ -34,7 +34,7 @@ then
   echo -e "$SECTION_START Classifying Cities $SECTION_END"
   meteor npm run classify-cities
 
-  echo -e "$SECTION_STAET Preparing front app plugin $SECTION_END"
+  echo -e "$SECTION_START Preparing front app plugin $SECTION_END"
   ( cd ../plugins/frontPlugin && npm rebuild node-sass );
   ( cd ../plugins/frontPlugin && npm i -q );
   ln -s ../../../core ../plugins/frontPlugin/src/core
