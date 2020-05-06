@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
-import Button from 'core/components/Button';
 
 import InsuranceProductForm from './InsuranceProductForm';
 
@@ -23,20 +22,7 @@ const InsuranceProductModifier = ({
     open={open}
     setOpen={setOpen}
     noButton
-    renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) => (
-      <Button
-        onClick={() => {
-          setDisableActions(true);
-          removeInsuranceProduct()
-            .then(closeDialog)
-            .finally(() => setDisableActions(false));
-        }}
-        error
-        disabled={disabled}
-      >
-        Supprimer
-      </Button>
-    )}
+    onDelete={() => removeInsuranceProduct()}
   />
 );
 

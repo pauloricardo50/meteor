@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
 
@@ -38,19 +37,7 @@ const DashboardInfoTeamMember = ({
           )}
           onSubmit={values => editContact(name, values)}
           model={{ name, title, email, phoneNumber }}
-          renderAdditionalActions={({ handleClose, setDisableActions }) => (
-            <Button
-              error
-              onClick={() => {
-                setDisableActions(true);
-                return removeContact(name)
-                  .then(() => setDisableActions(false))
-                  .finally(handleClose);
-              }}
-            >
-              <T id="general.delete" />
-            </Button>
-          )}
+          onDelete={() => removeContact(name)}
         />
       )}
 
