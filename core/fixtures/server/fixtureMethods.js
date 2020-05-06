@@ -31,6 +31,7 @@ import { fakeProperty } from '../../api/properties/fakes';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
 import Tasks from '../../api/tasks/tasks';
+import UserService from '../../api/users/server/UserService';
 import { ROLES } from '../../api/users/userConstants';
 import Users from '../../api/users/users';
 import {
