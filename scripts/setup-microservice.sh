@@ -35,19 +35,27 @@ then
   meteor npm run classify-cities
 
   echo -e "$SECTION_START Preparing front app plugin $SECTION_END"
+
+  # Remove all symlinks in the parent directory except node_modules to
+  # keep .bin symlinks
+  (
+    cd ../plugins/frontPlugin && \
+    find . -type l -not -path "**/node_modules/**" -exec unlink {} \;
+  )
+
   ( cd ../plugins/frontPlugin && npm rebuild node-sass );
   ( cd ../plugins/frontPlugin && npm i -q );
   ln -s ../../../core ../plugins/frontPlugin/src/core
-  ( cd ../plugins/frontPlugin && meteor npm run build-production );
+  # ( cd ../plugins/frontPlugin && meteor npm run build-production );
 
 else
   echo -e "$SECTION_START Creating language files $SECTION_END"
   meteor npx babel-node ./createLanguages.js $MICROSERVICE
 fi
 
-ln -s ../../../core ../microservices/$MICROSERVICE/imports/core
-./link.sh ../core/assets/public ../microservices/$MICROSERVICE/public
-ln -s ../../core/assets/private ../microservices/$MICROSERVICE/private
+# ln -s ../../../core ../microservices/$MICROSERVICE/imports/core
+# ./link.sh ../core/assets/public ../microservices/$MICROSERVICE/public
+# ln -s ../../core/assets/private ../microservices/$MICROSERVICE/private
 
-echo -e "$SECTION_START Installing npm packages $SECTION_END"
-( cd ../microservices/$MICROSERVICE && meteor npm i -q );
+# echo -e "$SECTION_START Installing npm packages $SECTION_END"
+# ( cd ../microservices/$MICROSERVICE && meteor npm i -q );
