@@ -12,10 +12,13 @@ windows:
             - tmux select-pane -t 0 -T Instructions
             - node ./utils/tmux-instructions.js
 
-        <% apps.forEach(({ app, environment, configFolder, command, prettyCommand }, i) => { %>
+        <% apps.forEach(({ app, environment, configFolder, command, prettyCommand, runSetup }, i) => { %>
         - <%- app %>-<%- environment %>:
             - tmux set pane-border-status bottom
             - export NPM_CONFIG_PREFIX=""
+            <% if (runSetup) { %>
+            - (cd ../scripts && bash setup-microservice.sh <%- app %>)
+            <% } %>
             - tmux select-pane -t <%- i + 1 %> -T "<%- prettyCommand %> - <%- app %>"
             - cd <%- configFolder %>
             - METEOR_ALLOW_SUPERUSER=true EPOTEK_RUN_PARALLEL=true <%- command %> || echo "FAILED"

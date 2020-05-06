@@ -53,7 +53,6 @@ const getClosestMainCity = ({ city, cities }) => {
 };
 
 const classifyCity = (city, index, cities) => {
-  process.stdout.write(`Processing city "${city.city}"`);
   const isMainCity = mainCities.some(({ zipCode }) => zipCode === city.zipCode);
   let closestMainCity;
 
@@ -62,13 +61,11 @@ const classifyCity = (city, index, cities) => {
   } else {
     closestMainCity = getClosestMainCity({ city, cities });
   }
-  console.log(` --> ${closestMainCity.city}`);
 
   return { ...city, closestMainCity };
 };
 
 const classifyCities = () => {
-  console.log('Classifying cities...');
   const classifiedCities = JSON.stringify(citiesCoordinates.map(classifyCity));
   fs.writeFileSync(
     '../../core/api/gpsStats/server/classifiedCities.json',
