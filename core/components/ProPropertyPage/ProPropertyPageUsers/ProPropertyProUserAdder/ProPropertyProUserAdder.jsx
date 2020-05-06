@@ -24,7 +24,7 @@ const ProPropertyProUserAdder = ({ property, permissions: { isAdmin } }) => {
       <CollectionSearch
         query={isAdmin && userSearch}
         title="Rechercher un compte Pro"
-        queryParams={{ 'roles._id': ROLES.PRO }}
+        queryParams={{ roles: [ROLES.PRO] }}
         method={!isAdmin && getProByEmail}
         methodParams={({ searchQuery }) => ({ email: searchQuery })}
         placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}

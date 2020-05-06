@@ -20,7 +20,7 @@ const PromotionProUserAdder = ({ addUser, promotion }) => (
     <div className="flex-col">
       <CollectionSearch
         query={userSearch}
-        queryParams={{ 'roles._id': ROLES.PRO }}
+        queryParams={{ roles: [ROLES.PRO] }}
         title="Rechercher un compte Pro"
         renderItem={user => (
           <div className="user-search-item">
