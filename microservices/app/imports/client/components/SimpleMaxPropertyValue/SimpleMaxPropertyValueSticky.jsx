@@ -44,25 +44,25 @@ const getFooter = ({
 }) => {
   if (maxPropertyValueExists) {
     return (
-      <h2>
+      <div className="font-size-3">
         <T id="MaxPropertyValue.stickyFooterTitle" />
-      </h2>
+      </div>
     );
   }
 
   if (!maxPropertyValue && !canCalculateSolvency) {
     return (
-      <h2>
+      <div className="font-size-3">
         <T id="MaxPropertyValue.stickyFooterEmpty" />
-      </h2>
+      </div>
     );
   }
 
   if (!maxPropertyValue && canCalculateSolvency) {
     return (
-      <h2 className="animated bounceIn calculate">
+      <div className="animated bounceIn calculate font-size-3">
         <T id="MaxPropertyValue.stickyFooterCalculate" />
-      </h2>
+      </div>
     );
   }
 
@@ -79,7 +79,7 @@ const getFooter = ({
         <T id={`Forms.canton.${canton}`} /> -{' '}
         <T id={`Forms.residenceType.${residenceType}`} />
       </label>
-      <h3>{displayRange(values, purchaseType)}</h3>
+      <div className="font-size-3">{displayRange(values, purchaseType)}</div>
     </div>
   );
 };

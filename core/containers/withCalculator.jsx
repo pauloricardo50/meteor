@@ -26,7 +26,7 @@ const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
 const getLenderRules = ({ loan, lenderRules }) => {
   let finalLenderRules = lenderRules;
   if (loan && loan.structure && loan.structure.offerId) {
-    finalLenderRules = loan.structure.offer?.lender.organisation.lenderRules;
+    finalLenderRules = loan.structure.offer.lender.organisation.lenderRules;
   }
 
   return finalLenderRules;

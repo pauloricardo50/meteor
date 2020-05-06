@@ -48,6 +48,7 @@ const NewLoansStat = ({
             ]}
             onChange={setPeriod}
             value={period}
+            className="mr-8"
           />
           <Select
             label="Anonymes"
