@@ -5,7 +5,12 @@ import SimpleSchema from 'simpl-schema';
 
 import UserService from '../../../users/server/UserService';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
-import { checkAccessToUser, checkQuery, getImpersonateUserId } from './helpers';
+import {
+  ACCESS_TO_USER,
+  checkAccessToUser,
+  checkQuery,
+  getImpersonateUserId,
+} from './helpers';
 
 const querySchema = new SimpleSchema({
   email: { type: String, optional: false },
@@ -49,13 +54,18 @@ const getUserAPI = ({ user: { _id: userId }, query }) => {
     );
   }
 
-  checkAccessToUser({ user, proId: proId || userId });
+  const hasAccessToFullUser =
+    checkAccessToUser({ user, proId: proId || userId }) === ACCESS_TO_USER.FULL;
 
-  return omit(user, [
-    'referredByOrganisationLink',
-    'referredByUserLink',
-    'emails',
-  ]);
+  return omit(
+    user,
+    [
+      'referredByOrganisationLink',
+      'referredByUserLink',
+      'emails',
+      !hasAccessToFullUser && 'phoneNumbers',
+    ].filter(x => x),
+  );
 };
 
 export default getUserAPI;
