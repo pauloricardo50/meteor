@@ -11,6 +11,8 @@ const defaultHandleError = (error, additionalData) => {
     }
   }
 
+  console.error(error);
+
   const { Kadira } = window;
   if (Kadira && Kadira.trackError) {
     Kadira.trackError('react', error.stack.toString());
