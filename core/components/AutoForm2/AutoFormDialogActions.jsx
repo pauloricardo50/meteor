@@ -6,33 +6,8 @@ import { withState } from 'recompose';
 import Button from '../Button';
 import T from '../Translation';
 import AutoFormDialogChildren from './AutoFormDialogChildren';
+import AutoFormDialogDelete from './AutoFormDialogDelete';
 import CustomSubmitField from './CustomSubmitField';
-
-const enhanceOnDelete = ({
-  onDelete,
-  setDisableActions,
-  handleClose,
-  setDeleting,
-}) => (...args) => {
-  const confirmed = window.confirm('Êtes-vous sûr?');
-
-  if (!confirmed) {
-    return;
-  }
-
-  setDeleting(true);
-  setDisableActions(true);
-  return onDelete(...args)
-    .then(result => {
-      handleClose();
-      return result;
-    })
-    .finally(result => {
-      setDisableActions(false);
-      setDeleting(false);
-      return result;
-    });
-};
 
 const AutoFormDialogActions = (
   {
@@ -42,6 +17,7 @@ const AutoFormDialogActions = (
     disableActions,
     setDisableActions,
     onDelete,
+    deleteKeyword,
   },
   {
     uniforms: {
@@ -57,20 +33,17 @@ const AutoFormDialogActions = (
       </Button>
 
       {onDelete && (
-        <Button
-          onClick={enhanceOnDelete({
-            onDelete,
-            setDisableActions,
-            handleClose,
-            setDeleting,
-          })}
+        <AutoFormDialogDelete
           disabled={submitting || disableActions}
-          error
-          outlined
+          handleClose={handleClose}
           loading={deleting}
-        >
-          <T id="general.remove" />
-        </Button>
+          onDelete={onDelete}
+          toggleDeleting={v => {
+            setDeleting(v);
+            setDisableActions(v);
+          }}
+          deleteKeyword={deleteKeyword}
+        />
       )}
 
       {renderAdditionalActions && (

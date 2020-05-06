@@ -64,6 +64,7 @@ export class AutoFormDialog extends Component {
       setOpen,
       title,
       triggerComponent,
+      deleteKeyword,
       ...otherProps
     } = this.props;
     const schemaKeys = this.props.schema._schemaKeys;
@@ -124,6 +125,7 @@ export class AutoFormDialog extends Component {
               renderAdditionalActions={renderAdditionalActions}
               disableActions={disableActions}
               onDelete={onDelete}
+              deleteKeyword={deleteKeyword}
             />
           </AutoForm>
         </MuiDialog>
