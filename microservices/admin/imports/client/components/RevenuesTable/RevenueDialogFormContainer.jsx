@@ -158,24 +158,11 @@ export default compose(
               onSubmitted();
             });
         },
-        deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
+        deleteRevenue: revenueId => {
           setSubmitting(true);
-          setDisableActions(true);
-          const confirm = window.confirm('Êtes-vous sûr ?');
-          if (confirm) {
-            return revenueRemove
-              .run({ revenueId })
-              .then(closeDialog)
-              .finally(() => {
-                setDisableActions(false);
-                setSubmitting(false);
-                onSubmitted();
-              });
-          }
-
-          setDisableActions(false);
-          setSubmitting(false);
-          return Promise.resolve();
+          return revenueRemove.run({ revenueId }).finally(() => {
+            onSubmitted();
+          });
         },
         layout: revenueFormLayout,
       };
