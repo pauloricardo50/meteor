@@ -26,6 +26,7 @@ import { NONCE_TTL, addNonce, nonceExists } from './noncesHandler';
 import {
   BODY_SIZE_LIMIT,
   FILE_UPLOAD_DIR,
+  HTTP_STATUS_CODES,
   REST_API_ERRORS,
 } from './restApiConstants';
 
@@ -265,17 +266,19 @@ const errorMiddleware = options => (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
   const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
 
-  ErrorLogger.handleError({
-    error,
-    additionalData: [
-      Object.keys(body).length > 0 && { body },
-      Object.keys(params).length > 0 && { params },
-      Object.keys(query).length > 0 && { query },
-      Object.keys(headers).length > 0 && { headers },
-    ].filter(x => x),
-    userId: user._id,
-    url: getRequestPath(req),
-  });
+  if (status !== HTTP_STATUS_CODES.NOT_FOUND) {
+    ErrorLogger.handleError({
+      error,
+      additionalData: [
+        Object.keys(body).length > 0 && { body },
+        Object.keys(params).length > 0 && { params },
+        Object.keys(query).length > 0 && { query },
+        Object.keys(headers).length > 0 && { headers },
+      ].filter(x => x),
+      userId: user._id,
+      url: getRequestPath(req),
+    });
+  }
 
   logRequest({ req, result: JSON.stringify({ status, errorName, message }) });
   if (Object.keys(user) > 0) {
