@@ -35,6 +35,14 @@ then
   meteor npm run classify-cities
 
   echo -e "$SECTION_START Preparing front app plugin $SECTION_END"
+
+  # Remove all symlinks in the parent directory except node_modules to
+  # keep .bin symlinks
+  (
+    cd ../plugins/frontPlugin && \
+    find . -type l -not -path "**/node_modules/**" -exec unlink {} \;
+  )
+
   ( cd ../plugins/frontPlugin && npm rebuild node-sass );
   ( cd ../plugins/frontPlugin && npm i -q );
   ln -s ../../../core ../plugins/frontPlugin/src/core
