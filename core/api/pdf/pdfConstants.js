@@ -7,7 +7,7 @@ export const TEMPLATES = {
     name: 1,
     purchaseType: 1,
     residenceType: 1,
-    disbursementDate: 1,
+    disbursementDate: { $or: 'structure.refinancingDate' },
     borrowers: [
       {
         gender: 1,
@@ -19,6 +19,7 @@ export const TEMPLATES = {
       },
     ],
     structure: {
+      refinancingDate: { $or: 'disbursementDate' },
       ownFunds: [1],
       property: {
         propertyType: 1,
