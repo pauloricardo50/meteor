@@ -139,8 +139,8 @@ const makePrepareJob = () => ({
       'meteor npm --prefix microservices/backend ci',
     ),
     runCommand(
-      'Remove libc6-dev',
-      'sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f',
+      'Reinstall libc6-dev',
+      'sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f && apt-get install libc6-dev',
     ),
     runCommand(
       'Install expect',

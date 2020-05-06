@@ -75,10 +75,11 @@ jobs:
           name: Install node_modules
           command: meteor npm --prefix microservices/backend ci
       - run:
-          name: Remove libc6-dev
+          name: Reinstall libc6-dev
           command: >-
             sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo
-            apt-get clean && sudo apt-get install -f
+            apt-get clean && sudo apt-get install -f && apt-get install
+            libc6-dev
       - run:
           name: Install expect
           command: sudo apt-get update && sudo apt-get install expect
