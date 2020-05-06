@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
@@ -109,8 +108,6 @@ const PdfDownloadDialog = ({
   icon,
   dialogTitle,
 }) => {
-  const { purchaseType } = loan;
-  const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   const schema = useMemo(() => makeSchema(loan), [loan]);
 
   return (
@@ -124,10 +121,6 @@ const PdfDownloadDialog = ({
         label: buttonLabel,
         icon,
         style: { marginRight: 4 },
-        disabled: isRefinancing,
-        tooltip:
-          isRefinancing &&
-          'Les PDF pour les refinancements ne sont pas encore disponibles',
       }}
       model={{ structureIds: loan.structures.map(({ id }) => id) }}
       layout={[
