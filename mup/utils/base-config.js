@@ -27,6 +27,7 @@ module.exports = function createConfig({
   parallelPrepareBundle,
   appName: _appName,
   hooks = {},
+  envVars = {},
 }) {
   const appName = _appName || microservice;
 
@@ -70,6 +71,7 @@ module.exports = function createConfig({
         MONGO_URL: `${BASE_MONGO_URL}/${environment}?retryWrites=true&w=majority`,
         MONGO_OPLOG_URL: `${BASE_MONGO_URL}/local`,
         DDP_DEFAULT_CONNECTION_URL: `https://backend.${baseDomain}`,
+        ...envVars,
       },
 
       docker: {
