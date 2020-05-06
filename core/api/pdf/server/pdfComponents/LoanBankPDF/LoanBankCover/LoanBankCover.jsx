@@ -65,7 +65,6 @@ const coverContent = ({
     flatType,
     canton,
   } = Calculator.selectProperty({ loan });
-  const propertyValue = Calculator.selectPropertyValue({ loan });
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   const refinancingDate = Calculator.selectStructureKey({
     loan,
