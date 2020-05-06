@@ -1,9 +1,8 @@
 #!/bin/bash
+source ./colors.sh
 
-# This scripts does a bunch of repetitive setup for each microservice
-# such as installing things, symlinks, copying necessary folders
+echo -e "$TITLE_START SETTING UP ROOT $TITLE_END"
 
-start=`date +%s`
 DO_CLEAN=false
 
 # check for flag arguments
@@ -22,17 +21,12 @@ done
 
 if [[ $DO_CLEAN == true ]];
 then
-  echo "Cleaning and installing root npm packages"
+  echo -e "$SECTION_START Cleaning and installing root npm packages $SECTION_END"
   ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
 fi
 
-echo "Installing npm packages in root"
+echo -e "$SECTION_START Installing npm packages in root $SECTION_END"
 ( cd .. && meteor npm i -q );
 
-echo "Setting up sort-import style"
+echo -e "$SECTION_START Setting up sort-import style $SECTION_END"
 ln -s ../plugins/import-sort-style-epotek ../node_modules/.
-
-end=`date +%s`
-runtime=$((end-start))
-
-echo "e-Potek is ready! It took $runtime seconds"

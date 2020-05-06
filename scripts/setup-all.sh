@@ -1,4 +1,6 @@
-echo "Preparing e-Potek :]"
+source ./colors.sh
+
+echo -e "$BLUE Preparing e-Potek :] $RESET_FORMATTING"
 
 bash setup-root.sh
 

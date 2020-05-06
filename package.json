@@ -18,7 +18,7 @@
     "restore-production-to-staging": "cd mup && node pull-mongo -e prod --out /tmp/prod.archive && node restore-mongo -e staging --archivePath /tmp/prod.archive",
     "run": "cd scripts/ && ./run.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
-    "setup": "cd scripts/ && bash ./setup-all.sh",
+    "setup": "cd scripts/ && ./setup-all.sh",
     "test-all": "cd scripts/ && ./test-all.sh",
     "classify-cities": "cd scripts/gpsStats && node classifyCities"
   },

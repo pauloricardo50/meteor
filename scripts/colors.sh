@@ -1,0 +1,9 @@
+export BLUE="\e[34m"
+export UNDERLINE="\e[4m"
+export RESET_FORMATTING="\e[0m"
+
+export TITLE_START="\n$BLUE $UNDERLINE** "
+export TITLE_END=" **$RESET_FORMATTING \n"
+
+export SECTION_START="\n$NEW_LINE $BLUE**"
+export SECTION_END=" **$RESET_FORMATTING"
