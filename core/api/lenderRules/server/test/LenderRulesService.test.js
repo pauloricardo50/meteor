@@ -1,10 +1,10 @@
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 import jsonLogic from 'json-logic-js';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { EXPENSE_TYPES } from '../../lenderRulesConstants';
 import LenderRulesService from '../LenderRulesService';

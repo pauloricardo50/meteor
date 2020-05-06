@@ -11,9 +11,7 @@ import {
 import { ROLES } from '../../../users/userConstants';
 
 describe('Global Exposures', () => {
-  beforeEach(() => {
-    resetDatabase();
-  });
+  beforeEach(() => resetDatabase());
 
   afterEach(done =>
     Meteor.logout(err => {

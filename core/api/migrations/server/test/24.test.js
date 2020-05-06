@@ -1,9 +1,8 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import {
   ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,

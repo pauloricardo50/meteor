@@ -1,12 +1,13 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { LOAN_STATUS } from '../../loanConstants';
 import { proLoans2 } from '../../queries';
 import LoanService from '../LoanService';
+
+/* eslint-env mocha */
+
 
 describe('proLoans2', () => {
   beforeEach(() => {

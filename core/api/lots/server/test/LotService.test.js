@@ -1,9 +1,9 @@
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 import PromotionService from '../../../promotions/server/PromotionService';

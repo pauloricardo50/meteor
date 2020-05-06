@@ -35,7 +35,7 @@ const getSchema = currentUser =>
       defaultValue: currentUser?._id,
       customAllowedValues: {
         query: adminUsers,
-        params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
+        params: () => ({ 'roles._id': ROLES.ADMIN, $body: { name: 1 } }),
       },
       uniforms: {
         transform: assignee => assignee?.name,

@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
@@ -19,7 +21,7 @@ import EmailModifier from 'core/components/EmailModifier';
 import Icon from 'core/components/Icon';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import Roles from 'core/components/Roles';
+import RolesList from 'core/components/RolesList';
 import Toggle from 'core/components/Toggle';
 import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
@@ -46,10 +48,10 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     emails = [],
     isDisabled,
   } = user;
-  const { roles: currentUserRoles = [] } = currentUser || {};
   const allowAssign =
-    currentUserRoles.includes(ROLES.DEV) ||
-    (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
+    Roles.userIsInRole(currentUser, ROLES.DEV) ||
+    (!Roles.userIsInRole(user, ROLES.DEV) &&
+      !Roles.userIsInRole(user, ROLES.ADMIN));
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => toggleAccount.run({ userId });
 
@@ -64,7 +66,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
           <small className="secondary">
             &nbsp;-&nbsp;
-            <Roles roles={roles} />
+            <RolesList roles={roles} />
           </small>
 
           <RolePicker userId={userId} />

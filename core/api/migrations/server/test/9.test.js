@@ -1,7 +1,7 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { expect } from 'chai';
+import { resetDatabase } from '../../../../utils/testHelpers';
 
 /* eslint-env mocha */
-import { expect } from 'chai';
 
 import { STEPS } from '../../../loans/loanConstants';
 import Loans from '../../../loans/loans';

@@ -1,10 +1,10 @@
 import { Factory } from 'meteor/dburles:factory';
 /* eslint-env mocha */
 import { Mongo } from 'meteor/mongo';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../server';
 
 const PostCollection = new Mongo.Collection('posts');

@@ -1,9 +1,8 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import {

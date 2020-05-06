@@ -60,7 +60,7 @@ const getRandomInsuranceName = () =>
   `20-0${Math.floor(Math.random() * 899 + 100)}-A01`;
 
 Factory.define('user', Users, {
-  roles: [ROLES.USER],
+  roles: [{ _id: ROLES.USER }],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -68,7 +68,7 @@ Factory.define('user', Users, {
 });
 
 Factory.define('dev', Users, {
-  roles: [ROLES.DEV],
+  roles: [{ _id: ROLES.DEV }],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -76,7 +76,7 @@ Factory.define('dev', Users, {
 });
 
 Factory.define('admin', Users, {
-  roles: [ROLES.ADMIN],
+  roles: [{ _id: ROLES.ADMIN }],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -84,7 +84,7 @@ Factory.define('admin', Users, {
 });
 
 Factory.define('pro', Users, {
-  roles: [ROLES.PRO],
+  roles: [{ _id: ROLES.PRO }],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -142,7 +142,7 @@ Factory.define('promotion', Promotions, {
   city: 'Genève',
   assignedEmployeeId: () => {
     const adminId = Users.insert({
-      roles: [ROLES.ADMIN],
+      roles: [{ _id: ROLES.ADMIN }],
       emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
       lastName: TEST_LASTNAME,
       firstName: TEST_FIRSTNAME,

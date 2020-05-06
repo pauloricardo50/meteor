@@ -3,6 +3,6 @@ import '../testInit.test';
 import '../../api/server';
 import '../../api/api';
 
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { resetDatabase } from '../../utils/testHelpers';
 
 resetDatabase();
