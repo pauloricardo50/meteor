@@ -20,7 +20,6 @@ export const TEMPLATES = {
     ],
     structure: {
       refinancingDate: { $or: 'disbursementDate' },
-      ownFunds: [1],
       property: {
         propertyType: 1,
         address1: 1,

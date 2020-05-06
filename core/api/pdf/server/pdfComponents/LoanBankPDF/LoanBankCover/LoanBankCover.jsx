@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import T from '../../../../../../components/Translation';
 import Calculator from '../../../../../../utils/Calculator';
+import { PURCHASE_TYPE } from '../../../../../loans/loanConstants';
 import { PROPERTY_TYPE } from '../../../../../properties/propertyConstants';
 import PdfPage from '../../PdfPage';
 import LoanBankCoverHeader from './LoanBankCoverHeader';
@@ -65,6 +66,11 @@ const coverContent = ({
     canton,
   } = Calculator.selectProperty({ loan });
   const propertyValue = Calculator.selectPropertyValue({ loan });
+  const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
+  const refinancingDate = Calculator.selectStructureKey({
+    loan,
+    key: 'refinancingDate',
+  });
 
   return (
     <div className="cover-content">
@@ -82,10 +88,17 @@ const coverContent = ({
       </h2>
       <h3 className="address">{`${address1}, ${zipCode} ${city} (${canton})`}</h3>
       <h3 className="disbursement-date">
-        <span>
-          Déblocage des fonds prévu le{' '}
-          <b>{moment(disbursementDate).format('DD.MM.YYYY')}</b>
-        </span>
+        {isRefinancing ? (
+          <span>
+            Date de reprise souhaitée{' '}
+            <b>{moment(refinancingDate).format('DD.MM.YYYY')}</b>
+          </span>
+        ) : (
+          <span>
+            Déblocage des fonds prévu le{' '}
+            <b>{moment(disbursementDate).format('DD.MM.YYYY')}</b>
+          </span>
+        )}
       </h3>
       <StructureRecapTable
         loan={loan}
