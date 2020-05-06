@@ -1,4 +1,4 @@
-import { REGULAR_WEIGHT } from '../../../../pdfConstants';
+import { BORDER_BLUE, REGULAR_WEIGHT } from '../../../../pdfConstants';
 
 export default `
     .balance-sheet-table {
@@ -77,4 +77,26 @@ export default `
     .single-structure-recap-table {
         margin-top: 40px;
     }
+
+    .own-funds-use-description {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .own-funds-use-description .title {
+        margin: 0;
+        margin-bottom: 8px;
+        color: ${BORDER_BLUE};
+        font-weight: 800;
+    }
+
+    .own-funds-use-description p {
+        margin: 0;
+        border: 1px solid ${BORDER_BLUE};
+        padding: 4px;
+        white-space: pre-line;
+    }
+
 `;
