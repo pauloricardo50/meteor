@@ -235,6 +235,7 @@ anonymousCreateUser.setHandler((context, params) => {
   const userId = UserService.anonymousCreateUser(params);
   return userId;
 });
+anonymousCreateUser.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 // Method to toggle provided user account only if the current user is admin
 toggleAccount.setHandler((context, { userId }) => {

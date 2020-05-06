@@ -8,7 +8,13 @@ import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTab
 
 const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];
 
-const OrganisationInfo = ({ currentUser, adminNote, _id, documents }) => (
+const OrganisationInfo = ({
+  currentUser,
+  adminNote,
+  _id,
+  documents,
+  _collection,
+}) => (
   <div>
     <AdminNote
       adminNote={adminNote}
@@ -24,7 +30,7 @@ const OrganisationInfo = ({ currentUser, adminNote, _id, documents }) => (
       variant="simple"
     />
     <CollectionTasksTable
-      doc={{ _id }}
+      doc={{ _id, _collection }}
       collection={ORGANISATIONS_COLLECTION}
       withTaskInsert
     />
