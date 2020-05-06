@@ -143,6 +143,10 @@ const makePrepareJob = () => ({
       'sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f && sudo apt-get update && sudo apt-get install libc6-dev',
     ),
     runCommand(
+      'Reinstall build-essential',
+      'sudo apt-get update && sudo apt-get install build-essential',
+    ),
+    runCommand(
       'Install expect',
       'sudo apt-get update && sudo apt-get install expect',
     ),

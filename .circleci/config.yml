@@ -81,6 +81,9 @@ jobs:
             apt-get clean && sudo apt-get install -f && sudo apt-get update &&
             sudo apt-get install libc6-dev
       - run:
+          name: Reinstall build-essential
+          command: sudo apt-get update && sudo apt-get install build-essential
+      - run:
           name: Install expect
           command: sudo apt-get update && sudo apt-get install expect
       - run:
