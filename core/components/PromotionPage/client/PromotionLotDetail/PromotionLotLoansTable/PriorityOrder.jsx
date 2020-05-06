@@ -50,7 +50,7 @@ const PriorityOrder = ({
 
   return (
     <div className="priority-order">
-      {options.map(({ _id, name, solvency, promotionLots }) => {
+      {options.map(({ _id, name, promotionLots }) => {
         const chipColor = getChipColor({ currentId, userId, promotionLots });
 
         return (
@@ -65,12 +65,11 @@ const PriorityOrder = ({
             key={`${_id}${promotionLots[0]._id}`}
             onClick={event => event.stopPropagation()}
           >
-            <Tooltip placement="bottom" title={getTooltip(chipColor)}>
+            <Tooltip title={getTooltip(chipColor)}>
               <Chip
                 clickable
                 label={name}
                 className={chipColor}
-                // icon={<PromotionOptionSolvency solvency={solvency} />}
                 style={{ cursor: 'pointer' }}
               />
             </Tooltip>
