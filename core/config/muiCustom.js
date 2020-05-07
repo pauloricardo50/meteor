@@ -60,6 +60,43 @@ const createTheme = ({ fontSize = 14 }) =>
           margin: 4,
           width: 'calc(100% - 8px)',
           borderRadius: 4,
+          '&:hover': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
+          '&:focus': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
+          '&.Mui-selected': {
+            backgroundColor: colors.mui.darkPrimary,
+            color: 'white',
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+            '&:hover': {
+              backgroundColor: colors.mui.darkPrimary,
+              color: 'white',
+              '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+                color: 'white',
+              },
+            },
+          },
+        },
+        button: {
+          '&:hover': {
+            backgroundColor: colors.primary,
+            color: 'white',
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              color: 'white',
+            },
+          },
         },
       },
       MuiList: {

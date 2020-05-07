@@ -283,22 +283,6 @@ $button-height: 30px;
   }
 }
 
-.checkbox-list {
-  display: flex;
-  overflow: scroll;
-  flex-direction: column;
-
-  max-height: 400px;
-
-  > * {
-    margin-left: 0;
-  }
-
-  .checkbox {
-    padding: 4px;
-  }
-}
-
 .radio-group > * {
   margin-left: 0;
 
