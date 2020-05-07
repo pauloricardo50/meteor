@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 
@@ -19,7 +20,7 @@ const ProPropertyPageHeader = ({ property, permissions }) => {
     _collection,
   } = property;
   const { canModifyProperty } = permissions;
-  const isDev = Meteor.user().roles.includes(ROLES.DEV);
+  const isDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
 
   return (
     <div className="pro-property-page-header">

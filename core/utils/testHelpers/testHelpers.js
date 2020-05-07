@@ -110,13 +110,6 @@ export const checkEmails = (expected, options = {}) =>
     });
   });
 
-export const resetDatabase = () =>
-  new Promise((resolve, reject) => {
-    Meteor.call('resetDatabase', (err, res) =>
-      err ? reject(err) : resolve(res),
-    );
-  });
-
 export const generateScenario = scenario =>
   new Promise((resolve, reject) => {
     Meteor.call('generateScenario', { scenario }, (err, res) =>

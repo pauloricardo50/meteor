@@ -167,8 +167,9 @@ api.addEndpoint('/front-webhooks/:webhookName', 'POST', frontWebhookAPI, {
   customAuth: FrontService.checkWebhookAuthentication.bind(FrontService),
   endpointName: 'Front webhooks',
   analyticsParams: req => {
-    const { params: { webhookName } = {} } = req;
-
+    // req.params is set by connect-route, after all middlewares
+    const { url } = req;
+    const [webhookName] = url.split('/').slice(-1);
     return { webhookName };
   },
 });

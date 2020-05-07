@@ -5,8 +5,6 @@ import colors from './colors';
 const createTheme = ({ fontSize = 14 }) =>
   createMuiTheme({
     overrides: {
-      MuiInput: {},
-      MuiSelect: {},
       MuiToolbar: {
         root: {
           position: '',

@@ -1,8 +1,7 @@
 /* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { COMMISSION_RATES_TYPE } from '../../commissionRateConstants';
 import CommissionRateService from '../CommissionRateService';

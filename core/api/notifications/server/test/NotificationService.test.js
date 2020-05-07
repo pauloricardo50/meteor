@@ -1,8 +1,7 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
 import ActivityService from '../../../activities/server/ActivityService';
 import generator from '../../../factories/server';

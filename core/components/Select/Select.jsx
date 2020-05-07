@@ -1,13 +1,10 @@
 import React from 'react';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 
 import Chip from '../Material/Chip';
-import FormControl from '../Material/FormControl';
-import FormHelperText from '../Material/FormHelperText';
-import Input from '../Material/Input';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 import MenuItem from '../Material/MenuItem';
-import MuiSelect from '../Material/Select';
+import TextField from '../Material/TextField';
 import SelectContainer from './SelectContainer';
 
 const makeRenderValue = ({ multiple, rawOptions }) => {
@@ -45,42 +42,34 @@ const Select = ({
   multiple,
   rawOptions,
   fullWidth,
+  className,
   ...otherProps
-}) => {
-  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
-
-  return (
-    <FormControl
-      fullWidth={fullWidth}
-      variant="outlined"
-      className="mui-select"
-      style={style}
-    >
-      {label && (
-        <InputLabel ref={inputLabelRef} htmlFor={id}>
-          {label}
-          {required && ' '}
-          {required && <span className="error">*</span>}
-        </InputLabel>
-      )}
-      <MuiSelect
-        renderValue={makeRenderValue({ multiple, rawOptions })}
-        {...otherProps}
-        value={value}
-        onChange={onChange}
-        input={<Input labelWidth={labelWidth} id={id} />}
-        multiple={multiple}
-        displayEmpty={!!placeholder}
-      >
-        {[
-          placeholder && <MenuItem value="">{placeholder}</MenuItem>,
-          ...options,
-        ].filter(x => x)}
-      </MuiSelect>
-      {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl>
-  );
-};
+}) => (
+  <TextField
+    fullWidth={fullWidth}
+    style={style}
+    className={cx('mui-select', className)}
+    select
+    SelectProps={{
+      multiple,
+      renderValue: makeRenderValue({ multiple, rawOptions }),
+      displayEmpty: !!placeholder,
+    }}
+    value={value}
+    onChange={onChange}
+    label={label}
+    id={id}
+    helperText={error}
+    error={!!error}
+    required={required}
+    {...otherProps}
+  >
+    {[
+      placeholder && <MenuItem value="">{placeholder}</MenuItem>,
+      ...options,
+    ].filter(x => x)}
+  </TextField>
+);
 
 Select.propTypes = {
   id: PropTypes.string,

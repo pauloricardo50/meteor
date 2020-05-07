@@ -28,7 +28,7 @@ import { USERS_COLLECTION } from '../../../api/users/userConstants';
 import colors from '../../../config/colors';
 import FullDate from '../../dateComponents/FullDate';
 import PremiumBadge from '../../PremiumBadge';
-import Roles from '../../Roles';
+import RolesList from '../../RolesList';
 import StatusLabel from '../../StatusLabel';
 import TooltipArray from '../../TooltipArray';
 import T, { IntlDate, Money } from '../../Translation';
@@ -89,7 +89,7 @@ export const titles = {
       )}
       {name}
       &nbsp;
-      <Roles className="secondary" roles={roles} />
+      <RolesList className="secondary" roles={roles} />
     </span>
   ),
   [BORROWERS_COLLECTION]: ({ name, age }) => (

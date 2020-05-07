@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import { getUserNameAndOrganisation } from '../../helpers/helpers';
 import {
   cancelPromotionLotReservation,
@@ -55,13 +57,12 @@ const getPromotionOptionMailParams = (
   let userName = 'e-Potek';
 
   if (userId) {
-    const { name, roles } = UserService.get(userId, { name: 1, roles: 1 });
-    const isUser = roles.includes(ROLES.USER);
+    const user = UserService.get(userId, { name: 1, roles: 1 });
 
-    if (isUser && anonymize) {
+    if (Roles.userIsInRole(user, ROLES.USER) && anonymize) {
       userName = 'un acquéreur';
     } else {
-      userName = name;
+      userName = user.name;
     }
   }
 

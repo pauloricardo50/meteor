@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import { fullUser } from '../../../fragments';
 import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';

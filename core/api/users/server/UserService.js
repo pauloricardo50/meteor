@@ -50,7 +50,7 @@ export class UserServiceClass extends CollectionService {
     return user;
   }
 
-  createUser = ({ options, role }) => {
+  createUser = ({ options, role = ROLES.USER }) => {
     if (!options.password) {
       // password is not even allowed to be undefined,
       // it has to be stripped from the options object
@@ -59,9 +59,10 @@ export class UserServiceClass extends CollectionService {
 
     const newUserId = Accounts.createUser(options);
 
-    if (role) {
-      Roles.setUserRoles(newUserId, role);
+    if (!role) {
+      throw new Meteor.Error('New user must have a role');
     }
+    Roles.setUserRoles(newUserId, role);
 
     return newUserId;
   };
@@ -114,8 +115,7 @@ export class UserServiceClass extends CollectionService {
         referredByUserId && this.get(referredByUserId, { roles: 1 });
       const isReferralAdmin =
         userReferral &&
-        (Roles.userIsInRole(userReferral, ROLES.ADMIN) ||
-          Roles.userIsInRole(userReferral, ROLES.DEV));
+        Roles.userIsInRole(userReferral, [ROLES.ADMIN, ROLES.DEV]);
 
       this.update({
         userId: newUserId,
@@ -149,7 +149,7 @@ export class UserServiceClass extends CollectionService {
         object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_PRO },
       });
       const referralUser = this.get(
-        { _id: referralId, roles: { $in: [ROLES.PRO] } },
+        { _id: referralId, 'roles._id': ROLES.PRO },
         { _id: 1 },
       );
       const referralOrg = OrganisationService.get(referralId, { _id: 1 });
@@ -759,7 +759,7 @@ export class UserServiceClass extends CollectionService {
       // this avoids issues with analytics, that expects all users to have
       // an assignee
       const anyAdmin = this.get(
-        { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
+        { 'roles._id': { $in: [ROLES.ADMIN, ROLES.DEV] } },
         { _id: 1 },
       );
       return anyAdmin && anyAdmin._id;
@@ -776,7 +776,7 @@ export class UserServiceClass extends CollectionService {
     // Round robin
     const previouslyCreatedUser = this.get(
       {
-        roles: ROLES.USER,
+        'roles._id': ROLES.USER,
         assignedEmployeeId: { $in: this.employees },
       },
       {

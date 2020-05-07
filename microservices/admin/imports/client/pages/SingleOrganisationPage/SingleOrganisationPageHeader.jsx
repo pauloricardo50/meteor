@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import queryString from 'query-string';
 import { injectIntl } from 'react-intl';
@@ -62,7 +64,7 @@ const SingleOrganisationPage = ({
           </div>
         </span>
         <div>
-          {currentUser.roles.includes(ROLES.DEV) && (
+          {Roles.userIsInRole(currentUser, ROLES.DEV) && (
             <ConfirmMethod
               keyword={name}
               buttonProps={{

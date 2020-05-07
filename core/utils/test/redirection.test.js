@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import { ROLES } from '../../api/users/userConstants';
 import { getRedirectIfInRoleForOtherApp } from '../redirection';
 
-describe('getRedirectIfInRoleForOtherApp', () => {
+describe('redirection getRedirectIfInRoleForOtherApp', () => {
   const token = Random.id();
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('getRedirectIfInRoleForOtherApp', () => {
     delete Accounts._storedLoginToken;
   });
 
-  const userWithRole = role => ({ roles: [role] });
+  const userWithRole = role => ({ roles: [{ _id: role }] });
   const urlFor = service =>
     `${Meteor.settings.public.subdomains[service]}/login-token/${token}`;
 

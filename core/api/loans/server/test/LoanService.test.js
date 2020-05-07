@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import faker from 'faker/locale/fr';
@@ -9,7 +8,7 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';

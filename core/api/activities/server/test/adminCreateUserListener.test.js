@@ -1,8 +1,6 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { adminCreateUser } from '../../../users/methodDefinitions';
@@ -12,6 +10,9 @@ import {
   ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,
 } from '../../activityConstants';
+
+/* eslint-env mocha */
+
 
 describe('adminCreateUserListener', () => {
   beforeEach(() => {

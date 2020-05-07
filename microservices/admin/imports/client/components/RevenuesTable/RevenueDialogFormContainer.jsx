@@ -35,7 +35,7 @@ const getSchema = currentUser =>
       defaultValue: currentUser?._id,
       customAllowedValues: {
         query: adminUsers,
-        params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
+        params: () => ({ 'roles._id': ROLES.ADMIN, $body: { name: 1 } }),
       },
       uniforms: {
         transform: assignee => assignee?.name,
@@ -158,24 +158,11 @@ export default compose(
               onSubmitted();
             });
         },
-        deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
+        deleteRevenue: revenueId => {
           setSubmitting(true);
-          setDisableActions(true);
-          const confirm = window.confirm('Êtes-vous sûr ?');
-          if (confirm) {
-            return revenueRemove
-              .run({ revenueId })
-              .then(closeDialog)
-              .finally(() => {
-                setDisableActions(false);
-                setSubmitting(false);
-                onSubmitted();
-              });
-          }
-
-          setDisableActions(false);
-          setSubmitting(false);
-          return Promise.resolve();
+          return revenueRemove.run({ revenueId }).finally(() => {
+            onSubmitted();
+          });
         },
         layout: revenueFormLayout,
       };

@@ -1,9 +1,6 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
@@ -15,6 +12,9 @@ import {
   ACTIVITY_TYPES,
 } from '../../activityConstants';
 import ActivityService from '../ActivityService';
+
+/* eslint-env mocha */
+
 
 describe('proInviteUserListener', function() {
   this.timeout(10000);

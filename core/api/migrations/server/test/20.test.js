@@ -1,4 +1,4 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { resetDatabase } from '../../../../utils/testHelpers';
 
 /* eslint-env mocha */
 import { expect } from 'chai';

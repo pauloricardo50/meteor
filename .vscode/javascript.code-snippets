@@ -5,7 +5,7 @@
       "/* eslint-env mocha */",
       "import { expect } from 'chai';",
       "import { Factory } from 'meteor/dburles:factory';",
-      "import { resetDatabase } from 'meteor/xolvio:cleaner';",
+      "import { resetDatabase } from 'core/utils/testHelpers';",
       "",
       "import ${1:module} from '../${2:path}';",
       "",

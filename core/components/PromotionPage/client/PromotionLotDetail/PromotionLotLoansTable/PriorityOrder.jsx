@@ -1,8 +1,6 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { createRoute } from '../../../../../utils/routerUtils';
-import Link from '../../../../Link';
 import Chip from '../../../../Material/Chip';
 
 const getChipColor = ({ currentId, userId, promotionLots }) => {
@@ -50,31 +48,13 @@ const PriorityOrder = ({
 
   return (
     <div className="priority-order">
-      {options.map(({ _id, name, solvency, promotionLots }) => {
+      {options.map(({ _id, name, promotionLots }) => {
         const chipColor = getChipColor({ currentId, userId, promotionLots });
 
         return (
-          <Link
-            to={createRoute(
-              '/promotions/:promotionId/promotionLots/:promotionLotId',
-              {
-                promotionId: promotion._id,
-                promotionLotId: promotionLots[0]._id,
-              },
-            )}
-            key={`${_id}${promotionLots[0]._id}`}
-            onClick={event => event.stopPropagation()}
-          >
-            <Tooltip placement="bottom" title={getTooltip(chipColor)}>
-              <Chip
-                clickable
-                label={name}
-                className={chipColor}
-                // icon={<PromotionOptionSolvency solvency={solvency} />}
-                style={{ cursor: 'pointer' }}
-              />
-            </Tooltip>
-          </Link>
+          <Tooltip key={_id} placement="bottom" title={getTooltip(chipColor)}>
+            <Chip label={name} className={chipColor} />
+          </Tooltip>
         );
       })}
     </div>

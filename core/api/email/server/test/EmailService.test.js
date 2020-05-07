@@ -1,12 +1,12 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import generator from '../../../factories/server';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../emailConstants';
 import EmailService, { isEmailTestEnv } from '../EmailService';
 import { setupMandrill } from '../mandrill';
+
+/* eslint-env mocha */
 
 setupMandrill();
 
@@ -23,11 +23,12 @@ describe('EmailService', function() {
 
   describe('renderTemplate', () => {
     it('should not throw', async () => {
+      generator({ users: { _id: 'userId', _factory: 'user' } });
       const emailId = EMAIL_IDS.ENROLL_ACCOUNT;
       const template = await EmailService.getAccountsTemplate({
         emailId,
         params: {
-          user: { roles: 'user' },
+          user: { _id: 'userId' },
           url: 'stuff/enroll-account/hello',
         },
       });
