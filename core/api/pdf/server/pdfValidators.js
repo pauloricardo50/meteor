@@ -1,3 +1,5 @@
+import { PURCHASE_TYPE } from '../../../redux/widget1/widget1Constants';
+import Calculator from '../../../utils/Calculator';
 import { makeCheckObjectStructure } from '../../../utils/checkObjectStructure';
 import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
@@ -11,11 +13,20 @@ export const validateLoanPdf = ({ loan, structureIds }) => {
   );
   let id;
 
-  structures.forEach(({ propertyId, promotionOptionId }) => {
-    if (!id) {
-      id = propertyId || promotionOptionId;
-    } else if (id !== propertyId && id !== promotionOptionId) {
-      throw 'Tous les biens immo doivent être les mêmes sur chaque plan financier du PDF';
-    }
-  });
+  structures.forEach(
+    ({ id: structureId, propertyId, promotionOptionId, ownFunds = [] }) => {
+      if (!id) {
+        id = propertyId || promotionOptionId;
+      } else if (id !== propertyId && id !== promotionOptionId) {
+        throw 'Tous les biens immo doivent être les mêmes sur chaque plan financier du PDF';
+      }
+
+      if (
+        Calculator.getRequiredOwnFunds({ loan, structureId }) &&
+        !ownFunds.length
+      ) {
+        throw 'Fonds propres ne doit pas être vide dans Plans financiers';
+      }
+    },
+  );
 };

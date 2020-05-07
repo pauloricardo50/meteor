@@ -1,10 +1,12 @@
 import React from 'react';
 
 import T from '../../../../../../components/Translation';
+import { PURCHASE_TYPE } from '../../../../../loans/loanConstants';
 import PdfPage from '../../PdfPage';
 import CostsBalanceSheet from './CostsBalanceSheet';
 import PledgeTable from './PledgeTable';
 import ProjectBalanceSheet from './ProjectBalanceSheet';
+import RefinancingBalanceSheet from './RefinancingBalanceSheet';
 import SingleStructureRecapTable from './SingleStructureRecapTable';
 
 const StructurePdfPage = ({
@@ -19,6 +21,7 @@ const StructurePdfPage = ({
     loan,
     structureId,
   });
+  const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
   return (
     <PdfPage
       className="property-page"
@@ -38,11 +41,13 @@ const StructurePdfPage = ({
         calculator={calculator}
       />
 
-      <ProjectBalanceSheet
-        loan={loan}
-        structureId={structureId}
-        calculator={calculator}
-      />
+      {!isRefinancing && (
+        <ProjectBalanceSheet
+          loan={loan}
+          structureId={structureId}
+          calculator={calculator}
+        />
+      )}
 
       <PledgeTable
         loan={loan}
@@ -50,11 +55,21 @@ const StructurePdfPage = ({
         calculator={calculator}
       />
 
-      <CostsBalanceSheet
-        loan={loan}
-        structureId={structureId}
-        calculator={calculator}
-      />
+      {!isRefinancing && (
+        <CostsBalanceSheet
+          loan={loan}
+          structureId={structureId}
+          calculator={calculator}
+        />
+      )}
+
+      {isRefinancing && (
+        <RefinancingBalanceSheet
+          loan={loan}
+          structureId={structureId}
+          calculator={calculator}
+        />
+      )}
     </PdfPage>
   );
 };

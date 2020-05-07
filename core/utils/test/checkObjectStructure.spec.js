@@ -85,6 +85,42 @@ describe('checkObjectStructure', () => {
 
       expect(() => checkObjectStructure({ obj, template })).to.not.throw();
     });
+
+    it('with a matching $or', () => {
+      const template = {
+        a: { b: 1, c: { $or: 'd' } },
+      };
+
+      let obj = {
+        a: { b: 'hello', d: 'hello' },
+      };
+
+      expect(() => checkObjectStructure({ obj, template })).to.not.throw();
+
+      obj = {
+        a: { b: 'hello', c: 'hello' },
+      };
+
+      expect(() => checkObjectStructure({ obj, template })).to.not.throw();
+    });
+
+    it('with a nested matching $or', () => {
+      const template = {
+        a: { b: 1, c: { $or: 'd.e' } },
+      };
+
+      let obj = {
+        a: { b: 'hello', d: { e: 'hello' } },
+      };
+
+      expect(() => checkObjectStructure({ obj, template })).to.not.throw();
+
+      obj = {
+        a: { b: 'hello', c: 'hello' },
+      };
+
+      expect(() => checkObjectStructure({ obj, template })).to.not.throw();
+    });
   });
 
   describe('throws when the object does not match the template', () => {
@@ -188,6 +224,34 @@ describe('checkObjectStructure', () => {
       expect(() =>
         checkObjectStructure({ obj, template, parentKey: 'Root' }),
       ).to.throw('Missing key a from object Root');
+    });
+
+    it('with a non matching $or', () => {
+      const template = {
+        a: { b: 1, c: { $or: 'd' } },
+      };
+
+      const obj = {
+        a: { b: 'hello' },
+      };
+
+      expect(() => checkObjectStructure({ obj, template })).to.throw(
+        'Missing key c from object a or missing key d from object a',
+      );
+    });
+
+    it('with a nested non matching $or', () => {
+      const template = {
+        a: { b: 1, c: { $or: 'd.e' } },
+      };
+
+      const obj = {
+        a: { b: 'hello' },
+      };
+
+      expect(() => checkObjectStructure({ obj, template })).to.throw(
+        'Missing key c from object a or missing key e from object d',
+      );
     });
   });
 });

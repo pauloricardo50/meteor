@@ -18,10 +18,19 @@ const formatKey = key => {
 };
 
 export const frenchErrors = {
-  missingKey: (key, parentKey) =>
-    parentKey
+  missingKey: (key, parentKey, orKey, orParentKey) => {
+    const firstMessage = parentKey
       ? `Il manque ${formatKey(key)} dans ${formatKey(parentKey)}`
-      : `Il manque ${formatKey(key)}`,
+      : `Il manque ${formatKey(key)}`;
+
+    const secondMessage = orKey
+      ? orParentKey
+        ? ` ou il manque ${formatKey(orKey)} dans ${formatKey(orParentKey)}`
+        : ` ou il manque ${formatKey(orKey)}`
+      : '';
+
+    return `${firstMessage}${secondMessage}`;
+  },
   shouldBeArray: key => `${formatKey(key)} doit être une liste`,
   shouldBeObject: key => `${formatKey(key)} doit être un objet`,
   emptyArray: (key, parentKey) =>
