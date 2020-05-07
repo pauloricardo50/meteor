@@ -1,10 +1,15 @@
+body {
+  background-color: #fff;
+}
+
 .container {
   // NOTE: not every section type should be constrained with top level container class (e.g. hero)
   max-width: 1200px;
   margin: auto;
 
   @media (max-width: $med) {
-    padding: 0 20px;
+    padding-right: 20px;
+    padding-left: 20px;
   }
 }
 
