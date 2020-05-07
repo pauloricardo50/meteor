@@ -63,14 +63,14 @@ const createTheme = ({ fontSize = 14 }) => {
           '&$focusVisible': {
             backgroundColor: colors.primary,
             color: 'white',
-            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
               color: 'white',
             },
           },
           '&$selected, &$selected:hover': {
             backgroundColor: colors.primary,
             color: 'white',
-            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
               color: 'white',
             },
           },
@@ -79,7 +79,7 @@ const createTheme = ({ fontSize = 14 }) => {
           '&:hover': {
             backgroundColor: colors.primary,
             color: 'white',
-            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+            '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
               color: 'white',
             },
           },
@@ -99,27 +99,27 @@ const createTheme = ({ fontSize = 14 }) => {
           '&:hover': {
             backgroundColor: colors.primary,
             color: 'white',
-            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
               color: 'white',
             },
           },
           '&:focus': {
             backgroundColor: colors.primary,
             color: 'white',
-            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
               color: 'white',
             },
           },
           '&.Mui-selected': {
             backgroundColor: colors.mui.darkPrimary,
             color: 'white',
-            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
               color: 'white',
             },
             '&:hover': {
               backgroundColor: colors.mui.darkPrimary,
               color: 'white',
-              '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary': {
+              '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
               },
             },
@@ -130,6 +130,9 @@ const createTheme = ({ fontSize = 14 }) => {
         root: {
           lineHeight: '2em',
         },
+      },
+      MuiListItemIcon: {
+        root: {},
       },
     },
     palette: {
@@ -174,6 +177,10 @@ const createTheme = ({ fontSize = 14 }) => {
   // You need the theme object to change transitions
   theme.overrides.MuiListItem.button.transition = theme.transitions.create(
     ['background-color', 'color'],
+    { duration: theme.transitions.duration.shortest },
+  );
+  theme.overrides.MuiListItemIcon.root.transition = theme.transitions.create(
+    'color',
     { duration: theme.transitions.duration.shortest },
   );
 

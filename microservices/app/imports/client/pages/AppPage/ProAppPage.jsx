@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom';
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 
-import { DASHBOARD_PAGE } from '../../../startup/client/appRoutes';
+import ROUTES from '../../../startup/client/appRoutes';
 
 const ProAppPage = ({ loans, history, insertLoan }) => (
   <div className="flex center space-children">
@@ -44,15 +44,17 @@ const ProAppPage = ({ loans, history, insertLoan }) => (
         style={{ marginTop: 40 }}
         onClick={() => {
           if (loans.length) {
-            history.push(createRoute(DASHBOARD_PAGE, { loanId: loans[0]._id }));
+            history.push(
+              createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId: loans[0]._id }),
+            );
           } else {
             insertLoan({ test: true }).then(loanId => {
-              history.push(createRoute(DASHBOARD_PAGE, { loanId }));
+              history.push(createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId }));
             });
           }
         }}
       >
-        Faire un dossier test
+        Créer un dossier test
       </Button>
     </div>
   </div>
