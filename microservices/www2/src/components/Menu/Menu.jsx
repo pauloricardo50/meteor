@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 import useAllMenus from '../../hooks/useAllMenus';
 import { linkResolver } from '../../utils/linkResolver';
+import './Menu.scss';
 
 const getLink = (menuLink) => {
   if (menuLink.link === null) return menuLink.label;
@@ -16,20 +17,20 @@ const getLink = (menuLink) => {
   return menuLink.label;
 };
 
-const MainMenu = () => {
+const Menu = ({ menuName }) => {
   const allMenus = useAllMenus();
 
   // TODO: get localized lang
-  const main = allMenus.find((menu) => {
-    return menu.node._meta.uid === 'main' && menu.node._meta.lang === 'fr-ch';
+  const menu = allMenus.find(({ node }) => {
+    return node._meta.uid === menuName && node._meta.lang === 'fr-ch';
   });
 
-  if (!main) return null;
+  if (!menu) return null;
 
   return (
-    <nav className="menu menu--main">
+    <nav className={`menu menu--${menuName}`}>
       <ul>
-        {main.node.menu_links.map((menuLink, idx) => (
+        {menu.node.menu_links.map((menuLink, idx) => (
           <li key={idx}>{getLink(menuLink)}</li>
         ))}
       </ul>
@@ -37,4 +38,4 @@ const MainMenu = () => {
   );
 };
 
-export default MainMenu;
+export default Menu;
