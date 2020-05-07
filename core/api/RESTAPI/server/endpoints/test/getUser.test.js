@@ -270,7 +270,7 @@ describe('REST: getUser', function() {
       firstName: 'FirstName3',
       lastName: 'LastName3',
       name: 'FirstName3 LastName3',
-      roles: ['user'],
+      roles: [{ _id: 'user' }],
     });
   });
 
@@ -287,7 +287,7 @@ describe('REST: getUser', function() {
       firstName: 'FirstName4',
       lastName: 'LastName4',
       name: 'FirstName4 LastName4',
-      roles: ['user'],
+      roles: [{ _id: 'user' }],
     });
   });
 });
