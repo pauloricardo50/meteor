@@ -216,6 +216,10 @@ export class UserServiceClass extends CollectionService {
       throw new Meteor.Error('Should not set ADMIN role only');
     }
 
+    if (role !== ROLES.ADVISOR) {
+      this.baseUpdate(userId, { $unset: { office: true } });
+    }
+
     return Roles.setUserRoles(userId, role);
   };
 

@@ -1037,6 +1037,7 @@ export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
   assignedEmployeeCache: 1,
+  office: 1,
   promotions: { name: 1, status: 1 },
   proProperties: { address1: 1, status: 1, loanCount: 1, totalValue: 1 },
   referredByUser: {

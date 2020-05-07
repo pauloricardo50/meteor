@@ -1,4 +1,7 @@
 {
+  "Forms.office": "Bureau",
+  "Forms.office.GENEVA": "Genève",
+  "Forms.office.LAUSANNE": "Lausanne",
   "roles.advisor": "Conseiller",
   "roles.observer": "Observateur",
   "PDF.cover.date": "{purchaseType, select, ACQUISITION {Déblocage des fonds prévu le } other {Date de reprise souhaitée: }}",

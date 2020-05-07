@@ -37,3 +37,8 @@ export const ACQUISITION_CHANNELS = {
   FACEBOOK: 'FACEBOOK',
   LINKEDIN: 'LINKEDIN',
 };
+
+export const OFFICES = {
+  GENEVA: 'GENEVA',
+  LAUSANNE: 'LAUSANNE',
+};

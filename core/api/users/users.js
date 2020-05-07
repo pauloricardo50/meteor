@@ -5,7 +5,7 @@ import SimpleSchema from 'simpl-schema';
 import { makeCollectionTransform } from '../helpers/collectionHelpers';
 import { cacheField, createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
-import { ACQUISITION_CHANNELS, ROLES } from './userConstants';
+import { ACQUISITION_CHANNELS, OFFICES, ROLES } from './userConstants';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -115,6 +115,11 @@ export const UserSchema = new SimpleSchema({
     optional: true,
     allowedValues: ['loans', 'insuranceRequests'],
     defaultValue: 'loans',
+  },
+  office: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(OFFICES),
   },
 });
 

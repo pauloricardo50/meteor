@@ -54,6 +54,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       !Roles.userIsInRole(user, ROLES.ADMIN));
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => toggleAccount.run({ userId });
+  const isAdvisor = Roles.userIsInRole(user, ROLES.ADVISOR);
 
   return (
     <div className="single-user-page-header">
@@ -70,6 +71,16 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           </small>
 
           <RolePicker userId={userId} />
+
+          {isAdvisor && (
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['office']}
+              autosaveDelay={250}
+              style={{ maxWidth: 200 }}
+            />
+          )}
         </h1>
         <UserModifier user={user} />
         <ConfirmMethod
