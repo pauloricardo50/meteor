@@ -1,21 +1,88 @@
 import React from 'react';
-import epotekLogo from '../../images/epotek_logo.png';
+import Menu from '../Menu';
+import SignupForm from '../SignupForm';
+import SocialLinks from '../SocialLinks';
 import './Footer.scss';
 
-const Footer = () => {
-  return (
-    <footer className="container">
-      <p>
-        <a href="/" rel="noopener noreferrer">
-          <img
-            className="footer-logo"
-            src={epotekLogo}
-            alt="e-Potek blue logo"
-          />
-        </a>
-      </p>
-    </footer>
-  );
+const contactEmail = 'team@e-potek.ch';
+const contactPhone = '+41 22 566 01 10';
+const locations = {
+  lausanne: {
+    label: 'Lausanne',
+    url: '/',
+  },
+  geneve: {
+    label: 'Genève',
+    url: '/',
+  },
 };
+
+const LinkedLocation = ({ location }) => (
+  <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+    <a href={locations[location].url} itemProp="url">
+      {locations[location].label}
+      {/* TODO: add map icon */}
+    </a>
+  </span>
+);
+
+const Footer = () => (
+  <footer className="footer container">
+    <Menu menuName="main" />
+
+    <div
+      className="contact"
+      itemScope
+      itemType="https://schema.org/LocalBusiness"
+    >
+      {/* keep here for web crawlers */}
+      <h1 itemProp="name" hidden>
+        e-Potek SA
+      </h1>
+
+      <div className="contact-email">
+        <a href={`mailto:${contactEmail}`} itemProp="email">
+          {contactEmail}
+        </a>
+      </div>
+
+      <div className="contact-phone">
+        <a
+          href={`tel:${contactPhone.split(' ').join('')}`}
+          itemProp="telephone"
+        >
+          {contactPhone}
+        </a>
+      </div>
+
+      <hr />
+
+      {/* TODO: localize this content */}
+      <p className="contact-locations">
+        <span>Trouver nous a </span>
+        <LinkedLocation location="lausanne" />
+        <br />
+        <span>Et a </span>
+        <LinkedLocation location="geneve" />
+      </p>
+
+      <SignupForm type="footer" />
+
+      <div className="contact-notices">
+        {/* TODO: pull this content from CMS or localized file */}
+        <p>
+          e-Potek SA est une société régulée par la{' '}
+          <a href="https://www.finma.ch/">FINMA</a>
+        </p>
+        <p>
+          Copyright - e-Potek 2020 • Hébergé et sécurisé Privacy policy • UID :
+          CHE-405.084.029 • Finma No. 33709
+        </p>
+      </div>
+
+      <SocialLinks />
+    </div>
+  </footer>
+);
 
 export default Footer;

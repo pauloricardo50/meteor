@@ -1,27 +1,155 @@
-footer {
-  color: #9a9a9a;
-  font-size: 16px;
-  font-style: italic;
-  text-align: center;
+.footer {
+  padding-top: 24px;
+  padding-bottom: 24px;
 
-  p {
-    border-top: 1px solid #dadada;
-    padding: 2rem 0;
-    margin-bottom: 0;
+  nav.menu {
+    margin-bottom: 56px;
+
+    li {
+      // Mobile/Plain/M/Light
+      font-size: 14px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #000000;
+
+      + li {
+        margin-top: 5px;
+      }
+    }
   }
 
-  a {
-    font-weight: bold;
+  .contact {
+    &-email,
+    &-phone {
+      // Mobile/Title/H4
+      font-size: 20px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: #2c2c2c;
+    }
+
+    hr {
+      height: 1px;
+      // border: solid 0.5px var(--2c2c2c-20);
+      color: rgba(#2c2c2c, 0.2);
+    }
+
+    &-locations {
+      // Mobile/Plain/M/Light
+      font-size: 14px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #000000;
+    }
+
+    &-notices {
+      // Mobile/Plain/M/Light
+      font-size: 14px;
+      font-weight: 300;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: rgba(0, 0, 0, 0.5);
+
+      a {
+        color: #2e7eff;
+      }
+    }
+
+    &-social {
+      // Desktop/Plain/M/Light
+      font-size: 16px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.44;
+      letter-spacing: normal;
+      color: #000000;
+    }
   }
 
-  .footer-logo {
-    width: 30px;
-    margin-top: 10px;
-  }
-}
+  @media (min-width: $med) {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 128px;
+    padding-bottom: 128px;
 
-.footer-menu {
-  ul {
-    list-style: none;
+    nav.menu {
+      flex: 1;
+      padding-bottom: 0;
+
+      li {
+        // Desktop/Title/H4
+        font-size: 24px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: 1.42;
+        letter-spacing: normal;
+        color: #2c2c2c;
+      }
+    }
+
+    .contact {
+      flex-basis: 384px;
+
+      &-email,
+      &-phone {
+        // Desktop/Title/H4
+        font-size: 24px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: 1.42;
+        letter-spacing: normal;
+        color: #2c2c2c;
+      }
+
+      hr {
+        height: 1px;
+        // border: solid 0.5px var(--2c2c2c-20);
+        color: rgba(#2c2c2c, 0.2);
+      }
+
+      &-locations {
+        // Desktop/Plain/M/Light
+        font-size: 16px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        color: #000000;
+      }
+
+      &-notices {
+        // Desktop/Plain/M/Light
+        font-size: 16px;
+        font-weight: 300;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        color: rgba(0, 0, 0, 0.5);
+
+        a {
+          color: #2e7eff;
+        }
+      }
+
+      &-social {
+        // Desktop/Plain/M/Light
+        font-size: 16px;
+        font-weight: 300;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        color: #000000;
+      }
+    }
   }
 }

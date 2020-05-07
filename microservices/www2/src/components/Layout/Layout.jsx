@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Helmet } from 'react-helmet';
+import TopNav from '../TopNav';
 import Footer from '../Footer';
 import '../../styles/main.scss';
 
@@ -30,6 +31,7 @@ export default ({ children }) => {
         <title>{title}</title>
         <meta name="description" content={description} />
       </Helmet>
+      <TopNav />
       <main>{children}</main>
       <Footer />
     </>
