@@ -11,17 +11,21 @@ import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import AutoFormSelectFieldInput from '../AutoForm/AutoFormSelectFieldInput';
 import T from '../Translation';
 
-const getCities = async zipCode => {
-  if (zipCode) {
+const getCities = async (zipCode = '') => {
+  if (String(zipCode).length === 4) {
     try {
       const cities = await getCitiesFromZipCode.run({ zipCode });
-      return cities;
+      return cities.length
+        ? cities.map(city => ({
+            id: city,
+          }))
+        : [{ id: null }];
     } catch (error) {
-      return [];
+      return [{ id: null }];
     }
   }
 
-  return [];
+  return [{ id: null }];
 };
 
 const CityField = ({ updateFunc, cities, city }) => (
@@ -35,8 +39,8 @@ const CityField = ({ updateFunc, cities, city }) => (
       todo: !city,
       multiline: true,
       id: 'city',
-      options: cities.map(c => ({ id: c })),
-      transform: c => c,
+      options: cities,
+      transform: c => c || 'Aucun résultat trouvé',
     }}
     saveOnChange
     showValidIconOnChange
@@ -57,14 +61,21 @@ export default withProps(({ doc }) => {
   switch (_collection) {
     case BORROWERS_COLLECTION:
       updateFunc = ({ object: { city: newCity } = {} }) =>
-        borrowerUpdate.run({
-          borrowerId: doc._id,
-          object: { city: newCity },
-        });
+        newCity
+          ? borrowerUpdate.run({
+              borrowerId: doc._id,
+              object: { city: newCity },
+            })
+          : Promise.resolve();
       break;
     case PROPERTIES_COLLECTION:
       updateFunc = ({ object: { city: newCity } = {} }) =>
-        propertyUpdate.run({ propertyId: doc._id, object: { city: newCity } });
+        newCity
+          ? propertyUpdate.run({
+              propertyId: doc._id,
+              object: { city: newCity },
+            })
+          : Promise.resolve();
       break;
     default: {
       throw new Meteor.Error(

@@ -68,8 +68,15 @@ export const address = {
     type: String,
     optional: true,
     autoValue: autoValueSentenceCase,
-    customAllowedValues: ({ zipCode }) =>
-      zipCode ? getCitiesFromZipCode.run({ zipCode }) : [null],
+    customAllowedValues: ({ zipCode = '' }) =>
+      String(zipCode).length === 4
+        ? getCitiesFromZipCode.run({ zipCode })
+        : [null],
+    uniforms: {
+      transform: city => city || 'Aucun résultat trouvé',
+      displayEmtpy: true,
+      allowNull: true,
+    },
   },
   country: {
     type: String,

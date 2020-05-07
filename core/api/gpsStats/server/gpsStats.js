@@ -53,7 +53,10 @@ export const getStats = ({ cantons = [] }) => {
     });
 };
 
-export const getCitiesFromZipCode = ({ zipCode }) =>
-  classifiedCities
+export const getCitiesFromZipCode = ({ zipCode = '' }) => {
+  const cities = classifiedCities
     .filter(({ zipCode: zip }) => String(zip).startsWith(String(zipCode)))
     .map(({ city }) => city);
+
+  return cities.length ? cities : [null];
+};
