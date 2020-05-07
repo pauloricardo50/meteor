@@ -16,12 +16,12 @@ import {
 } from 'core/api/users/methodDefinitions';
 import { ROLES } from 'core/api/users/userConstants';
 import Users from 'core/api/users/users';
+import AssignedRole from 'core/components/AssignedRole';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import EmailModifier from 'core/components/EmailModifier';
 import Icon from 'core/components/Icon';
 import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import RolesList from 'core/components/RolesList';
 import Toggle from 'core/components/Toggle';
 import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
@@ -66,7 +66,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
           <small className="secondary">
             &nbsp;-&nbsp;
-            <RolesList roles={roles} />
+            <AssignedRole roles={roles} />
           </small>
 
           <RolePicker userId={userId} />
