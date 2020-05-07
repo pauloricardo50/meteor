@@ -1,13 +1,13 @@
 import React from 'react';
 
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
+import T from '../../../../../../components/Translation';
 import { Calculator } from '../../../../../../utils/Calculator';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { ERROR, SUCCESS } from '../../../../../constants';
-import { PURCHASE_TYPE } from '../../../../../loans/loanConstants';
 import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 
-const getColumnsConfig = isRefinancing => [
+const columnsConfig = [
   {
     style: { width: '20%' },
     title: 'Plan financier',
@@ -15,7 +15,7 @@ const getColumnsConfig = isRefinancing => [
   },
   {
     style: { width: '20%', textAlign: 'right' },
-    title: isRefinancing ? 'Valeur du logement' : "Prix d'achat",
+    title: <T id="Forms.value" />,
     value: (calculator, { id: structureId }, loan) =>
       toMoney(calculator.selectPropertyValue({ loan, structureId })),
   },
@@ -71,8 +71,6 @@ const getColumnsConfig = isRefinancing => [
 
 const getRows = ({ loan, structureIds, organisation }) => {
   const { lenderRules } = organisation || {};
-  const isRefinancing = loan?.purchaseType === PURCHASE_TYPE.REFINANCING;
-  const columnsConfig = getColumnsConfig(isRefinancing);
 
   return [
     <tr key="0" className={classes[ROW_TYPES.TITLE]}>

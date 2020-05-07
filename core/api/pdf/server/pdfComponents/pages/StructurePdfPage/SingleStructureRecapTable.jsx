@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
+import T from '../../../../../../components/Translation';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { OWN_FUNDS_TYPES } from '../../../../../borrowers/borrowerConstants';
 import { ERROR, SUCCESS } from '../../../../../constants';
@@ -11,7 +12,7 @@ import {
 import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 
 const getColumnsConfig = ({ calculator, structureId, loan }) => {
-  const isRefinancing = loan?.purchaseType === PURCHASE_TYPE.REFINANCING;
+  const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 
   return [
     {
@@ -21,7 +22,7 @@ const getColumnsConfig = ({ calculator, structureId, loan }) => {
     },
     {
       style: { width: '20%', textAlign: 'right' },
-      title: isRefinancing ? 'Valeur du logement' : "Prix d'achat",
+      title: <T id="Forms.value" />,
       value: () =>
         toMoney(calculator.selectPropertyValue({ loan, structureId })),
     },

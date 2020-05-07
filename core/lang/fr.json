@@ -1,4 +1,5 @@
 {
+  "PDF.cover.date": "{purchaseType, select, ACQUISITION {Déblocage des fonds prévu le } other {Date de reprise souhaitée: }}",
   "FinancingOwnFundsTitle.tooltip": "Frais de notaire: CHF {value}",
   "FinancingOwnFundsTitle.pledge": "Nantissement",
   "files.HEATER_TYPE": "Type de chauffage",

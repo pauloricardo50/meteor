@@ -7,7 +7,6 @@ import { frenchErrors } from './pdfHelpers';
 export const validateLoanPdf = ({ loan, structureIds }) => {
   const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
   checkObjectStructure({ obj: loan, template: TEMPLATES[PDF_TYPES.LOAN] });
-  const isRefinancing = loan?.purchaseType === PURCHASE_TYPE.REFINANCING;
 
   const structures = loan.structures.filter(({ id }) =>
     structureIds.includes(id),
@@ -22,13 +21,8 @@ export const validateLoanPdf = ({ loan, structureIds }) => {
         throw 'Tous les biens immo doivent être les mêmes sur chaque plan financier du PDF';
       }
 
-      if (!isRefinancing && !ownFunds.length) {
-        throw 'Fonds propres ne doit pas être vide dans Plans financiers';
-      }
-
       if (
-        isRefinancing &&
-        Calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) > 0 &&
+        Calculator.getRequiredOwnFunds({ loan, structureId }) &&
         !ownFunds.length
       ) {
         throw 'Fonds propres ne doit pas être vide dans Plans financiers';

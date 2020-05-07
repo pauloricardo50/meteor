@@ -87,17 +87,14 @@ const coverContent = ({
       </h2>
       <h3 className="address">{`${address1}, ${zipCode} ${city} (${canton})`}</h3>
       <h3 className="disbursement-date">
-        {isRefinancing ? (
-          <span>
-            Date de reprise souhaitée{' '}
-            <b>{moment(refinancingDate).format('DD.MM.YYYY')}</b>
-          </span>
-        ) : (
-          <span>
-            Déblocage des fonds prévu le{' '}
-            <b>{moment(disbursementDate).format('DD.MM.YYYY')}</b>
-          </span>
-        )}
+        <span>
+          <T id="PDF.cover.date" />
+          <b>
+            {moment(isRefinancing ? refinancingDate : disbursementDate).format(
+              'DD.MM.YYYY',
+            )}
+          </b>
+        </span>
       </h3>
       <StructureRecapTable
         loan={loan}

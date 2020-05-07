@@ -21,7 +21,7 @@ const StructurePdfPage = ({
     loan,
     structureId,
   });
-  const isRefinancing = loan?.purchaseType === PURCHASE_TYPE.REFINANCING;
+  const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
   return (
     <PdfPage
       className="property-page"
