@@ -17,9 +17,9 @@ export function generateImpersonateLink(user, adminId) {
   // eslint-disable-next-line no-underscore-dangle
   const token = Accounts._storedLoginToken();
   const queryString = `${IMPERSONATE_USER_ID}=${userId}&${IMPERSONATE_TOKEN}=${token}&${IMPERSONATE_ADMIN_ID}=${adminId}`;
-  const microserviceUrl = Roles.userIsInRole(user, ROLES.USER)
-    ? APP_URL
-    : PRO_URL;
+  const microserviceUrl = Roles.userIsInRole(user, ROLES.PRO)
+    ? PRO_URL
+    : APP_URL;
 
   return `${microserviceUrl}${IMPERSONATE_ROUTE}?${queryString}`;
 }
