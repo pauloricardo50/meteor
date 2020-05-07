@@ -6,7 +6,7 @@ import StickyPopover from 'core/components/StickyPopover';
 const renderCheckboxValue = (values, options) =>
   values.map(i => {
     const value = options.find(({ id }) => id === i);
-    return <div key={i}>{value.label}</div>;
+    return <div key={i}>{value?.label}</div>;
   });
 
 const LoanBoardOptionsCheckboxes = ({ label, options, value, onChange }) => {

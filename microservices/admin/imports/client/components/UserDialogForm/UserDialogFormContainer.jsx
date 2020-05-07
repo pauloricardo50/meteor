@@ -36,7 +36,7 @@ const userSchema = new SimpleSchema({
     },
     optional: true,
     uniforms: {
-      transform: ({ firstName }) => firstName,
+      transform: user => user?.firstName,
       labelProps: { shrink: true },
     },
   },
