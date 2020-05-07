@@ -2,8 +2,8 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 import colors from './colors';
 
-const createTheme = ({ fontSize = 14 }) =>
-  createMuiTheme({
+const createTheme = ({ fontSize = 14 }) => {
+  const theme = createMuiTheme({
     overrides: {
       MuiToolbar: {
         root: {
@@ -67,25 +67,18 @@ const createTheme = ({ fontSize = 14 }) =>
               color: 'white',
             },
           },
-          '&:focus': {
+          '&$focusVisible': {
             backgroundColor: colors.primary,
             color: 'white',
             '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
               color: 'white',
             },
           },
-          '&.Mui-selected': {
-            backgroundColor: colors.mui.darkPrimary,
+          '&$selected, &$selected:hover': {
+            backgroundColor: colors.primary,
             color: 'white',
             '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
               color: 'white',
-            },
-            '&:hover': {
-              backgroundColor: colors.mui.darkPrimary,
-              color: 'white',
-              '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
-                color: 'white',
-              },
             },
           },
         },
@@ -179,5 +172,14 @@ const createTheme = ({ fontSize = 14 }) =>
       },
     },
   });
+
+  // You need the theme object to change transitions
+  theme.overrides.MuiListItem.button.transition = theme.transitions.create(
+    ['background-color', 'color'],
+    { duration: theme.transitions.duration.shortest },
+  );
+
+  return theme;
+};
 
 export default createTheme;
