@@ -60,13 +60,6 @@ const createTheme = ({ fontSize = 14 }) => {
           margin: 4,
           width: 'calc(100% - 8px)',
           borderRadius: 4,
-          '&:hover': {
-            backgroundColor: colors.primary,
-            color: 'white',
-            '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
-              color: 'white',
-            },
-          },
           '&$focusVisible': {
             backgroundColor: colors.primary,
             color: 'white',
@@ -131,6 +124,11 @@ const createTheme = ({ fontSize = 14 }) => {
               },
             },
           },
+        },
+      },
+      MuiListSubheader: {
+        root: {
+          lineHeight: '2em',
         },
       },
     },

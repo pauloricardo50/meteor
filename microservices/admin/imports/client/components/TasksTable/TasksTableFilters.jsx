@@ -25,7 +25,11 @@ const TasksTableFilters = ({
   additionalFilters,
 }) => {
   const assigneeOptions = [
-    ...admins.map(({ _id, firstName }) => ({ id: _id, label: firstName })),
+    ...admins.map(({ _id, firstName, office }) => ({
+      id: _id,
+      label: firstName,
+      office,
+    })),
     { _id: undefined, label: 'Personne' },
   ];
   return (
@@ -38,6 +42,10 @@ const TasksTableFilters = ({
           options={assigneeOptions}
           onChange={selected => setAssignee({ $in: selected })}
           className="mr-8"
+          grouping={{
+            groupBy: 'office',
+            format: office => <T id={`Forms.office.${office}`} />,
+          }}
         />
       )}
 
@@ -74,6 +82,7 @@ export default withSmartQuery({
   params: {
     $filters: { 'roles._id': ROLES.ADVISOR },
     firstName: 1,
+    office: 1,
     $options: { sort: { firstName: 1 } },
   },
   dataName: 'admins',

@@ -6,6 +6,7 @@ import { withSmartQuery } from '../../../api/containerToolkit';
 import { promotionUpdate } from '../../../api/promotions/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from '../../../api/users/userConstants';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
+import T from '../../Translation';
 
 const getSchema = admins =>
   new SimpleSchema({
@@ -16,6 +17,10 @@ const getSchema = admins =>
         transform: assignedEmployeeId =>
           admins.find(({ _id }) => assignedEmployeeId === _id)?.name,
         labelProps: { shrink: true },
+        grouping: {
+          groupBy: ({ id }) => admins.find(({ _id }) => id === _id)?.office,
+          format: office => <T id={`Forms.office.${office}`} />,
+        },
       },
     },
   });
@@ -43,10 +48,14 @@ export default compose(
     params: {
       $filters: { 'roles._id': ROLES.ADVISOR },
       name: 1,
+      office: 1,
       $options: { sort: { firstName: 1 } },
     },
     dataName: 'admins',
     smallLoader: true,
   }),
-  withProps(({ admins }) => ({ schema: getSchema(admins) })),
+  withProps(({ admins }) => {
+    console.log('admins:', admins);
+    return { schema: getSchema(admins) };
+  }),
 )(PromotionAssignee);

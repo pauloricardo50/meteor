@@ -1,3 +1,4 @@
+import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,6 +7,7 @@ import { insuranceRequestSetAssignees } from 'core/api/insuranceRequests/methodD
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loanSetAssignees } from 'core/api/loans/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import T from 'core/components/Translation';
 
 export const assigneesSchema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
@@ -17,6 +19,7 @@ export const assigneesSchema = new SimpleSchema({
       params: {
         $filters: { 'roles._id': ROLES.ADVISOR },
         firstName: 1,
+        office: 1,
         $options: { sort: { firstName: 1 } },
       },
     },
@@ -24,6 +27,10 @@ export const assigneesSchema = new SimpleSchema({
       transform: user => user?.firstName || '',
       label: 'Conseiller',
       placeholder: null,
+      grouping: {
+        groupBy: user => user?.office,
+        format: office => <T id={`Forms.office.${office}`} />,
+      },
     },
   },
   'assigneeLinks.$.percent': {

@@ -12,6 +12,7 @@ import MenuItem from '../../Material/MenuItem';
 import Radio, { RadioGroup } from '../../Material/Radio';
 import Switch from '../../Material/Switch';
 import TextField from '../../Material/TextField';
+import { mapSelectOptions } from '../../Select/selectHelpers';
 import TextInput from '../../TextInput';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
@@ -49,11 +50,18 @@ const renderSelect = ({
   value,
   variant,
   nullable,
+  grouping,
+  data,
   ...props
 }) => {
-  const Item = native ? 'option' : MenuItem;
   const hasPlaceholder = !!placeholder;
   const hasValue = value !== '' && value !== undefined;
+
+  const options = allowedValues.map(v => {
+    // Make this data available for grouping
+    const rest = data?.find(({ _id }) => _id === v);
+    return { id: v, label: transform(v), ...rest };
+  });
 
   return (
     <TextField
@@ -81,15 +89,11 @@ const renderSelect = ({
       value={native && !value ? '' : value}
     >
       {hasPlaceholder && (
-        <Item value="" disabled={nullable}>
+        <MenuItem value="" disabled={nullable}>
           <i className="secondary">{placeholder}</i>
-        </Item>
+        </MenuItem>
       )}
-      {allowedValues.map(v => (
-        <Item key={v} value={v}>
-          {transform(v)}
-        </Item>
-      ))}
+      {mapSelectOptions(options, grouping)}
     </TextField>
   );
 };

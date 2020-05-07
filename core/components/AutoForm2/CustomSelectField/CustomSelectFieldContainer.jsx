@@ -178,7 +178,7 @@ export default Component => {
     };
 
     render() {
-      const { values, error, loading } = this.state;
+      const { values, error, loading, data } = this.state;
       const {
         customAllowedValues,
         displayEmpty,
@@ -212,6 +212,7 @@ export default Component => {
           formatOption={this.formatOption}
           renderValue={this.renderValue}
           transform={this.makeTransform() || this.formatOption}
+          data={data}
         />
       );
     }

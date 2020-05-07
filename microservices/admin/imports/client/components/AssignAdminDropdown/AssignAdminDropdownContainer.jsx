@@ -25,7 +25,7 @@ export default compose(
   withSmartQuery({
     query: USERS_COLLECTION,
     params: {
-      $filters: { 'roles._id': ROLES.ADVISOR },
+      $filters: { 'roles._id': ROLES.ADMIN },
       firstName: 1,
       $options: { sort: { firstName: 1 } },
     },
