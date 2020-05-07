@@ -1,6 +1,5 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { NavLink, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
@@ -13,24 +12,6 @@ const styles = () => ({
   root: { justifyContent: 'center' },
 });
 
-const shouldRenderInPrimaryColor = ({
-  collection,
-  collectionName,
-  path,
-  to,
-  exact,
-}) => {
-  if (collection && collection === collectionName) {
-    return true;
-  }
-  if (path.slice(1).startsWith(collection) || path.includes(collection)) {
-    return true;
-  }
-  if (exact && path === to) {
-    return true;
-  }
-};
-
 const MainSideNavListItem = ({
   label,
   icon,
@@ -38,10 +19,8 @@ const MainSideNavListItem = ({
   detail,
   onClick,
   collection,
-  collectionName,
   to,
   history,
-  exact,
 }) => (
   <ListItem
     button
@@ -56,17 +35,7 @@ const MainSideNavListItem = ({
     to={!detail ? to : undefined}
     className="main-side-nav-list-item"
   >
-    <div
-      className={classnames({
-        primary: shouldRenderInPrimaryColor({
-          collection,
-          collectionName,
-          path: history.location.pathname,
-          to,
-          exact,
-        }),
-      })}
-    >
+    <div>
       {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
       <small className="label">
         {label || <T id={`collections.${collection}`} noTooltips />}
@@ -78,7 +47,6 @@ const MainSideNavListItem = ({
 MainSideNavListItem.propTypes = {
   classes: PropTypes.object.isRequired,
   collection: PropTypes.string,
-  collectionName: PropTypes.string,
   detail: PropTypes.bool,
   icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   label: PropTypes.string,

@@ -24,13 +24,11 @@ const getItems = currentUser =>
       label: 'Dashboard',
       icon: 'home',
       to: ADMIN_ROUTES.DASHBOARD_PAGE.path,
-      exact: true,
     },
     {
       label: 'Dossiers',
       icon: 'viewWeek',
       to: '/board',
-      exact: true,
     },
     {
       detail: true,
@@ -43,7 +41,6 @@ const getItems = currentUser =>
     {
       collection: INSURANCE_REQUESTS_COLLECTION,
       to: '/insuranceRequests',
-      exact: true,
       label: 'Assurances',
     },
     {
@@ -80,7 +77,6 @@ const getItems = currentUser =>
       label: 'Dev',
       icon: 'developerMode',
       to: ADMIN_ROUTES.DEV_PAGE.path,
-      exact: true,
       show: !!(currentUser && currentUser.isDev),
     },
   ]
