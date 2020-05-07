@@ -407,6 +407,7 @@ describe('Pro promotion', () => {
           .click();
 
         cy.contains('Supprimer').click();
+        cy.contains('Confirmer').click();
         cy.contains('Lot 2').should('not.exist');
       });
     });
