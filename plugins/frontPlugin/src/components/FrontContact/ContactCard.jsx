@@ -1,11 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 
+import { employeesById } from '../../core/arrays/epotekEmployees';
+import T from '../../core/components/Translation';
 import FrontCard from '../FrontCard/FrontCard';
 import FrontCardItem from '../FrontCard/FrontCardItem';
 import FrontContactTasks from './FrontContactTasks/FrontContactTasks';
-import T from '../../core/components/Translation';
-import { employeesById } from '../../core/arrays/epotekEmployees';
 
 const { Front, subdomains } = window;
 
@@ -22,7 +22,7 @@ const getContactTitle = props => {
     return 'Contact e-Potek';
   }
 
-  switch (roles[0]) {
+  switch (roles[0]._id) {
     case 'user':
       return 'Client(e) e-Potek';
     case 'dev':
