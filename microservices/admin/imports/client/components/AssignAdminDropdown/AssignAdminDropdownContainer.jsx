@@ -1,7 +1,7 @@
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminUsers as query } from 'core/api/users/queries';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
   const oldAdmin = relatedDoc.assignedEmployee
@@ -13,7 +13,7 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
     return {
       id: _id,
       show: _id !== oldAdmin,
-      label: admin.name || 'Personne',
+      label: admin.firstName || 'Personne',
       link: false,
       onClick: () => onAdminSelectHandler({ newAdmin: admin, relatedDoc }),
     };
@@ -23,8 +23,12 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
 
 export default compose(
   withSmartQuery({
-    query,
-    params: { admins: true, $body: { name: 1 } },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      firstName: 1,
+      $options: { sort: { firstName: 1 } },
+    },
     queryOptions: { reactive: false },
     dataName: 'admins',
     smallLoader: true,

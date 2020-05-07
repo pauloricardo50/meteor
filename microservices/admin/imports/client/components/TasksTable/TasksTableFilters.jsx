@@ -1,9 +1,10 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 
@@ -13,7 +14,7 @@ const uptoDateOptions = [
   { id: 'ALL', label: 'Tout' },
 ];
 
-const TaskTableFilters = ({
+const TasksTableFilters = ({
   admins = [],
   assignee,
   status,
@@ -69,10 +70,14 @@ const TaskTableFilters = ({
 };
 
 export default withSmartQuery({
-  query: adminUsers,
-  params: { $body: { firstName: 1 }, roles: [ROLES.ADMIN, ROLES.DEV] },
+  query: USERS_COLLECTION,
+  params: {
+    $filters: { 'roles._id': ROLES.ADVISOR },
+    firstName: 1,
+    $options: { sort: { firstName: 1 } },
+  },
   dataName: 'admins',
   queryOptions: { shouldRefetch: () => false },
   refetchOnMethodCall: false,
   skip: ({ setAssignee }) => !setAssignee,
-})(TaskTableFilters);
+})(TasksTableFilters);

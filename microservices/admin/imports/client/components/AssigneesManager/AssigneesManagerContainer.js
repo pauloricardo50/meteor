@@ -5,8 +5,7 @@ import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insura
 import { insuranceRequestSetAssignees } from 'core/api/insuranceRequests/methodDefinitions';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loanSetAssignees } from 'core/api/loans/methodDefinitions';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 export const assigneesSchema = new SimpleSchema({
   assigneeLinks: { type: Array, optional: true, uniforms: { label: ' ' } },
@@ -14,14 +13,15 @@ export const assigneesSchema = new SimpleSchema({
   'assigneeLinks.$._id': {
     type: String,
     customAllowedValues: {
-      query: adminUsers,
-      params: () => ({
-        roles: [ROLES.ADMIN],
-        $body: { name: 1, $options: { sort: { name: 1 } } },
-      }),
+      query: USERS_COLLECTION,
+      params: {
+        $filters: { 'roles._id': ROLES.ADVISOR },
+        firstName: 1,
+        $options: { sort: { firstName: 1 } },
+      },
     },
     uniforms: {
-      transform: user => (user ? user.name : ''),
+      transform: user => user?.firstName || '',
       label: 'Conseiller',
       placeholder: null,
     },

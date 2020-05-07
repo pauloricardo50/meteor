@@ -4,8 +4,7 @@ import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { insuranceRequestInsert } from 'core/api/insuranceRequests/methodDefinitions';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 const getSchema = ({ availableBorrowers = [], withKeepAssigneesCheckbox }) =>
   new SimpleSchema({
@@ -25,14 +24,15 @@ const getSchema = ({ availableBorrowers = [], withKeepAssigneesCheckbox }) =>
     'assigneeLinks.$._id': {
       type: String,
       customAllowedValues: {
-        query: adminUsers,
-        params: () => ({
-          roles: [ROLES.ADMIN],
-          $body: { name: 1, $options: { sort: { name: 1 } } },
-        }),
+        query: USERS_COLLECTION,
+        params: {
+          $filters: { 'roles._id': ROLES.ADVISOR },
+          firstName: 1,
+          $options: { sort: { firstName: 1 } },
+        },
       },
       uniforms: {
-        transform: user => (user ? user.name : ''),
+        transform: user => user?.firstName || '',
         label: 'Conseiller',
         placeholder: null,
       },

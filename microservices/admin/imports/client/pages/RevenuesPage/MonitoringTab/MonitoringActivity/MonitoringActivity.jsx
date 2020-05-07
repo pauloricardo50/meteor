@@ -7,9 +7,7 @@ import {
   LOAN_STATUS,
   LOAN_STATUS_ORDER,
 } from 'core/api/loans/loanConstants';
-import { adminLoans } from 'core/api/loans/queries';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
 import TableWithModal from 'core/components/Table/TableWithModal';
@@ -42,7 +40,7 @@ const getColumnOptions = ({ hasCreatedAtRange }) =>
   ].filter(x => x);
 
 const getColumnsForAdminRow = ({ hasCreatedAtRange, loans, data }) => ({
-  name,
+  firstName,
   _id,
 }) => {
   const loansByAdmin = loans.filter(
@@ -62,9 +60,9 @@ const getColumnsForAdminRow = ({ hasCreatedAtRange, loans, data }) => ({
   return {
     id: _id,
     loans: loansToShow,
-    name,
+    name: firstName,
     columns: [
-      name,
+      firstName,
       loanCount,
       hasCreatedAtRange
         ? loansByAdmin.filter(({ status }) => status === LOAN_STATUS.LEAD)
@@ -137,18 +135,28 @@ const MonitoringActivity = ({
 }) => {
   const hasCreatedAtRange = createdAtRange.startDate || createdAtRange.endDate;
   const { data: admins, loading: usersLoading } = useStaticMeteorData({
-    query: adminUsers,
-    params: { roles: [ROLES.ADMIN], $body: { name: 1 } },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      firstName: 1,
+      $options: { sort: { firstName: 1 } },
+    },
   });
   const { data: loans = [], loading: loansLoading } = useStaticMeteorData(
     {
-      query: adminLoans,
+      query: LOANS_COLLECTION,
       params: {
-        createdAt: {
-          $gte: createdAtRange.startDate,
-          $lte: createdAtRange.endDate,
+        $filter: {
+          createdAt: {
+            $gte: createdAtRange.startDate,
+            $lte: createdAtRange.endDate,
+          },
         },
-        $body: { userCache: 1, status: 1, name: 1, createdAt: 1 },
+        createdAt: 1,
+        name: 1,
+        status: 1,
+        userCache: 1,
+        $options: { sort: { createdAt: 1 } },
       },
     },
     [createdAtRange],

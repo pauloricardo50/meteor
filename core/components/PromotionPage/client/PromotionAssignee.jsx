@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { withSmartQuery } from '../../../api/containerToolkit';
 import { promotionUpdate } from '../../../api/promotions/methodDefinitions';
-import { adminUsers as query } from '../../../api/users/queries';
+import { ROLES, USERS_COLLECTION } from '../../../api/users/userConstants';
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 
 const getSchema = admins =>
@@ -14,7 +14,7 @@ const getSchema = admins =>
       allowedValues: admins.map(({ _id }) => _id),
       uniforms: {
         transform: assignedEmployeeId =>
-          admins.find(({ _id }) => assignedEmployeeId === _id).name,
+          admins.find(({ _id }) => assignedEmployeeId === _id)?.name,
         labelProps: { shrink: true },
       },
     },
@@ -39,8 +39,12 @@ const PromotionAssignee = ({ schema, promotion }) => (
 
 export default compose(
   withSmartQuery({
-    query,
-    params: { admins: true, $body: { name: 1 } },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      name: 1,
+      $options: { sort: { firstName: 1 } },
+    },
     dataName: 'admins',
     smallLoader: true,
   }),

@@ -5,14 +5,13 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   adminCreateUser,
   updateUser,
   userUpdateOrganisations,
 } from 'core/api/users/methodDefinitions';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({
@@ -28,12 +27,16 @@ const userSchema = new SimpleSchema({
   assignedEmployeeId: {
     type: String,
     customAllowedValues: {
-      query: adminUsers,
-      params: () => ({ $body: { name: 1 }, admins: true }),
+      query: USERS_COLLECTION,
+      params: {
+        $filters: { 'roles._id': ROLES.ADVISOR },
+        firstName: 1,
+        $options: { sort: { firstName: 1 } },
+      },
     },
     optional: true,
     uniforms: {
-      transform: ({ name }) => name,
+      transform: ({ firstName }) => firstName,
       labelProps: { shrink: true },
     },
   },
@@ -43,8 +46,8 @@ const userSchema = new SimpleSchema({
     optional: true,
     defaultValue: null,
     customAllowedValues: {
-      query: adminOrganisations,
-      params: () => ({ $body: { name: 1 } }),
+      query: ORGANISATIONS_COLLECTION,
+      params: { name: 1 },
     },
     uniforms: {
       transform: ({ name }) => name,
