@@ -1,4 +1,4 @@
-import './initRoles';
+import './roles/initRoles';
 
 import { Meteor } from 'meteor/meteor';
 

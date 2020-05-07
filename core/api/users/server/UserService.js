@@ -210,7 +210,13 @@ export class UserServiceClass extends CollectionService {
     return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
-  setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
+  setRole = ({ userId, role }) => {
+    if (role === ROLES.ADMIN) {
+      throw new Meteor.Error('Should not set ADMIN role only');
+    }
+
+    return Roles.setUserRoles(userId, role);
+  };
 
   getUserByPasswordResetToken = ({ token }) =>
     this.get(

@@ -1,13 +1,8 @@
 // Not actually used to create a meteor collection, but useful to switch()
 // on collection names
-export const USERS_COLLECTION = 'users';
+export { ROLES } from './roles/roleConstants';
 
-export const ROLES = {
-  ADMIN: 'admin',
-  DEV: 'dev',
-  USER: 'user',
-  PRO: 'pro',
-};
+export const USERS_COLLECTION = 'users';
 
 export const USER_QUERIES = {
   ADMIN_USERS: 'ADMIN_USERS',

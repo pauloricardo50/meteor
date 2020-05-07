@@ -417,8 +417,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({
-          token: 'some unknown token',}),
+        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
+        }),
       ).to.equal(false);
     });
   });
