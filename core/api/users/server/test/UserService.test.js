@@ -26,8 +26,8 @@ describe('UserService', function() {
 
   beforeEach(() => {
     resetDatabase();
-
-    user = Factory.create('user', { firstName, lastName });
+    const { _id: userId } = Factory.create('user', { firstName, lastName });
+    user = UserService.findOne(userId);
     sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
   });
 
@@ -190,6 +190,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal(newFirstName);
     });
+
     it('updates a user: check the sentence case', () => {
       const newFirstName = 'jon';
       UserService.update({
@@ -198,6 +199,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal('Jon');
     });
+
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
       expect(UserService.findOne(user._id)).to.deep.equal(user);
@@ -309,29 +311,6 @@ describe('UserService', function() {
       expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
         adminId,
       );
-    });
-  });
-
-  describe('setRole', () => {
-    it('changes the role of a user', () => {
-      const newRole = ROLES.DEV;
-      const u1 = UserService.findOne(user._id);
-      expect(u1.roles.length).to.equal(1);
-      expect(u1.roles[0]).to.deep.include({ _id: ROLES.USER });
-
-      UserService.setRole({ userId: user._id, role: newRole });
-
-      const u2 = UserService.findOne(user._id);
-      expect(u2.roles.length).to.equal(1);
-      expect(u2.roles[0]).to.deep.include({ _id: newRole });
-    });
-
-    it('throws if an unauthorized role is set', () => {
-      const newRole = 'some role';
-
-      expect(() =>
-        UserService.setRole({ userId: user._id, role: newRole }),
-      ).to.throw(`'${newRole}' does not exist`);
     });
   });
 

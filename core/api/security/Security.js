@@ -16,6 +16,11 @@ export default class Security {
     return Roles.userIsInRole(userId, role);
   }
 
+  static hasAssignedRole(userId, role) {
+    const roles = Roles.getRolesForUser(userId, { onlyAssigned: true });
+    return !!roles.find(r => r === role);
+  }
+
   static handleUnauthorized(message) {
     throw new Meteor.Error(SECURITY_ERROR, message);
   }

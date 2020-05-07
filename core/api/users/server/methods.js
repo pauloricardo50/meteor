@@ -171,7 +171,7 @@ proInviteUser.setHandler((context, params) => {
   }
 
   // Only pass proUserId if this is a pro user
-  const isProUser = SecurityService.hasRole(userId, ROLES.PRO);
+  const isProUser = SecurityService.hasAssignedRole(userId, ROLES.PRO);
 
   return UserService.proInviteUser({
     ...params,
