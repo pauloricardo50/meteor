@@ -1,15 +1,14 @@
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { getColumnOptions, getRows } from './userTableHelpers';
 
 export const withUsersQuery = withSmartQuery({
   query: USERS_COLLECTION,
   params: ({ assignedTo }) => ({
-    $filters: {
-      assignedEmployeeId: assignedTo,
-    },
+    $filters: { assignedEmployeeId: assignedTo },
     email: 1,
     name: 1,
     createdAt: 1,

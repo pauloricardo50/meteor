@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -19,6 +19,7 @@ import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 
 const xor = (item, array) => {
   const index = array.indexOf(item);
+
   if (index === -1) {
     return array.concat([item]);
   }
@@ -51,17 +52,21 @@ const renderSelect = ({
   variant,
   nullable,
   grouping,
-  data,
+  data = [],
   ...props
 }) => {
   const hasPlaceholder = !!placeholder;
   const hasValue = value !== '' && value !== undefined;
 
-  const options = allowedValues.map(v => {
-    // Make this data available for grouping
-    const rest = data?.find(({ _id }) => _id === v);
-    return { id: v, label: transform(v), ...rest };
-  });
+  const options = useMemo(
+    () =>
+      allowedValues.map(v => {
+        // Make this data available for grouping
+        const rest = data?.filter(x => x?._id).find(({ _id }) => _id === v);
+        return { id: v, label: transform(v), ...rest };
+      }),
+    [allowedValues],
+  );
 
   return (
     <TextField

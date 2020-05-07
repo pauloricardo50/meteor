@@ -57,7 +57,7 @@ const isAuthorizedToRun = () =>
 
 const getAdmins = () => {
   const admins = UserService.fetch({
-    $filters: { 'roles._id': ROLES.ADMIN },
+    $filters: { 'roles._id': ROLES.ADVISOR },
     _id: 1,
   });
   if (admins.length <= 1) {

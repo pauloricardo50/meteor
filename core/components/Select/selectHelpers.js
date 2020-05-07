@@ -22,7 +22,7 @@ const groupOptions = (options, { groupBy, format = x => x }) => {
     [],
   );
 
-  if (undefinedGroup.length > 0) {
+  if (undefinedGroup?.length) {
     return [
       ...groupedOptions,
       { id: 'SELECT_GROUP', label: <T id="general.other" /> },
