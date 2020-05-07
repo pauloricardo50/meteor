@@ -6,6 +6,8 @@ import { withProps } from 'recompose';
 import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 import { borrowerUpdate } from '../../api/borrowers/methodDefinitions';
 import { getCitiesFromZipCode } from '../../api/gpsStats/methodDefinitions';
+import { propertyUpdate } from '../../api/properties/methodDefinitions';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import AutoFormSelectFieldInput from '../AutoForm/AutoFormSelectFieldInput';
 import T from '../Translation';
 
@@ -59,6 +61,10 @@ export default withProps(({ doc }) => {
           borrowerId: doc._id,
           object: { city: newCity },
         });
+      break;
+    case PROPERTIES_COLLECTION:
+      updateFunc = ({ object: { city: newCity } = {} }) =>
+        propertyUpdate.run({ propertyId: doc._id, object: { city: newCity } });
       break;
     default: {
       throw new Meteor.Error(
