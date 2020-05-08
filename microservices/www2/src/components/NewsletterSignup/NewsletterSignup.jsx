@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RichText } from 'prismic-reactjs';
-import Button from '../Button';
 import TextInput from 'core/components/TextInput/TextInput';
+import Button from '../Button';
 import './NewsletterSignup.scss';
 
 const NewsletterSignup = ({ primary, placement }) => {
@@ -23,7 +23,7 @@ const NewsletterSignup = ({ primary, placement }) => {
 
       <Button primary raised className="button" type="submit">
         {/* TODO: hardcode for now, translation will be added later */}
-        S'inscrire
+        S&apos;inscrire
       </Button>
     </form>
   );
@@ -38,7 +38,7 @@ const NewsletterSignup = ({ primary, placement }) => {
   }
 
   return (
-    <section id={primary.section_id} class="newsletter-signup">
+    <section id={primary.section_id} className="newsletter-signup">
       {RichText.render(primary.section_heading)}
 
       {RichText.render(primary.content)}

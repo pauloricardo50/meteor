@@ -51,6 +51,19 @@ export const query = graphql`
               }
             }
           }
+          __typename
+          ... on PRISMIC_PageBodyImage_carousel {
+            type
+            primary {
+              section_id
+              section_heading
+            }
+            fields {
+              content
+              image
+              caption
+            }
+          }
           ... on PRISMIC_PageBodyNewsletter_signup {
             type
             primary {
