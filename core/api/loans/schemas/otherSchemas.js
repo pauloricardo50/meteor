@@ -25,10 +25,7 @@ export const loanTranchesSchema = {
     optional: true,
     allowedValues: Object.values(INTEREST_RATES),
   },
-  'loanTranches.$.value': {
-    ...moneyField,
-    type: Number, // Can be specified as percentages or monetary amounts
-  },
+  'loanTranches.$.value': moneyField,
 };
 
 export const previousLoanTranchesSchema = {

@@ -65,7 +65,7 @@ describe('FinancingResult', () => {
     beforeEach(() => {
       const structure = {
         id: 'a',
-        loanTranches: [{ type: 'interest10', value: 1 }],
+        loanTranches: [{ type: 'interest10', value: 800000 }],
         propertyId: 'house',
         propertyWork: 0,
         wantedLoan: 800000,
@@ -155,8 +155,8 @@ describe('FinancingResult', () => {
       const structure = {
         id: 'a',
         loanTranches: [
-          { type: 'interest2', value: 0.8 },
-          { type: 'interestLibor', value: 0.2 },
+          { type: 'interest2', value: 0.8 * 1080000 },
+          { type: 'interestLibor', value: 0.2 * 1080000 },
         ],
         propertyId: 'house',
         offerId: 'offer',
