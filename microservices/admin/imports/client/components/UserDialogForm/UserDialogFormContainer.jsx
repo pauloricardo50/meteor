@@ -31,6 +31,7 @@ const userSchema = new SimpleSchema({
       params: {
         $filters: { 'roles._id': ROLES.ADMIN },
         firstName: 1,
+        office: 1,
         $options: { sort: { firstName: 1 } },
       },
     },
@@ -38,6 +39,10 @@ const userSchema = new SimpleSchema({
     uniforms: {
       transform: user => user?.firstName,
       labelProps: { shrink: true },
+      grouping: {
+        groupBy: 'office',
+        format: office => <T id={`Forms.office.${office}`} />,
+      },
     },
   },
   'organisations.$': Object,

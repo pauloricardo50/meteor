@@ -24,6 +24,7 @@ const MonitoringTab = () => {
     params: {
       $filters: { 'roles._id': ROLES.ADVISOR },
       firstName: 1,
+      office: 1,
       $options: { sort: { firstName: 1 } },
     },
   });
