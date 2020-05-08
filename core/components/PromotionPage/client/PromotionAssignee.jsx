@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
@@ -55,7 +55,7 @@ export default compose(
     smallLoader: true,
   }),
   withProps(({ admins }) => {
-    console.log('admins:', admins);
-    return { schema: getSchema(admins) };
+    const schema = useMemo(() => getSchema(admins), []);
+    return { schema };
   }),
 )(PromotionAssignee);

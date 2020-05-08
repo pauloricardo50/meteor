@@ -6,6 +6,16 @@ import generator from '../../../factories/server';
 import { ROLES } from '../../roles/roleConstants';
 import UserService from '../UserService';
 
+const checkRoles = (roles, rolesToMatch) => {
+  expect(roles.length).to.equal(rolesToMatch.length);
+  Object.values(ROLES).forEach(role => {
+    const roleShouldMatch = rolesToMatch.some(
+      roleToMatch => roleToMatch === role,
+    );
+    expect(roles.some(({ _id }) => _id === role)).to.equal(roleShouldMatch);
+  });
+};
+
 describe('roles', () => {
   beforeEach(() => {
     resetDatabase();
@@ -21,12 +31,7 @@ describe('roles', () => {
 
     expect(roles[0]._id).to.equal(ROLES.DEV);
     expect(roles.length).to.equal(4);
-    expect(roles.some(({ _id }) => _id === ROLES.ADVISOR)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.OBSERVER)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+    checkRoles(roles, [ROLES.DEV, ROLES.ADMIN, ROLES.PRO, ROLES.USER]);
   });
 
   it('OBSERVER should have ADMIN, PRO and USER roles', () => {
@@ -39,11 +44,7 @@ describe('roles', () => {
 
     expect(roles[0]._id).to.equal(ROLES.OBSERVER);
     expect(roles.length).to.equal(4);
-    expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.OBSERVER)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+    checkRoles(roles, [ROLES.OBSERVER, ROLES.ADMIN, ROLES.PRO, ROLES.USER]);
   });
 
   it('OBSERVER should have ADMIN, PRO and USER roles', () => {
@@ -56,12 +57,7 @@ describe('roles', () => {
 
     expect(roles[0]._id).to.equal(ROLES.ADVISOR);
     expect(roles.length).to.equal(4);
-    expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.OBSERVER)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.ADVISOR)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+    checkRoles(roles, [ROLES.ADVISOR, ROLES.ADMIN, ROLES.PRO, ROLES.USER]);
   });
 
   it('PRO should have USER roles', () => {
@@ -74,10 +70,7 @@ describe('roles', () => {
 
     expect(roles[0]._id).to.equal(ROLES.PRO);
     expect(roles.length).to.equal(2);
-    expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(true);
-    expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+    checkRoles(roles, [ROLES.PRO, ROLES.USER]);
   });
 
   it('USER should only have USER roles', () => {
@@ -89,23 +82,20 @@ describe('roles', () => {
 
     expect(roles[0]._id).to.equal(ROLES.USER);
     expect(roles.length).to.equal(1);
-    expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(false);
-    expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+    checkRoles(roles, [ROLES.USER]);
   });
 
   describe('setRole', () => {
     it('changes the role of a user', () => {
       generator({ users: { _id: 'userId' } });
       const newRole = ROLES.DEV;
-      const u1 = UserService.findOne('userId');
+      const u1 = UserService.get('userId', { roles: 1 });
       expect(u1.roles.length).to.equal(1);
       expect(u1.roles[0]).to.deep.include({ _id: ROLES.USER });
 
       UserService.setRole({ userId: 'userId', role: newRole });
 
-      const u2 = UserService.findOne('userId');
+      const u2 = UserService.get('userId', { roles: 1 });
       expect(u2.roles[0]._id).to.equal(newRole);
     });
 
@@ -135,10 +125,7 @@ describe('roles', () => {
       expect(roles[0]._id).to.equal(ROLES.PRO);
       const pro = roles.find(({ _id }) => _id === ROLES.PRO);
       expect(pro.assigned).to.equal(true);
-      expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(false);
-      expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(false);
-      expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(true);
-      expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+      checkRoles(roles, [ROLES.PRO, ROLES.USER]);
     });
 
     it('should upgrade all roles', () => {
@@ -154,11 +141,7 @@ describe('roles', () => {
       expect(roles[0]._id).to.equal(ROLES.OBSERVER);
       expect(obs.assigned).to.equal(true);
       expect(user.assigned).to.equal(false);
-      expect(roles.some(({ _id }) => _id === ROLES.DEV)).to.equal(false);
-      expect(roles.some(({ _id }) => _id === ROLES.OBSERVER)).to.equal(true);
-      expect(roles.some(({ _id }) => _id === ROLES.ADMIN)).to.equal(true);
-      expect(roles.some(({ _id }) => _id === ROLES.PRO)).to.equal(true);
-      expect(roles.some(({ _id }) => _id === ROLES.USER)).to.equal(true);
+      checkRoles(roles, [ROLES.OBSERVER, ROLES.ADMIN, ROLES.PRO, ROLES.USER]);
     });
   });
 });

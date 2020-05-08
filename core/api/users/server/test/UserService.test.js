@@ -39,7 +39,7 @@ describe('UserService', function() {
     it('creates a user with a USER role by default', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
       expect(user.roles[0]).to.deep.include({ _id: ROLES.USER });
     });
@@ -47,7 +47,7 @@ describe('UserService', function() {
     it('creates a user with a PRO role', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options, role: ROLES.PRO });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
       expect(user.roles[0]).to.deep.include({ _id: ROLES.PRO });
     });
@@ -55,7 +55,7 @@ describe('UserService', function() {
     it('uses all options to create the user', () => {
       const options = { email: 'test@test.com', username: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { emails: 1, username: 1 });
 
       expect(user.emails[0].address).to.equal(options.email);
       expect(user.username).to.equal(options.username);
@@ -64,7 +64,7 @@ describe('UserService', function() {
     it('does not set additional stuff', () => {
       const options = { email: 'test@test.com', firstName: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { firstName: 1 });
 
       expect(user.firstName).to.equal(undefined);
     });
@@ -157,13 +157,8 @@ describe('UserService', function() {
 
     it('sets a hardcoded assignee per organisation', () => {
       generator({
-        users: {
-          _factory: 'admin',
-          _id: 'testAdminId',
-        },
-        organisations: {
-          _id: 'testOrgId',
-        },
+        users: { _factory: ROLES.ADVISOR, _id: 'testAdminId' },
+        organisations: { _id: 'testOrgId' },
       });
 
       const options = {

@@ -771,7 +771,7 @@ export class UserServiceClass extends CollectionService {
       // in the db and assign it to the user
       // this avoids issues with analytics, that expects all users to have
       // an assignee
-      const anyAdmin = this.get({ 'roles._id': ROLES.ADMIN }, { _id: 1 });
+      const anyAdmin = this.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 });
       return anyAdmin && anyAdmin._id;
     }
 
