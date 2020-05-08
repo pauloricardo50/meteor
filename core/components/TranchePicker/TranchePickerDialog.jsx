@@ -1,58 +1,60 @@
 import React from 'react';
 
+import { toMoney } from '../../utils/conversionFunctions';
 import Button from '../Button';
 import DialogSimple from '../DialogSimple';
 import T from '../Translation';
 import { TranchePicker } from './TranchePicker';
 import TranchePickerContainer from './TranchePickerContainer';
-
-const tranchesAreValid = tranches => {
-  const sum = tranches.reduce((total, { value }) => total + value, 0);
-  // Ensure that values from 0.9995 are rounded to 1, (i.e. in case user wants 3x 33.33%)
-  const sumIsOne = Math.round((sum + Number.EPSILON) * 1000) / 1000 === 1;
-  const allTypesAreDefined = tranches.every(({ type }) => !!type);
-
-  return sumIsOne && allTypesAreDefined;
-};
+import { checkTranches } from './tranchePickerHelpers';
 
 const TranchePickerDialog = ({
   title,
   tranches,
   handleSave,
   disabled,
+  wantedLoan,
   ...props
-}) => (
-  <DialogSimple
-    title={title || <T id="TranchePicker.title" />}
-    text={
-      <span
-        className="description mb-16"
-        style={{ maxWidth: '300px', display: 'block' }}
-      >
-        <T id="TranchePicker.description" />
-      </span>
-    }
-    actions={handleClose => [
-      <Button key="cancel" onClick={handleClose}>
-        Annuler
-      </Button>,
-      <Button
-        key="save"
-        onClick={() => {
-          handleSave(tranches);
-          handleClose();
-        }}
-        disabled={disabled || !tranchesAreValid(tranches)}
-      >
-        Enregistrer
-      </Button>,
-    ]}
-    label="Choisir tranches"
-    primary
-    raised={false}
-  >
-    <TranchePicker {...props} tranches={tranches} />
-  </DialogSimple>
-);
+}) => {
+  const tranchesAreValid = checkTranches(tranches, wantedLoan);
+  return (
+    <DialogSimple
+      title={title || <T id="TranchePicker.title" />}
+      text={
+        <span
+          className="description mb-16"
+          style={{ maxWidth: '300px', display: 'block' }}
+        >
+          <T id="TranchePicker.description" />
+        </span>
+      }
+      actions={handleClose => [
+        <Button key="cancel" onClick={handleClose}>
+          Annuler
+        </Button>,
+        <Button
+          key="save"
+          onClick={() => {
+            handleSave(tranches);
+            handleClose();
+          }}
+          disabled={disabled || !tranchesAreValid}
+        >
+          Enregistrer
+        </Button>,
+      ]}
+      label="Choisir tranches"
+      primary
+      raised={false}
+    >
+      <TranchePicker {...props} wantedLoan={wantedLoan} tranches={tranches} />
+      {!tranchesAreValid && (
+        <span className="error">
+          Vos tranches doivent s'additionner à CHF {toMoney(wantedLoan)}
+        </span>
+      )}
+    </DialogSimple>
+  );
+};
 
 export default TranchePickerContainer(TranchePickerDialog);

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Button from '../Button';
-import PercentInput from '../PercentInput';
+import InputAdornment from '../Material/InputAdornment';
+import MoneyInput from '../MoneyInput';
 import Select from '../Select';
 
 const Tranche = ({
@@ -11,9 +12,21 @@ const Tranche = ({
   setValue,
   setType,
   options,
+  wantedLoan,
 }) => (
   <span className="tranche">
-    <PercentInput value={value} onChange={setValue} className="value" />
+    <MoneyInput
+      value={value}
+      onChange={setValue}
+      className="value"
+      endAdornment={
+        <InputAdornment position="end">
+          <span className="secondary">
+            {Math.round((100 * value) / wantedLoan)}&nbsp;%
+          </span>
+        </InputAdornment>
+      }
+    />
     <Select
       value={type}
       onChange={setType}
