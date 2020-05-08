@@ -145,9 +145,16 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     }
 
     getMostActivePromotionOption({ loan: { promotionOptions = [] } }) {
-      const sorted = promotionOptions.sort(
-        sortByStatus(Object.values(PROMOTION_OPTION_STATUS)),
-      );
+      const order = [
+        PROMOTION_OPTION_STATUS.INTERESTED,
+        PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
+        PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+        PROMOTION_OPTION_STATUS.RESERVED,
+        PROMOTION_OPTION_STATUS.SOLD,
+      ];
+      const sorted = promotionOptions.sort(sortByStatus(order));
       return sorted.slice(-1)[0];
     }
 

@@ -1,12 +1,39 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { PROMOTION_OPTION_STATUS } from '../../../api/promotionOptions/promotionOptionConstants';
 import Calculator from '..';
 
 describe('PromotionCalculator', () => {
-  describe('canAffordPromotionOption', () => {
-    it('test name', () => {
-      // Test code
+  describe('getMostActivePromotionOption', () => {
+    it('returns a RESERVATION ACTIVE before CANCELLED', () => {
+      const loan = {
+        promotionOptions: [
+          { status: PROMOTION_OPTION_STATUS.INTERESTED },
+          { status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE },
+          { status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED },
+        ],
+      };
+
+      const result = Calculator.getMostActivePromotionOption({ loan });
+      expect(result.status).to.equal(
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      );
+    });
+
+    it('returns a RESERVATION ACTIVE before EXPIRED', () => {
+      const loan = {
+        promotionOptions: [
+          { status: PROMOTION_OPTION_STATUS.INTERESTED },
+          { status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE },
+          { status: PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED },
+        ],
+      };
+
+      const result = Calculator.getMostActivePromotionOption({ loan });
+      expect(result.status).to.equal(
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+      );
     });
   });
 
