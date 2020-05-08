@@ -375,7 +375,7 @@ describe('LoanService', function() {
         });
     });
 
-    it.only('updates the loan tranches if the wanted loan changed and there is only one tranche', () => {
+    it('updates the loan tranches if the wanted loan changed and there is only one tranche', () => {
       loanId = Factory.create('loan', {
         structures: [
           {
@@ -397,7 +397,7 @@ describe('LoanService', function() {
       expect(structure.loanTranches[0].value).to.equal(800000);
     });
 
-    it.only('does not update the loan tranches if the wanted loan changed and there is more than one tranche', () => {
+    it('does not update the loan tranches if the wanted loan changed and there is more than one tranche', () => {
       loanId = Factory.create('loan', {
         structures: [
           {
@@ -424,7 +424,7 @@ describe('LoanService', function() {
       expect(structure.loanTranches[1].value).to.equal(500000);
     });
 
-    it.only('does not update the loan tranches if the wanted loan did not change', () => {
+    it('does not update the loan tranches if the wanted loan did not change', () => {
       loanId = Factory.create('loan', {
         structures: [
           {
