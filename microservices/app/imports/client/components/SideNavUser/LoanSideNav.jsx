@@ -119,8 +119,7 @@ export const LoanSideNav = ({ loan, links, closeDrawer }) => (
                 className="loan-side-nav-text"
                 primary={<T id={`${id}.title`} />}
                 secondary={
-                  percent &&
-                  progress !== false && (
+                  percent && progress !== false ? (
                     <span className="progress">
                       <PercentWithStatus
                         value={progress}
@@ -128,7 +127,7 @@ export const LoanSideNav = ({ loan, links, closeDrawer }) => (
                         rounded
                       />
                     </span>
-                  )
+                  ) : null // Make sure nothing is rendered to center the label
                 }
               />
             </ListItem>
