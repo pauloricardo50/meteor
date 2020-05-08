@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import { adminUsers } from 'core/api/users/queries';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
@@ -91,11 +91,15 @@ export const schema = new SimpleSchema({
     type: String,
     optional: true,
     customAllowedValues: {
-      query: adminUsers,
-      params: () => ({ $body: { name: 1 }, admins: true }),
+      query: USERS_COLLECTION,
+      params: {
+        $filters: { 'roles._id': ROLES.ADVISOR },
+        firstName: 1,
+        $options: { sort: { firstName: 1 } },
+      },
     },
     uniforms: {
-      transform: ({ name }) => name,
+      transform: ({ firstName }) => firstName,
       labelProps: { shrink: true },
       label: 'Assigner conseiller',
       placeholder: null,

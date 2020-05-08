@@ -2,13 +2,17 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminUsers } from 'core/api/users/queries';
+import { adminUser } from 'core/api/fragments';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 export default compose(
   withRouter,
   withSmartQuery({
-    query: adminUsers,
-    params: ({ match, userId }) => ({ _id: userId || match.params.userId }),
+    query: USERS_COLLECTION,
+    params: ({ match, userId }) => ({
+      $filters: { _id: userId || match.params.userId },
+      ...adminUser(), // TODO: Query less data
+    }),
     queryOptions: { reactive: false, single: true },
     dataName: 'user',
   }),

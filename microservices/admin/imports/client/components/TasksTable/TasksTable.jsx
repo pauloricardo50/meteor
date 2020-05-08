@@ -5,8 +5,8 @@ import Table from 'core/components/Table';
 
 import TaskModifier from './TaskModifier';
 import TasksTableContainer from './TasksTableContainer';
+import TasksTableFilters from './TasksTableFilters';
 import TasksTablePriority from './TasksTablePriority';
-import TaskTableFilters from './TaskTableFilters';
 
 export const taskTableFragment = {
   assigneeLink: 1,
@@ -56,7 +56,7 @@ const TasksTable = ({
       <div className="flex center-align">
         {children}
         {renderTable && setStatus && (
-          <TaskTableFilters
+          <TasksTableFilters
             assignee={assignee}
             status={status}
             setStatus={setStatus}

@@ -68,8 +68,8 @@ class NotificationService extends CollectionService {
       assigneeLink: 1,
     });
 
-    const admins = UserService.fetch({
-      $filters: { 'roles._id': ROLES.ADMIN },
+    const advisors = UserService.fetch({
+      $filters: { 'roles._id': ROLES.ADVISOR },
     });
     tasks.forEach(({ _id: taskId, assigneeLink = {} }) => {
       const existingNotification = this.get(
@@ -81,7 +81,7 @@ class NotificationService extends CollectionService {
         this.insert({
           recipientLinks: this.getNotificationRecipient(
             assigneeLink._id,
-            admins,
+            advisors,
           ),
           taskLink: { _id: taskId },
         });
@@ -131,8 +131,8 @@ class NotificationService extends CollectionService {
       loan: { userCache: 1 },
     });
 
-    const admins = UserService.fetch({
-      $filters: { 'roles._id': ROLES.ADMIN },
+    const advisors = UserService.fetch({
+      $filters: { 'roles._id': ROLES.ADVISOR },
     });
     revenues.forEach(({ _id: revenueId, loan = {} }) => {
       const existingNotification = this.get(
@@ -146,7 +146,7 @@ class NotificationService extends CollectionService {
             loan.userCache &&
               loan.userCache.assignedEmployeeCache &&
               loan.userCache.assignedEmployeeCache._id,
-            admins,
+            advisors,
           ),
           revenueLink: { _id: revenueId },
         });

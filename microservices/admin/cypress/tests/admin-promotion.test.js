@@ -129,7 +129,7 @@ describe('Admin promotion', () => {
       cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
     });
 
-    it.only('can change roles, remove a promotion Pro, and add one', () => {
+    it('can change roles, remove a promotion Pro, and add one', () => {
       cy.visit('/promotions');
       cy.contains('Pré Polly').click();
       cy.contains('Pros').click();

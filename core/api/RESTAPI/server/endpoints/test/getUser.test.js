@@ -151,7 +151,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName1',
       name: 'FirstName1 LastName1',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: [{ _id: 'user' }],
+      assignedRoles: ['user'],
       assignedEmployee: {
         _id: 'admin',
         _collection: 'users',
@@ -179,7 +179,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: [{ _id: 'user' }],
+      assignedRoles: ['user'],
     });
   });
 
@@ -197,7 +197,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: [{ _id: 'user' }],
+      assignedRoles: ['user'],
     });
   });
 
@@ -215,7 +215,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: [{ _id: 'user' }],
+      assignedRoles: ['user'],
     });
   });
 
@@ -253,7 +253,7 @@ describe('REST: getUser', function() {
       lastName: '4',
       name: 'Pro 4',
       phoneNumbers: ['+41 12345'],
-      roles: [{ _id: 'pro' }],
+      assignedRoles: ['pro'],
     });
   });
 
@@ -270,7 +270,7 @@ describe('REST: getUser', function() {
       firstName: 'FirstName3',
       lastName: 'LastName3',
       name: 'FirstName3 LastName3',
-      roles: [{ _id: 'user' }],
+      assignedRoles: ['user'],
     });
   });
 
@@ -287,7 +287,7 @@ describe('REST: getUser', function() {
       firstName: 'FirstName4',
       lastName: 'LastName4',
       name: 'FirstName4 LastName4',
-      roles: [{ _id: 'user' }],
+      assignedRoles: ['user'],
     });
   });
 });

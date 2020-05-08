@@ -4,11 +4,9 @@ import { INSURANCE_REQUEST_STATUS_ORDER } from 'core/api/insuranceRequests/insur
 import { ROLES } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
-import RadioButtons from 'core/components/RadioButtons';
-import StickyPopover from 'core/components/StickyPopover';
 import T from 'core/components/Translation';
 
-import LoanBoardOptionsCheckboxes from '../../LoanBoard/LoanBoardOptions/LoanBoardOptionsCheckboxes';
+import LoanBoardOptionsSelect from '../../LoanBoard/LoanBoardOptions/LoanBoardOptionsSelect';
 import { ACTIONS, GROUP_BY } from '../insuranceRequestBoardConstants';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
@@ -77,7 +75,7 @@ const insuranceRequestBoardContent = ({
   return (
     <>
       <div className="left">
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Conseiller"
           value={assignedEmployeeValue}
           options={assignedEmployeeOptions}
@@ -89,14 +87,14 @@ const insuranceRequestBoardContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Statut"
           value={statusValue}
           options={statusOptions}
           onChange={next => makeOnChange('status', dispatch)(statusValue, next)}
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Assureurs"
           value={organisationIdValue}
           options={organisationOptions}
@@ -105,26 +103,15 @@ const insuranceRequestBoardContent = ({
           }
         />
 
-        <div>
-          <StickyPopover
-            component={
-              <RadioButtons
-                options={groupByOptions}
-                onChange={newValue =>
-                  dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
-                }
-                value={groupBy}
-                radioGroupStyle={{ flexDirection: 'column' }}
-              />
-            }
-            placement="bottom"
-          >
-            <div>Mode d'affichage</div>
-          </StickyPopover>
-          <div className="secondary">
-            {groupByOptions.find(({ id }) => id === groupBy).label}
-          </div>
-        </div>
+        <LoanBoardOptionsSelect
+          label="Affichage"
+          value={groupBy}
+          options={groupByOptions}
+          onChange={newValue =>
+            dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
+          }
+          multiple={false}
+        />
       </div>
 
       <div className="right">

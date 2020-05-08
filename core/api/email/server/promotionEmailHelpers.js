@@ -1,5 +1,3 @@
-import { Roles } from 'meteor/alanning:roles';
-
 import { getUserNameAndOrganisation } from '../../helpers/helpers';
 import {
   cancelPromotionLotReservation,
@@ -17,6 +15,7 @@ import {
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
 import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
+import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import { EMAIL_IDS } from '../emailConstants';
@@ -59,7 +58,7 @@ const getPromotionOptionMailParams = (
   if (userId) {
     const user = UserService.get(userId, { name: 1, roles: 1 });
 
-    if (Roles.userIsInRole(user, ROLES.USER) && anonymize) {
+    if (SecurityService.hasAssignedRole(user, ROLES.USER) && anonymize) {
       userName = 'un acquéreur';
     } else {
       userName = user.name;
