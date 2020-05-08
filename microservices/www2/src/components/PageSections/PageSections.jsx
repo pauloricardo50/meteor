@@ -1,6 +1,7 @@
 import React from 'react';
 import BlogPostsGrid from '../BlogPostsGrid';
 import Hero from '../Hero';
+import NewsletterSignup from '../NewsletterSignup';
 import PageHeading from '../PageHeading';
 import PageNavigation from '../PageNavigation';
 import Quote from '../Quote';
@@ -18,6 +19,7 @@ const PageSections = ({ sections }) =>
           {
             blog_posts: <BlogPostsGrid {...section} />,
             hero: <Hero {...section} />,
+            newsletter_signup: <NewsletterSignup {...section} />,
             page_heading: <PageHeading {...section} />,
             page_navigation: <PageNavigation {...section} />,
             quote: <Quote {...section} />,

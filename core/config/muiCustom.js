@@ -16,7 +16,9 @@ const createTheme = ({ fontSize = 14 }) =>
         root: {
           borderRadius: 4,
         },
-        containedPrimary: {},
+        containedPrimary: {
+          backgroundImage: 'linear-gradient(to left, #5bb5ff, #2e7eff 0%)',
+        },
         contained: {
           backgroundColor: 'white',
           color: colors.primary,

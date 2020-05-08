@@ -1,0 +1,35 @@
+{
+  "Main": {
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Menu Name",
+        "useAsTitle": true,
+        "placeholder": "Must be all lowercase, with no spaces"
+      }
+    },
+    "menu_links": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "label": {
+            "type": "Text",
+            "config": {
+              "label": "Label",
+              "placeholder": "Link label"
+            }
+          },
+          "link": {
+            "type": "Link",
+            "config": {
+              "label": "Link",
+              "placeholder": "Select a Link...",
+              "allowTargetBlank": true
+            }
+          }
+        },
+        "label": "Menu Links"
+      }
+    }
+  }
+}

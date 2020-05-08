@@ -1,0 +1,175 @@
+{
+  "Blog Post": {
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "UID",
+        "placeholder": "unique-identifier-for-blog-post-url"
+      }
+    },
+    "title": {
+      "type": "StructuredText",
+      "config": {
+        "single": "heading1",
+        "label": "Title",
+        "placeholder": "Blog Post Title..."
+      }
+    },
+    "date": {
+      "type": "Date",
+      "config": {
+        "label": "Date"
+      }
+    },
+    "author": {
+      "type": "Link",
+      "config": {
+        "select": "document",
+        "customtypes": ["blog_post_author"],
+        "label": "Author",
+        "placeholder": "Choose an Author"
+      }
+    },
+    "body": {
+      "type": "Slices",
+      "fieldset": "Slice zone",
+      "config": {
+        "labels": {
+          "image_with_caption": [
+            {
+              "name": "emphasized",
+              "display": "Emphasized"
+            },
+            {
+              "name": "image-full-width",
+              "display": "Full"
+            }
+          ],
+          "hero": []
+        },
+        "choices": {
+          "hero": {
+            "type": "Slice",
+            "fieldset": "Hero",
+            "description": "Hero image with optional content overlay and CTA(s)",
+            "icon": "image",
+            "display": "grid",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "image_layout": {
+                "type": "Select",
+                "config": {
+                  "options": ["Full Width", "Equal Split"],
+                  "default_value": "Full Width",
+                  "label": "Image Layout"
+                }
+              },
+              "images": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [
+                    {
+                      "name": "mobile",
+                      "width": 800,
+                      "height": 400
+                    }
+                  ],
+                  "label": "Images"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink, list-item, o-list-item",
+                  "allowTargetBlank": true,
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
+            "repeat": {
+              "cta_text": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text",
+                  "placeholder": "Learn more"
+                }
+              },
+              "cta_link": {
+                "type": "Link",
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "CTA Link"
+                }
+              }
+            }
+          },
+          "quote": {
+            "type": "Slice",
+            "fieldset": "Quote",
+            "description": "A quote section",
+            "icon": "format_quote",
+            "non-repeat": {
+              "quote": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "paragraph",
+                  "label": "Quote",
+                  "placeholder": "Post Quote..."
+                }
+              },
+              "quote_source": {
+                "type": "Text",
+                "config": {
+                  "label": "Quote Attribution",
+                  "placeholder": "Author or attribution"
+                }
+              }
+            },
+            "repeat": {}
+          },
+          "text": {
+            "type": "Slice",
+            "fieldset": "Text",
+            "description": "Rich Text Section",
+            "icon": "text_fields",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "justification": {
+                "type": "Select",
+                "config": {
+                  "options": ["Center", "Left", "Right"],
+                  "default_value": "Center",
+                  "label": "Justification"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, preformatted, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink, list-item, o-list-item, o-list-item",
+                  "allowTargetBlank": true,
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
+            "repeat": {}
+          }
+        }
+      }
+    }
+  }
+}

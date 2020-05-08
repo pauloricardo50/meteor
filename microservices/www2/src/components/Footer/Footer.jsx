@@ -1,6 +1,6 @@
 import React from 'react';
 import Menu from '../Menu';
-import SignupForm from '../SignupForm';
+import NewsletterSignup from '../NewsletterSignup';
 import SocialLinks from '../SocialLinks';
 import './Footer.scss';
 
@@ -66,10 +66,9 @@ const Footer = () => (
         <LinkedLocation location="geneve" />
       </p>
 
-      <SignupForm type="footer" />
+      <NewsletterSignup placement="footer" />
 
       <div className="contact-notices">
-        {/* TODO: pull this content from CMS or localized file */}
         <p>
           e-Potek SA est une société régulée par la{' '}
           <a href="https://www.finma.ch/">FINMA</a>

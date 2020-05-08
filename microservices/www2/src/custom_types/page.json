@@ -1,0 +1,584 @@
+{
+  "Main": {
+    "name": {
+      "type": "StructuredText",
+      "config": {
+        "single": "heading1",
+        "label": "Name",
+        "placeholder": "This will be the page name displayed in the browser tab"
+      }
+    },
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Slug",
+        "placeholder": "Add an SEO-friendly page slug"
+      }
+    },
+    "body": {
+      "type": "Slices",
+      "fieldset": "Page sections",
+      "config": {
+        "labels": {
+          "faq": [],
+          "image_gallery": [],
+          "newsletter_signup": [],
+          "image_collage": [],
+          "image_carousel": []
+        },
+        "choices": {
+          "page_heading": {
+            "type": "Slice",
+            "fieldset": "Page Heading",
+            "description": "Large text-only header for sectioned pages",
+            "icon": "subtitles",
+            "display": "list",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "page_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading1, heading2",
+                  "label": "Page Heading",
+                  "placeholder": "Heading"
+                }
+              }
+            },
+            "repeat": {}
+          },
+          "page_navigation": {
+            "type": "Slice",
+            "fieldset": "In-Page Navigation",
+            "description": "Anchor links to sections on this page",
+            "icon": "menu",
+            "display": "list",
+            "non-repeat": {},
+            "repeat": {
+              "link_text": {
+                "type": "Text",
+                "config": {
+                  "label": "Link Text",
+                  "placeholder": "Text to display within page navigation"
+                }
+              },
+              "section_link": {
+                "type": "Text",
+                "config": {
+                  "label": "Section Link",
+                  "placeholder": "Enter anchor id of section to be linked to within this page"
+                }
+              }
+            }
+          },
+          "hero": {
+            "type": "Slice",
+            "fieldset": "Hero",
+            "description": "Hero image with optional CTA(s)",
+            "icon": "image",
+            "display": "grid",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "image_layout": {
+                "type": "Select",
+                "config": {
+                  "options": ["Full Width", "Equal Split"],
+                  "default_value": "Full Width",
+                  "label": "Image Layout"
+                }
+              },
+              "images": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [
+                    {
+                      "name": "mobile",
+                      "width": 800,
+                      "height": 400
+                    }
+                  ],
+                  "label": "Images"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink, list-item, o-list-item",
+                  "allowTargetBlank": true,
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
+            "repeat": {
+              "cta_text": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text",
+                  "placeholder": "Learn more"
+                }
+              },
+              "cta_link": {
+                "type": "Link",
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "CTA Link"
+                }
+              }
+            }
+          },
+          "text": {
+            "type": "Slice",
+            "fieldset": "Text",
+            "description": "Rich Text Section",
+            "icon": "text_fields",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "justification": {
+                "type": "Select",
+                "config": {
+                  "options": ["Center", "Left", "Right"],
+                  "default_value": "Center",
+                  "label": "Justification"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, preformatted, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink, list-item, o-list-item, o-list-item",
+                  "allowTargetBlank": true,
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
+            "repeat": {}
+          },
+          "image_carousel": {
+            "type": "Slice",
+            "fieldset": "Image Carousel",
+            "description": "Section with clickable caption and content per image",
+            "icon": "view_carousel",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "section_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading1, heading2",
+                  "label": "Section Heading"
+                }
+              }
+            },
+            "repeat": {
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "paragraph, strong, em, hyperlink",
+                  "label": "Content",
+                  "placeholder": "Short paragraph"
+                }
+              },
+              "image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {
+                    "width": null,
+                    "height": null
+                  },
+                  "thumbnails": [],
+                  "label": "Image"
+                }
+              },
+              "caption": {
+                "type": "Text",
+                "config": {
+                  "label": "Caption",
+                  "placeholder": "Very short phrase that will be the clickable link for advancing the carousel"
+                }
+              }
+            },
+            "display": "list"
+          },
+          "newsletter_signup": {
+            "type": "Slice",
+            "fieldset": "Newsletter Signup",
+            "description": "Content to include with email signup field",
+            "icon": "markunread_mailbox",
+            "display": "list",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "section_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading1, heading2",
+                  "label": "Section Heading"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, strong, em",
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
+            "repeat": {}
+          },
+          "image_collage": {
+            "type": "Slice",
+            "fieldset": "Image Collage",
+            "description": "Displays a collage of images with split content",
+            "icon": "collections",
+            "display": "list",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink",
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              },
+              "images": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [
+                    {
+                      "name": "second",
+                      "width": 1000,
+                      "height": 1000
+                    },
+                    {
+                      "name": "third",
+                      "width": 1000,
+                      "height": 1000
+                    },
+                    {
+                      "name": "fourth",
+                      "width": 1000,
+                      "height": 1000
+                    }
+                  ],
+                  "label": "Images"
+                }
+              }
+            },
+            "repeat": {
+              "cta_text": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text",
+                  "placeholder": "Learn more"
+                }
+              },
+              "cta_link": {
+                "type": "Link",
+                "config": {
+                  "label": "CTA Link"
+                }
+              }
+            }
+          },
+          "faq": {
+            "type": "Slice",
+            "fieldset": "FAQ",
+            "description": "Section for questions and answers",
+            "icon": "help",
+            "display": "list",
+            "non-repeat": {},
+            "repeat": {
+              "question": {
+                "type": "Text",
+                "config": {
+                  "label": "Question",
+                  "placeholder": "More lorem ipsum??"
+                }
+              },
+              "answer": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, strong, em, hyperlink, list-item",
+                  "allowTargetBlank": true,
+                  "label": "Answer"
+                }
+              }
+            }
+          },
+          "team": {
+            "type": "Slice",
+            "fieldset": "Team",
+            "description": "Section for team member information with portrait",
+            "icon": "person_pin",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "section_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading2",
+                  "label": "Section Heading",
+                  "placeholder": "Management"
+                }
+              }
+            },
+            "repeat": {
+              "member_name": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading3",
+                  "label": "Member Name",
+                  "placeholder": "Albert Einstein"
+                }
+              },
+              "position": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading4",
+                  "label": "Position",
+                  "placeholder": "Clerk"
+                }
+              },
+              "phone": {
+                "type": "Text",
+                "config": {
+                  "label": "Phone",
+                  "placeholder": "+41-785-555-222"
+                }
+              },
+              "email": {
+                "type": "Text",
+                "config": {
+                  "label": "email",
+                  "placeholder": "albert.einstein@example.com"
+                }
+              },
+              "portrait": {
+                "type": "Image",
+                "config": {
+                  "constraint": {
+                    "width": 1000,
+                    "height": 1000
+                  },
+                  "thumbnails": [
+                    {
+                      "name": "Mobile",
+                      "width": 500,
+                      "height": 500
+                    }
+                  ],
+                  "label": "Portrait"
+                }
+              }
+            }
+          },
+          "testimonial": {
+            "type": "Slice",
+            "fieldset": "Testimonials",
+            "description": "Customer testimonals",
+            "icon": "textsms",
+            "display": "list",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "testimonials_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading1",
+                  "label": "Testimonials Heading"
+                }
+              }
+            },
+            "repeat": {
+              "profile_image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {
+                    "width": 400,
+                    "height": 400
+                  },
+                  "thumbnails": [],
+                  "label": "Profile Image"
+                }
+              },
+              "customer_name": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading2",
+                  "label": "Customer Name",
+                  "placeholder": "Jacques Martin"
+                }
+              },
+              "customer_title": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading3",
+                  "label": "Customer Title",
+                  "placeholder": "Investor"
+                }
+              },
+              "customer_quote": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph",
+                  "label": "Customer Quote",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            }
+          },
+          "blog_posts": {
+            "type": "Slice",
+            "fieldset": "Blog Posts",
+            "description": "Section auto-populated by blog posts",
+            "icon": "grid_on",
+            "display": "list",
+            "non-repeat": {},
+            "repeat": {
+              "post_filter": {
+                "type": "Text",
+                "config": {
+                  "label": "Post Filter",
+                  "placeholder": "[e.g. Acheter, Refinancement, Conseils]"
+                }
+              }
+            }
+          },
+          "promotions": {
+            "type": "Slice",
+            "fieldset": "Promotions",
+            "description": "Section auto-populated by promotions",
+            "icon": "grid_on",
+            "display": "list",
+            "non-repeat": {},
+            "repeat": {
+              "promotion_filter": {
+                "type": "Text",
+                "config": {
+                  "label": "Promotion Filter",
+                  "placeholder": ""
+                }
+              }
+            }
+          },
+          "mortgage_rates": {
+            "type": "Slice",
+            "fieldset": "Mortgage Rates",
+            "description": "Section auto-populated by mortgage rates",
+            "icon": "account_balance",
+            "display": "list",
+            "non-repeat": {},
+            "repeat": {}
+          },
+          "gps_stats_map": {
+            "type": "Slice",
+            "fieldset": "GPS Stats Map",
+            "description": "Section auto-populated by GPS stats map",
+            "icon": "map",
+            "display": "list",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink, list-item, o-list-item, o-list-item",
+                  "allowTargetBlank": true,
+                  "label": "Content",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
+            "repeat": {
+              "cta_text": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text",
+                  "placeholder": "Learn more"
+                }
+              },
+              "cta_link": {
+                "type": "Link",
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "CTA Link"
+                }
+              }
+            }
+          },
+          "dynamic_section": {
+            "type": "Slice",
+            "fieldset": "Dynamic Section",
+            "description": "Section auto-populated by site build / API ",
+            "icon": "widgets",
+            "display": "list",
+            "non-repeat": {
+              "section": {
+                "type": "Link",
+                "config": {
+                  "select": "document",
+                  "label": "Section",
+                  "placeholder": "Select a section"
+                }
+              }
+            },
+            "repeat": {}
+          }
+        }
+      }
+    }
+  }
+}
