@@ -1,33 +1,72 @@
+// TODO: update these temp styles once card slider component added
 .testimonials {
   h1 {
     font-size: 1.6em;
     text-align: center;
   }
+
   .testimonial {
     display: flex;
     padding: 10px;
+
     &__image {
-      flex: 0 0 150px;
+      // flex: 0 0 150px;
       padding-top: 20px;
     }
+
     &__content {
       flex: 1;
     }
+
     blockquote {
       font-style: italic;
-      font-size: 24px;
-      color: #868686;
-
-      @media screen and (min-width: $wide) {
-        font-size: 30px;
-        padding: 0;
-      }
+      // font-size: 24px;
+      // color: #868686;
     }
   }
-}
 
-.profile-image {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
+  .profile-image {
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+  }
+
+  @media screen and (min-width: $med) {
+    // temp styles until card slider added
+    h1 {
+      font-size: 1.6em;
+      text-align: center;
+    }
+
+    .testimonial {
+      display: flex;
+      padding: 10px;
+
+      &__image {
+        flex: 0 0 150px;
+        padding-top: 20px;
+      }
+
+      &__content {
+        flex: 1;
+      }
+
+      blockquote {
+        font-style: italic;
+        font-size: 24px;
+        color: #868686;
+
+        @media screen and (min-width: $wide) {
+          font-size: 30px;
+          padding: 0;
+        }
+      }
+    }
+
+    .profile-image {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+    }
+  }
 }

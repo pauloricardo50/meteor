@@ -18,7 +18,7 @@ const locations = {
 };
 
 const LinkedLocation = ({ location }) => (
-  <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+  <span itemProp="location" itemScope itemType="http://schema.org/Place">
     <a href={locations[location].url} itemProp="url">
       {locations[location].label}
       {/* TODO: add map icon */}

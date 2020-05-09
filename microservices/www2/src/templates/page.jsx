@@ -64,6 +64,34 @@ export const query = graphql`
               caption
             }
           }
+          ... on PRISMIC_PageBodyImage_collage {
+            type
+            primary {
+              section_id
+              content
+              images
+            }
+            fields {
+              cta_text
+              cta_link {
+                _linkType
+                __typename
+                ... on PRISMIC__ExternalLink {
+                  url
+                  _linkType
+                }
+                ... on PRISMIC_Page {
+                  _meta {
+                    id
+                    uid
+                    type
+                    lang
+                  }
+                  name
+                }
+              }
+            }
+          }
           ... on PRISMIC_PageBodyNewsletter_signup {
             type
             primary {
