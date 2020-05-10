@@ -28,7 +28,7 @@ const makeSchema = loan =>
     organisationId: {
       type: String,
       optional: true,
-      allowedValues: loan.lenders.map(
+      allowedValues: loan.lenders?.map(
         ({ organisation }) => organisation && organisation._id,
       ),
       uniforms: {
