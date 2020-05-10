@@ -1,6 +1,6 @@
 import React from 'react';
 import { RichText } from 'prismic-reactjs';
-import Button from '../Button';
+import CTAButtons from '../CTAButtons';
 import './Hero.scss';
 
 const EqualSplit = ({ primary, fields }) => (
@@ -13,25 +13,9 @@ const EqualSplit = ({ primary, fields }) => (
     <div className="equal-split__content">
       {primary.content && RichText.asText(primary.content) !== '' ? (
         <>
-          <span className="image-label">
-            {RichText.asText(primary.content)}
-          </span>
-          <div>
-            {/* TODO: add logic for ExternalLink vs. Page */}
-            {fields.length > 0 &&
-              fields.map((field, idx) => (
-                <Button
-                  key={idx}
-                  className="cta--button"
-                  raised
-                  primary
-                  link
-                  to={field.cta_link.url}
-                >
-                  {field.cta_text}
-                </Button>
-              ))}
-          </div>
+          {RichText.render(primary.content)}
+
+          <CTAButtons buttons={fields} />
         </>
       ) : null}
     </div>
@@ -49,19 +33,8 @@ const FullWidthImage = ({ primary, fields }) => (
           <span className="image-label">
             {RichText.asText(primary.content)}
           </span>
-          <div>
-            {fields.length > 0 &&
-              fields.map((field, idx) => (
-                <a
-                  key={idx}
-                  href={field.cta_link.url}
-                  className="cta-button"
-                  type="button"
-                >
-                  {field.cta_text}
-                </a>
-              ))}
-          </div>
+
+          <CTAButtons buttons={fields} />
         </>
       ) : null}
     </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RichText } from 'prismic-reactjs';
-import Button from '../Button';
+import CTAButtons from '../CTAButtons';
 import './ImageCollage.scss';
 
 const CollageGrid = ({ images }) =>
@@ -22,19 +22,7 @@ const ImageCollage = ({ primary, fields }) => {
       <div className="content">
         {RichText.render(primary.content)}
 
-        {fields.length > 0 &&
-          fields.map((field, idx) => (
-            <Button
-              key={idx}
-              className="cta--button"
-              raised
-              primary={idx === 0}
-              link
-              to={field.cta_link.url}
-            >
-              {field.cta_text}
-            </Button>
-          ))}
+        <CTAButtons buttons={fields} />
       </div>
 
       <div className="collage" aria-hidden="true">

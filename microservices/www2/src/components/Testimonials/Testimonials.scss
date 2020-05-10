@@ -15,7 +15,7 @@
   }
 
   &__content {
-    // TODO: setup overflow container for scrolling
+    // setup overflow container for horizontal scrolling
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
