@@ -7,7 +7,7 @@ body {
   max-width: 1200px;
   margin: auto;
 
-  @media (max-width: $med) {
+  @media (max-width: $med - 1) {
     padding-right: 20px;
     padding-left: 20px;
   }
