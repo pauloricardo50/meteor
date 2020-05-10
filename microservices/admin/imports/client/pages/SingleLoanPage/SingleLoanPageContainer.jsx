@@ -1,3 +1,4 @@
+import React from 'react';
 import omit from 'lodash/omit';
 import { branch, compose, mapProps, renderComponent } from 'recompose';
 
@@ -70,4 +71,15 @@ export default compose(
     ({ loan: { category } }) => category === LOAN_CATEGORIES.PREMIUM,
     renderComponent(PremiumSingleLoanPage),
   ),
+  // FIXME: This is a serious Meteor bug, no idea what's going on
+  Component =>
+    class extends React.Component {
+      componentDidCatch(err) {
+        console.log('err:', err);
+      }
+
+      render() {
+        return <Component {...this.props} />;
+      }
+    },
 );
