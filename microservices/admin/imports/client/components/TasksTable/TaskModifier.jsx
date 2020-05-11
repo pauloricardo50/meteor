@@ -95,14 +95,19 @@ export const schema = new SimpleSchema({
       params: {
         $filters: { 'roles._id': ROLES.ADVISOR },
         firstName: 1,
+        office: 1,
         $options: { sort: { firstName: 1 } },
       },
     },
     uniforms: {
-      transform: ({ firstName }) => firstName,
+      transform: user => user?.firstName,
       labelProps: { shrink: true },
       label: 'Assigner conseiller',
       placeholder: null,
+      grouping: {
+        groupBy: 'office',
+        format: office => <T id={`Forms.office.${office}`} />,
+      },
     },
   },
   isPrivate: {
