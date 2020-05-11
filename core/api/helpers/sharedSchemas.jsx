@@ -8,6 +8,7 @@ import {
   getSortedCountriesCodes,
 } from '../../utils/countriesUtils';
 import zipcodes from '../../utils/zipcodes';
+import { getCitiesFromZipCode } from '../gpsStats/methodDefinitions';
 import { CANTONS } from '../loans/loanConstants';
 import { autoValueSentenceCase } from './sharedSchemaValues';
 
@@ -63,7 +64,20 @@ export const address = {
     min: 1000,
     max: 99999,
   },
-  city: { type: String, optional: true, autoValue: autoValueSentenceCase },
+  city: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+    customAllowedValues: ({ zipCode = '' }) =>
+      String(zipCode).length === 4
+        ? getCitiesFromZipCode.run({ zipCode })
+        : [null],
+    uniforms: {
+      transform: city => city || 'Aucun résultat trouvé',
+      displayEmtpy: true,
+      allowNull: true,
+    },
+  },
   country: {
     type: String,
     optional: true,

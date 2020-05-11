@@ -11,6 +11,7 @@ import {
   VOLUME_NORM,
 } from '../api/properties/propertyConstants';
 import CantonField from '../components/CantonField/CantonField';
+import CityField from '../components/CityField/CityField';
 import {
   COMMON_COUNTRIES,
   getSortedCountriesCodes,
@@ -198,8 +199,9 @@ export const getPropertyArray = ({ loan, property }) => {
       type: 'textInput',
     },
     {
+      type: 'custom',
       id: 'city',
-      type: 'textInput',
+      component: <CityField doc={property} />,
     },
     {
       id: 'country',
