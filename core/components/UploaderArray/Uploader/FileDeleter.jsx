@@ -54,6 +54,7 @@ const FileDeleter = ({
       });
     }}
     size="small"
+    name="delete"
   />
 );
 

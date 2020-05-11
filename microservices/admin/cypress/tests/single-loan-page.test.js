@@ -96,4 +96,63 @@ describe('Single Loan Page', () => {
 
     cy.get('.lender.card1').should('have.length', 2);
   });
+
+  it('should add files and change their status', () => {
+    cy.contains('button', 'Hypothèque').click();
+    cy.contains('button', 'Acquisition').click();
+
+    cy.contains('Emprunteurs').click();
+    cy.contains('.tab-content button', 'Emprunteur').click();
+    cy.contains('Documents').click();
+
+    // Upload 2 files
+    cy.get('label[for="IDENTITY"] input[type="file"]')
+      .first()
+      .attachFile('files/logo.png')
+      .attachFile('files/logo2.png');
+
+    cy.get('label[for="IDENTITY"]')
+      .contains('logo.png')
+      .should('exist');
+    cy.get('label[for="IDENTITY"]')
+      .contains('logo2.png')
+      .should('exist');
+
+    // Change status to error
+    cy.get('label[for="IDENTITY"]')
+      .contains('Validé')
+      .click();
+
+    cy.contains('Non valide').click();
+
+    cy.get('input[name=error]').type('bad file');
+    cy.contains('button', 'Ok').click();
+    cy.get('label[for="IDENTITY"]')
+      .contains('bad file')
+      .should('exist');
+
+    cy.get('label[for="IDENTITY"] .title-top svg.error').should('exist');
+
+    // Change error message
+    cy.get(
+      `label[for="IDENTITY"] button[aria-label="Modifier le message d'erreur"]`,
+    ).click();
+    cy.get('input[name=error]')
+      .clear()
+      .type('terrible file');
+    cy.contains('button', 'Ok').click();
+    cy.get('label[for="IDENTITY"]')
+      .contains('terrible file')
+      .should('exist');
+
+    // Remove error file
+    cy.get(`label[for="IDENTITY"] button[name=delete]`)
+      .first()
+      .click();
+    cy.get('button')
+      .contains('Supprimer')
+      .click();
+
+    cy.get('label[for="IDENTITY"] .title-top svg.error').should('not.exist');
+  });
 });
