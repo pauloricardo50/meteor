@@ -6,23 +6,29 @@ export const up = () => {
   const loans = LoanService.fetch({ structures: 1 });
 
   return Promise.all(
-    loans.map(({ _id: loanId, structures = [] }) => {
-      const newStructures = structures.map(structure => {
-        const { wantedLoan, loanTranches = [] } = structure;
+    loans.map(({ _id: loanId, structures = [] }) =>
+      Promise.all(
+        structures.map(structure => {
+          const { wantedLoan = 0, loanTranches = [] } = structure;
 
-        const newLoanTranches = loanTranches.map(({ value, ...tranche }) => ({
-          ...tranche,
-          value: value * wantedLoan,
-        }));
+          const newLoanTranches = loanTranches.map(
+            ({ value = 1, ...tranche }) => ({
+              ...tranche,
+              value: Math.round(value * wantedLoan || 0),
+            }),
+          );
 
-        return { ...structure, loanTranches: newLoanTranches };
-      });
-
-      return LoanService.baseUpdate(
-        { _id: loanId },
-        { $set: { structures: newStructures } },
-      );
-    }),
+          return LoanService.rawCollection.update(
+            { _id: loanId, 'structures.id': structure.id },
+            {
+              $set: {
+                'structures.$.loanTranches': newLoanTranches,
+              },
+            },
+          );
+        }),
+      ),
+    ),
   );
 };
 
@@ -30,23 +36,37 @@ export const down = () => {
   const loans = LoanService.fetch({ structures: 1 });
 
   return Promise.all(
-    loans.map(({ _id: loanId, structures = [] }) => {
-      const newStructures = structures.map(structure => {
-        const { wantedLoan, loanTranches = [] } = structure;
+    loans.map(({ _id: loanId, structures = [] }) =>
+      Promise.all(
+        structures.map(structure => {
+          const { wantedLoan = 0, loanTranches = [] } = structure;
 
-        const newLoanTranches = loanTranches.map(({ value, ...tranche }) => ({
-          ...tranche,
-          value: value / wantedLoan,
-        }));
+          const newLoanTranches = loanTranches.map(
+            ({ value = 0, ...tranche }) => {
+              let newValue;
+              if (!wantedLoan || !value) {
+                newValue = 1;
+              } else {
+                newValue = value / wantedLoan;
+              }
+              return {
+                ...tranche,
+                value: newValue,
+              };
+            },
+          );
 
-        return { ...structure, loanTranches: newLoanTranches };
-      });
-
-      return LoanService.rawCollection.update(
-        { _id: loanId },
-        { $set: { structures: newStructures } },
-      );
-    }),
+          return LoanService.rawCollection.update(
+            { _id: loanId, 'structures.id': structure.id },
+            {
+              $set: {
+                'structures.$.loanTranches': newLoanTranches,
+              },
+            },
+          );
+        }),
+      ),
+    ),
   );
 };
 
