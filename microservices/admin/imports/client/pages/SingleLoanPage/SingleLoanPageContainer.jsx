@@ -85,11 +85,4 @@ export default compose(
     ({ loan: { category } }) => category === LOAN_CATEGORIES.PREMIUM,
     renderComponent(PremiumSingleLoanPage),
   ),
-  // FIXME: This is a serious Meteor bug, no idea what's going on
-  // Component =>
-  //   class extends React.Component {
-  //     render() {
-  //       return <div>Hello {this.props.loan._id}</div>;
-  //     }
-  //   },
 );

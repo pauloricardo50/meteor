@@ -111,7 +111,7 @@ export default compose(
       ...getQueryBody(options.additionalFields),
     }),
     dataName: 'loans',
-    // queryOptions: { pollingMs: 5000 },
+    queryOptions: { pollingMs: 5000 },
   }),
   withProps(({ loans, ...props }) => ({
     loans: loans.filter(makeClientSideFilter(props)),
