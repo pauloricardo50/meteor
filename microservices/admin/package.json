@@ -80,7 +80,7 @@
     "react-scroll": "^1.7.15",
     "react-scroll-sync": "^0.7.0",
     "react-string-replace": "^0.4.4",
-    "react-table": "^7.0.0-rc.15",
+    "react-table": "^7.0.4",
     "react-text-mask": "^5.4.3",
     "react-use": "^13.18.0",
     "recompose": "^0.30.0",
