@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { arePathsUnequal } from '../reactFunctions';
 
-describe('reactFunctions', () => {
+describe.only('reactFunctions', () => {
   describe('arePathsUnequal', () => {
     it('returns true or false if paths are unequal', () => {
       const func = arePathsUnequal(['a']);
@@ -33,6 +33,16 @@ describe('reactFunctions', () => {
       const func = arePathsUnequal(['a']);
       expect(func({ a: null }, { a: 2 })).to.equal(true);
       expect(func({ a: 2 }, { a: null })).to.equal(true);
+    });
+
+    it('works for multiple paths', () => {
+      const func = arePathsUnequal(['a.b', 'c']);
+      expect(
+        func(
+          { a: { b: 'hello' }, c: undefined },
+          { a: { b: 'hello' }, c: undefined },
+        ),
+      ).to.equal(false);
     });
   });
 });
