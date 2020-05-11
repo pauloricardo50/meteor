@@ -1,13 +1,14 @@
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {
   addQueryToRefetch,
   removeQueryToRefetch,
 } from '../api/methods/clientQueryManager';
+import useAsyncStateMachine from './useAsyncStateMachine';
 
 const getQuery = (query, params) => {
   if (!query) {
@@ -56,30 +57,34 @@ export const useStaticMeteorData = (
   { query, params, type = 'many', refetchOnMethodCall = 'all' },
   deps = [],
 ) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
-  const [error, setError] = useState();
+  const {
+    data,
+    error,
+    isLoading,
+    setData,
+    setError,
+    setLoading,
+  } = useAsyncStateMachine();
 
   const finalQuery = getQuery(query, params);
 
   const refetch = () => {
     if (!finalQuery) {
-      setLoading(false);
       setData(null);
       return;
     }
 
-    setLoading(true);
+    if (!isLoading) {
+      // isLoading is already set initially
+      setLoading();
+    }
 
     finalQuery[getStaticFunction(type)]((err, res) => {
       if (err) {
         setError(err);
-        setData(null);
       } else {
-        setError(null);
         setData(res);
       }
-      setLoading(false);
     });
   };
 
@@ -87,7 +92,7 @@ export const useStaticMeteorData = (
 
   useQueryRefetcher({ refetchOnMethodCall, refetch, query });
 
-  return { loading, data, error, refetch };
+  return { loading: isLoading, data, error, refetch };
 };
 
 export const useReactiveMeteorData = (
