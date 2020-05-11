@@ -1,0 +1,139 @@
+.image-carousel {
+  // display: flex;
+
+  .content {
+    margin-bottom: 24px;
+
+    h1,
+    h2 {
+      margin-bottom: 23px;
+      // Mobile/Title/H4
+      font-size: 20px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: #2c2c2c;
+    }
+  }
+
+  .captions {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    counter-reset: curr-index;
+
+    li {
+      counter-increment: curr-index;
+      // Mobile/Plain/L/Light
+      opacity: 0.3;
+      font-size: 16px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.44;
+      letter-spacing: normal;
+      color: #2c2c2c;
+      cursor: pointer;
+
+      &::before {
+        content: counter(curr-index);
+        margin-right: 8px;
+        // Desktop/Plain/S
+        font-size: 12px;
+      }
+
+      &.active {
+        opacity: 1;
+        color: #2e7eff;
+      }
+    }
+  }
+
+  hr {
+    margin: 24px 0;
+  }
+
+  p {
+    // Desktop/Plain/S
+    font-size: 12px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+  }
+
+  .current-image {
+    img {
+      max-width: 100%;
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    display: flex;
+    flex-direction: row-reverse;
+
+    .content {
+      flex-basis: 50%;
+      margin-bottom: 0;
+
+      h1,
+      h2 {
+        margin-bottom: 48px;
+        // Desktop/Title/H1
+        font-size: 40px;
+        font-weight: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #2c2c2c;
+      }
+
+      .captions {
+        li {
+          opacity: 1;
+          // Manrope-Regular
+          font-size: 28px;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 1.43;
+          letter-spacing: normal;
+          color: rgba(#2c2c2c, 0.2);
+
+          &::before {
+            margin-right: 15px;
+            font-size: 16px;
+            font-weight: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            vertical-align: top;
+          }
+
+          &.active {
+            opacity: 1;
+            color: #2e7eff;
+          }
+        }
+      }
+
+      hr {
+        margin: 32px 0;
+      }
+
+      p {
+        // Desktop/Plain/L/Light
+        font-size: 20px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: 1.4;
+        letter-spacing: normal;
+        color: #2c2c2c;
+      }
+    }
+
+    .current-image {
+      flex-basis: 50%;
+    }
+  }
+}

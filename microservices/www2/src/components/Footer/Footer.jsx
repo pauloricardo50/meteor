@@ -1,6 +1,6 @@
 import React from 'react';
 import Menu from '../Menu';
-import SignupForm from '../SignupForm';
+import NewsletterSignup from '../NewsletterSignup';
 import SocialLinks from '../SocialLinks';
 import './Footer.scss';
 
@@ -18,7 +18,7 @@ const locations = {
 };
 
 const LinkedLocation = ({ location }) => (
-  <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+  <span itemProp="location" itemScope itemType="http://schema.org/Place">
     <a href={locations[location].url} itemProp="url">
       {locations[location].label}
       {/* TODO: add map icon */}
@@ -66,10 +66,9 @@ const Footer = () => (
         <LinkedLocation location="geneve" />
       </p>
 
-      <SignupForm type="footer" />
+      <NewsletterSignup placement="footer" />
 
       <div className="contact-notices">
-        {/* TODO: pull this content from CMS or localized file */}
         <p>
           e-Potek SA est une société régulée par la{' '}
           <a href="https://www.finma.ch/">FINMA</a>

@@ -66,14 +66,26 @@ const Post = ({ data }) => {
 
   if (!blogPost) return null;
 
+  const blogHome = {
+    'fr-ch': {
+      shortLang: 'fr',
+      linkText: `Revenir à l'index`,
+    },
+    'en-us': {
+      shortLang: 'en',
+      linkText: `Return to index`,
+    },
+  }[blogPost._meta.lang];
+
+  // TODO: add newletter signup to each article, but which version to use?
+
   // TODO: add structured data - https://developers.google.com/search/docs/data-types/article
   return (
     <Layout>
       <div className="post" data-wio-id={blogPost._meta.id}>
         <div className="post-header">
           <div className="back-to-blog">
-            {/* TODO: add language prefix here, or send through resolver */}
-            <Link to="/blog">Revenir à l'index</Link>
+            <Link to={`${blogHome.shortLang}/blog`}>{blogHome.linkText}</Link>
           </div>
 
           <h1 className="post-title">
