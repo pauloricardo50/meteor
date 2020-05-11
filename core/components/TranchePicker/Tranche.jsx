@@ -4,6 +4,7 @@ import Button from '../Button';
 import InputAdornment from '../Material/InputAdornment';
 import MoneyInput from '../MoneyInput';
 import Select from '../Select';
+import { Percent } from '../Translation';
 
 const Tranche = ({
   value,
@@ -22,7 +23,7 @@ const Tranche = ({
       endAdornment={
         <InputAdornment position="end">
           <span className="secondary">
-            {Math.round((100 * value) / wantedLoan)}&nbsp;%
+            <Percent value={value / wantedLoan} />
           </span>
         </InputAdornment>
       }

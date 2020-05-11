@@ -1,4 +1,8 @@
 {
+  "TranchePicker.error.sumIsNotEqualToWantedLoan": "Vos tranches doivent s'additioner à {wantedLoan}",
+  "TranchePicker.error.general": "Une de vos tranches n'est pas définie correctement",
+  "TranchePicker.label": "Choisir tranches",
+  "general.distributed": "répartis",
   "PDF.cover.date": "{purchaseType, select, ACQUISITION {Déblocage des fonds prévu le } other {Date de reprise souhaitée: }}",
   "FinancingOwnFundsTitle.tooltip": "Frais de notaire: CHF {value}",
   "FinancingOwnFundsTitle.pledge": "Nantissement",

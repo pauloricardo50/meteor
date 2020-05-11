@@ -1,9 +1,10 @@
 import React from 'react';
+import cx from 'classnames';
 
 import { toMoney } from '../../utils/conversionFunctions';
 import Button from '../Button';
 import DialogSimple from '../DialogSimple';
-import T from '../Translation';
+import T, { Money } from '../Translation';
 import { TranchePicker } from './TranchePicker';
 import TranchePickerContainer from './TranchePickerContainer';
 import { checkTranches } from './tranchePickerHelpers';
@@ -16,7 +17,12 @@ const TranchePickerDialog = ({
   wantedLoan,
   ...props
 }) => {
-  const tranchesAreValid = checkTranches(tranches, wantedLoan);
+  const {
+    status,
+    error,
+    additionalData: { sum },
+  } = checkTranches(tranches, wantedLoan);
+
   return (
     <DialogSimple
       title={title || <T id="TranchePicker.title" />}
@@ -30,7 +36,7 @@ const TranchePickerDialog = ({
       }
       actions={handleClose => [
         <Button key="cancel" onClick={handleClose}>
-          Annuler
+          <T id="general.cancel" />
         </Button>,
         <Button
           key="save"
@@ -38,21 +44,46 @@ const TranchePickerDialog = ({
             handleSave(tranches);
             handleClose();
           }}
-          disabled={disabled || !tranchesAreValid}
+          disabled={disabled || status === 'error'}
         >
-          Enregistrer
+          <T id="general.save" />
         </Button>,
       ]}
-      label="Choisir tranches"
+      label={<T id="TranchePicker.label" />}
       primary
       raised={false}
     >
-      <TranchePicker {...props} wantedLoan={wantedLoan} tranches={tranches} />
-      {!tranchesAreValid && (
-        <span className="error">
-          Vos tranches doivent s'additionner à CHF {toMoney(wantedLoan)}
-        </span>
-      )}
+      <div className="flex-col center">
+        <h2>
+          <span
+            className={cx({
+              error: error === 'sumIsNotEqualToWantedLoan',
+              success: status === 'ok',
+            })}
+          >
+            {toMoney(sum)}
+          </span>
+          &nbsp;/&nbsp;<span className="secondary">{toMoney(wantedLoan)}</span>
+          &nbsp;
+          <small>
+            <T id="general.distributed" />
+          </small>
+        </h2>
+        <TranchePicker {...props} wantedLoan={wantedLoan} tranches={tranches} />
+        {status === 'error' &&
+          (error === 'sumIsNotEqualToWantedLoan' ? (
+            <span className="error">
+              <T
+                id="TranchePicker.error.sumIsNotEqualToWantedLoan"
+                values={{ wantedLoan: <Money value={wantedLoan} /> }}
+              />
+            </span>
+          ) : (
+            <span className="error">
+              <T id="TranchePicker.error.general" />
+            </span>
+          ))}
+      </div>
     </DialogSimple>
   );
 };

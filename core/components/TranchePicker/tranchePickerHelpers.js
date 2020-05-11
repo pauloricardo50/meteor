@@ -3,5 +3,21 @@ export const checkTranches = (tranches, wantedLoan) => {
   const sumIsEqualToWantedLoan = sum === wantedLoan;
   const allTypesAreDefined = tranches.every(({ type }) => !!type);
 
-  return sumIsEqualToWantedLoan && allTypesAreDefined;
+  if (!sumIsEqualToWantedLoan) {
+    return {
+      status: 'error',
+      error: 'sumIsNotEqualToWantedLoan',
+      additionalData: { sum },
+    };
+  }
+
+  if (!allTypesAreDefined) {
+    return {
+      status: 'error',
+      error: 'allTypesAreNotDefined',
+      additionalData: { sum },
+    };
+  }
+
+  return { status: 'ok', additionalData: { sum } };
 };
