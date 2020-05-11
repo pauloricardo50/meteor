@@ -6,8 +6,7 @@ import {
   getUserOrganisationName,
 } from 'core/api/helpers';
 import { setUserReferredBy } from 'core/api/users/methodDefinitions';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 const getMenuItems = ({
   proUsers,
@@ -48,14 +47,12 @@ const getMenuItems = ({
 
 export default compose(
   withSmartQuery({
-    query: adminUsers,
+    query: USERS_COLLECTION,
     params: {
-      roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
-      $body: {
-        name: 1,
-        organisations: { name: 1 },
-        $options: { sort: { name: 1 } },
-      },
+      $filters: { 'roles._id': ROLES.PRO },
+      name: 1,
+      organisations: { name: 1 },
+      $options: { sort: { lastName: 1 } },
     },
     queryOptions: { reactive: false },
     dataName: 'proUsers',

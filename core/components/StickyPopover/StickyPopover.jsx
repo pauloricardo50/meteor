@@ -50,7 +50,14 @@ export default class PopoverStickOnHover extends React.Component {
   };
 
   render() {
-    const { component, children, placement, title, forceOpen } = this.props;
+    const {
+      component,
+      children,
+      placement,
+      title,
+      forceOpen,
+      paperProps,
+    } = this.props;
     const { showPopover } = this.state;
     const show = forceOpen || showPopover;
 
@@ -81,6 +88,7 @@ export default class PopoverStickOnHover extends React.Component {
             style={{ padding: 8 }}
             elevation={15}
             className="popover-content"
+            {...paperProps}
           >
             {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
             {component}

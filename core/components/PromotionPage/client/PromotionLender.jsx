@@ -16,7 +16,7 @@ const schema = new SimpleSchema({
       allowNull: true,
     },
     uniforms: {
-      transform: lender => (lender ? lender.name : 'Pas de prêteur'),
+      transform: lender => lender?.name || 'Pas de prêteur',
       labelProps: { shrink: true },
       label: 'Prêteur',
       placeholder: null,

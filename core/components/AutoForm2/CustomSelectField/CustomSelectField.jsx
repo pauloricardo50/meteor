@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -12,12 +12,14 @@ import MenuItem from '../../Material/MenuItem';
 import Radio, { RadioGroup } from '../../Material/Radio';
 import Switch from '../../Material/Switch';
 import TextField from '../../Material/TextField';
+import { mapSelectOptions } from '../../Select/selectHelpers';
 import TextInput from '../../TextInput';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 
 const xor = (item, array) => {
   const index = array.indexOf(item);
+
   if (index === -1) {
     return array.concat([item]);
   }
@@ -49,11 +51,22 @@ const renderSelect = ({
   value,
   variant,
   nullable,
+  grouping,
+  data = [],
   ...props
 }) => {
-  const Item = native ? 'option' : MenuItem;
   const hasPlaceholder = !!placeholder;
   const hasValue = value !== '' && value !== undefined;
+
+  const options = useMemo(
+    () =>
+      allowedValues.map(v => {
+        // Make this data available for grouping
+        const rest = data?.filter(x => x?._id).find(({ _id }) => _id === v);
+        return { id: v, label: transform(v), ...rest };
+      }),
+    [allowedValues],
+  );
 
   return (
     <TextField
@@ -81,15 +94,11 @@ const renderSelect = ({
       value={native && !value ? '' : value}
     >
       {hasPlaceholder && (
-        <Item value="" disabled={nullable}>
+        <MenuItem value="" disabled={nullable}>
           <i className="secondary">{placeholder}</i>
-        </Item>
+        </MenuItem>
       )}
-      {allowedValues.map(v => (
-        <Item key={v} value={v}>
-          {transform(v)}
-        </Item>
-      ))}
+      {mapSelectOptions(options, grouping)}
     </TextField>
   );
 };

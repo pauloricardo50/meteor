@@ -45,6 +45,7 @@ const CollectionSearch = ({
         placeholder={placeholder || 'Rechercher...'}
         onFocus={onFocus}
         autoComplete="off"
+        autoFocus
       />
       <CollectionSearchResults
         type={type}

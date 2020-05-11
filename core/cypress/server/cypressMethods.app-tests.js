@@ -86,7 +86,7 @@ Meteor.methods({
       email: ADMIN_EMAIL,
       password: PRO_PASSWORD,
     });
-    Roles.addUsersToRoles(adminId, ROLES.ADMIN);
+    Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
 
     UserService.updateOrganisations({
       userId: adminId,
@@ -151,7 +151,7 @@ Meteor.methods({
   },
   async insertFullPromotion() {
     const admin = await UserService.get(
-      { 'roles._id': ROLES.ADMIN },
+      { 'roles._id': ROLES.ADVISOR },
       { _id: 1 },
     );
     if (!admin) {
@@ -159,7 +159,7 @@ Meteor.methods({
         email: ADMIN_EMAIL,
         password: PRO_PASSWORD,
       });
-      Roles.addUsersToRoles(adminId, ROLES.ADMIN);
+      Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
     }
     await createPromotionDemo(this.userId, false, false, 4);
   },
@@ -269,7 +269,7 @@ Meteor.methods({
     // UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
 
     const admin =
-      UserService.get({ 'roles._id': ROLES.ADMIN }, { _id: 1 }) || {};
+      UserService.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 }) || {};
 
     const solvencyLoan = userLoansE2E
       .clone({ userId, step: STEPS.SOLVENCY })

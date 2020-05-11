@@ -1,3 +1,5 @@
+import '../roles/initRoles';
+
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
@@ -114,8 +116,7 @@ export class UserServiceClass extends CollectionService {
       const userReferral =
         referredByUserId && this.get(referredByUserId, { roles: 1 });
       const isReferralAdmin =
-        userReferral &&
-        Roles.userIsInRole(userReferral, [ROLES.ADMIN, ROLES.DEV]);
+        userReferral && Roles.userIsInRole(userReferral, ROLES.ADMIN);
 
       this.update({
         userId: newUserId,
@@ -210,7 +211,17 @@ export class UserServiceClass extends CollectionService {
     return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
-  setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
+  setRole = ({ userId, role }) => {
+    if (role === ROLES.ADMIN) {
+      throw new Meteor.Error('Should not set ADMIN role only');
+    }
+
+    if (role !== ROLES.ADVISOR) {
+      this.baseUpdate(userId, { $unset: { office: true } });
+    }
+
+    return Roles.setUserRoles(userId, role);
+  };
 
   getUserByPasswordResetToken = ({ token }) =>
     this.get(
@@ -544,10 +555,12 @@ export class UserServiceClass extends CollectionService {
   };
 
   getEnrollmentUrl({ userId }) {
-    let domain = Meteor.settings.public.subdomains.app;
+    let domain;
 
     if (SecurityService.hasRole(userId, ROLES.PRO)) {
       domain = Meteor.settings.public.subdomains.pro;
+    } else {
+      domain = Meteor.settings.public.subdomains.app;
     }
 
     const { token } = Accounts.generateResetToken(
@@ -749,7 +762,7 @@ export class UserServiceClass extends CollectionService {
   }
 
   getAssigneeForNewUser(user) {
-    if (!Roles.userIsInRole(user, ROLES.USER)) {
+    if (!SecurityService.hasAssignedRole(user, ROLES.USER)) {
       return;
     }
 
@@ -758,10 +771,7 @@ export class UserServiceClass extends CollectionService {
       // in the db and assign it to the user
       // this avoids issues with analytics, that expects all users to have
       // an assignee
-      const anyAdmin = this.get(
-        { 'roles._id': { $in: [ROLES.ADMIN, ROLES.DEV] } },
-        { _id: 1 },
-      );
+      const anyAdmin = this.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 });
       return anyAdmin && anyAdmin._id;
     }
 
@@ -776,7 +786,7 @@ export class UserServiceClass extends CollectionService {
     // Round robin
     const previouslyCreatedUser = this.get(
       {
-        'roles._id': ROLES.USER,
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
         assignedEmployeeId: { $in: this.employees },
       },
       {

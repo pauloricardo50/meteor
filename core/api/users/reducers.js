@@ -3,9 +3,7 @@ import Users from './users';
 
 Users.addReducers({
   email: {
-    body: {
-      emails: 1,
-    },
+    body: { emails: 1 },
     reduce: ({ emails }) => emails && emails.length && emails[0].address,
   },
   name: {
@@ -13,10 +11,13 @@ Users.addReducers({
     reduce: getUserDisplayName,
   },
   phoneNumber: {
-    body: {
-      phoneNumbers: 1,
-    },
+    body: { phoneNumbers: 1 },
     reduce: ({ phoneNumbers = [] }) =>
       (!!phoneNumbers.length && phoneNumbers[0]) || '',
+  },
+  assignedRoles: {
+    body: { roles: 1 },
+    reduce: ({ roles = [] }) =>
+      roles.filter(({ assigned }) => assigned).map(({ _id }) => _id),
   },
 });

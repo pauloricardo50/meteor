@@ -32,7 +32,6 @@ const renderUserSearcher = ({ organisation, setUserId }) => (
       organisation.users &&
       organisation.users.map(({ _id }) => _id).includes(user._id)
     }
-    type="list"
   />
 );
 

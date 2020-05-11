@@ -200,7 +200,7 @@ export const createPromotionDemo = async (
   withInvitedBy = false,
 ) => {
   console.log('Creating promotion demo...');
-  const admin = UserService.get({ 'roles._id': ROLES.ADMIN }, { _id: 1 });
+  const admin = UserService.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 });
 
   const promotionId = PromotionService.insert({
     promotion: { ...DEMO_PROMOTION, assignedEmployeeId: admin && admin._id },

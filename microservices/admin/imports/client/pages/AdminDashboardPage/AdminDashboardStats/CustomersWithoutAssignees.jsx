@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -11,20 +10,24 @@ import StatItem from './StatItem';
 const CustomersWithoutAssignees = ({ showAll }) => {
   // We need to query both for undefined or null values in the assignedEmployeeId
   const { data: users1 = [], loading: loading1 } = useStaticMeteorData({
-    query: adminUsers,
+    query: USERS_COLLECTION,
     params: {
-      $body: { name: 1 },
-      roles: [ROLES.USER],
-      assignedEmployeeId: { $exists: false },
+      $filters: {
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
+        assignedEmployeeId: { $exists: false },
+      },
+      name: 1,
     },
     refetchOnMethodCall: false,
   });
   const { data: users2 = [], loading: loading2 } = useStaticMeteorData({
-    query: adminUsers,
+    query: USERS_COLLECTION,
     params: {
-      $body: { name: 1 },
-      roles: [ROLES.USER],
-      assignedEmployeeId: { $type: 'null' },
+      $filters: {
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
+        assignedEmployeeId: { $type: 'null' },
+      },
+      name: 1,
     },
     refetchOnMethodCall: false,
   });

@@ -1,13 +1,8 @@
 // Not actually used to create a meteor collection, but useful to switch()
 // on collection names
-export const USERS_COLLECTION = 'users';
+export { ROLES } from './roles/roleConstants';
 
-export const ROLES = {
-  ADMIN: 'admin',
-  DEV: 'dev',
-  USER: 'user',
-  PRO: 'pro',
-};
+export const USERS_COLLECTION = 'users';
 
 export const USER_QUERIES = {
   ADMIN_USERS: 'ADMIN_USERS',
@@ -41,4 +36,9 @@ export const ACQUISITION_CHANNELS = {
   WEBSITE: 'WEBSITE',
   FACEBOOK: 'FACEBOOK',
   LINKEDIN: 'LINKEDIN',
+};
+
+export const OFFICES = {
+  GENEVA: 'GENEVA',
+  LAUSANNE: 'LAUSANNE',
 };

@@ -54,6 +54,7 @@ const PromotionCustomersTableActions = ({
         className="actions"
         options={options}
         noWrapper
+        buttonProps={{ size: 'small' }}
       />
       <AutoFormDialog
         open={openDialog}

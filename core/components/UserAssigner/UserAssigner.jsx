@@ -28,7 +28,6 @@ const UserAssigner = ({
           secondary={user.email}
         />
       )}
-      type="list"
     />
   </DialogSimple>
 );
