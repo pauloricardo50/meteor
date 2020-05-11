@@ -65,7 +65,7 @@ const MaxPropertyValueSharing = ({
   handleDisable,
   propertyOrganisation,
 }) => {
-  if (!hasProProperty && !hasPromotion) {
+  if (!hasProProperty) {
     return null;
   }
 
