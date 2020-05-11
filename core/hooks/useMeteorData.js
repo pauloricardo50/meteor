@@ -102,13 +102,17 @@ export const useReactiveMeteorData = (
   const finalQuery = getQuery(query, params);
 
   const { loading, subscribedQuery } = useTracker(() => {
+    if (!finalQuery) {
+      return { loading: false };
+    }
+
     const handle = finalQuery[getSubscriptionFunction(type)]();
     const isReady = handle.ready();
     return { loading: !isReady, subscribedQuery: finalQuery };
   }, deps);
 
   const data = useTracker(
-    () => subscribedQuery[getStaticFunction(type)](),
+    () => (subscribedQuery ? subscribedQuery[getStaticFunction(type)]() : null),
     deps,
   );
 
