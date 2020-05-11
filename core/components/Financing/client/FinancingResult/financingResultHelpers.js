@@ -37,7 +37,7 @@ export const getInterests = params => {
   const {
     structure: { wantedLoan },
   } = params;
-  return (FinanceCalculator.getInterestsWithTranches(params) * wantedLoan) / 12;
+  return FinanceCalculator.getInterestsWithTranches(params) / 12;
 };
 
 export const getAmortization = params => {

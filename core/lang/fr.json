@@ -1,4 +1,8 @@
 {
+  "TranchePicker.error.sumIsNotEqualToWantedLoan": "Vos tranches doivent s'additioner à {wantedLoan}",
+  "TranchePicker.error.general": "Une de vos tranches n'est pas définie correctement",
+  "TranchePicker.label": "Choisir tranches",
+  "general.distributed": "répartis",
   "general.other": "Autre",
   "Forms.office": "Bureau",
   "Forms.office.GENEVA": "Genève",

@@ -5,15 +5,12 @@
 
   .tranche {
     display: flex;
-
+    align-items: center;
     margin-bottom: 16px;
 
     .select {
       margin: 0 8px;
     }
 
-    .value {
-      width: 100px;
-    }
   }
 }

@@ -116,7 +116,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         key: 'loanTranches',
         structureId,
       });
-      const loanValue = this.selectLoanValue({ loan, structureId });
       if (offer) {
         finalInterestRates = offer;
       }
@@ -126,7 +125,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         interestRates: finalInterestRates,
       });
 
-      return (interests * loanValue) / 12;
+      return interests / 12;
     }
 
     getTheoreticalInterests({ loan, structureId }) {

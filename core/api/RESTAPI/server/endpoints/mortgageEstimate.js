@@ -83,7 +83,7 @@ const mortgageEstimateAPI = ({ query }) => {
     propertyValue,
     canton: finalCanton,
     currentInterestRates: interestRates,
-    loanTranches: [{ value: 1, type: INTEREST_RATES.YEARS_10 }],
+    loanTranches: [{ value: loanValue, type: INTEREST_RATES.YEARS_10 }],
   });
   const amortizationGoal =
     borrowRatio === SECOND_OR_LUXURY_BORROW_RATIO
@@ -99,7 +99,7 @@ const mortgageEstimateAPI = ({ query }) => {
         propertyValue,
         canton: finalCanton,
         currentInterestRates: interestRates,
-        loanTranches: [{ value: 1, type }],
+        loanTranches: [{ value: loanValue, type }],
       }),
     });
 

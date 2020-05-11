@@ -322,11 +322,38 @@ class LoanService extends CollectionService {
   updateStructure = ({ loanId, structureId, structure }) => {
     const currentStructure = this.get(loanId, {
       structures: 1,
-    }).structures.find(({ id }) => id === structureId);
+    })?.structures.find(({ id }) => id === structureId);
+
+    const {
+      loanTranches: previousLoanTranches = [],
+      wantedLoan: previousWantedLoan,
+    } = currentStructure;
+    const { wantedLoan: newWantedLoan } = structure;
+
+    let newLoanTranches;
+
+    if (
+      newWantedLoan &&
+      newWantedLoan !== previousWantedLoan &&
+      previousLoanTranches.length === 1
+    ) {
+      newLoanTranches = previousLoanTranches.map(tranche => ({
+        ...tranche,
+        value: newWantedLoan,
+      }));
+    }
 
     return Loans.update(
       { _id: loanId, 'structures.id': structureId },
-      { $set: { 'structures.$': { ...currentStructure, ...structure } } },
+      {
+        $set: {
+          'structures.$': {
+            ...currentStructure,
+            ...structure,
+            ...(newLoanTranches ? { loanTranches: newLoanTranches } : {}),
+          },
+        },
+      },
     );
   };
 
