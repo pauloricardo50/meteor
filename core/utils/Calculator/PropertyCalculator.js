@@ -4,6 +4,7 @@ import {
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
+import { propertyHasDetailedValue } from '../../api/properties/propertyClientHelper';
 import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
 import {
   getPropertyArray,
@@ -218,23 +219,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     hasDetailedPropertyValue({ loan, structureId }) {
-      const propertyExactValue = this.selectPropertyKey({
-        key: 'value',
-        loan,
-        structureId,
+      return propertyHasDetailedValue({
+        property: this.selectProperty({ loan, structureId }),
       });
-      const landValue = this.selectPropertyKey({
-        key: 'landValue',
-        loan,
-        structureId,
-      });
-      const constructionValue = this.selectPropertyKey({
-        key: 'constructionValue',
-        loan,
-        structureId,
-      });
-
-      return !propertyExactValue || !!(landValue && constructionValue);
     }
 
     isPromotionProperty({ loan, structureId }) {
