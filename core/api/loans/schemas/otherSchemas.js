@@ -16,7 +16,7 @@ export const borrowerIdsSchema = {
 export const loanTranchesSchema = {
   loanTranches: {
     type: Array,
-    defaultValue: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+    defaultValue: [{ type: INTEREST_RATES.YEARS_10 }],
     optional: true,
   },
   'loanTranches.$': Object,
