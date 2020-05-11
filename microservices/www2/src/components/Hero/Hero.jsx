@@ -4,7 +4,7 @@ import CTAButtons from '../CTAButtons';
 import './Hero.scss';
 
 const EqualSplit = ({ primary, fields }) => (
-  <div className="equal-split">
+  <section className="equal-split no-top-pad">
     <div
       className="equal-split__image"
       style={{ backgroundImage: `url(${primary.images.url})` }}
@@ -19,7 +19,7 @@ const EqualSplit = ({ primary, fields }) => (
         </>
       ) : null}
     </div>
-  </div>
+  </section>
 );
 
 const FullWidthImage = ({ primary, fields }) => (

@@ -21,4 +21,8 @@ section,
   @media (min-width: $med) {
     padding: 128px 0;
   }
+
+  &.no-top-pad {
+    padding-top: 0px;
+  }
 }
