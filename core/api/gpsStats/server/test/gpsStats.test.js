@@ -26,13 +26,20 @@ describe('gpsStats', () => {
 
     it('returns all cities matching the a zipCode pattern', () => {
       const cities = getCitiesFromZipCode({ zipCode: 140 });
-      expect(cities.length).to.equal(12);
+      expect(cities.length).to.equal(8);
     });
 
-    // This should be fixed with a new cleaned cities list
-    it('returns more than one city in some cases', () => {
+    it('does not return more than one city for a 4-digits zipCode', () => {
+      // Raw data for zipCode 1000 contains 3 cities
       const cities = getCitiesFromZipCode({ zipCode: 1000 });
-      expect(cities.length).to.equal(3);
+      expect(cities.length).to.equal(1);
+    });
+
+    it('does not include numerical characters in city name', () => {
+      // Raw data for zipCode 1000 contains numbers in city name
+      const cities = getCitiesFromZipCode({ zipCode: 1000 });
+      expect(cities.length).to.equal(1);
+      expect(cities[0].match(/[0-9 ]/g)).to.equal(null);
     });
   });
 });

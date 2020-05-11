@@ -65,8 +65,22 @@ const classifyCity = (city, index, cities) => {
   return { ...city, closestMainCity };
 };
 
+// Removes duplicates and removes numerical characters in cities names
+const formatAndFilterCities = cities =>
+  cities
+    .filter(
+      ({ zipCode }, index, array) =>
+        array.findIndex(({ zipCode: zip }) => zip === zipCode) === index,
+    )
+    .map(({ city, ...rest }) => ({
+      city: city.replace(/[0-9 ]/g, ''),
+      ...rest,
+    }));
+
 const classifyCities = () => {
-  const classifiedCities = JSON.stringify(citiesCoordinates.map(classifyCity));
+  const classifiedCities = JSON.stringify(
+    formatAndFilterCities(citiesCoordinates).map(classifyCity),
+  );
   fs.writeFileSync(
     '../../core/api/gpsStats/server/classifiedCities.json',
     classifiedCities,
