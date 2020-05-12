@@ -42,7 +42,6 @@ const determineComponentFromProps = ({
     return {
       Component: CustomSelectField,
       type: COMPONENT_TYPES.SELECT,
-      props: { variant: 'outlined' },
     };
   }
 
@@ -51,7 +50,7 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedDateField,
       type: COMPONENT_TYPES.DATE,
-      props: { placeholder: null, variant: 'outlined', getProps },
+      props: { placeholder: null, getProps },
     };
   }
 
@@ -63,7 +62,6 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal', variant: 'outlined' },
     };
   }
 
@@ -71,7 +69,7 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal', decimal: true, variant: 'outlined' },
+      props: { decimal: true },
     };
   }
 
@@ -79,7 +77,7 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal', negative: true, variant: 'outlined' },
+      props: { negative: true },
     };
   }
 
@@ -91,10 +89,8 @@ const determineComponentFromProps = ({
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
       props: {
-        margin: 'normal',
         decimal: true,
         negative: true,
-        variant: 'outlined',
       },
     };
   }
@@ -139,7 +135,11 @@ const determineComponentFromProps = ({
     };
   }
 
-  return { Component: false, type: null, props: { variant: 'outlined' } };
+  return {
+    Component: false,
+    type: null,
+    props: { variant: 'outlined', size: 'small' },
+  };
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {

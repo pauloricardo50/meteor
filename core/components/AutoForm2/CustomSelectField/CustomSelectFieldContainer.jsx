@@ -1,9 +1,21 @@
+import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
+
 import React, { PureComponent } from 'react';
 
 import Loading from '../../Loading';
 import Chip from '../../Material/Chip';
 import T from '../../Translation';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
+
+const getQuery = ({ query, params = {}, model }) => {
+  const finalParams = typeof params === 'function' ? params(model) : params;
+
+  if (typeof query === 'string') {
+    return createQuery({ [query]: finalParams });
+  }
+
+  return query.clone(finalParams);
+};
 
 export default Component => {
   class CustomSelectFieldContainer extends PureComponent {
@@ -88,9 +100,9 @@ export default Component => {
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (typeof customAllowedValues === 'object') {
-        const { query, params = () => ({}), allowNull } = customAllowedValues;
+        const { query, params, allowNull } = customAllowedValues;
 
-        query.clone(params(model)).fetch((error, data) => {
+        getQuery({ query, params, model }).fetch((error, data) => {
           if (error) {
             return this.setState({ error, loading: false });
           }
@@ -166,7 +178,7 @@ export default Component => {
     };
 
     render() {
-      const { values, error, loading } = this.state;
+      const { values, error, loading, data } = this.state;
       const {
         customAllowedValues,
         displayEmpty,
@@ -200,6 +212,7 @@ export default Component => {
           formatOption={this.formatOption}
           renderValue={this.renderValue}
           transform={this.makeTransform() || this.formatOption}
+          data={data}
         />
       );
     }

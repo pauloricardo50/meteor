@@ -41,7 +41,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
       {
         raw: loan.status,
         label: (
-          <StatusLabel status={loan.status} collection={LOANS_COLLECTION} />
+          <StatusLabel status={loan.status} collection={loan._collection} />
         ),
       },
       {

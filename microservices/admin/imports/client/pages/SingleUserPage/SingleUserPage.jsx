@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -25,7 +27,6 @@ const SingleUserPage = ({
   currentUser,
   children,
   history,
-  activities,
 }) => {
   const {
     loans,
@@ -35,9 +36,9 @@ const SingleUserPage = ({
     proProperties,
     insuranceRequests,
   } = user;
-  const isUser = user.roles.includes(ROLES.USER);
-  const isPro = user.roles.includes(ROLES.PRO);
-  const currentUserIsDev = currentUser.roles.includes(ROLES.DEV);
+  const isUser = Roles.userIsInRole(user, ROLES.USER);
+  const isPro = Roles.userIsInRole(user, ROLES.PRO);
+  const currentUserIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
 
   return (
     <section
@@ -55,12 +56,7 @@ const SingleUserPage = ({
         collection={USERS_COLLECTION}
         withActivityAdder={false}
       />
-      <CollectionTasksTable
-        doc={user}
-        collection={USERS_COLLECTION}
-        withTaskInsert
-        withQueryTaskInsert
-      />
+      <CollectionTasksTable doc={user} withTaskInsert withQueryTaskInsert />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}

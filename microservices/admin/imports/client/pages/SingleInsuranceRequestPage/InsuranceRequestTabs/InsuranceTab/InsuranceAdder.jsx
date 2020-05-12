@@ -34,8 +34,8 @@ const InsuranceAdder = ({
       buttonProps={{
         fab: true,
         primary: true,
-        label: '',
-        icon: <Icon type="add" />,
+        label: null,
+        icon: <Icon type="add" fontSize="small" />,
         className: 'ml-8',
         size: 'small',
         disabled: shouldDisable,

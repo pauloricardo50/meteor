@@ -3,8 +3,8 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { adminLoan, loanBase } from '../../api/fragments';
 import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';
@@ -28,6 +28,7 @@ import { createAdmins, createEpotek } from '../../fixtures/userFixtures';
 import {
   createEmailVerificationToken,
   createLoginToken,
+  resetDatabase,
 } from '../../utils/testHelpers';
 import {
   ADMIN_EMAIL,
@@ -68,24 +69,25 @@ Meteor.methods({
       email: PRO_EMAIL,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId, object: { roles: [ROLES.PRO] } });
+    Roles.addUsersToRoles(userId, ROLES.PRO);
     const userId2 = Accounts.createUser({
       email: PRO_EMAIL_2,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId: userId2, object: { roles: [ROLES.PRO] } });
+    Roles.addUsersToRoles(userId2, ROLES.PRO);
     const userId3 = Accounts.createUser({
       email: PRO_EMAIL_3,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId: userId3, object: { roles: [ROLES.PRO] } });
+    Roles.addUsersToRoles(userId3, ROLES.PRO);
 
     const orgId = createEpotek();
     const adminId = Accounts.createUser({
       email: ADMIN_EMAIL,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+    Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
+
     UserService.updateOrganisations({
       userId: adminId,
       newOrganisations: [{ _id: orgId, metadata: { isMain: true } }],
@@ -148,13 +150,16 @@ Meteor.methods({
     });
   },
   async insertFullPromotion() {
-    const admin = await UserService.get({ roles: ROLES.ADMIN }, { _id: 1 });
+    const admin = await UserService.get(
+      { 'roles._id': ROLES.ADVISOR },
+      { _id: 1 },
+    );
     if (!admin) {
       const adminId = await Accounts.createUser({
         email: ADMIN_EMAIL,
         password: PRO_PASSWORD,
       });
-      UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+      Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
     }
     await createPromotionDemo(this.userId, false, false, 4);
   },
@@ -264,7 +269,7 @@ Meteor.methods({
     // UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
 
     const admin =
-      UserService.get({ roles: { $in: [ROLES.ADMIN] } }, { _id: 1 }) || {};
+      UserService.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 }) || {};
 
     const solvencyLoan = userLoansE2E
       .clone({ userId, step: STEPS.SOLVENCY })

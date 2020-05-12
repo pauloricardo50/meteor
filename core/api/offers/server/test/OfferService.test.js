@@ -1,15 +1,16 @@
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-/* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { offerSendFeedback } from '../../methodDefinitions';
 import OfferService from '../OfferService';
+
+/* eslint-env mocha */
+
 
 describe('OfferService', () => {
   let offer;

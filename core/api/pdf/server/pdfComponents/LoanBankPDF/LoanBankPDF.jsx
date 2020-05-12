@@ -85,6 +85,6 @@ const LoanBankPDF = props => {
   return <Pdf stylesheet={stylesheet} pages={pages} pdfName={pdfName} />;
 };
 
-export default withTranslationContext(() => ({ purchaseType: 'ACQUISITION' }))(
-  LoanBankPDF,
-);
+export default withTranslationContext(({ loan: { purchaseType } }) => ({
+  purchaseType,
+}))(LoanBankPDF);

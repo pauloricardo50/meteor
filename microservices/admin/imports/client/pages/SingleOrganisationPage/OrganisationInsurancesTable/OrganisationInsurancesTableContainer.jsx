@@ -15,7 +15,13 @@ const columnOptions = [
 ];
 
 const mapInsurance = (insurance = {}) => {
-  const { _id: insuranceId, status, createdAt, insuranceProduct } = insurance;
+  const {
+    _id: insuranceId,
+    status,
+    createdAt,
+    insuranceProduct,
+    _collection,
+  } = insurance;
 
   return {
     id: insuranceId,
@@ -30,9 +36,7 @@ const mapInsurance = (insurance = {}) => {
       },
       {
         raw: status,
-        label: (
-          <StatusLabel status={status} collection={INSURANCES_COLLECTION} />
-        ),
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: insuranceProduct?.name,

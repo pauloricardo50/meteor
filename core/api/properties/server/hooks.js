@@ -1,5 +1,8 @@
 import FileService from '../../files/server/FileService';
-import { additionalDocumentsHook } from '../../helpers/sharedHooks';
+import {
+  additionalDocumentsHook,
+  getFieldsToWatch,
+} from '../../helpers/sharedHooks';
 import LoanService from '../../loans/server/LoanService';
 import SecurityService from '../../security';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
@@ -31,11 +34,24 @@ Properties.after.insert(
 );
 
 Properties.after.update(
-  additionalDocumentsHook({
-    collection: PROPERTIES_COLLECTION,
-    initialDocuments,
-    conditionalDocuments,
-  }),
+  (userId, property, fieldNames = []) => {
+    const fieldsToWatch = getFieldsToWatch({
+      conditionalDocuments: conditionalDocuments.filter(
+        ({ requireOtherCollectionDoc }) => !requireOtherCollectionDoc,
+      ),
+    });
+
+    if (!fieldNames.some(field => fieldsToWatch.includes(field))) {
+      return;
+    }
+
+    additionalDocumentsHook({
+      collection: PROPERTIES_COLLECTION,
+      initialDocuments,
+      conditionalDocuments,
+    })(userId, property);
+  },
+  { fetchPrevious: false },
 );
 
 UpdateWatcherService.addUpdateWatching({

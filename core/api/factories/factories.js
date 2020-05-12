@@ -1,3 +1,4 @@
+import { Roles } from 'meteor/alanning:roles';
 import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
 
@@ -59,36 +60,15 @@ const getRandomInsuranceRequestName = () =>
 const getRandomInsuranceName = () =>
   `20-0${Math.floor(Math.random() * 899 + 100)}-A01`;
 
-Factory.define('user', Users, {
-  roles: [ROLES.USER],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
-});
-
-Factory.define('dev', Users, {
-  roles: [ROLES.DEV],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
-});
-
-Factory.define('admin', Users, {
-  roles: [ROLES.ADMIN],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
-});
-
-Factory.define('pro', Users, {
-  roles: [ROLES.PRO],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
+Object.values(ROLES).forEach(role => {
+  Factory.define(role, Users, {
+    emails: () => [{ address: faker.internet.email(), verified: false }],
+    lastName: TEST_LASTNAME,
+    firstName: TEST_FIRSTNAME,
+    phoneNumbers: [TEST_PHONE],
+  }).after(({ _id }) => {
+    Roles.setUserRoles(_id, role);
+  });
 });
 
 Factory.define('borrower', Borrowers);
@@ -142,12 +122,12 @@ Factory.define('promotion', Promotions, {
   city: 'Genève',
   assignedEmployeeId: () => {
     const adminId = Users.insert({
-      roles: [ROLES.ADMIN],
       emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
       lastName: TEST_LASTNAME,
       firstName: TEST_FIRSTNAME,
       phoneNumbers: [TEST_PHONE],
     });
+    Roles.setUserRoles(adminId, ROLES.ADMIN);
 
     return adminId;
   },

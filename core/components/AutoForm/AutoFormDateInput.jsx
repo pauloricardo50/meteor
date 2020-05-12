@@ -18,7 +18,7 @@ class AutoFormDateInput extends Component {
       <AutoFormTextInput
         {...this.props}
         showValidIconOnChange
-        savingIconStyle={{ top: 10 }}
+        savingIconStyle={{ top: 2 }}
         inputComponent={DatePicker}
         InputProps={{
           ...InputProps,

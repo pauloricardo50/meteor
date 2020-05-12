@@ -242,7 +242,8 @@ describe('Pro promotion', () => {
         cy.get('input[name=address1]').type('Chemin Auguste-Vilbert 14');
         cy.get('input[name=address2]').type('1er étage');
         cy.get('input[name=zipCode]').type('1218');
-        cy.get('input[name=city]').type('Le Grand-Saconnex');
+        cy.get('#mui-component-select-city').click();
+        cy.contains('Le Grand-Saconnex').click();
         cy.get('input[name=agreementDuration]').type('14{enter}');
 
         cy.url().should('include', 'promotions/');
@@ -407,6 +408,7 @@ describe('Pro promotion', () => {
           .click();
 
         cy.contains('Supprimer').click();
+        cy.contains('Confirmer').click();
         cy.contains('Lot 2').should('not.exist');
       });
     });

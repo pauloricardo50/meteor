@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 
+import AssignedRole from 'core/components/AssignedRole';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import Link from 'core/components/Link';
-import Roles from 'core/components/Roles';
 import T from 'core/components/Translation/';
 import { isUser } from 'core/utils/userFunctions';
 
@@ -37,7 +37,7 @@ const getColumns = ({ showAssignee, user }) => {
       raw: createdAt.getTime(),
       label: moment(createdAt).fromNow(),
     },
-    { label: <Roles roles={roles} />, raw: roles && roles.toString() },
+    { label: <AssignedRole roles={roles} />, raw: roles && roles.toString() },
   ];
   if (showAssignee) {
     if (assignedEmployee) {

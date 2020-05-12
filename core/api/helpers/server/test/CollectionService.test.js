@@ -1,10 +1,10 @@
 import { Mongo } from 'meteor/mongo';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import CollectionService from '../CollectionService';
 
 const CollectionA = new Mongo.Collection('collectionA');

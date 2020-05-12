@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  APPLICATION_TYPES,
-  LOANS_COLLECTION,
-} from 'core/api/loans/loanConstants';
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import {
   getPropertyArray,
   getPropertyLoanArray,
@@ -27,7 +23,6 @@ const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
         <AutoForm
           formClasses="user-form user-form__info"
           inputs={getPropertyLoanArray({ loan, borrowers })}
-          collection={LOANS_COLLECTION}
           doc={loan}
           docId={loan._id}
           disabled={!userFormsEnabled}
@@ -48,7 +43,6 @@ const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
               },
               ...getRefinancingFormArray({ loan }),
             ]}
-            collection={LOANS_COLLECTION}
             doc={loan}
             docId={loan._id}
             disabled={!userFormsEnabled}
@@ -61,7 +55,6 @@ const SinglePropertyPageForms = ({ loan, borrowers, property }) => {
         <AutoForm
           formClasses="user-form user-form__info"
           inputs={getPropertyArray({ loan, property })}
-          collection={PROPERTIES_COLLECTION}
           doc={property}
           docId={property._id}
           disabled={!userFormsEnabled}

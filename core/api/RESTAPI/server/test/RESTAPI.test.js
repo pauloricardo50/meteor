@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import { appendFileSync } from 'fs';
@@ -11,6 +10,7 @@ import {
   flushFileUploadDir,
   makeFileUploadDir,
 } from '../../../../utils/filesUtils';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import {
   OBJECT_FORMATS,
   getAPIUser,

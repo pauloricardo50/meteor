@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
@@ -8,7 +8,6 @@ import {
 } from '../../../api/methods/methodDefinitions';
 import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
 import AutoFormDialog from '../../AutoForm2/AutoFormDialog';
-import Button from '../../Button';
 import T from '../../Translation';
 
 export const getAdditionalDocSchema = collection => {
@@ -67,12 +66,18 @@ export const getAdditionalDocSchema = collection => {
   });
 };
 
-const AdditionalDocModifier = ({ additionalDoc, docId, collection }) =>
-  additionalDoc.label ? (
+const AdditionalDocModifier = ({ additionalDoc, docId, collection }) => {
+  if (!additionalDoc.label) {
+    return null;
+  }
+
+  const schema = useMemo(() => getAdditionalDocSchema(collection), []);
+
+  return (
     <AutoFormDialog
       buttonProps={{ primary: true, label: <T id="general.modify" /> }}
       model={additionalDoc}
-      schema={getAdditionalDocSchema(collection)}
+      schema={schema}
       onSubmit={object =>
         setAdditionalDoc.run({
           collection,
@@ -83,25 +88,15 @@ const AdditionalDocModifier = ({ additionalDoc, docId, collection }) =>
         })
       }
       autoFieldProps={{ labels: { label: 'Nom du document' } }}
-      renderAdditionalActions={({ closeDialog, setDisableActions }) => (
-        <Button
-          onClick={() => {
-            setDisableActions(true);
-            return removeAdditionalDoc
-              .run({
-                collection,
-                id: docId,
-                additionalDocId: additionalDoc.id,
-              })
-              .then(closeDialog)
-              .finally(() => setDisableActions(false));
-          }}
-          error
-        >
-          <T id="general.delete" />
-        </Button>
-      )}
+      onDelete={() =>
+        removeAdditionalDoc.run({
+          collection,
+          id: docId,
+          additionalDocId: additionalDoc.id,
+        })
+      }
     />
-  ) : null;
+  );
+};
 
 export default AdditionalDocModifier;

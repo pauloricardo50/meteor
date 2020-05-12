@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import Borrowers from '../../../borrowers';
 import generator from '../../../factories/server';
 import S3Service from '../../../files/server/S3Service';
@@ -796,7 +797,7 @@ describe('Collection Security', () => {
       });
 
       it('should return true if the user is dev', async () => {
-        Meteor.users.update(userId, { $set: { roles: ['dev'] } });
+        Roles.addUsersToRoles(userId, 'dev');
         await uploadFile('test/hello.json');
         const isAllowed = await SecurityService.files.isAllowedToAccess({
           key: 'test/hello.json',
@@ -807,7 +808,7 @@ describe('Collection Security', () => {
       });
 
       it('should return true if the user is admin', async () => {
-        Meteor.users.update(userId, { $set: { roles: 'admin' } });
+        Roles.addUsersToRoles(userId, 'admin');
         await uploadFile('test/hello.json');
         const isAllowed = await SecurityService.files.isAllowedToAccess({
           key: 'test/hello.json',
@@ -831,7 +832,7 @@ describe('Collection Security', () => {
       });
 
       it('should throw if file is admin only and user is pro', async () => {
-        Meteor.users.update(userId, { $set: { roles: 'pro' } });
+        Roles.addUsersToRoles(userId, 'pro');
         await uploadFile('test/hello.json', { roles: 'admin' });
         try {
           await SecurityService.files.isAllowedToAccess({
@@ -923,7 +924,7 @@ describe('Collection Security', () => {
         });
 
         it('should return true when the file is pro only with a pro user', async () => {
-          Meteor.users.update(userId, { $set: { roles: 'pro' } });
+          Roles.addUsersToRoles(userId, 'pro');
 
           await uploadFile(key, { roles: 'pro' });
           const isAllowed = await SecurityService.files.isAllowedToAccess({
@@ -968,7 +969,7 @@ describe('Collection Security', () => {
         });
 
         it('should return true when the file is pro only with a pro user', async () => {
-          Meteor.users.update(userId, { $set: { roles: 'pro' } });
+          Roles.addUsersToRoles(userId, 'pro');
 
           await uploadFile(key, { roles: 'pro' });
           const isAllowed = await SecurityService.files.isAllowedToAccess({

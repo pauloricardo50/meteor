@@ -45,7 +45,7 @@ const AdminTimeline = ({
   return (
     <div className="admin-timeline">
       <div className="flex center-align mb-16">
-        <h2>Activité</h2>
+        <h2 className="mr-8">Activité</h2>
         {withActivityAdder &&
           (CustomActivityAdder || (
             <AdminActivityAdder
@@ -63,18 +63,20 @@ const AdminTimeline = ({
             label: <T id={`Forms.type.${t}`} />,
           }))}
           onChange={selected => setType({ $in: selected })}
+          className="mr-8"
         />
         <Checkbox
           onChange={() => setFetchTasks(!fetchTasks)}
           value={fetchTasks}
           label="Tâches"
-          className="ml-8"
+          className="mr-8"
         />
         {frontTagId && (
           <Checkbox
             onChange={() => setFetchConversations(!fetchConversations)}
             value={fetchConversations}
             label="Front"
+            className="mr-8"
           />
         )}
         {AdditionalFilters}

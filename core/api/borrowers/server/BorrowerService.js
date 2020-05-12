@@ -7,7 +7,7 @@ import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import Borrowers from '../borrowers';
 
-export class BorrowerService extends CollectionService {
+class BorrowerService extends CollectionService {
   constructor() {
     super(Borrowers);
   }

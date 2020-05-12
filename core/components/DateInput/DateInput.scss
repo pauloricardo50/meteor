@@ -83,8 +83,11 @@
 .DateInput input {
   flex-grow: 1;
 
-  padding-top: 18.5px;
-  padding-bottom: 18.5px;
+  padding-top: 10.5px;
+  padding-bottom: 10.5px;
+  font-size: inherit;
+  line-height: inherit;
+  color: black;
 }
 
 .SingleDatePicker_picker,

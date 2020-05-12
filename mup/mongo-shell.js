@@ -1,7 +1,6 @@
 const yargs = require('yargs');
-const fs = require('fs');
 const { spawnSync } = require('child_process');
-const chalk = require('chalk');
+const { retrieveSecret } = require('./utils/secrets');
 
 const { argv } = yargs
   .string('environment')
@@ -9,14 +8,7 @@ const { argv } = yargs
   .describe('environment', 'environment name')
   .demandOption('environment');
 
-if (!fs.existsSync('./configs/mongo-auth.json')) {
-  console.error(
-    chalk.redBright`Please create the './configs/mongo-auth.json' file as described in the Atlas Database User section of the docs`,
-  );
-  process.exit(1);
-}
-
-const { username, password } = require('./configs/mongo-auth.json');
+const { username, password } = retrieveSecret('mongo-user');
 
 let dbName;
 if (argv.environment === 'production') {

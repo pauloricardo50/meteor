@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PercentWithStatus from '../../../../../../components/PercentWithStatus';
+import T from '../../../../../../components/Translation';
 import { Calculator } from '../../../../../../utils/Calculator';
 import { toMoney } from '../../../../../../utils/conversionFunctions';
 import { ERROR, SUCCESS } from '../../../../../constants';
@@ -14,7 +15,7 @@ const columnsConfig = [
   },
   {
     style: { width: '20%', textAlign: 'right' },
-    title: "Prix d'achat",
+    title: <T id="Forms.value" />,
     value: (calculator, { id: structureId }, loan) =>
       toMoney(calculator.selectPropertyValue({ loan, structureId })),
   },

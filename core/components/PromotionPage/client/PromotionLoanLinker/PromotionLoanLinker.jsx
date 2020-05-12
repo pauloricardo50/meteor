@@ -54,7 +54,7 @@ const PromotionLoanLinker = ({
           className="flex-row"
           style={{ width: '100%', justifyContent: 'space-between' }}
         >
-          <CollectionIconLink relatedDoc={loan} />
+          <CollectionIconLink relatedDoc={loan} placement="left" />
           <Button
             onClick={() =>
               linkPromotionLoan({ loanId: loan._id }).then(hideResults)

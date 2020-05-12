@@ -68,13 +68,7 @@ const getLabel = props => {
 };
 
 const RequiredOwnFundsBody = props => {
-  const {
-    value,
-    suggestStructure,
-    disableForms,
-    loan = {},
-    structureId,
-  } = props;
+  const { suggestStructure, disableForms, loan = {} } = props;
 
   const { borrowers = [] } = loan;
   return (

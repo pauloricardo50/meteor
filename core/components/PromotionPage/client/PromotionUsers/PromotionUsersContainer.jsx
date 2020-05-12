@@ -83,7 +83,8 @@ const makeMapPromotionUser = ({
           <ImpersonateLink
             user={user}
             key="impersonate"
-            className="impersonate-link"
+            className="impersonate-link mr-4"
+            size="small"
           />
           <IconButton
             onClick={() => {
@@ -99,6 +100,7 @@ const makeMapPromotionUser = ({
             }}
             type="close"
             tooltip="Enlever de la promotion"
+            size="small"
           />
         </div>
       ),

@@ -1,12 +1,15 @@
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
+import { DOCUMENTS } from '../../../files/fileConstants';
+import { PURCHASE_TYPE } from '../../../loans/loanConstants';
 import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';
+import { initialDocuments } from '../../propertiesAdditionalDocuments';
 import { PROPERTY_CATEGORY } from '../../propertyConstants';
 import PropertyService from '../PropertyService';
 
@@ -222,6 +225,132 @@ describe('PropertyService', function() {
         name: 'Org1',
         userLinks: [{ _id: 'proId', shareCustomers: true }],
       });
+    });
+  });
+
+  describe('additional documents', () => {
+    it('adds initial documents when the property is created', () => {
+      generator({ properties: { _id: 'prop' } });
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments).to.deep.equal(initialDocuments);
+    });
+
+    it('adds conditional documents when condition is met', () => {
+      generator({ properties: { _id: 'prop', renovationYear: 2010 } });
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+      const propertyWorksQuote = additionalDocuments.find(
+        ({ id }) => id === DOCUMENTS.PROPERTY_WORKS_QUOTE,
+      );
+      expect(propertyWorksQuote).to.not.equal(undefined);
+    });
+
+    it('removes conditional documents when condition is not met anymore', () => {
+      generator({ properties: { _id: 'prop', renovationYear: 2010 } });
+      PropertyService._update({
+        id: 'prop',
+        object: { renovationYear: true },
+        operator: '$unset',
+      });
+
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+      const propertyWorksQuote = additionalDocuments.find(
+        ({ id }) => id === DOCUMENTS.PROPERTY_WORKS_QUOTE,
+      );
+
+      expect(propertyWorksQuote).to.equal(undefined);
+    });
+
+    it('adds conditional documents when loan updates', () => {
+      generator({ loans: { _id: 'loan', properties: { _id: 'prop' } } });
+      LoanService._update({
+        id: 'loan',
+        object: { purchaseType: PURCHASE_TYPE.REFINANCING },
+      });
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+
+      const heaterType = additionalDocuments.find(
+        ({ id }) => id === DOCUMENTS.HEATER_TYPE,
+      );
+
+      expect(heaterType).to.not.equal(undefined);
+    });
+
+    it('removes conditional documents when loan updates', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          purchaseType: PURCHASE_TYPE.REFINANCING,
+          properties: { _id: 'prop' },
+        },
+      });
+      LoanService._update({
+        id: 'loan',
+        object: { purchaseType: PURCHASE_TYPE.ACQUISITION },
+      });
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+
+      const heaterType = additionalDocuments.find(
+        ({ id }) => id === DOCUMENTS.HEATER_TYPE,
+      );
+
+      expect(heaterType).to.equal(undefined);
+    });
+
+    it('keeps conditional documents with condition on property when loan updates', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          properties: { _id: 'prop', renovationYear: 2010 },
+        },
+      });
+      LoanService._update({
+        id: 'loan',
+        object: { purchaseType: PURCHASE_TYPE.ACQUISITION },
+      });
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+
+      const propertyWorksQuote = additionalDocuments.find(
+        ({ id }) => id === DOCUMENTS.PROPERTY_WORKS_QUOTE,
+      );
+      expect(propertyWorksQuote).to.not.equal(undefined);
+    });
+
+    it('keeps conditional documents with condition on loan when property updates', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          properties: { _id: 'prop', renovationYear: 2010 },
+        },
+      });
+      LoanService._update({
+        id: 'loan',
+        object: { purchaseType: PURCHASE_TYPE.REFINANCING },
+      });
+      PropertyService._update({
+        id: 'property',
+        object: { address1: 'Rue du test 1' },
+      });
+      const { additionalDocuments } = PropertyService.get('prop', {
+        additionalDocuments: 1,
+      });
+
+      const heaterType = additionalDocuments.find(
+        ({ id }) => id === DOCUMENTS.HEATER_TYPE,
+      );
+
+      expect(heaterType).to.not.equal(undefined);
     });
   });
 });

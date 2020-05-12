@@ -117,10 +117,10 @@ hr {
 }
 
 .error-box {
-  padding: 2px;
+  padding: 1px 4px;
 
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: $error;
 }
 
@@ -129,10 +129,10 @@ hr {
 }
 
 .warning-box {
-  padding: 2px;
+  padding: 1px 4px;
 
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: $warning;
 }
 
@@ -289,6 +289,14 @@ p.description,
   margin: 0;
 }
 
+.m-2 {
+  margin: 2px;
+}
+
+.m-4 {
+  margin: 4px;
+}
+
 .m-8 {
   margin: 8px;
 }
@@ -337,6 +345,10 @@ p.description,
   margin-bottom: 16px;
 }
 
+.mr-2 {
+  margin-right: 2px;
+}
+
 .mr-4 {
   margin-right: 4px;
 }
@@ -347,6 +359,10 @@ p.description,
 
 .mr-16 {
   margin-right: 16px;
+}
+
+.ml-2 {
+  margin-left: 2px;
 }
 
 .ml-4 {

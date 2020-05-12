@@ -11,7 +11,7 @@ shell-server            # Server-side component of the `meteor shell` command
 force-ssl                     # Automatically route users to https
 
 # Accounts
-alanning:roles@1.2.19
+alanning:roles@2.1.0
 accounts-password
 epotek:accounts-ui
 

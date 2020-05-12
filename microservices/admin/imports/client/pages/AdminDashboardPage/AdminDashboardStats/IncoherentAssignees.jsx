@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import CountUp from 'react-countup';
 
 import { incoherentAssignees } from 'core/api/users/queries';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { CurrentUserContext } from 'core/containers/CurrentUserContext';

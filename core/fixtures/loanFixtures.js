@@ -206,8 +206,8 @@ export const addLoanWithData = ({
     structure: {
       propertyId,
       loanTranches: [
-        { type: INTEREST_RATES.YEARS_10, value: 0.8 },
-        { type: INTEREST_RATES.YEARS_5, value: 0.2 },
+        { type: INTEREST_RATES.YEARS_10, value: 0.8 * 1000000 },
+        { type: INTEREST_RATES.YEARS_5, value: 0.2 * 1000000 },
       ],
       ...getRandomStructure(1000000, borrowerId1),
     },

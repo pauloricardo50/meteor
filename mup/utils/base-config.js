@@ -2,6 +2,7 @@ const {
   removePrepareBundleLock,
   getPrepareBundleLock,
 } = require('./prepare-bundle-lock');
+const { retrieveSecret } = require('./secrets');
 
 const { generateConfig } = require('./nginx.js');
 
@@ -11,6 +12,9 @@ process.env.METEOR_PROFILE = 1000;
 process.env.METEOR_DISABLE_OPTIMISTIC_CACHING = 'true';
 
 const enableLock = process.env.EPOTEK_RUN_PARALLEL === 'true';
+
+const BASE_MONGO_URL = retrieveSecret('base-mongo-url');
+const REGISTRY_PASSWORD = retrieveSecret('registry-password');
 
 module.exports = function createConfig({
   microservice,
@@ -23,6 +27,7 @@ module.exports = function createConfig({
   parallelPrepareBundle,
   appName: _appName,
   hooks = {},
+  envVars = {},
 }) {
   const appName = _appName || microservice;
 
@@ -63,10 +68,10 @@ module.exports = function createConfig({
 
       env: {
         ROOT_URL: `https://${domains[0]}`,
-        MONGO_URL: `mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/${environment}?retryWrites=true&w=majority`,
-        MONGO_OPLOG_URL:
-          'mongodb+srv://staging-access:hYeXNTdaue54qYuC@cluster0-rcyrm.gcp.mongodb.net/local',
+        MONGO_URL: `${BASE_MONGO_URL}/${environment}?retryWrites=true&w=majority`,
+        MONGO_OPLOG_URL: `${BASE_MONGO_URL}/local`,
         DDP_DEFAULT_CONNECTION_URL: `https://backend.${baseDomain}`,
+        ...envVars,
       },
 
       docker: {
@@ -86,7 +91,7 @@ module.exports = function createConfig({
       host: 'https://eu.gcr.io',
       imagePrefix: 'eu.gcr.io/e-potek-1499177443071',
       username: '_json_key',
-      password: JSON.stringify(require('../configs/registry-key.json')),
+      password: JSON.stringify(REGISTRY_PASSWORD),
     },
 
     proxy: {
@@ -122,6 +127,13 @@ module.exports = function createConfig({
     },
 
     hooks: {
+      // "reconfig" is the command that updates the
+      // env vars (including METEOR_SETTINGS) and other app configuration
+      // It is also run during deploys.
+      'pre.reconfig': function(api) {
+        // eslint-disable-next-line no-param-reassign
+        api.settings = retrieveSecret(`${environment}-meteor-settings`);
+      },
       'post.setup': {
         remoteCommand: `
           # If you need to change settings for the papertrail-logs container

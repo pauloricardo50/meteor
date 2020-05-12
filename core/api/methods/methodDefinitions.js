@@ -73,6 +73,10 @@ export const migrateToLatest = new Method({
   name: 'migrateToLatest',
 });
 
+export const migrateRoles = new Method({
+  name: 'migrateRoles',
+});
+
 export const updateDocument = new Method({
   name: 'updateDocument',
   params: {

@@ -285,11 +285,11 @@ class InsuranceRequestService extends CollectionService {
   }
 
   addBorrower({ insuranceRequestId, amount = 1 }) {
-    const {
-      user: { _id: userId },
-    } = this.get(insuranceRequestId, { user: { _id: 1 } });
+    const { user: { _id: userId } = {} } = this.get(insuranceRequestId, {
+      user: { _id: 1 },
+    });
 
-    return [...Array(amount)].map(i =>
+    return [...Array(amount)].map(() =>
       BorrowerService.insert({ userId, insuranceRequestId }),
     );
   }

@@ -121,7 +121,7 @@ class Analytics {
         firstName,
         lastName,
         email,
-        role: roles[0],
+        role: roles[0]._id,
       },
     });
 
@@ -146,7 +146,7 @@ class Analytics {
         firstName: this.user?.firstName,
         lastName: this.user?.lastName,
         email: this.user?.email,
-        role: this.user?.roles[0],
+        role: this.user?.roles[0]._id,
       },
     });
   }

@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withState } from 'recompose';
 
-import { PROMOTION_OPTIONS_COLLECTION } from '../../../../api/promotionOptions/promotionOptionConstants';
 import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import StatusLabel from '../../../StatusLabel';
@@ -22,6 +21,7 @@ const makeMapPromotionOption = ({
   isAdmin,
 }) => (promotionOption, index, arr) => {
   const {
+    _collection,
     _id: promotionOptionId,
     promotionLots,
     loan: {
@@ -52,12 +52,7 @@ const makeMapPromotionOption = ({
       { raw: name, label: name },
       !isDashboardTable && {
         raw: status,
-        label: (
-          <StatusLabel
-            status={status}
-            collection={PROMOTION_OPTIONS_COLLECTION}
-          />
-        ),
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: value,

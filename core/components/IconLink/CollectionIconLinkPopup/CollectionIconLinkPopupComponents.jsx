@@ -26,9 +26,9 @@ import {
 } from '../../../api/properties/propertyConstants';
 import { USERS_COLLECTION } from '../../../api/users/userConstants';
 import colors from '../../../config/colors';
+import AssignedRole from '../../AssignedRole';
 import FullDate from '../../dateComponents/FullDate';
 import PremiumBadge from '../../PremiumBadge';
-import Roles from '../../Roles';
 import StatusLabel from '../../StatusLabel';
 import TooltipArray from '../../TooltipArray';
 import T, { IntlDate, Money } from '../../Translation';
@@ -69,11 +69,11 @@ const LinkList = ({ docs }) => (
 );
 
 export const titles = {
-  [LOANS_COLLECTION]: ({ name, status, category }) => (
+  [LOANS_COLLECTION]: ({ name, status, category, _collection }) => (
     <span>
       {name}
       &nbsp;
-      <StatusLabel status={status} collection={LOANS_COLLECTION} />
+      <StatusLabel status={status} collection={_collection} />
       {category === LOAN_CATEGORIES.PREMIUM && (
         <span>
           &nbsp;
@@ -89,7 +89,7 @@ export const titles = {
       )}
       {name}
       &nbsp;
-      <Roles className="secondary" roles={roles} />
+      <AssignedRole className="secondary" roles={roles} />
     </span>
   ),
   [BORROWERS_COLLECTION]: ({ name, age }) => (
@@ -105,22 +105,26 @@ export const titles = {
       <span className="secondary">Emprunteur</span>
     </span>
   ),
-  [PROPERTIES_COLLECTION]: ({ address1, name, status, category }) => (
+  [PROPERTIES_COLLECTION]: ({
+    address1,
+    name,
+    status,
+    category,
+    _collection,
+  }) => (
     <span>
       {name || address1 || 'Bien immobilier sans nom'}
       &nbsp;
       {category === PROPERTY_CATEGORY.PRO && <b>(PRO)</b>}
       {category === PROPERTY_CATEGORY.PROMOTION && <b>(PROMO)</b>}
       &nbsp;
-      {status && (
-        <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />
-      )}
+      {status && <StatusLabel status={status} collection={_collection} />}
     </span>
   ),
   [OFFERS_COLLECTION]: ({
     lender: {
       loan: { name },
-      organisation: { name: orgName, logo },
+      organisation: { name: orgName },
     },
   }) => (
     <span>
@@ -129,11 +133,11 @@ export const titles = {
       {name}
     </span>
   ),
-  [PROMOTIONS_COLLECTION]: ({ name, status }) => (
+  [PROMOTIONS_COLLECTION]: ({ name, status, _collection }) => (
     <span>
       {name}
       &nbsp;
-      <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+      <StatusLabel status={status} collection={_collection} />
     </span>
   ),
   [ORGANISATIONS_COLLECTION]: ({ name, type }) => (
@@ -154,18 +158,18 @@ export const titles = {
       </span>
     </span>
   ),
-  [INSURANCES_COLLECTION]: ({ name, status }) => (
+  [INSURANCES_COLLECTION]: ({ name, status, _collection }) => (
     <span>
       {name}
       &nbsp;
-      <StatusLabel status={status} collection={INSURANCES_COLLECTION} />
+      <StatusLabel status={status} collection={_collection} />
     </span>
   ),
-  [INSURANCE_REQUESTS_COLLECTION]: ({ name, status }) => (
+  [INSURANCE_REQUESTS_COLLECTION]: ({ name, status, _collection }) => (
     <span>
       {name}
       &nbsp;
-      <StatusLabel status={status} collection={INSURANCE_REQUESTS_COLLECTION} />
+      <StatusLabel status={status} collection={_collection} />
     </span>
   ),
 };

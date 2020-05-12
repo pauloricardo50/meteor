@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React, { useContext } from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -11,6 +12,14 @@ import { ModalManagerContext } from '../../ModalManager';
 import DialogForm from '../../ModalManager/DialogForm';
 import T from '../../Translation';
 
+const schema = new SimpleSchema({
+  error: {
+    type: String,
+    optional: true,
+    uniforms: { autoFocus: true },
+  },
+});
+
 const FileStatusSetter = ({
   status = FILE_STATUS.UNVERIFIED,
   fileKey,
@@ -20,8 +29,9 @@ const FileStatusSetter = ({
   const { openModal } = useContext(ModalManagerContext);
 
   const user = Meteor.user();
+  const isAdmin = Roles.userIsInRole(user, [ROLES.ADMIN]);
 
-  if (user.roles.includes(ROLES.USER) || user.roles.includes(ROLES.PRO)) {
+  if (!isAdmin) {
     return (
       <span className={`${status} bold`}>
         <T id={`File.status.${status}`} />
@@ -50,11 +60,7 @@ const FileStatusSetter = ({
 
           openModal(
             <DialogForm
-              schema={
-                new SimpleSchema({
-                  error: { type: String, optional: true },
-                })
-              }
+              schema={schema}
               model={{ error: currentError }}
               title="Fichier non valide"
               description="Entrez la raison"

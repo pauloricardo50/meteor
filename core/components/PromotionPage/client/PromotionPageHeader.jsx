@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
-import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
 import CollectionIconLink from '../../IconLink/CollectionIconLink';
 import ImageCarrousel from '../../ImageCarrousel';
 import StatusLabel from '../../StatusLabel';
@@ -18,15 +17,16 @@ import PromotionMetadataContext from './PromotionMetadata';
 
 const PromotionPageHeader = ({ promotion }) => {
   const {
+    _collection,
     _id: promotionId,
+    address1,
+    city,
     documents: { promotionImage = [{ url: '/img/placeholder.png' }] } = {},
     name,
-    address1,
-    zipCode,
-    city,
-    status,
-    promotionLots = [],
     promotionLoan,
+    promotionLots = [],
+    status,
+    zipCode,
   } = promotion;
   const {
     permissions: {
@@ -49,7 +49,7 @@ const PromotionPageHeader = ({ promotion }) => {
             <h1 className="font-size-3">{name}</h1>
             <StatusLabel
               status={status}
-              collection={PROMOTIONS_COLLECTION}
+              collection={_collection}
               allowModify={canModifyStatus}
               docId={promotionId}
               method={nextStatus =>

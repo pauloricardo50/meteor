@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 
+import MenuItem from '../Material/MenuItem';
 import TextInput from '../TextInput';
 
 const renderInput = inputProps => {

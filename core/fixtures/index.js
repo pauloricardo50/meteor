@@ -9,7 +9,7 @@ import { createAdmins, createDevs } from './userFixtures';
 
 Meteor.startup(() => {
   if (!Meteor.isAppTest) {
-    if (Meteor.users.find({ roles: { $in: [ROLES.DEV] } }).count() === 0) {
+    if (Meteor.users.find({ 'roles._id': ROLES.DEV }).count() === 0) {
       createDevs();
       createAdmins();
     }

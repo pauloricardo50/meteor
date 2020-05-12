@@ -1,13 +1,14 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import Activities from '../../../activities';
 import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
 import Loans from '../../../loans';
 import Users from '../../../users';
 import { up } from '../17';
+
+/* eslint-env mocha */
+
 
 // Skip these tests because this migration is not up to date since migration 22
 describe.skip('Migration 17', () => {

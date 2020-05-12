@@ -1,14 +1,14 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import AssignedRole from 'core/components/AssignedRole';
 import Loading from 'core/components/Loading';
-import Roles from 'core/components/Roles';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import TestBadge from 'core/components/TestBadge';
 import Calculator from 'core/utils/Calculator';
@@ -25,7 +25,7 @@ const getListItemDetails = (
     case USERS_COLLECTION:
       return {
         primary: name,
-        secondary: <Roles roles={roles} />,
+        secondary: <AssignedRole roles={roles} />,
       };
     case LOANS_COLLECTION: {
       const loanValue =

@@ -8,6 +8,7 @@ import {
   BASIC_DOCUMENTS_LIST,
   BORROWER_DOCUMENTS,
   DOCUMENTS,
+  FILE_STATUS,
   INSURANCE_DOCUMENTS,
   INSURANCE_REQUEST_DOCUMENTS,
   LOAN_DOCUMENTS,
@@ -92,17 +93,43 @@ const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
 
   const document =
     doc || (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
-  const additionalDocumentsExist =
-    document &&
-    document.additionalDocuments &&
-    document.additionalDocuments.length > 0;
+  const additionalDocumentsExist = document?.additionalDocuments?.length > 0;
+
+  const documentsExist = Object.keys(document?.documents || {}).length > 0;
+
+  const additionalDocuments = additionalDocumentsExist
+    ? document.additionalDocuments
+        .filter(requiredByAdminOnly)
+        .map(formatAdditionalDoc)
+    : [];
+
+  // Get all validated documents, ignoring if they are required by admin or not
+  const validatedDocuments = documentsExist
+    ? Object.keys(document.documents)
+        .reduce((validDocuments, key) => {
+          const files = document.documents[key] || [];
+          // At least one file is validated
+          const oneFileIsValid = files.some(
+            ({ status }) => status === FILE_STATUS.VALID,
+          );
+
+          return oneFileIsValid
+            ? [...validDocuments, { id: key }]
+            : validDocuments;
+        }, [])
+        .map(formatAdditionalDoc)
+        // Don't return a valid document already present in additionalDocuments
+        .filter(
+          ({ id: docId }) =>
+            !additionalDocuments.some(
+              ({ id: additionnalDocId }) => additionnalDocId === docId,
+            ),
+        )
+    : [];
 
   return [
-    ...(additionalDocumentsExist
-      ? document.additionalDocuments
-          .filter(requiredByAdminOnly)
-          .map(formatAdditionalDoc)
-      : []),
+    ...additionalDocuments,
+    ...validatedDocuments,
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
   ];
 };

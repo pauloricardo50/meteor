@@ -3,7 +3,6 @@ import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { withProps } from 'recompose';
 
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
 
@@ -18,6 +17,7 @@ const columnOptions = [
 const getRows = ({ insuranceRequests = [], history }) =>
   insuranceRequests.map(insuranceRequest => {
     const {
+      _collection,
       _id: insuranceRequestId,
       name,
       user,
@@ -43,12 +43,7 @@ const getRows = ({ insuranceRequests = [], history }) =>
         },
         {
           raw: status,
-          label: (
-            <StatusLabel
-              status={status}
-              collection={INSURANCE_REQUESTS_COLLECTION}
-            />
-          ),
+          label: <StatusLabel status={status} collection={_collection} />,
         },
         {
           raw: createdAt?.getTime(),

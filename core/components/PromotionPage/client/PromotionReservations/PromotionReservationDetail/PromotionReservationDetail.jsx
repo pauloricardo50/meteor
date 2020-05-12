@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import {
-  PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
@@ -53,7 +52,6 @@ const PromotionReservationDetail = ({ promotionOption, loan }) => {
         !isAnonymized && (
           <UploaderArray
             doc={promotionOption}
-            collection={PROMOTION_OPTIONS_COLLECTION}
             documentArray={promotionReservationsArray}
             allowRequireByAdmin={false}
             disabled={!isAdmin}

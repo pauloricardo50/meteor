@@ -37,7 +37,7 @@ const analysisConfig = {
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
-        `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`,
+        `${LOAN_STATUS_ORDER.indexOf(status) + 1}) ${status}`,
     },
     residenceType: { id: 'Forms.residenceType' },
     purchaseType: { id: 'Forms.purchaseType' },
@@ -235,7 +235,7 @@ const analysisConfig = {
         label: 'Statut du dossier',
         format: ({ loan: { status } = {} }) =>
           status
-            ? `${LOAN_STATUS_ORDER.indexOf(status) + 1}. ${status}`
+            ? `${LOAN_STATUS_ORDER.indexOf(status) + 1}) ${status}`
             : undefined,
       },
       {

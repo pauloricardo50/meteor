@@ -1,21 +1,20 @@
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminUsers } from 'core/api/users/queries';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { getColumnOptions, getRows } from './userTableHelpers';
 
 export const withUsersQuery = withSmartQuery({
-  query: adminUsers,
+  query: USERS_COLLECTION,
   params: ({ assignedTo }) => ({
-    assignedEmployeeId: assignedTo,
-    $body: {
-      email: 1,
-      name: 1,
-      createdAt: 1,
-      roles: 1,
-      assignedEmployee: { _id: 1, name: 1, email: 1 },
-    },
+    $filters: { assignedEmployeeId: assignedTo },
+    email: 1,
+    name: 1,
+    createdAt: 1,
+    roles: 1,
+    assignedEmployee: { _id: 1, name: 1, email: 1 },
+    $options: { sort: { lastName: 1 } },
   }),
   queryOptions: { reactive: false },
 });
