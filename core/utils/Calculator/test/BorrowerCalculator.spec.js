@@ -17,7 +17,7 @@ import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
-    it.only("returns 0 if the key doesn't exist", () => {
+    it("returns 0 if the key doesn't exist", () => {
       expect(Calculator.getArrayValues({}, 'key')).to.equal(0);
     });
 
