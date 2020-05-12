@@ -10,6 +10,7 @@ import {
   LOAN_CATEGORIES,
 } from 'core/api/loans/loanConstants';
 import Loading from 'core/components/Loading';
+import MissingDoc from 'core/components/MissingDoc';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import updateForProps from 'core/containers/updateForProps';
 import {
@@ -67,6 +68,10 @@ export default compose(
 
     if (loading) {
       return <Loading />;
+    }
+
+    if (!data) {
+      return <MissingDoc />;
     }
 
     return <Component {...props} loan={data} />;
