@@ -49,6 +49,7 @@ const NewUsersStat = ({
             ]}
             onChange={setPeriod}
             value={period}
+            className="mr-8"
           />
           <Select
             label="Email vérifié?"

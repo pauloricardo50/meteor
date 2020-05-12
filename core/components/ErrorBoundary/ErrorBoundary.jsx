@@ -90,6 +90,7 @@ export default compose(
   withErrorCatcher,
   withProps({
     onCatch: (error, info) => {
+      console.error(error);
       sendToKadira(error);
       logError.run({
         error: JSON.parse(

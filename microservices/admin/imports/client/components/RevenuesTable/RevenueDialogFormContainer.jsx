@@ -11,8 +11,7 @@ import {
 } from 'core/api/revenues/methodDefinitions';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
@@ -34,11 +33,15 @@ const getSchema = currentUser =>
       type: String,
       defaultValue: currentUser?._id,
       customAllowedValues: {
-        query: adminUsers,
-        params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
+        query: USERS_COLLECTION,
+        params: {
+          $filters: { 'roles._id': ROLES.ADVISOR },
+          firstName: 1,
+          $options: { sort: { firstName: 1 } },
+        },
       },
       uniforms: {
-        transform: assignee => assignee?.name,
+        transform: assignee => assignee?.firstName,
         labelProps: { shrink: true },
         label: 'Responsable du revenu',
         displayEmtpy: false,
@@ -158,24 +161,11 @@ export default compose(
               onSubmitted();
             });
         },
-        deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
+        deleteRevenue: revenueId => {
           setSubmitting(true);
-          setDisableActions(true);
-          const confirm = window.confirm('Êtes-vous sûr ?');
-          if (confirm) {
-            return revenueRemove
-              .run({ revenueId })
-              .then(closeDialog)
-              .finally(() => {
-                setDisableActions(false);
-                setSubmitting(false);
-                onSubmitted();
-              });
-          }
-
-          setDisableActions(false);
-          setSubmitting(false);
-          return Promise.resolve();
+          return revenueRemove.run({ revenueId }).finally(() => {
+            onSubmitted();
+          });
         },
         layout: revenueFormLayout,
       };

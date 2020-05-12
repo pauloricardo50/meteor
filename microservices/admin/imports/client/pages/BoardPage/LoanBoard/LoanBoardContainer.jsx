@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import merge from 'lodash/merge';
 import { compose, mapProps, withProps } from 'recompose';
 
@@ -6,8 +8,7 @@ import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import { adminOrganisations } from 'core/api/organisations/queries';
 import { adminPromotions } from 'core/api/promotions/queries';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { addLiveSync, withLiveSync } from '../liveSync';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
@@ -117,16 +118,21 @@ export default compose(
   })),
   withProps(({ refetch }) => ({ refetchLoans: refetch })),
   withSmartQuery({
-    query: adminUsers,
-    params: { $body: { firstName: 1 }, roles: [ROLES.ADMIN, ROLES.DEV] },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      firstName: 1,
+      roles: 1,
+      $options: { sort: { firstName: 1 } },
+    },
     dataName: 'admins',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
   mapProps(({ admins, ...rest }) => ({
     devAndAdmins: admins,
-    admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
-    devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
+    admins: admins.filter(user => Roles.userIsInRole(user, ROLES.ADMIN)),
+    devs: admins.filter(user => Roles.userIsInRole(user, ROLES.DEV)),
     ...rest,
   })),
   withSmartQuery({

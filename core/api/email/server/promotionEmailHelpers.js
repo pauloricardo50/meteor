@@ -15,6 +15,7 @@ import {
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
 import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
+import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import { EMAIL_IDS } from '../emailConstants';
@@ -55,13 +56,12 @@ const getPromotionOptionMailParams = (
   let userName = 'e-Potek';
 
   if (userId) {
-    const { name, roles } = UserService.get(userId, { name: 1, roles: 1 });
-    const isUser = roles.includes(ROLES.USER);
+    const user = UserService.get(userId, { name: 1, roles: 1 });
 
-    if (isUser && anonymize) {
+    if (SecurityService.hasAssignedRole(user, ROLES.USER) && anonymize) {
       userName = 'un acquéreur';
     } else {
-      userName = name;
+      userName = user.name;
     }
   }
 

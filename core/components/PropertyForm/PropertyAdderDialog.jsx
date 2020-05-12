@@ -38,7 +38,7 @@ const PropertyAdderDialog = withProps(
         isRefinancing
           ? new SimpleSchema({
               address1: String,
-              city: String,
+              city: address.city,
               country: { ...address.country, optional: false },
               value: {
                 ...moneyField,

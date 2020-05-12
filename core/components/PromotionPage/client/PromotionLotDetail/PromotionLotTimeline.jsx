@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
+import { propertyHasDetailedValue } from '../../../../api/properties/propertyClientHelper';
 import ConstructionTimeline, {
   ConstructionTimelineItem,
 } from '../../../ConstructionTimeline';
@@ -13,9 +14,10 @@ const PromotionLotTimeline = ({
   promotionLot,
 }) => {
   const { properties } = promotionLot;
-  const [
-    { landValue = 0, constructionValue, additionalMargin = 0 },
-  ] = properties;
+  const [property] = properties;
+  const { landValue = 0, additionalMargin = 0, constructionValue } = property;
+
+  const hasDetailedValue = propertyHasDetailedValue({ property });
 
   const startDate = signingDate ? (
     moment(signingDate).format('MMM YYYY')
@@ -68,9 +70,11 @@ const PromotionLotTimeline = ({
           <h4>
             <T id="PromotionLotTimeline.construction" />
           </h4>
-          <b>
-            <Money value={constructionValue} />
-          </b>
+          {hasDetailedValue && (
+            <b>
+              <Money value={constructionValue} />
+            </b>
+          )}
         </div>
       ),
       columns: constructionTimeline.map(({ description, percent }, index) => {
@@ -85,7 +89,7 @@ const PromotionLotTimeline = ({
               percent={percent}
               date={getItemDate({ signingDate, prevDuration, index })}
               isLast={index + 1 === constructionTimeline.length}
-              value={percent * constructionValue}
+              value={hasDetailedValue && percent * constructionValue}
             />
           ),
           id: `${index}`,

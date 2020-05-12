@@ -6,6 +6,7 @@ import faker from 'faker/locale/fr';
 import { ORGANISATION_TYPES } from '../api/organisations/organisationConstants';
 import OrganisationService from '../api/organisations/server/OrganisationService';
 import UserService from '../api/users/server/UserService';
+import { OFFICES, ROLES } from '../api/users/userConstants';
 import { ADMIN_EMAIL } from '../cypress/server/e2eConstants';
 import { USER_PASSWORD } from './fixtureConstants';
 
@@ -14,7 +15,7 @@ export const createUser = (email, role, password) => {
     email,
     password: password || USER_PASSWORD,
   });
-  Roles.setUserRoles(userId, [role]);
+  Roles.setUserRoles(userId, role);
 
   return userId;
 };
@@ -94,7 +95,7 @@ export const createDevs = currentEmail => {
   ];
   return devs
     .filter(({ email }) => email !== currentEmail)
-    .map(obj => ({ ...obj, role: 'dev' }))
+    .map(obj => ({ ...obj, role: ROLES.DEV }))
     .map(args => addUser({ ...args, orgId }));
 };
 
@@ -106,25 +107,29 @@ export const createAdmins = () => {
       email: 'lydia@e-potek.ch',
       firstName: 'Lydia',
       lastName: 'Abraha',
+      office: OFFICES.GENEVA,
     },
     {
       email: 'yannis@e-potek.ch',
       firstName: 'Yannis',
       lastName: 'Eggert',
+      office: OFFICES.GENEVA,
     },
     {
       email: 'jeanluc@e-potek.ch',
       firstName: 'Jean-luc',
       lastName: 'Kringel',
+      office: OFFICES.LAUSANNE,
     },
     {
       email: ADMIN_EMAIL,
       firstName: 'Admin',
       lastName: 'e-Potek',
+      office: OFFICES.LAUSANNE,
     },
   ];
   return devs
-    .map(obj => ({ ...obj, role: 'admin' }))
+    .map(obj => ({ ...obj, role: ROLES.ADVISOR }))
     .map(args => addUser({ ...args, orgId }));
 };
 

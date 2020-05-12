@@ -5,8 +5,7 @@ import SimpleSchema from 'simpl-schema';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { adminOrganisations } from 'core/api/organisations/queries';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
 import Icon from 'core/components/Icon';
@@ -48,15 +47,13 @@ const getSchema = ({ schema, organisations }) =>
         type: String,
         optional: true,
         customAllowedValues: {
-          query: adminUsers,
-          params: () => ({
-            roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
-            $body: {
-              name: 1,
-              organisations: { name: 1 },
-              $options: { sort: { name: 1 } },
-            },
-          }),
+          query: USERS_COLLECTION,
+          params: {
+            $filters: { 'roles._id': ROLES.PRO },
+            name: 1,
+            organisations: { name: 1 },
+            $options: { sort: { lastName: 1 } },
+          },
           allowNull: true,
         },
         uniforms: {

@@ -6,8 +6,10 @@ import { Redirect } from 'react-router-dom';
 
 import { testCreateUser } from '../../../../api/users/methodDefinitions';
 import pollUntilReady from '../../../../utils/pollUntilReady';
-import { getMountedComponent } from '../../../../utils/testHelpers';
-import { resetDatabase } from '../../../../utils/testHelpers/testHelpers';
+import {
+  getMountedComponent,
+  resetDatabase,
+} from '../../../../utils/testHelpers';
 import Loading from '../../../Loading/Loading';
 import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
@@ -47,7 +49,7 @@ describe('PasswordResetPage', () => {
           firstName,
           lastName,
           services: { password: { reset: { token } } },
-          roles: ['user'],
+          roles: [{ _id: 'user' }],
         },
       });
     } catch (error) {

@@ -35,7 +35,6 @@ const BaseUploader = ({
 BaseUploader.propTypes = {
   displayFull: PropTypes.bool.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
-  showFull: PropTypes.func.isRequired,
 };
 
 export default BaseUploader;

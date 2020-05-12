@@ -1,5 +1,3 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 /* eslint-env mocha */
 import { expect } from 'chai';
 
@@ -8,7 +6,7 @@ import generator from '../../../../../api/factories/server';
 import { sendLoanChecklist } from '../../../../../api/loans/methodDefinitions';
 import { ddpWithUserId } from '../../../../../api/methods/methodHelpers';
 import intl from '../../../../../utils/intl';
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import { getChecklistMissingInformations } from '../../../helpers';
 
 const { formatMessage } = intl;

@@ -48,7 +48,6 @@ export const Uploader = ({
 Uploader.propTypes = {
   displayFull: PropTypes.bool.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
-  showFull: PropTypes.func.isRequired,
 };
 
 export default UploaderContainer(Uploader);

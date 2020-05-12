@@ -1,10 +1,11 @@
+import { Roles } from 'meteor/alanning:roles';
 import { Factory } from 'meteor/dburles:factory';
 /* eslint-env mocha */
 import { Mongo } from 'meteor/mongo';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../server';
 
 const PostCollection = new Mongo.Collection('posts');
@@ -167,6 +168,18 @@ describe('factoriesHelpers', () => {
         { _id: 'comment1' },
         { _id: 'comment2' },
       ]);
+    });
+
+    it('uses proper roles for users when assigned in factory after hook', () => {
+      Roles.deleteRole('SUB_ROLE');
+      Roles.createRole('SUB_ROLE', { unlessExists: true });
+      Roles.addRolesToParent('SUB_ROLE', 'admin');
+
+      generator({ users: { _id: 'userId', _factory: 'admin' } });
+
+      expect(Roles.userIsInRole('userId', 'SUB_ROLE')).to.equal(true);
+
+      Roles.deleteRole('SUB_ROLE');
     });
   });
 });

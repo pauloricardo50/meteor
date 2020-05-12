@@ -1,9 +1,8 @@
-/* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 import { expect } from 'chai';
 import moment from 'moment';
 
+/* eslint-env mocha */
+import { resetDatabase } from '../../../../utils/testHelpers';
 import SessionService from '../SessionService';
 
 describe('SessionService', () => {

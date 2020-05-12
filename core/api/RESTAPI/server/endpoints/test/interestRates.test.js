@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import {
   INTEREST_RATES,

@@ -78,7 +78,7 @@ sh.set('-e');
 sh.exec('node update-servers');
 
 if (mupCommands[0] === 'deploy') {
-  sh.exec('meteor npm run setup');
+  sh.exec('bash ../scripts/setup-root.sh');
 }
 
 // Remove a lock in case it wasn't properly removed at the end of the last deploy
@@ -111,6 +111,7 @@ function runInParallel() {
         command: getFullCommand(
           `--config ${app}.mup.js ${mupCommands.join(' ')}`,
         ),
+        runSetup: isDeploying,
 
         // If it starts with an option, we just show everything
         // instead of trying to identify what is the command or what is a value to an option

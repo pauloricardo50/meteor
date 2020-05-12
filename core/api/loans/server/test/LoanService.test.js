@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import faker from 'faker/locale/fr';
@@ -9,12 +8,13 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
+import { INTEREST_RATES } from '../../../interestRates/interestRatesConstants';
 import LenderService from '../../../lenders/server/LenderService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import OfferService from '../../../offers/server/OfferService';
@@ -373,6 +373,77 @@ describe('LoanService', function() {
             id: structureId + index,
           });
         });
+    });
+
+    it('updates the loan tranches if the wanted loan changed and there is only one tranche', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'structure',
+            wantedLoan: 1000000,
+            loanTranches: [{ value: 1000000, type: INTEREST_RATES.YEARS_10 }],
+          },
+        ],
+      })._id;
+
+      LoanService.updateStructure({
+        loanId,
+        structureId: 'structure',
+        structure: { wantedLoan: 800000 },
+      });
+
+      const { structures = [] } = LoanService.get(loanId, { structures: 1 });
+      const [structure] = structures;
+      expect(structure.loanTranches[0].value).to.equal(800000);
+    });
+
+    it('does not update the loan tranches if the wanted loan changed and there is more than one tranche', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'structure',
+            wantedLoan: 1000000,
+            loanTranches: [
+              { value: 500000, type: INTEREST_RATES.YEARS_5 },
+              { value: 500000, type: INTEREST_RATES.YEARS_10 },
+            ],
+          },
+        ],
+      })._id;
+
+      LoanService.updateStructure({
+        loanId,
+        structureId: 'structure',
+        structure: { wantedLoan: 800000 },
+      });
+
+      const { structures = [] } = LoanService.get(loanId, { structures: 1 });
+      const [structure] = structures;
+      expect(structure.loanTranches.length).to.equal(2);
+      expect(structure.loanTranches[0].value).to.equal(500000);
+      expect(structure.loanTranches[1].value).to.equal(500000);
+    });
+
+    it('does not update the loan tranches if the wanted loan did not change', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'structure',
+            wantedLoan: 1000000,
+            loanTranches: [{ value: 1000000, type: INTEREST_RATES.YEARS_10 }],
+          },
+        ],
+      })._id;
+
+      LoanService.updateStructure({
+        loanId,
+        structureId: 'structure',
+        structure: { propertyId: 'prop' },
+      });
+
+      const { structures = [] } = LoanService.get(loanId, { structures: 1 });
+      const [structure] = structures;
+      expect(structure.loanTranches[0].value).to.equal(1000000);
     });
   });
 

@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
@@ -27,8 +26,8 @@ describe('UserService', function() {
 
   beforeEach(() => {
     resetDatabase();
-
-    user = Factory.create('user', { firstName, lastName });
+    const { _id: userId } = Factory.create('user', { firstName, lastName });
+    user = UserService.findOne(userId);
     sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
   });
 
@@ -40,23 +39,23 @@ describe('UserService', function() {
     it('creates a user with a USER role by default', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
-      expect(user.roles).to.deep.equal([ROLES.USER]);
+      expect(user.roles[0]).to.deep.include({ _id: ROLES.USER });
     });
 
     it('creates a user with a PRO role', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options, role: ROLES.PRO });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
-      expect(user.roles).to.deep.equal([ROLES.PRO]);
+      expect(user.roles[0]).to.deep.include({ _id: ROLES.PRO });
     });
 
     it('uses all options to create the user', () => {
       const options = { email: 'test@test.com', username: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { emails: 1, username: 1 });
 
       expect(user.emails[0].address).to.equal(options.email);
       expect(user.username).to.equal(options.username);
@@ -65,9 +64,16 @@ describe('UserService', function() {
     it('does not set additional stuff', () => {
       const options = { email: 'test@test.com', firstName: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { firstName: 1 });
 
       expect(user.firstName).to.equal(undefined);
+    });
+
+    it('throws if you try to insert a user without role', () => {
+      const options = { email: 'test@test.com' };
+      expect(() => UserService.createUser({ options, role: null })).to.throw(
+        'must have a role',
+      );
     });
   });
 
@@ -151,13 +157,8 @@ describe('UserService', function() {
 
     it('sets a hardcoded assignee per organisation', () => {
       generator({
-        users: {
-          _factory: 'admin',
-          _id: 'testAdminId',
-        },
-        organisations: {
-          _id: 'testOrgId',
-        },
+        users: { _factory: ROLES.ADVISOR, _id: 'testAdminId' },
+        organisations: { _id: 'testOrgId' },
       });
 
       const options = {
@@ -184,6 +185,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal(newFirstName);
     });
+
     it('updates a user: check the sentence case', () => {
       const newFirstName = 'jon';
       UserService.update({
@@ -192,6 +194,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal('Jon');
     });
+
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
       expect(UserService.findOne(user._id)).to.deep.equal(user);
@@ -303,23 +306,6 @@ describe('UserService', function() {
       expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
         adminId,
       );
-    });
-  });
-
-  describe('setRole', () => {
-    it('changes the role of a user', () => {
-      const newRole = ROLES.DEV;
-      expect(UserService.findOne(user._id).roles).to.deep.equal([ROLES.USER]);
-      UserService.setRole({ userId: user._id, role: newRole });
-      expect(UserService.findOne(user._id).roles).to.deep.equal([newRole]);
-    });
-
-    it('throws if an unauthorized role is set', () => {
-      const newRole = 'some role';
-
-      expect(() =>
-        UserService.setRole({ userId: user._id, role: newRole }),
-      ).to.throw(`${newRole} is not an allowed value`);
     });
   });
 

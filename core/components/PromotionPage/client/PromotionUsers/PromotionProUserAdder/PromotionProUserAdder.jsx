@@ -24,7 +24,7 @@ const PromotionProUserAdder = ({ addUser, promotion }) => (
         title="Rechercher un compte Pro"
         renderItem={user => (
           <div className="user-search-item">
-            <CollectionIconLink relatedDoc={user} />
+            <CollectionIconLink placement="left" relatedDoc={user} />
             <Button
               onClick={() => addUser({ userId: user._id })}
               primary

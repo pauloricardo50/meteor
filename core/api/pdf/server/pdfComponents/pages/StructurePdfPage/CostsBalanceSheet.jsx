@@ -127,7 +127,7 @@ const ownFundLabel = ({ type, usageType, borrower, borrowerIndex }) => {
   );
 };
 
-const getOwnFundsLines = ({ loan, structureId, calculator }) => {
+export const getOwnFundsLines = ({ loan, structureId, calculator }) => {
   const { borrowers } = loan;
   const multipleBorrowers = borrowers.length > 1;
   const ownFunds = calculator.selectStructureKey({

@@ -1,12 +1,13 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { toggleAccount } from '../../../users/methodDefinitions';
 import UserService from '../../../users/server/UserService';
+
+/* eslint-env mocha */
+
 
 describe('toggleAccountListener', () => {
   beforeEach(() => {

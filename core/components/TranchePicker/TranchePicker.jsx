@@ -31,6 +31,7 @@ export const TranchePicker = ({
   setValue,
   setType,
   options,
+  wantedLoan,
 }) => (
   <div className="tranche-picker">
     {tranches.map(({ value, type }) => (
@@ -42,6 +43,7 @@ export const TranchePicker = ({
         setValue={newValue => setValue(type, newValue)}
         setType={newType => setType(type, newType)}
         options={filterOptions(options, tranches, type)}
+        wantedLoan={wantedLoan}
       />
     ))}
     <Button className="add" primary onClick={addTranche}>

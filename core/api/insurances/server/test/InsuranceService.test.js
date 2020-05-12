@@ -1,9 +1,9 @@
 /* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { INSURANCE_REQUEST_STATUS } from '../../../insuranceRequests/insuranceRequestConstants';
 import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';

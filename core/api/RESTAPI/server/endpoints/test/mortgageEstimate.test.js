@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import sinon from 'sinon';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import { TRENDS } from '../../../../interestRates/interestRatesConstants';
 import { PURCHASE_TYPE } from '../../../../loans/loanConstants';

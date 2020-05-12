@@ -12,6 +12,7 @@ import {
 import { RESIDENCE_TYPE } from '../api/properties/propertyConstants';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 import CantonField from '../components/CantonField/CantonField';
+import CityField from '../components/CityField/CityField';
 import T, { Money } from '../components/Translation';
 import { PURCHASE_TYPE } from '../redux/widget1/widget1Constants';
 import Calculator from '../utils/Calculator';
@@ -118,11 +119,10 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       required: addressFieldsAreNecessary,
     },
     {
+      type: 'custom',
       id: 'city',
-      type: 'textInput',
+      component: <CityField doc={b} />,
       condition: !disableAddress,
-      placeholder: disableAddress && borrowers[0].address1,
-      noIntl: disableAddress,
       required: addressFieldsAreNecessary,
     },
     {

@@ -40,8 +40,14 @@ class LenderRulesService extends CollectionService {
 
   insert({ organisationId, object = {}, logicRules }) {
     const { lenderRules = [] } = OrganisationService.get(organisationId, {
-      lenderRules: { _id: 1 },
+      lenderRules: { _id: 1, filter: 1 },
     });
+
+    if (logicRules?.[0] === true && lenderRules.length > 0) {
+      throw new Meteor.Error(
+        "Vous ne pouvez pas initialiser les critères d'octroi 2 fois",
+      );
+    }
 
     const lenderRulesId = super.insert({
       ...object,

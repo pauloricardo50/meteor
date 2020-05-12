@@ -2,8 +2,15 @@ import { Meteor } from 'meteor/meteor';
 
 import SimpleSchema from 'simpl-schema';
 
+import PromotionService from '../../../promotions/server/PromotionService';
+import PropertyService from '../../../properties/server/PropertyService';
 import UserService from '../../../users/server/UserService';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+
+export const ACCESS_TO_USER = {
+  FULL: 'FULL',
+  PARTIAL: 'PARTIAL',
+};
 
 const anyOrganisationMatches = ({
   userOrganisations = [],
@@ -61,7 +68,12 @@ export const checkQuery = ({ query, schema }) => {
   return cleanQuery;
 };
 
-export const checkAccessToUser = ({ user, proId, errorMessage }) => {
+export const checkAccessToUser = ({
+  user,
+  proId,
+  errorMessage,
+  allowPartialAccess = true,
+}) => {
   const { organisations = [] } = UserService.get(proId, {
     organisations: { users: { _id: 1 } },
   });
@@ -69,24 +81,58 @@ export const checkAccessToUser = ({ user, proId, errorMessage }) => {
   const userIsReferredByProOrg = organisations.some(
     ({ _id }) => _id === user.referredByOrganisationLink,
   );
+  if (userIsReferredByProOrg) {
+    return ACCESS_TO_USER.FULL;
+  }
+
   const userIsReferredByProOrgMember = organisations.some(({ users = [] }) =>
     users.some(({ _id }) => _id === user.referredByUserLink),
   );
+  if (userIsReferredByProOrgMember) {
+    return ACCESS_TO_USER.FULL;
+  }
+
   const userIsPartOfProOrg = organisations.some(({ users = [] }) =>
     users.some(({ _id }) => _id === user._id),
   );
-
-  if (
-    !userIsReferredByProOrg &&
-    !userIsReferredByProOrgMember &&
-    !userIsPartOfProOrg
-  ) {
-    throw new Meteor.Error(
-      HTTP_STATUS_CODES.NOT_FOUND,
-      errorMessage ||
-        `User with email "${user.emails[0].address}" not found, or you don't have access to it.`,
-    );
+  if (userIsPartOfProOrg) {
+    return ACCESS_TO_USER.FULL;
   }
+
+  if (allowPartialAccess) {
+    const { loans = [] } = UserService.get(user?._id, {
+      loans: { promotionLinks: 1, propertyIds: 1 },
+    });
+
+    const hasAccessToUserPropertyOrPromotion = loans.some(
+      ({ promotionLinks = [], propertyIds = [] }) =>
+        // Has access to one property
+        propertyIds.some(propertyId => {
+          const { userLinks = [] } = PropertyService.get(propertyId, {
+            userLinks: 1,
+          });
+          return !!userLinks.find(({ _id }) => _id === proId);
+        }) ||
+        // Has access to one promotion
+        promotionLinks.some(({ _id: promotionId }) => {
+          const { userLinks = [] } = PromotionService.get(promotionId, {
+            userLinks: 1,
+          });
+          return !!userLinks.find(({ _id }) => _id === proId);
+        }),
+    );
+
+    // Doesn't have access to full user
+    if (hasAccessToUserPropertyOrPromotion) {
+      return ACCESS_TO_USER.PARTIAL;
+    }
+  }
+
+  throw new Meteor.Error(
+    HTTP_STATUS_CODES.NOT_FOUND,
+    errorMessage ||
+      `User with email "${user.emails[0].address}" not found, or you don't have access to it.`,
+  );
 };
 
 export const impersonateSchema = new SimpleSchema({

@@ -13,9 +13,7 @@ import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
-import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
-import T from 'core/components/Translation';
 
 export const getActivitySchema = (activitiesFilter = () => true) =>
   new SimpleSchema({
@@ -89,20 +87,7 @@ export const AdminActivityModifier = withProps(({ model }) => ({
     tooltip: 'Modifier',
     size: 'small',
   },
-  renderAdditionalActions: ({ closeDialog, setDisableActions }) => (
-    <Button
-      onClick={() => {
-        setDisableActions(true);
-        return activityRemove
-          .run({ activityId: model._id })
-          .then(closeDialog)
-          .finally(() => setDisableActions(false));
-      }}
-      error
-    >
-      <T id="general.delete" />
-    </Button>
-  ),
+  onDelete: () => activityRemove.run({ activityId: model._id }),
   title: 'Modifier événement',
 }))(AdminActivityForm);
 

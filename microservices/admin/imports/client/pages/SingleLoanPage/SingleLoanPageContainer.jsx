@@ -1,3 +1,4 @@
+import React from 'react';
 import omit from 'lodash/omit';
 import { branch, compose, mapProps, renderComponent } from 'recompose';
 
@@ -8,12 +9,14 @@ import {
   LOANS_COLLECTION,
   LOAN_CATEGORIES,
 } from 'core/api/loans/loanConstants';
+import Loading from 'core/components/Loading';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import updateForProps from 'core/containers/updateForProps';
 import {
   injectCalculator,
   withCalculator,
 } from 'core/containers/withCalculator';
+import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
@@ -44,18 +47,30 @@ const fullLoanFragment = {
 };
 
 export default compose(
-  updateForProps(['match.params.loanId']),
-  withSmartQuery({
-    query: LOANS_COLLECTION,
-    params: ({ match, loanId }) => ({
-      $filters: {
-        _id: loanId || match.params.loanId,
+  updateForProps(['match.params.loanId', 'loanId']),
+  Component => props => {
+    const { loanId, match } = props;
+    const _id = loanId || match?.params?.loanId;
+
+    const { data, loading } = useReactiveMeteorData(
+      {
+        query: _id && LOANS_COLLECTION,
+        params: { $filters: { _id }, ...fullLoanFragment },
+        type: 'single',
       },
-      ...fullLoanFragment,
-    }),
-    queryOptions: { reactive: true, single: true },
-    dataName: 'loan',
-  }),
+      [_id],
+    );
+
+    if (!_id) {
+      return null;
+    }
+
+    if (loading) {
+      return <Loading />;
+    }
+
+    return <Component {...props} loan={data} />;
+  },
   injectCalculator(),
   withTranslationContext(({ loan = {} }) => ({
     purchaseType: loan.purchaseType,

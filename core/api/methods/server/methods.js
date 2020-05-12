@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import generator from '../../factories/server';
@@ -16,6 +17,7 @@ import {
   cleanDatabase,
   generateScenario,
   getMixpanelAuthorization,
+  migrateRoles,
   migrateToLatest,
   referralExists,
   removeAdditionalDoc,
@@ -104,6 +106,11 @@ migrateToLatest.setHandler(({ userId }) => {
   migrate();
 });
 
+migrateRoles.setHandler(({ userId }) => {
+  SecurityService.checkCurrentUserIsDev();
+  Roles._forwardMigrate();
+});
+
 updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   const service = Services[collection];
   try {
@@ -138,7 +145,7 @@ generateScenario.setHandler(({ userId }, { scenario }) => {
 referralExists.setHandler((context, params) => {
   const { refId } = params;
   const referralUser = UserService.get(
-    { _id: refId, roles: { $in: [ROLES.PRO] } },
+    { _id: refId, 'roles._id': ROLES.PRO },
     { _id: 1 },
   );
   const referralOrg = OrganisationService.get(refId, { _id: 1 });

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import {
   cleanDatabase,
+  migrateRoles,
   migrateToLatest,
 } from '../../api/methods/methodDefinitions';
 import Button from '../Button';
@@ -27,6 +28,12 @@ const SharedStuff = () => (
       method={cb => cleanDatabase.run().then(cb)}
       keyword="CLEAN_DATABASE"
       label="Clean database"
+      buttonProps={{ error: true, raised: true }}
+    />
+    <ConfirmMethod
+      method={cb => migrateRoles.run().then(cb)}
+      keyword="ROLES_V2"
+      label="Migrate to roles v2"
       buttonProps={{ error: true, raised: true }}
     />
     <ErrorThrower />

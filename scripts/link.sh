@@ -14,8 +14,8 @@ source=$1
 destination=$2
 
 
-files=( $(find $source -type f -maxdepth 1) )
-folders=( $(find $source -type d -maxdepth 1 -mindepth 1) )
+files=( $(find $source -maxdepth 1 -type f) )
+folders=( $(find $source -maxdepth 1 -mindepth 1 -type d) )
 
 prefix="$source"
 
@@ -28,4 +28,3 @@ for i in "${files[@]}"
 do
     ln -svf ../../$i $destination${i#$prefix}
 done
-

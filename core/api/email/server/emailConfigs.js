@@ -304,7 +304,9 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
     { title, cta },
   ) {
     const { variables } = this.template;
-    const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
+    // This page is accessible without a user account, so make sure we send the
+    // person to the login page first. Otherwise he will see a "doc not found" error message
+    const ctaUrl = `${Meteor.settings.public.subdomains.app}/login?path=/loans/${loan._id}`;
 
     return {
       variables: [
