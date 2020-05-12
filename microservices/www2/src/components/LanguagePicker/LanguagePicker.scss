@@ -1,0 +1,15 @@
+.language-picker {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.language-option {
+  // TODO: get style from design team
+  & + & {
+    margin-left: 1rem;
+  }
+
+  &[data-active='true'] {
+    font-weight: bold;
+  }
+}

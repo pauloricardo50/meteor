@@ -1,5 +1,6 @@
 import React from 'react';
 import Menu from '../Menu';
+import LanguagePicker from '../LanguagePicker';
 import NewsletterSignup from '../NewsletterSignup';
 import SocialLinks from '../SocialLinks';
 import './Footer.scss';
@@ -80,6 +81,8 @@ const Footer = () => (
       </div>
 
       <SocialLinks />
+
+      <LanguagePicker />
     </div>
   </footer>
 );
