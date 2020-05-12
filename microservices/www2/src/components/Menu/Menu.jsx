@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 import useAllMenus from '../../hooks/useAllMenus';
 import { linkResolver } from '../../utils/linkResolver';
+import LanguageContext from '../../contexts/LanguageContext';
 import './Menu.scss';
 
 const getLink = (menuLink) => {
@@ -18,11 +19,11 @@ const getLink = (menuLink) => {
 };
 
 const Menu = ({ menuName }) => {
+  const [language] = useContext(LanguageContext);
   const allMenus = useAllMenus();
 
-  // TODO: get localized lang
   const menu = allMenus.find(({ node }) => {
-    return node._meta.uid === menuName && node._meta.lang === 'fr-ch';
+    return node._meta.uid === menuName && node._meta.lang.includes(language);
   });
 
   if (!menu) return null;
