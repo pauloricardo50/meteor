@@ -61,11 +61,12 @@ export const query = graphql`
   }
 `;
 
-const Post = ({ data }) => {
+const Post = ({ data, pageContext: { rootQuery, ...pageContext } }) => {
   const { post: blogPost } = data.prismic;
 
   if (!blogPost) return null;
 
+  // TODO: move these to centralized localization json file
   const blogHome = {
     'fr-ch': {
       shortLang: 'fr',
@@ -75,13 +76,11 @@ const Post = ({ data }) => {
       shortLang: 'en',
       linkText: `Return to index`,
     },
-  }[blogPost._meta.lang];
-
-  // TODO: add newletter signup to each article, but which version to use?
+  }[pageContext.lang];
 
   // TODO: add structured data - https://developers.google.com/search/docs/data-types/article
   return (
-    <Layout>
+    <Layout pageContext={pageContext} pageName={blogPost.title}>
       <div className="post" data-wio-id={blogPost._meta.id}>
         <div className="post-header">
           <div className="back-to-blog">
@@ -117,19 +116,14 @@ const Post = ({ data }) => {
             </div>
           )}
         </div>
-
         {blogPost.body && <PageSections sections={blogPost.body} />}
+        {/* TODO: add newletter signup to each article, but which version to use from Prismic? */}
+        <div className="section-placeholder">Newsletter sign up section</div>
+
+        <div className="section-placeholder">Related promotions</div>
 
         <div className="section-placeholder">
-          Coming soon... newsletter sign up section
-        </div>
-
-        <div className="section-placeholder">
-          Coming soon... related promotions
-        </div>
-
-        <div className="section-placeholder">
-          Coming soon... full width background image w/ CTA buttons
+          Full width background image w/ CTA buttons
         </div>
       </div>
     </Layout>

@@ -192,13 +192,13 @@ export const query = graphql`
   }
 `;
 
-const Page = ({ data }) => {
+const Page = ({ data, pageContext: { rootQuery, ...pageContext } }) => {
   const { page } = data.prismic;
 
   if (!page) return null;
 
   return (
-    <Layout>
+    <Layout pageContext={pageContext} pageName={page.name}>
       <div className="container page" data-wio-id={page._meta.id}>
         {page.body && <PageSections sections={page.body} />}
       </div>
