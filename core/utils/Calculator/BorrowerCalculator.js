@@ -611,7 +611,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getRealEstateDeltas({ borrowers }) {
       const allRealEstate = borrowers
         .map(({ realEstate }) => realEstate)
-        .reduce((arr, realEstate) => [...arr, ...realEstate], []);
+        .reduce((arr, realEstate = []) => [...arr, ...realEstate], []);
 
       return allRealEstate.map(realEstate => {
         const { income } = realEstate;

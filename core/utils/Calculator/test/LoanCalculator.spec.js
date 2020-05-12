@@ -14,6 +14,7 @@ import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
 } from '../../../api/properties/propertyConstants';
+import { REAL_ESTATE_INCOME_ALGORITHMS } from '../../../config/financeConstants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('LoanCalculator', () => {
@@ -654,7 +655,7 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe.only('getIncomeRatio', () => {
+  describe('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
       expect(
         Calculator.getIncomeRatio({
@@ -702,13 +703,55 @@ describe('LoanCalculator', () => {
               wantedLoan: 800000,
               property: { value: 1000000, investmentRent: 40000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
             },
             borrowers: [{ salary: 160000 }],
           },
           interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
         }),
       ).to.be.within(0.33, 0.34);
+    });
+
+    it('Calculates property income based on positive and negative deltas', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000, investmentRent: 36000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [{ salary: 160000 }],
+        },
+      });
+
+      expect(incomeRatio).to.equal(0.15);
+    });
+
+    it('returns 0 if a property pays for itself', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000, investmentRent: 60000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [{ salary: 160000 }],
+        },
+      });
+
+      expect(incomeRatio).to.equal(0);
     });
   });
 
