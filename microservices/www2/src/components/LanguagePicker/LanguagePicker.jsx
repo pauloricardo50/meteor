@@ -1,26 +1,27 @@
 import React, { useContext } from 'react';
 import LanguageContext from '../../contexts/LanguageContext';
+import { getLanguages, getLanguageData } from '../../utils/languages.js';
 import './LanguagePicker.scss';
 
 const LanguagePicker = () => {
   const [language, setLanguage] = useContext(LanguageContext);
 
+  const languages = getLanguages();
+
+  const languageData = languages.map(lang => getLanguageData(lang));
+
   return (
     <div className="language-picker">
-      <span
-        className="language-option"
-        onClick={() => setLanguage('fr')}
-        data-active={language === 'fr'}
-      >
-        FR
-      </span>
-      <span
-        className="language-option"
-        onClick={() => setLanguage('en')}
-        data-active={language === 'en'}
-      >
-        EN
-      </span>
+      {languageData.map(lang => (
+        <span
+          key={lang.shortLang}
+          className="language-option"
+          onClick={() => setLanguage(lang.shortLang)}
+          data-active={language === lang.shortLang}
+        >
+          {lang.display}
+        </span>
+      ))}
     </div>
   );
 };

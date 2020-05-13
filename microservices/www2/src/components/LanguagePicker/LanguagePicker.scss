@@ -4,6 +4,8 @@
 }
 
 .language-option {
+  cursor: pointer;
+
   // TODO: get style from design team
   & + & {
     margin-left: 1rem;
