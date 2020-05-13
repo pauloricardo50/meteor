@@ -17,7 +17,7 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import MonitoringActivityContainer from './MonitoringActivityContainer';
 import MonitoringActivityFilters from './MonitoringActivityFilters';
 
-const statuses = LOAN_STATUS_ORDER.slice(1);
+const statuses = LOAN_STATUS_ORDER.slice(1, -1);
 
 const getColumnOptions = ({ hasCreatedAtRange }) =>
   [
@@ -189,7 +189,7 @@ const MonitoringActivity = ({
             title: name,
             children: (
               <div className="flex-col">
-                {LOAN_STATUS_ORDER.map(status => {
+                {LOAN_STATUS_ORDER.slice(0, -1).map(status => {
                   const value = groups[status];
 
                   return (
