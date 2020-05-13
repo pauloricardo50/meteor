@@ -34,7 +34,7 @@ const DataTable = ({ columns, data }) => {
             manualSortBy: true, // Sorting is done server-side
             disableMultiSort: true, // No multiple sorting on the server for now
             disableSortRemove: true,
-            manualPagination: true,
+            manualPagination: true, // Pagination is done server-side
             pageCount: 10, // TODO: set this
           }}
         />

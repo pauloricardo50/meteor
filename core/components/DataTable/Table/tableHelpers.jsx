@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { usePagination, useRowSelect, useSortBy } from 'react-table';
 
 import TableCheckbox from './TableCheckbox';
@@ -32,4 +32,18 @@ export const getTableHooks = ({ sortable, selectable }) => {
   }
 
   return array;
+};
+
+// Only call the callback on subsequent renders
+export const useStateChangeCallback = (callback, args) => {
+  const isMountedRef = useRef(false);
+  useEffect(() => {
+    if (isMountedRef.current) {
+      if (callback) {
+        callback(args);
+      }
+    } else {
+      isMountedRef.current = true;
+    }
+  }, [callback, ...Object.values(args)]);
 };

@@ -2,6 +2,7 @@
 import React from 'react';
 import { cleanup, fireEvent, render, within } from '@testing-library/react';
 import { expect } from 'chai';
+import Sinon from 'sinon';
 
 import Table from '..';
 
@@ -288,6 +289,34 @@ describe('Table', () => {
 
       expect(select1.checked).to.equal(true);
       expect(select2.checked).to.equal(false);
+    });
+  });
+
+  describe('onStateChange', () => {
+    it('Provides a hook when changing the table state after mounting', () => {
+      const columns = [
+        { Header: 'Column 1', accessor: 'col1' },
+        { Header: 'Column 2', accessor: 'col2' },
+      ];
+      const data = [
+        { col1: 'A', col2: '1' },
+        { col1: 'B', col2: '2' },
+      ];
+      const onStateChange = Sinon.spy();
+
+      const { getByText } = render(
+        <Table data={data} columns={columns} onStateChange={onStateChange} />,
+      );
+
+      // Sort
+      fireEvent.click(getByText('Column 1'));
+
+      // Should not run on mount, only on subsequent changes
+      expect(onStateChange.calledOnce).to.equal(true);
+      expect(onStateChange.firstCall.args[0].sortBy[0]).to.deep.equal({
+        id: 'col1',
+        desc: false,
+      });
     });
   });
 });

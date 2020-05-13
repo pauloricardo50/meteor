@@ -5,11 +5,11 @@ import { useTable } from 'react-table';
 import TableBody from './TableBody';
 import TableFooter, { paginationOptions } from './TableFooter';
 import TableHead from './TableHead';
-import { getTableHooks } from './tableHelpers';
+import { getTableHooks, useStateChangeCallback } from './tableHelpers';
 
 // import { useTable } from 'react-table';
 
-// Both columns and data should be memoized arrays:
+// Both "columns" and "data" props should be memoized arrays:
 //
 // const data = useMemo(() => [ ... ], deps);
 
@@ -21,12 +21,13 @@ const Table = ({
   initialHiddenColumns = [],
   initialSort,
   padding = 'default',
-  pageSize = paginationOptions[1],
+  initialPageSize = paginationOptions[1],
   selectable,
   size = 'small',
   sortable = true,
   stickyHeader,
   tableOptions,
+  onStateChange,
 }) => {
   const {
     allColumns,
@@ -46,7 +47,7 @@ const Table = ({
       data,
       initialState: {
         sortBy: initialSort ? [initialSort] : [],
-        pageSize,
+        pageSize: initialPageSize,
         pageIndex: 0,
         hiddenColumns: allowHidingColumns ? initialHiddenColumns : [],
       },
@@ -54,6 +55,9 @@ const Table = ({
     },
     ...getTableHooks({ sortable, selectable }),
   );
+  const { pageIndex, pageSize, sortBy } = state;
+
+  useStateChangeCallback(onStateChange, { pageIndex, pageSize, sortBy });
 
   return (
     <MuiTable
