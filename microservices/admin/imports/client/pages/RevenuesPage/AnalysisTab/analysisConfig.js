@@ -27,7 +27,7 @@ const sevenDaysAgo = moment()
   .minute(0);
 
 const fifteenDaysAgo = moment()
-  .day(-30)
+  .day(-15)
   .hour(0)
   .minute(0);
 
