@@ -102,18 +102,22 @@ const addPromotionStaticPros = ({ promotionId }) => {
 
   return Promise.all(
     pros.map(async ({ email, role, orgId }) => {
-      const userId = await addUser({ email, role: ROLES.PRO });
+      const userId = await addUser({
+        email,
+        role: ROLES.PRO,
+        orgId,
+      });
       await PromotionService.addProUser({
         promotionId,
         userId,
         permissions: PERMISSIONS[role],
-        orgId,
       });
       await PromotionService.updateUserRoles({
         promotionId,
         userId,
         roles: [role],
       });
+
       return userId;
     }),
   );
@@ -154,10 +158,11 @@ const addProsToPromotion = async ({ promotionId, pros }) => {
   return Promise.all(
     [...Array(pros)].map(async (_, index) => {
       // Choose a random organisation for this broker
-      const organisationIndex = random(0, organisationsCount);
+      const organisationIndex = random(0, organisationsCount - 1);
       const userId = await addUser({
         email: `broker${index + 1}@org${organisationIndex + 1}.com`,
         role: ROLES.PRO,
+        orgId: organisationIds[organisationIndex],
       });
       await PromotionService.addProUser({
         promotionId,
@@ -168,7 +173,6 @@ const addProsToPromotion = async ({ promotionId, pros }) => {
         promotionId,
         userId,
         roles: [PROMOTION_USERS_ROLES.BROKER],
-        orgId: organisationIds[organisationIndex],
       });
 
       return userId;
