@@ -1,5 +1,4 @@
 import './promotionDemo/promotionFixturesMethods';
-import './promotionTest/fixtureMethods';
 
 import { Meteor } from 'meteor/meteor';
 

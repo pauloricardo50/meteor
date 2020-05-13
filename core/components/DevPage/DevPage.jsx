@@ -42,6 +42,42 @@ const SharedStuff = () => (
   </>
 );
 
+const testPromotionSchema = new SimpleSchema({
+  promotionName: {
+    type: String,
+    defaultValue: 'Promo test',
+    uniforms: { label: 'Nom de la promotion' },
+  },
+  lots: {
+    type: Number,
+    min: 1,
+    max: 500,
+    defaultValue: 50,
+    uniforms: { label: 'Nombre de lots' },
+  },
+  pros: {
+    type: Number,
+    min: 1,
+    max: 50,
+    defaultValue: 10,
+    uniforms: { label: 'Nombre de courtiers' },
+  },
+  users: {
+    type: Number,
+    min: 1,
+    max: 2000,
+    defaultValue: 25,
+    uniforms: { label: 'Nombre de clients' },
+  },
+  promotionOptionsPerUser: {
+    type: Number,
+    min: 1,
+    max: 5,
+    defaultValue: 3,
+    uniforms: { label: 'Nombre de lots max par client' },
+  },
+});
+
 class DevPage extends Component {
   constructor(props) {
     super(props);
@@ -246,38 +282,7 @@ class DevPage extends Component {
               secondary: true,
             }}
             title="Créer promotion"
-            schema={
-              new SimpleSchema({
-                lots: {
-                  type: Number,
-                  min: 1,
-                  max: 500,
-                  defaultValue: 50,
-                  uniforms: { label: 'Nombre de lots' },
-                },
-                pros: {
-                  type: Number,
-                  min: 1,
-                  max: 500,
-                  defaultValue: 10,
-                  uniforms: { label: 'Nombre de courtiers' },
-                },
-                users: {
-                  type: Number,
-                  min: 1,
-                  max: 500,
-                  defaultValue: 25,
-                  uniforms: { label: 'Nombre de clients' },
-                },
-                promotionOptionsPerUser: {
-                  type: Number,
-                  min: 1,
-                  max: 5,
-                  defaultValue: 3,
-                  uniforms: { label: 'Nombre de lots par client' },
-                },
-              })
-            }
+            schema={testPromotionSchema}
             onSubmit={params =>
               new Promise((resolve, reject) => {
                 Meteor.call('createTestPromotion', params, (err, res) =>

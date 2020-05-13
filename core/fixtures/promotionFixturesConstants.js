@@ -4,15 +4,14 @@ import moment from 'moment';
 import {
   ORGANISATION_FEATURES,
   ORGANISATION_TYPES,
-} from '../../api/organisations/organisationConstants';
+} from '../api/organisations/organisationConstants';
 import {
   PROMOTION_PERMISSIONS,
   PROMOTION_STATUS,
   PROMOTION_TYPES,
-} from '../../api/promotions/promotionConstants';
+} from '../api/promotions/promotionConstants';
 
 export const DEMO_PROMOTION = {
-  name: 'Promo test',
   type: PROMOTION_TYPES.SHARE,
   status: PROMOTION_STATUS.OPEN,
   address1: 'Rue du Test 1',
