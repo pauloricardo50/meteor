@@ -12,7 +12,6 @@ import {
 
 /* eslint-env mocha */
 
-
 describe('anonymousCreateUserListener', function() {
   this.timeout(10000);
   beforeEach(() => {
@@ -23,14 +22,26 @@ describe('anonymousCreateUserListener', function() {
           _id: 'org1',
           name: 'Organisation 1',
           users: [
-            { _id: 'pro1', _factory: 'pro', $metadata: { isMain: true } },
+            {
+              _id: 'pro1',
+              _factory: 'pro',
+              $metadata: { isMain: true },
+              firstName: 'TestFirstName',
+              lastName: 'TestLastName',
+            },
           ],
         },
         { _id: 'org2', name: 'Organisation 2' },
       ],
       users: [
         { _id: 'adminId', _factory: 'admin' },
-        { _id: 'pro2', _factory: 'pro' },
+        {
+          _id: 'pro2',
+          _factory: 'pro',
+
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
+        },
       ],
     });
   });
@@ -103,7 +114,11 @@ describe('anonymousCreateUserListener', function() {
 
   it('adds activities on the user when he is referred by a pro', async () => {
     const userId = await anonymousCreateUser.run({
-      user: { email: 'john.doe@test.com' },
+      user: {
+        email: 'john.doe@test.com',
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
+      },
       referralId: 'pro1',
       trackingId: '123',
     });
@@ -141,7 +156,11 @@ describe('anonymousCreateUserListener', function() {
 
   it('adds activities on the user when user is referred by pro user without any org', async () => {
     const userId = await anonymousCreateUser.run({
-      user: { email: 'john.doe@test.com' },
+      user: {
+        email: 'john.doe@test.com',
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
+      },
       referralId: 'pro2',
       trackingId: '123',
     });

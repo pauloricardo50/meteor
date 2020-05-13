@@ -44,6 +44,7 @@ import { createFakeInterestRates } from '../interestRatesFixtures';
 import { addLoanWithData, createFakeLoan } from '../loanFixtures';
 import { createFakeOffer } from '../offerFixtures';
 import { createOrganisations } from '../organisationFixtures';
+import { createTestPromotion } from '../promotionFixtures';
 import {
   createAdmins,
   createDevs,
@@ -338,5 +339,10 @@ Meteor.methods({
         },
       },
     );
+  },
+
+  createTestPromotion(...params) {
+    SecurityService.checkCurrentUserIsDev();
+    return createTestPromotion(...params);
   },
 });
