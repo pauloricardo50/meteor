@@ -4,12 +4,14 @@ import { Roles } from 'meteor/alanning:roles';
 import React, { Component } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
+import SimpleSchema from 'simpl-schema';
 
 import {
   cleanDatabase,
   migrateRoles,
   migrateToLatest,
 } from '../../api/methods/methodDefinitions';
+import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
 import ConfirmMethod from '../ConfirmMethod';
 import Icon from '../Icon';
@@ -71,6 +73,7 @@ class DevPage extends Component {
       purgeAndGenerateDatabase,
       addCompleteLoan,
       addAnonymousLoan,
+      history,
     } = this.props;
     const showDevStuff =
       !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
@@ -236,62 +239,53 @@ class DevPage extends Component {
             </Button>
           </Tooltip>
           <hr className="mbt20" />
-          Nb. of users
-          <input
-            type="number"
-            value={users}
-            onChange={e => this.makeHandleChange('users')(e.target.value)}
+          <AutoFormDialog
+            buttonProps={{
+              label: 'Créer promotion',
+              raised: true,
+              secondary: true,
+            }}
+            title="Créer promotion"
+            schema={
+              new SimpleSchema({
+                lots: {
+                  type: Number,
+                  min: 1,
+                  max: 500,
+                  defaultValue: 50,
+                  uniforms: { label: 'Nombre de lots' },
+                },
+                pros: {
+                  type: Number,
+                  min: 1,
+                  max: 500,
+                  defaultValue: 10,
+                  uniforms: { label: 'Nombre de courtiers' },
+                },
+                users: {
+                  type: Number,
+                  min: 1,
+                  max: 500,
+                  defaultValue: 25,
+                  uniforms: { label: 'Nombre de clients' },
+                },
+                promotionOptionsPerUser: {
+                  type: Number,
+                  min: 1,
+                  max: 5,
+                  defaultValue: 3,
+                  uniforms: { label: 'Nombre de lots par client' },
+                },
+              })
+            }
+            onSubmit={params =>
+              new Promise((resolve, reject) => {
+                Meteor.call('createTestPromotion', params, (err, res) =>
+                  err ? reject(err) : resolve(res),
+                );
+              }).then(promotionId => history.push(`/promotions/${promotionId}`))
+            }
           />
-          <input
-            type="checkbox"
-            name="withInvitedBy"
-            value={withInvitedBy}
-            onChange={() =>
-              this.makeHandleChange('withInvitedBy')(!withInvitedBy)
-            }
-          />
-          With invitedBy
-          <Button
-            raised
-            secondary
-            className="mr20"
-            onClick={() =>
-              Meteor.call('createDemoPromotion', {
-                users,
-                withInvitedBy,
-              })
-            }
-          >
-            Créer promotion
-          </Button>
-          <Button
-            raised
-            secondary
-            className="mr20"
-            onClick={() =>
-              Meteor.call('createDemoPromotion', {
-                users,
-                addCurrentUser: true,
-                withPromotionOptions: true,
-                withInvitedBy,
-              })
-            }
-          >
-            Créer promotion avec moi dedans
-          </Button>
-          <Button
-            raised
-            secondary
-            className="mr20"
-            onClick={() =>
-              Meteor.call('createDemoPromotion', {
-                users,
-                addCurrentUser: true,
-              })
-            }
-          >
-            Créer promotion avec moi dedans, sans promotionOptions
-          </Button>
           <hr className="mbt20" />
           Nb. de taux
           <input
