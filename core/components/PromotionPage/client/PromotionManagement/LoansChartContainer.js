@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { withProps } from 'recompose';
 
-const getData = (loans = []) => {
+const getData = loans => {
   const filteredDates = [
     ...new Set(loans.map(({ createdAt }) => createdAt.valueOf())),
   ].sort();
@@ -61,9 +61,7 @@ const getConfig = (data, loans = []) => ({
 });
 
 export default withProps(({ loans = [] }) => {
-  const data = useMemo(() => (loans.length ? getData(loans) : []), [
-    loans.length,
-  ]);
+  const data = useMemo(() => getData(loans), [loans.length]);
 
   return {
     config: getConfig(data, loans),

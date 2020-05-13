@@ -18,7 +18,8 @@ const AdminNote = ({
   allowEditing,
   ...rest
 }) => {
-  const [displayFullNote, setDisplayFullNote] = useState(false);
+  const noteShouldBeSliced = adminNote?.length > 400;
+  const [displayFullNote, setDisplayFullNote] = useState(!noteShouldBeSliced);
   const displayedNote = displayFullNote ? adminNote : adminNote.slice(0, 400);
   return (
     <>
@@ -39,8 +40,8 @@ const AdminNote = ({
         }}
         style={style}
         allowEditing={allowEditing}
-        onFocus={() => setDisplayFullNote(true)}
-        onBlur={() => setDisplayFullNote(false)}
+        onFocus={() => noteShouldBeSliced && setDisplayFullNote(true)}
+        onBlur={() => noteShouldBeSliced && setDisplayFullNote(false)}
         {...rest}
       >
         {({ value, isEditing }) =>
@@ -53,11 +54,13 @@ const AdminNote = ({
           )
         }
       </ClickToEditField>
-      <Button
-        onClick={() => setDisplayFullNote(!displayFullNote)}
-        label={displayFullNote ? 'Afficher moins' : 'Afficher plus'}
-        primary
-      />
+      {noteShouldBeSliced && (
+        <Button
+          onClick={() => setDisplayFullNote(!displayFullNote)}
+          label={displayFullNote ? 'Afficher moins' : 'Afficher plus'}
+          primary
+        />
+      )}
     </>
   );
 };
