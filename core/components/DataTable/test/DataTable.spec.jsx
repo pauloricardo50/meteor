@@ -3,16 +3,13 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { expect } from 'chai';
 
+import Table from '../Table';
 import DataTable from '..';
 
-describe.only('DataTable', () => {
-  it('works', async () => {
-    const { getByText, findByText, ...rest } = render(<DataTable />);
-    console.log('rest:', rest);
-    const result1 = await findByText('Hello');
-    console.log('result1:', result1);
-    const result2 = getByText('Hello');
-    console.log('result2:', result2);
-    // Test code
+describe('DataTable', () => {
+  it('works', () => {
+    // const { getByText, findByText, debug } = render(<DataTable />);
+    // debug();
+    // const result2 = getByText('Hello from DataTable').tagName;
   });
 });
