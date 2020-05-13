@@ -22,6 +22,16 @@ export const query = graphql`
               post_filter
             }
           }
+          ... on PRISMIC_PageBodyFaq {
+            type
+            primary {
+              section_heading
+            }
+            fields {
+              question
+              answer
+            }
+          }
           ... on PRISMIC_PageBodyHero {
             type
             primary {
