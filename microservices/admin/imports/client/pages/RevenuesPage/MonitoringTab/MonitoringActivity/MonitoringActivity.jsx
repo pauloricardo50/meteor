@@ -17,7 +17,16 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import MonitoringActivityContainer from './MonitoringActivityContainer';
 import MonitoringActivityFilters from './MonitoringActivityFilters';
 
-const statuses = LOAN_STATUS_ORDER.slice(1, -1);
+const sortStatuses = (a, b) =>
+  LOAN_STATUS_ORDER.indexOf(b) < LOAN_STATUS_ORDER.indexOf(a) ? 1 : -1;
+
+const tableStatuses = Object.values(LOAN_STATUS)
+  .filter(status => ![LOAN_STATUS.LEAD, LOAN_STATUS.TEST].includes(status))
+  .sort(sortStatuses);
+
+const modalStatuses = Object.values(LOAN_STATUS)
+  .filter(status => status !== LOAN_STATUS.TEST)
+  .sort(sortStatuses);
 
 const getColumnOptions = ({ hasCreatedAtRange }) =>
   [
@@ -29,7 +38,7 @@ const getColumnOptions = ({ hasCreatedAtRange }) =>
         <StatusLabel status={LOAN_STATUS.LEAD} collection={LOANS_COLLECTION} />
       ),
     },
-    ...statuses.map(status => ({
+    ...tableStatuses.map(status => ({
       id: status,
       label: (
         <span>
@@ -68,7 +77,7 @@ const getColumnsForAdminRow = ({ hasCreatedAtRange, loans, data }) => ({
         ? loansByAdmin.filter(({ status }) => status === LOAN_STATUS.LEAD)
             .length
         : null,
-      ...statuses.map(status =>
+      ...tableStatuses.map(status =>
         adminData.statusChanges
           .filter(({ nextStatus }) => nextStatus === status)
           .reduce((tot, { count }) => tot + count, 0),
@@ -189,7 +198,7 @@ const MonitoringActivity = ({
             title: name,
             children: (
               <div className="flex-col">
-                {LOAN_STATUS_ORDER.slice(0, -1).map(status => {
+                {modalStatuses.map(status => {
                   const value = groups[status];
 
                   return (
