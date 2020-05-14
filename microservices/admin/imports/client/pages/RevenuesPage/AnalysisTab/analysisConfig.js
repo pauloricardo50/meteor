@@ -7,6 +7,10 @@ import {
 } from 'core/api/activities/activityConstants';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import {
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCE_REQUEST_STATUS_ORDER,
+} from 'core/api/insuranceRequests/insuranceRequestConstants';
+import {
   LOANS_COLLECTION,
   LOAN_STATUS_ORDER,
 } from 'core/api/loans/loanConstants';
@@ -17,6 +21,9 @@ import {
 } from 'core/api/revenues/revenueConstants';
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import intl from 'core/utils/intl';
+
+const { formatMessage } = intl;
 
 const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
@@ -42,15 +49,24 @@ const analysisConfig = {
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
-        `${LOAN_STATUS_ORDER.indexOf(status) + 1}) ${status}`,
+        `${LOAN_STATUS_ORDER.indexOf(status) + 1}) ${formatMessage({
+          id: `Forms.status.${status}`,
+        })}`,
     },
     residenceType: { id: 'Forms.residenceType' },
     purchaseType: { id: 'Forms.purchaseType' },
     user: [
       {
         id: 'Forms.roles',
-        fragment: { roles: 1, referredByOrganisation: { name: 1 }, emails: 1 },
-        format: ({ user }) => user?.roles,
+        fragment: {
+          assignedRoles: 1,
+          referredByOrganisation: { name: 1 },
+          emails: 1,
+        },
+        format: ({ user }) =>
+          user?.assignedRoles?.map(role =>
+            formatMessage({ id: `roles.${role}` }),
+          ),
       },
       {
         id: 'Référé par',
@@ -272,10 +288,14 @@ const analysisConfig = {
   [USERS_COLLECTION]: {
     emails: {
       label: 'Email vérifié',
-      format: ({ emails }) =>
+      format: ({ emails = [] }) =>
         emails.some(({ verified }) => verified) ? 'Oui' : 'Non',
     },
-    roles: { id: 'Forms.roles' },
+    assignedRoles: {
+      id: 'Forms.roles',
+      format: ({ assignedRoles }) =>
+        assignedRoles.map(role => formatMessage({ id: `roles.${role}` })),
+    },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
     'referredByUser.name': { label: 'Référé par compte' },
     createdAt: {
@@ -424,6 +444,164 @@ const analysisConfig = {
             const maxOfferMade = Math.max(0, ...amounts);
             return t + maxOfferMade;
           }, 0),
+      },
+    ],
+  },
+  [INSURANCE_REQUESTS_COLLECTION]: {
+    status: {
+      id: 'Forms.status',
+      format: ({ status }) =>
+        `${INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) +
+          1}) ${formatMessage({ id: `Forms.status.${status}` })}`,
+    },
+    user: [
+      {
+        id: 'Forms.roles',
+        fragment: { assignedRoles: 1 },
+        format: ({ user }) =>
+          user?.assignedRoles?.map(role =>
+            formatMessage({ id: `roles.${role}` }),
+          ),
+      },
+      {
+        id: 'Référé par',
+        format: ({ user }) => user?.referredByOrganisation?.name,
+      },
+      {
+        id: 'Compte vérifié',
+        format: ({ user }) =>
+          user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'A un compte',
+        format: ({ user }) => (user ? 'Oui' : 'Non'),
+      },
+    ],
+    createdAt: [
+      {
+        label: 'Création Mois-Année',
+        format: makeFormatDate('createdAt'),
+      },
+      {
+        label: 'Création Année',
+        format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
+      },
+      {
+        label: 'Créé < 7 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(sevenDaysAgo) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'Créé < 15 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(fifteenDaysAgo) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'Créé < 30 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(thirtyDaysAgo) ? 'Oui' : 'Non',
+      },
+    ],
+    assignees: [
+      {
+        fragment: { name: 1 },
+        label: 'Conseiller',
+        format: ({ assignees }) => {
+          if (!assignees || assignees.length === 0) {
+            return 'Personne';
+          }
+
+          return assignees.find(({ $metadata }) => $metadata.isMain).name;
+        },
+      },
+      {
+        label: 'Nb. de conseillers',
+        format: ({ assignees = [] }) => assignees.length,
+      },
+    ],
+    insurances: [
+      {
+        fragment: { organisation: { name: 1 }, status: 1 },
+        label: 'Assureur',
+        format: ({ insurances = [] }) => {
+          if (!insurances.length) {
+            return 'Aucun';
+          }
+
+          return insurances
+            .reduce(
+              (organisations, { organisation }) => [
+                ...organisations,
+                organisation?.name,
+              ],
+              [],
+            )
+            .filter(x => x);
+        },
+      },
+      {
+        label: 'Statut des assurances',
+        format: ({ insurances = [] }) =>
+          insurances
+            .reduce((statuses, { status }) => [...statuses, status], [])
+            .filter(
+              ({ status }, index, self) =>
+                self.findIndex(({ status: s }) => status === s) === index,
+            )
+            .map(status => formatMessage({ id: `Forms.status.${status}` })),
+      },
+    ],
+    activities: [
+      {
+        fragment: {
+          type: 1,
+          metadata: { event: 1 },
+          date: 1,
+          $options: { sort: { date: -1 } },
+        },
+        label: 'Dernier changement de statut',
+        format: ({ activities = [] }) => {
+          const lastChangedStatus = activities.find(
+            ({ metadata }) =>
+              metadata?.event ===
+              ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS,
+          );
+          return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+        },
+      },
+      {
+        label: 'Planification faite cette semaine',
+        format: ({ activities = [] }) => {
+          const financialPlanningDone = activities.find(
+            ({ type, date }) =>
+              type === ACTIVITY_TYPES.FINANCIAL_PLANNING &&
+              moment(date).isSameOrAfter(sevenDaysAgo),
+          );
+
+          return financialPlanningDone ? 'Oui' : 'Non';
+        },
+      },
+    ],
+    revenues: [
+      {
+        id: 'Revenus totaux',
+        fragment: { amount: 1, status: 1 },
+        format: ({ revenues = [] }) =>
+          revenues.reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus encaissés',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
+            .reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus projetés',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
+            .reduce((t, { amount }) => t + amount, 0),
       },
     ],
   },
