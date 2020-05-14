@@ -10,7 +10,6 @@ import {
   getPropertyArray,
   getPropertyLoanArray,
 } from '../../arrays/PropertyFormArray';
-import { PURCHASE_TYPE } from '../../redux/widget1/widget1Constants';
 import {
   getCountedArray,
   getMissingFieldIds,
@@ -245,5 +244,16 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
 
       return propertyCategory === PROPERTY_CATEGORY.USER;
+    }
+
+    getYearlyPropertyIncome({ loan, structureId }) {
+      const investmentRent =
+        this.selectPropertyKey({
+          loan,
+          structureId,
+          key: 'investmentRent',
+        }) || 0;
+
+      return this.realEstateIncomeConsideration * investmentRent;
     }
   };

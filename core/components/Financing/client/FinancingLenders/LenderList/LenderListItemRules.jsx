@@ -19,8 +19,8 @@ export const mapOrganisation = ({ loan, structureId, organisation }) => {
   return {
     incomeRatio,
     borrowRatio,
-    totalIncome: calc.getTotalIncome({ loan }),
-    expenses: calc.getTheoreticalMonthly({ loan, structureId }) * 12,
+    totalIncome: calc.getMonthlyProjectIncome({ loan }) * 12,
+    expenses: calc.getMonthlyProjectCost({ loan, structureId }) * 12,
     calc,
     incomeRatioStatus: incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS,
     borrowRatioStatus: borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS,
