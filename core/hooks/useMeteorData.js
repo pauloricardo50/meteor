@@ -62,7 +62,7 @@ export const useStaticMeteorData = (
 
   const finalQuery = getQuery(query, params);
 
-  const refetch = () => {
+  const refetch = callback => {
     if (!finalQuery) {
       setLoading(false);
       setData(null);
@@ -78,6 +78,9 @@ export const useStaticMeteorData = (
       } else {
         setError(null);
         setData(res);
+        if (callback) {
+          callback(res);
+        }
       }
       setLoading(false);
     });

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 
+import { useStaticMeteorData } from '../../hooks/useMeteorData';
 import Loading from '../Loading';
 import Table from './Table';
+import { paginationOptions } from './Table/TableFooter';
 
 // Sample usage
 
@@ -21,28 +23,41 @@ import Table from './Table';
 //   onRowClick={() => doStuff()}
 // />;
 
-const DataTable = ({ columns, data }) => {
-  const isLoading = false;
+const DataTable = ({ initialPageSize = paginationOptions[1] }) => {
+  const { data, loading, refetch } = useStaticMeteorData({});
+  const [pageCount, setPageCount] = useState();
+
+  const memoizedColumns = useMemo(() => [], []);
+  const memoizedData = useMemo(() => [], []);
+
+  const allRowsCount = 100;
+  const onStateChange = useCallback(({ pageSize }) => {
+    refetch();
+  });
 
   return (
     <div className="data-table">
       <div className="table-container">
         <Table
-          columns={columns}
-          data={data}
+          columns={memoizedColumns}
+          data={memoizedData}
           tableOptions={{
-            manualSortBy: true, // Sorting is done server-side
             disableMultiSort: true, // No multiple sorting on the server for now
             disableSortRemove: true,
             manualPagination: true, // Pagination is done server-side
-            pageCount: 10, // TODO: set this
+            manualSortBy: true, // Sorting is done server-side
+            pageCount, // TODO: set this
           }}
+          initialPageSize={initialPageSize}
+          onStateChange={onStateChange}
+          allRowsCount={allRowsCount}
         />
-        <Backdrop open={isLoading} className="data-table-backdrop">
+        <Backdrop open={loading} className="data-table-backdrop">
           <Loading />
         </Backdrop>
       </div>
     </div>
   );
 };
+
 export default DataTable;

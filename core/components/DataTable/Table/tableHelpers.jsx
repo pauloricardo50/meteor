@@ -1,5 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { usePagination, useRowSelect, useSortBy } from 'react-table';
+import {
+  useAsyncDebounce,
+  usePagination,
+  useRowSelect,
+  useSortBy,
+} from 'react-table';
 
 import TableCheckbox from './TableCheckbox';
 
@@ -36,14 +41,16 @@ export const getTableHooks = ({ sortable, selectable }) => {
 
 // Only call the callback on subsequent renders
 export const useStateChangeCallback = (callback, args) => {
+  const debouncedCallback = useAsyncDebounce(callback, 50);
   const isMountedRef = useRef(false);
+
   useEffect(() => {
     if (isMountedRef.current) {
       if (callback) {
-        callback(args);
+        debouncedCallback(args);
       }
     } else {
       isMountedRef.current = true;
     }
-  }, [callback, ...Object.values(args)]);
+  }, [debouncedCallback, ...Object.values(args)]);
 };

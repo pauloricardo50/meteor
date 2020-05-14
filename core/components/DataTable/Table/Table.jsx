@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MuiTable from '@material-ui/core/Table';
 import { useTable } from 'react-table';
 
@@ -15,19 +15,21 @@ import { getTableHooks, useStateChangeCallback } from './tableHelpers';
 
 const Table = ({
   allowHidingColumns,
+  allRowsCount,
   className,
   columns,
   data,
   initialHiddenColumns = [],
-  initialSort,
-  padding = 'default',
+  initialPageIndex = 0,
   initialPageSize = paginationOptions[1],
+  initialSort,
+  onStateChange,
+  padding = 'default',
   selectable,
   size = 'small',
   sortable = true,
   stickyHeader,
   tableOptions,
-  onStateChange,
 }) => {
   const {
     allColumns,
@@ -48,15 +50,15 @@ const Table = ({
       initialState: {
         sortBy: initialSort ? [initialSort] : [],
         pageSize: initialPageSize,
-        pageIndex: 0,
+        pageIndex: initialPageIndex,
         hiddenColumns: allowHidingColumns ? initialHiddenColumns : [],
       },
       ...tableOptions,
     },
     ...getTableHooks({ sortable, selectable }),
   );
-  const { pageIndex, pageSize, sortBy } = state;
 
+  const { pageIndex, pageSize, sortBy } = state;
   useStateChangeCallback(onStateChange, { pageIndex, pageSize, sortBy });
 
   return (
@@ -79,7 +81,7 @@ const Table = ({
         pageCount={pageCount}
         pageIndex={state.pageIndex}
         pageSize={state.pageSize}
-        rowCount={rows.length}
+        rowCount={allRowsCount || rows.length}
         setPageSize={setPageSize}
       />
     </MuiTable>

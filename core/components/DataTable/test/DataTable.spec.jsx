@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
 import { expect } from 'chai';
 
+import { fireEvent, render } from '../../../utils/testHelpers/testing-library';
 import Table from '../Table';
 import DataTable from '..';
 
