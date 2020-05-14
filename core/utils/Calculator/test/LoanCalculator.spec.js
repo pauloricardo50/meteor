@@ -657,6 +657,8 @@ describe('LoanCalculator', () => {
 
   describe('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
+      // Valeurs magiques qui donnent 33.33%
+      // Tu peux le retrouver en utilisant notre calculateur pour une acquisition de 1mio
       expect(
         Calculator.getIncomeRatio({
           loan: {
@@ -696,6 +698,7 @@ describe('LoanCalculator', () => {
       const calc = new CalculatorClass({
         realEstateIncomeConsideration: 0.5,
       });
+
       expect(
         calc.getIncomeRatio({
           loan: {
