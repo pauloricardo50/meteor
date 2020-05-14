@@ -7,6 +7,7 @@ import ImageCollage from '../ImageCollage';
 import NewsletterSignup from '../NewsletterSignup';
 import PageHeading from '../PageHeading';
 import PageNavigation from '../PageNavigation';
+import PromotionsGrid from '../PromotionsGrid';
 import Quote from '../Quote';
 import Team from '../Team';
 import Testimonials from '../Testimonials';
@@ -28,6 +29,7 @@ const PageSections = ({ sections }) =>
             newsletter_signup: <NewsletterSignup {...section} />,
             page_heading: <PageHeading {...section} />,
             page_navigation: <PageNavigation {...section} />,
+            promotions: <PromotionsGrid {...section} />,
             quote: <Quote {...section} />,
             team: <Team {...section} />,
             testimonial: <Testimonials {...section} />,
