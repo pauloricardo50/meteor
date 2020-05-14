@@ -1,5 +1,6 @@
 import React from 'react';
 import BlogPostsGrid from '../BlogPostsGrid';
+import GPSStats from '../GPSStats';
 import Hero from '../Hero';
 import ImageCarousel from '../ImageCarousel';
 import ImageCollage from '../ImageCollage';
@@ -20,6 +21,7 @@ const PageSections = ({ sections }) =>
         {
           {
             blog_posts: <BlogPostsGrid {...section} />,
+            gps_stats_map: <GPSStats {...section} />,
             hero: <Hero {...section} />,
             image_carousel: <ImageCarousel {...section} />,
             image_collage: <ImageCollage {...section} />,
