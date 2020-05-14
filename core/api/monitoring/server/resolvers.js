@@ -204,6 +204,7 @@ export const loanMonitoring = args => {
 const getFilters = ({ fromDate, toDate }) => {
   const filters = {
     'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+    'metadata.details.nextStatus': { $ne: LOAN_STATUS.TEST },
   };
 
   if (fromDate) {
@@ -219,10 +220,12 @@ const getFilters = ({ fromDate, toDate }) => {
 };
 
 const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
-  const filters = {};
+  const filters = {
+    'loan.status': { $ne: LOAN_STATUS.TEST },
+  };
 
   if (!loanCreatedAtFrom && !loanCreatedAtTo) {
-    return {};
+    return filters;
   }
 
   if (loanCreatedAtFrom) {
@@ -317,50 +320,17 @@ const assigneeBreakdown = filters => [
   { $sort: { '_id.assigneeId': 1 } },
 ];
 
-const loanStatusChangePipeline = filters => [
-  { $match: getFilters(filters) },
-  { $addFields: { _collection: 'loans' } },
-  {
-    $group: {
-      _id: {
-        prevStatus: '$metadata.details.prevStatus',
-        nextStatus: '$metadata.details.nextStatus',
-      },
-      count: { $sum: 1 },
-      loanIds: { $push: '$loanLink._id' },
-    },
-  },
-];
-
 export const loanStatusChanges = args => {
-  const { breakdown, ...filters } = args;
-
-  let pipeline = [];
-
-  if (breakdown === 'assignee') {
-    pipeline = assigneeBreakdown(filters);
-  } else if (breakdown) {
-    throw new Meteor.Error('breakdown property can only be "assignee"');
-  } else {
-    pipeline = loanStatusChangePipeline(filters);
-  }
+  const pipeline = assigneeBreakdown(args);
 
   const results = ActivityService.aggregate(pipeline);
 
-  if (breakdown === 'assignee') {
-    return results.map(({ statusChanges, ...data }) => ({
-      ...data,
-      statusChanges: statusChanges.sort(
-        ({ prevStatus: prevStatusA }, { prevStatus: prevStatusB }) =>
-          LOAN_STATUS_ORDER.indexOf(prevStatusA) -
-          LOAN_STATUS_ORDER.indexOf(prevStatusB),
-      ),
-    }));
-  }
-
-  return results.sort(
-    ({ _id: _idA }, { _id: _idB }) =>
-      LOAN_STATUS_ORDER.indexOf(_idA.prevStatus) -
-      LOAN_STATUS_ORDER.indexOf(_idB.prevStatus),
-  );
+  return results.map(({ statusChanges, ...data }) => ({
+    ...data,
+    statusChanges: statusChanges.sort(
+      ({ prevStatus: prevStatusA }, { prevStatus: prevStatusB }) =>
+        LOAN_STATUS_ORDER.indexOf(prevStatusA) -
+        LOAN_STATUS_ORDER.indexOf(prevStatusB),
+    ),
+  }));
 };
