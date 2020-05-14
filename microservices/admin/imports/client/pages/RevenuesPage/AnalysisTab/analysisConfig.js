@@ -26,6 +26,11 @@ const sevenDaysAgo = moment()
   .hour(0)
   .minute(0);
 
+const fifteenDaysAgo = moment()
+  .day(-15)
+  .hour(0)
+  .minute(0);
+
 const thirtyDaysAgo = moment()
   .day(-30)
   .hour(0)
@@ -74,6 +79,11 @@ const analysisConfig = {
         label: 'Créé < 7 jours',
         format: ({ createdAt }) =>
           moment(createdAt).isAfter(sevenDaysAgo) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'Créé < 15 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(fifteenDaysAgo) ? 'Oui' : 'Non',
       },
       {
         label: 'Créé < 30 jours',

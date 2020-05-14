@@ -93,7 +93,13 @@ describe('REST: inviteCustomerToProProperties', function() {
     resetDatabase();
     generator({
       users: [
-        { _id: 'admin', _factory: 'admin' },
+        {
+          _id: 'admin',
+          _factory: 'admin',
+
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
+        },
         {
           _factory: 'pro',
           _id: 'pro',
@@ -112,6 +118,8 @@ describe('REST: inviteCustomerToProProperties', function() {
             },
           ],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -129,6 +137,8 @@ describe('REST: inviteCustomerToProProperties', function() {
             },
           ],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -136,6 +146,8 @@ describe('REST: inviteCustomerToProProperties', function() {
           emails: [{ address: 'pro3@org2.com', verified: true }],
           organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
       ],
     });
