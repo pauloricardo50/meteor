@@ -1,3 +1,4 @@
+import { INSURANCE_PRODUCT_FEATURES } from 'imports/core/api/insuranceProducts/insuranceProductConstants';
 import moment from 'moment';
 
 import {
@@ -10,6 +11,7 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS_ORDER,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
   LOAN_STATUS_ORDER,
@@ -111,7 +113,7 @@ const analysisConfig = {
     assignees: [
       {
         fragment: { name: 1 },
-        label: 'Conseiller',
+        label: 'Conseiller principal',
         format: ({ assignees }) => {
           if (!assignees || assignees.length === 0) {
             return 'Personne';
@@ -286,6 +288,9 @@ const analysisConfig = {
     ],
   },
   [USERS_COLLECTION]: {
+    name: {
+      label: 'Nom',
+    },
     emails: {
       label: 'Email vérifié',
       format: ({ emails = [] }) =>
@@ -457,7 +462,11 @@ const analysisConfig = {
     user: [
       {
         id: 'Forms.roles',
-        fragment: { assignedRoles: 1 },
+        fragment: {
+          assignedRoles: 1,
+          referredByOrganisation: { name: 1 },
+          emails: 1,
+        },
         format: ({ user }) =>
           user?.assignedRoles?.map(role =>
             formatMessage({ id: `roles.${role}` }),
@@ -505,7 +514,7 @@ const analysisConfig = {
     assignees: [
       {
         fragment: { name: 1 },
-        label: 'Conseiller',
+        label: 'Conseiller principal',
         format: ({ assignees }) => {
           if (!assignees || assignees.length === 0) {
             return 'Personne';
@@ -517,38 +526,6 @@ const analysisConfig = {
       {
         label: 'Nb. de conseillers',
         format: ({ assignees = [] }) => assignees.length,
-      },
-    ],
-    insurances: [
-      {
-        fragment: { organisation: { name: 1 }, status: 1 },
-        label: 'Assureur',
-        format: ({ insurances = [] }) => {
-          if (!insurances.length) {
-            return 'Aucun';
-          }
-
-          return insurances
-            .reduce(
-              (organisations, { organisation }) => [
-                ...organisations,
-                organisation?.name,
-              ],
-              [],
-            )
-            .filter(x => x);
-        },
-      },
-      {
-        label: 'Statut des assurances',
-        format: ({ insurances = [] }) =>
-          insurances
-            .reduce((statuses, { status }) => [...statuses, status], [])
-            .filter(
-              ({ status }, index, self) =>
-                self.findIndex(({ status: s }) => status === s) === index,
-            )
-            .map(status => formatMessage({ id: `Forms.status.${status}` })),
       },
     ],
     activities: [
@@ -570,12 +547,24 @@ const analysisConfig = {
         },
       },
       {
-        label: 'Planification faite cette semaine',
+        label: 'Planification faite < 7 jours',
         format: ({ activities = [] }) => {
           const financialPlanningDone = activities.find(
             ({ type, date }) =>
               type === ACTIVITY_TYPES.FINANCIAL_PLANNING &&
-              moment(date).isSameOrAfter(sevenDaysAgo),
+              moment(date).isAfter(sevenDaysAgo),
+          );
+
+          return financialPlanningDone ? 'Oui' : 'Non';
+        },
+      },
+      {
+        label: 'Planification faite < 15 jours',
+        format: ({ activities = [] }) => {
+          const financialPlanningDone = activities.find(
+            ({ type, date }) =>
+              type === ACTIVITY_TYPES.FINANCIAL_PLANNING &&
+              moment(date).isAfter(fifteenDaysAgo),
           );
 
           return financialPlanningDone ? 'Oui' : 'Non';
@@ -604,6 +593,211 @@ const analysisConfig = {
             .reduce((t, { amount }) => t + amount, 0),
       },
     ],
+  },
+  [INSURANCES_COLLECTION]: {
+    status: {
+      id: 'Forms.status',
+      format: ({ status }) => formatMessage({ id: `Forms.status.${status}` }),
+    },
+    insuranceRequest: [
+      {
+        id: 'Forms.roles',
+        fragment: {
+          assignees: { name: 1 },
+          user: {
+            assignedRoles: 1,
+            referredByOrganisation: { name: 1 },
+            emails: 1,
+          },
+        },
+        format: ({ insuranceRequest: { user } = {} }) =>
+          user?.assignedRoles?.map(role =>
+            formatMessage({ id: `roles.${role}` }),
+          ),
+      },
+      {
+        id: 'Référé par',
+        format: ({ insuranceRequest: { user } = {} }) =>
+          user?.referredByOrganisation?.name,
+      },
+      {
+        id: 'Compte vérifié',
+        format: ({ insuranceRequest: { user } = {} }) =>
+          user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'A un compte',
+        format: ({ insuranceRequest: { user } = {} }) => (user ? 'Oui' : 'Non'),
+      },
+      {
+        label: 'Conseiller principal',
+        format: ({ insuranceRequest: { assignees } = {} }) => {
+          if (!assignees || assignees.length === 0) {
+            return 'Personne';
+          }
+
+          return assignees.find(({ $metadata }) => $metadata.isMain).name;
+        },
+      },
+    ],
+    createdAt: [
+      {
+        label: 'Création Mois-Année',
+        format: makeFormatDate('createdAt'),
+      },
+      {
+        label: 'Création Année',
+        format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
+      },
+      {
+        label: 'Créé < 7 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(sevenDaysAgo) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'Créé < 15 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(fifteenDaysAgo) ? 'Oui' : 'Non',
+      },
+      {
+        label: 'Créé < 30 jours',
+        format: ({ createdAt }) =>
+          moment(createdAt).isAfter(thirtyDaysAgo) ? 'Oui' : 'Non',
+      },
+    ],
+    revenues: [
+      {
+        id: 'Revenus totaux',
+        fragment: { amount: 1, status: 1 },
+        format: ({ revenues = [] }) =>
+          revenues.reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus encaissés',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
+            .reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus projetés',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.EXPECTED)
+            .reduce((t, { amount }) => t + amount, 0),
+      },
+    ],
+    activities: [
+      {
+        fragment: {
+          type: 1,
+          metadata: { event: 1 },
+          date: 1,
+          $options: { sort: { date: -1 } },
+        },
+        label: 'Dernier changement de statut',
+        format: ({ activities = [] }) => {
+          const lastChangedStatus = activities.find(
+            ({ metadata }) =>
+              metadata?.event ===
+              ACTIVITY_EVENT_METADATA.INSURANCE_CHANGE_STATUS,
+          );
+          return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+        },
+      },
+      {
+        label: 'Rendez-vous fait < 7 jours',
+        format: ({ activities = [] }) => {
+          const meetingDone = activities.find(
+            ({ type, date }) =>
+              type === ACTIVITY_TYPES.MEETING &&
+              moment(date).isAfter(sevenDaysAgo),
+          );
+
+          return meetingDone ? 'Oui' : 'Non';
+        },
+      },
+      {
+        label: 'Rendez-vous fait < 15 jours',
+        format: ({ activities = [] }) => {
+          const meetingDone = activities.find(
+            ({ type, date }) =>
+              type === ACTIVITY_TYPES.MEETING &&
+              moment(date).isAfter(fifteenDaysAgo),
+          );
+
+          return meetingDone ? 'Oui' : 'Non';
+        },
+      },
+    ],
+    borrower: {
+      label: 'Âge',
+      fragment: { age: 1 },
+      format: ({ borrower }) => borrower?.age,
+    },
+    organisation: {
+      label: 'Assureur',
+      fragment: { name: 1 },
+      format: ({ organisation }) => organisation?.name,
+    },
+    insuranceProduct: [
+      {
+        label: 'Produit',
+        fragment: {
+          name: 1,
+          category: 1,
+          features: 1,
+        },
+        format: ({ insuranceProduct }) => insuranceProduct?.name,
+      },
+      {
+        label: 'Catégorie',
+        format: ({ insuranceProduct }) =>
+          formatMessage({
+            id: `insuranceProduct.category.${insuranceProduct?.category}`,
+          }),
+      },
+      {
+        label: 'Avec capital garanti',
+        format: ({ insuranceProduct: { features = [] } } = {}) =>
+          features.includes(INSURANCE_PRODUCT_FEATURES.GUARANTEED_CAPITAL)
+            ? 'Oui'
+            : 'Non',
+      },
+      {
+        label: 'Avec capital non garanti',
+        format: ({ insuranceProduct: { features = [] } } = {}) =>
+          features.includes(INSURANCE_PRODUCT_FEATURES.NON_GUARANTEED_CAPITAL)
+            ? 'Oui'
+            : 'Non',
+      },
+      {
+        label: 'Avec capital décès',
+        format: ({ insuranceProduct: { features = [] } } = {}) =>
+          features.includes(INSURANCE_PRODUCT_FEATURES.DEATH_CAPITAL)
+            ? 'Oui'
+            : 'Non',
+      },
+      {
+        label: "Avec rente d'incapacité de gain",
+        format: ({ insuranceProduct: { features = [] } } = {}) =>
+          features.includes(INSURANCE_PRODUCT_FEATURES.DISABILITY_PENSION)
+            ? 'Oui'
+            : 'Non',
+      },
+    ],
+    premium: {
+      id: 'Forms.premium',
+    },
+    premiumFrequency: {
+      id: 'Forms.premiumFrequency',
+      format: ({ premiumFrequency }) =>
+        formatMessage({ id: `Forms.premiumFrequency.${premiumFrequency}` }),
+    },
+    guaranteedCapital: { id: 'Forms.guaranteedCapital' },
+    nonGuaranteedCapital: { id: 'Forms.nonGuaranteedCapital' },
+    deathCapital: { id: 'Forms.deathCapital' },
+    disabilityPension: { id: 'Forms.disabilityPension' },
   },
 };
 
