@@ -1,28 +1,20 @@
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
-import { Link } from 'gatsby';
-import Layout from '../components/Layout';
+import { useEffect } from 'react';
+import { navigate } from 'gatsby';
+import { getLanguageData, getShortLang } from '../utils/languages.js';
 
-const Index = () => (
-  <Layout>
-    <div
-      style={{
-        padding: '100px',
-        textAlign: 'center',
-      }}
-    >
-      <h3>
-        Gatsby default index page... will eventually be redirected to language
-        specific home page
-      </h3>
-      <h4>
-        <Link to="/fr/accueil">/fr/accueil</Link>
-      </h4>
-      <h4>
-        <Link to="/en/home">/en/home</Link>
-      </h4>
-    </div>
-  </Layout>
-);
+const Index = () => {
+  useEffect(() => {
+    // TODO: first check to see if lang cookie has been set for *.e-potek.ch
+    const language =
+      typeof navigator === `undefined`
+        ? 'fr'
+        : getShortLang(navigator.language);
+
+    navigate(getLanguageData(language).homeLink);
+  }, []);
+
+  return null;
+};
 
 export default Index;

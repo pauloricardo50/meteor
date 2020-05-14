@@ -2,7 +2,9 @@ import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { RichText } from 'prismic-reactjs';
 import Layout from '../components/Layout';
+import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
+import { getLanguageData } from '../utils/languages.js';
 import '../styles/post.scss';
 
 export const query = graphql`
@@ -61,31 +63,21 @@ export const query = graphql`
   }
 `;
 
-const Post = ({ data }) => {
+const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
   const { post: blogPost } = data.prismic;
 
-  if (!blogPost) return null;
+  // handle unknown posts that don't get redirected to a 404
+  if (!blogPost) return <NotFound pageType="post" pageLang={lang} />;
 
-  const blogHome = {
-    'fr-ch': {
-      shortLang: 'fr',
-      linkText: `Revenir à l'index`,
-    },
-    'en-us': {
-      shortLang: 'en',
-      linkText: `Return to index`,
-    },
-  }[blogPost._meta.lang];
-
-  // TODO: add newletter signup to each article, but which version to use?
+  const languageData = getLanguageData(lang);
 
   // TODO: add structured data - https://developers.google.com/search/docs/data-types/article
   return (
-    <Layout>
+    <Layout pageContext={pageContext} pageName={blogPost.title}>
       <div className="post" data-wio-id={blogPost._meta.id}>
         <div className="post-header">
           <div className="back-to-blog">
-            <Link to={`${blogHome.shortLang}/blog`}>{blogHome.linkText}</Link>
+            <Link to={languageData.blogLink}>{languageData.blogLinkText}</Link>
           </div>
 
           <h1 className="post-title">
@@ -117,19 +109,14 @@ const Post = ({ data }) => {
             </div>
           )}
         </div>
-
         {blogPost.body && <PageSections sections={blogPost.body} />}
+        {/* TODO: add newletter signup to each article, but which version to use from Prismic? */}
+        <div className="section-placeholder">Newsletter sign up section</div>
+
+        <div className="section-placeholder">Related promotions</div>
 
         <div className="section-placeholder">
-          Coming soon... newsletter sign up section
-        </div>
-
-        <div className="section-placeholder">
-          Coming soon... related promotions
-        </div>
-
-        <div className="section-placeholder">
-          Coming soon... full width background image w/ CTA buttons
+          Full width background image w/ CTA buttons
         </div>
       </div>
     </Layout>
