@@ -6,7 +6,7 @@ import { fireEvent, render } from '../../../utils/testHelpers/testing-library';
 import Table from '../Table';
 import DataTable from '..';
 
-describe('DataTable', () => {
+describe.only('DataTable', () => {
   it('works', () => {
     // const { getByText, findByText, debug } = render(<DataTable />);
     // debug();
