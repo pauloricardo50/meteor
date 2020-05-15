@@ -1,4 +1,3 @@
-import { INSURANCE_PRODUCT_FEATURES } from 'imports/core/api/insuranceProducts/insuranceProductConstants';
 import moment from 'moment';
 
 import {
@@ -7,6 +6,7 @@ import {
   ACTIVITY_TYPES,
 } from 'core/api/activities/activityConstants';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { INSURANCE_PRODUCT_FEATURES } from 'core/api/insuranceProducts/insuranceProductConstants';
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS_ORDER,
