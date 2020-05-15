@@ -47,6 +47,7 @@ module.exports = {
         repositoryName: process.env.PRISMIC_REPO,
         accessToken: process.env.PRISMIC_API_KEY,
         langs: ['fr-ch', 'en-us'],
+        defaultLang: 'fr-ch',
         shortenUrlLangs: true,
         path: '/preview',
         previews: true,
@@ -63,10 +64,6 @@ module.exports = {
             path: '/blog-preview',
             component: require.resolve('./src/templates/post.jsx'),
           },
-        ],
-        sharpKeys: [
-          /image|photo|picture/, // (default)
-          'profilepic',
         ],
       },
     },
