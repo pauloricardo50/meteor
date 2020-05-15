@@ -27,7 +27,7 @@ const TestComponent = ({ query, params }) => {
     totalCount,
     nextPage,
     hasMoreResults,
-    page,
+    pageIndex,
     loading,
     setPage,
   } = usePaginatedMeteorData({
@@ -41,7 +41,7 @@ const TestComponent = ({ query, params }) => {
       <span>dataPoint: {data[0]?._id}</span>
       <span>data: {data.length}</span>
       <span>totalCount: {totalCount}</span>
-      <span>page: {page}</span>
+      <span>pageIndex: {pageIndex}</span>
       <span>loading: {`${loading}`}</span>
       <span>hasMoreResults: {`${hasMoreResults}`}</span>
       <button type="button" onClick={() => setPageSize(15)}>
@@ -64,10 +64,13 @@ describe.only('usePaginatedMeteorData', () => {
     // connection. This can make methods fail, as the result of a called method
     // will never reach the client back
 
+    // I don't know exactly why this happens, but maybe meteor stores some connection
+    // data in mongo
+
     // Take a look at the network tab, you should see 2 websocket connections,
     // 1 for the current microservice, and another for backend
     // if you see a third, you're having issues
-    return callMethod('resetDatabase');
+    return resetDatabase();
   });
 
   describe('named queries', () => {

@@ -12,6 +12,7 @@ import {
   within,
 } from '../../../../../utils/testHelpers/testing-library';
 import T from '../../../../Translation';
+import Link from '../../../Link';
 import Table from '../..';
 
 describe('Table', () => {
@@ -69,6 +70,47 @@ describe('Table', () => {
 
     expect(!!queryByText('Oui')).to.equal(true);
     expect(!!queryByText('Non')).to.equal(true);
+  });
+
+  it('aligns cells right, left or center, in the body and header', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', align: 'right' },
+      { Header: 'Column 2', accessor: 'col2', align: 'center' },
+    ];
+    const data = [{ col1: 'A ', col2: 1 }];
+
+    const { queryByText, debug, queryByRole } = render(
+      <Table data={data} columns={columns} />,
+    );
+
+    // TODO: Write this test
+  });
+
+  it('adds a link on each row', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', align: 'right' },
+      { Header: 'Column 2', accessor: 'col2', align: 'center' },
+    ];
+    const data = [{ col1: 'A ', col2: 1 }];
+
+    const { queryAllByRole } = render(
+      <Table
+        data={data}
+        columns={columns}
+        addRowProps={({ original: { col1, col2 } }) => ({
+          component: Link,
+          to: `/${col1}${col2}`,
+        })}
+      />,
+    );
+
+    const rows = queryAllByRole('row');
+    const [header, row1] = rows;
+
+    fireEvent.click(row1);
+
+    // TODO: Write this test
+    // Expect routing to have worked somehow
   });
 
   describe('sorting', () => {

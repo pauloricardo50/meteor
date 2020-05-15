@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 
-import { useStaticMeteorData } from '../../hooks/useMeteorData';
+import usePaginatedMeteorData from '../../hooks/usePaginatedMeteorData';
 import Loading from '../Loading';
 import Table from './Table';
 import { paginationOptions } from './Table/TableFooter';
@@ -9,66 +9,56 @@ import { paginationOptions } from './Table/TableFooter';
 // Sample usage
 
 // import { allUsers } from 'core/api/users/queries';
-// <DataTable
-//   query={allUsers}
-//   filters={figure_this_out_to_make_it_convenient}
-//   queryParams={({ search, createdAt, status }) => ({
-//     role: 'ADMIN',
-//     search,
-//     createdAt,
-//     status,
-//   })}
-//   columns={[ ... ]}
-//   rows={data => data.map( ... )}
-//   onRowClick={() => doStuff()}
-// />;
-
-const getPaginationParams = ({ query, pageSize }) => {
-  if (typeof query === 'string') {
-    return {
-      $options: { limit: pageSize, skip: 0 },
-    };
-  }
-
-  return { $limit: pageSize, $skip: 0 };
-};
+/* <DataTable
+  queryConfig={{
+    query: LOANS_COLLECTION,
+    params: { name: 1, createdAt: 1, structureCache: 1, customName: 1 },
+  }}
+  columns={[
+    { Header: 'Nom', accessor: 'name' },
+    {
+      Header: 'PH',
+      accessor: 'structureCache.wantedLoan',
+      align: 'right',
+      Cell: ({ value }) => <Money value={value} />,
+    },
+    { Header: 'Titre plan financier', accessor: 'structureCache.name' },
+    { Header: 'Nom', accessor: 'customName' },
+  ]}
+  initialPageSize={5}
+  addRowProps={({ original }) => ({
+    component: Link,
+    to: `/loans/${original._id}`,
+  })}
+/>; */
 
 const DataTable = ({
   queryConfig,
   queryDeps,
   initialPageSize = paginationOptions[1],
   columns,
+  ...rest
 }) => {
-  const { data = [], loading, refetch } = useStaticMeteorData({
-    ...queryConfig,
-    params: {
-      ...queryConfig.params,
-      ...getPaginationParams({
-        query: queryConfig.query,
-        pageSize: initialPageSize,
-      }),
-    },
+  const [dataTableState, setDataTableState] = useState({
+    pageSize: initialPageSize,
   });
-  const {
-    data: allRowsCount,
-    loading: loadingCount,
-    refetch: refetchCount,
-  } = useStaticMeteorData({
-    ...queryConfig,
-    type: 'count',
-    callback: data => {},
-  });
-  const [pageCount, setPageCount] = useState();
+  const { data = [], totalCount, pageCount, loading } = usePaginatedMeteorData(
+    { ...dataTableState, ...queryConfig },
+    queryDeps,
+  );
 
   const memoizedColumns = useMemo(() => columns, [columns]);
   const memoizedData = useMemo(() => data, [data]);
 
-  const onStateChange = useCallback(({ pageSize }) => {
-    refetch();
-    refetchCount(({ params }, newCount) => {
-      setPageCount(Math.ceil(newCount / pageSize));
+  const onStateChange = useCallback(({ pageIndex, pageSize, sortBy }) => {
+    const [{ desc, id } = {}] = sortBy;
+    setDataTableState({
+      pageIndex,
+      pageSize,
+      sort: id,
+      sortDirection: desc ? 1 : -1,
     });
-  });
+  }, []);
 
   return (
     <div className="data-table" data-testid="data-table">
@@ -81,15 +71,17 @@ const DataTable = ({
             disableSortRemove: true,
             manualPagination: true, // Pagination is done server-side
             manualSortBy: true, // Sorting is done server-side
-            pageCount, // TODO: set this
+            pageCount,
           }}
           initialPageSize={initialPageSize}
           onStateChange={onStateChange}
-          allRowsCount={allRowsCount}
+          allRowsCount={totalCount}
+          {...rest}
         />
         <Backdrop
-          open={loading || loadingCount}
+          open={loading}
           className="data-table-backdrop"
+          transitionDuration={1000}
         >
           <Loading />
         </Backdrop>

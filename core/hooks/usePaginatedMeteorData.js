@@ -2,21 +2,45 @@ import { useCallback, useState } from 'react';
 
 import { useStaticMeteorData } from './useMeteorData';
 
-const getPaginationParams = ({ query, pageSize, page }) => {
+const getSortObject = (sortBy, sortDirection) => {
+  if (!sortBy) {
+    return {};
+  }
+
+  return { [sortBy]: sortDirection };
+};
+
+const getPaginationParams = ({
+  query,
+  pageSize,
+  pageIndex,
+  sort,
+  sortDirection,
+}) => {
   if (typeof query === 'string') {
     return {
-      $options: { limit: pageSize, skip: page * pageSize },
+      $options: {
+        limit: pageSize,
+        skip: pageIndex * pageSize,
+        sort: getSortObject(sort, sortDirection),
+      },
     };
   }
 
-  return { $limit: pageSize, $skip: page * pageSize };
+  return {
+    $limit: pageSize,
+    $skip: pageIndex * pageSize,
+    $sort: getSortObject(sort, sortDirection),
+  };
 };
 
 const usePaginatedMeteorData = (
-  { pageSize = 10, ...queryConfig },
+  { pageSize = 10, sort, sortDirection, pageIndex, ...queryConfig },
   deps = [],
 ) => {
-  const [page, setPageState] = useState(0);
+  const [localPageIndex, setPageIndex] = useState(0);
+  const finalPageIndex =
+    typeof pageIndex === 'number' ? pageIndex : localPageIndex;
   const {
     data,
     loading: loadingData,
@@ -26,11 +50,17 @@ const usePaginatedMeteorData = (
       ...queryConfig,
       params: {
         ...queryConfig.params,
-        ...getPaginationParams({ query: queryConfig.query, pageSize, page }),
+        ...getPaginationParams({
+          query: queryConfig.query,
+          pageSize,
+          pageIndex: finalPageIndex,
+          sort,
+          sortDirection,
+        }),
       },
       type: 'many',
     },
-    [pageSize, page, ...deps],
+    [pageSize, finalPageIndex, sort, sortDirection, ...deps],
   );
   const {
     data: totalCount,
@@ -44,23 +74,24 @@ const usePaginatedMeteorData = (
   }, [refetchData, refetchCount]);
 
   const loading = loadingData || loadingCount;
-  const hasMoreResults = !loading && totalCount > page * pageSize + pageSize;
-  const maxPage = Math.ceil(totalCount / pageSize) - 1;
+  const hasMoreResults =
+    !loading && totalCount > pageIndex * pageSize + pageSize;
+  const pageCount = Math.ceil(totalCount / pageSize) - 1;
 
   const nextPage = useCallback(() => {
-    setPageState(currentPage => Math.min(currentPage + 1, maxPage));
-  }, [maxPage]);
+    setPageIndex(currentPage => Math.min(currentPage + 1, pageCount));
+  }, [pageCount]);
 
   const previousPage = useCallback(() => {
-    setPageState(currentPage => Math.max(currentPage - 1, 1));
+    setPageIndex(currentPage => Math.max(currentPage - 1, 1));
   }, []);
 
   const setPage = useCallback(
     newPage => {
       const pageNumber = Math.max(1, newPage);
-      setPageState(Math.min(pageNumber, maxPage));
+      setPageIndex(Math.min(pageNumber, pageCount));
     },
-    [maxPage],
+    [pageCount],
   );
 
   return {
@@ -68,11 +99,12 @@ const usePaginatedMeteorData = (
     hasMoreResults,
     loading,
     nextPage,
-    page,
+    pageIndex: finalPageIndex,
     previousPage,
     refetch,
     setPage,
     totalCount,
+    pageCount,
   };
 };
 

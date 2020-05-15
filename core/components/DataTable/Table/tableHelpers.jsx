@@ -1,14 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import {
-  useAsyncDebounce,
-  usePagination,
-  useRowSelect,
-  useSortBy,
-} from 'react-table';
+import React, { useRef } from 'react';
+import { usePagination, useRowSelect, useSortBy } from 'react-table';
+import useDebounce from 'react-use/lib/useDebounce';
 
-import TableCheckbox from './TableCheckbox';
+import Checkbox from '../../Material/Checkbox';
 
-export const getTableHooks = ({ sortable, selectable }) => {
+export const getTableHooks = ({ addRowProps, selectable, sortable }) => {
   const array = [];
 
   if (sortable) {
@@ -25,14 +21,22 @@ export const getTableHooks = ({ sortable, selectable }) => {
         {
           id: 'selection',
           Header: ({ getToggleAllRowsSelectedProps }) => (
-            <TableCheckbox {...getToggleAllRowsSelectedProps()} />
+            <Checkbox {...getToggleAllRowsSelectedProps()} />
           ),
-          Cell: ({ row }) => (
-            <TableCheckbox {...row.getToggleRowSelectedProps()} />
-          ),
+          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+          padding: 'checkbox',
         },
         ...columns,
       ]);
+    });
+  }
+
+  if (addRowProps) {
+    array.push(hooks => {
+      hooks.getRowProps.push((rowProps, { row }) => ({
+        ...rowProps,
+        ...addRowProps(row),
+      }));
     });
   }
 
@@ -41,16 +45,22 @@ export const getTableHooks = ({ sortable, selectable }) => {
 
 // Only call the callback on subsequent renders
 export const useStateChangeCallback = (callback, args) => {
-  const debouncedCallback = useAsyncDebounce(callback, 50);
   const isMountedRef = useRef(false);
 
-  useEffect(() => {
-    if (isMountedRef.current) {
-      if (callback) {
-        debouncedCallback(args);
+  useDebounce(
+    () => {
+      if (isMountedRef.current && callback) {
+        callback(args);
       }
-    } else {
-      isMountedRef.current = true;
-    }
-  }, [debouncedCallback, ...Object.values(args)]);
+
+      // On first render, avoid calling the callback
+      // this assumes the user will never input anything valuable in the first
+      // 50ms, or else it will be discarded, since this is debounced
+      if (!isMountedRef.current) {
+        isMountedRef.current = true;
+      }
+    },
+    50,
+    [callback, ...Object.values(args)],
+  );
 };

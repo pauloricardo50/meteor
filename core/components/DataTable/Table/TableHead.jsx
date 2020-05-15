@@ -6,9 +6,9 @@ import TableHeadCell from './TableHeadCell';
 
 const TableHead = ({ headerGroups }) => (
   <MuiTableHead>
-    {headerGroups.map(headerGroup => (
-      <TableRow {...headerGroup.getHeaderGroupProps()}>
-        {headerGroup.headers.map(column => (
+    {headerGroups.map(({ getHeaderGroupProps, headers }) => (
+      <TableRow {...getHeaderGroupProps()}>
+        {headers.map(column => (
           <TableHeadCell
             {...column.getHeaderProps(column.getSortByToggleProps())}
             column={column}

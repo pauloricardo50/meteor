@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import MuiTable from '@material-ui/core/Table';
 import { useTable } from 'react-table';
 
@@ -14,6 +14,7 @@ import { getTableHooks, useStateChangeCallback } from './tableHelpers';
 // const data = useMemo(() => [ ... ], deps);
 
 const Table = ({
+  addRowProps,
   allowHidingColumns,
   allRowsCount,
   className,
@@ -40,9 +41,9 @@ const Table = ({
     page,
     pageCount,
     prepareRow,
+    rows,
     setPageSize,
     state,
-    rows,
   } = useTable(
     {
       columns,
@@ -53,14 +54,9 @@ const Table = ({
         pageIndex: initialPageIndex,
         hiddenColumns: allowHidingColumns ? initialHiddenColumns : [],
       },
-      useControlledState: s =>
-        useMemo(() => {
-          console.log('state:', s);
-          return s;
-        }, [s]),
       ...tableOptions,
     },
-    ...getTableHooks({ sortable, selectable }),
+    ...getTableHooks({ sortable, selectable, addRowProps }),
   );
 
   const { pageIndex, pageSize, sortBy } = state;

@@ -9,12 +9,15 @@ const TableBody = ({ getTableBodyProps, rows, prepareRow }) => (
       prepareRow(row);
 
       return (
-        <TableRow {...row.getRowProps()}>
-          {row.cells.map(cell => (
-            <TableCell {...cell.getCellProps()}>
-              {cell.render('Cell')}
-            </TableCell>
-          ))}
+        <TableRow {...row.getRowProps()} hover selected={row.isSelected}>
+          {row.cells.map(({ column, getCellProps, render }) => {
+            const { align, padding } = column;
+            return (
+              <TableCell {...getCellProps()} align={align} padding={padding}>
+                {render('Cell')}
+              </TableCell>
+            );
+          })}
         </TableRow>
       );
     })}
