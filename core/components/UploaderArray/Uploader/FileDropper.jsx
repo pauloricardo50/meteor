@@ -101,7 +101,6 @@ FileDropper.propTypes = {
   children: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
   handleAddFiles: PropTypes.func.isRequired,
-  showFull: PropTypes.func.isRequired,
   variant: PropTypes.oneOf(['normal', 'simple']),
 };
 

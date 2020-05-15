@@ -1,29 +1,27 @@
-import moment from 'moment';
+import { useMemo } from 'react';
 import { withProps } from 'recompose';
 
-const getData = (loans = []) => {
-  const dates = loans.map(({ createdAt }) =>
-    moment(createdAt).format('YYYY-M-D'),
-  );
-  const filteredDates = dates
-    .filter((date, index, self) => self.indexOf(date) === index)
-    .sort((a, b) => new Date(b) - new Date(a));
+const getData = loans => {
+  const filteredDates = [
+    ...new Set(loans.map(({ createdAt }) => createdAt.valueOf())),
+  ].sort();
+
   const loansByDate = filteredDates.reduce(
     (sortedLoans, date) => ({
       ...sortedLoans,
-      [date]: loans.filter(({ createdAt }) =>
-        moment(moment(createdAt).format('YYYY-M-D')).isSameOrBefore(date),
-      ).length,
+      [date]: loans.filter(({ createdAt }) => createdAt.valueOf() <= date)
+        .length,
     }),
     {},
   );
+
   return Object.keys(loansByDate).map(date => [
-    moment.utc(moment(date).format('YYYY-MM-DD')).valueOf(),
+    Number(date),
     loansByDate[date],
   ]);
 };
 
-const getConfig = (loans = []) => ({
+const getConfig = (data, loans = []) => ({
   chart: {
     type: 'line',
   },
@@ -50,17 +48,23 @@ const getConfig = (loans = []) => ({
       marker: {
         enabled: true,
       },
+      animation: false,
+      turboThreshold: 1,
     },
   },
   series: [
     {
       name: 'Clients',
-      data: getData(loans),
+      data,
     },
   ],
 });
 
-export default withProps(({ loans = [] }) => ({
-  config: getConfig(loans),
-  data: getData(loans),
-}));
+export default withProps(({ loans = [] }) => {
+  const data = useMemo(() => getData(loans), [loans.length]);
+
+  return {
+    config: getConfig(data, loans),
+    data,
+  };
+});

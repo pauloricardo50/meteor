@@ -23,7 +23,7 @@ const OrganisationInfo = ({
       allowEditing
     />
     <UploaderArray
-      doc={{ _id, documents }}
+      doc={{ _id, _collection: ORGANISATIONS_COLLECTION, documents }}
       documentArray={organisationDocuments}
       currentUser={currentUser}
       allowRequireByAdmin={false}

@@ -69,17 +69,23 @@ describe('REST: getUser', function() {
           ],
           proProperties: [{ _id: 'property' }],
           promotions: [{ _id: 'promotion' }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
           _id: 'pro2',
           organisations: [{ _id: 'org2' }],
           emails: [{ address: 'pro2@org2.com', verified: true }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
           _id: 'pro3',
           organisations: [{ _id: 'org3' }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -102,6 +108,8 @@ describe('REST: getUser', function() {
             _id: 'admin',
             _factory: 'admin',
             emails: [{ address: 'admin@e-potek.ch', verified: true }],
+            firstName: 'TestFirstName',
+            lastName: 'TestLastName',
           },
         },
         {

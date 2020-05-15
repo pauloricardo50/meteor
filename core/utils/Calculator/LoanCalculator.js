@@ -18,6 +18,7 @@ import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import {
   MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
   MIN_INSURANCE2_WITHDRAW,
+  REAL_ESTATE_INCOME_ALGORITHMS,
 } from '../../config/financeConstants';
 import {
   getCountedArray,
@@ -320,10 +321,54 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return propertyCost + expensesToAddToTheoreticalCost;
     }
 
+    getTheoreticalPropertySplit({ loan, structureId }) {
+      const propertyCost = this.getTheoreticalPropertyCost({
+        loan,
+        structureId,
+      });
+      const propertyIncome =
+        this.getYearlyPropertyIncome({
+          loan,
+          structureId,
+        }) / 12;
+
+      if (
+        this.realEstateIncomeAlgorithm ===
+        REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
+      ) {
+        const delta = propertyIncome - propertyCost;
+
+        if (delta >= 0) {
+          return { addToIncome: delta, addToExpenses: 0 };
+        }
+
+        return { addToIncome: 0, addToExpenses: -delta };
+      }
+
+      return { addToIncome: propertyIncome, addToExpenses: propertyCost };
+    }
+
+    getMonthlyProjectIncome({ loan, structureId }) {
+      const borrowerIncome = this.getTotalIncome({ loan });
+      const { addToIncome } = this.getTheoreticalPropertySplit({
+        loan,
+        structureId,
+      });
+      return borrowerIncome / 12 + addToIncome;
+    }
+
+    getMonthlyProjectCost({ loan, structureId }) {
+      const { addToExpenses } = this.getTheoreticalPropertySplit({
+        loan,
+        structureId,
+      });
+      return addToExpenses;
+    }
+
     getIncomeRatio({ loan, structureId }) {
-      const cost = this.getTheoreticalMonthly({ loan, structureId });
-      const income = this.getTotalIncome({ borrowers: loan.borrowers });
-      const ratio = cost / (income / 12);
+      const cost = this.getMonthlyProjectCost({ loan, structureId });
+      const income = this.getMonthlyProjectIncome({ loan, structureId });
+      const ratio = cost / income;
 
       if (ratio > 1 || ratio < 0) {
         return 1;

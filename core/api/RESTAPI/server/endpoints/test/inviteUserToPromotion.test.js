@@ -97,6 +97,8 @@ describe('REST: inviteUserToPromotion', function() {
         _id: 'pro',
         _factory: 'pro',
         organisations: { _id: 'org', name: 'org', $metadata: { isMain: true } },
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
       },
       promotions: {
         _id: 'promotionId',

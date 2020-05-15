@@ -270,73 +270,6 @@ describe('monitoring', () => {
 
   describe('loanStatusChanges', function() {
     this.timeout(5000);
-    it('groups status changes', async () => {
-      generator({
-        loans: [
-          { _id: 'loan1', status: LOAN_STATUS.QUALIFIED_LEAD },
-          { _id: 'loan2', status: LOAN_STATUS.QUALIFIED_LEAD },
-        ],
-        users: { _id: 'admin', _factory: 'admin' },
-      });
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.CLOSING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.PENDING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({
-          loanId: 'loan2',
-          status: LOAN_STATUS.FINALIZED,
-        }),
-      );
-
-      const result = loanStatusChanges({
-        fromDate: moment()
-          .subtract(1, 'd')
-          .toDate(),
-        toDate: moment()
-          .add(1, 'd')
-          .toDate(),
-      });
-
-      expect(result.length).to.equal(5);
-
-      const qualifiedLeadToOngoing = result.find(
-        ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.QUALIFIED_LEAD &&
-          nextStatus === LOAN_STATUS.ONGOING,
-      );
-      expect(qualifiedLeadToOngoing).to.deep.include({
-        _id: {
-          prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
-          nextStatus: LOAN_STATUS.ONGOING,
-        },
-        count: 2,
-      });
-
-      const pendingToFinalized = result.find(
-        ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.PENDING &&
-          nextStatus === LOAN_STATUS.FINALIZED,
-      );
-      expect(pendingToFinalized).to.deep.include({
-        _id: {
-          prevStatus: LOAN_STATUS.PENDING,
-          nextStatus: LOAN_STATUS.FINALIZED,
-        },
-        count: 1,
-      });
-    });
 
     it('groups status changes, and breaks them down by assignee', async () => {
       generator({
@@ -381,7 +314,6 @@ describe('monitoring', () => {
         toDate: moment()
           .add(1, 'd')
           .toDate(),
-        breakdown: 'assignee',
       }).sort((a, b) => a._id.localeCompare(b._id));
 
       expect(result.length).to.equal(2);
@@ -418,6 +350,94 @@ describe('monitoring', () => {
       });
       expect(result[1].loans.length).to.equal(1);
       expect(result[1].loans[0]._id).to.equal('loan2');
+    });
+
+    it('does not include TEST loans', async () => {
+      generator({
+        users: [
+          { _id: 'admin1', _factory: 'admin' },
+          { _id: 'admin2', _factory: 'admin' },
+        ],
+        loans: [
+          {
+            _id: 'loan1',
+            assignees: [
+              { _id: 'admin2', $metadata: { isMain: false } },
+              { _id: 'admin1', $metadata: { isMain: true } },
+            ],
+          },
+        ],
+      });
+      await ddpWithUserId('admin1', () =>
+        loanSetStatus.run({
+          loanId: 'loan1',
+          status: LOAN_STATUS.QUALIFIED_LEAD,
+        }),
+      );
+      await ddpWithUserId('admin1', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.TEST }),
+      );
+
+      const result = loanStatusChanges({
+        fromDate: moment()
+          .subtract(1, 'd')
+          .toDate(),
+        toDate: moment()
+          .add(1, 'd')
+          .toDate(),
+      }).sort((a, b) => a._id.localeCompare(b._id));
+
+      expect(result.length).to.equal(0);
+    });
+
+    it('does not include loan status changes to TEST but still includes status changes from TEST', async () => {
+      generator({
+        users: [
+          { _id: 'admin1', _factory: 'admin' },
+          { _id: 'admin2', _factory: 'admin' },
+        ],
+        loans: [
+          {
+            _id: 'loan1',
+            assignees: [
+              { _id: 'admin2', $metadata: { isMain: false } },
+              { _id: 'admin1', $metadata: { isMain: true } },
+            ],
+          },
+        ],
+      });
+
+      await ddpWithUserId('admin1', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.TEST }),
+      );
+
+      await ddpWithUserId('admin1', () =>
+        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+      );
+
+      const result = loanStatusChanges({
+        fromDate: moment()
+          .subtract(1, 'd')
+          .toDate(),
+        toDate: moment()
+          .add(1, 'd')
+          .toDate(),
+      }).sort((a, b) => a._id.localeCompare(b._id));
+
+      expect(result.length).to.equal(1);
+
+      expect(result[0].loans[0]._id).to.equal('loan1');
+      expect(result[0]).to.deep.include({
+        _id: 'admin1',
+        totalStatusChangeCount: 1,
+        statusChanges: [
+          {
+            prevStatus: LOAN_STATUS.TEST,
+            nextStatus: LOAN_STATUS.ONGOING,
+            count: 1,
+          },
+        ],
+      });
     });
   });
 });

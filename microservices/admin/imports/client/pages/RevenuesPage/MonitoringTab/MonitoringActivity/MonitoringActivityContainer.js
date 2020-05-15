@@ -30,7 +30,6 @@ export default compose(
       toDate,
       loanCreatedAtFrom,
       loanCreatedAtTo,
-      breakdown: 'assignee',
     }),
     dataName: 'data',
   }),

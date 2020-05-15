@@ -175,6 +175,8 @@ describe('LoanChecklist', function() {
         _id: 'adminId',
         _factory: 'admin',
         emails: [{ address: 'admin@e-potek.ch', verified: true }],
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
       },
       loans: { _id: 'loanId' },
     });

@@ -97,6 +97,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org3', name: 'Org 3' },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -104,6 +106,8 @@ describe('REST: referCustomer', function() {
           emails: [{ address: 'pro2@org.com', verified: true }],
           organisations: [{ _id: 'org', $metadata: { isMain: true } }],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -113,6 +117,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org2', $metadata: { isMain: true }, name: 'Org 2' },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -122,6 +128,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org3', $metadata: { isMain: true, title: 'CEO' } },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
       ],
     });

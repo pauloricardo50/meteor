@@ -14,10 +14,10 @@ const LoginPage = ({
   onSignInSuccess,
 }) => {
   const currentUser = useContext(CurrentUserContext);
-  const { path } = queryString.parse(search);
+  const { path = '/' } = queryString.parse(search);
 
   if (currentUser) {
-    return <Redirect to="/" />;
+    return <Redirect to={path} />;
   }
 
   return (
