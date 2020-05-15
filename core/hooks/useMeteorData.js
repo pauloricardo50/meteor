@@ -1,7 +1,7 @@
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {
@@ -65,6 +65,7 @@ export const useStaticMeteorData = (
     setError,
     setLoading,
   } = useAsyncStateMachine();
+  const fetchIdRef = useRef(0);
 
   const refetch = useCallback(
     (
@@ -83,7 +84,17 @@ export const useStaticMeteorData = (
         setLoading();
       }
 
+      // Give this fetch an id, to make sure we only keep track of the last
+      // refetch if they're called multiple times in a row
+      // ideally this refetch would also be debounced
+      const fetchId = ++fetchIdRef.current;
       finalQuery[getStaticFunction(type)]((err, res) => {
+        if (fetchId !== fetchIdRef.current) {
+          // If we're getting data back from a refetch that isn't the latest,
+          // don't run this
+          return;
+        }
+
         if (err) {
           setError(err);
         } else {

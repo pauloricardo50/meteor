@@ -36,17 +36,7 @@ const usePaginatedMeteorData = (
     data: totalCount,
     loading: loadingCount,
     refetch: refetchCount,
-  } = useStaticMeteorData(
-    {
-      ...queryConfig,
-      params: {
-        ...queryConfig.params,
-        ...getPaginationParams({ query: queryConfig.query, pageSize, page }),
-      },
-      type: 'count',
-    },
-    [pageSize, page, ...deps],
-  );
+  } = useStaticMeteorData({ ...queryConfig, type: 'count' }, deps);
 
   const refetch = useCallback(() => {
     refetchData();
