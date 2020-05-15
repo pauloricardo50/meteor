@@ -4,7 +4,7 @@ import { compose, withState } from 'recompose';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { collectionStatusChanges } from 'core/api/monitoring/queries';
 
-export default compose(
+export const MonitoringActivityFilterContainer = compose(
   withState('activityRange', 'setActivityRange', {
     startDate: moment()
       .subtract(30, 'd')
@@ -17,20 +17,21 @@ export default compose(
     startDate: null,
     endDate: null,
   }),
+);
+
+export default compose(
   withSmartQuery({
     query: collectionStatusChanges,
     params: ({
       activityRange: { startDate: fromDate, endDate: toDate },
-      createdAtRange: {
-        startDate: loanCreatedAtFrom,
-        endDate: loanCreatedAtTo,
-      },
+      createdAtRange: { startDate, endDate },
+      collection,
     }) => ({
       fromDate,
       toDate,
-      createdAtFrom: loanCreatedAtFrom,
-      createdAtTo: loanCreatedAtTo,
-      collection: 'loans',
+      createdAtFrom: startDate,
+      createdAtTo: endDate,
+      collection,
     }),
     dataName: 'data',
   }),
