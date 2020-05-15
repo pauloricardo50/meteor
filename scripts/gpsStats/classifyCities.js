@@ -73,7 +73,7 @@ const formatAndFilterCities = cities =>
         array.findIndex(({ zipCode: zip }) => zip === zipCode) === index,
     )
     .map(({ city, ...rest }) => ({
-      city: city.replace(/[0-9 ]/g, ''),
+      city: city.replace(/[0-9]/g, '').trim(),
       ...rest,
     }));
 

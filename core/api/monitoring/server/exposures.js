@@ -28,7 +28,6 @@ exposeQuery({
       toDate: Match.Maybe(Match.OneOf(null, Date)),
       loanCreatedAtFrom: Match.Maybe(Match.OneOf(null, Date)),
       loanCreatedAtTo: Match.Maybe(Match.OneOf(null, Date)),
-      breakdown: Match.Maybe(String),
     },
   },
   resolver: loanStatusChangesResolver,

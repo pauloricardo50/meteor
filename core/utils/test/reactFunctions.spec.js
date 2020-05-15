@@ -34,5 +34,15 @@ describe('reactFunctions', () => {
       expect(func({ a: null }, { a: 2 })).to.equal(true);
       expect(func({ a: 2 }, { a: null })).to.equal(true);
     });
+
+    it('works for multiple paths', () => {
+      const func = arePathsUnequal(['a.b', 'c']);
+      expect(
+        func(
+          { a: { b: 'hello' }, c: undefined },
+          { a: { b: 'hello' }, c: undefined },
+        ),
+      ).to.equal(false);
+    });
   });
 });

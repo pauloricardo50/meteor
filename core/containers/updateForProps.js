@@ -4,7 +4,8 @@ import { arePathsUnequal } from '../utils/reactFunctions';
 
 // Given an array of prop paths, only rerender the component
 // when they change
-export default paths => shouldUpdate(arePathsUnequal(paths));
+const updateForProps = paths => shouldUpdate(arePathsUnequal(paths));
+export default updateForProps;
 
 export const ignoreProps = propNames =>
   shouldUpdate((props, nextProps) => {

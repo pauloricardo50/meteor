@@ -14,6 +14,7 @@ import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
 } from '../../../api/properties/propertyConstants';
+import { REAL_ESTATE_INCOME_ALGORITHMS } from '../../../config/financeConstants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('LoanCalculator', () => {
@@ -656,6 +657,8 @@ describe('LoanCalculator', () => {
 
   describe('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
+      // Valeurs magiques qui donnent 33.33%
+      // Tu peux le retrouver en utilisant notre calculateur pour une acquisition de 1mio
       expect(
         Calculator.getIncomeRatio({
           loan: {
@@ -689,6 +692,69 @@ describe('LoanCalculator', () => {
           interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
         }),
       ).to.equal(1);
+    });
+
+    it('includes investmentRent on the property', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeConsideration: 0.5,
+      });
+
+      expect(
+        calc.getIncomeRatio({
+          loan: {
+            structure: {
+              wantedLoan: 800000,
+              property: { value: 1000000, investmentRent: 40000 },
+              propertyWork: 0,
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
+            },
+            borrowers: [{ salary: 160000 }],
+          },
+          interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+        }),
+      ).to.be.within(0.33, 0.34);
+    });
+
+    it('Calculates property income based on positive and negative deltas', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000, investmentRent: 36000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [{ salary: 160000 }],
+        },
+      });
+
+      expect(incomeRatio).to.equal(0.15);
+    });
+
+    it('returns 0 if a property pays for itself', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000, investmentRent: 60000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [{ salary: 160000 }],
+        },
+      });
+
+      expect(incomeRatio).to.equal(0);
     });
   });
 

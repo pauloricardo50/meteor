@@ -8,6 +8,7 @@ import {
   addQueryToRefetch,
   removeQueryToRefetch,
 } from '../api/methods/clientQueryManager';
+import useAsyncStateMachine from './useAsyncStateMachine';
 
 const getQuery = (query, params) => {
   if (!query) {
@@ -56,9 +57,14 @@ export const useStaticMeteorData = (
   { query, params, type = 'many', refetchOnMethodCall = 'all' },
   deps = [],
 ) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
-  const [error, setError] = useState();
+  const {
+    data,
+    error,
+    isLoading,
+    setData,
+    setError,
+    setLoading,
+  } = useAsyncStateMachine();
 
   const refetch = useCallback(
     (
@@ -68,25 +74,24 @@ export const useStaticMeteorData = (
       const finalQuery = getQuery(refetchQuery, refetchParams);
 
       if (!finalQuery) {
-        setLoading(false);
         setData(null);
         return;
       }
 
-      setLoading(true);
+      if (!isLoading) {
+        // isLoading is already set initially
+        setLoading();
+      }
 
       finalQuery[getStaticFunction(type)]((err, res) => {
         if (err) {
           setError(err);
-          setData(null);
         } else {
-          setError(null);
           setData(res);
           if (callback) {
             callback(res);
           }
         }
-        setLoading(false);
       });
     },
     [query, params],
@@ -96,7 +101,7 @@ export const useStaticMeteorData = (
 
   useQueryRefetcher({ refetchOnMethodCall, refetch, query });
 
-  return { loading, data, error, refetch };
+  return { loading: isLoading, data, error, refetch };
 };
 
 export const useReactiveMeteorData = (
@@ -106,13 +111,17 @@ export const useReactiveMeteorData = (
   const finalQuery = getQuery(query, params);
 
   const { loading, subscribedQuery } = useTracker(() => {
+    if (!finalQuery) {
+      return { loading: false };
+    }
+
     const handle = finalQuery[getSubscriptionFunction(type)]();
     const isReady = handle.ready();
     return { loading: !isReady, subscribedQuery: finalQuery };
   }, deps);
 
   const data = useTracker(
-    () => subscribedQuery[getStaticFunction(type)](),
+    () => (subscribedQuery ? subscribedQuery[getStaticFunction(type)]() : null),
     deps,
   );
 

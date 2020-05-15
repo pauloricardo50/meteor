@@ -12,7 +12,6 @@ import {
 
 /* eslint-env mocha */
 
-
 describe('setUserReferredByListener', () => {
   beforeEach(() => {
     resetDatabase();
@@ -27,6 +26,8 @@ describe('setUserReferredByListener', () => {
         {
           _id: 'user',
           emails: [{ address: 'john.doe@test.com', verified: true }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _id: 'pro2',
@@ -39,7 +40,15 @@ describe('setUserReferredByListener', () => {
         _id: 'org1',
         _factory: 'organisation',
         name: 'Organisation 1',
-        users: [{ _id: 'pro1', _factory: 'pro', $metadata: { isMain: true } }],
+        users: [
+          {
+            _id: 'pro1',
+            _factory: 'pro',
+            firstName: 'TestFirstName',
+            lastName: 'TestLastName',
+            $metadata: { isMain: true },
+          },
+        ],
       },
     });
   });

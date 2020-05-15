@@ -54,8 +54,6 @@ import Tasks from '../tasks/tasks';
 import { ROLES } from '../users/userConstants';
 import Users from '../users/users';
 
-const TEST_LASTNAME = 'TestLastName';
-const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
 const getRandomLoanName = () => `20-0${Math.floor(Math.random() * 899 + 100)}`;
@@ -67,8 +65,8 @@ const getRandomInsuranceName = () =>
 Object.values(ROLES).forEach(role => {
   Factory.define(role, Users, {
     emails: () => [{ address: faker.internet.email(), verified: false }],
-    lastName: TEST_LASTNAME,
-    firstName: TEST_FIRSTNAME,
+    lastName: () => faker.name.lastName(),
+    firstName: () => faker.name.firstName(),
     phoneNumbers: [TEST_PHONE],
   }).after(({ _id }) => {
     Roles.setUserRoles(_id, role);
@@ -127,8 +125,8 @@ Factory.define('promotion', Promotions, {
   assignedEmployeeId: () => {
     const adminId = Users.insert({
       emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
-      lastName: TEST_LASTNAME,
-      firstName: TEST_FIRSTNAME,
+      lastName: faker.name.lastName(),
+      firstName: faker.name.firstName(),
       phoneNumbers: [TEST_PHONE],
     });
     Roles.setUserRoles(adminId, ROLES.ADMIN);

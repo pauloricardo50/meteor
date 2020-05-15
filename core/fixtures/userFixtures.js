@@ -11,10 +11,14 @@ import { ADMIN_EMAIL } from '../cypress/server/e2eConstants';
 import { USER_PASSWORD } from './fixtureConstants';
 
 export const createUser = (email, role, password) => {
-  const userId = Accounts.createUser({
-    email,
-    password: password || USER_PASSWORD,
-  });
+  let userId = UserService.getByEmail(email, { _id: 1 })?._id;
+
+  if (!userId) {
+    userId = Accounts.createUser({
+      email,
+      password: password || USER_PASSWORD,
+    });
+  }
   Roles.setUserRoles(userId, role);
 
   return userId;

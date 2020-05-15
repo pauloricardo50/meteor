@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from '../Button';
+import Icon from '../Icon';
 import Link from '../Link';
 import Loading from '../Loading';
 import T from '../Translation';
@@ -29,15 +32,15 @@ class MissingDoc extends Component {
     }
 
     return (
-      <div className="flex-col center animated jackInTheBox">
-        <div className="description">
-          <p>
-            <T id="MissingDoc.text" />
-          </p>
-        </div>
+      <div className="missing-doc flex-col center animated jackInTheBox">
+        <FontAwesomeIcon icon={faQuestionCircle} className="icon" />
+
+        <h2 className="font-size-4 secondary mb-16">
+          <T id="MissingDoc.text" />
+        </h2>
         <div className="flex center">
           <Link to="/" className="home-link">
-            <Button raised color="secondary">
+            <Button raised color="secondary" icon={<Icon type="home" />}>
               <T id="MissingDoc.redirectHome" />
             </Button>
           </Link>
@@ -46,4 +49,5 @@ class MissingDoc extends Component {
     );
   }
 }
+
 export default MissingDoc;
