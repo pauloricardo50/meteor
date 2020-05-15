@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 
 import { useStaticMeteorData } from '../../hooks/useMeteorData';
@@ -23,20 +23,55 @@ import { paginationOptions } from './Table/TableFooter';
 //   onRowClick={() => doStuff()}
 // />;
 
-const DataTable = ({ initialPageSize = paginationOptions[1] }) => {
-  const { data, loading, refetch } = useStaticMeteorData({});
+const getPaginationParams = ({ query, pageSize }) => {
+  if (typeof query === 'string') {
+    return {
+      $options: { limit: pageSize, skip: 0 },
+    };
+  }
+
+  return { $limit: pageSize, $skip: 0 };
+};
+
+const DataTable = ({
+  queryConfig,
+  queryDeps,
+  initialPageSize = paginationOptions[1],
+  columns,
+}) => {
+  const { data = [], loading, refetch } = useStaticMeteorData({
+    ...queryConfig,
+    params: {
+      ...queryConfig.params,
+      ...getPaginationParams({
+        query: queryConfig.query,
+        pageSize: initialPageSize,
+      }),
+    },
+  });
+  const {
+    data: allRowsCount,
+    loading: loadingCount,
+    refetch: refetchCount,
+  } = useStaticMeteorData({
+    ...queryConfig,
+    type: 'count',
+    callback: data => {},
+  });
   const [pageCount, setPageCount] = useState();
 
-  const memoizedColumns = useMemo(() => [], []);
-  const memoizedData = useMemo(() => [], []);
+  const memoizedColumns = useMemo(() => columns, [columns]);
+  const memoizedData = useMemo(() => data, [data]);
 
-  const allRowsCount = 100;
   const onStateChange = useCallback(({ pageSize }) => {
     refetch();
+    refetchCount(({ params }, newCount) => {
+      setPageCount(Math.ceil(newCount / pageSize));
+    });
   });
 
   return (
-    <div className="data-table">
+    <div className="data-table" data-testid="data-table">
       <div className="table-container">
         <Table
           columns={memoizedColumns}
@@ -52,7 +87,10 @@ const DataTable = ({ initialPageSize = paginationOptions[1] }) => {
           onStateChange={onStateChange}
           allRowsCount={allRowsCount}
         />
-        <Backdrop open={loading} className="data-table-backdrop">
+        <Backdrop
+          open={loading || loadingCount}
+          className="data-table-backdrop"
+        >
           <Loading />
         </Backdrop>
       </div>

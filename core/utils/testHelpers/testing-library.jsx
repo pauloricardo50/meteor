@@ -23,7 +23,5 @@ const TestProviders = ({ children }) => (
 const customRender = (ui, options = {}) =>
   testingLibrary.render(ui, { wrapper: TestProviders, ...options });
 
-module.exports = {
-  ...testingLibrary,
-  render: customRender,
-};
+export * from '@testing-library/react';
+export const render = customRender;

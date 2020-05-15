@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import MuiTable from '@material-ui/core/Table';
 import { useTable } from 'react-table';
 
@@ -53,6 +53,11 @@ const Table = ({
         pageIndex: initialPageIndex,
         hiddenColumns: allowHidingColumns ? initialHiddenColumns : [],
       },
+      useControlledState: s =>
+        useMemo(() => {
+          console.log('state:', s);
+          return s;
+        }, [s]),
       ...tableOptions,
     },
     ...getTableHooks({ sortable, selectable }),
