@@ -1,15 +1,10 @@
 import { Match } from 'meteor/check';
 
 import { exposeQuery } from '../../queries/queryHelpers';
-import {
-  collectionStatusChanges,
-  loanMonitoring,
-  loanStatusChanges,
-} from '../queries';
+import { collectionStatusChanges, loanMonitoring } from '../queries';
 import {
   collectionStatusChanges as collectionStatusChangesResolver,
   loanMonitoring as loanMonitoringResolver,
-  loanStatusChanges as loanStatusChangesResolver,
 } from './resolvers';
 
 exposeQuery({
@@ -23,19 +18,6 @@ exposeQuery({
     },
   },
   resolver: loanMonitoringResolver,
-});
-
-exposeQuery({
-  query: loanStatusChanges,
-  overrides: {
-    validateParams: {
-      fromDate: Match.Maybe(Match.OneOf(null, Date)),
-      toDate: Match.Maybe(Match.OneOf(null, Date)),
-      loanCreatedAtFrom: Match.Maybe(Match.OneOf(null, Date)),
-      loanCreatedAtTo: Match.Maybe(Match.OneOf(null, Date)),
-    },
-  },
-  resolver: loanStatusChangesResolver,
 });
 
 exposeQuery({

@@ -214,24 +214,6 @@ export const loanMonitoring = args => {
   return result;
 };
 
-const getFilters = ({ fromDate, toDate }) => {
-  const filters = {
-    'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
-    'metadata.details.nextStatus': { $ne: LOAN_STATUS.TEST },
-  };
-
-  if (fromDate) {
-    filters.createdAt = { $gte: fromDate };
-  }
-
-  if (toDate) {
-    filters.createdAt = filters.createdAt || {};
-    filters.createdAt.$lte = toDate;
-  }
-
-  return filters;
-};
-
 const COLLECTION_INITIAL_FILTERS = {
   [LOANS_COLLECTION]: {
     'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
@@ -256,27 +238,6 @@ const getCollectionFilters = ({ collection, fromDate, toDate }) => {
   if (toDate) {
     filters.createdAt = filters.createdAt || {};
     filters.createdAt.$lte = toDate;
-  }
-
-  return filters;
-};
-
-const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
-  const filters = {
-    'loan.status': { $ne: LOAN_STATUS.TEST },
-  };
-
-  if (!loanCreatedAtFrom && !loanCreatedAtTo) {
-    return filters;
-  }
-
-  if (loanCreatedAtFrom) {
-    filters['loan.createdAt'] = { $gte: loanCreatedAtFrom };
-  }
-
-  if (loanCreatedAtTo) {
-    filters['loan.createdAt'] = filters['loan.createdAt'] || {};
-    filters['loan.createdAt'].$lte = loanCreatedAtTo;
   }
 
   return filters;
@@ -309,86 +270,6 @@ const getCollectionCreatedAtFilters = ({
 
   return filters;
 };
-
-const assigneeBreakdown = filters => [
-  { $match: getFilters(filters) },
-  {
-    $lookup: {
-      from: 'loans',
-      localField: 'loanLink._id',
-      foreignField: '_id',
-      as: 'loan',
-    },
-  },
-  {
-    $project: {
-      _id: 1,
-      metadata: 1,
-      'loan._id': 1,
-      'loan.name': 1,
-      'loan.userCache': 1,
-      'loan.assigneeLinks': 1,
-      'loan.createdAt': 1,
-      'loan.status': 1,
-    },
-  },
-  { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
-  { $addFields: { loan: { _collection: 'loans' } } },
-  { $match: getLoanFilters(filters) },
-
-  {
-    $group: {
-      _id: {
-        // Extract the main assignee
-        assigneeId: {
-          $reduce: {
-            input: '$loan.assigneeLinks',
-            initialValue: '',
-            in: {
-              $cond: {
-                if: { $eq: ['$$this.isMain', true] },
-                then: '$$this._id',
-                else: '',
-              },
-            },
-          },
-        },
-        prevStatus: '$metadata.details.prevStatus',
-        nextStatus: '$metadata.details.nextStatus',
-      },
-      activities: { $push: '$$ROOT' },
-      count: { $sum: 1 },
-    },
-  },
-  {
-    $group: {
-      _id: '$_id.assigneeId',
-      statusChanges: {
-        $push: {
-          prevStatus: '$_id.prevStatus',
-          nextStatus: '$_id.nextStatus',
-          count: '$count',
-        },
-      },
-      totalStatusChangeCount: { $sum: '$count' },
-      loans: { $push: '$activities.loan' },
-    },
-  },
-  // Simple array flattening, as these ids arrive in the form of an array of arrays
-  {
-    $addFields: {
-      loans: {
-        $reduce: {
-          input: '$loans',
-          initialValue: [],
-          in: { $concatArrays: ['$$value', '$$this'] },
-        },
-      },
-    },
-  },
-  // Add this stage for consistency
-  { $sort: { '_id.assigneeId': 1 } },
-];
 
 const getCollectionFragment = ({ collection, singularCollection }) => {
   if (collection === INSURANCES_COLLECTION) {
@@ -546,21 +427,6 @@ const makeCollectionStatusChangeSort = collection => (
   }
 
   return statusOrder.indexOf(prevStatusA) - statusOrder.indexOf(prevStatusB);
-};
-
-export const loanStatusChanges = args => {
-  const pipeline = assigneeBreakdown(args);
-
-  const results = ActivityService.aggregate(pipeline);
-
-  return results.map(({ statusChanges, ...data }) => ({
-    ...data,
-    statusChanges: statusChanges.sort(
-      ({ prevStatus: prevStatusA }, { prevStatus: prevStatusB }) =>
-        LOAN_STATUS_ORDER.indexOf(prevStatusA) -
-        LOAN_STATUS_ORDER.indexOf(prevStatusB),
-    ),
-  }));
 };
 
 export const collectionStatusChanges = args => {

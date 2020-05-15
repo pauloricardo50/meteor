@@ -2,7 +2,7 @@ import moment from 'moment';
 import { compose, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { loanStatusChanges } from 'core/api/monitoring/queries';
+import { collectionStatusChanges } from 'core/api/monitoring/queries';
 
 export default compose(
   withState('activityRange', 'setActivityRange', {
@@ -18,7 +18,7 @@ export default compose(
     endDate: null,
   }),
   withSmartQuery({
-    query: loanStatusChanges,
+    query: collectionStatusChanges,
     params: ({
       activityRange: { startDate: fromDate, endDate: toDate },
       createdAtRange: {
@@ -28,8 +28,9 @@ export default compose(
     }) => ({
       fromDate,
       toDate,
-      loanCreatedAtFrom,
-      loanCreatedAtTo,
+      createdAtFrom: loanCreatedAtFrom,
+      createdAtTo: loanCreatedAtTo,
+      collection: 'loans',
     }),
     dataName: 'data',
   }),
