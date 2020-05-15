@@ -1,7 +1,7 @@
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {
@@ -60,31 +60,37 @@ export const useStaticMeteorData = (
   const [data, setData] = useState();
   const [error, setError] = useState();
 
-  const finalQuery = getQuery(query, params);
+  const refetch = useCallback(
+    (
+      { query: refetchQuery = query, params: refetchParams = params } = {},
+      callback,
+    ) => {
+      const finalQuery = getQuery(refetchQuery, refetchParams);
 
-  const refetch = callback => {
-    if (!finalQuery) {
-      setLoading(false);
-      setData(null);
-      return;
-    }
-
-    setLoading(true);
-
-    finalQuery[getStaticFunction(type)]((err, res) => {
-      if (err) {
-        setError(err);
+      if (!finalQuery) {
+        setLoading(false);
         setData(null);
-      } else {
-        setError(null);
-        setData(res);
-        if (callback) {
-          callback(res);
-        }
+        return;
       }
-      setLoading(false);
-    });
-  };
+
+      setLoading(true);
+
+      finalQuery[getStaticFunction(type)]((err, res) => {
+        if (err) {
+          setError(err);
+          setData(null);
+        } else {
+          setError(null);
+          setData(res);
+          if (callback) {
+            callback(res);
+          }
+        }
+        setLoading(false);
+      });
+    },
+    [query, params],
+  );
 
   useEffect(refetch, deps);
 
