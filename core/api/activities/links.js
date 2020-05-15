@@ -25,10 +25,12 @@ LinkInitializer.directInit(() => {
     insuranceRequest: {
       collection: InsuranceRequests,
       field: 'insuranceRequestLink',
+      metadata: true,
     },
     insurance: {
       collection: Insurances,
       field: 'insuranceLink',
+      metadata: true,
     },
   });
 });

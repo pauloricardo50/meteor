@@ -3,6 +3,8 @@ import set from 'lodash/set';
 
 import { ACTIVITIES_COLLECTION } from 'core/api/activities/activityConstants';
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
@@ -108,6 +110,12 @@ export const analysisBodies = {
   [TASKS_COLLECTION]: createBodyFromMap(analysisConfig[TASKS_COLLECTION]),
   [ORGANISATIONS_COLLECTION]: createBodyFromMap(
     analysisConfig[ORGANISATIONS_COLLECTION],
+  ),
+  [INSURANCE_REQUESTS_COLLECTION]: createBodyFromMap(
+    analysisConfig[INSURANCE_REQUESTS_COLLECTION],
+  ),
+  [INSURANCES_COLLECTION]: createBodyFromMap(
+    analysisConfig[INSURANCES_COLLECTION],
   ),
 };
 
