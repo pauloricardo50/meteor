@@ -1,25 +1,31 @@
 import React, { useContext } from 'react';
+import { useCookies } from 'react-cookie';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguages, getLanguageData } from '../../utils/languages.js';
 import './LanguagePicker.scss';
 
 const LanguagePicker = () => {
+  const [cookies, setCookie] = useCookies(['epLang']);
   const [language, setLanguage] = useContext(LanguageContext);
-
   const languages = getLanguages();
-
   const languageData = languages.map(lang => getLanguageData(lang));
 
   return (
     <div className="language-picker">
-      {languageData.map(lang => (
+      {languageData.map(({ display, shortLang }) => (
         <span
-          key={lang.shortLang}
+          key={shortLang}
           className="language-option"
-          onClick={() => setLanguage(lang.shortLang)}
-          data-active={language === lang.shortLang}
+          onClick={() => {
+            setCookie('epLang', shortLang, {
+              maxAge: '31536000', // one year
+              domain: 'e-potek.ch',
+            });
+            setLanguage(shortLang);
+          }}
+          data-active={language === shortLang}
         >
-          {lang.display}
+          {display}
         </span>
       ))}
     </div>
