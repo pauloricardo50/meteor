@@ -1,15 +1,25 @@
 /* eslint-disable react/jsx-filename-extension */
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { navigate } from 'gatsby';
-import { getLanguageData, getShortLang } from '../utils/languages.js';
+import { useCookies } from 'react-cookie';
+import {
+  getLanguages,
+  getLanguageData,
+  getShortLang,
+} from '../utils/languages.js';
 
 const Index = () => {
+  const [cookies] = useCookies(['epLang']);
+
   useEffect(() => {
-    // TODO: first check to see if lang cookie has been set for *.e-potek.ch
-    const language =
-      typeof navigator === `undefined`
-        ? 'fr'
-        : getShortLang(navigator.language);
+    const languages = getLanguages();
+    let language = 'fr';
+
+    if (cookies && languages.includes(cookies.epLang)) {
+      language = cookies.epLang;
+    } else if (typeof navigator !== 'undefined') {
+      language = getShortLang(navigator.language);
+    }
 
     navigate(getLanguageData(language).homeLink);
   }, []);

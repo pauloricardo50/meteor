@@ -10,8 +10,8 @@ Our brand website is built on the following stack:
   - Easy to use
   - Great development experience
   - Fast AF
-- Netlify, to watch changes in our Repo and in Contentful that rebuilds our website, hosts it and pushes it into production
-  - Pretty much the default setup for gatsby websites, deploys in 10-30 seconds
+- Netlify, to watch changes in our Repo and in Prismic that rebuilds our website, hosts it and pushes it into production
+  - Pretty much the default setup for gatsby websites, deploys in 1-2 minutes
 
 ## Setup
 
