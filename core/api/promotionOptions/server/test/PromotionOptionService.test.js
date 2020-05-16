@@ -24,6 +24,7 @@ import {
 } from '../../../promotions/promotionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import TaskService from '../../../tasks/server/TaskService';
+import { ROLES } from '../../../users/userConstants';
 import {
   promotionOptionActivateReservation,
   setPromotionOptionProgress,
@@ -56,7 +57,10 @@ const makePromotionLotWithReservation = ({
       status: promotionOptionStatus,
       promotionLots: [{ _id: `pL${key}` }],
       promotion: { _id: 'promo' },
-      reservationAgreement: { expirationDate },
+      reservationAgreement: {
+        expirationDate,
+        status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+      },
     },
   ],
 });
@@ -877,6 +881,47 @@ describe('PromotionOptionService', function() {
       ).to.include(
         'La convention de réservation du client John Doe pour le lot Lot 1 a expiré',
       );
+    });
+
+    it('does not run on promotionOptions that are already expired', async () => {
+      const yesterday = moment()
+        .subtract(1, 'days')
+        .toDate();
+
+      generator({
+        promotions: {
+          users: {
+            _id: 'pro1',
+            $metadata: {
+              enableNotifications: true,
+              permissions: {},
+            },
+            organisations: { _id: 'org1', name: 'Org 1' },
+            emails: [{ address: 'pro1@e-potek.ch', verified: true }],
+          },
+          promotionLots: { _id: 'pLot1' },
+          loans: {
+            _id: 'loanId',
+            $metadata: { invitedBy: 'pro1' },
+            user: { assignedEmployee: { _factory: ROLES.ADVISOR } },
+          },
+          promotionOptions: {
+            status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+            promotionLots: { _id: 'pLot1' },
+            loan: { _id: 'loanId' },
+            reservationAgreement: {
+              expirationDate: yesterday,
+              status: PROMOTION_OPTION_AGREEMENT_STATUS.EXPIRED,
+            },
+          },
+        },
+      });
+
+      const expiredReservations = await PromotionOptionService.expireReservations();
+      expect(expiredReservations.length).to.equal(0);
+
+      const emails = await checkEmails(0, { timeout: 2000 });
+      expect(emails.length).to.equal(0);
     });
   });
 

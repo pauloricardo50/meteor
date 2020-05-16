@@ -449,6 +449,8 @@ class PromotionOptionService extends CollectionService {
       $filters: {
         'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        'reservationAgreement.status':
+          PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
       },
     });
   };
