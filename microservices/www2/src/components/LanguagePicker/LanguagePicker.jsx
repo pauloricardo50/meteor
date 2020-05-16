@@ -12,14 +12,14 @@ const LanguagePicker = () => {
 
   return (
     <div className="language-picker">
-      {languageData.map(lang => (
+      {languageData.map(({ display, shortLang }) => (
         <span
-          key={lang.shortLang}
+          key={shortLang}
           className="language-option"
-          onClick={() => setLanguage(lang.shortLang)}
-          data-active={language === lang.shortLang}
+          onClick={() => setLanguage(shortLang)}
+          data-active={language === shortLang}
         >
-          {lang.display}
+          {display}
         </span>
       ))}
     </div>

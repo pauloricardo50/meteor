@@ -26,7 +26,8 @@ const Layout = ({ children, pageContext, pageName }) => {
   `);
 
   const { title, description } = data.site.siteMetadata;
-  const pageTitle = RichText.asText(pageName);
+  const pageTitle =
+    typeof pageName === 'object' ? RichText.asText(pageName) : pageName;
   const pageLang = getShortLang(pageContext.lang);
   const pageType = pageContext.type;
 
