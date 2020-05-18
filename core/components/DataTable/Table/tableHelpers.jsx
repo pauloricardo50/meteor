@@ -53,7 +53,7 @@ export const useStateChangeCallback = (callback, args) => {
         callback(args);
       }
     },
-    50,
+    100,
     [callback, ...Object.values(args)],
   );
 

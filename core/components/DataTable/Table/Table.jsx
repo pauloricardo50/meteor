@@ -23,7 +23,7 @@ const Table = ({
   initialHiddenColumns = [],
   initialPageIndex = 0,
   initialPageSize = paginationOptions[1],
-  initialSort,
+  initialSort, // { id: columnAccessor, desc: true }
   onStateChange,
   padding = 'default',
   selectable,

@@ -51,10 +51,7 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
     case USERS_COLLECTION: {
       let text;
       const { organisations = [] } = data;
-      if (
-        Roles.userIsInRole(data, [ROLES.ADMIN, ROLES.DEV]) &&
-        employeesById[docId]
-      ) {
+      if (Roles.userIsInRole(data, ROLES.ADMIN) && employeesById[docId]) {
         text = (
           <img
             src={employeesById[docId].src}

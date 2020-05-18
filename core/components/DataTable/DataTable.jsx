@@ -37,10 +37,13 @@ const DataTable = ({
   queryDeps,
   initialPageSize = paginationOptions[1],
   columns,
+  initialSort,
   ...rest
 }) => {
   const [dataTableState, setDataTableState] = useState({
     pageSize: initialPageSize,
+    sort: initialSort?.id,
+    sortDirection: initialSort ? (initialSort.desc ? 1 : -1) : undefined,
   });
   const { data = [], totalCount, pageCount, loading } = usePaginatedMeteorData(
     { ...dataTableState, ...queryConfig },
@@ -76,6 +79,7 @@ const DataTable = ({
           initialPageSize={initialPageSize}
           onStateChange={onStateChange}
           allRowsCount={totalCount}
+          initialSort={initialSort}
           {...rest}
         />
         <Backdrop
