@@ -65,7 +65,9 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
       } else if (organisations.length) {
         text = getUserNameAndOrganisation({ user: data });
       } else {
-        text = data.name;
+        text =
+          data.name ||
+          [data.firstName, data.lastName].filter(name => name).join(' ');
       }
 
       return {
