@@ -23,6 +23,7 @@ const LoansWithoutAssignees = ({ showAll }) => {
       borrowers: { name: 1 },
       user: { name: 1 },
     },
+    refetchOnMethodCall: false,
   });
 
   const isOk = loans.length === 0;
