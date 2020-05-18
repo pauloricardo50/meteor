@@ -11,8 +11,8 @@ import {
   waitFor,
   within,
 } from '../../../../../utils/testHelpers/testing-library';
+import Link from '../../../../Link';
 import T from '../../../../Translation';
-import Link from '../../../Link';
 import Table from '../..';
 
 describe('Table', () => {

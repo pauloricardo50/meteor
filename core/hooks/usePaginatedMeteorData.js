@@ -2,40 +2,41 @@ import { useCallback, useState } from 'react';
 
 import { useStaticMeteorData } from './useMeteorData';
 
-const getSortObject = (sortBy, sortDirection) => {
-  if (!sortBy) {
+const getSortObject = (sort, sortDirection) => {
+  if (!sort) {
     return {};
   }
 
-  return { [sortBy]: sortDirection };
+  return { [sort]: sortDirection };
 };
 
 const getPaginationParams = ({
-  query,
-  pageSize,
+  infinite,
   pageIndex,
+  pageSize,
+  query,
   sort,
   sortDirection,
 }) => {
   if (typeof query === 'string') {
     return {
       $options: {
-        limit: pageSize,
-        skip: pageIndex * pageSize,
+        limit: infinite ? (pageIndex + 1) * pageSize : pageSize,
+        skip: infinite ? 0 : pageIndex * pageSize,
         sort: getSortObject(sort, sortDirection),
       },
     };
   }
 
   return {
-    $limit: pageSize,
-    $skip: pageIndex * pageSize,
+    $limit: infinite ? (pageIndex + 1) * pageSize : pageSize,
+    $skip: infinite ? 0 : pageIndex * pageSize,
     $sort: getSortObject(sort, sortDirection),
   };
 };
 
 const usePaginatedMeteorData = (
-  { pageSize = 10, sort, sortDirection, pageIndex, ...queryConfig },
+  { pageSize = 10, sort, sortDirection, pageIndex, infinite, ...queryConfig },
   deps = [],
 ) => {
   const [localPageIndex, setPageIndex] = useState(0);
@@ -56,6 +57,7 @@ const usePaginatedMeteorData = (
           pageIndex: finalPageIndex,
           sort,
           sortDirection,
+          infinite,
         }),
       },
       type: 'many',
@@ -75,7 +77,10 @@ const usePaginatedMeteorData = (
 
   const loading = loadingData || loadingCount;
   const hasMoreResults =
-    !loading && totalCount > pageIndex * pageSize + pageSize;
+    !loading &&
+    (infinite
+      ? totalCount > data?.length
+      : totalCount > finalPageIndex * pageSize + pageSize);
   const pageCount = Math.ceil(totalCount / pageSize) - 1;
 
   const nextPage = useCallback(() => {

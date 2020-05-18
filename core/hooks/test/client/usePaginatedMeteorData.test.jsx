@@ -20,7 +20,12 @@ const callMethod = (name, ...args) =>
     Meteor.call(name, ...args, (err, res) => resolve(res)),
   );
 
-const TestComponent = ({ query, params }) => {
+const TestComponent = ({
+  query,
+  params,
+  infinite,
+  pageIndex: overridePageIndex,
+}) => {
   const [pageSize, setPageSize] = useState(10);
   const {
     data = [],
@@ -34,6 +39,8 @@ const TestComponent = ({ query, params }) => {
     query,
     params,
     pageSize,
+    infinite,
+    pageIndex: overridePageIndex,
   });
 
   return (
@@ -154,6 +161,27 @@ describe.only('usePaginatedMeteorData', () => {
       await waitFor(() => expect(!!getByText('dataPoint: 20')).to.equal(true));
       expect(!!getByText('hasMoreResults: false')).to.equal(true);
     });
+
+    it('can use a controlled pageIndex', async () => {
+      await callMethod('generateScenario', {
+        scenario: {
+          interestRates: Array.from({ length: 25 }, (_, i) => ({
+            _id: `${i}`,
+          })),
+        },
+      });
+      const { getByText } = render(
+        <TestComponent
+          query={interestRates}
+          params={{ $body: { _id: 1 } }}
+          pageIndex={2}
+        />,
+      );
+
+      await waitFor(() => expect(!!getByText('dataPoint: 20')).to.equal(true));
+      await waitFor(() => expect(!!getByText('data: 5')).to.equal(true));
+      await waitFor(() => expect(!!getByText('totalCount: 25')).to.equal(true));
+    });
   });
 
   describe('global queries', () => {
@@ -225,6 +253,42 @@ describe.only('usePaginatedMeteorData', () => {
         expect(!!getByText('hasMoreResults: false')).to.equal(true),
       );
       expect(!!getByText('dataPoint: 20')).to.equal(true);
+    });
+  });
+
+  describe('infinite scroll', () => {
+    it('loads more results without paginating', async () => {
+      await callMethod('generateScenario', {
+        scenario: {
+          interestRates: Array.from({ length: 25 }, () => ({})),
+        },
+      });
+      const { getByText } = render(
+        <TestComponent
+          query={interestRates}
+          params={{ $body: { _id: 1 } }}
+          infinite
+        />,
+      );
+
+      await waitFor(() => expect(!!getByText('data: 10')).to.equal(true));
+      await waitFor(() =>
+        expect(!!getByText('hasMoreResults: true')).to.equal(true),
+      );
+
+      fireEvent.click(getByText('next page'));
+
+      await waitFor(() => expect(!!getByText('data: 20')).to.equal(true));
+      await waitFor(() =>
+        expect(!!getByText('hasMoreResults: true')).to.equal(true),
+      );
+
+      fireEvent.click(getByText('next page'));
+
+      await waitFor(() => expect(!!getByText('data: 25')).to.equal(true));
+      await waitFor(() =>
+        expect(!!getByText('hasMoreResults: false')).to.equal(true),
+      );
     });
   });
 });
