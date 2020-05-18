@@ -22,9 +22,11 @@ export const getStats = ({ cantons = [] }) => {
         gpsStats,
         { structure: { property: { zipCode: propertyZipCode } = {} } },
       ) => {
-        const city = classifiedCities.find(
-          ({ zipCode }) => zipCode === propertyZipCode,
-        );
+        // const city = classifiedCities.find(
+        //   ({ zipCode }) => zipCode === propertyZipCode,
+        // );
+
+        const city = classifiedCities[propertyZipCode];
 
         if (!city) {
           return gpsStats;
@@ -54,9 +56,9 @@ export const getStats = ({ cantons = [] }) => {
 };
 
 export const getCitiesFromZipCode = ({ zipCode = '' }) => {
-  const cities = classifiedCities
-    .filter(({ zipCode: zip }) => String(zip).startsWith(String(zipCode)))
-    .map(({ city }) => city);
+  const cities = Object.keys(classifiedCities)
+    .filter(key => key.startsWith(String(zipCode)))
+    .map(key => classifiedCities[key].city);
 
   return cities.length ? cities : [null];
 };

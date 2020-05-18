@@ -79,8 +79,14 @@ const formatAndFilterCities = cities =>
 
 const classifyCities = () => {
   const classifiedCities = JSON.stringify(
-    formatAndFilterCities(citiesCoordinates).map(classifyCity),
+    formatAndFilterCities(citiesCoordinates)
+      .map(classifyCity)
+      .reduce((cities, city) => {
+        const { zipCode } = city;
+        return { ...cities, [zipCode]: city };
+      }, {}),
   );
+
   fs.writeFileSync(
     '../../core/api/gpsStats/server/classifiedCities.json',
     classifiedCities,
