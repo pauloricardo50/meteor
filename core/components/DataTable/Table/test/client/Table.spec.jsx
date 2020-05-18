@@ -1,23 +1,22 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+import { createMemoryHistory } from 'history';
 import Sinon from 'sinon';
 
 import {
   cleanup,
   fireEvent,
-  prettyDOM,
   render,
   waitFor,
   within,
 } from '../../../../../utils/testHelpers/testing-library';
+import Link from '../../../../Link';
 import T from '../../../../Translation';
 import Table from '../..';
 
 describe('Table', () => {
-  beforeEach(() => {
-    cleanup();
-  });
+  beforeEach(() => cleanup());
 
   it('renders all columns and rows ', () => {
     const columns = [
@@ -69,6 +68,70 @@ describe('Table', () => {
 
     expect(!!queryByText('Oui')).to.equal(true);
     expect(!!queryByText('Non')).to.equal(true);
+  });
+
+  it('aligns cells right, left or center, in the body and header', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', align: 'right' },
+      { Header: 'Column 2', accessor: 'col2', align: 'center' },
+    ];
+    const data = [{ col1: 'A ', col2: 1 }];
+
+    const { getByText, debug, queryByRole } = render(
+      <Table data={data} columns={columns} />,
+    );
+
+    debug();
+
+    const cell1 = getByText('A').closest('td');
+    const cell2 = getByText('1').closest('td');
+
+    expect(cell1.className).to.include('MuiTableCell-alignRight');
+    expect(cell2.className).to.not.include('MuiTableCell-alignRight');
+    expect(cell2.className).to.include('MuiTableCell-alignCenter');
+  });
+
+  it.skip('adds a link on each row', async () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', align: 'right' },
+      { Header: 'Column 2', accessor: 'col2', align: 'center' },
+    ];
+    const data = [{ col1: 'A ', col2: 1 }];
+    const history = createMemoryHistory();
+    history.listen(() => {
+      console.log('yo');
+    });
+    const spy = Sinon.spy();
+
+    const { queryAllByRole } = render(
+      <Table
+        data={data}
+        columns={columns}
+        addRowProps={({ original: { col1, col2 } }) => ({
+          component: props => <Link {...props} onClick={spy} />,
+          to: `/${col1}${col2}`,
+        })}
+      />,
+      {
+        getRouterProps: props => ({
+          ...props,
+          history,
+        }),
+      },
+    );
+
+    const rows = queryAllByRole('row');
+    const [header, row1] = rows;
+
+    fireEvent.click(row1);
+
+    await waitFor(() => expect(spy.calledOnce).to.equal(true));
+
+    console.log('history:', history.location.pathname);
+
+    // TODO: Write this test
+    // Expect routing to have worked somehow
+    // Follow: https://stackoverflow.com/questions/61869886/simplest-test-for-react-routers-link-with-testing-library-react
   });
 
   describe('sorting', () => {
@@ -213,7 +276,7 @@ describe('Table', () => {
       expect(rows.length).to.equal(7);
     });
 
-    it('can do client-side pagination', () => {
+    it('can do client-side pagination', async () => {
       const columns = [
         { Header: 'Column 1', accessor: 'col1' },
         { Header: 'Column 2', accessor: 'col2' },
@@ -223,11 +286,11 @@ describe('Table', () => {
         col2: `${i}-2`,
       }));
 
-      const { queryAllByRole, getByTitle, queryByText } = render(
+      const { getAllByRole, getByTitle, queryByText } = render(
         <Table data={data} columns={columns} />,
       );
 
-      let [header, row1] = queryAllByRole('row');
+      let [header, row1] = getAllByRole('row');
       expect(!!within(row1).queryByText('0')).to.equal(true);
       expect(!!queryByText('1-25 of 100')).to.equal(true);
 
@@ -235,8 +298,8 @@ describe('Table', () => {
       fireEvent.click(next);
 
       expect(!!queryByText('26-50 of 100')).to.equal(true);
-      [header, row1] = queryAllByRole('row');
-      expect(!!within(row1).queryByText('0')).to.equal(false);
+      [header, row1] = getAllByRole('row');
+      await within(row1).findByText('25');
       expect(!!within(row1).queryByText('25')).to.equal(true);
     });
 
@@ -369,6 +432,8 @@ describe('Table', () => {
       const { getByText } = render(
         <Table data={data} columns={columns} onStateChange={onStateChange} />,
       );
+
+      await new Promise(r => setTimeout(r, 60));
 
       // Sort
       fireEvent.click(getByText('Column 1'));

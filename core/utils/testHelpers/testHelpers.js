@@ -116,3 +116,8 @@ export const generateScenario = scenario =>
       err ? reject(err) : resolve(res),
     );
   });
+
+export const callMethod = (name, ...args) =>
+  new Promise(resolve =>
+    Meteor.call(name, ...args, (err, res) => resolve(res)),
+  );
