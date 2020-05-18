@@ -6,7 +6,6 @@ import Sinon from 'sinon';
 import {
   cleanup,
   fireEvent,
-  prettyDOM,
   render,
   waitFor,
   within,
@@ -16,9 +15,7 @@ import T from '../../../../Translation';
 import Table from '../..';
 
 describe('Table', () => {
-  beforeEach(() => {
-    cleanup();
-  });
+  beforeEach(() => cleanup());
 
   it('renders all columns and rows ', () => {
     const columns = [
@@ -255,7 +252,7 @@ describe('Table', () => {
       expect(rows.length).to.equal(7);
     });
 
-    it('can do client-side pagination', () => {
+    it('can do client-side pagination', async () => {
       const columns = [
         { Header: 'Column 1', accessor: 'col1' },
         { Header: 'Column 2', accessor: 'col2' },
@@ -265,11 +262,11 @@ describe('Table', () => {
         col2: `${i}-2`,
       }));
 
-      const { queryAllByRole, getByTitle, queryByText } = render(
+      const { getAllByRole, getByTitle, queryByText } = render(
         <Table data={data} columns={columns} />,
       );
 
-      let [header, row1] = queryAllByRole('row');
+      let [header, row1] = getAllByRole('row');
       expect(!!within(row1).queryByText('0')).to.equal(true);
       expect(!!queryByText('1-25 of 100')).to.equal(true);
 
@@ -277,8 +274,8 @@ describe('Table', () => {
       fireEvent.click(next);
 
       expect(!!queryByText('26-50 of 100')).to.equal(true);
-      [header, row1] = queryAllByRole('row');
-      expect(!!within(row1).queryByText('0')).to.equal(false);
+      [header, row1] = getAllByRole('row');
+      await within(row1).findByText('25');
       expect(!!within(row1).queryByText('25')).to.equal(true);
     });
 
@@ -411,6 +408,8 @@ describe('Table', () => {
       const { getByText } = render(
         <Table data={data} columns={columns} onStateChange={onStateChange} />,
       );
+
+      await new Promise(r => setTimeout(r, 60));
 
       // Sort
       fireEvent.click(getByText('Column 1'));

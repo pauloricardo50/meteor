@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { usePagination, useRowSelect, useSortBy } from 'react-table';
 import useDebounce from 'react-use/lib/useDebounce';
 
@@ -47,20 +47,21 @@ export const getTableHooks = ({ addRowProps, selectable, sortable }) => {
 export const useStateChangeCallback = (callback, args) => {
   const isMountedRef = useRef(false);
 
-  useDebounce(
+  const [_, cancel] = useDebounce(
     () => {
       if (isMountedRef.current && callback) {
         callback(args);
-      }
-
-      // On first render, avoid calling the callback
-      // this assumes the user will never input anything valuable in the first
-      // 50ms, or else it will be discarded, since this is debounced
-      if (!isMountedRef.current) {
-        isMountedRef.current = true;
       }
     },
     50,
     [callback, ...Object.values(args)],
   );
+
+  useEffect(() => {
+    // On first render, avoid calling the callback, and cancel the debounce
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      cancel();
+    }
+  }, []);
 };
