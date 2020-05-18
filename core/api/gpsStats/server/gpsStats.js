@@ -22,10 +22,6 @@ export const getStats = ({ cantons = [] }) => {
         gpsStats,
         { structure: { property: { zipCode: propertyZipCode } = {} } },
       ) => {
-        // const city = classifiedCities.find(
-        //   ({ zipCode }) => zipCode === propertyZipCode,
-        // );
-
         const city = classifiedCities[propertyZipCode];
 
         if (!city) {
