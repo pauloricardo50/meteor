@@ -51,6 +51,7 @@ const AllLoansTable = () => {
             userCache: 1,
           },
         }}
+        initialSort={{ id: 'createdAt' }}
         queryDeps={[assignees]}
         columns={[
           { Header: 'Nom', accessor: 'name' },

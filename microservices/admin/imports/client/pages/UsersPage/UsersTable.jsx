@@ -19,6 +19,7 @@ const UsersTable = () => (
         assignedEmployeeCache: 1,
       },
     }}
+    initialSort={{ id: 'createdAt' }}
     columns={[
       {
         Header: 'Nom',
@@ -60,7 +61,6 @@ const UsersTable = () => (
         },
       },
     ]}
-    initialSort={{ id: 'createdAt' }}
     addRowProps={({ original }) => ({
       component: Link,
       to: `/users/${original._id}`,
