@@ -11,7 +11,7 @@ import {
 } from '../../insuranceRequests/insuranceRequestConstants';
 import {
   INSURANCES_COLLECTION,
-  INSURANCE_STATUS,
+  INSURANCE_STATUS_ORDER,
 } from '../../insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
@@ -229,7 +229,7 @@ const COLLECTION_INITIAL_FILTERS = {
 };
 
 const getCollectionFilters = ({ collection, fromDate, toDate }) => {
-  const filters = COLLECTION_INITIAL_FILTERS[collection];
+  const filters = { ...COLLECTION_INITIAL_FILTERS[collection] };
 
   if (fromDate) {
     filters.createdAt = { $gte: fromDate };
@@ -247,10 +247,17 @@ const getCollectionCreatedAtFilters = ({
   singularCollection,
   createdAtFrom,
   createdAtTo,
+  collection,
 }) => {
-  const filters = {
-    [`${singularCollection}.status`]: { $ne: INSURANCE_REQUEST_STATUS.TEST },
-  };
+  const filters = {};
+
+  if (collection === LOANS_COLLECTION) {
+    filters[`${singularCollection}.status`] = { $ne: LOAN_STATUS.TEST };
+  } else if (collection === INSURANCE_REQUESTS_COLLECTION) {
+    filters[`${singularCollection}.status`] = {
+      $ne: INSURANCE_REQUEST_STATUS.TEST,
+    };
+  }
 
   if (!createdAtFrom && !createdAtTo) {
     return filters;
@@ -308,9 +315,6 @@ const addCollectionFields = ({ filters, singularCollection, collection }) => {
       },
     },
     { $addFields: { [singularCollection]: { _collection: collection } } },
-    {
-      $match: getCollectionCreatedAtFilters({ singularCollection, ...filters }),
-    },
   ];
 
   if (collection === INSURANCES_COLLECTION) {
@@ -322,6 +326,14 @@ const addCollectionFields = ({ filters, singularCollection, collection }) => {
       },
     });
   }
+
+  addFields.push({
+    $match: getCollectionCreatedAtFilters({
+      singularCollection,
+      collection,
+      ...filters,
+    }),
+  });
 
   return addFields;
 };
@@ -420,7 +432,7 @@ const makeCollectionStatusChangeSort = collection => (
       statusOrder = INSURANCE_REQUEST_STATUS_ORDER;
       break;
     case INSURANCES_COLLECTION:
-      statusOrder = Object.values(INSURANCE_STATUS);
+      statusOrder = INSURANCE_STATUS_ORDER;
       break;
     default:
       break;

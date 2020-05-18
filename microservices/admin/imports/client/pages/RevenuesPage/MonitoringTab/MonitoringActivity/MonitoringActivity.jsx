@@ -6,7 +6,6 @@ import { Percent } from 'core/components/Translation';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import MonitoringActivityContainer from './MonitoringActivityContainer';
-import MonitoringActivityFilters from './MonitoringActivityFilters';
 
 const sharedColumnOptions = [
   { id: 'assignee', label: 'Conseiller principal' },
@@ -69,20 +68,14 @@ const getRows = ({
 };
 
 const MonitoringActivity = ({
-  activityRange,
-  setActivityRange,
   createdAtRange,
-  setCreatedAtRange,
   data = [],
   staticData,
   staticDataIsLoading,
   getModalProps,
   getColumnOptions,
   getColumnsForAdminRow,
-  collection,
 }) => {
-  console.log('data:', data);
-  console.log('collection:', collection);
   const hasCreatedAtRange = createdAtRange.startDate || createdAtRange.endDate;
   const { data: admins, loading: usersLoading } = useStaticMeteorData({
     query: USERS_COLLECTION,
@@ -108,25 +101,16 @@ const MonitoringActivity = ({
       });
 
   return (
-    <div className="monitoring-activity">
-      <MonitoringActivityFilters
-        activityRange={activityRange}
-        setActivityRange={setActivityRange}
-        createdAtRange={createdAtRange}
-        setCreatedAtRange={setCreatedAtRange}
-      />
-
-      <TableWithModal
-        modalType="dialog"
-        rows={rows}
-        columnOptions={[
-          ...sharedColumnOptions,
-          ...getColumnOptions({ hasCreatedAtRange }),
-        ]}
-        initialOrderBy="count"
-        getModalProps={getModalProps}
-      />
-    </div>
+    <TableWithModal
+      modalType="dialog"
+      rows={rows}
+      columnOptions={[
+        ...sharedColumnOptions,
+        ...getColumnOptions({ hasCreatedAtRange }),
+      ]}
+      initialOrderBy="count"
+      getModalProps={getModalProps}
+    />
   );
 };
 

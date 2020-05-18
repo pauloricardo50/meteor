@@ -1,7 +1,7 @@
 import React from 'react';
 import groupBy from 'lodash/groupBy';
 import uniqBy from 'lodash/uniqBy';
-import { compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 
 import {
   LOANS_COLLECTION,
@@ -13,7 +13,6 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import MonitoringActivity from './MonitoringActivity';
-import { MonitoringActivityFilterContainer } from './MonitoringActivityContainer';
 
 const sortStatuses = (a, b) =>
   LOAN_STATUS_ORDER.indexOf(b) < LOAN_STATUS_ORDER.indexOf(a) ? 1 : -1;
@@ -123,7 +122,7 @@ const LoanMonitoringActivity = withProps(({ createdAtRange }) => {
     {
       query: LOANS_COLLECTION,
       params: {
-        $filter: {
+        $filters: {
           createdAt: {
             $gte: createdAtRange.startDate,
             $lte: createdAtRange.endDate,
@@ -148,7 +147,4 @@ const LoanMonitoringActivity = withProps(({ createdAtRange }) => {
   };
 });
 
-export default compose(
-  MonitoringActivityFilterContainer,
-  LoanMonitoringActivity,
-)(MonitoringActivity);
+export default LoanMonitoringActivity(MonitoringActivity);

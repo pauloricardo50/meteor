@@ -1,7 +1,7 @@
 import React from 'react';
 import groupBy from 'lodash/groupBy';
 import uniqBy from 'lodash/uniqBy';
-import { compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 
 import {
   INSURANCES_COLLECTION,
@@ -13,7 +13,6 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import MonitoringActivity from './MonitoringActivity';
-import { MonitoringActivityFilterContainer } from './MonitoringActivityContainer';
 
 const sortStatuses = (a, b) =>
   INSURANCE_STATUS_ORDER.indexOf(b) < INSURANCE_STATUS_ORDER.indexOf(a)
@@ -24,7 +23,7 @@ const tableStatuses = Object.values(INSURANCE_STATUS)
   .filter(status => status !== INSURANCE_STATUS.SUGGESTED)
   .sort(sortStatuses);
 
-const modalStatuses = Object.values(INSURANCE_STATUS);
+const modalStatuses = INSURANCE_STATUS_ORDER;
 
 const getColumnOptions = ({ hasCreatedAtRange }) =>
   [
@@ -53,10 +52,11 @@ const getColumnsForAdminRow = ({
   data,
 }) => ({ firstName, _id }) => {
   const insurancesByAdmin = insurances.filter(
-    ({ insuranceRequestCache: { userCache } = {} }) =>
-      userCache &&
-      userCache.assignedEmployeeCache &&
-      userCache.assignedEmployeeCache._id === _id,
+    ({ insuranceRequestCache = [] }) => {
+      const [{ assigneeLinks = [] } = {}] = insuranceRequestCache;
+
+      return assigneeLinks?.filter(({ isMain }) => isMain)[0]?._id === _id;
+    },
   );
   const adminData = data.find(({ _id: dataId }) => dataId === _id) || {
     statusChanges: [],
@@ -87,7 +87,6 @@ const getColumnsForAdminRow = ({
   };
 };
 const getModalProps = ({ row: { insurances: is, name } }) => {
-  console.log('is:', is);
   const groups = groupBy(is, 'status');
   return {
     title: name,
@@ -131,7 +130,7 @@ const InsuranceMonitoringActivity = withProps(({ createdAtRange }) => {
     {
       query: INSURANCES_COLLECTION,
       params: {
-        $filter: {
+        $filters: {
           createdAt: {
             $gte: createdAtRange.startDate,
             $lte: createdAtRange.endDate,
@@ -157,7 +156,4 @@ const InsuranceMonitoringActivity = withProps(({ createdAtRange }) => {
   };
 });
 
-export default compose(
-  MonitoringActivityFilterContainer,
-  InsuranceMonitoringActivity,
-)(MonitoringActivity);
+export default InsuranceMonitoringActivity(MonitoringActivity);

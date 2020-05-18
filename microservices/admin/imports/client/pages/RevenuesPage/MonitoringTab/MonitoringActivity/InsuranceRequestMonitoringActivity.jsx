@@ -1,7 +1,7 @@
 import React from 'react';
 import groupBy from 'lodash/groupBy';
 import uniqBy from 'lodash/uniqBy';
-import { compose, withProps } from 'recompose';
+import { withProps } from 'recompose';
 
 import {
   INSURANCE_REQUESTS_COLLECTION,
@@ -13,7 +13,6 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import MonitoringActivity from './MonitoringActivity';
-import { MonitoringActivityFilterContainer } from './MonitoringActivityContainer';
 
 const sortStatuses = (a, b) =>
   INSURANCE_REQUEST_STATUS_ORDER.indexOf(b) <
@@ -167,7 +166,4 @@ const InsuranceRequestMonitoringActivity = withProps(({ createdAtRange }) => {
   };
 });
 
-export default compose(
-  MonitoringActivityFilterContainer,
-  InsuranceRequestMonitoringActivity,
-)(MonitoringActivity);
+export default InsuranceRequestMonitoringActivity(MonitoringActivity);
