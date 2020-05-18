@@ -131,7 +131,10 @@ const makeGetDocuments = collection => ({ loan, id }, options = {}) => {
     ...additionalDocuments,
     ...validatedDocuments,
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
-  ];
+  ].filter(
+    ({ id: docId }, index, self) =>
+      self.findIndex(d => d.id === docId) === index,
+  );
 };
 
 export const getPropertyDocuments = makeGetDocuments(PROPERTIES_COLLECTION);
