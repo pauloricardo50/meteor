@@ -404,9 +404,9 @@ Meteor.methods({
       console.log('Cypress logging from server: ', log);
     }
   },
-  // isLoggedIn() {
-  //   return this.userId;
-  // },
+  isLoggedIn() {
+    return this.userId;
+  },
   resetDatabase,
   generateFixtures() {
     createFakeInterestRates({ number: 10 });

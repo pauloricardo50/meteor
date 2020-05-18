@@ -7,8 +7,5 @@ if (!Meteor.default_server.method_handlers.resetDatabase) {
     resetDatabase() {
       return resetDatabase();
     },
-    isLoggedIn() {
-      return this.userId;
-    },
   });
 }
