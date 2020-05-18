@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+import { createMemoryHistory } from 'history';
 import Sinon from 'sinon';
 
 import {
@@ -76,29 +77,47 @@ describe('Table', () => {
     ];
     const data = [{ col1: 'A ', col2: 1 }];
 
-    const { queryByText, debug, queryByRole } = render(
+    const { getByText, debug, queryByRole } = render(
       <Table data={data} columns={columns} />,
     );
 
-    // TODO: Write this test
+    debug();
+
+    const cell1 = getByText('A').closest('td');
+    const cell2 = getByText('1').closest('td');
+
+    expect(cell1.className).to.include('MuiTableCell-alignRight');
+    expect(cell2.className).to.not.include('MuiTableCell-alignRight');
+    expect(cell2.className).to.include('MuiTableCell-alignCenter');
   });
 
-  it('adds a link on each row', () => {
+  it.skip('adds a link on each row', async () => {
     const columns = [
       { Header: 'Column 1', accessor: 'col1', align: 'right' },
       { Header: 'Column 2', accessor: 'col2', align: 'center' },
     ];
     const data = [{ col1: 'A ', col2: 1 }];
+    const history = createMemoryHistory();
+    history.listen(() => {
+      console.log('yo');
+    });
+    const spy = Sinon.spy();
 
     const { queryAllByRole } = render(
       <Table
         data={data}
         columns={columns}
         addRowProps={({ original: { col1, col2 } }) => ({
-          component: Link,
+          component: props => <Link {...props} onClick={spy} />,
           to: `/${col1}${col2}`,
         })}
       />,
+      {
+        getRouterProps: props => ({
+          ...props,
+          history,
+        }),
+      },
     );
 
     const rows = queryAllByRole('row');
@@ -106,8 +125,13 @@ describe('Table', () => {
 
     fireEvent.click(row1);
 
+    await waitFor(() => expect(spy.calledOnce).to.equal(true));
+
+    console.log('history:', history.location.pathname);
+
     // TODO: Write this test
     // Expect routing to have worked somehow
+    // Follow: https://stackoverflow.com/questions/61869886/simplest-test-for-react-routers-link-with-testing-library-react
   });
 
   describe('sorting', () => {

@@ -1,10 +1,9 @@
-import { Meteor } from 'meteor/meteor';
-
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
 
 import { interestRates } from '../../../../api/interestRates/queries';
+import { callMethod } from '../../../../utils/testHelpers';
 import {
   cleanup,
   render,
@@ -13,15 +12,10 @@ import {
 } from '../../../../utils/testHelpers/testing-library';
 import DataTable from '../..';
 
-const callMethod = (name, ...args) =>
-  new Promise(resolve =>
-    Meteor.call(name, ...args, (err, res) => resolve(res)),
-  );
-
 describe('DataTable', () => {
-  beforeEach(() => {
-    cleanup();
-    return callMethod('resetDatabase');
+  beforeEach(async () => {
+    await cleanup();
+    await callMethod('resetDatabase');
   });
 
   it('queries and displays data', async () => {

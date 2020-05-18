@@ -64,9 +64,9 @@ const TestComponent = ({
   );
 };
 
-describe.only('usePaginatedMeteorData', () => {
-  beforeEach(() => {
-    cleanup();
+describe('usePaginatedMeteorData', () => {
+  beforeEach(async () => {
+    await cleanup();
     // Important, hard earned, lesson: Calling resetDatabase on the client resets the websocket
     // connection. This can make methods fail, as the result of a called method
     // will never reach the client back
@@ -77,7 +77,7 @@ describe.only('usePaginatedMeteorData', () => {
     // Take a look at the network tab, you should see 2 websocket connections,
     // 1 for the current microservice, and another for backend
     // if you see a third, you're having issues
-    return resetDatabase();
+    await resetDatabase();
   });
 
   describe('named queries', () => {
