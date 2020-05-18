@@ -176,7 +176,7 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     }),
   );
 
-  if (!hasPromotion) {
+  if (!hasPromotion && structure?.propertyId) {
     // Zip property files
     zipDocFiles({
       zip,
