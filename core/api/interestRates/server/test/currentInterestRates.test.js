@@ -4,10 +4,10 @@ import moment from 'moment';
 
 import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
-import { TRENDS } from '../../interestRatesConstants';
+import { INTEREST_RATES, TRENDS } from '../../interestRatesConstants';
 import { currentInterestRates } from '../../queries';
 
-describe('currentInterestRates', () => {
+describe.only('currentInterestRates', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -47,7 +47,10 @@ describe('currentInterestRates', () => {
     });
 
     const { rates } = currentInterestRates.fetch();
+    const { rateLow } = rates.find(
+      ({ type }) => type === INTEREST_RATES.YEARS_10,
+    );
 
-    expect(rates[0].rateLow).to.equal(0.2);
+    expect(rateLow).to.equal(0.2);
   });
 });
