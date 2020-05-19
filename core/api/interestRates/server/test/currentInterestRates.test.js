@@ -7,7 +7,7 @@ import generator from '../../../factories/server';
 import { INTEREST_RATES, TRENDS } from '../../interestRatesConstants';
 import { currentInterestRates } from '../../queries';
 
-describe.only('currentInterestRates', () => {
+describe('currentInterestRates', () => {
   beforeEach(() => {
     resetDatabase();
   });
