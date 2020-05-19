@@ -15,7 +15,7 @@ import Link from '../../../../Link';
 import T from '../../../../Translation';
 import Table from '../..';
 
-describe('Table', () => {
+describe.only('Table', () => {
   beforeEach(() => cleanup());
 
   it('renders all columns and rows ', () => {
@@ -132,6 +132,69 @@ describe('Table', () => {
     // TODO: Write this test
     // Expect routing to have worked somehow
     // Follow: https://stackoverflow.com/questions/61869886/simplest-test-for-react-routers-link-with-testing-library-react
+  });
+
+  it('spreads column style on all cells in the column', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', style: { color: 'red' } },
+      { Header: 'Column 2', accessor: 'col2' },
+    ];
+    const data = [{ col1: 'A', col2: '1' }];
+
+    const { queryAllByRole, debug } = render(
+      <Table data={data} columns={columns} />,
+    );
+
+    debug();
+
+    const [header, row1] = queryAllByRole('row');
+    const [header1, header2] = within(header).queryAllByRole('columnheader');
+    const [cell1, cell2] = within(row1).queryAllByRole('cell');
+
+    expect(header1.style.color).to.equal('red');
+    expect(header2.style.color).to.not.equal('red');
+    expect(cell1.style.color).to.equal('red');
+    expect(cell2.style.color).to.not.equal('red');
+  });
+
+  it('shows an empty table when there is no data and no pagination', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', style: { color: 'red' } },
+      { Header: 'Column 2', accessor: 'col2' },
+    ];
+    const data = [];
+
+    const { getByTestId, queryByTitle } = render(
+      <Table data={data} columns={columns} />,
+    );
+
+    expect(!!getByTestId('empty-table')).to.equal(true);
+    expect(!queryByTitle('Next page')).to.equal(true);
+  });
+
+  it('does not show the empty table when there is data', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', style: { color: 'red' } },
+      { Header: 'Column 2', accessor: 'col2' },
+    ];
+    const data2 = [{ col1: 'A', col2: '1' }];
+    const { queryByTestId } = render(<Table data={data2} columns={columns} />);
+
+    expect(!!queryByTestId('empty-table')).to.equal(false);
+  });
+
+  it('renders nothing if hideIfEmpty is set', () => {
+    const columns = [
+      { Header: 'Column 1', accessor: 'col1', style: { color: 'red' } },
+      { Header: 'Column 2', accessor: 'col2' },
+    ];
+    const data = [];
+
+    const { queryByRole } = render(
+      <Table data={data} columns={columns} hideIfEmpty />,
+    );
+
+    expect(!queryByRole('table')).to.equal(true);
   });
 
   describe('sorting', () => {

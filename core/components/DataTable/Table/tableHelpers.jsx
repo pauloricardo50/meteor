@@ -4,6 +4,18 @@ import useDebounce from 'react-use/lib/useDebounce';
 
 import Checkbox from '../../Material/Checkbox';
 
+// Automatically merge a style prop on the column object into each cell in that column
+const columnStyle = hooks => {
+  hooks.getCellProps.push((cellProps, { cell: { column } }) => ({
+    ...cellProps,
+    style: { ...cellProps.style, ...column.style },
+  }));
+  hooks.getHeaderProps.push((headerProps, { column }) => ({
+    ...headerProps,
+    style: { ...headerProps.style, ...column.style },
+  }));
+};
+
 export const getTableHooks = ({ addRowProps, selectable, sortable }) => {
   const array = [];
 
@@ -32,13 +44,15 @@ export const getTableHooks = ({ addRowProps, selectable, sortable }) => {
   }
 
   if (addRowProps) {
-    array.push(hooks => {
+    array.push(hooks =>
       hooks.getRowProps.push((rowProps, { row }) => ({
         ...rowProps,
         ...addRowProps(row),
-      }));
-    });
+      })),
+    );
   }
+
+  array.push(columnStyle);
 
   return array;
 };
