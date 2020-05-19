@@ -1,8 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import {
   adminLoanInsert,
@@ -64,17 +62,6 @@ const insertNewLoan = ({
       return loanId;
     });
 };
-
-const addUnsuccesfulActivity = ({ loanId, unsucessfulReason }) =>
-  activityInsert.run({
-    object: {
-      title: 'Sans suite',
-      description: unsucessfulReason,
-      type: ACTIVITY_TYPES.EVENT,
-      isServerGenerated: true,
-      loanLink: { _id: loanId },
-    },
-  });
 
 const setUnsuccessfulReason = ({ loanId, unsuccessfulReason }) =>
   loanUpdate.run({ loanId, object: { unsuccessfulReason } });

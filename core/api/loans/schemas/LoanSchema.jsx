@@ -193,6 +193,8 @@ const LoanSchema = new SimpleSchema({
             <T id="general.other" />
           ),
       },
+      displayEmpty: false,
+      placeholder: '',
     },
   },
 });

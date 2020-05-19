@@ -3,6 +3,7 @@ import React from 'react';
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
 
 import CollectionTasksTable from '../../../components/TasksTable/CollectionTasksTable';
+import UnsuccessfulReasonModal from '../../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
 import SingleLoanPageContacts from '../SingleLoanPageContacts';
 import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
 import SingleLoanPageHeader from '../SingleLoanPageHeader';
@@ -33,6 +34,7 @@ const PremiumSingleLoanPage = props => {
         <SingleLoanPageContacts loanId={loan._id} />
       </div>
       <PremiumLoanTabs {...props} />
+      <UnsuccessfulReasonModal loan={loan} />
     </div>
   );
 };

@@ -56,7 +56,12 @@ export const mapSelectOptions = (options, grouping) => {
     } = option;
 
     if (id === 'SELECT_GROUP') {
-      array.push(<ListSubheader key={`${id}${index}`}>{label}</ListSubheader>);
+      array.push(
+        <ListSubheader style={{ marginTop: 8 }} key={`${id}${index}`}>
+          <b>{label}</b>
+        </ListSubheader>,
+      );
+      array.push(<Divider key={`divider${id}`} />);
       return;
     }
 

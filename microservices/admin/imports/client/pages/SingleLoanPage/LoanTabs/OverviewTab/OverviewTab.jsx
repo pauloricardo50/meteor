@@ -34,6 +34,14 @@ const OverviewTab = props => {
     <div className="overview-tab">
       <div className="admin-section card1">
         <div className="card-top">
+          {status === LOAN_STATUS.UNSUCCESSFUL && (
+            <UpdateField
+              doc={loan}
+              collection={Loans}
+              fields={['unsuccessfulReason']}
+              autosaveDelay={500}
+            />
+          )}
           <DisableUserFormsToggle loan={loan} />
           <UpdateField doc={loan} fields={['category']} collection={Loans} />
           <UpdateField
@@ -54,14 +62,6 @@ const OverviewTab = props => {
           <LoanStepSetter loan={loan} />
           <LoanDisbursementDate loan={loan} />
           <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
-          {status === LOAN_STATUS.UNSUCCESSFUL && (
-            <UpdateField
-              doc={loan}
-              collection={Loans}
-              fields={['unsuccessfulReason']}
-              autosaveDelay={500}
-            />
-          )}
         </div>
 
         <div className="card-bottom">
