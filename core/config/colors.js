@@ -1,19 +1,22 @@
 import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
 
 const colors = {
-  primary: '#005bea',
+  primary: '#2e7eff',
   primaryArray: [0, 91, 234],
+  primaryLight: '#5bb5ff',
+  primaryGradient: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
   secondary: '#00c6ff',
   tertiary: '#001a8f',
   success: '#21d3b5',
   warning: '#F3AF50',
   error: '#e01076',
   mix: '#95299D', // Mix between error and primary
-  borderGrey: '#DEE2E6',
+  borderGrey: '#cccccc',
   charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#005bea'],
   iconColor: '#444',
   iconHoverColor: '#888',
   body: '#2c2c2c',
+  bodyLight: '#2c2c2c33',
   title: '#2c2c2c',
   mui: {
     background: '#fff',
@@ -32,15 +35,6 @@ const colors = {
     [INTEREST_RATES.YEARS_20]: '#3793CC',
     [INTEREST_RATES.YEARS_25]: '#53A8E2',
     irs10y: '#0048bb',
-  },
-  // TODO: www2 colors to be integrated/replace core theme colors
-  www2: {
-    primary: '#2e7eff',
-    secondary: '#5bb5ff',
-    tertiary: '#dbeeff',
-    primarySecondaryBlend: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
-    bodyLight: '#2c2c2c33',
-    borderGrey: '#cccccc',
   },
 };
 

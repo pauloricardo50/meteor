@@ -1,6 +1,12 @@
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 import colors from './colors';
+
+// initialize with default MUI breakpoints
+const breakpoints = createBreakpoints({});
+// TODO: override MUI breakpoints with e-Potek settings
+// https://material-ui.com/customization/breakpoints/#default-breakpoints
 
 const createTheme = ({ fontSize = 14 }) =>
   createMuiTheme({
@@ -14,14 +20,30 @@ const createTheme = ({ fontSize = 14 }) =>
       },
       MuiButton: {
         root: {
-          borderRadius: 4,
-        },
-        containedPrimary: {
-          backgroundImage: 'linear-gradient(to left, #5bb5ff, #2e7eff 0%)',
+          borderRadius: 5,
+          padding: '7px 6px 8px',
+          fontSize: '16px',
+          fontWeight: 'normal',
+          fontStyle: 'normal',
+          lineHeight: 1.44,
+          letterSpacing: 'normal',
+          textAlign: 'center',
+          [breakpoints.up('md')]: {
+            padding: '15px 12px 16px',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            fontStyle: 'normal',
+            lineHeight: 1.44,
+            letterSpacing: '0.85px',
+          },
         },
         contained: {
           backgroundColor: 'white',
           color: colors.primary,
+        },
+        containedPrimary: {
+          backgroundImage: colors.primaryGradient,
+          color: 'white',
         },
       },
       MuiFormLabel: {
@@ -51,7 +73,7 @@ const createTheme = ({ fontSize = 14 }) =>
       },
       MuiExpansionPanelSummary: {
         root: {
-          borderBottom: `1px solid ${colors.www2.bodyLight}`,
+          borderBottom: `1px solid ${colors.bodyLight}`,
         },
       },
       MuiChip: {

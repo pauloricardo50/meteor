@@ -7,7 +7,7 @@ import './NewsletterSignup.scss';
 const NewsletterSignup = ({ primary, placement }) => {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     // TODO: get simpleDDP function to post data
     setEmail('');
@@ -18,7 +18,7 @@ const NewsletterSignup = ({ primary, placement }) => {
       <TextInput
         className="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
       />
 
       <Button primary raised className="button" type="submit">
@@ -32,7 +32,7 @@ const NewsletterSignup = ({ primary, placement }) => {
     return (
       <>
         <p>Newsletter</p>
-        <SignupForm />;
+        <SignupForm />
       </>
     );
   }

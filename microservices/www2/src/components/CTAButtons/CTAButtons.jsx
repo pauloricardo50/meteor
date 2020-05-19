@@ -1,5 +1,4 @@
 import React from 'react';
-import { RichText } from 'prismic-reactjs';
 import Button from '../Button';
 import { linkResolver } from '../../utils/linkResolver';
 import './CTAButtons.scss';
