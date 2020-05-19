@@ -10,6 +10,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { linkResolver } from '../../utils/linkResolver';
 import './FAQ.scss';
 
+// TODO: update styles
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',

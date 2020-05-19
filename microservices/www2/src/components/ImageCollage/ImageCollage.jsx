@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RichText } from 'prismic-reactjs';
 import CTAButtons from '../CTAButtons';
 import './ImageCollage.scss';
@@ -11,7 +11,7 @@ const ImageCollage = ({ primary, fields }) => {
   const images = [{}];
   const arrKeys = Object.keys(primary.images);
 
-  arrKeys.forEach((key) => {
+  arrKeys.forEach(key => {
     if (identifiers.includes(key)) {
       images.push(primary.images[key]);
     } else images[0][key] = primary.images[key];
