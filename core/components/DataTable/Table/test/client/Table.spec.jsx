@@ -15,7 +15,7 @@ import Link from '../../../../Link';
 import T from '../../../../Translation';
 import Table from '../..';
 
-describe.only('Table', () => {
+describe('Table', () => {
   beforeEach(() => cleanup());
 
   it('renders all columns and rows ', () => {
