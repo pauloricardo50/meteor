@@ -2,79 +2,26 @@ import React from 'react';
 
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import TableWithModal from 'core/components/Table/TableWithModal';
-import { Percent } from 'core/components/Translation';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import MonitoringActivityContainer from './MonitoringActivityContainer';
+import {
+  getColumnOptions,
+  getRows,
+  makeGetModalProps,
+} from './monitoringActivityHelpers';
 
 const sharedColumnOptions = [
   { id: 'assignee', label: 'Conseiller principal' },
   { id: 'count', label: 'Nb. de dossiers distincts' },
 ];
 
-const getRows = ({
-  data,
-  admins,
-  staticData,
-  hasCreatedAtRange,
-  getColumnsForAdminRow,
-}) => {
-  const byAdminData = admins.map(
-    getColumnsForAdminRow({ data, staticData, hasCreatedAtRange }),
-  );
-
-  const totalColumns = byAdminData.map(({ columns }) => columns.slice(1));
-  const total = totalColumns
-    .slice(1)
-    .reduce(
-      (tot, columns) => tot.map((value, index) => value + columns[index]),
-      totalColumns[0],
-    );
-
-  const rawRowData = [
-    ...byAdminData,
-    { id: 'total', columns: ['Total', ...total] },
-  ];
-
-  return rawRowData.map(({ columns, ...obj }, index) => {
-    const [name, count, ...rest] = columns;
-    const [restWithoutLast, last] = [
-      rest.slice(0, rest.length - 1),
-      rest.slice(-1),
-    ];
-
-    const isLastRow = index === rawRowData.length - 1;
-
-    return {
-      ...obj,
-      columns: [
-        name,
-        count,
-        ...restWithoutLast.map((num, i) => (
-          <span key={i}>
-            {num} (<Percent value={num / count} />)
-          </span>
-        )),
-        last,
-      ].map(item => {
-        if (isLastRow) {
-          return <b>{item}</b>;
-        }
-
-        return item;
-      }),
-    };
-  });
-};
-
 const MonitoringActivity = ({
   createdAtRange,
   data = [],
   staticData,
   staticDataIsLoading,
-  getModalProps,
-  getColumnOptions,
-  getColumnsForAdminRow,
+  collection,
 }) => {
   const hasCreatedAtRange = createdAtRange.startDate || createdAtRange.endDate;
   const { data: admins, loading: usersLoading } = useStaticMeteorData({
@@ -97,7 +44,7 @@ const MonitoringActivity = ({
         admins,
         staticData,
         hasCreatedAtRange,
-        getColumnsForAdminRow,
+        collection,
       });
 
   return (
@@ -106,10 +53,13 @@ const MonitoringActivity = ({
       rows={rows}
       columnOptions={[
         ...sharedColumnOptions,
-        ...getColumnOptions({ hasCreatedAtRange }),
+        ...getColumnOptions({
+          hasCreatedAtRange,
+          collection,
+        }),
       ]}
       initialOrderBy="count"
-      getModalProps={getModalProps}
+      getModalProps={makeGetModalProps({ collection })}
     />
   );
 };

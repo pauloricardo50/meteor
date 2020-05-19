@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import RadioTabs from 'core/components/RadioButtons/RadioTabs';
 
-import InsuranceMonitoringActivity from './InsuranceMonitoringActivity';
-import InsuranceRequestMonitoringActivity from './InsuranceRequestMonitoringActivity';
-import LoanMonitoringActivity from './LoanMonitoringActivity';
+import CollectionMonitoringActivity from './CollectionMonitoringActivity';
 import { MonitoringActivityFilterContainer } from './MonitoringActivityContainer';
 import MonitoringActivityFilters from './MonitoringActivityFilters';
 
 const MonitoringActivities = props => {
-  const [collection, setCollection] = useState('loans');
+  const [collection, setCollection] = useState(LOANS_COLLECTION);
 
   return (
     <div className="monitoring-activity">
@@ -17,20 +18,14 @@ const MonitoringActivities = props => {
       <MonitoringActivityFilters {...props} />
       <RadioTabs
         options={[
-          { id: 'loans', label: 'Dossiers hypothécaires' },
-          { id: 'insuranceRequests', label: 'Dossiers assurances' },
-          { id: 'insurances', label: 'Assurance' },
+          { id: LOANS_COLLECTION, label: 'Dossiers hypothécaires' },
+          { id: INSURANCE_REQUESTS_COLLECTION, label: 'Dossiers assurances' },
+          { id: INSURANCES_COLLECTION, label: 'Assurances' },
         ]}
         onChange={setCollection}
         value={collection}
       />
-      {collection === 'loans' && <LoanMonitoringActivity {...props} />}
-      {collection === 'insuranceRequests' && (
-        <InsuranceRequestMonitoringActivity {...props} />
-      )}
-      {collection === 'insurances' && (
-        <InsuranceMonitoringActivity {...props} />
-      )}
+      <CollectionMonitoringActivity {...props} collection={collection} />
     </div>
   );
 };
