@@ -6,7 +6,11 @@ import { expect } from 'chai';
 import { INTEREST_RATES_COLLECTION } from '../../../api/interestRates/interestRatesConstants';
 import { interestRates } from '../../../api/interestRates/queries';
 import { ROLES } from '../../../api/users/userConstants';
-import { resetDatabase, userLogin } from '../../../utils/testHelpers';
+import {
+  callMethod,
+  resetDatabase,
+  userLogin,
+} from '../../../utils/testHelpers';
 import {
   cleanup,
   fireEvent,
@@ -14,11 +18,6 @@ import {
   waitFor,
 } from '../../../utils/testHelpers/testing-library';
 import usePaginatedMeteorData from '../../usePaginatedMeteorData';
-
-const callMethod = (name, ...args) =>
-  new Promise(resolve =>
-    Meteor.call(name, ...args, (err, res) => resolve(res)),
-  );
 
 const TestComponent = ({
   query,
