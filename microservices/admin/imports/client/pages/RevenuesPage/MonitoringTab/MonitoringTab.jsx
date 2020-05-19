@@ -7,7 +7,7 @@ import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import LoanMonitoringChart from './LoanMonitoringChart';
-import MonitoringActivity from './MonitoringActivity';
+import { MonitoringActivities } from './MonitoringActivity';
 
 const MonitoringTab = () => {
   const [revenueDateRange, setRevenueDateRange] = useState({
@@ -82,8 +82,7 @@ const MonitoringTab = () => {
         }}
       />
 
-      <h2 className="text-center">Activité</h2>
-      <MonitoringActivity />
+      <MonitoringActivities />
     </div>
   );
 };

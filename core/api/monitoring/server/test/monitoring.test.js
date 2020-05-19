@@ -272,7 +272,7 @@ describe('monitoring', () => {
     });
   });
 
-  describe.only('collectionStatusChanges', function() {
+  describe('collectionStatusChanges', function() {
     this.timeout(5000);
 
     describe('with loans', () => {

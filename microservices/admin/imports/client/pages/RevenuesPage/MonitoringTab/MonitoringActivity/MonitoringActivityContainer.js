@@ -1,10 +1,11 @@
 import moment from 'moment';
-import { compose, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { collectionStatusChanges } from 'core/api/monitoring/queries';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
-export default compose(
+export const MonitoringActivityFilterContainer = compose(
   withState('activityRange', 'setActivityRange', {
     startDate: moment()
       .subtract(30, 'd')
@@ -17,21 +18,28 @@ export default compose(
     startDate: null,
     endDate: null,
   }),
-  withSmartQuery({
-    query: collectionStatusChanges,
-    params: ({
-      activityRange: { startDate: fromDate, endDate: toDate },
-      createdAtRange: {
-        startDate: loanCreatedAtFrom,
-        endDate: loanCreatedAtTo,
+);
+
+export default withProps(
+  ({
+    activityRange: { startDate: fromDate, endDate: toDate },
+    createdAtRange: { startDate, endDate },
+    collection,
+  }) => {
+    const { data } = useStaticMeteorData(
+      {
+        query: collectionStatusChanges,
+        params: {
+          fromDate,
+          toDate,
+          createdAtFrom: startDate,
+          createdAtTo: endDate,
+          collection,
+        },
       },
-    }) => ({
-      fromDate,
-      toDate,
-      createdAtFrom: loanCreatedAtFrom,
-      createdAtTo: loanCreatedAtTo,
-      collection: 'loans',
-    }),
-    dataName: 'data',
-  }),
+      [fromDate, toDate, startDate, endDate, collection],
+    );
+
+    return { data };
+  },
 );
