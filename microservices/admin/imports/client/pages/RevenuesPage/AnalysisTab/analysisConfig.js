@@ -15,6 +15,7 @@ import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
   LOAN_STATUS_ORDER,
+  UNSUCCESSFUL_LOAN_REASONS,
 } from 'core/api/loans/loanConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
@@ -204,6 +205,15 @@ const analysisConfig = {
         );
         return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
       },
+    },
+    unsuccessfulReason: {
+      label: "Raison d'archivage",
+      format: ({ unsuccessfulReason }) =>
+        Object.values(UNSUCCESSFUL_LOAN_REASONS).includes(unsuccessfulReason)
+          ? formatMessage({
+              id: `Forms.unsuccessfulReason.${unsuccessfulReason}`,
+            })
+          : 'Autre',
     },
   },
   [REVENUES_COLLECTION]: {
