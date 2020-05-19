@@ -36,7 +36,7 @@ const createTheme = ({ fontSize = 14 }) =>
         root: {
           border: 'none',
           marginBottom: 8,
-          boxShadow: '0 2px 60px 5px rgba(0, 0, 0, 0.05)',
+          boxShadow: 'none',
           '&:before': {
             backgroundColor: 'transparent',
           },
@@ -47,6 +47,11 @@ const createTheme = ({ fontSize = 14 }) =>
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8,
           },
+        },
+      },
+      MuiExpansionPanelSummary: {
+        root: {
+          borderBottom: `1px solid ${colors.www2.bodyLight}`,
         },
       },
       MuiChip: {
