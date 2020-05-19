@@ -17,6 +17,7 @@ jobs:
           CIRCLE_CI: 1
           DEBUG: false
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
+          RTL_SKIP_AUTO_CLEANUP: 1
     resource_class: large
     steps:
       - restore_cache:
