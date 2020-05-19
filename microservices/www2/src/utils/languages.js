@@ -8,6 +8,12 @@ const languageData = {
     homeLink: '/en/home',
     blogLink: '/en/blog',
     blogLinkText: `Return to index`,
+    rateTable: {
+      header: ['Duration', 'Trend', 'Rate'],
+    },
+    rateType: {
+      suffix: '-Year',
+    },
   },
   fr: {
     display: 'FR',
@@ -16,6 +22,12 @@ const languageData = {
     homeLink: '/fr/accueil',
     blogLink: '/fr/blog',
     blogLinkText: `Revenir à l'index`,
+    rateTable: {
+      header: ['Durée', 'Tendance', 'Taux'],
+    },
+    rateType: {
+      suffix: ' ans',
+    },
   },
 };
 

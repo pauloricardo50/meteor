@@ -1,0 +1,86 @@
+.mortgage-rates {
+  margin-bottom: 50px;
+
+  .rates-table {
+    // Desktop/Plain/M/Light
+    font-size: 16px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid $body-text-light;
+      padding-bottom: 16px;
+      color: #2e7eff;
+    }
+
+    .heading-0,
+    .rate-type {
+      flex: 0 1 95px;
+    }
+
+    .heading-2 {
+      margin-right: 36px;
+    }
+
+    .heading-2,
+    .rate-range {
+      flex: 1;
+      text-align: right;
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    .rates-table {
+      // Manrope-Regular
+      font-size: 20px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+
+      &-header {
+        padding-bottom: 24px;
+      }
+
+      .heading-0,
+      .rate-type {
+        flex: 0 1 369px;
+      }
+
+      .heading-2 {
+        margin-right: 36px;
+      }
+
+      .heading-2,
+      .rate-range {
+        flex: 1;
+        text-align: right;
+      }
+    }
+  }
+
+  .trend-icon {
+    // Desktop/Plain/L/Light
+    font-size: 20px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.4;
+    letter-spacing: normal;
+    color: #2c2c2c;
+
+    &--down {
+      transform: rotate(45deg);
+      color: #10b000;
+    }
+
+    &--up {
+      transform: rotate(-45deg);
+      color: #b00000;
+    }
+  }
+}

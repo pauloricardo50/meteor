@@ -33,6 +33,15 @@ const colors = {
     [INTEREST_RATES.YEARS_25]: '#53A8E2',
     irs10y: '#0048bb',
   },
+  // TODO: www2 colors to be integrated/replace core theme colors
+  www2: {
+    primary: '#2e7eff',
+    secondary: '#5bb5ff',
+    tertiary: '#dbeeff',
+    primarySecondaryBlend: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
+    bodyLight: '#2c2c2c33',
+    borderGrey: '#cccccc',
+  },
 };
 
 export default colors;
