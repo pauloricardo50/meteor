@@ -3,8 +3,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 
 import usePaginatedMeteorData from '../../hooks/usePaginatedMeteorData';
 import Loading from '../Loading';
-import Table from './Table';
 import { paginationOptions } from './Table/TableFooter';
+import TableWithModal from './Table/TableWithModal';
 
 // Sample usage
 
@@ -66,7 +66,7 @@ const DataTable = ({
   return (
     <div className="data-table" data-testid="data-table">
       <div className="table-container">
-        <Table
+        <TableWithModal
           columns={memoizedColumns}
           data={memoizedData}
           tableOptions={{
