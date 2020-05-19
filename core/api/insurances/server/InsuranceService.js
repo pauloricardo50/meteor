@@ -203,6 +203,26 @@ class InsuranceService extends CollectionService {
 
     return super.remove(insuranceId);
   }
+
+  updateStatus({ insuranceId, status }) {
+    const {
+      borrowerLink: { _id: borrowerId } = {},
+      insuranceProductLink: { _id: insuranceProductId } = {},
+      organisationLink: { _id: organisationId } = {},
+    } = this.get(insuranceId, {
+      borrowerLink: 1,
+      insuranceProductLink: 1,
+      organisationLink: 1,
+    });
+
+    return this.update({
+      insuranceId,
+      borrowerId,
+      organisationId,
+      insuranceProductId,
+      insurance: { status },
+    });
+  }
 }
 
 export default new InsuranceService({});

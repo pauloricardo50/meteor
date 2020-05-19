@@ -5,6 +5,7 @@ import {
   insuranceRemove,
   insuranceRemoveAdminNote,
   insuranceSetAdminNote,
+  insuranceUpdateStatus,
 } from '../methodDefinitions';
 import InsuranceService from './InsuranceService';
 
@@ -33,4 +34,9 @@ insuranceRemoveAdminNote.setHandler(
 insuranceRemove.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return InsuranceService.remove(params);
+});
+
+insuranceUpdateStatus.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  return InsuranceService.updateStatus(params);
 });
