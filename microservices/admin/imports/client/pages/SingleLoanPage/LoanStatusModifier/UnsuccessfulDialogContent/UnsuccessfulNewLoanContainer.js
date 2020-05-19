@@ -65,16 +65,19 @@ const insertNewLoan = ({
     });
 };
 
-const addUnsuccesfulActivity = ({ loanId, reason }) =>
+const addUnsuccesfulActivity = ({ loanId, unsucessfulReason }) =>
   activityInsert.run({
     object: {
       title: 'Sans suite',
-      description: reason,
+      description: unsucessfulReason,
       type: ACTIVITY_TYPES.EVENT,
       isServerGenerated: true,
       loanLink: { _id: loanId },
     },
   });
+
+const setUnsuccessfulReason = ({ loanId, unsuccessfulReason }) =>
+  loanUpdate.run({ loanId, object: { unsuccessfulReason } });
 
 export default compose(
   withRouter,
@@ -85,10 +88,10 @@ export default compose(
       confirmNewStatus,
       closeModal,
       history,
-      returnValue: { reason },
+      returnValue: { unsuccessfulReason },
     }) => ({
       setUnsuccessfulOnly: () => {
-        addUnsuccesfulActivity({ loanId: loan._id, reason })
+        setUnsuccessfulReason({ loanId: loan._id, unsuccessfulReason })
           .then(() => {
             confirmNewStatus();
             closeModal();
@@ -96,7 +99,7 @@ export default compose(
           .catch(cancelNewStatus);
       },
       insertLeadLoan: () => {
-        addUnsuccesfulActivity({ loanId: loan._id, reason })
+        setUnsuccessfulReason({ loanId: loan._id, unsuccessfulReason })
           .then(() =>
             insertNewLoan({ loan, cancelNewStatus, confirmNewStatus }),
           )

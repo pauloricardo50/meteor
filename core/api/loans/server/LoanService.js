@@ -188,6 +188,13 @@ class LoanService extends CollectionService {
     const prevStatus = this.verifyStatusChange({ loanId, status });
 
     this.update({ loanId, object: { status } });
+    if (status !== LOAN_STATUS.UNSUCCESSFUL) {
+      this.update({
+        loanId,
+        object: { unsuccessfulReason: true },
+        operator: '$unset',
+      });
+    }
     return { prevStatus, nextStatus: status };
   }
 

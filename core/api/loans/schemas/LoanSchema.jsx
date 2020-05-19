@@ -1,5 +1,7 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import T from '../../../components/Translation';
 import {
   additionalDocuments,
   adminNotesSchema,
@@ -19,6 +21,8 @@ import {
   OWNER,
   PURCHASE_TYPE,
   STEPS,
+  UNSUCCESSFUL_LOAN_REASONS,
+  UNSUCCESSFUL_LOAN_REASON_CATEGORIES,
 } from '../loanConstants';
 import {
   borrowerIdsSchema,
@@ -171,6 +175,26 @@ const LoanSchema = new SimpleSchema({
   tasksCache: { type: Array, optional: true },
   'tasksCache.$': cacheField,
   userCache: cacheField,
+  unsuccessfulReason: {
+    type: String,
+    optional: true,
+    uniforms: {
+      recommendedValues: Object.values(UNSUCCESSFUL_LOAN_REASONS),
+      withCustomOther: true,
+      grouping: {
+        groupBy: reason =>
+          Object.keys(UNSUCCESSFUL_LOAN_REASON_CATEGORIES).find(key =>
+            UNSUCCESSFUL_LOAN_REASON_CATEGORIES[key].includes(reason?.id),
+          ),
+        format: category =>
+          category ? (
+            <T id={`Forms.unsuccessfulReason.category.${category}`} />
+          ) : (
+            <T id="general.other" />
+          ),
+      },
+    },
+  },
 });
 
 export default LoanSchema;

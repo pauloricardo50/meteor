@@ -405,6 +405,7 @@ export const adminLoan = ({ withSort } = {}) => ({
     createdAt: 1,
     updatedAt: 1,
   },
+  unsuccessfulReason: 1,
 });
 
 export const adminLoans = () => ({
