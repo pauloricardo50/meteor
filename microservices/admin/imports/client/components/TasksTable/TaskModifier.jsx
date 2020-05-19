@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
@@ -151,7 +151,7 @@ const getTime = date => {
   return `${hours}:${minutes}`;
 };
 
-const TaskModifier = ({ task, updateTask, open, setOpen, submitting }) => {
+const TaskModifier = ({ task, updateTask, open, setOpen }) => {
   const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog
@@ -161,22 +161,12 @@ const TaskModifier = ({ task, updateTask, open, setOpen, submitting }) => {
       onSubmit={updateTask}
       open={open}
       setOpen={setOpen}
-      submitting={submitting}
       title="Modifier tâche"
       layout={taskFormLayout}
     />
   );
 };
 
-export default compose(
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
-    updateTask: values => {
-      setSubmitting(true);
-      return taskUpdate
-        .run({ taskId, object: values })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-  })),
-)(TaskModifier);
+export default withProps(({ task: { _id: taskId } }) => ({
+  updateTask: values => taskUpdate.run({ taskId, object: values }),
+}))(TaskModifier);
