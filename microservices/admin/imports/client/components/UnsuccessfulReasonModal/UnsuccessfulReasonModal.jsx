@@ -10,6 +10,7 @@ import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { employeesByEmail } from 'core/arrays/epotekEmployees';
 import { AutoFormDialog } from 'core/components/AutoForm2';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 const NoReasonDescription = ({ unsuccessfulActivity }) => (
   <div className="flex-col">
@@ -53,10 +54,15 @@ const NoReasonDescription = ({ unsuccessfulActivity }) => (
 );
 
 const UnsuccessfulReasonModal = ({
-  loan: { _id: loanId, status, unsuccessfulReason, anonymous },
+  loan: { _id: loanId, status, unsuccessfulReason, anonymous, mainAssignee },
 }) => {
+  const currentUser = useCurrentUser();
+
   const shouldShowDialog =
-    status === LOAN_STATUS.UNSUCCESSFUL && !anonymous && !unsuccessfulReason;
+    status === LOAN_STATUS.UNSUCCESSFUL &&
+    !anonymous &&
+    !unsuccessfulReason &&
+    mainAssignee?._id === currentUser._id;
 
   const { data: unsuccessfulActivity, loading } = useStaticMeteorData({
     query: ACTIVITIES_COLLECTION,
