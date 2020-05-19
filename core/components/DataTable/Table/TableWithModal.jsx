@@ -44,9 +44,7 @@ const initialState = { open: false };
 
 const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
   const [{ open, row }, dispatch] = useReducer(modalReducer, initialState);
-  const handleClose = useCallback(() => {
-    dispatch({ type: 'close' });
-  }, []);
+  const handleClose = useCallback(() => dispatch({ type: 'close' }), []);
   const handleOpen = useCallback(
     payload => dispatch({ type: 'open', payload }),
     [],
@@ -55,6 +53,7 @@ const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
   if (!getModalProps) {
     return <Table hooks={hooks} {...rest} />;
   }
+
   const modalProps = useMemo(() => getModalProps(row), [row]);
 
   return (

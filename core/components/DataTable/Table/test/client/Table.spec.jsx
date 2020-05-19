@@ -157,7 +157,7 @@ describe('Table', () => {
     expect(cell2.style.color).to.not.equal('red');
   });
 
-  it('shows an empty table when there is no data and no pagination', () => {
+  it('shows an empty table and no pagination when there is no data', () => {
     const columns = [
       { Header: 'Column 1', accessor: 'col1', style: { color: 'red' } },
       { Header: 'Column 2', accessor: 'col2' },
@@ -194,7 +194,7 @@ describe('Table', () => {
       <Table data={data} columns={columns} hideIfEmpty />,
     );
 
-    expect(!queryByRole('table')).to.equal(true);
+    expect(queryByRole('table')).to.equal(null);
   });
 
   describe('sorting', () => {
