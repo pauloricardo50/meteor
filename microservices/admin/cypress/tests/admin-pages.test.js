@@ -15,7 +15,7 @@ const pages = {
 
   admin: {
     Dashboard: route('/', {
-      shouldRender: '.admin-dashboard-page .tasks-table',
+      shouldRender: '.admin-dashboard-page .tasks-data-table',
     }),
 
     Profile: route('/account', { shouldRender: '.admin-account-page' }),
