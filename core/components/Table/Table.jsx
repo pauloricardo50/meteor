@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-import T from '../Translation';
+import TableEmpty from '../DataTable/Table/TableEmpty';
 import TableBody from './TableBody';
 import TableCustom from './TableCustom';
 import TableFooter from './TableFooter';
@@ -176,14 +176,7 @@ export default class Table extends Component {
             />
           )}
         </TableCustom>
-        {data.length === 0 && (
-          <h3
-            className="secondary flex center"
-            style={{ width: '100%', padding: 16, boxSizing: 'border-box' }}
-          >
-            <T id="Table.empty" />
-          </h3>
-        )}
+        {data.length === 0 && <TableEmpty />}
       </div>
     );
   }
