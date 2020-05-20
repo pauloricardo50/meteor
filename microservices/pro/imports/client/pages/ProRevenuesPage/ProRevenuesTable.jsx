@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 
 import { proRevenues } from 'core/api/revenues/queries';
@@ -10,7 +10,7 @@ import {
 import Select from 'core/components/Select';
 import Table from 'core/components/Table';
 import T, { Money, Percent } from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 const columnOptions = [
@@ -101,7 +101,7 @@ const ProRevenuesTable = () => {
     PRO_COMMISSION_STATUS.WAITING_FOR_REVENUE,
     PRO_COMMISSION_STATUS.COMMISSION_TO_PAY,
   ]);
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const mainOrg = currentUser.organisations.find(
     ({ $metadata }) => $metadata?.isMain,
   );

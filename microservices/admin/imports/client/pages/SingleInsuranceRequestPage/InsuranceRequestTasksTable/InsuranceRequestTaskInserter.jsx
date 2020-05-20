@@ -1,11 +1,11 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { taskInsert } from 'core/api/tasks/methodDefinitions';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import { CollectionTaskInserterForm } from '../../../components/TasksTable/CollectionTaskInserter';
 import { schema as taskSchema } from '../../../components/TasksTable/TaskModifier';
@@ -39,7 +39,7 @@ const getSchema = ({ insurances = [], _id: insuranceRequestId, name }) =>
 
 export default withProps(
   ({ doc: insuranceRequest, model = {}, resetForm = () => {} }) => {
-    const currentUser = useContext(CurrentUserContext);
+    const currentUser = useCurrentUser();
     const schema = useMemo(() => getSchema(insuranceRequest), [
       insuranceRequest,
     ]);
