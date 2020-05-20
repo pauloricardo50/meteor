@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ACTIVITIES_COLLECTION,
   ACTIVITY_TYPES,
@@ -34,7 +34,6 @@ const NoReasonDescription = ({ unsuccessfulActivity }) => (
           <a
             className="a flex center-align mt-16"
             href="mailto:corentin@e-potek.ch"
-            target="_blank"
             style={{ alignSelf: 'center', marginLeft: '-44px' }}
           >
             <img
@@ -52,6 +51,10 @@ const NoReasonDescription = ({ unsuccessfulActivity }) => (
     )}
   </div>
 );
+
+const schema = LoanSchema.pick('unsuccessfulReason').extend({
+  unsuccessfulReason: { optional: false },
+});
 
 const UnsuccessfulReasonModal = ({
   loan: { _id: loanId, status, unsuccessfulReason, anonymous, mainAssignee },
@@ -76,9 +79,8 @@ const UnsuccessfulReasonModal = ({
       description: 1,
     },
     type: 'single',
+    refetchOnMethodCall: false,
   });
-
-  const [openDialog, setOpenDialog] = useState(shouldShowDialog);
 
   if (!shouldShowDialog || loading) {
     return null;
@@ -86,14 +88,11 @@ const UnsuccessfulReasonModal = ({
 
   return (
     <AutoFormDialog
-      schema={LoanSchema.pick('unsuccessfulReason').extend({
-        unsuccessfulReason: { optional: false },
-      })}
+      schema={schema}
       onSubmit={object => loanUpdate.run({ loanId, object })}
       noButton
       important
-      setOpen={setOpenDialog}
-      openOnMount={openDialog}
+      openOnMount
       noCancel
       title="Dossier sans suite sans raison d'archivage"
       description={

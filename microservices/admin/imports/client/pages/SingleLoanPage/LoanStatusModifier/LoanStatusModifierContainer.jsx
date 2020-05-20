@@ -39,6 +39,10 @@ const closeButton = (reject, closeAll) => (
   />
 );
 
+const unsuccessfulReasonSchema = LoanSchema.pick('unsuccessfulReason').extend({
+  unsuccessfulReason: { optional: false },
+});
+
 const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
   switch (status) {
     case LOAN_STATUS.ONGOING: {
@@ -69,9 +73,7 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
         openModal([
           <DialogForm
             key="reason"
-            schema={LoanSchema.pick('unsuccessfulReason').extend({
-              unsuccessfulReason: { optional: false },
-            })}
+            schema={unsuccessfulReasonSchema}
             title={getTitle(status)}
             description="Entrez la raison du passage du dossier en sans suite"
             className="animated fadeIn"
