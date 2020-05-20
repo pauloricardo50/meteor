@@ -76,7 +76,8 @@ export const VD = {
   propertyRegistrationTax: ({ propertyValue }) =>
     propertyValue * cantons.VD.PROPERTY_REGISTRATION_TAX,
   landRegistryPropertyTax: ({ propertyValue }) =>
-    propertyValue * cantons.VD.LAND_REGISTRY_PROPERTY_TAX,
+    propertyValue * cantons.VD.LAND_REGISTRY_PROPERTY_TAX +
+    cantons.VD.LAND_REGISTRY_PUBLICATION_COST,
   mortgageNoteRegistrationTax: ({ mortgageNoteIncrease }) => 0,
   landRegistryMortgageNoteTax: ({ mortgageNoteIncrease }) =>
     mortgageNoteIncrease * cantons.VD.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
