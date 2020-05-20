@@ -15,12 +15,12 @@ const pages = {
 
   admin: {
     Dashboard: route('/', {
-      shouldRender: '.admin-dashboard-page .tasks-data-table',
+      shouldRender: '.admin-dashboard-page table',
     }),
 
     Profile: route('/account', { shouldRender: '.admin-account-page' }),
 
-    Users: route('/users', { shouldRender: '.users-page .users-table' }),
+    Users: route('/users', { shouldRender: '.users-page table' }),
 
     User: ({ user: { _id } }) =>
       route(`/users/${_id}`, { shouldRender: '.single-user-page' }),
