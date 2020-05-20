@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 
+// TODO: refactor to use fragments
 export const query = graphql`
   query PRISMIC_PAGE($uid: String!, $lang: String!) {
     prismic {
@@ -21,6 +22,70 @@ export const query = graphql`
             type
             fields {
               post_filter
+            }
+          }
+          ... on PRISMIC_PageBodyCtas_section {
+            type
+            primary {
+              section_id
+            }
+            fields {
+              illustration
+              content
+              cta_text_1
+              cta_link_1 {
+                _linkType
+                __typename
+                ... on PRISMIC__ExternalLink {
+                  url
+                  _linkType
+                }
+                ... on PRISMIC_Page {
+                  _meta {
+                    id
+                    uid
+                    type
+                    lang
+                  }
+                  name
+                }
+                ... on PRISMIC_Post {
+                  _meta {
+                    id
+                    uid
+                    type
+                    lang
+                  }
+                  title
+                }
+              }
+              cta_text_2
+              cta_link_2 {
+                _linkType
+                __typename
+                ... on PRISMIC__ExternalLink {
+                  url
+                  _linkType
+                }
+                ... on PRISMIC_Page {
+                  _meta {
+                    id
+                    uid
+                    type
+                    lang
+                  }
+                  name
+                }
+                ... on PRISMIC_Post {
+                  _meta {
+                    id
+                    uid
+                    type
+                    lang
+                  }
+                  title
+                }
+              }
             }
           }
           ... on PRISMIC_PageBodyFaq {
