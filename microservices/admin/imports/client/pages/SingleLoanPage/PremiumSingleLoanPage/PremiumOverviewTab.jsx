@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Loans from 'core/api/loans';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import AdminNotes from 'core/components/AdminNotes';
 import Recap from 'core/components/Recap';
 import UpdateField from 'core/components/UpdateField';
@@ -13,10 +13,18 @@ import StructureForm from './StructureForm';
 
 const PremiumOverviewTab = props => {
   const { loan } = props;
-  const { _id: loanId, frontTagId } = loan;
+  const { _id: loanId, frontTagId, status } = loan;
   return (
     <div className="premium-overview">
       <div className="card1 card-top top">
+        {status === LOAN_STATUS.UNSUCCESSFUL && (
+          <UpdateField
+            doc={loan}
+            collection={Loans}
+            fields={['unsuccessfulReason']}
+            autosaveDelay={500}
+          />
+        )}
         <UpdateField doc={loan} fields={['category']} collection={Loans} />
         <UpdateField doc={loan} fields={['residenceType']} collection={Loans} />
         <LoanDisbursementDate loan={loan} />

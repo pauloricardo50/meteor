@@ -129,10 +129,17 @@ const createTheme = ({ fontSize = 14 }) => {
       MuiListSubheader: {
         root: {
           lineHeight: '2em',
+          color: colors.title,
         },
       },
       MuiListItemIcon: {
         root: {},
+      },
+      MuiDivider: {
+        root: {
+          width: 'calc(100% - 8px)',
+          margin: '0 auto',
+        },
       },
     },
     palette: {

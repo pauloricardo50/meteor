@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loansWithoutRevenues } from 'core/api/stats/queries';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
 import Table from 'core/components/Table';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 
@@ -78,7 +77,7 @@ const LoansWithoutRevenues = ({ showAll }) => {
     refetchOnMethodCall: false,
   });
   const isOk = loans.length === 0;
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
 
   const ownLoans = loans.filter(
     ({ userCache }) =>

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { aggregators } from 'react-pivottable/Utilities';
 import SimpleSchema from 'simpl-schema';
@@ -11,7 +11,7 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import IconButton from 'core/components/IconButton';
 import RadioTabs from 'core/components/RadioButtons/RadioTabs';
 import TextInput from 'core/components/TextInput';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 const schema = new SimpleSchema({ name: String });
@@ -89,7 +89,7 @@ const SavedAnalysis = ({ setCollection, setState, report }) => {
 };
 
 const SavedAnalyses = ({ setState, setCollection }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const [search, setSearch] = useState('');
   const [myReports, setMyReports] = useState(true);
   const { data = [], loading } = useReactiveMeteorData(

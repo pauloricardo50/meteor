@@ -1,8 +1,8 @@
 import React from 'react';
 import { withProps } from 'recompose';
-import SimpleSchema from 'simpl-schema';
 
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import Button from 'core/components/Button';
 import { CollectionIconLink } from 'core/components/IconLink';
 import DialogForm from 'core/components/ModalManager/DialogForm';
@@ -39,6 +39,10 @@ const closeButton = (reject, closeAll) => (
   />
 );
 
+const unsuccessfulReasonSchema = LoanSchema.pick('unsuccessfulReason').extend({
+  unsuccessfulReason: { optional: false },
+});
+
 const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
   switch (status) {
     case LOAN_STATUS.ONGOING: {
@@ -69,18 +73,7 @@ const makeAdditionalActions = loan => openModal => (status, prevStatus) => {
         openModal([
           <DialogForm
             key="reason"
-            schema={
-              new SimpleSchema({
-                reason: {
-                  type: String,
-                  optional: false,
-                  uniforms: {
-                    placeholder:
-                      "Le client n'est pas solvable pour ce bien immobilier",
-                  },
-                },
-              })
-            }
+            schema={unsuccessfulReasonSchema}
             title={getTitle(status)}
             description="Entrez la raison du passage du dossier en sans suite"
             className="animated fadeIn"

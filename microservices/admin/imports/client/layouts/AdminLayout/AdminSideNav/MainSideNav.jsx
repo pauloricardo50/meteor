@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
 import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,7 +12,7 @@ import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
 import List from 'core/components/Material/List';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { createRoute } from 'core/utils/routerUtils';
 
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
@@ -103,7 +103,7 @@ const createOnClickHandler = (
 };
 
 const MainSideNav = props => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const items = useMemo(() => getItems(currentUser), [currentUser]);
 
   return (

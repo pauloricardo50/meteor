@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import groupBy from 'lodash/groupBy';
 
 import {
@@ -8,7 +8,7 @@ import {
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { Money } from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import StatItem from './StatItem';
@@ -44,7 +44,7 @@ const OrgItem = ({ orgName, revenues }) => (
 );
 
 const RevenuesWithUnnecessaryCommissions = ({ showAll }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { data: revenues = [], loading } = useStaticMeteorData({
     query: REVENUES_COLLECTION,
     params: {

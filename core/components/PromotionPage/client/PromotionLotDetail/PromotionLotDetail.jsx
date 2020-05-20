@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Box from '../../../Box';
 import DocumentDownloadList from '../../../DocumentDownloadList';
 import T from '../../../Translation';
@@ -22,7 +22,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const {
     permissions: { canModifyLots, canSeeCustomers },
   } = useContext(PromotionMetadataContext);
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const files = (documents && documents.promotionPropertyDocuments) || [];
 
   return (

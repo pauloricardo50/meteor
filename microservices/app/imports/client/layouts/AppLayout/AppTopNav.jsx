@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
 import { withRouter } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import IconButton from 'core/components/IconButton';
 import TopNavButtons from 'core/components/TopNav/TopNavButtons';
 import TopNavlogo from 'core/components/TopNav/TopNavLogo';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import useMedia from 'core/hooks/useMedia';
 
 import UserCreator from '../../components/UserCreator';
@@ -30,7 +30,7 @@ const renderButtons = ({ location: { pathname, search } }) => {
 };
 
 const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const isMobile = useMedia({ maxWidth: 768 });
 
   return (
