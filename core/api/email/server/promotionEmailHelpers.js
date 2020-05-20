@@ -11,6 +11,7 @@ import {
 import {
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
@@ -196,7 +197,27 @@ export const PROMOTION_EMAILS = [
   {
     description: "Annulation de la réservation d'un lot -> Pros",
     method: cancelPromotionLotReservation,
+    shouldSend: ({ result: { oldStatus } }) =>
+      [PROMOTION_OPTION_STATUS.RESERVED, PROMOTION_OPTION_STATUS.SOLD].includes(
+        oldStatus,
+      ),
     emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
+    recipients: [
+      PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+    ],
+    showProgress: false,
+  },
+  {
+    description: "Interruption du processus de réservation d'un lot -> Pros",
+    method: cancelPromotionLotReservation,
+    shouldSend: ({ result: { oldStatus } }) =>
+      ![
+        PROMOTION_OPTION_STATUS.RESERVED,
+        PROMOTION_OPTION_STATUS.SOLD,
+      ].includes(oldStatus),
+    emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS,
     recipients: [
       PROMOTION_EMAIL_RECIPIENTS.BROKER,
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,
