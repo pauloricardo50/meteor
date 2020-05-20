@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import pick from 'lodash/pick';
-import { compose, withState } from 'recompose';
+import { withState } from 'recompose';
 
 import loadable from '../../utils/loadable';
 import Button from '../Button';
@@ -61,7 +61,7 @@ export const AutoFormDialog = props => {
   }, []);
   const schemaKeys = props.schema._schemaKeys;
 
-  const handleOpen = useCallback(event => {
+  const handleOpen = event => {
     if (event && event.stopPropagation) {
       event.stopPropagation();
       event.preventDefault();
@@ -71,19 +71,17 @@ export const AutoFormDialog = props => {
     if (onOpen) {
       onOpen();
     }
-  }, []);
-  const handleClose = useCallback(event => {
+  };
+  const handleClose = event => {
     if (event && event.stopPropagation) {
       event.stopPropagation();
       event.preventDefault();
     }
     setOpen(false);
-  }, []);
+  };
 
-  const wrappedOnSubmit = useCallback(
-    (...args) => onSubmit(...args).then(() => setOpen(false)),
-    [onSubmit],
-  );
+  const wrappedOnSubmit = (...args) =>
+    onSubmit(...args).then(() => setOpen(false));
 
   return (
     <>
@@ -130,9 +128,8 @@ export const AutoFormDialog = props => {
   );
 };
 
-export default compose(
-  withState('open', 'setOpen', ({ openOnMount }) => !!openOnMount),
-  // withProps(({ onSubmit, setOpen }) => ({
-  //   onSubmit: (...args) => onSubmit(...args).then(() => setOpen(false)),
-  // })),
+export default withState(
+  'open',
+  'setOpen',
+  ({ openOnMount }) => !!openOnMount,
 )(AutoFormDialog);

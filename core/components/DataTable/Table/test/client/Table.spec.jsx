@@ -81,8 +81,6 @@ describe('Table', () => {
       <Table data={data} columns={columns} />,
     );
 
-    debug();
-
     const cell1 = getByText('A').closest('td');
     const cell2 = getByText('1').closest('td');
 
@@ -145,8 +143,6 @@ describe('Table', () => {
       <Table data={data} columns={columns} />,
     );
 
-    debug();
-
     const [header, row1] = queryAllByRole('row');
     const [header1, header2] = within(header).queryAllByRole('columnheader');
     const [cell1, cell2] = within(row1).queryAllByRole('cell');
@@ -169,7 +165,7 @@ describe('Table', () => {
     );
 
     expect(!!getByTestId('empty-table')).to.equal(true);
-    expect(!queryByTitle('Next page')).to.equal(true);
+    expect(queryByTitle('Next page')).to.equal(null);
   });
 
   it('does not show the empty table when there is data', () => {

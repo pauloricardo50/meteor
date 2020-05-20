@@ -27,7 +27,9 @@ const getModal = ({ modalType, modalProps, open, handleClose, row }) => {
     );
   }
 
-  throw new Error('Invalid modalType in TableWithModal');
+  throw new Error(
+    'Invalid modalType in TableWithModal. use either "form" or "dialog"',
+  );
 };
 
 const modalReducer = (state, action) => {
@@ -40,7 +42,7 @@ const modalReducer = (state, action) => {
 
   return state;
 };
-const initialState = { open: false };
+const initialState = { open: false, row: null };
 
 const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
   const [{ open, row }, dispatch] = useReducer(modalReducer, initialState);

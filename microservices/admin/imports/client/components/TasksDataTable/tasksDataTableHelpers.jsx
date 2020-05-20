@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 
 import {
@@ -26,4 +28,16 @@ export const getTasksTableModalProps = task => {
     title: 'Modifier tâche',
     layout: taskFormLayout,
   };
+};
+
+const now = moment();
+export const formatDateTime = (date, toNow) => {
+  const momentDate = moment(date);
+  const text = date ? momentDate[toNow ? 'toNow' : 'fromNow']() : '-';
+
+  if (momentDate.isBefore(now)) {
+    return <span className="error-box">{text}</span>;
+  }
+
+  return text;
 };

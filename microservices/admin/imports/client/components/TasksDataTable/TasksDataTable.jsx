@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import moment from 'moment';
 
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import DataTable from 'core/components/DataTable/DataTable';
@@ -7,7 +6,10 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import Linkify from 'core/components/Linkify';
 import T, { IntlDate } from 'core/components/Translation';
 
-import { getTasksTableModalProps } from './tasksDataTableHelpers';
+import {
+  formatDateTime,
+  getTasksTableModalProps,
+} from './tasksDataTableHelpers';
 import TasksTableActions from './TasksTableActions';
 
 export const taskTableFragment = {
@@ -38,18 +40,6 @@ const getRelatedTo = task =>
   task.lender ||
   task.insuranceRequest ||
   task.insurance;
-
-const now = moment();
-export const formatDateTime = (date, toNow) => {
-  const momentDate = moment(date);
-  const text = date ? momentDate[toNow ? 'toNow' : 'fromNow']() : '-';
-
-  if (momentDate.isBefore(now)) {
-    return <span className="error-box">{text}</span>;
-  }
-
-  return text;
-};
 
 const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
   const getModalProps = useCallback(
