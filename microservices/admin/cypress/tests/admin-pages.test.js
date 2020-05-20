@@ -25,7 +25,7 @@ const pages = {
     User: ({ user: { _id } }) =>
       route(`/users/${_id}`, { shouldRender: '.single-user-page' }),
 
-    Loans: route('/loans', { shouldRender: '.loans-page' }),
+    Loans: route('/loans', { shouldRender: '.loans-page table' }),
 
     Loan: ({ loan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '.overview-tab' }),
