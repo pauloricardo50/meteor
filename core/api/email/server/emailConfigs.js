@@ -402,6 +402,11 @@ addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION, {
   createOverrides: promotionEmailOverridesPro,
 });
 
+addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
 addEmailConfig(EMAIL_IDS.SELL_PROMOTION_LOT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides: promotionEmailOverridesPro,
