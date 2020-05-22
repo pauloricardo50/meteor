@@ -437,7 +437,7 @@ describe('PromotionLotService', function() {
           ({ name }) => name === 'BODY',
         ).content,
       ).to.include(
-        'Admin User 1 a mis un terme au processus de réservation pour John Doe sur le lot Lot 1',
+        'Admin User 1 a interompu la réservation en cours pour John Doe sur le lot Lot 1',
       );
 
       expect(email2.address).to.equal('pro2@e-potek.ch');
@@ -446,7 +446,7 @@ describe('PromotionLotService', function() {
           ({ name }) => name === 'BODY',
         ).content,
       ).to.include(
-        'Admin User 1 a mis un terme au processus de réservation pour un acquéreur sur le lot Lot 1',
+        'Admin User 1 a interompu la réservation en cours pour un acquéreur sur le lot Lot 1',
       );
 
       expect(email3.address).to.equal('pro4@e-potek.ch');
@@ -455,7 +455,7 @@ describe('PromotionLotService', function() {
           ({ name }) => name === 'BODY',
         ).content,
       ).to.include(
-        'Admin User 1 a mis un terme au processus de réservation pour John Doe sur le lot Lot 1',
+        'Admin User 1 a interompu la réservation en cours pour John Doe sur le lot Lot 1',
       );
     });
   });
