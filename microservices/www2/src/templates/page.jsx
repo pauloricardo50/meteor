@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, navigate } from 'gatsby';
+import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
@@ -166,6 +166,16 @@ export const query = graphql`
                   name
                 }
               }
+            }
+          }
+          ... on PRISMIC_PageBodyImage_gallery {
+            type
+            primary {
+              section_id
+              content
+            }
+            fields {
+              image
             }
           }
           ... on PRISMIC_PageBodyNewsletter_signup {
