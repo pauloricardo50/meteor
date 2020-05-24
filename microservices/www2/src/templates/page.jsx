@@ -133,6 +133,7 @@ export const query = graphql`
             primary {
               section_id
               section_heading
+              flipped
             }
             fields {
               content
