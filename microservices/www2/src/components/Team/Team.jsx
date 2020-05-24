@@ -10,43 +10,48 @@ const getMailTo = name =>
 
 const Team = ({ primary, fields }) => (
   <div className="team container">
-    <div className="team__heading">{RichText.render(primary.team_section)}</div>
+    <div className="team__heading">
+      {RichText.asText(primary.section_heading)}
+    </div>
 
-    {fields &&
-      fields.map((field, idx) => (
-        <div key={idx} className="team-member">
-          <div className="team-member__image">
-            <img
-              className="profile-image"
-              src={field.portrait.url}
-              alt={field.portrait.alt}
-            />
-          </div>
+    <div className="team__members">
+      {fields &&
+        fields.map((field, idx) => (
+          <div key={idx} className="team-member">
+            <div className="team-member__image center">
+              <div className="outer-circle center">
+                <div className="inner-circle center">
+                  <img
+                    className="profile-image"
+                    src={field.portrait.url}
+                    alt={field.portrait.alt}
+                  />
+                </div>
+              </div>
+            </div>
 
-          <div className="team-member__content">
-            <div className="team-member__customer">
-              {RichText.render(field.member_name)}
-              {RichText.render(field.position)}
-              <span className="team-member__contact">
+            <div className="team-member__content">
+              <div className="team-member__name">
+                {RichText.asText(field.member_name)}
+              </div>
+
+              <div className="team-member__position">
+                {RichText.asText(field.position)}
+              </div>
+
+              <div className="team-member__contact">
                 <a href={getMailTo(field.member_name)} className="email">
-                  <IconButton
-                    size="small"
-                    type="mail"
-                    // tooltip={field.member_name}
-                  />
+                  <IconButton size="small" type="mail" />
                 </a>
-                <a href="tel:+41225660110">
-                  <IconButton
-                    size="small"
-                    type="phone"
-                    // tooltip={field.member_name}
-                  />
+
+                <a href={`tel:${field.phone || '+41225660110'}`}>
+                  <IconButton size="small" type="phone" />
                 </a>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+    </div>
   </div>
 );
 
