@@ -1,0 +1,76 @@
+.image-gallery {
+  // TODO: remove container from page level and apply to content
+
+  .content {
+    margin-bottom: 56px;
+
+    h3,
+    h4 {
+      // Mobile/Title/H4
+      font-size: 20px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: $body-text;
+    }
+  }
+
+  .gallery {
+    // setup overflow container for horizontal scrolling
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    overflow-x: auto;
+    width: 100%;
+    margin: 0px auto;
+
+    // hide horizontal scrollbar
+    &::-webkit-scrollbar {
+      display: none !important;
+      width: 0px !important;
+      height: 0px !important;
+    }
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+
+    img {
+      display: block;
+      max-width: 100%;
+      width: 194px;
+    }
+
+    img + img {
+      margin-left: 45px;
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    .content {
+      margin-bottom: 100px;
+
+      h3,
+      h4 {
+        // Desktop/Title/H3
+        font-size: 28px;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        text-align: center;
+        color: $body-text;
+      }
+    }
+
+    .gallery {
+      img {
+        width: 484px;
+      }
+
+      img + img {
+        margin-left: 116px;
+      }
+    }
+  }
+}

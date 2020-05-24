@@ -6,6 +6,7 @@ import GPSStats from '../GPSStats';
 import Hero from '../Hero';
 import ImageCarousel from '../ImageCarousel';
 import ImageCollage from '../ImageCollage';
+import ImageGallery from '../ImageGallery';
 import MortgageRates from '../MortgageRates';
 import NewsletterSignup from '../NewsletterSignup';
 import PageHeading from '../PageHeading';
@@ -31,6 +32,7 @@ const PageSections = ({ sections }) =>
             hero: <Hero {...section} />,
             image_carousel: <ImageCarousel {...section} />,
             image_collage: <ImageCollage {...section} />,
+            image_gallery: <ImageGallery {...section} />,
             mortgage_rates: <MortgageRates {...section} />,
             newsletter_signup: <NewsletterSignup {...section} />,
             page_heading: <PageHeading {...section} />,
