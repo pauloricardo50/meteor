@@ -42,15 +42,4 @@ export const localizationStartup = ({
     const countries = require('i18n-iso-countries');
     countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
   }
-
-  // Do this for browsers that don't have language things
-  // https://formatjs.io/docs/react-intl/upgrade-guide-3x#migrate-to-using-native-intl-apis
-  if (!Intl.PluralRules) {
-    require('@formatjs/intl-pluralrules/polyfill');
-    require('@formatjs/intl-pluralrules/dist/locale-data/fr'); // Add locale data for de
-  }
-  if (!Intl.RelativeTimeFormat) {
-    require('@formatjs/intl-relativetimeformat/polyfill');
-    require('@formatjs/intl-relativetimeformat/dist/locale-data/fr'); // Add locale data for de
-  }
 };
