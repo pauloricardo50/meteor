@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Loans from 'core/api/loans';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import AdminNotes from 'core/components/AdminNotes';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
@@ -25,7 +25,7 @@ const OverviewTab = props => {
     loan,
     currentUser: { roles },
   } = props;
-  const { borrowers, _id: loanId, frontTagId } = loan;
+  const { borrowers, _id: loanId, frontTagId, status } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -34,6 +34,14 @@ const OverviewTab = props => {
     <div className="overview-tab">
       <div className="admin-section card1">
         <div className="card-top">
+          {status === LOAN_STATUS.UNSUCCESSFUL && (
+            <UpdateField
+              doc={loan}
+              collection={Loans}
+              fields={['unsuccessfulReason']}
+              autosaveDelay={500}
+            />
+          )}
           <DisableUserFormsToggle loan={loan} />
           <UpdateField doc={loan} fields={['category']} collection={Loans} />
           <UpdateField

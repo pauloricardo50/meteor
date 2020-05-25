@@ -128,13 +128,20 @@ const createTheme = ({ fontSize = 14 }) => {
             },
           },
         },
-        MuiListSubheader: {
-          root: {
-            lineHeight: '2em',
-          },
+      },
+      MuiListSubheader: {
+        root: {
+          lineHeight: '2em',
+          color: colors.title,
         },
-        MuiListItemIcon: {
-          root: {},
+      },
+      MuiListItemIcon: {
+        root: {},
+      },
+      MuiDivider: {
+        root: {
+          width: 'calc(100% - 8px)',
+          margin: '0 auto',
         },
       },
       palette: {
@@ -162,16 +169,16 @@ const createTheme = ({ fontSize = 14 }) => {
         background: {
           default: colors.mui.background,
         },
-      },
-      typography: {
-        fontFamily: 'Manrope-variable, Helvetica, sans-serif',
-        // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
-        fontSize,
-        fontWeightRegular: 300,
-        fontWeightMedium: 400,
-        button: {
-          fontWeight: 400,
-          textTransform: '',
+        typography: {
+          fontFamily: 'Manrope-variable, Helvetica, sans-serif',
+          // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
+          fontSize,
+          fontWeightRegular: 300,
+          fontWeightMedium: 400,
+          button: {
+            fontWeight: 400,
+            textTransform: '',
+          },
         },
       },
     },

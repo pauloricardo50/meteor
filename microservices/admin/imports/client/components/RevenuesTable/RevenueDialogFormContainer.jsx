@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import merge from 'lodash/merge';
 import { compose, withProps, withState } from 'recompose';
 
@@ -15,7 +15,7 @@ import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(
@@ -133,7 +133,7 @@ export default compose(
       insuranceRequest,
       onSubmitted = () => null,
     }) => {
-      const currentUser = useContext(CurrentUserContext);
+      const currentUser = useCurrentUser();
       const schema = useMemo(() => getSchema(currentUser), [currentUser]);
 
       return {

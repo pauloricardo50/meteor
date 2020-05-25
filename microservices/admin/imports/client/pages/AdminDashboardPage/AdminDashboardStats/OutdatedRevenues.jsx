@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
@@ -7,7 +7,7 @@ import {
   REVENUE_STATUS,
 } from 'core/api/revenues/revenueConstants';
 import Button from 'core/components/Button';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { createRoute } from 'core/utils/routerUtils';
 
@@ -15,7 +15,7 @@ import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
 import StatItem from './StatItem';
 
 const OutdatedRevenues = ({ revenues }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const total = revenues.reduce((tot, { amount }) => tot + amount, 0);
   const myRevenues = revenues.filter(
     ({ assigneeLink }) => assigneeLink?._id === currentUser?._id,

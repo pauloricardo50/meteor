@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
@@ -39,7 +39,7 @@ const renderMobile = props => {
 };
 
 const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
 

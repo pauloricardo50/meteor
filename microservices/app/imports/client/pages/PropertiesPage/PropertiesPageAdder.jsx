@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../startup/client/appRoutes';
@@ -28,7 +28,7 @@ const makeOnSubmitSuccess = ({ history, loanId }) => propertyId =>
 
 const PropertiesPageAdder = ({ loanId, purchaseType }) => {
   const history = useHistory();
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const onSubmitSuccess = makeOnSubmitSuccess({ history, loanId });
   return (
     <div className="properties-page-detail property-adder card1 card-hover">

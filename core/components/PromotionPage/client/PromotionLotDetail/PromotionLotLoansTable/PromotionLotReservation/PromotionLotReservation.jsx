@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { PROMOTION_OPTION_STATUS } from '../../../../../../api/promotionOptions/promotionOptionConstants';
 import {
   getPromotionCustomerOwnerType,
   shouldAnonymize,
 } from '../../../../../../api/promotions/promotionClientHelpers';
-import { CurrentUserContext } from '../../../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import T from '../../../../../Translation';
@@ -18,7 +18,7 @@ import RequestReservation from '../../../UserPromotionOptionsTable/RequestReserv
 const isAdmin = Meteor.microservice === 'admin';
 
 const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { status, promotionLots } = promotionOption;
   const { users = [] } = promotion;
   const { $metadata: { permissions } = {} } =

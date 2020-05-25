@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import UnsuccessfulReasonModal from '../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContacts from './SingleLoanPageContacts';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
@@ -26,6 +27,7 @@ const SingleLoanPage = props => {
         <SingleLoanPageContacts loanId={loan._id} />
       </div>
       <LoanTabs {...props} />
+      <UnsuccessfulReasonModal loan={loan} />
     </section>
   );
 };

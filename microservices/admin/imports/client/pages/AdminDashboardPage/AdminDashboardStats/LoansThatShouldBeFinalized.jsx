@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
@@ -8,7 +8,7 @@ import {
 } from 'core/api/revenues/revenueConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import StatItem from './StatItem';
@@ -29,7 +29,7 @@ const LoansThatShouldBeFinalized = ({ showAll }) => {
     },
     refetchOnMethodCall: false,
   });
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
 
   if (loading) {
     return null;

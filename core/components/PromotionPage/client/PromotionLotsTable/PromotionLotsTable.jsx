@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import cx from 'classnames';
 
 import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import MongoSelect from '../../../Select/MongoSelect';
 import TableWithModal from '../../../Table/TableWithModal';
 import T from '../../../Translation';
@@ -25,7 +25,7 @@ const PromotionLotsTable = ({
   className,
   ...props
 }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const {
     permissions: { canModifyLots, canManageDocuments },
   } = useContext(PromotionMetadataContext);

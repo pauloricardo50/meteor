@@ -129,8 +129,9 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
         hasPopup: true,
       };
     case INSURANCES_COLLECTION: {
-      const { insuranceRequest } = data;
-      const { _id: insuranceRequestId } = insuranceRequest;
+      const { insuranceRequest, insuranceRequestCache = [] } = data;
+      const insuranceRequestId =
+        insuranceRequest?._id || insuranceRequestCache[0]?._id;
       return {
         link: `/insuranceRequests/${insuranceRequestId}/${docId}`,
         text: getInsuranceLinkTitle(data),
