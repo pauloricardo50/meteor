@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { REAL_ESTATE_INCOME_ALGORITHMS } from '../../../../../../../config/financeConstants';
+import { REAL_ESTATE_INCOME_ALGORITHMS } from '../../../../../../../../config/financeConstants';
 import Calculator, {
   Calculator as CalculatorClass,
-} from '../../../../../../../utils/Calculator';
-import getMountedComponent from '../../../../../../../utils/testHelpers/getMountedComponent';
-import BorrowersPdfPage from '../BorrowersPdfPage';
+} from '../../../../../../../../utils/Calculator';
+import getMountedComponent from '../../../../../../../../utils/testHelpers/getMountedComponent';
+import BorrowersPdfPage from '../../BorrowersPdfPage';
 
 describe('BorrowersPdfPage', () => {
   let props;
