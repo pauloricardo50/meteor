@@ -86,12 +86,13 @@ const renderSelect = ({
       select
       SelectProps={{
         displayEmpty: hasPlaceholder,
-        inputProps: { name, id, ...inputProps },
+        inputProps: { name, ...inputProps },
         multiple: fieldType === Array || undefined,
         native,
         ...filterDOMProps(props),
       }}
       value={native && !value ? '' : value}
+      id={id}
     >
       {hasPlaceholder && (
         <MenuItem value="" disabled={nullable}>
@@ -243,6 +244,7 @@ const CustomSelectField = ({
             }}
             label="Préciser"
             className="mb-8"
+            id={`${props.id}-specify`}
           />
         </>
       )}
