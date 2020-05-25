@@ -1,7 +1,7 @@
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {
@@ -36,21 +36,26 @@ let count = 0;
 // Automatically refetch a query on method calls, making everything seem
 // reactive
 const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall }) => {
+  // Make sure there are no clashes between multiple queries with the
+  // same name
+  const [queryName] = useState(
+    `${(query && query.queryName) || query}-hook-${count++}`,
+  );
   useEffect(() => {
-    const uniqueId = count++;
     if (refetchOnMethodCall) {
-      // Make sure there are no clashes between multiple queries with the
-      // same name
-      const queryName = `${(query && query.queryName) ||
-        query}-hook-${uniqueId}`;
+      // Remove any existing listeners when this useEffect is ran again
+      ClientEventService.removeAllListeners(queryName);
+      removeQueryToRefetch(queryName);
+
       ClientEventService.addListener(queryName, refetch);
       addQueryToRefetch(queryName, refetchOnMethodCall);
+
       return () => {
-        ClientEventService.removeListener(queryName, refetch);
+        ClientEventService.removeAllListeners(queryName);
         removeQueryToRefetch(queryName);
       };
     }
-  }, []);
+  }, [query, refetch, refetchOnMethodCall]);
 };
 
 export const useStaticMeteorData = (
@@ -64,6 +69,7 @@ export const useStaticMeteorData = (
     setData,
     setError,
     setLoading,
+    config,
   } = useAsyncStateMachine();
   const fetchIdRef = useRef(0);
 
@@ -75,7 +81,7 @@ export const useStaticMeteorData = (
       const finalQuery = getQuery(refetchQuery, refetchParams);
 
       if (!finalQuery) {
-        setData(null);
+        setData(null, undefined);
         return;
       }
 
@@ -96,9 +102,9 @@ export const useStaticMeteorData = (
         }
 
         if (err) {
-          setError(err);
+          setError(err, { query: refetchQuery, params: refetchParams });
         } else {
-          setData(res);
+          setData(res, { query: refetchQuery, params: refetchParams });
           if (callback) {
             callback(res);
           }
@@ -110,7 +116,11 @@ export const useStaticMeteorData = (
 
   useEffect(refetch, deps);
 
-  useQueryRefetcher({ refetchOnMethodCall, refetch, query });
+  useQueryRefetcher({
+    refetchOnMethodCall,
+    refetch: () => refetch(config),
+    query: config?.query || query,
+  });
 
   return { loading: isLoading, data, error, refetch };
 };

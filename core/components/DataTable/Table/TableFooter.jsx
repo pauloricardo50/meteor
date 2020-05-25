@@ -16,7 +16,7 @@ const TableFooter = ({
   rowCount,
   setPageSize,
 }) => {
-  if (pageCount === 1 && rowCount < paginationOptions[0]) {
+  if (pageCount <= 1 && rowCount < paginationOptions[0]) {
     return null;
   }
 

@@ -125,15 +125,12 @@ const revenueFormLayout = [
 ];
 
 export default compose(
-  withState('submitting', 'setSubmitting', false),
   withProps(
     ({
       loan,
       insurance,
       revenue,
       insuranceRequest,
-      setSubmitting,
-      setOpen,
       onSubmitted = () => null,
     }) => {
       const currentUser = useContext(CurrentUserContext);
@@ -143,30 +140,20 @@ export default compose(
         schema,
         model: revenue,
         insertRevenue: model =>
-          revenueInsert
-            .run({
-              revenue: model,
-              loanId: loan?._id,
-              insuranceId: insurance?._id,
-              insuranceRequestId: insuranceRequest?._id,
-            })
-            .then(() => setOpen && setOpen(false)),
-        modifyRevenue: ({ _id: revenueId, ...object }) => {
-          setSubmitting(true);
-          return revenueUpdate
-            .run({ revenueId, object })
-            .then(() => setOpen(false))
-            .finally(() => {
-              setSubmitting(false);
-              onSubmitted();
-            });
-        },
-        deleteRevenue: revenueId => {
-          setSubmitting(true);
-          return revenueRemove.run({ revenueId }).finally(() => {
+          revenueInsert.run({
+            revenue: model,
+            loanId: loan?._id,
+            insuranceId: insurance?._id,
+            insuranceRequestId: insuranceRequest?._id,
+          }),
+        modifyRevenue: ({ _id: revenueId, ...object }) =>
+          revenueUpdate.run({ revenueId, object }).finally(() => {
             onSubmitted();
-          });
-        },
+          }),
+        deleteRevenue: revenueId =>
+          revenueRemove.run({ revenueId }).finally(() => {
+            onSubmitted();
+          }),
         layout: revenueFormLayout,
       };
     },

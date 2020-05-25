@@ -1,17 +1,114 @@
 import React from 'react';
-import { withProps } from 'recompose';
+import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
 
-import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
-import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
 
 import TaskModifierDateSetter from './TaskModifierDateSetter';
-import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
+
+const toNearest15Minutes = momentObj => {
+  const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
+  return momentObj
+    .clone()
+    .minute(roundedMinutes)
+    .second(0);
+};
+
+export const dueAtTimeFuncs = [
+  {
+    label: 'dans 1h',
+    func: () => {
+      const nextDate = toNearest15Minutes(moment().add(1, 'h'));
+      return [
+        ['dueAtTime', nextDate.format('HH:mm')],
+        ['dueAt', nextDate.toDate()],
+      ];
+    },
+  },
+  {
+    label: 'dans 3h',
+    func: () => {
+      const nextDate = toNearest15Minutes(moment().add(3, 'h'));
+      return [
+        ['dueAtTime', nextDate.format('HH:mm')],
+        ['dueAt', nextDate.toDate()],
+      ];
+    },
+  },
+  {
+    label: 'Demain, 8h',
+    func: () => {
+      const nextDate = moment()
+        .add(1, 'd')
+        .hours(8)
+        .minutes(0);
+
+      return [
+        ['dueAtTime', nextDate.format('HH:mm')],
+        ['dueAt', nextDate.toDate()],
+      ];
+    },
+  },
+];
+
+const getNextMonday = () => {
+  const dayINeed = 1; // Monday
+  const today = moment().isoWeekday();
+
+  // if we haven't yet passed the day of the week that I need:
+  if (today < dayINeed) {
+    // then just give me this week's instance of that day
+    return moment().isoWeekday(dayINeed);
+  }
+  // otherwise, give me *next week's* instance of that same day
+  return moment()
+    .add(1, 'weeks')
+    .isoWeekday(dayINeed);
+};
+
+export const dueAtFuncs = [
+  {
+    label: 'Demain',
+    func: () => [
+      [
+        'dueAt',
+        moment()
+          .add(1, 'd')
+          .toDate(),
+      ],
+    ],
+  },
+  {
+    label: 'Dans 3 jours',
+    func: () => [
+      [
+        'dueAt',
+        moment()
+          .add(3, 'd')
+          .toDate(),
+      ],
+    ],
+  },
+  {
+    label: 'Lundi pro',
+    func: () => [['dueAt', getNextMonday().toDate()]],
+  },
+  {
+    label: 'Semaine pro',
+    func: () => [
+      [
+        'dueAt',
+        moment()
+          .add(7, 'd')
+          .toDate(),
+      ],
+    ],
+  },
+];
 
 const taskPlaceholders = [
   'Faire la vaisselle',
@@ -29,7 +126,7 @@ const taskPlaceholders = [
   'Aller au sport',
 ];
 
-export const schema = new SimpleSchema({
+export const taskFormSchema = new SimpleSchema({
   title: {
     type: String,
     uniforms: {
@@ -135,38 +232,9 @@ export const taskFormLayout = [
   },
 ];
 
-const labels = {
+export const taskFormLabels = {
   title: <T id="TasksTable.title" />,
   dueAt: <T id="TasksTable.dueAt" />,
   status: <T id="TasksTable.status" />,
   assignedEmployeeId: <T id="TasksTable.assignedTo" />,
 };
-
-const getTime = date => {
-  if (!date) {
-    return undefined;
-  }
-  const hours = date.getHours() || '00';
-  const minutes = date.getMinutes() || '00';
-  return `${hours}:${minutes}`;
-};
-
-const TaskModifier = ({ task, updateTask, open, setOpen }) => {
-  const model = { ...task, dueAtTime: getTime(task.dueAt) };
-  return (
-    <AutoFormDialog
-      schema={schema}
-      model={model}
-      autoFieldProps={{ labels }}
-      onSubmit={updateTask}
-      open={open}
-      setOpen={setOpen}
-      title="Modifier tâche"
-      layout={taskFormLayout}
-    />
-  );
-};
-
-export default withProps(({ task: { _id: taskId } }) => ({
-  updateTask: values => taskUpdate.run({ taskId, object: values }),
-}))(TaskModifier);

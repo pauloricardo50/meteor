@@ -3,11 +3,10 @@ import MuiTable from '@material-ui/core/Table';
 import { useTable } from 'react-table';
 
 import TableBody from './TableBody';
+import TableEmpty from './TableEmpty';
 import TableFooter, { paginationOptions } from './TableFooter';
 import TableHead from './TableHead';
 import { getTableHooks, useStateChangeCallback } from './tableHelpers';
-
-// import { useTable } from 'react-table';
 
 // Both "columns" and "data" props should be memoized arrays:
 //
@@ -15,15 +14,16 @@ import { getTableHooks, useStateChangeCallback } from './tableHelpers';
 
 const Table = ({
   addRowProps,
-  allowHidingColumns,
   allRowsCount,
   className,
   columns,
   data,
-  initialHiddenColumns = [],
+  hideIfEmpty,
+  hooks = [],
+  initialHiddenColumns,
   initialPageIndex = 0,
   initialPageSize = paginationOptions[1],
-  initialSort,
+  initialSort, // { id: columnAccessor, desc: true }
   onStateChange,
   padding = 'default',
   selectable,
@@ -52,40 +52,50 @@ const Table = ({
         sortBy: initialSort ? [initialSort] : [],
         pageSize: initialPageSize,
         pageIndex: initialPageIndex,
-        hiddenColumns: allowHidingColumns ? initialHiddenColumns : [],
+        hiddenColumns: initialHiddenColumns || [],
       },
       ...tableOptions,
     },
     ...getTableHooks({ sortable, selectable, addRowProps }),
+    ...hooks,
   );
 
   const { pageIndex, pageSize, sortBy } = state;
   useStateChangeCallback(onStateChange, { pageIndex, pageSize, sortBy });
+  const rowCount = allRowsCount || rows.length;
+  const isEmpty = rowCount === 0;
+
+  if (hideIfEmpty && isEmpty) {
+    return null;
+  }
 
   return (
-    <MuiTable
-      {...getTableProps()}
-      className={className}
-      padding={padding}
-      size={size}
-      stickyHeader={stickyHeader}
-    >
-      <TableHead headerGroups={headerGroups} />
-      <TableBody
-        getTableBodyProps={getTableBodyProps}
-        prepareRow={prepareRow}
-        rows={page}
-      />
-      <TableFooter
-        allColumns={allowHidingColumns && allColumns}
-        gotoPage={gotoPage}
-        pageCount={pageCount}
-        pageIndex={state.pageIndex}
-        pageSize={state.pageSize}
-        rowCount={allRowsCount || rows.length}
-        setPageSize={setPageSize}
-      />
-    </MuiTable>
+    <>
+      <MuiTable
+        {...getTableProps()}
+        className={className}
+        padding={padding}
+        size={size}
+        stickyHeader={stickyHeader}
+      >
+        <TableHead headerGroups={headerGroups} />
+        <TableBody
+          getTableBodyProps={getTableBodyProps}
+          prepareRow={prepareRow}
+          rows={page}
+        />
+        <TableFooter
+          allColumns={!!initialHiddenColumns && allColumns}
+          gotoPage={gotoPage}
+          pageCount={pageCount}
+          pageIndex={state.pageIndex}
+          pageSize={state.pageSize}
+          rowCount={allRowsCount || rows.length}
+          setPageSize={setPageSize}
+        />
+      </MuiTable>
+      {isEmpty && <TableEmpty />}
+    </>
   );
 };
 

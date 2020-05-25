@@ -25,6 +25,7 @@ const LoansWithoutLenders = ({ showAll }) => {
       mainAssignee: 1,
       name: 1,
     },
+    refetchOnMethodCall: false,
   });
   const groupedLoans = groupBy(loans, 'mainAssignee.name');
   const myLoans = loans.filter(

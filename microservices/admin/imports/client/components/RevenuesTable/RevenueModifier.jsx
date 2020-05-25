@@ -10,7 +10,6 @@ const RevenueModifier = ({
   model,
   open,
   setOpen,
-  submitting,
   deleteRevenue,
   layout,
   description,
@@ -22,7 +21,6 @@ const RevenueModifier = ({
     onSubmit={modifyRevenue}
     open={open}
     setOpen={setOpen}
-    submitting={submitting}
     onDelete={() => deleteRevenue(model._id)}
     title="Modifier un revenu"
     layout={layout}

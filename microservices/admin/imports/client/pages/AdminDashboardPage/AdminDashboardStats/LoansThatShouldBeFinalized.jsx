@@ -27,6 +27,7 @@ const LoansThatShouldBeFinalized = ({ showAll }) => {
       revenues: { status: 1, type: 1 },
       userCache: 1,
     },
+    refetchOnMethodCall: false,
   });
   const currentUser = useContext(CurrentUserContext);
 
