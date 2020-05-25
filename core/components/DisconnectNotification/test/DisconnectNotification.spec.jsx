@@ -1,90 +1,56 @@
 /* eslint-env mocha */
-import Snackbar from '@material-ui/core/Snackbar';
+
+import React from 'react';
 import { expect } from 'chai';
 
-import { getMountedComponent } from '../../../utils/testHelpers';
+import {
+  cleanup,
+  render,
+  waitFor,
+} from '../../../utils/testHelpers/testing-library';
 import { DisconnectNotification } from '../DisconnectNotification';
 
 describe('DisconnectNotification', () => {
-  let props;
-  const component = () =>
-    getMountedComponent({
-      Component: DisconnectNotification,
-      props,
-    });
+  beforeEach(() => cleanup());
 
-  beforeEach(() => {
-    getMountedComponent.reset();
-    props = {};
+  it('changes to open if a disconnection happens, after TIMEOUT', async () => {
+    const { queryByText, rerender } = render(
+      <DisconnectNotification status={{ connected: true }} timeout={500} />,
+    );
+    expect(queryByText('Il semble que vous soyiez déconnecté')).to.equal(null);
+
+    rerender(
+      <DisconnectNotification status={{ connected: false }} timeout={500} />,
+    );
+    expect(queryByText('Il semble que vous soyiez déconnecté')).to.equal(null);
+
+    await waitFor(() =>
+      expect(!!queryByText('Il semble que vous soyiez déconnecté')).to.equal(
+        true,
+      ),
+    );
   });
 
-  it('is hidden by default', () => {
-    props.status = { connected: true };
+  it('takes TIMEOUT to open if it starts disconnected, then changes back to closed instantly if connection is made', async () => {
+    const { queryByText, rerender } = render(
+      <DisconnectNotification status={{ connected: false }} timeout={500} />,
+    );
+    expect(queryByText('Il semble que vous soyiez déconnecté')).to.equal(null);
 
-    expect(
-      component()
-        .find(Snackbar)
-        .prop('open'),
-    ).to.equal(false);
-  });
+    await waitFor(() =>
+      expect(!!queryByText('Il semble que vous soyiez déconnecté')).to.equal(
+        true,
+      ),
+    );
 
-  it('changes to open if a disconnection happens, after TIMEOUT', done => {
-    props = { status: { connected: true }, timeout: 500 };
-    expect(
-      component()
-        .find(Snackbar)
-        .prop('open'),
-    ).to.equal(false);
+    rerender(
+      <DisconnectNotification status={{ connected: true }} timeout={500} />,
+    );
 
-    props = { status: { connected: false }, timeout: 500 };
-
-    component().setProps(props);
-
-    component().update();
-
-    expect(
-      component()
-        .find(Snackbar)
-        .prop('open'),
-    ).to.equal(false);
-
-    setTimeout(() => {
-      component().update();
-
-      expect(
-        component()
-          .find(Snackbar)
-          .prop('open'),
-      ).to.equal(true);
-      done();
-    }, 600);
-  });
-
-  it('takes TIMEOUT to open if it starts disconnected, then changes back to closed instantly if connection is made', done => {
-    props = { status: { connected: false }, timeout: 500 };
-    component().update();
-
-    setTimeout(() => {
-      component().update();
-
-      expect(
-        component()
-          .find(Snackbar)
-          .prop('open'),
-      ).to.equal(true);
-
-      props = { status: { connected: true }, timeout: 500 };
-
-      component().setProps(props);
-
-      component().update();
-
-      expect(
-        component()
-          .find(Snackbar)
-          .prop('open'),
-      ).to.equal(false);
-      done();
-    }, 600);
+    await waitFor(() =>
+      expect(!!queryByText('Il semble que vous soyiez déconnecté')).to.equal(
+        false,
+      ),
+    );
   });
 });
