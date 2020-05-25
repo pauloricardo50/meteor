@@ -4,6 +4,8 @@
   "emails.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS.from": "e-Potek",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS.SUBJECT": "{promotionName},  Réservation interrompue",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS.TITLE": "{promotionName}, Réservation interrompue",
+  "PDF.projectInfos.structure.currentProperty": "Bien en cours d'acquisition",
+  "PDF.projectInfos.structure.yearlyPropertyIncome": "Loyer de rendement",
   "Forms.unsuccessfulReason": "Raison d'archivage",
   "Forms.unsuccessfulReason.category.LEAD_LOST": "Perte du lead au profit d'un autre",
   "Forms.unsuccessfulReason.category.BAD_OFFER": "Offre insuffisante de notre côté",

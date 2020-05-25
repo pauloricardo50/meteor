@@ -337,8 +337,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT
       ) {
         const delta = propertyIncome - propertyCost;
-        console.log('propertyCost:', propertyCost);
-        console.log('propertyIncome:', propertyIncome);
 
         if (delta >= 0) {
           return { addToIncome: delta, addToExpenses: 0 };

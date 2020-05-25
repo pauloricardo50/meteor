@@ -12,11 +12,11 @@ const formatExpensesToSubtractFromIncome = expenses =>
   Object.keys(expenses).map(expenseType => {
     const value = expenses[expenseType];
     return {
-      label: <T id={`Forms.expenses.${expenseType}`} />,
+      label: getExpenseLabel(expenseType),
       // When an expense is positive, it means it has to be substracted from
       // the income
       // When it is negative, it has to be added to it
-      value: value < 0 ? value : -value,
+      value: -value,
       condition: !!value,
     };
   });
@@ -97,20 +97,20 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
     {
       label: [
         <T id="Forms.expenses.REAL_ESTATE_DELTA_POSITIVE" />,
-        "Bien en cours d'acquisition",
+        <T id="PDF.projectInfos.structure.currentProperty" />,
       ],
       value: 12 * addToIncome,
       condition: shouldDisplayDeltaSection,
     },
     {
-      label: ['Loyer de rendement'],
+      label: <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
       value: calculator.getYearlyPropertyIncome({ loan, structureId }),
       condition: shouldDisplayDeltaSection,
       secondary: true,
     },
     {
       label: [
-        "Taux d'intérêt théorique",
+        <T id="PDF.projectInfos.structure.interests" />,
         <Percent value={theoreticalInterestRate} />,
       ],
       value: -propertyCost.interests * 12,
@@ -118,14 +118,17 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
       secondary: true,
     },
     {
-      label: ['Amortissement théorique', <Percent value={amortizationRate} />],
+      label: [
+        <T id="PDF.projectInfos.structure.amortization" />,
+        <Percent value={amortizationRate} />,
+      ],
       value: -propertyCost.amortization * 12,
       condition: shouldDisplayDeltaSection,
       secondary: true,
     },
     {
       label: [
-        "Frais d'entretien théorique",
+        <T id="PDF.projectInfos.structure.maintenance" />,
         <Percent value={theoreticalMaintenanceRate} />,
       ],
       value: -propertyCost.maintenance * 12,
@@ -173,24 +176,13 @@ const getExpenseLabel = expenseType => {
       EXPENSE_TYPES.REAL_ESTATE_DELTA_NEGATIVE,
     ].includes(expenseType)
   ) {
-    return (
-      <>
-        <b>
-          <T id={`Forms.expenses.${expenseType}`} />
-          &nbsp;
-        </b>
-        <span className="secondary">
-          <T id="Forms.realEstate" />
-        </span>
-      </>
-    );
+    return [
+      <T id={`Forms.expenses.${expenseType}`} />,
+      <T id="Forms.realEstate" />,
+    ];
   }
 
-  return (
-    <b>
-      <T id={`Forms.expenses.${expenseType}`} />
-    </b>
-  );
+  return <T id={`Forms.expenses.${expenseType}`} />;
 };
 
 const getExpenseRows = ({ loan, structureId, calculator }) => {
@@ -208,50 +200,110 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
     loan,
     structureId,
   });
+  const { addToExpenses } = calculator.getTheoreticalPropertySplit({
+    loan,
+    structureId,
+  });
 
-  return [
+  const isPositiveNegativeSplit =
+    calculator.realEstateIncomeAlgorithm ===
+    REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT;
+
+  const shouldDisplayDeltaSection = isPositiveNegativeSplit && !!addToExpenses;
+
+  const allExpenses = [
     {
-      label: (
-        <>
-          <b>Taux d'intérêt théorique&nbsp;</b>
-          <span className="secondary">
-            (<Percent value={theoreticalInterestRate} />)
-          </span>
-        </>
-      ),
-      value: toMoney(propertyCost.interests * 12),
-      money: false,
+      label: [
+        <T id="Forms.expenses.REAL_ESTATE_DELTA_NEGATIVE" />,
+        <T id="PDF.projectInfos.structure.currentProperty" />,
+      ],
+      value: 12 * addToExpenses,
+      condition: shouldDisplayDeltaSection,
     },
     {
-      label: (
-        <>
-          <b>Amortissement théorique&nbsp;</b>
-          <span className="secondary">
-            (<Percent value={amortizationRate} />)
-          </span>
-        </>
-      ),
-      value: toMoney(propertyCost.amortization * 12),
-      money: false,
+      label: <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
+      value: -calculator.getYearlyPropertyIncome({ loan, structureId }),
+      condition: shouldDisplayDeltaSection,
+      secondary: true,
     },
     {
-      label: (
-        <>
-          <b>Frais d'entretien théorique&nbsp;</b>
-          <span className="secondary">
-            (<Percent value={theoreticalMaintenanceRate} />)
-          </span>
-        </>
-      ),
-      value: toMoney(propertyCost.maintenance * 12),
-      money: false,
+      label: [
+        <T id="PDF.projectInfos.structure.interests" />,
+        <Percent value={theoreticalInterestRate} />,
+      ],
+      value: propertyCost.interests * 12,
+      secondary: shouldDisplayDeltaSection,
+    },
+    {
+      label: [
+        <T id="PDF.projectInfos.structure.amortization" />,
+        <Percent value={amortizationRate} />,
+      ],
+      value: propertyCost.amortization * 12,
+      secondary: shouldDisplayDeltaSection,
+    },
+    {
+      label: [
+        <T id="PDF.projectInfos.structure.maintenance" />,
+        <Percent value={theoreticalMaintenanceRate} />,
+      ],
+      value: propertyCost.maintenance * 12,
+      secondary: shouldDisplayDeltaSection,
     },
     ...Object.keys(expenses).map(expenseType => ({
       label: getExpenseLabel(expenseType),
       value: expenses[expenseType],
       condition: !!expenses[expenseType],
     })),
-  ].filter(({ condition }) => shouldRenderRow(condition));
+  ];
+
+  return allExpenses
+    .map(renderRow(shouldDisplayDeltaSection))
+    .filter(({ condition }) => shouldRenderRow(condition));
+
+  // return [
+  //   {
+  //     label: (
+  //       <>
+  //         <b>Taux d'intérêt théorique&nbsp;</b>
+  //         <span className="secondary">
+  //           (<Percent value={theoreticalInterestRate} />)
+  //         </span>
+  //       </>
+  //     ),
+  //     value: toMoney(propertyCost.interests * 12),
+  //     money: false,
+  //   },
+  //   {
+  //     label: (
+  //       <>
+  //         <b>Amortissement théorique&nbsp;</b>
+  //         <span className="secondary">
+  //           (<Percent value={amortizationRate} />)
+  //         </span>
+  //       </>
+  //     ),
+  //     value: toMoney(propertyCost.amortization * 12),
+  //     money: false,
+  //   },
+  //   {
+  //     label: (
+  //       <>
+  //         <b>Frais d'entretien théorique&nbsp;</b>
+  //         <span className="secondary">
+  //           (<Percent value={theoreticalMaintenanceRate} />)
+  //         </span>
+  //       </>
+  //     ),
+  //     value: toMoney(propertyCost.maintenance * 12),
+  //     money: false,
+  //   },
+  //   ...Object.keys(expenses).map(expenseType => ({
+  //     label: getExpenseLabel(expenseType),
+  //     value: expenses[expenseType],
+  //     condition: !!expenses[expenseType],
+  //   })),
+  // ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
 const IncomeAndExpenses = ({ loan, structureId, calculator }) => (
