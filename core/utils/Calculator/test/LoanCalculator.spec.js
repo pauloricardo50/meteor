@@ -736,6 +736,98 @@ describe('LoanCalculator', () => {
       expect(incomeRatio).to.equal(0.15);
     });
 
+    it('Adds the borrower expenses to expenses', () => {
+      const calc = new CalculatorClass({
+        expensesSubtractFromIncome: [],
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              salary: 160000,
+              expenses: [{ value: 20000, description: EXPENSES.LEASING }],
+            },
+          ],
+        },
+      });
+
+      expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
+    });
+
+    it('Splits the right borrower expenses between expenses and income', () => {
+      const calc = new CalculatorClass({
+        expensesSubtractFromIncome: [EXPENSES.LEASING],
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              salary: 160000,
+              expenses: [
+                { value: 20000, description: EXPENSES.LEASING },
+                { value: 10000, description: EXPENSES.PENSIONS },
+              ],
+            },
+          ],
+        },
+      });
+
+      expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
+    });
+
+    it.only('Adds negative deltas to expenses using positive negative split algorithm', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              salary: 160000,
+              realEstate: [
+                // 30'000 expenses
+                {
+                  value: 1000000,
+                  loan: 800000,
+                  income: 0,
+                  theoreticalExpenses: 30000,
+                },
+                // 20'000 income
+                {
+                  value: 1000000,
+                  loan: 800000,
+                  income: 20000,
+                  theoreticalExpenses: 0,
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      // 90'000 / 180'000
+      expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
+    });
+
     it('returns 0 if a property pays for itself', () => {
       const calc = new CalculatorClass({
         realEstateIncomeAlgorithm:

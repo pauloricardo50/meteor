@@ -362,7 +362,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         loan,
         structureId,
       });
-      return addToExpenses;
+      const expenses = this.getFormattedExpenses({ loan }).add / 12;
+      return addToExpenses + expenses;
     }
 
     getIncomeRatio({ loan, structureId }) {
