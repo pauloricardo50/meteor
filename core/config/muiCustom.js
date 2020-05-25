@@ -169,16 +169,16 @@ const createTheme = ({ fontSize = 14 }) => {
         background: {
           default: colors.mui.background,
         },
-        typography: {
-          fontFamily: 'Manrope-variable, Helvetica, sans-serif',
-          // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
-          fontSize,
-          fontWeightRegular: 300,
-          fontWeightMedium: 400,
-          button: {
-            fontWeight: 400,
-            textTransform: '',
-          },
+      },
+      typography: {
+        fontFamily: 'Manrope-variable, Helvetica, sans-serif',
+        // htmlFontSize: fontSize, // FIXME: This prop messes up our input labels, no idea why
+        fontSize,
+        fontWeightRegular: 300,
+        fontWeightMedium: 400,
+        button: {
+          fontWeight: 400,
+          textTransform: '',
         },
       },
     },
