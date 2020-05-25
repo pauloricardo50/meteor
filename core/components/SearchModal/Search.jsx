@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
-import { compose, withState } from 'recompose';
+import { withState } from 'recompose';
 
 import TextInput from '../TextInput';
 import SearchResults from './SearchResults';
@@ -27,7 +26,4 @@ Search.propTypes = {
   search: PropTypes.string.isRequired,
 };
 
-export default compose(
-  withState('search', 'changeSearch', ''),
-  injectIntl,
-)(Search);
+export default withState('search', 'changeSearch', '')(Search);

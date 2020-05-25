@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import { injectIntl } from 'react-intl';
-import { compose, withProps } from 'recompose';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 
 import { documentHasTooltip } from '../../api/files/documents';
 import { DOCUMENTS } from '../../api/files/fileConstants';
@@ -26,7 +26,7 @@ const makeGetFileMeta = documentArray => ({
   );
 };
 
-const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
+const makeSortDocuments = f => (a, b) => {
   if (a.id === DOCUMENTS.OTHER) {
     return 1;
   }
@@ -37,11 +37,12 @@ const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
   return labelA.localeCompare(labelB);
 };
 
-export default compose(
-  injectIntl,
-  withProps(({ documentArray, intl, canModify }) => ({
-    documentArray: documentArray.sort(makeSortDocuments(intl)),
+export default withProps(({ documentArray, canModify }) => {
+  const { formatMessage } = useIntl();
+
+  return {
+    documentArray: documentArray.sort(makeSortDocuments(formatMessage)),
     getFileMeta: makeGetFileMeta(documentArray),
     canModify: canModify && Meteor.microservice === 'admin',
-  })),
-);
+  };
+});
