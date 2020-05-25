@@ -52,7 +52,7 @@ describe('Table', () => {
   });
 
   // FIXME: Will probably work in meteor tests when we upgrade react-intl
-  it.skip('works with i18n', () => {
+  it.only('works with i18n', () => {
     const columns = [
       { Header: <T id="general.yes" />, accessor: 'col1' },
       {
