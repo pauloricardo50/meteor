@@ -1,6 +1,7 @@
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
 import React, { PureComponent } from 'react';
+import { injectIntl } from 'react-intl';
 
 import Loading from '../../Loading';
 import Chip from '../../Material/Chip';
@@ -222,5 +223,5 @@ export default Component => {
     displayEmpty: true,
   };
 
-  return CustomSelectFieldContainer;
+  return injectIntl(CustomSelectFieldContainer);
 };
