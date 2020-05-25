@@ -586,10 +586,10 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe('getTheoreticalMonthly', () => {
+  describe('getMonthlyProjectCost', () => {
     it('uses the default theoretical rate', () => {
       expect(
-        Calculator.getTheoreticalMonthly({
+        Calculator.getMonthlyProjectCost({
           loan: {
             structure: {
               wantedLoan: 960000,
@@ -608,7 +608,7 @@ describe('LoanCalculator', () => {
         theoreticalInterestRate: 0.01,
       });
       expect(
-        Calc.getTheoreticalMonthly({
+        Calc.getMonthlyProjectCost({
           loan: {
             structure: {
               wantedLoan: 960000,
@@ -635,7 +635,7 @@ describe('LoanCalculator', () => {
       // 2800 for the other property
 
       expect(
-        Calc.getTheoreticalMonthly({
+        Calc.getMonthlyProjectCost({
           loan: {
             structure: {
               wantedLoan: 960000,
@@ -787,7 +787,7 @@ describe('LoanCalculator', () => {
       expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
     });
 
-    it.only('Adds negative deltas to expenses using positive negative split algorithm', () => {
+    it('Adds negative deltas to expenses using positive negative split algorithm', () => {
       const calc = new CalculatorClass({
         realEstateIncomeAlgorithm:
           REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,

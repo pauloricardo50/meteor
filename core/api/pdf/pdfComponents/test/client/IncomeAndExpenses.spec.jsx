@@ -10,14 +10,12 @@ import Calculator, {
 
 import {
   cleanup,
-  fireEvent,
   render,
-  waitFor,
   within,
 } from '../../../../../utils/testHelpers/testing-library';
 import IncomeAndExpenses from '../../pages/StructureAppendixPdfPage/IncomeAndExpenses';
 
-describe.only('IncomeAndExpenses', () => {
+describe('IncomeAndExpenses', () => {
   beforeEach(() => cleanup());
 
   it('renders rows and 2 columns', () => {
