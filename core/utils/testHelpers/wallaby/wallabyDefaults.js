@@ -3,6 +3,8 @@ const merge = require('lodash/merge');
 
 function setWallabyConfig(name, overrides = {}) {
   return function setupWallaby(wallaby) {
+    process.env.RTL_SKIP_AUTO_CLEANUP = true;
+
     return merge(
       {},
       {

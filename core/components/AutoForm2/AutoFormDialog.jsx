@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-// import MuiDialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
+import React, { useMemo } from 'react';
 import pick from 'lodash/pick';
-import { compose, withProps, withState } from 'recompose';
+import { withState } from 'recompose';
 
 import loadable from '../../utils/loadable';
 import Button from '../Button';
@@ -23,7 +21,6 @@ const AutoForm = loadable({
 const getAutoFormProps = props =>
   pick(props, [
     'model',
-    'onSubmit',
     'onSuccessMessage',
     'placeholder',
     'schema',
@@ -33,112 +30,106 @@ const getAutoFormProps = props =>
     'onSubmitSuccess',
   ]);
 
-export class AutoFormDialog extends Component {
-  constructor(props) {
-    super(props);
-    const { autoFieldProps } = props;
-
+export const AutoFormDialog = props => {
+  const {
+    autoFieldProps,
+    buttonProps,
+    children,
+    description,
+    disableActions = false,
+    emptyDialog,
+    important,
+    layout,
+    maxWidth = 'sm',
+    noButton,
+    onDelete,
+    onOpen,
+    onSubmit,
+    renderAdditionalActions,
+    setOpen,
+    title,
+    triggerComponent,
+    deleteKeyword,
+    ...otherProps
+  } = props;
+  // Never recompute this because it's really heavy
+  const autoField = useMemo(() => {
     if (autoFieldProps) {
-      this.autoField = makeCustomAutoField(autoFieldProps);
-    } else {
-      this.autoField = CustomAutoField;
+      return makeCustomAutoField(autoFieldProps);
     }
-  }
+    return CustomAutoField;
+  }, []);
+  const schemaKeys = props.schema._schemaKeys;
 
-  render() {
-    const {
-      autoFieldProps,
-      buttonProps,
-      children,
-      description,
-      disableActions = false,
-      emptyDialog,
-      important,
-      layout,
-      maxWidth = 'sm',
-      noButton,
-      onDelete,
-      onOpen,
-      onSubmit,
-      renderAdditionalActions,
-      setOpen,
-      title,
-      triggerComponent,
-      deleteKeyword,
-      noCancel,
-      ...otherProps
-    } = this.props;
-    const schemaKeys = this.props.schema._schemaKeys;
+  const handleOpen = event => {
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    setOpen(true);
 
-    const handleOpen = event => {
-      if (event && event.stopPropagation) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
-      setOpen(true);
+    if (onOpen) {
+      onOpen();
+    }
+  };
+  const handleClose = event => {
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    setOpen(false);
+  };
 
-      if (onOpen) {
-        onOpen();
-      }
-    };
-    const handleClose = event => {
-      if (event && event.stopPropagation) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
-      setOpen(false);
-    };
+  const wrappedOnSubmit = (...args) =>
+    onSubmit(...args).then(() => setOpen(false));
 
-    return (
-      <>
-        {triggerComponent
-          ? triggerComponent(handleOpen)
-          : !noButton && <Button {...buttonProps} onClick={handleOpen} />}
-        <MuiDialog
-          disableBackdropClick={important}
-          disableEscapeKeyDown={important}
-          onClose={handleClose}
-          className="autoform-dialog"
-          maxWidth={maxWidth}
-          fullWidth
-          onClick={e => {
-            // Clicking on the dialog should not trigger a table row below it..
-            e.stopPropagation();
-          }}
-          {...otherProps}
-        >
-          {title && <DialogTitle>{title}</DialogTitle>}
-          <AutoForm {...getAutoFormProps(this.props)}>
-            <AutoFormDialogContent
-              autoField={this.autoField}
-              description={description}
-              emptyDialog={emptyDialog}
-              handleClose={handleClose}
-              onSubmit={onSubmit}
-              layout={layout}
-              schemaKeys={schemaKeys}
-            >
-              {children}
-            </AutoFormDialogContent>
-            <AutoFormDialogActions
-              handleClose={handleClose}
-              onSubmit={onSubmit}
-              renderAdditionalActions={renderAdditionalActions}
-              disableActions={disableActions}
-              onDelete={onDelete}
-              deleteKeyword={deleteKeyword}
-              noCancel={noCancel}
-            />
-          </AutoForm>
-        </MuiDialog>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {triggerComponent
+        ? triggerComponent(handleOpen)
+        : !noButton && <Button {...buttonProps} onClick={handleOpen} />}
+      <MuiDialog
+        disableBackdropClick={important}
+        disableEscapeKeyDown={important}
+        onClose={handleClose}
+        className="autoform-dialog"
+        maxWidth={maxWidth}
+        fullWidth
+        onClick={e => {
+          // Clicking on the dialog should not trigger a table row below it..
+          e.stopPropagation();
+        }}
+        {...otherProps}
+      >
+        {title && <DialogTitle>{title}</DialogTitle>}
+        <AutoForm {...getAutoFormProps(props)} onSubmit={wrappedOnSubmit}>
+          <AutoFormDialogContent
+            autoField={autoField}
+            description={description}
+            emptyDialog={emptyDialog}
+            handleClose={handleClose}
+            onSubmit={wrappedOnSubmit}
+            layout={layout}
+            schemaKeys={schemaKeys}
+          >
+            {children}
+          </AutoFormDialogContent>
+          <AutoFormDialogActions
+            handleClose={handleClose}
+            onSubmit={wrappedOnSubmit}
+            renderAdditionalActions={renderAdditionalActions}
+            disableActions={disableActions}
+            onDelete={onDelete}
+            deleteKeyword={deleteKeyword}
+          />
+        </AutoForm>
+      </MuiDialog>
+    </>
+  );
+};
 
-export default compose(
-  withState('open', 'setOpen', ({ openOnMount }) => !!openOnMount),
-  withProps(({ onSubmit, setOpen }) => ({
-    onSubmit: (...args) => onSubmit(...args).then(() => setOpen(false)),
-  })),
+export default withState(
+  'open',
+  'setOpen',
+  ({ openOnMount }) => !!openOnMount,
 )(AutoFormDialog);

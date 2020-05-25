@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -114,7 +114,6 @@ export default compose(
     dataName: 'existingOrganisations',
     smallLoader: true,
   }),
-  withState('submitting', 'setSubmitting', false),
   withProps(({ existingOrganisations, model }) => {
     const initialSearchParams = useSearchParams();
     const [searchParams, setSearchParams] = useState(initialSearchParams);

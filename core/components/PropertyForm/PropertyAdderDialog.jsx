@@ -110,10 +110,7 @@ const PropertyAdderDialog = withProps(
           });
 
     return {
-      onSubmit: property =>
-        onSubmit(property)
-          .then(onSubmitSuccess)
-          .then(() => setOpen(false)),
+      onSubmit: property => onSubmit(property).then(onSubmitSuccess),
       form: 'add-property',
       formTitleId: 'PropertyForm.adderDialogTitle',
       formDescriptionId: isRefinancing

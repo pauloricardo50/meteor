@@ -494,7 +494,7 @@ describe('SolvencyCalculator', () => {
           },
         ],
       });
-      expect(result.propertyValue).to.equal(818000);
+      expect(result.propertyValue).to.equal(817000);
     });
   });
 

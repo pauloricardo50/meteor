@@ -11,7 +11,6 @@ const ModifyIrs10ytRatesDialogForm = ({
   open,
   setOpen,
   irs10yToModify,
-  submitting,
 }) => (
   <AutoFormDialog
     noButton
@@ -20,7 +19,6 @@ const ModifyIrs10ytRatesDialogForm = ({
     onSubmit={modifyIrs10y}
     open={open}
     setOpen={setOpen}
-    submitting={submitting}
     onDelete={() => removeIrs10y(irs10yToModify._id)}
   />
 );
