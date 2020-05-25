@@ -1,5 +1,5 @@
-import { injectIntl } from 'react-intl';
-import { compose, withProps } from 'recompose';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { offerSendFeedback } from '../../api/offers/methodDefinitions';
@@ -51,36 +51,34 @@ const schema = ({ offer, formatMessage }) =>
     },
   });
 
-export default compose(
-  injectIntl,
-  withProps(({ offer, intl: { formatMessage } }) => {
-    const {
-      _id: offerId,
-      feedback = {},
-      lender: { contact },
-    } = offer;
+export default withProps(({ offer }) => {
+  const { formatMessage } = useIntl();
+  const {
+    _id: offerId,
+    feedback = {},
+    lender: { contact },
+  } = offer;
 
-    const { message } = feedback;
+  const { message } = feedback;
 
-    return {
-      schema: schema({ offer, formatMessage }),
-      onSubmit: object => {
-        if (message) {
-          return Promise.resolve();
-        }
-
-        const { name } = contact || {};
-        const confirm = window.confirm(
-          `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
-        );
-        if (confirm) {
-          return offerSendFeedback.run({
-            offerId,
-            feedback: makeFeedback({ model: object, offer, formatMessage }),
-          });
-        }
+  return {
+    schema: schema({ offer, formatMessage }),
+    onSubmit: object => {
+      if (message) {
         return Promise.resolve();
-      },
-    };
-  }),
-);
+      }
+
+      const { name } = contact || {};
+      const confirm = window.confirm(
+        `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
+      );
+      if (confirm) {
+        return offerSendFeedback.run({
+          offerId,
+          feedback: makeFeedback({ model: object, offer, formatMessage }),
+        });
+      }
+      return Promise.resolve();
+    },
+  };
+});

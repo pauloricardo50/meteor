@@ -1,7 +1,6 @@
 import { Random } from 'meteor/random';
 
 import React, { useEffect, useState } from 'react';
-import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { connectField } from 'uniforms';
 
@@ -64,7 +63,6 @@ export default compose(
       />
     );
   },
-  injectIntl,
   displayFullState,
   tempFileState,
   addProps,

@@ -10,7 +10,7 @@ describe('PageHead', () => {
   const component = () => shallow(<PageHead {...props} />);
 
   beforeEach(() => {
-    props = { intl: { formatMessage: ({ id }) => id } };
+    props = {};
   });
 
   it('renders a title tag with just e-Potek in it if no title is provided', () => {

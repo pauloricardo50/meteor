@@ -2,9 +2,8 @@ import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import queryString from 'query-string';
-import { injectIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { organisationRemove } from 'core/api/organisations/methodDefinitions';
 import { ROLES } from 'core/api/users/userConstants';
@@ -14,12 +13,10 @@ import T from 'core/components/Translation/Translation';
 
 import OrganisationModifier from './OrganisationModifier';
 
-const SingleOrganisationPage = ({
-  organisation,
-  history,
-  intl: { formatMessage },
-  currentUser,
-}) => {
+const SingleOrganisationPage = ({ organisation, currentUser }) => {
+  const { formatMessage } = useIntl();
+  const history = useHistory();
+
   const {
     _id: organisationId,
     logo,
@@ -85,4 +82,4 @@ const SingleOrganisationPage = ({
   );
 };
 
-export default compose(withRouter, injectIntl)(SingleOrganisationPage);
+export default SingleOrganisationPage;

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import uniqBy from 'lodash/uniqBy';
+import { useIntl } from 'react-intl';
 import { lifecycle, withProps, withStateHandlers } from 'recompose';
 
 import ClientEventService, {
@@ -71,56 +72,60 @@ export const addProps = withProps(
     setTempSuccessFiles,
     handleSuccess,
     addTempSuccessFile,
-    intl: { formatMessage: f },
-  }) => ({
-    handleAddFiles: files => {
-      const fileArray = [];
-      let showError = false;
+  }) => {
+    const { formatMessage: f } = useIntl();
+    return {
+      handleAddFiles: files => {
+        const fileArray = [];
+        let showError = false;
 
-      files.forEach(file => {
-        const isValid = checkFile(
-          file,
-          [...currentValue, ...tempSuccessFiles],
-          tempFiles,
-        );
-        if (isValid === true) {
-          fileArray.push(file);
-        } else {
-          showError = isValid;
+        files.forEach(file => {
+          const isValid = checkFile(
+            file,
+            [...currentValue, ...tempSuccessFiles],
+            tempFiles,
+          );
+          if (isValid === true) {
+            fileArray.push(file);
+          } else {
+            showError = isValid;
+          }
+        });
+
+        if (showError) {
+          import('../../../utils/notification').then(
+            ({ default: notification }) => {
+              notification.error({
+                message: f({ id: `errors.${showError}.title` }),
+                description: f({ id: `errors.${showError}.description` }),
+              });
+            },
+          );
+          return;
         }
-      });
 
-      if (showError) {
-        import('../../../utils/notification').then(
-          ({ default: notification }) => {
-            notification.error({
-              message: f({ id: `errors.${showError}.title` }),
-              description: f({ id: `errors.${showError}.description` }),
-            });
-          },
-        );
-        return;
-      }
+        addTempFiles(files);
+      },
+      handleUploadComplete: (file, url) => {
+        addTempSuccessFile(file);
+        if (handleSuccess) {
+          handleSuccess(file, url);
+        }
+      },
+      handleRemove: key =>
+        deleteFile(key).then(() => {
+          // Filter temp files if this is not a real file from the DB
+          setTempSuccessFiles(
+            tempSuccessFiles.filter(({ Key }) => Key !== key),
+          );
 
-      addTempFiles(files);
-    },
-    handleUploadComplete: (file, url) => {
-      addTempSuccessFile(file);
-      if (handleSuccess) {
-        handleSuccess(file, url);
-      }
-    },
-    handleRemove: key =>
-      deleteFile(key).then(() => {
-        // Filter temp files if this is not a real file from the DB
-        setTempSuccessFiles(tempSuccessFiles.filter(({ Key }) => Key !== key));
-
-        // Wait for a sec before pinging the DB again
-        setTimeout(() => {
-          ClientEventService.emit(MODIFIED_FILES_EVENT);
-        }, 0);
-      }),
-  }),
+          // Wait for a sec before pinging the DB again
+          setTimeout(() => {
+            ClientEventService.emit(MODIFIED_FILES_EVENT);
+          }, 0);
+        }),
+    };
+  },
 );
 
 export const propHasChanged = (oldProp, newProp) =>
