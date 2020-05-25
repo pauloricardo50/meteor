@@ -24,6 +24,7 @@ const defaultJobValues = {
         // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
+        RTL_SKIP_AUTO_CLEANUP: 1,
       },
     },
   ],

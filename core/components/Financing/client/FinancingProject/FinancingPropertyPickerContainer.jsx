@@ -96,10 +96,7 @@ const FinancingPropertyPickerContainer = compose(
               loanId,
               userId: Meteor.microservice === 'admin' ? userId : undefined,
             })
-            .then(newId => {
-              handleChange(newId);
-              setOpenForm(false);
-            }),
+            .then(newId => handleChange(newId)),
       };
     },
   ),

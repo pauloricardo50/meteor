@@ -87,8 +87,7 @@ export default withProps(
               setConfirmDialogProps,
               setConfirmDialogActions,
             }),
-          )
-          .then(() => setOpenDialog(false)),
+          ),
       openConfirmDialog,
       confirmDialogActions,
       confirmDialogProps,

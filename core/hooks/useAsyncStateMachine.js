@@ -33,6 +33,7 @@ const stateMachine = (state, action) => {
       return {
         ...state,
         data: action.payload,
+        config: action.config,
         error: null,
         status: STATES.IDLE,
       };
@@ -56,7 +57,7 @@ const useAsyncStateMachine = () => {
     [],
   );
   const setData = useCallback(
-    data => dispatch({ type: EVENTS.SUCCESS, payload: data }),
+    (data, config) => dispatch({ type: EVENTS.SUCCESS, payload: data, config }),
     [],
   );
 

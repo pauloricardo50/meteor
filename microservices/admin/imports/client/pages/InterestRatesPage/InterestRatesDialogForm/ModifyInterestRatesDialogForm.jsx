@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
 
 import InterestRatesDialogFormContainer from './InterestRatesDialogFormContainer';
 
@@ -14,7 +12,6 @@ const ModifyInterestRatesDialogForm = ({
   open,
   setOpen,
   interestRatesToModify,
-  submitting,
 }) => (
   <AutoFormDialog
     emptyDialog
@@ -24,7 +21,6 @@ const ModifyInterestRatesDialogForm = ({
     onSubmit={modifyInterestRates}
     open={open}
     setOpen={setOpen}
-    submitting={submitting}
     onDelete={() => removeInterestRates(interestRatesToModify._id)}
   >
     {() => fields}
