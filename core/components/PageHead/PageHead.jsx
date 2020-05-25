@@ -21,6 +21,7 @@ const formatTitle = ({ titleId, title }, formatMessage) => {
 // https://github.com/nfl/react-helmet/issues/373
 export const PageHead = ({ descriptionId, ...props }) => {
   const { formatMessage } = useIntl();
+
   return (
     <Helmet
       defaultTitle="e-Potek"
@@ -34,9 +35,7 @@ export const PageHead = ({ descriptionId, ...props }) => {
               },
             ]
           : []),
-        {
-          charSet: 'UTF-8',
-        },
+        { charSet: 'UTF-8' },
       ]}
     />
   );
