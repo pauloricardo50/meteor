@@ -23,8 +23,9 @@ const StructureAppendixPdfPage = ({
   const pageName = `${structureName || structureIndex + 1}`;
 
   const totalExpenses =
-    calculator.getTheoreticalMonthly({ loan, structureId }) * 12;
-  const totalIncome = calculator.getTotalIncome({ loan, structureId });
+    calculator.getMonthlyProjectCost({ loan, structureId }) * 12;
+  const totalIncome =
+    calculator.getMonthlyProjectIncome({ loan, structureId }) * 12;
   const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
 
   return (

@@ -210,6 +210,10 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
     REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT;
 
   const shouldDisplayDeltaSection = isPositiveNegativeSplit && !!addToExpenses;
+  const propertyIncome = calculator.getYearlyPropertyIncome({
+    loan,
+    structureId,
+  });
 
   const allExpenses = [
     {
@@ -222,8 +226,8 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
     },
     {
       label: <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
-      value: -calculator.getYearlyPropertyIncome({ loan, structureId }),
-      condition: shouldDisplayDeltaSection,
+      value: -propertyIncome,
+      condition: shouldDisplayDeltaSection && !!propertyIncome,
       secondary: true,
     },
     {
@@ -260,50 +264,6 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
   return allExpenses
     .map(renderRow(shouldDisplayDeltaSection))
     .filter(({ condition }) => shouldRenderRow(condition));
-
-  // return [
-  //   {
-  //     label: (
-  //       <>
-  //         <b>Taux d'intérêt théorique&nbsp;</b>
-  //         <span className="secondary">
-  //           (<Percent value={theoreticalInterestRate} />)
-  //         </span>
-  //       </>
-  //     ),
-  //     value: toMoney(propertyCost.interests * 12),
-  //     money: false,
-  //   },
-  //   {
-  //     label: (
-  //       <>
-  //         <b>Amortissement théorique&nbsp;</b>
-  //         <span className="secondary">
-  //           (<Percent value={amortizationRate} />)
-  //         </span>
-  //       </>
-  //     ),
-  //     value: toMoney(propertyCost.amortization * 12),
-  //     money: false,
-  //   },
-  //   {
-  //     label: (
-  //       <>
-  //         <b>Frais d'entretien théorique&nbsp;</b>
-  //         <span className="secondary">
-  //           (<Percent value={theoreticalMaintenanceRate} />)
-  //         </span>
-  //       </>
-  //     ),
-  //     value: toMoney(propertyCost.maintenance * 12),
-  //     money: false,
-  //   },
-  //   ...Object.keys(expenses).map(expenseType => ({
-  //     label: getExpenseLabel(expenseType),
-  //     value: expenses[expenseType],
-  //     condition: !!expenses[expenseType],
-  //   })),
-  // ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
 const IncomeAndExpenses = ({ loan, structureId, calculator }) => (
