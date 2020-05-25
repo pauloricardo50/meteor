@@ -1,8 +1,6 @@
 // This file is shared between client and server to allow server-side tests to have access to it
 
 import moment from 'moment';
-import { addLocaleData } from 'react-intl';
-import fr from 'react-intl/locale-data/fr';
 
 import intl from '../intl';
 import { setupMoment } from './localizationHelpers';
@@ -13,9 +11,6 @@ export const localizationStartup = ({
   setupCountries = true,
   messages,
 } = {}) => {
-  // Add locales used in app here
-  addLocaleData(fr);
-
   setupMoment();
   moment.locale('fr');
 
@@ -46,5 +41,16 @@ export const localizationStartup = ({
   if (setupCountries) {
     const countries = require('i18n-iso-countries');
     countries.registerLocale(require('i18n-iso-countries/langs/fr.json'));
+  }
+
+  // Do this for browsers that don't have language things
+  // https://formatjs.io/docs/react-intl/upgrade-guide-3x#migrate-to-using-native-intl-apis
+  if (!Intl.PluralRules) {
+    require('@formatjs/intl-pluralrules/polyfill');
+    require('@formatjs/intl-pluralrules/dist/locale-data/fr'); // Add locale data for de
+  }
+  if (!Intl.RelativeTimeFormat) {
+    require('@formatjs/intl-relativetimeformat/polyfill');
+    require('@formatjs/intl-relativetimeformat/dist/locale-data/fr'); // Add locale data for de
   }
 };
