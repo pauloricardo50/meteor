@@ -1,5 +1,5 @@
 import React from 'react';
-import Menu from '../Menu';
+import FooterMenu from './FooterMenu';
 import LanguagePicker from '../LanguagePicker';
 import NewsletterSignup from '../NewsletterSignup';
 import SocialLinks from '../SocialLinks';
@@ -29,7 +29,7 @@ const LinkedLocation = ({ location }) => (
 
 const Footer = () => (
   <footer className="footer container">
-    <Menu menuName="main" />
+    <FooterMenu />
 
     <div
       className="contact"

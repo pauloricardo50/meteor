@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import IconButton from 'core/components/IconButton';
-import MainMenuItems from './MainMenuItems';
+import MenuItems from '../MenuItems';
 import getMenuLinks from '../../utils/getMenuLinks';
 
 const MainMenu = () => {
@@ -35,7 +35,7 @@ const MainMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MainMenuItems menuLinks={menuLinks} />
+        <MenuItems menuLinks={menuLinks} />
       </Menu>
     </div>
   );
