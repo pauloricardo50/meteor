@@ -18,7 +18,7 @@ const FinancingResultSuccess = ({ className, ...props }) => {
 
   return (
     <div className={cx('financing-structures-result-chart', className)}>
-      <span className="total">
+      <span className="total" data-testid="financing-total">
         <span className="chf">CHF </span>
         {toMoney(amortization + interests + propertyExpenses)}
         <small>&nbsp;/mois</small>

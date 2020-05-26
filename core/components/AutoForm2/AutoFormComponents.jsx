@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { intlShape } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
@@ -153,6 +153,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
+    const intl = useIntl();
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
 
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
@@ -190,7 +191,14 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       [],
     );
     const placeholder = useMemo(
-      () => getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
+      () =>
+        getPlaceholder({
+          ...props,
+          ...additionalProps,
+          intl,
+          intlPrefix,
+          type,
+        }),
       [],
     );
 
@@ -220,7 +228,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
   CustomAutoField.contextTypes = AutoField.contextTypes;
 
   return compose(
-    getContext({ intl: intlShape, ...AutoField.contextTypes }),
+    getContext(AutoField.contextTypes),
     connectField,
   )(CustomAutoField, { includeInChain: false, includeParent: true });
 };

@@ -209,11 +209,15 @@ const analysisConfig = {
     unsuccessfulReason: {
       label: "Raison d'archivage",
       format: ({ unsuccessfulReason }) =>
-        Object.values(UNSUCCESSFUL_LOAN_REASONS).includes(unsuccessfulReason)
-          ? formatMessage({
-              id: `Forms.unsuccessfulReason.${unsuccessfulReason}`,
-            })
-          : 'Autre',
+        unsuccessfulReason
+          ? Object.values(UNSUCCESSFUL_LOAN_REASONS).includes(
+              unsuccessfulReason,
+            )
+            ? formatMessage({
+                id: `Forms.unsuccessfulReason.${unsuccessfulReason}`,
+              })
+            : 'Autre'
+          : undefined,
     },
   },
   [REVENUES_COLLECTION]: {

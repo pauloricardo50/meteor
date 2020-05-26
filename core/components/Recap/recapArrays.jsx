@@ -7,7 +7,7 @@ import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import Calculator from '../../utils/Calculator';
 import { toMoney } from '../../utils/conversionFunctions';
 import PercentWithStatus from '../PercentWithStatus/PercentWithStatus';
-import { MetricArea, Percent, T } from '../Translation';
+import T, { MetricArea, Money, Percent } from '../Translation';
 
 export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const borrowRatio = calc.getBorrowRatio({ loan });
@@ -606,7 +606,9 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       title: true,
       label: 'Recap.buyersContract',
-      intlValues: { value: toMoney(propertyValue) },
+      intlValues: {
+        value: <Money value={propertyValue} />,
+      },
       hide: !buyersContractFees,
     },
     ...(buyersContractFees ? getRecapForObject(buyersContractValues) : []),
@@ -635,7 +637,9 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       title: true,
       label: 'Recap.mortgageNote',
-      intlValues: { value: toMoney(mortgageNoteIncrease) },
+      intlValues: {
+        value: <Money value={mortgageNoteIncrease} />,
+      },
       hide: !mortgageNoteFees,
     },
     ...(mortgageNoteFees ? getRecapForObject(mortgageNoteValues) : []),

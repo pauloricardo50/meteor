@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useEffect, useState } from 'react';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
-const EmailList = ({ intl: { formatMessage: f } }) => {
+const EmailList = () => {
+  const { formatMessage: f } = useIntl();
   const [listenerData, setListeners] = useState([]);
 
   useEffect(() => {
@@ -41,4 +42,4 @@ const EmailList = ({ intl: { formatMessage: f } }) => {
   );
 };
 
-export default injectIntl(EmailList);
+export default EmailList;

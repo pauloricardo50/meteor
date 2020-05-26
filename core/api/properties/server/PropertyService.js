@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { adminLoan } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
@@ -37,7 +36,7 @@ class PropertyService extends CollectionService {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
         return removePropertyFromLoan({
-          loan: LoanService.get(loanId, adminLoan()),
+          loan: LoanService.get(loanId, { _id: 1, structures: 1 }),
           propertyId,
         });
       }
@@ -111,7 +110,7 @@ class PropertyService extends CollectionService {
   }
 
   removeCustomerFromProperty({ propertyId, loanId }) {
-    const loan = LoanService.get(loanId, adminLoan());
+    const loan = LoanService.get(loanId, { _id: 1, structures: 1 });
     const { structures = [] } = loan;
 
     if (structures.length) {

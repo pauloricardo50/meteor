@@ -1,5 +1,4 @@
 import React from 'react';
-import { injectIntl } from 'react-intl';
 import { scroller } from 'react-scroll';
 import { compose, withProps } from 'recompose';
 
@@ -85,5 +84,4 @@ export default compose(
     rows: lots.map(makeMapAdditionalLot({ canModifyLots })),
     columnOptions,
   })),
-  injectIntl,
 );
