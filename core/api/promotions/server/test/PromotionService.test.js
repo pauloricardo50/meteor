@@ -751,14 +751,9 @@ describe('PromotionService', function() {
     beforeEach(() => {
       generator({
         users: [
-          {
-            _id: 'user',
-          },
+          { _id: 'user' },
           { _id: 'user2' },
-          {
-            _id: 'admin',
-            _factory: 'admin',
-          },
+          { _id: 'admin', _factory: 'admin' },
           {
             _id: 'pro',
             _factory: 'pro',
@@ -772,12 +767,7 @@ describe('PromotionService', function() {
         ],
         promotions: {
           _id: 'promotion',
-          promotionLots: [
-            {
-              _id: 'pL',
-            },
-            { _id: 'pL2' },
-          ],
+          promotionLots: [{ _id: 'pL' }, { _id: 'pL2' }],
         },
         loans: [
           {
@@ -796,6 +786,19 @@ describe('PromotionService', function() {
               _id: 'pO2',
               promotionLots: { _id: 'pL' },
               promotion: { _id: 'promotion' },
+              bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+              simpleVerification: {
+                status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+              },
+              fullVerification: {
+                status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+              },
+              reservationAgreement: {
+                status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+              },
+              reservationDeposit: {
+                status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+              },
             },
             promotions: { _id: 'promotion' },
           },
@@ -907,22 +910,6 @@ describe('PromotionService', function() {
     });
 
     it('does not change the promotionLotStatus if it was not attributed to this loan', async () => {
-      PromotionOptionService.update({
-        promotionOptionId: 'pO2',
-        object: {
-          bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
-          simpleVerification: {
-            status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
-          },
-          fullVerification: {
-            status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
-          },
-          reservationAgreement: {
-            status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
-          },
-          reservationDeposit: { status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID },
-        },
-      });
       PromotionLotService.reservePromotionLot({
         promotionOptionId: 'pO2',
       });
