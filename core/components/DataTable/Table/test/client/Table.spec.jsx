@@ -491,7 +491,7 @@ describe('Table', () => {
         <Table data={data} columns={columns} onStateChange={onStateChange} />,
       );
 
-      await new Promise(r => setTimeout(r, 60));
+      await new Promise(r => setTimeout(r, 200));
 
       // Sort
       fireEvent.click(getByText('Column 1'));
