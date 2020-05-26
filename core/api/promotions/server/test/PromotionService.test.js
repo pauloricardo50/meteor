@@ -3,18 +3,32 @@ import { Factory } from 'meteor/dburles:factory';
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { resetDatabase } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import LotService from '../../../lots/server/LotService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
-import { PROMOTION_OPTION_STATUS } from '../../../promotionOptions/promotionOptionConstants';
+import {
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import PropertyService from '../../../properties/server/PropertyService';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
-import { PROMOTION_STATUS, PROMOTION_TYPES } from '../../promotionConstants';
+import { removeLoanFromPromotion } from '../../methodDefinitions';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_TYPES,
+  PROMOTION_USERS_ROLES,
+} from '../../promotionConstants';
 import PromotionService from '../PromotionService';
 
 describe('PromotionService', function() {
@@ -729,6 +743,249 @@ describe('PromotionService', function() {
 
       expect(promotion.userLinks[0].permissions.displayCustomerNames).to.equal(
         false,
+      );
+    });
+  });
+
+  describe('removeLoanFromPromotion', () => {
+    beforeEach(() => {
+      generator({
+        users: [
+          { _id: 'user' },
+          { _id: 'user2' },
+          { _id: 'admin', _factory: 'admin' },
+          {
+            _id: 'pro',
+            _factory: 'pro',
+            promotions: {
+              _id: 'promotion',
+              $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
+            },
+            emails: [{ address: 'pro@e-potek.ch', verified: true }],
+            organisations: { _id: 'org' },
+          },
+        ],
+        promotions: {
+          _id: 'promotion',
+          promotionLots: [{ _id: 'pL' }, { _id: 'pL2' }],
+        },
+        loans: [
+          {
+            _id: 'loan',
+            promotionOptions: {
+              _id: 'pO',
+              promotionLots: { _id: 'pL' },
+              promotion: { _id: 'promotion' },
+            },
+            promotions: { _id: 'promotion', $metadata: { invitedBy: 'pro' } },
+            user: { _id: 'user' },
+          },
+          {
+            _id: 'loan2',
+            promotionOptions: {
+              _id: 'pO2',
+              promotionLots: { _id: 'pL' },
+              promotion: { _id: 'promotion' },
+              bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+              simpleVerification: {
+                status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+              },
+              fullVerification: {
+                status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+              },
+              reservationAgreement: {
+                status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+              },
+              reservationDeposit: {
+                status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+              },
+            },
+            promotions: { _id: 'promotion' },
+          },
+          {
+            _id: 'loan3',
+            promotionOptions: [
+              {
+                _id: 'pO3',
+                promotionLots: { _id: 'pL' },
+                promotion: { _id: 'promotion' },
+              },
+              {
+                _id: 'pO4',
+                promotionLots: { _id: 'pL2' },
+                promotion: { _id: 'promotion' },
+              },
+            ],
+            promotions: { _id: 'promotion', $metadata: { invitedBy: 'pro' } },
+            user: { _id: 'user' },
+          },
+        ],
+      });
+    });
+
+    it('removes the promotion from the loan', async () => {
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan',
+          promotionId: 'promotion',
+        }),
+      );
+      await checkEmails(1);
+
+      const { promotions = [] } = LoanService.get('loan', {
+        promotions: { _id: 1 },
+      });
+
+      expect(promotions.length).to.equal(0);
+    });
+
+    it('removes the related promotion option', async () => {
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan',
+          promotionId: 'promotion',
+        }),
+      );
+      await checkEmails(1);
+
+      const { promotionOptions = [] } = PromotionService.get('promotion', {
+        promotionOptions: { _id: 1 },
+      });
+      expect(promotionOptions.length).to.equal(3);
+      expect(promotionOptions.some(({ _id }) => _id === 'pO')).to.equal(false);
+    });
+
+    it('removes the related promotion options', async () => {
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan3',
+          promotionId: 'promotion',
+        }),
+      );
+      await checkEmails(2);
+
+      const { promotionOptions = [] } = PromotionService.get('promotion', {
+        promotionOptions: { _id: 1 },
+      });
+      expect(promotionOptions.length).to.equal(2);
+      expect(
+        promotionOptions.some(({ _id }) => _id === 'pO3' || _id === 'pO4'),
+      ).to.equal(false);
+    });
+
+    it('changes the promotionLotStatus if it was attributed to this loan', async () => {
+      PromotionOptionService.update({
+        promotionOptionId: 'pO',
+        object: {
+          bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+          simpleVerification: {
+            status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+          },
+          fullVerification: {
+            status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+          },
+          reservationAgreement: {
+            status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+          },
+          reservationDeposit: { status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID },
+        },
+      });
+      PromotionLotService.reservePromotionLot({
+        promotionOptionId: 'pO',
+      });
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan',
+          promotionId: 'promotion',
+        }),
+      );
+      await checkEmails(1);
+
+      const { status, attributedTo } = PromotionLotService.get('pL', {
+        status: 1,
+        attributedTo: { _id: 1 },
+      });
+      expect(status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
+      expect(attributedTo).to.equal(undefined);
+    });
+
+    it('does not change the promotionLotStatus if it was not attributed to this loan', async () => {
+      PromotionLotService.reservePromotionLot({
+        promotionOptionId: 'pO2',
+      });
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan',
+          promotionId: 'promotion',
+        }),
+      );
+      await checkEmails(1);
+
+      const { status, attributedTo } = PromotionLotService.get('pL', {
+        status: 1,
+        attributedTo: { _id: 1 },
+      });
+      expect(status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
+      expect(attributedTo._id).to.equal('loan2');
+    });
+
+    it('sends the email if a reservation was active', async () => {
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan',
+          promotionId: 'promotion',
+        }),
+      );
+      const [{ emailId }] = await checkEmails(1);
+      expect(emailId).to.equal(
+        EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS,
+      );
+    });
+
+    it('sends the email if a reservation was reserved', async () => {
+      PromotionOptionService.update({
+        promotionOptionId: 'pO',
+        object: {
+          bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+          simpleVerification: {
+            status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+          },
+          fullVerification: {
+            status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+          },
+          reservationAgreement: {
+            status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+          },
+          reservationDeposit: { status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID },
+        },
+      });
+      PromotionLotService.reservePromotionLot({
+        promotionOptionId: 'pO',
+      });
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan',
+          promotionId: 'promotion',
+        }),
+      );
+      await checkEmails(1);
+
+      const [{ emailId }] = await checkEmails(1);
+      expect(emailId).to.equal(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION);
+    });
+
+    it('sends emails for each reservation', async () => {
+      await ddpWithUserId('admin', () =>
+        removeLoanFromPromotion.run({
+          loanId: 'loan3',
+          promotionId: 'promotion',
+        }),
+      );
+      const emails = await checkEmails(2);
+      emails.forEach(({ emailId }) =>
+        expect(emailId).to.equal(
+          EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS,
+        ),
       );
     });
   });
