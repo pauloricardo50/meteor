@@ -2,22 +2,6 @@ import Calculator from '../../../utils/Calculator';
 import { FinanceCalculator } from '../../../utils/FinanceCalculator';
 import { makeArgumentMapper } from '../../../utils/MiddlewareManager/index';
 
-export const getProperty = ({ loan, structureId }) =>
-  Calculator.selectProperty({ loan, structureId });
-
-export const getOffer = ({ structureId, loan }) =>
-  Calculator.selectOffer({ loan, structureId });
-
-export const getAmortizationRateMapper = data => {
-  const {
-    structure: { wantedLoan, propertyWork },
-  } = data;
-  return {
-    borrowRatio:
-      wantedLoan / (Calculator.selectPropertyValue(data) + propertyWork),
-  };
-};
-
 export const getInterestRates = ({ structureId, loan, offer }) => {
   const { offerId } = Calculator.selectStructure({
     loan,
