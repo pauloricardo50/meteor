@@ -352,12 +352,12 @@ class PromotionOptionService extends CollectionService {
   };
 
   cancelReservation({ promotionOptionId }) {
-    const {status: oldStatus} = this.get(promotionOptionId, {status: 1});
+    const { status: oldStatus } = this.get(promotionOptionId, { status: 1 });
     this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     });
-    return {oldStatus};
+    return { oldStatus };
   }
 
   completeReservation({ promotionOptionId }) {
