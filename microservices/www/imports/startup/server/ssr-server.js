@@ -26,20 +26,20 @@ onPageLoad(async sink => {
 
   await setHeaders(sink);
 
-  sink.renderIntoElementById(
-    startupConstants.ROOT_ID,
-    // Can't use the new "renderToNodeStream" because of JSS
-    // See this issue: https://github.com/mui-org/material-ui/issues/8503
-    renderToString(
-      sheets.collect(
-        <ServerApp
-          store={store}
-          context={context}
-          location={sink.request.url}
-        />,
-      ),
+  const html = renderToString(
+    sheets.collect(
+      <ServerApp store={store} context={context} location={sink.request.url} />,
     ),
   );
+
+  // Get the CSS after it's been rendered by the server
+  // And inject it to the client
+  const css = sheets.toString();
+  sink.appendToHead(`
+    <style id="jss-server-side">
+      ${css}
+    </style>
+  `);
 
   const helmet = Helmet.renderStatic();
   sink.appendToHead(helmet.meta.toString());
@@ -51,13 +51,12 @@ onPageLoad(async sink => {
     </script>
   `);
 
-  // Get the CSS after it's been rendered by the server
-  // And inject it to the client
-  const css = sheets.toString();
-  sink.appendToHead(`
-    <style id="jss-server-side">
-      ${css}
-    </style>
-  `);
+  sink.renderIntoElementById(
+    startupConstants.ROOT_ID,
+    // Can't use the new "renderToNodeStream" because of JSS
+    // See this issue: https://github.com/mui-org/material-ui/issues/8503
+    html,
+  );
+
   sink.setStatusCode(200);
 });

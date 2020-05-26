@@ -394,8 +394,7 @@ describe('Public onboarding', () => {
       cy.setSelect('residenceType', 1);
       cy.get('[name="address1"]').type('Place de neuve 2');
       cy.get('[name="zipCode"]').type('1204');
-      cy.get('#mui-component-select-city').click();
-      cy.contains('Genève').click();
+      cy.setSelect('city', 1);
       cy.get('[name="previousLoanTranches.0.value"]').type('500000');
       cy.get('[name="previousLoanTranches.0.dueDate"]').type('2020-01-01');
       cy.get('[name="previousLoanTranches.0.rate"]').type('0.8');

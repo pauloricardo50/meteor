@@ -352,10 +352,12 @@ class PromotionOptionService extends CollectionService {
   };
 
   cancelReservation({ promotionOptionId }) {
-    return this.updateStatus({
+    const { status: oldStatus } = this.get(promotionOptionId, { status: 1 });
+    this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     });
+    return { oldStatus };
   }
 
   completeReservation({ promotionOptionId }) {
@@ -449,6 +451,8 @@ class PromotionOptionService extends CollectionService {
       $filters: {
         'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        'reservationAgreement.status':
+          PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
       },
     });
   };

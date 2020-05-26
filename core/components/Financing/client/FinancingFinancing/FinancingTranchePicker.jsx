@@ -12,7 +12,7 @@ const FinancingTranchePicker = ({
   updateStructure,
   className,
 }) => {
-  const { status, error } = checkTranches(loanTranches, wantedLoan);
+  const { status, errors } = checkTranches(loanTranches, wantedLoan);
 
   return (
     <span className={className}>
@@ -23,16 +23,16 @@ const FinancingTranchePicker = ({
         wantedLoan={wantedLoan}
       />
       {status === 'error' &&
-        (error === 'sumIsNotEqualToWantedLoan' ? (
+        (errors.includes('allTypesAreNotDefined') ? (
+          <div className="error flex-col center">
+            <T id="TranchePicker.error.general" />
+          </div>
+        ) : (
           <div className="error flex-col center">
             <T
               id="TranchePicker.error.sumIsNotEqualToWantedLoan"
               values={{ wantedLoan: <Money value={wantedLoan} /> }}
             />
-          </div>
-        ) : (
-          <div className="error flex-col center">
-            <T id="TranchePicker.error.general" />
           </div>
         ))}
     </span>

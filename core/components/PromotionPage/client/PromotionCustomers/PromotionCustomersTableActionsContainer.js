@@ -24,9 +24,7 @@ export default compose(
       },
       handleOpenForm: () => setOpenDialog(true),
       editLots: values =>
-        editPromotionLoan
-          .run({ ...values, loanId, promotionId })
-          .then(() => setOpenDialog(false)),
+        editPromotionLoan.run({ ...values, loanId, promotionId }),
     }),
   ),
 );

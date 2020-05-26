@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { compose, withState } from 'recompose';
 
 import { withSmartQuery } from '../../../../api/containerToolkit';
 import { LOAN_STATUS } from '../../../../api/loans/loanConstants';
 import { proPromotionLoans } from '../../../../api/loans/queries';
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import T from '../../../Translation';
 import PromotionCustomersTable from './PromotionCustomersTable';
 
 const PromotionCustomers = props => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { loans = [] } = props;
 
   return (

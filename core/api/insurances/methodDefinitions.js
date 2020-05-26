@@ -48,3 +48,8 @@ export const insuranceRemove = new Method({
     insuranceId: String,
   },
 });
+
+export const insuranceUpdateStatus = new Method({
+  name: 'insuranceUpdateStatus',
+  params: { insuranceId: String, status: String },
+});

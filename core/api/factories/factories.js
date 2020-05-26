@@ -18,6 +18,10 @@ import {
 import InsuranceRequests from '../insuranceRequests';
 import Insurances from '../insurances';
 import InterestRates from '../interestRates';
+import {
+  INTEREST_RATES,
+  TRENDS,
+} from '../interestRates/interestRatesConstants';
 import LenderRules from '../lenderRules';
 import {
   DEFAULT_MAIN_RESIDENCE_RULES,
@@ -172,7 +176,24 @@ Factory.define('organisation', Organisations, {
 
 Factory.define('lender', Lenders, {});
 
-Factory.define('interestRates', InterestRates, {});
+Factory.define('interestRates', InterestRates, {
+  date: new Date(),
+  [INTEREST_RATES.YEARS_5]: {
+    rateLow: 0.005,
+    rateHigh: 0.006,
+    trend: TRENDS.FLAT,
+  },
+  [INTEREST_RATES.YEARS_10]: {
+    rateLow: 0.01,
+    rateHigh: 0.011,
+    trend: TRENDS.FLAT,
+  },
+  [INTEREST_RATES.YEARS_15]: {
+    rateLow: 0.015,
+    rateHigh: 0.016,
+    trend: TRENDS.FLAT,
+  },
+});
 
 Factory.define('contact', Contacts, {
   firstName: 'John',

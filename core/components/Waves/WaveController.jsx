@@ -15,6 +15,11 @@ export default class WaveController extends Component {
   constructor(props) {
     super(props);
 
+    this.isSupported =
+      global.SVGPathElement &&
+      SVGPathElement.prototype.getPathData &&
+      SVGPathElement.prototype.setPathData;
+
     this.state = { offset: this.props.initialOffset };
 
     this.offsetIncrement = this.props.speed / FRAMERATE;
@@ -22,7 +27,9 @@ export default class WaveController extends Component {
   }
 
   componentDidMount = () => {
-    requestAnimationFrame(this.animate);
+    if (this.isSupported) {
+      requestAnimationFrame(this.animate);
+    }
   };
 
   componentDidUpdate = ({ width }) => {
@@ -87,6 +94,10 @@ export default class WaveController extends Component {
   };
 
   render() {
+    if (!this.isSupported) {
+      return null;
+    }
+
     return <Wave setPathRef={this.setPathRef} {...this.props} />;
   }
 }

@@ -18,6 +18,7 @@ const AutoFormDialogActions = (
     setDisableActions,
     onDelete,
     deleteKeyword,
+    noCancel,
   },
   {
     uniforms: {
@@ -28,9 +29,11 @@ const AutoFormDialogActions = (
   const [deleting, setDeleting] = useState(false);
   return (
     <DialogActions>
-      <Button onClick={handleClose} disabled={submitting || disableActions}>
-        <T id="general.cancel" />
-      </Button>
+      {!noCancel && (
+        <Button onClick={handleClose} disabled={submitting || disableActions}>
+          <T id="general.cancel" />
+        </Button>
+      )}
 
       {onDelete && (
         <AutoFormDialogDelete

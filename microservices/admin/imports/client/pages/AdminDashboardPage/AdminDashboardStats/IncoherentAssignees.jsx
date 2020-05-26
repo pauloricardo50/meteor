@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
 import { incoherentAssignees } from 'core/api/users/queries';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import StatItem from './StatItem';
 
 const IncoherentAssignees = ({ showAll }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { data: users = [], loading } = useStaticMeteorData({
     query: incoherentAssignees,
     refetchOnMethodCall: false,

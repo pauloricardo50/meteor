@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useIntl } from 'react-intl';
 import { Element } from 'react-scroll';
 import SimpleSchema from 'simpl-schema';
 
@@ -37,9 +38,9 @@ const LotsTable = ({
   rows,
   columnOptions,
   promotion: { promotionLots },
-  intl: { formatMessage },
   ...props
 }) => {
+  const { formatMessage } = useIntl();
   const {
     permissions: { canModifyLots },
   } = useContext(PromotionMetadataContext);

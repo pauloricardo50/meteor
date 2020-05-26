@@ -81,7 +81,7 @@ const testPromotionSchema = new SimpleSchema({
 class DevPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { twoBorrowers: false, users: 5, numberOfRates: 20 };
+    this.state = { twoBorrowers: false, numberOfRates: 20 };
   }
 
   componentDidMount() {
@@ -96,11 +96,9 @@ class DevPage extends Component {
   render() {
     const {
       twoBorrowers,
-      users,
       addOffers,
       isRefinancing,
       numberOfRates,
-      withInvitedBy,
     } = this.state;
     const {
       currentUser,

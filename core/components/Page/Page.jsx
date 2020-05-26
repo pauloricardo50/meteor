@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
 
 import PageHead from '../PageHead';
 import T from '../Translation';
@@ -58,4 +57,4 @@ Page.defaultProps = {
   title: undefined,
 };
 
-export default injectIntl(Page);
+export default Page;

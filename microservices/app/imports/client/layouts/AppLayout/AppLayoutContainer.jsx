@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withProps } from 'recompose';
 
@@ -8,9 +7,9 @@ import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import withMatchParam from 'core/containers/withMatchParam';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import getBaseRedirect, {
   isLogin,
   isOnAllowedRoute,
@@ -83,7 +82,7 @@ const withInterestRates = withSmartQuery({
 });
 
 const withRedirect = withProps(({ history }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });

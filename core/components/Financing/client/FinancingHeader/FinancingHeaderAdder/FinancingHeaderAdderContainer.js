@@ -8,15 +8,13 @@ import {
 const FinancingHeaderAdderContainer = compose(
   withState('isAdding', 'setIsAdding', false),
   withState('openDialog', 'setDialogOpen', false),
-  withProps(({ loan: { _id: loanId }, setIsAdding, setDialogOpen }) => ({
+  withProps(({ loan: { _id: loanId }, setIsAdding }) => ({
     handleAdd: () => {
       setIsAdding(true);
       return addNewStructure.run({ loanId }).finally(() => setIsAdding(false));
     },
     handleAddMaxStructure: ({ residenceType, canton }) =>
-      addNewMaxStructure
-        .run({ residenceType, canton, loanId })
-        .then(() => setDialogOpen(true)),
+      addNewMaxStructure.run({ residenceType, canton, loanId }),
   })),
 );
 

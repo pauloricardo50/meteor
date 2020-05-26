@@ -76,5 +76,4 @@ const MonitoringActivityFilters = ({
     </Box>
   </div>
 );
-
 export default MonitoringActivityFilters;

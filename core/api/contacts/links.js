@@ -5,21 +5,23 @@ import Tasks from '../tasks';
 import Users from '../users';
 import Contacts from '.';
 
-Contacts.addLinks({
-  user: {
-    collection: Users,
-    field: 'userLink',
-    type: 'one',
-    metadata: true,
-  },
-  organisations: {
-    collection: Organisations,
-    inversedBy: 'contacts',
-  },
-  lenders: {
-    collection: Lenders,
-    inversedBy: 'contact',
-  },
+LinkInitializer.directInit(() => {
+  Contacts.addLinks({
+    user: {
+      collection: Users,
+      field: 'userLink',
+      type: 'one',
+      metadata: true,
+    },
+    organisations: {
+      collection: Organisations,
+      inversedBy: 'contacts',
+    },
+    lenders: {
+      collection: Lenders,
+      inversedBy: 'contact',
+    },
+  });
 });
 
 LinkInitializer.inversedInit(() => {

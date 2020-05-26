@@ -14,7 +14,7 @@ import {
 } from '../../../../api/promotions/methodDefinitions';
 import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
 import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import { ModalManagerContext } from '../../../ModalManager';
 import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import DialogForm from '../../../ModalManager/DialogForm';
@@ -93,7 +93,7 @@ const getOptions = ({
     canRemovePromotion,
     canLinkLoan,
   } = permissions;
-  const { isPro } = useContext(CurrentUserContext);
+  const { isPro } = useCurrentUser();
 
   return [
     {

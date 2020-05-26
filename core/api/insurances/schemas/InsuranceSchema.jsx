@@ -71,6 +71,8 @@ const InsuranceSchema = new SimpleSchema({
       endAdornment: <InputAdornment position="end">/ mois</InputAdornment>,
     },
   },
+  insuranceRequestCache: { type: Array, optional: true },
+  'insuranceRequestCache.$': cacheField,
 });
 
 export default InsuranceSchema;

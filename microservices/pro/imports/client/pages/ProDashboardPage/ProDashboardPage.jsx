@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import ProCustomerAdder from 'core/components/ProCustomersTable/ProCustomerAdder';
 import { ProPropertyAdder } from 'core/components/ProPropertyPage/ProPropertyForm';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import ExternalPropertyAdder from './ExternalPropertyAdder';
 import ProDashboardPageTabs from './ProDashboardPageTabs';
 import PromotionAdder from './PromotionAdder';
 
 const ProDashboardPage = props => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
 
   return (
     <div className="card1 pro-dashboard-page">

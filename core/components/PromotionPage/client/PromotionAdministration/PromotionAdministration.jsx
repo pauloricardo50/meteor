@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { addProUserToPromotion } from '../../../../api/promotions/methodDefinitions';
 import { userSearch } from '../../../../api/users/queries';
 import { ROLES } from '../../../../api/users/userConstants';
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Button from '../../../Button';
 import CollectionSearch from '../../../CollectionSearch';
 import DropdownMenu from '../../../DropdownMenu';
@@ -27,7 +27,7 @@ const PromotionAdministration = ({
   setOpenLinkLoanModal,
   permissions = {},
 }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { canManageDocuments } = permissions;
 
   const { _id: promotionId } = promotion;

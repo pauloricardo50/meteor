@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import merge from 'lodash/merge';
 import { compose, withProps, withState } from 'recompose';
 
@@ -15,7 +15,7 @@ import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(
@@ -125,48 +125,35 @@ const revenueFormLayout = [
 ];
 
 export default compose(
-  withState('submitting', 'setSubmitting', false),
   withProps(
     ({
       loan,
       insurance,
       revenue,
       insuranceRequest,
-      setSubmitting,
-      setOpen,
       onSubmitted = () => null,
     }) => {
-      const currentUser = useContext(CurrentUserContext);
+      const currentUser = useCurrentUser();
       const schema = useMemo(() => getSchema(currentUser), [currentUser]);
 
       return {
         schema,
         model: revenue,
         insertRevenue: model =>
-          revenueInsert
-            .run({
-              revenue: model,
-              loanId: loan?._id,
-              insuranceId: insurance?._id,
-              insuranceRequestId: insuranceRequest?._id,
-            })
-            .then(() => setOpen && setOpen(false)),
-        modifyRevenue: ({ _id: revenueId, ...object }) => {
-          setSubmitting(true);
-          return revenueUpdate
-            .run({ revenueId, object })
-            .then(() => setOpen(false))
-            .finally(() => {
-              setSubmitting(false);
-              onSubmitted();
-            });
-        },
-        deleteRevenue: revenueId => {
-          setSubmitting(true);
-          return revenueRemove.run({ revenueId }).finally(() => {
+          revenueInsert.run({
+            revenue: model,
+            loanId: loan?._id,
+            insuranceId: insurance?._id,
+            insuranceRequestId: insuranceRequest?._id,
+          }),
+        modifyRevenue: ({ _id: revenueId, ...object }) =>
+          revenueUpdate.run({ revenueId, object }).finally(() => {
             onSubmitted();
-          });
-        },
+          }),
+        deleteRevenue: revenueId =>
+          revenueRemove.run({ revenueId }).finally(() => {
+            onSubmitted();
+          }),
         layout: revenueFormLayout,
       };
     },

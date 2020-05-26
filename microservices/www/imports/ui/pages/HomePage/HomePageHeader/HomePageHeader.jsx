@@ -29,7 +29,7 @@ const HomePageHeader = ({ history }) => {
         <h4>
           <T id="HomePageHeader.description" />
         </h4>
-        <div className="buttons space-children">
+        <div className="buttons">
           <Button
             size="large"
             secondary
@@ -38,6 +38,7 @@ const HomePageHeader = ({ history }) => {
             onClick={() => {
               ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
             }}
+            style={{ marginRight: 8 }}
           >
             <T id="HomePageHeader.acquisition" />
           </Button>

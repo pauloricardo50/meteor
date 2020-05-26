@@ -4,12 +4,12 @@ import { BORROWERS_COLLECTION } from '../../../../../api/borrowers/borrowerConst
 import Properties from '../../../../../api/properties';
 import { PROPERTIES_COLLECTION } from '../../../../../api/properties/propertyConstants';
 import collectionIcons from '../../../../../arrays/collectionIcons';
+import Calculator from '../../../../../utils/Calculator';
 import { createRoute } from '../../../../../utils/routerUtils';
 import Button from '../../../../Button';
 import Icon from '../../../../Icon';
 import T from '../../../../Translation';
 import UpdateField from '../../../../UpdateField';
-import { getProperty } from '../../FinancingCalculator';
 import MortgageNotesPickerList from './MortgageNotesPickerList';
 
 const MortgageNotesPickerDialog = props => {
@@ -20,7 +20,7 @@ const MortgageNotesPickerDialog = props => {
     loan: { _id: loanId },
     removeMortgageNote,
   } = props;
-  const property = getProperty(props);
+  const property = Calculator.selectProperty(props);
 
   if (!property?._id) {
     return (

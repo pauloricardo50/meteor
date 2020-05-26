@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import { injectIntl } from 'react-intl';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
 
 import InsuranceRequestBoardOptionsContent from './InsuranceRequestBoardOptionsContent';
@@ -14,4 +13,4 @@ const InsuranceRequestBoardOptions = props => {
   );
 };
 
-export default injectIntl(InsuranceRequestBoardOptions);
+export default InsuranceRequestBoardOptions;

@@ -51,7 +51,7 @@ describe('PropertyService', function() {
 
       expect(PropertyService.remove({ propertyId: 'prop' })).to.equal(false);
 
-      expect(PropertyService.find({}).fetch().length).to.equal(1);
+      expect(PropertyService.find({}).count()).to.equal(1);
     });
 
     it('unlinks a property if it has multiple loans', () => {
@@ -69,7 +69,7 @@ describe('PropertyService', function() {
         PropertyService.remove({ propertyId: 'prop', loanId: 'loan' }),
       ).to.equal(1);
 
-      expect(PropertyService.find({}).fetch().length).to.equal(1);
+      expect(PropertyService.find({}).count()).to.equal(1);
       expect(
         LoanService.get('loan', { propertyIds: 1 }).propertyIds,
       ).to.deep.equal([]);

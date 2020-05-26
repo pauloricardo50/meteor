@@ -23,7 +23,9 @@ class ClickToEditField extends Component {
       toggleEdit(false);
     }
 
-    onBlur();
+    if (onBlur) {
+      onBlur();
+    }
   };
 
   handleKeyDown = e => {

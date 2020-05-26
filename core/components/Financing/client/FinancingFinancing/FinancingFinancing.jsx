@@ -10,7 +10,7 @@ import { createRoute } from '../../../../utils/routerUtils';
 import IconButton from '../../../IconButton';
 import Link from '../../../Link';
 import T from '../../../Translation';
-import Calc, { getOffer } from '../FinancingCalculator';
+import Calc from '../FinancingCalculator';
 import FinancingProjectFees from '../FinancingProject/FinancingProjectFees';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
 import FinancingSection, {
@@ -42,7 +42,7 @@ const calculateMaxLoan = (data, pledgeOverride) => {
   const { loan, structureId } = data;
   const offer = Calculator.selectOffer({ loan, structureId });
   if (offer) {
-    const { maxAmount } = getOffer(data);
+    const { maxAmount } = Calculator.selectOffer(data);
     return maxAmount;
   }
 

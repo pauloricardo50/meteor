@@ -51,10 +51,7 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
     case USERS_COLLECTION: {
       let text;
       const { organisations = [] } = data;
-      if (
-        Roles.userIsInRole(data, [ROLES.ADMIN, ROLES.DEV]) &&
-        employeesById[docId]
-      ) {
+      if (Roles.userIsInRole(data, ROLES.ADMIN) && employeesById[docId]) {
         text = (
           <img
             src={employeesById[docId].src}
@@ -65,7 +62,9 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
       } else if (organisations.length) {
         text = getUserNameAndOrganisation({ user: data });
       } else {
-        text = data.name;
+        text =
+          data.name ||
+          [data.firstName, data.lastName].filter(name => name).join(' ');
       }
 
       return {
@@ -130,8 +129,9 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
         hasPopup: true,
       };
     case INSURANCES_COLLECTION: {
-      const { insuranceRequest } = data;
-      const { _id: insuranceRequestId } = insuranceRequest;
+      const { insuranceRequest, insuranceRequestCache = [] } = data;
+      const insuranceRequestId =
+        insuranceRequest?._id || insuranceRequestCache[0]?._id;
       return {
         link: `/insuranceRequests/${insuranceRequestId}/${docId}`,
         text: getInsuranceLinkTitle(data),

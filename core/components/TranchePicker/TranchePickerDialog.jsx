@@ -19,7 +19,7 @@ const TranchePickerDialog = ({
 }) => {
   const {
     status,
-    error,
+    errors,
     additionalData: { sum },
   } = checkTranches(tranches, wantedLoan);
 
@@ -57,7 +57,7 @@ const TranchePickerDialog = ({
         <h2>
           <span
             className={cx({
-              error: error === 'sumIsNotEqualToWantedLoan',
+              error: errors.includes('sumIsNotEqualToWantedLoan'),
               success: status === 'ok',
             })}
           >
@@ -71,16 +71,16 @@ const TranchePickerDialog = ({
         </h2>
         <TranchePicker {...props} wantedLoan={wantedLoan} tranches={tranches} />
         {status === 'error' &&
-          (error === 'sumIsNotEqualToWantedLoan' ? (
+          (errors.includes('allTypesAreNotDefined') ? (
+            <span className="error">
+              <T id="TranchePicker.error.general" />
+            </span>
+          ) : (
             <span className="error">
               <T
                 id="TranchePicker.error.sumIsNotEqualToWantedLoan"
                 values={{ wantedLoan: <Money value={wantedLoan} /> }}
               />
-            </span>
-          ) : (
-            <span className="error">
-              <T id="TranchePicker.error.general" />
             </span>
           ))}
       </div>
