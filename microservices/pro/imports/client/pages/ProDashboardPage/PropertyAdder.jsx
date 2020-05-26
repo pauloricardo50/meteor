@@ -20,7 +20,7 @@ export const proPropertySchema = new SimpleSchema({
   value: { ...moneyField, optional: false },
 });
 
-const PropertyAdder = ({ history, currentUser: { _id: userId } }) => {
+const PropertyAdder = ({ currentUser: { _id: userId } }) => {
   const history = useHistory();
 
   return (
@@ -48,4 +48,5 @@ const PropertyAdder = ({ history, currentUser: { _id: userId } }) => {
     />
   );
 };
+
 export default PropertyAdder;

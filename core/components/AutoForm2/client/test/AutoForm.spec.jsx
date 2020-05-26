@@ -2,7 +2,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { expect } from 'chai';
-import Loadable from 'react-loadable';
 import SimpleSchema from 'simpl-schema';
 import { TextField } from 'uniforms-material';
 
@@ -15,8 +14,6 @@ import AutoForm from '../../AutoForm';
 import { CustomAutoField } from '../../AutoFormComponents';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../autoFormConstants';
 import CustomSelectField from '../../CustomSelectField';
-
-Loadable.preloadAll();
 
 let props;
 const component = () => getMountedComponent({ Component: AutoForm, props });
@@ -357,7 +354,7 @@ describe('AutoForm', () => {
           component()
             .find(CustomSelectField)
             .prop('placeholder'),
-        ).to.equal('general.pick');
+        ).to.equal('Choisissez...');
       });
 
       it('does not set a placeholder for a list item field', () => {
