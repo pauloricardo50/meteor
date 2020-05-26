@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -10,7 +11,7 @@ import {
   makeFeedback,
 } from './feedbackHelpers';
 
-const schema = ({ offer, formatMessage }) =>
+const getSchema = ({ offer, formatMessage }) =>
   new SimpleSchema({
     option: {
       type: String,
@@ -53,6 +54,7 @@ const schema = ({ offer, formatMessage }) =>
 
 export default withProps(({ offer }) => {
   const { formatMessage } = useIntl();
+  const schema = useMemo(() => getSchema({ offer, formatMessage }), [offer]);
   const {
     _id: offerId,
     feedback = {},
@@ -62,7 +64,7 @@ export default withProps(({ offer }) => {
   const { message } = feedback;
 
   return {
-    schema: schema({ offer, formatMessage }),
+    schema,
     onSubmit: object => {
       if (message) {
         return Promise.resolve();
