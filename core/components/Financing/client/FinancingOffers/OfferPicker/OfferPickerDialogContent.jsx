@@ -1,13 +1,13 @@
 import React from 'react';
 
+import Calculator from '../../../../../utils/Calculator';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import { RecapSimple } from '../../../../Recap';
 import T, { Money, Percent } from '../../../../Translation';
-import { getProperty } from '../../FinancingCalculator';
 
 const OfferPickerDialogContent = props => {
   const { offer } = props;
-  const property = getProperty(props);
+  const property = Calculator.selectProperty(props);
   const {
     maxAmount,
     conditions,

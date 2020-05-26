@@ -1,11 +1,11 @@
 import React from 'react';
 import { compose, withProps } from 'recompose';
 
+import Calculator from '../../../../../utils/Calculator';
 import T from '../../../../Translation';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
-import { getProperty } from '../../FinancingCalculator';
 
 const formatMortgageNotes = (mortgageNoteIds, borrowers) =>
   borrowers.reduce((arr, { mortgageNotes: notes = [], name }, index) => {
@@ -53,7 +53,7 @@ export default compose(
       borrowers = [],
       updateStructure,
     } = props;
-    const property = getProperty(props);
+    const property = Calculator.selectProperty(props);
     const { mortgageNotes = [], canton } = property;
     const notes = formatMortgageNotes(mortgageNoteIds, borrowers);
 
