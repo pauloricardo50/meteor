@@ -51,7 +51,7 @@ function setWallabyConfig(name, overrides = {}) {
         env: {
           type: 'node',
           params: {
-            // Requires the full-icu package to work
+            // Requires the full-icu package to work properly
             // Makes sure locale data is loaded in our wallaby tests
             runner: `--icu-data-dir=${require('path').join(
               wallaby.localProjectDir,
