@@ -31,5 +31,14 @@ const customRender = (ui, { getRouterProps, ...options } = {}) =>
     ...options,
   });
 
-export * from '@testing-library/react';
-export const render = customRender;
+export { customRender as render };
+// Export these like this to avoid weird node issues if you try to do
+// export * from '@testing-library/react'; -> Fails
+// export { customRender as render };
+export {
+  waitFor,
+  fireEvent,
+  screen,
+  cleanup,
+  within,
+} from '@testing-library/react';
