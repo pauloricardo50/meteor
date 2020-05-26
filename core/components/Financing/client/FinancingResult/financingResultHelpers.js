@@ -48,7 +48,7 @@ export const getAmortization = params => {
 };
 
 export const getPropertyExpenses = data => {
-  const property = Calculator.selectProperty(props);
+  const property = Calculator.selectProperty(data);
   return Math.round((property && property.yearlyExpenses) / 12 || 0);
 };
 
