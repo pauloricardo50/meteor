@@ -14,6 +14,13 @@ export const ROW_TYPES = {
   TOOLTIP: 'TOOLTIP',
 };
 
+export const CELL_TYPES = {
+  LEFT_LABEL: 'LEFT_LABEL',
+  LEFT_VALUE: 'LEFT_VALUE',
+  RIGHT_LABEL: 'RIGHT_LABEL',
+  RIGHT_VALUE: 'RIGHT_VALUE',
+};
+
 export const classes = {
   [ROW_TYPES.TITLE]: 'title-row',
   [ROW_TYPES.TITLE_NO_PADDING]: 'title-row no-padding',
@@ -22,6 +29,10 @@ export const classes = {
   [ROW_TYPES.SUM]: 'sum-row',
   [ROW_TYPES.SUBSECTION]: 'subsection-row',
   [ROW_TYPES.TOOLTIP]: 'tooltip',
+  [CELL_TYPES.LEFT_LABEL]: 'left-label',
+  [CELL_TYPES.LEFT_VALUE]: 'left-value',
+  [CELL_TYPES.RIGHT_LABEL]: 'right-label',
+  [CELL_TYPES.RIGHT_VALUE]: 'right-value',
 };
 
 export const shouldRenderRow = condition =>

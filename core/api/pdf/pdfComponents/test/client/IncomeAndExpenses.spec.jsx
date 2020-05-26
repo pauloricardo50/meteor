@@ -21,7 +21,7 @@ describe('IncomeAndExpenses', () => {
   it('renders rows and 2 columns', () => {
     const loan = { borrowers: [{}], structures: [{ id: 'struct' }] };
     const calculator = Calculator;
-    const { getAllByRole, getByText } = render(
+    const { getAllByRole } = render(
       <IncomeAndExpenses
         loan={loan}
         structureId="struct"
@@ -54,7 +54,7 @@ describe('IncomeAndExpenses', () => {
       interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
     };
     const calculator = Calculator;
-    const { getAllByRole, getAllByText } = render(
+    const { getAllByRole } = render(
       <IncomeAndExpenses
         loan={loan}
         structureId="struct"
@@ -69,14 +69,13 @@ describe('IncomeAndExpenses', () => {
     expect(totalCells.length).to.equal(4);
 
     expect(within(totalRow).getAllByText('Total').length).to.equal(2);
-    const [
-      totalExpenses,
-      totalExpensesValue,
-      totalIncome,
-      totalIncomeValue,
-    ] = totalCells;
-    expect(totalExpensesValue.textContent).to.include('60 000');
-    expect(totalIncomeValue.textContent).to.include('180 000');
+
+    expect(totalRow.querySelector('.left-value').textContent).to.equal(
+      '60 000',
+    );
+    expect(totalRow.querySelector('.right-value').textContent).to.equal(
+      '180 000',
+    );
   });
 
   it('renders expenses rows', () => {
@@ -94,7 +93,7 @@ describe('IncomeAndExpenses', () => {
       interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
     };
     const calculator = Calculator;
-    const { getAllByRole } = render(
+    const { getByText, getAllByText } = render(
       <IncomeAndExpenses
         loan={loan}
         structureId="struct"
@@ -102,30 +101,27 @@ describe('IncomeAndExpenses', () => {
       />,
     );
 
-    const rows = getAllByRole('row');
-    const expensesRows = rows.slice(1, -1).map(row =>
-      within(row)
-        .getAllByRole('cell')
-        .slice(0, 2),
-    );
-    // Filter empty lines
-    const filteredExpensesRows = expensesRows.filter(r => !!r[0].textContent);
-    expect(filteredExpensesRows.length).to.equal(3);
+    expect(
+      getByText('Intérêts théoriques')
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('40 000');
+    expect(
+      getByText('Amortissement théorique')
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('10 000');
+    expect(
+      getByText('Entretien théorique')
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('10 000');
 
-    const [
-      [interestsLabel, interests],
-      [amortizationLabel, amortization],
-      [maintenanceLabel, maintenance],
-    ] = filteredExpensesRows;
-
-    expect(interestsLabel.textContent).to.include('Intérêts théoriques');
-    expect(interests.textContent).to.include('40 000');
-
-    expect(amortizationLabel.textContent).to.include('Amortissement théorique');
-    expect(amortization.textContent).to.include('10 000');
-
-    expect(maintenanceLabel.textContent).to.include('Entretien théorique');
-    expect(maintenance.textContent).to.include('10 000');
+    expect(
+      getAllByText('Total')[0]
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('60 000');
   });
 
   it('renders income rows', () => {
@@ -143,7 +139,7 @@ describe('IncomeAndExpenses', () => {
       interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
     };
     const calculator = Calculator;
-    const { getAllByRole } = render(
+    const { getByText, getAllByText } = render(
       <IncomeAndExpenses
         loan={loan}
         structureId="struct"
@@ -151,24 +147,20 @@ describe('IncomeAndExpenses', () => {
       />,
     );
 
-    const rows = getAllByRole('row');
-    const incomeRows = rows.slice(1, -1).map(row =>
-      within(row)
-        .getAllByRole('cell')
-        .slice(2),
-    );
+    expect(
+      getByText('Revenus bruts annuels (hors bonus)')
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('180 000');
 
-    // Filter empty lines
-    const filteredIncomeRows = incomeRows.filter(r => !!r[0].textContent);
-    expect(filteredIncomeRows.length).to.equal(1);
-
-    const [[salaryLabel, salary]] = filteredIncomeRows;
-
-    expect(salaryLabel.textContent).to.include('Revenus bruts annuels');
-    expect(salary.textContent).to.include('180 000');
+    expect(
+      getAllByText('Total')[1]
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('180 000');
   });
 
-  it('renders realEstate rows', () => {
+  it('renders income rows with realEstate', () => {
     const loan = {
       borrowers: [
         {
@@ -202,7 +194,7 @@ describe('IncomeAndExpenses', () => {
     };
 
     const calculator = Calculator;
-    const { getAllByRole } = render(
+    const { getByText, getAllByText } = render(
       <IncomeAndExpenses
         loan={loan}
         structureId="struct"
@@ -210,55 +202,39 @@ describe('IncomeAndExpenses', () => {
       />,
     );
 
-    const rows = getAllByRole('row');
-    const incomeRows = rows.slice(1).map(row =>
-      within(row)
-        .getAllByRole('cell')
-        .slice(2),
-    );
-    const expensesRows = rows.slice(1).map(row =>
-      within(row)
-        .getAllByRole('cell')
-        .slice(0, 2),
-    );
+    expect(
+      getByText('Revenus bruts annuels (hors bonus)')
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('180 000');
 
-    // Filter empty lines
-    const filteredIncomeRows = incomeRows.filter(r => !!r[0].textContent);
-    const filteredExpenses = expensesRows.filter(r => !!r[0].textContent);
-    expect(filteredIncomeRows.length).to.equal(4);
-    expect(filteredExpenses.length).to.equal(4);
+    expect(
+      getByText('Revenus de fortune immobilière')
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('10 000');
 
-    const [
-      [salaryLabel, salary],
-      [realEstate1Label, realEstate1],
-      [realEstate2Label, realEstate2],
-      totalIncomeRow,
-    ] = filteredIncomeRows;
-    const [totalIncome] = totalIncomeRow.reverse();
+    expect(
+      getByText('Charges théoriques immobilières')
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('-10 000');
 
-    expect(salaryLabel.textContent).to.include('Revenus bruts annuels');
-    expect(salary.textContent).to.include('180 000');
-
-    expect(realEstate1Label.textContent).to.include(
-      'Revenus de fortune immobilière',
-    );
-    expect(realEstate1.textContent).to.include('10 000');
-
-    expect(realEstate2Label.textContent).to.include(
-      'Charges théoriques immobilières',
-    );
-    expect(realEstate2.textContent).to.include('-10 000');
-
-    expect(totalIncome.textContent).to.include('180 000');
-
-    const [totalExpensesRow] = filteredExpenses.reverse();
-    const [totalExpenses] = totalExpensesRow.reverse();
+    expect(
+      getAllByText('Total')[1]
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('180 000');
 
     // Only to verify that no extra expenses are added
-    expect(totalExpenses.textContent).to.include('60 000');
+    expect(
+      getAllByText('Total')[0]
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('60 000');
   });
 
-  it('renders realEstate rows using deltas', () => {
+  it('renders income rows with realEstate rows using deltas', () => {
     const loan = {
       borrowers: [
         {
@@ -296,7 +272,7 @@ describe('IncomeAndExpenses', () => {
         REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
     });
 
-    const { getAllByRole } = render(
+    const { getByText, getAllByText } = render(
       <IncomeAndExpenses
         loan={loan}
         structureId="struct"
@@ -304,63 +280,105 @@ describe('IncomeAndExpenses', () => {
       />,
     );
 
-    const rows = getAllByRole('row');
-    const incomeRows = rows.slice(1).map(row =>
-      within(row)
-        .getAllByRole('cell')
-        .slice(2),
+    expect(
+      getByText('Revenus bruts annuels (hors bonus)')
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('180 000');
+
+    expect(
+      getByText('Delta immobilier positif')
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('1 000');
+
+    expect(
+      getAllByText('Total')[1]
+        .closest('tr')
+        .querySelector('.right-value').textContent,
+    ).to.equal('181 000');
+  });
+
+  it('renders expenses rows with realEstate rows using deltas', () => {
+    const loan = {
+      borrowers: [
+        {
+          salary: 180000,
+          realEstate: [
+            {
+              value: 1000000,
+              loan: 800000,
+              income: 4000,
+              theoreticalExpenses: 5000,
+            },
+            {
+              value: 1000000,
+              loan: 800000,
+              income: 6000,
+              theoreticalExpenses: 5000,
+            },
+          ],
+        },
+      ],
+      structures: [
+        {
+          id: 'struct',
+          wantedLoan: 800000,
+          propertyValue: 1000000,
+          loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
+        },
+      ],
+
+      interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+    };
+
+    const calculator = new CalculatorClass({
+      realEstateIncomeAlgorithm:
+        REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+    });
+
+    const { getByText, getAllByText } = render(
+      <IncomeAndExpenses
+        loan={loan}
+        structureId="struct"
+        calculator={calculator}
+      />,
     );
-    const expensesRows = rows.slice(1).map(row =>
-      within(row)
-        .getAllByRole('cell')
-        .slice(0, 2),
-    );
 
-    // Filter empty lines
-    const filteredIncomeRows = incomeRows.filter(r => !!r[0].textContent);
-    const filteredExpenses = expensesRows.filter(r => !!r[0].textContent);
-    expect(filteredIncomeRows.length).to.equal(3);
-    expect(filteredExpenses.length).to.equal(6);
+    expect(
+      getAllByText('Delta immobilier négatif', { exact: false })[0]
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('60 000');
 
-    const [salaryRow, positiveDeltaRow, totalRow] = filteredIncomeRows;
-    const [salaryLabel, salary] = salaryRow;
-    const [positiveDeltaLabel, positiveDelta] = positiveDeltaRow;
-    const [total] = totalRow.reverse();
+    expect(
+      getByText('Intérêts théoriques')
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('40 000');
 
-    expect(salaryLabel.textContent).to.include('Revenus bruts annuels');
-    expect(salary.textContent).to.include('180 000');
+    expect(
+      getByText('Amortissement théorique')
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('10 000');
 
-    expect(positiveDeltaLabel.textContent).to.include(
-      'Delta immobilier positif',
-    );
-    expect(positiveDelta.textContent).to.include('1 000');
+    expect(
+      getByText('Entretien théorique')
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('10 000');
 
-    expect(total.textContent).to.include('181 000');
+    expect(
+      getAllByText('Delta immobilier négatif', { exact: false })[1]
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('1 000');
 
-    const [
-      [currentNegativeDeltaLabel, currentNegativeDelta],
-      [interestsLabel, interests],
-      [amortizationLabel, amortization],
-      [maintenanceLabel, maintenance],
-      [negativeDeltaLabel, negativeDelta],
-      totalExpensesRow,
-    ] = filteredExpenses;
-    const [totalExpenses] = totalExpensesRow.reverse();
-
-    expect(currentNegativeDeltaLabel.textContent).to.include(
-      'Delta immobilier négatif',
-    );
-    expect(currentNegativeDelta.textContent).to.include('60 000');
-    expect(interestsLabel.textContent).to.include('Intérêts théoriques');
-    expect(interests.textContent).to.include('40 000');
-    expect(amortizationLabel.textContent).to.include('Amortissement théorique');
-    expect(amortization.textContent).to.include('10 000');
-    expect(maintenanceLabel.textContent).to.include('Entretien théorique');
-    expect(maintenance.textContent).to.include('10 000');
-    expect(negativeDeltaLabel.textContent).to.include(
-      'Delta immobilier négatif',
-    );
-    expect(negativeDelta.textContent).to.include('1 000');
-    expect(totalExpenses.textContent).to.include('61 000');
+    expect(
+      getAllByText('Total')[0]
+        .closest('tr')
+        .querySelector('.left-value').textContent,
+    ).to.equal('61 000');
   });
 });

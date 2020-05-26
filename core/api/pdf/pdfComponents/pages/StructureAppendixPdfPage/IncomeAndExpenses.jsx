@@ -27,26 +27,20 @@ const renderRow = (partitioned = false) => income => {
   const [mainLabel, secondaryLabel] = arrayifiedLabel;
   const shouldBeBold = partitioned && !secondary;
 
-  const formattedLabel = shouldBeBold ? (
-    <>
-      <b>{mainLabel}</b>
-      {secondaryLabel && (
-        <span className="secondary">&nbsp;({secondaryLabel})</span>
-      )}
-    </>
-  ) : (
-    <>
+  const Component = shouldBeBold ? 'b' : React.Fragment;
+
+  const formattedLabel = (
+    <Component>
       {mainLabel}
       {secondaryLabel && (
-        <span className="secondary">&nbsp;({secondaryLabel})</span>
+        <span className="secondary" style={{ fontWeight: 'normal' }}>
+          &nbsp;({secondaryLabel})
+        </span>
       )}
-    </>
+    </Component>
   );
-  const formattedValue = shouldBeBold ? (
-    <b>{toMoney(value)}</b>
-  ) : (
-    toMoney(value)
-  );
+
+  const formattedValue = <Component>{toMoney(value)}</Component>;
 
   return {
     label: formattedLabel,
