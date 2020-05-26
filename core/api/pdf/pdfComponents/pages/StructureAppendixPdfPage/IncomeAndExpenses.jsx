@@ -90,10 +90,18 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
     calculator.realEstateIncomeAlgorithm ===
     REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT;
 
+  const propertyIncome = calculator.getYearlyPropertyIncome({
+    loan,
+    structureId,
+  });
+
   const shouldDisplayDeltaSection = isPositiveNegativeSplit && !!addToIncome;
 
   const allIncomes = [
-    // Delta
+    {
+      label: <T id={useNetSalary ? 'Forms.netSalary' : 'Forms.salary'} />,
+      value: salary,
+    },
     {
       label: [
         <T id="Forms.expenses.REAL_ESTATE_DELTA_POSITIVE" />,
@@ -101,12 +109,6 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
       ],
       value: 12 * addToIncome,
       condition: shouldDisplayDeltaSection,
-    },
-    {
-      label: <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
-      value: calculator.getYearlyPropertyIncome({ loan, structureId }),
-      condition: shouldDisplayDeltaSection,
-      secondary: true,
     },
     {
       label: [
@@ -135,10 +137,16 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
       condition: shouldDisplayDeltaSection,
       secondary: true,
     },
-    // Incomes
     {
-      label: <T id={useNetSalary ? 'Forms.netSalary' : 'Forms.salary'} />,
-      value: salary,
+      label: [
+        <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
+        !shouldDisplayDeltaSection && (
+          <T id="PDF.projectInfos.structure.currentProperty" />
+        ),
+      ].filter(x => x),
+      value: propertyIncome,
+      condition: !!propertyIncome,
+      secondary: true,
     },
     {
       label: <T id="Recap.consideredBonus" />,
@@ -156,7 +164,7 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
       condition: !!fortuneReturns,
     },
     {
-      label: [<T id="Forms.realEstateIncome" />, <T id="Forms.realEstate" />],
+      label: <T id="Forms.realEstateIncome" />,
       value: realEstateIncome,
       condition: !!realEstateIncome,
     },
@@ -200,20 +208,22 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
     loan,
     structureId,
   });
-  const { addToExpenses } = calculator.getTheoreticalPropertySplit({
-    loan,
-    structureId,
-  });
+  const { addToExpenses, addToIncome } = calculator.getTheoreticalPropertySplit(
+    {
+      loan,
+      structureId,
+    },
+  );
 
   const isPositiveNegativeSplit =
     calculator.realEstateIncomeAlgorithm ===
     REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT;
 
-  const shouldDisplayDeltaSection = isPositiveNegativeSplit && !!addToExpenses;
   const propertyIncome = calculator.getYearlyPropertyIncome({
     loan,
     structureId,
   });
+  const shouldDisplayDeltaSection = isPositiveNegativeSplit && !!addToExpenses;
 
   const allExpenses = [
     {
@@ -225,18 +235,13 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
       condition: shouldDisplayDeltaSection,
     },
     {
-      label: <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
-      value: -propertyIncome,
-      condition: shouldDisplayDeltaSection && !!propertyIncome,
-      secondary: true,
-    },
-    {
       label: [
         <T id="PDF.projectInfos.structure.interests" />,
         <Percent value={theoreticalInterestRate} />,
       ],
       value: propertyCost.interests * 12,
       secondary: shouldDisplayDeltaSection,
+      condition: isPositiveNegativeSplit ? !addToIncome : true,
     },
     {
       label: [
@@ -245,6 +250,7 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
       ],
       value: propertyCost.amortization * 12,
       secondary: shouldDisplayDeltaSection,
+      condition: isPositiveNegativeSplit ? !addToIncome : true,
     },
     {
       label: [
@@ -253,6 +259,13 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
       ],
       value: propertyCost.maintenance * 12,
       secondary: shouldDisplayDeltaSection,
+      condition: isPositiveNegativeSplit ? !addToIncome : true,
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.yearlyPropertyIncome" />,
+      value: -propertyIncome,
+      condition: shouldDisplayDeltaSection && !!propertyIncome,
+      secondary: true,
     },
     ...Object.keys(expenses).map(expenseType => ({
       label: getExpenseLabel(expenseType),
