@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { IntlProvider, intlShape } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
@@ -11,6 +11,10 @@ import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../../utils/Calculator';
 import { mount } from '../../../../../utils/testHelpers/enzyme';
+import {
+  cleanup,
+  render,
+} from '../../../../../utils/testHelpers/testing-library';
 import MoneyInput from '../../../../MoneyInput';
 import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
 import { Provider } from '../../containers/loan-context';
@@ -35,22 +39,24 @@ const expectResult = (component, name, value) => {
 describe('FinancingResult', () => {
   let props;
   let loan;
-  const { intl } = new IntlProvider({
-    defaultLocale: 'fr',
-    messages,
-  }).getChildContext();
   const component = ({ calc } = {}) =>
     mount(
-      <ScrollSync>
-        <Provider value={{ loan, Calculator: calc || Calculator }}>
-          <FinancingResult {...props} />
-        </Provider>
-      </ScrollSync>,
-      {
-        context: { intl },
-        childContextTypes: { intl: intlShape },
-      },
+      <IntlProvider defaultLocale="fr" messages={messages}>
+        <ScrollSync>
+          <Provider value={{ loan, Calculator: calc || Calculator }}>
+            <FinancingResult {...props} />
+          </Provider>
+        </ScrollSync>
+      </IntlProvider>,
     );
+
+  const Component = ({ calc }) => (
+    <ScrollSync>
+      <Provider value={{ loan, Calculator: calc || Calculator }}>
+        <FinancingResult {...props} />
+      </Provider>
+    </ScrollSync>
+  );
 
   beforeEach(() => {
     props = {};
@@ -59,6 +65,7 @@ describe('FinancingResult', () => {
       borrowers: [],
       properties: [],
     };
+    return cleanup();
   });
 
   context('renders the correct results for a standard structure', () => {
@@ -96,13 +103,11 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find(
-        '.financing-structures-result-chart .total',
-      );
-      const string = monthly.text();
-      const hasNonZeroNumber = /[1-9]/.test(string);
-      // Interests rates change constantly, can't pin a precise value
-      expect(hasNonZeroNumber).to.equal(true);
+      const { getByTestId } = render(<Component />);
+      const total = getByTestId('financing-total');
+
+      // Replace any white space character with a proper space
+      expect(total.textContent.replace(/\s/g, ' ')).to.equal('CHF 1 600 /mois');
     });
 
     it('interestsCost', () => {

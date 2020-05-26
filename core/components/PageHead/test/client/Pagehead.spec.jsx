@@ -6,8 +6,8 @@ import {
   cleanup,
   render,
   waitFor,
-} from '../../../utils/testHelpers/testing-library';
-import { PageHead } from '../PageHead';
+} from '../../../../utils/testHelpers/testing-library';
+import { PageHead } from '../../PageHead';
 
 describe('PageHead', () => {
   beforeEach(() => {

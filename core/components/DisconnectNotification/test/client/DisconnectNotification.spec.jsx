@@ -7,8 +7,8 @@ import {
   cleanup,
   render,
   waitFor,
-} from '../../../utils/testHelpers/testing-library';
-import { DisconnectNotification } from '../DisconnectNotification';
+} from '../../../../utils/testHelpers/testing-library';
+import { DisconnectNotification } from '../../DisconnectNotificationion';
 
 describe('DisconnectNotification', () => {
   beforeEach(() => cleanup());

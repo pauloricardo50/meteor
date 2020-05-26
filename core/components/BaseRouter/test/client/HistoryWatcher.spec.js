@@ -62,7 +62,7 @@ describe('HistoryWatcher', () => {
     });
 
     it('generates a new tracking id', () => {
-      expect(getCookie(TRACKING_COOKIE)).to.equal('');
+      expect(getCookie(TRACKING_COOKIE)).to.equal(null);
       watcher.generateTrackingId();
       expect(getCookie(TRACKING_COOKIE)).to.not.equal('');
     });

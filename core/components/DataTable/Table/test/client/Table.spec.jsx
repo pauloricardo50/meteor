@@ -51,8 +51,7 @@ describe('Table', () => {
     expect(!!within(row2).queryByText('4')).to.equal(true);
   });
 
-  // FIXME: Will probably work in meteor tests when we upgrade react-intl
-  it.only('works with i18n', () => {
+  it('works with i18n', () => {
     const columns = [
       { Header: <T id="general.yes" />, accessor: 'col1' },
       {
