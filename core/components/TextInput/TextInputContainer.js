@@ -1,7 +1,7 @@
 import moment from 'moment';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
-import { compose, mapProps } from 'recompose';
+import { mapProps } from 'recompose';
 
 import {
   toDecimalNumber,
@@ -104,7 +104,7 @@ export const getFinalPlaceholder = ({
   noIntl,
   placeholder,
   defaultPlaceholder,
-  intl,
+  formatMessage,
   type,
 }) => {
   let finalPlaceholder;
@@ -113,9 +113,9 @@ export const getFinalPlaceholder = ({
   } else {
     finalPlaceholder =
       placeholder && typeof placeholder === 'string'
-        ? `${intl.formatMessage({
+        ? `${formatMessage({
             id: 'Forms.textInput.placeholderPrefix',
-          })} ${intl.formatMessage({ id: placeholder })}`
+          })} ${formatMessage({ id: placeholder })}`
         : defaultPlaceholder;
   }
 
@@ -128,71 +128,68 @@ export const getFinalPlaceholder = ({
   return finalPlaceholder;
 };
 
-const TextInputContainer = compose(
-  injectIntl,
-  mapProps(
-    ({
-      decimal,
-      id,
-      inputComponent,
-      inputProps,
-      InputProps = {},
-      inputType,
-      intl,
-      negative,
-      noIntl,
-      onChange,
-      placeholder,
-      simpleOnChange,
+const TextInputContainer = mapProps(
+  ({
+    decimal,
+    id,
+    inputComponent,
+    inputProps,
+    InputProps = {},
+    inputType,
+    negative,
+    noIntl,
+    onChange,
+    placeholder,
+    simpleOnChange,
+    type,
+    value,
+    ...rest
+  }) => {
+    const { formatMessage } = useIntl();
+    const {
+      onChangeHandler,
+      onDateChange,
+      showMask,
+      mask,
+      placeholder: defaultPlaceholder,
+      value: formattedValue,
+    } = getDefaults({
       type,
+      id,
+      onChange,
       value,
-      ...rest
-    }) => {
-      const {
-        onChangeHandler,
-        onDateChange,
-        showMask,
-        mask,
-        placeholder: defaultPlaceholder,
-        value: formattedValue,
-      } = getDefaults({
-        type,
-        id,
-        onChange,
-        value,
-        simpleOnChange,
-        negative,
-        decimal,
-      });
+      simpleOnChange,
+      negative,
+      decimal,
+    });
 
-      return {
-        id,
-        onChange: onChangeHandler,
-        placeholder: getFinalPlaceholder({
-          noIntl,
-          placeholder,
-          defaultPlaceholder,
-          intl,
-          type,
-        }),
-        value: formattedValue,
-        InputProps: {
-          inputComponent: showMask ? MaskedInput : inputComponent || undefined,
-          ...InputProps,
-          inputProps: {
-            pattern: mask ? '[0-9]*' : undefined,
-            onDateChange: type === 'date' ? onDateChange : undefined,
-            mask: mask || undefined,
-            ...InputProps.inputProps,
-            ...inputProps,
-          },
+    return {
+      id,
+      onChange: onChangeHandler,
+      placeholder: getFinalPlaceholder({
+        noIntl,
+        placeholder,
+        defaultPlaceholder,
+        formatMessage,
+        type,
+      }),
+      value: formattedValue,
+      InputProps: {
+        inputComponent: showMask ? MaskedInput : inputComponent || undefined,
+        ...InputProps,
+        inputProps: {
+          pattern: mask ? '[0-9]*' : undefined,
+          onDateChange: type === 'date' ? onDateChange : undefined,
+          mask: mask || undefined,
+          ...InputProps.inputProps,
+          ...inputProps,
         },
-        type: inputType,
-        dataType: type,
-        ...rest,
-      };
-    },
-  ),
+      },
+      type: inputType,
+      dataType: type,
+      ...rest,
+    };
+  },
 );
 
 export default TextInputContainer;

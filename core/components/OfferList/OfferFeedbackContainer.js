@@ -1,5 +1,6 @@
-import { injectIntl } from 'react-intl';
-import { compose, withProps } from 'recompose';
+import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { offerSendFeedback } from '../../api/offers/methodDefinitions';
@@ -10,7 +11,7 @@ import {
   makeFeedback,
 } from './feedbackHelpers';
 
-const schema = ({ offer, formatMessage }) =>
+const getSchema = ({ offer, formatMessage }) =>
   new SimpleSchema({
     option: {
       type: String,
@@ -51,36 +52,35 @@ const schema = ({ offer, formatMessage }) =>
     },
   });
 
-export default compose(
-  injectIntl,
-  withProps(({ offer, intl: { formatMessage } }) => {
-    const {
-      _id: offerId,
-      feedback = {},
-      lender: { contact },
-    } = offer;
+export default withProps(({ offer }) => {
+  const { formatMessage } = useIntl();
+  const schema = useMemo(() => getSchema({ offer, formatMessage }), [offer]);
+  const {
+    _id: offerId,
+    feedback = {},
+    lender: { contact },
+  } = offer;
 
-    const { message } = feedback;
+  const { message } = feedback;
 
-    return {
-      schema: schema({ offer, formatMessage }),
-      onSubmit: object => {
-        if (message) {
-          return Promise.resolve();
-        }
-
-        const { name } = contact || {};
-        const confirm = window.confirm(
-          `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
-        );
-        if (confirm) {
-          return offerSendFeedback.run({
-            offerId,
-            feedback: makeFeedback({ model: object, offer, formatMessage }),
-          });
-        }
+  return {
+    schema,
+    onSubmit: object => {
+      if (message) {
         return Promise.resolve();
-      },
-    };
-  }),
-);
+      }
+
+      const { name } = contact || {};
+      const confirm = window.confirm(
+        `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
+      );
+      if (confirm) {
+        return offerSendFeedback.run({
+          offerId,
+          feedback: makeFeedback({ model: object, offer, formatMessage }),
+        });
+      }
+      return Promise.resolve();
+    },
+  };
+});

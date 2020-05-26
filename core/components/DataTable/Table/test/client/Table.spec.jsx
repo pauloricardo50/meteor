@@ -51,8 +51,7 @@ describe('Table', () => {
     expect(!!within(row2).queryByText('4')).to.equal(true);
   });
 
-  // FIXME: Will probably work in meteor tests when we upgrade react-intl
-  it.skip('works with i18n', () => {
+  it('works with i18n', () => {
     const columns = [
       { Header: <T id="general.yes" />, accessor: 'col1' },
       {
@@ -492,7 +491,7 @@ describe('Table', () => {
         <Table data={data} columns={columns} onStateChange={onStateChange} />,
       );
 
-      await new Promise(r => setTimeout(r, 60));
+      await new Promise(r => setTimeout(r, 200));
 
       // Sort
       fireEvent.click(getByText('Column 1'));

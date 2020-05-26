@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { IntlProvider, intlShape } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 
 import { mount } from '../../../../utils/testHelpers/index';
 import Tranche from '../../Tranche';
@@ -9,12 +9,12 @@ import DefaultTranchePicker, { TranchePicker } from '../../TranchePicker';
 
 describe('TranchePicker', () => {
   let props;
-  const { intl } = new IntlProvider({ defaultLocale: 'fr' }).getChildContext();
   const component = () =>
-    mount(<DefaultTranchePicker {...props} />, {
-      context: { intl },
-      childContextTypes: { intl: intlShape },
-    });
+    mount(
+      <IntlProvider defaultLocale="fr">
+        <DefaultTranchePicker {...props} />
+      </IntlProvider>,
+    );
 
   beforeEach(() => {
     props = { types: ['interest10', 'interest2', 'interest5'] };

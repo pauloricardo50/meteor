@@ -50,8 +50,7 @@ describe('Pro pages', () => {
 
     cy.get('input[name=address1]').type('Rue du test 1');
     cy.get('input[name=zipCode]').type('1201');
-    cy.get('#mui-component-select-city').click();
-    cy.contains('Genève').click();
+    cy.setSelect('city', 1);
     cy.get('input[name=value]').type('1000000{enter}');
     cy.url().should('include', 'properties/');
 

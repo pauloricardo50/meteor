@@ -1,24 +1,20 @@
 import { Accounts } from 'meteor/accounts-base';
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import React, { useEffect } from 'react';
+import { useIntl } from 'react-intl';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
 import { analyticsVerifyEmail } from '../../api/analytics/methodDefinitions';
 import { userVerifyEmail } from '../../api/users/methodDefinitions';
 import { getCookie } from '../../utils/cookiesHelpers';
 
-class EmailVerificationPage extends Component {
-  componentDidMount() {
-    const {
-      match: {
-        params: { token },
-      },
-      history,
-      intl,
-    } = this.props;
+const EmailVerificationPage = () => {
+  const { formatMessage } = useIntl();
+  const history = useHistory();
+  const { token } = useParams();
 
+  useEffect(() => {
     if (!token) {
       history.push('/');
     }
@@ -28,13 +24,10 @@ class EmailVerificationPage extends Component {
         history.push('/');
 
         import('../../utils/message').then(({ default: message }) => {
-          message.error(
-            intl.formatMessage({ id: 'EmailVerification.error' }),
-            5,
-          );
+          message.error(formatMessage({ id: 'EmailVerification.error' }), 5);
         });
       } else {
-        const msg = intl.formatMessage({ id: 'EmailVerification.message' });
+        const msg = formatMessage({ id: 'EmailVerification.message' });
         import('../../utils/message').then(({ default: message }) => {
           message.success(msg, 2);
         });
@@ -45,15 +38,9 @@ class EmailVerificationPage extends Component {
         history.push('/');
       }
     });
-  }
+  }, []);
 
-  render() {
-    return <section id="email-verification-page" />;
-  }
-}
-
-EmailVerificationPage.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  return <section id="email-verification-page" />;
 };
 
-export default injectIntl(EmailVerificationPage);
+export default EmailVerificationPage;

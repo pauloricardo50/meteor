@@ -1,33 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
-import { compose, withState } from 'recompose';
+import React, { useState } from 'react';
 
 import TextInput from '../TextInput';
 import SearchResults from './SearchResults';
 
-export const Search = ({ search, changeSearch }) => (
-  <div className="search">
-    <h2>
-      <TextInput
-        className="search-input"
-        autoFocus
-        placeholder="Search.placeholder"
-        id="search"
-        value={search}
-        onChange={value => changeSearch(value)}
-      />
-    </h2>
-    <SearchResults search={search} />
-  </div>
-);
+export const Search = () => {
+  const [search, changeSearch] = useState('');
 
-Search.propTypes = {
-  changeSearch: PropTypes.func.isRequired,
-  search: PropTypes.string.isRequired,
+  return (
+    <div className="search">
+      <h2>
+        <TextInput
+          className="search-input"
+          autoFocus
+          placeholder="Search.placeholder"
+          id="search"
+          value={search}
+          onChange={value => changeSearch(value)}
+        />
+      </h2>
+      <SearchResults search={search} />
+    </div>
+  );
 };
 
-export default compose(
-  withState('search', 'changeSearch', ''),
-  injectIntl,
-)(Search);
+export default Search;

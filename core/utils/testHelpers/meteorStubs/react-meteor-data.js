@@ -1,3 +1,3 @@
-const withTracker = () => () => {};
+const withTracker = () => x => x;
 
 export { withTracker };

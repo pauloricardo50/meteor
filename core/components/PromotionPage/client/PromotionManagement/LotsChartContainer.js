@@ -1,5 +1,5 @@
-import { injectIntl } from 'react-intl';
-import { compose, withProps } from 'recompose';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 
 import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import { toMoney } from '../../../../utils/conversionFunctions';
@@ -90,10 +90,11 @@ const getConfig = (promotionLots = [], formatMessage) => ({
   ],
 });
 
-export default compose(
-  injectIntl,
-  withProps(({ promotionLots = [], intl: { formatMessage } }) => ({
+export default withProps(({ promotionLots = [] }) => {
+  const { formatMessage } = useIntl();
+
+  return {
     config: getConfig(promotionLots, formatMessage),
     data: getData(promotionLots),
-  })),
-);
+  };
+});
