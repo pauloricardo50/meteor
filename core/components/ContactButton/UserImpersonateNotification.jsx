@@ -114,8 +114,8 @@ const UserImpersonateNotification = ({ impersonatedSession }) => {
     } = {},
   } = impersonatedSession;
 
-  const [followAdmin, setFollowAdmin] = useState(false);
-  const [showDialog, setShowDialog] = useState(true);
+  const [followAdmin, setFollowAdmin] = useState(impersonatedSession?.followed);
+  const [showDialog, setShowDialog] = useState(!impersonatedSession?.followed);
 
   const history = useHistory();
   const adminImage = employeesById[adminId].src;

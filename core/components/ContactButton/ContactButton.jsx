@@ -4,16 +4,21 @@ import React, { useContext } from 'react';
 import Fab from '@material-ui/core/Fab';
 
 import { setUserConnected } from '../../api/sessions/methodDefinitions';
+import useImpersonatedSession from '../../hooks/useImpersonatedSession';
 import Icon from '../Icon';
 import AdminImpersonateNotification from './AdminImpersonateNotification';
-import ContactButtonContainer from './ContactButtonContainer';
 import { ContactButtonContext } from './ContactButtonContext';
 import ContactButtonOverlay from './ContactButtonOverlay';
+import SimpleContactButtonContainer from './SimpleContactButtonContainer';
 import UserImpersonateNotification from './UserImpersonateNotification';
 
 export const ContactButton = props => {
   const { openContact, toggleOpenContact } = useContext(ContactButtonContext);
-  const { impersonatedSession } = props;
+  const { impersonatedSession, loading } = useImpersonatedSession();
+
+  if (loading) {
+    return null;
+  }
 
   if (impersonatedSession) {
     const { connectionId, userIsConnected, shared } = impersonatedSession;
@@ -64,4 +69,4 @@ export const ContactButton = props => {
   );
 };
 
-export default ContactButtonContainer(ContactButton);
+export default SimpleContactButtonContainer(ContactButton);
