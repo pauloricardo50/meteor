@@ -1,3 +1,4 @@
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
@@ -6,6 +7,10 @@ import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
 export default compose(
   withRouter,
+  // Reload page on user change
+  Component => props => (
+    <Component key={props.userId || props.match.params.userId} {...props} />
+  ),
   withSmartQuery({
     query: USERS_COLLECTION,
     params: ({ match, userId }) => ({

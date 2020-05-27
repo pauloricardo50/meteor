@@ -15,6 +15,7 @@ import {
 } from 'core/api/users/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import Users from 'core/api/users/users';
+import NewsletterSignup from 'core/components/AccountPage/NewsletterSignup';
 import AssignedRole from 'core/components/AssignedRole';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import EmailModifier from 'core/components/EmailModifier';
@@ -221,6 +222,13 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             fields={['acquisitionChannel']}
             autosaveDelay={250}
             style={{ maxWidth: 250 }}
+          />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem label="Newsletter" className="m-0">
+          <NewsletterSignup
+            userId={userId}
+            label={<h4 className="m-0">Inscrit</h4>}
           />
         </SingleUserPageInformationItem>
       </SingleUserPageInformation>

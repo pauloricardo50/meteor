@@ -52,6 +52,7 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'proUsers',
     refetchOnMethodCall: false,
+    smallLoader: true,
   }),
   withProps(
     ({ proUsers = [], user: { _id: userId, referredByUser, name } }) => ({

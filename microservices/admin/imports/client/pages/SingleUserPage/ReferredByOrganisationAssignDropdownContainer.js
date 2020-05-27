@@ -32,6 +32,7 @@ export default compose(
     params: { $body: { name: 1 } },
     dataName: 'organisations',
     refetchOnMethodCall: false,
+    smallLoader: true,
   }),
   withProps(
     ({

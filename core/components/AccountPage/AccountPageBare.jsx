@@ -46,8 +46,12 @@ const AccountPageBare = ({ currentUser }) => {
             />
           </div>
         )}
-
-        <NewsletterSignup />
+        <div>
+          <h4>
+            <T id="AccountPage.newsletter" />
+          </h4>
+          <NewsletterSignup />
+        </div>
       </div>
 
       <span className="flex-col space-children">

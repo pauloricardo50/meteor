@@ -8,7 +8,10 @@ import { useStaticMeteorData } from '../../hooks/useMeteorData';
 import Checkbox from '../Checkbox';
 import T from '../Translation';
 
-const NewsletterSignup = ({ userId }) => {
+const NewsletterSignup = ({
+  userId,
+  label = <T id="AccountPage.newsletter.signedUp" />,
+}) => {
   const { data, loading } = useStaticMeteorData({
     query: userId ? USERS_COLLECTION : appUser,
     params: userId
@@ -18,27 +21,20 @@ const NewsletterSignup = ({ userId }) => {
   });
 
   return (
-    <div>
-      <h4>
-        <T id="AccountPage.newsletter" />
-      </h4>
-      <Checkbox
-        onChange={() =>
-          updateMailchimpProfile.run({
-            userId: data?._id,
-            status:
-              data?.newsletterStatus?.status === MANDRILL_LIST_STATUS.SUBSCRIBED
-                ? MANDRILL_LIST_STATUS.UNSUBSCRIBED
-                : MANDRILL_LIST_STATUS.SUBSCRIBED,
-          })
-        }
-        value={
-          data?.newsletterStatus?.status === MANDRILL_LIST_STATUS.SUBSCRIBED
-        }
-        label={<T id="AccountPage.newsletter.signedUp" />}
-        disabled={loading}
-      />
-    </div>
+    <Checkbox
+      onChange={() =>
+        updateMailchimpProfile.run({
+          userId: data?._id,
+          status:
+            data?.newsletterStatus?.status === MANDRILL_LIST_STATUS.SUBSCRIBED
+              ? MANDRILL_LIST_STATUS.UNSUBSCRIBED
+              : MANDRILL_LIST_STATUS.SUBSCRIBED,
+        })
+      }
+      value={data?.newsletterStatus?.status === MANDRILL_LIST_STATUS.SUBSCRIBED}
+      label={label}
+      disabled={loading}
+    />
   );
 };
 
