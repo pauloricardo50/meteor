@@ -66,7 +66,6 @@ exposeQuery({
           loanStatus,
           invitedBy,
         } = params;
-        console.log('params:', params);
 
         if (status) {
           filters.status = status;

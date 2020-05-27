@@ -15,7 +15,6 @@ import MongoSelect from '../../../Select/MongoSelect';
 import StatusLabel from '../../../StatusLabel';
 import T, { IntlDate } from '../../../Translation';
 import PromotionReservationProgress from '../../PromotionReservationProgress';
-import { rawPromotionReservationProgress } from '../../PromotionReservationProgress/PromotionReservationProgressHelpers';
 import PromotionCustomer from '../PromotionCustomer';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
@@ -44,7 +43,7 @@ const getModalProps = ({ original: promotionOption }) => {
 const PromotionOptionsTable = ({ promotion }) => {
   const currentUser = useCurrentUser();
   const { _id: promotionId, users: promotionUsers } = promotion;
-  const [status, setStatus] = useState({
+  const [statusFilter, setStatusFilter] = useState({
     $in: [
       PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
@@ -67,8 +66,8 @@ const PromotionOptionsTable = ({ promotion }) => {
       <div className="flex center-align">
         <h3 className="text-center mr-8">Réservations</h3>
         <MongoSelect
-          value={status}
-          onChange={setStatus}
+          value={statusFilter}
+          onChange={setStatusFilter}
           options={omit(
             PROMOTION_OPTION_STATUS,
             PROMOTION_OPTION_STATUS.INTERESTED,
@@ -82,15 +81,17 @@ const PromotionOptionsTable = ({ promotion }) => {
           onChange={setInvitedByFilter}
           options={[
             { id: null, label: <T id="general.all" /> },
-            ...promotionUsers.map(({ _id, name }) => ({
+            ...promotionUsers.map(({ _id, name, organisations }) => ({
               id: _id,
               label: name,
+              organisations,
             })),
           ]}
           label={<T id="Forms.invitedBy" />}
           displayEmpty
           notched
           InputLabelProps={{ shrink: true }}
+          grouping={{ groupBy: 'organisations.0.name' }}
         />
       </div>
 
@@ -98,12 +99,15 @@ const PromotionOptionsTable = ({ promotion }) => {
         queryConfig={{
           query: proPromotionOptions,
           params: {
-            status: { ...status, $ne: PROMOTION_OPTION_STATUS.INTERESTED },
+            status: {
+              ...statusFilter,
+              $ne: PROMOTION_OPTION_STATUS.INTERESTED,
+            },
             promotionId,
             invitedBy: invitedByFilter,
           },
         }}
-        queryDeps={[status, promotionId, invitedByFilter]}
+        queryDeps={[statusFilter, invitedByFilter]}
         columns={[
           {
             Header: <T id="PromotionOptionsTable.lotName" />,
