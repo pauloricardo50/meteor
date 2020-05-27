@@ -1,52 +1,25 @@
-import { Meteor } from 'meteor/meteor';
-
 import React, { useContext } from 'react';
 import Fab from '@material-ui/core/Fab';
 
-import { setUserConnected } from '../../api/sessions/methodDefinitions';
 import useImpersonatedSession from '../../hooks/useImpersonatedSession';
 import Icon from '../Icon';
-import AdminImpersonateNotification from './AdminImpersonateNotification';
 import { ContactButtonContext } from './ContactButtonContext';
 import ContactButtonOverlay from './ContactButtonOverlay';
+import ImpersonateNotification from './ImpersonateNotification';
 import SimpleContactButtonContainer from './SimpleContactButtonContainer';
-import UserImpersonateNotification from './UserImpersonateNotification';
 
 export const ContactButton = props => {
   const { openContact, toggleOpenContact } = useContext(ContactButtonContext);
-  const { impersonatedSession, loading } = useImpersonatedSession();
-
-  if (loading) {
-    return null;
-  }
-
-  if (impersonatedSession) {
-    const { connectionId, userIsConnected, shared } = impersonatedSession;
-    const currentSessionId = Meteor.connection._lastSessionId;
-    if (connectionId === currentSessionId && userIsConnected) {
-      return (
-        <AdminImpersonateNotification
-          impersonatedSession={impersonatedSession}
-        />
-      );
-    }
-
-    if (connectionId !== currentSessionId && !userIsConnected) {
-      setUserConnected.run({ connectionId });
-    }
-
-    if (shared) {
-      return (
-        <UserImpersonateNotification
-          impersonatedSession={impersonatedSession}
-        />
-      );
-    }
-  }
+  const [impersonatedSession, options] = useImpersonatedSession();
 
   const handleCloseContact = () => toggleOpenContact(false);
 
-  return (
+  return options.shouldRenderNotification ? (
+    <ImpersonateNotification
+      impersonatedSession={impersonatedSession}
+      options={options}
+    />
+  ) : (
     <div className="contact-button">
       <Fab
         onClick={event => {

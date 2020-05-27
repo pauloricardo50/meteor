@@ -1,121 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { followImpersonatedSession } from '../../api/sessions/methodDefinitions';
 import { employeesById } from '../../arrays/epotekEmployees';
-import Button from '../Button';
-import Icon from '../Icon';
-import Dialog from '../Material/Dialog';
 import T from '../Translation';
-import { styles } from './fabStyles';
+import UserImpersonateNotificationButton from './UserImpersonateNotificationButton';
+import UserImpersonateNotificationDialog from './UserImpersonateNotificationDialog';
 
-const useStyles = makeStyles(styles);
-
-const getButton = ({
-  followAdmin,
-  adminFirstName,
-  setFollowAdmin,
-  connectionId,
-  lastPageVisited,
-  history,
-}) => {
-  const classes = useStyles();
-  return (
-    <Button
-      fab
-      className={followAdmin ? classes.error : classes.success}
-      onClick={() => {
-        if (followAdmin) {
-          followImpersonatedSession.run({ connectionId, follow: false });
-          setFollowAdmin(false);
-        } else {
-          followImpersonatedSession.run({ connectionId, follow: true });
-          history.push(lastPageVisited);
-          setFollowAdmin(true);
-        }
-      }}
-      tooltip={
-        followAdmin ? (
-          <T
-            id="ImpersonateNotification.stopFollowing"
-            values={{ adminFirstName }}
-          />
-        ) : (
-          <T id="ImpersonateNotification.follow" values={{ adminFirstName }} />
-        )
-      }
-      tooltipPlacement="top-end"
-      key={followAdmin ? 'unfollowAdmin' : 'followAdmin'}
-    >
-      <Icon type={followAdmin ? 'close' : 'howToReg'} />
-    </Button>
-  );
-};
-
-const getDialog = ({
-  showDialog,
-  adminImage,
-  adminName,
-  adminFirstName,
-  history,
-  setShowDialog,
-  setFollowAdmin,
-  connectionId,
-  lastPageVisited,
-}) => (
-  <Dialog open={showDialog}>
-    <div className="impersonate-notification-dialog">
-      <img src={adminImage} />
-      <h3>{adminName}</h3>
-      <p>
-        <T
-          id="ImpersonateNotification.dialog.description"
-          values={{ adminFirstName }}
-        />
-      </p>
-      <div className="actions">
-        <Button
-          raised
-          secondary
-          onClick={() => {
-            followImpersonatedSession.run({ connectionId, follow: true });
-            history.push(lastPageVisited);
-            setFollowAdmin(true);
-            setShowDialog(false);
-          }}
-          label={
-            <T
-              id="ImpersonateNotification.follow"
-              values={{ adminFirstName }}
-            />
-          }
-          size="large"
-          icon={<Icon type="howToReg" />}
-        />
-        <Button
-          onClick={() => setShowDialog(false)}
-          label={<T id="ImpersonateNotification.followLater" />}
-          size="small"
-        />
-      </div>
-    </div>
-  </Dialog>
-);
-
-const UserImpersonateNotification = ({ impersonatedSession }) => {
+const UserImpersonateNotification = ({ impersonatedSession, options }) => {
   const {
-    connectionId,
     lastPageVisited,
-    impersonatingAdmin: {
-      name: adminName,
-      _id: adminId,
-      firstName: adminFirstName,
-    } = {},
+    impersonatingAdmin: { _id: adminId, firstName: adminFirstName } = {},
   } = impersonatedSession;
 
-  const [followAdmin, setFollowAdmin] = useState(impersonatedSession?.followed);
-  const [showDialog, setShowDialog] = useState(!impersonatedSession?.followed);
+  const { followAdmin } = options;
 
   const history = useHistory();
   const adminImage = employeesById[adminId].src;
@@ -129,17 +26,10 @@ const UserImpersonateNotification = ({ impersonatedSession }) => {
 
   return (
     <>
-      {getDialog({
-        showDialog,
-        adminImage,
-        adminName,
-        adminFirstName,
-        history,
-        setShowDialog,
-        setFollowAdmin,
-        lastPageVisited,
-        connectionId,
-      })}
+      <UserImpersonateNotificationDialog
+        impersonatedSession={impersonatedSession}
+        options={options}
+      />
       <div className="impersonate-notification">
         <img src={adminImage} />
         <h4>
@@ -155,14 +45,10 @@ const UserImpersonateNotification = ({ impersonatedSession }) => {
             />
           )}
         </h4>
-        {getButton({
-          followAdmin,
-          adminFirstName,
-          setFollowAdmin,
-          connectionId,
-          lastPageVisited,
-          history,
-        })}
+        <UserImpersonateNotificationButton
+          impersonatedSession={impersonatedSession}
+          options={options}
+        />
       </div>
     </>
   );
