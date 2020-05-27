@@ -5,23 +5,19 @@ import SecurityService from '../../security';
 import { ROLES } from '../../users/userConstants';
 import {
   ALLOWED_FILE_TYPES,
+  ALLOWED_FILE_TYPES_DISPLAYABLE,
   ALLOWED_FILE_TYPES_TEMP,
   MAX_FILE_SIZE,
   SLINGSHOT_DIRECTIVE_NAME,
+  SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE,
   SLINGSHOT_DIRECTIVE_NAME_TEMP,
 } from '../fileConstants';
 import FileService from './FileService';
 import uploadDirective from './uploadDirective';
 import uploadDirectiveTemp from './uploadDirectiveTemp';
 
-// export const getS3FileKey = (file, { docId, id }) =>
-//   `${docId}/${id}/${file.name
-//     .normalize('NFD')
-//     .replace(/[\u0300-\u036f]/g, '')}`;
-
-Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
+const sharedOptions = {
   maxSize: MAX_FILE_SIZE,
-  allowedFileTypes: ALLOWED_FILE_TYPES,
   authorize(file, { collection, docId }) {
     // Don't use arrow function, this is the current object here
 
@@ -50,7 +46,21 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
     return true;
   },
   key: FileService.getS3FileKey,
+};
+
+Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
+  ...sharedOptions,
+  allowedFileTypes: ALLOWED_FILE_TYPES,
 });
+
+Slingshot.createDirective(
+  SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE,
+  uploadDirective,
+  {
+    ...sharedOptions,
+    allowedFileTypes: ALLOWED_FILE_TYPES_DISPLAYABLE,
+  },
+);
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME_TEMP, uploadDirectiveTemp, {
   maxSize: MAX_FILE_SIZE,
