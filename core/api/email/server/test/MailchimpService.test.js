@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { MAILCHIMP_LIST_STATUS } from '../../emailConstants';
 import MailchimpService from '../MailchimpService';
 
 describe('MailchimpService', () => {
@@ -24,7 +25,7 @@ describe('MailchimpService', () => {
         email: 'florian@e-potek.ch',
       });
 
-      expect(status).to.equal('subscribed');
+      expect(status).to.equal(MAILCHIMP_LIST_STATUS.SUBSCRIBED);
       expect(FNAME).to.equal('Florian');
       expect(LNAME).to.equal('Bienefelt');
     });
@@ -64,7 +65,7 @@ describe('MailchimpService', () => {
         email: 'digital@e-potek.ch',
       });
 
-      expect(status).to.equal('unsubscribed');
+      expect(status).to.equal(MAILCHIMP_LIST_STATUS.UNSUBSCRIBED);
     });
 
     it.skip('archives them', () => {

@@ -3,6 +3,8 @@ import crypto from 'crypto';
 import fetch from 'node-fetch';
 import queryString from 'query-string';
 
+import { MAILCHIMP_LIST_STATUS } from '../emailConstants';
+
 const API_PATH = 'https://us15.api.mailchimp.com/3.0';
 const API_KEY = '5e8afd137d0894b8660e15a1df431abe-us15';
 
@@ -130,7 +132,7 @@ class MailchimpService {
       body: {
         email_address: email,
         status,
-        status_if_new: 'subscribed',
+        status_if_new: MAILCHIMP_LIST_STATUS.UNSUBSCRIBED,
         merge_fields: {
           FNAME: firstName,
           LNAME: lastName,
@@ -145,7 +147,7 @@ class MailchimpService {
     return this.callApi({
       endpoint: 'upsertMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
-      body: { status: 'subscribed' },
+      body: { status: MAILCHIMP_LIST_STATUS.SUBSCRIBED },
     });
   }
 
@@ -153,7 +155,7 @@ class MailchimpService {
     return this.callApi({
       endpoint: 'upsertMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
-      body: { status: 'unsubscribed' },
+      body: { status: MAILCHIMP_LIST_STATUS.UNSUBSCRIBED },
     });
   }
 

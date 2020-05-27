@@ -114,7 +114,7 @@ export const EMAIL_QUERIES = {
   RECENT_NEWSLETTERS: 'RECENT_NEWSLETTERS',
 };
 
-export const MANDRILL_LIST_STATUS = {
+export const MAILCHIMP_LIST_STATUS = {
   SUBSCRIBED: 'subscribed',
   UNSUBSCRIBED: 'unsubscribed',
 };

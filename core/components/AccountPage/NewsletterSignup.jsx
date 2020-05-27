@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MANDRILL_LIST_STATUS } from '../../api/email/emailConstants';
+import { MAILCHIMP_LIST_STATUS } from '../../api/email/emailConstants';
 import { updateMailchimpProfile } from '../../api/email/methodDefinitions';
 import { appUser } from '../../api/users/queries';
 import { USERS_COLLECTION } from '../../api/users/userConstants';
@@ -26,12 +26,14 @@ const NewsletterSignup = ({
         updateMailchimpProfile.run({
           userId: data?._id,
           status:
-            data?.newsletterStatus?.status === MANDRILL_LIST_STATUS.SUBSCRIBED
-              ? MANDRILL_LIST_STATUS.UNSUBSCRIBED
-              : MANDRILL_LIST_STATUS.SUBSCRIBED,
+            data?.newsletterStatus?.status === MAILCHIMP_LIST_STATUS.SUBSCRIBED
+              ? MAILCHIMP_LIST_STATUS.UNSUBSCRIBED
+              : MAILCHIMP_LIST_STATUS.SUBSCRIBED,
         })
       }
-      value={data?.newsletterStatus?.status === MANDRILL_LIST_STATUS.SUBSCRIBED}
+      value={
+        data?.newsletterStatus?.status === MAILCHIMP_LIST_STATUS.SUBSCRIBED
+      }
       label={label}
       disabled={loading}
     />
