@@ -230,30 +230,6 @@ describe('Pro promotion', () => {
     });
 
     context('with an existing promotion', () => {
-      it('should add a promotion', () => {
-        cy.contains('Promotions').click();
-
-        cy.contains('.pro-dashboard-page', 'Rien à afficher');
-
-        cy.contains('Promotion immobilière').click();
-
-        cy.get('input[name=name]').type('New promotion');
-        cy.setSelect('type', 'CREDIT');
-        cy.get('input[name=address1]').type('Chemin Auguste-Vilbert 14');
-        cy.get('input[name=address2]').type('1er étage');
-        cy.get('input[name=zipCode]').type('1218');
-        cy.setSelect('city', 1);
-        cy.get('input[name=agreementDuration]').type('14{enter}');
-
-        cy.url().should('include', 'promotions/');
-        cy.get('h1').should('contain', 'New promotion');
-        cy.contains('Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex').should(
-          'exist',
-        );
-
-        cy.contains('Préparation').should('exist');
-      });
-
       it('should render buttons based on permissions', () => {
         cy.callMethod('insertPromotion');
         cy.callMethod('resetUserPermissions');
