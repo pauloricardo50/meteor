@@ -27,13 +27,19 @@ const promotionDocuments = [
     acl: S3_ACLS.PUBLIC_READ,
     noTooltips: true,
     maxSize: 500 * ONE_KB,
+    displayableFile: true,
   },
   {
     id: 'promotionDocuments',
     acl: S3_ACLS.PUBLIC_READ,
     noTooltips: true,
   },
-  { id: 'logos', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  {
+    id: 'logos',
+    acl: S3_ACLS.PUBLIC_READ,
+    noTooltips: true,
+    displayableFile: true,
+  },
   { id: 'promotionGuide', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
 ];
 
