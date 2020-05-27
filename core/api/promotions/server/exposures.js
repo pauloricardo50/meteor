@@ -1,5 +1,5 @@
-import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import { Match } from 'meteor/check';
 
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
@@ -179,6 +179,9 @@ exposeQuery({
     embody: body => {
       body.$filter = ({ filters }) => {
         filters.isTest = { $ne: true };
+        filters.status = {
+          $in: [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.FINISHED],
+        };
       };
     },
   },

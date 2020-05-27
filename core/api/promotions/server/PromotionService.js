@@ -284,6 +284,12 @@ class PromotionService extends CollectionService {
   }
 
   checkPromotionIsReady({ promotionId }) {
+    db.promotions
+      .find(
+        { 'documents.promotionImage': { $exists: false }, isTest: false },
+        { _id: 1, name: 1 },
+      )
+      .pretty();
     const {
       documents = {},
       promotionLotLinks = [],
