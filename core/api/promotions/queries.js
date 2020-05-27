@@ -46,5 +46,9 @@ export const promotionsList = Promotions.createQuery(
     address: 1,
     documents: { promotionImage: 1 },
     lotsCount: 1,
+    status: 1,
+    // For future use
+    description: 1,
+    externalUrl: 1,
   },
 );
