@@ -5,8 +5,9 @@ import { expect } from 'chai';
 
 import S3Service from '../S3Service';
 
-export const clearBucket = () =>
-  Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
+const prefix = 'S3Service.test';
+export const clearBucket = prefx =>
+  Meteor.isTest && S3Service.deleteObjectsWithPrefix(prefx);
 
 describe('S3Service', function() {
   this.timeout(10000);
@@ -32,9 +33,9 @@ describe('S3Service', function() {
     beforeEach(() => {
       json = { hello: 'world' };
       binaryData = Buffer.from(JSON.stringify(json), 'utf-8');
-      key = 'test/hello.json';
+      key = `${prefix}/hello.json`;
 
-      return clearBucket();
+      return clearBucket(prefix);
     });
 
     describe('putObject', () => {
@@ -55,7 +56,7 @@ describe('S3Service', function() {
           .catch(err => expect(err.name).to.equal('NoSuchKey')));
 
       it('throws if you try to delete an unexisting object', () => {
-        key = 'someKey.txt';
+        key = `${prefix}someKey.txt`;
         return S3Service.deleteObject(key).catch(err => {
           expect(err.name).to.equal('NoSuchKey');
         });
@@ -78,7 +79,7 @@ describe('S3Service', function() {
 
     describe('listObjects', () => {
       it('returns an empty array if no objects exist at that key', () => {
-        key = 'root.json';
+        key = `${prefix}root.json`;
 
         return S3Service.putObject(binaryData, key)
           .then(() => S3Service.listObjects('emptyPrefix'))
@@ -86,14 +87,14 @@ describe('S3Service', function() {
       });
 
       it('returns all objects under a certain prefix', () => {
-        const key1 = 'asdf/root1.json';
-        const key2 = 'asdf/root2.json';
+        const key1 = `${prefix}/asdf/root1.json`;
+        const key2 = `${prefix}/asdf/root2.json`;
 
         return Promise.all([
           S3Service.putObject(binaryData, key1),
           S3Service.putObject(binaryData, key2),
         ])
-          .then(() => S3Service.listObjects('asdf'))
+          .then(() => S3Service.listObjects(prefix))
           .then(results =>
             expect(results.map(({ Key }) => Key)).to.deep.equal([key1, key2]),
           );
@@ -164,8 +165,8 @@ describe('S3Service', function() {
 
     describe('listObjectsWithMetadata', () => {
       it('returns a list of objects with their metadata ', () => {
-        const key1 = 'asdf/root1.json';
-        const key2 = 'asdf/root2.json';
+        const key1 = `${prefix}asdf/root1.json`;
+        const key2 = `${prefix}asdf/root2.json`;
         const statuses = ['hello', 'dude'];
 
         return Promise.all([
@@ -184,8 +185,8 @@ describe('S3Service', function() {
 
   describe('makeSignedUrl', () => {
     it('should return a signed url', () => {
-      expect(S3Service.makeSignedUrl('dude/file.pdf')).to.include(
-        'dude/file.pdf',
+      expect(S3Service.makeSignedUrl(`${prefix}/dude/file.pdf`)).to.include(
+        `${prefix}/dude/file.pdf`,
       );
     });
   });
