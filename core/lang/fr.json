@@ -807,8 +807,6 @@
   "ProCustomerAdder.title": "Inviter un client",
   "ProCustomerAdder.description": "Ajoute un compte pour ce client, et le notifiera par email (ainsi que son conseiller et le courtier) que vous l'avez invité sur e-Potek. Si c'est un client déjà existant chez e-Potek, vous devez l'inviter à une promotion ou à un bien immobilier.",
   "ProCustomersTable.maxPropertyValue.placeHolder": "Pas encore {computed, select, true {partagé} other {calculé}}",
-  "ProDashboardPage.PromotionAdder.name": "Nom de la promotion",
-  "ProDashboardPage.PromotionAdder.type": "Type de la promotion",
   "ProDashboardPage.ExternalPropertyAdder": "Bien immobilier API",
   "Forms.propertyPage.residenceTypeSetter.text": "Choisissez le type de résidence pour afficher le bien immobilier.",
   "Forms.propertyIds": "Inviter aux biens immobiliers",
