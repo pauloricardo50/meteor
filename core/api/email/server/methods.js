@@ -5,7 +5,13 @@ import SimpleSchema from 'simpl-schema';
 
 import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
-import { subscribeToNewsletter } from '../methodDefinitions';
+import UserService from '../../users/server/UserService';
+import {
+  getNewsletterStatus,
+  subscribeToNewsletter,
+  unsubscribeFromNewsletter,
+  updateMailchimpProfile,
+} from '../methodDefinitions';
 import EmailService from './EmailService';
 import MailchimpService from './MailchimpService';
 
@@ -48,10 +54,43 @@ sendEmailToAddress.setHandler((context, params) => {
   }
 });
 
-subscribeToNewsletter.setHandler(({ email }) => {
+subscribeToNewsletter.setHandler((context, { email }) => {
   if (!SimpleSchema.RegEx.Email.test(email)) {
     throw new Meteor.Error('Email invalide');
   }
+  context.unblock();
 
   return MailchimpService.subscribeMember({ email });
+});
+
+unsubscribeFromNewsletter.setHandler((context, { email }) => {
+  const user = UserService.getByEmail(email, { _id: 1 });
+  SecurityService.users.isAllowedToUpdate(user._id, context.userId);
+
+  return MailchimpService.unsubscribeMember({ email });
+});
+
+updateMailchimpProfile.setHandler((context, { userId, status }) => {
+  SecurityService.users.isAllowedToUpdate(userId, context.userId);
+  const {
+    email,
+    firstName,
+    lastName,
+    mainOrganisation,
+    phoneNumber,
+  } = UserService.get(userId, {
+    email: 1,
+    firstName: 1,
+    lastName: 1,
+    mainOrganisation: 1,
+    phoneNumber: 1,
+  });
+  return MailchimpService.upsertMember({
+    email,
+    firstName,
+    lastName,
+    organisation: mainOrganisation?.name,
+    phoneNumber,
+    status,
+  });
 });

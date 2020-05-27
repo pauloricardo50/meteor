@@ -1,3 +1,4 @@
+import MailchimpService from '../../email/server/MailchimpService';
 import { getEmailsForAddress } from '../../email/server/mandrill';
 import { createMeteorAsyncFunction } from '../../helpers';
 import assigneeReducer from '../../reducers/assigneeReducer';
@@ -16,5 +17,12 @@ Users.addReducers({
     body: { _id: 1 },
     reduce: ({ _id }, { mainOrganisationFragment }) =>
       UserService.getUserMainOrganisation(_id, mainOrganisationFragment),
+  },
+  newsletterStatus: {
+    body: { email: 1 },
+    reduce: ({ email }) =>
+      createMeteorAsyncFunction(
+        MailchimpService.getMember.bind(MailchimpService),
+      )({ email }),
   },
 });

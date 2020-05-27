@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import MailchimpService from '../MailchimpService';
 
-describe.only('MailchimpService', () => {
+describe('MailchimpService', () => {
   it('handles errors', async () => {
     try {
       await MailchimpService.testError();
