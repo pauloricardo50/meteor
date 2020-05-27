@@ -7,6 +7,7 @@ import 'core/api/analysisReports';
 import 'core/startup/accounts-config';
 import './css';
 import 'react-dates/initialize'; // Fix issue #750
+import 'core/startup/client/report-reconnects';
 
 import { Meteor } from 'meteor/meteor';
 
