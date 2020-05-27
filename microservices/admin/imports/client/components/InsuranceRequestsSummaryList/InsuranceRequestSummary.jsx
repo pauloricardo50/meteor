@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import BorrowersSummary from 'core/components/BorrowersSummary';
 import Link from 'core/components/Link';
 import StatusLabel from 'core/components/StatusLabel';

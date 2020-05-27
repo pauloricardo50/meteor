@@ -8,12 +8,7 @@ import {
 import { setUserReferredBy } from 'core/api/users/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
-const getMenuItems = ({
-  proUsers,
-  referredByUser: { referredByUserId } = {},
-  userId,
-  name,
-}) =>
+const getMenuItems = ({ proUsers, referredByUser, userId, name }) =>
   [null, ...proUsers].map(pro => {
     const { _id: proId } = pro || {};
     let userName = 'Personne';
@@ -24,7 +19,7 @@ const getMenuItems = ({
     }
     return {
       id: proId,
-      show: proId !== referredByUserId,
+      show: proId !== referredByUser?._id,
       label: userName,
       link: false,
       onClick: () => {
@@ -56,6 +51,7 @@ export default compose(
     },
     queryOptions: { reactive: false },
     dataName: 'proUsers',
+    refetchOnMethodCall: false,
   }),
   withProps(
     ({ proUsers = [], user: { _id: userId, referredByUser, name } }) => ({

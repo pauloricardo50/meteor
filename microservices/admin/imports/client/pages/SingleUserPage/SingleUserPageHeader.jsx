@@ -14,7 +14,7 @@ import {
   sendEnrollmentEmail,
   toggleAccount,
 } from 'core/api/users/methodDefinitions';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import Users from 'core/api/users/users';
 import AssignedRole from 'core/components/AssignedRole';
 import ConfirmMethod from 'core/components/ConfirmMethod';
@@ -38,7 +38,7 @@ import UserDeleter from './UserDeleter';
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
     _id: userId,
-    assignedEmployee,
+    assignedEmployeeCache,
     createdAt,
     roles = [],
     phoneNumbers,
@@ -88,7 +88,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           label="Envoyer email d'invitation"
           keyword="ENVOYER"
         />
-        <UserDeleter user={user} currentUser={currentUser} />
+        <UserDeleter userId={userId} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
       <Toggle
@@ -156,10 +156,16 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         {allowAssign && (
           <div className="flex-col">
             <div className="assigned-employee space-children">
-              {assignedEmployee && (
+              {assignedEmployeeCache?._id && (
                 <>
                   <T id="UsersTable.assignedTo" />
-                  <CollectionIconLink relatedDoc={assignedEmployee} />
+                  <CollectionIconLink
+                    relatedDoc={{
+                      ...assignedEmployeeCache,
+                      _collection: USERS_COLLECTION,
+                      roles: [{ _id: ROLES.ADMIN }],
+                    }}
+                  />
                 </>
               )}
               <UserAssignDropdown doc={user} />

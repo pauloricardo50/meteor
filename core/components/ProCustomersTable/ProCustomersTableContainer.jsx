@@ -127,8 +127,8 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  withProps(({ loans, proUser, isAdmin = false }) => ({
-    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
+  withProps(({ loans, isAdmin = false }) => ({
+    rows: loans.map(makeMapLoan({ isAdmin })),
     columnOptions,
   })),
 );

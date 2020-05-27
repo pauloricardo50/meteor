@@ -31,7 +31,7 @@ const SingleUserPage = ({
   const {
     loans,
     _id: userId,
-    assignedEmployee,
+    assignedEmployeeCache,
     promotions,
     proProperties,
     insuranceRequests,
@@ -47,7 +47,7 @@ const SingleUserPage = ({
       <SingleUserPageHeader
         user={{
           ...user,
-          assignedEmployeeId: assignedEmployee && assignedEmployee._id,
+          assignedEmployeeId: assignedEmployeeCache?._id,
         }}
         currentUser={currentUser}
       />
