@@ -230,7 +230,7 @@ describe('Pro promotion', () => {
     });
 
     context('with an existing promotion', () => {
-      it('should add a promotion', () => {
+      it.skip('should add a promotion', () => {
         cy.contains('Promotions').click();
 
         cy.contains('.pro-dashboard-page', 'Rien à afficher');
