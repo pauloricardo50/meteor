@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-import Loading from 'core/components/Loading';
 import MixpanelService from 'core/utils/mixpanel';
 
 const LastSeen = ({ userId }) => {
@@ -15,19 +14,17 @@ const LastSeen = ({ userId }) => {
   }, [userId]);
 
   if (!lastSeen) {
-    return <Loading small />;
+    return <h4 className="m-0">Loading...</h4>;
   }
 
   if (!lastSeen.length) {
-    return <h4>Jamais vu</h4>;
+    return <h4 className="m-0 animated fadeIn">Jamais vu</h4>;
   }
 
   const [last] = lastSeen;
 
   return (
-    <h4>
-      <span className="secondary">Vu pour la dernière fois:</span>
-      &nbsp;
+    <h4 className="m-0 animated fadeIn">
       {moment(last.$properties.$last_seen).fromNow()}
     </h4>
   );

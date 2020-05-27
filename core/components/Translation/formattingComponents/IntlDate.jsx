@@ -12,7 +12,7 @@ export const IntlDate = ({ type, ...props }) => {
     case 'time':
       return <FormattedTime {...props} />;
     case 'relative': {
-      const { value } = props;
+      const { value, ...rest } = props;
       // Shouldn't use a hook nested here, but the type should never change anyways
       const { value: selectedValue, unit } = useMemo(() => selectUnit(value), [
         value,
@@ -23,6 +23,7 @@ export const IntlDate = ({ type, ...props }) => {
           unit={unit}
           value={selectedValue}
           style="short"
+          {...rest}
         />
       );
     }

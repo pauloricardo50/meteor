@@ -24,12 +24,12 @@ const getSchema = oldEmail =>
 const handleSubmit = userId => ({ email: newEmail }) =>
   changeEmail.run({ userId, newEmail });
 
-const EmailModifier = ({ userId, email }) => {
+const EmailModifier = ({ userId, email, buttonLabel = "Modifier l'email" }) => {
   const schema = useMemo(() => getSchema(email), []);
 
   return (
     <AutoFormDialog
-      buttonProps={{ label: "Modifer l'email", primary: true }}
+      buttonProps={{ label: buttonLabel, primary: true }}
       title="Changer l'adresse email"
       schema={schema}
       onSubmit={handleSubmit(userId)}
