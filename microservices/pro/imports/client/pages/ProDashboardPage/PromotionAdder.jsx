@@ -1,41 +1,61 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 
-import { promotionInsert } from 'core/api/promotions/methodDefinitions';
-import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
-import { AutoFormDialog } from 'core/components/AutoForm2';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import collectionIcons from 'core/arrays/collectionIcons';
+import { employeesByEmail } from 'core/arrays/epotekEmployees';
+import DialogSimple from 'core/components/DialogSimple/DialogSimple';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import { createRoute } from 'core/utils/routerUtils';
+import colors from 'core/config/colors';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
-import PRO_ROUTES from '../../../startup/client/proRoutes';
+const PromotionAdder = () => {
+  const { assignedEmployee = {} } = useCurrentUser();
+  const { email: assigneeEmail, name: assigneeName } = assignedEmployee;
 
-const PromotionAdder = ({ history }) => (
-  <AutoFormDialog
-    title={<T id="ProDashboardPage.addPromotion" />}
-    buttonProps={{
-      label: <T id="ProDashboardPage.addPromotion" />,
-      raised: true,
-      primary: true,
-      icon: <Icon type="add" />,
-    }}
-    schema={BasePromotionSchema}
-    onSubmit={promotion =>
-      promotionInsert
-        .run({ promotion })
-        .then(promotionId =>
-          history.push(
-            createRoute(PRO_ROUTES.PRO_PROMOTION_PAGE.path, { promotionId }),
-          ),
-        )
-    }
-    autoFieldProps={{
-      labels: {
-        name: <T id="ProDashboardPage.PromotionAdder.name" />,
-        type: <T id="ProDashboardPage.PromotionAdder.type" />,
-      },
-    }}
-  />
-);
+  const imageSrc =
+    employeesByEmail[assigneeEmail]?.src || '/img/epotek-logo.png';
 
-export default withRouter(PromotionAdder);
+  return (
+    <DialogSimple
+      title={<T id="ProDashboardPage.addPromotion" />}
+      buttonProps={{
+        label: <T id="ProDashboardPage.addPromotion" />,
+        raised: true,
+        primary: true,
+        icon: <Icon type="add" />,
+      }}
+      maxWidth="xs"
+      closeOnly
+    >
+      <div className="flex-col center">
+        <Icon
+          className="mt-16 mb-32"
+          type={collectionIcons[PROMOTIONS_COLLECTION]}
+          style={{ width: '100px', height: '100px', color: colors.primary }}
+        />
+        <T
+          id="ProDashboardPage.addPromotion.description"
+          values={{ hasAssignee: !!assigneeEmail }}
+        />
+        <a
+          href={`mailto:${assigneeEmail || 'team@e-potek.ch'}`}
+          className="flex center a mt-16"
+          style={{ marginLeft: '-8px' }}
+        >
+          <img
+            src={imageSrc}
+            className="mr-8"
+            widht={50}
+            height={50}
+            style={{ borderRadius: '50%' }}
+            alt={assigneeName || 'team@e-potek.ch'}
+          />
+          {assigneeName || 'team@e-potek.ch'}
+        </a>
+      </div>
+    </DialogSimple>
+  );
+};
+
+export default PromotionAdder;
