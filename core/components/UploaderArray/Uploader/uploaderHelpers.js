@@ -9,12 +9,18 @@ import ClientEventService, {
 } from '../../../api/events/ClientEventService';
 import {
   ALLOWED_FILE_TYPES,
+  ALLOWED_FILE_TYPES_DISPLAYABLE,
   FILE_STATUS,
   MAX_FILE_SIZE,
 } from '../../../api/files/fileConstants';
 
-export const checkFile = (file, currentValue = [], tempFiles = []) => {
-  if (file.type && ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
+export const checkFile = (
+  file,
+  currentValue = [],
+  tempFiles = [],
+  allowedFileTypes = ALLOWED_FILE_TYPES,
+) => {
+  if (file.type && allowedFileTypes.indexOf(file.type) < 0) {
     return 'fileType';
   }
   if (file.size && file.size > MAX_FILE_SIZE) {
@@ -72,6 +78,7 @@ export const addProps = withProps(
     setTempSuccessFiles,
     handleSuccess,
     addTempSuccessFile,
+    displayableFile,
   }) => {
     const { formatMessage: f } = useIntl();
     return {
@@ -84,6 +91,9 @@ export const addProps = withProps(
             file,
             [...currentValue, ...tempSuccessFiles],
             tempFiles,
+            displayableFile
+              ? ALLOWED_FILE_TYPES_DISPLAYABLE
+              : ALLOWED_FILE_TYPES,
           );
           if (isValid === true) {
             fileArray.push(file);
@@ -97,7 +107,12 @@ export const addProps = withProps(
             ({ default: notification }) => {
               notification.error({
                 message: f({ id: `errors.${showError}.title` }),
-                description: f({ id: `errors.${showError}.description` }),
+                description: f(
+                  {
+                    id: `errors.${showError}.description`,
+                  },
+                  { displayableFile },
+                ),
               });
             },
           );

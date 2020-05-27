@@ -5,7 +5,12 @@ import { compose, withProps } from 'recompose';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
-import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/files/fileConstants';
+import {
+  ALLOWED_FILE_TYPES,
+  ALLOWED_FILE_TYPES_DISPLAYABLE,
+  SLINGSHOT_DIRECTIVE_NAME,
+  SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE,
+} from '../../../api/files/fileConstants';
 import {
   autoRenameFile,
   moveFile,
@@ -45,8 +50,15 @@ const addMeteorProps = withProps(
     canModify,
     autoRenameFiles = false,
     allowSetRoles = false,
+    displayableFile = false,
   }) => {
     const { formatMessage: f } = useIntl();
+    const uploadDirective = displayableFile
+      ? SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE
+      : SLINGSHOT_DIRECTIVE_NAME;
+    const allowedFileTypes = displayableFile
+      ? ALLOWED_FILE_TYPES_DISPLAYABLE
+      : ALLOWED_FILE_TYPES;
 
     return {
       handleSuccess: async (file, url) => {
@@ -73,14 +85,24 @@ const addMeteorProps = withProps(
         oldCollection,
         name,
       }) => {
-        const isValid = checkFile({ name }, destinationFiles, []);
+        const isValid = checkFile(
+          { name },
+          destinationFiles,
+          [],
+          allowedFileTypes,
+        );
 
         if (isValid !== true) {
           import('../../../utils/notification').then(
             ({ default: notification }) => {
               notification.error({
                 message: f({ id: `errors.${isValid}.title` }),
-                description: f({ id: `errors.${isValid}.description` }),
+                description: f(
+                  {
+                    id: `errors.${isValid}.description`,
+                  },
+                  { displayableFile },
+                ),
               });
             },
           );
@@ -96,7 +118,7 @@ const addMeteorProps = withProps(
           newCollection: collection,
         });
       },
-      uploadDirective: SLINGSHOT_DIRECTIVE_NAME,
+      uploadDirective,
       uploadDirectiveProps: { collection, docId, id: fileId, acl, maxSize },
       fileId,
       handleRenameFile: (newName, Key) =>
