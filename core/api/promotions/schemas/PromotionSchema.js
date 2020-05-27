@@ -157,7 +157,6 @@ const PromotionSchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   'constructionTimeline.$.percent': { ...percentageField, optional: false },
-  adminNote: { type: String, optional: true },
   projectStatus: { type: String, optional: true },
   authorizationStatus: {
     type: String,
