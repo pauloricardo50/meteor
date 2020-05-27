@@ -41,6 +41,7 @@ const addSort = (body, params) => {
 const addSkip = (body, params) => {
   const { $skip } = params;
   if ($skip) {
+    console.log('$skip:', $skip);
     body.$options = { ...body.$options, skip: $skip };
   }
 };

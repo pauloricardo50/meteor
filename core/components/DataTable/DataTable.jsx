@@ -86,6 +86,7 @@ const DataTable = ({
           open={loading}
           className="data-table-backdrop"
           transitionDuration={1000}
+          style={{ zIndex: 0 }}
         >
           <Loading />
         </Backdrop>

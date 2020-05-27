@@ -59,7 +59,14 @@ exposeQuery({
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionLotId, status, promotionId, loanStatus } = params;
+        const {
+          promotionLotId,
+          status,
+          promotionId,
+          loanStatus,
+          invitedBy,
+        } = params;
+        console.log('params:', params);
 
         if (status) {
           filters.status = status;
@@ -78,6 +85,10 @@ exposeQuery({
         if (loanStatus) {
           filters['loanCache.status'] = loanStatus;
         }
+
+        if (invitedBy) {
+          filters['loanCache.promotionLinks.0.invitedBy'] = invitedBy;
+        }
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
@@ -92,12 +103,13 @@ exposeQuery({
       };
     },
     validateParams: {
+      anonymize: Match.Maybe(Boolean),
+      invitedBy: Match.Maybe(Match.OneOf(String, null)),
+      loanStatus: Match.Maybe(Match.OneOf(String, Object)),
       promotionId: Match.Maybe(String),
       promotionLotId: Match.Maybe(String),
-      userId: String,
-      anonymize: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
-      loanStatus: Match.Maybe(Match.OneOf(String, Object)),
+      userId: String,
     },
   },
 });

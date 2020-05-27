@@ -81,10 +81,10 @@ const usePaginatedMeteorData = (
     (infinite
       ? totalCount > data?.length
       : totalCount > finalPageIndex * pageSize + pageSize);
-  const pageCount = Math.ceil(totalCount / pageSize) - 1;
+  const pageCount = Math.ceil(totalCount / pageSize);
 
   const nextPage = useCallback(() => {
-    setPageIndex(currentPage => Math.min(currentPage + 1, pageCount));
+    setPageIndex(currentPage => Math.min(currentPage + 1, pageCount - 1));
   }, [pageCount]);
 
   const previousPage = useCallback(() => {
@@ -94,7 +94,7 @@ const usePaginatedMeteorData = (
   const setPage = useCallback(
     newPage => {
       const pageNumber = Math.max(1, newPage);
-      setPageIndex(Math.min(pageNumber, pageCount));
+      setPageIndex(Math.min(pageNumber, pageCount - 1));
     },
     [pageCount],
   );

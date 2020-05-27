@@ -26,7 +26,11 @@ const TableFooter = ({
         <TableOptions allColumns={allColumns} />
         <TablePagination
           count={rowCount}
-          onChangePage={(event, page) => gotoPage(page)}
+          onChangePage={(event, page) => {
+            console.log('onChangePage??', page);
+
+            gotoPage(page);
+          }}
           onChangeRowsPerPage={event =>
             setPageSize(parseInt(event.target.value, 10))
           }
