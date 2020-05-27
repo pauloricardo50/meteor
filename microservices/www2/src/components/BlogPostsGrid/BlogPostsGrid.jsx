@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import BlogPostsGridItem from '../BlogPostsGridItem';
-import useAllBlogPosts from '../../hooks/use-all-blog-posts';
+import useAllBlogPosts from '../../hooks/useAllBlogPosts';
 import LanguageContext from '../../contexts/LanguageContext';
 import './BlogPostsGrid.scss';
 

@@ -2,6 +2,9 @@
   "name": "epotek-brand-website",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/pro-light-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
     "classnames": "^2.2.6",

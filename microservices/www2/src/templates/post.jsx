@@ -4,6 +4,7 @@ import { RichText } from 'prismic-reactjs';
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
+import RecommendedBlogPosts from '../components/RecommendedBlogPosts';
 import { getLanguageData } from '../utils/languages.js';
 import '../styles/post.scss';
 
@@ -109,11 +110,13 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
             </div>
           )}
         </div>
+
         {blogPost.body && <PageSections sections={blogPost.body} />}
-        {/* TODO: add newletter signup to each article, but which version to use from Prismic? */}
+
+        {/* TODO: add newletter signup from Prismic */}
         <div className="section-placeholder">Newsletter sign up section</div>
 
-        <div className="section-placeholder">Related promotions</div>
+        <RecommendedBlogPosts currentPost={blogPost} />
 
         <div className="section-placeholder">
           Full width background image w/ CTA buttons
