@@ -11,7 +11,9 @@ const API_PATH = 'https://us15.api.mailchimp.com/3.0';
 const API_KEY = Meteor.settings.mailchimp?.API_KEY;
 
 // We currently support only one list, this could change in the future
-const NEWSLETTER_LIST_ID = '536ce48082';
+const LIST_IDS = {
+  MAIN_NEWSLETTER: '536ce48082',
+};
 
 const mailchimpEndpoints = {
   getLastCampaigns: {
@@ -29,7 +31,7 @@ const mailchimpEndpoints = {
   },
   testError: {
     method: 'GET',
-    makeEndpoint: () => '/campaignz',
+    makeEndpoint: () => '/test-error',
   },
   getMember: {
     method: 'GET',
@@ -37,27 +39,27 @@ const mailchimpEndpoints = {
       const query = queryString.stringify({
         fields: 'status,merge_fields',
       });
-      return `/lists/${NEWSLETTER_LIST_ID}/members/${subscriberHash}?${query}`;
+      return `/lists/${LIST_IDS.MAIN_NEWSLETTER}/members/${subscriberHash}?${query}`;
     },
   },
   upsertMember: {
     method: 'PUT',
     makeEndpoint: ({ subscriberHash }) =>
-      `/lists/${NEWSLETTER_LIST_ID}/members/${subscriberHash}`,
+      `/lists/${LIST_IDS.MAIN_NEWSLETTER}/members/${subscriberHash}`,
   },
   archiveMember: {
     method: 'DELETE',
     makeEndpoint: ({ subscriberHash }) =>
-      `/lists/${NEWSLETTER_LIST_ID}/members/${subscriberHash}`,
+      `/lists/${LIST_IDS.MAIN_NEWSLETTER}/members/${subscriberHash}`,
   },
   permanentlyDeleteMember: {
     method: 'POST',
     makeEndpoint: ({ subscriberHash }) =>
-      `/lists/${NEWSLETTER_LIST_ID}/members/${subscriberHash}/actions/delete-permanent`,
+      `/lists/${LIST_IDS.MAIN_NEWSLETTER}/members/${subscriberHash}/actions/delete-permanent`,
   },
   listMergeFields: {
     method: 'GET',
-    makeEndpoint: () => `/lists/${NEWSLETTER_LIST_ID}/merge-fields`,
+    makeEndpoint: () => `/lists/${LIST_IDS.MAIN_NEWSLETTER}/merge-fields`,
   },
 };
 
