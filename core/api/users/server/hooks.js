@@ -18,12 +18,16 @@ Users.after.update((userId, doc, fieldNames) => {
   ) {
     try {
       const { firstName, lastName, emails, phoneNumbers } = doc;
-      MailchimpService.upsertMember({
-        firstName,
-        lastName,
-        email: emails[0].address,
-        phoneNumber: phoneNumbers?.[0],
-      });
+      const email = emails[0].address;
+      // Skip all of our test accounts
+      if (!email.includes('@e-potek.ch')) {
+        MailchimpService.upsertMember({
+          firstName,
+          lastName,
+          email,
+          phoneNumber: phoneNumbers?.[0],
+        });
+      }
     } catch (error) {
       ErrorLogger.handleError({
         error: new Error(`Users after update hook errror: ${error.message}`),

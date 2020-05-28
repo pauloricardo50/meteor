@@ -115,6 +115,11 @@ class MailchimpService {
     return this.callApi({
       endpoint: 'getMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
+    }).catch(error => {
+      // Ignore 404 errors on this one
+      if (!error.message.includes('404')) {
+        throw error;
+      }
     });
   }
 
