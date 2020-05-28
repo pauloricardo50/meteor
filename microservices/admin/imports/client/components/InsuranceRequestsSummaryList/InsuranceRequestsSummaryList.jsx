@@ -15,7 +15,7 @@ const InsuranceRequestsSummaryList = ({
 }) => {
   const history = useHistory();
   return (
-    <div className="mt-32">
+    <div className="mt-40">
       <h3>
         Dossiers assurance
         <InsuranceRequestAdder

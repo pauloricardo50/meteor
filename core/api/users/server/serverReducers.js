@@ -1,4 +1,5 @@
 import { getEmailsForAddress } from '../../email/server/mandrill';
+import NewsletterService from '../../email/server/NewsletterService';
 import { createMeteorAsyncFunction } from '../../helpers';
 import assigneeReducer from '../../reducers/assigneeReducer';
 import UserService from './UserService';
@@ -16,5 +17,12 @@ Users.addReducers({
     body: { _id: 1 },
     reduce: ({ _id }, { mainOrganisationFragment }) =>
       UserService.getUserMainOrganisation(_id, mainOrganisationFragment),
+  },
+  newsletterStatus: {
+    body: { email: 1 },
+    reduce: ({ email }) =>
+      createMeteorAsyncFunction(
+        NewsletterService.getStatus.bind(NewsletterService),
+      )({ email }),
   },
 });

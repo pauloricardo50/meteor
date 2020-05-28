@@ -1,9 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
+import SimpleSchema from 'simpl-schema';
+
 import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
+import {
+  getNewsletterStatus,
+  subscribeToNewsletter,
+  unsubscribeFromNewsletter,
+  updateNewsletterProfile,
+} from '../methodDefinitions';
 import EmailService from './EmailService';
+import NewsletterService from './NewsletterService';
 
 export const sendEmail = new Method({
   name: 'sendEmail',
@@ -42,4 +52,28 @@ sendEmailToAddress.setHandler((context, params) => {
     console.log(`EmailService error for ${params.emailId}`, error);
     throw new Meteor.Error(error);
   }
+});
+
+subscribeToNewsletter.setHandler((context, { email }) => {
+  if (!SimpleSchema.RegEx.Email.test(email)) {
+    throw new Meteor.Error('Email invalide');
+  }
+  context.unblock();
+
+  return NewsletterService.subscribeByEmail({ email });
+});
+
+unsubscribeFromNewsletter.setHandler((context, { email }) => {
+  const user = UserService.getByEmail(email, { _id: 1 });
+  SecurityService.users.isAllowedToUpdate(user._id, context.userId);
+  context.unblock();
+
+  return NewsletterService.unsubscribe({ email });
+});
+
+updateNewsletterProfile.setHandler((context, { userId, status }) => {
+  SecurityService.users.isAllowedToUpdate(userId, context.userId);
+  context.unblock();
+
+  return NewsletterService.updateUser({ userId, status });
 });

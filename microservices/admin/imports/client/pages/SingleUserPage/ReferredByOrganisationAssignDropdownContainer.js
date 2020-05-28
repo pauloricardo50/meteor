@@ -6,7 +6,7 @@ import { setUserReferredByOrganisation } from 'core/api/users/methodDefinitions'
 
 const getMenuItems = ({
   organisations,
-  referredByOrganisation: { referredByOrganisationId } = {},
+  referredByOrganisation: { _id: referredByOrganisationId } = {},
   userId,
 }) =>
   [null, ...organisations].map(organisation => {
@@ -31,6 +31,8 @@ export default compose(
     queryOptions: { reactive: false },
     params: { $body: { name: 1 } },
     dataName: 'organisations',
+    refetchOnMethodCall: false,
+    smallLoader: true,
   }),
   withProps(
     ({

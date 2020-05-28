@@ -1,4 +1,7 @@
 {
+  "PasswordResetPage.newsletterSignup": "Recevoir notre newsletter mensuelle avec les dernières actualités du monde hypothécaire",
+  "AccountPage.newsletter": "Newsletter e-Potek",
+  "AccountPage.newsletter.signedUp": "Recevoir notre newsletter mensuelle avec les dernières actualités du monde hypothécaire",
   "ProDashboardPage.addPromotion.description": "Afin de démarrer une promotion en partenariat avec e-Potek, veuillez {hasAssignee, select, true {contacter votre conseiller} other {nous contacter à}}",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS.BODY": "{userName} a interompu la réservation en cours pour {customerName} sur le lot {promotionLotName}.",
   "emails.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS.CTA": "Voir la promotion",

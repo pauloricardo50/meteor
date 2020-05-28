@@ -1,8 +1,8 @@
 import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose, withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
@@ -94,9 +94,9 @@ const updateOrganisations = ({ userId, organisations = [] }) =>
     })),
   });
 
-export default compose(
-  withRouter,
-  withProps(({ history, user }) => ({
+export default withProps(({ user }) => {
+  const history = useHistory();
+  return {
     schema: userSchema,
     labels: { assignedEmployeeId: <T id="Forms.assignedEmployee" /> },
     createUser: data =>
@@ -113,5 +113,5 @@ export default compose(
             updateOrganisations({ userId: user._id, organisations }),
         );
     },
-  })),
-);
+  };
+});
