@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-
 import PersonOutline from '@material-ui/icons/PersonOutline';
+import LanguageContext from '../../contexts/LanguageContext';
+import { getLanguageData } from '../../utils/languages';
 
 const LoginMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [language] = useContext(LanguageContext);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +29,7 @@ const LoginMenu = () => {
         size="large"
         startIcon={<PersonOutline />}
       >
-        Se connecter
+        {getLanguageData(language).loginText}
       </Button>
 
       <Menu

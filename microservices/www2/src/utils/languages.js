@@ -8,6 +8,8 @@ const languageData = {
     homeLink: '/en/home',
     blogLink: '/en/blog',
     blogLinkText: `Return to index`,
+    loginText: 'Login',
+    recommendedArticleHeader: `This might interest you`,
     rateTable: {
       header: ['Duration', 'Trend', 'Rate'],
     },
@@ -22,6 +24,8 @@ const languageData = {
     homeLink: '/fr/accueil',
     blogLink: '/fr/blog',
     blogLinkText: `Revenir à l'index`,
+    loginText: 'Se connecter',
+    recommendedArticleHeader: `Ceci pourrait vous intéresser`,
     rateTable: {
       header: ['Durée', 'Tendance', 'Taux'],
     },
