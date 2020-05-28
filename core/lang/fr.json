@@ -2007,7 +2007,7 @@
   "emails.VERIFY_EMAIL.CTA": "Confirmer",
   "emails.VERIFY_EMAIL.SUBJECT": "Vérifiez votre adresse email",
   "emails.VERIFY_EMAIL.TITLE": "Vérifiez votre adresse email",
-  "errors.fileSize.description": "On ne peut prendre que des fichiers en dessous de 50MB",
+  "errors.fileSize.description": "On ne peut prendre que des fichiers en dessous de {maxSize}",
   "errors.fileSize.title": "Fichier trop gros",
   "errors.fileType.description": "On ne peut prendre que les {displayableFile, select, true {.jpg, .jpeg et .png} other {.pdf, .jpg, .jpeg, .xlsx et .png}}",
   "errors.fileType.title": "Fichier incompatible",

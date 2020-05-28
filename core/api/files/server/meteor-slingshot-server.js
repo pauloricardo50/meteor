@@ -7,6 +7,7 @@ import {
   ALLOWED_FILE_TYPES,
   ALLOWED_FILE_TYPES_DISPLAYABLE,
   ALLOWED_FILE_TYPES_TEMP,
+  MAX_DISPLAYABLE_FILE_SIZE,
   MAX_FILE_SIZE,
   SLINGSHOT_DIRECTIVE_NAME,
   SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE,
@@ -17,7 +18,6 @@ import uploadDirective from './uploadDirective';
 import uploadDirectiveTemp from './uploadDirectiveTemp';
 
 const sharedOptions = {
-  maxSize: MAX_FILE_SIZE,
   authorize(file, { collection, docId }) {
     // Don't use arrow function, this is the current object here
 
@@ -50,6 +50,7 @@ const sharedOptions = {
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   ...sharedOptions,
+  maxSize: MAX_FILE_SIZE,
   allowedFileTypes: ALLOWED_FILE_TYPES,
 });
 
@@ -58,6 +59,7 @@ Slingshot.createDirective(
   uploadDirective,
   {
     ...sharedOptions,
+    maxSize: MAX_DISPLAYABLE_FILE_SIZE,
     allowedFileTypes: ALLOWED_FILE_TYPES_DISPLAYABLE,
   },
 );

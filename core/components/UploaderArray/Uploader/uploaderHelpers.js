@@ -9,21 +9,42 @@ import ClientEventService, {
 } from '../../../api/events/ClientEventService';
 import {
   ALLOWED_FILE_TYPES,
-  ALLOWED_FILE_TYPES_DISPLAYABLE,
   FILE_STATUS,
+  MAX_DISPLAYABLE_FILE_SIZE,
   MAX_FILE_SIZE,
+  ONE_KB,
 } from '../../../api/files/fileConstants';
 
-export const checkFile = (
+export const getMaxSize = ({ displayableFile, maxSize, maxSizeOverride }) => {
+  if (maxSizeOverride) {
+    return maxSizeOverride;
+  }
+
+  if (maxSize) {
+    return displayableFile
+      ? Math.min(MAX_DISPLAYABLE_FILE_SIZE, maxSize)
+      : Math.min(MAX_FILE_SIZE, maxSize);
+  }
+
+  return displayableFile ? MAX_DISPLAYABLE_FILE_SIZE : MAX_FILE_SIZE;
+};
+
+export const checkFile = ({
   file,
   currentValue = [],
   tempFiles = [],
   allowedFileTypes = ALLOWED_FILE_TYPES,
-) => {
+  displayableFile = false,
+  maxSize,
+  maxSizeOverride,
+}) => {
   if (file.type && allowedFileTypes.indexOf(file.type) < 0) {
     return 'fileType';
   }
-  if (file.size && file.size > MAX_FILE_SIZE) {
+
+  const maxFileSize = getMaxSize({ displayableFile, maxSize, maxSizeOverride });
+
+  if (file.size && file.size > maxFileSize) {
     return 'fileSize';
   }
   if (
@@ -68,6 +89,18 @@ export const tempFileState = withStateHandlers(
   },
 );
 
+export const formatMaxFileSize = maxSize => {
+  if (maxSize / (ONE_KB * ONE_KB) >= 1) {
+    return `${maxSize / (ONE_KB * ONE_KB)}MB`;
+  }
+
+  if (maxSize / ONE_KB >= 1) {
+    return `${maxSize / ONE_KB}KB`;
+  }
+
+  return `${maxSize}B`;
+};
+
 export const addProps = withProps(
   ({
     addTempFiles,
@@ -78,8 +111,15 @@ export const addProps = withProps(
     setTempSuccessFiles,
     handleSuccess,
     addTempSuccessFile,
-    displayableFile,
+    uploadDirectiveProps,
   }) => {
+    const {
+      maxSize,
+      displayableFile,
+      allowedFileTypes,
+      maxSizeOverride,
+    } = uploadDirectiveProps;
+
     const { formatMessage: f } = useIntl();
     return {
       handleAddFiles: files => {
@@ -87,14 +127,15 @@ export const addProps = withProps(
         let showError = false;
 
         files.forEach(file => {
-          const isValid = checkFile(
+          const isValid = checkFile({
             file,
-            [...currentValue, ...tempSuccessFiles],
+            currentValue: [...currentValue, ...tempSuccessFiles],
             tempFiles,
-            displayableFile
-              ? ALLOWED_FILE_TYPES_DISPLAYABLE
-              : ALLOWED_FILE_TYPES,
-          );
+            allowedFileTypes,
+            displayableFile,
+            maxSize,
+            maxSizeOverride,
+          });
           if (isValid === true) {
             fileArray.push(file);
           } else {
@@ -111,7 +152,12 @@ export const addProps = withProps(
                   {
                     id: `errors.${showError}.description`,
                   },
-                  { displayableFile },
+                  {
+                    displayableFile,
+                    maxSize: formatMaxFileSize(
+                      getMaxSize({ displayableFile, maxSize, maxSizeOverride }),
+                    ),
+                  },
                 ),
               });
             },

@@ -26,6 +26,7 @@ export const ONE_KB = 1024;
 
 // 16 MB (use null for unlimited), https://community.exoscale.com/api/sos/
 export const MAX_FILE_SIZE = 16 * ONE_KB * ONE_KB;
+export const MAX_DISPLAYABLE_FILE_SIZE = 500 * ONE_KB;
 
 export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
 export const SLINGSHOT_DIRECTIVE_NAME_TEMP = 'exoscale-temp';
@@ -292,4 +293,6 @@ export const FILE_ROLES = {
   ADMIN: 'admin',
 };
 
-export const DISPLAYABLE_FILES = [PROPERTY_DOCUMENTS.PROPERTY_PICTURES];
+export const DISPLAYABLE_FILES = {
+  [PROPERTY_DOCUMENTS.PROPERTY_PICTURES]: { maxSizeOverride: MAX_FILE_SIZE },
+};

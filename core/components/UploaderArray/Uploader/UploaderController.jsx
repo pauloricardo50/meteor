@@ -27,6 +27,8 @@ import {
   addProps,
   checkFile,
   displayFullState,
+  formatMaxFileSize,
+  getMaxSize,
   tempFileState,
   willReceiveProps,
   withMergedSuccessfulFiles,
@@ -43,6 +45,7 @@ const addMeteorProps = withProps(
       requiredByAdmin,
       category,
       tooltip,
+      maxSizeOverride,
     },
     loanId,
     docId,
@@ -54,7 +57,9 @@ const addMeteorProps = withProps(
   }) => {
     const { formatMessage: f } = useIntl();
     const uploadDirective = displayableFile
-      ? SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE
+      ? maxSizeOverride
+        ? SLINGSHOT_DIRECTIVE_NAME
+        : SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE
       : SLINGSHOT_DIRECTIVE_NAME;
     const allowedFileTypes = displayableFile
       ? ALLOWED_FILE_TYPES_DISPLAYABLE
@@ -85,12 +90,15 @@ const addMeteorProps = withProps(
         oldCollection,
         name,
       }) => {
-        const isValid = checkFile(
-          { name },
-          destinationFiles,
-          [],
+        const isValid = checkFile({
+          file: { name },
+          currentValue: destinationFiles,
+          tempFiles: [],
           allowedFileTypes,
-        );
+          displayableFile,
+          maxSize,
+          maxSizeOverride,
+        });
 
         if (isValid !== true) {
           import('../../../utils/notification').then(
@@ -101,7 +109,12 @@ const addMeteorProps = withProps(
                   {
                     id: `errors.${isValid}.description`,
                   },
-                  { displayableFile },
+                  {
+                    displayableFile,
+                    maxSize: formatMaxFileSize(
+                      getMaxSize({ displayableFile, maxSize, maxSizeOverride }),
+                    ),
+                  },
                 ),
               });
             },
@@ -119,7 +132,16 @@ const addMeteorProps = withProps(
         });
       },
       uploadDirective,
-      uploadDirectiveProps: { collection, docId, id: fileId, acl, maxSize },
+      uploadDirectiveProps: {
+        collection,
+        docId,
+        id: fileId,
+        acl,
+        maxSize,
+        displayableFile,
+        allowedFileTypes,
+        maxSizeOverride,
+      },
       fileId,
       handleRenameFile: (newName, Key) =>
         setFileAdminName
