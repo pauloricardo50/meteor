@@ -13,7 +13,7 @@ import {
   sendEnrollmentEmail,
   toggleAccount,
 } from 'core/api/users/methodDefinitions';
-import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import { ROLES } from 'core/api/users/userConstants';
 import Users from 'core/api/users/users';
 import NewsletterSignup from 'core/components/AccountPage/NewsletterSignup';
 import AssignedRole from 'core/components/AssignedRole';
@@ -28,8 +28,8 @@ import T from 'core/components/Translation';
 import IntlDate from 'core/components/Translation/formattingComponents/IntlDate';
 import UpdateField from 'core/components/UpdateField';
 
-import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import RolePicker from '../../components/RolePicker';
+import UserAssigneeSelect from '../../components/UserAssigneeSelect';
 import { UserModifier } from '../../components/UserDialogForm';
 import LastSeen from './LastSeen';
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
@@ -133,21 +133,11 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           </Tooltip>
         </SingleUserPageInformationItem>
 
-        <SingleUserPageInformationItem
-          label="Conseiller e-Potek"
-          className="flex center-align"
-        >
-          {assignedEmployeeCache?._id && (
-            <CollectionIconLink
-              relatedDoc={{
-                ...assignedEmployeeCache,
-                _collection: USERS_COLLECTION,
-                roles: [{ _id: ROLES.ADMIN }],
-              }}
-              iconClassName="mr-8"
-            />
-          )}
-          <UserAssignDropdown doc={user} />
+        <SingleUserPageInformationItem label="Conseiller e-Potek">
+          <UserAssigneeSelect
+            userId={userId}
+            assignedEmployeeId={assignedEmployeeCache?._id}
+          />
         </SingleUserPageInformationItem>
 
         {isAdvisor && (
