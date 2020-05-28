@@ -10,7 +10,7 @@ export const unsubscribeFromNewsletter = new Method({
   params: { email: String },
 });
 
-export const updateMailchimpProfile = new Method({
-  name: 'updateMailchimpProfile',
+export const updateNewsletterProfile = new Method({
+  name: 'updateNewsletterProfile',
   params: { userId: String, status: String },
 });

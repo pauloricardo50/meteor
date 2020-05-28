@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MAILCHIMP_LIST_STATUS } from '../../api/email/emailConstants';
-import { updateMailchimpProfile } from '../../api/email/methodDefinitions';
+import { updateNewsletterProfile } from '../../api/email/methodDefinitions';
 import { appUser } from '../../api/users/queries';
 import { USERS_COLLECTION } from '../../api/users/userConstants';
 import { useStaticMeteorData } from '../../hooks/useMeteorData';
@@ -23,7 +23,7 @@ const NewsletterSignup = ({
   return (
     <Checkbox
       onChange={() =>
-        updateMailchimpProfile.run({
+        updateNewsletterProfile.run({
           userId: data?._id,
           status:
             data?.newsletterStatus?.status === MAILCHIMP_LIST_STATUS.SUBSCRIBED

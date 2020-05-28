@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
 import { analyticsVerifyEmail } from '../../api/analytics/methodDefinitions';
 import { MAILCHIMP_LIST_STATUS } from '../../api/email/emailConstants';
-import { updateMailchimpProfile } from '../../api/email/methodDefinitions';
+import { updateNewsletterProfile } from '../../api/email/methodDefinitions';
 import { notifyAssignee } from '../../api/slack/methodDefinitions';
 import {
   getUserByPasswordResetToken,
@@ -81,7 +81,7 @@ export default compose(
             }),
             userPasswordReset.run({}),
             newsletterSignup
-              ? updateMailchimpProfile.run({
+              ? updateNewsletterProfile.run({
                   userId: user._id,
                   status: MAILCHIMP_LIST_STATUS.SUBSCRIBED,
                 })

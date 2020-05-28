@@ -10,7 +10,7 @@ import {
   getNewsletterStatus,
   subscribeToNewsletter,
   unsubscribeFromNewsletter,
-  updateMailchimpProfile,
+  updateNewsletterProfile,
 } from '../methodDefinitions';
 import EmailService from './EmailService';
 import MailchimpService from './MailchimpService';
@@ -70,7 +70,7 @@ unsubscribeFromNewsletter.setHandler((context, { email }) => {
   return MailchimpService.unsubscribeMember({ email });
 });
 
-updateMailchimpProfile.setHandler((context, { userId, status }) => {
+updateNewsletterProfile.setHandler((context, { userId, status }) => {
   SecurityService.users.isAllowedToUpdate(userId, context.userId);
   const {
     email,

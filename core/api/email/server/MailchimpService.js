@@ -19,7 +19,6 @@ const mailchimpEndpoints = {
     makeEndpoint: () => {
       const query = queryString.stringify({
         count: 3,
-        sort: '',
         fields:
           'campaigns.id,campaigns.settings.title,campaigns.send_time,archive_url',
         sort_field: 'send_time',
