@@ -937,6 +937,40 @@ describe('BorrowerCalculator', () => {
         c: 1,
       });
     });
+
+    it('works with empty arrays', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        c: 1,
+      });
+    });
+
+    it('works with empty objects', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {},
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        c: 1,
+      });
+    });
   });
 
   describe('getFormattedExpenses', () => {
