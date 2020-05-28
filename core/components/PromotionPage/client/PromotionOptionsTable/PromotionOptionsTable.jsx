@@ -18,7 +18,7 @@ import PromotionReservationProgress from '../../PromotionReservationProgress';
 import PromotionCustomer from '../PromotionCustomer';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
-const getModalProps = ({ original: promotionOption }) => {
+const getModalProps = promotionOption => {
   const { promotionLots, loan } = promotionOption;
   const [promotionLot] = promotionLots;
   return {

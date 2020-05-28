@@ -42,10 +42,7 @@ const getRelatedTo = task =>
   task.insurance;
 
 const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
-  const getModalProps = useCallback(
-    row => getTasksTableModalProps(row?.original),
-    [],
-  );
+  const getModalProps = useCallback(row => getTasksTableModalProps(row), []);
 
   return (
     <>
