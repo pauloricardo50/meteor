@@ -8,7 +8,7 @@ describe('MailchimpService', () => {
   it('handles errors', async () => {
     try {
       await MailchimpService.testError();
-      expect(2).to.equal(1);
+      expect(2).to.equal(1, 'Test should throw');
     } catch (error) {
       expect(error.message).to.include('Mailchimp');
       expect(error.message).to.include('404');
@@ -84,6 +84,12 @@ describe('MailchimpService', () => {
           Date.parse(send_time) <= Date.parse(result[i - 1].send_time),
       );
       expect(isSorted).to.equal(true);
+
+      const [mostRecentCampaign] = result;
+      expect(!!mostRecentCampaign.id).to.equal(true);
+      expect(!!mostRecentCampaign.send_time).to.equal(true);
+      expect(!!mostRecentCampaign.archive_url).to.equal(true);
+      expect(!!mostRecentCampaign.settings.subject_line).to.equal(true);
     });
   });
 

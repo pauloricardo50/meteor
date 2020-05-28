@@ -1,5 +1,5 @@
-import MailchimpService from '../../email/server/MailchimpService';
 import { getEmailsForAddress } from '../../email/server/mandrill';
+import NewsletterService from '../../email/server/NewsletterService';
 import { createMeteorAsyncFunction } from '../../helpers';
 import assigneeReducer from '../../reducers/assigneeReducer';
 import UserService from './UserService';
@@ -22,7 +22,7 @@ Users.addReducers({
     body: { email: 1 },
     reduce: ({ email }) =>
       createMeteorAsyncFunction(
-        MailchimpService.getMember.bind(MailchimpService),
+        NewsletterService.getStatus.bind(NewsletterService),
       )({ email }),
   },
 });

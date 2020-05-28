@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import formatNumbersHook from '../../../utils/phoneFormatting';
-import MailchimpService from '../../email/server/MailchimpService';
+import NewsletterService from '../../email/server/NewsletterService';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import Users from '../users';
 import UserService from './UserService';
@@ -21,7 +21,7 @@ Users.after.update((userId, doc, fieldNames) => {
       const email = emails[0].address;
       // Skip all of our test accounts
       if (!email.includes('@e-potek.ch')) {
-        MailchimpService.upsertMember({
+        NewsletterService.updateUser({
           firstName,
           lastName,
           email,
@@ -41,7 +41,7 @@ Users.after.remove(userId => {
   if (Meteor.isProduction && !Meteor.isStaging) {
     const { email } = UserService.get(userId, { email: 1 });
     try {
-      MailchimpService.archiveMember({ email });
+      NewsletterService.removeUser({ email });
     } catch (error) {
       ErrorLogger.handleError({
         error: new Error(`Users after remove hook errror: ${error.message}`),

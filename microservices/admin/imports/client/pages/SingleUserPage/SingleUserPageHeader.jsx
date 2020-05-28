@@ -175,7 +175,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           />
         </SingleUserPageInformationItem>
 
-        <SingleUserPageInformationItem label="Dernière connection">
+        <SingleUserPageInformationItem label="Dernière connexion">
           <LastSeen userId={userId} />
         </SingleUserPageInformationItem>
 

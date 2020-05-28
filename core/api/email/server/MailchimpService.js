@@ -22,7 +22,7 @@ const mailchimpEndpoints = {
       const query = queryString.stringify({
         count: 3,
         fields:
-          'campaigns.id,campaigns.settings.title,campaigns.send_time,archive_url',
+          'campaigns.id,campaigns.settings.subject_line,campaigns.send_time,campaigns.archive_url',
         sort_field: 'send_time',
         sort_dir: 'DESC',
       });

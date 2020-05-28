@@ -13,7 +13,7 @@ import {
   updateNewsletterProfile,
 } from '../methodDefinitions';
 import EmailService from './EmailService';
-import MailchimpService from './MailchimpService';
+import NewsletterService from './NewsletterService';
 
 export const sendEmail = new Method({
   name: 'sendEmail',
@@ -60,37 +60,20 @@ subscribeToNewsletter.setHandler((context, { email }) => {
   }
   context.unblock();
 
-  return MailchimpService.subscribeMember({ email });
+  return NewsletterService.subscribeByEmail({ email });
 });
 
 unsubscribeFromNewsletter.setHandler((context, { email }) => {
   const user = UserService.getByEmail(email, { _id: 1 });
   SecurityService.users.isAllowedToUpdate(user._id, context.userId);
+  context.unblock();
 
-  return MailchimpService.unsubscribeMember({ email });
+  return NewsletterService.unsubscribe({ email });
 });
 
 updateNewsletterProfile.setHandler((context, { userId, status }) => {
   SecurityService.users.isAllowedToUpdate(userId, context.userId);
-  const {
-    email,
-    firstName,
-    lastName,
-    mainOrganisation,
-    phoneNumber,
-  } = UserService.get(userId, {
-    email: 1,
-    firstName: 1,
-    lastName: 1,
-    mainOrganisation: 1,
-    phoneNumber: 1,
-  });
-  return MailchimpService.upsertMember({
-    email,
-    firstName,
-    lastName,
-    organisation: mainOrganisation?.name,
-    phoneNumber,
-    status,
-  });
+  context.unblock();
+
+  return NewsletterService.updateUser({ userId, status });
 });
