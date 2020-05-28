@@ -5,7 +5,12 @@ import { compose, withProps } from 'recompose';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
-import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/files/fileConstants';
+import {
+  ALLOWED_FILE_TYPES,
+  ALLOWED_FILE_TYPES_DISPLAYABLE,
+  SLINGSHOT_DIRECTIVE_NAME,
+  SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE,
+} from '../../../api/files/fileConstants';
 import {
   autoRenameFile,
   moveFile,
@@ -22,6 +27,8 @@ import {
   addProps,
   checkFile,
   displayFullState,
+  formatMaxFileSize,
+  getMaxSize,
   tempFileState,
   willReceiveProps,
   withMergedSuccessfulFiles,
@@ -38,6 +45,7 @@ const addMeteorProps = withProps(
       requiredByAdmin,
       category,
       tooltip,
+      maxSizeOverride,
     },
     loanId,
     docId,
@@ -45,8 +53,17 @@ const addMeteorProps = withProps(
     canModify,
     autoRenameFiles = false,
     allowSetRoles = false,
+    displayableFile = false,
   }) => {
     const { formatMessage: f } = useIntl();
+    const uploadDirective = displayableFile
+      ? maxSizeOverride
+        ? SLINGSHOT_DIRECTIVE_NAME
+        : SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE
+      : SLINGSHOT_DIRECTIVE_NAME;
+    const allowedFileTypes = displayableFile
+      ? ALLOWED_FILE_TYPES_DISPLAYABLE
+      : ALLOWED_FILE_TYPES;
 
     return {
       handleSuccess: async (file, url) => {
@@ -73,14 +90,32 @@ const addMeteorProps = withProps(
         oldCollection,
         name,
       }) => {
-        const isValid = checkFile({ name }, destinationFiles, []);
+        const isValid = checkFile({
+          file: { name },
+          currentValue: destinationFiles,
+          tempFiles: [],
+          allowedFileTypes,
+          displayableFile,
+          maxSize,
+          maxSizeOverride,
+        });
 
         if (isValid !== true) {
           import('../../../utils/notification').then(
             ({ default: notification }) => {
               notification.error({
                 message: f({ id: `errors.${isValid}.title` }),
-                description: f({ id: `errors.${isValid}.description` }),
+                description: f(
+                  {
+                    id: `errors.${isValid}.description`,
+                  },
+                  {
+                    displayableFile,
+                    maxSize: formatMaxFileSize(
+                      getMaxSize({ displayableFile, maxSize, maxSizeOverride }),
+                    ),
+                  },
+                ),
               });
             },
           );
@@ -96,8 +131,17 @@ const addMeteorProps = withProps(
           newCollection: collection,
         });
       },
-      uploadDirective: SLINGSHOT_DIRECTIVE_NAME,
-      uploadDirectiveProps: { collection, docId, id: fileId, acl, maxSize },
+      uploadDirective,
+      uploadDirectiveProps: {
+        collection,
+        docId,
+        id: fileId,
+        acl,
+        maxSize,
+        displayableFile,
+        allowedFileTypes,
+        maxSizeOverride,
+      },
       fileId,
       handleRenameFile: (newName, Key) =>
         setFileAdminName

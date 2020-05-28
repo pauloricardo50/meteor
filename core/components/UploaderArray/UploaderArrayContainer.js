@@ -20,6 +20,8 @@ const makeGetFileMeta = documentArray => ({
   return (
     additionalDocuments.find(document => document.id === id) && {
       noTooltips: !documentHasTooltip(id),
+      maxSizeOverride: documentArray.find(({ id: docId }) => id === docId)
+        ?.maxSizeOverride,
       ...additionalDocuments.find(document => document.id === id),
       ...metadata,
     }

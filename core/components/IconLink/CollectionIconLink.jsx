@@ -151,18 +151,19 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
 };
 
 const CollectionIconLink = ({
+  children,
+  data,
   forceOpen,
   iconClassName,
+  iconStyle,
+  noRoute,
+  onClick,
+  placement,
   relatedDoc = {},
+  replacementPopup,
   showIcon,
   stopPropagation,
-  placement,
-  data,
-  replacementPopup,
-  noRoute,
-  iconStyle,
-  children,
-  onClick,
+  className,
 }) => {
   const { _collection, _id: docId } = relatedDoc;
 
@@ -191,9 +192,11 @@ const CollectionIconLink = ({
           link={link}
           icon={icon}
           text={text}
-          className={cx('collection-icon', {
-            'font-awesome': typeof icon !== 'string',
-          })}
+          className={cx(
+            'collection-icon',
+            { 'font-awesome': typeof icon !== 'string' },
+            className,
+          )}
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
           iconStyle={iconStyle}

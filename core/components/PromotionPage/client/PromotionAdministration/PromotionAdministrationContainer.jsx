@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { ONE_KB, S3_ACLS } from '../../../../api/files/fileConstants';
+import { S3_ACLS } from '../../../../api/files/fileConstants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
 import { lotInsert } from '../../../../api/lots/methodDefinitions';
@@ -26,14 +26,19 @@ const promotionDocuments = [
     id: 'promotionImage',
     acl: S3_ACLS.PUBLIC_READ,
     noTooltips: true,
-    maxSize: 500 * ONE_KB,
+    displayableFile: true,
   },
   {
     id: 'promotionDocuments',
     acl: S3_ACLS.PUBLIC_READ,
     noTooltips: true,
   },
-  { id: 'logos', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  {
+    id: 'logos',
+    acl: S3_ACLS.PUBLIC_READ,
+    noTooltips: true,
+    displayableFile: true,
+  },
   { id: 'promotionGuide', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
 ];
 

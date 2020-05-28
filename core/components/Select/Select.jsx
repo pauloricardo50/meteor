@@ -17,7 +17,7 @@ const makeRenderValue = ({ multiple, rawOptions }) => {
 
   return values => (
     <div className="flex wrap">
-      {values.map((value, i) => {
+      {values.map(value => {
         const option = rawOptions.find(({ id }) => id === value);
         return (
           option && (
@@ -43,6 +43,8 @@ const Select = ({
   rawOptions,
   fullWidth,
   className,
+  displayEmpty,
+  SelectProps,
   ...otherProps
 }) => (
   <TextField
@@ -53,7 +55,9 @@ const Select = ({
     SelectProps={{
       multiple,
       renderValue: makeRenderValue({ multiple, rawOptions }),
-      displayEmpty: !!placeholder,
+      displayEmpty:
+        typeof displayEmpty === 'boolean' ? displayEmpty : !!placeholder,
+      ...SelectProps,
     }}
     value={value}
     onChange={onChange}

@@ -328,6 +328,15 @@ class PromotionService extends CollectionService {
         'Il faut ajouter un (seul) guide du financement bancaire sur cette promotion',
       );
     }
+
+    if (
+      !Meteor.isDevelopment &&
+      !Meteor.isTest &&
+      !Meteor.isAppTest &&
+      !documents.promotionImage?.length
+    ) {
+      throw new Meteor.Error('Il faut ajouter une image sur cette promotion');
+    }
   }
 
   setStatus({ promotionId, status }) {

@@ -9,17 +9,16 @@ const ReferredByOrganisationAssignDropdown = ({
   options,
   referredByOrganisation,
 }) => (
-  <div className="flex-row center space-children">
-    {referredByOrganisation ? (
-      <span className="flex-row center space-children">
-        Référé par l'organisation&nbsp;
-        <CollectionIconLink relatedDoc={referredByOrganisation} />
-      </span>
-    ) : (
-      <span className="flex-row center space-children">
-        Référé par aucune organisation
-      </span>
-    )}
+  <div className="flex-row center">
+    <span className="flex-row center mr-8">
+      {referredByOrganisation ? (
+        <>
+          <CollectionIconLink relatedDoc={referredByOrganisation} />
+        </>
+      ) : (
+        'Aucune'
+      )}
+    </span>
     <DropdownMenu
       iconType="groupAdd"
       options={options}

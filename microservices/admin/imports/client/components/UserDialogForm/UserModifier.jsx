@@ -22,4 +22,5 @@ const UserModifier = ({ schema, user, editUser, labels }) => (
     title={<T id="UserModifier.dialogTitle" />}
   />
 );
+
 export default UserDialogFormContainer(UserModifier);

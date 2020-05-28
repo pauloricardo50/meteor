@@ -262,9 +262,17 @@ describe('PromotionOptionService', function() {
         loanId,
         promotionId,
       });
-      expect(
-        PromotionOptionService.get(id, { loanCache: 1 }).loanCache,
-      ).to.deep.equal([{ _id: loanId, status: LOAN_STATUS.LEAD }]);
+      const { loanCache } = PromotionOptionService.get(id, { loanCache: 1 });
+      expect(loanCache[0]).to.deep.include({
+        _id: loanId,
+        status: LOAN_STATUS.LEAD,
+      });
+      expect(loanCache[0].promotionLinks.length).to.equal(1);
+      expect(loanCache[0].promotionLinks[0]).to.deep.include({
+        _id: 'promoId',
+        showAllLots: true,
+        priorityOrder: [id],
+      });
     });
   });
 

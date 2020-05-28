@@ -785,7 +785,6 @@ export const basePromotion = () => ({
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
-  adminNote: 1,
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
   promotionLots: {
@@ -1028,11 +1027,12 @@ export const fullUser = () => ({
   apiPublicKey: 1,
   assignedEmployee: simpleUser(),
   createdAt: 1,
+  defaultBoardId: 1,
   emails: 1,
   loans: loanBase(),
-  updatedAt: 1,
+  newsletterStatus: 1,
   organisations: fullOrganisation(),
-  defaultBoardId: 1,
+  updatedAt: 1,
 });
 
 export const adminUser = () => ({

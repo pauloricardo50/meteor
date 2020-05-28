@@ -7,7 +7,6 @@ import { Roles } from 'meteor/alanning:roles';
 import omit from 'lodash/omit';
 import NodeRSA from 'node-rsa';
 
-import { fullUser } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
 import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
 import LoanService from '../../loans/server/LoanService';
@@ -346,7 +345,7 @@ export class UserServiceClass extends CollectionService {
     }
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
-    return this.get(userId, fullUser());
+    return this.get(userId, { _id: 1, name: 1, email: 1, roles: 1 });
   };
 
   generateKeyPair = ({ userId }) => {
