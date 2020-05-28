@@ -335,8 +335,12 @@ class PromotionOptionService extends CollectionService {
     agreementFileKeys = [],
   }) => {
     const mergeFiles = async () => {
+      console.log('Merge files debug');
+
       await asyncForEach(agreementFileKeys, async Key => {
+        console.log('Key:', Key);
         const name = FileService.getFileName(Key);
+        console.log('name:', name);
         const newKey = await FileService.moveFile({
           Key,
           name,
@@ -344,6 +348,7 @@ class PromotionOptionService extends CollectionService {
           newDocId: promotionOptionId,
           newCollection: PROMOTION_OPTIONS_COLLECTION,
         });
+        console.log('newKey:', newKey);
         await FileService.autoRenameFile(newKey, PROMOTION_OPTIONS_COLLECTION);
       });
     };
