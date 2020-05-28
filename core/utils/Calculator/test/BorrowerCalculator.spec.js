@@ -914,7 +914,7 @@ describe('BorrowerCalculator', () => {
       });
     });
 
-    it('filters expenses without a falsy value', () => {
+    it('filters expenses with a falsy value', () => {
       const borrowers = [
         {
           expenses: [
