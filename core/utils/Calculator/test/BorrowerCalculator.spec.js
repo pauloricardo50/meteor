@@ -894,6 +894,49 @@ describe('BorrowerCalculator', () => {
         c: 1,
       });
     });
+
+    it('filters expenses without a value', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [{ description: 'b', value: 5 }, { description: 'a' }],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        b: 5,
+        c: 1,
+      });
+    });
+
+    it('filters expenses without a falsy value', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [
+            { description: 'b', value: 5 },
+            { description: 'a', value: NaN },
+            { description: 'a', value: null },
+            { description: 'a', value: undefined },
+          ],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        b: 5,
+        c: 1,
+      });
+    });
   });
 
   describe('getFormattedExpenses', () => {
