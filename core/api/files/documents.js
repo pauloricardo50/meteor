@@ -7,6 +7,7 @@ import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
 import {
   BASIC_DOCUMENTS_LIST,
   BORROWER_DOCUMENTS,
+  DISPLAYABLE_FILES,
   DOCUMENTS,
   FILE_STATUS,
   INSURANCE_DOCUMENTS,
@@ -30,6 +31,8 @@ const makeAllObjectDocuments = documents =>
   Object.values(documents).map(id => ({
     id,
     noTooltips: !documentHasTooltip(id),
+    displayableFile: Object.keys(DISPLAYABLE_FILES).includes(id),
+    maxSizeOverride: DISPLAYABLE_FILES[id]?.maxSizeOverride,
   }));
 
 export const allDocuments = ({ doc, collection }) => {
@@ -81,6 +84,8 @@ const formatAdditionalDoc = additionalDoc => ({
   ...additionalDoc,
   required: true,
   noTooltips: !documentHasTooltip(additionalDoc.id),
+  displayableFile: Object.keys(DISPLAYABLE_FILES).includes(additionalDoc.id),
+  maxSizeOverride: DISPLAYABLE_FILES[additionalDoc.id]?.maxSizeOverride,
 });
 
 const makeGetDocuments = collection => ({ loan, id }, options = {}) => {

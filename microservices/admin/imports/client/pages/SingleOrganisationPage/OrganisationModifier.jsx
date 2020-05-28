@@ -51,8 +51,8 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
             label: 'Logo',
             acl: S3_ACLS.PUBLIC_READ,
             noTooltips: true,
-            maxSize: 100 * ONE_KB,
           }}
+          displayableFile
           handleSuccess={(file, url) => updateOrganisation({ logo: url })}
         />
       )}
