@@ -36,5 +36,8 @@
   "exoscale": {
     "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
     "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
+  },
+  "mailchimp": {
+    "API_KEY": "5e8afd137d0894b8660e15a1df431abe-us15"
   }
 }

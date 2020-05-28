@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import btoa from 'btoa';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
@@ -6,7 +8,7 @@ import queryString from 'query-string';
 import { MAILCHIMP_LIST_STATUS } from '../emailConstants';
 
 const API_PATH = 'https://us15.api.mailchimp.com/3.0';
-const API_KEY = '5e8afd137d0894b8660e15a1df431abe-us15';
+const API_KEY = Meteor.settings.mailchimp?.API_KEY;
 
 // We currently support only one list, this could change in the future
 const NEWSLETTER_LIST_ID = '536ce48082';
@@ -66,6 +68,10 @@ class MailchimpService {
 
     if (!endpointConfig) {
       throw new Error(`Invalid endpoint config ${endpoint}`);
+    }
+
+    if (!API_KEY) {
+      return;
     }
 
     const { method, makeEndpoint } = endpointConfig;
