@@ -76,10 +76,10 @@ describe('Single Insurance Request Page', () => {
 
     // Create an insuranceRequest, and set assignees
     cy.contains('Dossier assurance').click();
-    cy.get('input[name="assigneeLinks.0.percent"]')
-      .clear()
-      .clear()
-      .type('40');
+    cy.setSelect('"assigneeLinks.0._id"', 1);
+    cy.get('input[name="assigneeLinks.0.percent"]').type(
+      '{backspace}{backspace}{backspace}40',
+    );
     cy.get('input[name="assigneeLinks.0.isMain"]').uncheck();
     cy.get('button.list-add-field').click();
     cy.setSelect('"assigneeLinks.1._id"', 0);
