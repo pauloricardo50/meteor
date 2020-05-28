@@ -10,8 +10,15 @@ import MenuItem from '../Material/MenuItem';
 import T from '../Translation';
 
 const groupOptions = (options, { groupBy, format = x => x }) => {
-  const { undefined: undefinedGroup, ...grouped } = group(options, groupBy);
+  let { undefined: undefinedGroup, ...grouped } = group(options, groupBy);
   const groups = Object.keys(grouped);
+  let falsyOption;
+
+  if (undefinedGroup?.length) {
+    // Make sure to put a falsy id option at the top of the select
+    falsyOption = undefinedGroup.find(({ id }) => !id);
+    undefinedGroup = undefinedGroup.filter(({ id }) => !!id);
+  }
 
   const groupedOptions = groups.reduce(
     (acc, v) => [
@@ -24,13 +31,14 @@ const groupOptions = (options, { groupBy, format = x => x }) => {
 
   if (undefinedGroup?.length) {
     return [
+      falsyOption,
       ...groupedOptions,
       { id: 'SELECT_GROUP', label: <T id="general.other" /> },
       ...undefinedGroup,
-    ];
+    ].filter(x => x);
   }
 
-  return groupedOptions;
+  return [falsyOption, ...groupedOptions].filter(x => x);
 };
 
 export const mapSelectOptions = (options, grouping) => {

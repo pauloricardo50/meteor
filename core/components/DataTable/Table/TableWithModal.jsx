@@ -37,7 +37,8 @@ const modalReducer = (state, action) => {
     return { ...state, open: true, row: action.payload };
   }
   if (action.type === 'close') {
-    return { ...state, open: false, row: null };
+    // Don't set row to null/undefined here, or else the UI jumps before the modal can close
+    return { ...state, open: false };
   }
 
   return state;
@@ -56,7 +57,7 @@ const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
     return <Table hooks={hooks} {...rest} />;
   }
 
-  const modalProps = useMemo(() => getModalProps(row), [row]);
+  const modalProps = useMemo(() => row && getModalProps(row), [row]);
 
   return (
     <>
