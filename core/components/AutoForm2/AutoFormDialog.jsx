@@ -59,7 +59,7 @@ export const AutoFormDialog = props => {
     }
     return CustomAutoField;
   }, []);
-  const schemaKeys = props.schema._schemaKeys;
+  const schemaKeys = props.schema?._schemaKeys;
 
   const handleOpen = event => {
     if (event && event.stopPropagation) {

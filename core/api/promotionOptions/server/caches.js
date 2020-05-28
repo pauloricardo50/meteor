@@ -5,9 +5,10 @@ PromotionOptionService.cache(
   {
     collection: Loans,
     type: 'many-inverse',
-    fields: ['status'],
+    fields: ['status', 'promotionLinks'],
     referenceField: 'promotionOptionLinks:_id',
     cacheField: 'loanCache',
   },
+  { 'loanCache.promotionLinks': { $exists: false } },
   // { 'loanCache._id': { $exists: false } },
 );
