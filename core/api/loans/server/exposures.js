@@ -374,8 +374,6 @@ exposeQuery({
 
       body.$postFilter = loans =>
         loans.map(({ loanProgress: progress }) => progress);
-      // const [loan] = loans;
-      // return [loan?.loanProgress];
     },
     validateParams: {
       loanId: String,
