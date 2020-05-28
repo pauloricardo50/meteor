@@ -6,12 +6,14 @@ import UploaderController from './UploaderController';
 
 const UploaderContainer = withProps(({ docId, disabled, doc, collection }) => {
   const userIsAdmin = SecurityService.currentUserIsAdmin();
+  const docCollection = collection || doc?._collection;
 
   return {
-    deleteFile: fileKey => deleteFile.run({ collection, docId, fileKey }),
+    deleteFile: fileKey =>
+      deleteFile.run({ collection: docCollection, docId, fileKey }),
     userIsAdmin,
     disabled: userIsAdmin ? false : disabled,
-    collection: collection || doc?._collection,
+    collection: docCollection,
   };
 });
 
