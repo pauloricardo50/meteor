@@ -3,6 +3,8 @@ import cx from 'classnames';
 import { withProps } from 'recompose';
 
 import { getLoanProgress } from '../../../api/loans/helpers';
+import { loanProgress as loanProgressQuery } from '../../../api/loans/queries';
+import { useStaticMeteorData } from '../../../hooks/useMeteorData';
 import ProgressCircle from '../../ProgressCircle';
 import {
   getAdminNoteIcon,
@@ -17,7 +19,7 @@ const PromotionReservationProgressComponent = ({
   style,
   variant = 'icon',
   className,
-  loanProgress = {},
+  loanProgress,
   withTooltip,
   withIcon,
   renderStatus,
@@ -33,8 +35,9 @@ const PromotionReservationProgressComponent = ({
     loan,
     isAnonymized,
   } = promotionOption;
-  const { user, _id: loanId, proNote = {} } = loanOverride || loan;
-  const { info = {}, documents = {} } = loanProgress;
+  const { _id: loanId, proNote = {} } = loanOverride || loan;
+  const info = loanProgress?.info;
+  const documents = loanProgress?.documents;
 
   const getProgressItem = useMemo(
     () =>
@@ -59,30 +62,40 @@ const PromotionReservationProgressComponent = ({
       id: 'simpleVerification',
     }),
     ...[
-      { data: info, id: 'info', tooltipPrefix: 'Informations:' },
-      { data: documents, id: 'documents', tooltipPrefix: 'Documents:' },
-    ].map(({ data, id, tooltipPrefix }) =>
-      getProgressItem({
-        renderComponent: (
-          <ProgressCircle
-            percent={getPercent(data)}
-            ratio={getRatio(data)}
-            options={{
-              squareSize: 16,
-              strokeWidth: 4,
-              animated: true,
-              withRatio: true,
-              tooltipPrefix,
-              style: { padding: 2 },
-            }}
-          />
-        ),
-        placeholder: `${data.valid}/${data.required} (${Math.round(
-          getPercent(info) * 100,
-        )}%)`,
-        id,
-      }),
-    ),
+      info && {
+        data: info,
+        id: 'info',
+        tooltipPrefix: 'Informations:',
+      },
+      documents && {
+        data: documents,
+        id: 'documents',
+        tooltipPrefix: 'Documents:',
+      },
+    ]
+      .filter(x => x)
+      .map(({ data, id, tooltipPrefix }) =>
+        getProgressItem({
+          renderComponent: (
+            <ProgressCircle
+              percent={getPercent(data)}
+              ratio={getRatio(data)}
+              options={{
+                squareSize: 16,
+                strokeWidth: 4,
+                animated: true,
+                withRatio: true,
+                tooltipPrefix,
+                style: { padding: 2 },
+              }}
+            />
+          ),
+          placeholder: `${data.valid}/${data.required} (${Math.round(
+            getPercent(info) * 100,
+          )}%)`,
+          id,
+        }),
+      ),
     getProgressItem({
       ...fullVerification,
       ...getPromotionReservationIcon(
@@ -161,8 +174,18 @@ const PromotionReservationProgressComponent = ({
 export default withProps(
   ({
     loan,
-    promotionOption: {
-      loan: { loanProgress },
-    },
-  }) => ({ loanProgress: loanProgress || getLoanProgress(loan) }),
+    promotionOption: { loan: promotionOptionLoan },
+    withLoanProgress = false,
+  }) => {
+    const loanId = loan?._id || promotionOptionLoan?._id;
+    const { data: loanProgress = {}, loading } = useStaticMeteorData({
+      query: withLoanProgress && loanProgressQuery,
+      params: { loanId },
+      type: 'single',
+    });
+
+    return {
+      loanProgress: withLoanProgress && !loading && loanProgress,
+    };
+  },
 )(PromotionReservationProgressComponent);
