@@ -36,6 +36,7 @@ export const UploaderArray = ({
           docId={doc._id}
           doc={doc}
           allowRequireByAdmin={allowRequireByAdmin}
+          displayableFile={documentObject?.displayableFile}
           {...props}
         />
       ))}

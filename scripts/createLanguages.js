@@ -148,6 +148,7 @@ const config = {
     'errors',
     'ExpensesChart',
     'ExpensesChartInterests',
+    'ExternalUrl',
     'File',
     'FileTabs',
     'Form',

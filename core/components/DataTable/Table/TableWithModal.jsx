@@ -6,7 +6,7 @@ import Dialog from '../../Material/Dialog';
 import T from '../../Translation';
 import Table from './Table';
 
-const getModal = ({ modalType, modalProps, open, handleClose, row }) => {
+const getModal = ({ modalType, modalProps, open, handleClose }) => {
   if (modalType === 'form') {
     return <AutoFormDialog {...modalProps} open={open} setOpen={handleClose} />;
   }
@@ -20,7 +20,6 @@ const getModal = ({ modalType, modalProps, open, handleClose, row }) => {
           </Button>
         }
         {...modalProps}
-        row={row}
         open={open}
         onClose={handleClose}
       />
@@ -34,19 +33,24 @@ const getModal = ({ modalType, modalProps, open, handleClose, row }) => {
 
 const modalReducer = (state, action) => {
   if (action.type === 'open') {
-    return { ...state, open: true, row: action.payload };
+    return { ...state, open: true, rowId: action.payload };
   }
+
+  if (action.type === 'rowRemoved') {
+    return { ...state, open: false, rowId: null };
+  }
+
   if (action.type === 'close') {
-    // Don't set row to null/undefined here, or else the UI jumps before the modal can close
+    // Don't set rowId to null/undefined here, or else the UI jumps before the modal can close
     return { ...state, open: false };
   }
 
   return state;
 };
-const initialState = { open: false, row: null };
+const initialState = { open: false, rowId: null };
 
 const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
-  const [{ open, row }, dispatch] = useReducer(modalReducer, initialState);
+  const [{ open, rowId }, dispatch] = useReducer(modalReducer, initialState);
   const handleClose = useCallback(() => dispatch({ type: 'close' }), []);
   const handleOpen = useCallback(
     payload => dispatch({ type: 'open', payload }),
@@ -57,13 +61,26 @@ const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
     return <Table hooks={hooks} {...rest} />;
   }
 
-  const modalProps = useMemo(() => row && getModalProps(row), [row]);
+  const modalProps = useMemo(() => {
+    if (!rowId) {
+      return null;
+    }
+
+    const row = rest?.data.find(({ _id }) => _id === rowId);
+
+    if (row) {
+      return getModalProps(row);
+    }
+
+    dispatch({ type: 'rowRemoved' });
+
+    return null;
+  }, [rowId, rest?.data]);
 
   return (
     <>
       {getModal({
         modalType,
-        getModalProps,
         handleClose,
         open,
         modalProps,
@@ -72,11 +89,12 @@ const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
         {...rest}
         hooks={[
           ...hooks,
-          h =>
-            h.getRowProps.push((rowProps, { row: onClickRow }) => ({
+          h => {
+            h.getRowProps.push((rowProps, { row }) => ({
               ...rowProps,
-              onClick: () => handleOpen(onClickRow),
-            })),
+              onClick: () => handleOpen(row?.original._id),
+            }));
+          },
         ]}
       />
     </>
