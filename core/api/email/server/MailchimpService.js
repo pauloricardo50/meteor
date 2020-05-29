@@ -119,6 +119,10 @@ class MailchimpService {
   }
 
   getMember({ email }) {
+    console.error(
+      'fetching mailchimp member, check if this is necessary, or adjust the query',
+      email,
+    );
     return this.callApi({
       endpoint: 'getMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
