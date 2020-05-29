@@ -50,7 +50,7 @@ export default compose(
       generatedProductions: 1,
       lenderRules: lenderRules(),
       lenders: lender(),
-      offers: 1,
+      offers: 1, // FIXME: Refactor this to use lenders.offers instead
       offerCount: 1,
       users: organisationUser(),
       enabledCommissionTypes: 1,

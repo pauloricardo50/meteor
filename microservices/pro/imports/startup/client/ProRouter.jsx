@@ -20,7 +20,6 @@ const ProRouter = () => (
         $body: {
           apiPublicKey: 1,
           assignedEmployee: { email: 1, name: 1 },
-          currentUser: 1,
           email: 1,
           firstName: 1,
           lastName: 1,

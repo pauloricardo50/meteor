@@ -31,7 +31,7 @@ export const getUserDisplayName = ({
 export const getMainOrganisation = user => {
   const { organisations } = user || {};
 
-  if (!organisations.length) {
+  if (!organisations?.length) {
     return;
   }
 

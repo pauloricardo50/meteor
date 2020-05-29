@@ -16,7 +16,29 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={APP_ROUTES}
-    currentUser={{ query: appUser }}
+    currentUser={{
+      query: appUser,
+      params: {
+        $body: {
+          assignedEmployee: { email: 1, name: 1 },
+          currentUser: 1,
+          email: 1,
+          emails: 1,
+          firstName: 1,
+          lastName: 1,
+          loans: {
+            name: 1,
+            customName: 1,
+            purchaseType: 1,
+            propertyIds: 1,
+          },
+          name: 1,
+          organisations: { name: 1 },
+          phoneNumbers: 1,
+          roles: 1,
+        },
+      },
+    }}
     loginPageProps={{
       onSignInSuccess: () => {
         if (dataLayer()) {

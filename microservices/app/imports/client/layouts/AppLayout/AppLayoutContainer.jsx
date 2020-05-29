@@ -69,7 +69,12 @@ const fragment = {
 const withUserLoan = withSmartQuery({
   query: userLoans,
   params: ({ loanId }) => ({ loanId, $body: fragment }),
-  deps: ({ loanId }) => [loanId],
+  deps: ({ loanId }) => {
+    // Make sure the currentUser is in the dependencies here, or else
+    // the query can get stuck when it's undefined on initial launch
+    const currentUser = useCurrentUser();
+    return [loanId, currentUser?._id];
+  },
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
   skip: ({ loanId }) => !loanId,

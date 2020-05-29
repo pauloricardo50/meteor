@@ -43,8 +43,8 @@ export default compose(
       const { currentUser, history, propertyId } = this.props;
       if (currentUser) {
         const { loans = [] } = currentUser;
-        const loanWithProperty = loans.find(({ properties }) =>
-          properties.some(({ _id }) => _id === propertyId),
+        const loanWithProperty = loans.find(({ propertyIds }) =>
+          propertyIds.some(_id => _id === propertyId),
         );
 
         if (loanWithProperty) {

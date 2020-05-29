@@ -138,6 +138,7 @@ export const useReactiveMeteorData = (
 
     const handle = finalQuery[getSubscriptionFunction(type)]();
     const isReady = handle.ready();
+
     return { loading: !isReady, subscribedQuery: finalQuery };
   }, deps);
 
