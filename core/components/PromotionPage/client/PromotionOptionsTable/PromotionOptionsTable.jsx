@@ -105,6 +105,21 @@ const PromotionOptionsTable = ({ promotion }) => {
             },
             promotionId,
             invitedBy: invitedByFilter,
+            $body: {
+              status: 1,
+              createdAt: 1,
+              promotionLots: { name: 1 },
+              loan: {
+                user: { name: 1, phoneNumbers: 1, email: 1 },
+                promotions: { _id: 1 },
+                proNote: 1,
+              },
+              reservationDeposit: 1,
+              simpleVerification: 1,
+              fullVerification: 1,
+              reservationAgreement: 1,
+              bank: 1,
+            },
           },
         }}
         queryDeps={[statusFilter, invitedByFilter]}
