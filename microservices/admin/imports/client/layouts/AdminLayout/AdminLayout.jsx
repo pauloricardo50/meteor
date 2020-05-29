@@ -56,7 +56,7 @@ const AdminLayout = ({
 }) => {
   const isMobile = useMedia({ maxWidth: 768 });
   const [openDrawer, setDrawer] = useState(false);
-  const toggleDrawer = () => setDrawer(!openDrawer);
+  const toggleDrawer = () => setDrawer(state => !state);
   handleLoggedOut();
 
   if (window.isRedirectingLoggedOutUser) {
