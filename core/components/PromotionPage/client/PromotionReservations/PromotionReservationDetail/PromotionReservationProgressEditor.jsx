@@ -16,6 +16,7 @@ const PromotionReservationProgressEditor = ({ promotionOption, loan }) => (
       variant="text"
       className="full"
       loan={loan}
+      withLoanProgress
     />
   </>
 );
