@@ -125,6 +125,36 @@ export default compose(
     params: ({ promotionLot: { _id: promotionLotId }, status }) => ({
       promotionLotId,
       loanStatus: status,
+      $body: {
+        bank: 1,
+        createdAt: 1,
+        reservationDeposit: 1,
+        simpleVerification: 1,
+        fullVerification: 1,
+        priority: 1,
+        promotionLots: { name: 1, promotion: { name: 1 } },
+        reservationAgreement: 1,
+        status: 1,
+        updatedAt: 1,
+        loan: {
+          promotions: {
+            users: { name: 1, organisations: { name: 1 } },
+            agreementDuration: 1,
+          },
+          promotionOptions: {
+            name: 1,
+            promotionLots: {
+              attributedTo: { user: { _id: 1 } },
+              status: 1,
+            },
+            loan: { _id: 1 },
+          },
+          proNote: 1,
+          status: 1,
+          user: { phoneNumbers: 1, name: 1, email: 1 },
+        },
+        promotion: { users: { _id: 1 }, agreementDuration: 1 },
+      },
     }),
     dataName: 'promotionOptions',
     deps: ({ status }) => [status],
