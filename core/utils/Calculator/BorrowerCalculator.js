@@ -690,7 +690,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getGroupedExpenses({ borrowers }) {
       const flattenedExpenses = []
         .concat([], ...borrowers.map(({ expenses }) => expenses))
-        .filter(x => x);
+        .filter(({ value } = {}) => value);
       return flattenedExpenses.reduce(
         (obj, { value, description }) => ({
           ...obj,
