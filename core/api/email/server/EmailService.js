@@ -17,8 +17,6 @@ export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
 export const skipEmails =
   (Meteor.isDevelopment || Meteor.isDevEnvironment || Meteor.isStaging) &&
   !isEmailTestEnv;
-console.log('skipEmails:', skipEmails);
-console.log('Meteor.isStaging', Meteor.isStaging);
 
 // export const skipEmails = false;
 
