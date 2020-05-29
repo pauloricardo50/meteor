@@ -11,6 +11,7 @@ import 'core/startup/client/report-reconnects';
 
 import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
 import { render } from 'react-dom';
 
 import AdminRouter from './AdminRouter';
@@ -30,7 +31,7 @@ const start = testElement => {
   }
 
   // Render react-router routes
-  render(AdminRouter(), testElement || document.getElementById('react-root'));
+  render(<AdminRouter />, testElement || document.getElementById('react-root'));
 };
 
 export default start;

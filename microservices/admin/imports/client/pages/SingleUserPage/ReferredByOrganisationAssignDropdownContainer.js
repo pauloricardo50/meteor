@@ -1,7 +1,7 @@
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { setUserReferredByOrganisation } from 'core/api/users/methodDefinitions';
 
 const getMenuItems = ({
@@ -27,9 +27,8 @@ const getMenuItems = ({
 
 export default compose(
   withSmartQuery({
-    query: adminOrganisations,
-    queryOptions: { reactive: false },
-    params: { $body: { name: 1 } },
+    query: ORGANISATIONS_COLLECTION,
+    params: { name: 1, $options: { sort: { name: 1 } } },
     dataName: 'organisations',
     refetchOnMethodCall: false,
     smallLoader: true,

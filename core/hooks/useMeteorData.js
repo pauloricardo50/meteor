@@ -141,10 +141,21 @@ export const useReactiveMeteorData = (
     return { loading: !isReady, subscribedQuery: finalQuery };
   }, deps);
 
-  const data = useTracker(
-    () => (subscribedQuery ? subscribedQuery[getStaticFunction(type)]() : null),
-    deps,
-  );
+  const data = useTracker(() => {
+    if (subscribedQuery) {
+      return subscribedQuery[getStaticFunction(type)]();
+    }
+
+    return null;
+  }, deps);
 
   return { loading, data };
+};
+
+export const useMeteorData = (args, deps) => {
+  if (args.reactive) {
+    return useReactiveMeteorData(args, deps);
+  }
+
+  return useStaticMeteorData(args, deps);
 };

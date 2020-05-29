@@ -2,14 +2,12 @@ import formatNumbersHook, {
   formatPhoneNumber,
 } from '../../../utils/phoneFormatting';
 import ActivityService from '../../activities/server/ActivityService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
 import FileService from '../../files/server/FileService';
 import FrontService from '../../front/server/FrontService';
 import {
   additionalDocumentsHook,
   getFieldsToWatch,
 } from '../../helpers/sharedHooks';
-import LenderService from '../../lenders/server/LenderService';
 import {
   conditionalDocuments,
   initialDocuments,
@@ -23,24 +21,11 @@ import SecurityService from '../../security';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
 import { ROLES } from '../../users/userConstants';
 import Loans from '../loans';
-import LoanService from './LoanService';
+import { cleanupLoanRemoval, setLenderOrganisation } from './hooksHelpers';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
-  borrowerIds.forEach(borrowerId =>
-    BorrowerService.cleanUpBorrowers({ borrowerId }),
-  );
-  propertyIds.forEach(propertyId => {
-    const { loans, category } = PropertyService.createQuery({
-      $filters: { _id: propertyId },
-      loans: { _id: 1 },
-      category: 1,
-    }).fetchOne();
-
-    if (loans.length === 1 && category === PROPERTY_CATEGORY.USER) {
-      PropertyService.remove({ propertyId });
-    }
-  });
+  cleanupLoanRemoval({borrowerIds, propertyIds});
 });
 
 UpdateWatcherService.addUpdateWatching({
@@ -63,13 +48,14 @@ UpdateWatcherService.addUpdateWatching({
 
 Loans.after.remove((userId, { _id }) => FileService.deleteAllFilesForDoc(_id));
 
-Loans.after.insert((userId, doc) =>
+Loans.after.insert((userId, doc) => {
   ActivityService.addCreatedAtActivity({
     createdAt: doc.createdAt,
     loanLink: { _id: doc._id },
     title: 'Dossier créé',
-  }),
-);
+  });
+  setLenderOrganisation(doc);
+});
 
 formatNumbersHook(Loans, 'contacts', (oldContacts = []) =>
   oldContacts.map(({ phoneNumber, ...contact }) => ({
@@ -78,69 +64,12 @@ formatNumbersHook(Loans, 'contacts', (oldContacts = []) =>
   })),
 );
 
-Loans.after.update(
-  (
-    userId,
-    {
-      _id: loanId,
-      structures = [],
-      selectedStructure,
-      lendersCache = [],
-      selectedLenderOrganisationLink = {},
-    },
-    fieldNames = [],
-  ) => {
-    const fieldsToWatch = ['structures', 'selectedStructure'];
-    if (fieldNames.some(fieldName => fieldsToWatch.includes(fieldName))) {
-      if (selectedStructure) {
-        const { offerId } = structures.find(
-          ({ id }) => id === selectedStructure,
-        );
-
-        // Selected structure has no selected offer
-        if (!offerId && selectedLenderOrganisationLink._id) {
-          return LoanService.removeLink({
-            id: loanId,
-            linkName: 'selectedLenderOrganisation',
-            linkId: selectedLenderOrganisationLink._id,
-          });
-        }
-        if (!offerId) {
-          return;
-        }
-
-        const selectedLenderOrganisation =
-          lendersCache.find(({ _id: lenderId }) => {
-            const { offers = [] } = LenderService.get(
-              { _id: lenderId, 'loanLink._id': loanId },
-              { offers: { _id: 1 } },
-            );
-            return offers.some(({ _id }) => _id === offerId);
-          }) || {};
-
-        const {
-          organisationLink: { _id: selectedLenderOrganisationId } = {},
-        } = selectedLenderOrganisation;
-
-        if (selectedLenderOrganisationId) {
-          const {
-            _id: currentselectedLenderOrganisationId,
-          } = selectedLenderOrganisationLink;
-
-          if (
-            selectedLenderOrganisationId !== currentselectedLenderOrganisationId
-          ) {
-            LoanService.addLink({
-              id: loanId,
-              linkName: 'selectedLenderOrganisation',
-              linkId: selectedLenderOrganisationId,
-            });
-          }
-        }
-      }
-    }
-  },
-);
+Loans.after.update((userId, loan, fieldNames = []) => {
+  const fieldsToWatch = ['structures', 'selectedStructure', 'lendersCache'];
+  if (fieldNames.some(fieldName => fieldsToWatch.includes(fieldName))) {
+    setLenderOrganisation(loan);
+  }
+});
 
 Loans.before.remove((userId, { frontTagId }) => {
   if (frontTagId) {

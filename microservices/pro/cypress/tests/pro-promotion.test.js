@@ -49,6 +49,7 @@ describe('Pro promotion', () => {
           },
         },
       });
+      cy.refetch();
 
       cy.get('tbody tr').should('have.length', 4);
 
@@ -124,6 +125,7 @@ describe('Pro promotion', () => {
           canInviteCustomers: true,
         },
       });
+      cy.refetch();
 
       cy.get('.actions')
         .first()

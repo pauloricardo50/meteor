@@ -38,6 +38,7 @@ export default compose(
       promotionId,
       status,
     }),
+    deps: ({ status }) => [status],
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),

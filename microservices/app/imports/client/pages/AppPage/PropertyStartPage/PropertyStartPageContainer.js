@@ -30,11 +30,8 @@ export default compose(
         totalValue: 1,
       },
     }),
-    queryOptions: {
-      single: true,
-      shouldRefetch: ({ propertyId }, { propertyId: nextPropertyId }) =>
-        nextPropertyId !== propertyId,
-    },
+    queryOptions: { single: true },
+    deps: ({ propertyId }) => [propertyId],
     dataName: 'anonymousProperty',
     renderMissingDoc: false,
     refetchOnMethodCall: false,

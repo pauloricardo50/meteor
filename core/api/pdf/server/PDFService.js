@@ -3,11 +3,12 @@ import { Match, check } from 'meteor/check';
 import { Random } from 'meteor/random';
 
 import fs from 'fs';
+import merge from 'lodash/merge';
 import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
 
-import { lenderRules } from '../../fragments';
-import { adminLoans } from '../../loans/queries';
+import { calculatorLoan, lenderRules } from '../../fragments';
+import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanBankPDF from '../pdfComponents/LoanBankPDF';
 import { PDF_TYPES } from '../pdfConstants';
@@ -78,7 +79,10 @@ class PDFService {
             logo: 1,
           });
 
-        const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+        const loan = LoanService.get(
+          loanId,
+          merge({}, calculatorLoan(), { name: 1 }),
+        );
 
         return { ...params, loan, organisation };
       }

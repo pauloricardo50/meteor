@@ -51,6 +51,8 @@ export const withTasksQuery = compose(
       $filters: getQueryFilters({ assignee, status, uptoDate }),
       ...taskTableFragment,
     }),
+    deps: ({ assignee, status, uptoDate }) =>
+      Object.values(getQueryFilters({ assignee, status, uptoDate })),
     queryOptions: { reactive: false, pollingMs: 5000 },
     dataName: 'tasks',
   }),

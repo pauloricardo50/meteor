@@ -21,3 +21,18 @@ export const getUserDisplayName = ({ firstName, lastName, emails } = {}) =>
   [firstName, lastName].filter(name => name).join(' ') ||
   (emails && emails[0] && emails[0].address) ||
   '';
+
+export const getMainOrganisation = ({ organisations = [] }) => {
+  if (!organisations.length) {
+    return;
+  }
+
+  if (organisations.length === 1) {
+    return organisations[0];
+  }
+
+  return (
+    organisations.find(({ $metadata: { isMain } }) => isMain) ||
+    organisations[0]
+  );
+};

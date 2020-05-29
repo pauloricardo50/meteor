@@ -25,10 +25,12 @@ export const CurrentUserContext = React.createContext();
 export const queryContainer = compose(
   withSmartQuery({
     query: ({ query }) => query,
-    params: ({ params, ...props }) => params && params(props),
+    params: ({ params, ...props }) =>
+      typeof params === 'function' ? params(props) : params,
     queryOptions: { reactive: true, single: true },
     dataName: 'currentUser',
     renderMissingDoc: false,
+    deps: ({ deps }) => deps,
   }),
   mapProps(({ query, params, ...rest }) => rest),
 );

@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
 import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types';
 
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
@@ -31,12 +30,12 @@ const getItems = currentUser =>
       to: '/board',
     },
     {
-      detail: true,
       collection: USERS_COLLECTION,
+      to: '/users',
     },
     {
-      detail: true,
       collection: LOANS_COLLECTION,
+      to: '/loans',
     },
     {
       collection: INSURANCE_REQUESTS_COLLECTION,
@@ -45,7 +44,7 @@ const getItems = currentUser =>
     },
     {
       collection: PROMOTIONS_COLLECTION,
-      detail: true,
+      to: '/promotions',
     },
     {
       label: 'Organisations',
@@ -86,22 +85,6 @@ const getItems = currentUser =>
       icon: obj.icon || collectionIcons[obj.collection],
     }));
 
-const createOnClickHandler = (
-  { detail, collection },
-  { hideDetailNav, showDetailNav, collectionName, toggleDrawer },
-) => {
-  if (detail) {
-    if (collection === collectionName) {
-      return hideDetailNav;
-    }
-    return () => showDetailNav(collection);
-  }
-  return () => {
-    hideDetailNav();
-    toggleDrawer();
-  };
-};
-
 const MainSideNav = props => {
   const currentUser = useCurrentUser();
   const items = useMemo(() => getItems(currentUser), [currentUser]);
@@ -110,7 +93,7 @@ const MainSideNav = props => {
     <List className="main-side-nav">
       {items.map((item, index) => (
         <MainSideNavListItem
-          onClick={createOnClickHandler(item, props)}
+          onClick={() => props.toggleDrawer()}
           key={index}
           {...item}
           {...props}
@@ -118,11 +101,6 @@ const MainSideNav = props => {
       ))}
     </List>
   );
-};
-
-MainSideNav.propTypes = {
-  hideDetailNav: PropTypes.func.isRequired,
-  showDetailNav: PropTypes.func.isRequired,
 };
 
 export default MainSideNav;

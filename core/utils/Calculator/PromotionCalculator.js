@@ -1,6 +1,5 @@
 import pick from 'lodash/pick';
 
-import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
@@ -84,7 +83,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       })({ income, fortune });
     }
 
-    formatPromotionOptionIntoProperty(promotionOption) {
+    formatPromotionOptionIntoProperty({ loan, promotionOption }) {
       if (!promotionOption) {
         return;
       }
@@ -98,15 +97,11 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
 
       const { properties = [] } = promotionLot;
       const [property] = properties;
+      const { promotions } = loan;
 
       return {
         // Get the address from the promotion
-        ...pick(promotionOption.promotion, [
-          'address1',
-          'address2',
-          'zipCode',
-          'city',
-        ]),
+        ...pick(promotions?.[0], ['address1', 'address2', 'zipCode', 'city']),
         ...promotionOption,
         ...property,
         totalValue: promotionOption.value,

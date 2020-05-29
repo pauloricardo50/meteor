@@ -1,6 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+import { getMainOrganisation } from 'core/utils/userFunctions';
 
 import ProOrganisationPageTabs from './ProOrganisationPageTabs';
 import ShareCustomersToggle from './ShareCustomersToggle';
@@ -21,12 +22,7 @@ const ProOrganisationPage = ({ currentUser }) => {
     );
   }
 
-  let mainOrganisation = organisations[0];
-  if (organisations.length > 1) {
-    mainOrganisation =
-      organisations.find(({ $metadata: { isMain } }) => isMain) ||
-      organisations[0];
-  }
+  const mainOrganisation = getMainOrganisation(currentUser);
 
   const organisation = mainOrganisation;
 
@@ -54,4 +50,5 @@ const ProOrganisationPage = ({ currentUser }) => {
     </div>
   );
 };
+
 export default ProOrganisationPage;

@@ -156,22 +156,8 @@ export default compose(
         promotion: { users: { _id: 1 }, agreementDuration: 1 },
       },
     }),
-    queryOptions: {
-      reactive: false,
-      shouldRefetch: (
-        {
-          query: {
-            params: { loanStatus: prevLoanStatus },
-          },
-        },
-        {
-          query: {
-            params: { loanStatus: nextLoanStatus },
-          },
-        },
-      ) => prevLoanStatus !== nextLoanStatus,
-    },
     dataName: 'promotionOptions',
+    deps: ({ status }) => [status],
   }),
   withRouter,
   withProps(({ promotionOptions = [], promotionLot }) => ({

@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, mapProps, withProps } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
@@ -17,6 +18,7 @@ export default compose(
     simple,
     loan,
   })),
+  Component => props => <Component {...props} key={props.propertyId} />,
   withSmartQuery({
     query: userProperty,
     params: ({ propertyId }) => ({ _id: propertyId }),

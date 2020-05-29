@@ -88,12 +88,14 @@ export default compose(
     query: newUsers,
     dataName: 'newUsers',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    deps: ({ period, verified }) => [period, verified],
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: userHistogram,
     dataName: 'userHistogram',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    deps: ({ period, verified }) => [period, verified],
     refetchOnMethodCall: false,
   }),
 )(NewUsersStat);

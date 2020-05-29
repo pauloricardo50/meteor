@@ -5,9 +5,7 @@ import {
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
-import { adminContacts, contactSearch } from '../queries';
-
-exposeQuery({ query: adminContacts, options: { allowFilterById: true } });
+import { contactSearch } from '../queries';
 
 exposeQuery({
   query: contactSearch,

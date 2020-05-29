@@ -14,4 +14,5 @@ export const getCitiesFromZipCode = new Method({
   params: {
     zipCode: Match.OneOf(String, Number),
   },
+  doNotRefetchQueries: true,
 });

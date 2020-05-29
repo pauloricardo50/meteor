@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -9,6 +10,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
   withMatchParam('insuranceRequestId'),
+  Component => props => <Component {...props} key={props.insuranceRequestId} />,
   withSmartQuery({
     query: INSURANCE_REQUESTS_COLLECTION,
     params: ({ insuranceRequestId }) => ({
