@@ -11,7 +11,6 @@ import {
   adminLoans,
   anonymousLoan,
   fullLoan,
-  loanProgress,
   loanSearch,
   proLoans2,
   proLoansAggregate,
@@ -359,24 +358,6 @@ exposeQuery({
       referredByMe: Match.Maybe(Boolean),
       referredByMyOrganisation: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
-    },
-  },
-});
-
-exposeQuery({
-  query: loanProgress,
-  overrides: {
-    firewall() {},
-    embody: body => {
-      body.$filter = ({ filters, params: { loanId } }) => {
-        filters._id = loanId;
-      };
-
-      body.$postFilter = loans =>
-        loans.map(({ loanProgress: progress }) => progress);
-    },
-    validateParams: {
-      loanId: String,
     },
   },
 });
