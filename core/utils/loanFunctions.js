@@ -1,14 +1,15 @@
 import { STEPS } from '../api/loans/loanConstants';
 import Calculator from './Calculator';
 
-export const formatLoanWithStructure = ({
-  selectedStructure,
-  structures = [],
-  properties,
-  offers,
-  promotionOptions,
-  borrowers = [],
-}) => {
+export const formatLoanWithStructure = loan => {
+  const {
+    selectedStructure,
+    structures = [],
+    properties,
+    offers,
+    promotionOptions,
+    borrowers = [],
+  } = loan;
   if (structures.length === 0) {
     return undefined;
   }
@@ -36,9 +37,10 @@ export const formatLoanWithStructure = ({
         );
         structure = {
           ...structure,
-          property: Calculator.formatPromotionOptionIntoProperty(
+          property: Calculator.formatPromotionOptionIntoProperty({
+            loan,
             promotionOption,
-          ),
+          }),
         };
       }
 
@@ -66,28 +68,6 @@ export const formatLoanWithStructure = ({
   }
 
   return structure;
-};
-
-export const formatLoanWithDocuments = loan => {
-  if (!loan || !loan.structure) {
-    return loan;
-  }
-
-  const { structure, properties = [] } = loan;
-  const { property, propertyId } = structure;
-  const structureProperty = properties.find(({ _id }) => _id === propertyId);
-  const propertyDocuments = structureProperty && structureProperty.documents;
-
-  return {
-    ...loan,
-    structure: {
-      ...structure,
-      property: property && {
-        ...property,
-        documents: propertyDocuments,
-      },
-    },
-  };
 };
 
 export const shouldSendStepNotification = (prevStep, nextStep) =>

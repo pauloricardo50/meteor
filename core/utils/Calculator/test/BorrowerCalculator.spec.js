@@ -8,7 +8,6 @@ import {
 } from '../../../api/borrowers/borrowerConstants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
 import { DOCUMENTS } from '../../../api/files/fileConstants';
-import { STEPS } from '../../../api/loans/loanConstants';
 import {
   BONUS_ALGORITHMS,
   REAL_ESTATE_INCOME_ALGORITHMS,
@@ -444,7 +443,6 @@ describe('BorrowerCalculator', () => {
             borrowers: [
               { _id: 'borrowerId', additionalDocuments: initialDocuments },
             ],
-            step: STEPS.SOLVENCY,
           },
         }),
       ).to.deep.equal(initialDocuments.map(({ id }) => id));

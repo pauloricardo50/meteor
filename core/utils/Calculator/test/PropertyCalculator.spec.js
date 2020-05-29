@@ -5,7 +5,6 @@ import {
   DOCUMENTS,
   PROPERTY_DOCUMENTS,
 } from '../../../api/files/fileConstants';
-import { STEPS } from '../../../api/loans/loanConstants';
 import { initialDocuments } from '../../../api/properties/propertiesAdditionalDocuments';
 import Calculator from '..';
 
@@ -20,7 +19,6 @@ describe('PropertyCalculator', () => {
         structure: { property },
         borrowers: [{}],
         properties: [property],
-        step: STEPS.SOLVENCY,
       },
     };
   });

@@ -28,8 +28,6 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       // Global rules
       const globalRules = this.getGlobalLenderRules({
-        loan,
-        structureId,
         lenderRules: sortedlenderRules,
       });
       this.applyRules(globalRules);
