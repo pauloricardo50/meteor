@@ -32,7 +32,7 @@ const getTabs = ({ organisation, currentUser }) => {
       ...tab,
       content: (
         <Component
-          {...organisation}
+          organisation={organisation}
           organisationId={organisation._id}
           currentUser={currentUser}
         />

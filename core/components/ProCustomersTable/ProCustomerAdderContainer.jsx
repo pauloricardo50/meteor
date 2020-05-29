@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -9,7 +10,7 @@ import {
 import { proInviteUser } from '../../api/users/methodDefinitions';
 import { createRoute } from '../../utils/routerUtils';
 
-const schema = ({ proProperties, promotions, history }) =>
+const getSchema = ({ proProperties, promotions, history }) =>
   new SimpleSchema({
     email: String,
     firstName: { type: String, optional: true },
@@ -97,12 +98,18 @@ export default withProps(({ currentUser }) => {
       isAllowedToInviteCustomersToPromotion({ promotion, currentUser }),
     )
     .sort(({ name: A }, { name: B }) => A.localeCompare(B));
+  const schema = useMemo(
+    () =>
+      getSchema({
+        proProperties: filteredProProperties,
+        promotions: filteredPromotions,
+        history,
+      }),
+    [proProperties, promotions],
+  );
+
   return {
-    schema: schema({
-      proProperties: filteredProProperties,
-      promotions: filteredPromotions,
-      history,
-    }),
+    schema,
     onSubmit: model => {
       const {
         propertyIds = [],

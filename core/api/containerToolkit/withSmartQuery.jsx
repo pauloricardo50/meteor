@@ -8,7 +8,7 @@ import {
 
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
-import { useMeteorData } from '../../hooks/useMeteorData';
+import useMeteorData from '../../hooks/useMeteorData';
 import makeSkipContainer from './skipContainer';
 
 // render the missing doc component only when we want to

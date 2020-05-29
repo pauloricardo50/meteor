@@ -19,7 +19,7 @@ const ProDashboardPage = props => {
       </h1>
       <div className="buttons">
         <ProCustomerAdder currentUser={currentUser} />
-        <PromotionAdder currentUser={currentUser} />
+        <PromotionAdder />
         <ProPropertyAdder currentUser={currentUser} />
         {currentUser.apiPublicKey && <ExternalPropertyAdder />}
       </div>

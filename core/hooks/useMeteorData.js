@@ -152,10 +152,12 @@ export const useReactiveMeteorData = (
   return { loading, data };
 };
 
-export const useMeteorData = (args, deps) => {
+const useMeteorData = (args, deps) => {
   if (args.reactive) {
     return useReactiveMeteorData(args, deps);
   }
 
   return useStaticMeteorData(args, deps);
 };
+
+export default useMeteorData;

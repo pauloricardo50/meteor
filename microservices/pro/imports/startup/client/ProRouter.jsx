@@ -14,7 +14,25 @@ const ProRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={PRO_ROUTES}
-    currentUser={{ query: proUser }}
+    currentUser={{
+      query: proUser,
+      params: {
+        $body: {
+          apiPublicKey: 1,
+          assignedEmployee: { email: 1, name: 1 },
+          currentUser: 1,
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          name: 1,
+          organisations: { name: 1, commissionRates: { _id: 1 } },
+          phoneNumbers: 1,
+          promotions: { status: 1, userLinks: 1 },
+          proProperties: { userLinks: 1, status: 1 },
+          roles: 1,
+        },
+      },
+    }}
   >
     <ProLayout>
       <Switch>

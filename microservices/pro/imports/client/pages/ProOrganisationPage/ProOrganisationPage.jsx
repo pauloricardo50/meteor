@@ -1,12 +1,33 @@
 import React from 'react';
 
+import { proUser } from 'core/api/users/queries';
+import Loading from 'core/components/Loading/Loading';
 import T from 'core/components/Translation';
+import useMeteorData from 'core/hooks/useMeteorData';
 import { getMainOrganisation } from 'core/utils/userFunctions';
 
 import ProOrganisationPageTabs from './ProOrganisationPageTabs';
 import ShareCustomersToggle from './ShareCustomersToggle';
 
-const ProOrganisationPage = ({ currentUser }) => {
+const ProOrganisationPage = () => {
+  const { data: currentUser, loading } = useMeteorData({
+    query: proUser,
+    params: {
+      $body: {
+        organisations: {
+          name: 1,
+          users: { name: 1, email: 1, phoneNumber: 1 },
+          commissionRates: { _id: 1 },
+          logo: 1,
+        },
+      },
+    },
+    type: 'single',
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
   const { organisations } = currentUser;
 
   if (!organisations || organisations.length === 0) {

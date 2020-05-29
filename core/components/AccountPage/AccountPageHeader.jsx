@@ -1,18 +1,20 @@
 import React from 'react';
 
-import { getUserDisplayName } from '../../utils/userFunctions';
+import {
+  getMainOrganisation,
+  getUserDisplayName,
+} from '../../utils/userFunctions';
 import Icon from '../Icon';
-import T from '../Translation';
 
 const AccountPageHeader = ({ currentUser }) => {
-  const { organisations } = currentUser;
+  const mainOrganisation = getMainOrganisation(currentUser);
 
   return (
     <div className="account-page-header">
       <Icon type="accountCircle" className="icon" />
       <h1>{getUserDisplayName(currentUser)}</h1>
-      {organisations && organisations.length > 0 && (
-        <h3 className="secondary">{organisations[0].name}</h3>
+      {mainOrganisation?._id && (
+        <h3 className="secondary">{mainOrganisation.name}</h3>
       )}
     </div>
   );
