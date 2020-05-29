@@ -787,6 +787,8 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
+  description: 1,
+  externalUrl: 1,
   promotionLots: {
     attributedTo: { user: { name: 1 } },
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
