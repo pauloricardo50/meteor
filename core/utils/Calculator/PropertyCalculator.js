@@ -37,7 +37,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       const selectedProperty = this.selectProperty({ loan, structureId });
       const propertyToCalculateWith = property || selectedProperty;
 
-      if (!propertyToCalculateWith) {
+      if (!propertyToCalculateWith?._id) {
         return 0;
       }
 
@@ -77,8 +77,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       const selectedProperty = this.selectProperty({ loan, structureId });
       const propertyToCalculateWith = property || selectedProperty;
 
-      if (!propertyToCalculateWith) {
-        return 0;
+      if (!propertyToCalculateWith?._id) {
+        return { percent: 0, count: 0 };
       }
 
       return filesPercent({
