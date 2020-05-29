@@ -4,6 +4,8 @@ import { RichText } from 'prismic-reactjs';
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
+import CTAsSection from '../components/CTAsSection';
+import NewsletterSignup from '../components/NewsletterSignup';
 import RecommendedBlogPosts from '../components/RecommendedBlogPosts';
 import { getLanguageData } from '../utils/languages.js';
 import '../styles/post.scss';
@@ -60,17 +62,123 @@ export const query = graphql`
           }
         }
       }
+
+      allPosts(lang: $lang, first: 3, sortBy: date_DESC) {
+        edges {
+          node {
+            _meta {
+              id
+              uid
+              tags
+              type
+              lang
+            }
+            title
+            date
+            body {
+              ... on PRISMIC_PostBodyHero {
+                type
+                primary {
+                  images
+                }
+              }
+            }
+          }
+        }
+      }
+
+      allGlobals(lang: $lang, uid: "article") {
+        edges {
+          node {
+            _meta {
+              id
+              uid
+              type
+              lang
+            }
+            title
+            body {
+              __typename
+              ... on PRISMIC_GlobalBodyCtas_section {
+                type
+                primary {
+                  section_id
+                }
+                fields {
+                  content
+                  illustration
+                  cta_text_1
+                  cta_link_1 {
+                    ... on PRISMIC__ExternalLink {
+                      _linkType
+                      url
+                    }
+                    ... on PRISMIC_Page {
+                      _linkType
+                      _meta {
+                        id
+                        uid
+                        type
+                        lang
+                      }
+                      name
+                    }
+                  }
+                  cta_text_2
+                  cta_link_2 {
+                    ... on PRISMIC__ExternalLink {
+                      _linkType
+                      url
+                    }
+                    ... on PRISMIC_Page {
+                      _linkType
+                      _meta {
+                        id
+                        uid
+                        type
+                        lang
+                      }
+                      name
+                    }
+                  }
+                }
+              }
+              ... on PRISMIC_GlobalBodyNewsletter_signup {
+                type
+                primary {
+                  section_id
+                  section_heading
+                  content
+                  illustration
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
 
 const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
-  const { post: blogPost } = data.prismic;
+  const {
+    post: blogPost,
+    allPosts: { edges: recentPosts },
+    allGlobals: { edges: sharedSections },
+  } = data.prismic;
 
   // handle unknown posts that don't get redirected to a 404
   if (!blogPost) return <NotFound pageType="post" pageLang={lang} />;
 
   const languageData = getLanguageData(lang);
+
+  const articleCTAsSection = sharedSections[0]?.node.body.find(
+    section => section.type === 'ctas_section',
+  );
+
+  const articleNewsletterSignup = sharedSections[0]?.node.body.find(
+    section => section.type === 'newsletter_signup',
+  );
 
   // TODO: add structured data - https://developers.google.com/search/docs/data-types/article
   return (
@@ -113,14 +221,26 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
 
         {blogPost.body && <PageSections sections={blogPost.body} />}
 
-        {/* TODO: add newletter signup from Prismic */}
-        <div className="section-placeholder">Newsletter sign up section</div>
+        {articleNewsletterSignup && (
+          <div className="container">
+            <NewsletterSignup
+              {...articleNewsletterSignup}
+              placement="article"
+            />
+            ,
+          </div>
+        )}
 
-        <RecommendedBlogPosts currentPost={blogPost} />
+        <RecommendedBlogPosts
+          currentPost={blogPost}
+          recentPosts={recentPosts}
+        />
 
-        <div className="section-placeholder">
-          Full width background image w/ CTA buttons
-        </div>
+        {articleCTAsSection && (
+          <div className="container">
+            <CTAsSection {...articleCTAsSection} />
+          </div>
+        )}
       </div>
     </Layout>
   );
