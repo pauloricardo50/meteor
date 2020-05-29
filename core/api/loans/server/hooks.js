@@ -25,7 +25,7 @@ import { cleanupLoanRemoval, setLenderOrganisation } from './hooksHelpers';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
-  cleanupLoanRemoval(borrowerIds, propertyIds);
+  cleanupLoanRemoval({borrowerIds, propertyIds});
 });
 
 UpdateWatcherService.addUpdateWatching({

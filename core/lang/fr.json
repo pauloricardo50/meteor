@@ -1520,7 +1520,6 @@
   "emails.EXPIRE_PROMOTION_RESERVATION_AGREEMENT.CTA": "Se connecter",
   "Forms.promotionOptions.custom": "Souhaits particuliers",
   "Forms.promotionOptions.custom.placeholder": "Parkings supplémentaires, lots adjacents, etc.",
-  "AppPromotionLotPage.subtitle": "Promotion {promotionName} - {value}",
   "collections.promotionOptions": "Mes lots",
   "PromotionPage.lots.custom": "Souhaits particuliers",
   "PromotionPage.lots.changePriority": "Changer priorité",
