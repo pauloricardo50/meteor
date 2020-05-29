@@ -27,7 +27,7 @@ class NotaryFeesCalculator {
   }
 
   hasDetailedConfig() {
-    return cantonConfigs[this.canton];
+    return !!cantonConfigs[this.canton];
   }
 
   shouldUseConstructionMath({ loan, structureId }) {

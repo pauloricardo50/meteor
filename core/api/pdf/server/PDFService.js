@@ -81,7 +81,11 @@ class PDFService {
 
         const loan = LoanService.get(
           loanId,
-          merge({}, calculatorLoan(), { name: 1 }),
+          merge({}, calculatorLoan(), {
+            name: 1,
+            borrowers: { address: 1, name: 1, age: 1 },
+            properties: { promotion: { name: 1 } },
+          }),
         );
 
         return { ...params, loan, organisation };

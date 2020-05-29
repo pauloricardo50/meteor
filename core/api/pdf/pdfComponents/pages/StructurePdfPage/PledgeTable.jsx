@@ -59,7 +59,6 @@ const getPledgeRows = ({ loan, structureId, calculator }) => {
         </span>
       ),
       data: toMoney(value),
-      //   style: { textAlign: 'right' },
     })),
     {
       label: 'Total',
