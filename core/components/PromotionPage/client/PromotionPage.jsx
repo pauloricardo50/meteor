@@ -17,7 +17,7 @@ const getTabs = ({
   [
     { id: 'management', shouldDisplay: canSeeManagement },
     { id: 'overview', shouldDisplay: true },
-    { id: 'map', shouldDisplay: true },
+    { id: 'description', shouldDisplay: true },
     { id: 'partners', shouldDisplay: true },
     {
       id: 'files',

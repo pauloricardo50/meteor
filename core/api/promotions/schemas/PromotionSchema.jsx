@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import T from '../../../components/Translation';
 import {
   address,
   contactsSchema,
@@ -12,6 +14,7 @@ import {
   updatedAt,
   userLinksSchema,
 } from '../../helpers/sharedSchemas';
+import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
 import {
   PROMOTION_AUTHORIZATION_STATUS,
   PROMOTION_PERMISSIONS,
@@ -178,19 +181,62 @@ const PromotionSchema = new SimpleSchema({
     defaultValue: false,
     uniforms: { label: 'Promotion test' },
   },
+  description: {
+    type: String,
+    optional: true,
+    uniforms: { placeholder: null, multiline: true, rows: 5, rowsMax: 15 },
+    autoValue: autoValueSentenceCase,
+  },
+  externalUrl: {
+    type: String,
+    optional: true,
+    uniforms: {
+      label: <T id="Forms.promotionExternalUrl" />,
+      placeholder: 'https://www.google.com/ma-promotion',
+    },
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(
-  'name',
-  'type',
-  'isTest',
   'address1',
   'address2',
-  'zipCode',
-  'city',
-  'signingDate',
-  'contacts',
   'agreementDuration',
+  'city',
+  'contacts',
+  'description',
+  'externalUrl',
+  'isTest',
+  'name',
+  'signingDate',
+  'type',
+  'zipCode',
 );
+
+export const basePromotionLayout = [
+  {
+    layout: [
+      'isTest',
+      {
+        className: 'grid-col',
+        fields: ['name', 'type'],
+      },
+      {
+        className: 'grid-row',
+        fields: ['description', 'externalUrl'],
+      },
+    ],
+    className: 'mb-32 grid-row',
+  },
+  {
+    layout: [
+      { className: 'grid-col', fields: ['address1', 'address2'] },
+      { className: 'grid-col', fields: ['zipCode', 'city'] },
+      'agreementDuration',
+      'signingDate',
+    ],
+    className: 'mb-32 grid-row',
+  },
+  'contacts',
+];
 
 export default PromotionSchema;

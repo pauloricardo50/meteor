@@ -12,7 +12,10 @@ import {
   promotionUpdate,
   toggleNotifications,
 } from '../../../../api/promotions/methodDefinitions';
-import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
+import {
+  BasePromotionSchema,
+  basePromotionLayout,
+} from '../../../../api/promotions/schemas/PromotionSchema';
 import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
 import { ModalManagerContext } from '../../../ModalManager';
@@ -125,6 +128,7 @@ const getOptions = ({
             schema={BasePromotionSchema}
             title={<T id="PromotionAdministration.updatePromotion" />}
             onSubmit={object => promotionUpdate.run({ promotionId, object })}
+            layout={basePromotionLayout}
           />,
           { maxWidth: 'sm', fullWidth: true },
         ),

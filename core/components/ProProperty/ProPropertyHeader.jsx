@@ -2,6 +2,7 @@ import React from 'react';
 
 import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
 import Loans from '../../api/loans';
+import ExternalUrl from '../ExternalUrl';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
 import { Money } from '../Translation';
@@ -77,18 +78,7 @@ const ProPropertyheader = ({ property, loan }) => {
           </p>
         )}
         <ProPropertyRecap property={property} />
-        {externalUrl && (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={externalUrl}
-            className="card1 card-top card-hover flex-col center external-link"
-          >
-            <Icon type="openInNew" className="external-link-icon" size={40} />
-            {ogSiteName && <h2>{ogSiteName}</h2>}
-            <h4 className="secondary">Ouvrir site externe</h4>
-          </a>
-        )}
+        {externalUrl && <ExternalUrl description={ogSiteName} />}
       </div>
       <ImageCarrousel images={getImages(documents, imageUrls)} />
     </div>

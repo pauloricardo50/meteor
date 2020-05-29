@@ -114,7 +114,7 @@ describe('Admin promotion', () => {
       cy.contains("Vue d'ensemble").click();
       cy.get('.promotion-lots-table table tbody tr').should('have.length', 5);
 
-      cy.contains('Carte').click();
+      cy.contains('Description').click();
       cy.get('.google-map').should('exist');
 
       cy.contains('Partenaires').click();
