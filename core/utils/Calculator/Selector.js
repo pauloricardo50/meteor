@@ -98,6 +98,21 @@ export const withSelector = (SuperClass = class {}) =>
       }
     }
 
+    selectLenderRules({ loan, structureId }) {
+      const { offers = [], lenders = [] } = loan;
+      const { offerId } = this.selectStructure({ loan, structureId });
+
+      if (offerId) {
+        const lender = lenders.find(({ offers }) =>
+          offers.some(({ _id }) => _id === offerId),
+        );
+
+        if (lender) {
+          return lender.organisation.lenderRules;
+        }
+      }
+    }
+
     selectStructure({ loan, structureId } = {}) {
       if (structureId) {
         return loan.structures.find(({ id }) => id === structureId);

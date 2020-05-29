@@ -158,6 +158,8 @@ export default compose(
       },
       insuranceRequest: { name: 1 },
     }),
+    deps: ({ filterRevenues, ...props }) =>
+      Object.values(filterRevenues(props)),
     dataName: 'revenues',
   }),
   withProps(({ revenues, postFilter }) => {

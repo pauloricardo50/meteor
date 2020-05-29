@@ -26,7 +26,7 @@ const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
 const getLenderRules = ({ loan, lenderRules }) => {
   let finalLenderRules = lenderRules;
   if (loan && loan.structure && loan.structure.offerId) {
-    finalLenderRules = loan.structure.offer.lender.organisation.lenderRules;
+    finalLenderRules = Calculator.selectLenderRules({ loan });
   }
 
   return finalLenderRules;
@@ -97,9 +97,10 @@ const withLenderRules = Component => {
   const WrappedComponent = withSmartQuery({
     query,
     params: getParams,
-    queryOptions: { shouldRefetch: () => false, loadOnRefetch: false },
     refetchOnMethodCall: false,
     dataName: 'lenderRules',
+    loadOnRefetch: false,
+    deps: ({ loan }) => [loan.hasPromotion, loan?.structure?.offerId],
   })(Component);
 
   return props => {

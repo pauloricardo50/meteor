@@ -69,6 +69,7 @@ const fragment = {
 const withUserLoan = withSmartQuery({
   query: userLoans,
   params: ({ loanId }) => ({ loanId, $body: fragment }),
+  deps: ({ loanId }) => [loanId],
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
   skip: ({ loanId }) => !loanId,
@@ -76,7 +77,6 @@ const withUserLoan = withSmartQuery({
 
 const withInterestRates = withSmartQuery({
   query: currentInterestRates,
-  queryOptions: { shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   refetchOnMethodCall: false,
 });

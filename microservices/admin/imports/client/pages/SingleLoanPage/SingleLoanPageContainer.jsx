@@ -23,7 +23,6 @@ import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
 const withInterestRates = withSmartQuery({
   query: interestRates,
-  queryOptions: { reactive: false, shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   smallLoader: true,
   refetchOnMethodCall: false,

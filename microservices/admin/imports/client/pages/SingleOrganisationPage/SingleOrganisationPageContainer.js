@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
@@ -12,6 +13,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
   withMatchParam('organisationId'),
+  Component => props => <Component {...props} key={props.organisationId} />,
   withSmartQuery({
     query: ORGANISATIONS_COLLECTION,
     params: ({ organisationId }) => ({

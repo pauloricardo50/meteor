@@ -192,6 +192,7 @@ export default compose(
       propertyId,
       anonymous: getAnonymous(withAnonymous),
     }),
+    deps: ({ withAnonymous }) => [withAnonymous],
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),

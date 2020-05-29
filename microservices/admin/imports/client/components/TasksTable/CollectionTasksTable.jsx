@@ -94,6 +94,8 @@ export default compose(
       $filters: getFilters({ doc, assignee, status }),
       ...taskTableFragment,
     }),
+    deps: ({ doc, assignee, status }) =>
+      Object.values(getFilters({ doc, assignee, status })),
     queryOptions: { reactive: false },
     dataName: 'tasks',
     refetchOnMethodCall: [

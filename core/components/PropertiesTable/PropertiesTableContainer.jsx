@@ -87,7 +87,11 @@ export default compose(
       value: propertyValue,
       search,
     }),
-    queryOptions: { reactive: false },
+    deps: ({ fetchOrganisationProperties, propertyValue, search }) => [
+      fetchOrganisationProperties,
+      propertyValue,
+      search,
+    ],
     renderMissingDoc: false,
     dataName: 'properties',
   }),

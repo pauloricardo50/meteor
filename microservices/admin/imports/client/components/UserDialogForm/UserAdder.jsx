@@ -141,11 +141,12 @@ export default compose(
   withSmartQuery({
     query: ORGANISATIONS_COLLECTION,
     dataName: 'organisations',
-    params: () => ({
+    params: {
       name: 1,
       users: { _id: 1 },
       $options: { sort: { name: 1 } },
-    }),
+    },
+    refetchOnMethodCall: false,
   }),
   withProps(() => {
     const searchParams = useSearchParams();

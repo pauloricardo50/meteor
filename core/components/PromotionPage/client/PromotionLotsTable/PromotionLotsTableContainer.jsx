@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../../../api/containerToolkit';
@@ -7,6 +7,8 @@ import {
   proPromotionLots,
 } from '../../../../api/promotionLots/queries';
 import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
+import { useStaticMeteorData } from '../../../../hooks/useMeteorData';
+import { withLoading } from '../../../Loading';
 import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';
 import PromotionCustomer from '../PromotionCustomer';
@@ -174,6 +176,7 @@ export const ProPromotionLotsTableContainer = compose(
       status,
     }),
     dataName: 'promotionLots',
+    deps: ({ status }) => [status],
   }),
   withProps(({ promotionLots, promotion }) => ({
     rows: promotionLots.map(makeMapProPromotionLot({ promotion })),
@@ -182,32 +185,67 @@ export const ProPromotionLotsTableContainer = compose(
 );
 
 export const AppPromotionLotsTableContainer = compose(
-  withSmartQuery({
-    query: appPromotionLots,
-    params: ({
+  withProps(
+    ({
       promotion: { _id: promotionId },
       status,
       loan: { promotions = [], promotionOptions = [] } = {},
     }) => {
       const [promotion] = promotions || {};
       const { $metadata: { showAllLots = false } = {} } = promotion;
-      const promotionLotIds = promotionOptions.reduce(
-        (ids, promotionOption) => {
-          const { promotionLots = [] } = promotionOption;
-          return [...ids, ...promotionLots.map(({ _id }) => _id)];
+      const promotionLotIds = useMemo(
+        () =>
+          promotionOptions.reduce((ids, promotionOption) => {
+            const { promotionLots = [] } = promotionOption;
+            return [...ids, ...promotionLots.map(({ _id }) => _id)];
+          }, []),
+        { promotionOptions },
+      );
+      const { data: promotionLots, loading } = useStaticMeteorData(
+        {
+          query: appPromotionLots,
+          params: {
+            promotionId,
+            status,
+            showAllLots,
+            promotionLotIds,
+          },
         },
-        [],
+        [status, promotionLotIds, showAllLots],
       );
 
-      return {
-        promotionId,
-        status,
-        showAllLots,
-        promotionLotIds,
-      };
+      return { promotionLots, loading };
     },
-    dataName: 'promotionLots',
-  }),
+  ),
+  withLoading(),
+
+  // withSmartQuery({
+  //   query: appPromotionLots,
+  //   params: ({
+  //     promotion: { _id: promotionId },
+  //     status,
+  //     loan: { promotions = [], promotionOptions = [] } = {},
+  //   }) => {
+  //     const [promotion] = promotions || {};
+  //     const { $metadata: { showAllLots = false } = {} } = promotion;
+  //     const promotionLotIds = promotionOptions.reduce(
+  //       (ids, promotionOption) => {
+  //         const { promotionLots = [] } = promotionOption;
+  //         return [...ids, ...promotionLots.map(({ _id }) => _id)];
+  //       },
+  //       [],
+  //     );
+
+  //     return {
+  //       promotionId,
+  //       status,
+  //       showAllLots,
+  //       promotionLotIds,
+  //     };
+  //   },
+  //   deps: ({ status }) => [status],
+  //   dataName: 'promotionLots',
+  // }),
   withProps(
     ({
       promotionLots,
@@ -221,9 +259,7 @@ export const AppPromotionLotsTableContainer = compose(
           promotionId,
         }),
       ),
-      columnOptions: appColumnOptions({
-        promotionStatus,
-      }),
+      columnOptions: appColumnOptions({ promotionStatus }),
     }),
   ),
 );

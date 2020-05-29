@@ -124,6 +124,11 @@ export default compose(
         },
       },
     }),
+    deps: ({ status, withAnonymous, referredByMe }) => [
+      status,
+      withAnonymous,
+      referredByMe,
+    ],
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
