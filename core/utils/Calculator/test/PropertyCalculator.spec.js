@@ -30,6 +30,7 @@ describe('PropertyCalculator', () => {
 
     it('returns 1 for a complete property', () => {
       params.loan.structure.property = {
+        _id: 'propertyId',
         value: 1,
         propertyType: '',
         address1: 'yo',
@@ -44,6 +45,7 @@ describe('PropertyCalculator', () => {
         isCoproperty: false,
         country: 'CH',
       };
+      params.loan.properties = [params.loan.structure.property];
       params.loan.residenceType = ' ';
       expect(Calculator.propertyPercent(params)).to.deep.equal(1);
     });
