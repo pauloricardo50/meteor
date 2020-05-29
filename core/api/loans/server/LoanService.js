@@ -590,10 +590,7 @@ class LoanService extends CollectionService {
   }
 
   sendNegativeFeedbackToAllLenders({ loanId }) {
-    const {
-      offers = [],
-      structure: { property },
-    } =
+    const loan =
       this.createQuery({
         $filters: { _id: loanId },
         offers: {
@@ -604,12 +601,14 @@ class LoanService extends CollectionService {
           },
         },
         structure: 1,
+        properties: { address1: 1, zipCode: 1, city: 1 },
         createdAt: 1,
         $options: { sort: { createdAt: -1 } },
       }).fetchOne() || {};
+    const property = Calculator.selectProperty({ loan });
 
     // Get lenders' last offer
-    const filteredOffers = offers.reduce((filtered, offer) => {
+    const filteredOffers = loan.offers.reduce((filtered, offer) => {
       const {
         lender: {
           contact: { email: lenderEmail },
@@ -901,12 +900,14 @@ class LoanService extends CollectionService {
       merge({}, calculatorLoan(), {
         promotions: { lenderOrganisationLink: 1 },
         selectedLenderOrganisation: {
+          name: 1,
           lenderRules: lenderRulesFragment(),
         },
       }),
     );
     let lenderRules;
 
+    // console.log('loan:', loan);
     if (loan.selectedLenderOrganisation) {
       lenderRules = loan.selectedLenderOrganisation.lenderRules;
     } else if (loan.hasPromotion) {

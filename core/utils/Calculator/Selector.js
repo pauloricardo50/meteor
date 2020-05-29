@@ -99,7 +99,19 @@ export const withSelector = (SuperClass = class {}) =>
     }
 
     selectLenderRules({ loan, structureId }) {
-      const { offers = [], lenders = [] } = loan;
+      const { lenders = [], selectedLenderOrganisation, hasPromotion } = loan;
+
+      if (!structureId && selectedLenderOrganisation?.lenderRules) {
+        return selectedLenderOrganisation.lenderRules;
+      }
+
+      if (hasPromotion) {
+        const { promotions = [] } = loan;
+        if (promotions[0].lenderOrganisation?.lenderRules) {
+          return promotions[0].lenderOrganisation.lenderRules;
+        }
+      }
+
       const { offerId } = this.selectStructure({ loan, structureId });
 
       if (offerId) {

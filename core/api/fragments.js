@@ -231,7 +231,7 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   order: 1,
-  organisation: { name: 1 },
+  organisationCache: 1,
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeAlgorithm: 1,
@@ -269,6 +269,8 @@ export const formLoan = () => ({
   canton: 1,
   disbursementDate: 1,
   documents: 1,
+  hasPromotion: 1,
+  hasProProperty: 1,
   purchaseType: 1,
   selectedStructure: 1,
   structures: 1,
@@ -468,7 +470,10 @@ export const proLoanWithRevenues = () => ({
 export const calculatorLoan = () => ({
   ...formLoan(),
   borrowers: formBorrower(),
-  lenders: { offers: formOffer() },
+  lenders: {
+    offers: formOffer(),
+    organisation: { name: 1, lenderRules: lenderRules() },
+  },
   promotionOptions: formPromotionOption(),
   promotions: {
     address1: 1,

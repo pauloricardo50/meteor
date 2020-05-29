@@ -101,7 +101,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
 
       return {
         // Get the address from the promotion
-        ...pick(promotions[0], ['address1', 'address2', 'zipCode', 'city']),
+        ...pick(promotions?.[0], ['address1', 'address2', 'zipCode', 'city']),
         ...promotionOption,
         ...property,
         totalValue: promotionOption.value,
