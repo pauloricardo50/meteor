@@ -3,7 +3,7 @@ import omit from 'lodash/omit';
 import { branch, compose, mapProps, renderComponent } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminLoan } from 'core/api/fragments';
+import { adminLender, adminProperty, userLoan } from 'core/api/fragments';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
 import {
   LOANS_COLLECTION,
@@ -32,19 +32,43 @@ const withInterestRates = withSmartQuery({
 const keysToOmit = [
   'borrowers.loans',
   'contacts',
-  'properties.loans',
-  'properties.promotion',
-  'properties.user',
-  'properties.users',
   'user.borrowers',
   'user.loans',
   'user.organisations',
   'user.properties',
-  'revenues',
 ];
 const fullLoanFragment = {
-  ...omit(adminLoan({ withSort: true }), keysToOmit),
+  assigneeLinks: 1,
+  ...omit(userLoan({ withSort: true }), keysToOmit),
+  adminNotes: 1,
+  category: 1,
+  financedPromotion: { name: 1, status: 1 },
+  financedPromotionLink: 1,
+  frontTagId: 1,
+  lenders: adminLender(),
+  maxPropertyValue: 1,
+  nextDueTask: 1,
+  proNote: 1,
+  properties: omit(adminProperty({ withSort: true }), [
+    'loans',
+    'promotion',
+    'user',
+    'users',
+  ]),
   revenues: { _id: 1, status: 1 },
+  selectedLenderOrganisation: { name: 1 },
+  status: 1,
+  tasksCache: 1,
+  userCache: 1,
+  insuranceRequests: {
+    status: 1,
+    name: 1,
+    borrowers: { name: 1 },
+    createdAt: 1,
+    updatedAt: 1,
+  },
+  unsuccessfulReason: 1,
+  mainAssignee: 1,
 };
 
 export default compose(

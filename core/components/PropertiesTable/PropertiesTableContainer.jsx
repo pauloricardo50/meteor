@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
-import { proPropertySummary } from '../../api/fragments';
 import { proProperties } from '../../api/properties/queries';
 import { createRoute } from '../../utils/routerUtils';
 import StatusLabel from '../StatusLabel';
@@ -73,7 +72,17 @@ export default compose(
   withSmartQuery({
     query: proProperties,
     params: ({ fetchOrganisationProperties, propertyValue, search }) => ({
-      $body: proPropertySummary(),
+      $body: {
+        address1: 1,
+        city: 1,
+        createdAt: 1,
+        status: 1,
+        totalValue: 1,
+        loanCount: 1,
+        country: 1,
+        userLinks: 1,
+        users: { name: 1 },
+      },
       fetchOrganisationProperties,
       value: propertyValue,
       search,

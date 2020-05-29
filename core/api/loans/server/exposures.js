@@ -1,16 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
-import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
-import { LOAN_STATUS } from '../loanConstants';
 import {
-  adminLoans,
   anonymousLoan,
-  fullLoan,
   loanSearch,
   proLoans2,
   proLoansAggregate,
@@ -25,126 +21,12 @@ import {
 } from './resolvers';
 
 exposeQuery({
-  query: adminLoans,
-  overrides: {
-    embody: (body, params) => {
-      body.$filter = ({
-        filters,
-        params: {
-          _id,
-          assignedEmployeeId,
-          category,
-          createdAt,
-          hasPromotion,
-          lenderId,
-          name,
-          noPromotion,
-          owned,
-          promotionId,
-          relevantOnly,
-          status,
-          step,
-        },
-      }) => {
-        if (_id) {
-          filters._id = _id;
-        }
-
-        if (name) {
-          filters.name = name;
-        }
-
-        if (owned) {
-          filters.userId = { $exists: true };
-        }
-
-        if (assignedEmployeeId) {
-          filters['userCache.assignedEmployeeCache._id'] = assignedEmployeeId;
-        }
-
-        if (createdAt) {
-          filters.createdAt = createdAt;
-        }
-
-        if (relevantOnly) {
-          filters.status = {
-            $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
-          };
-          filters.anonymous = { $ne: true };
-        }
-
-        if (step) {
-          filters.step = step;
-        }
-
-        if (category) {
-          filters.category = category;
-        }
-
-        if (status) {
-          filters.status = status;
-        }
-
-        if (hasPromotion) {
-          filters.$or = [
-            { 'promotionLinks._id': { $exists: true } },
-            { 'financedPromotionLink._id': { $exists: true } },
-          ];
-        }
-
-        if (promotionId) {
-          filters.$or = [
-            { 'promotionLinks._id': promotionId },
-            { 'financedPromotionLink._id': promotionId },
-          ];
-        }
-
-        if (noPromotion) {
-          filters.promotionLinks = { $in: [[], null] };
-        }
-
-        if (lenderId) {
-          filters.lendersCache = {
-            $elemMatch: { 'organisationLink._id': lenderId },
-          };
-        }
-      };
-    },
-    validateParams: {
-      _id: Match.Maybe(String),
-      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
-      category: Match.Maybe(Match.OneOf(Object, String)),
-      createdAt: Match.Maybe(Object),
-      hasPromotion: Match.Maybe(Boolean),
-      lenderId: Match.Maybe(Match.OneOf(Object, String)),
-      name: Match.Maybe(String),
-      noPromotion: Match.Maybe(Boolean),
-      owned: Match.Maybe(Boolean),
-      promotionId: Match.Maybe(Match.OneOf(Object, String)),
-      relevantOnly: Match.Maybe(Boolean),
-      status: Match.Maybe(Match.OneOf(Object, String)),
-      step: Match.Maybe(Match.OneOf(Object, String)),
-    },
-  },
-});
-
-exposeQuery({
   query: anonymousLoan,
   overrides: {
     firewall(userId, params) {
       SecurityService.loans.checkAnonymousLoan(params._id);
     },
     validateParams: { _id: String },
-  },
-  options: { allowFilterById: true },
-});
-
-exposeQuery({
-  query: fullLoan,
-  overrides: {
-    embody: body => {
-      body.$postFilter = (loans = []) => loans.map(formatLoanWithDocuments);
-    },
   },
   options: { allowFilterById: true },
 });

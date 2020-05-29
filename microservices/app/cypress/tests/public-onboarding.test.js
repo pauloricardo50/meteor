@@ -257,11 +257,13 @@ describe('Public onboarding', () => {
 
     cy.window().then(window => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      cy.callMethod('getLoan', loanId).then(({ referralId }) => {
-        cy.get('@userId').then(userId => {
-          expect(referralId).to.equal(userId);
-        });
-      });
+      cy.callMethod('getLoan', loanId, { referralId: 1 }).then(
+        ({ referralId }) => {
+          cy.get('@userId').then(userId => {
+            expect(referralId).to.equal(userId);
+          });
+        },
+      );
     });
   });
 
@@ -274,9 +276,11 @@ describe('Public onboarding', () => {
 
     cy.window().then(window => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      cy.callMethod('getLoan', loanId).then(({ referralId }) => {
-        expect(referralId).to.equal(undefined);
-      });
+      cy.callMethod('getLoan', loanId, { referralId: 1 }).then(
+        ({ referralId }) => {
+          expect(referralId).to.equal(undefined);
+        },
+      );
     });
   });
 
@@ -295,13 +299,15 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getUser', 'dev@e-potek.ch').then(
-      ({ referredByUserLink }) => {
-        cy.get('@userId').then(userId => {
-          expect(referredByUserLink).to.equal(userId);
-        });
-      },
-    );
+    cy.callMethod(
+      'getUser',
+      { 'emails.0.address': 'dev@e-potek.ch' },
+      { referredByUserLink: 1 },
+    ).then(({ referredByUserLink }) => {
+      cy.get('@userId').then(userId => {
+        expect(referredByUserLink).to.equal(userId);
+      });
+    });
   });
 
   it('should create an account with organisation referralId', () => {
@@ -320,13 +326,15 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getUser', 'dev@e-potek.ch').then(
-      ({ referredByOrganisationLink }) => {
-        cy.get('@orgId').then(orgId => {
-          expect(referredByOrganisationLink).to.equal(orgId);
-        });
-      },
-    );
+    cy.callMethod(
+      'getUser',
+      { 'emails.0.address': 'dev@e-potek.ch' },
+      { referredByOrganisationLink: 1 },
+    ).then(({ referredByOrganisationLink }) => {
+      cy.get('@orgId').then(orgId => {
+        expect(referredByOrganisationLink).to.equal(orgId);
+      });
+    });
   });
 
   it('should not let override the referralId with an invalid one', () => {
@@ -348,13 +356,15 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getUser', 'dev@e-potek.ch').then(
-      ({ referredByUserLink }) => {
-        cy.get('@userId').then(userId => {
-          expect(referredByUserLink).to.equal(userId);
-        });
-      },
-    );
+    cy.callMethod(
+      'getUser',
+      { 'emails.0.address': 'dev@e-potek.ch' },
+      { referredByUserLink: 1 },
+    ).then(({ referredByUserLink }) => {
+      cy.get('@userId').then(userId => {
+        expect(referredByUserLink).to.equal(userId);
+      });
+    });
   });
 
   it('should not route to an existing loan if a new property is expected', () => {
