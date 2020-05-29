@@ -8,12 +8,13 @@ import UserService from './UserService';
 
 formatNumbersHook(Users, 'phoneNumbers');
 
+const shouldUseNewsletterHooks = Meteor.isProduction && !Meteor.isStaging;
+
 Users.after.update((userId, doc, fieldNames) => {
   const fieldsToWatch = ['emails', 'firstName', 'lastName', 'phoneNumbers'];
 
   if (
-    Meteor.isProduction &&
-    !Meteor.isStaging &&
+    shouldUseNewsletterHooks &&
     fieldNames.some(fieldName => fieldsToWatch.includes(fieldName))
   ) {
     try {
@@ -38,7 +39,7 @@ Users.after.update((userId, doc, fieldNames) => {
 });
 
 Users.after.remove(userId => {
-  if (Meteor.isProduction && !Meteor.isStaging) {
+  if (shouldUseNewsletterHooks) {
     const { email } = UserService.get(userId, { email: 1 });
     try {
       NewsletterService.removeUser({ email });

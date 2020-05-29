@@ -8,10 +8,7 @@ import queryString from 'query-string';
 import { MAILCHIMP_LIST_STATUS } from '../emailConstants';
 
 const API_PATH = 'https://us15.api.mailchimp.com/3.0';
-const API_KEY =
-  Meteor.isProduction &&
-  !Meteor.isStaging &&
-  Meteor.settings.mailchimp?.API_KEY;
+const API_KEY = Meteor.settings.mailchimp?.API_KEY;
 
 // We currently support only one list, this could change in the future
 const LIST_IDS = {
@@ -75,7 +72,7 @@ class MailchimpService {
     }
 
     if (!API_KEY) {
-      return;
+      return Promise.resolve({});
     }
 
     const { method, makeEndpoint } = endpointConfig;
