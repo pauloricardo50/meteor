@@ -10,7 +10,7 @@ import PRO_ROUTES from '../../../startup/client/proRoutes';
 import ProOrganisationUsersTable from './ProOrganisationUsersTable';
 
 const getTabs = ({ organisation, currentUser }) => {
-  const { contacts, commissionRates } = organisation;
+  const { commissionRates } = organisation;
 
   return [
     {
