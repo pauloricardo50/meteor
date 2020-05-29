@@ -34,8 +34,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     propertyPercent({ loan, structureId, property }) {
       const { borrowers } = loan;
-      const structure = this.selectStructure({ loan, structureId });
-      const propertyToCalculateWith = property || structure.property;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
       if (!propertyToCalculateWith) {
         return 0;
@@ -74,8 +74,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyFilesProgress({ loan, structureId, property }) {
-      const structure = this.selectStructure({ loan, structureId });
-      const propertyToCalculateWith = property || structure.property;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
       if (!propertyToCalculateWith) {
         return 0;
@@ -134,7 +134,6 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getRequiredPropertyFields({ loan, structureId, property }) {
       const { borrowers } = loan;
       const selectedProperty = this.selectProperty({ loan, structureId });
-
       const propertyToCalculateWith = property || selectedProperty;
 
       const formArray1 = getPropertyArray({
