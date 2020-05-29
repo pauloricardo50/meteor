@@ -674,6 +674,7 @@ export const fullPromotionOption = () => ({
 export const proPromotionOption = () => ({
   ...fullPromotionOption(),
   loan: {
+    loanProgress: 1,
     name: 1,
     promotions: {
       users: { _id: 1, name: 1, organisations: { name: 1 } },
@@ -683,7 +684,7 @@ export const proPromotionOption = () => ({
       name: 1,
       promotionLots: { attributedTo: { user: { _id: 1 } }, status: 1 },
       solvency: 1,
-      loan: { _id: 1 },
+      loan: { loanProgress: 1 },
     },
     proNote: 1,
     solvency: 1,

@@ -3,8 +3,6 @@ import cx from 'classnames';
 import { withProps } from 'recompose';
 
 import { getLoanProgress } from '../../../api/loans/helpers';
-import { loanProgress as loanProgressQuery } from '../../../api/loans/queries';
-import { useStaticMeteorData } from '../../../hooks/useMeteorData';
 import ProgressCircle from '../../ProgressCircle';
 import {
   getAdminNoteIcon,
@@ -38,6 +36,8 @@ const PromotionReservationProgressComponent = ({
   const { _id: loanId, proNote = {} } = loanOverride || loan;
   const info = loanProgress?.info;
   const documents = loanProgress?.documents;
+  const displayInfo = info !== undefined;
+  const displayDocuments = documents !== undefined;
 
   const getProgressItem = useMemo(
     () =>
@@ -62,12 +62,12 @@ const PromotionReservationProgressComponent = ({
       id: 'simpleVerification',
     }),
     ...[
-      info && {
+      displayInfo && {
         data: info,
         id: 'info',
         tooltipPrefix: 'Informations:',
       },
-      documents && {
+      displayDocuments && {
         data: documents,
         id: 'documents',
         tooltipPrefix: 'Documents:',
@@ -176,16 +176,11 @@ export default withProps(
     loan,
     promotionOption: { loan: promotionOptionLoan },
     withLoanProgress = false,
-  }) => {
-    const loanId = loan?._id || promotionOptionLoan?._id;
-    const { data: loanProgress = {}, loading } = useStaticMeteorData({
-      query: withLoanProgress && loanProgressQuery,
-      params: { loanId },
-      type: 'single',
-    });
-
-    return {
-      loanProgress: withLoanProgress && !loading && loanProgress,
-    };
-  },
+  }) => ({
+    loanProgress:
+      withLoanProgress &&
+      (promotionOptionLoan?.loanProgress ||
+        loan?.loanProgress ||
+        getLoanProgress(loan)),
+  }),
 )(PromotionReservationProgressComponent);

@@ -65,7 +65,12 @@ exposeQuery({
           promotionId,
           loanStatus,
           invitedBy,
+          promotionOptionId,
         } = params;
+
+        if (promotionOptionId) {
+          filters._id = promotionOptionId;
+        }
 
         if (status) {
           filters.status = status;
@@ -109,6 +114,7 @@ exposeQuery({
       promotionLotId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
       userId: String,
+      promotionOptionId: Match.Maybe(String),
     },
   },
 });
