@@ -2,6 +2,36 @@ import pollUntilReady from '../../../utils/pollUntilReady';
 import { USER_EMAIL, USER_PASSWORD } from '../../server/e2eConstants';
 // import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
+// Be careful, if methods don't come back, you might be creating a new
+// websocket connection, see the network tab if you have multiple ones
+// https://github.com/meteor/meteor/issues/10392
+// This hardcore retry function makes sure we have highly reliable tests
+// as it'll end up succeeding once the websocket connection has stablized
+const tryUntilSucceed = func =>
+  new Promise((resolve, reject) => {
+    pollUntilReady(
+      () =>
+        new Promise((res2, rej2) => {
+          const timeout = setTimeout(() => {
+            // Sometimes the isLoggedIn call never reaches the server
+            // To avoid this, add a timeout that skips this specific call
+            res2(false);
+          }, 40);
+
+          func((error, result) => {
+            clearTimeout(timeout);
+            if (error) {
+              rej2(error);
+            }
+
+            res2(result);
+          });
+        }),
+    )
+      .then(resolve)
+      .catch(reject);
+  });
+
 // You have to have visited the app before this can work
 // Like: cy.visit('/')
 Cypress.Commands.add('getMeteor', () =>
@@ -23,10 +53,7 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
 
   return cy.getMeteor().then(
     Meteor =>
-      new Cypress.Promise((resolve, reject) => {
-        // Be careful, if methods don't come back, you might be creating a new
-        // websocket connection, see the network tab if you have multiple ones
-        // https://github.com/meteor/meteor/issues/10392
+      new Cypress.Promise(resolve => {
         Meteor.apply(method, params, (err, result) => {
           if (err) {
             // It would be great if you could catch cypress.Promise errors..
@@ -49,43 +76,12 @@ Cypress.Commands.add('meteorLogout', () => {
           return resolve();
         }
 
-        Meteor.logout(err => {
-          if (err) {
-            return reject(err);
-          }
-
-          resolve(true);
-        });
+        tryUntilSucceed(callback => Meteor.logout(callback))
+          .then(() => resolve(true))
+          .catch(reject);
       }),
   );
 });
-
-// We need to make sure we're properly logged in on the server, not only the
-// the client, as they can by out of sync with cypress
-const waitForLoggedIn = Meteor =>
-  new Promise((resolve, reject) =>
-    pollUntilReady(
-      () =>
-        new Promise((resolve2, reject2) => {
-          const timeout = setTimeout(() => {
-            // Sometimes the isLoggedIn call never reaches the server
-            // To avoid this, add a timeout that skips this specific call
-            resolve2(false);
-          }, 40);
-
-          Meteor.call('isLoggedIn', (err, userId) => {
-            clearTimeout(timeout);
-            if (err) {
-              reject2(err);
-            }
-
-            resolve2(userId);
-          });
-        }),
-    )
-      .then(resolve)
-      .catch(reject),
-  );
 
 Cypress.Commands.add(
   'meteorLogin',
@@ -106,7 +102,9 @@ Cypress.Commands.add(
             return reject(err);
           }
 
-          waitForLoggedIn(Meteor)
+          // We need to make sure we're properly logged in on the server, not only the
+          // the client, as they can by out of sync with cypress
+          tryUntilSucceed(callback => Meteor.call('isLoggedIn', callback))
             .then(resolve)
             .catch(reject);
         });
