@@ -45,7 +45,7 @@ import {
 import LoanService from '../LoanService';
 import { generateDisbursedSoonLoansTasks } from '../methods';
 
-describe.only('LoanService', function() {
+describe('LoanService', function() {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -1432,7 +1432,7 @@ describe.only('LoanService', function() {
     });
   });
 
-  describe.only('getLoanCalculator', () => {
+  describe('getLoanCalculator', () => {
     it('returns an uninitialized calculator by default', () => {
       generator({ loans: { _id: 'myLoan' } });
 
