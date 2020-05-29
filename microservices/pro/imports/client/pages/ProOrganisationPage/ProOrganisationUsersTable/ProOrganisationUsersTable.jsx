@@ -8,7 +8,6 @@ import ProOrganisationUsersTableContainer from './ProOrganisationUsersTableConta
 const ProOrganisationUsersTable = ({
   rows,
   columnOptions,
-  currentUser,
   name,
   _id: organisationId,
 }) => (

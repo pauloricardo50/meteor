@@ -1024,6 +1024,12 @@ export const appUser = () => ({
 
 export const proUser = () => ({
   ...fullUser(),
+  organisations: {
+    name: 1,
+    users: { name: 1, email: 1, phoneNumber: 1 },
+    logo: 1,
+    commissionRates: { _id: 1 },
+  },
   assignedEmployee: simpleUser(),
   promotions: { _id: 1, name: 1, permissions: 1, status: 1, users: { _id: 1 } },
   properties: { _id: 1 },
