@@ -8,10 +8,12 @@ import {
   lifecycle,
   mapProps,
   renderComponent,
+  withProps,
 } from 'recompose';
 
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
+import { useMeteorData } from '../../hooks/useMeteorData';
 import ClientEventService from '../events/ClientEventService';
 import {
   addQueryToRefetch,
@@ -65,7 +67,7 @@ const withQueryRefetcher = lifecycle({
 // These queries can then all be refreshed from `clientMethodsConfig`
 // every time a method is called
 const withGlobalQueryManager = (
-  queryName,
+  getQuery,
   { reactive },
   refetchOnMethodCall,
 ) => {
@@ -73,6 +75,7 @@ const withGlobalQueryManager = (
     refetchOnMethodCall && !reactive && global.window;
 
   return Component => props => {
+    const queryName = getQuery(props)?.name;
     const [uniqueQueryName] = useState(`${queryName}-hoc-${count++}`);
     useEffect(() => {
       if (shouldActivateGlobalRefetch) {
@@ -102,26 +105,58 @@ const withSmartQuery = ({
   smallLoader = false,
   refetchOnMethodCall = 'all',
   skip,
+  deps,
+  loadOnRefetch,
 }) => {
-  let completeQuery;
+  // let completeQuery;
 
-  if (typeof query === 'function') {
-    completeQuery = props => query(props).clone(calculateParams(params, props));
-  } else if (typeof query === 'string') {
-    completeQuery = props =>
-      createQuery({ [query]: calculateParams(params, props) });
-  } else {
-    completeQuery = props => query.clone(calculateParams(params, props));
-  }
+  // const completeQuery = props => {
+  //   let finalQuery = query;
+  //   console.log('query:', query);
 
-  const queryName = query.queryName || query;
+  //   if (typeof query === 'function') {
+  //     finalQuery = query(props);
+  //   }
+  //   console.log('finalQuery:', finalQuery);
+
+  //   if (!finalQuery) {
+  //     return {};
+  //   }
+
+  //   if (typeof finalQuery === 'string') {
+  //     return createQuery({ [finalQuery]: calculateParams(params, props) });
+  //   }
+
+  //   return finalQuery.clone(calculateParams(params, props));
+  // };
 
   const container = compose(
-    withGlobalQueryManager(queryName, queryOptions, refetchOnMethodCall),
-    withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
+    // withGlobalQueryManager(completeQuery, queryOptions, refetchOnMethodCall),
+    // withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
+    withProps(props => {
+      const finalQuery = typeof query === 'function' ? query(props) : query;
+      const finalParams = typeof params === 'function' ? params(props) : params;
+      const finalDeps = typeof deps === 'function' ? deps(props) : deps;
+
+      const { data, loading } = useMeteorData(
+        {
+          query: finalQuery,
+          params: finalParams,
+          type: queryOptions.single ? 'single' : 'many',
+          reactive: queryOptions.reactive,
+          refetchOnMethodCall,
+        },
+        finalDeps,
+      );
+
+      return {
+        data,
+        loading: loadOnRefetch ? loading : data ? false : loading,
+      };
+    }),
     withLoading(smallLoader),
     makeRenderMissingDocIfNoData(renderMissingDoc, queryOptions),
-    withQueryRefetcher,
+    // withQueryRefetcher,
     makeMapProps(dataName),
   );
 

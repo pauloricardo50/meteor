@@ -5,8 +5,10 @@ import { compose, mapProps, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
-import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/organisations/organisationConstants';
 import { adminPromotions } from 'core/api/promotions/queries';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
@@ -112,6 +114,7 @@ export default compose(
     }),
     dataName: 'loans',
     queryOptions: { pollingMs: 5000 },
+    deps: ({ options }) => Object.values(options),
   }),
   withProps(({ loans, ...props }) => ({
     loans: loans.filter(makeClientSideFilter(props)),
@@ -143,10 +146,13 @@ export default compose(
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
-    query: adminOrganisations,
-    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.LENDER },
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { features: ORGANISATION_FEATURES.LENDER },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
     dataName: 'lenders',
-    queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
   mapProps(({ loans, ...rest }) => ({
