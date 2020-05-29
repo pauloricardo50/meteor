@@ -28,6 +28,7 @@ module.exports = function createConfig({
   appName: _appName,
   hooks = {},
   envVars = {},
+  stickySessions = true,
 }) {
   const appName = _appName || microservice;
 
@@ -96,6 +97,7 @@ module.exports = function createConfig({
 
     proxy: {
       loadBalancing: true,
+      stickySessions,
       domains: domains.join(','),
       nginxLocationConfig: nginxLocationConfig
         ? generateConfig(nginxLocationConfig, baseDomain)
