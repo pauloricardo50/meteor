@@ -218,34 +218,6 @@ export const AppPromotionLotsTableContainer = compose(
     },
   ),
   withLoading(),
-
-  // withSmartQuery({
-  //   query: appPromotionLots,
-  //   params: ({
-  //     promotion: { _id: promotionId },
-  //     status,
-  //     loan: { promotions = [], promotionOptions = [] } = {},
-  //   }) => {
-  //     const [promotion] = promotions || {};
-  //     const { $metadata: { showAllLots = false } = {} } = promotion;
-  //     const promotionLotIds = promotionOptions.reduce(
-  //       (ids, promotionOption) => {
-  //         const { promotionLots = [] } = promotionOption;
-  //         return [...ids, ...promotionLots.map(({ _id }) => _id)];
-  //       },
-  //       [],
-  //     );
-
-  //     return {
-  //       promotionId,
-  //       status,
-  //       showAllLots,
-  //       promotionLotIds,
-  //     };
-  //   },
-  //   deps: ({ status }) => [status],
-  //   dataName: 'promotionLots',
-  // }),
   withProps(
     ({
       promotionLots,

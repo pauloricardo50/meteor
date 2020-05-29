@@ -907,7 +907,6 @@ class LoanService extends CollectionService {
     );
     let lenderRules;
 
-    // console.log('loan:', loan);
     if (loan.selectedLenderOrganisation) {
       lenderRules = loan.selectedLenderOrganisation.lenderRules;
     } else if (loan.hasPromotion) {
