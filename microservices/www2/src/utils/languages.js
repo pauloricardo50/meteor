@@ -9,6 +9,7 @@ const languageData = {
     blogLink: '/en/blog',
     blogLinkText: `Return to index`,
     loginText: 'Login',
+    signupButtonText: 'Sign up',
     recommendedArticleHeader: `This might interest you`,
     rateTable: {
       header: ['Duration', 'Trend', 'Rate'],
@@ -25,6 +26,7 @@ const languageData = {
     blogLink: '/fr/blog',
     blogLinkText: `Revenir à l'index`,
     loginText: 'Se connecter',
+    signupButtonText: `S'inscrire`,
     recommendedArticleHeader: `Ceci pourrait vous intéresser`,
     rateTable: {
       header: ['Durée', 'Tendance', 'Taux'],

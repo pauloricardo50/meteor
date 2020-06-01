@@ -9,7 +9,7 @@ import TopNavLogo from './TopNavLogo';
 import './TopNav.scss';
 
 const TopNav = () => {
-  const matches = useMediaQuery(theme => theme.breakpoints.up('med'));
+  const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
   return (
     <Toolbar className="top-nav">
