@@ -56,7 +56,7 @@ const PromotionReservationDeadline = ({
             </span>
           }
         >
-          <h1 className={cx({ 'error-box': isTight })}>
+          <h3 className={cx('font-size-2 mt-0', { 'error-box': isTight })}>
             {momentDate.fromNow()}
             {isAdmin && (
               <AutoFormDialog
@@ -80,7 +80,7 @@ const PromotionReservationDeadline = ({
                 title="Changer les dates"
               />
             )}
-          </h1>
+          </h3>
         </Tooltip>
       </label>
     );
@@ -88,9 +88,9 @@ const PromotionReservationDeadline = ({
 
   return (
     <div style={{ marginBottom: 16 }}>
-      <h1>
+      <h3 className="font-size-2 mt-0">
         <T id={`PromotionReservationDeadline.${status}`} />
-      </h1>
+      </h3>
       <p className="description">
         <T
           id={`PromotionReservationDeadline.${status}.description`}

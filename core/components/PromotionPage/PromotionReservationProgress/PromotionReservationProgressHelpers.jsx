@@ -11,65 +11,58 @@ import {
 } from '../../../api/promotionOptions/promotionOptionConstants';
 import PromotionReservationProgressItem from './PromotionReservationProgressItem';
 
-const iconConfig = {
+export const promotionOptionIconConfig = {
   simpleVerification: {
-    error: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED],
-    success: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED],
-    waiting: [PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED],
+    error: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED,
+    success: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+    waiting: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED,
   },
   fullVerification: {
-    error: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED],
-    success: [PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED],
+    error: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED,
+    success: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
   },
   bank: {
-    success: [PROMOTION_OPTION_BANK_STATUS.VALIDATED],
-    error: [PROMOTION_OPTION_BANK_STATUS.REJECTED],
-    warning: [PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS],
-    sent: [PROMOTION_OPTION_BANK_STATUS.SENT],
-    waitList: [PROMOTION_OPTION_BANK_STATUS.WAITLIST],
+    success: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+    error: PROMOTION_OPTION_BANK_STATUS.REJECTED,
+    warning: PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+    sent: PROMOTION_OPTION_BANK_STATUS.SENT,
+    waitList: PROMOTION_OPTION_BANK_STATUS.WAITLIST,
   },
   reservationAgreement: {
-    success: [PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED],
-    waiting: [PROMOTION_OPTION_AGREEMENT_STATUS.WAITING],
+    success: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+    waiting: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
   },
   reservationDeposit: {
-    success: [PROMOTION_OPTION_DEPOSIT_STATUS.PAID],
-    error: [PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID],
+    success: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+    error: PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID,
   },
 };
 
 export const getPromotionReservationIcon = (id, status) => {
-  const config = iconConfig[id];
+  const config = promotionOptionIconConfig[id];
 
   if (!config) {
     return;
   }
 
-  const {
-    success = [],
-    waiting = [],
-    error = [],
-    warning = [],
-    sent = [],
-    waitList = [],
-  } = config;
+  const { success, waiting, error, warning, sent, waitList } = config;
 
-  if (waiting.includes(status)) {
+  if (waiting === status) {
     return { icon: 'waiting', color: 'warning' };
   }
-  if (warning.includes(status)) {
+  if (warning === status) {
     return { icon: 'error', color: 'warning' };
   }
-  if (error.includes(status)) {
+  if (error === status) {
     return { icon: 'error', color: 'error' };
   }
-  if (success.includes(status)) {
+  if (success === status) {
     return { icon: 'checkCircle', color: 'success' };
   }
-  if (sent.includes(status)) {
+  if (sent === status) {
     return { icon: 'send', color: 'warning' };
   }
-  if (waitList.includes(status)) {
+  if (waitList === status) {
     return { icon: 'schedule', color: 'warning' };
   }
 

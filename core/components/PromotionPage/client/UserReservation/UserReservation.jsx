@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../../Translation';
-import PromotionReservationProgress from '../../PromotionReservationProgress';
+import PromotionReservationProgress2 from '../../PromotionReservationProgress/PromotionReservationProgress2';
 import PromotionReservationDeadline from '../PromotionReservations/PromotionReservationDeadline';
 
 const UserReservation = ({
@@ -41,11 +41,12 @@ const UserReservation = ({
           PROMOTION_OPTION_STATUS.RESERVED,
           PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
         ].includes(status) && (
-          <PromotionReservationProgress
+          <PromotionReservationProgress2
             promotionOption={promotionOption}
             variant={progressVariant}
             loan={loan}
             withLoanProgress
+            showLabel={progressVariant === 'text'}
           />
         )}
       </div>
