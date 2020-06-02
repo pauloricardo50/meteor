@@ -4,7 +4,6 @@ import formatNumbersHook from '../../../utils/phoneFormatting';
 import NewsletterService from '../../email/server/NewsletterService';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import Users from '../users';
-import UserService from './UserService';
 
 formatNumbersHook(Users, 'phoneNumbers');
 
@@ -38,14 +37,14 @@ Users.after.update((userId, doc, fieldNames) => {
   }
 });
 
-Users.after.remove(userId => {
+Users.before.remove((userId, { emails }) => {
   if (shouldUseNewsletterHooks) {
-    const { email } = UserService.get(userId, { email: 1 });
     try {
+      const email = emails[0].address;
       NewsletterService.removeUser({ email });
     } catch (error) {
       ErrorLogger.handleError({
-        error: new Error(`Users after remove hook errror: ${error.message}`),
+        error: new Error(`Users before remove hook errror: ${error.message}`),
         userId,
       });
     }
