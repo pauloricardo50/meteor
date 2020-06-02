@@ -17,16 +17,11 @@ Users.after.update((userId, doc, fieldNames) => {
     fieldNames.some(fieldName => fieldsToWatch.includes(fieldName))
   ) {
     try {
-      const { firstName, lastName, emails, phoneNumbers } = doc;
+      const { emails } = doc;
       const email = emails[0].address;
       // Skip all of our test accounts
       if (!email.includes('@e-potek.ch')) {
-        NewsletterService.updateUser({
-          firstName,
-          lastName,
-          email,
-          phoneNumber: phoneNumbers?.[0],
-        });
+        NewsletterService.updateUser({ userId });
       }
     } catch (error) {
       ErrorLogger.handleError({
