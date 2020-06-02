@@ -1791,12 +1791,12 @@ describe('PromotionOptionService', function() {
       expect(from_email).to.equal('admin@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal(
-        'Test promotion, Début de la réservation du logement Lot A',
+        'Test promotion, Début de la réservation du logement A',
       );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement A.',
       );
     });
 
@@ -1868,12 +1868,12 @@ describe('PromotionOptionService', function() {
       expect(from_email).to.equal('admin@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal(
-        'Test promotion, Début de la réservation du logement Lot A',
+        'Test promotion, Début de la réservation du logement A',
       );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement A.',
       );
     });
   });
