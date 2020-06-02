@@ -22,7 +22,7 @@ export default compose(
     query: ORGANISATIONS_COLLECTION,
     params: ({ tags, hasRules }) => ({
       $filters: {
-        features: [ORGANISATION_FEATURES.LENDER],
+        features: ORGANISATION_FEATURES.LENDER,
         ...(tags?.length ? { tags: { $in: tags } } : {}),
         ...(hasRules ? { lenderRulesCount: { $gte: 1 } } : {}),
       },
