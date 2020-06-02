@@ -11,6 +11,8 @@ import { getLanguageData } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
 // import './CookiesPrompt.scss';
 
+const acceptCookie = 'epotek_acceptCookie';
+
 const useSnackbarStyles = makeStyles({
   root: {
     transform: 'unset',
@@ -42,7 +44,7 @@ const useSnackbarContentStyles = makeStyles(theme => ({
 
 const CookiesNotification = () => {
   const [language] = useContext(LanguageContext);
-  const [cookies, setCookie] = useCookies(['epAccept']);
+  const [cookies, setCookie] = useCookies(acceptCookie);
   const [visible, setVisible] = useState(true);
   const allCookiesNotifications = useAllCookiesNotifications();
 
@@ -53,7 +55,16 @@ const CookiesNotification = () => {
   if (!cookieNotification) return null;
 
   const handleAccept = () => {
-    setCookie('epAccept', true, {
+    setCookie(acceptCookie, true, {
+      maxAge: '31536000', // one year
+      domain: 'e-potek.ch',
+    });
+
+    setVisible(false);
+  };
+
+  const handleDecline = () => {
+    setCookie(acceptCookie, false, {
       maxAge: '31536000', // one year
       domain: 'e-potek.ch',
     });
@@ -62,12 +73,15 @@ const CookiesNotification = () => {
   };
 
   return (
-    <Snackbar open={!cookies.epAccept && visible} classes={useSnackbarStyles()}>
+    <Snackbar
+      open={!cookies[acceptCookie] && visible}
+      classes={useSnackbarStyles()}
+    >
       <SnackbarContent
         classes={useSnackbarContentStyles()}
         message={RichText.render(cookieNotification.node.content, linkResolver)}
         action={[
-          <Button key="decline" raised onClick={() => setVisible(false)}>
+          <Button key="decline" raised onClick={() => handleDecline()}>
             {getLanguageData(language).cookieDecline}
           </Button>,
           <Button key="accept" raised primary onClick={() => handleAccept()}>
