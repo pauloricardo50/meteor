@@ -62,7 +62,7 @@
     "react-gtm-module": "^2.0.8",
     "react-helmet": "^5.2.1",
     "react-highcharts": "^16.1.0",
-    "react-intl": "^4.5.12",
+    "react-intl": "3.12.1",
     "react-linkify": "^1.0.0-alpha",
     "react-loadable": "^5.5.0",
     "react-markdown": "^4.3.1",
