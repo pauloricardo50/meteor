@@ -3,7 +3,7 @@ jobs:
   Prepare:
     working_directory: ~/app
     docker: &ref_0
-      - image: 'cimg/openjdk:14.0'
+      - image: 'cimg/openjdk:14.0-node'
         environment:
           LANG: C.UTF-8
           LANGUAGE: C.UTF-8

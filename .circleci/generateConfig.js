@@ -7,7 +7,7 @@ const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'cimg/openjdk:14.0', // Has browsers, like chrome, necessary to run client-side tests
+      image: 'cimg/openjdk:14.0-node', // Has browsers, like chrome, necessary to run client-side tests
       environment: {
         // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',
