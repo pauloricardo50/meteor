@@ -4,6 +4,7 @@ import { RichText } from 'prismic-reactjs';
 import { Helmet } from 'react-helmet';
 import TopNav from '../TopNav';
 import Footer from '../Footer';
+import CookiesNotification from '../CookiesNotification';
 import LanguageContext from '../../contexts/LanguageContext';
 import {
   getLanguageData,
@@ -70,6 +71,8 @@ const Layout = ({ children, pageContext, pageName }) => {
         <main>{children}</main>
 
         <Footer />
+
+        <CookiesNotification />
       </LanguageContext.Provider>
     </>
   );
