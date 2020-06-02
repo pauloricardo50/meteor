@@ -7,6 +7,7 @@ import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
 import { lotInsert } from '../../../../api/lots/methodDefinitions';
 import {
+  addPromotionLotGroup,
   insertPromotionProperty,
   promotionRemove,
   promotionUpdate,
@@ -84,6 +85,16 @@ export const lotSchema = new SimpleSchema({
   value: { ...moneyField, min: 0 },
 });
 
+export const promotionLotGroupSchema = new SimpleSchema({
+  label: {
+    type: String,
+    uniforms: {
+      label: <T id="Forms.promotionLotGroup.label" />,
+      placeholder: 'Immeuble A',
+    },
+  },
+});
+
 const getOptions = ({
   metadata: { permissions, enableNotifications },
   openModal,
@@ -91,6 +102,7 @@ const getOptions = ({
   openDocumentsModal,
   openProInvitationModal,
   openLinkLoanModal,
+  openPromotionLotGroupsModal = () => null,
 }) => {
   const { _id: promotionId } = promotion;
   const {
@@ -143,6 +155,29 @@ const getOptions = ({
       dividerTop: true,
       condition: canAddPros,
       onClick: openProInvitationModal,
+    },
+    {
+      id: 'addPromotionLotGroup',
+      dividerTop: true,
+      condition: canModifyPromotion,
+      onClick: () =>
+        openModal(
+          <DialogForm
+            schema={promotionLotGroupSchema}
+            title={<T id="PromotionAdministration.addPromotionLotGroup" />}
+            description={
+              <T id="PromotionAdministration.addPromotionLotGroup.description" />
+            }
+            onSubmit={({ label }) =>
+              addPromotionLotGroup.run({ promotionId, label })
+            }
+          />,
+        ),
+    },
+    {
+      id: 'managePromotionLotGroups',
+      condition: canModifyPromotion,
+      onClick: openPromotionLotGroupsModal,
     },
     {
       id: 'addPromotionLot',
@@ -206,6 +241,10 @@ export default withProps(({ promotion }) => {
   const [openDocumentsModal, setOpenDocumentsModal] = useState(false);
   const [openProInvitationModal, setOpenProInvitationModal] = useState(false);
   const [openLinkLoanModal, setOpenLinkLoanModal] = useState(false);
+  const [
+    openPromotionLotGroupsModal,
+    setOpenPromotionLotGroupsModal,
+  ] = useState(false);
 
   return {
     options: getOptions({
@@ -215,6 +254,7 @@ export default withProps(({ promotion }) => {
       openDocumentsModal: () => setOpenDocumentsModal(true),
       openProInvitationModal: () => setOpenProInvitationModal(true),
       openLinkLoanModal: () => setOpenLinkLoanModal(true),
+      openPromotionLotGroupsModal: () => setOpenPromotionLotGroupsModal(true),
     }),
     promotionDocuments,
     openDocumentsModal,
@@ -224,5 +264,7 @@ export default withProps(({ promotion }) => {
     openLinkLoanModal,
     setOpenLinkLoanModal,
     permissions: metadata.permissions,
+    openPromotionLotGroupsModal,
+    setOpenPromotionLotGroupsModal,
   };
 });

@@ -1231,5 +1231,38 @@ describe('PromotionService', function() {
         }),
       ).to.throw('PromotionLotGroup id "group1" not found');
     });
+
+    it('removes the promotionLots from the group when removing it', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+            {
+              id: 'group2',
+              label: 'Group 2',
+            },
+          ],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1', 'group2'],
+          },
+        },
+      });
+
+      PromotionService.removePromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroupId: 'group2',
+      });
+
+      const { promotionLotGroupIds } = PromotionLotService.get('promotionLot', {
+        promotionLotGroupIds: 1,
+      });
+
+      expect(promotionLotGroupIds.length).to.deep.equal(['group1']);
+    });
   });
 });

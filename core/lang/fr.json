@@ -1,4 +1,13 @@
 {
+  "PromotionAdministration.managePromotionLotGroups": "Gérer les groupes de lots",
+  "PromotionLotGroupsManager.modify": "Modifier le groupe de lots",
+  "PromotionLotGroupsManager.modify.description": "Renseignez un nouveau nom pour le groupe de lots",
+  "PromotionLotGroupsManager.delete": "Supprimer ce groupe de lots supprimera également tous les liens vers ce groupe dans les lots concernés",
+  "PromotionAdministration.addPromotionLotGroup": "Ajouter un groupe de lots",
+  "PromotionAdministration.addPromotionLotGroup.description": "Renseignez le nom du nouveau groupe de lots",
+  "Forms.promotionLotGroup": "Groupe de lots",
+  "Forms.promotionLotGroup.label": "Nom du groupe",
+  "PromotionLotGroupsManager.actions": "Actions",
   "ExternalUrl.title": "Ouvrir le site externe",
   "Forms.promotionExternalUrl": "Lien vers site de commercialisation de la promotion",
   "PasswordResetPage.newsletterSignup": "Recevoir notre newsletter mensuelle avec les dernières actualités du monde hypothécaire",

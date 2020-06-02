@@ -375,9 +375,13 @@ class PromotionService extends CollectionService {
   }
 
   removePromotionLotGroup({ promotionId, promotionLotGroupId }) {
-    const { promotionLotGroups = [] } = this.get(promotionId, {
-      promotionLotGroups: 1,
-    });
+    const { promotionLotGroups = [], promotionLots = [] } = this.get(
+      promotionId,
+      {
+        promotionLotGroups: 1,
+        promotionLots: { promotionLotGroupIds: 1 },
+      },
+    );
 
     const groupToRemove = promotionLotGroups.find(
       ({ id }) => id === promotionLotGroupId,
@@ -386,6 +390,20 @@ class PromotionService extends CollectionService {
     if (!groupToRemove) {
       throw new Meteor.Error(
         `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const promotionLotsInGroup = promotionLots.filter(
+      ({ promotionLotGroupIds = [] }) =>
+        promotionLotGroupIds.some(id => id === promotionLotGroupId),
+    );
+
+    if (promotionLotsInGroup.length) {
+      promotionLotsInGroup.forEach(({ _id: promotionLotId }) =>
+        PromotionLotService.removeFromPromotionLotGroup({
+          promotionLotId,
+          promotionLotGroupId,
+        }),
       );
     }
 

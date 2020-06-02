@@ -465,7 +465,7 @@ describe('PromotionLotService', function() {
       generator({
         promotions: {
           _id: 'promotion',
-          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
           promotionLots: { _id: 'promotionLot' },
         },
       });
@@ -489,7 +489,7 @@ describe('PromotionLotService', function() {
         promotions: {
           _id: 'promotion',
           promotionLotGroups: [
-            { id: 'group1', label: 'Group1' },
+            { id: 'group1', label: 'Group 1' },
             { id: 'group2', label: 'Group 2' },
           ],
           promotionLots: {
@@ -518,7 +518,7 @@ describe('PromotionLotService', function() {
       generator({
         promotions: {
           _id: 'promotion',
-          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
           promotionLots: { _id: 'promotionLot' },
         },
       });
@@ -535,7 +535,7 @@ describe('PromotionLotService', function() {
       generator({
         promotions: {
           _id: 'promotion',
-          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
           promotionLots: {
             _id: 'promotionLot',
             promotionLotGroupIds: ['group1'],
@@ -555,7 +555,7 @@ describe('PromotionLotService', function() {
       generator({
         promotions: {
           _id: 'promotion',
-          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
           promotionLots: {
             _id: 'promotionLot',
             promotionLotGroupIds: ['group1'],
