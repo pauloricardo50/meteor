@@ -123,6 +123,55 @@ class PromotionLotService extends CollectionService {
       promotionOptionId,
     });
   }
+
+  addToPromotionLotGroup({ promotionLotId, promotionLotGroupId }) {
+    const {
+      promotionLotGroupIds = [],
+      promotion: { promotionLotGroups = [] } = {},
+    } = this.get(promotionLotId, {
+      promotionLotGroupIds: 1,
+      promotion: { promotionLotGroups: 1 },
+    });
+
+    if (!promotionLotGroups.some(({ id }) => id === promotionLotGroupId)) {
+      throw new Meteor.Error(`Group "${promotionLotGroupId}" does not exist`);
+    }
+
+    if (promotionLotGroupIds.some(id => id === promotionLotGroupId)) {
+      throw new Meteor.Error(
+        `Promotion lot is already part of "${promotionLotGroupId}"`,
+      );
+    }
+
+    return this.update({
+      promotionLotId,
+      object: {
+        promotionLotGroupIds: [...promotionLotGroupIds, promotionLotGroupId],
+      },
+    });
+  }
+
+  removeFromPromotionLotGroup({ promotionLotId, promotionLotGroupId }) {
+    const { promotionLotGroupIds = [] } = this.get(promotionLotId, {
+      promotionLotGroupIds: 1,
+    });
+
+    if (!promotionLotGroupIds.some(id => id === promotionLotGroupId)) {
+      throw new Meteor.Error(
+        `Group "${promotionLotGroupId}" not found in PromotionLotGroupIds`,
+      );
+    }
+
+    const groupIndex = promotionLotGroupIds.indexOf(promotionLotGroupId);
+
+    const newGroups = promotionLotGroupIds;
+    newGroups.splice(groupIndex, 1);
+
+    return this.update({
+      promotionLotId,
+      object: { promotionLotGroupIds: newGroups },
+    });
+  }
 }
 
 export default new PromotionLotService();

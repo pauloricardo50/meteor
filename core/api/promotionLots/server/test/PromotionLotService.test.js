@@ -459,4 +459,169 @@ describe('PromotionLotService', function() {
       );
     });
   });
+
+  describe('promotionLotGroupIds', () => {
+    it('adds a promotionLotGroup to the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLots: { _id: 'promotionLot' },
+        },
+      });
+
+      PromotionLotService.addToPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group1',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(1);
+      const [groupId] = promotionLotGroupIds;
+      expect(groupId).to.equal('group1');
+    });
+
+    it('appends a promotionLotGroup to the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            { id: 'group1', label: 'Group1' },
+            { id: 'group2', label: 'Group 2' },
+          ],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1'],
+          },
+        },
+      });
+
+      PromotionLotService.addToPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group2',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(2);
+      const [groupId1, groupId2] = promotionLotGroupIds;
+      expect(groupId1).to.equal('group1');
+      expect(groupId2).to.equal('group2');
+    });
+
+    it('throws if promotionLotGroupId does not exist in promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLots: { _id: 'promotionLot' },
+        },
+      });
+
+      expect(() =>
+        PromotionLotService.addToPromotionLotGroup({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupId: 'group2',
+        }),
+      ).to.throw('Group "group2" does not exist');
+    });
+
+    it('throws if promotionLotGroupId is already in promotionLotGroupIds', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1'],
+          },
+        },
+      });
+
+      expect(() =>
+        PromotionLotService.addToPromotionLotGroup({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupId: 'group1',
+        }),
+      ).to.throw('Promotion lot is already part of "group1"');
+    });
+
+    it('removes a promotionLotGroupId from the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group1' }],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1'],
+          },
+        },
+      });
+
+      PromotionLotService.removeFromPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group1',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(0);
+    });
+
+    it('removes only one promotionLotGroup from the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            { id: 'group1', label: 'Group 1' },
+            { id: 'group2', label: 'Group 2' },
+            { id: 'group3', label: 'Group 3' },
+          ],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1', 'group2', 'group3'],
+          },
+        },
+      });
+
+      PromotionLotService.removeFromPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group2',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(2);
+      const [groupId1, groupId3] = promotionLotGroupIds;
+      expect(groupId1).to.equal('group1');
+      expect(groupId3).to.equal('group3');
+    });
+
+    it('throws if promotionLotGroupId does not exist in promotionLot promotionLotGroupIds', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLots: {
+            _id: 'promotionLot',
+          },
+        },
+      });
+
+      expect(() =>
+        PromotionLotService.removeFromPromotionLotGroup({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupId: 'group1',
+        }),
+      ).to.throw('Group "group1" not found in PromotionLotGroupIds');
+    });
+  });
 });

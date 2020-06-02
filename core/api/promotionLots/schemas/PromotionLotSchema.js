@@ -23,6 +23,8 @@ const PromotionLotSchema = new SimpleSchema({
   // https://github.com/Herteby/denormalize/issues/17
   promotionCache: { type: Array, optional: true },
   'promotionCache.$': cacheField,
+  promotionLotGroupIds: { type: Array, optional: true },
+  'promotionLotGroupIds.$': String,
 });
 
 export default PromotionLotSchema;
