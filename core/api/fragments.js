@@ -765,6 +765,7 @@ export const basePromotion = () => ({
   zipCode: 1,
   signingDate: 1,
   country: 1,
+  promotionLotGroups: 1,
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({

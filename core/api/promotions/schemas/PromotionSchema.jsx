@@ -195,6 +195,13 @@ const PromotionSchema = new SimpleSchema({
       placeholder: 'https://www.google.com/ma-promotion',
     },
   },
+  promotionLotGroups: {
+    type: Array,
+    optional: true,
+  },
+  'promotionLotGroups.$': Object,
+  'promotionLotGroups.$.id': String,
+  'promotionLotGroups.$.label': String,
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

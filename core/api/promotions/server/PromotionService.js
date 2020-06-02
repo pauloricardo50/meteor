@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 
 import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
@@ -345,6 +346,84 @@ class PromotionService extends CollectionService {
     }
 
     return this.update({ promotionId, object: { status } });
+  }
+
+  addPromotionLotGroup({ promotionId, promotionLotGroup }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    if (
+      promotionLotGroups.some(({ label }) => label === promotionLotGroup.label)
+    ) {
+      throw new Meteor.Error(
+        `Le groupe "${promotionLotGroup.label}" existe déjà`,
+      );
+    }
+
+    const id = Random.id();
+
+    return this._update({
+      id: promotionId,
+      object: {
+        promotionLotGroups: [
+          ...promotionLotGroups,
+          { id, ...promotionLotGroup },
+        ],
+      },
+    });
+  }
+
+  removePromotionLotGroup({ promotionId, promotionLotGroupId }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    const groupToRemove = promotionLotGroups.find(
+      ({ id }) => id === promotionLotGroupId,
+    );
+
+    if (!groupToRemove) {
+      throw new Meteor.Error(
+        `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const newGroups = promotionLotGroups.filter(
+      ({ id }) => id !== promotionLotGroupId,
+    );
+
+    return this._update({
+      id: promotionId,
+      object: { promotionLotGroups: newGroups },
+    });
+  }
+
+  updatePromotionLotGroup({ promotionId, promotionLotGroupId, object }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    const groupToUpdate = promotionLotGroups.find(
+      ({ id }) => id === promotionLotGroupId,
+    );
+
+    if (!groupToUpdate) {
+      throw new Meteor.Error(
+        `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const newGroups = promotionLotGroups;
+    newGroups[newGroups.findIndex(({ id }) => id === groupToUpdate.id)] = {
+      id: groupToUpdate.id,
+      ...object,
+    };
+
+    return this._update({
+      id: promotionId,
+      object: { promotionLotGroups: newGroups },
+    });
   }
 }
 
