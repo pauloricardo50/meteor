@@ -1,7 +1,7 @@
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_12'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_13'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -138,14 +138,6 @@ const makePrepareJob = () => ({
     runCommand(
       'Install node_modules',
       'meteor npm --prefix microservices/backend ci',
-    ),
-    runCommand(
-      'Remove libc6-dev',
-      'sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f',
-    ),
-    runCommand(
-      'Reinstall build-essential',
-      'sudo apt-get update && sudo apt-get install build-essential',
     ),
     runCommand(
       'Install expect',
