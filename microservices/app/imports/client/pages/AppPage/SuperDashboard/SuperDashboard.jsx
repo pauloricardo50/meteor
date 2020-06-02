@@ -8,8 +8,8 @@ import useMeteorData from 'core/hooks/useMeteorData';
 
 import LoanCards from './LoanCards';
 
-const SuperDashboard = () => {
-  const { data, loading } = useMeteorData({
+export const useUserLoans = () =>
+  useMeteorData({
     query: appUser,
     type: 'single',
     params: {
@@ -29,6 +29,9 @@ const SuperDashboard = () => {
       },
     },
   });
+
+const SuperDashboard = () => {
+  const { data, loading } = useUserLoans();
 
   if (loading) {
     return <Loading />;

@@ -4,60 +4,93 @@ import React from 'react';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 
 import ROUTES from '../../../startup/client/appRoutes';
+import LoanCards from './SuperDashboard/LoanCards';
+import { useUserLoans } from './SuperDashboard/SuperDashboard';
 
-const ProAppPage = ({ loans, history, insertLoan }) => (
-  <div className="flex center space-children">
-    <div className="card1 card-top flex-col center" style={{ padding: 40 }}>
-      <FontAwesomeIcon
-        style={{ width: 64, height: 64 }}
-        icon={faCity}
-        className="font-awesome"
-      />
+const ProAppPage = ({ loans, insertLoan }) => {
+  const history = useHistory();
+  const { data, loading } = useUserLoans();
+  const hasLoans = data?.loans?.length > 0;
 
-      <Button
-        raised
-        secondary
-        style={{ marginTop: 40 }}
-        onClick={() => {
-          window.location.replace(Meteor.settings.public.subdomains.pro);
-        }}
-      >
-        Accéder à votre interface Pro
-      </Button>
+  return (
+    <div className="flex-col center animated fadeIn">
+      <h1 className="mb-0">Bienvenue sur e-Potek App</h1>
+      <h2 className="mt-0 secondary">Pour les Pros</h2>
+      <div className="flex">
+        <div
+          className="card1 card-top flex-col center mr-16"
+          style={{ padding: 40 }}
+        >
+          <FontAwesomeIcon
+            style={{ width: 64, height: 64 }}
+            icon={faCity}
+            className="font-awesome"
+          />
+
+          <Button
+            raised
+            secondary
+            style={{ marginTop: 40 }}
+            onClick={() => {
+              window.location.replace(Meteor.settings.public.subdomains.pro);
+            }}
+          >
+            Accéder à votre interface Pro
+          </Button>
+        </div>
+
+        {!loading && !hasLoans && (
+          <div
+            className="card1 card-top flex-col center"
+            style={{ padding: 40 }}
+          >
+            <FontAwesomeIcon
+              style={{ width: 64, height: 64 }}
+              icon={faUsdCircle}
+              className="font-awesome"
+            />
+
+            <Button
+              raised
+              primary
+              style={{ marginTop: 40 }}
+              onClick={() => {
+                if (loans.length) {
+                  history.push(
+                    createRoute(ROUTES.DASHBOARD_PAGE.path, {
+                      loanId: loans[0]._id,
+                    }),
+                  );
+                } else {
+                  insertLoan({ test: true }).then(loanId => {
+                    history.push(
+                      createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId }),
+                    );
+                  });
+                }
+              }}
+            >
+              Créer un dossier test
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {!loading && hasLoans && (
+        <>
+          <h2>Mes dossiers</h2>
+          {/* <div className="" style={{ alignSelf: 'stretch' }}> */}
+          <LoanCards loans={data.loans} />
+          {/* </div> */}
+        </>
+      )}
     </div>
-    <div className="card1 card-top flex-col center" style={{ padding: 40 }}>
-      <FontAwesomeIcon
-        style={{ width: 64, height: 64 }}
-        icon={faUsdCircle}
-        className="font-awesome"
-      />
-
-      <Button
-        raised
-        primary
-        style={{ marginTop: 40 }}
-        onClick={() => {
-          if (loans.length) {
-            history.push(
-              createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId: loans[0]._id }),
-            );
-          } else {
-            insertLoan({ test: true }).then(loanId => {
-              history.push(createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId }));
-            });
-          }
-        }}
-      >
-        Créer un dossier test
-      </Button>
-    </div>
-  </div>
-);
-
-export default withRouter(ProAppPage);
+  );
+};
+export default ProAppPage;
