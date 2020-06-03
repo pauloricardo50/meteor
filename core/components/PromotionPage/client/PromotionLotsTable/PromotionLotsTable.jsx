@@ -23,15 +23,18 @@ const PromotionLotsTable = ({
   promotionLots,
   promotion,
   className,
+  promotionLotGroupId,
+  setPromotionLotGroupId,
   ...props
 }) => {
   const currentUser = useCurrentUser();
   const {
     permissions: { canModifyLots, canManageDocuments },
   } = useContext(PromotionMetadataContext);
+  const { promotionLotGroups = [] } = promotion;
   return (
     <div className={cx('promotion-lots-table', className)}>
-      <div className="flex center-align">
+      <div className="flex center-align space-children">
         <h3 className="text-center mr-8">
           <T id="collections.lots" />
         </h3>
@@ -42,6 +45,15 @@ const PromotionLotsTable = ({
           id="status"
           label="Statut"
         />
+        {!!promotionLotGroups.length && (
+          <MongoSelect
+            value={promotionLotGroupId}
+            onChange={setPromotionLotGroupId}
+            options={promotionLotGroups}
+            id="promotionLotGroupIds"
+            label="Groupe de lots"
+          />
+        )}
       </div>
 
       <TableWithModal
@@ -57,6 +69,7 @@ const PromotionLotsTable = ({
                   <PromotionLotModifier
                     className="mr-8"
                     promotionLot={promotionLot}
+                    promotion={promotion}
                   />
                 )}
                 {canManageDocuments && (

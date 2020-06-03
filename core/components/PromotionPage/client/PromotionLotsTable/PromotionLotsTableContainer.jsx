@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../../../api/containerToolkit';
@@ -14,10 +14,12 @@ import T, { Money } from '../../../Translation';
 import PromotionCustomer from '../PromotionCustomer';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
 import LotChip from './LotChip';
+import PromotionLotGroupChip from './PromotionLotGroupChip';
 import PromotionLotSelector from './PromotionLotSelector';
 
 const proColumnOptions = [
   { id: 'name' },
+  { id: 'group' },
   { id: 'status' },
   {
     id: 'totalValue',
@@ -76,11 +78,16 @@ const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
     promotionOptions,
     value,
     attributedTo,
+    promotionLotGroupIds = [],
   } = promotionLot;
 
   let invitedBy;
   const { _id: loanId } = attributedTo || {};
-  const { loans = [], users: promotionUsers = [] } = promotion;
+  const {
+    loans = [],
+    users: promotionUsers = [],
+    promotionLotGroups = [],
+  } = promotion;
 
   if (loanId) {
     const { $metadata = {} } = loans.find(({ _id }) => _id === loanId);
@@ -92,6 +99,27 @@ const makeMapProPromotionLot = ({ promotion }) => promotionLot => {
     promotionLot,
     columns: [
       name,
+      {
+        raw: promotionLotGroupIds.length,
+        label: (
+          <div>
+            {promotionLotGroupIds.map(promotionLotGroupId => {
+              const promotionLotGroup = promotionLotGroups.find(
+                ({ id }) => id === promotionLotGroupId,
+              );
+
+              return (
+                promotionLotGroup && (
+                  <PromotionLotGroupChip
+                    key={promotionLotGroupId}
+                    promotionLotGroup={promotionLotGroup}
+                  />
+                )
+              );
+            })}
+          </div>
+        ),
+      },
       {
         raw: status,
         label: (
@@ -169,14 +197,23 @@ const withStatusFilter = withState('status', 'setStatus', undefined);
 
 export const ProPromotionLotsTableContainer = compose(
   withStatusFilter,
+  withProps(() => {
+    const [promotionLotGroupId, setPromotionLotGroupId] = useState();
+    return { promotionLotGroupId, setPromotionLotGroupId };
+  }),
   withSmartQuery({
     query: proPromotionLots,
-    params: ({ promotion: { _id: promotionId }, status }) => ({
+    params: ({
+      promotion: { _id: promotionId },
+      status,
+      promotionLotGroupId,
+    }) => ({
       promotionId,
       status,
+      promotionLotGroupId,
     }),
     dataName: 'promotionLots',
-    deps: ({ status }) => [status],
+    deps: ({ status, promotionLotGroupId }) => [status, promotionLotGroupId],
   }),
   withProps(({ promotionLots, promotion }) => ({
     rows: promotionLots.map(makeMapProPromotionLot({ promotion })),
