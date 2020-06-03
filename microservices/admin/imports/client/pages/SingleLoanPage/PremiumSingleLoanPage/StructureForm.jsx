@@ -6,10 +6,13 @@ import SimpleSchema from 'simpl-schema';
 import { updateStructure } from 'core/api/loans/methodDefinitions';
 import { structureSchema } from 'core/api/loans/schemas/StructureSchema';
 import AutoForm from 'core/components/AutoForm2';
+import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
 
-const getSchema = ({ offers }) =>
-  new SimpleSchema(
+const getSchema = loan => {
+  const offers = Calculator.selectOffers({ loan });
+
+  return new SimpleSchema(
     merge(
       {},
       pick(structureSchema, [
@@ -43,9 +46,11 @@ const getSchema = ({ offers }) =>
             transform: offerId => {
               if (offerId) {
                 const offer = offers.find(({ _id }) => _id);
-                return `${offer.lender.organisation.name} - CHF ${toMoney(
-                  offer.maxAmount,
-                )}`;
+                const { organisation } = Calculator.selectLenderForOfferId({
+                  loan,
+                  offerId: offer._id,
+                });
+                return `${organisation.name} - CHF ${toMoney(offer.maxAmount)}`;
               }
             },
           },
@@ -53,10 +58,11 @@ const getSchema = ({ offers }) =>
       },
     ),
   );
+};
 
 const StructureForm = ({ loan }) => {
-  const { structure, _id, selectedStructure, borrowers, offers } = loan;
-  const schema = useMemo(() => getSchema({ offers }), []);
+  const { structure, _id, selectedStructure, borrowers } = loan;
+  const schema = useMemo(() => getSchema(loan), []);
 
   const normalizedModel = structure.offerId
     ? structure
