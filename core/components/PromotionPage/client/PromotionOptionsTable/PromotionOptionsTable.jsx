@@ -48,7 +48,6 @@ const PromotionOptionsTable = ({ promotion }) => {
     users: promotionUsers,
     promotionLotGroups = [],
   } = promotion;
-  console.log('promotionLotGroups:', promotionLotGroups);
   const [statusFilter, setStatusFilter] = useState({
     $in: [
       PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,

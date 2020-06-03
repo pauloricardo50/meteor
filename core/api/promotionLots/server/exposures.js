@@ -76,6 +76,7 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(String, Object)),
       showAllLots: Match.Maybe(Match.OneOf(Boolean, undefined)),
       promotionLotIds: Match.Maybe(Match.OneOf(Array, undefined)),
+      promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });
