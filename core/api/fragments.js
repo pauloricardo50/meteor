@@ -629,6 +629,7 @@ export const proPromotionLot = () => ({
   updatedAt: 1,
   value: 1,
   promotionLotGroupIds: 1,
+  loanCount: 1,
 });
 
 export const appPromotionLot = () => ({

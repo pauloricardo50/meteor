@@ -57,6 +57,7 @@ const getAppColumns = ({ loan, promotion }) => {
     {
       Header: <T id="PromotionPage.lots.totalValue" />,
       accessor: 'value',
+      disableSortBy: true,
       align: 'right',
       Cell: ({ row: { original: promotionLot } }) => {
         const value = getPromotionLotValue(promotionLot);
@@ -149,6 +150,7 @@ const getProColumns = promotion => {
       Header: <T id="PromotionPage.lots.totalValue" />,
       accessor: 'value',
       align: 'right',
+      disableSortBy: true,
       Cell: ({ value }) => (
         <span style={{ whiteSpace: 'nowrap' }}>
           {typeof value === 'number' ? (
@@ -175,9 +177,8 @@ const getProColumns = promotion => {
     },
     {
       Header: <T id="PromotionPage.lots.loans" />,
-      accessor: 'promotionOptions',
-      Cell: ({ value: promotionOptions = [] }) => promotionOptions.length,
-      disableSortBy: true,
+      accessor: 'loanCount',
+      Cell: ({ value: loanCount }) => loanCount,
     },
     {
       Header: <T id="PromotionPage.lots.attributedTo" />,

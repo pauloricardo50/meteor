@@ -25,6 +25,7 @@ const PromotionLotSchema = new SimpleSchema({
   'promotionCache.$': cacheField,
   promotionLotGroupIds: { type: Array, optional: true },
   'promotionLotGroupIds.$': String,
+  loanCount: { type: Number, optional: true },
 });
 
 export default PromotionLotSchema;

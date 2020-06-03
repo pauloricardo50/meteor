@@ -1,3 +1,4 @@
+import PromotionOptions from '../../promotionOptions';
 import Promotions from '../../promotions';
 import PromotionLotService from './PromotionLotService';
 
@@ -10,4 +11,13 @@ PromotionLotService.cache(
     referenceField: 'promotionLotLinks:_id',
   },
   // { promotionCache: { $exists: false } },
+);
+
+PromotionLotService.cacheCount(
+  {
+    collection: PromotionOptions,
+    referenceField: 'promotionLotCache._id',
+    cacheField: 'loanCount',
+  },
+  { loanCount: { $$exists: false } },
 );
