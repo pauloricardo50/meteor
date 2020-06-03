@@ -66,6 +66,7 @@ exposeQuery({
           loanStatus,
           invitedBy,
           promotionOptionId,
+          promotionLotGroupId,
         } = params;
 
         if (promotionOptionId) {
@@ -93,6 +94,12 @@ exposeQuery({
         if (invitedBy) {
           filters['loanCache.promotionLinks.0.invitedBy'] = invitedBy;
         }
+
+        if (promotionLotGroupId) {
+          filters[
+            'promotionLotCache.0.promotionLotGroupIds'
+          ] = promotionLotGroupId;
+        }
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
@@ -115,6 +122,7 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(String, Object)),
       userId: String,
       promotionOptionId: Match.Maybe(String),
+      promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

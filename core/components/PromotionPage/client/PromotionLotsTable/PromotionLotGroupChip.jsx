@@ -24,7 +24,7 @@ const PromotionLotGroupChip = ({
   >
     {handleOpen => (
       <Chip
-        style={{ marginRight: 8 }}
+        style={{ marginRight: 4 }}
         onDelete={allowDelete ? handleOpen : null}
         label={label}
         clickable
