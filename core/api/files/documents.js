@@ -35,38 +35,39 @@ const makeAllObjectDocuments = documents =>
     maxSizeOverride: DISPLAYABLE_FILES[id]?.maxSizeOverride,
   }));
 
-export const allDocuments = ({ doc, collection }) => {
-  const s3Documents = doc.documents
-    ? Object.keys(doc.documents).map(key => ({ id: key }))
+export const getAllDocuments = ({ doc, collection }) => {
+  const { documents, additionalDocuments = [] } = doc;
+  const s3Documents = documents
+    ? Object.keys(documents).map(key => ({ id: key }))
     : [];
-  let documents = [];
+  let allDocuments = [];
   switch (collection) {
     case BORROWERS_COLLECTION:
-      documents = makeAllObjectDocuments(BORROWER_DOCUMENTS);
+      allDocuments = makeAllObjectDocuments(BORROWER_DOCUMENTS);
       break;
     case PROPERTIES_COLLECTION:
-      documents = makeAllObjectDocuments(PROPERTY_DOCUMENTS);
+      allDocuments = makeAllObjectDocuments(PROPERTY_DOCUMENTS);
       break;
     case LOANS_COLLECTION:
-      documents = makeAllObjectDocuments(LOAN_DOCUMENTS);
+      allDocuments = makeAllObjectDocuments(LOAN_DOCUMENTS);
       break;
     case INSURANCE_REQUESTS_COLLECTION:
-      documents = makeAllObjectDocuments(INSURANCE_REQUEST_DOCUMENTS);
+      allDocuments = makeAllObjectDocuments(INSURANCE_REQUEST_DOCUMENTS);
       break;
     case INSURANCES_COLLECTION:
-      documents = makeAllObjectDocuments(INSURANCE_DOCUMENTS);
+      allDocuments = makeAllObjectDocuments(INSURANCE_DOCUMENTS);
       break;
     default:
       break;
   }
 
-  const otherAdditionalDocuments = documents.filter(
-    ({ id }) => !doc.additionalDocuments.some(document => id === document.id),
+  const otherAdditionalDocuments = allDocuments.filter(
+    ({ id }) => !additionalDocuments.some(document => id === document.id),
   );
   const legacyCustomDocuments = s3Documents.filter(
     ({ id }) =>
-      !doc.additionalDocuments.some(document => id === document.id) &&
-      !documents.some(document => id === document.id),
+      !additionalDocuments.some(document => id === document.id) &&
+      !allDocuments.some(document => id === document.id),
   );
 
   return doc.additionalDocuments && doc.additionalDocuments.length > 0
@@ -75,7 +76,7 @@ export const allDocuments = ({ doc, collection }) => {
         ...otherAdditionalDocuments,
         ...legacyCustomDocuments,
       ]
-    : documents;
+    : allDocuments;
 };
 
 const requiredByAdminOnly = ({ requiredByAdmin }) => requiredByAdmin !== false;

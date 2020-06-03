@@ -12,6 +12,10 @@ import InsuranceRequestRemover from './InsuranceRequestRemover';
 
 const OverviewTab = props => {
   const { insuranceRequest, currentUser } = props;
+  const documentArray = getInsuranceRequestDocuments(
+    { id: insuranceRequest._id },
+    { doc: insuranceRequest },
+  );
 
   return (
     <div className="overview-tab">
@@ -34,10 +38,7 @@ const OverviewTab = props => {
       <SingleFileTab
         doc={insuranceRequest}
         currentUser={currentUser}
-        documentArray={getInsuranceRequestDocuments(
-          { id: insuranceRequest._id },
-          { doc: insuranceRequest },
-        )}
+        documentArray={documentArray}
         withAdditionalDocAdder={false}
       />
     </div>

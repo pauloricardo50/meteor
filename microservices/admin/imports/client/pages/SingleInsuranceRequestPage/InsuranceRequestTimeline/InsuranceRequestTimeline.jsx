@@ -89,10 +89,10 @@ const InsuranceRequestTimeline = ({ insuranceRequest }) => {
       shortLabel: insuranceRequestName,
       collection: INSURANCE_REQUESTS_COLLECTION,
     },
-    ...insurances.map(({ _id, borrower, insuranceProduct: { name } }) => ({
+    ...insurances.map(({ _id, borrower, insuranceProduct }) => ({
       id: _id,
-      label: `${name} - ${borrower.name}`,
-      shortLabel: `${name} - ${borrower.name}`,
+      label: `${insuranceProduct?.name} - ${borrower.name}`,
+      shortLabel: `${insuranceProduct?.name} - ${borrower.name}`,
       collection: INSURANCES_COLLECTION,
     })),
   ];
