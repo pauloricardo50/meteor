@@ -1,14 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { compose, withProps } from 'recompose';
 
-import { promotionLotRemove } from '../../../../api/promotionLots/methodDefinitions';
+import {
+  promotionLotRemove,
+  updateLotPromotionLotGroups,
+} from '../../../../api/promotionLots/methodDefinitions';
 import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import { propertyUpdate } from '../../../../api/properties/methodDefinitions';
 import { AutoFormDialog } from '../../../AutoForm2';
 import T from '../../../Translation';
-import { promotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
+import { getPromotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 
 const disableModification = promotionLotStatus => {
   const isAdmin = Meteor.microservice === 'admin';
@@ -22,11 +25,19 @@ const ProPromotionLotModifier = ({
   updateProperty,
   deletePromotionLot,
   className,
+  promotion,
 }) => {
-  const model =
-    promotionLot.properties &&
-    promotionLot.properties.length > 0 &&
-    promotionLot.properties[0];
+  const { promotionLotGroupIds } = promotionLot;
+  const schema = useMemo(
+    () => getPromotionLotSchema(promotion?.promotionLotGroups),
+    [promotionLot, promotion],
+  );
+
+  const property =
+    promotionLot?.properties?.length && promotionLot.properties[0];
+
+  const model = { ...property, promotionLotGroupIds };
+
   return (
     <AutoFormDialog
       buttonProps={{
@@ -38,7 +49,7 @@ const ProPromotionLotModifier = ({
       }}
       title={<T id="PromotionLotPage.modifyPromotionLot" />}
       description={<T id="PromotionPage.promotionLotValueDescription" />}
-      schema={promotionLotSchema}
+      schema={schema}
       onSubmit={updateProperty}
       model={model}
       onDelete={() => deletePromotionLot()}
@@ -49,10 +60,17 @@ const ProPromotionLotModifier = ({
 export default compose(
   withProps(({ promotionLot }) => ({
     updateProperty: property =>
-      propertyUpdate.run({
-        propertyId: promotionLot.properties[0]._id,
-        object: property,
-      }),
+      propertyUpdate
+        .run({
+          propertyId: promotionLot.properties[0]._id,
+          object: property,
+        })
+        .then(() =>
+          updateLotPromotionLotGroups.run({
+            promotionLotId: promotionLot._id,
+            promotionLotGroupIds: property.promotionLotGroupIds,
+          }),
+        ),
     deletePromotionLot: () =>
       promotionLotRemove.run({ promotionLotId: promotionLot._id }),
   })),

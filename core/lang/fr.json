@@ -1,4 +1,6 @@
 {
+  "PromotionPage.lots.group": "Groupe de lots",
+  "Forms.promotionLotGroupIds": "Groupe de lots",
   "PromotionAdministration.managePromotionLotGroups": "Gérer les groupes de lots",
   "PromotionLotGroupsManager.modify": "Modifier le groupe de lots",
   "PromotionLotGroupsManager.modify.description": "Renseignez un nouveau nom pour le groupe de lots",

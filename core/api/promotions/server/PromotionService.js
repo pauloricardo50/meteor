@@ -41,6 +41,8 @@ class PromotionService extends CollectionService {
       promotionId,
       { address1: 1, address2: 1, zipCode: 1, city: 1, canton: 1 },
     );
+    const { promotionLotGroupIds } = property;
+
     const propertyId = PropertyService.insert({
       property: {
         ...property,
@@ -54,6 +56,7 @@ class PromotionService extends CollectionService {
     });
     const promotionLotId = PromotionLotService.insert({
       propertyLinks: [{ _id: propertyId }],
+      promotionLotGroupIds,
     });
     this.addLink({
       id: promotionId,

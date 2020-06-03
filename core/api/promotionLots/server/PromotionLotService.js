@@ -172,6 +172,26 @@ class PromotionLotService extends CollectionService {
       object: { promotionLotGroupIds: newGroups },
     });
   }
+
+  updatePromotionLotGroups({ promotionLotId, promotionLotGroupIds = [] }) {
+    const {
+      promotionLotGroupIds: currentPromotionLotGroupIds = [],
+    } = this.get(promotionLotId, { promotionLotGroupIds: 1 });
+
+    const toRemove = currentPromotionLotGroupIds.filter(
+      id => !promotionLotGroupIds.some(groupId => groupId === id),
+    );
+    const toAdd = promotionLotGroupIds.filter(
+      id => !currentPromotionLotGroupIds.some(groupId => groupId === id),
+    );
+
+    toRemove.forEach(promotionLotGroupId =>
+      this.removeFromPromotionLotGroup({ promotionLotId, promotionLotGroupId }),
+    );
+    toAdd.forEach(promotionLotGroupId =>
+      this.addToPromotionLotGroup({ promotionLotId, promotionLotGroupId }),
+    );
+  }
 }
 
 export default new PromotionLotService();
