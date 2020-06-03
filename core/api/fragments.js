@@ -1132,3 +1132,17 @@ export const userSession = () => ({
   impersonatingAdmin: { name: 1, firstName: 1, lastName: 1 },
   followed: 1,
 });
+
+// //
+// // Lots fragments
+// //
+export const lots = () => ({
+  createdAt: 1,
+  updatedAt: 1,
+  description: 1,
+  name: 1,
+  promotionLots: { name: 1 },
+  status: 1,
+  type: 1,
+  value: 1,
+});

@@ -25,5 +25,6 @@ import '../../insuranceRequests/server/exposures';
 import '../../insurances/server/exposures';
 import '../../insuranceProducts/server/exposures';
 import '../../commissionRates/server/exposures';
+import '../../lots/server/exposures';
 import './exposures';
 import './globalExposures';
