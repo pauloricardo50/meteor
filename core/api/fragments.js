@@ -273,6 +273,7 @@ export const formLoan = () => ({
   hasProProperty: 1,
   purchaseType: 1,
   selectedStructure: 1,
+  structure: 1,
   structures: 1,
 });
 

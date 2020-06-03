@@ -16,6 +16,19 @@ import { validateLoanPdf } from './pdfValidators';
 
 const PDF_URL = 'https://docraptor.com/docs';
 
+const loanBankFragment = merge({}, calculatorLoan(), {
+  name: 1,
+  borrowers: { address: 1, name: 1, age: 1 },
+  properties: { promotion: { name: 1 } },
+  user: {
+    assignedEmployee: {
+      name: 1,
+      email: 1,
+      phoneNumbers: 1,
+    },
+  },
+});
+
 class PDFService {
   makePDF = ({ type, params, options, htmlOnly }) => {
     this.checkParams({ params, type });
@@ -79,14 +92,7 @@ class PDFService {
             logo: 1,
           });
 
-        const loan = LoanService.get(
-          loanId,
-          merge({}, calculatorLoan(), {
-            name: 1,
-            borrowers: { address: 1, name: 1, age: 1 },
-            properties: { promotion: { name: 1 } },
-          }),
-        );
+        const loan = LoanService.get(loanId, loanBankFragment);
 
         return { ...params, loan, organisation };
       }
