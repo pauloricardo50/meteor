@@ -99,7 +99,6 @@ const getColumns = ({
       raw: promotionOptions.length,
       label: (
         <PriorityOrder
-          promotion={promotion}
           promotionOptions={promotionOptions}
           userId={user && user._id}
         />

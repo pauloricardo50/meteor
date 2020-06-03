@@ -5,7 +5,7 @@ import StatusLabel from 'core/components/StatusLabel';
 import T, { Money } from 'core/components/Translation';
 
 const PromotionOptionDetail = ({
-  promotionOption: { name, promotionLots, priority },
+  promotionOption: { name, promotionLots, priorityOrder },
 }) => {
   const [{ reducedStatus, _collection }] = promotionLots;
   const promotionLotValue = getPromotionLotValue(promotionLots[0]);
@@ -29,7 +29,7 @@ const PromotionOptionDetail = ({
       <h4 className="priority font-size-2">
         <T
           id="PromotionOptionDetail.priority"
-          values={{ priority: priority + 1 }}
+          values={{ priority: priorityOrder + 1 }}
         />
       </h4>
     </div>
