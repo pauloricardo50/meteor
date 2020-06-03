@@ -57,14 +57,16 @@ export const OfferSchema = new SimpleSchema({
   documents: documentsField,
 });
 
-export const AdminOfferSchema = OfferSchema.omit(
-  'lenderLink',
-  'organisationLink',
-  'contactLink',
-  'createdAt',
-  'updatedAt',
-  'feedback',
-  'lenderCache',
+export const AdminOfferSchema = OfferSchema.pick(
+  'maxAmount',
+  'amortizationGoal',
+  'amortizationYears',
+  'fees',
+  'epotekFees',
+  ...Object.values(INTEREST_RATES),
+  'conditions',
+  'withCounterparts',
+  'enableOffer',
 );
 
 // Attach schema
