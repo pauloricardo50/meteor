@@ -1036,7 +1036,14 @@ export const proUser = () => ({
     commissionRates: { _id: 1 },
   },
   assignedEmployee: simpleUser(),
-  promotions: { _id: 1, name: 1, permissions: 1, status: 1, users: { _id: 1 } },
+  promotions: {
+    _id: 1,
+    name: 1,
+    permissions: 1,
+    status: 1,
+    userLinks: 1,
+    users: { _id: 1 },
+  },
   properties: { _id: 1 },
   proProperties: {
     _id: 1,
@@ -1044,6 +1051,7 @@ export const proUser = () => ({
     city: 1,
     permissions: 1,
     status: 1,
+    userLinks: 1,
     users: { _id: 1 },
     zipCode: 1,
   },

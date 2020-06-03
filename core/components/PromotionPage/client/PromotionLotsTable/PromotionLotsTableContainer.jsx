@@ -178,7 +178,9 @@ const getProColumns = promotion => {
     {
       Header: <T id="PromotionPage.lots.loans" />,
       accessor: 'loanCount',
-      Cell: ({ value: loanCount }) => loanCount,
+      Cell: ({ value: loanCount }) => (
+        <span className="loan-count">{loanCount}</span>
+      ),
     },
     {
       Header: <T id="PromotionPage.lots.attributedTo" />,
