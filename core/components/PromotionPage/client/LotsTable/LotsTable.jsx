@@ -51,7 +51,7 @@ const additionalLotModifierSchema = ({ promotionLots = [], formatMessage }) =>
 
 const makeGetModalProps = ({ schema, canModifyLots }) => lot => {
   const enableModal =
-    canModifyLots &&
+    !!canModifyLots &&
     ![PROMOTION_LOT_STATUS.RESERVED, PROMOTION_LOT_STATUS.SOLD].includes(
       lot.status,
     );
