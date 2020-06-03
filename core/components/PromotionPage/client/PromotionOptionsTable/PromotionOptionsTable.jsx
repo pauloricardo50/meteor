@@ -219,6 +219,11 @@ const PromotionOptionsTable = ({ promotion }) => {
         initialPageSize={10}
         modalType="dialog"
         getModalProps={getModalProps}
+        initialHiddenColumns={
+          promotionLotGroups.length === 0
+            ? ['promotionLots.0.promotionLotGroupIds']
+            : []
+        }
       />
     </div>
   );

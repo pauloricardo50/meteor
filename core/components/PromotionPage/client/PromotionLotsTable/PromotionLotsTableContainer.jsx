@@ -204,7 +204,7 @@ const getProColumns = promotion => {
 };
 
 export const ProPromotionLotsTableContainer = withProps(({ promotion }) => {
-  const { _id: promotionId } = promotion;
+  const { _id: promotionId, promotionLotGroups = [] } = promotion;
   const [status, setStatus] = useState();
   const [promotionLotGroupId, setPromotionLotGroupId] = useState();
 
@@ -217,6 +217,11 @@ export const ProPromotionLotsTableContainer = withProps(({ promotion }) => {
     },
   };
 
+  const initialHiddenColumns =
+    promotionLotGroups.length === 0
+      ? [promotionLotGroups.length === 0 && 'promotionLotGroupIds']
+      : [];
+
   const queryDeps = [status, promotionLotGroupId];
   const columns = getProColumns(promotion);
 
@@ -228,11 +233,19 @@ export const ProPromotionLotsTableContainer = withProps(({ promotion }) => {
     queryConfig,
     queryDeps,
     columns,
+    initialHiddenColumns,
   };
 });
 
 export const AppPromotionLotsTableContainer = withProps(
-  ({ promotion: { _id: promotionId, status: promotionStatus }, loan = {} }) => {
+  ({
+    promotion: {
+      _id: promotionId,
+      status: promotionStatus,
+      promotionLotGroups = [],
+    },
+    loan = {},
+  }) => {
     const { promotions = [], promotionOptions = [] } = loan;
 
     const [promotion] = promotions || {};
@@ -260,8 +273,10 @@ export const AppPromotionLotsTableContainer = withProps(
 
     const queryDeps = [promotionLotIds, showAllLots];
     const columns = getAppColumns({ loan, promotion });
-    const initialHiddenColumns =
-      promotionStatus === PROMOTION_STATUS.OPEN ? [] : ['_id'];
+    const initialHiddenColumns = [
+      promotionStatus !== PROMOTION_STATUS.OPEN && '_id',
+      promotionLotGroups.length === 0 && 'promotionLotGroupIds',
+    ].filter(x => x);
 
     return {
       promotionLotGroupId,

@@ -33,6 +33,7 @@ const PromotionLotGroupAdder = ({ promotionId }) => (
 );
 
 const makeMapPromotionLotGroup = promotionId => ({ id, label }) => ({
+  id,
   label,
   actions: (
     <div className="flex">
@@ -84,10 +85,29 @@ const PromotionLotGroupsManager = ({
     <PromotionLotGroupAdder promotionId={promotionId} />
   </div>
 );
+
 export default withProps(
-  ({ promotion: { _id: promotionId, promotionLotGroups = [] } }) => {
+  ({
+    promotion: {
+      _id: promotionId,
+      promotionLotGroups = [],
+      promotionLots = [],
+    },
+  }) => {
     const columns = useMemo(() => [
       { Header: <T id="Forms.promotionLotGroup" />, accessor: 'label' },
+      {
+        Header: <T id="PromotionLotGroupsManager.count" />,
+        accessor: 'id',
+        Cell: ({ value: id }) =>
+          promotionLots.reduce(
+            (count, { promotionLotGroupIds = [] }) =>
+              promotionLotGroupIds.some(groupId => groupId === id)
+                ? count + 1
+                : count,
+            0,
+          ),
+      },
       {
         Header: <T id="PromotionLotGroupsManager.actions" />,
         accessor: 'actions',

@@ -786,6 +786,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     status: 1,
     value: 1,
     promotion: { _id: 1 },
+    promotionLotGroupIds: 1,
   },
   promotionLoan: { _id: 1, name: 1, proNotes: 1, adminNotes: 1 },
   authorizationStatus: 1,

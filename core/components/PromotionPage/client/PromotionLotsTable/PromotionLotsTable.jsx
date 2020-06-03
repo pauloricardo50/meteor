@@ -75,7 +75,7 @@ const PromotionLotsTable = ({
 
   return (
     <div className={cx('promotion-lots-table', className)}>
-      <div className="flex center-align space-children">
+      <div className="flex center-align">
         <h3 className="text-center mr-8">
           <T id="collections.lots" />
         </h3>
@@ -86,6 +86,7 @@ const PromotionLotsTable = ({
             options={PROMOTION_LOT_STATUS}
             id="status"
             label="Statut"
+            className="mr-8"
           />
         )}
         {!!promotionLotGroups.length && (

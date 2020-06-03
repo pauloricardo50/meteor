@@ -29,6 +29,7 @@ const promotionFragment = {
       value: 1,
     },
     lots: { value: 1 },
+    promotionLotGroupIds: 1,
   },
 };
 

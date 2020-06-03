@@ -4,6 +4,7 @@
   "Forms.promotionLotGroupIds": "Groupe de lots",
   "PromotionAdministration.managePromotionLotGroups": "Gérer les groupes de lots",
   "PromotionLotGroupsManager.modify": "Modifier le groupe de lots",
+  "PromotionLotGroupsManager.count": "Nombre de lots",
   "PromotionLotGroupsManager.modify.description": "Renseignez un nouveau nom pour le groupe de lots",
   "PromotionLotGroupsManager.delete": "Supprimer ce groupe de lots supprimera également tous les liens vers ce groupe dans les lots concernés",
   "PromotionAdministration.addPromotionLotGroup": "Ajouter un groupe de lots",

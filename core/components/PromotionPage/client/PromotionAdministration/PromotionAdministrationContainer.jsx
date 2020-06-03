@@ -179,25 +179,8 @@ const getOptions = ({
       onClick: openProInvitationModal,
     },
     {
-      id: 'addPromotionLotGroup',
-      dividerTop: true,
-      condition: canModifyPromotion,
-      onClick: () =>
-        openModal(
-          <DialogForm
-            schema={promotionLotGroupSchema}
-            title={<T id="PromotionAdministration.addPromotionLotGroup" />}
-            description={
-              <T id="PromotionAdministration.addPromotionLotGroup.description" />
-            }
-            onSubmit={({ label }) =>
-              addPromotionLotGroup.run({ promotionId, label })
-            }
-          />,
-        ),
-    },
-    {
       id: 'managePromotionLotGroups',
+      dividerTop: true,
       condition: canModifyPromotion,
       onClick: openPromotionLotGroupsModal,
     },

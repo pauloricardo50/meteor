@@ -19,5 +19,5 @@ PromotionLotService.cacheCount(
     referenceField: 'promotionLotCache._id',
     cacheField: 'loanCount',
   },
-  { loanCount: { $$exists: false } },
+  { loanCount: { $exists: false } },
 );
