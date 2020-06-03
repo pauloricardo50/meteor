@@ -27,7 +27,7 @@ class NotaryFeesCalculator {
   }
 
   hasDetailedConfig() {
-    return cantonConfigs[this.canton];
+    return !!cantonConfigs[this.canton];
   }
 
   shouldUseConstructionMath({ loan, structureId }) {
@@ -188,7 +188,7 @@ class NotaryFeesCalculator {
 
     // Emoluments du notaire
     const notaryIncomeFromProperty = this.notaryIncomeFromProperty({
-      propertyValue: landValue + additionalMargin,
+      propertyValue: landValue + additionalMargin + constructionValue,
     });
 
     // Registre foncier

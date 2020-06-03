@@ -33,7 +33,7 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
         </div>
       )}
 
-      {loans.length > 0 && <SuperDashboard currentUser={currentUser} />}
+      {loans.length > 0 && <SuperDashboard />}
 
       {loans.length === 0 && (
         <WelcomeScreen

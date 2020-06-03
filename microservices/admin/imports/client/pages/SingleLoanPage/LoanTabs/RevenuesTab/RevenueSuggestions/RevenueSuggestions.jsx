@@ -2,7 +2,7 @@ import React from 'react';
 
 import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import { Money, Percent } from 'core/components/Translation';
 
@@ -112,15 +112,16 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
 };
 
 export default withSmartQuery({
-  query: adminOrganisations,
+  query: ORGANISATIONS_COLLECTION,
   params: ({ loan: { user } }) => ({
-    _id:
-      (user &&
-        user.referredByOrganisation &&
-        user.referredByOrganisation._id) ||
-      'none',
-    $body: { name: 1, commissionRate: 1, enabledCommissionTypes: 1 },
+    $filters: {
+      _id: user?.referredByOrganisation?._id || 'none',
+    },
+    name: 1,
+    commissionRate: 1,
+    enabledCommissionTypes: 1,
   }),
+  deps: ({ loan: { user } }) => user?.referredByOrganisation?._id,
   dataName: 'referralOrganisation',
   queryOptions: { single: true },
   renderMissingDoc: false,

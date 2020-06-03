@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import BorrowersSummary from 'core/components/BorrowersSummary';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Link from 'core/components/Link';
+import StatusLabel from 'core/components/StatusLabel';
 import T from 'core/components/Translation';
 
 import LoanSummaryColumns from './LoanSummaryColumns';
@@ -15,6 +17,18 @@ const getLoanName = ({ name, customName }) => {
   }
 
   return `${name} - ${customName}`;
+};
+
+export const loanSummaryFragment = {
+  borrowers: { name: 1 },
+  createdAt: 1,
+  customName: 1,
+  name: 1,
+  promotionOptions: { value: 1, promotionLots: { name: 1 } },
+  promotions: { name: 1, status: 1 },
+  properties: { address1: 1, totalValue: 1, category: 1 },
+  status: 1,
+  structure: 1,
 };
 
 const LoanSummary = ({ loan }) => {
@@ -48,7 +62,16 @@ const LoanSummary = ({ loan }) => {
             <h5>
               <T id="collections.promotions" />
             </h5>
-            <CollectionIconLink relatedDoc={promotions[0]} />
+            <div className="flex center-align">
+              <CollectionIconLink
+                relatedDoc={promotions[0]}
+                iconClassName="mr-4"
+              />
+              <StatusLabel
+                status={promotions[0].status}
+                collection={PROMOTIONS_COLLECTION}
+              />
+            </div>
           </div>
         )}
 

@@ -87,12 +87,14 @@ export default compose(
     query: newLoans,
     dataName: 'newLoans',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    deps: ({ period, withAnonymous }) => [period, withAnonymous],
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: loanHistogram,
     dataName: 'loanHistogram',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    deps: ({ period, withAnonymous }) => [period, withAnonymous],
     refetchOnMethodCall: false,
   }),
 )(NewLoansStat);

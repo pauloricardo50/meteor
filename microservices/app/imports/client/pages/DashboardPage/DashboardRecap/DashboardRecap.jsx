@@ -1,18 +1,16 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
 
 import DashboardRecapFinance from './DashboardRecapFinance';
 import DashboardRecapPromotion from './DashboardRecapPromotion';
 import DashboardRecapProperty from './DashboardRecapProperty';
 
 const DashboardRecap = props => {
-  const propertyToDisplay =
-    (props.loan.structure && props.loan.structure.property) ||
-    (props.loan.properties && props.loan.properties[0]);
-  const {
-    loan: { hasPromotion, promotions, _id: loanId },
-  } = props;
+  const { loan } = props;
+  const { hasPromotion, promotions, _id: loanId } = loan;
+  const propertyToDisplay = Calculator.selectProperty({ loan });
 
   return (
     <div className="dashboard-recap">

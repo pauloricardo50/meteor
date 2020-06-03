@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
@@ -45,11 +46,10 @@ const getEnableNotifications = ({
 
 const ProPromotionPageContainer = compose(
   withMatchParam('promotionId'),
+  Component => props => <Component {...props} key={props.promotionId} />,
   withSmartQuery({
     query: proPromotions,
-    params: ({ promotionId }) => ({
-      _id: promotionId,
-    }),
+    params: ({ promotionId }) => ({ _id: promotionId }),
     queryOptions: { single: true },
     dataName: 'promotion',
   }),

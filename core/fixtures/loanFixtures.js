@@ -9,7 +9,6 @@ import {
   PURCHASE_TYPE,
   STEPS,
 } from '../api/loans/loanConstants';
-import { adminLoans } from '../api/loans/queries';
 import LoanService from '../api/loans/server/LoanService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createFakeBorrowers } from './borrowerFixtures';
@@ -180,7 +179,7 @@ export const addLoanWithData = ({
 }) => {
   const loanId = LoanService.fullLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
-  const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+  const loan = LoanService.get(loanId, { structures: { id: 1 } });
   const propertyId = properties.length
     ? PropertyService.insert({ property: {}, userId })
     : undefined;

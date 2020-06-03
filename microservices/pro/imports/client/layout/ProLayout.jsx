@@ -26,7 +26,7 @@ const ProLayout = ({ children, redirect, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton currentUser={currentUser} />
+      <ContactButton />
     </div>
   );
 };

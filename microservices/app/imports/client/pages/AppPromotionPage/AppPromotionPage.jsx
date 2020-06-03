@@ -26,7 +26,8 @@ const AppPromotionPageContainer = compose(
       promotionId,
       loanId,
     }),
-    queryOptions: { reactive: false, single: true },
+    deps: ({ promotionId, loan: { _id: loanId } }) => [promotionId, loanId],
+    queryOptions: { single: true },
     dataName: 'promotion',
   }),
   withProps(({ promotion, promotionId, loan }) => ({

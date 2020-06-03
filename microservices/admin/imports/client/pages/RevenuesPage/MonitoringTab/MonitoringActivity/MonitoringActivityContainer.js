@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
 import { collectionStatusChanges } from 'core/api/monitoring/queries';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 

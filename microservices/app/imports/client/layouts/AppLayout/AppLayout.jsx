@@ -49,11 +49,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
 
   return (
     <div className={rootClasses}>
-      <Navs
-        {...props}
-        shouldShowSideNav={shouldShowSideNav}
-        currentUser={currentUser}
-      />
+      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
       <div className={classes} id="scroll-layout">
         <LayoutErrorBoundary>
           <div className="wrapper">
@@ -62,7 +58,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton currentUser={currentUser} />
+      <ContactButton />
       {currentUser && <AnonymousLoanClaimer currentUser={currentUser} />}
       <AnonymousLoanRemover />
     </div>

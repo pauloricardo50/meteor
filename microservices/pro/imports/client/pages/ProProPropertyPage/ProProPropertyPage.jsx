@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
@@ -26,10 +27,11 @@ const makePermissions = props => ({
 
 export default compose(
   withMatchParam('propertyId'),
+  Component => props => <Component {...props} key={props.propertyId} />,
   withSmartQuery({
     query: proProperties,
     params: ({ propertyId }) => ({ _id: propertyId }),
-    queryOptions: { single: true, reactive: false },
+    queryOptions: { single: true },
     dataName: 'property',
   }),
   withSmartQuery({
@@ -38,7 +40,8 @@ export default compose(
       organisationId: organisations[0]._id,
       $body: { name: 1, address1: 1, users: { name: 1 } },
     }),
-    queryOptions: { reactive: false, single: true },
+    deps: ({ currentUser: { organisations = [] } }) => [organisations[0]._id],
+    queryOptions: { single: true },
     dataName: 'organisation',
   }),
   withContextProvider({

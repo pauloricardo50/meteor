@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import merge from 'lodash/merge';
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { percentageField } from 'core/api/helpers/sharedSchemas';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   revenueInsert,
   revenueRemove,
@@ -53,8 +53,8 @@ const getSchema = currentUser =>
       optional: true,
       type: String,
       customAllowedValues: {
-        query: adminOrganisations,
-        params: () => ({ $body: { name: 1 } }),
+        query: ORGANISATIONS_COLLECTION,
+        params: () => ({ name: 1, $options: { sort: { name: 1 } } }),
       },
       uniforms: {
         transform: org => org?.name,
@@ -73,8 +73,8 @@ const getSchema = currentUser =>
     'organisationLinks.$._id': {
       type: String,
       customAllowedValues: {
-        query: adminOrganisations,
-        params: () => ({ $body: { name: 1 } }),
+        query: ORGANISATIONS_COLLECTION,
+        params: () => ({ name: 1, $options: { sort: { name: 1 } } }),
       },
       uniforms: {
         transform: org => org?.name,

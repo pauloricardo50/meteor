@@ -13,8 +13,6 @@ const getLoanSummaryColumns = ({
   updatedAt,
   ...loan
 }) => {
-  const ownFunds = Calculator.getNonPledgedOwnFunds({ loan });
-  const ownFundsPledged = Calculator.getTotalPledged({ loan });
   const loanValue = Calculator.selectLoanValue({ loan });
   const propertyValue = Calculator.selectPropertyValue({ loan });
   return [
@@ -27,26 +25,12 @@ const getLoanSummaryColumns = ({
       content: moment(createdAt).format('D MMM YY à HH:mm:ss'),
     },
     {
-      translationId: 'LoanSummaryColumn.updatedAt',
-      content: updatedAt
-        ? moment(updatedAt).format('D MMM YY à HH:mm:ss')
-        : '-',
-    },
-    {
       translationId: 'LoanSummaryColumn.propertyValue',
       content: <Money value={propertyValue} />,
     },
     {
       translationId: 'general.mortgageLoan',
       content: <Money value={loanValue} />,
-    },
-    {
-      translationId: 'LoanSummaryColumn.ownFunds',
-      content: <Money value={ownFunds} />,
-    },
-    {
-      translationId: 'LoanSummaryColumn.ownFundsPledged',
-      content: <Money value={ownFundsPledged} />,
     },
   ];
 };

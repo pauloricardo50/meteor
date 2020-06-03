@@ -45,6 +45,7 @@ const UserReservation = ({
             promotionOption={promotionOption}
             variant={progressVariant}
             loan={loan}
+            withLoanProgress
           />
         )}
       </div>

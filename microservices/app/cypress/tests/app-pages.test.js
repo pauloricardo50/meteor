@@ -29,23 +29,23 @@ const pages = {
 
     Account: route('/account', { shouldRender: '#AccountPage' }),
 
-    Dashboard: ({ requestLoan: { _id } }) =>
+    Dashboard: ({ loan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
 
-    'Loan Files': ({ requestLoan: { _id } }) =>
+    'Loan Files': ({ loan: { _id } }) =>
       route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
 
-    'Loan Single Property': ({ requestLoan: { _id, properties } }) =>
+    'Loan Single Property': ({ loan: { _id, properties } }) =>
       route(`/loans/${_id}/properties/${properties[0]._id}`, {
         shouldRender: '#SinglePropertyPage',
       }),
 
-    'Borrower Personal': ({ requestLoan: { _id } }) =>
+    'Borrower Personal': ({ loan: { _id } }) =>
       route(`/loans/${_id}/borrowers/personal`, {
         shouldRender: '.borrower-page-info',
       }),
 
-    'Borrower Finance': ({ requestLoan: { _id } }) =>
+    'Borrower Finance': ({ loan: { _id } }) =>
       route(`/loans/${_id}/borrowers/finance`, {
         shouldRender: '.borrower-finance-page',
       }),

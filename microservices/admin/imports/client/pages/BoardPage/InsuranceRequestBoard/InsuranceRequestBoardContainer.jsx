@@ -5,8 +5,10 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/organisations/organisationConstants';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { groupInsuranceRequests } from './insuranceRequestBoardHelpers';
@@ -58,6 +60,7 @@ export default compose(
     }),
     dataName: 'insuranceRequests',
     queryOptions: { pollingMs: 5000 },
+    deps: ({ options }) => Object.values(options),
   }),
   withProps(({ refetch }) => ({ refetchInsuranceRequests: refetch })),
   withSmartQuery({
@@ -79,8 +82,12 @@ export default compose(
     ...rest,
   })),
   withSmartQuery({
-    query: adminOrganisations,
-    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.INSURANCE },
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { features: ORGANISATION_FEATURES.INSURANCE },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
     dataName: 'organisations',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,

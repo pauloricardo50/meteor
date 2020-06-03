@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
@@ -139,9 +139,14 @@ const UserAdder = ({
 export default compose(
   UserDialogFormContainer,
   withSmartQuery({
-    query: adminOrganisations,
+    query: ORGANISATIONS_COLLECTION,
     dataName: 'organisations',
-    params: () => ({ $body: { name: 1, users: { _id: 1 } } }),
+    params: {
+      name: 1,
+      users: { _id: 1 },
+      $options: { sort: { name: 1 } },
+    },
+    refetchOnMethodCall: false,
   }),
   withProps(() => {
     const searchParams = useSearchParams();

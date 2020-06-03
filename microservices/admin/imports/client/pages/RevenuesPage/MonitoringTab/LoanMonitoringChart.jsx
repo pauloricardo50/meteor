@@ -100,6 +100,25 @@ export default compose(
         ? { 'revenues.type': revenueType }
         : undefined,
     }),
+    deps: ({
+      groupBy,
+      value,
+      category,
+      status,
+      withAnonymous,
+      assigneeLinkId,
+      referringOrganisationId,
+      revenueType,
+    }) => [
+      groupBy,
+      value,
+      category,
+      status,
+      withAnonymous,
+      assigneeLinkId,
+      referringOrganisationId,
+      revenueType,
+    ],
     dataName: 'data',
   }),
   withProps(({ data, groupBy }) => {
