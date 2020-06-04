@@ -5,7 +5,7 @@ import { AutoFormDialog } from '../AutoForm2';
 import T from '../Translation';
 import OfferModiferContainer from './OfferModifierContainer';
 
-const OfferModifier = ({ onSubmit, offer, schema }) => (
+const OfferModifier = ({ onSubmit, offer, schema, ...props }) => (
   <AutoFormDialog
     onSubmit={onSubmit}
     model={offer}
@@ -17,6 +17,8 @@ const OfferModifier = ({ onSubmit, offer, schema }) => (
       style: { alignSelf: 'center' },
     }}
     onDelete={() => offerDelete.run({ offerId: offer._id })}
+    {...props}
   />
 );
+
 export default OfferModiferContainer(OfferModifier);

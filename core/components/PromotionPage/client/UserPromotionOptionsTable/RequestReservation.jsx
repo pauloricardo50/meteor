@@ -18,14 +18,13 @@ const RequestReservation = ({
 }) => {
   const {
     _id: promotionOptionId,
-    loan: { promotions = [] },
+    loanCache,
+    loan: { promotions },
   } = promotionOption;
+  const [promotionLink] = loanCache[0].promotionLinks;
 
-  const [promotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-    users = [],
-  } = promotion;
+  const { invitedBy } = promotionLink;
+  const [{ users = [] }] = promotions;
 
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });

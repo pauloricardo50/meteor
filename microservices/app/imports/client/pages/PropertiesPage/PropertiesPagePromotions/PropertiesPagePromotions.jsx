@@ -32,7 +32,7 @@ const PropertiesPagePromotions = ({
     <div className="promotion-options">
       {promotionOptions
         .sort(
-          ({ priority: priority1 }, { priority: priority2 }) =>
+          ({ priorityOrder: priority1 }, { priorityOrder: priority2 }) =>
             priority1 - priority2,
         )
         .map(promotionOption => (

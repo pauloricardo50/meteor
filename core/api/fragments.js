@@ -652,6 +652,8 @@ export const formPromotionOption = () => ({
   bank: 1,
   canton: 1,
   fullVerification: 1,
+  loanCache: 1, // Useful for invitedBy
+  priorityOrder: 1,
   promotionLots: { properties: { totalValue: 1 } },
   reservationAgreement: 1,
   reservationDeposit: 1,
@@ -665,7 +667,6 @@ export const proPromotionOption = () => ({
   createdAt: 1,
   documents: 1,
   lots: { name: 1, type: 1, status: 1, description: 1 },
-  priority: 1,
   promotionLots: { name: 1, promotion: { name: 1 } },
   updatedAt: 1,
   loan: {
@@ -698,7 +699,6 @@ export const appPromotionOption = () => ({
     promotions: { _id: 1, users: { name: 1, organisations: { name: 1 } } },
   },
   lots: { description: 1, name: 1, type: 1, value: 1 },
-  priority: 1,
   promotionLots: appPromotionLot(),
   updatedAt: 1,
 });

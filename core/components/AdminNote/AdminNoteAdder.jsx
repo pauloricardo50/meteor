@@ -60,7 +60,7 @@ export const AdminNoteSetter = ({
   const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
   const isInsert = !adminNote;
 
-  const { loading, contacts } = getContacts(docId);
+  const { contacts = [] } = getContacts(docId);
   const schema = useMemo(() => {
     const insertSchema = getInsertSchemaOverride || getInsertSchema;
     const updateSchema = getUpdateSchemaOverride || getUpdateSchema;

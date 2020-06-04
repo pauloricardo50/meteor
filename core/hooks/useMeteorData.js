@@ -35,11 +35,11 @@ let count = 0;
 
 // Automatically refetch a query on method calls, making everything seem
 // reactive
-const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall }) => {
+const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall, params }) => {
   // Make sure there are no clashes between multiple queries with the
   // same name
   const [queryName] = useState(
-    `${(query && query.queryName) || query}-hook-${count++}`,
+    () => `${(query && query.queryName) || query}-hook-${count++}`,
   );
   useEffect(() => {
     if (refetchOnMethodCall) {
@@ -120,9 +120,16 @@ export const useStaticMeteorData = (
     refetchOnMethodCall,
     refetch: () => refetch(config),
     query: config?.query || query,
+    params,
   });
 
-  return { loading: isLoading, data, error, refetch };
+  return {
+    loading: isLoading,
+    data,
+    error,
+    refetch,
+    isInitialLoad: isLoading && data === undefined,
+  };
 };
 
 export const useReactiveMeteorData = (

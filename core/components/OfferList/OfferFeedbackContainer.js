@@ -4,6 +4,7 @@ import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { offerSendFeedback } from '../../api/offers/methodDefinitions';
+import Calculator from '../../utils/Calculator';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 import {
   FEEDBACK_OPTIONS,
@@ -11,7 +12,7 @@ import {
   makeFeedback,
 } from './feedbackHelpers';
 
-const getSchema = ({ offer, formatMessage }) =>
+const getSchema = ({ offer, formatMessage, loan }) =>
   new SimpleSchema({
     option: {
       type: String,
@@ -48,18 +49,21 @@ const getSchema = ({ offer, formatMessage }) =>
         type: CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW,
       },
       condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
-      customAutoValue: model => makeFeedback({ model, offer, formatMessage }),
+      customAutoValue: model =>
+        makeFeedback({ model, offer, loan, formatMessage }),
     },
   });
 
-export default withProps(({ offer }) => {
+export default withProps(({ offer, loan }) => {
   const { formatMessage } = useIntl();
-  const schema = useMemo(() => getSchema({ offer, formatMessage }), [offer]);
-  const {
-    _id: offerId,
-    feedback = {},
-    lender: { contact },
-  } = offer;
+  const schema = useMemo(() => getSchema({ offer, formatMessage, loan }), [
+    loan,
+  ]);
+  const { _id: offerId, feedback = {} } = offer;
+  const { contact } = Calculator.selectLenderForOfferId({
+    loan,
+    offerId,
+  });
 
   const { message } = feedback;
 
@@ -77,7 +81,7 @@ export default withProps(({ offer }) => {
       if (confirm) {
         return offerSendFeedback.run({
           offerId,
-          feedback: makeFeedback({ model: object, offer, formatMessage }),
+          feedback: makeFeedback({ model: object, offer, loan, formatMessage }),
         });
       }
       return Promise.resolve();

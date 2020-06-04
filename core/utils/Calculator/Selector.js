@@ -73,6 +73,14 @@ export const withSelector = (SuperClass = class {}) =>
       return {};
     }
 
+    selectOffers({ loan }) {
+      const { lenders = [] } = loan;
+      return lenders.reduce(
+        (allOffers, { offers: o = [] }) => [...allOffers, ...o],
+        [],
+      );
+    }
+
     selectOffer({ loan, structureId }) {
       const { offers = [], lenders = [] } = loan;
       const { offerId, offer } = this.selectStructure({ loan, structureId });
@@ -90,10 +98,7 @@ export const withSelector = (SuperClass = class {}) =>
       }
 
       if (lenders?.length) {
-        const lenderOffers = lenders.reduce(
-          (allOffers, { offers: o = [] }) => [...allOffers, ...o],
-          [],
-        );
+        const lenderOffers = this.selectOffers({ loan });
         return lenderOffers.find(({ _id }) => _id === offerId);
       }
     }
@@ -186,4 +191,11 @@ export const withSelector = (SuperClass = class {}) =>
     }
 
     getCashUsed = this.makeSelectStructureKey('fortuneUsed');
+
+    selectLenderForOfferId({ loan, offerId }) {
+      const { lenders = [] } = loan;
+      return lenders.find(({ offers }) =>
+        offers.some(({ _id }) => _id === offerId),
+      );
+    }
   };

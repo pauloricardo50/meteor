@@ -31,7 +31,7 @@ const useLoanContacts = loanId => {
     },
     type: 'single',
   });
-  const contacts = !loading ? getLoanContacts(loanWithContacts) : [];
+  const contacts = loanWithContacts && getLoanContacts(loanWithContacts);
   return { loading, contacts };
 };
 

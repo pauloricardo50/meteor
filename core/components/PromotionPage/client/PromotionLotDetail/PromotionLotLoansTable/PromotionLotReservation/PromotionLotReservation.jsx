@@ -26,7 +26,6 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
   const [promotionLot] = promotionLots;
   const {
     $metadata: { invitedBy },
-    agreementDuration,
   } = promotion;
 
   const customerOwnerType = getPromotionCustomerOwnerType({
@@ -64,7 +63,14 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
           id="PromotionReservationsTable.modalTitle"
           values={{
             lotName: <b>{promotionLot.name}</b>,
-            customerName: <b>{loan.user.name}</b>,
+            customerName: (
+              <b>
+                {loan.user?.name ||
+                  [loan.userCache?.firstName, loan.userCache?.lastName]
+                    .filter(x => x)
+                    .join(' ')}
+              </b>
+            ),
           }}
         />
       }

@@ -6,7 +6,7 @@ import OfferPickerList from './OfferPickerList';
 
 const OfferPicker = props => (
   <div className="offerId">
-    <OfferListDialog offers={props.offers} />
+    <OfferListDialog loan={props.loan} />
 
     <OfferPickerList {...props} />
   </div>
