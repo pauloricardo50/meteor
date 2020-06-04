@@ -1,3 +1,4 @@
+const sh = require('shelljs');
 const {
   removePrepareBundleLock,
   getPrepareBundleLock,
@@ -136,16 +137,41 @@ module.exports = function createConfig({
         // eslint-disable-next-line no-param-reassign
         api.settings = retrieveSecret(`${environment}-meteor-settings`);
       },
-      'post.setup': {
-        remoteCommand: `
+      'pre.setup': async function(api) {
+        sh.set('-e');
+
+        // Update atlas whitelist
+        const cwd = process.cwd();
+        sh.cd(`${__dirname}/../`);
+        sh.exec(`node update-atlas-whitelist.js`);
+        sh.cd(cwd);
+
+        // Start logging container
+        const command = `
           # If you need to change settings for the papertrail-logs container
           # Uncomment the following line so it is recreated
-          # docker rm -f papertrail-logs; 
+          # docker rm -f papertrail-logs;
           docker run --restart=always -d --name papertrail-logs \
           -e "SYSLOG_HOSTNAME=$HOSTNAME" \
           -v=/var/run/docker.sock:/var/run/docker.sock gliderlabs/logspout  \
-          syslog+tls://logs7.papertrailapp.com:31301
-        `,
+          syslog+tls://logs7.papertrailapp.com:31301 || echo "container already running"
+        `;
+
+        const promises = Object.keys(api.getConfig().app.servers)
+          .map(serverName => api.getSessionsForServers([serverName]))
+          .map(([session]) => api.runSSHCommand(session, command))
+          .map(promise =>
+            promise.then(({ output, host, code }) => {
+              if (code > 0 || !output.includes('container already running')) {
+                console.log(`Starting container failed on ${host}:`);
+                console.log(output);
+              } else {
+                console.log(`Logging container running on ${host}`);
+              }
+            }),
+          );
+
+        await Promise.all(promises);
       },
 
       'post.meteor.build': async function(api) {
