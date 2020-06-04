@@ -12,7 +12,7 @@ import { getChecklistMissingInformations } from '../../../helpers';
 const { formatMessage } = intl;
 
 describe('LoanChecklist', function() {
-  this.timeout(5000);
+  this.timeout(10000);
 
   beforeEach(() => {
     resetDatabase();

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
 import { adminBorrowers as query } from 'core/api/borrowers/queries';
@@ -55,9 +55,12 @@ export default compose(
     dataName: 'borrowers',
     renderMissingDoc: false,
   }),
-  withRouter,
-  withProps(({ borrowers, history }) => ({
-    rows: borrowers.map(mapBorrower({ history })),
-    columnOptions,
-  })),
+  withProps(({ borrowers }) => {
+    const history = useHistory();
+
+    return {
+      rows: borrowers.map(mapBorrower({ history })),
+      columnOptions,
+    };
+  }),
 );

@@ -1,6 +1,5 @@
 export const CONTACTS_COLLECTION = 'contacts';
 
 export const CONTACTS_QUERIES = {
-  ADMIN_CONTACTS: 'ADMIN_CONTACTS',
   CONTACT_SEARCH: 'CONTACT_SEARCH',
 };

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
+import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
@@ -9,7 +10,6 @@ import {
   FEEDBACK_OPTIONS,
   makeFeedback,
 } from '../../../components/OfferList/feedbackHelpers';
-import { PURCHASE_TYPE } from '../../../redux/widget1/widget1Constants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../utils/Calculator';
@@ -19,7 +19,7 @@ import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import {
-  adminLoan,
+  calculatorLoan,
   lenderRules as lenderRulesFragment,
   userLoan,
 } from '../../fragments';
@@ -50,10 +50,10 @@ import {
   LOAN_STATUS,
   LOAN_STATUS_ORDER,
   ORGANISATION_NAME_SEPARATOR,
+  PURCHASE_TYPE,
   STEPS,
 } from '../loanConstants';
 import Loans from '../loans';
-import { fullLoan } from '../queries';
 
 const { formatMessage } = intl;
 
@@ -590,42 +590,33 @@ class LoanService extends CollectionService {
   }
 
   sendNegativeFeedbackToAllLenders({ loanId }) {
-    const {
-      offers = [],
-      structure: { property },
-    } =
-      this.createQuery({
-        $filters: { _id: loanId },
-        ...adminLoan({ withSort: true }),
-        $options: { sort: { createdAt: -1 } },
-      }).fetchOne() || {};
+    const loan = this.get(loanId, {
+      structure: 1,
+      properties: { address1: 1, zipCode: 1, city: 1 },
+      borrowers: { name: 1 },
+      userCache: 1,
+      createdAt: 1,
+      lenders: {
+        contact: { email: 1, firstName: 1 },
+        offers: {
+          createdAt: 1,
+          $options: { sort: { createdAt: -1 }, limit: 1 },
+        }, // Sort offers to get the last one only
+      },
+    });
 
-    // Get lenders' last offer
-    const filteredOffers = offers.reduce((filtered, offer) => {
-      const {
-        lender: {
-          contact: { email: lenderEmail },
-        },
-      } = offer;
+    if (!loan.lenders?.length) {
+      return [];
+    }
 
-      const lenderIsAlreadyInMailingList = filtered.find(
-        ({
-          lender: {
-            contact: { email },
-          },
-        }) => lenderEmail === email,
-      );
+    const lastOffers = loan.lenders
+      .filter(({ offers }) => offers?.length)
+      .map(({ offers }) => offers[0]);
 
-      if (lenderIsAlreadyInMailingList) {
-        return filtered;
-      }
-
-      return [...filtered, offer];
-    }, []);
-
-    return filteredOffers.map(offer => ({
+    return lastOffers.map(offer => ({
       feedback: makeFeedback({
-        offer: { ...offer, property },
+        offer,
+        loan,
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
         formatMessage,
       }),
@@ -888,11 +879,20 @@ class LoanService extends CollectionService {
   }
 
   getLoanCalculator({ loanId, structureId }) {
-    const loan = fullLoan.clone({ _id: loanId }).fetchOne();
+    const loan = this.get(
+      loanId,
+      merge({}, calculatorLoan(), {
+        promotions: { lenderOrganisationLink: 1 },
+        selectedLenderOrganisation: {
+          name: 1,
+          lenderRules: lenderRulesFragment(),
+        },
+      }),
+    );
     let lenderRules;
 
-    if (loan && loan.structure && loan.structure.offerId) {
-      lenderRules = loan.structure.offer.lender.organisation.lenderRules;
+    if (loan.selectedLenderOrganisation) {
+      lenderRules = loan.selectedLenderOrganisation.lenderRules;
     } else if (loan.hasPromotion) {
       const { lenderOrganisationLink } = loan.promotions[0];
       if (lenderOrganisationLink) {

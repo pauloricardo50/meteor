@@ -1,7 +1,6 @@
 import omit from 'lodash/omit';
 
 import {
-  adminLoan,
   proLoanWithRevenues,
   proLoans as proLoansFragments,
   userLoan,
@@ -9,25 +8,11 @@ import {
 import { LOAN_QUERIES } from './loanConstants';
 import Loans from '.';
 
-export const adminLoans = Loans.createQuery(
-  LOAN_QUERIES.ADMIN_LOANS,
-  {
-    ...adminLoan({ withSort: true }),
-    $options: { sort: { createdAt: -1 } },
-  },
-  { scoped: true },
-);
-
 export const anonymousLoan = Loans.createQuery(
   LOAN_QUERIES.ANONYMOUS_LOAN,
   { ...omit(userLoan(), ['maxPropertyValue']), maxPropertyValueExists: 1 },
   { scoped: true },
 );
-
-// This query can be used on the server to get a complete loan, just like on the client
-export const fullLoan = Loans.createQuery(LOAN_QUERIES.FULL_LOAN, {
-  ...adminLoan({ withSort: true }),
-});
 
 export const loanSearch = Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
   category: 1,
@@ -64,7 +49,3 @@ export const userLoans = Loans.createQuery(
   },
   { scoped: true },
 );
-
-export const loanProgress = Loans.createQuery(LOAN_QUERIES.LOAN_PROGRESS, {
-  loanProgress: 1,
-});

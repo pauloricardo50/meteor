@@ -15,8 +15,8 @@ export default compose(
   withSmartQuery({
     query: adminPromotions,
     params: ({ status }) => ({ status }),
+    deps: ({ status }) => [status],
     dataName: 'promotions',
-    queryOptions: { reactive: false },
     renderMissingDoc: false,
   }),
   Component => ({ status, setStatus, ...props }) => (

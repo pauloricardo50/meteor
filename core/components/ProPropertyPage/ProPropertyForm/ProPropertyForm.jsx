@@ -25,12 +25,13 @@ const proPropertySchema = PropertySchema.pick(
   'imageUrls',
 );
 
-const ProPropertyForm = ({ model, onSubmit, buttonProps }) => (
+const ProPropertyForm = ({ model, onSubmit, buttonProps, ...rest }) => (
   <AutoFormDialog
     buttonProps={{ raised: true, primary: true, ...buttonProps }}
     model={model}
     schema={proPropertySchema}
     onSubmit={onSubmit}
+    {...rest}
   />
 );
 

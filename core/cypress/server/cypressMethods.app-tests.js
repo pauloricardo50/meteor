@@ -6,11 +6,8 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 
-import { adminLoan, loanBase } from '../../api/fragments';
 import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';
-import Loans from '../../api/loans';
-import { LOAN_QUERIES, STEPS } from '../../api/loans/loanConstants';
-import { adminLoans as adminLoansQuery } from '../../api/loans/queries';
+import { STEPS } from '../../api/loans/loanConstants';
 import LoanService from '../../api/loans/server/LoanService';
 import { ORGANISATION_FEATURES } from '../../api/organisations/organisationConstants';
 import OrganisationService from '../../api/organisations/server/OrganisationService';
@@ -43,22 +40,6 @@ import {
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
-
-const userLoansE2E = Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
-  $filter({ filters, params: { userId, unowned, step } }) {
-    filters.userId = userId;
-
-    if (unowned) {
-      filters.userId = { $exists: false };
-    }
-
-    if (step) {
-      filters.step = step;
-    }
-  },
-  ...loanBase(),
-  $options: { sort: { createdAt: -1 } },
-});
 
 Meteor.methods({
   createAdmins() {
@@ -271,15 +252,10 @@ Meteor.methods({
     const admin =
       UserService.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 }) || {};
 
-    const solvencyLoan = userLoansE2E
-      .clone({ userId, step: STEPS.SOLVENCY })
-      .fetchOne();
-
-    const requestLoan = userLoansE2E
-      .clone({ userId, step: STEPS.REQUEST })
-      .fetchOne();
-
-    const unownedLoan = userLoansE2E.clone({ owned: false }).fetchOne();
+    const loan = LoanService.get(
+      { userId, step: STEPS.REQUEST },
+      { name: 1, properties: { _id: 1 } },
+    );
 
     const adminLoginToken = createLoginToken(admin._id);
     const emailVerificationToken = createEmailVerificationToken(
@@ -302,9 +278,7 @@ Meteor.methods({
     const passwordResetToken = user.services.password.reset.token;
 
     return {
-      solvencyLoan,
-      requestLoan,
-      unownedLoan,
+      loan,
       adminLoginToken,
       emailVerificationToken,
       userId,
@@ -427,22 +401,21 @@ Meteor.methods({
 
     return userId;
   },
-  getLoan(loanId) {
-    return LoanService.get(loanId, {
-      ...adminLoan(),
-      referralId: 1,
-      referredByUserLink: 1,
-      referredByOrganisationLink: 1,
-    });
+  getLoan(...params) {
+    return LoanService.get(...params);
   },
-  getUser(email) {
-    return UserService.getByEmail(email, {
-      referredByUserLink: 1,
-      referredByOrganisationLink: 1,
-    });
+  getUser(...params) {
+    return UserService.get(...params);
   },
   getAdminEndToEndTestData() {
-    const loan = adminLoansQuery.clone({ owned: true }).fetchOne();
+    const loan = LoanService.get(
+      { userId: { $exists: true } },
+      {
+        userId: 1,
+        properties: { _id: 1 },
+        borrowers: { _id: 1 },
+      },
+    );
 
     const {
       properties,

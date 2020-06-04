@@ -65,7 +65,13 @@ exposeQuery({
           promotionId,
           loanStatus,
           invitedBy,
+          promotionOptionId,
+          promotionLotGroupId,
         } = params;
+
+        if (promotionOptionId) {
+          filters._id = promotionOptionId;
+        }
 
         if (status) {
           filters.status = status;
@@ -88,6 +94,12 @@ exposeQuery({
         if (invitedBy) {
           filters['loanCache.promotionLinks.0.invitedBy'] = invitedBy;
         }
+
+        if (promotionLotGroupId) {
+          filters[
+            'promotionLotCache.0.promotionLotGroupIds'
+          ] = promotionLotGroupId;
+        }
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
@@ -109,6 +121,8 @@ exposeQuery({
       promotionLotId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
       userId: String,
+      promotionOptionId: Match.Maybe(String),
+      promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

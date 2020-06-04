@@ -15,6 +15,7 @@ Meteor.startup(() => {
       publication: true,
       method: true,
       blocking: false,
+      body: () => true, // This lets you ignore all nested firewalls
     });
   });
 });

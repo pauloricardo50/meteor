@@ -1,6 +1,8 @@
+import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { proPromotion } from 'core/api/fragments';
 import { appPromotion } from 'core/api/promotions/queries';
 import PromotionPage from 'core/components/PromotionPage/client';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -8,6 +10,30 @@ import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
 import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
+
+const promotionFragment = {
+  ...pick(proPromotion({ withFilteredLoan: true }), [
+    'address',
+    'address1',
+    'agreementDuration',
+    'canton',
+    'city',
+    'constructionTimeline',
+    'contacts',
+    'documents',
+    'name',
+    'status',
+    'type',
+    'zipCode',
+    'signingDate',
+    'country',
+    'promotionLotGroups',
+    'description',
+    'externalUrl',
+    'loans',
+  ]),
+  promotionLots: { _id: 1 },
+};
 
 const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   const { promotions = [] } = loan;
@@ -25,8 +51,10 @@ const AppPromotionPageContainer = compose(
     params: ({ promotionId, loan: { _id: loanId } }) => ({
       promotionId,
       loanId,
+      $body: promotionFragment,
     }),
-    queryOptions: { reactive: false, single: true },
+    deps: ({ promotionId, loan: { _id: loanId } }) => [promotionId, loanId],
+    queryOptions: { single: true },
     dataName: 'promotion',
   }),
   withProps(({ promotion, promotionId, loan }) => ({

@@ -51,6 +51,7 @@ const PromotionOptionProgress = ({ loan, promotionOption }) => (
           </span>
         );
       }}
+      withLoanProgress
     />
   </div>
 );

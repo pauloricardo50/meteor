@@ -2,8 +2,8 @@ import Calculator from '../../utils/Calculator';
 import { ANONYMIZED_STRING } from '../security/securityConstants';
 
 export const getLoanProgress = loan => ({
-  info: Calculator.getValidFieldsRatio({ loan }),
-  documents: Calculator.getValidDocumentsRatio({ loan }),
+  info: loan && Calculator.getValidFieldsRatio({ loan }),
+  documents: loan && Calculator.getValidDocumentsRatio({ loan }),
 });
 
 const ANONYMIZED_USER = {

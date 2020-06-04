@@ -1,7 +1,6 @@
 import omit from 'lodash/omit';
 
-import { formatLoanWithStructure } from '../../utils/loanFunctions';
-import { fullOffer, loanPromotionOption, userProperty } from '../fragments';
+import { fullOffer } from '../fragments';
 import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
 import {
   PROPERTIES_COLLECTION,
@@ -15,14 +14,8 @@ import Loans from '.';
 
 Loans.addReducers({
   structure: {
-    body: {
-      selectedStructure: 1,
-      structures: 1,
-      properties: omit(userProperty(), ['loans', '$options', 'user']),
-      offers: 1,
-      promotionOptions: loanPromotionOption(),
-    },
-    reduce: formatLoanWithStructure,
+    body: { structureCache: 1 },
+    reduce: ({ structureCache }) => structureCache,
   },
   offers: {
     body: { lenders: { offers: omit(fullOffer(), ['user']) } },

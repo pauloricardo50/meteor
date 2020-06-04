@@ -10,7 +10,6 @@ import SecurityService from '../../security';
 import {
   adminUsers,
   appUser,
-  currentUser,
   incoherentAssignees,
   proReferredByUsers,
   proUser,
@@ -78,26 +77,6 @@ exposeQuery({
       }
     },
     embody: body => {
-      body.$filter = ({ filters, params }) => {
-        filters._id = params._userId;
-      };
-    },
-  },
-});
-
-exposeQuery({
-  query: currentUser,
-  overrides: {
-    firewall(userId, params) {
-      if (!userId) {
-        // Don't throw unauthorized error here, it causes race-conditions in E2E tests
-        // to not reload this subscription
-        // So simply set userId to an impossible id
-        params._userId = 'none';
-      }
-    },
-    embody: body => {
-      // This will deepExtend your body
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };

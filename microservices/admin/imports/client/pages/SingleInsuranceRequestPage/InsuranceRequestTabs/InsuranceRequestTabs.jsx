@@ -85,41 +85,36 @@ const getTabs = props => {
         }),
     },
     ...insurances.map(insurance => {
-      const {
-        organisation,
-        borrower,
-        insuranceProduct: { name },
-      } = insurance;
-      const borrowerIndex = borrowers
-        .map((b, i) => ({ ...b, index: i }))
-        .find(({ _id }) => _id === borrower._id).index;
+      const { organisation, borrower, insuranceProduct } = insurance;
+      const borrowerIndex = borrowers.findIndex(
+        ({ _id }) => _id === borrower._id,
+      );
 
       return {
         id: insurance._id,
         content: <InsuranceTab {...props} insurance={insurance} />,
         label: (
           <span className="single-insurance-request-page-tabs-label">
-            <img
-              src={organisation.logo}
-              alt={organisation.name}
-              height={24}
-              className="mr-8"
-            />
+            {organisation && (
+              <img
+                src={organisation.logo}
+                alt={organisation.name}
+                height={24}
+                className="mr-8"
+              />
+            )}
             <div className="flex-col">
               <span>{borrower.name || `Assuré ${borrowerIndex + 1}`}</span>
-              <span>{name}</span>
+              <span>{insuranceProduct?.name}</span>
             </div>
           </span>
         ),
         to:
           props.enableTabRouting &&
-          createRoute(
-            ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE_INSURANCES.path,
-            {
-              insuranceRequestId: props.insuranceRequest._id,
-              tabId: insurance._id,
-            },
-          ),
+          createRoute(ADMIN_ROUTES.SINGLE_INSURANCE_REQUEST_PAGE.path, {
+            insuranceRequestId: props.insuranceRequest._id,
+            tabId: insurance._id,
+          }),
       };
     }),
     {

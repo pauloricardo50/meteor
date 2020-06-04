@@ -49,16 +49,11 @@ const PromotionPageOverview = ({ promotion, loan }) => {
         </>
       )}
 
-      {promotion.lots &&
-        promotion.lots.length > 0 &&
-        (!isApp || loan.residenceType) && (
-          <Element
-            name="additional-lots-table"
-            className="additional-lots-table"
-          >
-            <LotsTable promotion={promotion} className="card1" />
-          </Element>
-        )}
+      {(!isApp || loan.residenceType) && (
+        <Element name="additional-lots-table" className="additional-lots-table">
+          <LotsTable promotion={promotion} className="card1" />
+        </Element>
+      )}
     </div>
   );
 };

@@ -40,7 +40,10 @@ dynamic-import
 matb33:collection-hooks
 percolate:migrations
 littledata:synced-cron
-zodern:standard-minifier-js@4.0.0-beta.5
 qualia:prod-shell
 jquery
 montiapm:profiler
+
+# Backend doesn't need a client architecture
+# Minifier to remove client js to reduce deployment time
+zodern:remove-client-js

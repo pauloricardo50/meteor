@@ -8,6 +8,7 @@ export default compose(
   withSmartQuery({
     query: loanOffers,
     params: ({ loan: { _id: loanId } }) => ({ loanId }),
+    deps: ({ loan: { _id: loanId } }) => [loanId],
     queryOptions: { reactive: false },
     smallLoader: true,
     dataName: 'offers',

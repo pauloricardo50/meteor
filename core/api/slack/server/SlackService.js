@@ -9,7 +9,7 @@ import colors from '../../../config/colors';
 import Calculator from '../../../utils/Calculator';
 import { percentFormatters } from '../../../utils/formHelpers';
 import { getClientMicroservice } from '../../../utils/server/getClientUrl';
-import { fullLoan } from '../../loans/queries';
+import { calculatorLoan } from '../../fragments';
 import LoanService from '../../loans/server/LoanService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import UserService from '../../users/server/UserService';
@@ -244,7 +244,14 @@ export class SlackServiceClass {
       return false;
     }
 
-    const loan = loanId && fullLoan.clone({ _id: loanId }).fetchOne();
+    const loan =
+      loanId &&
+      LoanService.get(loanId, {
+        ...calculatorLoan(),
+        name: 1,
+        hasPromotion: 1,
+        promotions: { name: 1 },
+      });
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
     const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
     let link = `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`;

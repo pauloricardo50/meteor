@@ -12,7 +12,7 @@ import PropertiesPageAdder from './PropertiesPageAdder';
 import PropertiesPageDetail from './PropertiesPageDetail';
 import PropertiesPagePromotions from './PropertiesPagePromotions';
 
-const PropertiesPage = ({ loan, currentUser }) => {
+const PropertiesPage = ({ loan }) => {
   const {
     _id: loanId,
     properties = [],
@@ -52,11 +52,7 @@ const PropertiesPage = ({ loan, currentUser }) => {
           ))}
 
           {!hasPromotion && (
-            <PropertiesPageAdder
-              loanId={loanId}
-              currentUser={currentUser}
-              purchaseType={purchaseType}
-            />
+            <PropertiesPageAdder loanId={loanId} purchaseType={purchaseType} />
           )}
         </div>
       </section>

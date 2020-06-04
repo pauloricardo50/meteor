@@ -35,11 +35,11 @@ let count = 0;
 
 // Automatically refetch a query on method calls, making everything seem
 // reactive
-const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall }) => {
+const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall, params }) => {
   // Make sure there are no clashes between multiple queries with the
   // same name
   const [queryName] = useState(
-    `${(query && query.queryName) || query}-hook-${count++}`,
+    () => `${(query && query.queryName) || query}-hook-${count++}`,
   );
   useEffect(() => {
     if (refetchOnMethodCall) {
@@ -120,9 +120,16 @@ export const useStaticMeteorData = (
     refetchOnMethodCall,
     refetch: () => refetch(config),
     query: config?.query || query,
+    params,
   });
 
-  return { loading: isLoading, data, error, refetch };
+  return {
+    loading: isLoading,
+    data,
+    error,
+    refetch,
+    isInitialLoad: isLoading && data === undefined,
+  };
 };
 
 export const useReactiveMeteorData = (
@@ -138,13 +145,27 @@ export const useReactiveMeteorData = (
 
     const handle = finalQuery[getSubscriptionFunction(type)]();
     const isReady = handle.ready();
+
     return { loading: !isReady, subscribedQuery: finalQuery };
   }, deps);
 
-  const data = useTracker(
-    () => (subscribedQuery ? subscribedQuery[getStaticFunction(type)]() : null),
-    deps,
-  );
+  const data = useTracker(() => {
+    if (subscribedQuery) {
+      return subscribedQuery[getStaticFunction(type)]();
+    }
+
+    return null;
+  }, deps);
 
   return { loading, data };
 };
+
+const useMeteorData = (args, deps) => {
+  if (args.reactive) {
+    return useReactiveMeteorData(args, deps);
+  }
+
+  return useStaticMeteorData(args, deps);
+};
+
+export default useMeteorData;

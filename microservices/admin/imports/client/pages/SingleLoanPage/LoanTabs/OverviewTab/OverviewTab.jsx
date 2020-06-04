@@ -83,7 +83,6 @@ const OverviewTab = props => {
 
       <div className="max-property-value-tools">
         <MaxPropertyValue loan={loan} />
-        {/* FIXME: This thing does not work with refinancings, and I don't think anyone uses it <Solvency loan={loan} /> */}
       </div>
 
       <div className="overview-recap">

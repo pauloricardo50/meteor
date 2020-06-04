@@ -22,10 +22,6 @@ describe('fragments', () => {
     });
   });
 
-  it('works', () => {
-    expect(fragments.adminLoan()).to.deep.include({ status: 1 });
-  });
-
   describe('fragments are all well defined and do not crash', () => {
     Object.keys(fragments).forEach(fragmentName => {
       it(fragmentName, () => {

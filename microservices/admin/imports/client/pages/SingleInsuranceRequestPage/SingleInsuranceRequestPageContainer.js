@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -9,6 +10,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
   withMatchParam('insuranceRequestId'),
+  Component => props => <Component {...props} key={props.insuranceRequestId} />,
   withSmartQuery({
     query: INSURANCE_REQUESTS_COLLECTION,
     params: ({ insuranceRequestId }) => ({
@@ -65,16 +67,16 @@ export default compose(
     queryOptions: { reactive: true, single: true },
   }),
   withSmartQuery({
-    query: ORGANISATIONS_COLLECTION,
+    query: ({ insuranceRequest: { user } = {} }) =>
+      user?.referredByOrganisation?._id && ORGANISATIONS_COLLECTION,
     params: ({ insuranceRequest: { user } = {} }) => ({
       $filters: { _id: user?.referredByOrganisation?._id },
       commissionRate: 1,
       enabledCommissionTypes: 1,
     }),
     dataName: 'referralOrganisation',
-    queryOptions: { reactive: false, single: true },
-    skip: ({ insuranceRequest: { user } = {} }) =>
-      !user?.referredByOrganisation?._id,
+    queryOptions: { single: true },
+    renderMissingDoc: false,
   }),
   withProps(({ referralOrganisation }) => {
     const referralIsCommissionned = referralOrganisation?.enabledCommissionTypes?.includes(

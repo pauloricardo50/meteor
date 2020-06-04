@@ -57,10 +57,16 @@ const schema = LoanSchema.pick('unsuccessfulReason').extend({
 });
 
 const UnsuccessfulReasonModal = ({
-  loan: { _id: loanId, status, unsuccessfulReason, anonymous, mainAssignee },
+  loan: {
+    _id: loanId,
+    status,
+    unsuccessfulReason,
+    anonymous,
+    assigneeLinks = [],
+  },
 }) => {
   const currentUser = useCurrentUser();
-
+  const mainAssignee = assigneeLinks.find(({ isMain }) => isMain);
   const shouldShowDialog =
     status === LOAN_STATUS.UNSUCCESSFUL &&
     !anonymous &&

@@ -42,6 +42,22 @@ class PromotionOptionService extends CollectionService {
               .toDate();
           }
         },
+        priorityOrder() {
+          // Automatically sets the priorityOrder based off the loanCache
+          const loanCache = this.field('loanCache');
+          if (loanCache.isSet) {
+            const { promotionLinks } = loanCache.value;
+
+            if (promotionLinks?.length) {
+              const [promotionLink] = promotionLinks;
+              return promotionLink.priorityOrder.findIndex(
+                id => id === this.docId,
+              );
+            }
+          }
+
+          return 0;
+        },
       },
     });
   }

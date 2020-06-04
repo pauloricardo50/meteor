@@ -211,7 +211,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             doc={user}
             fields={['acquisitionChannel']}
             autosaveDelay={250}
-            style={{ maxWidth: 250 }}
+            style={{ maxWidth: 250, minWidth: 150 }}
           />
         </SingleUserPageInformationItem>
 

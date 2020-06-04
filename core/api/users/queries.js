@@ -1,7 +1,6 @@
 import {
   adminUser,
   appUser as appUserFragment,
-  fullUser,
   proUser as proUserFragment,
 } from '../fragments';
 import { USER_QUERIES } from './userConstants';
@@ -16,12 +15,6 @@ export const adminUsers = Users.createQuery(
 export const appUser = Users.createQuery(
   USER_QUERIES.APP_USER,
   appUserFragment(),
-  { scoped: true },
-);
-
-export const currentUser = Users.createQuery(
-  USER_QUERIES.CURRENT_USER,
-  fullUser(),
   { scoped: true },
 );
 

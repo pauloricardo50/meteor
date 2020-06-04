@@ -52,7 +52,12 @@ export default compose(
       $filters: getFilters({ docId, doc, assignee, status }),
       ...taskTableFragment,
     }),
-    queryOptions: { reactive: false },
+    deps: ({ doc, assignee, status, docId }) => [
+      doc._id,
+      assignee,
+      status,
+      docId,
+    ],
     dataName: 'tasks',
     refetchOnMethodCall: [
       taskInsert,

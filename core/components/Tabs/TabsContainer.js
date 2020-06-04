@@ -16,10 +16,6 @@ const styles = theme => ({
     fontWeight: theme.typography.fontWeightRegular,
     maxWidth: 'unset',
   },
-  labelContainer: {
-    paddingRight: 12,
-    paddingLeft: 12,
-  },
 });
 
 export default compose(

@@ -6,11 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withProps, withState } from 'recompose';
 
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
-import {
-  LOANS_COLLECTION,
-  LOAN_STATUS,
-} from '../../../../../api/loans/loanConstants';
-import { PROMOTION_OPTIONS_COLLECTION } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import { LOAN_STATUS } from '../../../../../api/loans/loanConstants';
 import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
 import { CollectionIconLink } from '../../../../IconLink';
 import StatusLabel from '../../../../StatusLabel';
@@ -76,7 +72,6 @@ const getColumns = ({ promotionLot, promotionOption }) => {
       raw: promotionOptions.length,
       label: (
         <PriorityOrder
-          promotion={promotion}
           promotionOptions={promotionOptions}
           userId={user && user._id}
           currentId={promotionLotId}
@@ -125,23 +120,40 @@ export default compose(
     params: ({ promotionLot: { _id: promotionLotId }, status }) => ({
       promotionLotId,
       loanStatus: status,
+      $body: {
+        bank: 1,
+        createdAt: 1,
+        fullVerification: 1,
+        loanCache: 1,
+        loan: {
+          promotions: {
+            users: { name: 1, organisations: { name: 1 } },
+            agreementDuration: 1,
+          },
+          promotionOptions: {
+            name: 1,
+            promotionLots: {
+              attributedTo: { user: { _id: 1 } },
+              status: 1,
+            },
+            loan: { _id: 1 },
+          },
+          proNote: 1,
+          status: 1,
+          user: { phoneNumbers: 1, name: 1, email: 1 },
+        },
+        priorityOrder: 1,
+        promotion: { users: { _id: 1 }, agreementDuration: 1 },
+        promotionLots: { name: 1, promotion: { name: 1 } },
+        reservationAgreement: 1,
+        reservationDeposit: 1,
+        simpleVerification: 1,
+        status: 1,
+        updatedAt: 1,
+      },
     }),
-    queryOptions: {
-      reactive: false,
-      shouldRefetch: (
-        {
-          query: {
-            params: { loanStatus: prevLoanStatus },
-          },
-        },
-        {
-          query: {
-            params: { loanStatus: nextLoanStatus },
-          },
-        },
-      ) => prevLoanStatus !== nextLoanStatus,
-    },
     dataName: 'promotionOptions',
+    deps: ({ status }) => [status],
   }),
   withRouter,
   withProps(({ promotionOptions = [], promotionLot }) => ({

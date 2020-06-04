@@ -5,50 +5,49 @@ const classifiedCities = require('./classifiedCities.json');
 
 export const getStats = ({ cantons = [] }) => {
   const loans = LoanService.fetch({
-    $filters: {
-      'structureCache.propertyId': { $exists: true },
-    },
-    structure: { property: { zipCode: 1, country: 1 } },
+    $filters: { 'structureCache.propertyId': { $exists: true } },
+    structureCache: { propertyId: 1 },
+    properties: { zipCode: 1, country: 1 },
   });
 
-  const filteredLoans = loans.filter(
-    ({ structure }) =>
-      structure?.property?.zipCode && structure?.property?.country === 'CH',
+  const filteredLoans = loans
+    .map(({ structureCache: { propertyId }, properties }) =>
+      properties.find(({ _id }) => _id === propertyId),
+    )
+    .filter(property => property?.country === 'CH');
+
+  const mainCities = filteredLoans.reduce(
+    (gpsStats, { zipCode: propertyZipCode }) => {
+      const city = classifiedCities[propertyZipCode];
+
+      if (!city) {
+        return gpsStats;
+      }
+
+      const { closestMainCity } = city;
+      const currentValue = gpsStats[closestMainCity.zipCode];
+
+      if (currentValue?.count) {
+        return {
+          ...gpsStats,
+          [closestMainCity.zipCode]: {
+            ...closestMainCity,
+            count: currentValue.count + 1,
+          },
+        };
+      }
+
+      return {
+        ...gpsStats,
+        [closestMainCity.zipCode]: { ...closestMainCity, count: 1 },
+      };
+    },
+    {},
   );
 
-  return filteredLoans
-    .reduce(
-      (
-        gpsStats,
-        { structure: { property: { zipCode: propertyZipCode } = {} } },
-      ) => {
-        const city = classifiedCities[propertyZipCode];
-
-        if (!city) {
-          return gpsStats;
-        }
-
-        const { closestMainCity } = city;
-
-        const currentStatIndex = gpsStats.findIndex(
-          ({ zipCode }) => zipCode === closestMainCity.zipCode,
-        );
-
-        if (currentStatIndex !== -1) {
-          const [currentStat] = gpsStats.splice(currentStatIndex, 1);
-
-          const { count = 0 } = currentStat;
-          return [...gpsStats, { ...currentStat, count: count + 1 }];
-        }
-
-        return [...gpsStats, { ...closestMainCity, count: 1 }];
-      },
-      [],
-    )
-    .filter(({ zipCode }) => {
-      const canton = getCanton(zipCode);
-      return cantons.includes(canton);
-    });
+  return Object.keys(mainCities)
+    .filter(zipCode => cantons.includes(getCanton(zipCode)))
+    .map(zipCode => mainCities[zipCode]);
 };
 
 export const getCitiesFromZipCode = ({ zipCode = '' }) => {

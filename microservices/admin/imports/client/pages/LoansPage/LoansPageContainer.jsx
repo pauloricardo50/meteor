@@ -32,6 +32,7 @@ export default compose(
       },
       $options: { sort: { createdAt: -1 } },
     }),
+    deps: ({ assignees }) => [assignees],
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),

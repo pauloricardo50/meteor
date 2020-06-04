@@ -5,6 +5,8 @@ import { compose } from 'recompose';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 
+import { loanSummaryFragment } from '../../components/LoanSummaryList/LoanSummary';
+
 export default compose(
   withRouter,
   // Reload page on user change
@@ -17,17 +19,7 @@ export default compose(
       $filters: { _id: userId || match.params.userId },
       assignedEmployeeCache: 1,
       roles: 1,
-      loans: {
-        borrowers: { name: 1 },
-        createdAt: 1,
-        customName: 1,
-        name: 1,
-        promotions: { name: 1 },
-        properties: { address1: 1 },
-        status: 1,
-        structure: 1,
-        updatedAt: 1,
-      },
+      loans: loanSummaryFragment,
       promotions: { name: 1, status: 1 },
       proProperties: {
         address1: 1,

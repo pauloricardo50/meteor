@@ -6,3 +6,4 @@ export const recentNewsletters = createQuery(
   EMAIL_QUERIES.RECENT_NEWSLETTERS,
   () => {},
 );
+console.log('recentNewsletters:', recentNewsletters);

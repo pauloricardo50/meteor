@@ -18,22 +18,15 @@ const shouldRenderTab = ({ status, lenders = [] }) => {
 };
 
 const LendersTab = props => {
-  const {
-    loan: {
-      _id: loanId,
-      offers,
-      structure: { property },
-      status,
-      lenders,
-    },
-  } = props;
+  const { loan } = props;
+  const { _id: loanId, status, lenders } = loan;
   const disableOfferAdder = !lenders || lenders.length === 0;
 
   return (
     <div className="lenders-tab">
       {shouldRenderTab({ status, lenders }) ? (
         <>
-          <LendersActivation loan={props.loan} />
+          <LendersActivation loan={loan} />
           <LenderPicker {...props} />
           <OfferAdder
             loanId={loanId}
@@ -45,9 +38,9 @@ const LendersTab = props => {
             }}
           />
           <h1 className="text-center">Prêteurs</h1>
-          <LenderList {...props} />
+          <LenderList lenders={lenders} />
           <h1 className="text-center">Offres</h1>
-          <OfferList offers={offers} property={property} />
+          <OfferList loan={loan} />
         </>
       ) : (
         <LendersTabEmptyState />

@@ -3,17 +3,16 @@ import { withRouter } from 'react-router-dom';
 
 import useCurrentUser from '../../hooks/useCurrentUser';
 import useMedia from '../../hooks/useMedia';
+import { getMainOrganisation } from '../../utils/userFunctions';
 import Button from '../Button';
 import T from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 
 const TopNavButtons = ({ children, history }) => {
   const currentUser = useCurrentUser();
-  const { name, organisations = [] } = currentUser || {};
+  const { name } = currentUser || {};
   const isMobile = useMedia({ maxWidth: 768 });
-  const mainOrganisation = organisations.find(
-    ({ $metadata: { isMain } = {} }) => isMain,
-  );
+  const mainOrganisation = getMainOrganisation(currentUser);
 
   return (
     <div className="buttons">

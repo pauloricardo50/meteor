@@ -2,18 +2,21 @@ import { compose, mapProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../../../api/containerToolkit';
 import { lenderRules } from '../../../../api/fragments';
-import { ORGANISATION_FEATURES } from '../../../../api/organisations/organisationConstants';
-import { adminOrganisations } from '../../../../api/organisations/queries';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from '../../../../api/organisations/organisationConstants';
 
 export default compose(
   withSmartQuery({
-    query: adminOrganisations,
+    query: ORGANISATIONS_COLLECTION,
     params: {
-      features: ORGANISATION_FEATURES.LENDER,
-      $body: {
-        lenderRules: lenderRules(),
-        name: 1,
+      $filters: {
+        features: ORGANISATION_FEATURES.LENDER,
+        lenderRulesCount: { $gte: 1 },
       },
+      lenderRules: lenderRules(),
+      name: 1,
     },
     queryOptions: {
       reactive: false,

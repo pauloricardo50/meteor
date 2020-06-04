@@ -4,15 +4,15 @@ import { createRoute } from '../../../utils/routerUtils';
 import Route from '../../BaseRouter/Route';
 import Switch from '../../BaseRouter/Switch';
 import PromotionCustomers from './PromotionCustomers/loadable';
+import PromotionDescription from './PromotionDescription/loadable';
 import PromotionFiles from './PromotionFiles';
 import PromotionManagement from './PromotionManagement/loadable';
-import PromotionMap from './PromotionMap/loadable';
 import PromotionPageOverview from './PromotionPageOverview';
 import PromotionPartners from './PromotionPartners';
 import PromotionUsers from './PromotionUsers/loadable';
 
 const TABS_COMPONENTS = {
-  map: PromotionMap,
+  description: PromotionDescription,
   partners: PromotionPartners,
   files: PromotionFiles,
   users: PromotionUsers,

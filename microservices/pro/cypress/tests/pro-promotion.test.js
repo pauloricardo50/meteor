@@ -49,6 +49,7 @@ describe('Pro promotion', () => {
           },
         },
       });
+      cy.refetch();
 
       cy.get('tbody tr').should('have.length', 4);
 
@@ -124,6 +125,7 @@ describe('Pro promotion', () => {
           canInviteCustomers: true,
         },
       });
+      cy.refetch();
 
       cy.get('.actions')
         .first()
@@ -162,7 +164,7 @@ describe('Pro promotion', () => {
       cy.contains('Promotions').click();
       cy.contains('En cours').click();
 
-      cy.get('td.col-loans')
+      cy.get('span.loan-count')
         .invoke('text')
         .then(text => {
           const counts = text.split('');

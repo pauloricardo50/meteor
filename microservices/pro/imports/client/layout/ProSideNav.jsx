@@ -10,11 +10,13 @@ import List from 'core/components/Material/List';
 import ListItem from 'core/components/Material/ListItem';
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
+import { getMainOrganisation } from 'core/utils/userFunctions';
 
 import PRO_ROUTES from '../../startup/client/proRoutes';
 
 const getItems = (currentUser = {}) => {
-  const { organisations = [] } = currentUser;
+  const mainOrganisation = getMainOrganisation(currentUser);
+
   return [
     {
       label: <T id="ProSideNav.dashboard" />,
@@ -25,11 +27,7 @@ const getItems = (currentUser = {}) => {
       label: <T id="ProSideNav.revenues" />,
       to: createRoute(PRO_ROUTES.PRO_REVENUES_PAGE.path),
       icon: 'monetizationOn',
-      condition: !!(
-        organisations.length &&
-        organisations[0].commissionRates &&
-        organisations[0].commissionRates.length > 0
-      ),
+      condition: !!(mainOrganisation?.commissionRates?.length > 0),
     },
     {
       label: <T id="ProSideNav.organisation" />,

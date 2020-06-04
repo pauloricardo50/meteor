@@ -72,7 +72,7 @@ class MailchimpService {
     }
 
     if (!API_KEY) {
-      return;
+      return Promise.resolve({});
     }
 
     const { method, makeEndpoint } = endpointConfig;
@@ -119,6 +119,10 @@ class MailchimpService {
   }
 
   getMember({ email }) {
+    console.error(
+      'fetching mailchimp member, check if this is necessary, or adjust the query',
+      email,
+    );
     return this.callApi({
       endpoint: 'getMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
@@ -189,6 +193,11 @@ class MailchimpService {
     return this.callApi({
       endpoint: 'archiveMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
+    }).catch(error => {
+      // Ignore 404 errors on this one
+      if (!error.message.includes('404')) {
+        throw error;
+      }
     });
   }
 

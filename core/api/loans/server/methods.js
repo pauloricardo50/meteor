@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import ActivityService from '../../activities/server/ActivityService';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
-import { adminLoan } from '../../fragments';
+import { calculatorLoan } from '../../fragments';
 import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
 import Security from '../../security/Security';
@@ -308,7 +308,7 @@ sendLoanChecklist.setHandler(
       email: assigneeAddress,
       name: assigneeName,
     } = UserService.get(userId, { email: 1, name: 1 });
-    const loan = LoanService.get(loanId, adminLoan());
+    const loan = LoanService.get(loanId, calculatorLoan());
     return sendEmailToAddress.serverRun({
       address,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,

@@ -123,6 +123,54 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(39100.4);
     });
 
+    it('calculates a smaller amount for promotions and constructions', () => {
+      // This is an exact example for a customer
+      // https://github.com/e-Potek/epotek/issues/2529
+      loan = {
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        purchaseType: PURCHASE_TYPE.ACQUISITION,
+        structures: [
+          {
+            id: 'struct',
+            promotionOptionId: 'proOptId',
+            wantedLoan: 1280000,
+          },
+        ],
+        selectedStructure: 'struct',
+        promotionOptions: [
+          {
+            _id: 'proOptId',
+            promotionLots: [
+              {
+                properties: [
+                  {
+                    landValue: 452500,
+                    additionalMargin: 333500,
+                    constructionValue: 974000,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        promotions: [{ type: PROMOTION_TYPES.SHARE }],
+      };
+
+      const {
+        buyersContractFees,
+        mortgageNoteFees,
+      } = calc.getNotaryFeesForLoan({ loan });
+      expect(buyersContractFees).to.deep.equal({
+        total: 44610.21,
+        propertyRegistrationTax: 23580,
+        propertyConstructionTax: 9740,
+        landRegistryPropertyTax: 1965,
+        notaryIncomeFromProperty: 8325.21,
+        additionalFees: 1000,
+      });
+      expect(mortgageNoteFees.total).to.equal(24641.58);
+    });
+
     // FIXME: Skip these until we officially handle construction loans
     it.skip('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
       loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
@@ -186,11 +234,24 @@ describe('NotaryFeesCalculator', () => {
 
     it('returns the right amount for a promotion property', () => {
       loan = {
-        structure: {
-          property: { landValue: 395750, constructionValue: 824250 },
-          wantedLoan: 968000,
-          promotionOptionId: 'asd',
-        },
+        structures: [
+          {
+            id: 'struct',
+            wantedLoan: 968000,
+            promotionOptionId: 'asd',
+          },
+        ],
+        selectedStructure: 'struct',
+        promotionOptions: [
+          {
+            _id: 'asd',
+            promotionLots: [
+              {
+                properties: [{ landValue: 395750, constructionValue: 824250 }],
+              },
+            ],
+          },
+        ],
         promotions: [{ type: PROMOTION_TYPES.SHARE }],
       };
       const fees = calc.getNotaryFeesForLoan({ loan });

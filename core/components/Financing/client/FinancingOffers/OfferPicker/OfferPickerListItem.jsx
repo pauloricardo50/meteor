@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { toClass } from 'recompose';
 
+import Calculator from '../../../../../utils/Calculator';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import CounterpartsOfferIcon from '../../../../CounterpartsOfferIcon';
 import T from '../../../../Translation';
@@ -9,15 +10,26 @@ import OfferPickerListItemInterests from './OfferPickerListItemInterests';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 
 const OfferPickerListItem = props => {
-  const { offer, selected, structure, handleClick, displayDetail } = props;
   const {
-    organisation: { name, logo },
+    offer,
+    loan,
+    selected,
+    structure,
+    handleClick,
+    displayDetail,
+  } = props;
+  const {
+    _id: offerId,
     maxAmount,
     amortization,
     fees = 0,
     epotekFees = 0,
     withCounterparts,
   } = offer;
+  const {
+    organisation: { name, logo },
+  } = Calculator.selectLenderForOfferId({ loan, offerId });
+
   return (
     <div
       className={cx('offer-picker-list-item card1 card-hover', { selected })}

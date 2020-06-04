@@ -6,7 +6,6 @@ import UploaderArray from '../UploaderArray';
 const offerDocumentsArray = [{ id: 'OTHER', noTooltips: true }];
 
 const OfferDocuments = ({ offer }) => {
-  const currentUser = {};
   const documentsCount = Object.keys(offer.documents || {}).reduce(
     (tot, key) => {
       const documentValue = offer.documents[key];
@@ -23,7 +22,6 @@ const OfferDocuments = ({ offer }) => {
       <UploaderArray
         doc={offer}
         documentArray={offerDocumentsArray}
-        currentUser={currentUser}
         allowRequireByAdmin={false}
       />
     </DialogSimple>

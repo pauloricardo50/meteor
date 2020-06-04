@@ -1,6 +1,7 @@
 import '../../activities/server/exposures';
 import '../../borrowers/server/exposures';
 import '../../contacts/server/exposures';
+import '../../email/server/exposures';
 import '../../googleDrive/server/exposures';
 import '../../interestRates/server/exposures';
 import '../../irs10y/server/exposures';
@@ -25,5 +26,6 @@ import '../../insuranceRequests/server/exposures';
 import '../../insurances/server/exposures';
 import '../../insuranceProducts/server/exposures';
 import '../../commissionRates/server/exposures';
+import '../../lots/server/exposures';
 import './exposures';
 import './globalExposures';
