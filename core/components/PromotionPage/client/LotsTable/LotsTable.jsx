@@ -75,7 +75,7 @@ const makeGetModalProps = ({ schema, canModifyLots }) => lot => {
         lotId,
         object: { promotionLotId, name, description, value },
       }),
-    onDelete: ({ _id: lotId }) => lotRemove.run({ lotId }),
+    onDelete: () => lotRemove.run({ lotId: lot._id }),
   };
 };
 
