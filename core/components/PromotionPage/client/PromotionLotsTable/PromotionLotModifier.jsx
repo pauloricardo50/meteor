@@ -59,7 +59,7 @@ const ProPromotionLotModifier = ({
 
 export default compose(
   withProps(({ promotionLot }) => ({
-    updateProperty: property =>
+    updateProperty: ({ promotionLotGroupIds, ...property }) =>
       propertyUpdate
         .run({
           propertyId: promotionLot.properties[0]._id,
@@ -68,7 +68,7 @@ export default compose(
         .then(() =>
           updateLotPromotionLotGroups.run({
             promotionLotId: promotionLot._id,
-            promotionLotGroupIds: property.promotionLotGroupIds,
+            promotionLotGroupIds,
           }),
         ),
     deletePromotionLot: () =>

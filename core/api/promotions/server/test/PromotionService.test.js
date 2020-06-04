@@ -1262,7 +1262,7 @@ describe('PromotionService', function() {
         promotionLotGroupIds: 1,
       });
 
-      expect(promotionLotGroupIds.length).to.deep.equal(['group1']);
+      expect(promotionLotGroupIds).to.deep.equal(['group1']);
     });
   });
 });

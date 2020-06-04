@@ -623,5 +623,210 @@ describe('PromotionLotService', function() {
         }),
       ).to.throw('Group "group1" not found in PromotionLotGroupIds');
     });
+
+    describe('updatePromotionLotGroupIds', () => {
+      it('appends a new promtionLotGroupId', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(3);
+        const [groupId1, groupId2, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('adds new promtionLotGroupIds when there were no promotionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(3);
+        const [groupId1, groupId2, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('removes a promtionLotGroupId', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(2);
+        const [groupId1, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('removes all promtionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: [],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(0);
+      });
+
+      it('does not change the promtionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(3);
+        const [groupId1, groupId2, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('adds and removes promtionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(2);
+        const [groupId1, groupId2] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+      });
+    });
   });
 });

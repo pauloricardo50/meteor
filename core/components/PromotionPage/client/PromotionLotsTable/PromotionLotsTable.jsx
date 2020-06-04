@@ -8,12 +8,10 @@ import MongoSelect from '../../../Select/MongoSelect';
 import T from '../../../Translation';
 import PromotionLotDetail from '../PromotionLotDetail';
 import PromotionMetadataContext from '../PromotionMetadata';
+import AppPromotionLotsTableContainer from './AppPromotionLotsTableContainer';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotModifier from './PromotionLotModifier';
-import {
-  AppPromotionLotsTableContainer,
-  ProPromotionLotsTableContainer,
-} from './PromotionLotsTableContainer';
+import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 
 const makeGetModalProps = ({
   canModifyLots,
@@ -25,7 +23,7 @@ const makeGetModalProps = ({
   maxWidth: false,
   title: (
     <div className="modal-promotion-lot-title">
-      <span>Lot {promotionLot && promotionLot.name}</span>
+      <span>Lot {promotionLot?.name}</span>
       <div>
         {canModifyLots && (
           <PromotionLotModifier
@@ -36,8 +34,8 @@ const makeGetModalProps = ({
         )}
         {canManageDocuments && (
           <LotDocumentsManager
-            documents={promotionLot && promotionLot.documents}
-            property={promotionLot && promotionLot.properties[0]}
+            documents={promotionLot?.documents}
+            property={promotionLot?.properties[0]}
             currentUser={currentUser}
           />
         )}
