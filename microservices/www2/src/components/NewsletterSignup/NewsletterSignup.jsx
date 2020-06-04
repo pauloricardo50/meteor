@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { RichText } from 'prismic-reactjs';
 import TextInput from 'core/components/TextInput/TextInput';
 import Button from '../Button';
+import RecentNewsletters from './RecentNewsletters';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 
@@ -31,37 +32,49 @@ const NewsletterSignup = ({ primary, placement }) => {
     </form>
   );
 
-  if (placement === 'footer') {
-    return (
-      <>
-        <p>Newsletter</p>
-        <SignupForm />
-      </>
-    );
+  switch (placement) {
+    case 'footer':
+      return (
+        <>
+          <p>Newsletter</p>
+          <SignupForm />
+        </>
+      );
+
+    case 'article':
+      return (
+        <section id={primary.section_id} className="newsletter-signup--article">
+          <div className="newsletter-signup__content">
+            {RichText.render(primary.section_heading)}
+
+            {RichText.render(primary.content)}
+
+            <SignupForm />
+          </div>
+
+          {primary.illustration && (
+            <div className="newsletter-signup__image">
+              <img src={primary.illustration.url} alt="" />
+            </div>
+          )}
+        </section>
+      );
+
+    default:
+      return (
+        <section id={primary.section_id} className="newsletter-signup">
+          <div className="newsletter-signup__content">
+            {RichText.render(primary.section_heading)}
+
+            {RichText.render(primary.content)}
+
+            <SignupForm />
+          </div>
+
+          <RecentNewsletters />
+        </section>
+      );
   }
-
-  return (
-    <section
-      id={primary.section_id}
-      className={`newsletter-signup${
-        placement === 'article' ? '--article' : ''
-      }`}
-    >
-      <div className="newsletter-signup__content">
-        {RichText.render(primary.section_heading)}
-
-        {RichText.render(primary.content)}
-
-        <SignupForm />
-      </div>
-
-      {placement === 'article' && primary.illustration && (
-        <div className="newsletter-signup__image">
-          <img src={primary.illustration.url} alt="" />
-        </div>
-      )}
-    </section>
-  );
 };
 
 export default NewsletterSignup;

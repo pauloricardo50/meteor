@@ -11,6 +11,7 @@ const languageData = {
     cookieAccept: `I accept`,
     cookieDecline: `Decline`,
     loginText: 'Login',
+    recentNewslettersToggle: 'See previous newsletters',
     signupButtonText: 'Sign up',
     recommendedArticleHeader: `This might interest you`,
     rateTable: {
@@ -31,6 +32,7 @@ const languageData = {
     cookieDecline: `Refuser`,
     loginText: 'Se connecter',
     signupButtonText: `S'inscrire`,
+    recentNewslettersToggle: `Voir les newsletter précédentes`,
     recommendedArticleHeader: `Ceci pourrait vous intéresser`,
     rateTable: {
       header: ['Durée', 'Tendance', 'Taux'],

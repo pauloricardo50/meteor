@@ -76,6 +76,33 @@ exports.sourceNodes = async ({
       actions.createNode(node);
     });
   }
+
+  // create graphql nodes for recent newsletters
+  let recentNewsletters;
+
+  try {
+    recentNewsletters = await meteorClient.call(
+      'named_query_RECENT_NEWSLETTERS',
+    );
+  } catch (error) {
+    reporter.error('Failed to get recent newsletters data:', error);
+  }
+
+  if (recentNewsletters) {
+    reporter.success('e-Potek: retrieve recent newsletters data');
+
+    recentNewsletters.forEach(newsletter => {
+      const node = {
+        ...newsletter,
+        internal: {
+          type: 'newsletter',
+          contentDigest: createContentDigest(newsletter),
+          description: 'e-Potek Newsletter',
+        },
+      };
+      actions.createNode(node);
+    });
+  }
 };
 
 const onCreateWebpackConfig = ({ actions: { setWebpackConfig } }) => {
