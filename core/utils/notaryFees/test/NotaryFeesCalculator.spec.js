@@ -260,7 +260,7 @@ describe('NotaryFeesCalculator', () => {
         total: 23843.96,
       });
       expect(fees.buyersContractFees).to.deep.include({
-        total: 18205.16,
+        total: 16626.68,
       });
       expect(fees.mortgageNoteFees).to.deep.include({
         total: 7217.28,
