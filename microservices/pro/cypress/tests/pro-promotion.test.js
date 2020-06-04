@@ -164,7 +164,7 @@ describe('Pro promotion', () => {
       cy.contains('Promotions').click();
       cy.contains('En cours').click();
 
-      cy.get('td.col-loans')
+      cy.get('span.loan-count')
         .invoke('text')
         .then(text => {
           const counts = text.split('');

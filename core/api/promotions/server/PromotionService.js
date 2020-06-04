@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 
 import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
@@ -40,6 +41,8 @@ class PromotionService extends CollectionService {
       promotionId,
       { address1: 1, address2: 1, zipCode: 1, city: 1, canton: 1 },
     );
+    const { promotionLotGroupIds } = property;
+
     const propertyId = PropertyService.insert({
       property: {
         ...property,
@@ -53,6 +56,7 @@ class PromotionService extends CollectionService {
     });
     const promotionLotId = PromotionLotService.insert({
       propertyLinks: [{ _id: propertyId }],
+      promotionLotGroupIds,
     });
     this.addLink({
       id: promotionId,
@@ -345,6 +349,102 @@ class PromotionService extends CollectionService {
     }
 
     return this.update({ promotionId, object: { status } });
+  }
+
+  addPromotionLotGroup({ promotionId, promotionLotGroup }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    if (
+      promotionLotGroups.some(({ label }) => label === promotionLotGroup.label)
+    ) {
+      throw new Meteor.Error(
+        `Le groupe "${promotionLotGroup.label}" existe déjà`,
+      );
+    }
+
+    const id = Random.id();
+
+    return this._update({
+      id: promotionId,
+      object: {
+        promotionLotGroups: [
+          ...promotionLotGroups,
+          { id, ...promotionLotGroup },
+        ],
+      },
+    });
+  }
+
+  removePromotionLotGroup({ promotionId, promotionLotGroupId }) {
+    const { promotionLotGroups = [], promotionLots = [] } = this.get(
+      promotionId,
+      {
+        promotionLotGroups: 1,
+        promotionLots: { promotionLotGroupIds: 1 },
+      },
+    );
+
+    const groupToRemove = promotionLotGroups.find(
+      ({ id }) => id === promotionLotGroupId,
+    );
+
+    if (!groupToRemove) {
+      throw new Meteor.Error(
+        `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const promotionLotsInGroup = promotionLots.filter(
+      ({ promotionLotGroupIds = [] }) =>
+        promotionLotGroupIds.some(id => id === promotionLotGroupId),
+    );
+
+    if (promotionLotsInGroup.length) {
+      promotionLotsInGroup.forEach(({ _id: promotionLotId }) =>
+        PromotionLotService.removeFromPromotionLotGroup({
+          promotionLotId,
+          promotionLotGroupId,
+        }),
+      );
+    }
+
+    const newGroups = promotionLotGroups.filter(
+      ({ id }) => id !== promotionLotGroupId,
+    );
+
+    return this._update({
+      id: promotionId,
+      object: { promotionLotGroups: newGroups },
+    });
+  }
+
+  updatePromotionLotGroup({ promotionId, promotionLotGroupId, object }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    const groupToUpdate = promotionLotGroups.find(
+      ({ id }) => id === promotionLotGroupId,
+    );
+
+    if (!groupToUpdate) {
+      throw new Meteor.Error(
+        `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const newGroups = promotionLotGroups;
+    newGroups[newGroups.findIndex(({ id }) => id === groupToUpdate.id)] = {
+      id: groupToUpdate.id,
+      ...object,
+    };
+
+    return this._update({
+      id: promotionId,
+      object: { promotionLotGroups: newGroups },
+    });
   }
 }
 

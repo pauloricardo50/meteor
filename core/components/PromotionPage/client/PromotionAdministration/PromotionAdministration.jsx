@@ -14,6 +14,7 @@ import T from '../../../Translation';
 import UploaderArray from '../../../UploaderArray';
 import PromotionLoanLinker from '../PromotionLoanLinker';
 import PromotionAdministrationContainer from './PromotionAdministrationContainer';
+import PromotionLotGroupsManager from './PromotionLotGroupsManager';
 
 const PromotionAdministration = ({
   promotion,
@@ -26,6 +27,8 @@ const PromotionAdministration = ({
   openLinkLoanModal,
   setOpenLinkLoanModal,
   permissions = {},
+  openPromotionLotGroupsModal,
+  setOpenPromotionLotGroupsModal,
 }) => {
   const currentUser = useCurrentUser();
   const { canManageDocuments } = permissions;
@@ -117,6 +120,15 @@ const PromotionAdministration = ({
         actions={dialogActions(setOpenLinkLoanModal)}
       >
         <PromotionLoanLinker promotion={promotion} />
+      </Dialog>
+
+      <Dialog
+        title={<T id="PromotionAdministration.managePromotionLotGroups" />}
+        open={openPromotionLotGroupsModal}
+        onClose={() => setOpenPromotionLotGroupsModal(false)}
+        actions={dialogActions(setOpenPromotionLotGroupsModal)}
+      >
+        <PromotionLotGroupsManager promotion={promotion} />
       </Dialog>
     </>
   );

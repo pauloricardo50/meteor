@@ -57,7 +57,13 @@ const schema = LoanSchema.pick('unsuccessfulReason').extend({
 });
 
 const UnsuccessfulReasonModal = ({
-  loan: { _id: loanId, status, unsuccessfulReason, anonymous, assigneeLinks },
+  loan: {
+    _id: loanId,
+    status,
+    unsuccessfulReason,
+    anonymous,
+    assigneeLinks = [],
+  },
 }) => {
   const currentUser = useCurrentUser();
   const mainAssignee = assigneeLinks.find(({ isMain }) => isMain);

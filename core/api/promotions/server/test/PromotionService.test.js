@@ -989,4 +989,280 @@ describe('PromotionService', function() {
       );
     });
   });
+
+  describe('promotionLotGroups', () => {
+    it('adds new promotionLotGroup to the promotion', () => {
+      generator({ promotions: { _id: 'promotion' } });
+
+      PromotionService.addPromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroup: { label: 'Group 1' },
+      });
+
+      const { promotionLotGroups = [] } = PromotionService.get('promotion', {
+        promotionLotGroups: 1,
+      });
+
+      expect(promotionLotGroups.length).to.equal(1);
+      const [group] = promotionLotGroups;
+      expect(group.label).to.equal('Group 1');
+      expect(group.id).to.not.equal(undefined);
+    });
+
+    it('appends new promotionLotGroup to the promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+            {
+              id: 'group2',
+              label: 'Group 2',
+            },
+          ],
+        },
+      });
+
+      PromotionService.addPromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroup: { label: 'Group 3' },
+      });
+
+      const { promotionLotGroups = [] } = PromotionService.get('promotion', {
+        promotionLotGroups: 1,
+      });
+
+      expect(promotionLotGroups.length).to.equal(3);
+      const [group1, group2, group3] = promotionLotGroups;
+      expect(group1).to.deep.equal({
+        id: 'group1',
+        label: 'Group 1',
+      });
+      expect(group2).to.deep.equal({
+        id: 'group2',
+        label: 'Group 2',
+      });
+      expect(group3.label).to.equal('Group 3');
+      expect(group3.id).to.not.equal(undefined);
+    });
+
+    it('throws when adding a promotionLotGroup with the same label', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+            {
+              id: 'group2',
+              label: 'Group 2',
+            },
+          ],
+        },
+      });
+
+      expect(() =>
+        PromotionService.addPromotionLotGroup({
+          promotionId: 'promotion',
+          promotionLotGroup: { label: 'Group 1' },
+        }),
+      ).to.throw('Le groupe "Group 1" existe déjà');
+    });
+
+    it('removes a promotionLotGroup from the promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+          ],
+        },
+      });
+
+      PromotionService.removePromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroupId: 'group1',
+      });
+
+      const { promotionLotGroups = [] } = PromotionService.get('promotion', {
+        promotionLotGroups: 1,
+      });
+
+      expect(promotionLotGroups.length).to.equal(0);
+    });
+
+    it('removes only one promotionLotGroup from the promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+            {
+              id: 'group2',
+              label: 'Group 2',
+            },
+            {
+              id: 'group3',
+              label: 'Group 3',
+            },
+          ],
+        },
+      });
+
+      PromotionService.removePromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroupId: 'group2',
+      });
+
+      const { promotionLotGroups = [] } = PromotionService.get('promotion', {
+        promotionLotGroups: 1,
+      });
+
+      expect(promotionLotGroups.length).to.equal(2);
+      const [group1, group3] = promotionLotGroups;
+      expect(group1).to.deep.equal({ id: 'group1', label: 'Group 1' });
+      expect(group3).to.deep.equal({ id: 'group3', label: 'Group 3' });
+    });
+
+    it('throws if promotionLotGroup does not exist when removing', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+        },
+      });
+
+      expect(() =>
+        PromotionService.removePromotionLotGroup({
+          promotionId: 'promotion',
+          promotionLotGroupId: 'group1',
+        }),
+      ).to.throw('PromotionLotGroup id "group1" not found');
+    });
+
+    it('updates a promotionLotGroup', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+          ],
+        },
+      });
+
+      PromotionService.updatePromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroupId: 'group1',
+        object: { label: 'New group 1' },
+      });
+
+      const { promotionLotGroups = [] } = PromotionService.get('promotion', {
+        promotionLotGroups: 1,
+      });
+
+      expect(promotionLotGroups.length).to.equal(1);
+      const [group] = promotionLotGroups;
+      expect(group).to.deep.equal({ id: 'group1', label: 'New group 1' });
+    });
+
+    it('updates only one promotionLotGroup', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+            {
+              id: 'group2',
+              label: 'Group 2',
+            },
+            {
+              id: 'group3',
+              label: 'Group 3',
+            },
+          ],
+        },
+      });
+
+      PromotionService.updatePromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroupId: 'group2',
+        object: { label: 'New group 2' },
+      });
+
+      const { promotionLotGroups = [] } = PromotionService.get('promotion', {
+        promotionLotGroups: 1,
+      });
+
+      expect(promotionLotGroups.length).to.equal(3);
+      const [group1, group2, group3] = promotionLotGroups;
+      expect(group1).to.deep.equal({ id: 'group1', label: 'Group 1' });
+      expect(group2).to.deep.equal({ id: 'group2', label: 'New group 2' });
+      expect(group3).to.deep.equal({ id: 'group3', label: 'Group 3' });
+    });
+
+    it('throws if promotionLotGroup does not exist when updating', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+        },
+      });
+
+      expect(() =>
+        PromotionService.updatePromotionLotGroup({
+          promotionId: 'promotion',
+          promotionLotGroupId: 'group1',
+          object: { label: 'Group 1' },
+        }),
+      ).to.throw('PromotionLotGroup id "group1" not found');
+    });
+
+    it('removes the promotionLots from the group when removing it', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            {
+              id: 'group1',
+              label: 'Group 1',
+            },
+            {
+              id: 'group2',
+              label: 'Group 2',
+            },
+          ],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1', 'group2'],
+          },
+        },
+      });
+
+      PromotionService.removePromotionLotGroup({
+        promotionId: 'promotion',
+        promotionLotGroupId: 'group2',
+      });
+
+      const { promotionLotGroupIds } = PromotionLotService.get('promotionLot', {
+        promotionLotGroupIds: 1,
+      });
+
+      expect(promotionLotGroupIds).to.deep.equal(['group1']);
+    });
+  });
 });

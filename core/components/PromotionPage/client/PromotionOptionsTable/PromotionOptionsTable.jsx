@@ -16,6 +16,7 @@ import StatusLabel from '../../../StatusLabel';
 import T, { IntlDate } from '../../../Translation';
 import PromotionReservationProgress from '../../PromotionReservationProgress';
 import PromotionCustomer from '../PromotionCustomer';
+import PromotionLotGroupChip from '../PromotionLotsTable/PromotionLotGroupChip';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
 const getModalProps = promotionOption => {
@@ -42,7 +43,11 @@ const getModalProps = promotionOption => {
 
 const PromotionOptionsTable = ({ promotion }) => {
   const currentUser = useCurrentUser();
-  const { _id: promotionId, users: promotionUsers } = promotion;
+  const {
+    _id: promotionId,
+    users: promotionUsers,
+    promotionLotGroups = [],
+  } = promotion;
   const [statusFilter, setStatusFilter] = useState({
     $in: [
       PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
@@ -61,6 +66,8 @@ const PromotionOptionsTable = ({ promotion }) => {
     return userIsInPromotion ? currentUser._id : null;
   });
 
+  const [promotionLotGroupIdFilter, setPromotionLotGroupIdFilter] = useState();
+
   return (
     <div className="card1 card-top">
       <div className="flex center-align">
@@ -76,6 +83,16 @@ const PromotionOptionsTable = ({ promotion }) => {
           label="Statut"
           className="mr-8"
         />
+        {!!promotionLotGroups.length && (
+          <MongoSelect
+            value={promotionLotGroupIdFilter}
+            onChange={setPromotionLotGroupIdFilter}
+            options={promotionLotGroups}
+            id="promotionLotGroupIds"
+            label="Groupe de lots"
+            className="mr-8"
+          />
+        )}
         <Select
           value={invitedByFilter}
           onChange={setInvitedByFilter}
@@ -105,9 +122,11 @@ const PromotionOptionsTable = ({ promotion }) => {
             },
             promotionId,
             invitedBy: invitedByFilter,
+            promotionLotGroupId: promotionLotGroupIdFilter,
             $body: {
               bank: 1,
               createdAt: 1,
+              promotionLots: { name: 1, promotionLotGroupIds: 1 },
               fullVerification: 1,
               loanCache: 1,
               loan: {
@@ -116,7 +135,6 @@ const PromotionOptionsTable = ({ promotion }) => {
                 proNote: 1,
               },
               priorityOrder: 1,
-              promotionLots: { name: 1 },
               reservationAgreement: 1,
               reservationDeposit: 1,
               simpleVerification: 1,
@@ -124,12 +142,35 @@ const PromotionOptionsTable = ({ promotion }) => {
             },
           },
         }}
-        queryDeps={[statusFilter, invitedByFilter]}
+        queryDeps={[statusFilter, invitedByFilter, promotionLotGroupIdFilter]}
         columns={[
           {
             Header: <T id="PromotionOptionsTable.lotName" />,
             accessor: 'promotionLots.0.name',
             disableSortBy: true,
+          },
+          {
+            Header: <T id="PromotionOptionsTable.promotionLotGroups" />,
+            accessor: 'promotionLots.0.promotionLotGroupIds',
+            disableSortBy: true,
+            Cell: ({ value: promotionLotGroupIds = [] }) => (
+              <div>
+                {promotionLotGroupIds.map(promotionLotGroupId => {
+                  const promotionLotGroup = promotionLotGroups.find(
+                    ({ id }) => id === promotionLotGroupId,
+                  );
+
+                  return (
+                    promotionLotGroup && (
+                      <PromotionLotGroupChip
+                        key={promotionLotGroupId}
+                        promotionLotGroup={promotionLotGroup}
+                      />
+                    )
+                  );
+                })}
+              </div>
+            ),
           },
           {
             Header: <T id="PromotionOptionsTable.status" />,
@@ -180,6 +221,11 @@ const PromotionOptionsTable = ({ promotion }) => {
         initialPageSize={10}
         modalType="dialog"
         getModalProps={getModalProps}
+        initialHiddenColumns={
+          promotionLotGroups.length === 0
+            ? ['promotionLots.0.promotionLotGroupIds']
+            : []
+        }
       />
     </div>
   );

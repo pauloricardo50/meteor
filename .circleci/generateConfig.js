@@ -1,13 +1,13 @@
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_13'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_14'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'cimg/openjdk:14.0-node', // Has browsers, like chrome, necessary to run client-side tests
+      image: 'circleci/openjdk:8-jdk-node-browsers-legacy', // Has browsers, like chrome, necessary to run client-side tests
       environment: {
         // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',

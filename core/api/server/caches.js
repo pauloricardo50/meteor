@@ -10,3 +10,4 @@ import '../promotionOptions/server/caches';
 import '../properties/server/caches';
 import '../revenues/server/caches';
 import '../users/server/caches';
+import '../lots/server/caches';
