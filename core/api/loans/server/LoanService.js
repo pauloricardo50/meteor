@@ -605,12 +605,11 @@ class LoanService extends CollectionService {
       },
     });
 
-    // Get lenders' last offer
-    const filteredOffers = loan.lenders
+    const lastOffers = loan.lenders
       .filter(({ offers }) => offers?.length)
       .map(({ offers }) => offers[0]);
 
-    return filteredOffers.map(offer => ({
+    return lastOffers.map(offer => ({
       feedback: makeFeedback({
         offer,
         loan,

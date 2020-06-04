@@ -70,7 +70,6 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   userCache: 1,
   userFormsEnabled: 1,
 });
-console.log('fullLoanFragment:', fullLoanFragment);
 
 export default compose(
   updateForProps(['match.params.loanId', 'loanId']),
@@ -86,7 +85,6 @@ export default compose(
       },
       [_id],
     );
-    console.log('loan:', data);
 
     if (!_id) {
       return null;

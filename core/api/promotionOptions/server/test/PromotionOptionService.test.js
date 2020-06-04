@@ -276,7 +276,7 @@ describe('PromotionOptionService', function() {
     });
   });
 
-  describe.only('increasePriorityOrder', () => {
+  describe('increasePriorityOrder', () => {
     let promotionOptionId;
     let loanId;
     let promotionId;
