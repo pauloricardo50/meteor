@@ -148,6 +148,11 @@ jobs:
           name: Generate language files
           command: npm run lang www
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
           name: Run unit tests
           command: cd ./microservices/www && meteor npm run test-ci
           no_output_timeout: 30m
@@ -228,6 +233,11 @@ jobs:
       - run:
           name: Generate language files
           command: npm run lang app
+      - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
           name: Run unit tests
           command: cd ./microservices/app && meteor npm run test-ci
@@ -310,6 +320,11 @@ jobs:
           name: Generate language files
           command: npm run lang admin
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
           name: Run unit tests
           command: cd ./microservices/admin && meteor npm run test-ci
           no_output_timeout: 30m
@@ -391,6 +406,11 @@ jobs:
           name: Generate language files
           command: npm run lang pro
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
           name: Run unit tests
           command: cd ./microservices/pro && meteor npm run test-ci
           no_output_timeout: 30m
@@ -471,6 +491,11 @@ jobs:
       - run:
           name: Generate language files
           command: npm run lang www
+      - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
           name: Run e2e tests
           command: |2-
@@ -556,6 +581,11 @@ jobs:
           name: Generate language files
           command: npm run lang app
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
           name: Run e2e tests
           command: |2-
 
@@ -640,6 +670,11 @@ jobs:
           name: Generate language files
           command: npm run lang admin
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
           name: Run e2e tests
           command: |2-
 
@@ -723,6 +758,11 @@ jobs:
       - run:
           name: Generate language files
           command: npm run lang pro
+      - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
           name: Run e2e tests
           command: |2-
