@@ -605,6 +605,10 @@ class LoanService extends CollectionService {
       },
     });
 
+    if (!loan.lenders?.length) {
+      return [];
+    }
+
     const lastOffers = loan.lenders
       .filter(({ offers }) => offers?.length)
       .map(({ offers }) => offers[0]);

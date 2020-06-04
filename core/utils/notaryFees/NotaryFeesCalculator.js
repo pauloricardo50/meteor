@@ -188,7 +188,9 @@ class NotaryFeesCalculator {
 
     // Emoluments du notaire
     const notaryIncomeFromProperty = this.notaryIncomeFromProperty({
-      propertyValue: landValue + additionalMargin + constructionValue,
+      landValue,
+      constructionValue,
+      additionalMargin,
     });
 
     // Registre foncier
