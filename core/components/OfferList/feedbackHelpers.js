@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 
 import moment from 'moment';
 
+import Calculator from '../../utils/Calculator';
+
 export const FEEDBACK_OPTIONS = {
   POSITIVE: 'POSITIVE',
   NEGATIVE_NOT_COMPETITIVE: 'NEGATIVE_NOT_COMPETITIVE',
@@ -92,21 +94,20 @@ const outro = ({ borrowers, singleBorrower, option, formatMessage }) => {
 const closing = ({ assignee, formatMessage }) =>
   formatMessage({ id: 'Feedback.closing' }, { assignee });
 
-export const makeFeedback = ({ model, offer, formatMessage }) => {
+export const makeFeedback = ({ model, offer, loan, formatMessage }) => {
+  const { _id: offerId, createdAt } = offer;
+  const { borrowers, userCache, user } = loan;
   const { option, comments = [], customFeedback = '' } = model;
   const {
-    lender: {
-      contact: { firstName: contactName },
-      loan: {
-        borrowers,
-        user: { assignedEmployee },
-      },
-    },
-    property,
-    createdAt,
-  } = offer;
+    contact: { firstName: contactName },
+  } = Calculator.selectLenderForOfferId({
+    loan,
+    offerId,
+  });
+  const property = Calculator.selectProperty({ loan });
 
-  const { firstName: assignee = 'e-Potek' } = assignedEmployee || {};
+  const { firstName: assignee = 'e-Potek' } =
+    userCache?.assignedEmployeeCache || user?.assignedEmployee || {};
   const { address1, zipCode, city } = property || {};
 
   if (!property || !address1 || !zipCode || !city) {

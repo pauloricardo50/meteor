@@ -6,11 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withProps, withState } from 'recompose';
 
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
-import {
-  LOANS_COLLECTION,
-  LOAN_STATUS,
-} from '../../../../../api/loans/loanConstants';
-import { PROMOTION_OPTIONS_COLLECTION } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import { LOAN_STATUS } from '../../../../../api/loans/loanConstants';
 import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
 import { CollectionIconLink } from '../../../../IconLink';
 import StatusLabel from '../../../../StatusLabel';
@@ -76,7 +72,6 @@ const getColumns = ({ promotionLot, promotionOption }) => {
       raw: promotionOptions.length,
       label: (
         <PriorityOrder
-          promotion={promotion}
           promotionOptions={promotionOptions}
           userId={user && user._id}
           currentId={promotionLotId}
@@ -128,14 +123,8 @@ export default compose(
       $body: {
         bank: 1,
         createdAt: 1,
-        reservationDeposit: 1,
-        simpleVerification: 1,
         fullVerification: 1,
-        priority: 1,
-        promotionLots: { name: 1, promotion: { name: 1 } },
-        reservationAgreement: 1,
-        status: 1,
-        updatedAt: 1,
+        loanCache: 1,
         loan: {
           promotions: {
             users: { name: 1, organisations: { name: 1 } },
@@ -153,7 +142,14 @@ export default compose(
           status: 1,
           user: { phoneNumbers: 1, name: 1, email: 1 },
         },
+        priorityOrder: 1,
         promotion: { users: { _id: 1 }, agreementDuration: 1 },
+        promotionLots: { name: 1, promotion: { name: 1 } },
+        reservationAgreement: 1,
+        reservationDeposit: 1,
+        simpleVerification: 1,
+        status: 1,
+        updatedAt: 1,
       },
     }),
     dataName: 'promotionOptions',

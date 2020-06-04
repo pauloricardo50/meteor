@@ -78,7 +78,6 @@ class Tabs extends Component {
             classes={{
               root: classes.tabRoot,
               selected: classes.tabSelected,
-              labelContainer: classes.labelContainer,
             }}
             label={label}
             component={to ? Link : undefined}

@@ -590,49 +590,29 @@ class LoanService extends CollectionService {
   }
 
   sendNegativeFeedbackToAllLenders({ loanId }) {
-    const loan =
-      this.createQuery({
-        $filters: { _id: loanId },
+    const loan = this.get(loanId, {
+      structure: 1,
+      properties: { address1: 1, zipCode: 1, city: 1 },
+      borrowers: { name: 1 },
+      userCache: 1,
+      createdAt: 1,
+      lenders: {
+        contact: { email: 1, firstName: 1 },
         offers: {
-          lender: { contact: { email: 1, firstName: 1 } },
-          loan: {
-            borrowers: { name: 1 },
-            user: { assignedEmployee: { firstName: 1 } },
-          },
-        },
-        structure: 1,
-        properties: { address1: 1, zipCode: 1, city: 1 },
-        createdAt: 1,
-        $options: { sort: { createdAt: -1 } },
-      }).fetchOne() || {};
-    const property = Calculator.selectProperty({ loan });
+          createdAt: 1,
+          $options: { sort: { createdAt: -1 }, limit: 1 },
+        }, // Sort offers to get the last one only
+      },
+    });
 
-    // Get lenders' last offer
-    const filteredOffers = loan.offers.reduce((filtered, offer) => {
-      const {
-        lender: {
-          contact: { email: lenderEmail },
-        },
-      } = offer;
+    const lastOffers = loan.lenders
+      .filter(({ offers }) => offers?.length)
+      .map(({ offers }) => offers[0]);
 
-      const lenderIsAlreadyInMailingList = filtered.find(
-        ({
-          lender: {
-            contact: { email },
-          },
-        }) => lenderEmail === email,
-      );
-
-      if (lenderIsAlreadyInMailingList) {
-        return filtered;
-      }
-
-      return [...filtered, offer];
-    }, []);
-
-    return filteredOffers.map(offer => ({
+    return lastOffers.map(offer => ({
       feedback: makeFeedback({
-        offer: { ...offer, property },
+        offer,
+        loan,
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
         formatMessage,
       }),

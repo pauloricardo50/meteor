@@ -139,20 +139,23 @@ export default withProps(
         break;
     }
 
-    const { loading: loadingActivities, data: activities } = getActivities({
+    const {
+      isInitialLoad: loadingActivities,
+      data: activities,
+    } = getActivities({
       activityFilters,
       queryFilters,
       type,
     });
 
-    const { loading: loadingTasks, data: completedTasks } = getTasks({
+    const { isInitialLoad: loadingTasks, data: completedTasks } = getTasks({
       fetchTasks,
       taskFilters,
       queryFilters,
     });
 
     const {
-      loading: loadingConversations,
+      isInitialLoad: loadingConversations,
       data: conversations,
     } = getConversations({ fetchConversations, frontTagId });
 

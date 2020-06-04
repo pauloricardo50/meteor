@@ -124,6 +124,7 @@ const PromotionOptionSchema = new SimpleSchema({
   'loanCache.$': cacheField,
   promotionLotCache: { type: Array, optional: true },
   'promotionLotCache.$': cacheField,
+  priorityOrder: { type: SimpleSchema.Integer },
 });
 
 export default PromotionOptionSchema;

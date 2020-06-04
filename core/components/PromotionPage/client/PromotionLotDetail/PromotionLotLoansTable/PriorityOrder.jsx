@@ -35,20 +35,14 @@ const getTooltip = color => {
   }
 };
 
-const PriorityOrder = ({
-  promotion,
-  promotionOptions = [],
-  currentId,
-  userId,
-}) => {
-  const { priorityOrder = [] } = promotion.$metadata;
-  const options = priorityOrder.map(promotionOptionId =>
-    promotionOptions.find(({ _id }) => _id === promotionOptionId),
+const PriorityOrder = ({ promotionOptions = [], currentId, userId }) => {
+  const sortedPromotionOptions = promotionOptions.sort(
+    ({ priorityOrder: A }, { priorityOrder: B }) => A - B,
   );
 
   return (
     <div className="priority-order">
-      {options.map(({ _id, name, promotionLots }) => {
+      {sortedPromotionOptions.map(({ _id, name, promotionLots }) => {
         const chipColor = getChipColor({ currentId, userId, promotionLots });
 
         return (
