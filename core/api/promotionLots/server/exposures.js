@@ -60,7 +60,13 @@ exposeQuery({
     embody: body => {
       body.$filter = ({
         filters,
-        params: { promotionId, status, showAllLots, promotionLotIds },
+        params: {
+          promotionId,
+          status,
+          showAllLots,
+          promotionLotIds,
+          promotionLotGroupId,
+        },
       }) => {
         promotionLotFilters({
           filters,
@@ -68,6 +74,7 @@ exposeQuery({
           status,
           showAllLots,
           promotionLotIds,
+          promotionLotGroupId,
         });
       };
     },

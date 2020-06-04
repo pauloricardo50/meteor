@@ -1,7 +1,9 @@
 import React from 'react';
+import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
+import { proPromotion } from 'core/api/fragments';
 import { proPromotions } from 'core/api/promotions/queries';
 import {
   isAllowedToAddLotsToPromotion,
@@ -18,6 +20,49 @@ import { injectPromotionMetadata } from 'core/components/PromotionPage/client/Pr
 import withMatchParam from 'core/containers/withMatchParam';
 
 import PRO_ROUTES from '../../../startup/client/proRoutes';
+
+const promotionFragment = {
+  ...pick(proPromotion(), [
+    'address',
+    'address1',
+    'agreementDuration',
+    'canton',
+    'city',
+    'constructionTimeline',
+    'contacts',
+    'documents',
+    'lenderOrganisation',
+    'name',
+    'status',
+    'type',
+    'users',
+    'zipCode',
+    'signingDate',
+    'country',
+    'promotionLotGroups',
+    'assignedEmployee',
+    'description',
+    'externalUrl',
+    'promotionLoan',
+    'authorizationStatus',
+    'projectStatus',
+    'isTest',
+    'loans',
+  ]),
+  promotionLots: {
+    status: 1,
+    name: 1,
+    value: 1,
+    properties: {
+      landValue: 1,
+      constructionValue: 1,
+      additionalMargin: 1,
+      value: 1,
+    },
+    lots: { value: 1 },
+    promotionLotGroupIds: 1,
+  },
+};
 
 const makePermissions = props => ({
   canModifyPromotion: isAllowedToModifyPromotion(props),
@@ -49,7 +94,10 @@ const ProPromotionPageContainer = compose(
   Component => props => <Component {...props} key={props.promotionId} />,
   withSmartQuery({
     query: proPromotions,
-    params: ({ promotionId }) => ({ _id: promotionId }),
+    params: ({ promotionId }) => ({
+      _id: promotionId,
+      $body: promotionFragment,
+    }),
     queryOptions: { single: true },
     dataName: 'promotion',
   }),

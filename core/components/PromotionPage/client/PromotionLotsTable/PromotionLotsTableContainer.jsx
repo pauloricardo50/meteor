@@ -252,6 +252,7 @@ export const AppPromotionLotsTableContainer = withProps(
 
     const [promotion] = promotions || {};
     const { $metadata: { showAllLots = false } = {} } = promotion;
+    promotion.promotionLotGroups = promotionLotGroups;
     const promotionLotIds = useMemo(
       () =>
         promotionOptions.reduce((ids, promotionOption) => {
@@ -273,7 +274,7 @@ export const AppPromotionLotsTableContainer = withProps(
       },
     };
 
-    const queryDeps = [promotionLotIds, showAllLots];
+    const queryDeps = [promotionLotIds, showAllLots, promotionLotGroupId];
     const columns = getAppColumns({ loan, promotion });
     const initialHiddenColumns = [
       promotionStatus !== PROMOTION_STATUS.OPEN && '_id',

@@ -7,8 +7,13 @@ import T from '../../Translation';
 import Table from './Table';
 
 const getModal = ({ modalType, modalProps, open, handleClose }) => {
-  const { enableModal = true } = modalProps || {};
-  if (!enableModal) {
+  const { disableModal, schema } = modalProps || {};
+
+  if (disableModal) {
+    return null;
+  }
+
+  if (modalType === 'form' && !schema) {
     return null;
   }
 

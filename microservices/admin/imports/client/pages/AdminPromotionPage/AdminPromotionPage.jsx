@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
-import omit from 'lodash/omit';
+import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
@@ -16,9 +16,34 @@ import withMatchParam from 'core/containers/withMatchParam';
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const promotionFragment = {
-  ...omit(proPromotion(), ['promotionLots']),
+  ...pick(proPromotion(), [
+    'address',
+    'address1',
+    'agreementDuration',
+    'canton',
+    'city',
+    'constructionTimeline',
+    'contacts',
+    'documents',
+    'lenderOrganisation',
+    'name',
+    'status',
+    'type',
+    'users',
+    'zipCode',
+    'signingDate',
+    'country',
+    'promotionLotGroups',
+    'assignedEmployee',
+    'description',
+    'externalUrl',
+    'promotionLoan',
+    'authorizationStatus',
+    'projectStatus',
+    'isTest',
+    'loans',
+  ]),
   promotionLots: {
-    _id: 1,
     status: 1,
     name: 1,
     value: 1,

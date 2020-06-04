@@ -645,6 +645,7 @@ export const appPromotionLot = () => ({
   status: 1,
   updatedAt: 1,
   value: 1,
+  promotionLotGroupIds: 1,
 });
 
 // //
