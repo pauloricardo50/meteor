@@ -77,8 +77,6 @@ export default compose(
     dataName: 'referralOrganisation',
     queryOptions: { single: true },
     renderMissingDoc: false,
-    // skip: ({ insuranceRequest: { user } = {} }) =>
-    //   !user?.referredByOrganisation?._id,
   }),
   withProps(({ referralOrganisation }) => {
     const referralIsCommissionned = referralOrganisation?.enabledCommissionTypes?.includes(
