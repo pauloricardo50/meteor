@@ -5,32 +5,49 @@ import Button from '../Button';
 import RecentNewsletters from './RecentNewsletters';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-
 import './NewsletterSignup.scss';
+
+// TODO: replace with meteorClient call to subscribeToNewsletter
+const simulateSignup = () => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve({ status: 200 }), 1000);
+  });
+};
 
 const NewsletterSignup = ({ primary, placement }) => {
   const [email, setEmail] = useState('');
+  const [success, setSuccess] = useState(false);
   const [language] = useContext(LanguageContext);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // TODO: get simpleDDP function to post data
-    setEmail('');
+    const result = await simulateSignup();
+    if (result.status === 200) setSuccess(true);
   };
 
-  const SignupForm = () => (
-    <form onSubmit={handleSubmit} className="signup-form">
-      <TextInput
-        className="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
+  const SignupForm = () => {
+    if (success) {
+      return (
+        <div className="success-message">
+          {getLanguageData(language).signupSuccessText}
+        </div>
+      );
+    }
 
-      <Button primary raised className="button" type="submit">
-        {getLanguageData(language).signupButtonText}
-      </Button>
-    </form>
-  );
+    return (
+      <form onSubmit={handleSubmit} className="signup-form">
+        <TextInput
+          className="email"
+          value={email}
+          onChange={e => setEmail(e.currentTarget.value)}
+        />
+
+        <Button primary raised className="button" type="submit">
+          {getLanguageData(language).signupButtonText}
+        </Button>
+      </form>
+    );
+  };
 
   switch (placement) {
     case 'footer':

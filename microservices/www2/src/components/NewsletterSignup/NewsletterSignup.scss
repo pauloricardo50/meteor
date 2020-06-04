@@ -26,6 +26,16 @@
     color: black;
   }
 
+  .success-message {
+    // Manrope_Light
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.42;
+    letter-spacing: normal;
+    color: $primary;
+  }
+
   &--article {
     .newsletter-signup__image {
       img {
