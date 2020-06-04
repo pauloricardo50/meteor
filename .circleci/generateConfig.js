@@ -1,13 +1,13 @@
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_11'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_13'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'circleci/openjdk:10-jdk-node-browsers', // Has browsers, like chrome, necessary to run client-side tests
+      image: 'cimg/openjdk:14.0-node', // Has browsers, like chrome, necessary to run client-side tests
       environment: {
         // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',
@@ -140,14 +140,6 @@ const makePrepareJob = () => ({
       'meteor npm --prefix microservices/backend ci',
     ),
     runCommand(
-      'Remove libc6-dev',
-      'sudo apt-get purge libc6-dev && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get install -f',
-    ),
-    runCommand(
-      'Reinstall build-essential',
-      'sudo apt-get update && sudo apt-get install build-essential',
-    ),
-    runCommand(
       'Install expect',
       'sudo apt-get update && sudo apt-get install expect',
     ),
@@ -192,6 +184,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       `,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
+    testsType === 'e2e' && runCommand('Install cypress dependencies', 'sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb'),
     runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
@@ -206,7 +199,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
-  ],
+  ].filter(x => x),
 });
 
 // Final config
