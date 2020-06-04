@@ -184,7 +184,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       `,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
-    runCommand('Install cypress dependencies', 'sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb'),
+    testsType === 'e2e' && runCommand('Install cypress dependencies', 'sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb'),
     runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
@@ -199,7 +199,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
-  ],
+  ].filter(x => x),
 });
 
 // Final config
