@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { faHandshake } from '@fortawesome/pro-duotone-svg-icons/faHandshake';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Step from '@material-ui/core/Step';
 import StepConnector from '@material-ui/core/StepConnector';
@@ -15,6 +14,7 @@ import {
 } from '../../../api/promotionOptions/promotionOptionConstants';
 import colors from '../../../config/colors';
 import Icon from '../../Icon';
+import FaIcon from '../../Icon/FaIcon';
 import T from '../../Translation';
 import {
   getPercent,
@@ -134,13 +134,11 @@ const StepIconComponent = ({ IconComponent, ...props }) => (
         fontSize: '3rem',
       }}
     >
-      <FontAwesomeIcon
+      <FaIcon
         icon={faHandshake}
         fixedWidth // Uses 1.25x the fontSize
-        style={{
-          '--fa-primary-color': colors.primary,
-          '--fa-secondary-color': colors.success,
-        }}
+        primaryColor={colors.primary}
+        secondaryColor={colors.success}
       />
     </div>
   </div>
