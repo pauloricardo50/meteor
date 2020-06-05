@@ -3,7 +3,6 @@ import React from 'react';
 import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
 import Loans from '../../api/loans';
 import ExternalUrl from '../ExternalUrl';
-import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
 import { Money } from '../Translation';
 import UpdateField from '../UpdateField';

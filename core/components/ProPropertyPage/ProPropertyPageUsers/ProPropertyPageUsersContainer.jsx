@@ -93,8 +93,16 @@ export default compose(
   withRouter,
   withSmartQuery({
     query: proPropertyUsers,
-    params: ({ property: { _id: propertyId } }) => ({ propertyId }),
-    queryOptions: { reactive: false },
+    params: ({ property: { _id: propertyId } }) => ({
+      propertyId,
+      $body: {
+        users: {
+          email: 1,
+          name: 1,
+          organisations: { name: 1 },
+        },
+      },
+    }),
     dataName: 'proUsers',
   }),
   withProps(

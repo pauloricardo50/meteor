@@ -66,7 +66,12 @@ const isSolventForProProperty = ({
 
 const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
   // Remove these 2 properties from the loan
-  const { maxPropertyValue, shareSolvency, properties, ...loan } = loanObject;
+  const {
+    maxPropertyValue,
+    shareSolvency,
+    properties = [],
+    ...loan
+  } = loanObject;
 
   const propertiesWithSolvency = properties.map(property => ({
     ...property,
