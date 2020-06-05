@@ -6,12 +6,15 @@ import { RecapSimple } from '../../../../Recap';
 import T, { Money, Percent } from '../../../../Translation';
 
 const OfferPickerDialogContent = props => {
-  const { offer } = props;
+  const { offer, loan } = props;
   const property = Calculator.selectProperty(props);
+  const { organisation } = Calculator.selectLenderForOfferId({
+    loan,
+    offerId: offer._id,
+  });
   const {
     maxAmount,
     conditions,
-    organisation,
     amortization,
     interests,
     monthly,
