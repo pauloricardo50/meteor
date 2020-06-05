@@ -219,6 +219,7 @@ const Icon = React.forwardRef(
     if (type !== null && typeof type === 'object') {
       icon = React.cloneElement(type, {
         ...props,
+        fowardedRef: ref,
         style: { ...iconStyle, ...type.props.style },
       });
     } else if (typeof type === 'string') {
