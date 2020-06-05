@@ -11,7 +11,7 @@ import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import T from '../../../../../Translation';
-import PromotionReservationProgress from '../../../../PromotionReservationProgress2';
+import PromotionReservationProgress from '../../../../PromotionReservationProgress';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 

@@ -1,6 +1,17 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
+import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
+import { faCheckCircle } from '@fortawesome/pro-duotone-svg-icons/faCheckCircle';
+import { faCircle as duoToneCircle } from '@fortawesome/pro-duotone-svg-icons/faCircle';
+import { faClock } from '@fortawesome/pro-duotone-svg-icons/faClock';
+import { faDonate } from '@fortawesome/pro-duotone-svg-icons/faDonate';
+import { faExclamationCircle } from '@fortawesome/pro-duotone-svg-icons/faExclamationCircle';
+import { faFileCertificate } from '@fortawesome/pro-duotone-svg-icons/faFileCertificate';
+import { faFileSignature } from '@fortawesome/pro-duotone-svg-icons/faFileSignature';
+import { faFileUpload } from '@fortawesome/pro-duotone-svg-icons/faFileUpload';
+import { faHandshake } from '@fortawesome/pro-duotone-svg-icons/faHandshake';
+import { faIdCard } from '@fortawesome/pro-duotone-svg-icons/faIdCard';
+import { faPaperPlane } from '@fortawesome/pro-duotone-svg-icons/faPaperPlane';
+import { faUniversity } from '@fortawesome/pro-duotone-svg-icons/faUniversity';
 
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
@@ -9,95 +20,54 @@ import {
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../../../api/promotionOptions/promotionOptionConstants';
-import PromotionReservationProgressItem from './PromotionReservationProgressItem';
+import colors from '../../../config/colors';
+import CircularProgress from '../../CircularProgress';
+import FaIcon from '../../Icon/FaIcon';
+import T from '../../Translation';
 
-export const promotionOptionIconConfig = {
-  simpleVerification: {
-    error: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED,
-    success: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
-    waiting: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED,
+export const TIMELINE_ICON_STATES = {
+  TO_DO: {
+    IconComponent: () => <FaIcon icon={duoToneCircle} color="#bbb" />,
+    color: '#888',
   },
-  fullVerification: {
-    error: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED,
-    success: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+  DONE: {
+    IconComponent: () => (
+      <FaIcon icon={faCheckCircle} color={colors.success} size="24px" />
+    ),
+    color: colors.success,
   },
-  bank: {
-    success: PROMOTION_OPTION_BANK_STATUS.VALIDATED,
-    error: PROMOTION_OPTION_BANK_STATUS.REJECTED,
-    warning: PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
-    sent: PROMOTION_OPTION_BANK_STATUS.SENT,
-    waitList: PROMOTION_OPTION_BANK_STATUS.WAITLIST,
+  DONE_WITH_WARNING: {
+    IconComponent: () => (
+      <FaIcon icon={faExclamationCircle} color={colors.warning} />
+    ),
+    color: colors.success,
   },
-  reservationAgreement: {
-    success: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
-    waiting: PROMOTION_OPTION_AGREEMENT_STATUS.WAITING,
+  INVALID: {
+    IconComponent: () => (
+      <FaIcon
+        icon={faExclamationCircle}
+        primaryColor={colors.error}
+        secondaryColor={colors.error}
+      />
+    ),
+    color: colors.error,
   },
-  reservationDeposit: {
-    success: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
-    error: PROMOTION_OPTION_DEPOSIT_STATUS.UNPAID,
+  SENT: {
+    IconComponent: () => (
+      <span className="fa-layers">
+        <FaIcon icon={faCircle} color={colors.warning} />
+        <FaIcon icon={faPaperPlane} transform="shrink-7" color="white" />
+      </span>
+    ),
+    color: colors.warning,
+  },
+  WAITING: {
+    IconComponent: () => <FaIcon icon={faClock} color={colors.warning} />,
+    color: colors.warning,
   },
 };
 
-export const getPromotionReservationIcon = (id, status) => {
-  const config = promotionOptionIconConfig[id];
-
-  if (!config) {
-    return;
-  }
-
-  const { success, waiting, error, warning, sent, waitList } = config;
-
-  if (waiting === status) {
-    return { icon: 'waiting', color: 'warning' };
-  }
-  if (warning === status) {
-    return { icon: 'error', color: 'warning' };
-  }
-  if (error === status) {
-    return { icon: 'error', color: 'error' };
-  }
-  if (success === status) {
-    return { icon: 'checkCircle', color: 'success' };
-  }
-  if (sent === status) {
-    return { icon: 'send', color: 'warning' };
-  }
-  if (waitList === status) {
-    return { icon: 'schedule', color: 'warning' };
-  }
-
-  return { icon: 'radioButtonChecked', color: 'primary' };
-};
-
-export const makeGetProgressItem = ({
-  variant,
-  promotionOptionId,
-  loanId,
-  withTooltip,
-  withIcon,
-  renderStatus,
-}) => ({ icon, color, status, date, id, renderComponent, placeholder }) => ({
-  id,
-  progressItem: (
-    <PromotionReservationProgressItem
-      icon={icon}
-      color={color}
-      date={date}
-      status={status}
-      variant={variant}
-      id={id}
-      promotionOptionId={promotionOptionId}
-      renderComponent={renderComponent}
-      placeholder={placeholder}
-      loanId={loanId}
-      withTooltip={withTooltip}
-      withIcon={withIcon}
-      renderStatus={renderStatus}
-    />
-  ),
-});
-
-export const getPercent = ({ valid, required }) => {
+const getPercent = ({ valid, required }) => {
   if (valid === 0 || required === 0) {
     return 0;
   }
@@ -105,57 +75,147 @@ export const getPercent = ({ valid, required }) => {
   return valid / required;
 };
 
-export const getRatio = ({ valid, required }) => ({
-  value: valid,
-  target: required,
-});
+const getProgressDescription = data =>
+  `${data.valid}/${data.required} (${Math.round(getPercent(data) * 100)}%)`;
 
-export const getAdminNoteIcon = ({
-  proNote: { note, date },
-  variant,
-  promotionOptionId,
-  isAnonymized,
-  withTooltip,
-  withIcon,
-  renderStatus,
-}) => {
-  const shouldShowNote = !isAnonymized && Meteor.microservice !== 'app';
+export const PROMOTION_OPTION_ICONS = {
+  simpleVerification: ({ simpleVerification: { status, date } }) => {
+    const base = {
+      detailIcon: faHandshake,
+      isActive: true,
+      isCompleted:
+        PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED === status,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
-  if (!shouldShowNote) {
-    return null;
-  }
+    switch (status) {
+      case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE:
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
+      case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED:
+        return { ...base, ...TIMELINE_ICON_STATES.WAITING };
+      case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED:
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
+      case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED:
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
+      default:
+        return {};
+    }
+  },
+  info: ({ info }) => {
+    const percent = getPercent(info);
+    console.log('percent:', percent);
+    return {
+      ...(percent > 0 ? { color: colors.primary } : TIMELINE_ICON_STATES.TO_DO),
+      detailIcon: faIdCard,
+      isActive: true,
+      isCompleted: percent >= 1,
+      IconComponent: () => <CircularProgress percent={percent} />,
+      description: getProgressDescription(info),
+    };
+  },
+  documents: ({ documents }) => {
+    const percent = getPercent(documents);
+    return {
+      ...(percent > 0 ? { color: colors.primary } : TIMELINE_ICON_STATES.TO_DO),
+      detailIcon: faFileUpload,
+      isActive: true,
+      isCompleted: percent >= 1,
+      IconComponent: () => <CircularProgress percent={percent} />,
+      description: getProgressDescription(documents),
+    };
+  },
+  fullVerification: ({
+    fullVerification: { status, date },
+    simpleVerification,
+  }) => {
+    const base = {
+      detailIcon: faFileCertificate,
+      isCompleted:
+        status === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+      isActive:
+        simpleVerification.status ===
+        PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
-  return (
-    <PromotionReservationProgressItem
-      icon="info"
-      color={note ? 'primary' : 'borderGrey'}
-      date={date}
-      note={note}
-      placeholder="Pas de commentaire"
-      variant={variant}
-      id="proNote"
-      // Modify the note on the loan
-      promotionOptionId={promotionOptionId}
-      withTooltip={withTooltip}
-      withIcon={withIcon}
-      renderStatus={renderStatus}
-    />
-  );
+    switch (status) {
+      case PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE:
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
+      case PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED:
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
+      case PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED:
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
+      default:
+        return {};
+    }
+  },
+  bank: ({ bank: { status, date }, fullVerification }) => {
+    const base = {
+      detailIcon: faUniversity,
+      isActive:
+        fullVerification.status ===
+        PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+      isCompleted: [
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+      ].includes(status),
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
+
+    switch (status) {
+      case PROMOTION_OPTION_BANK_STATUS.INCOMPLETE:
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
+      case PROMOTION_OPTION_BANK_STATUS.WAITLIST:
+        return { ...base, ...TIMELINE_ICON_STATES.WAITING };
+      case PROMOTION_OPTION_BANK_STATUS.SENT:
+        return { ...base, ...TIMELINE_ICON_STATES.SENT };
+      case PROMOTION_OPTION_BANK_STATUS.REJECTED:
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
+      case PROMOTION_OPTION_BANK_STATUS.VALIDATED:
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
+      case PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS:
+        return { ...base, ...TIMELINE_ICON_STATES.DONE_WITH_WARNING };
+      default:
+        return {};
+    }
+  },
+  reservationAgreement: ({ reservationAgreement: { status, date } }) => {
+    const base = {
+      detailIcon: faFileSignature,
+      isCompleted: status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
+
+    switch (status) {
+      case PROMOTION_OPTION_AGREEMENT_STATUS.WAITING:
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
+      case PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED:
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
+      case PROMOTION_OPTION_AGREEMENT_STATUS.EXPIRED:
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
+      default:
+        return {};
+    }
+  },
+  reservationDeposit: ({ reservationDeposit: { status, date } }) => {
+    const base = {
+      detailIcon: faDonate,
+      isCompleted: status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
+
+    switch (status) {
+      case PROMOTION_OPTION_DEPOSIT_STATUS.WAITING:
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
+      case PROMOTION_OPTION_DEPOSIT_STATUS.PAID:
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
+      default:
+        return {};
+    }
+  },
 };
-
-export const rawPromotionReservationProgress = ({
-  simpleVerification,
-  fullVerification,
-  reservationAgreement,
-  reservationDeposit,
-  bank,
-}) =>
-  [
-    simpleVerification.status ===
-      PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
-    fullVerification.status ===
-      PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
-    reservationAgreement.status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
-    reservationDeposit.status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
-    bank.status === PROMOTION_OPTION_BANK_STATUS.VALIDATED,
-  ].reduce((tot, v) => (v === true ? tot + 1 : tot), 0);

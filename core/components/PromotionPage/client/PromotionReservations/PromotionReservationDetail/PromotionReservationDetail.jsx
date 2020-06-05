@@ -11,9 +11,9 @@ import { useStaticMeteorData } from '../../../../../hooks/useMeteorData';
 import Calculator from '../../../../../utils/Calculator';
 import Loading from '../../../../Loading';
 import UploaderArray from '../../../../UploaderArray';
+import PromotionReservationProgressEditor from '../../../PromotionReservationProgress/PromotionReservationProgressEditor';
 import PromotionReservationDeadline from '../PromotionReservationDeadline';
 import PromotionReservationDetailActions from './PromotionReservationDetailActions';
-import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
 
 const promotionReservationsArray = [
   {

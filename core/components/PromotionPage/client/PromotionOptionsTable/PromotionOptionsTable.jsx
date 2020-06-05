@@ -14,7 +14,7 @@ import Select from '../../../Select';
 import MongoSelect from '../../../Select/MongoSelect';
 import StatusLabel from '../../../StatusLabel';
 import T, { IntlDate } from '../../../Translation';
-import PromotionReservationProgress from '../../PromotionReservationProgress2';
+import PromotionReservationProgress from '../../PromotionReservationProgress';
 import PromotionCustomer from '../PromotionCustomer';
 import PromotionLotGroupChip from '../PromotionLotsTable/PromotionLotGroupChip';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
