@@ -403,7 +403,7 @@
   "Forms.fullVerification": "Attestation e-Potek",
   "PromotionPage.lots.requestReservation.button": "Réserver",
   "PromotionPage.lots.requestReservation.title": "Demande de réservation",
-  "PromotionPage.lots.requestReservation.description": "Démarre le processus de réservation pour le lot {promotionLotName} et informe {proName} et e-Potek de votre intérêt pour ce lot. Votre conseiller e-Potek vous contactera dès que vous aurez établi votre attestation de principe.",
+  "PromotionPage.lots.requestReservation.description": "Démarre le processus de réservation pour le lot {promotionLotName} et informe {proName} et e-Potek de votre intérêt pour ce lot. {isApp, select, true {Votre conseiller se tient à votre disposition pour vous aider à avancer sur la constitution de votre dossier.} other {Travaillez avec le client pour avancer dans la constitution de son dossier.}}",
   "PromotionPage.lots.requestReservation": "Réservation",
   "PromotionReservationDeadline.RESERVATION_REQUESTED": "Réservation demandée",
   "PromotionReservationDeadline.RESERVATION_REQUESTED.description": "{proName} a été informé de votre requête et vous fera parvenir votre convention de réservation",
