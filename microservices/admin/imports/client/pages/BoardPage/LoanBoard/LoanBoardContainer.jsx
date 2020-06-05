@@ -57,6 +57,20 @@ const getQueryBody = additionalFields => {
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
+const getStatusFilter = status => {
+  const { $in = [] } = status || {};
+  const toIgnore = [
+    LOAN_STATUS.TEST,
+    LOAN_STATUS.UNSUCCESSFUL,
+    LOAN_STATUS.FINALIZED,
+  ];
+
+  return {
+    $nin: toIgnore.filter(s => !$in.includes(s)),
+    ...status,
+  };
+};
+
 const getQueryFilters = ({
   assignedEmployeeId,
   step,
@@ -84,10 +98,7 @@ const getQueryFilters = ({
     step,
     $or: $or.length ? $or : undefined,
     anonymous: { $ne: true },
-    status: {
-      $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
-      ...status,
-    },
+    status: getStatusFilter(status),
     ...(lenderId
       ? {
           lendersCache: {
