@@ -18,7 +18,7 @@ const LoanStepSetter = ({ loan }) => {
 
         if (shouldSendStepNotification(step, nextStep)) {
           confirm = window.confirm(
-            'Passer à l\'étape "Identification du prêteur" activera les offres et enverra un mail au client pour l\'inviter à  les consulter.',
+            'Passer à l\'étape "Obtenir des offres" activera les offres et enverra un mail au client pour l\'inviter à  les consulter.',
           );
         }
 
