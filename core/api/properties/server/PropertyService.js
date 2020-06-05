@@ -33,23 +33,14 @@ class PropertyService extends CollectionService {
   };
 
   checkPropertyValue = ({ propertyId, property }) => {
-    const {
-      value,
-      landValue,
-      additionalMargin,
-      constructionValue,
-      category,
-    } = property;
+    const { value, landValue, additionalMargin, constructionValue } = property;
+    let { category } = property;
 
-    const { category: propertyCategory } =
-      this.get(propertyId, {
-        category,
-      }) || {};
+    if (!category) {
+      category = this.get(propertyId, { category: 1 })?.category;
+    }
 
-    if (
-      (category && category !== PROPERTY_CATEGORY.PROMOTION) ||
-      (propertyCategory && propertyCategory !== PROPERTY_CATEGORY.PROMOTION)
-    ) {
+    if (category !== PROPERTY_CATEGORY.PROMOTION) {
       return;
     }
 
