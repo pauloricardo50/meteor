@@ -340,6 +340,57 @@ describe('PromotionOptionService', function() {
         'test',
       ]);
     });
+
+    it('stores the priorityOrder from the loanCache', () => {
+      generator({
+        promotionOptions: [
+          {
+            _id: 'pOptId2',
+            promotion: { _id: promotionId },
+            promotionLots: { _id: promotionLotId },
+            loan: {
+              _id: 'loanId2',
+              promotionLinks: [
+                { _id: promotionId, priorityOrder: ['pOptId1', 'pOptId2'] },
+              ],
+            },
+          },
+          {
+            _id: 'pOptId1',
+            promotion: { _id: promotionId },
+            promotionLots: { _id: promotionLotId },
+            loan: {
+              _id: 'loanId2',
+              promotionLinks: [
+                { _id: promotionId, priorityOrder: ['pOptId1', 'pOptId2'] },
+              ],
+            },
+          },
+        ],
+      });
+      let promotionOption1 = PromotionOptionService.get('pOptId1', {
+        priorityOrder: 1,
+      });
+      let promotionOption2 = PromotionOptionService.get('pOptId2', {
+        priorityOrder: 1,
+      });
+      expect(promotionOption1.priorityOrder).to.equal(0);
+      expect(promotionOption2.priorityOrder).to.equal(1);
+
+      PromotionOptionService.increasePriorityOrder({
+        promotionOptionId: 'pOptId2',
+      });
+
+      promotionOption1 = PromotionOptionService.get('pOptId1', {
+        priorityOrder: 1,
+      });
+      promotionOption2 = PromotionOptionService.get('pOptId2', {
+        priorityOrder: 1,
+      });
+
+      expect(promotionOption1.priorityOrder).to.equal(1);
+      expect(promotionOption2.priorityOrder).to.equal(0);
+    });
   });
 
   describe('reducePriorityOrder', () => {

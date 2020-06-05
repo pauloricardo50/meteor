@@ -18,18 +18,6 @@ PromotionOptions.addReducers({
       return promotionLots[0].value;
     },
   },
-  priority: {
-    body: { loan: { promotionLinks: 1 } },
-    reduce: ({ loan, _id: promotionOptionId }) => {
-      const { promotionLinks } = loan;
-      if (promotionLinks && promotionLinks.length > 0) {
-        return promotionLinks[0].priorityOrder.findIndex(
-          id => id === promotionOptionId,
-        );
-      }
-      return null;
-    },
-  },
   attributedToMe: {
     body: { promotionLots: { attributedTo: { userId: 1 } } },
     reduce: ({ promotionLots = [] }) =>

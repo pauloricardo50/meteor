@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import withContextProvider from 'core/api/containerToolkit/withContextProvider';
 import ProPropertyPage from 'core/components/ProPropertyPage/ProPropertyPage';
 import { ProPropertyPageContext } from 'core/components/ProPropertyPage/ProPropertyPageContext';

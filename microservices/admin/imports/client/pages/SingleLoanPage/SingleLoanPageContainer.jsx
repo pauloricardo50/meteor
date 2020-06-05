@@ -1,9 +1,9 @@
 import React from 'react';
-import omit from 'lodash/omit';
+import merge from 'lodash/merge';
 import { branch, compose, mapProps, renderComponent } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminLender, adminProperty, userLoan } from 'core/api/fragments';
+import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
 import {
   LOANS_COLLECTION,
@@ -28,37 +28,17 @@ const withInterestRates = withSmartQuery({
   refetchOnMethodCall: false,
 });
 
-const keysToOmit = [
-  'borrowers.loans',
-  'contacts',
-  'user.borrowers',
-  'user.loans',
-  'user.organisations',
-  'user.properties',
-];
-const fullLoanFragment = {
-  assigneeLinks: 1,
-  ...omit(userLoan({ withSort: true }), keysToOmit),
+const fullLoanFragment = merge({}, calculatorLoan(), {
   adminNotes: 1,
+  applicationType: 1,
+  assigneeLinks: 1,
+  borrowers: { age: 1, $options: { sort: { createdAt: 1 } } },
   category: 1,
+  contacts: 1,
+  customName: 1,
+  enableOffers: 1,
   financedPromotion: { name: 1, status: 1 },
-  financedPromotionLink: 1,
   frontTagId: 1,
-  lenders: adminLender(),
-  maxPropertyValue: 1,
-  nextDueTask: 1,
-  proNote: 1,
-  properties: omit(adminProperty({ withSort: true }), [
-    'loans',
-    'promotion',
-    'user',
-    'users',
-  ]),
-  revenues: { _id: 1, status: 1 },
-  selectedLenderOrganisation: { name: 1 },
-  status: 1,
-  tasksCache: 1,
-  userCache: 1,
   insuranceRequests: {
     status: 1,
     name: 1,
@@ -66,9 +46,30 @@ const fullLoanFragment = {
     createdAt: 1,
     updatedAt: 1,
   },
+  lenders: {
+    adminNote: 1,
+    contact: { name: 1, email: 1 },
+    offers: {
+      enableOffer: 1,
+      conditions: 1,
+      withCounterparts: 1,
+      documents: 1,
+    },
+    organisation: { logo: 1 },
+    status: 1,
+  },
+  maxPropertyValue: 1,
+  name: 1,
+  promotions: { name: 1, lenderOrganisationLink: 1 },
+  proNote: 1,
+  properties: { address: 1, $options: { sort: { createdAt: 1 } } },
+  shareSolvency: 1,
+  status: 1,
+  step: 1,
   unsuccessfulReason: 1,
-  mainAssignee: 1,
-};
+  userCache: 1,
+  userFormsEnabled: 1,
+});
 
 export default compose(
   updateForProps(['match.params.loanId', 'loanId']),

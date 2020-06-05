@@ -2,7 +2,9 @@
 
 import { expect } from 'chai';
 
-import { getCitiesFromZipCode } from '../gpsStats';
+import { resetDatabase } from '../../../../utils/testHelpers';
+import generator from '../../../factories/server';
+import { getCitiesFromZipCode, getStats } from '../gpsStats';
 
 describe('gpsStats', () => {
   describe('getCitiesFromZipCode', () => {
@@ -40,6 +42,93 @@ describe('gpsStats', () => {
       const cities = getCitiesFromZipCode({ zipCode: 1000 });
       expect(cities.length).to.equal(1);
       expect(cities[0].match(/[0-9 ]/g)).to.equal(null);
+    });
+  });
+
+  describe('getStats', () => {
+    beforeEach(resetDatabase);
+
+    it('returns data grouped by cities', () => {
+      generator({
+        loans: [
+          {
+            structures: [{ id: 'a', propertyId: 'p1' }],
+            selectedStructure: 'a',
+            properties: { _id: 'p1', zipCode: 1201, country: 'CH' },
+          },
+          {
+            structures: [{ id: 'a', propertyId: 'p2' }],
+            selectedStructure: 'a',
+            properties: { _id: 'p2', zipCode: 1218, country: 'CH' },
+          },
+          {
+            structures: [{ id: 'a', propertyId: 'p3' }],
+            selectedStructure: 'a',
+            properties: { _id: 'p3', zipCode: 1400, country: 'CH' },
+          },
+        ],
+      });
+
+      const result = getStats({ cantons: ['GE', 'VD'] });
+      expect(result).to.deep.equal([
+        {
+          city: 'Genève',
+          zipCode: 1200,
+          lat: 46.2058,
+          long: 6.1416,
+          count: 2,
+        },
+        {
+          city: 'Yverdon-les-Bains',
+          zipCode: 1400,
+          lat: 46.7785,
+          long: 6.6411,
+          count: 1,
+        },
+      ]);
+    });
+
+    it('ignores data from other cantons', () => {
+      generator({
+        loans: [
+          {
+            structures: [{ id: 'a', propertyId: 'p1' }],
+            selectedStructure: 'a',
+            properties: { _id: 'p1', zipCode: 1201, country: 'CH' },
+          },
+          {
+            structures: [{ id: 'a', propertyId: 'p2' }],
+            selectedStructure: 'a',
+            properties: { _id: 'p2', zipCode: 1400, country: 'CH' },
+          },
+        ],
+      });
+
+      const result = getStats({ cantons: ['GE'] });
+      expect(result).to.deep.equal([
+        {
+          city: 'Genève',
+          zipCode: 1200,
+          lat: 46.2058,
+          long: 6.1416,
+          count: 1,
+        },
+      ]);
+    });
+
+    it('ignores properties outside switzerland', () => {
+      generator({
+        loans: [
+          {
+            structures: [{ id: 'a', propertyId: 'p1' }],
+            selectedStructure: 'a',
+            properties: { _id: 'p1', zipCode: 1201, country: 'US' },
+          },
+        ],
+      });
+
+      const result = getStats({ cantons: ['GE'] });
+      expect(result).to.deep.equal([]);
     });
   });
 });

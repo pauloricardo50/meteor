@@ -7,6 +7,16 @@ import T from '../../Translation';
 import Table from './Table';
 
 const getModal = ({ modalType, modalProps, open, handleClose }) => {
+  const { disableModal, schema } = modalProps || {};
+
+  if (disableModal) {
+    return null;
+  }
+
+  if (modalType === 'form' && !schema) {
+    return null;
+  }
+
   if (modalType === 'form') {
     return <AutoFormDialog {...modalProps} open={open} setOpen={handleClose} />;
   }

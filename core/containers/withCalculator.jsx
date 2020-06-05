@@ -23,14 +23,8 @@ const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
   return Calculator;
 };
 
-const getLenderRules = ({ loan, lenderRules }) => {
-  let finalLenderRules = lenderRules;
-  if (loan && loan.structure && loan.structure.offerId) {
-    finalLenderRules = Calculator.selectLenderRules({ loan });
-  }
-
-  return finalLenderRules;
-};
+const getLenderRules = ({ loan, lenderRules }) =>
+  lenderRules || (loan && Calculator.selectLenderRules({ loan }));
 
 // Memoize calculator creation, because it takes a lot of effort to recreate it
 // Calculation with lenderRules takes roughly 6ms, taken down to 0.01ms with memoization

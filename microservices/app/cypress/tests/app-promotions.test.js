@@ -29,6 +29,8 @@ describe('App Promotions', () => {
 
     cy.get('.promotion-options-table table tbody tr').should('have.length', 1);
 
+    cy.wait(1000);
+
     cy.get('input[type=checkbox]')
       .first()
       .click();

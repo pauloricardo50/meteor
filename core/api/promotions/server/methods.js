@@ -1,6 +1,7 @@
 import SecurityService from '../../security';
 import {
   addProUserToPromotion,
+  addPromotionLotGroup,
   editPromotionLoan,
   insertPromotionProperty,
   promotionInsert,
@@ -9,10 +10,12 @@ import {
   promotionUpdate,
   removeLoanFromPromotion,
   removeProFromPromotion,
+  removePromotionLotGroup,
   reuseConstructionTimeline,
   sendPromotionInvitationEmail,
   setPromotionUserPermissions,
   toggleNotifications,
+  updatePromotionLotGroup,
   updatePromotionUserRoles,
 } from '../methodDefinitions';
 import PromotionService from './PromotionService';
@@ -110,3 +113,34 @@ promotionSetStatus.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.setStatus(params);
 });
+
+addPromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, ...promotionLotGroup }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.addPromotionLotGroup({
+      promotionId,
+      promotionLotGroup,
+    });
+  },
+);
+
+removePromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, promotionLotGroupId }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.removePromotionLotGroup({
+      promotionId,
+      promotionLotGroupId,
+    });
+  },
+);
+
+updatePromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, promotionLotGroupId, ...object }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.updatePromotionLotGroup({
+      promotionId,
+      promotionLotGroupId,
+      object,
+    });
+  },
+);

@@ -20,7 +20,13 @@ export const appUser = Users.createQuery(
 
 export const proReferredByUsers = Users.createQuery(
   USER_QUERIES.PRO_REFERRED_BY,
-  proUserFragment(),
+  {
+    name: 1,
+    email: 1,
+    emails: 1,
+    phoneNumber: 1,
+    createdAt: 1,
+  },
 );
 
 export const proUser = Users.createQuery(

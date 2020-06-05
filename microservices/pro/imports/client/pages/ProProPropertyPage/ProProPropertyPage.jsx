@@ -12,6 +12,7 @@ import {
   isAllowedToModifyProProperty,
   isAllowedToSeeProPropertyCustomers,
 } from 'core/api/security/clientSecurityHelpers/';
+import { proPropertyFormFields } from 'core/components/ProPropertyPage/ProPropertyForm/ProPropertyForm';
 import ProPropertyPage from 'core/components/ProPropertyPage/ProPropertyPage';
 import { ProPropertyPageContext } from 'core/components/ProPropertyPage/ProPropertyPageContext';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -30,7 +31,18 @@ export default compose(
   Component => props => <Component {...props} key={props.propertyId} />,
   withSmartQuery({
     query: proProperties,
-    params: ({ propertyId }) => ({ _id: propertyId }),
+    params: ({ propertyId }) => ({
+      _id: propertyId,
+      $body: {
+        ...proPropertyFormFields,
+        address: 1,
+        documents: 1,
+        status: 1,
+        totalValue: 1,
+        userLinks: 1,
+        users: { name: 1, email: 1, organisations: { name: 1 } },
+      },
+    }),
     queryOptions: { single: true },
     dataName: 'property',
   }),

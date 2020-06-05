@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 import {
-  allDocuments,
+  getAllDocuments,
   getBorrowerDocuments,
   getLoanDocuments,
   getPropertyDocuments,
@@ -31,7 +31,7 @@ const documentsToDisplay = ({ collection, loan, id }) => {
 };
 
 const documentsToHide = ({ doc, collection, loan, id, documentArray }) => {
-  const allDocs = allDocuments({ doc, collection });
+  const allDocs = getAllDocuments({ doc, collection });
   const docsToDisplay =
     documentArray || documentsToDisplay({ collection, loan, id });
   return allDocs.filter(

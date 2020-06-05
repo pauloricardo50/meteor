@@ -273,6 +273,7 @@ export const formLoan = () => ({
   hasProProperty: 1,
   purchaseType: 1,
   selectedStructure: 1,
+  structure: 1,
   structures: 1,
 });
 
@@ -628,6 +629,8 @@ export const proPromotionLot = () => ({
   status: 1,
   updatedAt: 1,
   value: 1,
+  promotionLotGroupIds: 1,
+  loanCount: 1,
 });
 
 export const appPromotionLot = () => ({
@@ -642,6 +645,7 @@ export const appPromotionLot = () => ({
   status: 1,
   updatedAt: 1,
   value: 1,
+  promotionLotGroupIds: 1,
 });
 
 // //
@@ -651,6 +655,8 @@ export const formPromotionOption = () => ({
   bank: 1,
   canton: 1,
   fullVerification: 1,
+  loanCache: 1, // Useful for invitedBy
+  priorityOrder: 1,
   promotionLots: { properties: { totalValue: 1 } },
   reservationAgreement: 1,
   reservationDeposit: 1,
@@ -664,8 +670,7 @@ export const proPromotionOption = () => ({
   createdAt: 1,
   documents: 1,
   lots: { name: 1, type: 1, status: 1, description: 1 },
-  priority: 1,
-  promotionLots: { name: 1, promotion: { name: 1 } },
+  promotionLots: { name: 1, promotion: { name: 1 }, promotionLotGroupIds: 1 },
   updatedAt: 1,
   loan: {
     loanProgress: 1,
@@ -697,7 +702,6 @@ export const appPromotionOption = () => ({
     promotions: { _id: 1, users: { name: 1, organisations: { name: 1 } } },
   },
   lots: { description: 1, name: 1, type: 1, value: 1 },
-  priority: 1,
   promotionLots: appPromotionLot(),
   updatedAt: 1,
 });
@@ -765,6 +769,7 @@ export const basePromotion = () => ({
   zipCode: 1,
   signingDate: 1,
   country: 1,
+  promotionLotGroups: 1,
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
@@ -783,6 +788,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     status: 1,
     value: 1,
     promotion: { _id: 1 },
+    promotionLotGroupIds: 1,
   },
   promotionLoan: { _id: 1, name: 1, proNotes: 1, adminNotes: 1 },
   authorizationStatus: 1,
@@ -1032,7 +1038,14 @@ export const proUser = () => ({
     commissionRates: { _id: 1 },
   },
   assignedEmployee: simpleUser(),
-  promotions: { _id: 1, name: 1, permissions: 1, status: 1, users: { _id: 1 } },
+  promotions: {
+    _id: 1,
+    name: 1,
+    permissions: 1,
+    status: 1,
+    userLinks: 1,
+    users: { _id: 1 },
+  },
   properties: { _id: 1 },
   proProperties: {
     _id: 1,
@@ -1040,6 +1053,7 @@ export const proUser = () => ({
     city: 1,
     permissions: 1,
     status: 1,
+    userLinks: 1,
     users: { _id: 1 },
     zipCode: 1,
   },
@@ -1119,4 +1133,18 @@ export const userSession = () => ({
   userIsConnected: 1,
   impersonatingAdmin: { name: 1, firstName: 1, lastName: 1 },
   followed: 1,
+});
+
+// //
+// // Lots fragments
+// //
+export const lots = () => ({
+  createdAt: 1,
+  updatedAt: 1,
+  description: 1,
+  name: 1,
+  promotionLots: { name: 1 },
+  status: 1,
+  type: 1,
+  value: 1,
 });

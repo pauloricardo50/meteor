@@ -117,3 +117,18 @@ export const promotionSetStatus = new Method({
     status: String,
   },
 });
+
+export const addPromotionLotGroup = new Method({
+  name: 'addPromotionLotGroup',
+  params: { promotionId: String, label: String },
+});
+
+export const removePromotionLotGroup = new Method({
+  name: 'removePromotionLotGroup',
+  params: { promotionId: String, promotionLotGroupId: String },
+});
+
+export const updatePromotionLotGroup = new Method({
+  name: 'updatePromotionLotGroup',
+  params: { promotionId: String, promotionLotGroupId: String, label: String },
+});

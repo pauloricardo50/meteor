@@ -234,11 +234,24 @@ describe('NotaryFeesCalculator', () => {
 
     it('returns the right amount for a promotion property', () => {
       loan = {
-        structure: {
-          property: { landValue: 395750, constructionValue: 824250 },
-          wantedLoan: 968000,
-          promotionOptionId: 'asd',
-        },
+        structures: [
+          {
+            id: 'struct',
+            wantedLoan: 968000,
+            promotionOptionId: 'asd',
+          },
+        ],
+        selectedStructure: 'struct',
+        promotionOptions: [
+          {
+            _id: 'asd',
+            promotionLots: [
+              {
+                properties: [{ landValue: 395750, constructionValue: 824250 }],
+              },
+            ],
+          },
+        ],
         promotions: [{ type: PROMOTION_TYPES.SHARE }],
       };
       const fees = calc.getNotaryFeesForLoan({ loan });

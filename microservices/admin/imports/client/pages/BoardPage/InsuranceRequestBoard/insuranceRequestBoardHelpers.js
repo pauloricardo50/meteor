@@ -44,6 +44,7 @@ const getMissingColumns = (groupBy, groups) => {
         status =>
           status !== INSURANCE_REQUEST_STATUS.UNSUCCESSFUL &&
           status !== INSURANCE_REQUEST_STATUS.TEST &&
+          status !== INSURANCE_REQUEST_STATUS.FINALIZED &&
           !groups.includes(status),
       );
     }
