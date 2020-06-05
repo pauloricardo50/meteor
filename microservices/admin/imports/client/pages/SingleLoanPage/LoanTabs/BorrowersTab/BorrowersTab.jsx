@@ -85,7 +85,7 @@ const getPercentage = (funcs, borrowers) => {
 const BorrowersTab = props => {
   const [formFilter, setFormFilter] = useState('all');
   const { loan, Calculator } = props;
-  const { borrowers = [], _id: loanId, user: { _id: userId } = {} } = loan;
+  const { borrowers = [], _id: loanId, userCache: { _id: userId } = {} } = loan;
   const options = useMemo(
     () =>
       baseOptions
