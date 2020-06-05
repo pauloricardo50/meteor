@@ -13,10 +13,10 @@ import {
   FROM_EMAIL,
 } from '../emailConstants';
 import PromotionLogos from './components/PromotionLogos';
-import PromotionOptionProgress, {
-  getPromotionProgressData,
-  promotionOptionProgressStyles,
-} from './components/PromotionOptionProgress';
+// import PromotionOptionProgress, {
+//   getPromotionProgressData,
+//   promotionOptionProgressStyles,
+// } from './components/PromotionOptionProgress';
 import {
   getAccountsUrl,
   notificationAndCtaTemplateDefaultOverride,
@@ -356,17 +356,17 @@ const promotionEmailOverridesPro = function(params, { title, body, cta }) {
       },
       { name: variables.CSS, content: promotionOptionProgressStyles },
     ],
-    templateContent: showProgress
-      ? [
-          {
-            name: 'body-content-1',
-            content: renderEmailComponent({
-              Component: PromotionOptionProgress,
-              props: getPromotionProgressData({ promotionOptionId }),
-            }),
-          },
-        ]
-      : undefined,
+    // templateContent: showProgress
+    //   ? [
+    //       {
+    //         name: 'body-content-1',
+    //         content: renderEmailComponent({
+    //           Component: PromotionOptionProgress,
+    //           props: getPromotionProgressData({ promotionOptionId }),
+    //         }),
+    //       },
+    //     ]
+    //   : undefined,
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
