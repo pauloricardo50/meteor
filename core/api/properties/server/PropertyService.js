@@ -17,6 +17,7 @@ class PropertyService extends CollectionService {
   }
 
   insert = ({ property, userId, loanId }) => {
+    this.checkPropertyValue({ property });
     const propertyId = super.insert({ ...property, userId });
     if (loanId) {
       LoanService.addPropertyToLoan({ loanId, propertyId });
@@ -25,8 +26,39 @@ class PropertyService extends CollectionService {
     return propertyId;
   };
 
-  update = ({ propertyId, object }) =>
-    Properties.update(propertyId, { $set: object });
+  update = ({ propertyId, object }) => {
+    this.checkPropertyValue({ propertyId, property: object });
+
+    return Properties.update(propertyId, { $set: object });
+  };
+
+  checkPropertyValue = ({ propertyId, property }) => {
+    const {
+      value,
+      landValue,
+      additionalMargin,
+      constructionValue,
+      category,
+    } = property;
+
+    const { category: propertyCategory } =
+      this.get(propertyId, {
+        category,
+      }) || {};
+
+    if (
+      (category && category !== PROPERTY_CATEGORY.PROMOTION) ||
+      (propertyCategory && propertyCategory !== PROPERTY_CATEGORY.PROMOTION)
+    ) {
+      return;
+    }
+
+    if (value && (landValue || additionalMargin || constructionValue)) {
+      throw new Meteor.Error(
+        'Vous devez spécifier une valeur totale OU détaillée',
+      );
+    }
+  };
 
   remove = ({ propertyId, loanId }) => {
     const property = this.get(propertyId, { loans: { _id: 1 }, category: 1 });
