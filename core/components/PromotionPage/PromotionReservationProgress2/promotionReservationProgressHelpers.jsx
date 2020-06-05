@@ -1,6 +1,7 @@
 import React from 'react';
+import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
 import { faCheckCircle } from '@fortawesome/pro-duotone-svg-icons/faCheckCircle';
-import { faCircle } from '@fortawesome/pro-duotone-svg-icons/faCircle';
+import { faCircle as duoToneCircle } from '@fortawesome/pro-duotone-svg-icons/faCircle';
 import { faClock } from '@fortawesome/pro-duotone-svg-icons/faClock';
 import { faDonate } from '@fortawesome/pro-duotone-svg-icons/faDonate';
 import { faExclamationCircle } from '@fortawesome/pro-duotone-svg-icons/faExclamationCircle';
@@ -20,115 +21,200 @@ import {
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
 } from '../../../api/promotionOptions/promotionOptionConstants';
 import colors from '../../../config/colors';
+import CircularProgress from '../../CircularProgress';
 import FaIcon from '../../Icon/FaIcon';
+import T from '../../Translation';
 
 export const TIMELINE_ICON_STATES = {
   TO_DO: {
-    icon: <FaIcon icon={faCircle} fixedWidth color={colors.borderGrey} />,
+    IconComponent: () => (
+      <FaIcon icon={duoToneCircle} color={colors.borderGrey} />
+    ),
+    color: '#888',
   },
   DONE: {
-    icon: <FaIcon icon={faCheckCircle} fixedWidth color={colors.borderGrey} />,
+    IconComponent: () => (
+      <FaIcon icon={faCheckCircle} color={colors.success} size="24px" />
+    ),
+    color: colors.success,
   },
   DONE_WITH_WARNING: {
-    icon: (
-      <FaIcon icon={faExclamationCircle} fixedWidth color={colors.warning} />
+    IconComponent: () => (
+      <FaIcon icon={faExclamationCircle} color={colors.warning} />
     ),
+    color: colors.success,
   },
   INVALID: {
-    icon: <FaIcon icon={faExclamationCircle} fixedWidth color={colors.error} />,
+    IconComponent: () => (
+      <FaIcon
+        icon={faExclamationCircle}
+        primaryColor={colors.error}
+        secondaryColor={colors.error}
+      />
+    ),
+    color: colors.error,
   },
   SENT: {
-    icon: (
-      <span className="fa-layers fa-fw">
+    IconComponent: () => (
+      <span className="fa-layers">
         <FaIcon icon={faCircle} color={colors.warning} />
-        <FaIcon icon={faPaperPlane} transform="shrink-4" color="white" />
+        <FaIcon icon={faPaperPlane} transform="shrink-7" color="white" />
       </span>
     ),
+    color: colors.warning,
   },
   WAITING: {
-    icon: <FaIcon icon={faClock} fixedWidth color={colors.warning} />,
+    IconComponent: () => <FaIcon icon={faClock} color={colors.warning} />,
+    color: colors.warning,
   },
 };
 
+const getPercent = ({ valid, required }) => {
+  if (valid === 0 || required === 0) {
+    return 0;
+  }
+
+  return valid / required;
+};
+
+const getProgressDescription = data =>
+  `${data.valid}/${data.required} (${Math.round(getPercent(data) * 100)}%)`;
+
 export const PROMOTION_OPTION_ICONS = {
-  simpleVerification: ({ simpleVerification: { status } }) => {
-    const base = { detailIcon: faHandshake };
+  simpleVerification: ({ simpleVerification: { status, date } }) => {
+    const base = {
+      detailIcon: faHandshake,
+      isActive: true,
+      isCompleted:
+        PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED === status,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
     switch (status) {
       case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.INCOMPLETE:
-        return { ...base, mainIcon: 'TO_DO' };
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
       case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.CALCULATED:
-        return { ...base, mainIcon: 'WAITING' };
+        return { ...base, ...TIMELINE_ICON_STATES.WAITING };
       case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED:
-        return { ...base, mainIcon: 'DONE' };
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
       case PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED:
-        return { ...base, mainIcon: 'INVALID' };
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
       default:
         return {};
     }
   },
-  info: {
-    mainIcon: faIdCard,
+  info: ({ info }) => {
+    const percent = getPercent(info);
+    return {
+      ...(percent > 0 ? { color: colors.primary } : TIMELINE_ICON_STATES.TO_DO),
+      detailIcon: faIdCard,
+      isActive: true,
+      isCompleted: percent >= 1,
+      IconComponent: () => <CircularProgress percent={percent} />,
+      description: getProgressDescription(info),
+    };
   },
-  documents: {
-    mainIcon: faFileUpload,
+  documents: ({ documents }) => {
+    const percent = getPercent(documents);
+    return {
+      ...(percent > 0 ? { color: colors.primary } : TIMELINE_ICON_STATES.TO_DO),
+      detailIcon: faFileUpload,
+      isActive: () => true,
+      isCompleted: percent >= 1,
+      IconComponent: () => <CircularProgress percent={percent} />,
+      description: getProgressDescription(documents),
+    };
   },
-  fullVerification: ({ fullVerification: { status } }) => {
-    const base = { detailIcon: faFileCertificate };
+  fullVerification: ({
+    fullVerification: { status, date },
+    simpleVerification,
+  }) => {
+    const base = {
+      detailIcon: faFileCertificate,
+      isCompleted:
+        status === PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+      isActive:
+        simpleVerification.status ===
+        PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
     switch (status) {
       case PROMOTION_OPTION_FULL_VERIFICATION_STATUS.INCOMPLETE:
-        return { ...base, mainIcon: 'TO_DO' };
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
       case PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED:
-        return { ...base, mainIcon: 'DONE' };
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
       case PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED:
-        return { ...base, mainIcon: 'INVALID' };
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
       default:
         return {};
     }
   },
-  bank: ({ bank: { status } }) => {
-    const base = { detailIcon: faUniversity };
+  bank: ({ bank: { status, date }, fullVerification }) => {
+    const base = {
+      detailIcon: faUniversity,
+      isActive:
+        fullVerification.status ===
+        PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+      isCompleted: [
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED,
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+      ].includes(status),
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
     switch (status) {
       case PROMOTION_OPTION_BANK_STATUS.INCOMPLETE:
-        return { ...base, mainIcon: 'TO_DO' };
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
       case PROMOTION_OPTION_BANK_STATUS.WAITLIST:
-        return { ...base, mainIcon: 'WAITING' };
+        return { ...base, ...TIMELINE_ICON_STATES.WAITING };
       case PROMOTION_OPTION_BANK_STATUS.SENT:
-        return { ...base, mainIcon: 'SENT' };
+        return { ...base, ...TIMELINE_ICON_STATES.SENT };
       case PROMOTION_OPTION_BANK_STATUS.REJECTED:
-        return { ...base, mainIcon: 'INVALID' };
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
       case PROMOTION_OPTION_BANK_STATUS.VALIDATED:
-        return { ...base, mainIcon: 'DONE' };
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
       case PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS:
-        return { ...base, mainIcon: 'DONE_WITH_WARNING' };
+        return { ...base, ...TIMELINE_ICON_STATES.DONE_WITH_WARNING };
       default:
         return {};
     }
   },
-  reservationAgreement: ({ reservationAgreement: { status } }) => {
-    const base = { detailIcon: faFileSignature };
+  reservationAgreement: ({ reservationAgreement: { status, date } }) => {
+    const base = {
+      detailIcon: faFileSignature,
+      isCompleted: status === PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
     switch (status) {
       case PROMOTION_OPTION_AGREEMENT_STATUS.WAITING:
-        return { ...base, mainIcon: 'TO_DO' };
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
       case PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED:
-        return { ...base, mainIcon: 'DONE' };
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
       case PROMOTION_OPTION_AGREEMENT_STATUS.EXPIRED:
-        return { ...base, mainIcon: 'INVALID' };
+        return { ...base, ...TIMELINE_ICON_STATES.INVALID };
       default:
         return {};
     }
   },
-  reservationDeposit: ({ reservationAgreement: { status } }) => {
-    const base = { detailIcon: faFileSignature };
+  reservationDeposit: ({ reservationDeposit: { status, date } }) => {
+    const base = {
+      detailIcon: faDonate,
+      isCompleted: status === PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+      description: <T id={`Forms.status.${status}`} />,
+      date,
+    };
 
     switch (status) {
       case PROMOTION_OPTION_DEPOSIT_STATUS.WAITING:
-        return { ...base, mainIcon: 'TO_DO' };
+        return { ...base, ...TIMELINE_ICON_STATES.TO_DO };
       case PROMOTION_OPTION_DEPOSIT_STATUS.PAID:
-        return { ...base, mainIcon: 'DONE' };
+        return { ...base, ...TIMELINE_ICON_STATES.DONE };
       default:
         return {};
     }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const getStyle = (primaryColor, secondaryColor, style) => ({
+const getStyle = ({ color, primaryColor, secondaryColor, style }) => ({
   ...style,
-  ...(primaryColor ? { '--fa-primary-color': primaryColor } : {}),
-  ...(secondaryColor ? { '--fa-secondary-color': secondaryColor } : {}),
+  '--fa-primary-color': primaryColor || color,
+  '--fa-secondary-color': secondaryColor || color,
 });
 
 const FaIcon = ({
@@ -18,7 +18,7 @@ const FaIcon = ({
   <FontAwesomeIcon
     icon={icon}
     color={color}
-    style={getStyle(primaryColor, secondaryColor, style)}
+    style={getStyle({ color, primaryColor, secondaryColor, style })}
     {...props}
   />
 );
