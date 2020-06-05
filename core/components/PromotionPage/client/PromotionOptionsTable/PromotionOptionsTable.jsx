@@ -14,7 +14,7 @@ import Select from '../../../Select';
 import MongoSelect from '../../../Select/MongoSelect';
 import StatusLabel from '../../../StatusLabel';
 import T, { IntlDate } from '../../../Translation';
-import PromotionReservationProgress from '../../PromotionReservationProgress';
+import PromotionReservationProgress from '../../PromotionReservationProgress2';
 import PromotionCustomer from '../PromotionCustomer';
 import PromotionLotGroupChip from '../PromotionLotsTable/PromotionLotGroupChip';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
@@ -214,7 +214,11 @@ const PromotionOptionsTable = ({ promotion }) => {
             accessor: '_id',
             disableSortBy: true,
             Cell: ({ row: { original: promotionOption } }) => (
-              <PromotionReservationProgress promotionOption={promotionOption} />
+              <PromotionReservationProgress
+                promotionOption={promotionOption}
+                className="mr-8 flex"
+                StepperProps={{ style: { padding: 0 } }}
+              />
             ),
           },
         ]}

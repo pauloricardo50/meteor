@@ -45,7 +45,7 @@ const UserReservation = ({
             promotionOption={promotionOption}
             variant={progressVariant}
             loan={loan}
-            withLoanProgress
+            showLoanProgress
             showLabel={progressVariant === 'text'}
             showDetailIcon
           />
