@@ -20,19 +20,7 @@ const PromotionOptionDialog = ({
 
   return (
     <div className="flex-col">
-      <PromotionLotDetail promotionLot={promotionLot} promotion={promotion}>
-        <section className="flex center-align">
-          <Checkbox
-            label={<T id="PromotionOptionDialog.interested" />}
-            value
-            onChange={() =>
-              promotionOptionRemove
-                .run({ promotionOptionId: promotionOption._id })
-                .then(handleClose)
-            }
-          />
-        </section>
-      </PromotionLotDetail>
+      <PromotionLotDetail promotionLot={promotionLot} promotion={promotion} />
       {canReserve && (
         <RequestReservation
           promotionOption={promotionOption}

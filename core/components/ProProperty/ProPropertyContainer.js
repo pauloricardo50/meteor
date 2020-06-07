@@ -23,7 +23,7 @@ export default compose(
     query: userProperty,
     params: ({ propertyId }) => ({ _id: propertyId }),
     // Don't refetch this since it will get the opengraph data
-    queryOptions: { reactive: false, single: true, shouldRefetch: () => false },
+    queryOptions: { single: true },
     dataName: 'property',
   }),
   withProps(({ property }) => ({

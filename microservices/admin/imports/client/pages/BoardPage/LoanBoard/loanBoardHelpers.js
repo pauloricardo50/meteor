@@ -50,6 +50,7 @@ const getMissingColumns = (groupBy, groups) => {
         status =>
           status !== LOAN_STATUS.UNSUCCESSFUL &&
           status !== LOAN_STATUS.TEST &&
+          status !== LOAN_STATUS.FINALIZED &&
           !groups.includes(status),
       );
     }

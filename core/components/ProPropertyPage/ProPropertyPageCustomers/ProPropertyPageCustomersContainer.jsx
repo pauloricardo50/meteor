@@ -5,7 +5,6 @@ import { compose, mapProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../../api/containerToolkit';
 import { getReferredBy } from '../../../api/helpers';
-import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { proPropertyLoans } from '../../../api/loans/queries';
 import { removeCustomerFromProperty } from '../../../api/properties/methodDefinitions';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
@@ -163,7 +162,7 @@ const makeMapLoan = ({
             <T
               id="ProPropertyPage.removeCustomer.alert"
               values={{
-                customerName: anonymous ? 'Anonyme' : user && user.name,
+                customerName: anonymous ? 'Anonyme' : user?.name,
               }}
             />
           </p>
@@ -191,6 +190,14 @@ export default compose(
     params: ({ property: { _id: propertyId }, withAnonymous }) => ({
       propertyId,
       anonymous: getAnonymous(withAnonymous),
+      $body: {
+        name: 1,
+        createdAt: 1,
+        anonymous: 1,
+        status: 1,
+        user: { name: 1 },
+        properties: { totalValue: 1 },
+      },
     }),
     deps: ({ withAnonymous }) => [withAnonymous],
     queryOptions: { reactive: false },

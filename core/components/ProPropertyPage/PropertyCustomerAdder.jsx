@@ -83,7 +83,6 @@ export default compose(
   withSmartQuery({
     query: proReferredByUsers,
     params: { ownReferredUsers: true },
-    queryOptions: { reactive: false },
     dataName: 'referredUsers',
   }),
   withState('model', 'setModel', {}),

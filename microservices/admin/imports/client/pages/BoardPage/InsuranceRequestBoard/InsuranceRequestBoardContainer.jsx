@@ -33,15 +33,23 @@ const defaultBody = {
   adminNotes: 1,
 };
 
+const getStatusFilter = status => {
+  const { $in = [] } = status || {};
+  const toIgnore = [
+    INSURANCE_REQUEST_STATUS.TEST,
+    INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
+    INSURANCE_REQUEST_STATUS.FINALIZED,
+  ];
+
+  return {
+    $nin: toIgnore.filter(s => !$in.includes(s)),
+    ...status,
+  };
+};
+
 const getQueryFilters = ({ assignedEmployeeId, status, organisationId }) => ({
   assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
-  status: {
-    $nin: [
-      INSURANCE_REQUEST_STATUS.TEST,
-      INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
-    ],
-    ...status,
-  },
+  status: getStatusFilter(status),
   ...(organisationId
     ? {
         insurancesCache: {
