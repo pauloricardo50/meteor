@@ -65,7 +65,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe.only('PromotionOptionService', function() {
+describe('PromotionOptionService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -1509,7 +1509,7 @@ describe.only('PromotionOptionService', function() {
       );
     });
 
-    describe.only('emails', () => {
+    describe('emails', () => {
       it('sends emails when changing simpleVerification to VALIDATED', async () => {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
