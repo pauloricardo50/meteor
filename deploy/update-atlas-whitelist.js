@@ -12,7 +12,7 @@ const { log, error: logError } = console;
 log('');
 log(chalk.blue(`=> Updating Atlas IP Address Whitelist for the VM's`));
 
-const neededStagingIps = [
+const neededIps = [
   require('./configs/staging-servers.json'),
   require('./configs/prod-servers.json'),
   require('./configs/api-servers.json'),
@@ -22,8 +22,8 @@ const neededStagingIps = [
   .map(({ host }) => host);
 
 const formattedNeeded = [
-  neededStagingIps.slice(0, 1),
-  ...neededStagingIps.slice(1).map(item => item.padStart(8 + item.length, ' ')),
+  neededIps.slice(0, 1),
+  ...neededIps.slice(1).map(item => item.padStart(8 + item.length, ' ')),
 ].join('\n');
 log(chalk.dim(`needed: ${formattedNeeded}`));
 
@@ -41,7 +41,7 @@ if (!PRIVATE_KEY) {
 }
 
 const client = new DigestFetch(PUBLIC_KEY, PRIVATE_KEY, {});
-const stagingComment = 'google-cloud-staging';
+const stagingComment = 'google-cloud-server';
 
 const urlbase = 'https://cloud.mongodb.com/api/atlas/v1.0/';
 
@@ -53,7 +53,7 @@ async function updateWhitelist() {
   const stagingIps = existing
     .filter(item => item.comment === 'google-cloud-staging')
     .map(item => item.ipAddress);
-  const neededToAdd = neededStagingIps.filter(ip => !stagingIps.includes(ip));
+  const neededToAdd = neededIps.filter(ip => !stagingIps.includes(ip));
 
   log(chalk.dim(`missing addresses: ${neededToAdd.join(', ') || 'none'}`));
 

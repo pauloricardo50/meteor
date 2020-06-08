@@ -46,7 +46,7 @@ const FinancingResult = ({ error }) =>
         {
           id: 'cost-title',
           label: (
-            <h4>
+            <h4 className="font-size-5">
               <T id="FinancingResult.cost" />
             </h4>
           ),
@@ -73,7 +73,7 @@ const FinancingResult = ({ error }) =>
         {
           id: 'finma-title',
           label: (
-            <h4>
+            <h4 className="font-size-5">
               <T id="FinancingResult.finma" />
             </h4>
           ),
@@ -97,7 +97,7 @@ const FinancingResult = ({ error }) =>
         {
           id: 'future',
           label: (
-            <h4 className="future">
+            <h4 className="future font-size-5">
               <T id="FinancingResult.future" />
             </h4>
           ),

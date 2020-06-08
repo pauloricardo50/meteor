@@ -16,6 +16,8 @@ import IconButton from '../../../IconButton';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
 
+const isApp = Meteor.microservice === 'app';
+
 const PromotionReservationDeadline = ({
   startDate,
   expirationDate,
@@ -94,7 +96,7 @@ const PromotionReservationDeadline = ({
       <p className="description">
         <T
           id={`PromotionReservationDeadline.${status}.description`}
-          values={{ proName }}
+          values={{ proName, isApp }}
         />
       </p>
     </div>

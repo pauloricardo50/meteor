@@ -89,7 +89,7 @@ addEmailListener({
 });
 
 addEmailListener({
-  description: 'Étape du dossier à "Identification du prêteur" -> Client',
+  description: 'Étape du dossier à "Obtenir des offres" -> Client',
   method: setLoanStep,
   func: ({
     params: { loanId },

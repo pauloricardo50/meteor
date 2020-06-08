@@ -20,7 +20,7 @@ const OfferPickerListItemInterests = ({
             }}
           />
         }
-        valueProps={{ className: 'error' }}
+        valueProps={{ className: 'error font-size-5' }}
       />
     );
   }

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import { faPlus } from '@fortawesome/pro-light-svg-icons/faPlus';
@@ -9,6 +11,8 @@ import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promot
 import colors from '../../../../config/colors';
 import ConfirmMethod from '../../../ConfirmMethod';
 import T from '../../../Translation';
+
+const isApp = Meteor.microservice === 'app';
 
 const RequestReservation = ({
   promotionOption,
@@ -58,7 +62,7 @@ const RequestReservation = ({
           </span>
           <T
             id="PromotionPage.lots.requestReservation.description"
-            values={{ promotionLotName, proName }}
+            values={{ promotionLotName, proName, isApp }}
           />
         </div>
       }

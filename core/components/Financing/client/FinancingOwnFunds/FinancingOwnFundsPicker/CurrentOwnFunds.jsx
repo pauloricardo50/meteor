@@ -31,15 +31,15 @@ export const CurrentOwnFunds = ({
       className="current-own-funds"
       onClick={structure.disableForms ? null : handleOpen}
     >
-      <h5>
+      <b>
         <T id={`Forms.${type}`} />
         {usageType && ' - '}
         {usageType && <T id={`Forms.ownFundsUsageType.${usageType}`} />}
-      </h5>
+      </b>
       {borrowers.length > 1 && (
-        <h5 className="secondary">
+        <b className="secondary">
           {borrowers.find(({ _id }) => _id === borrowerId).firstName}
-        </h5>
+        </b>
       )}
       <p className="calculated-value">
         <span className="chf">CHF</span>{' '}
