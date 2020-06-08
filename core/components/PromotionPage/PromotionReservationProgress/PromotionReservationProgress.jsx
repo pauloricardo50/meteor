@@ -53,7 +53,7 @@ const isApp = Meteor.microservice === 'app';
 const PromotionReservationProgress = ({
   promotionOption,
   loan = promotionOption.loan,
-  showLabel,
+  showLabels,
   showDetailIcon,
   className,
   StepperProps,
@@ -88,7 +88,7 @@ const PromotionReservationProgress = ({
             key={id}
             id={id}
             stepConfig={PROMOTION_OPTION_ICONS[id](payload)}
-            showLabel={showLabel}
+            showLabels={showLabels}
             showDetailIcon={showDetailIcon}
             onClick={!['info', 'documents'].includes(id) && onClick}
             vertical={vertical}
@@ -105,7 +105,7 @@ const PromotionReservationProgress = ({
             key={id}
             id={id}
             stepConfig={PROMOTION_OPTION_ICONS[id](payload)}
-            showLabel={showLabel}
+            showLabels={showLabels}
             showDetailIcon={showDetailIcon}
             onClick={onClick}
             vertical={vertical}
@@ -127,7 +127,7 @@ const PromotionReservationProgress = ({
                 />
               ),
             }}
-            showLabel={showLabel}
+            showLabels={showLabels}
             vertical={vertical}
           />
         </Stepper>

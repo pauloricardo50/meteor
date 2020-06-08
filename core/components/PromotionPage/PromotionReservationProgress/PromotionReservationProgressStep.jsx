@@ -20,7 +20,6 @@ const StepIconComponent = ({
   secondaryColor,
   showDetailIcon,
   showTooltip,
-  title,
 }) => {
   const component = (
     <div
@@ -61,12 +60,7 @@ const StepIconComponent = ({
     return (
       <Tooltip
         title={
-          <StepLabelContent
-            id={id}
-            title={title}
-            description={description}
-            date={date}
-          />
+          <StepLabelContent id={id} description={description} date={date} />
         }
       >
         {component}
@@ -98,7 +92,7 @@ const StepLabelContent = ({ id, description, date, vertical }) => (
 
 const useStyles = makeStyles(() => ({
   labelContainer: {
-    display: ({ showLabel }) => (showLabel ? '' : 'none'),
+    display: ({ showLabels }) => (showLabels ? '' : 'none'),
   },
   stepButtonRoot: {
     transition: 'background-color 0.2s ease',
@@ -111,13 +105,13 @@ const useStyles = makeStyles(() => ({
 const PromotionReservationProgressStep = ({
   id,
   stepConfig,
-  showLabel,
+  showLabels,
   showDetailIcon,
   onClick,
   vertical,
   ...props
 }) => {
-  const { labelContainer, stepButtonRoot } = useStyles({ showLabel });
+  const { labelContainer, stepButtonRoot } = useStyles({ showLabels });
   const { isCompleted, isActive } = stepConfig;
 
   const label = (
@@ -126,12 +120,13 @@ const PromotionReservationProgressStep = ({
       StepIconProps={{
         id,
         showDetailIcon,
-        showTooltip: !showLabel,
+        showTooltip: !showLabels,
         ...stepConfig,
       }}
       classes={{ labelContainer }}
+      data-testid="step"
     >
-      {showLabel && (
+      {showLabels && (
         <StepLabelContent id={id} {...stepConfig} vertical={vertical} />
       )}
     </StepLabel>

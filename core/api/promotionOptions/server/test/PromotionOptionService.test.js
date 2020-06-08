@@ -1,7 +1,7 @@
-/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 
+/* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
@@ -65,7 +65,7 @@ const makePromotionLotWithReservation = ({
   ],
 });
 
-describe('PromotionOptionService', function() {
+describe.only('PromotionOptionService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -1509,7 +1509,7 @@ describe('PromotionOptionService', function() {
       );
     });
 
-    describe('emails', () => {
+    describe.only('emails', () => {
       it('sends emails when changing simpleVerification to VALIDATED', async () => {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
@@ -1769,6 +1769,68 @@ describe('PromotionOptionService', function() {
         expect(
           !!emails.find(({ address }) => address === 'user@e-potek.ch'),
         ).to.equal(true);
+      });
+
+      it('sends emails containing a progress report of the customer to Pros', async () => {
+        const oneHourAgo = new Date();
+        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          promotions: {
+            _id: 'promotionId',
+            users: [
+              {
+                _id: 'proId1',
+                $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
+                _factory: 'pro',
+                emails: [{ address: 'broker@e-potek.ch', verified: true }],
+              },
+            ],
+            loans: {
+              borrowers: { firstName: 'joe' },
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
+              $metadata: { invitedBy: 'proId1' },
+              proNote: {
+                id: 'asdf',
+                note: 'Tout baigne',
+                date: oneHourAgo,
+                updatedBy: 'adminId',
+              },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          setPromotionOptionProgress.run({
+            promotionOptionId: 'pOptId',
+            id: 'bank',
+            object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+          }),
+        );
+
+        const emails = await checkEmails(2);
+
+        const {
+          template: { template_content },
+        } = emails.find(
+          ({ emailId }) => emailId === EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO,
+        );
+
+        const { content } = template_content.find(
+          ({ name }) => name === 'body-content-1',
+        );
+
+        expect(content).to.include('Validé'); // Bank
+        expect(content).to.include('Tout baigne'); // proNote
+        expect(content).to.include('2/22 (9%)'); // Infos
       });
     });
   });
