@@ -44,6 +44,16 @@
     img + img {
       margin-left: 45px;
     }
+
+    &--logos {
+      align-items: center;
+
+      img {
+        width: 100%;
+        max-width: 200px;
+        max-height: 120px;
+      }
+    }
   }
 
   @media screen and (min-width: $med) {
@@ -70,6 +80,14 @@
 
       img + img {
         margin-left: 116px;
+      }
+
+      &--logos {
+        img {
+          width: 100%;
+          max-width: 300px;
+          max-height: 180px;
+        }
       }
     }
   }

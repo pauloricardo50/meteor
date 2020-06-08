@@ -3,11 +3,13 @@ import { RichText } from 'prismic-reactjs';
 import './ImageGallery.scss';
 
 const ImageGallery = ({ primary, fields }) => {
+  const galleryClasses = primary.logos ? 'gallery gallery--logos' : 'gallery';
+
   return (
     <section id={primary.section_id} className="image-gallery">
       <div className="content">{RichText.render(primary.content)}</div>
 
-      <div className="gallery" aria-hidden="true">
+      <div className={galleryClasses} aria-hidden="true">
         {fields.length &&
           fields.map(({ image }, idx) => (
             <img key={idx} src={image.url} alt={image.alt} />

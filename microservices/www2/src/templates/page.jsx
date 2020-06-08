@@ -174,6 +174,7 @@ export const query = graphql`
             primary {
               section_id
               content
+              logos
             }
             fields {
               image
