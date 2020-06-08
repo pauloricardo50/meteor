@@ -12,4 +12,5 @@ module.exports = generateConfig({
   // with the other microservices
   parallelPrepareBundle: true,
   nginxLocationConfig: '../nginx/api-docs.conf',
+  stickySessions: false,
 });
