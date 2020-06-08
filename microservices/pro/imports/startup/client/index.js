@@ -33,3 +33,7 @@ const start = testElement => {
 export default start;
 
 Meteor.startup(start);
+
+if (module.hot) {
+  module.hot.accept();
+}

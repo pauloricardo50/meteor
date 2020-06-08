@@ -18,8 +18,16 @@ runBackend({ process: backend });
 const runMicroservice = () => {
   process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;
 
+  let command = 'meteor';
+  let additionalArgs = [];
+
+  if (process.env.COMET_PATH) {
+    command = process.env.COMET_PATH;
+    additionalArgs = ['--extra-packages', 'zodern:hot'];
+  }
+
   start.spawn({
-    command: 'meteor',
+    command,
     args: [
       '--settings',
       'settings-dev.json',
@@ -27,6 +35,7 @@ const runMicroservice = () => {
       port,
       '--exclude-archs',
       'web.browser.legacy,web.cordova',
+      ...additionalArgs,
     ],
     options: {
       cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),

@@ -16,3 +16,7 @@ if (Meteor.isAppTest) {
 Accounts.onLogin(({ type }) => {
   analyticsLogin.run({ type });
 });
+
+if (module.hot) {
+  module.hot.decline();
+}
