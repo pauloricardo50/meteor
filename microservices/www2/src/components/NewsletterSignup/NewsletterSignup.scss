@@ -99,17 +99,22 @@
   }
 }
 
+.signup-form {
+  .MuiFormControl-root + button {
+    margin-left: 12px;
+  }
+}
+
 .recent-newsletters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+  list-style: none;
 
   .newsletter {
     a {
-      display: inline-flex;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       min-height: 54px;
       border-radius: 5px;
       border: solid 1px #cccccc;
@@ -119,7 +124,7 @@
       font-size: 16px;
       font-weight: 300;
       font-style: normal;
-      line-height: 54px; // override to center text vertically
+      line-height: normal; // override to center text vertically
       letter-spacing: normal;
       text-align: center;
       color: black;
@@ -131,8 +136,8 @@
 
     @media screen and (min-width: $med) {
       + .newsletter {
-        margin-top: 0;
-        margin-left: 16px;
+        // margin-top: 0;
+        // margin-left: 16px;
       }
     }
   }

@@ -6,28 +6,42 @@ import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { linkResolver } from '../../utils/linkResolver';
 import './FAQ.scss';
 
-// TODO: update styles
-const useStyles = makeStyles(theme => ({
+const useSummaryStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
+    padding: 0,
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
-    flexShrink: 0,
+  content: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: '23px 0 20px',
+    [theme.breakpoints.up('md')]: {
+      margin: '40px 0',
+      fontSize: '24px',
+      fontWeight: 300,
+      fontStyle: 'normal',
+      lineHeight: 1.42,
+      letterSpacing: 'normal',
+    },
   },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
+}));
+
+const useDetailStyles = makeStyles(theme => ({
+  root: {
+    fontSize: '16px',
+    fontWeight: 300,
+    fontStyle: 'normal',
+    lineHeight: 1.44,
+    letterSpacing: 'normal',
+    color: 'black',
   },
 }));
 
 const FAQ = ({ primary, fields }) => {
-  const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = panel => (event, isExpanded) => {
@@ -46,7 +60,7 @@ const FAQ = ({ primary, fields }) => {
         {RichText.asText(primary.section_heading)}
       </h1>
 
-      <div className={classes.root}>
+      <div className="nada">
         {fields.map((field, idx) => (
           <ExpansionPanel
             key={idx}
@@ -57,10 +71,11 @@ const FAQ = ({ primary, fields }) => {
             itemType="https://schema.org/Question"
           >
             <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<AddCircleOutlineIcon />}
               aria-controls={`panel-${idx}-content`}
               id={`panel-${idx}-header`}
               itemProp="name"
+              classes={useSummaryStyles()}
             >
               {field.question}
             </ExpansionPanelSummary>
@@ -68,8 +83,11 @@ const FAQ = ({ primary, fields }) => {
               itemScope
               itemProp="acceptedAnswer"
               itemType="https://schema.org/Answer"
+              classes={useDetailStyles()}
             >
-              <span itemProp="text">{RichText.render(field.answer)}</span>
+              <span itemProp="text">
+                {RichText.render(field.answer, linkResolver)}
+              </span>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         ))}
@@ -79,25 +97,3 @@ const FAQ = ({ primary, fields }) => {
 };
 
 export default FAQ;
-
-/*
-<ExpansionPanel
-  className={cx('financing-structures-section', className, { expanded })}
-  CollapseProps={{ classes: { container, entered } }}
-  expanded={expanded}
-  onChange={() => changeExpanded(!expanded)}
->
-  <FinancingSectionSummary
-    summaryConfig={summaryConfig}
-    sectionProps={sectionProps}
-    content={content}
-    expandedClass={expandedClass}
-    summaryRoot={summaryRoot}
-  />
-  <FinancingSectionDetails
-    detailConfig={detailConfig}
-    sectionProps={sectionProps}
-    sectionItemProps={sectionItemProps}
-  />
-</ExpansionPanel>
-*/

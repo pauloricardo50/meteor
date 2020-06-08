@@ -1,13 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import PersonOutline from '@material-ui/icons/PersonOutline';
+import { makeStyles } from '@material-ui/core/styles';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginRight: '48px',
+    fontSize: '16px',
+    fontWeight: 300,
+    fontStyle: 'normal',
+    lineHeight: 1.44,
+    letterSpacing: 'normal',
+    color: 'black',
+    '& [class*="MuiSvgIcon-root"]': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
 const LoginMenu = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [language] = useContext(LanguageContext);
 
   const handleClick = event => {
@@ -19,8 +35,9 @@ const LoginMenu = () => {
   };
 
   return (
-    <div>
+    <div className="login-menu">
       <Button
+        classes={useStyles()}
         aria-controls="login-menu"
         aria-haspopup="true"
         onClick={handleClick}
@@ -33,7 +50,7 @@ const LoginMenu = () => {
       </Button>
 
       <Menu
-        id="lohin-menu"
+        id="login-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}

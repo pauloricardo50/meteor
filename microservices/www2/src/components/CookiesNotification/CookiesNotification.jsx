@@ -9,7 +9,6 @@ import LanguageContext from '../../contexts/LanguageContext';
 import useAllCookiesNotifications from '../../hooks/useAllCookiesNotifications';
 import { getLanguageData } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
-// import './CookiesPrompt.scss';
 
 const acceptCookie = 'epotek_acceptCookie';
 
@@ -35,9 +34,17 @@ const useSnackbarContentStyles = makeStyles(theme => ({
     lineHeight: 'normal',
     letterSpacing: 'normal',
     color: 'black',
+    '& a': {
+      color: theme.palette.primary.main,
+    },
     [theme.breakpoints.up('md')]: {
       fontSize: '16px',
       lineHeight: 1.44,
+    },
+  },
+  action: {
+    '& button + button': {
+      marginLeft: '12px',
     },
   },
 }));
@@ -81,7 +88,7 @@ const CookiesNotification = () => {
         classes={useSnackbarContentStyles()}
         message={RichText.render(cookieNotification.node.content, linkResolver)}
         action={[
-          <Button key="decline" raised onClick={() => handleDecline()}>
+          <Button key="decline" contained onClick={() => handleDecline()}>
             {getLanguageData(language).cookieDecline}
           </Button>,
           <Button key="accept" raised primary onClick={() => handleAccept()}>

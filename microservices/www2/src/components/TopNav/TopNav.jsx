@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import TopMenu from '../TopMenu';
@@ -6,9 +6,12 @@ import MainMenu from '../MainMenu';
 import LoginMenu from '../LoginMenu';
 import Button from '../Button';
 import TopNavLogo from './TopNavLogo';
+import LanguageContext from '../../contexts/LanguageContext';
+import { getLanguageData } from '../../utils/languages';
 import './TopNav.scss';
 
 const TopNav = () => {
+  const [language] = useContext(LanguageContext);
   const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
   return (
@@ -25,7 +28,7 @@ const TopNav = () => {
         {matches && <LoginMenu />}
 
         <Button className="cta--button" raised primary link to="/">
-          Obtenir un prêt
+          {getLanguageData(language).getALoanText}
         </Button>
       </div>
     </Toolbar>
