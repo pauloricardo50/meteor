@@ -13,6 +13,7 @@ const languageData = {
     loginText: `Login`,
     recentNewslettersToggle: `See previous newsletters`,
     signupButtonText: `Sign up`,
+    getALoanText: `Get a loan`,
     signupSuccessText: `Thank you for subscribing!`,
     recommendedArticleHeader: `This might interest you`,
     rateTable: {
@@ -33,6 +34,7 @@ const languageData = {
     cookieDecline: `Refuser`,
     loginText: `Se connecter`,
     signupButtonText: `S'inscrire`,
+    getALoanText: `Obtenir un prêt`,
     signupSuccessText: `Merci de vous être abonné!`,
     recentNewslettersToggle: `Voir les newsletter précédentes`,
     recommendedArticleHeader: `Ceci pourrait vous intéresser`,

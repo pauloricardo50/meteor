@@ -56,11 +56,12 @@ const RecentNewsletters = () => {
                 .replace(/e-Potek: /i, '');
               const newsletterDate = sendDate.split('T')[0];
 
-              // TODO: use custom mui Button ?
               return (
                 <li key={id} className="newsletter">
                   <a href={url} title={title} target="_new">
-                    {`${newsletterTitle} - ${newsletterDate}`}
+                    {newsletterTitle}
+                    <br />
+                    {newsletterDate}
                   </a>
                 </li>
               );

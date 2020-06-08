@@ -13,7 +13,7 @@
       font-style: normal;
       line-height: 1.4;
       letter-spacing: normal;
-      color: #2c2c2c;
+      color: $title-text;
     }
   }
 
@@ -32,7 +32,7 @@
       font-style: normal;
       line-height: 1.44;
       letter-spacing: normal;
-      color: #2c2c2c;
+      color: $body-text;
       cursor: pointer;
 
       &::before {
@@ -44,7 +44,7 @@
 
       &.active {
         opacity: 1;
-        color: #2e7eff;
+        color: $primary;
       }
     }
   }
@@ -86,7 +86,7 @@
         font-style: normal;
         line-height: normal;
         letter-spacing: normal;
-        color: #2c2c2c;
+        color: $title-text;
       }
 
       .captions {
@@ -98,7 +98,7 @@
           font-style: normal;
           line-height: 1.43;
           letter-spacing: normal;
-          color: rgba(#2c2c2c, 0.2);
+          color: $body-text-light;
 
           &::before {
             margin-right: 15px;
@@ -112,7 +112,7 @@
 
           &.active {
             opacity: 1;
-            color: #2e7eff;
+            color: $primary;
           }
         }
       }
@@ -128,12 +128,13 @@
         font-style: normal;
         line-height: 1.4;
         letter-spacing: normal;
-        color: #2c2c2c;
+        color: $body-text;
       }
     }
 
     .current-image {
       flex-basis: 50%;
+      margin-right: 42px;
     }
   }
 }
