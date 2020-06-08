@@ -76,6 +76,7 @@ const PromotionReservationDetail = ({
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
+          loan={loan}
         />
       </div>
       <PromotionReservationProgressEditor

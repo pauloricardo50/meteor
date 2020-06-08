@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useMemo } from 'react';
 import { faCommentLines } from '@fortawesome/pro-duotone-svg-icons/faCommentLines';
-import Step from '@material-ui/core/Step';
 import StepConnector from '@material-ui/core/StepConnector';
 import Stepper from '@material-ui/core/Stepper';
 import { withStyles } from '@material-ui/core/styles';

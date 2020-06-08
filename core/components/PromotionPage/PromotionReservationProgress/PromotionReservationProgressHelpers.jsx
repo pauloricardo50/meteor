@@ -56,7 +56,7 @@ export const TIMELINE_ICON_STATES = {
     IconComponent: () => (
       <span className="fa-layers">
         <FaIcon icon={faCircle} color={colors.warning} />
-        <FaIcon icon={faPaperPlane} transform="shrink-7" color="white" />
+        <FaIcon icon={faPaperPlane} transform="shrink-7 left-1" color="white" />
       </span>
     ),
     color: colors.warning,
@@ -104,9 +104,12 @@ export const PROMOTION_OPTION_ICONS = {
   },
   info: ({ info }) => {
     const percent = getPercent(info);
-    console.log('percent:', percent);
     return {
-      ...(percent > 0 ? { color: colors.primary } : TIMELINE_ICON_STATES.TO_DO),
+      ...(percent > 0
+        ? percent >= 1
+          ? { color: colors.success }
+          : { color: colors.primary }
+        : TIMELINE_ICON_STATES.TO_DO),
       detailIcon: faIdCard,
       isActive: true,
       isCompleted: percent >= 1,
@@ -117,7 +120,11 @@ export const PROMOTION_OPTION_ICONS = {
   documents: ({ documents }) => {
     const percent = getPercent(documents);
     return {
-      ...(percent > 0 ? { color: colors.primary } : TIMELINE_ICON_STATES.TO_DO),
+      ...(percent > 0
+        ? percent >= 1
+          ? { color: colors.success }
+          : { color: colors.primary }
+        : TIMELINE_ICON_STATES.TO_DO),
       detailIcon: faFileUpload,
       isActive: true,
       isCompleted: percent >= 1,
