@@ -12,24 +12,46 @@ const useAllMenus = () => {
                   id
                   uid
                   type
+                  tags
                   lang
                 }
-                menu_links {
-                  label
-                  link {
-                    ... on PRISMIC__ExternalLink {
-                      _linkType
-                      url
-                    }
-                    ... on PRISMIC_Page {
-                      _linkType
-                      _meta {
-                        id
-                        uid
-                        type
-                        lang
+                menu_name
+                nav {
+                  __typename
+                  ... on PRISMIC_MenuNavMenu_link {
+                    type
+                    label
+                    primary {
+                      label
+                      link {
+                        _linkType
+                        __typename
+                        ... on PRISMIC_Page {
+                          _meta {
+                            id
+                            uid
+                            type
+                            tags
+                            lang
+                          }
+                        }
                       }
-                      name
+                    }
+                    fields {
+                      sub_label
+                      sub_link {
+                        _linkType
+                        __typename
+                        ... on PRISMIC_Page {
+                          _meta {
+                            id
+                            uid
+                            type
+                            tags
+                            lang
+                          }
+                        }
+                      }
                     }
                   }
                 }

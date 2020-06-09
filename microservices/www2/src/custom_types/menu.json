@@ -1,34 +1,62 @@
 {
   "Main": {
+    "menu_name": {
+      "type": "Text",
+      "config": {
+        "label": "Menu Name",
+        "useAsTitle": true
+      }
+    },
     "uid": {
       "type": "UID",
       "config": {
-        "label": "Menu Name",
-        "useAsTitle": true,
-        "placeholder": "Must be all lowercase, with no spaces"
+        "label": "Slug",
+        "placeholder": "Must be all lowercase, dashes okay, but no spaces"
       }
     },
-    "menu_links": {
-      "type": "Group",
+    "nav": {
+      "type": "Slices",
+      "fieldset": "Slice zone",
       "config": {
-        "fields": {
-          "label": {
-            "type": "Text",
-            "config": {
-              "label": "Label",
-              "placeholder": "Link label"
-            }
-          },
-          "link": {
-            "type": "Link",
-            "config": {
-              "label": "Link",
-              "placeholder": "Select a Link...",
-              "allowTargetBlank": true
+        "choices": {
+          "menu_link": {
+            "type": "Slice",
+            "fieldset": "Menu Link",
+            "description": "with optional Sub Menu Links",
+            "icon": "menu",
+            "display": "list",
+            "non-repeat": {
+              "label": {
+                "type": "Text",
+                "config": {
+                  "label": "Label",
+                  "placeholder": "Link label"
+                }
+              },
+              "link": {
+                "type": "Link",
+                "config": {
+                  "label": "Link",
+                  "placeholder": "Select a link... unless this menu item has sub menu links"
+                }
+              }
+            },
+            "repeat": {
+              "sub_label": {
+                "type": "Text",
+                "config": {
+                  "label": "Sub label"
+                }
+              },
+              "sub_link": {
+                "type": "Link",
+                "config": {
+                  "label": "Sub link"
+                }
+              }
             }
           }
-        },
-        "label": "Menu Links"
+        }
       }
     }
   }
