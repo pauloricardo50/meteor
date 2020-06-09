@@ -434,13 +434,14 @@ class PromotionOptionService extends CollectionService {
       return {};
     }
 
-    // Send keys with dot-notation, to make sure simple-schema doesn't
-    // set the other keys in the object to their defaultValues
-    changedKeys.forEach(key => {
-      this._update({
-        id: promotionOptionId,
-        object: { [`${id}.${key}`]: object[key] },
-      });
+    const updateObject = changedKeys.reduce(
+      (obj, key) => ({ ...obj, [`${id}.${key}`]: object[key] }),
+      {},
+    );
+
+    this._update({
+      id: promotionOptionId,
+      object: updateObject,
     });
 
     if (changedKeys.includes('status')) {

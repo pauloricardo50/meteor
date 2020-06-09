@@ -3,6 +3,8 @@ import moment from 'moment';
 
 import { PROMOTION_OPTION_ICONS } from '../../../../components/PromotionPage/PromotionReservationProgress/promotionReservationProgressHelpers';
 import T from '../../../../components/Translation';
+import colors from '../../../../config/colors';
+import { setupMoment } from '../../../../utils/localization';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 
 export const promotionOptionProgressStyles = `
@@ -29,26 +31,32 @@ const Item = ({
   promotionOption,
   description: overrideDescription,
   date: overrideDate,
+  color: overrideColor,
 }) => {
   const config = PROMOTION_OPTION_ICONS[id]?.({
     ...promotionOption,
     ...promotionOption.loan?.loanProgress,
   });
-  const { description = overrideDescription, color, date = overrideDate } =
-    config || {};
+  const {
+    description = overrideDescription,
+    color = overrideColor,
+    date = overrideDate,
+  } = config || {};
 
   return (
-    <li>
+    <li style={{ marginBottom: 8 }}>
       <div>
         <T id={`Forms.${id}`} />
       </div>
       <div>
-        <br />
         <span style={{ color }}>{description}</span>
         {date && (
           <>
             &nbsp;–&nbsp;
-            <small>{moment(date).fromNow()}</small>
+            <small>
+              {/* If you just use fromNow() the delta is off by our UTC offset... */}
+              {moment(date).from(new Date())}
+            </small>
           </>
         )}
       </div>
@@ -59,6 +67,7 @@ const Item = ({
 const EmailPromotionOptionProgress = ({ promotionOptionId, anonymize }) => {
   const promotionOption = getPromotionProgressData(promotionOptionId);
   const { loan } = promotionOption;
+  setupMoment();
 
   return (
     <div style={{ padding: 18, marginTop: 24 }}>
@@ -83,6 +92,7 @@ const EmailPromotionOptionProgress = ({ promotionOptionId, anonymize }) => {
               promotionOption={promotionOption}
               description={loan?.proNote?.note || 'Pas de commentaire'}
               date={loan?.proNote?.date}
+              color={colors.iconHoverColor}
             />
           </>
         )}

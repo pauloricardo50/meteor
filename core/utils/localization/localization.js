@@ -1,7 +1,5 @@
 // This file is shared between client and server to allow server-side tests to have access to it
 
-import moment from 'moment';
-
 import intl from '../intl';
 import { setupMoment } from './localizationHelpers';
 import translateSimpleSchema from './simpleSchemaLocalization';
@@ -12,7 +10,6 @@ export const localizationStartup = ({
   messages,
 } = {}) => {
   setupMoment();
-  moment.locale('fr');
 
   translateSimpleSchema();
 
