@@ -13,12 +13,13 @@ export const up = () => {
   });
 
   return Promise.all(
-    users.map(({ _id }) =>
-      UserService.rawCollection.update(
-        { _id },
-        { $set: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC } },
-      ),
-    ),
+    users.map(({ _id: id }) => {
+      UserService._update({
+        id,
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC },
+      });
+      return Promise.resolve();
+    }),
   );
 };
 
@@ -32,11 +33,11 @@ export const down = () => {
   });
 
   return Promise.all(
-    users.map(({ _id }) =>
-      UserService.rawCollection.update(
-        { _id },
-        { $set: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_PRO } },
-      ),
+    users.map(({ _id: id }) =>
+      UserService._update({
+        id,
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_PRO },
+      }),
     ),
   );
 };

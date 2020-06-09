@@ -2,6 +2,8 @@ import { expect } from 'chai';
 
 import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
+import InsuranceRequestService from '../../../insuranceRequests/server/InsuranceRequestService';
+import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';
 import { ACQUISITION_CHANNELS } from '../../../users/userConstants';
 import { down, up } from '../36';
@@ -95,6 +97,50 @@ describe('Migration 36', () => {
       });
 
       expect(user.acquisitionChannel).to.equal(undefined);
+    });
+
+    it('updates the loan userCache', async () => {
+      generator({
+        organisations: { _id: 'org' },
+        users: {
+          _id: 'user',
+          _factory: 'user',
+          referredByOrganisationLink: 'org',
+        },
+        loans: { _id: 'loan', userId: 'user' },
+      });
+
+      await up();
+
+      const loan = LoanService.get('loan', {
+        userCache: 1,
+      });
+
+      expect(loan.userCache.acquisitionChannel).to.equal(
+        ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+      );
+    });
+
+    it('updates the insuranceRequest userCache', async () => {
+      generator({
+        organisations: { _id: 'org' },
+        users: {
+          _id: 'user',
+          _factory: 'user',
+          referredByOrganisationLink: 'org',
+        },
+        insuranceRequests: { _id: 'iR', user: { _id: 'user' } },
+      });
+
+      await up();
+
+      const iR = InsuranceRequestService.get('iR', {
+        userCache: 1,
+      });
+
+      expect(iR.userCache.acquisitionChannel).to.equal(
+        ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+      );
     });
   });
 
