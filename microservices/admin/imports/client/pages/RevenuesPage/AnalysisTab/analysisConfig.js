@@ -10,6 +10,7 @@ import { INSURANCE_PRODUCT_FEATURES } from 'core/api/insuranceProducts/insurance
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS_ORDER,
+  UNSUCCESSFUL_INSURANCE_REQUESTS_REASONS,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import {
@@ -607,6 +608,19 @@ const analysisConfig = {
             .reduce((t, { amount }) => t + amount, 0),
       },
     ],
+    unsuccessfulReason: {
+      label: "Raison d'archivage",
+      format: ({ unsuccessfulReason }) =>
+        unsuccessfulReason
+          ? Object.values(UNSUCCESSFUL_INSURANCE_REQUESTS_REASONS).includes(
+              unsuccessfulReason,
+            )
+            ? formatMessage({
+                id: `Forms.unsuccessfulReason.${unsuccessfulReason}`,
+              })
+            : 'Autre'
+          : undefined,
+    },
   },
   [INSURANCES_COLLECTION]: {
     status: {

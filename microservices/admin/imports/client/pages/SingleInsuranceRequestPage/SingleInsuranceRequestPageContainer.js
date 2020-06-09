@@ -62,6 +62,7 @@ export default compose(
         disabilityPension: 1,
       },
       loan: { name: 1 },
+      unsuccessfulReason: 1,
     }),
     dataName: 'insuranceRequest',
     queryOptions: { reactive: true, single: true },
