@@ -56,10 +56,10 @@ const Item = ({
   );
 };
 
-const EmailPromotionOptionProgress = ({ promotionOptionId }) => {
+const EmailPromotionOptionProgress = ({ promotionOptionId, anonymize }) => {
   const promotionOption = getPromotionProgressData(promotionOptionId);
   const { loan } = promotionOption;
-  console.log('loan:', loan);
+
   return (
     <div style={{ padding: 18, marginTop: 24 }}>
       <h2>
@@ -75,13 +75,17 @@ const EmailPromotionOptionProgress = ({ promotionOptionId }) => {
         <br />
         <Item id="reservationAgreement" promotionOption={promotionOption} />
         <Item id="reservationDeposit" promotionOption={promotionOption} />
-        <br />
-        <Item
-          id="proNote"
-          promotionOption={promotionOption}
-          description={loan?.proNote?.note || 'Pas de commentaire'}
-          date={loan?.proNote?.date}
-        />
+        {!anonymize && (
+          <>
+            <br />
+            <Item
+              id="proNote"
+              promotionOption={promotionOption}
+              description={loan?.proNote?.note || 'Pas de commentaire'}
+              date={loan?.proNote?.date}
+            />
+          </>
+        )}
       </ul>
     </div>
   );

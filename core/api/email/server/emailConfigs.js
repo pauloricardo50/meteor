@@ -341,7 +341,13 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
 });
 
 const promotionEmailOverridesPro = function(params, { title, body, cta }) {
-  const { promotionId, promotionOptionId, fromEmail, showProgress } = params;
+  const {
+    promotionId,
+    promotionOptionId,
+    fromEmail,
+    showProgress,
+    anonymize,
+  } = params;
   const { variables } = this.template;
 
   return {
@@ -361,7 +367,7 @@ const promotionEmailOverridesPro = function(params, { title, body, cta }) {
             name: 'body-content-1',
             content: renderEmailComponent({
               Component: EmailPromotionOptionProgress,
-              props: { promotionOptionId },
+              props: { promotionOptionId, anonymize },
             }),
           },
         ]

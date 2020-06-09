@@ -27,7 +27,7 @@ const PromotionReservationProgressEditor = ({ promotionOption, loan }) => {
 
       <PromotionReservationProgress
         promotionOption={promotionOption}
-        showLabel
+        showLabels
         showLoanProgress
         vertical
         onClick={id => setDialogId(id)}

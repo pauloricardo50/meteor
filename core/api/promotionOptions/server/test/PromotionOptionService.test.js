@@ -14,6 +14,7 @@ import S3Service from '../../../files/server/S3Service';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
 import LoanService from '../../../loans/server/LoanService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { reservePromotionLot } from '../../../promotionLots/methodDefinitions';
 import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import {
   PROMOTION_EMAIL_RECIPIENTS,
@@ -1781,9 +1782,21 @@ describe('PromotionOptionService', function() {
             users: [
               {
                 _id: 'proId1',
-                $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
+                $metadata: {
+                  roles: [PROMOTION_USERS_ROLES.BROKER],
+                  permissions: {
+                    displayCustomerNames: {
+                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                      forLotStatus: Object.values(
+                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                          .FOR_LOT_STATUS,
+                      ),
+                    },
+                  },
+                },
                 _factory: 'pro',
                 emails: [{ address: 'broker@e-potek.ch', verified: true }],
+                organisations: {},
               },
             ],
             loans: {
@@ -1831,6 +1844,97 @@ describe('PromotionOptionService', function() {
         expect(content).to.include('Validé'); // Bank
         expect(content).to.include('Tout baigne'); // proNote
         expect(content).to.include('2/22 (9%)'); // Infos
+      });
+
+      it("anonymizes the proNote for pros who shouldn't get it", async () => {
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          organisations: [{ _id: 'org1' }, { _id: 'org2' }],
+          promotions: {
+            _id: 'promotionId',
+            users: [
+              {
+                _id: 'proId1',
+                $metadata: {
+                  roles: [PROMOTION_USERS_ROLES.BROKER],
+                  permissions: {
+                    displayCustomerNames: {
+                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                      forLotStatus: Object.values(
+                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                          .FOR_LOT_STATUS,
+                      ),
+                    },
+                  },
+                },
+                _factory: 'pro',
+                emails: [{ address: 'broker1@e-potek.ch', verified: true }],
+                organisations: { _id: 'org1' },
+              },
+              {
+                _id: 'proId2',
+                $metadata: {
+                  roles: [PROMOTION_USERS_ROLES.BROKER],
+                  permissions: {
+                    displayCustomerNames: {
+                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                      forLotStatus: Object.values(
+                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                          .FOR_LOT_STATUS,
+                      ),
+                    },
+                  },
+                },
+                _factory: 'pro',
+                emails: [{ address: 'broker2@e-potek.ch', verified: true }],
+                organisations: { _id: 'org2' },
+              },
+            ],
+            loans: {
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+                _factory: 'completedPromotionOption',
+              },
+              proNote: {
+                id: 'asdf',
+                note: 'Tout baigne',
+                date: new Date(),
+                updatedBy: 'adminId',
+              },
+              $metadata: { invitedBy: 'proId1' },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
+        );
+
+        const emails = await checkEmails(3);
+
+        const {
+          template: { template_content },
+        } = emails.find(({ address }) => address === 'broker1@e-potek.ch');
+        const {
+          template: { template_content: template_content2 },
+        } = emails.find(({ address }) => address === 'broker2@e-potek.ch');
+
+        const { content: content1 } = template_content.find(
+          ({ name }) => name === 'body-content-1',
+        );
+
+        const { content: content2 } = template_content2.find(
+          ({ name }) => name === 'body-content-1',
+        );
+
+        expect(content1).to.include('Tout baigne');
+        expect(content2).to.not.include('Tout baigne');
       });
     });
   });
