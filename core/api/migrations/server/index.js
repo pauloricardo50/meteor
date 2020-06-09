@@ -33,6 +33,7 @@ import './32';
 import './33';
 import './34';
 import './35';
+import './36';
 
 import { Migrations } from 'meteor/percolate:migrations';
 
