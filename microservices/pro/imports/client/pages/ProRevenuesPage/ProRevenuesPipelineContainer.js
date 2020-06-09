@@ -32,6 +32,7 @@ export default compose(
       referredByUserId: getReferredBy(referredByUserId, organisations[0]._id),
       $body: {
         anonymous: 1,
+        promotionLinks: 1,
         promotionOptions: {
           value: 1,
           promotionLots: { properties: { totalValue: 1, value: 1 } },
