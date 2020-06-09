@@ -32,7 +32,11 @@ export default Component => {
       if (allowedValues) {
         this.state.values = allowedValues;
       } else if (recommendedValues) {
-        this.getRecommendedValues(this.props);
+        if (typeof recommendedValues === 'function') {
+          this.getRecommendedValues(this.props);
+        } else {
+          this.state.values = recommendedValues;
+        }
       } else {
         this.getCustomAllowedValues(this.props);
       }
@@ -90,7 +94,8 @@ export default Component => {
       }
 
       if (typeof recommendedValues === 'function') {
-        Promise.resolve(recommendedValues(model))
+        Promise.resolve()
+          .then(() => recommendedValues(model))
           .then(result =>
             this.setState({ values: this.filterRecommendedValues(result) }),
           )
@@ -99,6 +104,7 @@ export default Component => {
         this.setState({
           values: this.filterRecommendedValues(recommendedValues),
           loading: false,
+          error: null,
         });
       }
     }
