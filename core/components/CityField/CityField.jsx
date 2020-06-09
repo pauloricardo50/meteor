@@ -31,38 +31,7 @@ const getCities = async (zipCode = '') => {
 
 const CityField = ({ updateFunc, cities, city, customCity, setCustomCity }) => (
   <>
-    <AutoFormSelectFieldInput
-      InputProps={{
-        defaultValue: city,
-        label: <T id="Forms.city" />,
-        style: { width: '100%', maxWidth: '400px' },
-        readOnly: false,
-        required: true,
-        todo: !city,
-        multiline: true,
-        id: 'city',
-        options: [...cities, { id: city }],
-        transform: c => {
-          if (c === 'other') {
-            return <T id="general.other" />;
-          }
-          return c || 'Aucun résultat trouvé';
-        },
-      }}
-      saveOnChange
-      showValidIconOnChange
-      updateFunc={value => {
-        const {
-          object: { city: newCity },
-        } = value;
-        if (newCity === 'other') {
-          return Promise.resolve(setCustomCity(true));
-        }
-        setCustomCity(false);
-        return updateFunc(value);
-      }}
-    />
-    {customCity && (
+    {customCity ? (
       <AutoFormTextInput
         InputProps={{
           defaultValue: city,
@@ -76,6 +45,38 @@ const CityField = ({ updateFunc, cities, city, customCity, setCustomCity }) => (
         saveOnChange
         updateFunc={updateFunc}
       />
+    ) : (
+      <AutoFormSelectFieldInput
+        InputProps={{
+          defaultValue: city,
+          label: <T id="Forms.city" />,
+          style: { width: '100%', maxWidth: '400px' },
+          readOnly: false,
+          required: true,
+          todo: !city,
+          multiline: true,
+          id: 'city',
+          options: [...cities, { id: city }],
+          transform: c => {
+            if (c === 'other') {
+              return <T id="general.other" />;
+            }
+            return c || 'Aucun résultat trouvé';
+          },
+        }}
+        saveOnChange
+        showValidIconOnChange
+        updateFunc={value => {
+          const {
+            object: { city: newCity },
+          } = value;
+          if (newCity === 'other') {
+            return Promise.resolve(setCustomCity(true));
+          }
+          setCustomCity(false);
+          return updateFunc(value);
+        }}
+      />
     )}
   </>
 );
@@ -87,7 +88,15 @@ export default withProps(({ doc }) => {
 
   useEffect(() => {
     getCities(zipCode).then(result => setCities([...result, { id: 'other' }]));
-  }, [zipCode]);
+  }, [zipCode, city]);
+
+  useEffect(() => {
+    if (cities.filter(({ id }) => ![null, 'other'].includes(id)).length === 0) {
+      setCustomCity(true);
+    } else {
+      setCustomCity(false);
+    }
+  }, [cities]);
 
   let updateFunc = () => Promise.resolve();
 

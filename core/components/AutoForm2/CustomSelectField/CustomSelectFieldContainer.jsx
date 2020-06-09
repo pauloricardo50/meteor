@@ -90,8 +90,7 @@ export default Component => {
       }
 
       if (typeof recommendedValues === 'function') {
-        Promise.resolve()
-          .then(() => recommendedValues(model))
+        Promise.resolve(recommendedValues(model))
           .then(result =>
             this.setState({ values: this.filterRecommendedValues(result) }),
           )
