@@ -15,7 +15,6 @@ import T from '../../../Translation';
 const isApp = Meteor.microservice === 'app';
 
 const getAppDescriptionId = (promotionOption, loan) => {
-  console.log('loan:', loan);
   if (promotionOption.bank.status === PROMOTION_OPTION_BANK_STATUS.WAITLIST) {
     return 'waitlist';
   }

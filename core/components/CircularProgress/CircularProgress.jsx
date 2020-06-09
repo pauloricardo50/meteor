@@ -22,7 +22,6 @@ const CircularProgress = ({ percent, size = '1em' }) => (
       {...circularProgressProps}
     />
     <MuiCircularProgress
-      // style={{ margin: '0 2px' }}
       value={percent * 100}
       color={percent >= 1 ? 'secondary' : 'primary'}
       size={size}

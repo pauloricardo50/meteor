@@ -60,21 +60,13 @@ const ProAppPage = ({ loans, insertLoan }) => {
               raised
               primary
               style={{ marginTop: 40 }}
-              onClick={() => {
-                if (loans.length) {
+              onClick={() =>
+                insertLoan({ test: true }).then(loanId => {
                   history.push(
-                    createRoute(ROUTES.DASHBOARD_PAGE.path, {
-                      loanId: loans[0]._id,
-                    }),
+                    createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId }),
                   );
-                } else {
-                  insertLoan({ test: true }).then(loanId => {
-                    history.push(
-                      createRoute(ROUTES.DASHBOARD_PAGE.path, { loanId }),
-                    );
-                  });
-                }
-              }}
+                })
+              }
             >
               Créer un dossier test
             </Button>
@@ -85,9 +77,7 @@ const ProAppPage = ({ loans, insertLoan }) => {
       {!loading && hasLoans && (
         <>
           <h2>Mes dossiers</h2>
-          {/* <div className="" style={{ alignSelf: 'stretch' }}> */}
           <LoanCards loans={data.loans} />
-          {/* </div> */}
         </>
       )}
     </div>

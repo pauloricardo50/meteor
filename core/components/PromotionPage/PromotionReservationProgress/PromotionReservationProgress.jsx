@@ -78,10 +78,13 @@ const PromotionReservationProgress = ({
   ].filter(x => x);
 
   return (
-    <div className={cx('promotion-reservation-progress-2', className)}>
+    <div className={cx('promotion-reservation-progress', className)}>
       <Stepper
         {...stepperProps}
-        style={{ ...stepperProps.style, minWidth: progressSteps.length * 50 }}
+        style={{
+          ...stepperProps.style,
+          minWidth: !vertical ? undefined : progressSteps.length * 50,
+        }}
       >
         {progressSteps.map(id => (
           <PromotionReservationProgressStep
@@ -98,7 +101,10 @@ const PromotionReservationProgress = ({
 
       <Stepper
         {...stepperProps}
-        style={{ ...stepperProps.style, minWidth: 2 * 50 }}
+        style={{
+          ...stepperProps.style,
+          minWidth: vertical ? undefined : 2 * 50,
+        }}
       >
         {['reservationAgreement', 'reservationDeposit'].map(id => (
           <PromotionReservationProgressStep

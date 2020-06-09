@@ -27,8 +27,10 @@ import T from '../../Translation';
 
 export const TIMELINE_ICON_STATES = {
   TO_DO: {
-    IconComponent: () => <FaIcon icon={duoToneCircle} color="#bbb" />,
-    color: '#888',
+    IconComponent: () => (
+      <FaIcon icon={duoToneCircle} color={colors.duotoneIconColor} />
+    ),
+    color: colors.iconHoverColor,
   },
   DONE: {
     IconComponent: () => (
