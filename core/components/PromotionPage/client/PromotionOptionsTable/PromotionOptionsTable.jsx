@@ -45,7 +45,7 @@ const PromotionOptionsTable = ({ promotion }) => {
   const currentUser = useCurrentUser();
   const {
     _id: promotionId,
-    users: promotionUsers,
+    users: promotionUsers = [],
     promotionLotGroups = [],
   } = promotion;
   const [statusFilter, setStatusFilter] = useState({
