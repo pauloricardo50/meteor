@@ -136,7 +136,7 @@ describe('CustomSelectField', () => {
   });
 
   context('with recommendedValues', () => {
-    it('renders recommended values', () => {
+    it('renders recommended values', async () => {
       props = {
         schema: new SimpleSchema({
           text: {
@@ -152,6 +152,68 @@ describe('CustomSelectField', () => {
 
       const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
 
+      await waitFor(() => getByLabelText('Select', { exact: false }));
+      fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
+
+      const options = getAllByRole('option');
+      expect(options.length).to.equal(2);
+      const [option1, option2] = options;
+      expect(!!within(option1).getByText('yo')).to.equal(true);
+      expect(!!within(option2).getByText('dude')).to.equal(true);
+    });
+
+    it('renders recommended values based on model', async () => {
+      props = {
+        schema: new SimpleSchema({
+          text: {
+            type: String,
+            uniforms: {
+              recommendedValues: model =>
+                ['yo', 'dude', model?.bool && 'yeah'].filter(x => x),
+              label: 'Select',
+              placeholder: '',
+              displayEmpty: false,
+            },
+          },
+          bool: {
+            type: Boolean,
+            defaultValue: true,
+          },
+        }),
+      };
+
+      const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
+
+      await waitFor(() => getByLabelText('Select', { exact: false }));
+      fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
+
+      const options = getAllByRole('option');
+      expect(options.length).to.equal(3);
+      const [o1, o2, o3] = options;
+      expect(!!within(o1).getByText('yo')).to.equal(true);
+      expect(!!within(o2).getByText('dude')).to.equal(true);
+      expect(!!within(o3).getByText('yeah')).to.equal(true);
+    });
+
+    it('renders recommended values based on model using a promise', async () => {
+      props = {
+        schema: new SimpleSchema({
+          bool: { type: Boolean, uniforms: { label: 'Check' } },
+          text: {
+            type: String,
+            uniforms: {
+              recommendedValues: () =>
+                new Promise((resolve, reject) => resolve(['yo', 'dude'])),
+              label: 'Select',
+              placeholder: null,
+            },
+          },
+        }),
+      };
+
+      const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
+
+      await waitFor(() => getByLabelText('Select', { exact: false }));
       fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
 
       const options = getAllByRole('option');

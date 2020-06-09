@@ -9,6 +9,8 @@
   "Forms.unsuccessfulReason.ADVISED_IN_BANK_3A_FOR_HEALTH_REASONS": "Le client est dirigé par e-Potek sur un 3A bancaire suite à des problèmes de santé",
   "Forms.unsuccessfulReason.WANTS_DIRECT_AMORTIZATION": "Le client souhaite effectuer un amortissement direct",
   "Forms.unsuccessfulReason.NO_WITHDRAWAL_TAXES_REDUCTION_LIMIT_REACHED": " Le client ne retire pas son/ses 3ème pilier et est au maximum déductible fiscalement",
+  "Forms.city.specify": "Spécifiez la commune",
+  "Forms.city.specify.placeholder": "Paris",
   "PromotionOptionsTable.promotionLotGroups": "Groupe de lots",
   "PromotionPage.lots.group": "Groupe de lots",
   "Forms.promotionLotGroupIds": "Groupe de lots",
