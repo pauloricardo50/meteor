@@ -11,7 +11,7 @@ import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import T from '../../../../../Translation';
-import PromotionReservationProgress from '../../../../PromotionReservationProgress/PromotionReservationProgress';
+import PromotionReservationProgress from '../../../../PromotionReservationProgress';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
@@ -52,6 +52,7 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
         promotionLotName={promotionLot.name}
         status={status}
         buttonProps={{ size: 'small' }}
+        loan={loan}
       />
     );
   }
@@ -80,7 +81,8 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
           <PromotionReservationProgress
             loan={loan}
             promotionOption={promotionOption}
-            className="mr-8"
+            className="mr-8 flex"
+            StepperProps={{ style: { padding: 0 } }}
           />
           <Button
             raised

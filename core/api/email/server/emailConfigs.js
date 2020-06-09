@@ -12,11 +12,10 @@ import {
   FOOTER_TYPES,
   FROM_EMAIL,
 } from '../emailConstants';
-import PromotionLogos from './components/PromotionLogos';
-import PromotionOptionProgress, {
-  getPromotionProgressData,
+import EmailPromotionOptionProgress, {
   promotionOptionProgressStyles,
-} from './components/PromotionOptionProgress';
+} from './components/EmailPromotionOptionProgress';
+import PromotionLogos from './components/PromotionLogos';
 import {
   getAccountsUrl,
   notificationAndCtaTemplateDefaultOverride,
@@ -342,7 +341,13 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
 });
 
 const promotionEmailOverridesPro = function(params, { title, body, cta }) {
-  const { promotionId, promotionOptionId, fromEmail, showProgress } = params;
+  const {
+    promotionId,
+    promotionOptionId,
+    fromEmail,
+    showProgress,
+    anonymize,
+  } = params;
   const { variables } = this.template;
 
   return {
@@ -361,8 +366,8 @@ const promotionEmailOverridesPro = function(params, { title, body, cta }) {
           {
             name: 'body-content-1',
             content: renderEmailComponent({
-              Component: PromotionOptionProgress,
-              props: getPromotionProgressData({ promotionOptionId }),
+              Component: EmailPromotionOptionProgress,
+              props: { promotionOptionId, anonymize },
             }),
           },
         ]

@@ -34,6 +34,7 @@ const UserReservation = ({
             expirationDate={expirationDate}
             status={status}
             promotionOption={promotionOption}
+            loan={loan}
           />
         </div>
         {[
@@ -45,7 +46,9 @@ const UserReservation = ({
             promotionOption={promotionOption}
             variant={progressVariant}
             loan={loan}
-            withLoanProgress
+            showLoanProgress
+            showLabels={progressVariant === 'text'}
+            showDetailIcon
           />
         )}
       </div>

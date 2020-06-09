@@ -19,16 +19,12 @@ const RequestReservation = ({
   promotionLotName,
   status,
   buttonProps,
+  loan = promotionOption.loan,
 }) => {
-  const {
-    _id: promotionOptionId,
-    loanCache,
-    loan: { promotions },
-  } = promotionOption;
+  const { _id: promotionOptionId, loanCache } = promotionOption;
   const [promotionLink] = loanCache[0].promotionLinks;
-
   const { invitedBy } = promotionLink;
-  const [{ users = [] }] = promotions;
+  const [{ users = [] }] = loan.promotions;
 
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });

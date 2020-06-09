@@ -4,7 +4,6 @@ import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
 
-import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { promotionOptionUpdate } from '../../../../api/promotionOptions/methodDefinitions';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
@@ -15,14 +14,14 @@ import { AutoFormDialog } from '../../../AutoForm2';
 import IconButton from '../../../IconButton';
 import Tooltip from '../../../Material/Tooltip';
 import T from '../../../Translation';
-
-const isApp = Meteor.microservice === 'app';
+import PromotionReservationDeadlineText from './PromotionReservationDeadlineText';
 
 const PromotionReservationDeadline = ({
   startDate,
   expirationDate,
   status,
   promotionOption,
+  loan,
 }) => {
   const inThreeDays = moment().add(3, 'd');
   const momentDate = moment(expirationDate);
@@ -30,17 +29,8 @@ const PromotionReservationDeadline = ({
   const isAdmin = Meteor.microservice === 'admin';
   const {
     _id: promotionOptionId,
-    loan: { promotions = [] },
     reservationAgreement: { status: reservationAgreementStatus },
   } = promotionOption;
-  const [promotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-    users = [],
-  } = promotion;
-
-  const pro = users.find(({ _id }) => _id === invitedBy);
-  const proName = getUserNameAndOrganisation({ user: pro });
 
   if (
     status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE &&
@@ -58,7 +48,7 @@ const PromotionReservationDeadline = ({
             </span>
           }
         >
-          <h1 className={cx({ 'error-box': isTight })}>
+          <h3 className={cx('font-size-2 mt-0', { 'error-box': isTight })}>
             {momentDate.fromNow()}
             {isAdmin && (
               <AutoFormDialog
@@ -82,24 +72,17 @@ const PromotionReservationDeadline = ({
                 title="Changer les dates"
               />
             )}
-          </h1>
+          </h3>
         </Tooltip>
       </label>
     );
   }
 
   return (
-    <div style={{ marginBottom: 16 }}>
-      <h1>
-        <T id={`PromotionReservationDeadline.${status}`} />
-      </h1>
-      <p className="description">
-        <T
-          id={`PromotionReservationDeadline.${status}.description`}
-          values={{ proName, isApp }}
-        />
-      </p>
-    </div>
+    <PromotionReservationDeadlineText
+      loan={loan}
+      promotionOption={promotionOption}
+    />
   );
 };
 
