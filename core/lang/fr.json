@@ -1,4 +1,5 @@
 {
+  "Forms.acquisitionChannel.REFERRAL_ORGANIC": "Referral organique",
   "Forms.city.specify": "Spécifiez la commune",
   "Forms.city.specify.placeholder": "Paris",
   "PromotionOptionsTable.promotionLotGroups": "Groupe de lots",
