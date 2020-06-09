@@ -29,6 +29,8 @@ InsuranceRequestService.cache(
     },
     referenceField: 'userLink._id',
   },
+  { 'userCache.acquisitionChannel': { $exists: false } },
+
   // {},
 );
 

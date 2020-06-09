@@ -31,6 +31,7 @@ export const MonitoringActivityFilterContainer = withProps(() => {
   });
 
   const [organisationId, setOrganisationId] = useState();
+  const [acquisitionChannel, setAcquisitionChannel] = useState();
 
   return {
     activityRange,
@@ -39,6 +40,8 @@ export const MonitoringActivityFilterContainer = withProps(() => {
     setCreatedAtRange,
     organisationId,
     setOrganisationId,
+    acquisitionChannel,
+    setAcquisitionChannel,
     organisations: loading ? [] : organisations,
   };
 });
@@ -49,6 +52,7 @@ export default withProps(
     createdAtRange: { startDate, endDate },
     collection,
     organisationId,
+    acquisitionChannel,
   }) => {
     const { data } = useStaticMeteorData(
       {
@@ -60,9 +64,18 @@ export default withProps(
           createdAtTo: endDate,
           collection,
           organisationId,
+          acquisitionChannel,
         },
       },
-      [fromDate, toDate, startDate, endDate, collection, organisationId],
+      [
+        fromDate,
+        toDate,
+        startDate,
+        endDate,
+        collection,
+        organisationId,
+        acquisitionChannel,
+      ],
     );
 
     return { data };

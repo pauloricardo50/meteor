@@ -250,6 +250,28 @@ const getCollectionReferralFilter = ({
   return filters;
 };
 
+const getCollectionAcquisitionChannelFilter = ({
+  collection,
+  singularCollection,
+  acquisitionChannel,
+}) => {
+  const filters = {};
+
+  if (acquisitionChannel) {
+    if (collection === INSURANCES_COLLECTION) {
+      filters[
+        `${singularCollection}.insuranceRequestCache.userCache.acquisitionChannel`
+      ] = acquisitionChannel;
+    } else {
+      filters[
+        `${singularCollection}.userCache.acquisitionChannel`
+      ] = acquisitionChannel;
+    }
+  }
+
+  return filters;
+};
+
 const getCollectionFilters = ({ collection, fromDate, toDate }) => {
   const filters = { ...COLLECTION_INITIAL_FILTERS[collection] };
 
@@ -359,6 +381,14 @@ const addCollectionFields = ({ filters, singularCollection, collection }) => {
 
   addFields.push({
     $match: getCollectionReferralFilter({
+      singularCollection,
+      collection,
+      ...filters,
+    }),
+  });
+
+  addFields.push({
+    $match: getCollectionAcquisitionChannelFilter({
       singularCollection,
       collection,
       ...filters,

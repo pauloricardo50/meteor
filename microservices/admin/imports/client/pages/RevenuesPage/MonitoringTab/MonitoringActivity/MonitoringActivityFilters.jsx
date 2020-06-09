@@ -1,10 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 
+import { ACQUISITION_CHANNELS } from 'core/api/users/userConstants';
 import Box from 'core/components/Box';
 import Button from 'core/components/Button';
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import MongoSelect from 'core/components/Select/MongoSelect';
+import T from 'core/components/Translation';
 
 // Date at which we started enforcing continuous status changes
 const minDate = moment('15/11/2019', 'DD/MM/YYYY');
@@ -16,6 +18,8 @@ const MonitoringActivityFilters = ({
   setCreatedAtRange,
   organisationId,
   setOrganisationId,
+  acquisitionChannel,
+  setAcquisitionChannel,
   organisations,
 }) => (
   <div className="flex" style={{ alignItems: 'center' }}>
@@ -51,7 +55,7 @@ const MonitoringActivityFilters = ({
         Activité dans les 30 derniers jours
       </Button>
     </Box>
-    <Box title="Date de création du dossier">
+    <Box title="Date de création du dossier" className="mr-8">
       <div className="flex-col mb-8">
         <DateRangePicker
           range={createdAtRange}
@@ -87,7 +91,22 @@ const MonitoringActivityFilters = ({
       }))}
       id="referredByOrganisationLink"
       label="Referral"
-      className="ml-8 mr-8"
+      className="mr-8"
+    />
+    <MongoSelect
+      value={acquisitionChannel}
+      onChange={setAcquisitionChannel}
+      options={[
+        ACQUISITION_CHANNELS.REFERRAL_PRO,
+        ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+        ACQUISITION_CHANNELS.REFERRAL_API,
+      ].map(channel => ({
+        id: channel,
+        label: <T id={`Forms.acquisitionChannel.${channel}`} />,
+      }))}
+      id="acquisitionChannel"
+      label="Canal d'acquisition"
+      className="mr-8"
     />
   </div>
 );
