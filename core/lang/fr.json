@@ -1,4 +1,6 @@
 {
+  "Forms.city.specify": "Spécifiez la commune",
+  "Forms.city.specify.placeholder": "Paris",
   "PromotionOptionsTable.promotionLotGroups": "Groupe de lots",
   "PromotionPage.lots.group": "Groupe de lots",
   "Forms.promotionLotGroupIds": "Groupe de lots",
