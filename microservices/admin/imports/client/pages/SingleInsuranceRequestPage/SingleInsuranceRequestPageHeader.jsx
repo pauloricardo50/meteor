@@ -1,19 +1,12 @@
 import React from 'react';
 
-import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
 import { CollectionIconLink } from 'core/components/IconLink';
-import StatusLabel from 'core/components/StatusLabel';
 
+import InsuranceRequestStatusModifier from './InsuranceRequestStatusModifier';
 import SingleInsuranceRequestCustomName from './SingleInsuranceRequestCustomName';
 
 const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
-  const {
-    _collection,
-    _id: insuranceRequestId,
-    name,
-    status: insuranceRequestStatus,
-    user,
-  } = insuranceRequest;
+  const { name, user } = insuranceRequest;
   return (
     <div className="single-insurance-request-page-header">
       <div className="left">
@@ -21,14 +14,8 @@ const SingleInsuranceRequestPageHeader = ({ insuranceRequest }) => {
           <h1>{name}</h1>
           {user && <CollectionIconLink relatedDoc={user} />}
           <span className="ml-16">
-            <StatusLabel
-              collection={_collection}
-              status={insuranceRequestStatus}
-              allowModify
-              docId={insuranceRequestId}
-              method={status =>
-                insuranceRequestUpdateStatus.run({ insuranceRequestId, status })
-              }
+            <InsuranceRequestStatusModifier
+              insuranceRequest={insuranceRequest}
             />
           </span>
         </div>

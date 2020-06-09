@@ -30,6 +30,8 @@ const DialogForm = ({
   onSubmit,
   children,
   layout,
+  actions,
+  ...props
 }) => (
   <>
     {title && <DialogTitle>{title}</DialogTitle>}
@@ -37,6 +39,7 @@ const DialogForm = ({
       model={model}
       schema={schema}
       onSubmit={makeOnSubmit(onSubmit, closeModal)}
+      {...props}
     >
       <DialogContent>
         {children}
@@ -52,8 +55,18 @@ const DialogForm = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button primary label={<T id="general.close" />} onClick={closeAll} />
-        <CustomSubmitField />
+        {actions ? (
+          actions({ closeAll })
+        ) : (
+          <>
+            <Button
+              primary
+              label={<T id="general.close" />}
+              onClick={closeAll}
+            />
+            <CustomSubmitField />
+          </>
+        )}
       </DialogActions>
     </AutoForm>
   </>

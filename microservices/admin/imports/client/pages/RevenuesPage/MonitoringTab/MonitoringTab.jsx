@@ -8,6 +8,7 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import LoanMonitoringChart from './LoanMonitoringChart';
 import { MonitoringActivities } from './MonitoringActivity';
+import UnsuccessfulReasons from './UnsuccessfulReasons/UnsuccessfulReasons';
 
 const MonitoringTab = () => {
   const [revenueDateRange, setRevenueDateRange] = useState({
@@ -83,6 +84,7 @@ const MonitoringTab = () => {
       />
 
       <MonitoringActivities />
+      {/* <UnsuccessfulReasons /> */}
     </div>
   );
 };
