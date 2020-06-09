@@ -28,9 +28,11 @@ export default Component => {
         loading: false,
       };
 
-      const allowedValues = this.getAllowedValues(props);
+      const { allowedValues, recommendedValues } = props;
       if (allowedValues) {
         this.state.values = allowedValues;
+      } else if (recommendedValues) {
+        this.getRecommendedValues(this.props);
       } else {
         this.getCustomAllowedValues(this.props);
       }
@@ -38,12 +40,19 @@ export default Component => {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
       const { model: nextModel } = nextProps;
-      const { model, handleClick, name } = this.props;
+      const {
+        model,
+        handleClick,
+        name,
+        recommendedValues,
+        allowedValues,
+      } = this.props;
 
       if (model !== nextModel) {
-        const allowedValues = this.getAllowedValues(nextProps);
         if (allowedValues) {
           this.setState({ values: allowedValues });
+        } else if (recommendedValues) {
+          this.getRecommendedValues(nextProps);
         } else {
           this.getCustomAllowedValues(nextProps);
         }
@@ -58,28 +67,40 @@ export default Component => {
       }
     }
 
-    getAllowedValues(props) {
-      const {
-        allowedValues,
-        recommendedValues,
-        withCustomOther,
-        value,
-      } = props;
-      if (allowedValues) {
-        return allowedValues;
+    filterRecommendedValues(recommendedValues) {
+      const { withCustomOther, value } = this.props;
+
+      const filteredRecommendValues = [
+        ...recommendedValues,
+        !withCustomOther && value,
+      ]
+        .filter((val, index, array) => array.indexOf(val) === index)
+        .filter(x => x);
+
+      return withCustomOther
+        ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
+        : filteredRecommendValues;
+    }
+
+    getRecommendedValues(props) {
+      const { recommendedValues, model } = props;
+
+      if (!recommendedValues) {
+        return;
       }
 
-      if (recommendedValues) {
-        const filteredRecommendValues = [
-          ...recommendedValues,
-          !withCustomOther && value,
-        ]
-          .filter((val, index, array) => array.indexOf(val) === index)
-          .filter(x => x);
-
-        return withCustomOther
-          ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
-          : filteredRecommendValues;
+      if (typeof recommendedValues === 'function') {
+        Promise.resolve()
+          .then(() => recommendedValues(model))
+          .then(result =>
+            this.setState({ values: this.filterRecommendedValues(result) }),
+          )
+          .finally(() => this.setState({ loading: false }));
+      } else {
+        this.setState({
+          values: this.filterRecommendedValues(recommendedValues),
+          loading: false,
+        });
       }
     }
 
