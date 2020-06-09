@@ -4,6 +4,7 @@ import moment from 'moment';
 import Box from 'core/components/Box';
 import Button from 'core/components/Button';
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
+import MongoSelect from 'core/components/Select/MongoSelect';
 
 // Date at which we started enforcing continuous status changes
 const minDate = moment('15/11/2019', 'DD/MM/YYYY');
@@ -13,8 +14,11 @@ const MonitoringActivityFilters = ({
   setActivityRange,
   createdAtRange,
   setCreatedAtRange,
+  organisationId,
+  setOrganisationId,
+  organisations,
 }) => (
-  <div className="flex">
+  <div className="flex" style={{ alignItems: 'center' }}>
     <Box className="mr-8" title={"Date de l'activité"}>
       <div className="flex-col mb-8">
         <DateRangePicker
@@ -74,6 +78,17 @@ const MonitoringActivityFilters = ({
         Performance totale des conseillers
       </Button>
     </Box>
+    <MongoSelect
+      value={organisationId}
+      onChange={setOrganisationId}
+      options={organisations.map(({ _id, name } = {}) => ({
+        id: _id,
+        label: name,
+      }))}
+      id="referredByOrganisationLink"
+      label="Referral"
+      className="ml-8 mr-8"
+    />
   </div>
 );
 export default MonitoringActivityFilters;

@@ -28,7 +28,7 @@ const makeSortStatuses = order => (a, b) =>
   order.indexOf(b) < order.indexOf(a) ? 1 : -1;
 
 export const COLLECTION_QUERIES = {
-  [LOANS_COLLECTION]: createdAtRange => ({
+  [LOANS_COLLECTION]: ({ createdAtRange, organisationId }) => ({
     query: LOANS_COLLECTION,
     params: {
       $filters: {
@@ -36,6 +36,7 @@ export const COLLECTION_QUERIES = {
           $gte: createdAtRange.startDate,
           $lte: createdAtRange.endDate,
         },
+        'userCache.referredByOrganisationLink': organisationId,
       },
       createdAt: 1,
       name: 1,
@@ -44,14 +45,15 @@ export const COLLECTION_QUERIES = {
       $options: { sort: { createdAt: 1 } },
     },
   }),
-  [INSURANCE_REQUESTS_COLLECTION]: createdAtRange => ({
+  [INSURANCE_REQUESTS_COLLECTION]: ({ createdAtRange, organisationId }) => ({
     query: INSURANCE_REQUESTS_COLLECTION,
     params: {
-      $filter: {
+      $filters: {
         createdAt: {
           $gte: createdAtRange.startDate,
           $lte: createdAtRange.endDate,
         },
+        'userCache.referredByOrganisationLink': organisationId,
       },
       createdAt: 1,
       name: 1,
@@ -60,7 +62,7 @@ export const COLLECTION_QUERIES = {
       $options: { sort: { createdAt: 1 } },
     },
   }),
-  [INSURANCES_COLLECTION]: createdAtRange => ({
+  [INSURANCES_COLLECTION]: ({ createdAtRange, organisationId }) => ({
     query: INSURANCES_COLLECTION,
     params: {
       $filters: {
@@ -68,6 +70,7 @@ export const COLLECTION_QUERIES = {
           $gte: createdAtRange.startDate,
           $lte: createdAtRange.endDate,
         },
+        'insuranceRequestCache.0.userCache.referredByOrganisationLink': organisationId,
       },
       createdAt: 1,
       name: 1,

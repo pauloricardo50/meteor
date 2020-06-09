@@ -6,14 +6,14 @@ import MonitoringActivity from './MonitoringActivity';
 import { COLLECTION_QUERIES } from './monitoringActivityHelpers';
 
 const CollectionMonitoringActivity = withProps(
-  ({ createdAtRange, collection }) => {
+  ({ createdAtRange, organisationId, collection }) => {
     const {
       data: staticData = [],
       loading,
-    } = useStaticMeteorData(COLLECTION_QUERIES[collection](createdAtRange), [
-      createdAtRange,
-      collection,
-    ]);
+    } = useStaticMeteorData(
+      COLLECTION_QUERIES[collection]({ createdAtRange, organisationId }),
+      [createdAtRange, organisationId, collection],
+    );
 
     return {
       staticData,

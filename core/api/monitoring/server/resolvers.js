@@ -228,6 +228,28 @@ const COLLECTION_INITIAL_FILTERS = {
   },
 };
 
+const getCollectionReferralFilter = ({
+  collection,
+  singularCollection,
+  organisationId,
+}) => {
+  const filters = {};
+
+  if (organisationId) {
+    if (collection === INSURANCES_COLLECTION) {
+      filters[
+        `${singularCollection}.insuranceRequestCache.userCache.referredByOrganisationLink`
+      ] = organisationId;
+    } else {
+      filters[
+        `${singularCollection}.userCache.referredByOrganisationLink`
+      ] = organisationId;
+    }
+  }
+
+  return filters;
+};
+
 const getCollectionFilters = ({ collection, fromDate, toDate }) => {
   const filters = { ...COLLECTION_INITIAL_FILTERS[collection] };
 
@@ -329,6 +351,14 @@ const addCollectionFields = ({ filters, singularCollection, collection }) => {
 
   addFields.push({
     $match: getCollectionCreatedAtFilters({
+      singularCollection,
+      collection,
+      ...filters,
+    }),
+  });
+
+  addFields.push({
+    $match: getCollectionReferralFilter({
       singularCollection,
       collection,
       ...filters,
