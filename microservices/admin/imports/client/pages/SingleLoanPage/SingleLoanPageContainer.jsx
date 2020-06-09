@@ -55,7 +55,7 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
       withCounterparts: 1,
       documents: 1,
     },
-    organisation: { logo: 1 },
+    organisation: { logo: 1, contacts: { name: 1, email: 1 } },
     status: 1,
   },
   maxPropertyValue: 1,

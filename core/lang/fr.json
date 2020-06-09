@@ -17,6 +17,8 @@
   "PromotionReservationDeadline.app.epotekWaiting.description": "Nous étudions la faisabilité de votre dossier. Contactez votre conseiller pour plus d'informations.",
   "PromotionReservationDeadline.app.missingInfo": "Réservation en cours",
   "PromotionReservationDeadline.app.missingInfo.description": "Avancez dans votre dossier en complétant vos informations afin que nous puissions l'envoyer à la banque le plus rapidement possible.",
+  "Forms.city.specify": "Spécifiez la commune",
+  "Forms.city.specify.placeholder": "Paris",
   "PromotionOptionsTable.promotionLotGroups": "Groupe de lots",
   "PromotionPage.lots.group": "Groupe de lots",
   "Forms.promotionLotGroupIds": "Groupe de lots",
