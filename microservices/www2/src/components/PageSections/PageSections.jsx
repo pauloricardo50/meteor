@@ -1,5 +1,6 @@
 import React from 'react';
 import BlogPostsGrid from '../BlogPostsGrid';
+import CardsGrid from '../CardsGrid';
 import CTAsSection from '../CTAsSection';
 import FAQ from '../FAQ';
 import GPSStats from '../GPSStats';
@@ -26,6 +27,7 @@ const PageSections = ({ sections }) =>
         {
           {
             blog_posts: <BlogPostsGrid {...section} />,
+            cards: <CardsGrid {...section} />,
             ctas_section: <CTAsSection {...section} />,
             faq: <FAQ {...section} />,
             gps_stats_map: <GPSStats {...section} />,

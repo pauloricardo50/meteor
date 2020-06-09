@@ -2,17 +2,19 @@ import React from 'react';
 import { Link } from 'gatsby';
 import MenuItem from '@material-ui/core/MenuItem';
 import { linkResolver } from '../../utils/linkResolver';
+import './MenuItems.scss';
 
-const MenuItems = ({ menuLinks }) => {
+const MenuItems = ({ menuLinks, subMenu }) => {
   return menuLinks.map((menuLink, idx) => {
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
     const primaryLabel = menuLink.primary?.label || menuLink.sub_label;
 
-    if (primaryLink && primaryLink._linkType === 'Link.document') {
+    if (primaryLink?._linkType === 'Link.document') {
       return (
         <MenuItem
           key={idx}
           component={Link}
+          className={subMenu ? 'submenu-link' : null}
           to={linkResolver(primaryLink._meta)}
         >
           {primaryLabel}
@@ -20,9 +22,13 @@ const MenuItems = ({ menuLinks }) => {
       );
     }
 
-    if (primaryLink && primaryLink._linkType === 'Link.web') {
+    if (primaryLink?._linkType === 'Link.web') {
       return (
-        <MenuItem key={idx} to={primaryLink.url}>
+        <MenuItem
+          key={idx}
+          className={subMenu ? 'submenu-link' : null}
+          to={primaryLink.url}
+        >
           {primaryLabel}
         </MenuItem>
       );
@@ -33,7 +39,7 @@ const MenuItems = ({ menuLinks }) => {
         <React.Fragment key={idx}>
           <MenuItem disabled>{primaryLabel}</MenuItem>
 
-          <MenuItems menuLinks={menuLink.fields} />
+          <MenuItems menuLinks={menuLink.fields} subMenu />
         </React.Fragment>
       );
     }
