@@ -84,7 +84,7 @@ const MonitoringTab = () => {
       />
 
       <MonitoringActivities />
-      <UnsuccessfulReasons />
+      {/* <UnsuccessfulReasons /> */}
     </div>
   );
 };
