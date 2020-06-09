@@ -42,16 +42,18 @@ const UnsuccessfulDialogPipeline = ({ resolve, reject, doc: loan }) => ({
           returnValue={returnValue}
         />
       ),
-      actions: ({ closeAll, closeModal, returnValue }) => [
-        <CancelButton closeAll={closeAll} reject={reject} key="cancel" />,
-        <Button
-          key="ok"
-          primary
-          raised
-          label={<T id="general.ok" />}
-          onClick={() => closeModal({ ...returnValue })}
-        />,
-      ],
+      actions: ({ closeAll, closeModal, returnValue }) => (
+        <>
+          <CancelButton closeAll={closeAll} reject={reject} />,
+          <Button
+            primary
+            raised
+            label={<T id="general.ok" />}
+            onClick={() => closeModal({ ...returnValue })}
+          />
+          ,
+        </>
+      ),
       important: true,
       maxWidth: 'xl',
       fullWidth: true,

@@ -32,7 +32,7 @@ export const additionalActionsConfig = {
               insuranceRequestId: insuranceRequest._id,
               object: { unsuccessfulReason },
             })
-            .then(() => resolve())
+            .then(resolve)
         }
         key="reason"
       />,
