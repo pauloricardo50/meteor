@@ -1,4 +1,5 @@
 {
+  "ProRevenuesPage.promotionLoans": "{count} dossiers liés à des promotions immobilières ne sont pas pris en compte dans cette pipeline.",
   "Forms.unsuccessfulReason.NO_ANSWER": "Le client ne répond pas après 3 emails",
   "Forms.unsuccessfulReason.NOT_INTERESTED_IN_PLANNING": "Le client n'est pas intéressé par une planification financière/prévoyance",
   "Forms.unsuccessfulReason.NOT_INTERESTED_IN_3A": "Le client ne souhaite pas pour l'instant conclure de 3ème pilier",
