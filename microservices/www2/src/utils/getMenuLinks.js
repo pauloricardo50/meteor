@@ -12,7 +12,7 @@ const getMenuLinks = menuName => {
 
   if (!menu) return null;
 
-  return menu.node.menu_links;
+  return menu.node.nav;
 };
 
 export default getMenuLinks;
