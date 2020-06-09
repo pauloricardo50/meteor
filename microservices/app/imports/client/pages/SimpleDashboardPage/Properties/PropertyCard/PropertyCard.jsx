@@ -29,6 +29,7 @@ const PropertyCard = props => {
             })}
             progressVariant="text"
             loan={loan}
+            showDetailIcon
           />
         </>
       ) : (

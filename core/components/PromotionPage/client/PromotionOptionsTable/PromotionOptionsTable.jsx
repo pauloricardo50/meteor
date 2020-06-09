@@ -214,7 +214,11 @@ const PromotionOptionsTable = ({ promotion }) => {
             accessor: '_id',
             disableSortBy: true,
             Cell: ({ row: { original: promotionOption } }) => (
-              <PromotionReservationProgress promotionOption={promotionOption} />
+              <PromotionReservationProgress
+                promotionOption={promotionOption}
+                className="mr-8 flex"
+                StepperProps={{ style: { padding: 0 } }}
+              />
             ),
           },
         ]}

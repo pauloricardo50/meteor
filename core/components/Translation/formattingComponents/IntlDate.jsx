@@ -19,12 +19,14 @@ export const IntlDate = ({ type, ...props }) => {
       ]);
 
       return (
-        <FormattedRelativeTime
-          unit={unit}
-          value={selectedValue}
-          style="short"
-          {...rest}
-        />
+        <span title={value.toString().split(' GMT')?.[0]}>
+          <FormattedRelativeTime
+            unit={unit}
+            value={selectedValue}
+            style="short"
+            {...rest}
+          />
+        </span>
       );
     }
     default:

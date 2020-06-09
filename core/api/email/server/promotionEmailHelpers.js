@@ -79,6 +79,7 @@ const getPromotionOptionMailParams = (
       : 'Le conseiller',
     invitedBy: getUserNameAndOrganisation({ user: invitedByUser }),
     showProgress,
+    anonymize,
   };
 };
 
