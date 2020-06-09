@@ -65,6 +65,7 @@ const makeMapPromotionOption = ({
           promotionOption={promotionOption}
           promotionLotName={name}
           status={status}
+          loan={loan}
         />
       ),
       !!isAdmin && (

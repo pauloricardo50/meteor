@@ -1,186 +1,145 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useMemo } from 'react';
+import { faCommentLines } from '@fortawesome/pro-duotone-svg-icons/faCommentLines';
+import StepConnector from '@material-ui/core/StepConnector';
+import Stepper from '@material-ui/core/Stepper';
+import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
-import { withProps } from 'recompose';
 
 import { getLoanProgress } from '../../../api/loans/helpers';
-import ProgressCircle from '../../ProgressCircle';
-import {
-  getAdminNoteIcon,
-  getPercent,
-  getPromotionReservationIcon,
-  getRatio,
-  makeGetProgressItem,
-} from './PromotionReservationProgressHelpers';
+import colors from '../../../config/colors';
+import FaIcon from '../../Icon/FaIcon';
+import { PROMOTION_OPTION_ICONS } from './promotionReservationProgressHelpers';
+import PromotionReservationProgressStep from './PromotionReservationProgressStep';
 
-const PromotionReservationProgressComponent = ({
+const Connector = withStyles({
+  alternativeLabel: { top: 9 },
+  active: { '& $line': { borderColor: colors.primary } },
+  completed: { '& $line': { borderColor: colors.success } },
+  line: {
+    borderColor: colors.borderGrey,
+    borderTopWidth: 2,
+  },
+  vertical: {
+    marginLeft: 9,
+    padding: 0,
+  },
+  lineVertical: {
+    borderLeftWidth: 2,
+    borderColor: colors.borderGrey,
+  },
+})(StepConnector);
+
+const getStepperProps = (
+  showDetailIcon,
+  vertical,
+  { style, ...props } = {},
+) => ({
+  alternativeLabel: !vertical,
+  nonLinear: true,
+  connector: <Connector />,
+  style: {
+    marginTop: showDetailIcon ? 24 : undefined,
+    backgroundColor: 'inherit',
+    ...style,
+  },
+  orientation: vertical ? 'vertical' : undefined,
+  ...props,
+});
+
+const isApp = Meteor.microservice === 'app';
+
+const PromotionReservationProgress = ({
   promotionOption,
-  style,
-  variant = 'icon',
+  loan = promotionOption.loan,
+  showLabels,
+  showDetailIcon,
   className,
-  loanProgress,
-  withTooltip,
-  withIcon,
-  renderStatus,
-  loan: loanOverride,
+  StepperProps,
+  showLoanProgress,
+  vertical,
+  onClick,
 }) => {
-  const {
-    _id: promotionOptionId,
-    simpleVerification,
-    fullVerification,
-    reservationAgreement,
-    reservationDeposit,
-    bank,
-    loan,
-    isAnonymized,
-  } = promotionOption;
-  const { _id: loanId, proNote = {} } = loanOverride || loan;
-  const info = loanProgress?.info;
-  const documents = loanProgress?.documents;
-  const displayInfo = info !== undefined;
-  const displayDocuments = documents !== undefined;
-
-  const getProgressItem = useMemo(
-    () =>
-      makeGetProgressItem({
-        variant,
-        promotionOptionId,
-        loanId,
-        withTooltip,
-        withIcon,
-        renderStatus,
-      }),
-    [],
+  const { proNote } = loan;
+  const { info, documents } = useMemo(
+    () => loan.loanProgress || getLoanProgress(loan),
+    [loan],
   );
+  const payload = { ...promotionOption, info, documents };
+  const stepperProps = getStepperProps(showDetailIcon, vertical, StepperProps);
 
-  const verificationAndBankIcons = [
-    getProgressItem({
-      ...simpleVerification,
-      ...getPromotionReservationIcon(
-        'simpleVerification',
-        simpleVerification.status,
-      ),
-      id: 'simpleVerification',
-    }),
-    ...[
-      displayInfo && {
-        data: info,
-        id: 'info',
-        tooltipPrefix: 'Informations:',
-      },
-      displayDocuments && {
-        data: documents,
-        id: 'documents',
-        tooltipPrefix: 'Documents:',
-      },
-    ]
-      .filter(x => x)
-      .map(({ data, id, tooltipPrefix }) =>
-        getProgressItem({
-          renderComponent: (
-            <ProgressCircle
-              percent={getPercent(data)}
-              ratio={getRatio(data)}
-              options={{
-                squareSize: 16,
-                strokeWidth: 4,
-                animated: true,
-                withRatio: true,
-                tooltipPrefix,
-                style: { padding: 2 },
-              }}
-            />
-          ),
-          placeholder: `${data.valid}/${data.required} (${Math.round(
-            getPercent(info) * 100,
-          )}%)`,
-          id,
-        }),
-      ),
-    getProgressItem({
-      ...fullVerification,
-      ...getPromotionReservationIcon(
-        'fullVerification',
-        fullVerification.status,
-      ),
-      id: 'fullVerification',
-    }),
-    getProgressItem({
-      ...bank,
-      ...getPromotionReservationIcon('bank', bank.status),
-      id: 'bank',
-    }),
-  ];
-
-  const agreementAndDepositIcons = [
-    getProgressItem({
-      ...reservationAgreement,
-      ...getPromotionReservationIcon(
-        'reservationAgreement',
-        reservationAgreement.status,
-      ),
-      id: 'reservationAgreement',
-    }),
-    getProgressItem({
-      ...reservationDeposit,
-      ...getPromotionReservationIcon(
-        'reservationDeposit',
-        reservationDeposit.status,
-      ),
-      id: 'reservationDeposit',
-    }),
-  ];
+  const progressSteps = [
+    'simpleVerification',
+    showLoanProgress && 'info',
+    showLoanProgress && 'documents',
+    'fullVerification',
+    'bank',
+  ].filter(x => x);
 
   return (
-    <div
-      className={cx(
-        'promotion-reservation-progress flex center-align',
-        className,
+    <div className={cx('promotion-reservation-progress', className)}>
+      <Stepper
+        {...stepperProps}
+        style={{
+          ...stepperProps.style,
+          minWidth: !vertical ? undefined : progressSteps.length * 50,
+        }}
+      >
+        {progressSteps.map(id => (
+          <PromotionReservationProgressStep
+            key={id}
+            id={id}
+            stepConfig={PROMOTION_OPTION_ICONS[id](payload)}
+            showLabels={showLabels}
+            showDetailIcon={showDetailIcon}
+            onClick={!['info', 'documents'].includes(id) && onClick}
+            vertical={vertical}
+          />
+        ))}
+      </Stepper>
+
+      <Stepper
+        {...stepperProps}
+        style={{
+          ...stepperProps.style,
+          minWidth: vertical ? undefined : 2 * 50,
+        }}
+      >
+        {['reservationAgreement', 'reservationDeposit'].map(id => (
+          <PromotionReservationProgressStep
+            key={id}
+            id={id}
+            stepConfig={PROMOTION_OPTION_ICONS[id](payload)}
+            showLabels={showLabels}
+            showDetailIcon={showDetailIcon}
+            onClick={onClick}
+            vertical={vertical}
+          />
+        ))}
+      </Stepper>
+
+      {!isApp && (
+        <Stepper {...stepperProps}>
+          <PromotionReservationProgressStep
+            id="proNote"
+            stepConfig={{
+              description: proNote?.note || 'Pas de commentaire',
+              date: proNote?.date,
+              IconComponent: () => (
+                <FaIcon
+                  icon={faCommentLines}
+                  color={proNote?.note ? colors.primary : colors.borderGrey}
+                />
+              ),
+            }}
+            showLabels={showLabels}
+            vertical={vertical}
+          />
+        </Stepper>
       )}
-      style={style}
-    >
-      <div className="promotion-reservation-progress-icons">
-        {verificationAndBankIcons.map(({ id, progressItem }, index) => (
-          <div className="icon" key={id}>
-            {progressItem}
-          </div>
-        ))}
-      </div>
-      <div className="promotion-reservation-progress-icons">
-        {agreementAndDepositIcons.map(({ id, progressItem }, index) => (
-          <div className="icon" key={id}>
-            {progressItem}
-          </div>
-        ))}
-      </div>
-      <div className="promotion-reservation-progress-icons">
-        {!isAnonymized && (
-          <div className="icon">
-            {getAdminNoteIcon({
-              proNote,
-              variant,
-              promotionOptionId,
-              isAnonymized,
-              withTooltip,
-              withIcon,
-              renderStatus,
-            })}
-          </div>
-        )}
-      </div>
     </div>
   );
 };
 
-export default withProps(
-  ({
-    loan,
-    promotionOption: { loan: promotionOptionLoan },
-    withLoanProgress = false,
-  }) => ({
-    loanProgress:
-      withLoanProgress &&
-      (promotionOptionLoan?.loanProgress ||
-        loan?.loanProgress ||
-        getLoanProgress(loan)),
-  }),
-)(PromotionReservationProgressComponent);
+export default PromotionReservationProgress;
