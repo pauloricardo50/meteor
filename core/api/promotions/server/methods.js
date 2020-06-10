@@ -141,9 +141,6 @@ updatePromotionLotGroup.setHandler(
 );
 
 updatePromotionTimeline.setHandler(({ userId }, params) => {
-  SecurityService.promotions.isAllowedToModify({
-    promotionId: params.promotionId,
-    userId,
-  });
+  SecurityService.checkUserIsAdmin(userId);
   return PromotionService.updatePromotionTimeline(params);
 });
