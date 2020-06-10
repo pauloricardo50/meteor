@@ -221,6 +221,17 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             label={<h4 className="m-0">Inscrit</h4>}
           />
         </SingleUserPageInformationItem>
+
+        {isAdvisor && (
+          <SingleUserPageInformationItem label="Timeout round robin">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['roundRobinTimeout']}
+              autosaveDelay={500}
+            />
+          </SingleUserPageInformationItem>
+        )}
       </SingleUserPageInformation>
     </div>
   );

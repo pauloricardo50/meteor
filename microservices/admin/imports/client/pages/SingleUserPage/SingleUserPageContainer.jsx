@@ -51,6 +51,7 @@ export default compose(
       phoneNumbers: 1,
       referredByOrganisation: { name: 1 },
       referredByUser: { name: 1 },
+      roundRobinTimeout: 1,
     }),
     queryOptions: { reactive: false, single: true },
     dataName: 'user',
