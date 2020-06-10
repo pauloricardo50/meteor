@@ -49,6 +49,7 @@ const MoneyInput = ({
       required={required}
       fullWidth={fullWidth}
       margin={margin}
+      size="small"
     >
       {label && <InputLabel ref={inputLabelRef}>{label}</InputLabel>}
       <Input

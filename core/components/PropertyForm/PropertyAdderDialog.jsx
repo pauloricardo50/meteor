@@ -80,7 +80,7 @@ const PropertyAdderDialog = withProps(
         className: 'mb-32',
         layout: [
           {
-            className: 'grid-2',
+            className: isRefinancing && 'grid-2',
             fields: ['value', isRefinancing && 'residenceType'].filter(x => x),
           },
           'address1',
