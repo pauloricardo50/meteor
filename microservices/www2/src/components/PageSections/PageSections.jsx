@@ -10,6 +10,7 @@ import ImageGallery from '../ImageGallery';
 import MortgageRates from '../MortgageRates';
 import NewsletterSignup from '../NewsletterSignup';
 import PageHeading from '../PageHeading';
+import PageLinks from '../PageLinks';
 import PageNavigation from '../PageNavigation';
 import PromotionsGrid from '../PromotionsGrid';
 import Quote from '../Quote';
@@ -36,6 +37,7 @@ const PageSections = ({ sections }) =>
             mortgage_rates: <MortgageRates {...section} />,
             newsletter_signup: <NewsletterSignup {...section} />,
             page_heading: <PageHeading {...section} />,
+            page_links: <PageLinks {...section} />,
             page_navigation: <PageNavigation {...section} />,
             promotions: <PromotionsGrid {...section} />,
             quote: <Quote {...section} />,
