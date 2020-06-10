@@ -23,7 +23,11 @@ export const getPromotionCustomerOwnerType = ({ invitedBy, currentUser }) => {
   }
 
   const organisationUserIds = organisations.reduce(
-    (userIds, { users = [] }) => [...userIds, ...users.map(({ _id }) => _id)],
+    (userIds, { users = [], userLinks = [] }) => [
+      ...userIds,
+      ...users.map(({ _id }) => _id),
+      ...userLinks.map(({ _id }) => _id),
+    ],
     [],
   );
 

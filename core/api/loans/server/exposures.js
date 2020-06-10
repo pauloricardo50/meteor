@@ -91,7 +91,7 @@ exposeQuery({
         } catch (error) {
           const currentUser = UserService.get(userId, {
             promotions: { _id: 1 },
-            organisations: { users: { _id: 1 } },
+            organisations: { userLinks: 1 },
           });
 
           const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
