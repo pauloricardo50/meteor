@@ -14,11 +14,11 @@ import {
 } from './mandrill';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-// export const skipEmails =
-//   (Meteor.isDevelopment || Meteor.isDevEnvironment || Meteor.isStaging) &&
-//   !isEmailTestEnv;
+export const skipEmails =
+  (Meteor.isDevelopment || Meteor.isDevEnvironment || Meteor.isStaging) &&
+  !isEmailTestEnv;
 
-export const skipEmails = false;
+// export const skipEmails = false;
 
 class EmailService {
   sendEmail = async ({ emailId, address, name, params }) => {
