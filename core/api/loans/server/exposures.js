@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
 import { createSearchFilters } from '../../helpers/mongoHelpers';
+import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
@@ -15,10 +16,7 @@ import {
   userLoans,
 } from '../queries';
 import { getProLoanFilters } from './exposureHelpers';
-import {
-  proPromotionLoansResolver,
-  proPropertyLoansResolver,
-} from './resolvers';
+import { proPropertyLoansResolver } from './resolvers';
 
 exposeQuery({
   query: anonymousLoan,
@@ -65,16 +63,52 @@ exposeQuery({
       const { promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
+
       SecurityService.promotions.isAllowedToView({ userId, promotionId });
+    },
+    embody: body => {
+      body.$filter = ({
+        filters,
+        params: { promotionId, status, invitedBy },
+      }) => {
+        if (promotionId) {
+          filters['promotionLinks._id'] = promotionId;
+        }
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (invitedBy) {
+          filters['promotionLinks.invitedBy'] = invitedBy;
+        }
+      };
+
+      body.$postFilter = (loans, { userId }) => {
+        try {
+          SecurityService.checkUserIsAdmin(userId);
+          return loans;
+        } catch (error) {
+          const currentUser = UserService.get(userId, {
+            promotions: { _id: 1 },
+            organisations: { userLinks: 1 },
+          });
+
+          const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
+            currentUser,
+          });
+
+          return loans.map(loan => promotionLoanAnonymizer(loan));
+        }
+      };
     },
     validateParams: {
       promotionId: String,
       userId: String,
       status: Match.Maybe(Match.OneOf(Object, String)),
+      invitedBy: Match.Maybe(Match.OneOf(String, null)),
     },
   },
-  resolver: ({ userId, promotionId, status }) =>
-    proPromotionLoansResolver({ calledByUserId: userId, promotionId, status }),
 });
 
 exposeQuery({

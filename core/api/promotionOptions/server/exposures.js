@@ -106,7 +106,7 @@ exposeQuery({
         const { anonymize = false, userId } = params;
         const currentUser = UserService.get(userId, {
           promotions: { _id: 1 },
-          organisations: { users: { _id: 1 } },
+          organisations: { userLinks: 1 },
         });
         return anonymize
           ? promotionOptions.map(makePromotionOptionAnonymizer({ currentUser }))

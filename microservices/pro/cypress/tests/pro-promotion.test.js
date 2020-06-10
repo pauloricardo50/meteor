@@ -51,6 +51,11 @@ describe('Pro promotion', () => {
       });
       cy.refetch();
 
+      cy.get('.mui-select')
+        .contains('dev+pro1@e-potek.ch')
+        .click();
+      cy.contains('Tous').click();
+
       cy.get('tbody tr').should('have.length', 4);
 
       cy.get('tbody tr')
@@ -70,6 +75,7 @@ describe('Pro promotion', () => {
       // customers are invited by user
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL });
       cy.refetch();
+      cy.wait(500);
       cy.get('tbody tr')
         .first()
         .then(tr => {
@@ -100,10 +106,18 @@ describe('Pro promotion', () => {
       });
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
       cy.refetch();
+      cy.wait(500);
       cy.get('tbody tr')
         .first()
         .then(tr => {
           cy.wrap(tr).should('not.contain', 'XXX');
+          console.log(
+            'tr',
+            cy
+              .wrap(tr)
+              .find('.icon-link')
+              .last(),
+          );
           cy.wrap(tr)
             .find('.icon-link')
             .last()
@@ -126,6 +140,7 @@ describe('Pro promotion', () => {
         },
       });
       cy.refetch();
+      cy.wait(500);
 
       cy.get('.actions')
         .first()

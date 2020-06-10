@@ -29,6 +29,8 @@ exposeQuery({
       createdAtFrom: Match.Maybe(Match.OneOf(null, Date)),
       createdAtTo: Match.Maybe(Match.OneOf(null, Date)),
       collection: String,
+      organisationId: Match.Maybe(Object),
+      acquisitionChannel: Match.Maybe(Object),
     },
   },
   resolver: collectionStatusChangesResolver,
