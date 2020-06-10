@@ -7,7 +7,6 @@ import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
 import { lotInsert } from '../../../../api/lots/methodDefinitions';
 import {
-  addPromotionLotGroup,
   insertPromotionProperty,
   promotionRemove,
   promotionUpdate,
@@ -96,7 +95,7 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
     },
   });
 
-const promotionLotFormLayout = [
+export const promotionLotFormLayout = [
   {
     title: <h5>Général</h5>,
     Component: Box,

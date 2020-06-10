@@ -1,4 +1,7 @@
 {
+  "Financing.bankValue": "[ADMIN] Valeur retenue par le prêteur",
+  "Forms.bankValue": "Valeur retenue par le prêteur",
+  "Forms.bankValue.placeholder": "CHF 800 000",
   "ProRevenuesPage.promotionLoans": "{count} dossiers liés à des promotions immobilières ne sont pas pris en compte dans cette pipeline.",
   "Forms.unsuccessfulReason.NO_ANSWER": "Le client ne répond pas après 3 emails",
   "Forms.unsuccessfulReason.NOT_INTERESTED_IN_PLANNING": "Le client n'est pas intéressé par une planification financière/prévoyance",

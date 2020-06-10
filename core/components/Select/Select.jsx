@@ -45,6 +45,7 @@ const Select = ({
   className,
   displayEmpty,
   SelectProps,
+  renderValue = makeRenderValue({ multiple, rawOptions }),
   ...otherProps
 }) => (
   <TextField
@@ -54,7 +55,7 @@ const Select = ({
     select
     SelectProps={{
       multiple,
-      renderValue: makeRenderValue({ multiple, rawOptions }),
+      renderValue,
       displayEmpty:
         typeof displayEmpty === 'boolean' ? displayEmpty : !!placeholder,
       ...SelectProps,
