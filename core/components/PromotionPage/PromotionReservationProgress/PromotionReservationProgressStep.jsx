@@ -72,6 +72,7 @@ const StepIconComponent = ({
 };
 
 const StepLabelContent = ({ id, description, date, vertical }) => (
+  // TODO: Remove this styling:
   <div style={vertical ? { textAlign: 'left' } : {}}>
     <div className="secondary">
       <T id={`Forms.${id}`} />
@@ -135,9 +136,9 @@ const PromotionReservationProgressStep = ({
   return (
     <Step
       key={id}
+      {...props} // https://github.com/mui-org/material-ui/issues/21326
       completed={isCompleted}
       active={isActive}
-      {...props} // https://github.com/mui-org/material-ui/issues/21326
     >
       {onClick ? (
         <StepButton
