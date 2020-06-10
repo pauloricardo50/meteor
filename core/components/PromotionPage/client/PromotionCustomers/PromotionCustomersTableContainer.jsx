@@ -147,12 +147,14 @@ export default withProps(({ promotion }) => {
   return {
     status,
     setStatus,
-    queryConfig,
-    queryDeps,
-    columns,
-    initialHiddenColumns,
     invitedBy,
     setInvitedBy,
     currentUser,
+    dataTableProps: {
+      queryConfig,
+      queryDeps,
+      columns,
+      initialHiddenColumns,
+    },
   };
 });

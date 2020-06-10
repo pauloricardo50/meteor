@@ -10,12 +10,9 @@ import PromotionCustomersTableContainer from './PromotionCustomersTableContainer
 const PromotionCustomersTable = ({
   status,
   setStatus,
-  queryConfig,
-  queryDeps,
-  columns,
-  initialHiddenColumns,
   invitedBy,
   setInvitedBy,
+  dataTableProps = {},
   promotion: { users = [] },
 }) => (
   <>
@@ -47,13 +44,7 @@ const PromotionCustomersTable = ({
         grouping={{ groupBy: 'organisations.0.name' }}
       />
     </div>
-    <DataTable
-      queryConfig={queryConfig}
-      queryDeps={queryDeps}
-      columns={columns}
-      initialHiddenColumns={initialHiddenColumns}
-      initialPageSize={10}
-    />
+    <DataTable initialPageSize={10} {...dataTableProps} />
   </>
 );
 
