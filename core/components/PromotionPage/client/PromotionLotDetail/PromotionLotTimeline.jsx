@@ -92,8 +92,9 @@ const PromotionLotTimeline = ({
                 percent={percent}
                 date={getTimelineDateText({
                   signingDate,
-                  date: index > 0 && startDate,
+                  date: startDate,
                   firstDate: constructionTimeline.steps[0].startDate,
+                  index,
                 })}
                 value={hasDetailedValue && percent * constructionValue}
               />

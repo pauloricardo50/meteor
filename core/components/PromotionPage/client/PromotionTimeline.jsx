@@ -24,7 +24,12 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
           </b>
           <span>
             {showExactDates ? (
-              <IntlDate value={signingDate} />
+              <IntlDate
+                value={signingDate}
+                year="numeric"
+                month="long"
+                day="numeric"
+              />
             ) : (
               <T id="PromotionTimelineHeader.undetermined" />
             )}
@@ -37,7 +42,12 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
           </b>
           <span>
             {showExactDates ? (
-              <IntlDate value={constructionStartDate} />
+              <IntlDate
+                value={constructionStartDate}
+                year="numeric"
+                month="long"
+                day="numeric"
+              />
             ) : (
               <T id="PromotionTimelineHeader.undetermined" />
             )}
@@ -48,12 +58,17 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
   );
 };
 
-export const getTimelineDateText = ({ signingDate, firstDate, date }) => {
+export const getTimelineDateText = ({
+  signingDate,
+  firstDate,
+  date,
+  index,
+}) => {
   if (signingDate) {
-    return <IntlDate value={date} />;
+    return <IntlDate value={date} year="numeric" month="long" day="numeric" />;
   }
 
-  if (!date) {
+  if (index === 0) {
     return <T id="PromotionTimeline.start" />;
   }
 
@@ -83,8 +98,9 @@ const PromotionTimeline = ({ constructionTimeline, signingDate }) => {
                 percent={percent}
                 date={getTimelineDateText({
                   signingDate,
-                  date: index > 0 && startDate,
+                  date: startDate,
                   firstDate: constructionTimeline.steps[0].startDate,
+                  index,
                 })}
               />
             ),
