@@ -53,7 +53,7 @@ export const formBorrower = () => ({
   bonusExists: 1,
   canton: 1,
   childrenCount: 1,
-  citizenShip: 1,
+  citizenship: 1,
   city: 1,
   civilStatus: 1,
   company: 1,
@@ -428,9 +428,11 @@ export const proLoans = () => ({
   },
   promotionLinks: 1,
   promotionOptions: {
+    priorityOrder: 1,
     name: 1,
     status: 1,
     promotionLots: {
+      attributedToLink: 1,
       attributedTo: { user: { _id: 1 } },
       properties: { totalValue: 1, value: 1 },
     },

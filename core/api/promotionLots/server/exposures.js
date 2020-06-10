@@ -115,7 +115,7 @@ exposeQuery({
         } catch (error) {
           const currentUser = UserService.get(_userId, {
             promotions: { _id: 1 },
-            organisations: { users: { _id: 1 } },
+            organisations: { userLinks: 1 },
           });
           return results.map(makePromotionLotAnonymizer({ currentUser }));
         }

@@ -33,7 +33,7 @@ export const proLoansAggregate = Loans.createQuery(
 
 export const proPromotionLoans = Loans.createQuery(
   LOAN_QUERIES.PRO_PROMOTION_LOANS,
-  () => {},
+  proLoansFragments(),
 );
 
 export const proPropertyLoans = Loans.createQuery(
