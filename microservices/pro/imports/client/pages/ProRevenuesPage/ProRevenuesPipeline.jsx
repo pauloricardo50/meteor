@@ -20,15 +20,22 @@ const ProRevenuesPipeline = ({
   referredByUserId,
   setReferredByUserId,
 }) => {
-  const anonymousLoans = loans.filter(({ anonymous }) => anonymous);
-  const claimedLoans = loans.filter(({ anonymous }) => !anonymous);
+  const noPromotionLoans = loans.filter(
+    ({ promotionLinks }) => !promotionLinks?.length,
+  );
+  const anonymousLoans = noPromotionLoans.filter(({ anonymous }) => anonymous);
+  const claimedLoans = noPromotionLoans.filter(({ anonymous }) => !anonymous);
+  const promotionLoansCount = loans.length - noPromotionLoans.length;
 
   return (
     <div>
       <h2>Pipeline</h2>
 
       <h3 className="secondary">
-        <T id="ProRevenuesPage.loanCount" values={{ value: loans.length }} />
+        <T
+          id="ProRevenuesPage.loanCount"
+          values={{ value: noPromotionLoans.length }}
+        />
         {anonymousLoans.length > 0 && (
           <T
             id="ProRevenuesPage.loanCountAnonymous"
@@ -39,6 +46,14 @@ const ProRevenuesPipeline = ({
           />
         )}
       </h3>
+      {promotionLoansCount > 0 && (
+        <div className="secondary mt-0">
+          <T
+            id="ProRevenuesPage.promotionLoans"
+            values={{ count: promotionLoansCount }}
+          />
+        </div>
+      )}
       <ProRevenuesPageExplained />
       <div className="flex" style={{ marginTop: 16 }}>
         <Select
@@ -79,7 +94,7 @@ const ProRevenuesPipeline = ({
           className="mr-8"
         />
       </div>
-      <RevenuesByStatus loans={loans} multiplier={commissionRate} />
+      <RevenuesByStatus loans={noPromotionLoans} multiplier={commissionRate} />
     </div>
   );
 };
