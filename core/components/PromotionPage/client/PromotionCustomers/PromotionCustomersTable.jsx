@@ -1,15 +1,11 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 
 import { LOAN_STATUS } from '../../../../api/loans/loanConstants';
-import Checkbox from '../../../Checkbox';
 import DataTable from '../../../DataTable';
+import Select from '../../../Select';
 import MongoSelect from '../../../Select/MongoSelect';
 import T from '../../../Translation';
 import PromotionCustomersTableContainer from './PromotionCustomersTableContainer';
-
-const isAdmin = Meteor.microservice === 'admin';
 
 const PromotionCustomersTable = ({
   status,
@@ -21,7 +17,6 @@ const PromotionCustomersTable = ({
   invitedBy,
   setInvitedBy,
   promotion: { users = [] },
-  currentUser,
 }) => (
   <>
     <div className="flex">
@@ -33,29 +28,24 @@ const PromotionCustomersTable = ({
         label={<T id="Forms.status" />}
         className="mr-8"
       />
-      {isAdmin ? (
-        <MongoSelect
-          value={invitedBy}
-          onChange={setInvitedBy}
-          options={users.map(user => ({
-            id: user._id,
-            label: user.name,
-            ...user,
-          }))}
-          id="invitedBy"
-          label={<T id="PromotionCustomersTable.invitedBy" />}
-          className="mr-8"
-          grouping={{ groupBy: 'organisations.0.name' }}
-        />
-      ) : (
-        <Checkbox
-          label={<T id="PromotionCustomersTable.myCustomers" />}
-          value={!!invitedBy}
-          onChange={() =>
-            setInvitedBy(current => (!current ? currentUser._id : undefined))
-          }
-        />
-      )}
+
+      <Select
+        value={invitedBy}
+        onChange={setInvitedBy}
+        options={[
+          { id: null, label: <T id="general.all" /> },
+          ...users.map(({ _id, name, organisations }) => ({
+            id: _id,
+            label: name,
+            organisations,
+          })),
+        ]}
+        label={<T id="Forms.invitedBy" />}
+        displayEmpty
+        notched
+        InputLabelProps={{ shrink: true }}
+        grouping={{ groupBy: 'organisations.0.name' }}
+      />
     </div>
     <DataTable
       queryConfig={queryConfig}

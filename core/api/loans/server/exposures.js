@@ -106,7 +106,7 @@ exposeQuery({
       promotionId: String,
       userId: String,
       status: Match.Maybe(Match.OneOf(Object, String)),
-      invitedBy: Match.Maybe(Match.OneOf(Object, String)),
+      invitedBy: Match.Maybe(Match.OneOf(String, null)),
     },
   },
 });
