@@ -106,6 +106,7 @@ const UserAdder = ({
   organisations = [],
   model = {},
   openOnMount,
+  buttonProps,
 }) => {
   const finalSchema = useMemo(() => getSchema({ schema, organisations }), [
     schema,
@@ -124,6 +125,7 @@ const UserAdder = ({
         raised: true,
         primary: true,
         icon: <Icon type="add" />,
+        ...buttonProps,
       }}
       autoFieldProps={{
         labels: {

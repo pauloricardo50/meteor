@@ -8,6 +8,7 @@ import LoanAdder from '../../components/LoanSummaryList/LoanAdder';
 import TasksTableWithPriority from '../../components/TasksDataTable/TasksTableWithPriority';
 import { UserAdder } from '../../components/UserDialogForm';
 import AdminDashboardStats from './AdminDashboardStats';
+import AdvisorsStatus from './AdvisorsStatus';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
   <>
@@ -16,14 +17,23 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <h1 className="flex center-align">
-        <Icon type="home" style={{ marginRight: 8 }} size={32} />
-        <span>Admin Dashboard</span>
-      </h1>
+      <div className="flex sb">
+        <div>
+          <h1 className="flex center-align mt-0">
+            <Icon type="home" style={{ marginRight: 8 }} size={32} />
+            <span>Admin Dashboard</span>
+          </h1>
 
-      <div className="flex space-children">
-        <UserAdder currentUser={currentUser} />
-        <LoanAdder onSuccess={loanId => history.push(`/loans/${loanId}`)} />
+          <div className="flex">
+            <UserAdder
+              currentUser={currentUser}
+              buttonProps={{ className: 'mr-8' }}
+            />
+            <LoanAdder onSuccess={loanId => history.push(`/loans/${loanId}`)} />
+          </div>
+        </div>
+
+        <AdvisorsStatus />
       </div>
 
       <h2 className="text-center">
