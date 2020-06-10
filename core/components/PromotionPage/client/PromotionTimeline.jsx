@@ -9,12 +9,11 @@ import T, { IntlDate } from '../../Translation';
 const getMonthDelta = count => `+${count} mois`;
 
 const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
-  const { endDate, steps } = constructionTimeline;
+  const { steps } = constructionTimeline;
   const constructionStartDate = steps[0].startDate;
 
   const showExactDates = !!signingDate;
 
-  const monthCount = moment(endDate).diff(constructionStartDate, 'months');
   return (
     <div className="construction-timeline-header">
       <div className="flex center-align">
@@ -45,46 +44,27 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
           </span>
         </div>
       </div>
-      <div>
-        <div>
-          <b>
-            <T id="PromotionTimelineHeader.constructionEnd" />
-            :&nbsp;
-          </b>
-          <span>
-            {showExactDates ? (
-              <IntlDate value={endDate} />
-            ) : (
-              <T
-                id="PromotionTimelineHeader.xMonthsLater"
-                values={{ monthCount }}
-              />
-            )}
-          </span>
-        </div>
-      </div>
     </div>
   );
 };
 
-const getTimelineDateText = (constructionTimeline, signingDate, index) => {
-  const { steps } = constructionTimeline;
+export const getTimelineDateText = ({ signingDate, firstDate, date }) => {
   if (signingDate) {
-    return <IntlDate value={steps[index].startDate} />;
+    return <IntlDate value={date} />;
   }
 
-  if (index === 0) {
+  if (!date) {
     return <T id="PromotionTimeline.start" />;
   }
 
-  const date = steps[index].startDate;
-  const initialDate = steps[0].startDate;
-  const monthsDiff = moment(date).diff(initialDate, 'months');
+  const monthsDiff = moment(date).diff(firstDate, 'months');
 
   return getMonthDelta(monthsDiff);
 };
 
 const PromotionTimeline = ({ constructionTimeline, signingDate }) => {
+  const { endDate, endPercent } = constructionTimeline;
+
   const columns = [
     {
       Header: () => (
@@ -94,23 +74,39 @@ const PromotionTimeline = ({ constructionTimeline, signingDate }) => {
         />
       ),
       id: 'root',
-      columns: constructionTimeline.steps.map(
-        ({ description, percent }, index) => ({
+      columns: [
+        ...constructionTimeline.steps.map(
+          ({ description, percent, startDate }, index) => ({
+            Header: () => (
+              <ConstructionTimelineItem
+                description={`${index + 1}. ${description}`}
+                percent={percent}
+                date={getTimelineDateText({
+                  signingDate,
+                  date: index > 0 && startDate,
+                  firstDate: constructionTimeline.steps[0].startDate,
+                })}
+              />
+            ),
+            id: `${index}`,
+          }),
+        ),
+        {
           Header: () => (
             <ConstructionTimelineItem
-              description={`${index + 1}. ${description}`}
-              percent={percent}
-              date={getTimelineDateText(
-                constructionTimeline,
+              description={<T id="PromotionTimelineHeader.constructionEnd" />}
+              percent={endPercent}
+              date={getTimelineDateText({
                 signingDate,
-                index,
-              )}
-              isLast={index + 1 === constructionTimeline.steps.length}
+                date: endDate,
+                firstDate: constructionTimeline.steps[0].startDate,
+              })}
+              isLast
             />
           ),
-          id: `${index}`,
-        }),
-      ),
+          id: 'end',
+        },
+      ],
     },
   ];
 

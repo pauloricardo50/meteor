@@ -54,7 +54,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
         )}
       </section>
 
-      {constructionTimeline.length > 0 && (
+      {constructionTimeline?.steps?.length > 0 && (
         <section>
           <h4>
             <T id="PromotionPage.timeline" />
