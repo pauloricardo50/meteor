@@ -1,12 +1,11 @@
 import React from 'react';
-import moment from 'moment';
 
 import { propertyHasDetailedValue } from '../../../../api/properties/propertyClientHelper';
 import ConstructionTimeline, {
   ConstructionTimelineItem,
 } from '../../../ConstructionTimeline';
-import T, { Money } from '../../../Translation';
-import { getItemDate } from '../PromotionTimeline';
+import T, { IntlDate, Money } from '../../../Translation';
+import { getTimelineDateText } from '../PromotionTimeline';
 
 const PromotionLotTimeline = ({
   constructionTimeline,
@@ -16,14 +15,19 @@ const PromotionLotTimeline = ({
   const { properties } = promotionLot;
   const [property] = properties;
   const { landValue = 0, additionalMargin = 0, constructionValue } = property;
+  const { startPercent, endDate, endPercent } = constructionTimeline;
+  const showExactDates = !!signingDate;
 
   const hasDetailedValue = propertyHasDetailedValue({ property });
 
-  const startDate = signingDate ? (
-    moment(signingDate).format('MMM YYYY')
+  const initialPaymentDate = showExactDates ? (
+    <IntlDate value={signingDate} />
   ) : (
     <T id="PromotionTimelineHeader.undetermined" />
   );
+  const initialConstructionPayment = startPercent * constructionValue;
+  const totalInitialPayment =
+    landValue + additionalMargin + initialConstructionPayment;
 
   const columns = [
     {
@@ -34,30 +38,32 @@ const PromotionLotTimeline = ({
             <T id="PromotionLotTimeline.notary" />
           </h4>
           <b>
-            <Money value={landValue + additionalMargin} />
+            <Money value={totalInitialPayment} />
           </b>
         </div>
       ),
       columns: [
         {
-          id: 'land',
+          id: 'landAndMargin',
           value: landValue,
           Header: () => (
             <ConstructionTimelineItem
-              description={<T id="Forms.landValue" />}
-              date={startDate}
-              value={landValue}
+              description={<T id="Forms.promotionShare" />}
+              date={initialPaymentDate}
+              value={landValue + additionalMargin}
             />
           ),
         },
         {
-          id: 'margin',
+          id: 'initialConstructionPayment',
           value: additionalMargin,
           Header: () => (
             <ConstructionTimelineItem
-              description={<T id="Forms.additionalMargin" />}
-              date={startDate}
-              value={additionalMargin}
+              description={
+                <T id="PromotionLotTimeline.initialConstructionPayment" />
+              }
+              date={initialPaymentDate}
+              value={initialConstructionPayment}
             />
           ),
         },
@@ -72,29 +78,47 @@ const PromotionLotTimeline = ({
           </h4>
           {hasDetailedValue && (
             <b>
-              <Money value={constructionValue} />
+              <Money value={constructionValue - initialConstructionPayment} />
             </b>
           )}
         </div>
       ),
-      columns: constructionTimeline.map(({ description, percent }, index) => {
-        const prevDuration = constructionTimeline
-          .slice(0, index)
-          .reduce((tot, { duration }) => tot + duration, 0);
-
-        return {
+      columns: [
+        ...constructionTimeline.steps.map(
+          ({ description, percent, startDate }, index) => ({
+            Header: () => (
+              <ConstructionTimelineItem
+                description={`${index + 1}. ${description}`}
+                percent={percent}
+                date={getTimelineDateText({
+                  signingDate,
+                  date: startDate,
+                  firstDate: constructionTimeline.steps[0].startDate,
+                  index,
+                })}
+                value={hasDetailedValue && percent * constructionValue}
+              />
+            ),
+            id: `${index}`,
+          }),
+        ),
+        {
           Header: () => (
             <ConstructionTimelineItem
-              description={`${index + 1}. ${description}`}
-              percent={percent}
-              date={getItemDate({ signingDate, prevDuration, index })}
-              isLast={index + 1 === constructionTimeline.length}
-              value={hasDetailedValue && percent * constructionValue}
+              description={<T id="PromotionTimelineHeader.constructionEnd" />}
+              percent={endPercent}
+              date={getTimelineDateText({
+                signingDate,
+                date: endDate,
+                firstDate: constructionTimeline.steps[0].startDate,
+              })}
+              isLast
+              value={hasDetailedValue && endPercent * constructionValue}
             />
           ),
-          id: `${index}`,
-        };
-      }),
+          id: 'end',
+        },
+      ],
     },
   ];
 

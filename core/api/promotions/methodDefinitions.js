@@ -86,14 +86,6 @@ export const editPromotionLoan = new Method({
   },
 });
 
-export const reuseConstructionTimeline = new Method({
-  name: 'reuseConstructionTimeline',
-  params: {
-    fromPromotionId: String,
-    toPromotionId: String,
-  },
-});
-
 export const toggleNotifications = new Method({
   name: 'toggleNotifications',
   params: {
@@ -131,4 +123,9 @@ export const removePromotionLotGroup = new Method({
 export const updatePromotionLotGroup = new Method({
   name: 'updatePromotionLotGroup',
   params: { promotionId: String, promotionLotGroupId: String, label: String },
+});
+
+export const updatePromotionTimeline = new Method({
+  name: 'updatePromotionTimeline',
+  params: { promotionId: String, constructionTimeline: Object },
 });

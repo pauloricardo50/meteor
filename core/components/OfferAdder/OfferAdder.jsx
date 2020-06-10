@@ -31,6 +31,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
     autoFieldProps={{ labels: interestRatesLabels }}
     fullWidth
     maxWidth="md"
+    important
     layout={[
       {
         Component: Box,
