@@ -3,18 +3,27 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import Chip from '../../../../Material/Chip';
 
-const getChipColor = ({ currentId, userId, promotionLots }) => {
-  const attributedTo =
-    promotionLots[0].attributedTo && promotionLots[0].attributedTo.user._id;
-  const promotionLotId = promotionLots[0]._id;
+const getChipColor = ({ currentId, userId, promotionLots, loanId }) => {
+  let attributedTo;
+  let isAttributedToUser;
 
-  if (attributedTo && attributedTo === userId) {
+  if (loanId) {
+    attributedTo = promotionLots[0]?.attributedToLink?._id;
+    isAttributedToUser = attributedTo === loanId;
+  } else {
+    attributedTo = promotionLots[0]?.attributedTo?.user?._id;
+    isAttributedToUser = attributedTo === userId;
+  }
+  const promotionLotId = promotionLots[0]._id;
+  const isCurrent = currentId === promotionLotId;
+
+  if (isAttributedToUser) {
     return 'success';
   }
-  if (attributedTo && attributedTo !== userId) {
+  if (attributedTo && !isAttributedToUser) {
     return 'error';
   }
-  if (currentId === promotionLotId) {
+  if (isCurrent) {
     return 'primary';
   }
 
@@ -35,7 +44,12 @@ const getTooltip = color => {
   }
 };
 
-const PriorityOrder = ({ promotionOptions = [], currentId, userId }) => {
+const PriorityOrder = ({
+  promotionOptions = [],
+  currentId,
+  userId,
+  loanId,
+}) => {
   const sortedPromotionOptions = promotionOptions.sort(
     ({ priorityOrder: A }, { priorityOrder: B }) => A - B,
   );
@@ -43,7 +57,12 @@ const PriorityOrder = ({ promotionOptions = [], currentId, userId }) => {
   return (
     <div className="priority-order">
       {sortedPromotionOptions.map(({ _id, name, promotionLots }) => {
-        const chipColor = getChipColor({ currentId, userId, promotionLots });
+        const chipColor = getChipColor({
+          currentId,
+          userId,
+          promotionLots,
+          loanId,
+        });
 
         return (
           <Tooltip key={_id} placement="bottom" title={getTooltip(chipColor)}>

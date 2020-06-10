@@ -6,7 +6,7 @@ UserService.cache(
     cacheField: 'assignedEmployeeCache',
     collection: Users,
     type: 'one',
-    fields: { _id: 1, firstName: 1, lastName: 1 },
+    fields: { firstName: 1, lastName: 1 },
     referenceField: 'assignedEmployeeId',
   },
   // {

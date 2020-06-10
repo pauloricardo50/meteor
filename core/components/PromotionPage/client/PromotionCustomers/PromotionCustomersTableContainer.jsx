@@ -33,8 +33,8 @@ const getColumns = ({
     accessor: 'userCache.lastName',
     Cell: ({ row: { original: loan } }) => (
       <PromotionCustomer
-        user={loan?.user}
-        invitedBy={loan?.promotions[0].$metadata?.invitedBy}
+        user={loan.user}
+        invitedBy={loan.promotions[0].$metadata?.invitedBy}
         promotionUsers={promotionUsers}
       />
     ),
@@ -52,8 +52,8 @@ const getColumns = ({
     Cell: ({ row: { original: loan } }) => (
       <InvitedByAssignDropdown
         promotionUsers={promotionUsers}
-        invitedBy={loan?.promotions[0]?.$metadata.invitedBy}
-        loanId={loan?._id}
+        invitedBy={loan.promotions[0]?.$metadata.invitedBy}
+        loanId={loan._id}
         promotionId={promotionId}
       />
     ),
@@ -68,8 +68,8 @@ const getColumns = ({
     accessor: 'promotionLinks.0.priorityOrder.0',
     Cell: ({ row: { original: loan } }) => (
       <PriorityOrder
-        promotionOptions={loan?.promotionOptions}
-        userId={loan?.user?._id}
+        promotionOptions={loan.promotionOptions}
+        loanId={loan._id}
       />
     ),
   },
@@ -81,7 +81,7 @@ const getColumns = ({
         promotion={{ ...loan?.promotions[0], promotionLots }}
         currentUser={currentUser}
         customerOwnerType={getPromotionCustomerOwnerType({
-          invitedBy: loan?.promotions[0]?.$metadata?.invitedBy,
+          invitedBy: loan.promotions[0]?.$metadata?.invitedBy,
           currentUser,
         })}
         loan={loan}
@@ -105,7 +105,32 @@ export default withProps(({ promotion }) => {
 
   const queryConfig = {
     query: proPromotionLoans,
-    params: { promotionId, status, invitedBy },
+    params: {
+      promotionId,
+      status,
+      invitedBy,
+      $body: {
+        createdAt: 1,
+        name: 1,
+        promotionLinks: 1,
+        userCache: 1,
+        status: 1,
+        promotions: { status: 1, users: { _id: 1 } },
+        promotionOptions: {
+          name: 1,
+          priorityOrder: 1,
+          promotionLots: {
+            attributedToLink: 1,
+          },
+        },
+        user: {
+          name: 1,
+          phoneNumbers: 1,
+          email: 1,
+          assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
+        },
+      },
+    },
   };
 
   const queryDeps = [status, promotionId, invitedBy];
