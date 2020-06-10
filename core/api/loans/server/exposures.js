@@ -63,12 +63,25 @@ exposeQuery({
       const { promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
+
       SecurityService.promotions.isAllowedToView({ userId, promotionId });
     },
     embody: body => {
-      body.$filter = ({ filters, params: { promotionId, status } }) => {
-        filters['promotionLinks._id'] = promotionId;
-        filters.status = status;
+      body.$filter = ({
+        filters,
+        params: { promotionId, status, invitedBy },
+      }) => {
+        if (promotionId) {
+          filters['promotionLinks._id'] = promotionId;
+        }
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (invitedBy) {
+          filters['promotionLinks.invitedBy'] = invitedBy;
+        }
       };
 
       body.$postFilter = (loans, { userId }) => {
@@ -93,6 +106,7 @@ exposeQuery({
       promotionId: String,
       userId: String,
       status: Match.Maybe(Match.OneOf(Object, String)),
+      invitedBy: Match.Maybe(Match.OneOf(Object, String)),
     },
   },
 });
