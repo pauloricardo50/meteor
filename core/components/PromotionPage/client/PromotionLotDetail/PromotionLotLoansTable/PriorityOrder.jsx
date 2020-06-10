@@ -7,6 +7,7 @@ const getChipColor = ({ currentId, userId, promotionLots, loanId }) => {
   let attributedTo;
   let isAttributedToUser;
 
+  // TODO: Remove this when attributedTo.user._id is no longer used
   if (loanId) {
     attributedTo = promotionLots[0]?.attributedToLink?._id;
     isAttributedToUser = attributedTo === loanId;
