@@ -123,10 +123,10 @@ describe('Admin promotion', () => {
         .should('exist');
 
       cy.contains('Acquéreurs').click();
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
+      cy.get('table tbody tr').should('have.length', 4);
 
       cy.contains('Pros').click();
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 5);
     });
 
     it('can change roles, remove a promotion Pro, and add one', () => {
@@ -149,14 +149,14 @@ describe('Admin promotion', () => {
 
       cy.get('body').type('{esc}');
 
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 5);
 
       cy.contains('visitor1@e-potek.ch')
         .parents('tr')
         .find('[aria-label="Enlever de la promotion"]')
         .click();
 
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
+      cy.get('table tbody tr').should('have.length', 4);
 
       cy.contains('Ajouter un pro').click();
       cy.get('[role=dialog]')
@@ -168,7 +168,7 @@ describe('Admin promotion', () => {
         .contains('Ajouter')
         .click();
 
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 5);
     });
 
     it('can add and remove a customer', () => {
@@ -196,14 +196,14 @@ describe('Admin promotion', () => {
       cy.get('.core-tabs-tab')
         .contains('Acquéreurs')
         .click();
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 5);
 
       cy.get('.actions')
         .first()
         .click();
       cy.contains('Supprimer').click();
 
-      cy.get('.promotion-users-table table tbody tr').should('have.length', 4);
+      cy.get('table tbody tr').should('have.length', 4);
     });
 
     it('can update a promotion reservation', () => {
@@ -297,6 +297,7 @@ describe('Admin promotion', () => {
         .click();
 
       cy.contains('Modifier').click();
+      cy.get('input[name=value]').type('{selectall}{backspace}');
       cy.get('input[name=landValue]').type('{backspace}500000');
       cy.get('input[name=constructionValue]').type('{backspace}500000');
       cy.get('input[name=additionalMargin]').type('{backspace}500000');
