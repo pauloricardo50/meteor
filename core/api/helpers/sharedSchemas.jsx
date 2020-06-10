@@ -199,8 +199,6 @@ export const percentageField = {
   optional: true,
   autoValue() {
     if (this.isSet) {
-      console.log('autoValue????', this.value);
-
       return Math.round(Number(this.value) * 10000) / 10000;
     }
   },

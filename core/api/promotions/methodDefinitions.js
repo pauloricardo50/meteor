@@ -124,3 +124,8 @@ export const updatePromotionLotGroup = new Method({
   name: 'updatePromotionLotGroup',
   params: { promotionId: String, promotionLotGroupId: String, label: String },
 });
+
+export const updatePromotionTimeline = new Method({
+  name: 'updatePromotionTimeline',
+  params: { promotionId: String, constructionTimeline: Object },
+});

@@ -15,6 +15,7 @@ import {
   setPromotionUserPermissions,
   toggleNotifications,
   updatePromotionLotGroup,
+  updatePromotionTimeline,
   updatePromotionUserRoles,
 } from '../methodDefinitions';
 import PromotionService from './PromotionService';
@@ -138,3 +139,11 @@ updatePromotionLotGroup.setHandler(
     });
   },
 );
+
+updatePromotionTimeline.setHandler(({ userId }, params) => {
+  SecurityService.promotions.isAllowedToModify({
+    promotionId: params.promotionId,
+    userId,
+  });
+  return PromotionService.updatePromotionTimeline(params);
+});

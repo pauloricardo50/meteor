@@ -1,7 +1,10 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import { promotionUpdate } from '../../../../api/promotions/methodDefinitions';
+import {
+  promotionUpdate,
+  updatePromotionTimeline,
+} from '../../../../api/promotions/methodDefinitions';
 import PromotionSchema from '../../../../api/promotions/schemas/PromotionSchema';
 import AutoFormDialog from '../../../AutoForm2/AutoFormDialog';
 
@@ -18,9 +21,15 @@ const PromotionTimelineForm = ({ promotion, onSubmit }) => (
       raised: true,
       primary: true,
     }}
+    important // You don't want to lose your progress on this form :)
   />
 );
 
 export default withProps(({ promotion: { _id: promotionId } }) => ({
-  onSubmit: object => promotionUpdate.run({ promotionId, object }),
+  onSubmit: ({ signingDate, constructionTimeline }) =>
+    promotionUpdate
+      .run({ promotionId, object: { signingDate } })
+      .then(() =>
+        updatePromotionTimeline.run({ promotionId, constructionTimeline }),
+      ),
 }))(PromotionTimelineForm);

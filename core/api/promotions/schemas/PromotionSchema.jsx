@@ -151,31 +151,6 @@ const PromotionSchema = new SimpleSchema({
     defaultValue: {},
     type: new SimpleSchema(constructionTimelineSchema),
   },
-  // constructionTimeline: {
-  //   type: Array,
-  //   defaultValue: [],
-  //   custom() {
-  //     if (this.value.length === 0) {
-  //       return;
-  //     }
-
-  //     // Round up to 100 to avoid JS math rounding issues
-  //     if (
-  //       Math.round(
-  //         this.value.reduce((tot, { percent }) => tot + percent, 0) * 100,
-  //       ) !== 100
-  //     ) {
-  //       return 'incompleteTimeline';
-  //     }
-  //   },
-  // },
-  // 'constructionTimeline.$': Object,
-  // 'constructionTimeline.$.description': String,
-  // 'constructionTimeline.$.duration': {
-  //   type: Number,
-  //   uniforms: { placeholder: null },
-  // },
-  // 'constructionTimeline.$.percent': { ...percentageField, optional: false },
   projectStatus: { type: String, optional: true },
   authorizationStatus: {
     type: String,
