@@ -103,19 +103,24 @@ export const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
     .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
-export const getMaxPledge = props => {
-  const { loan, structureId } = props;
-  const { propertyWork } = Calculator.selectStructure({
+export const getMaxPledge = ({ loan, structureId }) => {
+  const propertyWork = Calculator.selectStructureKey({
     loan,
     structureId,
+    key: 'propertyWork',
   });
   const propertyValue = Calculator.selectPropertyValue({
     loan,
     structureId,
   });
+  const bankValue = Calculator.selectPropertyKey({
+    loan,
+    structureId,
+    key: 'bankValue',
+  });
 
   return Math.round(
     (Calculator.maxBorrowRatioWithPledge - Calculator.maxBorrowRatio) *
-      (propertyValue + propertyWork),
+      ((bankValue || propertyValue) + propertyWork),
   );
 };

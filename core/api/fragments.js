@@ -858,6 +858,7 @@ export const formProperty = () => ({
   isNew: 1,
   landArea: 1,
   landValue: 1,
+  maxLoanValue: 1,
   minergie: 1,
   mortgageNotes: mortgageNote(),
   numberOfFloors: 1,

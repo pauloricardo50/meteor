@@ -1131,4 +1131,41 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return true;
     }
+
+    getMaxLoanValue({ loan, structureId, pledgeOverride }) {
+      const offer = this.selectOffer({ loan, structureId });
+      if (offer) {
+        return offer.maxAmount;
+      }
+
+      const structure = this.selectStructure({
+        loan,
+        structureId,
+        pledgeOverride,
+      });
+      const propertyValue = this.selectPropertyValue({
+        loan,
+        structureId,
+      });
+      const propertyBankValue = this.selectPropertyKey({
+        loan,
+        structureId,
+        key: 'bankValue',
+      });
+      const finalPropertyValue = propertyBankValue || propertyValue;
+
+      const maxLoan = this.getMaxLoanBase({
+        propertyWork: structure.propertyWork,
+        propertyValue: finalPropertyValue,
+        pledgedAmount:
+          pledgeOverride !== undefined
+            ? pledgeOverride
+            : this.getPledgedOwnFunds({ loan }),
+        residenceType: loan.residenceType,
+        maxBorrowRatio: this.getMaxBorrowRatio({ loan, structureId }),
+      });
+
+      const rounding = 1e3;
+      return Math.floor(maxLoan / rounding) * rounding;
+    }
   };

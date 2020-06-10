@@ -26,11 +26,6 @@ import MortgageNotesPicker from './MortgageNotesPicker';
 
 const MAX_NOTARY_FEES_RATE = 0.1;
 
-const getPledgedAmount = ({ structure: { ownFunds } }) =>
-  ownFunds
-    .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
-    .reduce((sum, { value }) => sum + value, 0);
-
 export const calculateLoan = params => {
   const {
     structure: { wantedLoan },
@@ -40,29 +35,13 @@ export const calculateLoan = params => {
 
 const calculateMaxLoan = (data, pledgeOverride) => {
   const { loan, structureId } = data;
-  const offer = Calculator.selectOffer({ loan, structureId });
-  if (offer) {
-    const { maxAmount } = Calculator.selectOffer(data);
-    return maxAmount;
-  }
 
-  const structure = Calculator.selectStructure({ loan, structureId });
-  const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
-
-  const maxLoan = Calc.getMaxLoanBase({
-    propertyWork: structure.propertyWork,
-    propertyValue,
-    pledgedAmount:
-      pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
-    residenceType: loan.residenceType,
-    maxBorrowRatio: Calculator.getMaxBorrowRatio({ loan, structureId }),
-  });
-  const rounding = 10 ** 3;
-  return Math.floor(maxLoan / rounding) * rounding;
+  return Calculator.getMaxLoanValue({ loan, structureId, pledgeOverride });
 };
 
 const calculateMaxFirstRank = ({ Calculator: calc, ...data }) =>
   calc.getMaxBorrowRatio(data);
+
 const calculateDefaultFirstRank = ({ Calculator: calc, ...data }) => {
   const borrowRatio = calc.getBorrowRatio(data);
   const goal = calc.getAmortizationGoal(data);
