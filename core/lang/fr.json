@@ -1,4 +1,6 @@
 {
+  "PromotionTimeline.start": "Début",
+  "PromotionTimelineHeader.xMonthsLater": "{monthCount} mois plus tard",
   "ProRevenuesPage.promotionLoans": "{count} dossiers liés à des promotions immobilières ne sont pas pris en compte dans cette pipeline.",
   "Forms.unsuccessfulReason.NO_ANSWER": "Le client ne répond pas après 3 emails",
   "Forms.unsuccessfulReason.NOT_INTERESTED_IN_PLANNING": "Le client n'est pas intéressé par une planification financière/prévoyance",
@@ -563,8 +565,8 @@
   "PromotionLotTimeline.notary": "Notaire",
   "PromotionLotTimeline.construction": "Construction",
   "PromotionPage.timeline": "Avancement des travaux",
-  "PromotionTimelineHeader.start": "Début des travaux: {date}",
-  "PromotionTimelineHeader.end": "Fin des travaux: {date}",
+  "PromotionTimelineHeader.constructionStart": "Début des travaux",
+  "PromotionTimelineHeader.constructionEnd": "Fin des travaux",
   "PromotionLotPage.loans": "Acquéreurs intéressés",
   "PromotionLotPage.downloads": "Téléchargements",
   "PromotionAdministration.buttonLabel": "Administration",

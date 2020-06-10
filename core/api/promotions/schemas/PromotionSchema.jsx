@@ -77,6 +77,17 @@ export const promotionPermissionsSchema = {
   canSeeManagement: SCHEMA_BOOLEAN,
 };
 
+const constructionTimelineSchema = {
+  startPercent: percentageField,
+  steps: { type: Array, defaultValue: [] },
+  'steps.$': Object,
+  'steps.$.description': String,
+  'steps.$.startDate': { ...dateField, optional: false },
+  'steps.$.percent': { ...percentageField, optional: false },
+  endDate: dateField,
+  endPercent: percentageField,
+};
+
 SimpleSchema.setDefaultMessages({
   messages: {
     fr: { incompleteTimeline: "Les pourcentages doivent s'additionner à 100%" },
@@ -136,30 +147,35 @@ const PromotionSchema = new SimpleSchema({
   'lenderOrganisationLink._id': { type: String, optional: true },
   signingDate: dateField,
   constructionTimeline: {
-    type: Array,
-    defaultValue: [],
-    custom() {
-      if (this.value.length === 0) {
-        return;
-      }
+    optional: true,
+    defaultValue: {},
+    type: new SimpleSchema(constructionTimelineSchema),
+  },
+  // constructionTimeline: {
+  //   type: Array,
+  //   defaultValue: [],
+  //   custom() {
+  //     if (this.value.length === 0) {
+  //       return;
+  //     }
 
-      // Round up to 100 to avoid JS math rounding issues
-      if (
-        Math.round(
-          this.value.reduce((tot, { percent }) => tot + percent, 0) * 100,
-        ) !== 100
-      ) {
-        return 'incompleteTimeline';
-      }
-    },
-  },
-  'constructionTimeline.$': Object,
-  'constructionTimeline.$.description': String,
-  'constructionTimeline.$.duration': {
-    type: Number,
-    uniforms: { placeholder: null },
-  },
-  'constructionTimeline.$.percent': { ...percentageField, optional: false },
+  //     // Round up to 100 to avoid JS math rounding issues
+  //     if (
+  //       Math.round(
+  //         this.value.reduce((tot, { percent }) => tot + percent, 0) * 100,
+  //       ) !== 100
+  //     ) {
+  //       return 'incompleteTimeline';
+  //     }
+  //   },
+  // },
+  // 'constructionTimeline.$': Object,
+  // 'constructionTimeline.$.description': String,
+  // 'constructionTimeline.$.duration': {
+  //   type: Number,
+  //   uniforms: { placeholder: null },
+  // },
+  // 'constructionTimeline.$.percent': { ...percentageField, optional: false },
   projectStatus: { type: String, optional: true },
   authorizationStatus: {
     type: String,

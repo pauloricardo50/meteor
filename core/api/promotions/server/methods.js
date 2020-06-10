@@ -11,7 +11,6 @@ import {
   removeLoanFromPromotion,
   removeProFromPromotion,
   removePromotionLotGroup,
-  reuseConstructionTimeline,
   sendPromotionInvitationEmail,
   setPromotionUserPermissions,
   toggleNotifications,
@@ -91,11 +90,6 @@ editPromotionLoan.setHandler(({ userId }, params) => {
     userId,
   });
   return PromotionService.editPromotionLoan(params);
-});
-
-reuseConstructionTimeline.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.reuseConstructionTimeline(params);
 });
 
 toggleNotifications.setHandler(({ userId }, { promotionId }) => {

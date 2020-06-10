@@ -267,17 +267,6 @@ class PromotionService extends CollectionService {
     });
   }
 
-  reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
-    const { constructionTimeline } = this.get(fromPromotionId, {
-      constructionTimeline: 1,
-    });
-
-    return this.update({
-      promotionId: toPromotionId,
-      object: { constructionTimeline },
-    });
-  }
-
   updateUserRoles({ promotionId, userId, roles = [] }) {
     this.updateLinkMetadata({
       id: promotionId,
