@@ -11,3 +11,9 @@ import './momentOffset';
 import './memory.js';
 // CRONs
 import './crons';
+
+// Should only be used in development
+// Saves traces as a json file
+if (process.env.SAVED_TRACE_PATH) {
+  require('./nested-tracer.js');
+}
