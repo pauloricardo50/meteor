@@ -124,7 +124,7 @@
       font-size: 16px;
       font-weight: 300;
       font-style: normal;
-      line-height: normal; // override to center text vertically
+      line-height: normal;
       letter-spacing: normal;
       text-align: center;
       color: black;
@@ -132,13 +132,6 @@
 
     + .newsletter {
       margin-top: 16px;
-    }
-
-    @media screen and (min-width: $med) {
-      + .newsletter {
-        // margin-top: 0;
-        // margin-left: 16px;
-      }
     }
   }
 }

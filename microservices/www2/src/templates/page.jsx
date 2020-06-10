@@ -220,6 +220,24 @@ export const query = graphql`
               page_heading
             }
           }
+          ... on PRISMIC_PageBodyPage_links {
+            type
+            fields {
+              label
+              link {
+                _linkType
+                __typename
+                ... on PRISMIC_Page {
+                  _meta {
+                    id
+                    uid
+                    type
+                    lang
+                  }
+                }
+              }
+            }
+          }
           ... on PRISMIC_PageBodyPage_navigation {
             type
             fields {

@@ -19,13 +19,6 @@
       "type": "Slices",
       "fieldset": "Page sections",
       "config": {
-        "labels": {
-          "faq": [],
-          "image_gallery": [],
-          "newsletter_signup": [],
-          "image_collage": [],
-          "image_carousel": []
-        },
         "choices": {
           "page_heading": {
             "type": "Slice",
@@ -54,7 +47,7 @@
           },
           "page_navigation": {
             "type": "Slice",
-            "fieldset": "In-Page Navigation",
+            "fieldset": "Section Links",
             "description": "Anchor links to sections on this page",
             "icon": "menu",
             "display": "list",
@@ -72,6 +65,28 @@
                 "config": {
                   "label": "Section Link",
                   "placeholder": "Enter anchor id of section to be linked to within this page"
+                }
+              }
+            }
+          },
+          "page_links": {
+            "type": "Slice",
+            "fieldset": "Page Links",
+            "description": "Links to other similar pages",
+            "icon": "forward",
+            "display": "list",
+            "non-repeat": {},
+            "repeat": {
+              "label": {
+                "type": "Text",
+                "config": {
+                  "label": "Label"
+                }
+              },
+              "link": {
+                "type": "Link",
+                "config": {
+                  "label": "Link"
                 }
               }
             }
@@ -172,6 +187,153 @@
             },
             "repeat": {}
           },
+          "ctas_section": {
+            "type": "Slice",
+            "fieldset": "CTAs Section",
+            "description": "For single or double CTAs with illustrations",
+            "icon": "phone_forwarded",
+            "display": "list",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID",
+                  "placeholder": "Enter a unique section id here if this section should act as an anchor target for in-page navigation"
+                }
+              }
+            },
+            "repeat": {
+              "illustration": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [],
+                  "label": "Illustration"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, heading1, heading2, strong, em",
+                  "label": "Content"
+                }
+              },
+              "cta_text_1": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text 1"
+                }
+              },
+              "cta_link_1": {
+                "type": "Link",
+                "config": {
+                  "label": "CTA Link 1"
+                }
+              },
+              "cta_text_2": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text 2"
+                }
+              },
+              "cta_link_2": {
+                "type": "Link",
+                "config": {
+                  "label": "CTA Link 2"
+                }
+              }
+            }
+          },
+          "image_gallery": {
+            "type": "Slice",
+            "fieldset": "Image Gallery",
+            "description": "Image Gallery with a title and a caption for each image",
+            "icon": "photo_library",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "multi": "paragraph, heading1, heading2, heading3, heading4, heading5, heading6, strong, em, hyperlink",
+                  "allowTargetBlank": true,
+                  "label": "Content",
+                  "placeholder": "Intro content above the image gallery"
+                }
+              },
+              "logos": {
+                "type": "Boolean",
+                "config": {
+                  "default_value": false,
+                  "label": "Logos"
+                }
+              }
+            },
+            "repeat": {
+              "image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {
+                    "width": null,
+                    "height": null
+                  },
+                  "thumbnails": [],
+                  "label": "Image"
+                }
+              }
+            }
+          },
+          "cards": {
+            "type": "Slice",
+            "fieldset": "Cards",
+            "description": "Displays multiple cards in a flexbox/grid",
+            "icon": "content_copy",
+            "display": "grid",
+            "non-repeat": {
+              "section_id": {
+                "type": "Text",
+                "config": {
+                  "label": "Section ID"
+                }
+              },
+              "heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading1, heading2, heading3, heading4, heading5, heading6",
+                  "label": "Heading"
+                }
+              }
+            },
+            "repeat": {
+              "icon": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [],
+                  "label": "Icon"
+                }
+              },
+              "title": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading2, heading3, heading4, heading5, heading6",
+                  "label": "Title"
+                }
+              },
+              "content": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "paragraph, strong, em",
+                  "label": "Content",
+                  "placeholder": "Short text"
+                }
+              }
+            }
+          },
           "image_carousel": {
             "type": "Slice",
             "fieldset": "Image Carousel",
@@ -190,6 +352,13 @@
                 "config": {
                   "single": "heading1, heading2",
                   "label": "Section Heading"
+                }
+              },
+              "flipped": {
+                "type": "Boolean",
+                "config": {
+                  "default_value": false,
+                  "label": "Flipped"
                 }
               }
             },
@@ -324,7 +493,16 @@
             "description": "Section for questions and answers",
             "icon": "help",
             "display": "list",
-            "non-repeat": {},
+            "non-repeat": {
+              "section_heading": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "heading1, heading2, heading3, heading4, heading5, heading6",
+                  "label": "Section Heading",
+                  "placeholder": "Lorem ipsum..."
+                }
+              }
+            },
             "repeat": {
               "question": {
                 "type": "Text",
