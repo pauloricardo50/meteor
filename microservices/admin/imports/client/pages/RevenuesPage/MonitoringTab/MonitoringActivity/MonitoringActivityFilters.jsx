@@ -96,11 +96,7 @@ const MonitoringActivityFilters = ({
     <MongoSelect
       value={acquisitionChannel}
       onChange={setAcquisitionChannel}
-      options={[
-        ACQUISITION_CHANNELS.REFERRAL_PRO,
-        ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
-        ACQUISITION_CHANNELS.REFERRAL_API,
-      ].map(channel => ({
+      options={Object.values(ACQUISITION_CHANNELS).map(channel => ({
         id: channel,
         label: <T id={`Forms.acquisitionChannel.${channel}`} />,
       }))}
