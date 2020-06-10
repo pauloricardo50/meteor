@@ -53,7 +53,7 @@ export const formBorrower = () => ({
   bonusExists: 1,
   canton: 1,
   childrenCount: 1,
-  citizenShip: 1,
+  citizenship: 1,
   city: 1,
   civilStatus: 1,
   company: 1,

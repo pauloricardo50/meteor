@@ -146,7 +146,7 @@ export class UserServiceClass extends CollectionService {
     if (referralId) {
       this.update({
         userId,
-        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_PRO },
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC },
       });
       const referralUser = this.get(
         { _id: referralId, 'roles._id': ROLES.PRO },

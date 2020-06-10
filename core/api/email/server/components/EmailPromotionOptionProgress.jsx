@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { PROMOTION_OPTION_ICONS } from '../../../../components/PromotionPage/PromotionReservationProgress/promotionReservationProgressHelpers';
+import { PROMOTION_OPTION_ICONS } from '../../../../components/PromotionPage/PromotionReservationProgress/PromotionReservationProgressHelpers';
 import T from '../../../../components/Translation';
 import colors from '../../../../config/colors';
 import { setupMoment } from '../../../../utils/localization';
