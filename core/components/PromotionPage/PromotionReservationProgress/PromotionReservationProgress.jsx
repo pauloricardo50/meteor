@@ -10,7 +10,7 @@ import cx from 'classnames';
 import { getLoanProgress } from '../../../api/loans/helpers';
 import colors from '../../../config/colors';
 import FaIcon from '../../Icon/FaIcon';
-import { PROMOTION_OPTION_ICONS } from './PromotionReservationProgressHelpers';
+import { PROMOTION_OPTION_ICONS } from './promotionReservationProgressHelperz';
 import PromotionReservationProgressStep from './PromotionReservationProgressStep';
 
 const Connector = withStyles({
