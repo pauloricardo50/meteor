@@ -126,13 +126,13 @@ const PdfDownloadDialog = ({
       layout={[
         {
           Component: Box,
-          title: <h4>Général</h4>,
+          title: <h5>Général</h5>,
           className: 'mb-32',
           fields: ['structureIds', 'organisationId'],
         },
         {
           Component: Box,
-          title: <h4>Contexte</h4>,
+          title: <h5>Contexte</h5>,
           layout: [
             {
               className: 'mb-32',

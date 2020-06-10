@@ -217,13 +217,13 @@ export const taskFormLayout = [
   {
     Component: Box,
     className: 'mb-32',
-    title: <h4>Général</h4>,
+    title: <h5>Général</h5>,
     fields: ['title', 'description'],
     layout: { className: 'grid-2', fields: ['assigneeLink._id', 'isPrivate'] },
   },
   {
     Component: Box,
-    title: <h4>Échéance</h4>,
+    title: <h5>Échéance</h5>,
     layout: [
       'dueAtTimeHelpers',
       'dueAtDateHelpers',
