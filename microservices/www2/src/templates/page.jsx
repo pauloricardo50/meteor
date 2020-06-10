@@ -24,6 +24,18 @@ export const query = graphql`
               post_filter
             }
           }
+          ... on PRISMIC_PageBodyCards {
+            type
+            primary {
+              section_id
+              heading
+            }
+            fields {
+              icon
+              title
+              content
+            }
+          }
           ... on PRISMIC_PageBodyCtas_section {
             type
             primary {
