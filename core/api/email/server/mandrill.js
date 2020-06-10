@@ -14,7 +14,7 @@ const shouldSkipEmail = address => {
   // properly, avoid sending emails outside of our domain
   if (Meteor.isDevelopment || Meteor.isStaging) {
     const isEpotekEmail = address.includes('@e-potek.ch');
-    const shouldSkip = !isEpotekEmail;
+    const shouldSkip = !isEpotekEmail && !isEmailTestEnv;
     return shouldSkip;
   }
 };
