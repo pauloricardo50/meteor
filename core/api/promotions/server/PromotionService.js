@@ -267,17 +267,6 @@ class PromotionService extends CollectionService {
     });
   }
 
-  reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
-    const { constructionTimeline } = this.get(fromPromotionId, {
-      constructionTimeline: 1,
-    });
-
-    return this.update({
-      promotionId: toPromotionId,
-      object: { constructionTimeline },
-    });
-  }
-
   updateUserRoles({ promotionId, userId, roles = [] }) {
     this.updateLinkMetadata({
       id: promotionId,
@@ -445,6 +434,57 @@ class PromotionService extends CollectionService {
       id: promotionId,
       object: { promotionLotGroups: newGroups },
     });
+  }
+
+  updatePromotionTimeline({ promotionId, constructionTimeline }) {
+    const { signingDate } = this.get(promotionId, { signingDate: 1 });
+    const {
+      startPercent,
+      endPercent,
+      steps = [],
+      endDate,
+    } = constructionTimeline;
+
+    const stepPercent = steps.reduce((tot, { percent }) => tot + percent, 0);
+    const total = Math.round((startPercent + endPercent + stepPercent) * 100);
+
+    if (endDate && endPercent && steps.length === 0) {
+      throw new Meteor.Error('Il faut ajouter les étapes du chantier');
+    }
+
+    if (total !== 100) {
+      throw new Meteor.Error(
+        `Les étapes doivent s'additionner à 100% (actuellement ${total}%)`,
+      );
+    }
+
+    const firstDate = new Date(steps[0]?.startDate);
+    const lastDate = new Date(steps.slice(-1)[0].startDate);
+
+    if (signingDate && signingDate.getTime() > firstDate.getTime()) {
+      throw new Meteor.Error(
+        'La date de signature ne peut pas être après le début de la construction',
+      );
+    }
+
+    if (new Date(endDate).getTime() < lastDate.getTime()) {
+      throw new Meteor.Error(
+        'La fin de la construction doit être après la dernière étape',
+      );
+    }
+
+    steps.forEach(({ startDate }, index) => {
+      if (index > 0) {
+        const prevDate = steps[index - 1].startDate;
+        if (new Date(prevDate).getTime() > new Date(startDate).getTime()) {
+          throw new Meteor.Error(
+            "Chaque date consécutive doit venir après l'autre",
+          );
+        }
+      }
+    });
+
+    this.update({ promotionId, object: { constructionTimeline } });
   }
 }
 

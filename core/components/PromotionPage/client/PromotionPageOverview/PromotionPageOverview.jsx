@@ -23,7 +23,7 @@ const PromotionPageOverview = ({ promotion, loan }) => {
     <div className="promotion-page-overview animated fadeIn">
       {canChangeTimeline && <PromotionTimelineForm promotion={promotion} />}
 
-      {constructionTimeline && constructionTimeline.length > 0 && (
+      {constructionTimeline?.steps?.length > 0 && (
         <>
           <h3>
             <T id="PromotionPage.timeline" />

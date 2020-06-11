@@ -83,7 +83,7 @@ const PromotionReservationProgress = ({
         {...stepperProps}
         style={{
           ...stepperProps.style,
-          minWidth: !vertical ? undefined : progressSteps.length * 50,
+          minWidth: vertical ? undefined : progressSteps.length * 50,
         }}
       >
         {progressSteps.map(id => (
