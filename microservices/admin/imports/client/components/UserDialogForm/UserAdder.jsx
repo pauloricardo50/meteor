@@ -17,7 +17,7 @@ import UserDialogFormContainer from './UserDialogFormContainer';
 export const userFormLayout = [
   {
     Component: Box,
-    title: <h4>Détails</h4>,
+    title: <h5>Détails</h5>,
     className: 'mb-32',
     layout: [
       { className: 'grid-2', fields: ['firstName', 'lastName'] },
@@ -30,7 +30,7 @@ export const userFormLayout = [
   },
   {
     Component: Box,
-    title: <h4>Options</h4>,
+    title: <h5>Options</h5>,
     fields: ['assignedEmployeeId', 'sendEnrollmentEmail'],
   },
 ];

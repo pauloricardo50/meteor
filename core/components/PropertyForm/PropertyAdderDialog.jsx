@@ -76,11 +76,11 @@ const PropertyAdderDialog = withProps(
     const layout = [
       {
         Component: Box,
-        title: <h4>Bien immobilier</h4>,
+        title: <h5>Bien immobilier</h5>,
         className: 'mb-32',
         layout: [
           {
-            className: 'grid-2',
+            className: isRefinancing && 'grid-2',
             fields: ['value', isRefinancing && 'residenceType'].filter(x => x),
           },
           'address1',
@@ -89,7 +89,7 @@ const PropertyAdderDialog = withProps(
       },
       isRefinancing && {
         Component: Box,
-        title: <h4>Prêt à refinancer</h4>,
+        title: <h5>Prêt à refinancer</h5>,
         fields: ['previousLoanTranches'],
       },
     ].filter(x => x);

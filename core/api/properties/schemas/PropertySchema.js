@@ -310,6 +310,7 @@ export const PropertySchema = new SimpleSchema({
   },
   documents: documentsField,
   loanCount: { type: Number, optional: true },
+  bankValue: moneyField,
 });
 
 const protectedKeys = [
