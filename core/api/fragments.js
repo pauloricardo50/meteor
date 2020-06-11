@@ -331,7 +331,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
   displayWelcomeScreen: 1,
-  // offers: 1,
   lenders: {
     organisation: { name: 1, logo: 1 },
     offers: {
@@ -602,7 +601,6 @@ export const proOrganisation = () => ({
   generatedProductions: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
-  offers: 1,
   offerCount: 1,
   users: organisationUser(),
   enabledCommissionTypes: 1,

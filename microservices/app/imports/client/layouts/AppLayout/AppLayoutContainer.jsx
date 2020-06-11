@@ -1,8 +1,9 @@
+import merge from 'lodash/merge';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { userLoan } from 'core/api/fragments';
+import { calculatorLoan, userLoan } from 'core/api/fragments';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
@@ -50,21 +51,31 @@ export const getRedirect = (currentUser, pathname) => {
   return false;
 };
 
-const fullFragment = userLoan({ withSort: true, withFilteredPromotions: true });
-const fragment = {
-  ...fullFragment,
-  user: { _id: 1 },
-  properties: {
-    ...fullFragment.properties,
-    loans: undefined,
-    user: undefined,
+const fragment = merge({}, calculatorLoan(), {
+  applicationType: 1,
+  borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
+  contacts: 1,
+  customName: 1,
+  enableOffers: 1,
+  lenders: {
+    offers: {
+      enableOffer: 1,
+      conditions: 1,
+      withCounterparts: 1,
+    },
+    organisation: { logo: 1 },
   },
-  promotions: {
-    ...fullFragment.promotions,
-    users: undefined,
-  },
+  userCache: 1,
+  name: 1,
+  promotionOptions: { name: 1 },
+  promotions: { name: 1, lenderOrganisationLink: 1 },
+  properties: { address: 1, $options: { sort: { createdAt: 1 } } },
+  shareSolvency: 1,
+  step: 1,
+  userFormsEnabled: 1,
+  maxPropertyValue: 1,
   maxPropertyValueExists: 1,
-};
+});
 
 const withUserLoan = withSmartQuery({
   query: userLoans,

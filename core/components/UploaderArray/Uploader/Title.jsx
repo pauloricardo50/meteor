@@ -22,12 +22,12 @@ const Title = ({
       <div className="title-top">
         <FileStatusIcon files={currentValue} />
 
-        <div className="text">
-          <h3 className="font-size-5 flex center">
+        <div>
+          <h3 className="font-size-5 text-main">
             {label || <T id={`files.${id}`} />}
             {required === false ? null : <span className="error">&nbsp;*</span>}
           </h3>
-          <span className="secondary">
+          <span className="secondary file-count">
             <span style={{ padding: '0 4px' }}>&bull;</span>
             <T
               id="Uploader.fileCount"
