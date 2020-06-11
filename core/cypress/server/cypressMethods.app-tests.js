@@ -235,19 +235,6 @@ Meteor.methods({
 
   getAppEndToEndTestData() {
     const { _id: userId } = UserService.getByEmail(E2E_USER_EMAIL);
-    // console.log('testUser:', testUser);
-
-    // if (!testUser) {
-    //   const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
-    //   testUser = { _id: testUserId };
-    // }
-    // const { _id: userId } = testUser || {};
-
-    // const adminId = Accounts.createUser({
-    //   email: ADMIN_EMAIL,
-    //   password: PRO_PASSWORD,
-    // });
-    // UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
 
     const admin =
       UserService.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 }) || {};
