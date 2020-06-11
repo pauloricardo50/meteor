@@ -100,9 +100,9 @@ export default withProps(({ user }) => {
     schema: userSchema,
     labels: { assignedEmployeeId: <T id="Forms.assignedEmployee" /> },
     createUser: data =>
-      adminCreateUser.run({ options: data, role: ROLES.USER }).then(newId => {
-        history.push(`/users/${newId}`);
-      }),
+      adminCreateUser
+        .run({ user: { ...data, role: ROLES.USER } })
+        .then(newId => history.push(`/users/${newId}`)),
     editUser: data => {
       const { organisations = [], ...object } = data;
       return updateUser

@@ -305,13 +305,11 @@ Meteor.methods({
       userId = result.userId;
     } else {
       userId = UserService.adminCreateUser({
-        options: {
-          email: USER_EMAIL,
-          firstName: 'Test',
-          lastName: 'User',
-          sendEnrollmentEmail: true,
-          phoneNumber: '0225660110',
-        },
+        email: USER_EMAIL,
+        firstName: 'Test',
+        lastName: 'User',
+        sendEnrollmentEmail: true,
+        phoneNumbers: ['0225660110'],
       });
       LoanService.fullLoanInsert({ userId });
     }
@@ -342,11 +340,9 @@ Meteor.methods({
     let { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     if (!userId) {
       userId = UserService.adminCreateUser({
-        options: {
-          email: PRO_EMAIL,
-          firstName: 'Pro',
-          lastName: 'Test User',
-        },
+        email: PRO_EMAIL,
+        firstName: 'Pro',
+        lastName: 'Test User',
         role: ROLES.PRO,
       });
     }
@@ -391,11 +387,9 @@ Meteor.methods({
     const userId =
       _id ||
       UserService.adminCreateUser({
-        options: {
-          email: PRO_EMAIL,
-          firstName: 'Pro',
-          lastName: 'Test User',
-        },
+        email: PRO_EMAIL,
+        firstName: 'Pro',
+        lastName: 'Test User',
         role: ROLES.PRO,
       });
 

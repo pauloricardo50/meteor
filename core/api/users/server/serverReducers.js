@@ -2,7 +2,6 @@ import { getEmailsForAddress } from '../../email/server/mandrill';
 import NewsletterService from '../../email/server/NewsletterService';
 import { createMeteorAsyncFunction } from '../../helpers';
 import assigneeReducer from '../../reducers/assigneeReducer';
-import roundRobinAdvisors from './roundRobinAdvisors';
 import UserService from './UserService';
 import Users from '..';
 
@@ -25,9 +24,5 @@ Users.addReducers({
       createMeteorAsyncFunction(
         NewsletterService.getStatus.bind(NewsletterService),
       )({ email }),
-  },
-  isInRoundRobin: {
-    body: { email: 1 },
-    reduce: ({ email }) => roundRobinAdvisors.includes(email),
   },
 });

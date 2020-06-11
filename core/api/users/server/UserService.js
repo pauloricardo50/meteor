@@ -18,12 +18,11 @@ import SecurityService from '../../security';
 import { ACQUISITION_CHANNELS, ROLES } from '../userConstants';
 import Users from '../users';
 import { assigneesByOrg } from './assigneesByOrg';
-import roundRobinAdvisors from './roundRobinAdvisors';
+import AssigneeService from './AssigneeService';
 
 export class UserServiceClass extends CollectionService {
-  constructor({ employees }) {
+  constructor() {
     super(Users);
-    this.setupRoundRobin(employees);
   }
 
   getByEmail(email, fragment = {}, additionalFilters = {}) {
@@ -69,28 +68,22 @@ export class UserServiceClass extends CollectionService {
   };
 
   adminCreateUser = ({
-    options: {
-      email,
-      password,
-      sendEnrollmentEmail,
-      referredByUserId,
-      referredByOrganisation,
-      ...additionalData
-    },
+    assignedEmployeeId,
+    email,
+    password,
+    referredByOrganisation,
+    referredByUserId,
     role = ROLES.USER,
-    adminId,
+    sendEnrollmentEmail,
+    ...additionalData
   }) => {
     const newUserId = this.createUser({ options: { email, password }, role });
-
-    if (additionalData.phoneNumber && additionalData.phoneNumber.length) {
-      additionalData.phoneNumbers = [additionalData.phoneNumber];
-    }
-
     this.update({ userId: newUserId, object: additionalData });
 
     if (referredByUserId) {
       this.setReferredBy({ userId: newUserId, proId: referredByUserId });
     }
+
     if (referredByOrganisation) {
       this.setReferredByOrganisation({
         userId: newUserId,
@@ -98,34 +91,14 @@ export class UserServiceClass extends CollectionService {
       });
     }
 
-    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
-      this.assignAdminToUser({ userId: newUserId, adminId });
-    } else if (!additionalData.assignedEmployeeId) {
-      this.setAssigneeForNewUser(newUserId);
-    }
+    const assigneeService = new AssigneeService(newUserId);
+    assigneeService.setAssignee(assignedEmployeeId);
 
-    const APIUser = getAPIUser();
-
-    if (APIUser) {
-      this.update({
-        userId: newUserId,
-        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_API },
-      });
-    } else if (referredByUserId || referredByOrganisation) {
-      const userReferral =
-        referredByUserId && this.get(referredByUserId, { roles: 1 });
-      const isReferralAdmin =
-        userReferral && Roles.userIsInRole(userReferral, ROLES.ADMIN);
-
-      this.update({
-        userId: newUserId,
-        object: {
-          acquisitionChannel: isReferralAdmin
-            ? ACQUISITION_CHANNELS.REFERRAL_ADMIN
-            : ACQUISITION_CHANNELS.REFERRAL_PRO,
-        },
-      });
-    }
+    this.setAcquisitionChannel({
+      newUserId,
+      referredByUserId,
+      referredByOrganisation,
+    });
 
     if (sendEnrollmentEmail) {
       this.sendEnrollmentEmail({ userId: newUserId });
@@ -134,9 +107,15 @@ export class UserServiceClass extends CollectionService {
     return newUserId;
   };
 
-  anonymousCreateUser = ({ user, loanId, referralId }) => {
+  anonymousCreateUser = ({
+    user: { phoneNumber, ...user },
+    loanId,
+    referralId,
+  }) => {
     const userId = this.adminCreateUser({
-      options: { ...user, sendEnrollmentEmail: true },
+      ...user,
+      phoneNumbers: [phoneNumber].filter(x => x),
+      sendEnrollmentEmail: true,
     });
 
     if (loanId) {
@@ -190,25 +169,6 @@ export class UserServiceClass extends CollectionService {
 
   update = ({ userId, object }) =>
     this.allowUpdate({ object }) && Users.update(userId, { $set: object });
-
-  assignAdminToUser = ({ userId, adminId }) => {
-    const { assignedEmployee: oldAssignee = {} } =
-      this.get(userId, { assignedEmployee: { name: 1 } }) || {};
-
-    if (adminId) {
-      const newAssignee = this.get(adminId, { name: 1 }) || {};
-
-      this.update({ userId, object: { assignedEmployeeId: adminId } });
-      return { oldAssignee, newAssignee };
-    }
-
-    this._update({
-      id: userId,
-      object: { assignedEmployeeId: true },
-      operator: '$unset',
-    });
-    return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
-  };
 
   setRole = ({ userId, role }) => {
     if (role === ROLES.ADMIN) {
@@ -376,7 +336,6 @@ export class UserServiceClass extends CollectionService {
     const { userId, pro, admin } = this.proCreateUser({
       user,
       proUserId,
-      sendInvitation: false,
     });
 
     const loanId = LoanService.fullLoanInsert({ userId });
@@ -388,69 +347,38 @@ export class UserServiceClass extends CollectionService {
   proCreateUser = ({
     user: { email, firstName, lastName, phoneNumber },
     proUserId,
-    sendInvitation = true,
-    adminId,
-    promotionId,
   }) => {
     let pro;
 
     const isNewUser = !this.doesUserExist({ email });
     let userId;
-    let admin;
 
     if (proUserId) {
       pro = this.get(proUserId, {
         name: 1,
-        assignedEmployeeId: 1,
         organisations: { name: 1 },
       });
     }
 
-    const assignedEmployeeId = this.getAssigneeForProInvitedUser({
-      pro,
-      adminId,
-      promotionId,
-    });
-
     if (isNewUser) {
-      admin = this.get(assignedEmployeeId, { name: 1 });
       userId = this.adminCreateUser({
-        options: {
-          email,
-          sendEnrollmentEmail: sendInvitation && !pro && Meteor.isProduction,
-          firstName,
-          lastName,
-          phoneNumber,
-          referredByUserId: proUserId,
-        },
-        adminId: admin && admin._id,
+        email,
+        // Invitation will be sent by the propertyInvitationEmail or
+        // promotionInvitationEmail
+        sendEnrollmentEmail: false,
+        firstName,
+        lastName,
+        phoneNumbers: [phoneNumber].filter(x => x),
+        referredByUserId: proUserId,
       });
     } else {
-      const {
-        _id: existingUserId,
-        assignedEmployeeId: existingAssignedEmployeeId,
-      } = this.getByEmail(email, { assignedEmployeeId: 1 });
-
-      admin = this.get(existingAssignedEmployeeId, { name: 1 });
+      const { _id: existingUserId } = this.getByEmail(email, { _id: 1 });
       userId = existingUserId;
     }
 
-    return { userId, admin, pro, isNewUser };
+    const user = this.get(userId, { assignedEmployee: { name: 1 } });
+    return { userId, admin: user.assignedEmployee, pro, isNewUser };
   };
-
-  getAssigneeForProInvitedUser({ pro, adminId, promotionId }) {
-    if (promotionId) {
-      const promotion = PromotionService.get(promotionId, {
-        assignedEmployeeId: 1,
-      });
-      return promotion.assignedEmployeeId;
-    }
-    if (pro?.assignedEmployeeId) {
-      return pro.assignedEmployeeId;
-    }
-
-    return adminId;
-  }
 
   proInviteUser = ({
     user,
@@ -458,7 +386,6 @@ export class UserServiceClass extends CollectionService {
     promotionIds = [],
     properties = [],
     proUserId,
-    adminId,
     shareSolvency,
   }) => {
     const referOnly =
@@ -474,11 +401,6 @@ export class UserServiceClass extends CollectionService {
     const { userId, admin, pro, isNewUser } = this.proCreateUser({
       user,
       proUserId: proUserId || invitedBy,
-      // Invitation will be sent by the propertyInvitationEmail or
-      // promotionInvitationEmail
-      sendInvitation: false,
-      adminId,
-      promotionId: promotionIds?.length === 1 && promotionIds[0],
     });
 
     let promises = [];
@@ -648,13 +570,11 @@ export class UserServiceClass extends CollectionService {
     }
 
     const userId = this.adminCreateUser({
-      options: {
-        ...user,
-        phoneNumbers: [phoneNumber],
-        sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
-      },
+      ...user,
+      phoneNumbers: [phoneNumber],
+      sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
       role: ROLES.PRO,
-      adminId: assigneeId,
+      assignedEmployeeId: assigneeId,
     });
 
     this.linkOrganisation({ userId, organisationId, metadata: { title } });
@@ -749,44 +669,58 @@ export class UserServiceClass extends CollectionService {
     });
   }
 
-  setupRoundRobin(employees = []) {
-    this.employees = employees
-      .map(email => {
-        const employee = this.getByEmail(email);
-        if (employee) {
-          return employee._id;
-        }
-      })
-      .filter(x => x);
-  }
-
-  getAssigneeForNewUser(user) {
+  getAssigneeForNewUser(user, suggestedAssigneeId) {
     if (!SecurityService.hasAssignedRole(user, ROLES.USER)) {
       return;
     }
 
-    if (!this.employees.length) {
-      // In tests or if there are no roundrobin advisors, use any admin
-      // in the db and assign it to the user
-      // this avoids issues with analytics, that expects all users to have
-      // an assignee
-      const anyAdmin = this.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 });
-      return anyAdmin && anyAdmin._id;
+    const advisors = this.fetch({
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      $options: { sort: { 'emails.0.address': 1 } },
+      roundRobinTimeout: 1,
+      isInRoundRobin: 1,
+    });
+    const roundRobinAdvisors = advisors.filter(
+      ({ isInRoundRobin }) => isInRoundRobin,
+    );
+    const unavailableAdvisors = advisors.filter(
+      ({ roundRobinTimeout }) => !!roundRobinTimeout,
+    );
+
+    if (
+      suggestedAssigneeId &&
+      !unavailableAdvisors.find(({ _id }) => _id === suggestedAssigneeId)
+    ) {
+      return suggestedAssigneeId;
     }
 
     // Hard coded assignee for an organisation
-    if (
-      user.referredByOrganisationLink &&
-      assigneesByOrg[user.referredByOrganisationLink]
-    ) {
-      return assigneesByOrg[user.referredByOrganisationLink];
+    if (user.referredByOrganisationLink) {
+      const organisationAssigneeId =
+        assigneesByOrg[user.referredByOrganisationLink];
+      const isAvailable = !unavailableAdvisors.some(
+        ({ _id }) => _id === organisationAssigneeId,
+      );
+
+      if (isAvailable) {
+        return organisationAssigneeId;
+      }
+    }
+
+    // If there are no roundrobin advisors, return the first advisor
+    // makes tests simple
+    if (roundRobinAdvisors.length === 0) {
+      return advisors[0]._id;
     }
 
     // Round robin
+
+    // Get the last user created by a round-robin advisor
+    // ignore users assigned to non-round-robin advisors
     const previouslyCreatedUser = this.get(
       {
         roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
-        assignedEmployeeId: { $in: this.employees },
+        assignedEmployeeId: { $in: roundRobinAdvisors.map(({ _id }) => _id) },
       },
       {
         $options: { sort: { createdAt: -1 } },
@@ -795,42 +729,70 @@ export class UserServiceClass extends CollectionService {
       },
     );
 
+    let roundRobinIndex = 0;
+
     if (previouslyCreatedUser?.assignedEmployeeId) {
-      const index = this.employees.indexOf(
-        previouslyCreatedUser.assignedEmployeeId,
+      const index = roundRobinAdvisors.findIndex(
+        ({ _id }) => _id === previouslyCreatedUser.assignedEmployeeId,
       );
-      if (index >= this.employees.length - 1) {
-        return this.employees[0];
+
+      // If we've gone around all advisors, start again
+      if (index >= roundRobinAdvisors.length - 1) {
+        roundRobinIndex = 0;
+      } else {
+        // Otherwise get the next advisor
+        roundRobinIndex = index + 1;
       }
-      return this.employees[index + 1];
     }
 
-    // Assign the very first user
-    return this.employees[0];
+    const allAreUnavailable = roundRobinAdvisors.every(
+      ({ roundRobinTimeout }) => !!roundRobinTimeout,
+    );
+
+    // Escape hatch, if all advisors are unavailable, ignore their unavailability
+    // Avoids infinite loops in the while loop below
+    if (allAreUnavailable) {
+      return roundRobinAdvisors[0]._id;
+    }
+
+    const isUnavailable = index =>
+      unavailableAdvisors.some(
+        ({ _id }) => _id === roundRobinAdvisors[index]._id,
+      );
+
+    while (isUnavailable(roundRobinIndex)) {
+      if (roundRobinIndex >= roundRobinAdvisors.length - 1) {
+        roundRobinIndex = 0;
+      } else {
+        roundRobinIndex += 1;
+      }
+    }
+
+    return roundRobinAdvisors[roundRobinIndex]._id;
   }
 
-  setAssigneeForNewUser(userId) {
-    const user = this.get(userId, {
-      assignedEmployeeId: 1,
-      roles: 1,
-      referredByOrganisationLink: 1,
-    });
+  // setAssigneeForNewUser(userId) {
+  //   const user = this.get(userId, {
+  //     assignedEmployeeId: 1,
+  //     roles: 1,
+  //     referredByOrganisationLink: 1,
+  //   });
 
-    // Don't set an assignee if there is already one
-    if (user.assignedEmployeeId) {
-      return;
-    }
+  //   // Don't set an assignee if there is already one
+  //   if (user.assignedEmployeeId) {
+  //     return;
+  //   }
 
-    const newAssignee = this.getAssigneeForNewUser(user);
+  //   const newAssignee = this.getAssigneeForNewUser(user);
 
-    if (newAssignee) {
-      this.addLink({
-        id: userId,
-        linkName: 'assignedEmployee',
-        linkId: newAssignee,
-      });
-    }
-  }
+  //   if (newAssignee) {
+  //     this.addLink({
+  //       id: userId,
+  //       linkName: 'assignedEmployee',
+  //       linkId: newAssignee,
+  //     });
+  //   }
+  // }
 
   getReferral(userId) {
     const { referredByUser, referredByOrganisation } = this.get(userId, {
@@ -858,6 +820,35 @@ export class UserServiceClass extends CollectionService {
     });
     return nextValue;
   }
+
+  setAcquisitionChannel({
+    newUserId,
+    referredByUserId,
+    referredByOrganisation,
+  }) {
+    const APIUser = getAPIUser();
+
+    if (APIUser) {
+      this.update({
+        userId: newUserId,
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_API },
+      });
+    } else if (referredByUserId || referredByOrganisation) {
+      const userReferral =
+        referredByUserId && this.get(referredByUserId, { roles: 1 });
+      const isReferralAdmin =
+        userReferral && Roles.userIsInRole(userReferral, ROLES.ADMIN);
+
+      this.update({
+        userId: newUserId,
+        object: {
+          acquisitionChannel: isReferralAdmin
+            ? ACQUISITION_CHANNELS.REFERRAL_ADMIN
+            : ACQUISITION_CHANNELS.REFERRAL_PRO,
+        },
+      });
+    }
+  }
 }
 
-export default new UserServiceClass({ employees: roundRobinAdvisors });
+export default new UserServiceClass();

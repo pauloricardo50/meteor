@@ -86,6 +86,10 @@ export const OrganisationSchema = new SimpleSchema({
       transform: type => <T id={`Forms.type.${type}`} />,
     },
   },
+  assignedEmployeeId: {
+    type: String,
+    optional: true,
+  },
 });
 
 Organisations.attachSchema(OrganisationSchema);

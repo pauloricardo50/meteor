@@ -1,5 +1,6 @@
 {
-  "Forms.roundRobinTimeout": "Explication",
+  "Forms.isInRoundRobin": "Round robin activé",
+  "Forms.roundRobinTimeout": "Pause round robin",
   "Forms.roundRobinTimeout.placeholder": "À Ibiza ⛷",
   "Forms.promotionShare": "Quote-part terrain",
   "PromotionLotTimeline.initialConstructionPayment": "Versement EG à la signature",

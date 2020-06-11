@@ -211,13 +211,11 @@ describe('PromotionService', function() {
       };
 
       const userId = UserService.adminCreateUser({
-        options: {
-          email: newUser.email,
-          sendEnrollmentEmail: false,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          phoneNumbers: [newUser.phoneNumber],
-        },
+        email: newUser.email,
+        sendEnrollmentEmail: false,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        phoneNumbers: [newUser.phoneNumber],
         role: ROLES.USER,
       });
 

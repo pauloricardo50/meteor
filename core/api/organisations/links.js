@@ -11,6 +11,11 @@ import Users from '../users/users';
 import Organisations from './organisations';
 
 Organisations.addLinks({
+  assignedEmployee: {
+    collection: Users,
+    field: 'assignedEmployeeId',
+    type: 'one',
+  },
   contacts: {
     collection: Contacts,
     field: 'contactIds',

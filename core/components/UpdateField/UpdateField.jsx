@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import cx from 'classnames';
 import pick from 'lodash/pick';
 
 import { updateDocument } from '../../api/methods/methodDefinitions';
@@ -34,6 +35,7 @@ const UpdateField = ({
   }),
   onSubmitCallback = () => ({}),
   extendSchema = {},
+  className,
   ...props
 }) => {
   const schema = useMemo(
@@ -50,7 +52,7 @@ const UpdateField = ({
       schema={schema}
       model={pick(doc, fields)}
       onSubmit={values => onSubmit(values).then(onSubmitCallback)}
-      className="update-field"
+      className={cx('update-field', className)}
       {...props}
     >
       {fields.map(field => (

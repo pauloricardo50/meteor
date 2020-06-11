@@ -30,6 +30,7 @@ import {
   userVerifyEmail,
 } from '../methodDefinitions';
 import { ROLES } from '../userConstants';
+import AssigneeService from './AssigneeService';
 import UserService from './UserService';
 
 doesUserExist.setHandler((context, { email }) =>
@@ -57,7 +58,7 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
 assignAdminToUser.setHandler((context, { userId, adminId }) => {
   SecurityService.checkCurrentUserIsAdmin();
 
-  return UserService.assignAdminToUser({ userId, adminId });
+  return AssigneeService.assignAdminToUser({ userId, adminId });
 });
 
 setRole.setHandler((context, params) => {
@@ -65,13 +66,9 @@ setRole.setHandler((context, params) => {
   return UserService.setRole(params);
 });
 
-adminCreateUser.setHandler((context, { options, role }) => {
-  SecurityService.users.isAllowedToInsertByRole({ role });
-  return UserService.adminCreateUser({
-    options,
-    role,
-    adminId: context.userId,
-  });
+adminCreateUser.setHandler((context, { user }) => {
+  SecurityService.users.isAllowedToInsertByRole({ role: user.role });
+  return UserService.adminCreateUser(user);
 });
 
 updateUser.setHandler((context, { userId, object }) => {
@@ -176,7 +173,6 @@ proInviteUser.setHandler((context, params) => {
   return UserService.proInviteUser({
     ...params,
     proUserId: isProUser ? userId : undefined,
-    adminId: !isProUser ? userId : undefined,
   });
 });
 
