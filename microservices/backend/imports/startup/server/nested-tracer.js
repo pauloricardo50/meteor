@@ -4,6 +4,15 @@
  * 1. Support an infinite level of nested events instead of one
  * 2. Save traces for certain methods or publications to a file
  * 3. Wrap Publication._publishChildrenOf from publish-composite to preserve kadira info in new fibers
+ * 
+ * Usage:
+ * 1. Set the env variabe SAVE_TRACE_PATH, for example to `/home/<user>/backend-trace.json
+ * 2. Update SAVED_TRACE_TYPE and SAVED_TRACE_NAME. The type can be `sub` or `method`, and
+ *    the name is the name of the method or publication
+ * 3. Run the backend. Each time a trace is finalized with the correct type and name,
+ *    it is saved to the file, overwriting any previously saved traces.
+ * 4. The `analyze-trace` and `aggregate-trace` scripts in the root `scripts` folder
+ *    can be used to analyze the trace.
  */
 
 // Controls which trace is stored in the file

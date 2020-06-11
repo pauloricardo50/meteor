@@ -17,6 +17,8 @@ function showEvents(events, depth = 0, path = []) {
   for (let i = 0; i < events.length; i += 1) {
     const event = events[i];
 
+    // Exclude async events without children since we only care
+    // about the db events that cause publish composite to be slow
     if (event.type === 'async' && event.nested.length === 0) {
       // eslint-disable-next-line no-continue
       continue;
@@ -30,6 +32,8 @@ function showEvents(events, depth = 0, path = []) {
     );
 
     if (event.nested && event.nested.length) {
+      // Ignore nested events when they are all async and have no nested events
+      // since they are unhelpful.
       if (
         !event.nested.every(
           nestedEvent =>
@@ -40,6 +44,9 @@ function showEvents(events, depth = 0, path = []) {
       ) {
         const newPath = [...path];
         const coll = event.data && event.data.coll ? event.data.coll : ' ';
+
+        // In publish composite, there are frequently two db events for the same collection,
+        // one nested in the other. Since the second one adds nothing new, we ignore it.
         if (coll !== path[path.length - 1]) {
           newPath.push(coll);
         }
