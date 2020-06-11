@@ -27,7 +27,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
       icon: <Icon type="add" />,
       ...buttonProps,
     }}
-    title={<T id="OfferAdder.buttonLabel" />}
+    title="Ajouter une offre"
     autoFieldProps={{ labels: interestRatesLabels }}
     fullWidth
     maxWidth="md"
@@ -35,19 +35,18 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
     layout={[
       {
         Component: Box,
-        className: 'flex mb-32',
-        title: <h4>Général</h4>,
+        className: 'grid-2 mb-32',
+        title: <h5>Général</h5>,
         fields: ['lender', 'enableOffer'],
       },
       {
         Component: Box,
-        title: <h4>Offre</h4>,
+        title: <h5>Offre</h5>,
         className: 'mb-32',
         layout: [
-          'maxAmount',
           {
-            className: 'grid-2',
-            fields: ['amortizationGoal', 'amortizationYears'],
+            className: 'grid-3',
+            fields: ['maxAmount', 'amortizationGoal', 'amortizationYears'],
           },
           { className: 'flex sb', fields: ['interest*'] },
         ],
@@ -55,19 +54,19 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
       {
         Component: Box,
         className: 'mb-32',
-        title: <h4>Conditions</h4>,
+        title: <h5>Conditions</h5>,
         fields: ['withCounterparts', 'conditions'],
       },
       {
         Component: Box,
         className: 'mb-32 grid-2',
-        title: <h4>Frais</h4>,
+        title: <h5>Frais</h5>,
         fields: ['fees', 'epotekFees'],
       },
       {
         Component: Box,
         className: 'mb-32',
-        title: <h4>Contreparties</h4>,
+        title: <h5>Contreparties</h5>,
         layout: [
           'hasCounterparts',
           'counterparts',

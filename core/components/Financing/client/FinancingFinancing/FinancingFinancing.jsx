@@ -1,16 +1,12 @@
 import React from 'react';
 
-import {
-  OWN_FUNDS_USAGE_TYPES,
-  PURCHASE_TYPE,
-} from '../../../../api/loans/loanConstants';
+import { PURCHASE_TYPE } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import { createRoute } from '../../../../utils/routerUtils';
 import IconButton from '../../../IconButton';
 import Link from '../../../Link';
 import T from '../../../Translation';
-import Calc from '../FinancingCalculator';
 import FinancingProjectFees from '../FinancingProject/FinancingProjectFees';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
 import FinancingSection, {
@@ -26,11 +22,6 @@ import MortgageNotesPicker from './MortgageNotesPicker';
 
 const MAX_NOTARY_FEES_RATE = 0.1;
 
-const getPledgedAmount = ({ structure: { ownFunds } }) =>
-  ownFunds
-    .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
-    .reduce((sum, { value }) => sum + value, 0);
-
 export const calculateLoan = params => {
   const {
     structure: { wantedLoan },
@@ -38,31 +29,15 @@ export const calculateLoan = params => {
   return wantedLoan;
 };
 
-const calculateMaxLoan = (data, pledgeOverride) => {
+const calculateMaxLoan = data => {
   const { loan, structureId } = data;
-  const offer = Calculator.selectOffer({ loan, structureId });
-  if (offer) {
-    const { maxAmount } = Calculator.selectOffer(data);
-    return maxAmount;
-  }
 
-  const structure = Calculator.selectStructure({ loan, structureId });
-  const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
-
-  const maxLoan = Calc.getMaxLoanBase({
-    propertyWork: structure.propertyWork,
-    propertyValue,
-    pledgedAmount:
-      pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
-    residenceType: loan.residenceType,
-    maxBorrowRatio: Calculator.getMaxBorrowRatio({ loan, structureId }),
-  });
-  const rounding = 10 ** 3;
-  return Math.floor(maxLoan / rounding) * rounding;
+  return Calculator.getMaxLoanValue({ loan, structureId });
 };
 
 const calculateMaxFirstRank = ({ Calculator: calc, ...data }) =>
   calc.getMaxBorrowRatio(data);
+
 const calculateDefaultFirstRank = ({ Calculator: calc, ...data }) => {
   const borrowRatio = calc.getBorrowRatio(data);
   const goal = calc.getAmortizationGoal(data);

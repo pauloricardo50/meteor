@@ -16,11 +16,11 @@ const layout = [
     fields: ['status', 'borrowerId'],
     Component: Box,
     className: 'grid-row mb-32',
-    title: <h4>Général</h4>,
+    title: <h5>Général</h5>,
   },
   {
     Component: Box,
-    title: <h4>Assurance</h4>,
+    title: <h5>Assurance</h5>,
     layout: [
       {
         fields: [

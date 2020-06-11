@@ -1,4 +1,7 @@
 {
+  "Financing.bankValue": "[ADMIN] Valeur retenue par le prêteur",
+  "Forms.bankValue": "Valeur retenue par le prêteur",
+  "Forms.bankValue.placeholder": "CHF 800 000",
   "Forms.promotionShare": "Quote-part terrain",
   "PromotionLotTimeline.initialConstructionPayment": "Versement EG à la signature",
   "PromotionTimeline.start": "Début",
