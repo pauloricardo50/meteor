@@ -1,16 +1,12 @@
 import React from 'react';
 
-import {
-  OWN_FUNDS_USAGE_TYPES,
-  PURCHASE_TYPE,
-} from '../../../../api/loans/loanConstants';
+import { PURCHASE_TYPE } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import { createRoute } from '../../../../utils/routerUtils';
 import IconButton from '../../../IconButton';
 import Link from '../../../Link';
 import T from '../../../Translation';
-import Calc from '../FinancingCalculator';
 import FinancingProjectFees from '../FinancingProject/FinancingProjectFees';
 import { getAmortization } from '../FinancingResult/financingResultHelpers';
 import FinancingSection, {
@@ -33,10 +29,10 @@ export const calculateLoan = params => {
   return wantedLoan;
 };
 
-const calculateMaxLoan = (data, pledgeOverride) => {
+const calculateMaxLoan = data => {
   const { loan, structureId } = data;
 
-  return Calculator.getMaxLoanValue({ loan, structureId, pledgeOverride });
+  return Calculator.getMaxLoanValue({ loan, structureId });
 };
 
 const calculateMaxFirstRank = ({ Calculator: calc, ...data }) =>

@@ -16,6 +16,7 @@ import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import { getPropertyArray } from '../../arrays/PropertyFormArray';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import {
+  LOAN_ROUNDING,
   MAX_BORROW_RATIO_INVESTMENT_PROPERTY,
   MIN_INSURANCE2_WITHDRAW,
   REAL_ESTATE_INCOME_ALGORITHMS,
@@ -1132,7 +1133,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return true;
     }
 
-    getMaxLoanValue({ loan, structureId, pledgeOverride }) {
+    getMaxLoanValue({ loan, structureId }) {
       const offer = this.selectOffer({ loan, structureId });
       if (offer) {
         return offer.maxAmount;
@@ -1141,7 +1142,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const structure = this.selectStructure({
         loan,
         structureId,
-        pledgeOverride,
       });
       const propertyValue = this.selectPropertyValue({
         loan,
@@ -1157,15 +1157,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const maxLoan = this.getMaxLoanBase({
         propertyWork: structure.propertyWork,
         propertyValue: finalPropertyValue,
-        pledgedAmount:
-          pledgeOverride !== undefined
-            ? pledgeOverride
-            : this.getPledgedOwnFunds({ loan }),
+        pledgedAmount: this.getPledgedOwnFunds({ loan }),
         residenceType: loan.residenceType,
         maxBorrowRatio: this.getMaxBorrowRatio({ loan, structureId }),
       });
 
-      const rounding = 1e3;
-      return Math.floor(maxLoan / rounding) * rounding;
+      return Math.floor(maxLoan / LOAN_ROUNDING) * LOAN_ROUNDING;
     }
   };

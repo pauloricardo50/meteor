@@ -1994,17 +1994,5 @@ describe('LoanCalculator', () => {
       });
       expect(maxLoan).to.equal(800000);
     });
-
-    it('lets you preview a maxLoanValue with pledgeOverride', () => {
-      const maxLoan = Calculator.getMaxLoanValue({
-        loan: {
-          structures: [{ id: 'struct', propertyValue: 1000000 }],
-          selectedStructure: 'struct',
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-        },
-        pledgeOverride: 50000,
-      });
-      expect(maxLoan).to.equal(850000);
-    });
   });
 });
