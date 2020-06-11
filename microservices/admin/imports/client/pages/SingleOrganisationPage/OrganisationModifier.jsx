@@ -19,7 +19,7 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
       layout={[
         {
           Component: Box,
-          title: <h4>Général</h4>,
+          title: <h5>Général</h5>,
           className: 'mb-32',
           layout: [
             { className: 'grid-2', fields: ['name', 'type'] },
@@ -29,13 +29,13 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
         },
         {
           Component: Box,
-          title: <h4>Adresse</h4>,
+          title: <h5>Adresse</h5>,
           className: 'mb-32 grid-2',
           fields: ['address1', 'address2', 'zipCode', 'city'],
         },
         {
           Component: Box,
-          title: <h4>Emails</h4>,
+          title: <h5>Emails</h5>,
           className: 'mb-32',
           fields: ['emails'],
         },

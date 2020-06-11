@@ -7,7 +7,6 @@ import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
 import { lotInsert } from '../../../../api/lots/methodDefinitions';
 import {
-  addPromotionLotGroup,
   insertPromotionProperty,
   promotionRemove,
   promotionUpdate,
@@ -19,6 +18,7 @@ import {
 } from '../../../../api/promotions/schemas/PromotionSchema';
 import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
+import Box from '../../../Box';
 import { ModalManagerContext } from '../../../ModalManager';
 import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import DialogForm from '../../../ModalManager/DialogForm';
@@ -70,6 +70,13 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
     landValue: { ...moneyField, defaultValue: 0 },
     constructionValue: { ...moneyField, defaultValue: 0 },
     additionalMargin: { ...moneyField, defaultValue: 0 },
+    bankValue: {
+      ...moneyField,
+      uniforms: {
+        ...moneyField.uniforms,
+        helperText: 'À renseigner uniquement si différent du prix de vente',
+      },
+    },
     propertyType: {
       type: String,
       allowedValues: Object.values(PROPERTY_TYPE),
@@ -87,6 +94,43 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
       uniforms: { placeholder: 'Attique avec la meilleure vue du bâtiment' },
     },
   });
+
+export const promotionLotFormLayout = [
+  {
+    title: <h5>Général</h5>,
+    Component: Box,
+    className: 'mb-32',
+    layout: [
+      { className: 'grid-2', fields: ['name', 'propertyType'] },
+      'description',
+      'promotionLotGroupIds',
+    ],
+  },
+  {
+    title: <h5>Valeur</h5>,
+    Component: Box,
+    description: (
+      <div className="mt-8 mb-8">
+        <T id="PromotionPage.promotionLotValueDescription" />
+      </div>
+    ),
+    className: 'mb-32',
+    layout: [
+      'value',
+      {
+        className: 'grid-3',
+        fields: ['landValue', 'additionalMargin', 'constructionValue'],
+      },
+      'bankValue',
+    ],
+  },
+  {
+    title: <h5>Détails</h5>,
+    Component: Box,
+    className: 'grid-2',
+    fields: ['__REST'],
+  },
+];
 
 export const lotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
@@ -193,10 +237,10 @@ const getOptions = ({
           <DialogForm
             schema={promotionLotSchema}
             title={<T id="PromotionAdministration.addPromotionLot" />}
-            description={<T id="PromotionPage.promotionLotValueDescription" />}
             onSubmit={property =>
               insertPromotionProperty.run({ promotionId, property })
             }
+            layout={promotionLotFormLayout}
           />,
         ),
     },

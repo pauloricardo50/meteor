@@ -98,7 +98,7 @@ const getSchema = currentUser =>
 const revenueFormLayout = [
   {
     Component: Box,
-    title: <h4>Général</h4>,
+    title: <h5>Général</h5>,
     className: 'mb-32',
     layout: [
       { className: 'grid-col', fields: ['amount', 'type'] },
@@ -107,19 +107,19 @@ const revenueFormLayout = [
   },
   {
     Component: Box,
-    title: <h4>Responsable</h4>,
+    title: <h5>Responsable</h5>,
     className: 'mb-32 grid-2',
     fields: ['assigneeLink._id'],
   },
   {
     Component: Box,
-    title: <h4>Payé par</h4>,
+    title: <h5>Payé par</h5>,
     className: 'mb-32 grid-2',
     fields: ['expectedAt', 'sourceOrganisationLink._id', 'paidAt'],
   },
   {
     Component: Box,
-    title: <h4>Commissions à payer</h4>,
+    title: <h5>Commissions à payer</h5>,
     fields: ['organisationLinks'],
   },
 ];
