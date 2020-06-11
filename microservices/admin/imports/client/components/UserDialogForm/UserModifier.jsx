@@ -16,7 +16,6 @@ import { userFormSchema } from './userDialogFormHelpers';
 
 const UserModifier = ({ user, editUser }) => (
   <AutoFormDialog
-    // Emails should not be modified here, but with EmailModifier
     schema={userFormSchema}
     model={user}
     onSubmit={editUser}
