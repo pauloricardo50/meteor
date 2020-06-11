@@ -13,6 +13,7 @@ import {
   removePromotionLotGroup,
   sendPromotionInvitationEmail,
   setPromotionUserPermissions,
+  submitPromotionInterestForm,
   toggleNotifications,
   updatePromotionLotGroup,
   updatePromotionTimeline,
@@ -144,3 +145,6 @@ updatePromotionTimeline.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.updatePromotionTimeline(params);
 });
+
+// This method needs to exist as its being listened to in EmailListeners
+submitPromotionInterestForm.setHandler(() => null);

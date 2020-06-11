@@ -129,3 +129,19 @@ export const updatePromotionTimeline = new Method({
   name: 'updatePromotionTimeline',
   params: { promotionId: String, constructionTimeline: Object },
 });
+
+export const submitPromotionInterestForm = new Method({
+  name: 'submitPromotionInterestForm',
+  params: {
+    name: String,
+    email: String,
+    phoneNumber: Match.Maybe(String),
+    details: Match.Maybe(String),
+  },
+  rateLimit: {
+    global: {
+      limit: 3,
+      timeRange: 30000,
+    },
+  },
+});
