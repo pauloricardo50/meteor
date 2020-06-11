@@ -138,12 +138,10 @@ const UserAdder = ({ buttonProps }) => {
   const { data: advisors = [] } = useMeteorData({
     query: USERS_COLLECTION,
     params: {
-      $filters: {
-        'roles._id': ROLES.ADVISOR,
-      },
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      $options: { sort: { firstName: 1 } },
       firstName: 1,
       office: 1,
-      $options: { sort: { firstName: 1 } },
     },
   });
   const schema = useMemo(() => getSchema(organisations, advisors), [

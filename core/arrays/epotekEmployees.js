@@ -127,16 +127,24 @@ const employees = [
   },
 ];
 
-export const employeesByEmail = employees.reduce(
-  (acc, employee) =>
-    employee.email ? { ...acc, [employee.email]: employee } : acc,
-  {},
-);
+export let employeesByEmail;
 
-export const employeesById = employees.reduce(
-  (acc, employee) =>
-    employee._id ? { ...acc, [employee._id]: employee } : acc,
-  {},
-);
+export let employeesById;
+
+export const setData = () => {
+  employeesByEmail = employees.reduce(
+    (acc, employee) =>
+      employee.email ? { ...acc, [employee.email]: employee } : acc,
+    {},
+  );
+
+  employeesById = employees.reduce(
+    (acc, employee) =>
+      employee._id ? { ...acc, [employee._id]: employee } : acc,
+    {},
+  );
+};
+
+setData();
 
 export default employees;
