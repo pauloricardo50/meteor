@@ -44,6 +44,7 @@ export default compose(
       emails: 1,
       firstName: 1,
       isDisabled: 1,
+      isInRoundRobin: 1,
       lastName: 1,
       name: 1,
       office: 1,

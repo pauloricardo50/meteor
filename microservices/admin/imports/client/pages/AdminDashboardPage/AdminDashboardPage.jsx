@@ -10,7 +10,7 @@ import { UserAdder } from '../../components/UserDialogForm';
 import AdminDashboardStats from './AdminDashboardStats';
 import AdvisorsStatus from './AdvisorsStatus';
 
-const AdminDashboardPage = ({ currentUser, history }) => (
+const AdminDashboardPage = ({ history }) => (
   <>
     <AdminDashboardStats />
     <section className="card1 card-top admin-dashboard-page">
@@ -25,10 +25,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
           </h1>
 
           <div className="flex">
-            <UserAdder
-              currentUser={currentUser}
-              buttonProps={{ className: 'mr-8' }}
-            />
+            <UserAdder buttonProps={{ className: 'mr-8' }} />
             <LoanAdder onSuccess={loanId => history.push(`/loans/${loanId}`)} />
           </div>
         </div>

@@ -55,6 +55,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => toggleAccount.run({ userId });
   const isAdvisor = Roles.userIsInRole(user, ROLES.ADVISOR);
+  const currentUserIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
 
   return (
     <div className="single-user-page-header">
@@ -223,7 +224,14 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         </SingleUserPageInformationItem>
 
         {isAdvisor && (
-          <SingleUserPageInformationItem label="Timeout round robin">
+          <SingleUserPageInformationItem label="Round robin">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['isInRoundRobin']}
+              disabled={!currentUserIsDev}
+              className="round-robin-checkbox"
+            />
             <UpdateField
               collection={Users}
               doc={user}

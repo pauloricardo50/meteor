@@ -1,18 +1,23 @@
 import React, { useMemo } from 'react';
-import { compose, withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import { adminCreateUser } from 'core/api/users/methodDefinitions';
+import {
+  ASSIGNEE,
+  ROLES,
+  USERS_COLLECTION,
+} from 'core/api/users/userConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
+import useMeteorData from 'core/hooks/useMeteorData';
 import useSearchParams from 'core/hooks/useSearchParams';
 
-import UserDialogFormContainer from './UserDialogFormContainer';
+import { userFormSchema } from './userDialogFormHelpers';
 
 export const userFormLayout = [
   {
@@ -35,13 +40,17 @@ export const userFormLayout = [
   },
 ];
 
-const getSchema = ({ schema, organisations }) =>
-  schema.extend(
+const getSchema = (organisations, advisors) =>
+  userFormSchema.omit('organisations').extend(
     new SimpleSchema({
+      email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
       sendEnrollmentEmail: {
         type: Boolean,
         optional: true,
         defaultValue: false,
+        uniforms: {
+          label: <T id="UserAdder.sendEnrollmentEmail" />,
+        },
       },
       referredByUserId: {
         type: String,
@@ -85,41 +94,81 @@ const getSchema = ({ schema, organisations }) =>
             return null;
           }
 
-          const org = organisations.find(({ users = [] }) =>
-            users.some(
-              ({ _id, $metadata: { isMain } }) =>
-                _id === referredByUserId && isMain,
+          const org = organisations.find(({ userLinks = [] }) =>
+            userLinks.some(
+              ({ _id, isMain }) => _id === referredByUserId && isMain,
             ),
           );
 
           return org;
         },
       },
+      assignedEmployeeId: {
+        type: String,
+        allowedValues: [
+          ...Object.values(ASSIGNEE),
+          ...advisors.map(({ _id }) => _id),
+        ],
+        uniforms: {
+          data: [
+            ...advisors,
+            { _id: ASSIGNEE.NONE, label: 'Sans conseiller', office: 'Auto' },
+            { _id: ASSIGNEE.ROUND_ROBIN, label: 'Round robin', office: 'Auto' },
+          ],
+          transform: item => item?.firstName || item?.label,
+          grouping: {
+            groupBy: 'office',
+            format: office =>
+              office === 'Auto' ? 'Auto' : <T id={`Forms.office.${office}`} />,
+          },
+        },
+      },
     }),
   );
 
-const UserAdder = ({
-  schema,
-  currentUser: { _id: adminId },
-  createUser,
-  labels,
-  organisations = [],
-  model = {},
-  openOnMount,
-  buttonProps,
-}) => {
-  const finalSchema = useMemo(() => getSchema({ schema, organisations }), [
-    schema,
+const UserAdder = ({ buttonProps }) => {
+  const { data: organisations = [] } = useMeteorData({
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      name: 1,
+      userLinks: 1,
+      $options: { sort: { name: 1 } },
+    },
+  });
+  const { data: advisors = [] } = useMeteorData({
+    query: USERS_COLLECTION,
+    params: {
+      $filters: {
+        'roles._id': ROLES.ADVISOR,
+      },
+      firstName: 1,
+      office: 1,
+      $options: { sort: { firstName: 1 } },
+    },
+  });
+  const schema = useMemo(() => getSchema(organisations, advisors), [
     organisations,
+    advisors,
   ]);
+  const searchParams = useSearchParams();
+  const history = useHistory();
 
   return (
     <AutoFormDialog
       title={<T id="UserAdder.buttonLabel" />}
-      schema={finalSchema}
-      model={{ ...model, assignedEmployeeId: adminId }}
-      openOnMount={openOnMount}
-      onSubmit={createUser}
+      schema={schema}
+      model={{ ...searchParams }}
+      openOnMount={
+        searchParams.addUser &&
+        !!Object.keys(searchParams).filter(key =>
+          ['email', 'firstName', 'lastName'].includes(key),
+        ).length
+      }
+      onSubmit={data =>
+        adminCreateUser
+          .run({ user: { ...data, role: ROLES.USER } })
+          .then(newId => history.push(`/users/${newId}`))
+      }
       buttonProps={{
         label: 'Compte',
         raised: true,
@@ -127,38 +176,9 @@ const UserAdder = ({
         icon: <Icon type="add" />,
         ...buttonProps,
       }}
-      autoFieldProps={{
-        labels: {
-          ...labels,
-          sendEnrollmentEmail: <T id="UserAdder.sendEnrollmentEmail" />,
-        },
-      }}
       layout={userFormLayout}
     />
   );
 };
 
-export default compose(
-  UserDialogFormContainer,
-  withSmartQuery({
-    query: ORGANISATIONS_COLLECTION,
-    dataName: 'organisations',
-    params: {
-      name: 1,
-      users: { _id: 1 },
-      $options: { sort: { name: 1 } },
-    },
-    refetchOnMethodCall: false,
-  }),
-  withProps(() => {
-    const searchParams = useSearchParams();
-    return {
-      model: searchParams,
-      openOnMount:
-        searchParams.addUser &&
-        !!Object.keys(searchParams).filter(key =>
-          ['email', 'firstName', 'lastName'].includes(key),
-        ).length,
-    };
-  }),
-)(UserAdder);
+export default UserAdder;
