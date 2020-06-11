@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-
+import T from '../../Translation';
 import Widget1FinmaLine from './Widget1FinmaLine';
 
 const Widget1Finma = ({ borrowRule, incomeRule }) => (

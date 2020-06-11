@@ -1,9 +1,48 @@
 import React from 'react';
 
+import ContactCard from './ContactCard';
 import FrontContactContainer from './FrontContactContainer';
 import FrontContactHeader from './FrontContactHeader';
-import ContactCard from './ContactCard';
 import LoanCard from './FrontContactLoans/LoanCard';
+
+const mapLoans = ({ loans = [], conversation, refetch, tagIds, setTagIds }) => {
+  if (!loans.length) {
+    return null;
+  }
+
+  let sortedLoans = loans;
+  let expandedLoan;
+  const loanTagIds = tagIds.filter(tag =>
+    loans.some(({ frontTagId }) => frontTagId === tag),
+  );
+
+  if (loanTagIds.length === 1) {
+    expandedLoan = loans.find(loan => {
+      const { frontTagId: loanTagId } = loan;
+      return loanTagId === loanTagIds[0];
+    });
+    sortedLoans = expandedLoan
+      ? [
+          expandedLoan,
+          ...sortedLoans.filter(loan => loan._id !== expandedLoan._id),
+        ]
+      : sortedLoans;
+  }
+
+  return sortedLoans.map(loan => (
+    <LoanCard
+      key={loan._id}
+      loan={loan}
+      expanded={
+        sortedLoans.length === 1 ? true : loan._id === expandedLoan?._id
+      }
+      refetch={refetch}
+      conversation={conversation}
+      tagIds={tagIds}
+      setTagIds={setTagIds}
+    />
+  ));
+};
 
 const FrontContact = ({
   finalContact,
@@ -12,6 +51,8 @@ const FrontContact = ({
   isEpotekResource,
   collection,
   refetch,
+  tagIds,
+  setTagIds,
 }) => {
   if (loading) {
     return (
@@ -29,6 +70,8 @@ const FrontContact = ({
         collection={collection}
         refetch={refetch}
         conversation={conversation}
+        tagIds={tagIds}
+        setTagIds={setTagIds}
       />
       {isEpotekResource && (
         <ContactCard
@@ -41,15 +84,13 @@ const FrontContact = ({
 
       {isEpotekResource &&
         collection === 'users' &&
-        finalContact.loans?.length &&
-        finalContact.loans.map(loan => (
-          <LoanCard
-            key={loan._id}
-            loan={loan}
-            expanded={finalContact.length === 1}
-            refetch={refetch}
-          />
-        ))}
+        mapLoans({
+          loans: finalContact?.loans,
+          conversation,
+          refetch,
+          tagIds,
+          setTagIds,
+        })}
     </div>
   );
 };

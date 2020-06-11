@@ -1,5 +1,5 @@
-import intersection from 'lodash/intersection';
 import flatten from 'lodash/flatten';
+import intersection from 'lodash/intersection';
 
 import { ROLES } from '../api/users/userConstants';
 
@@ -17,7 +17,30 @@ export const isUser = user => {
   return userHasRoles && intersection(userRoles, [ADMIN, DEV]).length === 0;
 };
 
-export const getUserDisplayName = ({ firstName, lastName, emails } = {}) =>
-  [firstName, lastName].filter(name => name).join(' ') ||
+export const getUserDisplayName = ({
+  emails,
+  firstName,
+  lastName,
+  name,
+} = {}) =>
+  name ||
+  [firstName, lastName].filter(x => x).join(' ') ||
   (emails && emails[0] && emails[0].address) ||
   '';
+
+export const getMainOrganisation = user => {
+  const { organisations } = user || {};
+
+  if (!organisations?.length) {
+    return;
+  }
+
+  if (organisations.length === 1) {
+    return organisations[0];
+  }
+
+  return (
+    organisations.find(({ $metadata: { isMain } }) => isMain) ||
+    organisations[0]
+  );
+};

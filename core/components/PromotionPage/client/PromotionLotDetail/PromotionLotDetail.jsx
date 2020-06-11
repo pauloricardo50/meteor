@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
-import T from '../../../Translation';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Box from '../../../Box';
 import DocumentDownloadList from '../../../DocumentDownloadList';
+import T from '../../../Translation';
 import PromotionMetadataContext from '../PromotionMetadata';
 import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
+import PromotionLotLoansTable from './PromotionLotLoansTable';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
-import PromotionLotLoansTable from './PromotionLotLoansTable';
 
 const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const {
@@ -22,7 +22,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const {
     permissions: { canModifyLots, canSeeCustomers },
   } = useContext(PromotionMetadataContext);
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const files = (documents && documents.promotionPropertyDocuments) || [];
 
   return (
@@ -54,7 +54,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
         )}
       </section>
 
-      {constructionTimeline.length > 0 && (
+      {constructionTimeline?.steps?.length > 0 && (
         <section>
           <h4>
             <T id="PromotionPage.timeline" />

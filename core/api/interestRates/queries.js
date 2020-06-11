@@ -2,11 +2,11 @@ import {
   currentInterestRates as currentInterestRatesFragment,
   interestRates as interestRatesFragment,
 } from '../fragments';
-import InterestRates from '.';
 import {
-  INTEREST_RATES_QUERIES,
   INTEREST_RATES,
+  INTEREST_RATES_QUERIES,
 } from './interestRatesConstants';
+import InterestRates from '.';
 
 const makeCheckIsRate = rates => type =>
   rates[type].rateLow && rates[type].rateHigh && rates[type].trend;

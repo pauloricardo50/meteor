@@ -1,13 +1,14 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
-import sinon from 'sinon';
-import moment from 'moment';
 
-import generator from '../../../factories/server';
+import { expect } from 'chai';
+import moment from 'moment';
+import sinon from 'sinon';
+
 import { BORROWERS_COLLECTION } from '../../../borrowers/borrowerConstants';
-import { asyncForEach } from '../../../helpers/index';
-import { FILE_STATUS, BORROWER_DOCUMENTS } from '../../fileConstants';
+import generator from '../../../factories/server';
+import { asyncForEach } from '../../../helpers';
+import { BORROWER_DOCUMENTS, FILE_STATUS } from '../../fileConstants';
 import FileService from '../FileService';
 import S3Service from '../S3Service';
 import { clearBucket } from './S3Service.test';
@@ -27,7 +28,7 @@ const setupBucket = () =>
     .then(() => S3Service.putObject(binaryData, key3));
 
 describe('FileService', function() {
-  this.timeout(30000);
+  this.timeout(10000);
 
   before(function() {
     if (Meteor.settings.public.microservice !== 'pro') {
@@ -37,7 +38,7 @@ describe('FileService', function() {
     }
   });
 
-  beforeEach(() => clearBucket().then(setupBucket));
+  beforeEach(() => clearBucket(docId).then(setupBucket));
 
   describe('getFilesForDoc', () => {
     it('lists all files uploaded to a doc', () => {
@@ -150,9 +151,7 @@ describe('FileService', function() {
         file: Buffer.from(`hello${i}`, 'utf-8'),
         key: FileService.getTempS3FileKey(
           'test',
-          {
-            name: `file${i}.pdf`,
-          },
+          { name: `file${i}.pdf` },
           { id: `file${i}` },
         ),
       }));
@@ -169,13 +168,12 @@ describe('FileService', function() {
   });
 
   describe('autoRenameFile', () => {
+    const documentId = 'autoRenameFile-test';
     const generateAndRenameFiles = async (count, date = '') => {
       await asyncForEach([...Array(count)], async (_, i) => {
         const fileKey = FileService.getS3FileKey(
-          {
-            name: `${date ? `${date} ` : ''}file${i}.pdf`,
-          },
-          { docId: 'borrower', id: BORROWER_DOCUMENTS.IDENTITY },
+          { name: `${date ? `${date} ` : ''}file${i}.pdf` },
+          { docId: documentId, id: BORROWER_DOCUMENTS.IDENTITY },
         );
 
         await S3Service.putObject(Buffer.from(`hello${i}`, 'utf-8'), fileKey);
@@ -184,53 +182,43 @@ describe('FileService', function() {
       });
     };
 
+    beforeEach(() => clearBucket(documentId));
+
     it('renames a single file', async () => {
-      generator({
-        borrowers: {
-          _id: 'borrower',
-        },
-      });
+      generator({ borrowers: { _id: 'borrower' } });
 
       const today = moment().format('YYYY-MM-DD');
 
       await generateAndRenameFiles(1);
 
-      const files = await FileService.listFilesForDoc('borrower');
+      const files = await FileService.listFilesForDoc(documentId);
 
       expect(files.length).to.equal(1);
       expect(files[0]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable.pdf`,
+        Key: `${documentId}/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable.pdf`,
       });
     });
 
     it('renames multiple files', async () => {
-      generator({
-        borrowers: {
-          _id: 'borrower',
-        },
-      });
+      generator({ borrowers: { _id: 'borrower' } });
 
       const today = moment().format('YYYY-MM-DD');
 
       await generateAndRenameFiles(2);
 
-      const files = await FileService.listFilesForDoc('borrower');
+      const files = await FileService.listFilesForDoc(documentId);
 
       expect(files.length).to.equal(2);
       expect(files[0]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable (1 sur 2).pdf`,
+        Key: `${documentId}/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable (1 sur 2).pdf`,
       });
       expect(files[1]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable (2 sur 2).pdf`,
+        Key: `${documentId}/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable (2 sur 2).pdf`,
       });
     });
 
     it('does not override date if it already exists', async () => {
-      generator({
-        borrowers: {
-          _id: 'borrower',
-        },
-      });
+      generator({ borrowers: { _id: 'borrower' } });
 
       const today = moment().format('YYYY-MM-DD');
       const yesterday = moment()
@@ -241,14 +229,14 @@ describe('FileService', function() {
 
       await generateAndRenameFiles(1);
 
-      const files = await FileService.listFilesForDoc('borrower');
+      const files = await FileService.listFilesForDoc(documentId);
 
       expect(files.length).to.equal(2);
       expect(files[0]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${yesterday} Pièce d'identité valable (1 sur 2).pdf`,
+        Key: `${documentId}/${BORROWER_DOCUMENTS.IDENTITY}/${yesterday} Pièce d'identité valable (1 sur 2).pdf`,
       });
       expect(files[1]).to.deep.include({
-        Key: `borrower/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable (2 sur 2).pdf`,
+        Key: `${documentId}/${BORROWER_DOCUMENTS.IDENTITY}/${today} Pièce d'identité valable (2 sur 2).pdf`,
       });
     });
   });

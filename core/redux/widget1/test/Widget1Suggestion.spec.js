@@ -2,14 +2,14 @@
 import { expect } from 'chai';
 import merge from 'lodash/merge';
 
-import widget1Suggesters, { makeSuggestValue } from '../widget1Suggestion';
 import {
+  FORTUNE,
+  PROPERTY,
   PURCHASE_TYPE,
   SALARY,
-  PROPERTY,
-  FORTUNE,
   WANTED_LOAN,
 } from '../widget1Constants';
+import widget1Suggesters, { makeSuggestValue } from '../widget1Suggestion';
 
 const value = 100;
 const prepareState = overrides => ({

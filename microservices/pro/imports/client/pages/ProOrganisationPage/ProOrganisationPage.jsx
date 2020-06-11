@@ -1,10 +1,33 @@
 import React from 'react';
 
+import { proUser } from 'core/api/users/queries';
+import Loading from 'core/components/Loading/Loading';
 import T from 'core/components/Translation';
+import useMeteorData from 'core/hooks/useMeteorData';
+import { getMainOrganisation } from 'core/utils/userFunctions';
+
 import ProOrganisationPageTabs from './ProOrganisationPageTabs';
 import ShareCustomersToggle from './ShareCustomersToggle';
 
-const ProOrganisationPage = ({ currentUser }) => {
+const ProOrganisationPage = () => {
+  const { data: currentUser, loading } = useMeteorData({
+    query: proUser,
+    params: {
+      $body: {
+        organisations: {
+          name: 1,
+          users: { name: 1, email: 1, phoneNumber: 1 },
+          commissionRates: { _id: 1 },
+          logo: 1,
+        },
+      },
+    },
+    type: 'single',
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
   const { organisations } = currentUser;
 
   if (!organisations || organisations.length === 0) {
@@ -20,12 +43,7 @@ const ProOrganisationPage = ({ currentUser }) => {
     );
   }
 
-  let mainOrganisation = organisations[0];
-  if (organisations.length > 1) {
-    mainOrganisation =
-      organisations.find(({ $metadata: { isMain } }) => isMain) ||
-      organisations[0];
-  }
+  const mainOrganisation = getMainOrganisation(currentUser);
 
   const organisation = mainOrganisation;
 
@@ -44,7 +62,7 @@ const ProOrganisationPage = ({ currentUser }) => {
         <label htmlFor="" className="mb-8">
           Code referral de {organisation.name}
         </label>
-        <b>{organisation._id}</b>
+        <b className="organisation-id">{organisation._id}</b>
       </div>
       <ProOrganisationPageTabs
         organisation={organisation}
@@ -53,4 +71,5 @@ const ProOrganisationPage = ({ currentUser }) => {
     </div>
   );
 };
+
 export default ProOrganisationPage;

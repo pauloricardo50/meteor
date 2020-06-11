@@ -6,8 +6,19 @@ const makeReferrerFilter = referrer => ({ loan }) => {
   return false;
 };
 
-export const revenuesFilter = ({ referrer, revenues }) => {
-  const referrerFilter = makeReferrerFilter(referrer);
+const makeAssigneeFilter = assignee => ({
+  assigneeLink: { _id: revenueAssignee } = {},
+}) => assignee === revenueAssignee;
 
-  return revenues.filter(revenue => !!(!referrer || referrerFilter(revenue)));
+export const revenuesFilter = ({ assignee, referrer, revenues }) => {
+  const referrerFilter = makeReferrerFilter(referrer);
+  const assigneeFilter = makeAssigneeFilter(assignee);
+
+  return revenues.filter(
+    revenue =>
+      !!(
+        (!referrer || referrerFilter(revenue)) &&
+        (!assignee || assigneeFilter(revenue))
+      ),
+  );
 };

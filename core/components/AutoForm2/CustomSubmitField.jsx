@@ -1,6 +1,6 @@
 import React from 'react';
-import { filterDOMProps } from 'uniforms';
 import PropTypes from 'prop-types';
+import { filterDOMProps } from 'uniforms';
 
 import Button from '../Button';
 import T from '../Translation';

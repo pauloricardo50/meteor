@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import ListItemText from '@material-ui/core/ListItemText';
 import JsSearch from 'js-search';
+import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
-import T from 'core/components/Translation';
-import { generalTooltips } from 'core/arrays/tooltips';
-import Button from 'core/components/Button';
+import { generalTooltips } from '../../arrays/tooltips';
+import Button from '../Button';
+import List from '../Material/List';
+import ListItem from '../Material/ListItem';
+import T from '../Translation';
 
 const styles = {
   list: {

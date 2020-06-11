@@ -1,8 +1,8 @@
 import React from 'react';
 
-import T from '../Translation';
-import StatusIcon from '../StatusIcon';
 import { SUCCESS } from '../../api/constants';
+import StatusIcon from '../StatusIcon';
+import T from '../Translation';
 
 const LoanChecklistList = ({ labels, title }) => (
   <span className="loan-checklist-list">

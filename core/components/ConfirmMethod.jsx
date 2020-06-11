@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Popover from './Material/Popover';
-import Dialog from './Material/Dialog';
 import Button from './Button';
+import Dialog from './Material/Dialog';
+import Popover from './Material/Popover';
 import TextField from './Material/TextField';
 import T from './Translation';
 
@@ -64,6 +64,7 @@ export default class ConfirmMethod extends Component {
       type = 'popover',
       method,
       TriggerComponent = Button,
+      noTrigger = false,
       ...rest
     } = this.props;
     const { open, text, loading, anchorEl } = this.state;
@@ -139,16 +140,19 @@ export default class ConfirmMethod extends Component {
 
     return (
       <>
-        <TriggerComponent
-          label={label}
-          onClick={this.handleOpen}
-          style={style}
-          disabled={disabled}
-          loading={loading}
-          {...buttonProps}
-        />
+        {!noTrigger && (
+          <TriggerComponent
+            label={label}
+            onClick={this.handleOpen}
+            style={style}
+            disabled={disabled}
+            loading={loading}
+            {...buttonProps}
+          />
+        )}
         {type === 'popover' && popover}
         {type === 'modal' && modal}
+        {type === 'popover' && noTrigger && children(this.handleOpen)}
       </>
     );
   }

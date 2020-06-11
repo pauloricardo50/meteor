@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import Slider from 'core/components/Slider';
-import IconButton from 'core/components/IconButton';
+import { shallow } from '../../../../utils/testHelpers';
+import IconButton from '../../../IconButton';
+import Slider from '../../../Slider';
 import Widget1SingleInputSlider from '../Widget1SingleInputSlider';
 
 describe('Widget1SingleInputSlider', () => {

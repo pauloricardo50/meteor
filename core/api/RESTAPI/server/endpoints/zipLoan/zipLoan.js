@@ -1,16 +1,18 @@
 import archiver from 'archiver';
 
-import Intl from 'core/utils/server/intl';
-import LoanService from '../../../../loans/server/LoanService';
-import { zipDocuments } from './zipHelpers';
+import intl from '../../../../../utils/intl';
 import {
   DOCUMENTS,
   DOCUMENTS_CATEGORIES,
 } from '../../../../files/fileConstants';
+import FileService from '../../../../files/server/FileService';
+import LoanService from '../../../../loans/server/LoanService';
 import { withMeteorUserId } from '../../helpers';
 import { RESPONSE_ALREADY_SENT } from '../../restApiConstants';
-import FileService from '../../../../files/server/FileService';
-import FilesBinPacker, { MIME_ENCODING_SIZE_FACTOR } from './FilesBinPacker';
+import FilesBinPacker from './FilesBinPacker';
+import { zipDocuments } from './zipHelpers';
+
+const { formatMessage } = intl;
 
 export const getFileName = ({
   Key,
@@ -65,7 +67,7 @@ export const getFileName = ({
       )
       .includes(documentId)
     ? `${root}${binPath}${prefix}${fileName}${suffix}.${extension}`
-    : `${root}${binPath}${prefix}${Intl.formatMessage({
+    : `${root}${binPath}${prefix}${formatMessage({
         id: `files.${documentId}`,
       })}${suffix}.${extension}`;
 };
@@ -174,7 +176,7 @@ export const generateLoanZip = ({ zip, loan, documents, options, res }) => {
     }),
   );
 
-  if (!hasPromotion) {
+  if (!hasPromotion && structure?.propertyId) {
     // Zip property files
     zipDocFiles({
       zip,

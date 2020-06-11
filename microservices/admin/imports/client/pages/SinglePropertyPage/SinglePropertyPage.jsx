@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
-import Recap from 'core/components/Recap';
-import MapWithMarker from 'core/components/maps/MapWithMarker';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import { PropertyForm } from 'core/components/forms';
-import { PROPERTY_CATEGORY } from 'core/api/constants';
-import AdminProPropertyPage from './AdminProPropertyPage';
+import MapWithMarker from 'core/components/maps/MapWithMarker';
+import Recap from 'core/components/Recap';
+
 import LoanSummaryList from '../../components/LoanSummaryList';
+import AdminProPropertyPage from './AdminProPropertyPage';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 

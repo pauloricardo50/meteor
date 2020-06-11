@@ -1,8 +1,9 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import T from 'core/components/Translation';
+
 import UserCreatorForm from '../UserCreator/UserCreatorForm';
 
 const SimpleMaxPropertyValueSignup = ({ fixed }) => (

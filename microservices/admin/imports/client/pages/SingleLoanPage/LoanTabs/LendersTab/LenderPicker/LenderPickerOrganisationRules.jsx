@@ -1,6 +1,8 @@
 import React from 'react';
 
-import LenderListItemRules from 'core/components/Financing/client/FinancingLenders/LenderList/LenderListItemRules';
+import LenderListItemRules, {
+  mapOrganisation,
+} from 'core/components/Financing/client/FinancingLenders/LenderList/LenderListItemRules';
 
 const LenderPickerOrganisationRules = ({ organisation, loan }) => {
   const { lenderRules } = organisation;
@@ -14,9 +16,7 @@ const LenderPickerOrganisationRules = ({ organisation, loan }) => {
         index !== 0 && <span className="lender-picker-structures-separator" />,
         <div key={structureId} className="flex">
           <LenderListItemRules
-            organisation={organisation}
-            loan={loan}
-            structureId={structureId}
+            {...mapOrganisation({ loan, structureId, organisation })}
           />
         </div>,
       ])}

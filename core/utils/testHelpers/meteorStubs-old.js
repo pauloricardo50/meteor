@@ -82,7 +82,6 @@ const meteorStubs = {
   'meteor/alanning:roles': stubs.alanningRoles,
   'meteor/ddp-rate-limiter': stubs.ddpRateLimiter,
   'meteor/underscore': stubs.meteorUnderscore,
-  'meteor/okgrow:analytics': stubs.analytics,
 };
 
 export default meteorStubs;

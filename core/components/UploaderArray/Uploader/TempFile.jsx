@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Tracker } from 'meteor/tracker';
 import { Slingshot } from 'meteor/edgee:slingshot';
+import { Tracker } from 'meteor/tracker';
+
+import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import PropTypes from 'prop-types';
 
-import { logError } from '../../../api/methods/index';
-import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/constants';
+import { logError } from '../../../api/errorLogger/methodDefinitions';
+import { EXOSCALE_PATH, FILE_STATUS } from '../../../api/files/fileConstants';
 
 export default class TempFile extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ export default class TempFile extends Component {
     return (
       <div className="temp-file flex-col">
         <div className="file">
-          <h5 className="secondary bold file-name">{name}</h5>
+          <h5 className="secondary bold file-name font-size-body">{name}</h5>
           {!error &&
             (fileIsUploading ? (
               <div className="uploading-progress">

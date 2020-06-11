@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { LOANS_COLLECTION } from 'core/api/constants';
+import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import UnsuccessfulReasonModal from '../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
 import LoanTabs from './LoanTabs';
+import SingleLoanPageContacts from './SingleLoanPageContacts';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
-import SingleLoanPageContacts from './SingleLoanPageContacts';
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
 
 const SingleLoanPage = props => {
   const { loan } = props;
@@ -20,7 +20,6 @@ const SingleLoanPage = props => {
       <div className="single-loan-page-sub-header">
         <CollectionTasksTable
           doc={loan}
-          collection={LOANS_COLLECTION}
           withTaskInsert
           withQueryTaskInsert
           className="single-loan-page-tasks card1 card-top"
@@ -28,6 +27,7 @@ const SingleLoanPage = props => {
         <SingleLoanPageContacts loanId={loan._id} />
       </div>
       <LoanTabs {...props} />
+      <UnsuccessfulReasonModal loan={loan} />
     </section>
   );
 };

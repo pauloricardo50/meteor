@@ -1,7 +1,7 @@
 import React from 'react';
-import { CollectionIconLink } from 'core/components/IconLink';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+
 import Icon from 'core/components/Icon';
+import { CollectionIconLink } from 'core/components/IconLink';
 
 const getAddress = ({ address, organisations }) => {
   const { address: organisationAddress } =
@@ -18,10 +18,7 @@ const SingleContactPageInfos = ({ contact }) => {
           ? organisations.map(organisation => (
               <CollectionIconLink
                 key={organisation._id}
-                relatedDoc={{
-                  ...organisation,
-                  collection: ORGANISATIONS_COLLECTION,
-                }}
+                relatedDoc={organisation}
               />
             ))
           : "N'est lié à aucune organisation"}

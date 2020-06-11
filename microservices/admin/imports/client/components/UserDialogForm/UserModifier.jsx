@@ -2,13 +2,14 @@ import React from 'react';
 
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
-import UserDialogFormContainer from './UserDialogFormContainer';
+
 import { userFormLayout } from './UserAdder';
+import UserDialogFormContainer from './UserDialogFormContainer';
 
 const UserModifier = ({ schema, user, editUser, labels }) => (
   <AutoFormDialog
     // Emails should not be modified like this, but with EmailModifier
-    schema={schema.omit('email', 'assignedEmployeeId', 'sendEnrollmentEmail')}
+    schema={schema.omit('email', 'sendEnrollmentEmail')}
     model={user}
     onSubmit={editUser}
     buttonProps={{
@@ -17,7 +18,7 @@ const UserModifier = ({ schema, user, editUser, labels }) => (
       primary: true,
     }}
     autoFieldProps={{ labels }}
-    layout={userFormLayout[0].layout}
+    layout={userFormLayout}
     title={<T id="UserModifier.dialogTitle" />}
   />
 );

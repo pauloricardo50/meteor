@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { APPLICATION_TYPES } from 'core/api/constants';
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 
 export const { Consumer, Provider } = React.createContext();
 

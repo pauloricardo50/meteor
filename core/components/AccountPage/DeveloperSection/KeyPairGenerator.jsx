@@ -1,9 +1,9 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import Button from 'core/components/Button';
-import { generateApiKeyPair } from 'core/api';
-import T from 'core/components/Translation';
+import { generateApiKeyPair } from '../../../api/users/methodDefinitions';
+import Button from '../../Button';
+import T from '../../Translation';
 
 const KeyPairGenerator = ({ loading, generateKeyPair, keyPair = {} }) => (
   <Button

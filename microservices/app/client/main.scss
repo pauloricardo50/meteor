@@ -7,7 +7,6 @@
 
 // Pages
 @import '../imports/client/pages/AppPage/AppPage.scss';
-@import '../imports/client/pages/AppPromotionLotPage/AppPromotionLotPage.scss';
 @import '../imports/client/pages/AppWidget1Page/AppWidget1Page.scss';
 @import '../imports/client/pages/BorrowersPage/BorrowersPage.scss';
 @import '../imports/client/pages/DashboardPage/DashboardPage.scss';
@@ -26,3 +25,10 @@
 @import '../imports/client/components/SummaryComponent/SummaryComponent.scss';
 @import '../imports/client/components/WelcomeScreen/WelcomeScreen.scss';
 @import '../imports/client/components/DeactivatedFormInfo/DeactivatedFormInfo.scss';
+
+
+html {
+  @include screen(med, min) {
+    @include font-size($font-size-s);
+  }
+}

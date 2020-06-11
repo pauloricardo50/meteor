@@ -1,24 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { ScrollSync } from 'react-scroll-sync';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ScrollSync } from 'react-scroll-sync';
 
-import { PURCHASE_TYPE, LOANS_COLLECTION } from '../../../api/constants';
+import Loans from '../../../api/loans';
 import Loading from '../../Loading';
-import UpdateField from '../../UpdateField';
 import T from '../../Translation';
+import UpdateField from '../../UpdateField';
+import FinancingContainer from './FinancingContainer';
+import FinancingDetails from './FinancingDetails';
 import FinancingFinancing from './FinancingFinancing';
 import FinancingHeader from './FinancingHeader';
+import FinancingLenders from './FinancingLenders';
 import FinancingOffers from './FinancingOffers';
 import FinancingOwnFunds from './FinancingOwnFunds';
 import FinancingProject from './FinancingProject';
 import FinancingResult from './FinancingResult';
-import FinancingContainer from './FinancingContainer';
-import FinancingRefinancing from './FinancingRefinancing';
-import FinancingLenders from './FinancingLenders';
-import FinancingDetails from './FinancingDetails';
 
 const Financing = ({ loan }) => {
   if (!loan.structures.length) {
@@ -33,7 +32,7 @@ const Financing = ({ loan }) => {
         <UpdateField
           doc={loan}
           fields={['residenceType']}
-          collection={LOANS_COLLECTION}
+          collection={Loans}
           style={{ minWidth: 200 }}
         />
       </div>
@@ -47,13 +46,9 @@ const Financing = ({ loan }) => {
 
         <FinancingDetails />
 
-        <FinancingProject />
+        <FinancingProject purchaseType={loan.purchaseType} />
 
-        {loan.purchaseType === PURCHASE_TYPE.REFINANCING && (
-          <FinancingRefinancing />
-        )}
-
-        <FinancingFinancing />
+        <FinancingFinancing purchaseType={loan.purchaseType} />
 
         <FinancingOwnFunds />
 

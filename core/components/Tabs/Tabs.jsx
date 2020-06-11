@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import MuiTabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 import Link from '../Link';
+import Tab from '../Material/Tab';
 import TabsContainer from './TabsContainer';
 
 class Tabs extends Component {
@@ -78,7 +78,6 @@ class Tabs extends Component {
             classes={{
               root: classes.tabRoot,
               selected: classes.tabSelected,
-              labelContainer: classes.labelContainer,
             }}
             label={label}
             component={to ? Link : undefined}

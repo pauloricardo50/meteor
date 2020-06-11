@@ -3,6 +3,9 @@ import { Method } from '../methods/methods';
 export const analyticsLogin = new Method({
   name: 'analyticsLogin',
   doNotRefetchQueries: true,
+  params: {
+    type: String,
+  },
 });
 
 export const analyticsPage = new Method({

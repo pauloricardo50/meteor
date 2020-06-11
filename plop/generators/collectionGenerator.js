@@ -99,51 +99,9 @@ module.exports = {
     });
     actions.push({
       type: 'append',
-      path: './core/api/api-server.js',
-      pattern: /(^import \b(?!SlackService)\S+ from .*;\n$)(?!\1)/m,
-      templateFile: `${templatesPath}/apiServerImportAppend.hbs`,
-      separator: '',
-    });
-    actions.push({
-      type: 'append',
-      path: './core/api/api-server.js',
-      pattern: /(?<=export const Services = {\n)(.*)(?=};)/s,
-      templateFile: `${templatesPath}/apiServerServicesAppend.hbs`,
-      separator: '',
-    });
-    actions.push({
-      type: 'append',
-      path: './core/api/constants.js',
-      pattern: /(^import { .* } from .*;\n$)(?!\1)/m,
-      templateFile: `${templatesPath}/constantsImportAppend.hbs`,
-      separator: '',
-    });
-    actions.push({
-      type: 'append',
-      path: './core/api/constants.js',
-      pattern: /(^export \* from .*;\n$)(?!\1)/m,
-      templateFile: `${templatesPath}/constantsExportAppend.hbs`,
-      separator: '',
-    });
-    actions.push({
-      type: 'append',
-      path: './core/api/constants.js',
-      pattern: /(?<=export const COLLECTIONS = {\n)(.*)(?=};)/s,
-      templateFile: `${templatesPath}/constantsCollectionsAppend.hbs`,
-      separator: '',
-    });
-    actions.push({
-      type: 'append',
       path: './core/api/methods/server/registerServerMethods.js',
       pattern: /(^import \'\.\.\/\.\.\/.*;\n$)(?!\1)/m,
       templateFile: `${templatesPath}/registerServerMethodsAppend.hbs`,
-      separator: '',
-    });
-    actions.push({
-      type: 'append',
-      path: './core/api/methods/registerMethodDefinitions.js',
-      pattern: /(^export \* from .*;\n$)(?!\1)/s,
-      templateFile: `${templatesPath}/registerMethodDefinitionsAppend.hbs`,
       separator: '',
     });
     actions.push({

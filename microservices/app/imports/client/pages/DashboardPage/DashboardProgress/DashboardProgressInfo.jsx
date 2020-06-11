@@ -1,13 +1,14 @@
 import React from 'react';
-import Link from 'core/components/Link';
 import cx from 'classnames';
 
 import Icon from 'core/components/Icon';
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
+
 import {
+  defaultTodoList,
   getDashboardTodosArray,
   promotionTodoList,
-  defaultTodoList,
 } from './dashboardTodos';
 
 const getTodos = loan => {

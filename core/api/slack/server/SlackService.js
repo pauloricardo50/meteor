@@ -1,24 +1,26 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import fetch from 'node-fetch';
 
-import colors from 'core/config/colors';
-import { getAPIUser } from 'core/api/RESTAPI/server/helpers';
-import LoanService from 'core/api/loans/server/LoanService';
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../constants';
-import { fullLoan } from '../../loans/queries';
+import colors from '../../../config/colors';
 import Calculator from '../../../utils/Calculator';
-import { getClientMicroservice } from '../../../utils/server/getClientUrl';
 import { percentFormatters } from '../../../utils/formHelpers';
+import { getClientMicroservice } from '../../../utils/server/getClientUrl';
+import { calculatorLoan } from '../../fragments';
+import LoanService from '../../loans/server/LoanService';
+import { getAPIUser } from '../../RESTAPI/server/helpers';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 
 const LOGO_URL =
   'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
-export class SlackService {
+export class SlackServiceClass {
   send = ({
     channel = '#clients_general',
     username = 'e-Potek Bot',
@@ -66,13 +68,6 @@ export class SlackService {
   });
 
   sendError = ({ error, additionalData = [], userId, url, connection }) => {
-    if (Meteor.isDevelopment && !Meteor.isTest) {
-      console.log('error', error);
-      console.log('additionalData', additionalData);
-      console.log('userId', userId);
-      console.log('url', url);
-    }
-
     if (
       (error && ERRORS_TO_IGNORE.includes(error.name)) ||
       ERRORS_TO_IGNORE.includes(error.message || error.reason)
@@ -109,7 +104,7 @@ export class SlackService {
       },
       {
         title: 'Stack',
-        text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
+        text: error && `\`\`\`${error?.stack?.toString()}\`\`\``,
         color: colors.error,
       },
       {
@@ -164,9 +159,7 @@ export class SlackService {
     loanId,
   }) => {
     const isAdmin =
-      currentUser &&
-      (currentUser.roles.includes(ROLES.ADMIN) ||
-        currentUser.roles.includes(ROLES.DEV));
+      currentUser && Roles.userIsInRole(currentUser, ROLES.ADMIN, ROLES.DEV);
 
     if (!notifyAlways && isAdmin) {
       return false;
@@ -207,14 +200,18 @@ export class SlackService {
 
   getNotificationOrigin = currentUser => {
     const APIUser = getAPIUser();
-    const username = currentUser ? currentUser.name : undefined;
-    const isPro = currentUser && currentUser.roles.includes(ROLES.PRO);
+    const username = currentUser?.name;
+    const isPro = currentUser && Roles.userIsInRole(currentUser, ROLES.PRO);
 
     if (APIUser) {
-      const mainOrg = UserService.getUserMainOrganisation(APIUser._id);
-      const proOrg = UserService.getUserMainOrganisation(currentUser._id);
+      const mainOrg =
+        UserService.getUserMainOrganisation(APIUser._id) ||
+        (APIUser.organisations?.length && APIUser.organisations[0].name);
+      const proOrg =
+        (currentUser && UserService.getUserMainOrganisation(currentUser._id)) ||
+        (APIUser.organisations?.length && APIUser.organisations[0].name);
       return [
-        username,
+        username || APIUser.name,
         `(${proOrg && proOrg.name}, API ${mainOrg && mainOrg.name})`,
       ].join(' ');
     }
@@ -241,13 +238,20 @@ export class SlackService {
   };
 
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
-    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+    const isUser = currentUser && Roles.userIsInRole(currentUser, ROLES.USER);
 
     if (!isUser) {
       return false;
     }
 
-    const loan = loanId && fullLoan.clone({ _id: loanId }).fetchOne();
+    const loan =
+      loanId &&
+      LoanService.get(loanId, {
+        ...calculatorLoan(),
+        name: 1,
+        hasPromotion: 1,
+        promotions: { name: 1 },
+      });
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
     const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
     let link = `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`;
@@ -279,4 +283,4 @@ export class SlackService {
   };
 }
 
-export default new SlackService({ serverSide: Meteor.isServer });
+export default new SlackServiceClass({ serverSide: Meteor.isServer });

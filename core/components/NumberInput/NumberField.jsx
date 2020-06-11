@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FormHelperText from '../Material/FormHelperText';
 import FormControl from '../Material/FormControl';
+import FormHelperText from '../Material/FormHelperText';
 import InputLabel, { useInputLabelWidth } from '../Material/Input';
 import NumberInput from './NumberInput';
 

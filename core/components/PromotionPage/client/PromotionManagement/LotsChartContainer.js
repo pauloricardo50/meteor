@@ -1,9 +1,9 @@
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 
-import { PROMOTION_LOT_STATUS } from 'core/api/constants';
-import { toMoney } from 'core/utils/conversionFunctions';
-import { getTotalValueByStatus, getGroupedLots } from './helpers';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
+import { toMoney } from '../../../../utils/conversionFunctions';
+import { getGroupedLots, getTotalValueByStatus } from './helpers';
 
 const getData = (promotionLots = []) => {
   const { availableLots, reservedLots, soldLots } = getGroupedLots(
@@ -90,10 +90,11 @@ const getConfig = (promotionLots = [], formatMessage) => ({
   ],
 });
 
-export default compose(
-  injectIntl,
-  withProps(({ promotionLots = [], intl: { formatMessage } }) => ({
+export default withProps(({ promotionLots = [] }) => {
+  const { formatMessage } = useIntl();
+
+  return {
     config: getConfig(promotionLots, formatMessage),
     data: getData(promotionLots),
-  })),
-);
+  };
+});

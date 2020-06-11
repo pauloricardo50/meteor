@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
 import { getBorrowerDocuments } from '../../api/files/documents';
 import {
   filesPercent,
@@ -5,31 +8,29 @@ import {
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
 import {
-  INCOME_CONSIDERATION_TYPES,
   EXPENSE_TYPES,
-  OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
-} from '../../api/constants';
+  INCOME_CONSIDERATION_TYPES,
+} from '../../api/lenderRules/lenderRulesConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
-  getBorrowerInfoArray,
   getBorrowerFinanceArray,
+  getBorrowerInfoArray,
   getBorrowerSimpleArray,
 } from '../../arrays/BorrowerFormArray';
 import {
+  AMORTIZATION_YEARS_INVESTMENT,
   BONUS_ALGORITHMS,
   REAL_ESTATE_INCOME_ALGORITHMS,
-  AMORTIZATION_YEARS_INVESTMENT,
 } from '../../config/financeConstants';
-import { arrayify, getPercent } from '../general';
 import {
   getCountedArray,
-  getMissingFieldIds,
   getFormValuesHashMultiple,
+  getMissingFieldIds,
   getRequiredFieldIds,
 } from '../formArrayHelpers';
+import { arrayify, getPercent } from '../general';
 import MiddlewareManager from '../MiddlewareManager';
 import { borrowerExtractorMiddleware } from './middleware';
-import { getAgeFromBirthDate } from '../borrowerUtils';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -45,18 +46,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       middlewareManager.applyToAllMethods([middleware]);
     }
 
-    getArrayValues({ borrowers, key, mapFunc }) {
+    getArrayValues({ borrowers, key, mapFunc = i => i?.value }) {
       let sum = 0;
 
       borrowers.forEach(borrower => {
-        if (!borrower[key]) {
+        if (!borrower[key] || borrower[key].length === 0) {
           return 0;
         }
-        sum += [
-          ...(borrower[key] && borrower[key].length > 0
-            ? borrower[key].map(mapFunc || (i => i.value))
-            : []),
-        ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+        sum += borrower[key].map(mapFunc).reduce((tot, val) => {
+          if (val > 0) {
+            return tot + val;
+          }
+
+          return tot;
+        }, 0);
       });
 
       return Math.max(0, Math.round(sum));
@@ -435,21 +439,23 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getRetirement({ borrowers }) {
       const argMap = borrowers.reduce(
-        (obj, { birthDate, age, gender }, index) => {
-          const finalAge = age || getAgeFromBirthDate(birthDate);
-          return {
-            ...obj,
-            [`${`age${index + 1}`}`]: finalAge,
-            [`${`gender${index + 1}`}`]: gender,
-          };
-        },
+        (obj, borrower, index) => ({
+          ...obj,
+          [`${`retirementDate${index + 1}`}`]: this.getRetirementDate(borrower),
+        }),
         {},
       );
 
       return this.getYearsToRetirement(argMap);
     }
 
-    getAmortizationDuration({ loan, structureId, offerOverride, borrowers }) {
+    getRetirementDate(borrower) {
+      const { birthDate } = borrower;
+      const retirementAge = this.getRetirementForGender(borrower);
+      return moment(birthDate).add(retirementAge, 'years');
+    }
+
+    getAmortizationYears({ loan, structureId, offerOverride, borrowers }) {
       const offer = this.selectOffer({ loan, structureId });
       const offerToUse = offerOverride || offer;
 
@@ -537,28 +543,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(array);
     }
 
+    getBorrowerFormArraysForHash({ borrowers }) {
+      return borrowers.reduce(
+        (arr, borrower) => [
+          ...arr,
+          {
+            formArray: getBorrowerFinanceArray({
+              borrowers,
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+          {
+            formArray: getBorrowerInfoArray({
+              borrowers,
+              borrowerId: borrower._id,
+            }),
+            doc: borrower,
+          },
+        ],
+        [],
+      );
+    }
+
     getBorrowerFormHash({ borrowers }) {
       return getFormValuesHashMultiple(
-        borrowers.reduce(
-          (arr, borrower) => [
-            ...arr,
-            {
-              formArray: getBorrowerFinanceArray({
-                borrowers,
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-            {
-              formArray: getBorrowerInfoArray({
-                borrowers,
-                borrowerId: borrower._id,
-              }),
-              doc: borrower,
-            },
-          ],
-          [],
-        ),
+        this.getBorrowerFormArraysForHash({ borrowers }),
       );
     }
 
@@ -599,9 +609,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getRealEstateDeltas({ borrowers }) {
-      const allRealEstate = borrowers
-        .map(({ realEstate }) => realEstate)
-        .reduce((arr, realEstate) => [...arr, ...realEstate], []);
+      const allRealEstate = borrowers.reduce(
+        (arr, { realEstate = [] }) => [...arr, ...realEstate],
+        [],
+      );
 
       return allRealEstate.map(realEstate => {
         const { income } = realEstate;
@@ -679,7 +690,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getGroupedExpenses({ borrowers }) {
       const flattenedExpenses = []
         .concat([], ...borrowers.map(({ expenses }) => expenses))
-        .filter(x => x);
+        .filter(({ value } = {}) => value);
       return flattenedExpenses.reduce(
         (obj, { value, description }) => ({
           ...obj,
@@ -812,23 +823,5 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           ...otherIncomeOfType.map(({ comment }) => comment),
         ].filter(x => x);
       }, []);
-    }
-
-    canCalculateSolvency({ borrowers }) {
-      if (!borrowers.length) {
-        return false;
-      }
-
-      const bankFortune = this.getFortune({ borrowers });
-      if (!bankFortune) {
-        return false;
-      }
-
-      const salary = this.getSalary({ borrowers });
-      if (!salary || salary === 0) {
-        return false;
-      }
-
-      return true;
     }
   };

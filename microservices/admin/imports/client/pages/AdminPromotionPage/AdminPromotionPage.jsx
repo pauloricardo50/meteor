@@ -1,22 +1,49 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
+import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
-import omit from 'lodash/omit';
 
-import { proPromotions } from 'core/api/promotions/queries';
-import { withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { proPromotion } from 'core/api/fragments';
-import withMatchParam from 'core/containers/withMatchParam';
-import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
-import { ROLES } from 'core/api/constants';
+import { proPromotions } from 'core/api/promotions/queries';
+import { ROLES } from 'core/api/users/userConstants';
 import PromotionPage from 'core/components/PromotionPage/client';
+import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import withMatchParam from 'core/containers/withMatchParam';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 
 const promotionFragment = {
-  ...omit(proPromotion(), ['promotionLots']),
+  ...pick(proPromotion(), [
+    'address',
+    'address1',
+    'agreementDuration',
+    'canton',
+    'city',
+    'constructionTimeline',
+    'contacts',
+    'documents',
+    'lenderOrganisation',
+    'name',
+    'status',
+    'type',
+    'users',
+    'zipCode',
+    'signingDate',
+    'country',
+    'promotionLotGroups',
+    'assignedEmployee',
+    'description',
+    'externalUrl',
+    'promotionLoan',
+    'authorizationStatus',
+    'projectStatus',
+    'isTest',
+    'loans',
+  ]),
   promotionLots: {
-    _id: 1,
     status: 1,
     name: 1,
     value: 1,
@@ -27,6 +54,7 @@ const promotionFragment = {
       value: 1,
     },
     lots: { value: 1 },
+    promotionLotGroupIds: 1,
   },
 };
 
@@ -56,7 +84,7 @@ const AdminPromotionPageContainer = compose(
       canModifyPromotion: true,
       canModifyStatus: true,
       canRemoveLots: true,
-      canRemovePromotion: Meteor.user().roles.includes(ROLES.DEV),
+      canRemovePromotion: Roles.userIsInRole(Meteor.user(), ROLES.DEV),
       canSeeCustomers: true,
       canSeeManagement: true,
       canSeeUsers: true,

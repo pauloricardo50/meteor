@@ -1,16 +1,33 @@
-@include font-face('Eina04-Regular', 'fonts/Eina04_Regular');
-@include font-face('Eina04-Bold', 'fonts/Eina04_Bold', bold);
+@font-face {
+  font-family: 'Manrope-variable';
+  // Get full range of weights
+  font-weight: 1 999;
+  font-style: normal;
+
+  font-display: swap;
+  src: url('/fonts/Manrope-variable.ttf') format('truetype');
+}
 
 html {
-  letter-spacing: 0.048em; /* 0.75px / 16px  */
-
   color: $body-text;
 
-  font-family: 'Eina04-Regular', 'Helvetica';
-  font-weight: normal;
-  line-height: 1.4em;
+  font-family: 'Manrope', 'Helvetica', sans-serif;
+  font-weight: $regular;
+  line-height: 1.4375rem;
 
+  font-variant-numeric: tabular-nums;
   @include font-size($font-size-xs);
+}
+
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Manrope-variable', 'Helvetica', sans-serif;
+  }
+}
+
+.font-size-body {
+  font-size: 1rem;
+  line-height: 1.4375rem;
 }
 
 h1,
@@ -21,44 +38,54 @@ h5,
 h6 {
   margin: 0.67em 0;
 
-  letter-spacing: 0.048em; /* 0.75px / 16px  */
-
   color: $title-text;
 
-  font-family: 'Eina04-Bold', 'Helvetica';
-  font-weight: bold;
-  line-height: 1.3em;
+  font-weight: $bold;
 
   &.inherit-color {
     color: inherit;
   }
 }
 
-h1 {
-  font-size: 2em;
+h1,
+.font-size-1 {
+  font-size: 2.5rem;
+  line-height: 3.5rem;
 }
 
-h2 {
-  font-size: 1.8em;
+h2,
+.font-size-2 {
+  font-size: 2rem;
+  line-height: 3rem;
 }
 
-h3 {
-  font-size: 1.6em;
+h3,
+.font-size-3 {
+  font-size: 1.75rem;
+  line-height: 2.5rem;
 }
 
-h4 {
-  font-size: 1.125em;
+h4,
+.font-size-4 {
+  font-size: 1.5rem;
+  font-weight: $regular;
+  line-height: 2.125rem;
 }
 
-h5 {
-  font-size: 0.83em;
-}
-
-h6 {
-  font-size: 0.6em;
+h5,
+.font-size-5 {
+  font-size: 1.25rem;
+  font-weight: $regular;
+  line-height: 1.75rem;
 }
 
 b,
 .bold {
-  font-family: 'Eina04-Bold', 'Helvetica';
+  font-weight: $bold;
+}
+
+// FIXME: Does not seem to work in google chrome
+i,
+.italic {
+  font-style: oblique;
 }

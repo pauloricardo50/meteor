@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MapWithMarker from './MapWithMarker';
 import T from '../Translation';
 import { getAddressString, isIncompleteAddress } from './googleMapsHelpers';
+import MapWithMarker from './MapWithMarker';
 
 const MapWithMarkerWrapper = ({
   address1,

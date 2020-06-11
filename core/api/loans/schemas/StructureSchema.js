@@ -1,9 +1,13 @@
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
 import { MIN_INSURANCE2_WITHDRAW } from '../../../config/financeConstants';
-import { OWN_FUNDS_TYPES } from '../../constants';
-import { moneyField, roundedInteger } from '../../helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
+import { OWN_FUNDS_TYPES } from '../../borrowers/borrowerConstants';
+import {
+  moneyField,
+  percentageField,
+  roundedInteger,
+} from '../../helpers/sharedSchemas';
 import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
 
@@ -25,6 +29,7 @@ export const structureSchema = {
   },
   description: { type: String, optional: true },
   disabled: { type: Boolean, defaultValue: false },
+  firstRank: { ...percentageField, min: 0 },
   id: String,
   mortgageNoteIds: { type: Array, optional: true },
   'mortgageNoteIds.$': String,
@@ -65,11 +70,19 @@ export const structureSchema = {
     type: String,
     optional: true,
   },
+  ownFundsUseDescription: {
+    type: String,
+    optional: true,
+  },
   wantedLoan: {
     ...roundedInteger({ digits: 3, func: 'floor', min: 100000 }),
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
+  wantedMortgageNote: moneyField,
+  yearlyAmortization: moneyField,
   ...loanTranchesSchema,
+  refinancingDate: { type: Date, optional: true },
+  reimbursementPenalty: moneyField,
 };
 
 export default new SimpleSchema(structureSchema);

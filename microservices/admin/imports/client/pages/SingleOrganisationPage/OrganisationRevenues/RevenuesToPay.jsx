@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { REVENUE_STATUS } from 'core/api/constants';
+import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
+
 import RevenuesTable from '../../../components/RevenuesTable';
 
 const RevenuesToPay = ({ _id: organisationId }) => {
@@ -23,10 +24,8 @@ const RevenuesToPay = ({ _id: organisationId }) => {
         style={{ display: 'inline-block' }}
       />
       <RevenuesTable
-        displayLoan
-        displayActions
         filterRevenues={() => ({
-          sourceOrganisationId: organisationId,
+          'sourceOrganisationLink._id': organisationId,
           status,
         })}
       />

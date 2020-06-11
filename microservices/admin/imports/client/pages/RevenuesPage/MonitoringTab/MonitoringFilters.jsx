@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { LOAN_CATEGORIES, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import Select from 'core/components/Select';
 import MongoSelect from 'core/components/Select/MongoSelect';
-import { LOAN_CATEGORIES } from 'imports/core/api/constants';
-import { LOAN_STATUS, REVENUE_TYPES } from 'core/api/constants';
+import T from 'core/components/Translation';
 
 const MonitoringFilters = ({
   category,
@@ -68,11 +69,19 @@ const MonitoringFilters = ({
         <MongoSelect
           value={assigneeLinkId}
           onChange={makeSetState('assigneeLinkId')}
-          options={admins.map(admin => ({ id: admin._id, label: admin.name }))}
+          options={admins.map(admin => ({
+            id: admin._id,
+            label: admin.firstName,
+            ...admin,
+          }))}
           id="assigneeLinkId"
           label="Conseiller principal du dossier"
           className="mr-8"
           style={{ minWidth: 260 }}
+          grouping={{
+            groupBy: 'office',
+            format: office => <T id={`Forms.office.${office}`} />,
+          }}
         />
         <MongoSelect
           value={referringOrganisationId}

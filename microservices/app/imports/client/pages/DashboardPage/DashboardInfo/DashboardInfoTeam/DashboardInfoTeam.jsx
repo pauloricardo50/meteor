@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import DashboardInfoTeamCompany from './DashboardInfoTeamCompany';
-import DashboardInfoTeamExternal from './DashboardInfoTeamExternal';
+
 import DashboardInfoTeamAdder from './DashboardInfoTeamAdder';
+import DashboardInfoTeamCompany from './DashboardInfoTeamCompany';
 import DashboardInfoTeamContainer from './DashboardInfoTeamContainer';
+import DashboardInfoTeamExternal from './DashboardInfoTeamExternal';
 import NotaryAdder from './NotaryAdder';
 
 const DashboardInfoTeam = ({
@@ -15,10 +16,8 @@ const DashboardInfoTeam = ({
   editContact,
   loan,
   contacts,
-  currentUser,
 }) => {
   const { hasPromotion, assignees } = loan;
-  const { assignedEmployee } = currentUser;
   return (
     <div className="dashboard-info-team card1">
       <div className="card-top">
@@ -27,7 +26,6 @@ const DashboardInfoTeam = ({
         </h3>
 
         <DashboardInfoTeamCompany
-          assignedEmployee={assignedEmployee} // remove me
           assignees={assignees}
           hasPromotion={hasPromotion}
         />

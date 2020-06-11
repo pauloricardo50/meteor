@@ -1,24 +1,26 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
-import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faMoneyBillWave } from '@fortawesome/pro-light-svg-icons/faMoneyBillWave';
+import { faShieldCheck } from '@fortawesome/pro-light-svg-icons/faShieldCheck';
+import { faUserShield } from '@fortawesome/pro-light-svg-icons/faUserShield';
+import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  BORROWERS_COLLECTION,
-  LOANS_COLLECTION,
-  TASKS_COLLECTION,
-  USERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-  INTEREST_RATES_COLLECTION,
-  REVENUES_COLLECTION,
-} from '../api/constants';
+import { BORROWERS_COLLECTION } from '../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../api/insurances/insuranceConstants';
+import { INTEREST_RATES_COLLECTION } from '../api/interestRates/interestRatesConstants';
+import { LOANS_COLLECTION } from '../api/loans/loanConstants';
+import { OFFERS_COLLECTION } from '../api/offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../api/properties/propertyConstants';
+import { REVENUES_COLLECTION } from '../api/revenues/revenueConstants';
+import { TASKS_COLLECTION } from '../api/tasks/taskConstants';
+import { USERS_COLLECTION } from '../api/users/userConstants';
 
 export default {
   [BORROWERS_COLLECTION]: 'people',
@@ -41,5 +43,11 @@ export default {
   ),
   [REVENUES_COLLECTION]: (
     <FontAwesomeIcon icon={faMoneyBillWave} className="collection-icon" />
+  ),
+  [INSURANCE_REQUESTS_COLLECTION]: (
+    <FontAwesomeIcon icon={faShieldCheck} className="collection-icon" />
+  ),
+  [INSURANCES_COLLECTION]: (
+    <FontAwesomeIcon icon={faUserShield} className="collection-icon" />
   ),
 };

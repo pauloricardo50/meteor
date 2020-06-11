@@ -1,26 +1,24 @@
 import React from 'react';
-import { withProps, compose, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
-import T, { Money } from 'core/components/Translation';
-import StatusLabel from 'core/components/StatusLabel';
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import {
-  ORGANISATIONS_COLLECTION,
   REVENUES_COLLECTION,
-  LOANS_COLLECTION,
   REVENUE_STATUS,
-} from 'core/api/constants';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { adminRevenues } from 'core/api/revenues/queries';
+} from 'core/api/revenues/revenueConstants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import StatusLabel from 'core/components/StatusLabel';
+import T, { Money } from 'core/components/Translation';
+
 import RevenueConsolidator from './RevenueConsolidator';
 
 const now = moment();
-export const formatDateTime = (date, toNow) => {
+const formatDateTime = (date, status) => {
   const momentDate = moment(date);
   const text = date ? momentDate.format("D MMM 'YY") : '-';
 
-  if (momentDate.isBefore(now)) {
+  if (momentDate.isBefore(now) && status !== REVENUE_STATUS.CLOSED) {
     return (
       <span className="error-box" style={{ whiteSpace: 'nowrap' }}>
         {text}
@@ -31,107 +29,86 @@ export const formatDateTime = (date, toNow) => {
   return text;
 };
 
-const getColumnOptions = ({
-  displayLoan,
-  displayActions,
-  displayOrganisationsToPay,
-}) =>
+const getColumnOptions = firstColumnLabel =>
   [
-    displayLoan && { id: 'loan' },
+    { id: 'loan', label: firstColumnLabel || 'Dossier' },
     { id: 'revenueStatus' },
     { id: 'date' },
     { id: 'type' },
     { id: 'description' },
     { id: 'sourceOrganisationLink' },
-    displayOrganisationsToPay && { id: 'organisationsToPay' },
     { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
-    displayActions && { id: 'actions' },
-  ]
-    .filter(x => x)
-    .map(i => ({ ...i, label: <T id={`Forms.${i.id}`} /> }));
+    { id: 'actions' },
+  ].map(i => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
 
 export const makeMapRevenue = ({
   setOpenModifier,
   setRevenueToModify,
-  displayLoan,
-  displayActions,
-  displayOrganisationsToPay,
 }) => revenue => {
   const {
+    _collection,
     _id: revenueId,
     expectedAt,
     paidAt,
     amount,
     type,
-    secondaryType,
     description,
     status,
     organisations = [],
     sourceOrganisation,
     loan,
+    insurance,
+    insuranceRequest,
   } = revenue;
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
+
+  let title;
+  if (loan) {
+    title = {
+      raw: loan && loan.name,
+      label: loan && <CollectionIconLink relatedDoc={loan} />,
+    };
+  } else if (insurance) {
+    title = {
+      raw: insurance && insurance.name,
+      label: insurance && <CollectionIconLink relatedDoc={insurance} />,
+    };
+  } else if (insuranceRequest) {
+    title = {
+      raw: insuranceRequest && insuranceRequest.name,
+      label: insuranceRequest && (
+        <CollectionIconLink relatedDoc={insuranceRequest} />
+      ),
+    };
+  }
 
   return {
     id: revenueId,
     organisations,
     amount,
     columns: [
-      displayLoan
-        ? {
-            raw: loan && loan.name,
-            label: loan && (
-              <CollectionIconLink
-                relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-              />
-            ),
-          }
-        : null,
+      title,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: date && date.getTime(),
-        label: date && formatDateTime(date),
+        label: date && formatDateTime(date, status),
       },
       {
         raw: type,
         label: (
           <span>
             <T id={`Forms.type.${type}`} />
-            {secondaryType && (
-              <span>
-                -
-                <T id={`Forms.secondaryType.${secondaryType}`} />
-              </span>
-            )}
           </span>
         ),
       },
       description,
       {
         raw: sourceOrganisation && sourceOrganisation.name,
-        label: (
-          <CollectionIconLink
-            relatedDoc={{
-              ...sourceOrganisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
-        ),
+        label: <CollectionIconLink relatedDoc={sourceOrganisation} />,
       },
-      displayOrganisationsToPay
-        ? organisations.map(organisation => (
-            <CollectionIconLink
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-              key={organisation._id}
-            />
-          ))
-        : null,
       {
         raw: amount,
         label: (
@@ -140,9 +117,7 @@ export const makeMapRevenue = ({
           </b>
         ),
       },
-      displayActions ? (
-        <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />
-      ) : null,
+      <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />,
     ].filter(cell => cell !== null),
     handleClick: () => {
       setRevenueToModify(revenue);
@@ -155,31 +130,35 @@ export default compose(
   withState('openModifier', 'setOpenModifier', false),
   withState('revenueToModify', 'setRevenueToModify', null),
   withSmartQuery({
-    query: adminRevenues,
+    query: REVENUES_COLLECTION,
     params: ({ filterRevenues, ...props }) => ({
-      ...filterRevenues(props),
-      $body: {
-        amount: 1,
-        assigneeLink: 1,
-        description: 1,
-        expectedAt: 1,
-        loan: {
-          name: 1,
-          borrowers: { name: 1 },
-          user: { name: 1 },
-          userCache: 1,
-          assigneeLinks: 1,
-        },
-        paidAt: 1,
-        secondaryType: 1,
-        sourceOrganisationLink: 1,
-        sourceOrganisation: { name: 1 },
-        status: 1,
-        type: 1,
-        organisationLinks: 1,
-        organisations: { name: 1 },
+      ...(filterRevenues ? { $filters: filterRevenues(props) } : {}),
+      amount: 1,
+      assigneeLink: 1,
+      description: 1,
+      expectedAt: 1,
+      loan: {
+        name: 1,
+        borrowers: { name: 1 },
+        user: { name: 1 },
+        userCache: 1,
+        assigneeLinks: 1,
       },
+      paidAt: 1,
+      sourceOrganisationLink: 1,
+      sourceOrganisation: { name: 1 },
+      status: 1,
+      type: 1,
+      organisationLinks: 1,
+      organisations: { name: 1 },
+      insurance: {
+        name: 1,
+        insuranceRequest: { _id: 1 },
+        borrower: { name: 1 },
+      },
+      insuranceRequest: { name: 1 },
     }),
+    deps: [],
     dataName: 'revenues',
   }),
   withProps(({ revenues, postFilter }) => {
@@ -192,24 +171,15 @@ export default compose(
       revenues = [],
       setOpenModifier,
       setRevenueToModify,
-      displayLoan,
-      displayActions,
-      displayOrganisationsToPay,
+      firstColumnLabel,
     }) => ({
       rows: revenues.map(
         makeMapRevenue({
           setOpenModifier,
           setRevenueToModify,
-          displayLoan,
-          displayActions,
-          displayOrganisationsToPay,
         }),
       ),
-      columnOptions: getColumnOptions({
-        displayLoan,
-        displayActions,
-        displayOrganisationsToPay,
-      }),
+      columnOptions: getColumnOptions(firstColumnLabel),
     }),
   ),
 );

@@ -1,17 +1,18 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
-import { TRENDS } from '../../../../constants';
+import { TRENDS } from '../../../../interestRates/interestRatesConstants';
+import { PURCHASE_TYPE } from '../../../../loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../../properties/propertyConstants';
 import RESTAPI from '../../RESTAPI';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
 import { mortgageEstimateAPI } from '..';
 
@@ -146,9 +147,9 @@ describe('REST: mortgageEstimate', function() {
       notaryFees: {
         canton: 'GE',
         estimate: false,
-        total: 65273.96,
+        total: 40682.96,
       },
-      ownFunds: 305273.96,
+      ownFunds: 280682.96,
       monthlyTotals: {
         interestsLibor: 1400,
         interests5: 1800,
@@ -157,7 +158,7 @@ describe('REST: mortgageEstimate', function() {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      totalValue: 1265273.96,
+      totalValue: 1240682.96,
     };
 
     const query = { 'property-value': '1200000', canton: 'GE' };
@@ -216,9 +217,9 @@ describe('REST: mortgageEstimate', function() {
       notaryFees: {
         canton: 'GE',
         estimate: false,
-        total: 65273.96,
+        total: 40682.96,
       },
-      ownFunds: 305273.96,
+      ownFunds: 280682.96,
       monthlyTotals: {
         interestsLibor: 1400,
         interests5: 1800,
@@ -227,7 +228,7 @@ describe('REST: mortgageEstimate', function() {
       },
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      totalValue: 1265273.96,
+      totalValue: 1240682.96,
     };
 
     const query = {

@@ -1,13 +1,13 @@
 import './testFactories';
+
 import { Factory } from 'meteor/dburles:factory';
 
-import { PROPERTY_TYPE } from '../../../../constants';
 import LoanService from '../../../../loans/server/LoanService';
-import { adminLoan } from '../../../../fragments';
+import { PROPERTY_TYPE } from '../../../../properties/propertyConstants';
 import {
-  fakeBorrower,
-  FAKE_HOUSE,
   FAKE_APPARTMENT,
+  FAKE_HOUSE,
+  fakeBorrower,
   fakeStructure,
 } from './fakes';
 

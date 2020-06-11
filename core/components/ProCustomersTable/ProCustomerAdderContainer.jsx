@@ -1,15 +1,16 @@
-import { withProps } from 'recompose';
+import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import {
   isAllowedToInviteCustomersToProProperty,
   isAllowedToInviteCustomersToPromotion,
-} from 'core/api/security/clientSecurityHelpers/index';
-import { proInviteUser } from 'core/api/methods/index';
-import { createRoute } from 'core/utils/routerUtils';
+} from '../../api/security/clientSecurityHelpers';
+import { proInviteUser } from '../../api/users/methodDefinitions';
+import { createRoute } from '../../utils/routerUtils';
 
-const schema = ({ proProperties, promotions, history }) =>
+const getSchema = ({ proProperties, promotions, history }) =>
   new SimpleSchema({
     email: String,
     firstName: { type: String, optional: true },
@@ -91,18 +92,24 @@ export default withProps(({ currentUser }) => {
     .filter(property =>
       isAllowedToInviteCustomersToProProperty({ property, currentUser }),
     )
-    .sort(({ address1: A }, { address1: B }) => A.localeCompare(B));
+    .sort(({ address1: A = '' }, { address1: B = '' }) => A.localeCompare(B));
   const filteredPromotions = promotions
     .filter(promotion =>
       isAllowedToInviteCustomersToPromotion({ promotion, currentUser }),
     )
     .sort(({ name: A }, { name: B }) => A.localeCompare(B));
+  const schema = useMemo(
+    () =>
+      getSchema({
+        proProperties: filteredProProperties,
+        promotions: filteredPromotions,
+        history,
+      }),
+    [proProperties, promotions],
+  );
+
   return {
-    schema: schema({
-      proProperties: filteredProProperties,
-      promotions: filteredPromotions,
-      history,
-    }),
+    schema,
     onSubmit: model => {
       const {
         propertyIds = [],

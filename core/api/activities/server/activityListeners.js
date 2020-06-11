@@ -1,35 +1,41 @@
 import pick from 'lodash/pick';
 
-import { getUserNameAndOrganisation } from 'core/api/helpers/index';
-import Intl from 'core/utils/server/intl';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { loanSetDisbursementDate } from 'core/api/loans/index';
+import intl from '../../../utils/intl';
+import { EMAIL_IDS } from '../../email/emailConstants';
 import ServerEventService from '../../events/server/ServerEventService';
+import { getUserNameAndOrganisation } from '../../helpers';
 import {
-  removeLoanFromPromotion,
-  toggleAccount,
-  anonymousCreateUser,
-  userPasswordReset,
-  setUserReferredByOrganisation,
-  proInviteUser,
-  adminCreateUser,
-  assignAdminToUser,
-  setUserReferredBy,
-  changeEmail,
-  userVerifyEmail,
+  insuranceRequestSetAssignees,
+  insuranceRequestUpdateStatus,
+} from '../../insuranceRequests/methodDefinitions';
+import {
+  loanSetAssignees,
+  loanSetDisbursementDate,
   loanSetStatus,
   sendLoanChecklist,
-  loanSetAssignees,
-} from '../../methods';
-import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
-import UserService from '../../users/server/UserService';
-import PromotionService from '../../promotions/server/PromotionService';
-import ActivityService from './ActivityService';
-import OrganisationService from '../../organisations/server/OrganisationService';
-import { getAPIUser } from '../../RESTAPI/server/helpers';
+} from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import { removeLoanFromPromotion } from '../../promotions/methodDefinitions';
+import PromotionService from '../../promotions/server/PromotionService';
+import { getAPIUser } from '../../RESTAPI/server/helpers';
+import {
+  adminCreateUser,
+  anonymousCreateUser,
+  assignAdminToUser,
+  changeEmail,
+  proInviteUser,
+  setUserReferredBy,
+  setUserReferredByOrganisation,
+  toggleAccount,
+  userPasswordReset,
+  userVerifyEmail,
+} from '../../users/methodDefinitions';
+import UserService from '../../users/server/UserService';
+import { ACTIVITY_EVENT_METADATA, ACTIVITY_TYPES } from '../activityConstants';
+import ActivityService from './ActivityService';
 
-const formatMessage = Intl.formatMessage.bind(Intl);
+const { formatMessage } = intl;
 
 ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
@@ -129,15 +135,12 @@ ServerEventService.addAfterMethodListener(
     const { userId: proId } = context;
     const APIUser = getAPIUser();
 
-    const currentUser = UserService.get(
-      { 'emails.address': { $in: [email] } },
-      {
-        activities: { metadata: 1 },
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        createdAt: 1,
-      },
-    );
+    const currentUser = UserService.getByEmail(email, {
+      activities: { metadata: 1 },
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      createdAt: 1,
+    });
 
     const { activities = [] } = currentUser;
 
@@ -343,7 +346,7 @@ ServerEventService.addAfterMethodListener(
     const formattedPrevStatus = formatMessage({
       id: `Forms.status.${prevStatus}`,
     });
-    const formattedNexStatus = formatMessage({
+    const formattedNextStatus = formatMessage({
       id: `Forms.status.${nextStatus}`,
     });
     const { name: adminName } = UserService.get(userId, { name: 1 });
@@ -354,7 +357,7 @@ ServerEventService.addAfterMethodListener(
       isServerGenerated: true,
       loanLink: { _id: loanId },
       title: 'Statut modifié',
-      description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
+      description: `${formattedPrevStatus} -> ${formattedNextStatus}, par ${adminName}`,
       createdBy: userId,
     });
   },
@@ -418,15 +421,28 @@ ServerEventService.addAfterMethodListener(
 );
 
 ServerEventService.addAfterMethodListener(
-  loanSetAssignees,
-  ({ context, params: { loanId, assignees, note } }) => {
+  [loanSetAssignees, insuranceRequestSetAssignees],
+  ({ context, params: { loanId, insuranceRequestId, assignees, note } }) => {
     context.unblock();
     const { userId } = context;
 
+    let eventParams;
+
+    if (loanId) {
+      eventParams = {
+        event: ACTIVITY_EVENT_METADATA.NEW_LOAN_ASSIGNEES,
+        loanLink: { _id: loanId },
+      };
+    } else if (insuranceRequestId) {
+      eventParams = {
+        event: ACTIVITY_EVENT_METADATA.NEW_INSURANCE_REQUEST_ASSIGNEES,
+        insuranceRequestLink: { _id: insuranceRequestId },
+      };
+    }
+
     ActivityService.addEventActivity({
-      event: ACTIVITY_EVENT_METADATA.NEW_LOAN_ASSIGNEES,
+      ...eventParams,
       isServerGenerated: true,
-      loanLink: { _id: loanId },
       title: `Nouvelle répartition des conseillers`,
       description: `Répartition: ${assignees
         .map(({ _id, percent }) => {
@@ -434,6 +450,35 @@ ServerEventService.addAfterMethodListener(
           return assignee && `${assignee.firstName} (${percent}%)`;
         })
         .join(', ')}\nNote: "${note}"`,
+      createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  insuranceRequestUpdateStatus,
+  ({
+    context,
+    params: { insuranceRequestId },
+    result: { prevStatus, nextStatus },
+  }) => {
+    context.unblock();
+    const { userId } = context;
+    const formattedPrevStatus = formatMessage({
+      id: `Forms.status.${prevStatus}`,
+    });
+    const formattedNexStatus = formatMessage({
+      id: `Forms.status.${nextStatus}`,
+    });
+    const { name: adminName } = UserService.get(userId, { name: 1 });
+
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS,
+      details: { prevStatus, nextStatus },
+      isServerGenerated: true,
+      insuranceRequestLink: { _id: insuranceRequestId },
+      title: 'Statut modifié',
+      description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
       createdBy: userId,
     });
   },

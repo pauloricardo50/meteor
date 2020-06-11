@@ -1,5 +1,5 @@
-import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
+import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
 
 export const getCurrentUserPermissionsForPromotion = ({
   currentUser: { promotions = [] } = {},
@@ -23,7 +23,11 @@ export const getPromotionCustomerOwnerType = ({ invitedBy, currentUser }) => {
   }
 
   const organisationUserIds = organisations.reduce(
-    (userIds, { users = [] }) => [...userIds, ...users.map(({ _id }) => _id)],
+    (userIds, { users = [], userLinks = [] }) => [
+      ...userIds,
+      ...users.map(({ _id }) => _id),
+      ...userLinks.map(({ _id }) => _id),
+    ],
     [],
   );
 

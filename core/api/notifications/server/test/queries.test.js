@@ -1,10 +1,11 @@
+import '../exposures';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { adminNotifications } from '../../queries';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
-import '../exposures';
+import { adminNotifications } from '../../queries';
 
 describe('adminNotifications', () => {
   beforeEach(() => {

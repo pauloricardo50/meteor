@@ -1,20 +1,21 @@
 import React from 'react';
-import { compose, mapProps, withState } from 'recompose';
-import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withState } from 'recompose';
 
-import { PROPERTY_SOLVENCY, LOANS_COLLECTION } from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { withSmartQuery } from '../../../api/containerToolkit';
+import { getReferredBy } from '../../../api/helpers';
 import { proPropertyLoans } from '../../../api/loans/queries';
+import { removeCustomerFromProperty } from '../../../api/properties/methodDefinitions';
+import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
+import { PROPERTY_SOLVENCY } from '../../../api/properties/propertyConstants';
+import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
-import T from '../../Translation';
-import { removeCustomerFromProperty, getReferredBy } from '../../../api';
-import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
-import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 import Icon from '../../Icon';
 import ProCustomer from '../../ProCustomer';
+import StatusLabel from '../../StatusLabel';
+import T from '../../Translation';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -96,6 +97,7 @@ const makeMapLoan = ({
   property,
 }) => loan => {
   const {
+    _collection,
     _id: loanId,
     name: loanName,
     user,
@@ -123,7 +125,7 @@ const makeMapLoan = ({
       loanName,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: !anonymous && user.name,
@@ -160,7 +162,7 @@ const makeMapLoan = ({
             <T
               id="ProPropertyPage.removeCustomer.alert"
               values={{
-                customerName: anonymous ? 'Anonyme' : user && user.name,
+                customerName: anonymous ? 'Anonyme' : user?.name,
               }}
             />
           </p>
@@ -188,7 +190,16 @@ export default compose(
     params: ({ property: { _id: propertyId }, withAnonymous }) => ({
       propertyId,
       anonymous: getAnonymous(withAnonymous),
+      $body: {
+        name: 1,
+        createdAt: 1,
+        anonymous: 1,
+        status: 1,
+        user: { name: 1 },
+        properties: { totalValue: 1 },
+      },
     }),
+    deps: ({ withAnonymous }) => [withAnonymous],
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),

@@ -1,10 +1,10 @@
 import { Random } from 'meteor/random';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import T from '../../Translation';
 import Button from '../../Button';
+import T from '../../Translation';
 
 const styles = {
   input: {
@@ -23,11 +23,13 @@ const styles = {
 
 const FileAdder = ({ handleAddFiles }) => {
   const [uniqueId] = useState(Random.id());
+  const ref = useRef(null);
 
   return (
     <a>
       {/* Hide the input, and make the label interactive */}
       <input
+        ref={ref}
         type="file"
         id={uniqueId}
         style={styles.input}

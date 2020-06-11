@@ -1,25 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import React, { useState, useEffect } from 'react';
-import { compose } from 'recompose';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
-import { getCookie } from 'core/utils/cookiesHelpers';
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
-import { analyticsVerifyEmail } from 'core/api/methods/index';
+import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
+import { analyticsVerifyEmail } from '../../api/analytics/methodDefinitions';
+import { MAILCHIMP_LIST_STATUS } from '../../api/email/emailConstants';
+import { updateNewsletterProfile } from '../../api/email/methodDefinitions';
+import { notifyAssignee } from '../../api/slack/methodDefinitions';
 import {
   getUserByPasswordResetToken,
-  notifyAssignee,
   updateUser,
   userPasswordReset,
-} from '../../api';
+} from '../../api/users/methodDefinitions';
 import withMatchParam from '../../containers/withMatchParam';
+import { getCookie } from '../../utils/cookiesHelpers';
 
 export default compose(
   withMatchParam('token'),
   withRouter,
-  Component => ({ token, history, ...props }) => {
+  Component => ({ token, history }) => {
     const [user, setUser] = useState();
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
@@ -42,7 +44,13 @@ export default compose(
 
     const handleSubmit = values => {
       setLoading(true);
-      const { newPassword, firstName, lastName, phoneNumber } = values;
+      const {
+        newPassword,
+        firstName,
+        lastName,
+        phoneNumber,
+        newsletterSignup,
+      } = values;
 
       new Promise((resolve, reject) => {
         Accounts.resetPassword(token, newPassword, err => {
@@ -63,18 +71,23 @@ export default compose(
             },
           }),
         )
+        // Route to the next part before all these other promises run, they don't matter to the user
+        .then(() => history.push('/'))
         .then(() =>
           Promise.all([
-            notifyAssignee.run({
-              title: 'A choisi/changé son mot de passe!',
-            }),
+            notifyAssignee.run({ title: 'A choisi/changé son mot de passe!' }),
             analyticsVerifyEmail.run({
               trackingId: getCookie(TRACKING_COOKIE),
             }),
             userPasswordReset.run({}),
+            newsletterSignup
+              ? updateNewsletterProfile.run({
+                  userId: user._id,
+                  status: MAILCHIMP_LIST_STATUS.SUBSCRIBED,
+                })
+              : Promise.resolve(),
           ]),
         )
-        .then(() => history.push('/'))
         .catch(err => {
           // Don't clear loading if the submission is successful, because it
           // should route to '/' always, and the user shouldn't click on submit twice

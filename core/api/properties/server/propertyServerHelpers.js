@@ -1,11 +1,11 @@
+import { anonymizeLoan } from '../../loans/helpers';
+import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 import {
   shouldAnonymize as clientShouldAnonymize,
   getProPropertyCustomerOwnerType as getCustomerOwnerType,
 } from '../propertyClientHelper';
 import PropertyService from './PropertyService';
-import LoanService from '../../loans/server/LoanService';
-import { anonymizeLoan } from '../../loans/helpers';
 
 const getCustomerReferredBy = ({ customerId }) => {
   const { referredByUser, referredByOrganisation } =

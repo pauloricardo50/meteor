@@ -1,6 +1,9 @@
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { removeLoanFromPromotion, editPromotionLoan } from '../../../../api';
+import {
+  editPromotionLoan,
+  removeLoanFromPromotion,
+} from '../../../../api/promotions/methodDefinitions';
 
 export default compose(
   withState('openDialog', 'setOpenDialog', false),
@@ -21,9 +24,7 @@ export default compose(
       },
       handleOpenForm: () => setOpenDialog(true),
       editLots: values =>
-        editPromotionLoan
-          .run({ ...values, loanId, promotionId })
-          .then(() => setOpenDialog(false)),
+        editPromotionLoan.run({ ...values, loanId, promotionId }),
     }),
   ),
 );

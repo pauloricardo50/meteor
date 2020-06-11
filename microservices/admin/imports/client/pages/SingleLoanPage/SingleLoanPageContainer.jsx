@@ -1,56 +1,105 @@
-import { compose, mapProps, branch, renderComponent } from 'recompose';
-import omit from 'lodash/omit';
+import React from 'react';
+import merge from 'lodash/merge';
+import { branch, compose, mapProps, renderComponent } from 'recompose';
 
-import { adminLoans } from 'core/api/loans/queries';
-import { withSmartQuery } from 'core/api';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates as interestRates } from 'core/api/interestRates/queries';
+import {
+  LOANS_COLLECTION,
+  LOAN_CATEGORIES,
+} from 'core/api/loans/loanConstants';
+import Loading from 'core/components/Loading';
+import MissingDoc from 'core/components/MissingDoc';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import updateForProps from 'core/containers/updateForProps';
 import {
   injectCalculator,
   withCalculator,
 } from 'core/containers/withCalculator';
-import updateForProps from 'core/containers/updateForProps';
-import { LOAN_CATEGORIES } from 'core/api/constants';
-import { adminLoan } from 'core/api/fragments';
+import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
+
 import PremiumSingleLoanPage from './PremiumSingleLoanPage';
 
 const withInterestRates = withSmartQuery({
   query: interestRates,
-  queryOptions: { reactive: false, shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   smallLoader: true,
   refetchOnMethodCall: false,
 });
 
-const keysToOmit = [
-  'borrowers.loans',
-  'contacts',
-  'properties.loans',
-  'properties.promotion',
-  'properties.user',
-  'properties.users',
-  'user.borrowers',
-  'user.loans',
-  'user.organisations',
-  'user.properties',
-  'revenues',
-];
-const fullLoanFragment = {
-  ...omit(adminLoan({ withSort: true }), keysToOmit),
-  revenues: { _id: 1, status: 1 },
-};
+const fullLoanFragment = merge({}, calculatorLoan(), {
+  adminNotes: 1,
+  applicationType: 1,
+  assigneeLinks: 1,
+  borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
+  category: 1,
+  contacts: 1,
+  customName: 1,
+  enableOffers: 1,
+  financedPromotion: { name: 1, status: 1 },
+  frontTagId: 1,
+  insuranceRequests: {
+    status: 1,
+    name: 1,
+    borrowers: { name: 1 },
+    createdAt: 1,
+    updatedAt: 1,
+  },
+  lenders: {
+    adminNote: 1,
+    contact: { firstName: 1, name: 1, email: 1 },
+    offers: {
+      enableOffer: 1,
+      conditions: 1,
+      withCounterparts: 1,
+      documents: 1,
+    },
+    organisation: { logo: 1 },
+    status: 1,
+  },
+  maxPropertyValue: 1,
+  name: 1,
+  promotions: { name: 1, lenderOrganisationLink: 1 },
+  proNote: 1,
+  properties: { address: 1, $options: { sort: { createdAt: 1 } } },
+  shareSolvency: 1,
+  status: 1,
+  step: 1,
+  unsuccessfulReason: 1,
+  userCache: 1,
+  userFormsEnabled: 1,
+});
 
 export default compose(
-  updateForProps(['match.params.loanId']),
-  withSmartQuery({
-    query: adminLoans,
-    params: ({ match, loanId }) => ({
-      _id: loanId || match.params.loanId,
-      $body: fullLoanFragment,
-    }),
-    queryOptions: { reactive: true, single: true },
-    dataName: 'loan',
-  }),
+  updateForProps(['match.params.loanId', 'loanId']),
+  Component => props => {
+    const { loanId, match } = props;
+    const _id = loanId || match?.params?.loanId;
+
+    const { data, loading } = useReactiveMeteorData(
+      {
+        query: _id && LOANS_COLLECTION,
+        params: { $filters: { _id }, ...fullLoanFragment },
+        type: 'single',
+      },
+      [_id],
+    );
+
+    if (!_id) {
+      return null;
+    }
+
+    if (loading) {
+      return <Loading />;
+    }
+
+    if (!data) {
+      return <MissingDoc />;
+    }
+
+    return <Component {...props} loan={data} />;
+  },
   injectCalculator(),
   withTranslationContext(({ loan = {} }) => ({
     purchaseType: loan.purchaseType,

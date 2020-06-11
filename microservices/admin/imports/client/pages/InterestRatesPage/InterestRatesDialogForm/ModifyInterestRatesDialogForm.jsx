@@ -1,7 +1,7 @@
 import React from 'react';
+
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
+
 import InterestRatesDialogFormContainer from './InterestRatesDialogFormContainer';
 
 const ModifyInterestRatesDialogForm = ({
@@ -12,7 +12,6 @@ const ModifyInterestRatesDialogForm = ({
   open,
   setOpen,
   interestRatesToModify,
-  submitting,
 }) => (
   <AutoFormDialog
     emptyDialog
@@ -22,21 +21,7 @@ const ModifyInterestRatesDialogForm = ({
     onSubmit={modifyInterestRates}
     open={open}
     setOpen={setOpen}
-    submitting={submitting}
-    renderAdditionalActions={({ disabled, setDisableActions }) => (
-      <Button
-        label={<T id="InterestRates.remove" />}
-        error
-        outlined
-        onClick={() => {
-          setDisableActions(true);
-          return removeInterestRates(interestRatesToModify._id).finally(() =>
-            setDisableActions(false),
-          );
-        }}
-        disabled={disabled}
-      />
-    )}
+    onDelete={() => removeInterestRates(interestRatesToModify._id)}
   >
     {() => fields}
   </AutoFormDialog>

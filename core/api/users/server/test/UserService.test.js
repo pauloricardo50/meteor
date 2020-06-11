@@ -1,22 +1,21 @@
 /* eslint-env mocha */
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../utils/testHelpers';
-import { ddpWithUserId } from '../../../methods/methodHelpers';
-import LoanService from '../../../loans/server/LoanService';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
-import PropertyService from '../../../properties/server/PropertyService';
+import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
-import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
+import PropertyService from '../../../properties/server/PropertyService';
+import { proInviteUser } from '../../methodDefinitions';
 import { ROLES } from '../../userConstants';
 import UserService, { UserServiceClass } from '../UserService';
-import { proInviteUser } from '../../methodDefinitions';
 
 describe('UserService', function() {
   this.timeout(10000);
@@ -27,8 +26,8 @@ describe('UserService', function() {
 
   beforeEach(() => {
     resetDatabase();
-
-    user = Factory.create('user', { firstName, lastName });
+    const { _id: userId } = Factory.create('user', { firstName, lastName });
+    user = UserService.findOne(userId);
     sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
   });
 
@@ -40,23 +39,23 @@ describe('UserService', function() {
     it('creates a user with a USER role by default', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
-      expect(user.roles).to.deep.equal([ROLES.USER]);
+      expect(user.roles[0]).to.deep.include({ _id: ROLES.USER });
     });
 
     it('creates a user with a PRO role', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options, role: ROLES.PRO });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
-      expect(user.roles).to.deep.equal([ROLES.PRO]);
+      expect(user.roles[0]).to.deep.include({ _id: ROLES.PRO });
     });
 
     it('uses all options to create the user', () => {
       const options = { email: 'test@test.com', username: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { emails: 1, username: 1 });
 
       expect(user.emails[0].address).to.equal(options.email);
       expect(user.username).to.equal(options.username);
@@ -65,9 +64,16 @@ describe('UserService', function() {
     it('does not set additional stuff', () => {
       const options = { email: 'test@test.com', firstName: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { firstName: 1 });
 
       expect(user.firstName).to.equal(undefined);
+    });
+
+    it('throws if you try to insert a user without role', () => {
+      const options = { email: 'test@test.com' };
+      expect(() => UserService.createUser({ options, role: null })).to.throw(
+        'must have a role',
+      );
     });
   });
 
@@ -148,6 +154,25 @@ describe('UserService', function() {
 
       expect(user.assignedEmployeeId).to.equal(undefined);
     });
+
+    it('sets a hardcoded assignee per organisation', () => {
+      generator({
+        users: { _factory: ROLES.ADVISOR, _id: 'testAdminId' },
+        organisations: { _id: 'testOrgId' },
+      });
+
+      const options = {
+        email: 'test@test.com',
+        referredByOrganisation: 'testOrgId',
+      };
+
+      const userId = UserService.adminCreateUser({
+        options,
+      });
+
+      user = UserService.get(userId, { assignedEmployeeId: 1 });
+      expect(user.assignedEmployeeId).to.equal('testAdminId');
+    });
   });
 
   describe('update', () => {
@@ -160,6 +185,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal(newFirstName);
     });
+
     it('updates a user: check the sentence case', () => {
       const newFirstName = 'jon';
       UserService.update({
@@ -168,6 +194,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal('Jon');
     });
+
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
       expect(UserService.findOne(user._id)).to.deep.equal(user);
@@ -282,23 +309,6 @@ describe('UserService', function() {
     });
   });
 
-  describe('setRole', () => {
-    it('changes the role of a user', () => {
-      const newRole = ROLES.DEV;
-      expect(UserService.findOne(user._id).roles).to.deep.equal([ROLES.USER]);
-      UserService.setRole({ userId: user._id, role: newRole });
-      expect(UserService.findOne(user._id).roles).to.deep.equal([newRole]);
-    });
-
-    it('throws if an unauthorized role is set', () => {
-      const newRole = 'some role';
-
-      expect(() =>
-        UserService.setRole({ userId: user._id, role: newRole }),
-      ).to.throw(`${newRole} is not an allowed value`);
-    });
-  });
-
   describe('doesUserExist', () => {
     let email;
 
@@ -367,6 +377,7 @@ describe('UserService', function() {
           UserService.getUserByPasswordResetToken({ token }),
         ).to.deep.equal({
           _id: userId,
+          _collection: 'users',
           firstName,
           lastName,
           email: 'yo@dude.com',
@@ -421,7 +432,11 @@ describe('UserService', function() {
           {
             _id: 'proId',
             assignedEmployeeId: 'adminId',
-            organisations: { _id: 'organisationId', name: 'bank' },
+            organisations: {
+              _id: 'organisationId',
+              name: 'bank',
+              $metadata: { isMain: true },
+            },
             _factory: 'pro',
             firstName: 'John',
             lastName: 'Doe',
@@ -436,13 +451,17 @@ describe('UserService', function() {
         proInviteUser.run({ user: userToInvite }),
       );
 
-      const userCreated = UserService.getByEmail(userToInvite.email);
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
 
       expect(userCreated.assignedEmployeeId).to.equal('adminId');
       expect(userCreated.referredByUserLink).to.equal('proId');
       expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
 
-      const emails = await checkEmails(2);
+      const emails = await checkEmails(2, { noExpect: true });
       expect(emails.length).to.equal(2);
       const {
         emailId,
@@ -459,7 +478,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal('bob@dylan.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Vous avez été invité sur e-Potek');
       expect(
@@ -483,7 +502,7 @@ describe('UserService', function() {
           EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
         );
         expect(address).to.equal('john@doe.com');
-        expect(from_email).to.equal('info@e-potek.ch');
+        expect(from_email).to.equal('team@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('Invitation réussie');
         expect(
@@ -506,7 +525,7 @@ describe('UserService', function() {
       ).to.throw('Ce client existe déjà');
     });
 
-    it('invites user to promotion', () => {
+    it('invites user to promotion', async () => {
       generator({
         properties: { _id: 'prop' },
         promotions: {
@@ -521,7 +540,13 @@ describe('UserService', function() {
         },
       });
 
-      return UserService.proInviteUser({
+      const {
+        userId,
+        isNewUser,
+        proId,
+        admin,
+        pro,
+      } = await UserService.proInviteUser({
         user: {
           ...userToInvite,
           showAllLots: false,
@@ -529,31 +554,33 @@ describe('UserService', function() {
         },
         promotionIds: ['promotionId'],
         proUserId: 'proId',
-      }).then(({ userId, isNewUser, proId, admin, pro }) => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.get(
-          { userId: userCreated._id },
-          { promotionLinks: 1, promotionOptionLinks: 1 },
-        );
-
-        expect(userCreated._id).to.equal(userId);
-        expect(isNewUser).to.equal(true);
-        expect(proId).to.equal('proId');
-        expect(admin._id).to.equal(userCreated.assignedEmployeeId);
-        expect(pro._id).to.equal('proId');
-        expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal(
-          'organisationId',
-        );
-        expect(loan.promotionLinks[0]._id).to.equal('promotionId');
-        expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
-        expect(loan.promotionLinks[0].showAllLots).to.equal(false);
-        expect(loan.promotionOptionLinks.length).to.equal(1);
       });
+
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+      const loan = LoanService.get(
+        { userId: userCreated._id },
+        { promotionLinks: 1, promotionOptionLinks: 1 },
+      );
+
+      expect(userCreated._id).to.equal(userId);
+      expect(isNewUser).to.equal(true);
+      expect(proId).to.equal('proId');
+      expect(admin._id).to.equal(userCreated.assignedEmployeeId);
+      expect(pro._id).to.equal('proId');
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loan.promotionLinks[0]._id).to.equal('promotionId');
+      expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
+      expect(loan.promotionLinks[0].showAllLots).to.equal(false);
+      expect(loan.promotionOptionLinks.length).to.equal(1);
     });
 
-    it('invites user to multiple promotions', () => {
+    it('invites user to multiple promotions', async () => {
       generator({
         promotions: [
           {
@@ -579,33 +606,35 @@ describe('UserService', function() {
         ],
       });
 
-      return UserService.proInviteUser({
+      await UserService.proInviteUser({
         user: userToInvite,
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
-      }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
-        const loans = LoanService.fetch({
-          $filters: { userId: userCreated._id },
-          promotionLinks: 1,
-        });
-
-        expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal(
-          'organisationId',
-        );
-        expect(loans.length).to.equal(2);
-        expect(loans[0].promotionLinks[0]._id).to.equal('promotionId1');
-        expect(loans[0].promotionLinks[0].invitedBy).to.equal('proId');
-        expect(loans[0].promotionLinks[0].showAllLots).to.equal(true);
-        expect(loans[1].promotionLinks[0]._id).to.equal('promotionId2');
-        expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
-        expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
       });
+
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+      const loans = LoanService.fetch({
+        $filters: { userId: userCreated._id },
+        promotionLinks: 1,
+      });
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loans.length).to.equal(2);
+      expect(loans[0].promotionLinks[0]._id).to.equal('promotionId1');
+      expect(loans[0].promotionLinks[0].invitedBy).to.equal('proId');
+      expect(loans[0].promotionLinks[0].showAllLots).to.equal(true);
+      expect(loans[1].promotionLinks[0]._id).to.equal('promotionId2');
+      expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
+      expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
     });
 
-    it('throws if user is already invited to promotion', () => {
+    it('throws if user is already invited to promotion', async () => {
       generator({
         promotions: {
           _id: 'promotionId',
@@ -619,19 +648,19 @@ describe('UserService', function() {
         },
       });
 
-      return UserService.proInviteUser({
+      await UserService.proInviteUser({
         user: userToInvite,
         promotionIds: ['promotionId'],
         proUserId: 'proId',
-      }).then(() => {
-        expect(() =>
-          UserService.proInviteUser({
-            user: userToInvite,
-            promotionIds: ['promotionId'],
-            proUserId: 'proId',
-          }),
-        ).to.throw('Ce client est déjà invité à cette promotion');
       });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          promotionIds: ['promotionId'],
+          proUserId: 'proId',
+        }),
+      ).to.throw('Ce client est déjà invité à cette promotion');
     });
 
     it('invites user to pro property', async () => {
@@ -650,7 +679,11 @@ describe('UserService', function() {
         proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId'] }),
       );
 
-      const userCreated = UserService.getByEmail(userToInvite.email);
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
       const loan = LoanService.get(
         { userId: userCreated._id },
         { propertyIds: 1 },
@@ -675,7 +708,7 @@ describe('UserService', function() {
       ).to.equal(true);
     });
 
-    it('invites user to multiple pro properties', () => {
+    it('invites user to multiple pro properties', async () => {
       generator({
         properties: [
           {
@@ -697,29 +730,30 @@ describe('UserService', function() {
         ],
       });
 
-      return UserService.proInviteUser({
+      await UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId1', 'propertyId2'],
         proUserId: 'proId',
-      }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
-        const loan = LoanService.get(
-          { userId: userCreated._id },
-          { propertyIds: 1 },
-        );
-
-        expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal(
-          'organisationId',
-        );
-        expect(loan.propertyIds.length).to.equal(2);
-        expect(loan.propertyIds[0]).to.equal('propertyId1');
-        expect(loan.propertyIds[1]).to.equal('propertyId2');
       });
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+      const loan = LoanService.get(
+        { userId: userCreated._id },
+        { propertyIds: 1 },
+      );
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loan.propertyIds.length).to.equal(2);
+      expect(loan.propertyIds[0]).to.equal('propertyId1');
+      expect(loan.propertyIds[1]).to.equal('propertyId2');
     });
 
-    it('invites user to multiple pro properties and promotions', () => {
+    it('invites user to multiple pro properties and promotions', async () => {
       generator({
         properties: [
           {
@@ -763,33 +797,35 @@ describe('UserService', function() {
         ],
       });
 
-      return UserService.proInviteUser({
+      await UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId1', 'propertyId2'],
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
-      }).then(() => {
-        const userCreated = UserService.getByEmail(userToInvite.email);
-        const loans = LoanService.fetch({
-          $filters: { userId: userCreated._id },
-          promotionLinks: 1,
-          propertyIds: 1,
-        });
-
-        expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        expect(userCreated.referredByUserLink).to.equal('proId');
-        expect(userCreated.referredByOrganisationLink).to.equal(
-          'organisationId',
-        );
-        expect(loans.length).to.equal(3);
-        expect(loans[0].propertyIds.length).to.equal(2);
-        expect(loans[0].propertyIds[0]).to.equal('propertyId1');
-        expect(loans[0].propertyIds[1]).to.equal('propertyId2');
-        expect(loans[1].promotionLinks[0]._id).to.equal('promotionId1');
-        expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
-        expect(loans[2].promotionLinks[0]._id).to.equal('promotionId2');
-        expect(loans[2].promotionLinks[0].invitedBy).to.equal('proId');
       });
+
+      const userCreated = UserService.getByEmail(userToInvite.email, {
+        assignedEmployeeId: 1,
+        referredByUserLink: 1,
+        referredByOrganisationLink: 1,
+      });
+      const loans = LoanService.fetch({
+        $filters: { userId: userCreated._id },
+        promotionLinks: 1,
+        propertyIds: 1,
+      });
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loans.length).to.equal(3);
+      expect(loans[0].propertyIds.length).to.equal(2);
+      expect(loans[0].propertyIds[0]).to.equal('propertyId1');
+      expect(loans[0].propertyIds[1]).to.equal('propertyId2');
+      expect(loans[1].promotionLinks[0]._id).to.equal('promotionId1');
+      expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
+      expect(loans[2].promotionLinks[0]._id).to.equal('promotionId2');
+      expect(loans[2].promotionLinks[0].invitedBy).to.equal('proId');
     });
 
     it('sends an invitation email', async () => {
@@ -829,7 +865,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal('bob@dylan.com');
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('e-Potek - "Rue du four 1"');
 
@@ -895,7 +931,7 @@ describe('UserService', function() {
       expect(template_name).to.equal(
         EMAIL_TEMPLATES.PROMOTION_INVITATION.mandrillId,
       );
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('Promotion immobilière Test promotion');
       expect(title).to.equal("Test promotion, Réservation d'un logement");
@@ -904,7 +940,7 @@ describe('UserService', function() {
       expect(ctaUrl).to.include(`enroll-account/${token}`);
     });
 
-    it('throws if user is already invited to pro property', () => {
+    it('throws if user is already invited to pro property', async () => {
       generator({
         properties: {
           _id: 'propertyId',
@@ -916,19 +952,19 @@ describe('UserService', function() {
         },
       });
 
-      return UserService.proInviteUser({
+      await UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId'],
         proUserId: 'proId',
-      }).then(() => {
-        expect(() =>
-          UserService.proInviteUser({
-            user: userToInvite,
-            propertyIds: ['propertyId'],
-            proUserId: 'proId',
-          }),
-        ).to.throw('Ce client est déjà invité à ce bien immobilier');
       });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          propertyIds: ['propertyId'],
+          proUserId: 'proId',
+        }),
+      ).to.throw('Ce client est déjà invité à ce bien immobilier');
     });
 
     it('invites existing users to a new promotion', async () => {
@@ -949,7 +985,7 @@ describe('UserService', function() {
         },
       });
 
-      return UserService.proInviteUser({
+      const { isNewUser, proId } = await UserService.proInviteUser({
         user: {
           email: 'Test@e-potek.ch',
           firstName: 'John',
@@ -961,12 +997,11 @@ describe('UserService', function() {
         },
         promotionIds: ['promotionId'],
         adminId: 'adminId',
-      }).then(({ isNewUser, proId }) => {
-        expect(isNewUser).to.equal(false);
-        expect(proId).to.equal('proId');
-        const { loans } = UserService.get('userId', { loans: { _id: 1 } });
-        expect(loans.length).to.equal(1);
       });
+      expect(isNewUser).to.equal(false);
+      expect(proId).to.equal('proId');
+      const { loans } = UserService.get('userId', { loans: { _id: 1 } });
+      expect(loans.length).to.equal(1);
     });
 
     it('should send an email invite if it is done by an admin and the user exists already', async () => {
@@ -979,14 +1014,14 @@ describe('UserService', function() {
               _id: 'adminUser',
               firstName: 'Lydia',
               lastName: 'Abraha',
-              organisations: {},
+              organisations: { $metadata: { isMain: true } },
             },
           },
           {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _id: 'organisation' },
+            organisations: { _id: 'organisation', $metadata: { isMain: true } },
             properties: {
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
@@ -1020,7 +1055,7 @@ describe('UserService', function() {
         EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId,
       );
       expect(address).to.equal(userToInvite.email);
-      expect(from_email).to.equal('info@e-potek.ch');
+      expect(from_email).to.equal('team@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal('e-Potek - "Rue du parc 4"');
       expect(
@@ -1031,12 +1066,16 @@ describe('UserService', function() {
     it('should send an email invite if it is done by an admin', async () => {
       generator({
         users: [
-          { _factory: 'admin', _id: 'adminUser', organisations: {} },
+          {
+            _factory: 'admin',
+            _id: 'adminUser',
+            organisations: { $metadata: { isMain: true } },
+          },
           {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _id: 'organisation' },
+            organisations: { _id: 'organisation', $metadata: { isMain: true } },
             properties: {
               _id: 'proProperty3',
               category: PROPERTY_CATEGORY.PRO,
@@ -1055,6 +1094,38 @@ describe('UserService', function() {
 
       const emails = await checkEmails(1);
       expect(emails.length).to.equal(1);
+    });
+
+    it('sets the right assignee to the user if it is a promotion', async () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            assignedEmployeeId: 'adminId3',
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+        users: { _id: 'adminId2' },
+      });
+
+      const { userId } = await UserService.proInviteUser({
+        user: {
+          ...userToInvite,
+          showAllLots: false,
+          promotionLotIds: ['pLotId'],
+        },
+        promotionIds: ['promotionId'],
+        adminId: 'adminId2',
+      });
+
+      const { assignedEmployeeId } = UserService.get(userId, {
+        assignedEmployeeId: 1,
+      });
+      expect(assignedEmployeeId).to.equal('adminId');
     });
   });
 
@@ -1085,9 +1156,7 @@ describe('UserService', function() {
     });
 
     it('sets the second user to the second in the array', () => {
-      const service = new UserServiceClass({
-        employees,
-      });
+      const service = new UserServiceClass({ employees });
 
       service.adminCreateUser({
         options: { email: '1@e-potek.ch' },
@@ -1125,9 +1194,7 @@ describe('UserService', function() {
     });
 
     it('ignores users assigned to people outside of employees list, and check latest one', () => {
-      const service = new UserServiceClass({
-        employees,
-      });
+      const service = new UserServiceClass({ employees });
 
       generator({
         users: [

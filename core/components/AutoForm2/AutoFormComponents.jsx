@@ -1,31 +1,31 @@
 import React, { useMemo } from 'react';
-import { intlShape } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { compose, getContext } from 'recompose';
 import { connectField, nothing } from 'uniforms';
 import { AutoField, BoolField } from 'uniforms-material';
 
+import { ignoreProps } from '../../containers/updateForProps';
 import DateField from '../DateField';
-import { PercentField } from '../PercentInput';
+import HtmlPreview from '../HtmlPreview';
+import MoneyInput from '../MoneyInput';
+import PercentInput from '../PercentInput';
 import {
-  CUSTOM_AUTOFIELD_TYPES,
   COMPONENT_TYPES,
+  CUSTOM_AUTOFIELD_TYPES,
   FIELDS_TO_IGNORE,
-} from './constants';
-import CustomSelectField from './CustomSelectField';
+} from './autoFormConstants';
+import { getLabel, getPlaceholder } from './autoFormHelpers';
+import CustomBooleanRadioField from './CustomBooleanRadioField';
 import { OptimizedListField } from './CustomListField';
 import CustomNestField from './CustomNestField';
-import { getLabel, getPlaceholder } from './autoFormHelpers';
-import MoneyInput from '../MoneyInput';
-import HtmlPreview from '../HtmlPreview';
-import { ignoreProps } from '../../containers/updateForProps';
-import CustomBooleanRadioField from './CustomBooleanRadioField';
-import FileUploadField from './FileUploadField';
+import CustomSelectField from './CustomSelectField';
+import FileUploadField from './FileUploadField/loadable';
 
 const container = ignoreProps(FIELDS_TO_IGNORE);
 
 const OptimizedMoneyInput = container(MoneyInput);
 const OptimizedDateField = container(DateField);
-const OptimizedPercentField = container(PercentField);
+const OptimizedPercentInput = container(PercentInput);
 const OptimizedBoolField = container(BoolField);
 
 const determineComponentFromProps = ({
@@ -42,27 +42,26 @@ const determineComponentFromProps = ({
     return {
       Component: CustomSelectField,
       type: COMPONENT_TYPES.SELECT,
-      props: { variant: 'outlined' },
     };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
+    const { getProps = () => {} } = uniforms;
     return {
       Component: OptimizedDateField,
       type: COMPONENT_TYPES.DATE,
-      props: { placeholder: null, variant: 'outlined' },
+      props: { placeholder: null, getProps },
     };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
-    return { Component: OptimizedPercentField, type: COMPONENT_TYPES.PERCENT };
+    return { Component: OptimizedPercentInput, type: COMPONENT_TYPES.PERCENT };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal', variant: 'outlined' },
     };
   }
 
@@ -70,7 +69,15 @@ const determineComponentFromProps = ({
     return {
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
-      props: { margin: 'normal', decimal: true, variant: 'outlined' },
+      props: { decimal: true },
+    };
+  }
+
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY_NEGATIVE) {
+    return {
+      Component: OptimizedMoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { negative: true },
     };
   }
 
@@ -82,10 +89,8 @@ const determineComponentFromProps = ({
       Component: OptimizedMoneyInput,
       type: COMPONENT_TYPES.MONEY,
       props: {
-        margin: 'normal',
         decimal: true,
         negative: true,
-        variant: 'outlined',
       },
     };
   }
@@ -130,7 +135,11 @@ const determineComponentFromProps = ({
     };
   }
 
-  return { Component: false, type: null, props: { variant: 'outlined' } };
+  return {
+    Component: false,
+    type: null,
+    props: { variant: 'outlined', size: 'small' },
+  };
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
@@ -144,6 +153,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       },
     },
   ) => {
+    const intl = useIntl();
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
 
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
@@ -181,7 +191,14 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       [],
     );
     const placeholder = useMemo(
-      () => getPlaceholder({ ...props, ...additionalProps, intlPrefix, type }),
+      () =>
+        getPlaceholder({
+          ...props,
+          ...additionalProps,
+          intl,
+          intlPrefix,
+          type,
+        }),
       [],
     );
 
@@ -211,7 +228,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
   CustomAutoField.contextTypes = AutoField.contextTypes;
 
   return compose(
-    getContext({ intl: intlShape, ...AutoField.contextTypes }),
+    getContext(AutoField.contextTypes),
     connectField,
   )(CustomAutoField, { includeInChain: false, includeParent: true });
 };

@@ -1,9 +1,11 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 import { PDF_TYPES } from './pdfConstants';
 
 export const generatePDF = new Method({
   name: 'generatePDF',
+  doNotRefetchQueries: true,
   params: {
     type: Match.OneOf(...Object.values(PDF_TYPES)),
     params: Object,

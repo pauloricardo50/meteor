@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/constants';
+import Loans from '../../../../api/loans';
+import UpdateField from '../../../UpdateField';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import FinancingCollapser from './FinancingCollapser';
-import UpdateField from '../../../UpdateField';
 
 const FinancingDetails = props => {
   const { loan } = props;
@@ -13,7 +13,7 @@ const FinancingDetails = props => {
       <UpdateField
         doc={loan}
         fields={['residenceType']}
-        collection={LOANS_COLLECTION}
+        collection={Loans}
         style={{ minWidth: 200 }}
       />
     </div>

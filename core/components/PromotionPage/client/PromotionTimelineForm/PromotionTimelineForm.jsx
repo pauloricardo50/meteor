@@ -1,41 +1,14 @@
 import React from 'react';
 import { withProps } from 'recompose';
-import moment from 'moment';
 
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import PromotionSchema from 'core/api/promotions/schemas/PromotionSchema';
-import { promotionUpdate } from 'core/api/methods';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/constants';
-import PromotionTimelinePicker from './PromotionTimelinePicker';
+import {
+  promotionUpdate,
+  updatePromotionTimeline,
+} from '../../../../api/promotions/methodDefinitions';
+import PromotionSchema from '../../../../api/promotions/schemas/PromotionSchema';
+import AutoFormDialog from '../../../AutoForm2/AutoFormDialog';
 
-const schema = PromotionSchema.pick(
-  'signingDate',
-  'constructionTimeline',
-).extend({
-  final: {
-    type: String,
-    optional: true,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW },
-    customAutoValue: ({ signingDate, constructionTimeline }) => (
-      <div className="flex-col">
-        <label>Fin de la construction</label>
-        <h4>
-          {signingDate && constructionTimeline.length > 0
-            ? moment(signingDate)
-                .add(
-                  constructionTimeline.reduce(
-                    (tot, { duration }) => tot + duration,
-                    0,
-                  ),
-                  'M',
-                )
-                .format('MMMM YYYY')
-            : '-'}
-        </h4>
-      </div>
-    ),
-  },
-});
+const schema = PromotionSchema.pick('signingDate', 'constructionTimeline');
 
 const PromotionTimelineForm = ({ promotion, onSubmit }) => (
   <AutoFormDialog
@@ -43,19 +16,20 @@ const PromotionTimelineForm = ({ promotion, onSubmit }) => (
     model={promotion}
     schema={schema}
     onSubmit={onSubmit}
-    triggerComponent={handleOpen => (
-      <PromotionTimelinePicker
-        handleOpen={handleOpen}
-        hasTimeline={
-          promotion.constructionTimeline &&
-          promotion.constructionTimeline.length > 0
-        }
-        promotionId={promotion._id}
-      />
-    )}
+    buttonProps={{
+      label: 'Répartition du financement',
+      raised: true,
+      primary: true,
+    }}
+    important // You don't want to lose your progress on this form :)
   />
 );
 
 export default withProps(({ promotion: { _id: promotionId } }) => ({
-  onSubmit: object => promotionUpdate.run({ promotionId, object }),
+  onSubmit: ({ signingDate, constructionTimeline }) =>
+    promotionUpdate
+      .run({ promotionId, object: { signingDate } })
+      .then(() =>
+        updatePromotionTimeline.run({ promotionId, constructionTimeline }),
+      ),
 }))(PromotionTimelineForm);

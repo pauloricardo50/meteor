@@ -1,15 +1,15 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
-} from 'core/api/activities/activityConstants';
-import Users from 'core/api/users';
-import UserService from 'core/api/users/server/UserService';
-import { up, down } from '../23';
+  ACTIVITY_TYPES,
+} from '../../../activities/activityConstants';
+import Users from '../../../users';
+import UserService from '../../../users/server/UserService';
+import { down, up } from '../23';
 
 describe('Migration 23', () => {
   beforeEach(() => resetDatabase());

@@ -1,21 +1,24 @@
+import '../roles/initRoles';
+
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
+import { Roles } from 'meteor/alanning:roles';
 
-import NodeRSA from 'node-rsa';
 import omit from 'lodash/omit';
+import NodeRSA from 'node-rsa';
 
-import { fullUser } from 'core/api/fragments';
 import CollectionService from '../../helpers/server/CollectionService';
+import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
 import LoanService from '../../loans/server/LoanService';
-import PropertyService from '../../properties/server/PropertyService';
-import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import SecurityService from '../../security';
-import { ROLES, ACQUISITION_CHANNELS } from '../userConstants';
-import Users from '../users';
-import roundRobinAdvisors from './roundRobinAdvisors';
+import PromotionService from '../../promotions/server/PromotionService';
+import PropertyService from '../../properties/server/PropertyService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
+import SecurityService from '../../security';
+import { ACQUISITION_CHANNELS, ROLES } from '../userConstants';
+import Users from '../users';
+import { assigneesByOrg } from './assigneesByOrg';
+import roundRobinAdvisors from './roundRobinAdvisors';
 
 export class UserServiceClass extends CollectionService {
   constructor({ employees }) {
@@ -23,11 +26,32 @@ export class UserServiceClass extends CollectionService {
     this.setupRoundRobin(employees);
   }
 
-  getByEmail(email) {
-    return Accounts.findUserByEmail(email);
+  getByEmail(email, fragment = {}, additionalFilters = {}) {
+    let user = null;
+    const mergedFragment = { _id: 1, ...fragment };
+    user = this.get(
+      { 'emails.address': email, ...additionalFilters },
+      mergedFragment,
+    );
+
+    if (!user) {
+      const filters = selectorForFastCaseInsensitiveLookup(
+        'emails.address',
+        email,
+      );
+      const candidateUsers = this.fetch({
+        $filters: { ...filters, ...additionalFilters },
+        ...mergedFragment,
+      });
+      if (candidateUsers.length === 1) {
+        user = candidateUsers[0];
+      }
+    }
+
+    return user;
   }
 
-  createUser = ({ options, role }) => {
+  createUser = ({ options, role = ROLES.USER }) => {
     if (!options.password) {
       // password is not even allowed to be undefined,
       // it has to be stripped from the options object
@@ -36,9 +60,10 @@ export class UserServiceClass extends CollectionService {
 
     const newUserId = Accounts.createUser(options);
 
-    if (role) {
-      Roles.setUserRoles(newUserId, role);
+    if (!role) {
+      throw new Meteor.Error('New user must have a role');
     }
+    Roles.setUserRoles(newUserId, role);
 
     return newUserId;
   };
@@ -63,12 +88,6 @@ export class UserServiceClass extends CollectionService {
 
     this.update({ userId: newUserId, object: additionalData });
 
-    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
-      this.assignAdminToUser({ userId: newUserId, adminId });
-    } else if (!additionalData.assignedEmployeeId) {
-      this.setAssigneeForNewUser(newUserId);
-    }
-
     if (referredByUserId) {
       this.setReferredBy({ userId: newUserId, proId: referredByUserId });
     }
@@ -77,6 +96,12 @@ export class UserServiceClass extends CollectionService {
         userId: newUserId,
         organisationId: referredByOrganisation._id,
       });
+    }
+
+    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
+      this.assignAdminToUser({ userId: newUserId, adminId });
+    } else if (!additionalData.assignedEmployeeId) {
+      this.setAssigneeForNewUser(newUserId);
     }
 
     const APIUser = getAPIUser();
@@ -90,9 +115,7 @@ export class UserServiceClass extends CollectionService {
       const userReferral =
         referredByUserId && this.get(referredByUserId, { roles: 1 });
       const isReferralAdmin =
-        userReferral &&
-        (Roles.userIsInRole(userReferral, ROLES.ADMIN) ||
-          Roles.userIsInRole(userReferral, ROLES.DEV));
+        userReferral && Roles.userIsInRole(userReferral, ROLES.ADMIN);
 
       this.update({
         userId: newUserId,
@@ -123,10 +146,10 @@ export class UserServiceClass extends CollectionService {
     if (referralId) {
       this.update({
         userId,
-        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_PRO },
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC },
       });
       const referralUser = this.get(
-        { _id: referralId, roles: { $in: [ROLES.PRO] } },
+        { _id: referralId, 'roles._id': ROLES.PRO },
         { _id: 1 },
       );
       const referralOrg = OrganisationService.get(referralId, { _id: 1 });
@@ -187,7 +210,17 @@ export class UserServiceClass extends CollectionService {
     return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
-  setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
+  setRole = ({ userId, role }) => {
+    if (role === ROLES.ADMIN) {
+      throw new Meteor.Error('Should not set ADMIN role only');
+    }
+
+    if (role !== ROLES.ADVISOR) {
+      this.baseUpdate(userId, { $unset: { office: true } });
+    }
+
+    return Roles.setUserRoles(userId, role);
+  };
 
   getUserByPasswordResetToken = ({ token }) =>
     this.get(
@@ -276,6 +309,17 @@ export class UserServiceClass extends CollectionService {
         'Vous ne pouvez pas lier un compte deux fois à la même organisation.',
       );
     }
+
+    const mainOrgs = newOrganisations.filter(
+      ({ metadata }) => metadata?.isMain,
+    );
+
+    if (newOrganisations.length && mainOrgs.length !== 1) {
+      throw new Meteor.Error(
+        'Une des organisations doit être choisie comme "principale"',
+      );
+    }
+
     const { organisations: oldOrganisations = [] } = this.get(userId, {
       organisations: { _id: 1 },
     });
@@ -301,7 +345,7 @@ export class UserServiceClass extends CollectionService {
     }
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
-    return this.get(userId, fullUser());
+    return this.get(userId, { _id: 1, name: 1, email: 1, roles: 1 });
   };
 
   generateKeyPair = ({ userId }) => {
@@ -346,9 +390,13 @@ export class UserServiceClass extends CollectionService {
     proUserId,
     sendInvitation = true,
     adminId,
+    promotionId,
   }) => {
     let pro;
-    let assignedEmployeeId;
+
+    const isNewUser = !this.doesUserExist({ email });
+    let userId;
+    let admin;
 
     if (proUserId) {
       pro = this.get(proUserId, {
@@ -356,17 +404,13 @@ export class UserServiceClass extends CollectionService {
         assignedEmployeeId: 1,
         organisations: { name: 1 },
       });
-
-      const { assignedEmployeeId: proAssignedEmployeeId } = pro;
-
-      assignedEmployeeId = proAssignedEmployeeId;
-    } else if (adminId) {
-      assignedEmployeeId = adminId;
     }
 
-    const isNewUser = !this.doesUserExist({ email });
-    let userId;
-    let admin;
+    const assignedEmployeeId = this.getAssigneeForProInvitedUser({
+      pro,
+      adminId,
+      promotionId,
+    });
 
     if (isNewUser) {
       admin = this.get(assignedEmployeeId, { name: 1 });
@@ -385,7 +429,7 @@ export class UserServiceClass extends CollectionService {
       const {
         _id: existingUserId,
         assignedEmployeeId: existingAssignedEmployeeId,
-      } = this.getByEmail(email);
+      } = this.getByEmail(email, { assignedEmployeeId: 1 });
 
       admin = this.get(existingAssignedEmployeeId, { name: 1 });
       userId = existingUserId;
@@ -393,6 +437,20 @@ export class UserServiceClass extends CollectionService {
 
     return { userId, admin, pro, isNewUser };
   };
+
+  getAssigneeForProInvitedUser({ pro, adminId, promotionId }) {
+    if (promotionId) {
+      const promotion = PromotionService.get(promotionId, {
+        assignedEmployeeId: 1,
+      });
+      return promotion.assignedEmployeeId;
+    }
+    if (pro?.assignedEmployeeId) {
+      return pro.assignedEmployeeId;
+    }
+
+    return adminId;
+  }
 
   proInviteUser = ({
     user,
@@ -416,10 +474,11 @@ export class UserServiceClass extends CollectionService {
     const { userId, admin, pro, isNewUser } = this.proCreateUser({
       user,
       proUserId: proUserId || invitedBy,
-      adminId,
       // Invitation will be sent by the propertyInvitationEmail or
       // promotionInvitationEmail
       sendInvitation: false,
+      adminId,
+      promotionId: promotionIds?.length === 1 && promotionIds[0],
     });
 
     let promises = [];
@@ -495,10 +554,12 @@ export class UserServiceClass extends CollectionService {
   };
 
   getEnrollmentUrl({ userId }) {
-    let domain = Meteor.settings.public.subdomains.app;
+    let domain;
 
     if (SecurityService.hasRole(userId, ROLES.PRO)) {
       domain = Meteor.settings.public.subdomains.pro;
+    } else {
+      domain = Meteor.settings.public.subdomains.app;
     }
 
     const { token } = Accounts.generateResetToken(
@@ -605,13 +666,18 @@ export class UserServiceClass extends CollectionService {
     const { organisations: userOrganisations = [] } = this.get(userId, {
       organisations: { _id: 1 },
     });
-    const isMain = userOrganisations.length === 0;
+    const isMain =
+      typeof metadata.isMain === 'boolean'
+        ? metadata.isMain
+        : userOrganisations.length === 0;
+
+    const newMetadata = { ...metadata, isMain };
 
     this.addLink({
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { ...metadata, isMain },
+      metadata: newMetadata,
     });
   }
 
@@ -626,17 +692,10 @@ export class UserServiceClass extends CollectionService {
     return mainOrganisation;
   }
 
-  getUserMainOrganisation(userId) {
-    const organisations = OrganisationService.fetch({
-      $filters: { userLinks: { $elemMatch: { _id: userId } } },
-      userLinks: 1,
-      name: 1,
-    });
-
-    return this.getMainOrg({
-      organisations,
-      getIsMain: ({ userLinks }) =>
-        userLinks.find(({ _id }) => _id === userId).isMain,
+  getUserMainOrganisation(userId, fragment = { name: 1 }) {
+    return OrganisationService.fetchOne({
+      $filters: { mainUserLinks: { $elemMatch: { _id: userId } } },
+      ...fragment,
     });
   }
 
@@ -701,58 +760,76 @@ export class UserServiceClass extends CollectionService {
       .filter(x => x);
   }
 
-  setAssigneeForNewUser(userId) {
-    const { roles, assignedEmployeeId } = this.get(userId, {
-      assignedEmployeeId: 1,
-      roles: 1,
-    });
-
-    if (assignedEmployeeId) {
+  getAssigneeForNewUser(user) {
+    if (!SecurityService.hasAssignedRole(user, ROLES.USER)) {
       return;
     }
-    let newAssignee;
 
-    if (roles.includes(ROLES.USER)) {
-      if (!this.employees.length) {
-        // In tests or if there are no roundrobin advisors, use any admin
-        // in the db and assign it to the user
-        // this avoids issues with analytics, that expects all users to have
-        // an assignee
-        const anyAdmin = this.get(
-          { roles: { $in: [ROLES.ADMIN, ROLES.DEV] } },
-          { _id: 1 },
-        );
-        newAssignee = anyAdmin && anyAdmin._id;
-      } else {
-        const lastCreatedUser = this.get(
-          {
-            roles: ROLES.USER,
-            assignedEmployeeId: { $in: this.employees },
-          },
-          {
-            $options: { sort: { createdAt: -1 } },
-            assignedEmployeeId: 1,
-            createdAt: 1,
-          },
-        );
-
-        if (lastCreatedUser?.assignedEmployeeId) {
-          const index = this.employees.indexOf(
-            lastCreatedUser.assignedEmployeeId,
-          );
-          if (index >= this.employees.length - 1) {
-            newAssignee = this.employees[0];
-          } else {
-            newAssignee = this.employees[index + 1];
-          }
-        } else {
-          // Assign the very first user
-          newAssignee = this.employees[0];
-        }
-      }
+    if (!this.employees.length) {
+      // In tests or if there are no roundrobin advisors, use any admin
+      // in the db and assign it to the user
+      // this avoids issues with analytics, that expects all users to have
+      // an assignee
+      const anyAdmin = this.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 });
+      return anyAdmin && anyAdmin._id;
     }
 
-    return this.update({ userId, object: { assignedEmployeeId: newAssignee } });
+    // Hard coded assignee for an organisation
+    if (
+      user.referredByOrganisationLink &&
+      assigneesByOrg[user.referredByOrganisationLink]
+    ) {
+      return assigneesByOrg[user.referredByOrganisationLink];
+    }
+
+    // Round robin
+    const previouslyCreatedUser = this.get(
+      {
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
+        assignedEmployeeId: { $in: this.employees },
+      },
+      {
+        $options: { sort: { createdAt: -1 } },
+        assignedEmployeeId: 1,
+        createdAt: 1,
+      },
+    );
+
+    if (previouslyCreatedUser?.assignedEmployeeId) {
+      const index = this.employees.indexOf(
+        previouslyCreatedUser.assignedEmployeeId,
+      );
+      if (index >= this.employees.length - 1) {
+        return this.employees[0];
+      }
+      return this.employees[index + 1];
+    }
+
+    // Assign the very first user
+    return this.employees[0];
+  }
+
+  setAssigneeForNewUser(userId) {
+    const user = this.get(userId, {
+      assignedEmployeeId: 1,
+      roles: 1,
+      referredByOrganisationLink: 1,
+    });
+
+    // Don't set an assignee if there is already one
+    if (user.assignedEmployeeId) {
+      return;
+    }
+
+    const newAssignee = this.getAssigneeForNewUser(user);
+
+    if (newAssignee) {
+      this.addLink({
+        id: userId,
+        linkName: 'assignedEmployee',
+        linkId: newAssignee,
+      });
+    }
   }
 
   getReferral(userId) {

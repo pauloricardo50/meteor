@@ -1,16 +1,16 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { setUserReferredBy } from '../../../methods';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
-import UserService from '../../../users/server/UserService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
-
+import { setUserReferredBy } from '../../../users/methodDefinitions';
+import UserService from '../../../users/server/UserService';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
 } from '../../activityConstants';
+
+/* eslint-env mocha */
 
 describe('setUserReferredByListener', () => {
   beforeEach(() => {
@@ -26,6 +26,8 @@ describe('setUserReferredByListener', () => {
         {
           _id: 'user',
           emails: [{ address: 'john.doe@test.com', verified: true }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _id: 'pro2',
@@ -38,7 +40,15 @@ describe('setUserReferredByListener', () => {
         _id: 'org1',
         _factory: 'organisation',
         name: 'Organisation 1',
-        users: [{ _id: 'pro1', _factory: 'pro', $metadata: { isMain: true } }],
+        users: [
+          {
+            _id: 'pro1',
+            _factory: 'pro',
+            firstName: 'TestFirstName',
+            lastName: 'TestLastName',
+            $metadata: { isMain: true },
+          },
+        ],
       },
     });
   });

@@ -1,9 +1,9 @@
 import SecurityService from '../../security';
 import {
+  generateAllNotifications,
   readNotification,
   snoozeNotification,
   unreadNotification,
-  generateAllNotifications,
 } from '../methodDefinitions';
 import NotificationService from './NotificationService';
 

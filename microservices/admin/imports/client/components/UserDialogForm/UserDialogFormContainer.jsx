@@ -1,16 +1,17 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
-import { compose, withProps } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   adminCreateUser,
   updateUser,
   userUpdateOrganisations,
-} from 'core/api/methods';
-import { ROLES } from 'core/api/users/userConstants';
-import { adminUsers } from 'core/api/users/queries';
+} from 'core/api/users/methodDefinitions';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import T from 'core/components/Translation';
 
 const userSchema = new SimpleSchema({
@@ -18,7 +19,7 @@ const userSchema = new SimpleSchema({
   lastName: { type: String, optional: true },
   organisations: {
     type: Array,
-    condition: ({ roles = [] }) => !roles.includes(ROLES.USER),
+    condition: user => !Roles.userIsInRole(user, ROLES.USER),
   },
   email: { type: String, optional: false, regEx: SimpleSchema.RegEx.Email },
   phoneNumbers: { type: Array, optional: true },
@@ -26,13 +27,22 @@ const userSchema = new SimpleSchema({
   assignedEmployeeId: {
     type: String,
     customAllowedValues: {
-      query: adminUsers,
-      params: () => ({ $body: { name: 1 }, admins: true }),
+      query: USERS_COLLECTION,
+      params: {
+        $filters: { 'roles._id': ROLES.ADMIN },
+        firstName: 1,
+        office: 1,
+        $options: { sort: { firstName: 1 } },
+      },
     },
     optional: true,
     uniforms: {
-      transform: ({ name }) => name,
+      transform: user => user?.firstName,
       labelProps: { shrink: true },
+      grouping: {
+        groupBy: 'office',
+        format: office => <T id={`Forms.office.${office}`} />,
+      },
     },
   },
   'organisations.$': Object,
@@ -41,8 +51,8 @@ const userSchema = new SimpleSchema({
     optional: true,
     defaultValue: null,
     customAllowedValues: {
-      query: adminOrganisations,
-      params: () => ({ $body: { name: 1 } }),
+      query: ORGANISATIONS_COLLECTION,
+      params: { name: 1 },
     },
     uniforms: {
       transform: ({ name }) => name,
@@ -66,6 +76,13 @@ const userSchema = new SimpleSchema({
       displayEmpty: true,
     },
   },
+  'organisations.$.$metadata.isMain': {
+    type: Boolean,
+    optional: false,
+    uniforms: {
+      label: 'Organisation principale',
+    },
+  },
 });
 
 const updateOrganisations = ({ userId, organisations = [] }) =>
@@ -77,9 +94,9 @@ const updateOrganisations = ({ userId, organisations = [] }) =>
     })),
   });
 
-export default compose(
-  withRouter,
-  withProps(({ history, user }) => ({
+export default withProps(({ user }) => {
+  const history = useHistory();
+  return {
     schema: userSchema,
     labels: { assignedEmployeeId: <T id="Forms.assignedEmployee" /> },
     createUser: data =>
@@ -92,9 +109,9 @@ export default compose(
         .run({ userId: user._id, object })
         .then(
           () =>
-            !user.roles.includes(ROLES.USER) &&
+            !Roles.userIsInRole(user, ROLES.USER) &&
             updateOrganisations({ userId: user._id, organisations }),
         );
     },
-  })),
-);
+  };
+});

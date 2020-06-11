@@ -1,11 +1,13 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { employeesByEmail } from 'core/arrays/epotekEmployees';
-import LoanService from '../../../loans/server/LoanService';
+import { employeesByEmail } from '../../../../arrays/epotekEmployees';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
-import { up, down } from '../28';
+import LoanService from '../../../loans/server/LoanService';
+import { down, up } from '../28';
+
+/* eslint-env mocha */
+
 
 describe('Migration 28', () => {
   beforeEach(() => resetDatabase());

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Waves from 'core/components/Waves';
+
 import WelcomeScreenContainer from './WelcomeScreenContainer';
 import WelcomeScreenLinks from './WelcomeScreenLinks';
 import WelcomeScreenTop from './WelcomeScreenTop';

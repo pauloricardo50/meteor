@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { updateDocument, updateDocumentUnset } from 'core/api/methods/index';
+
+import {
+  updateDocument,
+  updateDocumentUnset,
+} from 'core/api/methods/methodDefinitions';
 
 const UpdateForm = ({ id, collection }) => {
   const [$set, setSet] = useState('');

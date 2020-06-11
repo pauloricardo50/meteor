@@ -4,10 +4,12 @@ import { Random } from 'meteor/random';
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
 
-import { resetDatabase } from 'core/utils/testHelpers/testHelpers';
-import { testCreateUser } from '../../../../api';
-import { getMountedComponent } from '../../../../utils/testHelpers';
+import { testCreateUser } from '../../../../api/users/methodDefinitions';
 import pollUntilReady from '../../../../utils/pollUntilReady';
+import {
+  getMountedComponent,
+  resetDatabase,
+} from '../../../../utils/testHelpers';
 import Loading from '../../../Loading/Loading';
 import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
@@ -47,7 +49,7 @@ describe('PasswordResetPage', () => {
           firstName,
           lastName,
           services: { password: { reset: { token } } },
-          roles: ['user'],
+          roles: [{ _id: 'user' }],
         },
       });
     } catch (error) {

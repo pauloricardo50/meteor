@@ -1,14 +1,15 @@
+import './promotionDemo/promotionFixturesMethods';
+
 import { Meteor } from 'meteor/meteor';
 
-import { ROLES } from '../api/constants';
 import InterestRatesService from '../api/interestRates/server/InterestRatesService';
-import { createDevs, createAdmins } from './userFixtures';
-import './promotionDemo/promotionFixturesMethods';
+import { ROLES } from '../api/users/userConstants';
 import { createFakeInterestRates } from './interestRatesFixtures';
+import { createAdmins, createDevs } from './userFixtures';
 
 Meteor.startup(() => {
   if (!Meteor.isAppTest) {
-    if (Meteor.users.find({ roles: { $in: [ROLES.DEV] } }).count() === 0) {
+    if (Meteor.users.find({ 'roles._id': ROLES.DEV }).count() === 0) {
       createDevs();
       createAdmins();
     }

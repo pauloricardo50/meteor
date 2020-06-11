@@ -1,12 +1,13 @@
+import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { withProps, compose, withState } from 'recompose';
+
 import {
   irs10yInsert,
-  irs10yUpdate,
   irs10yRemove,
-} from 'imports/core/api/methods/index';
-import { PercentField } from 'imports/core/components/PercentInput/';
+  irs10yUpdate,
+} from 'core/api/irs10y/methodDefinitions';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import PercentInput from 'core/components/PercentInput';
 
 const irs10ySchema = new SimpleSchema({
   date: {
@@ -17,29 +18,18 @@ const irs10ySchema = new SimpleSchema({
     type: Number,
     min: -1,
     max: 1,
-    uniforms: { component: PercentField },
+    uniforms: { component: PercentInput },
   },
 });
 
 export default compose(
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting }) => ({
+  withProps({
     schema: irs10ySchema,
     insertIrs10y: data => irs10yInsert.run({ irs10y: data }),
     modifyIrs10y: data => {
       const { _id: irs10yId, ...object } = data;
-      setSubmitting(true);
-      return irs10yUpdate
-        .run({ irs10yId, object })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
+      return irs10yUpdate.run({ irs10yId, object });
     },
-    removeIrs10y: irs10yId => {
-      setSubmitting(true);
-      return irs10yRemove
-        .run({ irs10yId })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-  })),
+    removeIrs10y: irs10yId => irs10yRemove.run({ irs10yId }),
+  }),
 );

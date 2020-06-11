@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const notifyAssignee = new Method({
@@ -15,14 +16,5 @@ export const notifyOfUpload = new Method({
     docLabel: String,
     fileName: String,
     loanId: Match.Optional(String),
-  },
-});
-
-export const logError = new Method({
-  name: 'logError',
-  params: {
-    error: Match.Any,
-    additionalData: Match.Maybe(Match.Any),
-    url: Match.Optional(String),
   },
 });

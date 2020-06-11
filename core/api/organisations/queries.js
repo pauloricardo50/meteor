@@ -1,16 +1,6 @@
-import {
-  fullOrganisation,
-  userOrganisation,
-  adminOrganisation,
-} from '../fragments';
+import { proOrganisation as proOrganisationFragment } from '../fragments';
 import { ORGANISATION_QUERIES } from './organisationConstants';
 import Organisations from '.';
-
-export const adminOrganisations = Organisations.createQuery(
-  ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,
-  { ...adminOrganisation(), $options: { sort: { name: 1 } } },
-  { scoped: true },
-);
 
 export const organisationSearch = Organisations.createQuery(
   ORGANISATION_QUERIES.ORGANISATION_SEARCH,
@@ -23,13 +13,5 @@ export const organisationSearch = Organisations.createQuery(
 
 export const proOrganisation = Organisations.createQuery(
   ORGANISATION_QUERIES.PRO_ORGANISATION,
-  fullOrganisation(),
-);
-
-export const userOrganisations = Organisations.createQuery(
-  ORGANISATION_QUERIES.USER_ORGANISATIONS,
-  {
-    ...userOrganisation(),
-    $options: { sort: { name: 1 } },
-  },
+  proOrganisationFragment(),
 );

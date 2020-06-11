@@ -1,8 +1,8 @@
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/loans/loanConstants';
 import Calculator, {
   Calculator as CalculatorClass,
-} from 'core/utils/Calculator';
-import FinanceCalculator, { getProperty } from '../FinancingCalculator';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/constants';
+} from '../../../../utils/Calculator';
+import FinanceCalculator from '../FinancingCalculator';
 
 const initCalc = ({
   loan,
@@ -18,11 +18,7 @@ const initCalc = ({
     finalOffer = offers.find(({ _id }) => offerId === _id);
   }
 
-  if (
-    finalOffer &&
-    finalOffer.organisation &&
-    finalOffer.organisation.lenderRules
-  ) {
+  if (finalOffer?.organisation?.lenderRules) {
     return new CalculatorClass({
       loan,
       structureId,
@@ -41,7 +37,7 @@ export const getInterests = params => {
   const {
     structure: { wantedLoan },
   } = params;
-  return (FinanceCalculator.getInterestsWithTranches(params) * wantedLoan) / 12;
+  return FinanceCalculator.getInterestsWithTranches(params) / 12;
 };
 
 export const getAmortization = params => {
@@ -52,35 +48,75 @@ export const getAmortization = params => {
 };
 
 export const getPropertyExpenses = data => {
-  const property = getProperty(data);
+  const property = Calculator.selectProperty(data);
   return Math.round((property && property.yearlyExpenses) / 12 || 0);
 };
 
-const getNonPledgedFundsOfType = ({ structure: { ownFunds }, type }) =>
+const getNonPledgedFundsOfType = ({
+  structure: { ownFunds },
+  type,
+  borrowerId: bId,
+}) =>
   ownFunds
+    .filter(({ borrowerId }) => (bId ? bId === borrowerId : true))
     .filter(({ type: t }) => t === type)
     .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
 export const getRemainingCash = ({ borrowers, structure }) =>
-  Calculator.getFortune({ borrowers }) -
-  getNonPledgedFundsOfType({ structure, type: 'bankFortune' });
+  borrowers.map(
+    b =>
+      Calculator.getFortune({ borrowers: b }) -
+      getNonPledgedFundsOfType({
+        structure,
+        type: 'bankFortune',
+        borrowerId: b._id,
+      }),
+  );
 
 export const getRemainingInsurance2 = ({ borrowers, structure }) =>
-  Calculator.getInsurance2({ borrowers }) -
-  getNonPledgedFundsOfType({ structure, type: 'insurance2' });
+  borrowers.map(
+    b =>
+      Calculator.getInsurance2({ borrowers: b }) -
+      getNonPledgedFundsOfType({
+        structure,
+        type: 'insurance2',
+        borrowerId: b._id,
+      }),
+  );
 
 export const getRemainingInsurance3A = ({ borrowers, structure }) =>
-  Calculator.getInsurance3A({ borrowers }) -
-  getNonPledgedFundsOfType({ structure, type: 'insurance3A' });
+  borrowers.map(
+    b =>
+      Calculator.getInsurance3A({ borrowers: b }) -
+      getNonPledgedFundsOfType({
+        structure,
+        type: 'insurance3A',
+        borrowerId: b._id,
+      }),
+  );
 
 export const getRemainingInsurance3B = ({ borrowers, structure }) =>
-  Calculator.getInsurance3B({ borrowers }) -
-  getNonPledgedFundsOfType({ structure, type: 'insurance3B' });
+  borrowers.map(
+    b =>
+      Calculator.getInsurance3B({ borrowers: b }) -
+      getNonPledgedFundsOfType({
+        structure,
+        type: 'insurance3B',
+        borrowerId: b._id,
+      }),
+  );
 
 export const getRemainingBank3A = ({ borrowers, structure }) =>
-  Calculator.getBank3A({ borrowers }) -
-  getNonPledgedFundsOfType({ structure, type: 'bank3A' });
+  borrowers.map(
+    b =>
+      Calculator.getBank3A({ borrowers: b }) -
+      getNonPledgedFundsOfType({
+        structure,
+        type: 'bank3A',
+        borrowerId: b._id,
+      }),
+  );
 
 export const getBorrowRatio = params => {
   const calc = initCalc(params);

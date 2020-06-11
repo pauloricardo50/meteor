@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import MoneyInput from '../../../../MoneyInput';
 import Select from '../../../../Select';
 import T from '../../../../Translation';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import { FIELDS } from './FinancingOwnFundsPickerContainer';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 import { shouldAskForUsageType } from './FinancingOwnFundsPickerHelpers';
 import FinancingOwnFundsWarning from './FinancingOwnFundsWarning';
 

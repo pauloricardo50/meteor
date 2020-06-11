@@ -1,6 +1,7 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
+
+import MenuItem from '../Material/MenuItem';
 
 const GoogleMapsAutocompleteSuggestion = ({
   suggestion,

@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import T from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
+import T from 'core/components/Translation';
 
 import DashboardProgressBar from './DashboardProgressBar';
 import DashboardProgressInfo from './DashboardProgressInfo';

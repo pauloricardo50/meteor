@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import sinon from 'sinon';
-import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 
+import { getMountedComponent } from '../../../utils/testHelpers';
 import Tabs from '../Tabs';
 
 describe('Tabs', () => {

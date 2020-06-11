@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
+import { borrowerDelete } from 'core/api/borrowers/methodDefinitions';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import FullDate from 'core/components/dateComponents/FullDate';
-import { USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { borrowerDelete } from 'core/api';
+import T from 'core/components/Translation';
 
 const SingleBorrowerHeader = ({
   borrower: {
@@ -42,27 +42,30 @@ const SingleBorrowerHeader = ({
 
     {gender && age && address1 && (
       <p className="secondary">
-        {`${gender}, `}
-        <T id="SingleBorrowerPageHeader.age" values={{ value: age }} />
-        {`, ${address1}`}
+        {[
+          gender && <T id={`Forms.gender.${gender}`} />,
+          age && (
+            <T id="SingleBorrowerPageHeader.age" values={{ value: age }} />
+          ),
+          address1,
+        ]
+          .filter(x => x)
+          .map((item, index) => [index !== 0 && ', ', item])}
       </p>
     )}
 
     <div className="bottom">
       <p className="created-at">
-        {user && (
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          />
-        )}
-        {user && user.assignedEmployee && (
+        {user && <CollectionIconLink relatedDoc={user} />}
+        {user && user.assignedEmployeeCache && (
           <span>
             <T id="SingleBorrowerPageHeader.assignedTo" />
             &nbsp;
             <CollectionIconLink
               relatedDoc={{
-                ...user.assignedEmployee,
-                collection: USERS_COLLECTION,
+                ...user.assignedEmployeeCache,
+                roles: [{ _id: ROLES.ADMIN }],
+                _collection: USERS_COLLECTION,
               }}
             />
           </span>

@@ -16,7 +16,7 @@ Npm.depends({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.5');
-  api.use(['ecmascript', 'mongo', 'check', 'matb33:collection-hooks@0.8.4']);
+  api.use(['ecmascript', 'mongo', 'check', 'matb33:collection-hooks@1.0.1']);
 
   api.mainModule('cache.js', 'server');
   api.addFiles('cacheCount.js', 'server');
@@ -29,7 +29,7 @@ Package.onTest(function(api) {
     'ecmascript',
     'mongo',
     'check',
-    'matb33:collection-hooks@0.8.4',
+    'matb33:collection-hooks@1.0.1',
     'practicalmeteor:mocha',
     'practicalmeteor:chai',
   ]);

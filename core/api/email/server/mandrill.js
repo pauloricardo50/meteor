@@ -1,9 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 
-import { logError } from 'core/api/methods/index';
+import { logError } from '../../errorLogger/methodDefinitions';
 import { getEmailFooter } from './emailHelpers';
 import { isEmailTestEnv, skipEmails } from './EmailService';
 import Mandrill from './MandrillService';
+
+const shouldSkipEmail = address => {
+  if (skipEmails) {
+    return true;
+  }
+
+  // Second failure prevention mechanism, if we do forget to set "skipEmails"
+  // properly, avoid sending emails outside of our domain
+  if (Meteor.isDevelopment || Meteor.isStaging) {
+    const isEpotekEmail = address.includes('@e-potek.ch');
+    const shouldSkip = !isEpotekEmail && !isEmailTestEnv;
+    return shouldSkip;
+  }
+};
 
 export const setupMandrill = () => {
   let key = '';
@@ -83,8 +97,8 @@ export const getMandrillTemplate = ({
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 
-export const sendMandrillTemplate = mandrillTemplate => {
-  if (skipEmails) {
+export const sendMandrillTemplate = (mandrillTemplate, address) => {
+  if (shouldSkipEmail(address)) {
     return Promise.resolve();
   }
 

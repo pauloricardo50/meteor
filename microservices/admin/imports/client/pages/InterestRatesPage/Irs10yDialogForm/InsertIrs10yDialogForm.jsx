@@ -1,6 +1,9 @@
 import React from 'react';
+
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import T from 'imports/core/components/Translation/';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation/';
+
 import Irs10yDialogFormContainer from './Irs10yDialogFormContainer';
 
 const InsertIrs10yDialogForm = ({ schema, insertIrs10y }) => (
@@ -9,9 +12,11 @@ const InsertIrs10yDialogForm = ({ schema, insertIrs10y }) => (
     model={{ date: new Date() }}
     onSubmit={insertIrs10y}
     buttonProps={{
-      label: <T id="Irs10y.insert" />,
+      label: 'Taux IRS10',
       raised: true,
       primary: true,
+      icon: <Icon type="add" />,
+      className: 'mt-16',
     }}
     title={<T id="Irs10y.insert" />}
   />

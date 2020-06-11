@@ -1,20 +1,21 @@
 import { Meteor } from 'meteor/meteor';
+
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
 import {
-  createdAt,
-  updatedAt,
   additionalDocuments,
   address,
-  mortgageNoteLinks,
-  moneyField,
-  userLinksSchema,
+  createdAt,
   documentsField,
+  moneyField,
+  mortgageNoteLinks,
+  updatedAt,
+  userLinksSchema,
 } from '../../helpers/sharedSchemas';
-import * as propertyConstants from '../propertyConstants';
-import { initialDocuments } from '../propertiesAdditionalDocuments';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
+import { initialDocuments } from '../propertiesAdditionalDocuments';
+import * as propertyConstants from '../propertyConstants';
 
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
@@ -105,6 +106,13 @@ export const PropertySchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   value: moneyField,
+  originalValue: moneyField,
+  originalPurchaseYear: {
+    type: SimpleSchema.Integer,
+    min: 0,
+    max: 2020,
+    optional: true,
+  },
   status: {
     type: String,
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
@@ -114,7 +122,6 @@ export const PropertySchema = new SimpleSchema({
   propertyType: {
     type: String,
     optional: true,
-    defaultValue: propertyConstants.PROPERTY_TYPE.FLAT,
     allowedValues: Object.values(propertyConstants.PROPERTY_TYPE),
     uniforms: { placeholder: null },
   },
@@ -136,13 +143,7 @@ export const PropertySchema = new SimpleSchema({
     condition: ({ propertyType }) =>
       propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
   },
-  investmentRent: {
-    // Rent of property if investment
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
+  investmentRent: moneyField,
   ...address,
   constructionYear: {
     type: SimpleSchema.Integer,

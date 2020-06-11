@@ -1,15 +1,15 @@
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import SecurityService from '../../security';
-import BorrowerService from './BorrowerService';
 import {
+  borrowerDelete,
   borrowerInsert,
   borrowerUpdate,
-  borrowerDelete,
-  pushBorrowerValue,
+  getReusableBorrowers,
   popBorrowerValue,
   pullBorrowerValue,
-  getReusableBorrowers,
+  pushBorrowerValue,
 } from '../methodDefinitions';
-import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import BorrowerService from './BorrowerService';
 
 borrowerInsert.setHandler((context, { borrower, userId }) =>
   BorrowerService.insert({
@@ -17,6 +17,7 @@ borrowerInsert.setHandler((context, { borrower, userId }) =>
     userId: checkInsertUserId(userId),
   }),
 );
+borrowerInsert.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
 
 borrowerUpdate.setHandler((context, params) => {
   SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);
@@ -47,7 +48,14 @@ pullBorrowerValue.setHandler((context, params) => {
   return BorrowerService.pullValue(params);
 });
 
-getReusableBorrowers.setHandler((context, params) => {
-  SecurityService.loans.isAllowedToUpdate(params.loanId);
-  return BorrowerService.getReusableBorrowers({ ...params });
+getReusableBorrowers.setHandler(({ userId }, params) => {
+  const { loanId, insuranceRequestId } = params;
+
+  if (loanId) {
+    SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  } else if (insuranceRequestId) {
+    SecurityService.checkUserIsAdmin(userId);
+  }
+
+  return BorrowerService.getReusableBorrowers(params);
 });

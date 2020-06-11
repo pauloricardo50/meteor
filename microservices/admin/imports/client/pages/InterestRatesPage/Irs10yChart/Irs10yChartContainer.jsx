@@ -1,6 +1,6 @@
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
 import moment from 'moment';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 
 import colors from 'core/config/colors';
 
@@ -119,14 +119,13 @@ const getLines = ({ rates, formatMessage }) => {
   );
 };
 
-export default compose(
-  injectIntl,
-  withProps(({ irs10y = [], intl: { formatMessage } }) => {
-    const lines = getLines({ rates: irs10y, formatMessage });
-    return {
-      title: "Moyenne mensuelle de l'IRS 10 ans",
-      lines,
-      config: getConfig(),
-    };
-  }),
-);
+export default withProps(({ irs10y = [] }) => {
+  const { formatMessage } = useIntl();
+  const lines = getLines({ rates: irs10y, formatMessage });
+
+  return {
+    title: "Moyenne mensuelle de l'IRS 10 ans",
+    lines,
+    config: getConfig(),
+  };
+});

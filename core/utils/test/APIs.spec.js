@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
+
 import { getLocations } from '../APIs';
 
 // FIXME: These tests don't work reliably

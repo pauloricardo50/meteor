@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import merge from 'lodash/merge';
+import PropTypes from 'prop-types';
 
 import PieChart from './PieChart';
 

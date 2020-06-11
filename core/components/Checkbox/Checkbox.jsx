@@ -1,8 +1,8 @@
 import React from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import PropTypes from 'prop-types';
 
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import MuiCheckbox from '@material-ui/core/Checkbox';
+import MuiCheckbox from '../Material/Checkbox';
 
 const Checkbox = ({ value, onChange, id, ...props }) => (
   <FormControlLabel

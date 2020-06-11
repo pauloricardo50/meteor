@@ -1,10 +1,10 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
+import Activities from '../../activities';
 import {
   ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,
 } from '../../activities/activityConstants';
-import Activities from '../../activities';
 import ActivityService from '../../activities/server/ActivityService';
 import UserService from '../../users/server/UserService';
 

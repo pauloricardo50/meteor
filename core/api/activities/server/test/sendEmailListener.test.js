@@ -1,15 +1,15 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { checkEmails } from '../../../../utils/testHelpers/index';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import { sendEmail, sendEmailToAddress } from '../../../email/server/methods';
 import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
-
 import { ACTIVITY_TYPES } from '../../activityConstants';
 import ActivityService from '../ActivityService';
+
+/* eslint-env mocha */
+
 
 describe('sendEmailListener', function() {
   this.timeout(10000);
@@ -54,12 +54,12 @@ describe('sendEmailListener', function() {
       expect(activities[0]).to.deep.include({
         type: ACTIVITY_TYPES.EMAIL,
         title: 'Email envoyé',
-        description: 'E-Potek - Rue du test 1, de info@e-potek.ch',
+        description: 'E-Potek - Rue du test 1, de team@e-potek.ch',
       });
       expect(activities[0].metadata).to.deep.include({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
         to: 'john.doe@test.com',
-        from: 'info@e-potek.ch',
+        from: 'team@e-potek.ch',
       });
       expect(activities[0].metadata.response).to.deep.include({
         status: 'sent',
@@ -89,12 +89,12 @@ describe('sendEmailListener', function() {
       expect(activities[0]).to.deep.include({
         type: ACTIVITY_TYPES.EMAIL,
         title: 'Email envoyé',
-        description: 'E-Potek - Rue du test 1, de info@e-potek.ch',
+        description: 'E-Potek - Rue du test 1, de team@e-potek.ch',
       });
       expect(activities[0].metadata).to.deep.include({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
         to: 'john.doe@test.com',
-        from: 'info@e-potek.ch',
+        from: 'team@e-potek.ch',
       });
       expect(activities[0].metadata.response).to.deep.include({
         status: 'sent',

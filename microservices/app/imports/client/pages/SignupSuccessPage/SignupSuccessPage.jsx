@@ -1,8 +1,8 @@
 import React from 'react';
 
-import withMatchParam from 'core/containers/withMatchParam';
-import T from 'core/components/Translation';
 import AnimatedSuccess from 'core/components/AnimatedSuccess';
+import T from 'core/components/Translation';
+import withMatchParam from 'core/containers/withMatchParam';
 
 const SignupSuccessPage = ({ email }) => (
   <div className="signup-success animated fadeIn">

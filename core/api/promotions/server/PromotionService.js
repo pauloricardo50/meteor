@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 
-import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
-import UserService from '../../users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/server/CollectionService';
-import PropertyService from '../../properties/server/PropertyService';
+import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import {
-  PROMOTION_STATUS,
-  PROMOTION_PERMISSIONS_FULL_ACCESS,
-} from '../../constants';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
+import {
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_STATUS,
+} from '../promotionConstants';
 import Promotions from '../promotions';
 
 class PromotionService extends CollectionService {
@@ -40,6 +41,8 @@ class PromotionService extends CollectionService {
       promotionId,
       { address1: 1, address2: 1, zipCode: 1, city: 1, canton: 1 },
     );
+    const { promotionLotGroupIds } = property;
+
     const propertyId = PropertyService.insert({
       property: {
         ...property,
@@ -53,6 +56,7 @@ class PromotionService extends CollectionService {
     });
     const promotionLotId = PromotionLotService.insert({
       propertyLinks: [{ _id: propertyId }],
+      promotionLotGroupIds,
     });
     this.addLink({
       id: promotionId,
@@ -155,14 +159,11 @@ class PromotionService extends CollectionService {
       },
     });
 
-    loans.forEach(({ _id: loanId }) => {
-      this.updateLinkMetadata({
-        id: promotionId,
-        linkName: 'loans',
-        linkId: loanId,
-        metadata: { invitedBy: undefined },
-      });
-    });
+    if (loans?.length) {
+      throw new Meteor.Error(
+        'Ce compte Pro a toujours des clients dans cette promotion.',
+      );
+    }
 
     return this.removeLink({
       id: promotionId,
@@ -266,17 +267,6 @@ class PromotionService extends CollectionService {
     });
   }
 
-  reuseConstructionTimeline({ fromPromotionId, toPromotionId }) {
-    const { constructionTimeline } = this.get(fromPromotionId, {
-      constructionTimeline: 1,
-    });
-
-    return this.update({
-      promotionId: toPromotionId,
-      object: { constructionTimeline },
-    });
-  }
-
   updateUserRoles({ promotionId, userId, roles = [] }) {
     this.updateLinkMetadata({
       id: promotionId,
@@ -320,6 +310,7 @@ class PromotionService extends CollectionService {
     }
 
     if (
+      !Meteor.isDevelopment &&
       !Meteor.isTest &&
       !Meteor.isAppTest &&
       (!documents.promotionGuide ||
@@ -330,6 +321,15 @@ class PromotionService extends CollectionService {
         'Il faut ajouter un (seul) guide du financement bancaire sur cette promotion',
       );
     }
+
+    if (
+      !Meteor.isDevelopment &&
+      !Meteor.isTest &&
+      !Meteor.isAppTest &&
+      !documents.promotionImage?.length
+    ) {
+      throw new Meteor.Error('Il faut ajouter une image sur cette promotion');
+    }
   }
 
   setStatus({ promotionId, status }) {
@@ -338,6 +338,153 @@ class PromotionService extends CollectionService {
     }
 
     return this.update({ promotionId, object: { status } });
+  }
+
+  addPromotionLotGroup({ promotionId, promotionLotGroup }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    if (
+      promotionLotGroups.some(({ label }) => label === promotionLotGroup.label)
+    ) {
+      throw new Meteor.Error(
+        `Le groupe "${promotionLotGroup.label}" existe déjà`,
+      );
+    }
+
+    const id = Random.id();
+
+    return this._update({
+      id: promotionId,
+      object: {
+        promotionLotGroups: [
+          ...promotionLotGroups,
+          { id, ...promotionLotGroup },
+        ],
+      },
+    });
+  }
+
+  removePromotionLotGroup({ promotionId, promotionLotGroupId }) {
+    const { promotionLotGroups = [], promotionLots = [] } = this.get(
+      promotionId,
+      {
+        promotionLotGroups: 1,
+        promotionLots: { promotionLotGroupIds: 1 },
+      },
+    );
+
+    const groupToRemove = promotionLotGroups.find(
+      ({ id }) => id === promotionLotGroupId,
+    );
+
+    if (!groupToRemove) {
+      throw new Meteor.Error(
+        `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const promotionLotsInGroup = promotionLots.filter(
+      ({ promotionLotGroupIds = [] }) =>
+        promotionLotGroupIds.some(id => id === promotionLotGroupId),
+    );
+
+    if (promotionLotsInGroup.length) {
+      promotionLotsInGroup.forEach(({ _id: promotionLotId }) =>
+        PromotionLotService.removeFromPromotionLotGroup({
+          promotionLotId,
+          promotionLotGroupId,
+        }),
+      );
+    }
+
+    const newGroups = promotionLotGroups.filter(
+      ({ id }) => id !== promotionLotGroupId,
+    );
+
+    return this._update({
+      id: promotionId,
+      object: { promotionLotGroups: newGroups },
+    });
+  }
+
+  updatePromotionLotGroup({ promotionId, promotionLotGroupId, object }) {
+    const { promotionLotGroups = [] } = this.get(promotionId, {
+      promotionLotGroups: 1,
+    });
+
+    const groupToUpdate = promotionLotGroups.find(
+      ({ id }) => id === promotionLotGroupId,
+    );
+
+    if (!groupToUpdate) {
+      throw new Meteor.Error(
+        `PromotionLotGroup id "${promotionLotGroupId}" not found`,
+      );
+    }
+
+    const newGroups = promotionLotGroups;
+    newGroups[newGroups.findIndex(({ id }) => id === groupToUpdate.id)] = {
+      id: groupToUpdate.id,
+      ...object,
+    };
+
+    return this._update({
+      id: promotionId,
+      object: { promotionLotGroups: newGroups },
+    });
+  }
+
+  updatePromotionTimeline({ promotionId, constructionTimeline }) {
+    const { signingDate } = this.get(promotionId, { signingDate: 1 });
+    const {
+      startPercent,
+      endPercent,
+      steps = [],
+      endDate,
+    } = constructionTimeline;
+
+    const stepPercent = steps.reduce((tot, { percent }) => tot + percent, 0);
+    const total = Math.round((startPercent + endPercent + stepPercent) * 100);
+
+    if (endDate && endPercent && steps.length === 0) {
+      throw new Meteor.Error('Il faut ajouter les étapes du chantier');
+    }
+
+    if (total !== 100) {
+      throw new Meteor.Error(
+        `Les étapes doivent s'additionner à 100% (actuellement ${total}%)`,
+      );
+    }
+
+    const firstDate = new Date(steps[0]?.startDate);
+    const lastDate = new Date(steps.slice(-1)[0].startDate);
+
+    if (signingDate && signingDate.getTime() > firstDate.getTime()) {
+      throw new Meteor.Error(
+        'La date de signature ne peut pas être après le début de la construction',
+      );
+    }
+
+    if (new Date(endDate).getTime() < lastDate.getTime()) {
+      throw new Meteor.Error(
+        'La fin de la construction doit être après la dernière étape',
+      );
+    }
+
+    steps.forEach(({ startDate }, index) => {
+      if (index > 0) {
+        const prevDate = steps[index - 1].startDate;
+        if (new Date(prevDate).getTime() > new Date(startDate).getTime()) {
+          throw new Meteor.Error(
+            "Chaque date consécutive doit venir après l'autre",
+          );
+        }
+      }
+    });
+
+    this.update({ promotionId, object: { constructionTimeline } });
   }
 }
 

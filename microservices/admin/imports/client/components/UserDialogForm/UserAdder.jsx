@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
-import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import T from 'core/components/Translation';
-import Box from 'core/components/Box';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import { withSmartQuery } from 'core/api';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
+import Box from 'core/components/Box';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
 import useSearchParams from 'core/hooks/useSearchParams';
+
 import UserDialogFormContainer from './UserDialogFormContainer';
 
 export const userFormLayout = [
@@ -46,15 +47,13 @@ const getSchema = ({ schema, organisations }) =>
         type: String,
         optional: true,
         customAllowedValues: {
-          query: adminUsers,
-          params: () => ({
-            roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
-            $body: {
-              name: 1,
-              organisations: { name: 1 },
-              $options: { sort: { name: 1 } },
-            },
-          }),
+          query: USERS_COLLECTION,
+          params: {
+            $filters: { 'roles._id': ROLES.PRO },
+            name: 1,
+            organisations: { name: 1 },
+            $options: { sort: { lastName: 1 } },
+          },
           allowNull: true,
         },
         uniforms: {
@@ -121,9 +120,10 @@ const UserAdder = ({
       openOnMount={openOnMount}
       onSubmit={createUser}
       buttonProps={{
-        label: <T id="UserAdder.buttonLabel" />,
+        label: 'Compte',
         raised: true,
         primary: true,
+        icon: <Icon type="add" />,
       }}
       autoFieldProps={{
         labels: {
@@ -139,9 +139,14 @@ const UserAdder = ({
 export default compose(
   UserDialogFormContainer,
   withSmartQuery({
-    query: adminOrganisations,
+    query: ORGANISATIONS_COLLECTION,
     dataName: 'organisations',
-    params: () => ({ $body: { name: 1, users: { _id: 1 } } }),
+    params: {
+      name: 1,
+      users: { _id: 1 },
+      $options: { sort: { name: 1 } },
+    },
+    refetchOnMethodCall: false,
   }),
   withProps(() => {
     const searchParams = useSearchParams();

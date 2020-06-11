@@ -1,12 +1,12 @@
+import moment from 'moment';
+
+import { GENDER } from '../../api/borrowers/borrowerConstants';
+import { ERROR, SUCCESS, WARNING } from '../../api/constants';
 import {
-  GENDER,
-  SUCCESS,
-  ERROR,
-  WARNING,
-  RESIDENCE_TYPE,
-  REAL_ESTATE_CONSIDERATION_TYPES,
   EXPENSE_TYPES_WITHOUT_DELTAS,
-} from '../../api/constants';
+  REAL_ESTATE_CONSIDERATION_TYPES,
+} from '../../api/lenderRules/lenderRulesConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
   AMORTIZATION_STOP,
   AMORTIZATION_YEARS,
@@ -25,20 +25,20 @@ import {
   MAINTENANCE_FINMA,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_PLEDGE,
-  MAX_INCOME_RATIO_TIGHT,
   MAX_INCOME_RATIO,
+  MAX_INCOME_RATIO_TIGHT,
   MIN_CASH,
   NOTARY_FEES,
   OWN_FUNDS_ROUNDING_AMOUNT,
   PENSION_INCOME_CONSIDERATION,
   REAL_ESTATE_INCOME_ALGORITHMS,
   REAL_ESTATE_INCOME_CONSIDERATION,
-  REFERRAL_COMMISSION_SPLIT,
   REFERRAL_COMMISSION,
+  REFERRAL_COMMISSION_SPLIT,
 } from '../../config/financeConstants';
+import { memoizeMiddleware } from '../Calculator/middleware';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
-import { memoizeMiddleware } from '../Calculator/middleware';
 
 export class FinanceCalculator {
   constructor(settings) {
@@ -209,21 +209,22 @@ export class FinanceCalculator {
     }, 0);
   }
 
-  getAmountToAmortize({ borrowRatio }) {
-    return borrowRatio - this.amortizationGoal;
+  getAmountToAmortize({ borrowRatio, amortizationGoal }) {
+    return borrowRatio - amortizationGoal;
   }
 
   getAmortizationRateBase({
     borrowRatio = 0,
     amortizationYears = this.amortizationYears,
+    amortizationGoal = this.amortizationGoal,
   } = {}) {
     let amortizationRate = 0;
-    if (borrowRatio > this.amortizationGoal) {
+    if (borrowRatio > amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
       // whichever comes first
       const amountToAmortize = this.getAmountToAmortize({
         borrowRatio,
-        cacheFix: this.amortizationGoal,
+        amortizationGoal,
       });
 
       // Make sure we don't create a black hole, or use negative values by error
@@ -257,18 +258,17 @@ export class FinanceCalculator {
     return (propertyValue + propertyWork) * maxBorrowRatio;
   }
 
-  getYearsToRetirement = ({ age1, age2, gender1, gender2 } = {}) => {
-    const retirement1 = this.getRetirementForGender({ gender: gender1 });
-    let retirement2 = null;
-    if (gender2) {
-      retirement2 = this.getRetirementForGender({ gender: gender2 });
-    }
+  getYearsToRetirement = ({ retirementDate1, retirementDate2 } = {}) => {
+    const today = moment();
+    const toRetirement1 = moment
+      .duration(moment(retirementDate1).diff(today))
+      .asYears();
 
-    // Substract age to determine remaining time to retirement for both borrowers
-    const toRetirement1 = retirement1 - age1;
-    let toRetirement2;
-    if (retirement2 && age2) {
-      toRetirement2 = retirement2 - age2;
+    let toRetirement2 = null;
+    if (retirementDate2) {
+      toRetirement2 = moment
+        .duration(moment(retirementDate2).diff(today))
+        .asYears();
     }
 
     // Get the most limiting time to retirement for both borrowers, in years
@@ -279,7 +279,7 @@ export class FinanceCalculator {
       yearsToRetirement = toRetirement1;
     }
 
-    return Math.max(yearsToRetirement, 0);
+    return Math.round(Math.max(yearsToRetirement, 0));
   };
 
   getTheoreticalMonthly({ propAndWork, loanValue, amortizationRate }) {
@@ -327,8 +327,10 @@ export class FinanceCalculator {
   };
 
   getAveragedInterestRate({ tranches = [], interestRates = {} }) {
+    const totalValue = tranches.reduce((sum, { value = 0 }) => sum + value, 0);
     return tranches.reduce(
-      (totalRate, { type, value }) => totalRate + interestRates[type] * value,
+      (totalRate, { type, value }) =>
+        totalRate + interestRates[type] * (value / totalValue),
       0,
     );
   }

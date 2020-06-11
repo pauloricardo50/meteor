@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { ORGANISATIONS_COLLECTION, S3_ACLS, ONE_KB } from 'core/api/constants';
+import { S3_ACLS } from 'core/api/files/fileConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import { Uploader } from 'core/components/UploaderArray';
 import Box from 'core/components/Box';
+import { Uploader } from 'core/components/UploaderArray';
+
 import OrganisationModifierContainer from './OrganisationModifierContainer';
 
 const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
-  const { _id, documents } = organisation;
+  const { _id, documents, _collection } = organisation;
   return (
     <AutoFormDialog
       schema={schema}
@@ -37,17 +38,11 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
           className: 'mb-32',
           fields: ['emails'],
         },
-        {
-          Component: Box,
-          title: <h4>Commissionnement</h4>,
-          className: 'mb-32',
-          fields: ['commissionRates'],
-        },
       ]}
     >
       {() => (
         <Uploader
-          collection={ORGANISATIONS_COLLECTION}
+          collection={_collection}
           docId={_id}
           currentValue={documents && documents.logo}
           fileMeta={{
@@ -55,8 +50,8 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
             label: 'Logo',
             acl: S3_ACLS.PUBLIC_READ,
             noTooltips: true,
-            maxSize: 100 * ONE_KB,
           }}
+          displayableFile
           handleSuccess={(file, url) => updateOrganisation({ logo: url })}
         />
       )}

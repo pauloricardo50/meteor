@@ -1,19 +1,33 @@
 import { Meteor } from 'meteor/meteor';
+import { Match, check } from 'meteor/check';
 import { Random } from 'meteor/random';
-import { check, Match } from 'meteor/check';
 
+import fs from 'fs';
+import merge from 'lodash/merge';
 import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
-import fs from 'fs';
 
-import { adminLoans } from '../../loans/queries';
-import { lenderRules } from '../../fragments';
+import { calculatorLoan, lenderRules } from '../../fragments';
+import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import LoanBankPDF from './pdfComponents/LoanBankPDF';
+import LoanBankPDF from '../pdfComponents/LoanBankPDF';
 import { PDF_TYPES } from '../pdfConstants';
 import { validateLoanPdf } from './pdfValidators';
 
 const PDF_URL = 'https://docraptor.com/docs';
+
+const loanBankFragment = merge({}, calculatorLoan(), {
+  name: 1,
+  borrowers: { address: 1, name: 1, age: 1 },
+  properties: { promotion: { name: 1 } },
+  user: {
+    assignedEmployee: {
+      name: 1,
+      email: 1,
+      phoneNumbers: 1,
+    },
+  },
+});
 
 class PDFService {
   makePDF = ({ type, params, options, htmlOnly }) => {
@@ -78,7 +92,7 @@ class PDFService {
             logo: 1,
           });
 
-        const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+        const loan = LoanService.get(loanId, loanBankFragment);
 
         return { ...params, loan, organisation };
       }

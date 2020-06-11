@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 export const generateMatchAllWordsRegexp = words =>
   `${words.map(word => `(?=.*${word})`).join('')}.+`;
 

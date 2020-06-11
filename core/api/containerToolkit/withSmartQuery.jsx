@@ -1,24 +1,15 @@
-import { withQuery } from 'meteor/cultofcoders:grapher-react';
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
-
 import {
-  mapProps,
-  compose,
   branch,
+  compose,
+  mapProps,
   renderComponent,
-  lifecycle,
+  withProps,
 } from 'recompose';
-import React, { useEffect, useState } from 'react';
+
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
-import ClientEventService from '../events/ClientEventService';
-import {
-  addQueryToRefetch,
-  removeQueryToRefetch,
-} from '../methods/clientQueryManager';
+import useMeteorData from '../../hooks/useMeteorData';
 import makeSkipContainer from './skipContainer';
-
-let count = 0;
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render = false, { single }) => {
@@ -43,53 +34,8 @@ const makeMapProps = dataName =>
     ...rest,
   }));
 
-const withQueryRefetcher = lifecycle({
-  componentDidMount() {
-    const { refetch, uniqueQueryName } = this.props;
-
-    if (refetch) {
-      ClientEventService.addListener(uniqueQueryName, refetch);
-    }
-  },
-  componentWillUnmount() {
-    const { refetch, uniqueQueryName } = this.props;
-    if (refetch) {
-      ClientEventService.removeListener(uniqueQueryName, refetch);
-    }
-  },
-});
-
-// This adds all non-reactive queries on the window object, and removes them
-// when the query disappears
-// These queries can then all be refreshed from `clientMethodsConfig`
-// every time a method is called
-const withGlobalQueryManager = (
-  queryName,
-  { reactive },
-  refetchOnMethodCall,
-) => {
-  const shouldActivateGlobalRefetch =
-    refetchOnMethodCall && !reactive && global.window;
-
-  return Component => props => {
-    const [uniqueQueryName] = useState(`${queryName}-hoc-${count++}`);
-    useEffect(() => {
-      if (shouldActivateGlobalRefetch) {
-        addQueryToRefetch(uniqueQueryName, refetchOnMethodCall);
-        return () => removeQueryToRefetch(uniqueQueryName);
-      }
-    }, []);
-
-    return <Component {...props} uniqueQueryName={uniqueQueryName} />;
-  };
-};
-
-const calculateParams = (params, props) => {
-  if (typeof params === 'function') {
-    return params(props);
-  }
-  return params;
-};
+const getFinalValue = (func, props) =>
+  typeof func === 'function' ? func(props) : func;
 
 const withSmartQuery = ({
   query,
@@ -101,26 +47,33 @@ const withSmartQuery = ({
   smallLoader = false,
   refetchOnMethodCall = 'all',
   skip,
+  deps,
+  loadOnRefetch,
 }) => {
-  let completeQuery;
-
-  if (typeof query === 'function') {
-    completeQuery = props => query(props).clone(calculateParams(params, props));
-  } else if (typeof query === 'string') {
-    completeQuery = props =>
-      createQuery({ [query]: calculateParams(params, props) });
-  } else {
-    completeQuery = props => query.clone(calculateParams(params, props));
-  }
-
-  const queryName = query.queryName || query;
-
   const container = compose(
-    withGlobalQueryManager(queryName, queryOptions, refetchOnMethodCall),
-    withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
+    withProps(props => {
+      const finalQuery = getFinalValue(query, props);
+      const finalParams = getFinalValue(params, props);
+      const finalDeps = getFinalValue(deps, props);
+
+      const { data, loading } = useMeteorData(
+        {
+          query: finalQuery,
+          params: finalParams,
+          type: queryOptions.single ? 'single' : 'many',
+          reactive: queryOptions.reactive,
+          refetchOnMethodCall,
+        },
+        finalDeps,
+      );
+
+      return {
+        data,
+        loading: loadOnRefetch ? loading : data ? false : loading,
+      };
+    }),
     withLoading(smallLoader),
     makeRenderMissingDocIfNoData(renderMissingDoc, queryOptions),
-    withQueryRefetcher,
     makeMapProps(dataName),
   );
 

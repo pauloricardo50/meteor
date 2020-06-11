@@ -1,21 +1,21 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 
-import { PROMOTION_STATUS } from '../../../../constants';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
+import generator from '../../../../factories/server';
+import { PROMOTION_STATUS } from '../../../../promotions/promotionConstants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
-import inviteUserToPromotion from '../inviteUserToPromotion';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import generator from '../../../../factories/server';
-import { checkEmails } from '../../../../../utils/testHelpers';
+import inviteUserToPromotion from '../inviteUserToPromotion';
 
 let user;
 let promotionId;
@@ -93,7 +93,13 @@ describe('REST: inviteUserToPromotion', function() {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: { _id: 'pro', _factory: 'pro', organisations: {} },
+      users: {
+        _id: 'pro',
+        _factory: 'pro',
+        organisations: { _id: 'org', name: 'org', $metadata: { isMain: true } },
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
+      },
       promotions: {
         _id: 'promotionId',
         _factory: 'promotion',
@@ -115,14 +121,11 @@ describe('REST: inviteUserToPromotion', function() {
       status: HTTP_STATUS_CODES.OK,
     });
 
-    const invitedUser = UserService.get(
-      { 'emails.address': { $in: [userToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const invitedUser = UserService.getByEmail(userToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(undefined);
 
@@ -141,14 +144,11 @@ describe('REST: inviteUserToPromotion', function() {
       status: HTTP_STATUS_CODES.OK,
     });
 
-    const invitedUser = UserService.get(
-      { 'emails.address': { $in: [userToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const invitedUser = UserService.getByEmail(userToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
@@ -168,15 +168,12 @@ describe('REST: inviteUserToPromotion', function() {
       status: HTTP_STATUS_CODES.OK,
     });
 
-    const invitedUser = UserService.get(
-      { 'emails.address': { $in: [userToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-        tasks: { description: 1 },
-      },
-    );
+    const invitedUser = UserService.getByEmail(userToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+      tasks: { description: 1 },
+    });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
@@ -187,14 +184,9 @@ describe('REST: inviteUserToPromotion', function() {
       const interval = Meteor.setInterval(() => {
         if (tasks.length === 0 && intervalCount < 10) {
           tasks =
-            UserService.get(
-              {
-                'emails.address': { $in: [userToInvite.email] },
-              },
-              {
-                tasks: { description: 1 },
-              },
-            ).tasks || [];
+            UserService.getByEmail(userToInvite.email, {
+              tasks: { description: 1 },
+            }).tasks || [];
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);

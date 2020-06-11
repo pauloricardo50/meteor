@@ -1,12 +1,14 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { ddpWithUserId } from '../../../methods/methodHelpers';
-import { loanSetDisbursementDate } from '../../../methods';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
+import { loanSetDisbursementDate } from '../../../loans/methodDefinitions';
 import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { ACTIVITY_EVENT_METADATA } from '../../activityConstants';
+
+/* eslint-env mocha */
+
 
 describe('loanSetDisbursementDateListener', () => {
   beforeEach(() => {

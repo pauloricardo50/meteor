@@ -1,15 +1,13 @@
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
-  OWN_FUNDS_ROUNDING_AMOUNT,
   MIN_INSURANCE2_WITHDRAW,
+  OWN_FUNDS_ROUNDING_AMOUNT,
 } from '../../config/financeConstants';
-import {
-  OWN_FUNDS_TYPES,
-  RESIDENCE_TYPE,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../api/constants';
-import { arrayify } from '../general';
-import { NotaryFeesCalculator } from '../notaryFees/index';
 import { roundValue } from '../conversionFunctions';
+import { arrayify } from '../general';
+import { NotaryFeesCalculator } from '../notaryFees';
 
 const INITIAL_MIN_BOUND = 0;
 const INITIAL_MAX_BOUND = 1000000;
@@ -89,29 +87,41 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       loanValue,
       canton,
       residenceType,
-      notaryFees: forcedNotaryFees,
-      maxBorrowRatio = this.getMaxBorrowRatio({
+      fees: forcedFees,
+      borrowRatio = this.getMaxBorrowRatio({
         loan: this.createLoanObject({ residenceType }),
       }),
+      purchaseType,
+      previousLoanTranches,
     }) {
-      let notaryFees;
+      let fees;
 
       const finalLoanValue =
-        loanValue || Math.round(propertyValue * maxBorrowRatio);
+        loanValue || Math.round(propertyValue * borrowRatio);
 
-      if (forcedNotaryFees >= 0) {
-        notaryFees = forcedNotaryFees;
+      if (forcedFees >= 0) {
+        fees = forcedFees;
       } else {
         const notaryCalc = new NotaryFeesCalculator({ canton });
-        notaryFees = notaryCalc.getNotaryFeesWithoutLoan({
+        fees = notaryCalc.getNotaryFeesWithoutLoan({
           propertyValue,
           mortgageNoteIncrease: finalLoanValue,
           residenceType,
+          purchaseType,
         }).total;
       }
 
       let requiredOwnFunds = Math.round(
-        propertyValue + notaryFees - finalLoanValue,
+        this.getRequiredOwnFunds({
+          loan: this.createLoanObject({
+            residenceType,
+            purchaseType,
+            propertyValue,
+            wantedLoan: finalLoanValue,
+            notaryFees: fees, // This is a mix of notaryFees and reimbursementFees, but the math doesn't care about the split
+            previousLoanTranches,
+          }),
+        }),
       );
       let ownFunds = [];
 
@@ -232,17 +242,23 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       ownFunds = [],
       loanTranches = [],
+      notaryFees,
+      purchaseType,
+      previousLoanTranches,
       ...rest
     }) {
       return {
         residenceType,
+        purchaseType,
         borrowers,
+        previousLoanTranches,
         structure: {
           wantedLoan,
           propertyValue,
           property: { canton },
           ownFunds,
           loanTranches,
+          notaryFees,
         },
         ...rest,
       };
@@ -255,12 +271,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       residenceType,
       ownFunds,
-      maxBorrowRatio = this.getMaxBorrowRatio({
+      borrowRatio = this.getMaxBorrowRatio({
         loan: this.createLoanObject({ residenceType }),
       }),
+      purchaseType,
+      notaryFees,
     }) {
       const finalLoanValue =
-        loanValue || Math.round(propertyValue * maxBorrowRatio);
+        loanValue || Math.round(propertyValue * borrowRatio);
       const loanObject = this.createLoanObject({
         residenceType,
         borrowers,
@@ -268,6 +286,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         propertyValue,
         canton,
         ownFunds,
+        purchaseType,
+        notaryFees,
       });
 
       // If the calculator has been initialized, reinitialize it according to this new potential loan
@@ -290,7 +310,13 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       return true;
     }
 
-    getMaxPropertyValue({ borrowers, maxBorrowRatio, canton, residenceType }) {
+    getMaxPropertyValue({
+      borrowers,
+      maxBorrowRatio,
+      canton,
+      residenceType,
+      purchaseType,
+    }) {
       // Immediately stop iterating if maxBorrowRatio is above what is allowed
       if (
         this.getMaxBorrowRatio({
@@ -321,20 +347,22 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
         const ownFunds = this.suggestStructure({
           borrowers,
-          maxBorrowRatio,
+          borrowRatio: maxBorrowRatio,
           canton,
           residenceType,
           propertyValue: nextPropertyValue,
+          purchaseType,
         });
 
         if (
           this.suggestedStructureIsValid({
             borrowers,
-            maxBorrowRatio,
+            borrowRatio: maxBorrowRatio,
             canton,
             residenceType,
             propertyValue: nextPropertyValue,
             ownFunds,
+            purchaseType,
           })
         ) {
           minBound = nextPropertyValue;
@@ -370,6 +398,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       direction,
       cache,
+      purchaseType,
     }) {
       let newStepSize = stepSize;
       let foundBetterValue;
@@ -384,6 +413,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
               residenceType,
               maxBorrowRatio: currentBorrowRatio + stepSize,
               canton,
+              purchaseType,
             });
         } else {
           nextValue =
@@ -393,6 +423,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
               residenceType,
               maxBorrowRatio: currentBorrowRatio - stepSize,
               canton,
+              purchaseType,
             });
         }
 
@@ -414,6 +445,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       borrowers,
       residenceType,
       canton,
+      purchaseType,
     }) {
       let borrowRatio = 0.7;
       let foundValue = false;
@@ -449,6 +481,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             maxBorrowRatio: borrowRatio,
             canton,
+            purchaseType,
           });
         setMax(borrowRatio, center);
 
@@ -459,6 +492,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             maxBorrowRatio: borrowRatio - deltaX,
             canton,
+            purchaseType,
           });
         setMax(borrowRatio - deltaX, yLeft);
         const yRight =
@@ -468,6 +502,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             residenceType,
             maxBorrowRatio: borrowRatio + deltaX,
             canton,
+            purchaseType,
           });
         setMax(borrowRatio + deltaX, yRight);
 
@@ -489,6 +524,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             canton,
             direction: 'upwards',
             cache,
+            purchaseType,
           });
           borrowRatio += stepSize;
         } else {
@@ -501,6 +537,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             canton,
             direction: 'downwards',
             cache,
+            purchaseType,
           });
           borrowRatio -= stepSize;
         }
@@ -523,6 +560,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           residenceType,
           maxBorrowRatio: finalBorrowRatio,
           canton,
+          purchaseType,
         });
 
       return {
@@ -537,26 +575,102 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       canton,
       residenceType,
     }) {
-      const { borrowers, residenceType: loanResidenceType } = loan;
+      const {
+        borrowers,
+        residenceType: loanResidenceType,
+        purchaseType,
+      } = loan;
       return this.getMaxPropertyValue({
         borrowers,
         residenceType: residenceType || loanResidenceType,
         maxBorrowRatio,
         canton,
+        purchaseType,
       });
+    }
+
+    getMaxBorrowRatioForLoan({
+      loan,
+      structureId,
+      canton = this.selectPropertyKey({ loan, structureId, key: 'canton' }),
+      residenceType = loan.residenceType,
+    }) {
+      const { borrowers = [], purchaseType } = loan;
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const maxBorrowRatio = this.getMaxBorrowRatio({ loan, structureId });
+      const previousOwnFunds = this.getPreviousOwnFunds({ loan, structureId });
+      const borrowRatioStepSize = 0.005;
+      const updatedBorrowers = borrowers.map(
+        ({ bankFortune = [], ...borrower }, index) => {
+          if (index === 0) {
+            // Inject the current own funds of the property in the borrowers bankFortune
+            // this is not entirely accurate, but we're assuming that there is enough fortune in there
+            // to cover the required 10% cash needed
+            return {
+              ...borrower,
+              bankFortune: [...bankFortune, { value: previousOwnFunds }],
+            };
+          }
+          return borrower;
+        },
+      );
+      let borrowRatio = maxBorrowRatio;
+      let foundStructure = false;
+
+      while (borrowRatio > 0 && !foundStructure) {
+        const ownFunds = this.suggestStructure({
+          borrowers: updatedBorrowers,
+          borrowRatio,
+          canton,
+          residenceType,
+          propertyValue,
+          // FIXME: There could be notary fees related to increasing the mortgage note
+          // this is currently not handled and a potential flaw to take into
+          // account
+          fees: 0,
+          purchaseType,
+        });
+
+        if (
+          this.suggestedStructureIsValid({
+            borrowers: updatedBorrowers,
+            borrowRatio,
+            canton,
+            residenceType,
+            propertyValue,
+            ownFunds,
+            purchaseType,
+            notaryFees: 0,
+          })
+        ) {
+          foundStructure = true;
+        } else {
+          borrowRatio -= borrowRatioStepSize;
+        }
+      }
+
+      return { borrowRatio, propertyValue };
     }
 
     suggestStructureForLoan({ loan, structureId }) {
       const propertyValue = this.getPropAndWork({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });
-      const notaryFees = this.getFees({ loan, structureId }).total;
+      const fees = this.getFees({ loan, structureId }).total;
+      const {
+        borrowers,
+        residenceType,
+        purchaseType,
+        previousLoanTranches,
+      } = loan;
 
       return this.suggestStructure({
-        borrowers: loan.borrowers,
+        borrowers,
         propertyValue,
         loanValue,
-        residenceType: loan.residenceType,
-        notaryFees,
+        residenceType,
+        fees,
+        purchaseType,
+        previousLoanTranches,
       });
     }
   };

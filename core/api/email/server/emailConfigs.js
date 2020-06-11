@@ -1,23 +1,27 @@
-import ReactDOMServer from 'react-dom/server';
-import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-import {
-  EMAIL_TEMPLATES,
-  EMAIL_IDS,
-  CTA_URL_DEFAULT,
-  FOOTER_TYPES,
-  EPOTEK_PHONE,
-  FROM_EMAIL,
-} from '../emailConstants';
-import {
-  getAccountsUrl,
-  notificationTemplateDefaultOverride,
-  notificationAndCtaTemplateDefaultOverride,
-} from './emailHelpers';
-import PromotionLogos from './components/PromotionLogos';
+import moment from 'moment';
+
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import {
+  CTA_URL_DEFAULT,
+  EMAIL_IDS,
+  EMAIL_TEMPLATES,
+  EPOTEK_PHONE,
+  FOOTER_TYPES,
+  FROM_EMAIL,
+} from '../emailConstants';
+import EmailPromotionOptionProgress, {
+  promotionOptionProgressStyles,
+} from './components/EmailPromotionOptionProgress';
+import PromotionLogos from './components/PromotionLogos';
+import {
+  getAccountsUrl,
+  notificationAndCtaTemplateDefaultOverride,
+  notificationTemplateDefaultOverride,
+  renderEmailComponent,
+} from './emailHelpers';
 
 const emailConfigs = {};
 
@@ -162,9 +166,10 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       templateContent: [
         {
           name: 'logos',
-          content: ReactDOMServer.renderToStaticMarkup(
-            PromotionLogos({ logoUrls }),
-          ),
+          content: renderEmailComponent({
+            Component: PromotionLogos,
+            props: { logoUrls },
+          }),
         },
       ],
     };
@@ -290,7 +295,7 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       basicDocumentsOnly,
       customMessage = '',
       assigneeName = 'e-Potek',
-      assigneeAddress = 'info@e-potek.ch',
+      assigneeAddress = 'team@e-potek.ch',
       bccAddresses = [],
       ccAddresses = [],
       mainRecipientIsBcc = false,
@@ -298,7 +303,9 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
     { title, cta },
   ) {
     const { variables } = this.template;
-    const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
+    // This page is accessible without a user account, so make sure we send the
+    // person to the login page first. Otherwise he will see a "doc not found" error message
+    const ctaUrl = `${Meteor.settings.public.subdomains.app}/login?path=/loans/${loan._id}`;
 
     return {
       variables: [
@@ -311,9 +318,10 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       templateContent: [
         {
           name: 'body-content-1',
-          content: ReactDOMServer.renderToStaticMarkup(
-            LoanChecklistEmail({ loan, basicDocumentsOnly }),
-          ),
+          content: renderEmailComponent({
+            Component: LoanChecklistEmail,
+            props: { loan, basicDocumentsOnly },
+          }),
         },
       ],
       senderName: assigneeName,
@@ -332,11 +340,16 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
   }),
 });
 
-const promotionEmailOverridesPro = function(
-  { promotionId, fromEmail },
-  { title, body, cta },
-) {
+const promotionEmailOverridesPro = function(params, { title, body, cta }) {
+  const {
+    promotionId,
+    promotionOptionId,
+    fromEmail,
+    showProgress,
+    anonymize,
+  } = params;
   const { variables } = this.template;
+
   return {
     variables: [
       { name: variables.TITLE, content: title },
@@ -346,7 +359,19 @@ const promotionEmailOverridesPro = function(
         name: variables.CTA_URL,
         content: `${Meteor.settings.public.subdomains.pro}/promotions/${promotionId}`,
       },
+      { name: variables.CSS, content: promotionOptionProgressStyles },
     ],
+    templateContent: showProgress
+      ? [
+          {
+            name: 'body-content-1',
+            content: renderEmailComponent({
+              Component: EmailPromotionOptionProgress,
+              props: { promotionOptionId, anonymize },
+            }),
+          },
+        ]
+      : undefined,
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
@@ -378,6 +403,11 @@ addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT, {
 });
 
 addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides: promotionEmailOverridesPro,
 });

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Mutation } from 'meteor/cultofcoders:mutations';
 import { Match, check } from 'meteor/check';
+import { Mutation } from 'meteor/cultofcoders:mutations';
+
 import { getCookie } from '../../utils/cookiesHelpers';
 import { TRACKING_COOKIE } from '../analytics/analyticsConstants';
 import { internalMethod } from './methodHelpers';
@@ -8,7 +9,9 @@ import { internalMethod } from './methodHelpers';
 if (Meteor.isTest || Meteor.isAppTest) {
   Mutation.isDebugEnabled = false;
 } else {
-  Mutation.isDebugEnabled = { omit: ['analyticsPage', 'analyticsLogin'] };
+  Mutation.isDebugEnabled = {
+    omit: ['analyticsPage', 'analyticsLogin', 'logError'],
+  };
 }
 
 export class Method extends Mutation {
@@ -84,6 +87,14 @@ export class Method extends Mutation {
     return internalMethod(() => this.run(...args));
   }
 
+  setRateLimit(rateLimit, options) {
+    if (Meteor.isServer) {
+      const { RateLimiter } = require('../../utils/server/rate-limit');
+      const { name } = this.config;
+      this.rateLimiter = new RateLimiter({ name, rateLimit, options });
+    }
+  }
+
   setHandler(fn) {
     const { config } = this;
     const { name, params } = config;
@@ -138,6 +149,9 @@ export class Method extends Mutation {
         self.executionAOP.executeAfters(aopData);
 
         if (error) {
+          if (self.rateLimiter) {
+            self.rateLimiter.clearMethodLimiter();
+          }
           throw error;
         }
 

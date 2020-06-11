@@ -1,38 +1,42 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
-import { lifecycle } from 'recompose';
 import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
+import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
 import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
+import { lifecycle } from 'recompose';
 
-import Tabs from 'core/components/Tabs';
-import Icon from 'core/components/Icon';
-import PercentWithStatus from 'core/components/PercentWithStatus';
-import T from 'core/components/Translation';
-import {
-  ROLES,
-  PURCHASE_TYPE,
-  PROMOTIONS_COLLECTION,
-  BORROWERS_COLLECTION,
-  REVENUES_COLLECTION,
-} from 'core/api/constants';
-import FileTabs from 'core/components/FileTabs/loadable';
-import { createRoute } from 'core/utils/routerUtils';
-import Calculator from 'core/utils/Calculator';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { ROLES } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { PROPERTIES_COLLECTION } from 'imports/core/api/constants';
+import FileTabs from 'core/components/FileTabs/loadable';
+import Icon from 'core/components/Icon';
+import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
+import PercentWithStatus from 'core/components/PercentWithStatus';
+import Tabs from 'core/components/Tabs';
+import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
+import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
-import OverviewTab from './OverviewTab/loadable';
-import BorrowersTab from './BorrowersTab/loadable';
-import PropertiesTab from './PropertiesTab/loadable';
 // import CommunicationTab from './CommunicationTab';
 // import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab/loadable';
-import FinancingTab from './FinancingTab/loadable';
+import BorrowersTab from './BorrowersTab/loadable';
 import DevTab from './DevTab/loadable';
-import PromotionsTab from './PromotionsTab/loadable';
-import RefinancingTab from './RefinancingTab/loadable';
+import FinancingTab from './FinancingTab/loadable';
+import InsuranceRequestsTab from './InsuranceRequestsTab/loadable';
 import LendersTab from './LendersTab/loadable';
+import OverviewTab from './OverviewTab/loadable';
+import PromotionsTab from './PromotionsTab/loadable';
+import PropertiesTab from './PropertiesTab/loadable';
+import RefinancingTab from './RefinancingTab/loadable';
 import RevenuesTab from './RevenuesTab/loadable';
 
 const getTabs = props => {
@@ -58,6 +62,7 @@ const getTabs = props => {
       id: 'refinancing',
       Component: RefinancingTab,
       style: { color: 'red' },
+      icon: <RefinancingIcon style={{ width: 20, height: 20 }} />,
     },
     {
       id: 'borrowers',
@@ -84,6 +89,11 @@ const getTabs = props => {
       icon: collectionIcons[PROPERTIES_COLLECTION],
     },
     {
+      id: 'insuranceRequests',
+      icon: collectionIcons[INSURANCE_REQUESTS_COLLECTION],
+      Component: InsuranceRequestsTab,
+    },
+    {
       id: 'lenders',
       Component: LendersTab,
       icon: <FontAwesomeIcon icon={faUniversity} />,
@@ -108,7 +118,7 @@ const getTabs = props => {
       icon: collectionIcons[REVENUES_COLLECTION],
     },
     { id: 'actions', Component: ActionsTab, icon: 'settings' },
-    currentUser.roles.includes(ROLES.DEV) && {
+    Roles.userIsInRole(currentUser, ROLES.DEV) && {
       id: 'dev',
       Component: DevTab,
       icon: 'developerMode',

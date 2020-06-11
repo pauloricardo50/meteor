@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { apiProperty } from 'core/api/fragments';
+import { propertyUpdate } from '../../../properties/methodDefinitions';
 import PropertyService from '../../../properties/server/PropertyService';
-import { propertyUpdate } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
-import { checkQuery, impersonateSchema } from './helpers';
 import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, impersonateSchema } from './helpers';
+import { apiProperty } from './insertProperty';
 
 const updatePropertyAPI = ({
   user: { _id: userId },
@@ -35,7 +35,7 @@ const updatePropertyAPI = ({
 
   return withMeteorUserId({ userId, impersonateUser }, () =>
     propertyUpdate.run({ propertyId, object }).then(() => {
-      const property = PropertyService.get(propertyId, apiProperty());
+      const property = PropertyService.get(propertyId, apiProperty);
       return Promise.resolve({
         status: HTTP_STATUS_CODES.OK,
         message: `Property with id "${params.propertyId}" updated !`,

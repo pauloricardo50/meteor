@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 
-import { getCookie } from 'core/utils/cookiesHelpers';
+import { TRACKING_COOKIE } from '../../../../api/analytics/analyticsConstants';
+import { getCookie } from '../../../../utils/cookiesHelpers';
 import HistoryWatcher from '../../HistoryWatcher';
 
 const routes = {
@@ -62,7 +62,7 @@ describe('HistoryWatcher', () => {
     });
 
     it('generates a new tracking id', () => {
-      expect(getCookie(TRACKING_COOKIE)).to.equal('');
+      expect(getCookie(TRACKING_COOKIE)).to.equal(null);
       watcher.generateTrackingId();
       expect(getCookie(TRACKING_COOKIE)).to.not.equal('');
     });

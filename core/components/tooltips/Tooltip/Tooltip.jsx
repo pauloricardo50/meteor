@@ -1,15 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import omit from 'lodash/omit';
+import PropTypes from 'prop-types';
 
-import DialogSimple from '../../DialogSimple/loadable';
 import Button from '../../Button';
-import defaultIntlValues from '../../Translation/defaultIntlValues';
+import DialogSimple from '../../DialogSimple/loadable';
 import T from '../../Translation';
 import TooltipSynonyms from '../TooltipSynonyms';
 
@@ -51,7 +50,7 @@ const Tooltip = ({
           <TooltipSynonyms tooltipId={id} match={match} />
           <br />
           <br />
-          <T id={getTooltip2Id(id)} values={defaultIntlValues} />
+          <T id={getTooltip2Id(id)} />
         </DialogSimple>
       </span>
     );

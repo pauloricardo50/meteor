@@ -1,8 +1,8 @@
 import React from 'react';
 
-import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import { getUserLocale, getFormats } from 'core/utils/localization';
 import { proUser } from 'core/api/users/queries';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
+import { getFormats, getUserLocale } from 'core/utils/localization';
 
 import messagesFR from '../../../lang/fr.json';
 import ProLayout from '../../client/layout/loadable';
@@ -14,7 +14,34 @@ const ProRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={PRO_ROUTES}
-    currentUser={{ query: proUser }}
+    currentUser={{
+      query: proUser,
+      params: {
+        $body: {
+          apiPublicKey: 1,
+          assignedEmployee: { email: 1, name: 1 },
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          name: 1,
+          organisations: {
+            name: 1,
+            commissionRates: { _id: 1 },
+            users: { _id: 1 },
+          },
+          phoneNumbers: 1,
+          promotions: { status: 1, userLinks: 1, name: 1 },
+          proProperties: {
+            userLinks: 1,
+            status: 1,
+            address1: 1,
+            zipCode: 1,
+            city: 1,
+          },
+          roles: 1,
+        },
+      },
+    }}
   >
     <ProLayout>
       <Switch>

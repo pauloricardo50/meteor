@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
-import Button from 'core/components/Button';
+
 import ContactDialogFormContainer from './ContactDialogFormContainer';
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {
@@ -29,19 +29,7 @@ const ModifyContactDialogForm = ({
       raised: true,
       primary: true,
     }}
-    renderAdditionalActions={({ closeDialog, setDisableActions }) => (
-      <Button
-        onClick={() => {
-          setDisableActions(true);
-          return removeContact(contact._id)
-            .then(closeDialog)
-            .finally(() => setDisableActions(false));
-        }}
-        error
-      >
-        <T id="general.delete" />
-      </Button>
-    )}
+    onDelete={() => removeContact(contact._id)}
   />
 );
 

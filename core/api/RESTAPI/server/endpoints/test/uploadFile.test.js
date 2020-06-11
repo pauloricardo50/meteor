@@ -1,32 +1,39 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { expect } from 'chai';
-import { appendFileSync } from 'fs';
 import { Random } from 'meteor/random';
 
-import {
-  PROPERTY_DOCUMENTS,
-  OBJECT_STORAGE_PATH,
-} from 'core/api/files/fileConstants';
-import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
+import { expect } from 'chai';
+import { appendFileSync } from 'fs';
 
-import PropertyService from 'core/api/properties/server/PropertyService';
+import {
+  flushFileUploadDir,
+  makeFileUploadDir,
+} from '../../../../../utils/filesUtils';
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
+import {
+  OBJECT_STORAGE_PATH,
+  PROPERTY_DOCUMENTS,
+} from '../../../../files/fileConstants';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
 } from '../../../../properties/propertyConstants';
-import { uploadFile } from '../../test/apiTestHelpers.test';
+import PropertyService from '../../../../properties/server/PropertyService';
 import RESTAPI from '../../RESTAPI';
-import { uploadFileAPI } from '..';
 import { FILE_UPLOAD_DIR, HTTP_STATUS_CODES } from '../../restApiConstants';
+import { uploadFile } from '../../test/apiTestHelpers.test';
+import { uploadFileAPI } from '..';
 
 const api = new RESTAPI();
 let propertyId = '';
 api.addEndpoint('/files', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
+  analyticsParams: req => {
+    const { files: { file = {} } = {} } = req;
+    return { fileSize: file.size };
+  },
 });
 
 describe('REST: uploadFile', function() {

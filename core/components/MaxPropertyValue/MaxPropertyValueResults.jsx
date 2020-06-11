@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import Calculator from 'core/utils/Calculator';
-import { RESIDENCE_TYPE } from '../../api/constants';
-import T from '../Translation';
-import Select from '../Select';
+import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
+import Calculator from '../../utils/Calculator';
 import Button from '../Button';
 import Icon from '../Icon';
+import Select from '../Select';
+import T from '../Translation';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 import MaxPropertyValueSharing from './MaxPropertyValueSharing';
 
@@ -34,8 +34,10 @@ const MaxPropertyValueResults = ({
     hasPromotion,
     shareSolvency,
     _id: loanId,
+    purchaseType,
   } = loan;
-  const hash = Calculator.getBorrowerFormHash({ loan });
+  const previousLoan = Calculator.getPreviousLoanValue({ loan });
+  const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
   return (
@@ -43,7 +45,7 @@ const MaxPropertyValueResults = ({
       <div className="top">
         <div>
           <h2>
-            <T id="MaxPropertyValue.title" />
+            <T id="MaxPropertyValue.title" values={{ purchaseType }} />
           </h2>
         </div>
         <div className="max-property-value-results-selects">
@@ -83,6 +85,8 @@ const MaxPropertyValueResults = ({
           {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
           residenceType={residenceType}
           canton={canton}
+          purchaseType={purchaseType}
+          previousLoan={previousLoan}
         />
       </div>
       <Button

@@ -1,31 +1,33 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import generator from '../../factories/server';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import LoanService from '../../loans/server/LoanService';
+import { migrate } from '../../migrations/server';
 import { cleanAllData } from '../../migrations/server/dataCleaning';
-import { LOANS_COLLECTION } from '../../constants';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
 import { Services } from '../../server';
-import LoanService from '../../loans/server/LoanService';
-import BorrowerService from '../../borrowers/server/BorrowerService';
-import {
-  getMixpanelAuthorization,
-  addBorrower,
-  removeBorrower,
-  submitContactForm,
-  throwDevError,
-  setAdditionalDoc,
-  removeAdditionalDoc,
-  migrateToLatest,
-  updateDocument,
-  updateDocumentUnset,
-  generateScenario,
-  referralExists,
-  cleanDatabase,
-} from '../methodDefinitions';
-import generator from '../../factories/server';
-import { migrate } from '../../migrations/server';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
-import OrganisationService from '../../organisations/server/OrganisationService';
+import {
+  addBorrower,
+  cleanDatabase,
+  generateScenario,
+  getMixpanelAuthorization,
+  migrateRoles,
+  migrateToLatest,
+  referralExists,
+  removeAdditionalDoc,
+  removeBorrower,
+  setAdditionalDoc,
+  submitContactForm,
+  throwDevError,
+  updateDocument,
+  updateDocumentUnset,
+} from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -104,6 +106,11 @@ migrateToLatest.setHandler(({ userId }) => {
   migrate();
 });
 
+migrateRoles.setHandler(({ userId }) => {
+  SecurityService.checkCurrentUserIsDev();
+  Roles._forwardMigrate();
+});
+
 updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   const service = Services[collection];
   try {
@@ -138,7 +145,7 @@ generateScenario.setHandler(({ userId }, { scenario }) => {
 referralExists.setHandler((context, params) => {
   const { refId } = params;
   const referralUser = UserService.get(
-    { _id: refId, roles: { $in: [ROLES.PRO] } },
+    { _id: refId, 'roles._id': ROLES.PRO },
     { _id: 1 },
   );
   const referralOrg = OrganisationService.get(refId, { _id: 1 });

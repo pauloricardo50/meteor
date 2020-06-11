@@ -1,18 +1,19 @@
-import React from 'react';
-import SimpleSchema from 'simpl-schema';
+import React, { useState } from 'react';
 import omit from 'lodash/omit';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import { withSmartQuery } from 'core/api';
-import { address } from 'core/api/helpers/sharedSchemas';
 import {
-  contactInsert,
-  contactUpdate,
-  contactRemove,
   contactChangeOrganisations,
-} from 'core/api/methods';
-import { adminOrganisations } from 'core/api/organisations/queries';
+  contactInsert,
+  contactRemove,
+  contactUpdate,
+} from 'core/api/contacts/methodDefinitions';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { address } from 'core/api/helpers/sharedSchemas';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import T from 'core/components/Translation';
+import useSearchParams from 'core/hooks/useSearchParams';
 
 const schema = existingOrganisations =>
   new SimpleSchema({
@@ -23,8 +24,8 @@ const schema = existingOrganisations =>
     'organisations.$._id': {
       type: String,
       customAllowedValues: {
-        query: adminOrganisations,
-        params: () => ({ $body: { name: 1 } }),
+        query: ORGANISATIONS_COLLECTION,
+        params: () => ({ name: 1, $options: { sort: { name: 1 } } }),
       },
       uniforms: {
         transform: ({ name }) => name,
@@ -107,36 +108,53 @@ const changeOrganisations = ({ contactId, organisations, useSameAddress }) =>
 
 export default compose(
   withSmartQuery({
-    query: adminOrganisations,
+    query: ORGANISATIONS_COLLECTION,
     queryOptions: { reactive: false },
-    params: { $body: { _id: 1 } },
+    params: { _id: 1, $options: { sort: { name: 1 } } },
     dataName: 'existingOrganisations',
     smallLoader: true,
   }),
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ existingOrganisations }) => ({
-    schema: schema(existingOrganisations),
-    insertContact: ({ organisations = [], useSameAddress, ...contact }) =>
-      contactInsert.run({ contact }).then(contactId =>
-        changeOrganisations({
-          contactId,
-          organisations,
+  withProps(({ existingOrganisations, model }) => {
+    const initialSearchParams = useSearchParams();
+    const [searchParams, setSearchParams] = useState(initialSearchParams);
+    const { email, ...newContact } = searchParams || {};
+
+    const finalModel = Object.keys(searchParams).length
+      ? {
+          ...newContact,
+          emails: email && [{ address: email }],
+        }
+      : model;
+
+    return {
+      schema: schema(existingOrganisations),
+      insertContact: ({ organisations = [], useSameAddress, ...contact }) =>
+        contactInsert.run({ contact }).then(contactId =>
+          changeOrganisations({
+            contactId,
+            organisations,
+            useSameAddress,
+          })
+            .then(() => setSearchParams({}))
+            .then(() => contactId),
+        ),
+      modifyContact: data => {
+        const {
+          _id: contactId,
+          organisations = [],
           useSameAddress,
-        }).then(() => contactId),
-      ),
-    modifyContact: data => {
-      const {
-        _id: contactId,
-        organisations = [],
-        useSameAddress,
-        ...object
-      } = data;
-      return contactUpdate
-        .run({ contactId, object })
-        .then(() =>
-          changeOrganisations({ contactId, organisations, useSameAddress }),
-        );
-    },
-    removeContact: contactId => contactRemove.run({ contactId }),
-  })),
+          ...object
+        } = data;
+        return contactUpdate
+          .run({ contactId, object })
+          .then(() =>
+            changeOrganisations({ contactId, organisations, useSameAddress }),
+          );
+      },
+      removeContact: contactId => contactRemove.run({ contactId }),
+      model: finalModel,
+      openOnMount: searchParams.addContact,
+      resetForm: () => setSearchParams({}),
+    };
+  }),
 );

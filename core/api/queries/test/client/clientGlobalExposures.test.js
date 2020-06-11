@@ -1,14 +1,17 @@
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
 import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
-import { userLogin, resetDatabase } from 'core/utils/testHelpers/index';
-import { ROLES } from 'core/api/users/userConstants';
+import { expect } from 'chai';
+
+import {
+  generateScenario,
+  resetDatabase,
+  userLogin,
+} from '../../../../utils/testHelpers';
+import { ROLES } from '../../../users/userConstants';
 
 describe('Global Exposures', () => {
-  beforeEach(() => {
-    resetDatabase();
-  });
+  beforeEach(() => resetDatabase());
 
   afterEach(done =>
     Meteor.logout(err => {
@@ -39,7 +42,7 @@ describe('Global Exposures', () => {
   it('cannot fetch data when user is not an admin', async () => {
     await userLogin({ role: ROLES.USER });
     try {
-      const user = await new Promise((resolve, reject) =>
+      await new Promise((resolve, reject) =>
         createQuery({ users: { emails: 1 } }).fetchOne((err, res) =>
           err ? reject(err) : resolve(res),
         ),
@@ -48,5 +51,22 @@ describe('Global Exposures', () => {
     } catch (error) {
       expect(error.message).to.include('NOT_AUTHORIZED');
     }
+  });
+
+  it('returns transformed data', async () => {
+    const { _id: userId } = await userLogin({ role: ROLES.ADMIN });
+    await generateScenario({
+      loans: { user: { _id: userId } },
+    });
+
+    const user = await new Promise((resolve, reject) =>
+      createQuery({
+        users: { loans: { _id: 1 } },
+      }).fetchOne((err, res) => (err ? reject(err) : resolve(res))),
+    );
+
+    expect(user._collection).to.equal('users');
+    // FIXME: This should work
+    // expect(user.loans[0]._collection).to.equal('loans')
   });
 });

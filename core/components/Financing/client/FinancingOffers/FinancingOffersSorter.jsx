@@ -1,7 +1,7 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import Select from 'core/components/Select';
+import Select from '../../../Select';
+import T from '../../../Translation';
 import FinancingOffersSorterContainer from './FinancingOffersSorterContainer';
 
 const FinancingOffersSorter = ({ options, sortBy, setSort, ...props }) => (

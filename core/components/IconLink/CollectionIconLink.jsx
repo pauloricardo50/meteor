@@ -1,28 +1,33 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
 import { Roles } from 'meteor/alanning:roles';
 
+import React from 'react';
+import cx from 'classnames';
+
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../../api/contacts/contactsConstants';
 import { getUserNameAndOrganisation } from '../../api/helpers';
-import IconLink from './IconLink';
-import {
-  LOANS_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  OFFERS_COLLECTION,
-  PROMOTIONS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
-  ROLES,
-} from '../../api/constants';
-import { employeesById } from '../../arrays/epotekEmployees';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from '../../api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { OFFERS_COLLECTION } from '../../api/offers/offerConstants';
+import { ORGANISATIONS_COLLECTION } from '../../api/organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import { ROLES, USERS_COLLECTION } from '../../api/users/userConstants';
 import collectionIcons from '../../arrays/collectionIcons';
+import { employeesById } from '../../arrays/epotekEmployees';
+import {
+  getInsuranceLinkTitle,
+  getInsuranceRequestLinkTitle,
+  getLoanLinkTitle,
+} from './collectionIconLinkHelpers';
 import CollectionIconLinkPopup from './CollectionIconLinkPopup/CollectionIconLinkPopup';
-import { getLoanLinkTitle } from './collectionIconLinkHelpers';
+import IconLink from './IconLink';
 
 const showPopups = Meteor.microservice === 'admin';
 
-const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
+const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
   if (!docId) {
     return {
       link: '/',
@@ -31,7 +36,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     };
   }
 
-  switch (collection) {
+  switch (_collection) {
     case LOANS_COLLECTION: {
       let text;
 
@@ -45,11 +50,8 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
     }
     case USERS_COLLECTION: {
       let text;
-      const { organisations = [], roles = [] } = data;
-      if (
-        (roles.includes(ROLES.ADMIN) || roles.includes(ROLES.DEV)) &&
-        employeesById[docId]
-      ) {
+      const { organisations = [] } = data;
+      if (Roles.userIsInRole(data, ROLES.ADMIN) && employeesById[docId]) {
         text = (
           <img
             src={employeesById[docId].src}
@@ -60,7 +62,9 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
       } else if (organisations.length) {
         text = getUserNameAndOrganisation({ user: data });
       } else {
-        text = data.name;
+        text =
+          data.name ||
+          [data.firstName, data.lastName].filter(name => name).join(' ');
       }
 
       return {
@@ -118,6 +122,22 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
         text: data.name,
         hasPopup: true,
       };
+    case INSURANCE_REQUESTS_COLLECTION:
+      return {
+        link: `/insuranceRequests/${docId}`,
+        text: getInsuranceRequestLinkTitle(data),
+        hasPopup: true,
+      };
+    case INSURANCES_COLLECTION: {
+      const { insuranceRequest, insuranceRequestCache = [] } = data;
+      const insuranceRequestId =
+        insuranceRequest?._id || insuranceRequestCache[0]?._id;
+      return {
+        link: `/insuranceRequests/${insuranceRequestId}/${docId}`,
+        text: getInsuranceLinkTitle(data),
+        hasPopup: true,
+      };
+    }
     case 'NOT_FOUND':
       return {
         link: '/',
@@ -131,21 +151,21 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}, variant) => {
 };
 
 const CollectionIconLink = ({
+  children,
+  data,
   forceOpen,
   iconClassName,
-  relatedDoc,
+  iconStyle,
+  noRoute,
+  onClick,
+  placement,
+  relatedDoc = {},
+  replacementPopup,
   showIcon,
   stopPropagation,
-  variant,
-  placement,
-  data,
-  replacementPopup,
-  noRoute,
-  iconStyle,
-  children,
-  onClick,
+  className,
 }) => {
-  const { collection, _id: docId } = relatedDoc;
+  const { _collection, _id: docId } = relatedDoc;
 
   if (!docId) {
     return null;
@@ -153,10 +173,10 @@ const CollectionIconLink = ({
 
   const {
     link,
-    icon = collectionIcons[collection],
+    icon = collectionIcons[_collection],
     text,
     hasPopup,
-  } = getIconConfig(relatedDoc, variant);
+  } = getIconConfig(relatedDoc);
 
   if ((showPopups && hasPopup) || replacementPopup) {
     return (
@@ -172,7 +192,11 @@ const CollectionIconLink = ({
           link={link}
           icon={icon}
           text={text}
-          className="collection-icon"
+          className={cx(
+            'collection-icon',
+            { 'font-awesome': typeof icon !== 'string' },
+            className,
+          )}
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
           iconStyle={iconStyle}
@@ -192,7 +216,9 @@ const CollectionIconLink = ({
       icon={icon}
       text={text}
       stopPropagation={stopPropagation}
-      className="collection-icon"
+      className={cx('collection-icon', {
+        'font-awesome': typeof icon !== 'string',
+      })}
       iconClassName={iconClassName}
       iconStyle={iconStyle}
       showIcon={showIcon}

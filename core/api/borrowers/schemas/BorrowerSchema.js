@@ -1,16 +1,17 @@
 import SimpleSchema from 'simpl-schema';
+
 import {
-  createdAt,
-  updatedAt,
   additionalDocuments,
-  mortgageNoteLinks,
+  createdAt,
   documentsField,
+  mortgageNoteLinks,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
 import { initialDocuments } from '../borrowersAdditionalDocuments';
 import {
-  personalInfoSchema,
   financeInfoSchema,
   ownCompaniesSchema,
+  personalInfoSchema,
 } from './otherSchemas';
 
 // Documentation is in the google drive dev/MongoDB Schemas

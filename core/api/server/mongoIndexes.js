@@ -1,22 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 
-import {
-  Activities,
-  Borrowers,
-  Loans,
-  Offers,
-  Properties,
-  Sessions,
-  Tasks,
-  Users,
-} from '..';
+import Activities from '../activities';
+import Borrowers from '../borrowers';
+import Loans from '../loans/loans';
+import Offers from '../offers';
+import Properties from '../properties';
+import Sessions from '../sessions';
+import Tasks from '../tasks/tasks';
 import UpdateWatchers from '../updateWatchers/server/updateWatchers';
+import Users from '../users/users';
 
 Meteor.startup(() => {
   Activities._ensureIndex({ 'loanLink._id': 1 });
   Activities._ensureIndex({ 'userLink._id': 1 });
   Borrowers._ensureIndex({ userId: 1 });
   Loans._ensureIndex({ userId: 1 });
+  Loans._ensureIndex({ propertyIds: 1 });
   Offers._ensureIndex({ loanId: 1 });
   Properties._ensureIndex({ userId: 1 });
   Sessions._ensureIndex({ connectionId: 1 });

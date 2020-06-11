@@ -1,19 +1,23 @@
-/* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-import moment from 'moment';
 import { expect } from 'chai';
+import moment from 'moment';
 
-import LoanService from 'core/api/loans/server/LoanService';
-import {
-  REVENUE_STATUS,
-  COMMISSION_STATUS,
-} from 'core/api/revenues/revenueConstants';
-import { loanSetStatus } from 'core/api/loans/index';
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
+/* eslint-env mocha */
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
+import { INSURANCE_REQUEST_STATUS } from '../../../insuranceRequests/insuranceRequestConstants';
+import { insuranceRequestUpdateStatus } from '../../../insuranceRequests/methodDefinitions';
+import { INSURANCE_STATUS } from '../../../insurances/insuranceConstants';
+import { insuranceUpdateStatus } from '../../../insurances/methodDefinitions';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
-import { loanMonitoring, loanStatusChanges } from '../resolvers';
+import { loanSetStatus } from '../../../loans/methodDefinitions';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import {
+  COMMISSION_STATUS,
+  REVENUE_STATUS,
+} from '../../../revenues/revenueConstants';
+import { ACQUISITION_CHANNELS } from '../../../users/userConstants';
+import { collectionStatusChanges, loanMonitoring } from '../resolvers';
 
 describe('monitoring', () => {
   beforeEach(() => {
@@ -37,9 +41,9 @@ describe('monitoring', () => {
       });
 
       expect(result).to.deep.equal([
-        { _id: LOAN_STATUS.CLOSING, count: 1 },
-        { _id: LOAN_STATUS.ONGOING, count: 1 },
         { _id: LOAN_STATUS.LEAD, count: 2 },
+        { _id: LOAN_STATUS.ONGOING, count: 1 },
+        { _id: LOAN_STATUS.CLOSING, count: 1 },
       ]);
     });
 
@@ -64,18 +68,18 @@ describe('monitoring', () => {
 
       expect(result).to.deep.equal([
         {
-          _id: LOAN_STATUS.CLOSING,
-          revenues: 200,
-          expectedRevenues: 100,
-          paidRevenues: 100,
-          commissionsToPay: 0,
-          commissionsPaid: 0,
-        },
-        {
           _id: LOAN_STATUS.LEAD,
           revenues: 100,
           expectedRevenues: 100,
           paidRevenues: 0,
+          commissionsToPay: 0,
+          commissionsPaid: 0,
+        },
+        {
+          _id: LOAN_STATUS.CLOSING,
+          revenues: 200,
+          expectedRevenues: 100,
+          paidRevenues: 100,
           commissionsToPay: 0,
           commissionsPaid: 0,
         },
@@ -110,8 +114,8 @@ describe('monitoring', () => {
       });
 
       expect(result).to.deep.equal([
-        { _id: LOAN_STATUS.CLOSING, loanValue: 4000 },
         { _id: LOAN_STATUS.LEAD, loanValue: 8000 },
+        { _id: LOAN_STATUS.CLOSING, loanValue: 4000 },
       ]);
     });
 
@@ -269,156 +273,916 @@ describe('monitoring', () => {
     });
   });
 
-  describe('loanStatusChanges', function() {
+  describe('collectionStatusChanges', function() {
     this.timeout(5000);
-    it('groups status changes', async () => {
-      generator({
-        loans: [
-          { _id: 'loan1', status: LOAN_STATUS.QUALIFIED_LEAD },
-          { _id: 'loan2', status: LOAN_STATUS.QUALIFIED_LEAD },
-        ],
-        users: { _id: 'admin', _factory: 'admin' },
+
+    describe('with loans', () => {
+      it('groups status changes, and breaks them down by assignee', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+            },
+            {
+              _id: 'loan2',
+              assignees: { _id: 'admin2', $metadata: { isMain: true } },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({
+            loanId: 'loan1',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+        );
+        await ddpWithUserId('admin2', () =>
+          loanSetStatus.run({
+            loanId: 'loan2',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'loans',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(2);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: LOAN_STATUS.LEAD,
+              nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+            {
+              prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              nextStatus: LOAN_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].loans.length).to.equal(2);
+        expect(result[0].loans[0]._id).to.equal('loan1');
+        expect(result[0].loans[1]._id).to.equal('loan1');
+
+        expect(result[1]).to.deep.include({
+          _id: 'admin2',
+          totalStatusChangeCount: 1,
+          statusChanges: [
+            {
+              prevStatus: LOAN_STATUS.LEAD,
+              nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[1].loans.length).to.equal(1);
+        expect(result[1].loans[0]._id).to.equal('loan2');
       });
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.CLOSING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.PENDING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({
-          loanId: 'loan2',
-          status: LOAN_STATUS.FINALIZED,
-        }),
-      );
 
-      const result = loanStatusChanges({
-        fromDate: moment()
-          .subtract(1, 'd')
-          .toDate(),
-        toDate: moment()
-          .add(1, 'd')
-          .toDate(),
+      it('does not include TEST loans', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({
+            loanId: 'loan1',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.TEST }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'loans',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(0);
       });
 
-      expect(result.length).to.equal(5);
+      it('does not include loan status changes to TEST but still includes status changes from TEST', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+            },
+          ],
+        });
 
-      const qualifiedLeadToOngoing = result.find(
-        ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.QUALIFIED_LEAD &&
-          nextStatus === LOAN_STATUS.ONGOING,
-      );
-      expect(qualifiedLeadToOngoing).to.deep.include({
-        _id: {
-          prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
-          nextStatus: LOAN_STATUS.ONGOING,
-        },
-        count: 2,
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.TEST }),
+        );
+
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'loans',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+
+        expect(result[0].loans[0]._id).to.equal('loan1');
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 1,
+          statusChanges: [
+            {
+              prevStatus: LOAN_STATUS.TEST,
+              nextStatus: LOAN_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
       });
 
-      const pendingToFinalized = result.find(
-        ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.PENDING &&
-          nextStatus === LOAN_STATUS.FINALIZED,
-      );
-      expect(pendingToFinalized).to.deep.include({
-        _id: {
-          prevStatus: LOAN_STATUS.PENDING,
-          nextStatus: LOAN_STATUS.FINALIZED,
-        },
-        count: 1,
+      it('filters by referral', async () => {
+        generator({
+          organisations: { _id: 'org' },
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+            { _id: 'user', referredByOrganisationLink: 'org' },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+              userId: 'user',
+            },
+            {
+              _id: 'loan2',
+              assignees: { _id: 'admin2', $metadata: { isMain: true } },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({
+            loanId: 'loan1',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+        );
+        await ddpWithUserId('admin2', () =>
+          loanSetStatus.run({
+            loanId: 'loan2',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          organisationId: 'org',
+          collection: 'loans',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: LOAN_STATUS.LEAD,
+              nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+            {
+              prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              nextStatus: LOAN_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].loans.length).to.equal(2);
+        expect(result[0].loans[0]._id).to.equal('loan1');
+        expect(result[0].loans[1]._id).to.equal('loan1');
+      });
+
+      it('filters by acquisition channel', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+            {
+              _id: 'user',
+              acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+            },
+          ],
+          loans: [
+            {
+              _id: 'loan1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+              userId: 'user',
+            },
+            {
+              _id: 'loan2',
+              assignees: { _id: 'admin2', $metadata: { isMain: true } },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({
+            loanId: 'loan1',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
+        );
+        await ddpWithUserId('admin2', () =>
+          loanSetStatus.run({
+            loanId: 'loan2',
+            status: LOAN_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+          collection: 'loans',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: LOAN_STATUS.LEAD,
+              nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+            {
+              prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
+              nextStatus: LOAN_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].loans.length).to.equal(2);
+        expect(result[0].loans[0]._id).to.equal('loan1');
+        expect(result[0].loans[1]._id).to.equal('loan1');
       });
     });
 
-    it('groups status changes, and breaks them down by assignee', async () => {
-      generator({
-        users: [
-          { _id: 'admin1', _factory: 'admin' },
-          { _id: 'admin2', _factory: 'admin' },
-        ],
-        loans: [
-          {
-            _id: 'loan1',
-            assignees: [
-              { _id: 'admin2', $metadata: { isMain: false } },
-              { _id: 'admin1', $metadata: { isMain: true } },
-            ],
-          },
-          {
-            _id: 'loan2',
-            assignees: { _id: 'admin2', $metadata: { isMain: true } },
-          },
-        ],
-      });
-      await ddpWithUserId('admin1', () =>
-        loanSetStatus.run({
-          loanId: 'loan1',
-          status: LOAN_STATUS.QUALIFIED_LEAD,
-        }),
-      );
-      await ddpWithUserId('admin1', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin2', () =>
-        loanSetStatus.run({
-          loanId: 'loan2',
-          status: LOAN_STATUS.QUALIFIED_LEAD,
-        }),
-      );
+    describe('with insurance requests', () => {
+      it('groups status changes, and breaks them down by assignee', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+            },
+            {
+              _id: 'iR2',
+              assignees: { _id: 'admin2', $metadata: { isMain: true } },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.ONGOING,
+          }),
+        );
+        await ddpWithUserId('admin2', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR2',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
 
-      const result = loanStatusChanges({
-        fromDate: moment()
-          .subtract(1, 'd')
-          .toDate(),
-        toDate: moment()
-          .add(1, 'd')
-          .toDate(),
-        breakdown: 'assignee',
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'insuranceRequests',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(2);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].insuranceRequests.length).to.equal(2);
+        expect(result[0].insuranceRequests[0]._id).to.equal('iR1');
+        expect(result[0].insuranceRequests[1]._id).to.equal('iR1');
+
+        expect(result[1]).to.deep.include({
+          _id: 'admin2',
+          totalStatusChangeCount: 1,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[1].insuranceRequests.length).to.equal(1);
+        expect(result[1].insuranceRequests[0]._id).to.equal('iR2');
       });
 
-      expect(result.length).to.equal(2);
-      expect(result[0]).to.deep.include({
-        _id: 'admin1',
-        totalStatusChangeCount: 2,
-        statusChanges: [
-          {
-            prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            count: 1,
-          },
-          {
-            prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            nextStatus: LOAN_STATUS.ONGOING,
-            count: 1,
-          },
-        ],
-      });
-      expect(result[0].loans.length).to.equal(2);
-      expect(result[0].loans[0]._id).to.equal('loan1');
-      expect(result[0].loans[1]._id).to.equal('loan1');
+      it('does not include TEST insurance requests', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.TEST,
+          }),
+        );
 
-      expect(result[1]).to.deep.include({
-        _id: 'admin2',
-        totalStatusChangeCount: 1,
-        statusChanges: [
-          {
-            prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            count: 1,
-          },
-        ],
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'insuranceRequests',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(0);
       });
-      expect(result[1].loans.length).to.equal(1);
-      expect(result[1].loans[0]._id).to.equal('loan2');
+
+      it('does not include insurance requests status changes to TEST but still includes status changes from TEST', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+            },
+          ],
+        });
+
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.TEST,
+          }),
+        );
+
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.ONGOING,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'insuranceRequests',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+
+        expect(result[0].insuranceRequests[0]._id).to.equal('iR1');
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 1,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.TEST,
+              nextStatus: INSURANCE_REQUEST_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+      });
+
+      it('filters by referral', async () => {
+        generator({
+          organisations: { _id: 'org' },
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+            { _id: 'user', referredByOrganisationLink: 'org' },
+          ],
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+              user: { _id: 'user' },
+            },
+            {
+              _id: 'iR2',
+              assignees: { _id: 'admin2', $metadata: { isMain: true } },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.ONGOING,
+          }),
+        );
+        await ddpWithUserId('admin2', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR2',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          organisationId: 'org',
+          collection: 'insuranceRequests',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].insuranceRequests.length).to.equal(2);
+        expect(result[0].insuranceRequests[0]._id).to.equal('iR1');
+        expect(result[0].insuranceRequests[1]._id).to.equal('iR1');
+      });
+
+      it('filters by acquisition channel', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+            {
+              _id: 'user',
+              acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+            },
+          ],
+          insuranceRequests: [
+            {
+              _id: 'iR1',
+              assignees: [
+                { _id: 'admin2', $metadata: { isMain: false } },
+                { _id: 'admin1', $metadata: { isMain: true } },
+              ],
+              user: { _id: 'user' },
+            },
+            {
+              _id: 'iR2',
+              assignees: { _id: 'admin2', $metadata: { isMain: true } },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR1',
+            status: INSURANCE_REQUEST_STATUS.ONGOING,
+          }),
+        );
+        await ddpWithUserId('admin2', () =>
+          insuranceRequestUpdateStatus.run({
+            insuranceRequestId: 'iR2',
+            status: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+          collection: 'insuranceRequests',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              count: 1,
+            },
+            {
+              prevStatus: INSURANCE_REQUEST_STATUS.QUALIFIED_LEAD,
+              nextStatus: INSURANCE_REQUEST_STATUS.ONGOING,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].insuranceRequests.length).to.equal(2);
+        expect(result[0].insuranceRequests[0]._id).to.equal('iR1');
+        expect(result[0].insuranceRequests[1]._id).to.equal('iR1');
+      });
+    });
+
+    describe('with insurances', () => {
+      it('groups status changes, and breaks them down by assignee', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+          ],
+          insurances: [
+            {
+              _id: 'i1',
+              insuranceRequest: {
+                assignees: [
+                  { _id: 'admin2', $metadata: { isMain: false } },
+                  { _id: 'admin1', $metadata: { isMain: true } },
+                ],
+              },
+            },
+            {
+              _id: 'i2',
+              insuranceRequest: {
+                assignees: { _id: 'admin2', $metadata: { isMain: true } },
+              },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i1',
+            status: INSURANCE_STATUS.SIGNED,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i1',
+            status: INSURANCE_STATUS.POLICED,
+          }),
+        );
+        await ddpWithUserId('admin2', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i2',
+            status: INSURANCE_STATUS.DECLINED,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          collection: 'insurances',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(2);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_STATUS.SUGGESTED,
+              nextStatus: INSURANCE_STATUS.SIGNED,
+              count: 1,
+            },
+            {
+              prevStatus: INSURANCE_STATUS.SIGNED,
+              nextStatus: INSURANCE_STATUS.POLICED,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].insurances.length).to.equal(2);
+        expect(result[0].insurances[0]._id).to.equal('i1');
+        expect(result[0].insurances[1]._id).to.equal('i1');
+
+        expect(result[1]).to.deep.include({
+          _id: 'admin2',
+          totalStatusChangeCount: 1,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_STATUS.SUGGESTED,
+              nextStatus: INSURANCE_STATUS.DECLINED,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[1].insurances.length).to.equal(1);
+        expect(result[1].insurances[0]._id).to.equal('i2');
+      });
+
+      it('filters by referral', async () => {
+        generator({
+          organisations: { _id: 'org' },
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+            { _id: 'user', referredByOrganisationLink: 'org' },
+          ],
+          insurances: [
+            {
+              _id: 'i1',
+              insuranceRequest: {
+                assignees: [
+                  { _id: 'admin2', $metadata: { isMain: false } },
+                  { _id: 'admin1', $metadata: { isMain: true } },
+                ],
+                user: { _id: 'user' },
+              },
+            },
+            {
+              _id: 'i2',
+              insuranceRequest: {
+                assignees: { _id: 'admin2', $metadata: { isMain: true } },
+              },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i1',
+            status: INSURANCE_STATUS.SIGNED,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i1',
+            status: INSURANCE_STATUS.POLICED,
+          }),
+        );
+        await ddpWithUserId('admin2', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i2',
+            status: INSURANCE_STATUS.DECLINED,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          organisationId: 'org',
+          collection: 'insurances',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_STATUS.SUGGESTED,
+              nextStatus: INSURANCE_STATUS.SIGNED,
+              count: 1,
+            },
+            {
+              prevStatus: INSURANCE_STATUS.SIGNED,
+              nextStatus: INSURANCE_STATUS.POLICED,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].insurances.length).to.equal(2);
+        expect(result[0].insurances[0]._id).to.equal('i1');
+        expect(result[0].insurances[1]._id).to.equal('i1');
+      });
+
+      it('filters by acquisition channel', async () => {
+        generator({
+          users: [
+            { _id: 'admin1', _factory: 'admin' },
+            { _id: 'admin2', _factory: 'admin' },
+            {
+              _id: 'user',
+              acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+            },
+          ],
+          insurances: [
+            {
+              _id: 'i1',
+              insuranceRequest: {
+                assignees: [
+                  { _id: 'admin2', $metadata: { isMain: false } },
+                  { _id: 'admin1', $metadata: { isMain: true } },
+                ],
+                user: { _id: 'user' },
+              },
+            },
+            {
+              _id: 'i2',
+              insuranceRequest: {
+                assignees: { _id: 'admin2', $metadata: { isMain: true } },
+              },
+            },
+          ],
+        });
+        await ddpWithUserId('admin1', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i1',
+            status: INSURANCE_STATUS.SIGNED,
+          }),
+        );
+        await ddpWithUserId('admin1', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i1',
+            status: INSURANCE_STATUS.POLICED,
+          }),
+        );
+        await ddpWithUserId('admin2', () =>
+          insuranceUpdateStatus.run({
+            insuranceId: 'i2',
+            status: INSURANCE_STATUS.DECLINED,
+          }),
+        );
+
+        const result = collectionStatusChanges({
+          fromDate: moment()
+            .subtract(1, 'd')
+            .toDate(),
+          toDate: moment()
+            .add(1, 'd')
+            .toDate(),
+          acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+          collection: 'insurances',
+        }).sort((a, b) => a._id.localeCompare(b._id));
+
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.deep.include({
+          _id: 'admin1',
+          totalStatusChangeCount: 2,
+          statusChanges: [
+            {
+              prevStatus: INSURANCE_STATUS.SUGGESTED,
+              nextStatus: INSURANCE_STATUS.SIGNED,
+              count: 1,
+            },
+            {
+              prevStatus: INSURANCE_STATUS.SIGNED,
+              nextStatus: INSURANCE_STATUS.POLICED,
+              count: 1,
+            },
+          ],
+        });
+        expect(result[0].insurances.length).to.equal(2);
+        expect(result[0].insurances[0]._id).to.equal('i1');
+        expect(result[0].insurances[1]._id).to.equal('i1');
+      });
     });
   });
 });

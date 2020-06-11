@@ -1,6 +1,6 @@
-import { compose } from 'recompose';
-import isArray from 'lodash/isArray';
 import difference from 'lodash/difference';
+import isArray from 'lodash/isArray';
+import { compose } from 'recompose';
 
 const middlewareManagerHash = [];
 const CLASS_METHODS_TO_EXCLUDE = [

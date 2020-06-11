@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
+import { adminNotifications } from 'core/api/notifications/queries';
 import Icon from 'core/components/Icon';
 import StickyPopover from 'core/components/StickyPopover';
-import { adminNotifications } from 'core/api/notifications/queries';
-import NotificationsManagerContainer from './NotificationsManagerContainer';
+
 import NotificationList from './NotificationList';
+import NotificationsManagerContainer from './NotificationsManagerContainer';
 
 class NotificationsManager extends Component {
   constructor(props) {

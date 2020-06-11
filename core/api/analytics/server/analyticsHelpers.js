@@ -1,4 +1,4 @@
-import ServerEventService from 'core/api/events/server/ServerEventService';
+import ServerEventService from '../../events/server/ServerEventService';
 import SessionService from '../../sessions/server/SessionService';
 import Analytics from './Analytics';
 

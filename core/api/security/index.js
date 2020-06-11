@@ -1,13 +1,13 @@
-import Security from './Security';
 import {
+  BorrowerSecurity,
+  FileSecurity,
   LoanSecurity,
   OfferSecurity,
-  BorrowerSecurity,
+  PromotionSecurity,
   PropertySecurity,
   UserSecurity,
-  PromotionSecurity,
-  FileSecurity,
 } from './collections';
+import Security from './Security';
 
 class SecurityService extends Security {
   static get users() {

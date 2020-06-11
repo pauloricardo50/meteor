@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
-
+import T from '../../Translation';
 import Widget1SingleInput from '../Widget1SingleInput';
+import Widget1InputsContainer from './Widget1InputsContainer';
 import Widget1InputsError from './Widget1InputsError';
 import Widget1InputsReset from './Widget1InputsReset';
-import Widget1InputsContainer from './Widget1InputsContainer';
 
 export const Widget1Inputs = ({ finma, fields }) => (
   <div className="widget1-inputs card1">

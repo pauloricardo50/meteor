@@ -1,6 +1,6 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
 import { proReferredByUsers } from '../../api/users/queries';
@@ -9,6 +9,10 @@ import T from '../Translation';
 export const getReferredBy = (referredByUserId, organisationId) => {
   if (referredByUserId === true) {
     return;
+  }
+
+  if (referredByUserId === 'referral') {
+    return 'referral';
   }
 
   if (organisationId === referredByUserId) {
@@ -63,6 +67,9 @@ export default compose(
         createdAt: 1,
       },
     }),
+    deps: ({ referredByUserId, organisationId }) => [
+      getReferredBy(referredByUserId, organisationId),
+    ],
     queryOptions: { reactive: false },
     dataName: 'customers',
   }),

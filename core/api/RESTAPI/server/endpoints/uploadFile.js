@@ -1,15 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+
 import SimpleSchema from 'simpl-schema';
 
-import { PROPERTY_DOCUMENTS, FILE_ROLES } from '../../../files/fileConstants';
-import FileService from '../../../files/server/FileService';
-import Security from '../../../security';
-import PropertyService from '../../../properties/server/PropertyService';
-import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
-import { withMeteorUserId } from '../helpers';
-import { checkQuery, impersonateSchema, getImpersonateUserId } from './helpers';
-import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { FILE_ROLES, PROPERTY_DOCUMENTS } from '../../../files/fileConstants';
 import { getFileRolesArray } from '../../../files/fileHelpers';
+import FileService from '../../../files/server/FileService';
+import { PROPERTIES_COLLECTION } from '../../../properties/propertyConstants';
+import PropertyService from '../../../properties/server/PropertyService';
+import Security from '../../../security';
+import { withMeteorUserId } from '../helpers';
+import { HTTP_STATUS_CODES } from '../restApiConstants';
+import { checkQuery, getImpersonateUserId, impersonateSchema } from './helpers';
 
 const getInvalidRole = roles => {
   const rolesArray = getFileRolesArray({ roles });

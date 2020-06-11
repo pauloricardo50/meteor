@@ -1,29 +1,30 @@
 import { Meteor } from 'meteor/meteor';
+
 import moment from 'moment';
 
-import { asyncForEach } from '../../helpers/index';
-import {
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_DOCUMENTS,
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-} from '../promotionOptionConstants';
+import FileService from '../../files/server/FileService';
+import { asyncForEach } from '../../helpers';
+import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import CollectionService from '../../helpers/server/CollectionService';
-import PromotionOptions from '../promotionOptions';
-import FileService from '../../files/server/FileService';
 import {
-  PROMOTION_USERS_ROLES,
   PROMOTION_EMAIL_RECIPIENTS,
+  PROMOTION_USERS_ROLES,
 } from '../../promotions/promotionConstants';
 import { shouldAnonymize } from '../../promotions/server/promotionServerHelpers';
+import {
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../promotionOptionConstants';
+import PromotionOptions from '../promotionOptions';
 import { expirePromotionOptionReservation } from './serverMethods';
 
-export class PromotionOptionService extends CollectionService {
+class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
@@ -40,6 +41,22 @@ export class PromotionOptionService extends CollectionService {
               .endOf('day')
               .toDate();
           }
+        },
+        priorityOrder() {
+          // Automatically sets the priorityOrder based off the loanCache
+          const loanCache = this.field('loanCache');
+          if (loanCache.isSet) {
+            const { promotionLinks } = loanCache.value;
+
+            if (promotionLinks?.length) {
+              const [promotionLink] = promotionLinks;
+              return promotionLink.priorityOrder.findIndex(
+                id => id === this.docId,
+              );
+            }
+          }
+
+          return 0;
         },
       },
     });
@@ -334,8 +351,12 @@ export class PromotionOptionService extends CollectionService {
     agreementFileKeys = [],
   }) => {
     const mergeFiles = async () => {
+      console.log('Merge files debug');
+
       await asyncForEach(agreementFileKeys, async Key => {
+        console.log('Key:', Key);
         const name = FileService.getFileName(Key);
+        console.log('name:', name);
         const newKey = await FileService.moveFile({
           Key,
           name,
@@ -343,6 +364,7 @@ export class PromotionOptionService extends CollectionService {
           newDocId: promotionOptionId,
           newCollection: PROMOTION_OPTIONS_COLLECTION,
         });
+        console.log('newKey:', newKey);
         await FileService.autoRenameFile(newKey, PROMOTION_OPTIONS_COLLECTION);
       });
     };
@@ -351,10 +373,12 @@ export class PromotionOptionService extends CollectionService {
   };
 
   cancelReservation({ promotionOptionId }) {
-    return this.updateStatus({
+    const { status: oldStatus } = this.get(promotionOptionId, { status: 1 });
+    this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     });
+    return { oldStatus };
   }
 
   completeReservation({ promotionOptionId }) {
@@ -410,13 +434,14 @@ export class PromotionOptionService extends CollectionService {
       return {};
     }
 
-    // Send keys with dot-notation, to make sure simple-schema doesn't
-    // set the other keys in the object to their defaultValues
-    changedKeys.forEach(key => {
-      this._update({
-        id: promotionOptionId,
-        object: { [`${id}.${key}`]: object[key] },
-      });
+    const updateObject = changedKeys.reduce(
+      (obj, key) => ({ ...obj, [`${id}.${key}`]: object[key] }),
+      {},
+    );
+
+    this._update({
+      id: promotionOptionId,
+      object: updateObject,
     });
 
     if (changedKeys.includes('status')) {
@@ -448,6 +473,8 @@ export class PromotionOptionService extends CollectionService {
       $filters: {
         'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        'reservationAgreement.status':
+          PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
       },
     });
   };

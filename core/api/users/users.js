@@ -1,9 +1,11 @@
-import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
-import { createdAt, updatedAt, cacheField } from '../helpers/sharedSchemas';
-import { ROLES, ACQUISITION_CHANNELS } from './userConstants';
+import SimpleSchema from 'simpl-schema';
+
+import { makeCollectionTransform } from '../helpers/collectionHelpers';
+import { cacheField, createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
+import { ACQUISITION_CHANNELS, OFFICES, ROLES } from './userConstants';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -42,28 +44,22 @@ export const UserSchema = new SimpleSchema({
     optional: true,
     blackbox: true,
   },
-  // Add `roles` to your schema if you use the meteor-roles package.
-  // Option 1: Object type
-  // If you specify that type as Object, you must also specify the
-  // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
-  // Example:
-  // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
-  // You can't mix and match adding with and without a group since
-  // you will fail validation in some cases.
-  // roles: {
-  //   type: Object,
-  //   optional: true,
-  //   blackbox: true,
-  // },
-  // Option 2: [String] type
-  // If you are sure you will never need to use role groups, then
-  // you can specify [String] as the type
   roles: {
     type: Array,
     optional: true,
-    defaultValue: [ROLES.USER],
   },
+  // Shape is something like this:
+  // {
+  //   _id: 'admin',
+  //   scope: 'manchester-united',
+  //   assigned: true
+  // }
   'roles.$': {
+    type: Object,
+    optional: true,
+    blackbox: true,
+  },
+  'roles.$._id': {
     type: String,
     allowedValues: Object.values(ROLES),
   },
@@ -113,9 +109,22 @@ export const UserSchema = new SimpleSchema({
       withCustomOther: true,
     },
   },
+  frontUserId: { type: String, optional: true },
+  defaultBoardId: {
+    type: String,
+    optional: true,
+    allowedValues: ['loans', 'insuranceRequests'],
+    defaultValue: 'loans',
+  },
+  office: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(OFFICES),
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);
+Meteor.users._transform = makeCollectionTransform('users');
 
 const Users = Meteor.users;
 export default Users;

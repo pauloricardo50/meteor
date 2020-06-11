@@ -1,13 +1,15 @@
 import {
-  compose,
   branch,
+  compose,
+  mapProps,
   renderComponent,
   withState,
-  mapProps,
 } from 'recompose';
-import { APPLICATION_TYPES } from 'core/api/constants';
-import SimpleDashboardPage from '../SimpleDashboardPage';
+
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
+
 import WelcomeScreen from '../../components/WelcomeScreen';
+import SimpleDashboardPage from '../SimpleDashboardPage';
 
 export default compose(
   // Use this state to rerender when changing window.hideWelcomeScreen

@@ -1,9 +1,10 @@
 import React from 'react';
-import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
+import { compose, lifecycle } from 'recompose';
 
 import Widget1Part2 from 'core/components/widget1/Widget1Part2';
 import { widget1Actions } from 'core/redux/widget1';
+
 import PageApp from '../../components/PageApp';
 import AppWidget1PageContainer from './AppWidget1PageContainer';
 

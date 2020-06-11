@@ -1,14 +1,14 @@
 import {
-  NOTARY_FEES,
-  MAINTENANCE_FINMA,
-  INTERESTS_FINMA,
-  MAX_INCOME_RATIO,
-  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-  MAX_BORROW_RATIO_WITH_PLEDGE,
   AMORTIZATION_STOP,
   AMORTIZATION_YEARS,
-} from 'core/config/financeConstants';
-import { roundTo } from 'core/utils/conversionFunctions';
+  INTERESTS_FINMA,
+  MAINTENANCE_FINMA,
+  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
+  MAX_INCOME_RATIO,
+  NOTARY_FEES,
+} from '../../config/financeConstants';
+import { roundTo } from '../../utils/conversionFunctions';
 
 export class Widget1SuggesterClass {
   constructor({ notaryFees }) {

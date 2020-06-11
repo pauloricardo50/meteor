@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FileTabs from 'core/components/FileTabs';
+
 import PageApp from '../../components/PageApp';
 
 const FilesPage = props => (

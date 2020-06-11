@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
-import { documentHasTooltip } from 'core/api/files/documents';
-import { DOCUMENTS } from '../../api/constants';
+
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
+
+import { documentHasTooltip } from '../../api/files/documents';
+import { DOCUMENTS } from '../../api/files/fileConstants';
 
 const getFileMetadata = (documentArray = [], id) => {
   const { metadata = {} } =
@@ -18,13 +20,15 @@ const makeGetFileMeta = documentArray => ({
   return (
     additionalDocuments.find(document => document.id === id) && {
       noTooltips: !documentHasTooltip(id),
+      maxSizeOverride: documentArray.find(({ id: docId }) => id === docId)
+        ?.maxSizeOverride,
       ...additionalDocuments.find(document => document.id === id),
       ...metadata,
     }
   );
 };
 
-const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
+const makeSortDocuments = f => (a, b) => {
   if (a.id === DOCUMENTS.OTHER) {
     return 1;
   }
@@ -35,11 +39,12 @@ const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
   return labelA.localeCompare(labelB);
 };
 
-export default compose(
-  injectIntl,
-  withProps(({ documentArray, intl, canModify }) => ({
-    documentArray: documentArray.sort(makeSortDocuments(intl)),
+export default withProps(({ documentArray, canModify }) => {
+  const { formatMessage } = useIntl();
+
+  return {
+    documentArray: documentArray.sort(makeSortDocuments(formatMessage)),
     getFileMeta: makeGetFileMeta(documentArray),
     canModify: canModify && Meteor.microservice === 'admin',
-  })),
-);
+  };
+});

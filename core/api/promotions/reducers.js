@@ -1,4 +1,4 @@
-import { PROMOTION_LOT_STATUS } from '../constants';
+import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 import addressReducer from '../reducers/addressReducer';
 import Promotions from '.';
 
@@ -21,4 +21,8 @@ Promotions.addReducers({
   availablePromotionLots: promotionLotStatusReducer(
     PROMOTION_LOT_STATUS.AVAILABLE,
   ),
+  lotsCount: {
+    body: { promotionLots: { _id: 1 } },
+    reduce: ({ promotionLots = [] }) => promotionLots.length,
+  },
 });

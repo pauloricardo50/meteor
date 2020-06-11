@@ -68,6 +68,7 @@
     }
 
     h1,
+    h2,
     h3,
     h4 {
       margin: 0;
@@ -235,7 +236,7 @@
     }
   }
 
-  &-map {
+  &-description {
     flex-grow: 1;
 
     width: 100%;
@@ -281,19 +282,11 @@
   .success {
     color: white;
     background-color: $success;
-
-    &:hover {
-      background-color: $success-dark;
-    }
   }
 
   .error {
     color: white;
     background-color: $error;
-
-    &:hover {
-      background-color: $error-dark;
-    }
   }
 
   .icon {
@@ -393,130 +386,4 @@
       }
     }
   }
-}
-
-.promotion-reservation-progress {
-  .status-date-form {
-    // Sometimes the form does not stretch properly when opening a	
-    // select field	
-    width: 100%;
-  }
-
-  &.editing &-icons {
-    display: block;
-
-    width: 100%;
-
-    .icon {
-      display: block;
-
-      span {
-        margin-right: 16px;
-      }
-
-      &::after,
-      &::before {
-        display: none;
-      }
-    }
-  }
-
-  &.full &-icons {
-    display: block;
-
-    .icon {
-      position: relative;
-
-      display: block;
-
-      p {
-        width: 100%;
-      }
-
-      span {
-        margin-right: 16px;
-      }
-
-      &::after {
-        position: absolute;
-        left: 12px;
-
-        height: 24px;
-
-        content: '';
-
-        border-bottom: unset;
-        border-left: 1px solid black;
-      }
-
-      &::after {
-        top: 32px;
-      }
-
-      &::before {
-        display: none;
-      }
-
-      &:first-of-type::before,
-      &:last-of-type::after {
-        display: none;
-      }
-    }
-  }
-
-  &-icons {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-
-    margin-right: 8px;
-
-    .icon {
-      position: relative;
-
-      display: flex;
-
-      margin-right: 8px;
-
-      &::before,
-      &::after {
-        position: absolute;
-        top: 50%;
-
-        width: 8px;
-
-        content: '';
-
-        border-bottom: 1px solid black;
-      }
-
-      &::after {
-        left: 100%;
-      }
-
-      &::before {
-        right: 100%;
-      }
-
-      &:first-of-type::before,
-      &:last-of-type::after {
-        display: none;
-      }
-    }
-  }
-
-  .reservation-progress-item-modify:hover {
-    cursor: pointer;
-    transition: background-color 0.3s $bezier;
-
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-}
-
-.promotion-reservation-progress-item-tooltip {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-
-  white-space: pre-line;
 }

@@ -1,11 +1,15 @@
 import React from 'react';
 
+import { BORROWERS_COLLECTION } from '../../../../../api/borrowers/borrowerConstants';
+import Properties from '../../../../../api/properties';
+import { PROPERTIES_COLLECTION } from '../../../../../api/properties/propertyConstants';
+import collectionIcons from '../../../../../arrays/collectionIcons';
+import Calculator from '../../../../../utils/Calculator';
 import { createRoute } from '../../../../../utils/routerUtils';
-import { PROPERTIES_COLLECTION } from '../../../../../api/constants';
+import Button from '../../../../Button';
+import Icon from '../../../../Icon';
 import T from '../../../../Translation';
 import UpdateField from '../../../../UpdateField';
-import { getProperty } from '../../FinancingCalculator';
-import Link from '../../../../Link';
 import MortgageNotesPickerList from './MortgageNotesPickerList';
 
 const MortgageNotesPickerDialog = props => {
@@ -16,8 +20,9 @@ const MortgageNotesPickerDialog = props => {
     loan: { _id: loanId },
     removeMortgageNote,
   } = props;
-  const property = getProperty(props);
-  if (!property) {
+  const property = Calculator.selectProperty(props);
+
+  if (!property?._id) {
     return (
       <p className="description">
         <T id="FinancingMortgageNotesPicker.noProperty" />
@@ -36,7 +41,7 @@ const MortgageNotesPickerDialog = props => {
         <UpdateField
           doc={property}
           fields={['zipCode']}
-          collection={PROPERTIES_COLLECTION}
+          collection={Properties}
         />
       </div>
     );
@@ -49,14 +54,23 @@ const MortgageNotesPickerDialog = props => {
       </h4>
 
       {currentMortgageNotes.length === 0 && (
-        <Link
-          to={createRoute(`/loans/${loanId}/properties/${propertyId}`)}
-          className="a"
-        >
-          <T id="FinancingMortgageNotesPicker.emptyPropertyMortgageNotes" />
-        </Link>
+        <div className="flex-col center-align">
+          <span className="mb-8">
+            <T id="FinancingMortgageNotesPicker.emptyPropertyMortgageNotes" />
+          </span>
+          <Button
+            primary
+            raised
+            link
+            to={createRoute(`/loans/${loanId}/properties/${propertyId}`)}
+            icon={<Icon type={collectionIcons[PROPERTIES_COLLECTION]} />}
+          >
+            <T id="FinancingMortgageNotesPicker.add" />
+          </Button>
+        </div>
       )}
       <MortgageNotesPickerList mortgageNotes={currentMortgageNotes} />
+
       <h4>
         <T id="FinancingMortgageNotesPicker.borrowerMortgageNotes" />
       </h4>
@@ -66,12 +80,29 @@ const MortgageNotesPickerDialog = props => {
         canton={canton}
       />
       {!borrowerMortgageNotes.filter(({ available }) => available).length && (
-        <Link to={createRoute(`/loans/${loanId}/borrowers`)} className="a">
-          <T
-            id="FinancingMortgageNotesPicker.noAvailableMortgageNotes"
-            values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
-          />
-        </Link>
+        <div className="flex-col center-align">
+          <span className="mb-8">
+            <T
+              id="FinancingMortgageNotesPicker.noAvailableMortgageNotes"
+              values={{
+                canton: (
+                  <b>
+                    <T id={`Forms.canton.${canton}`} />
+                  </b>
+                ),
+              }}
+            />
+          </span>
+          <Button
+            primary
+            raised
+            link
+            to={createRoute(`/loans/${loanId}/borrowers`)}
+            icon={<Icon type={collectionIcons[BORROWERS_COLLECTION]} />}
+          >
+            <T id="FinancingMortgageNotesPicker.add" />
+          </Button>
+        </div>
       )}
     </div>
   );

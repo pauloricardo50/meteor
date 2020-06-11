@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+
 import { Consumer } from './loan-context';
 
 export default Component => props => {

@@ -1,6 +1,6 @@
-import { withProps, compose, withState } from 'recompose';
-import { injectIntl } from 'react-intl';
 import moment from 'moment';
+import { useIntl } from 'react-intl';
+import { compose, withProps, withState } from 'recompose';
 
 import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
 import colors from 'core/config/colors';
@@ -168,16 +168,10 @@ const getLines = ({ interestRates, irs10y, formatMessage }) =>
   ].filter(x => x);
 
 export default compose(
-  injectIntl,
   withState('showRanges', 'setShowRanges', false),
   withProps(
-    ({
-      interestRates = [],
-      irs10y = [],
-      showRanges,
-      setShowRanges,
-      intl: { formatMessage },
-    }) => {
+    ({ interestRates = [], irs10y = [], showRanges, setShowRanges }) => {
+      const { formatMessage } = useIntl();
       const lines = getLines({
         interestRates,
         irs10y,

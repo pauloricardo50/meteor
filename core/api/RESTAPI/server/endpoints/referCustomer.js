@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 
-import { proInviteUser } from '../../../methods';
-import { withMeteorUserId, updateCustomerReferral } from '../helpers';
+import { proInviteUser } from '../../../users/methodDefinitions';
+import { updateCustomerReferral, withMeteorUserId } from '../helpers';
 import { checkQuery } from './helpers';
 
 const querySchema = new SimpleSchema({

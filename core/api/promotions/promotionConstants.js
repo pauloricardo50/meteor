@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export const PROMOTIONS_COLLECTION = 'promotions';
@@ -24,6 +25,7 @@ export const PROMOTION_QUERIES = {
   PROMOTION_FILES: 'PROMOTION_FILES',
   PROMOTION_SEARCH: 'PROMOTION_SEARCH',
   PRO_PROMOTION_SIMPLE: 'PRO_PROMOTION_SIMPLE',
+  PROMOTIONS_LIST: 'PROMOTIONS_LIST',
 };
 
 export const PROMOTION_INVITED_BY_TYPE = {

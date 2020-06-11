@@ -7,3 +7,7 @@ export const LOT_TYPES = {
   PARKING_IN_A_ROW: 'PARKING_IN_A_ROW',
   PARKING_DISABLED: 'PARKING_DISABLED',
 };
+
+export const LOT_QUERIES = {
+  LOTS: 'LOTS',
+};

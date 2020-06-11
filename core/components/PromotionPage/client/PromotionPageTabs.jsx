@@ -2,9 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 
-import Tabs from 'core/components/Tabs';
-import { createRoute } from 'core/utils/routerUtils';
-import withMatchParam from 'core/containers/withMatchParam';
+import withMatchParam from '../../../containers/withMatchParam';
+import { createRoute } from '../../../utils/routerUtils';
+import Tabs from '../../Tabs';
 
 const useStyles = makeStyles({ root: { backgroundColor: 'white' } });
 

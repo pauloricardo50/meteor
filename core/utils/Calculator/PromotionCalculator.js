@@ -1,15 +1,14 @@
 import pick from 'lodash/pick';
 
 import {
-  PROMOTION_TYPES,
-  PURCHASE_TYPE,
-  PROMOTION_OPTION_STATUS,
+  PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
   PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
-} from '../../api/constants';
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../api/promotionOptions/promotionOptionConstants';
+import { PROMOTION_TYPES } from '../../api/promotions/promotionConstants';
 import { sortByStatus } from '../sorting';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
@@ -77,14 +76,14 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     }) {
       return this.getIncomeLimitedPropertyValue({
         nF: notaryFees / propertyValue,
-        r: this.getAmortizationDuration({ borrowers }),
+        r: this.getAmortizationYears({ borrowers }),
         i: this.theoreticalInterestRate,
         mR: this.maxIncomeRatio,
         m: this.theoreticalMaintenanceRate,
       })({ income, fortune });
     }
 
-    formatPromotionOptionIntoProperty(promotionOption) {
+    formatPromotionOptionIntoProperty({ loan, promotionOption }) {
       if (!promotionOption) {
         return;
       }
@@ -98,15 +97,11 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
 
       const { properties = [] } = promotionLot;
       const [property] = properties;
+      const { promotions } = loan;
 
       return {
         // Get the address from the promotion
-        ...pick(promotionOption.promotion, [
-          'address1',
-          'address2',
-          'zipCode',
-          'city',
-        ]),
+        ...pick(promotions?.[0], ['address1', 'address2', 'zipCode', 'city']),
         ...promotionOption,
         ...property,
         totalValue: promotionOption.value,
@@ -116,10 +111,6 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     shouldUseConstructionNotaryFees({ loan, structureId }) {
       const { promotions } = loan;
 
-      if (loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION) {
-        return true;
-      }
-
       if (!this.isPromotionProperty({ loan, structureId })) {
         return false;
       }
@@ -128,7 +119,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         return false;
       }
 
-      const promotion = promotions[0];
+      const [promotion] = promotions;
 
       return promotion.type === PROMOTION_TYPES.SHARE;
     }
@@ -149,9 +140,16 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
     }
 
     getMostActivePromotionOption({ loan: { promotionOptions = [] } }) {
-      const sorted = promotionOptions.sort(
-        sortByStatus(Object.values(PROMOTION_OPTION_STATUS)),
-      );
+      const order = [
+        PROMOTION_OPTION_STATUS.INTERESTED,
+        PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
+        PROMOTION_OPTION_STATUS.RESERVATION_EXPIRED,
+        PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
+        PROMOTION_OPTION_STATUS.RESERVED,
+        PROMOTION_OPTION_STATUS.SOLD,
+      ];
+      const sorted = promotionOptions.sort(sortByStatus(order));
       return sorted.slice(-1)[0];
     }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import groupBy from 'lodash/groupBy';
 
 import T from 'core/components/Translation';
+
 import Organisation from './Organisation';
 
 const OrganisationsByFeature = ({ organisations = [], feature }) => {

@@ -3,17 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import Loadable from 'react-loadable';
 
-import { logError } from '../api/methods/index';
+import { logError } from '../api/errorLogger/methodDefinitions';
 import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
 
-const ENABLE_LOADABLE = true;
-
-if (!ENABLE_LOADABLE && Meteor.isProduction) {
-  throw new Error('ENABLE_LOADABLE should be true in production');
-}
-
-const LoadableLoading = ({ error, retry, pastDelay }) => {
+const LoadableLoading = ({ error, pastDelay, loaderProps, serverSideName }) => {
   const [hasLoggedAnError, setHasLoggedError] = useState(false);
   useEffect(() => {
     if (error && !hasLoggedAnError) {
@@ -32,6 +26,15 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
   }, [error, hasLoggedAnError]);
 
   if (error) {
+    if (Meteor.isServer) {
+      logError.run({
+        error: JSON.parse(
+          JSON.stringify(error, Object.getOwnPropertyNames(error)),
+        ),
+        additionalData: ['Loadable server-side error'],
+        url: serverSideName,
+      });
+    }
     return <LayoutError error={error} />;
   }
 
@@ -40,21 +43,22 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
   }
 
   if (pastDelay) {
-    return <Loading />;
+    return <Loading {...loaderProps} />;
   }
 
   return null;
 };
 
-export default ({ req, loader, ...options }) => {
-  if (!ENABLE_LOADABLE && req) {
-    return req();
-  }
-
-  return Loadable({
-    loading: LoadableLoading,
+export default ({ loader, loaderProps, serverSideName, ...options }) =>
+  Loadable({
+    loading: props => (
+      <LoadableLoading
+        {...props}
+        loaderProps={loaderProps}
+        serverSideName={serverSideName}
+      />
+    ),
     delay: 200, // Hides the loading component for 200ms, to avoid flickering
     loader,
     ...options,
   });
-};

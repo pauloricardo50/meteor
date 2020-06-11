@@ -1,16 +1,14 @@
-import { withProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import {
   adminLoanInsert,
-  reuseProperty,
-  loanUpdate,
   loanSetCreatedAtActivityDescription,
-} from 'core/api';
-import { LOAN_STATUS } from 'imports/core/api/constants';
-import { PROPERTY_CATEGORY } from 'core/api/constants';
-import { activityInsert } from 'core/api/activities/methodDefinitions';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
+  loanUpdate,
+  reuseProperty,
+} from 'core/api/loans/methodDefinitions';
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 
 const insertNewLoan = ({
   loan,
@@ -65,16 +63,8 @@ const insertNewLoan = ({
     });
 };
 
-const addUnsuccesfulActivity = ({ loanId, reason }) =>
-  activityInsert.run({
-    object: {
-      title: 'Sans suite',
-      description: reason,
-      type: ACTIVITY_TYPES.EVENT,
-      isServerGenerated: true,
-      loanLink: { _id: loanId },
-    },
-  });
+const setUnsuccessfulReason = ({ loanId, unsuccessfulReason }) =>
+  loanUpdate.run({ loanId, object: { unsuccessfulReason } });
 
 export default compose(
   withRouter,
@@ -85,10 +75,10 @@ export default compose(
       confirmNewStatus,
       closeModal,
       history,
-      returnValue: { reason },
+      returnValue: { unsuccessfulReason },
     }) => ({
       setUnsuccessfulOnly: () => {
-        addUnsuccesfulActivity({ loanId: loan._id, reason })
+        setUnsuccessfulReason({ loanId: loan._id, unsuccessfulReason })
           .then(() => {
             confirmNewStatus();
             closeModal();
@@ -96,7 +86,7 @@ export default compose(
           .catch(cancelNewStatus);
       },
       insertLeadLoan: () => {
-        addUnsuccesfulActivity({ loanId: loan._id, reason })
+        setUnsuccessfulReason({ loanId: loan._id, unsuccessfulReason })
           .then(() =>
             insertNewLoan({ loan, cancelNewStatus, confirmNewStatus }),
           )

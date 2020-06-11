@@ -1,26 +1,26 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import UserService from '../../../../users/server/UserService';
-import PropertyService from '../../../../properties/server/PropertyService';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
+import generator from '../../../../factories/server';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_STATUS,
 } from '../../../../properties/propertyConstants';
+import PropertyService from '../../../../properties/server/PropertyService';
 import SlackService from '../../../../slack/server/SlackService';
-import generator from '../../../../factories/server';
+import UserService from '../../../../users/server/UserService';
 import RESTAPI from '../../RESTAPI';
-import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
-import { checkEmails } from '../../../../../utils/testHelpers/index';
+import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
 
 const customerToInvite = {
   email: 'test@example.com',
@@ -93,12 +93,20 @@ describe('REST: inviteCustomerToProProperties', function() {
     resetDatabase();
     generator({
       users: [
-        { _id: 'admin', _factory: 'admin' },
+        {
+          _id: 'admin',
+          _factory: 'admin',
+
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
+        },
         {
           _factory: 'pro',
           _id: 'pro',
           emails: [{ address: 'pro@org.com', verified: true }],
-          organisations: [{ _id: 'org', name: 'Main Org' }],
+          organisations: [
+            { _id: 'org', name: 'Main Org', $metadata: { isMain: true } },
+          ],
           proProperties: [
             { _id: 'property1', category: PROPERTY_CATEGORY.PRO },
             { _id: 'property2', category: PROPERTY_CATEGORY.PRO },
@@ -110,12 +118,14 @@ describe('REST: inviteCustomerToProProperties', function() {
             },
           ],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
           _id: 'pro2',
           emails: [{ address: 'pro2@org.com', verified: true }],
-          organisations: [{ _id: 'org' }],
+          organisations: [{ _id: 'org', $metadata: { isMain: true } }],
           proProperties: [
             { _id: 'property4', category: PROPERTY_CATEGORY.PRO },
             { _id: 'property5', category: PROPERTY_CATEGORY.PRO },
@@ -127,13 +137,17 @@ describe('REST: inviteCustomerToProProperties', function() {
             },
           ],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
           _id: 'pro3',
           emails: [{ address: 'pro3@org2.com', verified: true }],
-          organisation: [{ _id: 'org2' }],
+          organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
       ],
     });
@@ -173,14 +187,11 @@ describe('REST: inviteCustomerToProProperties', function() {
         message: `Successfully invited user \"${customerToInvite.email}\" to property ids \"ext1\", \"ext3\", \"property1\", \"property2\" and \"property3\"`,
       },
     });
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(customer.loans[0].shareSolvency).to.equal(undefined);
 
@@ -223,14 +234,11 @@ describe('REST: inviteCustomerToProProperties', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
 
     expect(customer.loans[0].shareSolvency).to.equal(true);
 
@@ -273,15 +281,12 @@ describe('REST: inviteCustomerToProProperties', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToInvite.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-        tasks: { description: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToInvite.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+      tasks: { description: 1 },
+    });
 
     expect(customer.loans[0].shareSolvency).to.equal(true);
 
@@ -292,14 +297,9 @@ describe('REST: inviteCustomerToProProperties', function() {
       const interval = Meteor.setInterval(() => {
         if (tasks.length === 0 && intervalCount < 10) {
           tasks =
-            UserService.get(
-              {
-                'emails.address': { $in: [customerToInvite.email] },
-              },
-              {
-                tasks: { description: 1 },
-              },
-            ).tasks || [];
+            UserService.getByEmail(customerToInvite.email, {
+              tasks: { description: 1 },
+            }).tasks || [];
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);

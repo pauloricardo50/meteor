@@ -1,12 +1,13 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import PageHead from 'core/components/PageHead';
-import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Button from 'core/components/Button';
+import MapWithMarker from 'core/components/maps/MapWithMarker';
+import PageHead from 'core/components/PageHead';
+import T from 'core/components/Translation';
+
+import ContactUsForm from '../../components/ContactUsForm';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
-import ContactUsForm from '../../components/ContactUsForm';
 import { ADDRESS, MAPS_ADDRESS } from './contactConstants';
 import ContactPageInformation from './ContactPageInformation';
 

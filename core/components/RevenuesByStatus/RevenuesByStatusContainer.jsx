@@ -1,10 +1,10 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
-import Calculator from '../../utils/Calculator/index';
-import { LOAN_STATUS, LOANS_COLLECTION } from '../../api/constants';
-import T, { Money } from '../Translation';
+import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
+import Calculator from '../../utils/Calculator';
 import StatusLabel from '../StatusLabel';
+import T, { Money } from '../Translation';
 
 const statuses = Object.values(LOAN_STATUS).filter(
   status => status !== LOAN_STATUS.TEST,

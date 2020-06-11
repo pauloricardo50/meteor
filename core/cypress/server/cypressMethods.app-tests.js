@@ -3,64 +3,43 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 
-import UserService from 'core/api/users/server/UserService';
-import PromotionService from 'core/api/promotions/server/PromotionService';
-import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
-import {
-  ROLES,
-  PROMOTION_TYPES,
-  LOAN_QUERIES,
-  STEPS,
-  ORGANISATION_FEATURES,
-} from 'core/api/constants';
-import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
-import OrganisationService from 'core/api/organisations/server/OrganisationService';
-import LoanService from 'core/api/loans/server/LoanService';
-import PropertyService from 'core/api/properties/server/PropertyService';
-import Loans from 'core/api/loans/loans';
-import { loanBase, adminLoan } from 'core/api/fragments';
-import {
-  createLoginToken,
-  createEmailVerificationToken,
-} from 'core/utils/testHelpers/index';
-import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
-import { adminLoans as adminLoansQuery } from 'core/api/loans/queries';
-import { Services } from 'core/api/server/index';
-import LenderRulesService from 'core/api/lenderRules/server/LenderRulesService';
-import { createAdmins, createEpotek } from 'core/fixtures/userFixtures';
+import LenderRulesService from '../../api/lenderRules/server/LenderRulesService';
+import { STEPS } from '../../api/loans/loanConstants';
+import LoanService from '../../api/loans/server/LoanService';
+import { ORGANISATION_FEATURES } from '../../api/organisations/organisationConstants';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
+import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
+import { PROMOTION_TYPES } from '../../api/promotions/promotionConstants';
+import PromotionService from '../../api/promotions/server/PromotionService';
+import PropertyService from '../../api/properties/server/PropertyService';
+import { Services } from '../../api/server';
+import UserService from '../../api/users/server/UserService';
+import { ROLES } from '../../api/users/userConstants';
 import { E2E_USER_EMAIL } from '../../fixtures/fixtureConstants';
+import { createFakeInterestRates } from '../../fixtures/interestRatesFixtures';
+import { createPromotionDemo } from '../../fixtures/promotionDemo/promotionDemoFixtures';
+import { createAdmins, createEpotek } from '../../fixtures/userFixtures';
 import {
+  createEmailVerificationToken,
+  createLoginToken,
+  resetDatabase,
+} from '../../utils/testHelpers';
+import {
+  ADMIN_EMAIL,
+  ORG_NAME,
   PRO_EMAIL,
   PRO_EMAIL_2,
   PRO_EMAIL_3,
   PRO_PASSWORD,
-  ORG_NAME,
   USER_EMAIL,
   USER_PASSWORD,
-  ADMIN_EMAIL,
 } from './e2eConstants';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
-
-const userLoansE2E = Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
-  $filter({ filters, params: { userId, unowned, step } }) {
-    filters.userId = userId;
-
-    if (unowned) {
-      filters.userId = { $exists: false };
-    }
-
-    if (step) {
-      filters.step = step;
-    }
-  },
-  ...loanBase(),
-  $options: { sort: { createdAt: -1 } },
-});
 
 Meteor.methods({
   createAdmins() {
@@ -71,46 +50,60 @@ Meteor.methods({
       email: PRO_EMAIL,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId, object: { roles: [ROLES.PRO] } });
+    Roles.addUsersToRoles(userId, ROLES.PRO);
     const userId2 = Accounts.createUser({
       email: PRO_EMAIL_2,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId: userId2, object: { roles: [ROLES.PRO] } });
+    Roles.addUsersToRoles(userId2, ROLES.PRO);
     const userId3 = Accounts.createUser({
       email: PRO_EMAIL_3,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId: userId3, object: { roles: [ROLES.PRO] } });
+    Roles.addUsersToRoles(userId3, ROLES.PRO);
 
     const orgId = createEpotek();
     const adminId = Accounts.createUser({
       email: ADMIN_EMAIL,
       password: PRO_PASSWORD,
     });
-    UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+    Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
+
     UserService.updateOrganisations({
       userId: adminId,
       newOrganisations: [{ _id: orgId, metadata: { isMain: true } }],
     });
 
-    OrganisationService.insert({
+    const orgId1 = OrganisationService.insert({
       name: ORG_NAME,
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
       city: 'Genève',
-      userLinks: [{ _id: userId }, { _id: userId2 }],
       features: [ORGANISATION_FEATURES.PRO],
     });
-    OrganisationService.insert({
+
+    const orgId2 = OrganisationService.insert({
       name: 'Organisation 2',
       type: 'DEVELOPER',
       address1: 'Rue du pré 1',
       zipCode: 1201,
       city: 'Genève',
-      userLinks: [{ _id: userId3 }],
+      userLinks: [{ _id: userId3, metadata: { isMain: true } }],
       features: [ORGANISATION_FEATURES.PRO],
+    });
+
+    UserService.updateOrganisations({
+      userId,
+      newOrganisations: [{ _id: orgId1, metadata: { isMain: true } }],
+    });
+    UserService.updateOrganisations({
+      userId: userId2,
+      newOrganisations: [{ _id: orgId1, metadata: { isMain: true } }],
+    });
+    UserService.updateOrganisations({
+      userId: userId3,
+      newOrganisations: [{ _id: orgId2, metadata: { isMain: true } }],
     });
 
     const organisationId = OrganisationService.insert({
@@ -124,12 +117,7 @@ Meteor.methods({
     LenderRulesService.initialize({ organisationId });
   },
   insertPromotion() {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     PromotionService.insert({
       userId,
       promotion: {
@@ -143,13 +131,16 @@ Meteor.methods({
     });
   },
   async insertFullPromotion() {
-    const admin = await UserService.get({ roles: ROLES.ADMIN }, { _id: 1 });
+    const admin = await UserService.get(
+      { 'roles._id': ROLES.ADVISOR },
+      { _id: 1 },
+    );
     if (!admin) {
       const adminId = await Accounts.createUser({
         email: ADMIN_EMAIL,
         password: PRO_PASSWORD,
       });
-      UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
+      Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
     }
     await createPromotionDemo(this.userId, false, false, 4);
   },
@@ -157,18 +148,9 @@ Meteor.methods({
     PromotionService.remove({ promotionId: {} });
   },
   addProUsersToPromotion() {
-    const { _id: userId } = UserService.get(
-      { 'emails.address': PRO_EMAIL },
-      { _id: 1 },
-    );
-    const { _id: userId2 } = UserService.get(
-      { 'emails.address': PRO_EMAIL_2 },
-      { _id: 1 },
-    );
-    const { _id: userId3 } = UserService.get(
-      { 'emails.address': PRO_EMAIL_3 },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
+    const { _id: userId2 } = UserService.getByEmail(PRO_EMAIL_2);
+    const { _id: userId3 } = UserService.getByEmail(PRO_EMAIL_3);
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -180,14 +162,8 @@ Meteor.methods({
     });
   },
   setInvitedBy({ email }) {
-    const { _id: userId } = UserService.get(
-      { 'emails.address': PRO_EMAIL },
-      { _id: 1 },
-    );
-    const { _id: invitedBy } = UserService.get(
-      { 'emails.address': email },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
+    const { _id: invitedBy } = UserService.getByEmail(email);
     const promotions =
       PromotionService.find(
         { 'userLinks._id': userId },
@@ -206,12 +182,7 @@ Meteor.methods({
     });
   },
   setUserPermissions({ permissions }) {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const promotions =
       PromotionService.find(
         { 'userLinks._id': userId },
@@ -223,12 +194,7 @@ Meteor.methods({
     );
   },
   setPromotionStatus({ status }) {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -239,12 +205,7 @@ Meteor.methods({
     );
   },
   resetUserPermissions() {
-    const { _id: userId } = UserService.get(
-      {
-        'emails.address': PRO_EMAIL,
-      },
-      { _id: 1 },
-    );
+    const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const promotions =
       PromotionService.find({
         'userLinks._id': userId,
@@ -289,17 +250,12 @@ Meteor.methods({
     // UserService.update({ userId: adminId, object: { roles: [ROLES.ADMIN] } });
 
     const admin =
-      UserService.get({ roles: { $in: [ROLES.ADMIN] } }, { _id: 1 }) || {};
+      UserService.get({ 'roles._id': ROLES.ADVISOR }, { _id: 1 }) || {};
 
-    const solvencyLoan = userLoansE2E
-      .clone({ userId, step: STEPS.SOLVENCY })
-      .fetchOne();
-
-    const requestLoan = userLoansE2E
-      .clone({ userId, step: STEPS.REQUEST })
-      .fetchOne();
-
-    const unownedLoan = userLoansE2E.clone({ owned: false }).fetchOne();
+    const loan = LoanService.get(
+      { userId, step: STEPS.REQUEST },
+      { name: 1, properties: { _id: 1 } },
+    );
 
     const adminLoginToken = createLoginToken(admin._id);
     const emailVerificationToken = createEmailVerificationToken(
@@ -322,9 +278,7 @@ Meteor.methods({
     const passwordResetToken = user.services.password.reset.token;
 
     return {
-      solvencyLoan,
-      requestLoan,
-      unownedLoan,
+      loan,
       adminLoginToken,
       emailVerificationToken,
       userId,
@@ -366,8 +320,7 @@ Meteor.methods({
       Accounts.setPassword(userId, USER_PASSWORD);
     }
 
-    const loginToken = UserService.getLoginToken({ userId });
-    return loginToken;
+    return UserService.getLoginToken({ userId });
   },
   removeTestUser(email) {
     const user = UserService.getByEmail(email);
@@ -386,7 +339,7 @@ Meteor.methods({
     return loginToken;
   },
   addProProperty() {
-    let userId = UserService.getByEmail(PRO_EMAIL);
+    let { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     if (!userId) {
       userId = UserService.adminCreateUser({
         options: {
@@ -448,19 +401,21 @@ Meteor.methods({
 
     return userId;
   },
-  getLoan(loanId) {
-    return LoanService.get(loanId, {
-      ...adminLoan(),
-      referralId: 1,
-      referredByUserLink: 1,
-      referredByOrganisationLink: 1,
-    });
+  getLoan(...params) {
+    return LoanService.get(...params);
   },
-  getUser(email) {
-    return UserService.getByEmail(email);
+  getUser(...params) {
+    return UserService.get(...params);
   },
   getAdminEndToEndTestData() {
-    const loan = adminLoansQuery.clone({ owned: true }).fetchOne();
+    const loan = LoanService.get(
+      { userId: { $exists: true } },
+      {
+        userId: 1,
+        properties: { _id: 1 },
+        borrowers: { _id: 1 },
+      },
+    );
 
     const {
       properties,

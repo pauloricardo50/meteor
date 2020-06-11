@@ -1,7 +1,9 @@
 import React from 'react';
+
 import Table, { ORDER } from 'core/components/Table';
-import Irs10yTableContainer from './Irs10yTableContainer';
+
 import { ModifyIrs10yDialogForm } from '../Irs10yDialogForm';
+import Irs10yTableContainer from './Irs10yTableContainer';
 // import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
 
 const Irs10yTable = ({

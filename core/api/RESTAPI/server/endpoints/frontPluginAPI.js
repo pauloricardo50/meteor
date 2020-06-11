@@ -1,8 +1,8 @@
 import FrontService from '../../../front/server/FrontService';
 
-const frontPluginAPI = async ({ body }) => {
+const frontPluginAPI = async ({ body, user }) => {
   try {
-    const result = await FrontService.handleRequest(body);
+    const result = await FrontService.handleRequest({ user, body });
 
     if (!result || typeof result !== 'object') {
       return { result };

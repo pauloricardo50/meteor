@@ -1,10 +1,10 @@
 import React from 'react';
-import { withProps, withState, compose } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { addBorrower } from '../../api/methods';
-import T from '../Translation';
+import { CIVIL_STATUS } from '../../api/borrowers/borrowerConstants';
+import { addBorrower } from '../../api/methods/methodDefinitions';
 import Button from '../Button';
-import { CIVIL_STATUS } from '../../api/constants';
+import T from '../Translation';
 
 const BorrowerAddPartner = ({ handleClick, isLoading }) => (
   <div className="borrower-add-partner">

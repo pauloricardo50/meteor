@@ -1,20 +1,20 @@
-import SecurityService from '../../security';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import SecurityService from '../../security';
 import {
+  addProUserToProperty,
+  evaluateProperty,
+  insertExternalProperty,
+  popPropertyValue,
+  proPropertyInsert,
+  propertyDataIsInvalid,
+  propertyDelete,
   propertyInsert,
   propertyUpdate,
-  propertyDelete,
-  pushPropertyValue,
-  popPropertyValue,
   pullPropertyValue,
-  evaluateProperty,
-  propertyDataIsInvalid,
-  addProUserToProperty,
-  proPropertyInsert,
-  setProPropertyPermissions,
-  removeProFromProperty,
+  pushPropertyValue,
   removeCustomerFromProperty,
-  insertExternalProperty,
+  removeProFromProperty,
+  setProPropertyPermissions,
 } from '../methodDefinitions';
 import PropertyService from './PropertyService';
 
@@ -22,6 +22,7 @@ propertyInsert.setHandler((context, params) => {
   const userId = checkInsertUserId(params.userId);
   return PropertyService.insert({ ...params, userId });
 });
+propertyInsert.setRateLimit({ rate: 1, timeRange: 30000 }); // Once every 30sec
 
 propertyUpdate.setHandler(({ userId }, params) => {
   SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);

@@ -1,9 +1,9 @@
 import moment from 'moment';
 
-import { userSession } from 'core/api/fragments';
-import Sessions from '../sessions';
+import { userSession } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
 import UserService from '../../users/server/UserService';
+import Sessions from '../sessions';
 
 class SessionService extends CollectionService {
   constructor() {
@@ -19,7 +19,7 @@ class SessionService extends CollectionService {
     const { roles = [] } = user || {};
     return this.baseUpdate(
       { connectionId },
-      { $set: { userId, role: roles.length ? roles[0] : undefined } },
+      { $set: { userId, role: roles.length ? roles[0]._id : undefined } },
     );
   }
 

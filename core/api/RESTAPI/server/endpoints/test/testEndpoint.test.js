@@ -1,18 +1,19 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+
 import pick from 'lodash/pick';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import UserService from '../../../../users/server/UserService';
-import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
-import { testEndpointAPI } from '..';
+import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
+import { testEndpointAPI } from '..';
 
 let user;
 

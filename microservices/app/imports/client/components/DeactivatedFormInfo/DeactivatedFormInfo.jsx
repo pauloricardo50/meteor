@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 
+import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 
 const DeactivatedFormInfo = ({ loan: { userFormsEnabled }, style }) => {
   const { toggleOpenContact } = useContext(ContactButtonContext);

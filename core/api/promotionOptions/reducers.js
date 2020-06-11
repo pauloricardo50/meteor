@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import PromotionOptions from '.';
 
 PromotionOptions.addReducers({
@@ -13,30 +14,14 @@ PromotionOptions.addReducers({
       if (promotionLots.length === 0) {
         return 0;
       }
-      const { value } = promotionLots[0];
-      return value;
-    },
-  },
-  priority: {
-    body: { loan: { promotionLinks: 1 } },
-    reduce: ({ loan, _id: promotionOptionId }) => {
-      const { promotionLinks } = loan;
-      if (promotionLinks && promotionLinks.length > 0) {
-        return promotionLinks[0].priorityOrder.findIndex(
-          id => id === promotionOptionId,
-        );
-      }
-      return null;
+
+      return promotionLots[0].value;
     },
   },
   attributedToMe: {
     body: { promotionLots: { attributedTo: { userId: 1 } } },
     reduce: ({ promotionLots = [] }) =>
-      !!(
-        promotionLots[0] &&
-        promotionLots[0].attributedTo &&
-        promotionLots[0].attributedTo.userId === Meteor.userId()
-      ),
+      !!(promotionLots[0]?.attributedTo?.userId === Meteor.userId()),
   },
   canton: {
     body: { promotionLots: { promotion: { canton: 1 } } },

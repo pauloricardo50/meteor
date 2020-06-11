@@ -1,12 +1,13 @@
 import React from 'react';
 
 import Link from 'core/components/Link';
-import useMedia from 'core/hooks/useMedia';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
+import useMedia from 'core/hooks/useMedia';
 import Calculator from 'core/utils/Calculator';
-import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
-import PropertyCardInfos from './PropertyCardInfos';
+
 import PropertyCardContainer from './PropertyCardContainer';
+import PropertyCardInfos from './PropertyCardInfos';
+import PropertyCardPromotionOptions from './PropertyCardPromotionOptions';
 
 const PropertyCard = props => {
   const { loan, route } = props;
@@ -28,6 +29,7 @@ const PropertyCard = props => {
             })}
             progressVariant="text"
             loan={loan}
+            showDetailIcon
           />
         </>
       ) : (

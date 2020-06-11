@@ -1,12 +1,11 @@
 import React from 'react';
 
+import { offerDelete } from '../../api/offers/methodDefinitions';
 import { AutoFormDialog } from '../AutoForm2';
 import T from '../Translation';
-import Button from '../Button';
 import OfferModiferContainer from './OfferModifierContainer';
-import { offerDelete } from '../../api';
 
-const OfferModifier = ({ onSubmit, offer, schema }) => (
+const OfferModifier = ({ onSubmit, offer, schema, ...props }) => (
   <AutoFormDialog
     onSubmit={onSubmit}
     model={offer}
@@ -17,26 +16,9 @@ const OfferModifier = ({ onSubmit, offer, schema }) => (
       primary: true,
       style: { alignSelf: 'center' },
     }}
-    renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) => (
-      <Button
-        onClick={() => {
-          const confirm = window.confirm("T'es sûr mon pote?");
-          if (confirm) {
-            setDisableActions(true);
-            offerDelete
-              .run({ offerId: offer._id })
-              .then(closeDialog)
-              .finally(() => setDisableActions(false));
-          } else {
-            return Promise.resolve();
-          }
-        }}
-        disabled={disabled}
-        error
-      >
-        <T id="general.delete" />
-      </Button>
-    )}
+    onDelete={() => offerDelete.run({ offerId: offer._id })}
+    {...props}
   />
 );
+
 export default OfferModiferContainer(OfferModifier);

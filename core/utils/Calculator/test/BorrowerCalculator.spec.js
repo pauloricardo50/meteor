@@ -2,18 +2,17 @@
 import { expect } from 'chai';
 
 import {
-  STEPS,
-  GENDER,
-  EXPENSES,
   BORROWER_ACTIVITY_TYPES,
-} from 'core/api/constants';
-import Calculator, { Calculator as CalculatorClass } from '..';
-import { DOCUMENTS } from '../../../api/constants';
+  EXPENSES,
+  GENDER,
+} from '../../../api/borrowers/borrowerConstants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
+import { DOCUMENTS } from '../../../api/files/fileConstants';
 import {
   BONUS_ALGORITHMS,
   REAL_ESTATE_INCOME_ALGORITHMS,
 } from '../../../config/financeConstants';
+import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
@@ -24,9 +23,7 @@ describe('BorrowerCalculator', () => {
     it("returns the sum of all value keys in an object's array", () => {
       expect(
         Calculator.getArrayValues({
-          borrowers: {
-            array: [{ value: 1 }, { value: 2 }],
-          },
+          borrowers: { array: [{ value: 1 }, { value: 2 }] },
           key: 'array',
         }),
       ).to.equal(3);
@@ -58,6 +55,15 @@ describe('BorrowerCalculator', () => {
           item => item.yo,
         ),
       ).to.equal(5);
+    });
+
+    it('does not throw if there is a null value in it', () => {
+      expect(
+        Calculator.getArrayValues({
+          borrowers: { array: [null, { value: 2 }] },
+          key: 'array',
+        }),
+      ).to.equal(2);
     });
   });
 
@@ -437,7 +443,6 @@ describe('BorrowerCalculator', () => {
             borrowers: [
               { _id: 'borrowerId', additionalDocuments: initialDocuments },
             ],
-            step: STEPS.SOLVENCY,
           },
         }),
       ).to.deep.equal(initialDocuments.map(({ id }) => id));
@@ -732,11 +737,83 @@ describe('BorrowerCalculator', () => {
     });
 
     it('returns 0 for a retired person', () => {
+      const yearsAgo70 = new Date();
+      yearsAgo70.setFullYear(yearsAgo70.getFullYear() - 70);
+      yearsAgo70.setDate(yearsAgo70.getDate() - 1);
       expect(
         Calculator.getRetirement({
-          borrowers: [{ age: 70, gender: GENDER.M }],
+          borrowers: [{ birthDate: yearsAgo70, gender: GENDER.M }],
         }),
       ).to.equal(0);
+    });
+
+    it('Should return 35 with a male of 30 yo', () => {
+      const yearsAgo30 = new Date();
+      yearsAgo30.setFullYear(yearsAgo30.getFullYear() - 30);
+      yearsAgo30.setDate(yearsAgo30.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo30, gender: GENDER.M }],
+        }),
+      ).to.equal(35);
+    });
+
+    it('Should return 34 with a female of 30 yo', () => {
+      const yearsAgo30 = new Date();
+      yearsAgo30.setFullYear(yearsAgo30.getFullYear() - 30);
+      yearsAgo30.setDate(yearsAgo30.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo30, gender: GENDER.F }],
+        }),
+      ).to.equal(34);
+    });
+
+    it('Should return 35 with an undefined gender of 30 yo', () => {
+      const yearsAgo30 = new Date();
+      yearsAgo30.setFullYear(yearsAgo30.getFullYear() - 30);
+      yearsAgo30.setDate(yearsAgo30.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo30 }],
+        }),
+      ).to.equal(35);
+    });
+
+    it('Should return 0 with a female of 64 yo', () => {
+      const yearsAgo64 = new Date();
+      yearsAgo64.setFullYear(yearsAgo64.getFullYear() - 64);
+      yearsAgo64.setDate(yearsAgo64.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo64, gender: GENDER.F }],
+        }),
+      ).to.equal(0);
+    });
+
+    it('Should return 0 with a female over 64 yo', () => {
+      const yearsAgo80 = new Date();
+      yearsAgo80.setFullYear(yearsAgo80.getFullYear() - 80);
+      yearsAgo80.setDate(yearsAgo80.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [{ birthDate: yearsAgo80, gender: GENDER.F }],
+        }),
+      ).to.equal(0);
+    });
+
+    it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
+      const yearsAgo54 = new Date();
+      yearsAgo54.setFullYear(yearsAgo54.getFullYear() - 54);
+      yearsAgo54.setDate(yearsAgo54.getDate() - 1);
+      expect(
+        Calculator.getRetirement({
+          borrowers: [
+            { birthDate: yearsAgo54, gender: GENDER.F },
+            { birthDate: yearsAgo54, gender: GENDER.M },
+          ],
+        }),
+      ).to.equal(10);
     });
   });
 
@@ -812,6 +889,83 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
         a: 15,
         b: 5,
+        c: 1,
+      });
+    });
+
+    it('filters expenses without a value', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [{ description: 'b', value: 5 }, { description: 'a' }],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        b: 5,
+        c: 1,
+      });
+    });
+
+    it('filters expenses with a falsy value', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [
+            { description: 'b', value: 5 },
+            { description: 'a', value: NaN },
+            { description: 'a', value: null },
+            { description: 'a', value: undefined },
+          ],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        b: 5,
+        c: 1,
+      });
+    });
+
+    it('works with empty arrays', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
+        c: 1,
+      });
+    });
+
+    it('works with empty objects', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {},
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 10,
         c: 1,
       });
     });

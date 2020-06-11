@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
-import Switch from '@material-ui/core/Switch';
+import Switch from '../Material/Switch';
 
 const Toggle = ({
   toggled,

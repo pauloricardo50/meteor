@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FileDropper from './FileDropper';
-import UploaderTop from './UploaderTop';
 import UploaderBottom from './UploaderBottom';
+import UploaderTop from './UploaderTop';
 
 const BaseUploader = ({
   toggleDisplayFull,
-  handleMoveFile,
+  handleMoveFile = () => {},
   variant,
   ...rest
 }) => {
@@ -15,6 +15,7 @@ const BaseUploader = ({
     handleAddFiles,
     displayFull,
     fileMeta: { id },
+    currentValue: destinationFiles = [],
   } = rest;
 
   return (
@@ -22,7 +23,7 @@ const BaseUploader = ({
       handleAddFiles={handleAddFiles}
       toggleDisplayFull={toggleDisplayFull}
       id={id}
-      handleMoveFile={handleMoveFile}
+      handleMoveFile={handleMoveFile(destinationFiles)}
       variant={variant}
     >
       <UploaderTop toggleDisplayFull={toggleDisplayFull} {...rest} />
@@ -34,7 +35,6 @@ const BaseUploader = ({
 BaseUploader.propTypes = {
   displayFull: PropTypes.bool.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
-  showFull: PropTypes.func.isRequired,
 };
 
 export default BaseUploader;

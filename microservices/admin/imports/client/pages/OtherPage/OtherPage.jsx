@@ -1,21 +1,20 @@
 import React from 'react';
 
-import Tabs from 'core/components/Tabs';
-import Icon from 'core/components/Icon';
-import T from 'core/components/Translation';
-import {
-  BORROWERS_COLLECTION,
-  INTEREST_RATES_COLLECTION,
-  PROPERTIES_COLLECTION,
-  CONTACTS_COLLECTION,
-} from 'core/api/constants';
-import { createRoute } from 'core/utils/routerUtils';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
+import { INTEREST_RATES_COLLECTION } from 'core/api/interestRates/interestRatesConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import Icon from 'core/components/Icon';
+import Tabs from 'core/components/Tabs';
+import T from 'core/components/Translation';
+import { createRoute } from 'core/utils/routerUtils';
+
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
 import BorrowersPage from '../BorrowersPage/loadable';
-import PropertiesPage from '../PropertiesPage/loadable';
-import InterestRatesPage from '../InterestRatesPage/loadable';
 import ContactsPage from '../ContactsPage/loadable';
+import InterestRatesPage from '../InterestRatesPage/loadable';
+import PropertiesPage from '../PropertiesPage/loadable';
 
 const tabs = [
   {

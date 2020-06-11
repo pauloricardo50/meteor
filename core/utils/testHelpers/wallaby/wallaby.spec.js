@@ -1,8 +1,10 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+/* eslint-env mocha */
+import { expect } from 'chai';
+
+// Leave this imported from core
 import dummyFunc from 'core/utils/testHelpers/wallaby/wallabyDummy';
 
 describe('Wallaby examples', () => {

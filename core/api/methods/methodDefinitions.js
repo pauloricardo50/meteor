@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from './methods';
 
 export const getMixpanelAuthorization = new Method({
@@ -70,6 +71,10 @@ export const removeAdditionalDoc = new Method({
 
 export const migrateToLatest = new Method({
   name: 'migrateToLatest',
+});
+
+export const migrateRoles = new Method({
+  name: 'migrateRoles',
 });
 
 export const updateDocument = new Method({

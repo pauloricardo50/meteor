@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'core/components/Link';
 import Overdrive from 'react-overdrive';
 
 import Button from 'core/components/Button';
+import Link from 'core/components/Link';
 
 const Widget1Starter = ({ link }) => (
   <Overdrive id="widget1-homepage" duration={400}>

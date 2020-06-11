@@ -57,6 +57,19 @@ export function toNumber(value) {
   return value ? Number(String(value).replace(/\D/g, '')) : value;
 }
 
+export function toNegativeNumber(value) {
+  if (typeof value === 'number') {
+    return value;
+  }
+  // If only negative sign is typed
+  // For weird reasons, an underscore is added sometimes
+  if (value === '-' || value === '-_') {
+    return '-';
+  }
+
+  return value ? Number(String(value).replace(/[^\d-]/g, '')) : value;
+}
+
 // Like toNumber, but allows decimals
 export function toDecimalNumber(value) {
   if (typeof value === 'number') {

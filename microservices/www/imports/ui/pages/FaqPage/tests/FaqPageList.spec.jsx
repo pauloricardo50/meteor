@@ -1,9 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+
 import { shallow } from 'core/utils/testHelpers/enzyme';
-import { FaqPageList } from '../FaqPageList';
+
 import FaqPageFaqs from '../FaqPageFaqs';
+import { FaqPageList } from '../FaqPageList';
 
 describe('FaqPageList', () => {
   let props;

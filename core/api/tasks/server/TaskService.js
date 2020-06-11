@@ -3,18 +3,20 @@ import { Mongo } from 'meteor/mongo';
 
 import moment from 'moment';
 
-import { getUserNameAndOrganisation } from 'core/api/helpers/index';
-import { LOANS_COLLECTION, USERS_COLLECTION } from '../../constants';
+import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
+import { task as taskFragment } from '../../fragments';
+import { getUserNameAndOrganisation } from '../../helpers';
 import CollectionService from '../../helpers/server/CollectionService';
+import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
+import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
+import LoanService from '../../loans/server/LoanService';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import UserService from '../../users/server/UserService';
+import { USERS_COLLECTION } from '../../users/userConstants';
 import { TASK_STATUS } from '../taskConstants';
 import Tasks from '../tasks';
-import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
-import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
-import { LENDERS_COLLECTION } from '../../lenders/lenderConstants';
-import { task as taskFragment } from '../../fragments';
-import UserService from '../../users/server/UserService';
-import LoanService from '../../loans/server/LoanService';
-import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
 
 class TaskService extends CollectionService {
   constructor() {
@@ -60,7 +62,9 @@ class TaskService extends CollectionService {
     if (collection === CONTACTS_COLLECTION) {
       this.addLink({ id: taskId, linkName: 'contact', linkId: docId });
     }
-
+    if (collection === INSURANCE_REQUESTS_COLLECTION) {
+      this.addLink({ id: taskId, linkName: 'insuranceRequest', linkId: docId });
+    }
     if (assignee) {
       this.addLink({
         id: taskId,

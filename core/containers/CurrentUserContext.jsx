@@ -1,19 +1,19 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { ROLES } from 'core/api/constants';
-
-const hasRole = ({ roles }, role) => roles.includes(role);
+import withSmartQuery from '../api/containerToolkit/withSmartQuery';
+import { ROLES } from '../api/users/userConstants';
 
 const formatCurrentUser = user => {
   if (user) {
     return {
       ...user,
-      isDev: hasRole(user, ROLES.DEV),
-      isUser: hasRole(user, ROLES.USER),
-      isAdmin: hasRole(user, ROLES.ADMIN),
-      isPro: hasRole(user, ROLES.PRO),
+      isDev: Roles.userIsInRole(user, ROLES.DEV),
+      isUser: Roles.userIsInRole(user, ROLES.USER),
+      isAdmin: Roles.userIsInRole(user, ROLES.ADMIN),
+      isPro: Roles.userIsInRole(user, ROLES.PRO),
     };
   }
 
@@ -25,10 +25,12 @@ export const CurrentUserContext = React.createContext();
 export const queryContainer = compose(
   withSmartQuery({
     query: ({ query }) => query,
-    params: ({ params, ...props }) => params && params(props),
+    params: ({ params, ...props }) =>
+      typeof params === 'function' ? params(props) : params,
     queryOptions: { reactive: true, single: true },
     dataName: 'currentUser',
     renderMissingDoc: false,
+    deps: ({ deps }) => deps,
   }),
   mapProps(({ query, params, ...rest }) => rest),
 );

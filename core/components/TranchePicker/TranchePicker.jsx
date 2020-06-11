@@ -1,8 +1,10 @@
 import React from 'react';
-import TranchePickerContainer from './TranchePickerContainer';
+
+import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
 import Button from '../Button';
 import Tranche from './Tranche';
-import { INTEREST_RATES } from '../../api/constants';
+import TranchePickerContainer from './TranchePickerContainer';
+import { checkTranches } from './tranchePickerHelpers';
 
 const interestRatesOrder = Object.values(INTEREST_RATES);
 
@@ -30,23 +32,37 @@ export const TranchePicker = ({
   setValue,
   setType,
   options,
-}) => (
-  <div className="tranche-picker">
-    {tranches.map(({ value, type }) => (
-      <Tranche
-        key={type}
-        value={value}
-        type={type}
-        removeTranche={() => removeTranche(type)}
-        setValue={newValue => setValue(type, newValue)}
-        setType={newType => setType(type, newType)}
-        options={filterOptions(options, tranches, type)}
-      />
-    ))}
-    <Button className="add" primary onClick={addTranche}>
-      Ajouter
-    </Button>
-  </div>
-);
+  wantedLoan,
+}) => {
+  const check = checkTranches(tranches, wantedLoan);
+  const disableAddTranche =
+    check.status === 'error' &&
+    check.errors.includes('allTypesAreNotDefined') &&
+    tranches.length > 0;
+  return (
+    <div className="tranche-picker">
+      {tranches.map(({ value, type }) => (
+        <Tranche
+          key={type}
+          value={value}
+          type={type}
+          removeTranche={() => removeTranche(type)}
+          setValue={newValue => setValue(type, newValue)}
+          setType={newType => setType(type, newType)}
+          options={filterOptions(options, tranches, type)}
+          wantedLoan={wantedLoan}
+        />
+      ))}
+      <Button
+        className="add"
+        primary
+        onClick={addTranche}
+        disabled={disableAddTranche}
+      >
+        Ajouter
+      </Button>
+    </div>
+  );
+};
 
 export default TranchePickerContainer(TranchePicker);

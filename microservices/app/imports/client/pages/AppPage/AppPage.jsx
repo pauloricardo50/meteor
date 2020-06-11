@@ -1,17 +1,21 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import { ROLES } from 'core/api/constants';
-import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
+import { ROLES } from 'core/api/users/userConstants';
+
 import DashboardUnverified from '../../components/DashboardUnverified';
+import { WelcomeScreen } from '../../components/WelcomeScreen/WelcomeScreen';
+import WelcomeScreenCtas from '../../components/WelcomeScreen/WelcomeScreenCtas';
 import AppPageContainer from './AppPageContainer';
 import ProAppPage from './ProAppPage';
-import SuperDashboard from './SuperDashboard';
+import SuperDashboard from './SuperDashboard/loadable';
 
 export const AppPage = ({ currentUser, insertLoan, loading }) => {
-  const { emails, loans, roles } = currentUser;
-  const userIsPro = roles.includes(ROLES.PRO);
+  const { emails, loans } = currentUser;
+  const userIsPro = Roles.userIsInRole(currentUser, ROLES.PRO);
 
   if (userIsPro) {
     return <ProAppPage loans={loans} insertLoan={insertLoan} />;
@@ -29,12 +33,12 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
         </div>
       )}
 
-      {loans.length > 0 && <SuperDashboard currentUser={currentUser} />}
+      {loans.length > 0 && <SuperDashboard />}
 
       {loans.length === 0 && (
         <WelcomeScreen
           displayCheckbox={false}
-          handleClick={insertLoan}
+          cta={<WelcomeScreenCtas loading={loading} insertLoan={insertLoan} />}
           buttonProps={{ loading }}
         />
       )}

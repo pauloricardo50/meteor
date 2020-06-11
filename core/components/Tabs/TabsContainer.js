@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import { withProps, compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import withMatchParam from '../../containers/withMatchParam';
 
@@ -15,10 +15,6 @@ const styles = theme => ({
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
     maxWidth: 'unset',
-  },
-  labelContainer: {
-    paddingRight: 12,
-    paddingLeft: 12,
   },
 });
 

@@ -1,15 +1,16 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import React from 'react';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { ROLES } from '../../api/constants';
-import T from '../Translation';
+import { ROLES } from '../../api/users/userConstants';
 import DropdownMenu from '../DropdownMenu';
+import T from '../Translation';
 
 // Shows a sign out link for all types of users, but:
 // an admin link for admins,

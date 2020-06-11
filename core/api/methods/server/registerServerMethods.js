@@ -25,5 +25,11 @@ import '../../sessions/server/methods';
 import '../../slack/server/methods';
 import '../../tasks/server/methods';
 import '../../users/server/methods';
-
+import '../../front/server/methods';
+import '../../insuranceRequests/server/methods';
+import '../../insurances/server/methods';
+import '../../insuranceProducts/server/methods';
+import '../../commissionRates/server/methods';
+import '../../gpsStats/server/methods';
+import '../../errorLogger/server/methods';
 import './methods';

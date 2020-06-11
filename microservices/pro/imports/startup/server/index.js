@@ -1,8 +1,8 @@
 import '../shared-startup';
-import { Inject } from 'meteor/meteorhacks:inject-initial';
+import 'core/startup/server/monti';
+
 import { Accounts } from 'meteor/accounts-base';
-import 'core/api/initialization';
-import 'core/startup/server';
+import { Inject } from 'meteor/meteorhacks:inject-initial';
 
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client

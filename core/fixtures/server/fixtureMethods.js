@@ -3,61 +3,64 @@ import { check } from 'meteor/check';
 
 import range from 'lodash/range';
 
-import LoanService from 'core/api/loans/server/LoanService';
+import Borrowers from '../../api/borrowers';
 import {
+  completeFakeBorrower,
+  emptyFakeBorrower,
+} from '../../api/borrowers/fakes';
+import Contacts from '../../api/contacts';
+import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
+import {
+  APPLICATION_TYPES,
+  PURCHASE_TYPE,
   STEPS,
   STEP_ORDER,
-  ROLES,
-  PURCHASE_TYPE,
-  APPLICATION_TYPES,
-  ORGANISATION_TYPES,
-} from '../../api/constants';
-import {
-  Borrowers,
-  Contacts,
-  Loans,
-  Lots,
-  Offers,
-  Organisations,
-  PromotionLots,
-  PromotionOptions,
-  Promotions,
-  Properties,
-  Tasks,
-  Users,
-} from '../../api';
+} from '../../api/loans/loanConstants';
+import Loans from '../../api/loans/loans';
+import LoanService from '../../api/loans/server/LoanService';
+import Lots from '../../api/lots/lots';
+import Offers from '../../api/offers';
+import Organisations from '../../api/organisations';
+import { ORGANISATION_TYPES } from '../../api/organisations/organisationConstants';
+import OrganisationService from '../../api/organisations/server/OrganisationService';
+import PromotionLots from '../../api/promotionLots';
+import PromotionOptions from '../../api/promotionOptions';
+import Promotions from '../../api/promotions';
+import Properties from '../../api/properties';
+import { fakeProperty } from '../../api/properties/fakes';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
+import Tasks from '../../api/tasks/tasks';
+import UserService from '../../api/users/server/UserService';
+import { ROLES } from '../../api/users/userConstants';
+import Users from '../../api/users/users';
 import {
-  USER_COUNT,
-  UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
+  UNOWNED_LOANS_COUNT,
+  USER_COUNT,
 } from '../fixtureConfig';
-import { createFakeLoan, addLoanWithData } from '../loanFixtures';
-import {
-  createDevs,
-  createAdmins,
-  getFakeUsersIds,
-  createUser,
-  createFakeUsers,
-} from '../userFixtures';
-import { createFakeOffer } from '../offerFixtures';
 import { E2E_USER_EMAIL } from '../fixtureConstants';
-import { createOrganisations } from '../organisationFixtures';
 import { createFakeInterestRates } from '../interestRatesFixtures';
+import { addLoanWithData, createFakeLoan } from '../loanFixtures';
+import { createFakeOffer } from '../offerFixtures';
+import { createOrganisations } from '../organisationFixtures';
+import { createTestPromotion } from '../promotionFixtures';
 import {
-  emptyFakeBorrower,
-  completeFakeBorrower,
-} from '../../api/borrowers/fakes';
-import { fakeProperty } from '../../api/properties/fakes';
-import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
-import OrganisationService from '../../api/organisations/server/OrganisationService';
+  createAdmins,
+  createDevs,
+  createFakeUsers,
+  createUser,
+  getFakeUsersIds,
+} from '../userFixtures';
 
 const isAuthorizedToRun = () =>
   !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
 const getAdmins = () => {
-  const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
+  const admins = UserService.fetch({
+    $filters: { 'roles._id': ROLES.ADVISOR },
+    _id: 1,
+  });
   if (admins.length <= 1) {
     const newAdmins = createAdmins();
     return newAdmins;
@@ -66,14 +69,14 @@ const getAdmins = () => {
 };
 
 const deleteUsersRelatedData = usersToDelete => {
-  Borrowers.remove({ userId: { $in: usersToDelete } });
-  Properties.remove({ userId: { $in: usersToDelete } });
-  Offers.remove({ userId: { $in: usersToDelete } });
-  Loans.remove({ userId: { $in: usersToDelete } });
+  BorrowerService.collection.remove({ userId: { $in: usersToDelete } });
+  PropertyService.collection.remove({ userId: { $in: usersToDelete } });
+  OfferService.collection.remove({ userId: { $in: usersToDelete } });
+  LoanService.collection.remove({ userId: { $in: usersToDelete } });
 };
 
 const deleteUsers = usersToDelete =>
-  Users.remove({ _id: { $in: usersToDelete } });
+  UserService.collection.remove({ _id: { $in: usersToDelete } });
 
 const createFakeLoanFixture = ({
   userId,
@@ -328,9 +331,18 @@ Meteor.methods({
       });
     }
 
-    Organisations.update(
+    OrganisationService.baseUpdate(
       { _id: orgId },
-      { $set: { userLinks: [{ _id: this.userId }] } },
+      {
+        $set: {
+          userLinks: [{ _id: this.userId, isMain: true, title: 'Dev </>' }],
+        },
+      },
     );
+  },
+
+  createTestPromotion(...params) {
+    SecurityService.checkCurrentUserIsDev();
+    return createTestPromotion(...params);
   },
 });

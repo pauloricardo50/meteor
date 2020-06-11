@@ -1,13 +1,10 @@
 import React from 'react';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 
-import MenuItem from '@material-ui/core/MenuItem';
-
-import MuiSelect from '../Material/Select';
-import FormHelperText from '../Material/FormHelperText';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
-import FormControl from '../Material/FormControl';
-import Input from '../Material/Input';
+import Chip from '../Material/Chip';
+import MenuItem from '../Material/MenuItem';
+import TextField from '../Material/TextField';
 import SelectContainer from './SelectContainer';
 
 const makeRenderValue = ({ multiple, rawOptions }) => {
@@ -18,11 +15,18 @@ const makeRenderValue = ({ multiple, rawOptions }) => {
     };
   }
 
-  return values =>
-    values.map((value, i) => {
-      const option = rawOptions.find(({ id }) => id === value);
-      return [i !== 0 && ', ', option && option.label];
-    });
+  return values => (
+    <div className="flex wrap">
+      {values.map(value => {
+        const option = rawOptions.find(({ id }) => id === value);
+        return (
+          option && (
+            <Chip key={option.id} label={option.label} className="m-2" />
+          )
+        );
+      })}
+    </div>
+  );
 };
 
 const Select = ({
@@ -38,42 +42,38 @@ const Select = ({
   multiple,
   rawOptions,
   fullWidth,
+  className,
+  displayEmpty,
+  SelectProps,
   ...otherProps
-}) => {
-  const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
-
-  return (
-    <FormControl
-      fullWidth={fullWidth}
-      variant="outlined"
-      className="mui-select"
-      style={style}
-    >
-      {label && (
-        <InputLabel ref={inputLabelRef} htmlFor={id}>
-          {label}
-          {required && ' '}
-          {required && <span className="error">*</span>}
-        </InputLabel>
-      )}
-      <MuiSelect
-        renderValue={makeRenderValue({ multiple, rawOptions })}
-        {...otherProps}
-        value={value}
-        onChange={onChange}
-        input={<Input labelWidth={labelWidth} id={id} />}
-        multiple={multiple}
-        displayEmpty={!!placeholder}
-      >
-        {[
-          placeholder && <MenuItem value="">{placeholder}</MenuItem>,
-          ...options,
-        ].filter(x => x)}
-      </MuiSelect>
-      {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl>
-  );
-};
+}) => (
+  <TextField
+    fullWidth={fullWidth}
+    style={style}
+    className={cx('mui-select', className)}
+    select
+    SelectProps={{
+      multiple,
+      renderValue: makeRenderValue({ multiple, rawOptions }),
+      displayEmpty:
+        typeof displayEmpty === 'boolean' ? displayEmpty : !!placeholder,
+      ...SelectProps,
+    }}
+    value={value}
+    onChange={onChange}
+    label={label}
+    id={id}
+    helperText={error}
+    error={!!error}
+    required={required}
+    {...otherProps}
+  >
+    {[
+      placeholder && <MenuItem value="">{placeholder}</MenuItem>,
+      ...options,
+    ].filter(x => x)}
+  </TextField>
+);
 
 Select.propTypes = {
   id: PropTypes.string,

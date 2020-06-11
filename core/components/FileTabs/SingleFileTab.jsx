@@ -3,20 +3,17 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import cx from 'classnames';
 
-import AdditionalDocAdder from './AdditionalDocAdder';
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 import {
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  LOANS_COLLECTION,
-  BASIC_DOCUMENTS_LIST,
-} from '../../api/constants';
-import {
+  getAllDocuments,
   getBorrowerDocuments,
-  getPropertyDocuments,
   getLoanDocuments,
-  allDocuments,
+  getPropertyDocuments,
 } from '../../api/files/documents';
-
+import { BASIC_DOCUMENTS_LIST } from '../../api/files/fileConstants';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
+import AdditionalDocAdder from './AdditionalDocAdder';
 import UploaderCategories from './UploaderCategories';
 
 const documentsToDisplay = ({ collection, loan, id }) => {
@@ -33,9 +30,10 @@ const documentsToDisplay = ({ collection, loan, id }) => {
   }
 };
 
-const documentsToHide = ({ doc, collection, loan, id }) => {
-  const allDocs = allDocuments({ doc, collection });
-  const docsToDisplay = documentsToDisplay({ collection, loan, id });
+const documentsToHide = ({ doc, collection, loan, id, documentArray }) => {
+  const allDocs = getAllDocuments({ doc, collection });
+  const docsToDisplay =
+    documentArray || documentsToDisplay({ collection, loan, id });
   return allDocs.filter(
     document => !docsToDisplay.some(({ id: docId }) => docId === document.id),
   );
@@ -43,7 +41,6 @@ const documentsToHide = ({ doc, collection, loan, id }) => {
 
 const SingleFileTab = ({ documentArray, ...props }) => {
   const {
-    collection,
     loan,
     doc,
     className,
@@ -52,12 +49,14 @@ const SingleFileTab = ({ documentArray, ...props }) => {
   } = props;
 
   let displayedDocs =
-    documentArray || documentsToDisplay({ collection, loan, id: doc._id });
+    documentArray ||
+    documentsToDisplay({ collection: doc._collection, loan, id: doc._id });
   let hiddenDocs = documentsToHide({
-    collection,
+    collection: doc._collection,
     loan,
     id: doc._id,
     doc,
+    documentArray,
   });
 
   if (typeof basicOnly === 'boolean' && basicOnly) {
@@ -72,7 +71,7 @@ const SingleFileTab = ({ documentArray, ...props }) => {
   return (
     <div className={cx('single-file-tab', className)}>
       {withAdditionalDocAdder && Meteor.microservice === 'admin' && (
-        <AdditionalDocAdder collection={collection} docId={doc._id} />
+        <AdditionalDocAdder collection={doc._collection} docId={doc._id} />
       )}
       <UploaderCategories
         documentsToDisplay={displayedDocs}

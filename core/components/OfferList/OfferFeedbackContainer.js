@@ -1,16 +1,18 @@
+import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
 
-import { offerSendFeedback } from '../../api';
+import { offerSendFeedback } from '../../api/offers/methodDefinitions';
+import Calculator from '../../utils/Calculator';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 import {
   FEEDBACK_OPTIONS,
-  makeFeedback,
   FEEDBACK_OPTIONS_SETTINGS,
+  makeFeedback,
 } from './feedbackHelpers';
-import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
-const schema = ({ offer, formatMessage }) =>
+const getSchema = ({ offer, formatMessage, loan }) =>
   new SimpleSchema({
     option: {
       type: String,
@@ -47,40 +49,42 @@ const schema = ({ offer, formatMessage }) =>
         type: CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW,
       },
       condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
-      customAutoValue: model => makeFeedback({ model, offer, formatMessage }),
+      customAutoValue: model =>
+        makeFeedback({ model, offer, loan, formatMessage }),
     },
   });
 
-export default compose(
-  injectIntl,
-  withProps(({ offer, intl: { formatMessage } }) => {
-    const {
-      _id: offerId,
-      feedback = {},
-      lender: { contact },
-    } = offer;
+export default withProps(({ offer, loan }) => {
+  const { formatMessage } = useIntl();
+  const schema = useMemo(() => getSchema({ offer, formatMessage, loan }), [
+    loan,
+  ]);
+  const { _id: offerId, feedback = {} } = offer;
+  const { contact } = Calculator.selectLenderForOfferId({
+    loan,
+    offerId,
+  });
 
-    const { message } = feedback;
+  const { message } = feedback;
 
-    return {
-      schema: schema({ offer, formatMessage }),
-      onSubmit: object => {
-        if (message) {
-          return Promise.resolve();
-        }
-
-        const { name } = contact || {};
-        const confirm = window.confirm(
-          `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
-        );
-        if (confirm) {
-          return offerSendFeedback.run({
-            offerId,
-            feedback: makeFeedback({ model: object, offer, formatMessage }),
-          });
-        }
+  return {
+    schema,
+    onSubmit: object => {
+      if (message) {
         return Promise.resolve();
-      },
-    };
-  }),
-);
+      }
+
+      const { name } = contact || {};
+      const confirm = window.confirm(
+        `Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié ! L'admin assigné à ce dossier recevra également l'email en BCC.`,
+      );
+      if (confirm) {
+        return offerSendFeedback.run({
+          offerId,
+          feedback: makeFeedback({ model: object, offer, loan, formatMessage }),
+        });
+      }
+      return Promise.resolve();
+    },
+  };
+});

@@ -1,50 +1,53 @@
 import { Meteor } from 'meteor/meteor';
 
-import UserService from 'core/api/users/server/UserService';
-import { adminLoan } from 'core/api/fragments';
+import ActivityService from '../../activities/server/ActivityService';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
-import Security from '../../security/Security';
-import ActivityService from '../../activities/server/ActivityService';
-import SecurityService from '../../security';
-import {
-  loanUpdate,
-  loanDelete,
-  pushLoanValue,
-  popLoanValue,
-  adminLoanInsert,
-  addNewStructure,
-  removeStructure,
-  updateStructure,
-  selectStructure,
-  duplicateStructure,
-  assignLoanToUser,
-  switchBorrower,
-  sendNegativeFeedbackToAllLenders,
-  loanUpdatePromotionInvitedBy,
-  reuseProperty,
-  setMaxPropertyValueWithoutBorrowRatio,
-  addNewMaxStructure,
-  setLoanStep,
-  loanShareSolvency,
-  anonymousLoanInsert,
-  userLoanInsert,
-  loanInsertBorrowers,
-  adminLoanReset,
-  loanLinkPromotion,
-  loanUnlinkPromotion,
-  loanSetCreatedAtActivityDescription,
-  loanSetStatus,
-  loanUpdateCreatedAt,
-  sendLoanChecklist,
-  loanSetAdminNote,
-  loanRemoveAdminNote,
-  loanSetDisbursementDate,
-  loanSetAssignees,
-} from '../methodDefinitions';
-import { STEPS, LOAN_STATUS } from '../loanConstants';
-import LoanService from './LoanService';
+import { calculatorLoan } from '../../fragments';
 import { Method } from '../../methods/methods';
+import SecurityService from '../../security';
+import Security from '../../security/Security';
+import UserService from '../../users/server/UserService';
+import { LOAN_STATUS, STEPS } from '../loanConstants';
+import {
+  addNewMaxStructure,
+  addNewStructure,
+  adminLoanInsert,
+  adminLoanReset,
+  anonymousLoanInsert,
+  assignLoanToUser,
+  duplicateStructure,
+  loanDelete,
+  loanGetReusableProperties,
+  loanInsertBorrowers,
+  loanLinkBorrower,
+  loanLinkPromotion,
+  loanLinkProperty,
+  loanRemoveAdminNote,
+  loanSetAdminNote,
+  loanSetAssignees,
+  loanSetCreatedAtActivityDescription,
+  loanSetDisbursementDate,
+  loanSetStatus,
+  loanShareSolvency,
+  loanUnlinkPromotion,
+  loanUpdate,
+  loanUpdateCreatedAt,
+  loanUpdatePromotionInvitedBy,
+  popLoanValue,
+  pushLoanValue,
+  removeStructure,
+  reuseProperty,
+  selectStructure,
+  sendLoanChecklist,
+  sendNegativeFeedbackToAllLenders,
+  setLoanStep,
+  setMaxPropertyValueOrBorrowRatio,
+  switchBorrower,
+  updateStructure,
+  userLoanInsert,
+} from '../methodDefinitions';
+import LoanService from './LoanService';
 
 loanUpdate.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -66,31 +69,49 @@ popLoanValue.setHandler((context, { loanId, object }) => {
   return LoanService.popValue({ loanId, object });
 });
 
-export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
+export const adminLoanInsertHandler = (
+  { userId: adminUserId },
+  { userId, loan },
+) => {
   SecurityService.checkUserIsAdmin(adminUserId);
-  return LoanService.fullLoanInsert({ userId });
-};
-adminLoanInsert.setHandler(adminLoanInsertHandler);
+  const loanId = LoanService.fullLoanInsert({ userId, loan });
 
-userLoanInsert.setHandler(({ userId }, { test, proPropertyId }) => {
-  SecurityService.checkLoggedIn();
-
-  if (proPropertyId) {
-    return LoanService.insertPropertyLoan({
-      userId,
-      propertyIds: [proPropertyId],
-      loan: { displayWelcomeScreen: false },
+  if (!userId) {
+    // Make sure new, loose, loans are assigned to the one creating them
+    // so we don't have unassigned loans in the DB
+    LoanService.setAssignees({
+      loanId,
+      assignees: [{ _id: adminUserId, isMain: true, percent: 100 }],
     });
   }
 
-  return LoanService.fullLoanInsert({
-    userId,
-    loan: {
-      displayWelcomeScreen: false,
-      status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
-    },
-  });
-});
+  return loanId;
+};
+adminLoanInsert.setHandler(adminLoanInsertHandler);
+
+userLoanInsert.setHandler(
+  ({ userId }, { test, proPropertyId, purchaseType }) => {
+    SecurityService.checkLoggedIn();
+
+    if (proPropertyId) {
+      return LoanService.insertPropertyLoan({
+        userId,
+        propertyIds: [proPropertyId],
+        loan: { displayWelcomeScreen: false },
+      });
+    }
+
+    return LoanService.fullLoanInsert({
+      userId,
+      loan: {
+        displayWelcomeScreen: false,
+        status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
+        purchaseType,
+      },
+    });
+  },
+);
+userLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -158,15 +179,17 @@ reuseProperty.setHandler((context, params) => {
   LoanService.reuseProperty(params);
 });
 
-setMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
+setMaxPropertyValueOrBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
-  return LoanService.setMaxPropertyValueWithoutBorrowRatio(params);
+  return LoanService.setMaxPropertyValueOrBorrowRatio(params);
 });
+setMaxPropertyValueOrBorrowRatio.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
 addNewMaxStructure.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.addNewMaxStructure(params);
 });
+addNewMaxStructure.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
 setLoanStep.setHandler((context, params) => {
   const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
@@ -190,12 +213,7 @@ loanShareSolvency.setHandler((context, params) => {
 });
 
 anonymousLoanInsert.setHandler((context, params) => {
-  const {
-    proPropertyId,
-    existingAnonymousLoanId,
-    referralId,
-    trackingId,
-  } = params;
+  const { proPropertyId, existingAnonymousLoanId } = params;
   if (proPropertyId) {
     SecurityService.properties.isAllowedToAddAnonymousLoan({
       propertyId: proPropertyId,
@@ -230,12 +248,14 @@ anonymousLoanInsert.setHandler((context, params) => {
 
   return loanId;
 });
+anonymousLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 loanInsertBorrowers.setHandler((context, params) => {
   const { loanId } = params;
   SecurityService.loans.isAllowedToUpdate(loanId);
   LoanService.insertBorrowers(params);
 });
+loanInsertBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
 
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -288,7 +308,7 @@ sendLoanChecklist.setHandler(
       email: assigneeAddress,
       name: assigneeName,
     } = UserService.get(userId, { email: 1, name: 1 });
-    const loan = LoanService.get(loanId, adminLoan());
+    const loan = LoanService.get(loanId, calculatorLoan());
     return sendEmailToAddress.serverRun({
       address,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
@@ -308,9 +328,9 @@ loanSetAdminNote.setHandler(({ userId }, params) => {
   return LoanService.setAdminNote({ ...params, userId });
 });
 
-loanRemoveAdminNote.setHandler(({ userId }, params) => {
+loanRemoveAdminNote.setHandler(({ userId }, { loanId, ...params }) => {
   SecurityService.checkUserIsAdmin(userId);
-  return LoanService.removeAdminNote(params);
+  return LoanService.removeAdminNote({ docId: loanId, ...params });
 });
 
 loanSetDisbursementDate.setHandler(({ userId }, params) => {
@@ -331,4 +351,19 @@ generateDisbursedSoonLoansTasks.setHandler(context => {
 loanSetAssignees.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.setAssignees(params);
+});
+
+loanLinkBorrower.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  return LoanService.linkBorrower(params);
+});
+
+loanGetReusableProperties.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  return LoanService.getReusableProperties(params);
+});
+
+loanLinkProperty.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
+  return LoanService.linkProperty(params);
 });

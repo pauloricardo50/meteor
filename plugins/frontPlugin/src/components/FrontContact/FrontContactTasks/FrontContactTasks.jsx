@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import Slide from '@material-ui/core/Slide';
 
 import T from '../../../core/components/Translation';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
@@ -8,6 +7,7 @@ import FrontCardItem from '../../FrontCard/FrontCardItem';
 import TableWithModal from '../../../core/components/Table/TableWithModal';
 import FrontContactTask from './FrontContactTask';
 import FrontContactTaskActions from './FrontContactTaskActions';
+import FrontModal from '../../FrontModal';
 
 const now = moment();
 export const formatDateTime = (date, toNow) => {
@@ -61,32 +61,25 @@ const makeMapTask = ({ refetch }) => task => {
   };
 };
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
-});
-
 const FrontContactTasks = ({ tasks = [], refetch }) => (
-  <FrontCardItem
-    label="Tâches"
-
-  > <TableWithModal
-      columnOptions={columnOptions}
-      rows={tasks.map(makeMapTask({ refetch }))}
-      className="front-contact-tasks"
-      modalType="dialog"
-      getModalProps={({ row: { task }, setOpen }) => ({
-        title: task.title,
-        fullScreen: true,
-        children: (
-          <FrontContactTask
-            task={task}
-            handleClose={() => setOpen(false)}
-            refetch={refetch}
-          />
-        ),
-      })}
-      modalProps={{ actions: [], TransitionComponent: Transition }}
-    /></FrontCardItem>
+  <FrontCardItem label="Tâches">
+    {tasks.length ? (
+      <TableWithModal
+        columnOptions={columnOptions}
+        rows={tasks.map(makeMapTask({ refetch }))}
+        className="front-contact-tasks"
+        ModalComponent={FrontModal}
+        modalType="dialog"
+        getModalProps={({ row: { task } }) => ({
+          title: task.title,
+          children: <FrontContactTask task={task} refetch={refetch} />,
+          withButton: false,
+        })}
+      />
+    ) : (
+      <p className="secondary mt-4">Aucune tâche pour l'instant</p>
+    )}
+  </FrontCardItem>
 );
 
 export default FrontContactTasks;

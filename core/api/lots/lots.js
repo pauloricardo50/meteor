@@ -1,6 +1,6 @@
-import LotSchema from './schemas/LotSchema';
-import { LOTS_COLLECTION } from './lotConstants';
 import { createCollection } from '../helpers/collectionHelpers';
+import { LOTS_COLLECTION } from './lotConstants';
+import LotSchema from './schemas/LotSchema';
 
 const Lots = createCollection(LOTS_COLLECTION);
 

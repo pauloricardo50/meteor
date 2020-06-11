@@ -1,10 +1,11 @@
 import React from 'react';
 
 import Button from 'core/components/Button';
+
 import LenderRulesEditorContainer from './LenderRulesEditorContainer';
 import LenderRulesEditorSingle from './LenderRulesEditorSingle';
-import LenderRulesSorter from './LenderRulesSorter/LenderRulesSorter';
 import LenderRulesAdder from './LenderRulesForm/LenderRulesAdder';
+import LenderRulesSorter from './LenderRulesSorter/LenderRulesSorter';
 
 const LenderRulesEditor = ({
   initializeLenderRules,

@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
-import cx from 'classnames';
 import Fab from '@material-ui/core/Fab';
+import cx from 'classnames';
 
 import Icon from '../Icon';
 

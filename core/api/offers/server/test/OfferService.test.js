@@ -1,14 +1,16 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { expect } from 'chai';
+
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
-import { checkEmails } from '../../../../utils/testHelpers';
-import { EMAIL_TEMPLATES, EMAIL_IDS } from '../../../email/emailConstants';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { offerSendFeedback } from '../../methodDefinitions';
 import OfferService from '../OfferService';
+
+/* eslint-env mocha */
+
 
 describe('OfferService', () => {
   let offer;

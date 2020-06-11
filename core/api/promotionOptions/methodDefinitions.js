@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const promotionOptionInsert = new Method({
@@ -64,4 +65,5 @@ export const promotionOptionAddToWaitList = new Method({
 export const getPromotionOptionProgressEmails = new Method({
   name: 'getPromotionOptionProgressEmails',
   params: { id: String, nextStatus: String },
+  doNotRefetchQueries: true,
 });

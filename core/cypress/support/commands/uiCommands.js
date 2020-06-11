@@ -1,3 +1,5 @@
+import 'cypress-file-upload';
+
 Cypress.Commands.add('routeShouldExist', expectedPageUri => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here

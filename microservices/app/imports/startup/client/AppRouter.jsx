@@ -1,12 +1,13 @@
 import React from 'react';
 
-import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import { getUserLocale, getFormats } from 'core/utils/localization';
 import { appUser } from 'core/api/users/queries';
-import messagesFR from '../../../lang/fr.json';
-import AppLayout from '../../client/layouts/AppLayout';
-import AppStore from '../../client/components/AppStore';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
+import { dataLayer } from 'core/utils/googleTagManager';
+import { getFormats, getUserLocale } from 'core/utils/localization';
 
+import messagesFR from '../../../lang/fr.json';
+import AppStore from '../../client/components/AppStore';
+import AppLayout from '../../client/layouts/AppLayout';
 import APP_ROUTES from './appRoutes';
 
 const AppRouter = () => (
@@ -15,7 +16,39 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={APP_ROUTES}
-    currentUser={{ query: appUser }}
+    currentUser={{
+      query: appUser,
+      params: {
+        $body: {
+          assignedEmployee: { email: 1, name: 1 },
+          currentUser: 1,
+          email: 1,
+          emails: 1,
+          firstName: 1,
+          lastName: 1,
+          loans: {
+            name: 1,
+            customName: 1,
+            purchaseType: 1,
+            propertyIds: 1,
+          },
+          name: 1,
+          organisations: { name: 1 },
+          phoneNumbers: 1,
+          roles: 1,
+        },
+      },
+    }}
+    loginPageProps={{
+      onSignInSuccess: () => {
+        if (dataLayer()) {
+          dataLayer().push({
+            event: 'formSubmission',
+            formType: 'Login',
+          });
+        }
+      },
+    }}
   >
     <AppStore>
       <AppLayout>

@@ -5,12 +5,14 @@ import moment from 'moment';
 import { aggregators } from 'react-pivottable/Utilities';
 import SimpleSchema from 'simpl-schema';
 
-import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import TextInput from 'core/components/TextInput';
-import IconButton from 'core/components/IconButton';
 import { generateMatchAllWordsRegexp } from 'core/api/helpers/mongoHelpers';
 import { AutoFormDialog } from 'core/components/AutoForm2';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import IconButton from 'core/components/IconButton';
+import RadioTabs from 'core/components/RadioButtons/RadioTabs';
+import TextInput from 'core/components/TextInput';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 const schema = new SimpleSchema({ name: String });
 
@@ -85,8 +87,11 @@ const SavedAnalysis = ({ setCollection, setState, report }) => {
     </div>
   );
 };
+
 const SavedAnalyses = ({ setState, setCollection }) => {
+  const currentUser = useCurrentUser();
   const [search, setSearch] = useState('');
+  const [myReports, setMyReports] = useState(true);
   const { data = [], loading } = useReactiveMeteorData(
     {
       query: 'analysisReports',
@@ -96,6 +101,7 @@ const SavedAnalyses = ({ setState, setCollection }) => {
             $regex: generateMatchAllWordsRegexp(search.split(' ')),
             $options: 'g',
           },
+          ...(myReports ? { 'userLink._id': currentUser._id } : undefined),
         },
         $options: { sort: { createdAt: -1 } },
         name: 1,
@@ -104,7 +110,7 @@ const SavedAnalyses = ({ setState, setCollection }) => {
         payload: 1,
       },
     },
-    [search],
+    [search, myReports, currentUser._id],
   );
 
   return (
@@ -117,6 +123,17 @@ const SavedAnalyses = ({ setState, setCollection }) => {
         onChange={setSearch}
         className="mb-8"
       />
+
+      <RadioTabs
+        options={[
+          { id: true, label: 'Mes rapports' },
+          { id: false, label: 'Tous' },
+        ]}
+        onChange={setMyReports}
+        value={myReports}
+        className="mb-8"
+      />
+
       <div className="flex-col">
         {!loading &&
           data.map(report => (

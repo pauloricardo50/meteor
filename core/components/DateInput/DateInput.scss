@@ -35,7 +35,7 @@
 
   border: none;
 
-  font-family: 'Eina04-Regular', 'Helvetica' !important;
+  font-family: 'Manrope', 'Helvetica' !important;
 }
 
 .date-input .SingleDatePicker .SingleDatePickerInput .DateInput,
@@ -83,8 +83,11 @@
 .DateInput input {
   flex-grow: 1;
 
-  padding-top: 18.5px;
-  padding-bottom: 18.5px;
+  padding-top: 10.5px;
+  padding-bottom: 10.5px;
+  font-size: inherit;
+  line-height: inherit;
+  color: black;
 }
 
 .SingleDatePicker_picker,

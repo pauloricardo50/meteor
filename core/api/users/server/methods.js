@@ -1,36 +1,36 @@
 import { Meteor } from 'meteor/meteor';
 
-import { HTTP_STATUS_CODES } from 'core/api/RESTAPI/server/restApiConstants';
+import PropertyService from '../../properties/server/PropertyService';
+import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
 import {
-  doesUserExist,
-  sendVerificationLink,
-  assignAdminToUser,
-  setRole,
   adminCreateUser,
-  updateUser,
-  getUserByPasswordResetToken,
-  testCreateUser,
-  removeUser,
-  sendEnrollmentEmail,
+  anonymousCreateUser,
+  assignAdminToUser,
   changeEmail,
-  userUpdateOrganisations,
-  testUserAccount,
+  doesUserExist,
   generateApiKeyPair,
+  getProByEmail,
+  getUserByPasswordResetToken,
   proInviteUser,
-  getUserByEmail,
-  setUserReferredBy,
-  setUserReferredByOrganisation,
   proInviteUserToOrganisation,
   proSetShareCustomers,
-  anonymousCreateUser,
+  removeUser,
+  sendEnrollmentEmail,
+  sendVerificationLink,
+  setRole,
+  setUserReferredBy,
+  setUserReferredByOrganisation,
+  testCreateUser,
+  testUserAccount,
   toggleAccount,
+  updateUser,
   userPasswordReset,
+  userUpdateOrganisations,
   userVerifyEmail,
 } from '../methodDefinitions';
-import UserService from './UserService';
-import PropertyService from '../../properties/server/PropertyService';
 import { ROLES } from '../userConstants';
+import UserService from './UserService';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }),
@@ -105,7 +105,9 @@ sendEnrollmentEmail.setHandler((context, params) => {
   return UserService.sendEnrollmentEmail(params);
 });
 
-changeEmail.setHandler(({ userId }, params) => {
+changeEmail.setHandler((context, params) => {
+  const { userId } = context;
+  context.unblock(); // This method will send an email to the user
   SecurityService.users.isAllowedToUpdate(userId, params.userId);
   return UserService.changeEmail(params);
 });
@@ -169,7 +171,7 @@ proInviteUser.setHandler((context, params) => {
   }
 
   // Only pass proUserId if this is a pro user
-  const isProUser = SecurityService.hasRole(userId, ROLES.PRO);
+  const isProUser = SecurityService.hasAssignedRole(userId, ROLES.PRO);
 
   return UserService.proInviteUser({
     ...params,
@@ -178,13 +180,13 @@ proInviteUser.setHandler((context, params) => {
   });
 });
 
-getUserByEmail.setHandler(({ userId }, { email }) => {
+getProByEmail.setHandler(({ userId }, { email }) => {
   SecurityService.checkUserIsPro(userId);
   const user = UserService.getByEmail(email);
 
   if (user) {
     return UserService.get(
-      { $and: [{ _id: user._id }, { roles: { $in: [ROLES.PRO] } }] },
+      { _id: user._id, 'roles._id': ROLES.PRO },
       {
         name: 1,
         organisations: { name: 1 },
@@ -233,6 +235,7 @@ anonymousCreateUser.setHandler((context, params) => {
   const userId = UserService.anonymousCreateUser(params);
   return userId;
 });
+anonymousCreateUser.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 // Method to toggle provided user account only if the current user is admin
 toggleAccount.setHandler((context, { userId }) => {

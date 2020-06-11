@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 
 import Button from 'core/components/Button';
+
+import CustomersWithoutAssignees from './CustomersWithoutAssignees';
+import IncoherentAssignees from './IncoherentAssignees';
+import LastSeenUsers from './LastSeenUsers';
+import LoansThatShouldBeFinalized from './LoansThatShouldBeFinalized';
+import LoansWithoutAssignees from './LoansWithoutAssignees';
+import LoansWithoutLenders from './LoansWithoutLenders';
+import LoansWithoutRevenues from './LoansWithoutRevenues';
 import NewLoansStat from './NewLoansStat';
 import NewUsersStat from './NewUsersStat';
-import LastSeenUsers from './LastSeenUsers';
 import OutdatedRevenues from './OutdatedRevenues';
-import LoansWithoutRevenues from './LoansWithoutRevenues';
-import CustomersWithoutAssignees from './CustomersWithoutAssignees';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
+import RevenuesWithUnnecessaryCommissions from './RevenuesWithUnnecessaryCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
-import IncoherentAssignees from './IncoherentAssignees';
-import LoansWithoutLenders from './LoansWithoutLenders';
-import LoansWithoutAssignees from './LoansWithoutAssignees';
 
 const AdminDashboardStats = ({
   newLoans,
@@ -51,6 +54,8 @@ const AdminDashboardStats = ({
           <IncoherentAssignees showAll={showAll} />
           <LoansWithoutLenders showAll={showAll} />
           <LoansWithoutAssignees showAll={showAll} />
+          <LoansThatShouldBeFinalized showAll={showAll} />
+          <RevenuesWithUnnecessaryCommissions showAll={showAll} />
         </div>
       </div>
     </div>

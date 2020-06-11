@@ -7,7 +7,7 @@ import {
   removeStructure,
   selectStructure,
   updateStructure,
-} from '../../../../api';
+} from '../../../../api/loans/methodDefinitions';
 
 export default withProps(
   ({ loanId, structureId, structure: { disabled }, selected }) => ({

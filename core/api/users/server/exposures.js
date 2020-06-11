@@ -1,50 +1,52 @@
-import { Meteor } from 'meteor/meteor';
-import { Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import { Match } from 'meteor/check';
 
-import { exposeQuery } from '../../queries/queryHelpers';
-import { ROLES } from '../../constants';
-import SecurityService from '../../security';
 import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
+import SecurityService from '../../security';
 import {
   adminUsers,
   appUser,
-  currentUser,
+  incoherentAssignees,
   proReferredByUsers,
+  proUser,
   userEmails,
   userSearch,
-  proUser,
-  incoherentAssignees,
 } from '../queries';
-import UserService from './UserService';
+import { ROLES } from '../userConstants';
 import { incoherentAssigneesResolver } from './resolvers';
+import UserService from './UserService';
 
 exposeQuery({
   query: adminUsers,
   overrides: {
+    firewall(userId, params) {
+      SecurityService.checkUserIsAdmin(userId);
+      params.userId = userId;
+    },
     embody: body => {
       body.$filter = ({
         filters,
-        params: { roles, _id, admins, assignedEmployeeId },
+        params: { roles, _id, admins, assignedEmployeeId, userId },
       }) => {
         if (_id) {
           filters._id = _id;
         }
 
         if (roles) {
-          filters.roles = { $in: roles };
+          filters['roles._id'] = { $in: roles };
         }
 
         if (admins) {
-          const userIsDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
+          const userIsDev = Roles.userIsInRole(userId, ROLES.DEV);
 
           if (userIsDev) {
-            filters.roles = { $in: [ROLES.ADMIN, ROLES.DEV] };
+            filters['roles._id'] = { $in: [ROLES.ADMIN, ROLES.DEV] };
           } else {
-            filters.roles = { $in: [ROLES.ADMIN] };
+            filters['roles._id'] = ROLES.ADMIN;
           }
         }
 
@@ -54,9 +56,10 @@ exposeQuery({
       };
     },
     validateParams: {
-      roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
       assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String, null)),
+      roles: Match.Maybe([String]),
+      userId: String,
     },
   },
   options: { allowFilterById: true },
@@ -74,26 +77,6 @@ exposeQuery({
       }
     },
     embody: body => {
-      body.$filter = ({ filters, params }) => {
-        filters._id = params._userId;
-      };
-    },
-  },
-});
-
-exposeQuery({
-  query: currentUser,
-  overrides: {
-    firewall(userId, params) {
-      if (!userId) {
-        // Don't throw unauthorized error here, it causes race-conditions in E2E tests
-        // to not reload this subscription
-        // So simply set userId to an impossible id
-        params._userId = 'none';
-      }
-    },
-    embody: body => {
-      // This will deepExtend your body
       body.$filter = ({ filters, params }) => {
         filters._id = params._userId;
       };
@@ -197,11 +180,11 @@ exposeQuery({
       body.$filter = ({ filters, params: { searchQuery, roles } }) => {
         const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
         if (roles) {
-          filters.roles = { $in: roles };
+          filters['roles._id'] = { $in: roles };
         }
         filters.$or = [
           createRegexQuery('_id', searchQuery),
-          createRegexQuery('emails.0.address', searchQuery),
+          createRegexQuery('emails.address', searchQuery),
           createRegexQuery('firstName', searchQuery),
           createRegexQuery('lastName', searchQuery),
           {

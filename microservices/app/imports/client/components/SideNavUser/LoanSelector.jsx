@@ -1,9 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import T from 'core/components/Translation';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
+import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 import Select from 'core/components/Select';
+import T from 'core/components/Translation';
 
 const handleChange = (value, closeDrawer, history) => {
   if (value === 0) {
@@ -15,16 +19,23 @@ const handleChange = (value, closeDrawer, history) => {
 };
 
 const getOptions = loans => {
-  const array = loans.map(({ _id: loanId, name, customName }) => ({
-    id: loanId,
-    label: name ? (
-      <T id="LoanSelector.name" values={{ name }} />
-    ) : (
-      <T id="LoanSelector.empty" />
-    ),
-    secondary: customName,
-    icon: 'home',
-  }));
+  const array = loans.map(
+    ({ _id: loanId, name, customName, purchaseType }) => ({
+      id: loanId,
+      label: name ? (
+        <T id="LoanSelector.name" values={{ name }} />
+      ) : (
+        <T id="LoanSelector.empty" />
+      ),
+      secondary: customName,
+      icon:
+        purchaseType === PURCHASE_TYPE.REFINANCING ? (
+          <RefinancingIcon />
+        ) : (
+          <AcquisitionIcon />
+        ),
+    }),
+  );
 
   return array;
 };

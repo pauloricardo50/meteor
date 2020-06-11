@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DescriptionItemText from './DescriptionItemText';
 import DescriptionItemIcon from './DescriptionItemIcon';
+import DescriptionItemText from './DescriptionItemText';
 
 const DescriptionItem = ({ step: { id }, nb }) => (
   <div className="description-item">

@@ -6,7 +6,7 @@ import Icon from '../../core/components/Icon';
 
 const { Front, subdomains } = window;
 
-const getAddUserUrl = contact => {
+const getUrl = ({ contact, type }) => {
   const { handle, name } = contact;
   const [firstName, lastName] = [
     name.split(' ')[0],
@@ -15,9 +15,11 @@ const getAddUserUrl = contact => {
       .slice(1)
       .join(' '),
   ];
-  const baseUrl = subdomains.admin;
+  const baseUrl =
+    type === 'user' ? subdomains.admin : `${subdomains.admin}/other/contacts`;
   const searchParams = queryString.stringify({
-    addUser: true,
+    ...(type === 'user' ? { addUser: true } : {}),
+    ...(type === 'contact' ? { addContact: true } : {}),
     email: handle,
     firstName,
     lastName,
@@ -27,16 +29,24 @@ const getAddUserUrl = contact => {
 };
 
 const FrontContactAddUser = ({ contact }) => (
-  <div className="front-contact-add-user">
+  <div className="front-contact-add-user space-children">
     <hr />
     <h2 className="secondary">Adresse email pas trouvée dans e-Potek</h2>
     <Button
-      onClick={() => Front.openUrl(getAddUserUrl(contact))}
+      onClick={() => Front.openUrl(getUrl({ contact, type: 'user' }))}
       secondary
       raised
       icon={<Icon type="personAdd" />}
     >
       Créer un compte e-Potek
+    </Button>
+    <Button
+      onClick={() => Front.openUrl(getUrl({ contact, type: 'contact' }))}
+      secondary
+      raised
+      icon={<Icon type="personAdd" />}
+    >
+      Créer un contact e-Potek
     </Button>
   </div>
 );

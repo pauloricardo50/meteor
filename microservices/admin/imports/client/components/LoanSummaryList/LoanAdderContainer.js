@@ -1,6 +1,8 @@
 import { withProps } from 'recompose';
-import { adminLoanInsert } from 'core/api';
 
-export default withProps(({ userId }) => ({
-  onSubmit: values => adminLoanInsert.run({ userId }),
+import { adminLoanInsert } from 'core/api/loans/methodDefinitions';
+
+export default withProps(({ userId, onSuccess = () => {} }) => ({
+  onSubmit: ({ purchaseType }) =>
+    adminLoanInsert.run({ userId, loan: { purchaseType } }).then(onSuccess),
 }));

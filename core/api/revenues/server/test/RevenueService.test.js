@@ -1,9 +1,11 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { resetDatabase } from '../../../../utils/testHelpers';
 
-import LoanService from '../../../loans/server/LoanService';
+/* eslint-env mocha */
+
 import generator from '../../../factories/server';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import LoanService from '../../../loans/server/LoanService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenueConstants';
 import RevenueService from '../RevenueService';
 
@@ -164,6 +166,46 @@ describe('RevenueService', () => {
       expect(loan.revenueLinks).to.deep.equal([]);
 
       expect(RevenueService.find({}).fetch()).to.deep.equal([]);
+    });
+  });
+
+  describe('get', () => {
+    it('returns a result with _collection', () => {
+      // This should be fixed with this PR: https://github.com/cult-of-coders/grapher/pull/421
+      generator({
+        revenues: {
+          _id: 'revId',
+          loan: {
+            _factory: 'loan',
+          },
+          organisations: { $metadata: { commissionRate: 0.1 } },
+        },
+      });
+
+      const result = RevenueService.get('revId', {
+        loan: { _id: 1 },
+      });
+
+      expect(result.loan._collection).to.equal('loans');
+    });
+  });
+
+  describe('consolidateRevenue', () => {
+    it('sets loan status to FINALIZED if required', () => {
+      generator({
+        loans: {
+          _id: 'loan',
+          revenues: { _id: 'revenue', status: REVENUE_STATUS.EXPECTED },
+        },
+      });
+
+      RevenueService.consolidateRevenue({
+        revenueId: 'revenue',
+        amount: 10,
+        paidAt: new Date(),
+      });
+      const { status } = LoanService.get('loan', { status: 1 });
+      expect(status).to.equal(LOAN_STATUS.FINALIZED);
     });
   });
 });

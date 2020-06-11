@@ -1,24 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'core/components/Material/Dialog';
-import Button from 'core/components/Button';
-
-import T from 'core/components/Translation';
-
-const styles = {
-  hr: {
-    width: '50%',
-    margin: '60px auto',
-  },
-  list: {
-    listStyle: 'none',
-    textAlign: 'center',
-  },
-  listItem: {
-    padding: '10px 0',
-  },
-};
+import Button from './Button';
+import Dialog from './Material/Dialog';
+import T from './Translation';
 
 export default class ConditionsButton extends Component {
   constructor(props) {

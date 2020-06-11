@@ -1,20 +1,19 @@
 import faker from 'faker/locale/fr';
 
-import LoanService from '../api/loans/server/LoanService';
-import {
-  PURCHASE_TYPE,
-  INTEREST_RATES,
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-  STEPS,
-  APPLICATION_TYPES,
-} from '../api/constants';
-import { createFakeBorrowers } from './borrowerFixtures';
-import { createFakeProperty } from './propertyFixtures';
-import { adminLoans } from '../api/loans/queries';
+import { OWN_FUNDS_TYPES } from '../api/borrowers/borrowerConstants';
 import BorrowerService from '../api/borrowers/server/BorrowerService';
+import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
+import {
+  APPLICATION_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+  PURCHASE_TYPE,
+  STEPS,
+} from '../api/loans/loanConstants';
+import LoanService from '../api/loans/server/LoanService';
 import PropertyService from '../api/properties/server/PropertyService';
+import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeOffer } from './offerFixtures';
+import { createFakeProperty } from './propertyFixtures';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
@@ -180,7 +179,7 @@ export const addLoanWithData = ({
 }) => {
   const loanId = LoanService.fullLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
-  const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+  const loan = LoanService.get(loanId, { structures: { id: 1 } });
   const propertyId = properties.length
     ? PropertyService.insert({ property: {}, userId })
     : undefined;
@@ -206,8 +205,8 @@ export const addLoanWithData = ({
     structure: {
       propertyId,
       loanTranches: [
-        { type: INTEREST_RATES.YEARS_10, value: 0.8 },
-        { type: INTEREST_RATES.YEARS_5, value: 0.2 },
+        { type: INTEREST_RATES.YEARS_10, value: 0.8 * 1000000 },
+        { type: INTEREST_RATES.YEARS_5, value: 0.2 * 1000000 },
       ],
       ...getRandomStructure(1000000, borrowerId1),
     },

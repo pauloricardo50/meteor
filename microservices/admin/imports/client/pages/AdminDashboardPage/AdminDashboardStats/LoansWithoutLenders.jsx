@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
-import CountUp from 'react-countup';
+import React from 'react';
 import groupBy from 'lodash/groupBy';
+import CountUp from 'react-countup';
 
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const LoansWithoutLenders = ({ showAll }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { data: loans = [], loading } = useStaticMeteorData({
     query: LOANS_COLLECTION,
     params: {
@@ -24,6 +25,7 @@ const LoansWithoutLenders = ({ showAll }) => {
       mainAssignee: 1,
       name: 1,
     },
+    refetchOnMethodCall: false,
   });
   const groupedLoans = groupBy(loans, 'mainAssignee.name');
   const myLoans = loans.filter(
@@ -67,10 +69,7 @@ const LoansWithoutLenders = ({ showAll }) => {
                     <div key={assignee}>
                       <h3>{assignee}</h3>
                       {groupedLoans[assignee].map(loan => (
-                        <CollectionIconLink
-                          key={loan._id}
-                          relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-                        />
+                        <CollectionIconLink key={loan._id} relatedDoc={loan} />
                       ))}
                     </div>
                   ))}

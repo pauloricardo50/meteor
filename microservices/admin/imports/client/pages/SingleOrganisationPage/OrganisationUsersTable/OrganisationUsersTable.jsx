@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Table from 'core/components/Table';
 import ProOrganisationUserAdder from 'core/components/ProOrganisationUserAdder';
-import OrganisationUsersTableContainer from './OrganisationUsersTableContainer';
+import Table from 'core/components/Table';
+
 import OrganisationUserAdder from '../OrganisationUserAdder/OrganisationUserAdder';
+import OrganisationUsersTableContainer from './OrganisationUsersTableContainer';
 
 const OrganisationUsersTable = ({ rows, columnOptions, ...organisation }) => (
   <div>

@@ -30,7 +30,7 @@ const mapUser = ({
   ],
 });
 
-export default withProps(({ users }) => ({
+export default withProps(({ organisation: { users } }) => ({
   rows: users.map(mapUser),
   columnOptions,
 }));

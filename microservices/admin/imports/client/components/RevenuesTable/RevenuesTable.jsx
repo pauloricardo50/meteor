@@ -2,8 +2,9 @@ import React from 'react';
 
 import Table from 'core/components/Table';
 import { Money } from 'core/components/Translation';
-import RevenuesTableContainer from './RevenuesTableContainer';
+
 import RevenueModifier from './RevenueModifier';
+import RevenuesTableContainer from './RevenuesTableContainer';
 
 export const RevenuesTable = ({
   loan,
@@ -12,7 +13,7 @@ export const RevenuesTable = ({
   revenueToModify,
   openModifier,
   setOpenModifier,
-  initialOrderBy = 1,
+  initialOrderBy = 'revenueStatus',
 }) => (
   <>
     <RevenueModifier
@@ -25,6 +26,7 @@ export const RevenuesTable = ({
       rows={rows}
       columnOptions={columnOptions}
       initialOrderBy={initialOrderBy}
+      className="revenues-table"
     />
     {rows.length > 1 && (
       <h2 className="secondary" style={{ textAlign: 'right' }}>

@@ -1,16 +1,15 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { ALL_FIELDS, CURRENT_LOAN, FORTUNE, SALARY } from '../widget1Constants';
 import widget1, { createWidget1ValueReducers } from '../widget1Reducers';
 import {
-  SET_VALUE,
-  SUGGEST_VALUE,
-  SET_AUTO,
   INCREASE_SLIDER_MAX,
   SET_ALLOW_EXTREME_LOAN,
+  SET_AUTO,
+  SET_VALUE,
+  SUGGEST_VALUE,
 } from '../widget1Types';
-
-import { ALL_FIELDS, SALARY, FORTUNE, CURRENT_LOAN } from '../widget1Constants';
 
 describe('widget1 Reducer', () => {
   it('should return the initial state', () => {

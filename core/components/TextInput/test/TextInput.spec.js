@@ -1,32 +1,26 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { getFinalPlaceholder } from '../TextInput';
+import { getFinalPlaceholder } from '../TextInputContainer';
 
 describe('getFinalPlaceholder', () => {
   context('when noIntl is false', () => {
     it('should return a placeholder with a prefix', () => {
-      const intl = {
-        formatMessage: ({ id }) => id,
-      };
       const prefix = 'Forms.textInput.placeholderPrefix';
       const placeholder = 'placeholer';
       const options = {
         noIntl: false,
-        intl,
+        formatMessage: ({ id }) => id,
         placeholder,
       };
       expect(getFinalPlaceholder(options)).to.equal(`${prefix} ${placeholder}`);
     });
 
     it('should return default placeholder if no placeholder is provided', () => {
-      const intl = {
-        formatMessage: ({ id }) => id,
-      };
       const defaultPlaceholder = 'defaultPlaceholder';
       const options = {
         noIntl: false,
-        intl,
+        formatMessage: ({ id }) => id,
         defaultPlaceholder,
       };
       expect(getFinalPlaceholder(options)).to.equal(defaultPlaceholder);
@@ -42,6 +36,7 @@ describe('getFinalPlaceholder', () => {
       expect(getFinalPlaceholder(options)).to.equal(defaultPlaceholder);
     });
   });
+
   context('when noIntl is true', () => {
     it('should return placeholder when it is defined', () => {
       const placeholder = 'placeholder';

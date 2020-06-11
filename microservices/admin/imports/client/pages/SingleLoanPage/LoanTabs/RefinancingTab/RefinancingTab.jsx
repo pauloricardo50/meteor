@@ -1,49 +1,34 @@
 import React from 'react';
-import omit from 'lodash/omit';
 
-import AutoForm from 'core/components/AutoForm2';
-import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import { loanUpdate } from 'core/api/loans/index';
+import getRefinancingFormArray from 'core/arrays/RefinancingFormArray';
+import AutoForm from 'core/components/AutoForm';
+import { Money } from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
 
-const grapherLinks = [
-  'user',
-  'documents',
-  'properties',
-  'borrowers',
-  'promotions',
-  'promotionOptions',
-  'offers',
-];
+const RefinancingTab = ({ loan }) => {
+  const previousLoanValue = Calculator.getPreviousLoanValue({ loan });
 
-const handleSubmit = loanId => doc => {
-  let message;
-  let hideLoader;
-
-  return import('../../../../../core/utils/message')
-    .then(({ default: m }) => {
-      message = m;
-      hideLoader = message.loading('...', 0);
-      return loanUpdate.run({ loanId, object: omit(doc, grapherLinks) });
-    })
-    .finally(() => {
-      hideLoader();
-    })
-    .then(() => message.success('Enregistré', 2));
+  return (
+    <div className="refinancing-tab">
+      <h1>Refinancement</h1>
+      <div className="flex-col center-align">
+        {previousLoanValue > 0 && (
+          <h2 className="text-center">
+            <span>Hypothèque actuelle</span>
+            <br />
+            <span className="secondary">
+              <Money value={previousLoanValue} />
+            </span>
+          </h2>
+        )}
+        <AutoForm
+          formClasses="user-form user-form__info"
+          inputs={getRefinancingFormArray({ loan })}
+          doc={loan}
+          docId={loan._id}
+        />
+      </div>
+    </div>
+  );
 };
-
-const RefinancingTab = ({ loan }) => (
-  <div className="refinancing-tab">
-    <h1>Refinancement</h1>
-    <AutoForm
-      model={loan}
-      schema={LoanSchema.pick(
-        'previousLender',
-        'previousLoanTranches',
-        'mortgageNotes',
-      )}
-      onSubmit={handleSubmit(loan._id)}
-    />
-  </div>
-);
-
 export default RefinancingTab;

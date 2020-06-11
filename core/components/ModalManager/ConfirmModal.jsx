@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '../Button';
-import T from '../Translation';
 import TextInput from '../TextInput';
+import T from '../Translation';
 
 const ConfirmModal = ({
   closeModal,

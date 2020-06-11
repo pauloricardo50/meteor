@@ -1,10 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { Random } from 'meteor/random';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { Accounts } from 'meteor/accounts-base';
-import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
-import Users from 'core/api/users';
-import { ROLES } from 'core/api/users/userConstants';
+
+import Users from '../../users';
+import { ROLES } from '../../users/userConstants';
 import ImpersonateService from './ImpersonateService';
 
 function getDummies() {
@@ -30,7 +32,7 @@ describe('ImpersonateService', () => {
 
     Users.update(adminId, {
       $set: {
-        roles: ROLES.ADMIN,
+        roles: [{ _id: ROLES.ADMIN }],
         'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
@@ -56,7 +58,7 @@ describe('ImpersonateService', () => {
 
     Users.update(adminId, {
       $set: {
-        roles: ROLES.LENDER,
+        roles: [{ _id: ROLES.PRO }],
         'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
@@ -82,7 +84,7 @@ describe('ImpersonateService', () => {
 
     Users.update(adminId, {
       $set: {
-        roles: ROLES.ADMIN,
+        roles: [{ _id: ROLES.ADMIN }],
         'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });

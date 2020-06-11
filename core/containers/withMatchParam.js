@@ -1,5 +1,5 @@
-import { withRouter, matchPath } from 'react-router-dom';
 import isArray from 'lodash/isArray';
+import { matchPath, withRouter } from 'react-router-dom';
 import { compose, mapProps } from 'recompose';
 
 // Lets you pass a param as a string, or an array of params, and you will get

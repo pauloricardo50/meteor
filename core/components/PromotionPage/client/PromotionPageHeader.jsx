@@ -2,33 +2,31 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
 
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import {
-  PROMOTIONS_COLLECTION,
-  LOANS_COLLECTION,
-} from '../../../api/constants';
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
+import CollectionIconLink from '../../IconLink/CollectionIconLink';
 import ImageCarrousel from '../../ImageCarrousel';
-import { LightTheme } from '../../Themes';
 import StatusLabel from '../../StatusLabel';
+import TestBadge from '../../TestBadge';
+import { LightTheme } from '../../Themes';
 import T from '../../Translation';
-import PromotionMetadataContext from './PromotionMetadata';
 import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
+import PromotionMetadataContext from './PromotionMetadata';
 
 const PromotionPageHeader = ({ promotion }) => {
   const {
+    _collection,
     _id: promotionId,
+    address1,
+    city,
     documents: { promotionImage = [{ url: '/img/placeholder.png' }] } = {},
     name,
-    address1,
-    zipCode,
-    city,
-    status,
-    promotionLots = [],
     promotionLoan,
+    promotionLots = [],
+    status,
+    zipCode,
   } = promotion;
   const {
     permissions: {
@@ -46,25 +44,28 @@ const PromotionPageHeader = ({ promotion }) => {
     >
       <div className="promotion-page-header-top">
         <div className="promotion-page-header-text">
-          <h4>{`${address1}, ${zipCode} ${city}`}</h4>
+          <h3 className="font-size-5 secondary">{`${address1}, ${zipCode} ${city}`}</h3>
           <div className="promotion-page-header-title flex center-align">
-            <h1>{name}</h1>
+            <h1 className="font-size-3">{name}</h1>
             <StatusLabel
               status={status}
-              collection={PROMOTIONS_COLLECTION}
+              collection={_collection}
               allowModify={canModifyStatus}
               docId={promotionId}
               method={nextStatus =>
                 promotionSetStatus.run({ promotionId, status: nextStatus })
               }
             />
+            {Meteor.microservice !== 'app' && promotion?.isTest && (
+              <TestBadge />
+            )}
           </div>
-          <h4>
+          <h2 className="font-size-4">
             <T
               id="PromotionPage.subtitle"
               values={{ promotionLotCount: promotionLots.length }}
             />
-          </h4>
+          </h2>
           <div className="promotion-page-header-linkers">
             <LightTheme>
               {canLinkAssignee && <PromotionAssignee promotion={promotion} />}
@@ -76,7 +77,7 @@ const PromotionPageHeader = ({ promotion }) => {
               <h4>Dossier de développement:</h4>
               <CollectionIconLink
                 key={promotionLoan._id}
-                relatedDoc={{ ...promotionLoan, collection: LOANS_COLLECTION }}
+                relatedDoc={promotionLoan}
               />
             </div>
           )}

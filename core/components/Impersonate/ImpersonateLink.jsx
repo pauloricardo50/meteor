@@ -1,17 +1,18 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import PropTypes from 'prop-types';
 
-import { ROLES } from 'core/api/constants';
-import T from '../Translation';
-import Icon from '../Icon';
-import Button from '../Button';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
 import { impersonateAdmin } from '../../api/impersonation/methodDefinitions';
+import { ROLES } from '../../api/users/userConstants';
 import { isUser } from '../../utils/userFunctions';
+import Button from '../Button';
+import Icon from '../Icon';
+import T from '../Translation';
 
 const styles = {
   cssRoot: {
@@ -23,12 +24,11 @@ const styles = {
   },
 };
 
-const isAdminAndDev = ({ roles }) =>
-  roles.includes(ROLES.ADMIN) &&
-  Meteor.user() &&
-  Meteor.user().roles.includes(ROLES.DEV);
+const isAdminAndDev = admin =>
+  Roles.userIsInRole(admin, ROLES.ADMIN) &&
+  Roles.userIsInRole(Meteor.user(), ROLES.DEV);
 
-const ImpersonateLink = ({ user, className, classes }) => {
+const ImpersonateLink = ({ user, className, classes, size }) => {
   if (!user) {
     return null;
   }
@@ -63,8 +63,8 @@ const ImpersonateLink = ({ user, className, classes }) => {
         placement="bottom"
         title={<T id="Impersonation.impersonateLinkText" />}
       >
-        <Button fab color="error" className={classes.cssRoot}>
-          <Icon type="supervisorAccount" size={32} />
+        <Button fab color="error" className={classes.cssRoot} size={size}>
+          <Icon type="supervisorAccount" size={size === 'small' ? 24 : 32} />
         </Button>
       </Tooltip>
     </a>

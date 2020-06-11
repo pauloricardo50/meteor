@@ -1,9 +1,9 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import notaries from 'core/arrays/notaries';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
-import notaries from 'core/arrays/notaries';
 
 const findNotary = contacts =>
   contacts.some(
@@ -52,11 +52,11 @@ const getSchema = canton =>
 const NotaryAdder = ({ contacts, property, addContact }) => {
   const hasNotary = findNotary(contacts);
 
-  if (!property.canton) {
+  if (!property?.canton) {
     return null;
   }
 
-  if (!notaries[property.canton]) {
+  if (!notaries[property?.canton]) {
     return null;
   }
 
@@ -66,7 +66,7 @@ const NotaryAdder = ({ contacts, property, addContact }) => {
 
   return (
     <AutoFormDialog
-      schema={getSchema(property.canton)}
+      schema={getSchema(property?.canton)}
       buttonProps={{
         raised: true,
         primary: true,
@@ -77,7 +77,7 @@ const NotaryAdder = ({ contacts, property, addContact }) => {
       onSubmit={({ alreadyHaveNotary, ...newContact }) =>
         addContact(
           suggestNotary({ alreadyHaveNotary })
-            ? { ...notaries[property.canton], title: 'Notaire' }
+            ? { ...notaries[property?.canton], title: 'Notaire' }
             : newContact,
         )
       }

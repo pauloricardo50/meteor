@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
+import { INTEREST_RATES, TRENDS } from '../../interestRatesConstants';
 import { currentInterestRates } from '../../queries';
-import { TRENDS } from '../../interestRatesConstants';
 
 describe('currentInterestRates', () => {
   beforeEach(() => {
@@ -47,7 +47,10 @@ describe('currentInterestRates', () => {
     });
 
     const { rates } = currentInterestRates.fetch();
+    const { rateLow } = rates.find(
+      ({ type }) => type === INTEREST_RATES.YEARS_10,
+    );
 
-    expect(rates[0].rateLow).to.equal(0.2);
+    expect(rateLow).to.equal(0.2);
   });
 });

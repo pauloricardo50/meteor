@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { APPLICATION_TYPES } from 'core/api/constants';
-import DashboardProgressBar from 'imports/client/pages/DashboardPage/DashboardProgress/DashboardProgressBar';
-import SimpleDashboardPageCTAs from 'imports/client/pages/SimpleDashboardPage/SimpleDashboardPageCTAs';
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
+
+import DashboardProgressBar from '../../pages/DashboardPage/DashboardProgress/DashboardProgressBar';
+import SimpleDashboardPageCTAs from '../../pages/SimpleDashboardPage/SimpleDashboardPageCTAs';
 
 const withSimpleAppPage = Component => props => {
-  const { loan, children, currentUser } = props;
+  const { loan, currentUser } = props;
   const { maxPropertyValue } = loan;
 
   if (loan && loan.applicationType === APPLICATION_TYPES.SIMPLE) {

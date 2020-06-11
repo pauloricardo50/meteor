@@ -1,15 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 import Link from 'core/components/Link';
-import { createRoute } from 'core/utils/routerUtils';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
-import Recap from 'core/components/Recap';
-import { T, MetricArea } from 'core/components/Translation';
-import { PropertyModifier } from 'core/components/PropertyForm';
-import { toMoney } from 'core/utils/conversionFunctions';
 import SwitzerlandMap from 'core/components/maps/SwitzerlandMap';
+import { PropertyModifier } from 'core/components/PropertyForm';
+import Recap from 'core/components/Recap';
+import { MetricArea, T } from 'core/components/Translation';
+import { toMoney } from 'core/utils/conversionFunctions';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../../../startup/client/appRoutes';
 import DashboardRecapPropertyEmpty from './DashboardRecapPropertyEmpty';
 

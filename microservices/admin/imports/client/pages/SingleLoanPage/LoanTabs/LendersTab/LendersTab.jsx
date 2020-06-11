@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
 import OfferAdder from 'core/components/OfferAdder';
 import OfferList from 'core/components/OfferList';
-import { LOAN_STATUS_ORDER, LOAN_STATUS } from 'core/api/constants';
-import LendersActivation from './LendersActivation';
+
 import LenderList from './LenderList';
 import LenderPicker from './LenderPicker';
+import LendersActivation from './LendersActivation';
 import LendersTabEmptyState from './LendersTabEmptyState';
 
 const shouldRenderTab = ({ status, lenders = [] }) => {
@@ -17,22 +18,15 @@ const shouldRenderTab = ({ status, lenders = [] }) => {
 };
 
 const LendersTab = props => {
-  const {
-    loan: {
-      _id: loanId,
-      offers,
-      structure: { property },
-      status,
-      lenders,
-    },
-  } = props;
+  const { loan } = props;
+  const { _id: loanId, status, lenders } = loan;
   const disableOfferAdder = !lenders || lenders.length === 0;
 
   return (
     <div className="lenders-tab">
       {shouldRenderTab({ status, lenders }) ? (
         <>
-          <LendersActivation loan={props.loan} />
+          <LendersActivation loan={loan} />
           <LenderPicker {...props} />
           <OfferAdder
             loanId={loanId}
@@ -44,9 +38,9 @@ const LendersTab = props => {
             }}
           />
           <h1 className="text-center">Prêteurs</h1>
-          <LenderList {...props} />
+          <LenderList lenders={lenders} />
           <h1 className="text-center">Offres</h1>
-          <OfferList offers={offers} property={property} />
+          <OfferList loan={loan} />
         </>
       ) : (
         <LendersTabEmptyState />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 // from https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
 const getDataTransferItems = event => {
@@ -25,7 +25,8 @@ const getMoveFileData = event => {
   const Key = event.dataTransfer.getData('Key');
   const status = event.dataTransfer.getData('status');
   const oldCollection = event.dataTransfer.getData('collection');
-  return { Key, status, oldCollection };
+  const name = event.dataTransfer.getData('name');
+  return { Key, status, oldCollection, name };
 };
 
 export default class FileDropper extends Component {
@@ -100,7 +101,6 @@ FileDropper.propTypes = {
   children: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
   handleAddFiles: PropTypes.func.isRequired,
-  showFull: PropTypes.func.isRequired,
   variant: PropTypes.oneOf(['normal', 'simple']),
 };
 

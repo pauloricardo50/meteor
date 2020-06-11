@@ -1,43 +1,45 @@
-/* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 import { Meteor } from 'meteor/meteor';
+import { Factory } from 'meteor/dburles:factory';
+
+/* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { ddpWithUserId } from 'core/api/methods/methodHelpers';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { checkEmails } from '../../../../utils/testHelpers/index';
-import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
-import PromotionService from '../../../promotions/server/PromotionService';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
-import LoanService from '../../../loans/server/LoanService';
-import PromotionOptionService from '../PromotionOptionService';
-import {
-  PROMOTION_OPTION_STATUS,
-  PROMOTION_OPTION_DOCUMENTS,
-  PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_DEPOSIT_STATUS,
-  PROMOTION_OPTION_BANK_STATUS,
-  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
-} from '../../promotionOptionConstants';
 import FileService from '../../../files/server/FileService';
 import S3Service from '../../../files/server/S3Service';
-import TaskService from '../../../tasks/server/TaskService';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import LoanService from '../../../loans/server/LoanService';
+import { ddpWithUserId } from '../../../methods/methodHelpers';
+import { reservePromotionLot } from '../../../promotionLots/methodDefinitions';
+import { PROMOTION_LOT_STATUS } from '../../../promotionLots/promotionLotConstants';
 import {
-  PROMOTION_USERS_ROLES,
-  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_EMAIL_RECIPIENTS,
   PROMOTION_INVITED_BY_TYPE,
   PROMOTION_PERMISSIONS,
-  PROMOTION_EMAIL_RECIPIENTS,
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+  PROMOTION_USERS_ROLES,
 } from '../../../promotions/promotionConstants';
-
-import { generateExpiringSoonReservationTasks } from '../methods';
+import PromotionService from '../../../promotions/server/PromotionService';
+import TaskService from '../../../tasks/server/TaskService';
+import { ROLES } from '../../../users/userConstants';
 import {
-  setPromotionOptionProgress,
   promotionOptionActivateReservation,
+  setPromotionOptionProgress,
 } from '../../methodDefinitions';
+import {
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_DOCUMENTS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
+} from '../../promotionOptionConstants';
+import { generateExpiringSoonReservationTasks } from '../methods';
+import PromotionOptionService from '../PromotionOptionService';
 
 const makePromotionLotWithReservation = ({
   key,
@@ -56,7 +58,10 @@ const makePromotionLotWithReservation = ({
       status: promotionOptionStatus,
       promotionLots: [{ _id: `pL${key}` }],
       promotion: { _id: 'promo' },
-      reservationAgreement: { expirationDate },
+      reservationAgreement: {
+        expirationDate,
+        status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+      },
     },
   ],
 });
@@ -251,6 +256,25 @@ describe('PromotionOptionService', function() {
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
       expect(loan.promotionLinks[0].priorityOrder[1]).to.equal(id);
     });
+
+    it('adds a loanCache', () => {
+      const id = PromotionOptionService.insert({
+        promotionLotId,
+        loanId,
+        promotionId,
+      });
+      const { loanCache } = PromotionOptionService.get(id, { loanCache: 1 });
+      expect(loanCache[0]).to.deep.include({
+        _id: loanId,
+        status: LOAN_STATUS.LEAD,
+      });
+      expect(loanCache[0].promotionLinks.length).to.equal(1);
+      expect(loanCache[0].promotionLinks[0]).to.deep.include({
+        _id: 'promoId',
+        showAllLots: true,
+        priorityOrder: [id],
+      });
+    });
   });
 
   describe('increasePriorityOrder', () => {
@@ -316,6 +340,57 @@ describe('PromotionOptionService', function() {
         'pOptId2',
         'test',
       ]);
+    });
+
+    it('stores the priorityOrder from the loanCache', () => {
+      generator({
+        promotionOptions: [
+          {
+            _id: 'pOptId2',
+            promotion: { _id: promotionId },
+            promotionLots: { _id: promotionLotId },
+            loan: {
+              _id: 'loanId2',
+              promotionLinks: [
+                { _id: promotionId, priorityOrder: ['pOptId1', 'pOptId2'] },
+              ],
+            },
+          },
+          {
+            _id: 'pOptId1',
+            promotion: { _id: promotionId },
+            promotionLots: { _id: promotionLotId },
+            loan: {
+              _id: 'loanId2',
+              promotionLinks: [
+                { _id: promotionId, priorityOrder: ['pOptId1', 'pOptId2'] },
+              ],
+            },
+          },
+        ],
+      });
+      let promotionOption1 = PromotionOptionService.get('pOptId1', {
+        priorityOrder: 1,
+      });
+      let promotionOption2 = PromotionOptionService.get('pOptId2', {
+        priorityOrder: 1,
+      });
+      expect(promotionOption1.priorityOrder).to.equal(0);
+      expect(promotionOption2.priorityOrder).to.equal(1);
+
+      PromotionOptionService.increasePriorityOrder({
+        promotionOptionId: 'pOptId2',
+      });
+
+      promotionOption1 = PromotionOptionService.get('pOptId1', {
+        priorityOrder: 1,
+      });
+      promotionOption2 = PromotionOptionService.get('pOptId2', {
+        priorityOrder: 1,
+      });
+
+      expect(promotionOption1.priorityOrder).to.equal(1);
+      expect(promotionOption2.priorityOrder).to.equal(0);
     });
   });
 
@@ -407,9 +482,10 @@ describe('PromotionOptionService', function() {
       ).to.throw('ne peut pas être dans le futur');
     });
 
-    it('does not throw if start date is today', () => {
+    it('does not throw if start date is later today', () => {
       const startDate = moment()
-        .add(1, 'hour')
+        .endOf('day')
+        .subtract(1, 'minutes')
         .toDate();
 
       expect(() =>
@@ -865,6 +941,47 @@ describe('PromotionOptionService', function() {
       ).to.include(
         'La convention de réservation du client John Doe pour le lot Lot 1 a expiré',
       );
+    });
+
+    it('does not run on promotionOptions that are already expired', async () => {
+      const yesterday = moment()
+        .subtract(1, 'days')
+        .toDate();
+
+      generator({
+        promotions: {
+          users: {
+            _id: 'pro1',
+            $metadata: {
+              enableNotifications: true,
+              permissions: {},
+            },
+            organisations: { _id: 'org1', name: 'Org 1' },
+            emails: [{ address: 'pro1@e-potek.ch', verified: true }],
+          },
+          promotionLots: { _id: 'pLot1' },
+          loans: {
+            _id: 'loanId',
+            $metadata: { invitedBy: 'pro1' },
+            user: { assignedEmployee: { _factory: ROLES.ADVISOR } },
+          },
+          promotionOptions: {
+            status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+            promotionLots: { _id: 'pLot1' },
+            loan: { _id: 'loanId' },
+            reservationAgreement: {
+              expirationDate: yesterday,
+              status: PROMOTION_OPTION_AGREEMENT_STATUS.EXPIRED,
+            },
+          },
+        },
+      });
+
+      const expiredReservations = await PromotionOptionService.expireReservations();
+      expect(expiredReservations.length).to.equal(0);
+
+      const emails = await checkEmails(0, { timeout: 2000 });
+      expect(emails.length).to.equal(0);
     });
   });
 
@@ -1398,6 +1515,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId',
@@ -1415,10 +1533,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1459,6 +1580,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: {
               _id: 'proId',
               _factory: 'pro',
@@ -1468,10 +1590,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1510,6 +1635,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId1',
@@ -1534,10 +1660,13 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId1' },
             },
-            promotionOptions: { _id: 'pOptId' },
           },
         });
 
@@ -1569,6 +1698,7 @@ describe('PromotionOptionService', function() {
         generator({
           users: { _id: 'adminId', _factory: 'admin' },
           promotions: {
+            _id: 'promotionId',
             users: [
               {
                 _id: 'proId1',
@@ -1599,7 +1729,11 @@ describe('PromotionOptionService', function() {
               user: {
                 emails: [{ address: 'user@e-potek.ch', verified: true }],
               },
-              promotionOptions: { _id: 'pOptId', promotionLots: {} },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
               $metadata: { invitedBy: 'proId1' },
             },
             promotionOptions: { _id: 'pOptId' },
@@ -1636,6 +1770,171 @@ describe('PromotionOptionService', function() {
         expect(
           !!emails.find(({ address }) => address === 'user@e-potek.ch'),
         ).to.equal(true);
+      });
+
+      it('sends emails containing a progress report of the customer to Pros', async () => {
+        const oneHourAgo = new Date();
+        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          promotions: {
+            _id: 'promotionId',
+            users: [
+              {
+                _id: 'proId1',
+                $metadata: {
+                  roles: [PROMOTION_USERS_ROLES.BROKER],
+                  permissions: {
+                    displayCustomerNames: {
+                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                      forLotStatus: Object.values(
+                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                          .FOR_LOT_STATUS,
+                      ),
+                    },
+                  },
+                },
+                _factory: 'pro',
+                emails: [{ address: 'broker@e-potek.ch', verified: true }],
+                organisations: {},
+              },
+            ],
+            loans: {
+              borrowers: { firstName: 'joe' },
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+              },
+              $metadata: { invitedBy: 'proId1' },
+              proNote: {
+                id: 'asdf',
+                note: 'Tout baigne',
+                date: oneHourAgo,
+                updatedBy: 'adminId',
+              },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          setPromotionOptionProgress.run({
+            promotionOptionId: 'pOptId',
+            id: 'bank',
+            object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+          }),
+        );
+
+        const emails = await checkEmails(2);
+
+        const {
+          template: { template_content },
+        } = emails.find(
+          ({ emailId }) => emailId === EMAIL_IDS.LOAN_VALIDATED_BY_BANK_PRO,
+        );
+
+        const { content } = template_content.find(
+          ({ name }) => name === 'body-content-1',
+        );
+
+        expect(content).to.include('Validé'); // Bank
+        expect(content).to.include('Tout baigne'); // proNote
+        expect(content).to.include('2/22 (9%)'); // Infos
+      });
+
+      it("anonymizes the proNote for pros who shouldn't get it", async () => {
+        generator({
+          users: { _id: 'adminId', _factory: 'admin' },
+          organisations: [{ _id: 'org1' }, { _id: 'org2' }],
+          promotions: {
+            _id: 'promotionId',
+            users: [
+              {
+                _id: 'proId1',
+                $metadata: {
+                  roles: [PROMOTION_USERS_ROLES.BROKER],
+                  permissions: {
+                    displayCustomerNames: {
+                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                      forLotStatus: Object.values(
+                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                          .FOR_LOT_STATUS,
+                      ),
+                    },
+                  },
+                },
+                _factory: 'pro',
+                emails: [{ address: 'broker1@e-potek.ch', verified: true }],
+                organisations: { _id: 'org1' },
+              },
+              {
+                _id: 'proId2',
+                $metadata: {
+                  roles: [PROMOTION_USERS_ROLES.BROKER],
+                  permissions: {
+                    displayCustomerNames: {
+                      invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
+                      forLotStatus: Object.values(
+                        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+                          .FOR_LOT_STATUS,
+                      ),
+                    },
+                  },
+                },
+                _factory: 'pro',
+                emails: [{ address: 'broker2@e-potek.ch', verified: true }],
+                organisations: { _id: 'org2' },
+              },
+            ],
+            loans: {
+              user: {
+                emails: [{ address: 'user@e-potek.ch', verified: true }],
+              },
+              promotionOptions: {
+                _id: 'pOptId',
+                promotionLots: { promotion: { _id: 'promotionId' } },
+                promotion: { _id: 'promotionId' },
+                _factory: 'completedPromotionOption',
+              },
+              proNote: {
+                id: 'asdf',
+                note: 'Tout baigne',
+                date: new Date(),
+                updatedBy: 'adminId',
+              },
+              $metadata: { invitedBy: 'proId1' },
+            },
+            promotionOptions: { _id: 'pOptId' },
+          },
+        });
+
+        await ddpWithUserId('adminId', () =>
+          reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
+        );
+
+        const emails = await checkEmails(3);
+
+        const {
+          template: { template_content },
+        } = emails.find(({ address }) => address === 'broker1@e-potek.ch');
+        const {
+          template: { template_content: template_content2 },
+        } = emails.find(({ address }) => address === 'broker2@e-potek.ch');
+
+        const { content: content1 } = template_content.find(
+          ({ name }) => name === 'body-content-1',
+        );
+
+        const { content: content2 } = template_content2.find(
+          ({ name }) => name === 'body-content-1',
+        );
+
+        expect(content1).to.include('Tout baigne');
+        expect(content2).to.not.include('Tout baigne');
       });
     });
   });
@@ -1709,12 +2008,12 @@ describe('PromotionOptionService', function() {
       expect(from_email).to.equal('admin@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal(
-        'Test promotion, Début de la réservation du logement Lot A',
+        'Test promotion, Début de la réservation du logement A',
       );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement A.',
       );
     });
 
@@ -1786,12 +2085,12 @@ describe('PromotionOptionService', function() {
       expect(from_email).to.equal('admin@e-potek.ch');
       expect(from_name).to.equal('e-Potek');
       expect(subject).to.equal(
-        'Test promotion, Début de la réservation du logement Lot A',
+        'Test promotion, Début de la réservation du logement A',
       );
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(
-        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement Lot A.',
+        'Bob Dylan a démontré son intérêt et souhaiterait avancer sur une réservation du logement A.',
       );
     });
   });

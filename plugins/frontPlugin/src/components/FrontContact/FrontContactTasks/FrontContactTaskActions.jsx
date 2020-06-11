@@ -1,6 +1,6 @@
 import React from 'react';
 import IconButton from '../../../core/components/IconButton';
-import { TASK_STATUS } from '../../../core/api/constants';
+import { TASK_STATUS } from '../../../core/api/tasks/taskConstants';
 import EpotekFrontApi from '../../../EpotekFrontApi';
 
 const FrontContactTaskActions = ({

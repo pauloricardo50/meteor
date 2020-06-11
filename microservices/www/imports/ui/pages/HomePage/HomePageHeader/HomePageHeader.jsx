@@ -4,13 +4,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
-import Waves from 'core/components/Waves';
-import { WWW_ROUTES } from 'imports/startup/shared/Routes';
-import useMedia from 'core/hooks/useMedia';
-import { ctaClicked } from 'core/api/analytics/helpers';
 import CTAS from 'core/api/analytics/ctas';
+import { ctaClicked } from 'core/api/analytics/helpers';
+import Button from 'core/components/Button';
+import T from 'core/components/Translation';
+import Waves from 'core/components/Waves';
+import useMedia from 'core/hooks/useMedia';
+
+import { WWW_ROUTES } from '../../../../startup/shared/Routes';
 import HomePageHeaderDevice from './HomePageHeaderDevice';
 
 const HomePageHeader = ({ history }) => {
@@ -28,7 +29,7 @@ const HomePageHeader = ({ history }) => {
         <h4>
           <T id="HomePageHeader.description" />
         </h4>
-        <div className="buttons space-children">
+        <div className="buttons">
           <Button
             size="large"
             secondary
@@ -37,6 +38,7 @@ const HomePageHeader = ({ history }) => {
             onClick={() => {
               ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
             }}
+            style={{ marginRight: 8 }}
           >
             <T id="HomePageHeader.acquisition" />
           </Button>

@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Table from 'core/components/Table';
-import TasksTableContainer from './TasksTableContainer';
+
 import TaskModifier from './TaskModifier';
-import TaskTableFilters from './TaskTableFilters';
+import TasksTableContainer from './TasksTableContainer';
+import TasksTableFilters from './TasksTableFilters';
 import TasksTablePriority from './TasksTablePriority';
 
 export const taskTableFragment = {
@@ -22,6 +23,8 @@ export const taskTableFragment = {
   status: 1,
   title: 1,
   user: { name: 1, roles: 1, organisations: { name: 1 } },
+  insuranceRequest: { name: 1 },
+  insurance: { name: 1, insuranceRequest: { _id: 1 } },
   isPrivate: 1,
 };
 
@@ -43,23 +46,27 @@ const TasksTable = ({
   uptoDate,
   setUptoDate,
   withPriority,
+  additionalFilters,
 }) => {
   const renderTable = !(hideIfNoData && !rows.length);
   const TableComponent = withPriority ? TasksTablePriority : Table;
 
   return (
     <>
-      {children}
-      {renderTable && setStatus && (
-        <TaskTableFilters
-          assignee={assignee}
-          status={status}
-          setStatus={setStatus}
-          setAssignee={setAssignee}
-          uptoDate={uptoDate}
-          setUptoDate={setUptoDate}
-        />
-      )}
+      <div className="flex center-align">
+        {children}
+        {renderTable && setStatus && (
+          <TasksTableFilters
+            assignee={assignee}
+            status={status}
+            setStatus={setStatus}
+            setAssignee={setAssignee}
+            uptoDate={uptoDate}
+            setUptoDate={setUptoDate}
+            additionalFilters={additionalFilters}
+          />
+        )}
+      </div>
       {renderTable ? (
         <TableComponent
           columnOptions={columnOptions}

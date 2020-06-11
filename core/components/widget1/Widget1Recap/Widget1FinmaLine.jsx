@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
-import PercentWithStatus from 'core/components/PercentWithStatus';
+import PercentWithStatus from '../../PercentWithStatus';
+import { T } from '../../Translation';
 
 const Widget1FinmaLine = ({ id, value, status }) => (
   <div className="widget1-finma-line">

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Menu from '../Material/Menu';
-import IconButton from '../IconButton';
 import Button from '../Button';
+import IconButton from '../IconButton';
+import Menu from '../Material/Menu';
 import DropdownMenuContainer from './DropdownMenuContainer';
 
 const getTrigger = ({

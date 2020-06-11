@@ -1,7 +1,7 @@
 import React from 'react';
 
-import HomePageReviewsTitle from './HomePageReviewsTitle';
 import HomePageReviewsCarousel from './HomePageReviewsCarousel';
+import HomePageReviewsTitle from './HomePageReviewsTitle';
 
 const HomePageReviews = () => (
   <div className="home-page-reviews">

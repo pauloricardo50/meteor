@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Widget1Inputs from './Widget1Inputs';
-import Widget1Recap from './Widget1Recap';
 import Widget1Monthly from './Widget1Monthly';
+import Widget1Recap from './Widget1Recap';
 
 const Widget1Part2 = ({ finma }) => (
   <div className="widget1-part-2 animated fadeIn">

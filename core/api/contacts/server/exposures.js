@@ -1,12 +1,11 @@
 import { Match } from 'meteor/check';
-import { exposeQuery } from '../../queries/queryHelpers';
-import {
-  generateMatchAnyWordRegexp,
-  createRegexQuery,
-} from '../../helpers/mongoHelpers';
-import { adminContacts, contactSearch } from '../queries';
 
-exposeQuery({ query: adminContacts, options: { allowFilterById: true } });
+import {
+  createRegexQuery,
+  generateMatchAnyWordRegexp,
+} from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
+import { contactSearch } from '../queries';
 
 exposeQuery({
   query: contactSearch,

@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { DOCUMENTS, STEPS } from 'core/api/constants';
-import { initialDocuments as borrowerDocuments } from 'core/api/borrowers/borrowersAdditionalDocuments';
-import { initialDocuments as propertyDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
 
+import { initialDocuments as borrowerDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
+import { DOCUMENTS } from '../../../api/files/fileConstants';
+import { initialDocuments as propertyDocuments } from '../../../api/properties/propertiesAdditionalDocuments';
 import Calculator from '..';
 
 describe('CombinedCalculator', () => {
@@ -32,7 +32,6 @@ describe('CombinedCalculator', () => {
             },
           ],
           properties: [property],
-          step: STEPS.SOLVENCY,
         },
       });
       expect(progress.percent).to.be.within(0.17, 0.18);
@@ -58,7 +57,6 @@ describe('CombinedCalculator', () => {
               additionalDocuments: borrowerDocuments,
             },
           ],
-          step: STEPS.SOLVENCY,
         },
       });
       expect(progress.percent).to.be.within(0.27, 0.28);

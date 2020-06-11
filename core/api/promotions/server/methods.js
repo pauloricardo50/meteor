@@ -1,21 +1,24 @@
 import SecurityService from '../../security';
-import PromotionService from './PromotionService';
 import {
-  promotionInsert,
-  promotionUpdate,
-  promotionRemove,
-  insertPromotionProperty,
-  setPromotionUserPermissions,
   addProUserToPromotion,
-  removeProFromPromotion,
-  sendPromotionInvitationEmail,
-  removeLoanFromPromotion,
+  addPromotionLotGroup,
   editPromotionLoan,
-  reuseConstructionTimeline,
-  toggleNotifications,
-  updatePromotionUserRoles,
+  insertPromotionProperty,
+  promotionInsert,
+  promotionRemove,
   promotionSetStatus,
+  promotionUpdate,
+  removeLoanFromPromotion,
+  removeProFromPromotion,
+  removePromotionLotGroup,
+  sendPromotionInvitationEmail,
+  setPromotionUserPermissions,
+  toggleNotifications,
+  updatePromotionLotGroup,
+  updatePromotionTimeline,
+  updatePromotionUserRoles,
 } from '../methodDefinitions';
+import PromotionService from './PromotionService';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
   SecurityService.checkUserIsPro(userId);
@@ -90,11 +93,6 @@ editPromotionLoan.setHandler(({ userId }, params) => {
   return PromotionService.editPromotionLoan(params);
 });
 
-reuseConstructionTimeline.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.reuseConstructionTimeline(params);
-});
-
 toggleNotifications.setHandler(({ userId }, { promotionId }) => {
   SecurityService.checkUserIsPro(userId);
   SecurityService.promotions.isAllowedToView({ userId, promotionId });
@@ -109,4 +107,40 @@ updatePromotionUserRoles.setHandler(({ userId }, params) => {
 promotionSetStatus.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.setStatus(params);
+});
+
+addPromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, ...promotionLotGroup }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.addPromotionLotGroup({
+      promotionId,
+      promotionLotGroup,
+    });
+  },
+);
+
+removePromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, promotionLotGroupId }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.removePromotionLotGroup({
+      promotionId,
+      promotionLotGroupId,
+    });
+  },
+);
+
+updatePromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, promotionLotGroupId, ...object }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.updatePromotionLotGroup({
+      promotionId,
+      promotionLotGroupId,
+      object,
+    });
+  },
+);
+
+updatePromotionTimeline.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.updatePromotionTimeline(params);
 });

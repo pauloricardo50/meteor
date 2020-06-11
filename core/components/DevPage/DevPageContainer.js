@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { withProps, compose } from 'recompose';
 
-import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/constants';
+import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
+
+import { LOCAL_STORAGE_ANONYMOUS_LOAN } from '../../api/loans/loanConstants';
 
 const DevPageContainer = compose(
+  withRouter,
   withProps(({ currentUser: { _id: userId } }) => ({
     addEmptyLoan: options =>
       Meteor.call('addEmptyLoan', { userId, ...options }),

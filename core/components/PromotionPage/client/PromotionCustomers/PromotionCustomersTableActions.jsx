@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { isAllowedToRemoveCustomerFromPromotion } from '../../../../api/security/clientSecurityHelpers';
+import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import DropdownMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
-import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
-import PromotionCustomersTableActionsContainer from './PromotionCustomersTableActionsContainer';
 import { CustomerAdderUserSchema } from '../CustomerAdder';
+import PromotionCustomersTableActionsContainer from './PromotionCustomersTableActionsContainer';
 
 const PromotionCustomersTableActions = ({
   promotion,
@@ -54,6 +54,7 @@ const PromotionCustomersTableActions = ({
         className="actions"
         options={options}
         noWrapper
+        buttonProps={{ size: 'small' }}
       />
       <AutoFormDialog
         open={openDialog}

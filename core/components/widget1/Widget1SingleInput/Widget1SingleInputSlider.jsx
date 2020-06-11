@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Slider from 'core/components/Slider';
-import T from 'core/components/Translation';
-import IconButton from 'core/components/IconButton';
+import IconButton from '../../IconButton';
+import Slider from '../../Slider';
+import T from '../../Translation';
 
 // Avoid weird slider bug, by first checking if value exists
 // https://github.com/react-component/slider/issues/387

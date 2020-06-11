@@ -1,16 +1,17 @@
 import React from 'react';
 import { compose, lifecycle } from 'recompose';
 
-import PageHead from 'core/components/PageHead';
+import { fetchBlogPostBySlug } from 'core/api/blog';
 import Button from 'core/components/Button';
-import T from 'core/components/Translation';
 import Loading from 'core/components/Loading';
 import NotFound from 'core/components/NotFound/loadable';
+import PageHead from 'core/components/PageHead';
+import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
-import { fetchBlogPostBySlug } from 'core/api/blog';
-import BlogPostPageContent from './BlogPostPageContent';
+
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
+import BlogPostPageContent from './BlogPostPageContent';
 
 const BlogPostPage = ({ loading = true, post }) => {
   if (post && post.error) {

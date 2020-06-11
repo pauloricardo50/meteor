@@ -1,7 +1,8 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+
+/* eslint-env mocha */
+import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
 
 import CronitorService from '../CronitorService';

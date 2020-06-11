@@ -1,18 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { withProps } from 'recompose';
 
 import createTheme from '../../config/muiCustom';
 
-const MaterialUiTheme = withProps({ theme: createTheme() })(MuiThemeProvider);
+const MaterialUiTheme = withProps({ theme: createTheme({}) })(MuiThemeProvider);
 
 const LibraryWrappers = ({
   i18n: { locale, messages, formats },
   children,
   withMui = true,
 }) => {
+  useEffect(() => {
+    window.intlMessages = messages;
+  }, [messages]);
   const content = (
     <IntlProvider
       locale={locale}

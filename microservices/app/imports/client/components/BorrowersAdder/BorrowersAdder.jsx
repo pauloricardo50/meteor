@@ -1,8 +1,9 @@
 import React from 'react';
+
+import { loanInsertBorrowers } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import { loanInsertBorrowers } from 'core/api/methods';
 
 const BorrowersAdder = ({ loanId }) => (
   <div className="borrowers-adder animated fadeIn">

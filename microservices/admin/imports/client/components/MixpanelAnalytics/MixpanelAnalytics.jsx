@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MixpanelService from 'core/utils/mixpanel';
-import MixpanelEventList from './MixpanelEventList';
+
 import groupDataByDay from './groupDataByDay';
+import MixpanelEventList from './MixpanelEventList';
 
 export default class MixpanelAnalytics extends Component {
   constructor(props) {

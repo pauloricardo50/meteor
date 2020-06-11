@@ -1,21 +1,21 @@
 import React from 'react';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import {
-  TRENDS,
   INTEREST_RATES,
+  TRENDS,
 } from 'core/api/interestRates/interestRatesConstants';
-import { withProps, compose, withState } from 'recompose';
 import {
   interestRatesInsert,
-  interestRatesUpdate,
   interestRatesRemove,
-} from 'core/api/methods/index';
+  interestRatesUpdate,
+} from 'core/api/interestRates/methodDefinitions';
 import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 import T from 'core/components/Translation';
 import Percent from 'core/components/Translation/numberComponents/Percent';
-import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 
 const singleInterestRate = type => ({
   [type]: { type: Object, optional: true },
@@ -114,27 +114,14 @@ const fields = currentInterestRates => [
   ),
 ];
 
-export default compose(
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting, currentInterestRates = [] }) => ({
-    schema: interestRatesSchema,
-    fields: fields(currentInterestRates),
-    insertInterestRates: data =>
-      interestRatesInsert.run({ interestRates: data }),
-    modifyInterestRates: data => {
-      const { _id: interestRatesId, ...object } = data;
-      setSubmitting(true);
-      return interestRatesUpdate
-        .run({ interestRatesId, object })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-    removeInterestRates: interestRatesId => {
-      setSubmitting(true);
-      return interestRatesRemove
-        .run({ interestRatesId })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-  })),
-);
+export default withProps(({ currentInterestRates = [] }) => ({
+  schema: interestRatesSchema,
+  fields: fields(currentInterestRates),
+  insertInterestRates: data => interestRatesInsert.run({ interestRates: data }),
+  modifyInterestRates: data => {
+    const { _id: interestRatesId, ...object } = data;
+    return interestRatesUpdate.run({ interestRatesId, object });
+  },
+  removeInterestRates: interestRatesId =>
+    interestRatesRemove.run({ interestRatesId }),
+}));

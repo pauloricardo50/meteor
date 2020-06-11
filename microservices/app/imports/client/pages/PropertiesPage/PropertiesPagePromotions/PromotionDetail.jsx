@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PromotionCard from './PromotionCard';
 
 const PromotionDetail = ({ promotion, loanId }) => (

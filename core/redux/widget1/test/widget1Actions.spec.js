@@ -6,11 +6,11 @@ import thunk from 'redux-thunk';
 import {
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_PLEDGE,
-} from 'core/config/financeConstants';
-import * as widget1Actions from '../widget1Actions';
-import * as widget1Types from '../widget1Types';
-import * as widget1Constants from '../widget1Constants';
+} from '../../../config/financeConstants';
 import { commonTypes } from '../../common';
+import * as widget1Actions from '../widget1Actions';
+import * as widget1Constants from '../widget1Constants';
+import * as widget1Types from '../widget1Types';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

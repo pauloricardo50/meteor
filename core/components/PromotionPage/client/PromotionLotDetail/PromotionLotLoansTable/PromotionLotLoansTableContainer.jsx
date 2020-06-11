@@ -1,30 +1,32 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps, mapProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withProps, withState } from 'recompose';
 
 import withSmartQuery from '../../../../../api/containerToolkit/withSmartQuery';
+import { LOAN_STATUS } from '../../../../../api/loans/loanConstants';
 import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
-import {
-  LOANS_COLLECTION,
-  PROMOTION_OPTIONS_COLLECTION,
-} from '../../../../../api/constants';
-import T from '../../../../Translation';
 import { CollectionIconLink } from '../../../../IconLink';
 import StatusLabel from '../../../../StatusLabel';
+import T from '../../../../Translation';
 import PromotionCustomer from '../../PromotionCustomer';
-import PromotionLotReservation from './PromotionLotReservation';
 import PriorityOrder from './PriorityOrder';
+import PromotionLotReservation from './PromotionLotReservation';
 
 const getColumns = ({ promotionLot, promotionOption }) => {
   const {
     _id: promotionLotId,
     promotion: { _id: promotionId },
   } = promotionLot;
-  const { loan, createdAt, status: promotionOptionStatus } = promotionOption;
-  const { status, user, promotionOptions = [], promotions } = loan;
+  const {
+    loan,
+    createdAt,
+    status: promotionOptionStatus,
+    _collection: _collection2,
+  } = promotionOption;
+  const { status, user, promotionOptions = [], promotions, _collection } = loan;
 
   const promotion = promotions.find(({ _id }) => _id === promotionId);
 
@@ -36,7 +38,7 @@ const getColumns = ({ promotionLot, promotionOption }) => {
   return [
     <CollectionIconLink
       key="loan"
-      relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+      relatedDoc={loan}
       noRoute={Meteor.microservice === 'pro'}
     />,
     {
@@ -45,12 +47,12 @@ const getColumns = ({ promotionLot, promotionOption }) => {
         <>
           <StatusLabel
             status={status}
-            collection={LOANS_COLLECTION}
+            collection={_collection}
             className="mr-8"
           />
           <StatusLabel
             status={promotionOptionStatus}
-            collection={PROMOTION_OPTIONS_COLLECTION}
+            collection={_collection2}
           />
         </>
       ),
@@ -70,7 +72,6 @@ const getColumns = ({ promotionLot, promotionOption }) => {
       raw: promotionOptions.length,
       label: (
         <PriorityOrder
-          promotion={promotion}
           promotionOptions={promotionOptions}
           userId={user && user._id}
           currentId={promotionLotId}
@@ -109,13 +110,50 @@ const columnOptions = [
 
 export default compose(
   mapProps(({ promotionLot }) => ({ promotionLot })),
+  withState('status', 'setStatus', {
+    $in: Object.values(LOAN_STATUS).filter(
+      s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST,
+    ),
+  }),
   withSmartQuery({
     query: proPromotionOptions,
-    params: ({ promotionLot: { _id: promotionLotId } }) => ({
+    params: ({ promotionLot: { _id: promotionLotId }, status }) => ({
       promotionLotId,
+      loanStatus: status,
+      $body: {
+        bank: 1,
+        createdAt: 1,
+        fullVerification: 1,
+        loanCache: 1,
+        loan: {
+          promotions: {
+            users: { name: 1, organisations: { name: 1 } },
+            agreementDuration: 1,
+          },
+          promotionOptions: {
+            name: 1,
+            promotionLots: {
+              attributedTo: { user: { _id: 1 } },
+              status: 1,
+            },
+            loan: { _id: 1 },
+          },
+          proNote: 1,
+          status: 1,
+          user: { phoneNumbers: 1, name: 1, email: 1 },
+        },
+        priorityOrder: 1,
+        promotion: { users: { _id: 1 }, agreementDuration: 1 },
+        promotionLots: { name: 1, promotion: { name: 1 } },
+        reservationAgreement: 1,
+        reservationDeposit: 1,
+        simpleVerification: 1,
+        status: 1,
+        updatedAt: 1,
+      },
     }),
-    queryOptions: { reactive: false, shouldRefetch: () => false },
     dataName: 'promotionOptions',
+    deps: ({ status }) => [status],
   }),
   withRouter,
   withProps(({ promotionOptions = [], promotionLot }) => ({

@@ -3,13 +3,13 @@ jobs:
   Prepare:
     working_directory: ~/app
     docker: &ref_0
-      - image: 'circleci/openjdk:10-jdk-node-browsers'
+      - image: 'circleci/openjdk:8-jdk-node-browsers-legacy'
         environment:
           LANG: C.UTF-8
           LANGUAGE: C.UTF-8
           LC_ALL: C.UTF-8
           LC_NUMERIC: en_US.UTF-8
-          METEOR_VERSION: '1.9'
+          METEOR_VERSION: 1.10.2
           NODE_ENV: development
           TOOL_NODE_FLAGS: >-
             --max_old_space_size=8192 --optimize_for_size --gc_interval=100
@@ -17,55 +17,58 @@ jobs:
           CIRCLE_CI: 1
           DEBUG: false
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
+          RTL_SKIP_AUTO_CLEANUP: 1
     resource_class: large
     steps:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - checkout
       - run:
           name: Init submodules
           command: git submodule sync && git submodule update --init --recursive
       - save_cache:
           name: Cache source
-          key: 'source_master_8-{{ .Branch }}-{{ .Revision }}'
+          key: 'source_master_14-{{ .Branch }}-{{ .Revision }}'
           paths:
             - .
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - run:
           name: Install project node_modules
           command: npm ci
       - save_cache:
           name: Cache globals
-          key: 'global_master_8-{{ .Branch }}-{{ .Revision }}'
+          key: 'global_master_14-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ~/.cache
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+          key: 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
           paths:
             - ./node_modules
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_backend_{{ checksum
+              meteor_system_master_14_backend_{{ checksum
               "./microservices/backend/.meteor/release" }}_{{ checksum
               "./microservices/backend/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -73,12 +76,15 @@ jobs:
           name: Install node_modules
           command: meteor npm --prefix microservices/backend ci
       - run:
+          name: Install expect
+          command: sudo apt-get update && sudo apt-get install expect
+      - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
           no_output_timeout: 30m
       - save_cache:
           name: Cache meteor backend
-          key: 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/backend/.meteor/local/bundler-cache
             - ./microservices/backend/.meteor/local/isopacks
@@ -91,38 +97,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_www_{{ checksum
+              meteor_system_master_14_www_{{ checksum
               "./microservices/www/.meteor/release" }}_{{ checksum
               "./microservices/www/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_www-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_www-{{ .Branch }}-'
-            - meteor_microservice_master_8_www-
+            - 'meteor_microservice_master_14_www-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_www-{{ .Branch }}-'
+            - meteor_microservice_master_14_www-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -146,14 +154,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_www_{{ checksum
+            meteor_system_master_14_www_{{ checksum
             "./microservices/www/.meteor/release" }}_{{ checksum
             "./microservices/www/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_www-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_www-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/www/.meteor/local/bundler-cache
             - ./microservices/www/.meteor/local/isopacks
@@ -170,38 +178,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_app_{{ checksum
+              meteor_system_master_14_app_{{ checksum
               "./microservices/app/.meteor/release" }}_{{ checksum
               "./microservices/app/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_app-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_app-{{ .Branch }}-'
-            - meteor_microservice_master_8_app-
+            - 'meteor_microservice_master_14_app-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_app-{{ .Branch }}-'
+            - meteor_microservice_master_14_app-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -225,14 +235,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_app_{{ checksum
+            meteor_system_master_14_app_{{ checksum
             "./microservices/app/.meteor/release" }}_{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_app-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_app-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/app/.meteor/local/bundler-cache
             - ./microservices/app/.meteor/local/isopacks
@@ -249,38 +259,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_admin_{{ checksum
+              meteor_system_master_14_admin_{{ checksum
               "./microservices/admin/.meteor/release" }}_{{ checksum
               "./microservices/admin/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_admin-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_admin-{{ .Branch }}-'
-            - meteor_microservice_master_8_admin-
+            - 'meteor_microservice_master_14_admin-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_admin-{{ .Branch }}-'
+            - meteor_microservice_master_14_admin-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -304,14 +316,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_admin_{{ checksum
+            meteor_system_master_14_admin_{{ checksum
             "./microservices/admin/.meteor/release" }}_{{ checksum
             "./microservices/admin/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_admin-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_admin-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/admin/.meteor/local/bundler-cache
             - ./microservices/admin/.meteor/local/isopacks
@@ -328,38 +340,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_pro_{{ checksum
+              meteor_system_master_14_pro_{{ checksum
               "./microservices/pro/.meteor/release" }}_{{ checksum
               "./microservices/pro/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_pro-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_pro-{{ .Branch }}-'
-            - meteor_microservice_master_8_pro-
+            - 'meteor_microservice_master_14_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_pro-{{ .Branch }}-'
+            - meteor_microservice_master_14_pro-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -383,14 +397,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_pro_{{ checksum
+            meteor_system_master_14_pro_{{ checksum
             "./microservices/pro/.meteor/release" }}_{{ checksum
             "./microservices/pro/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_pro-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_pro-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/pro/.meteor/local/bundler-cache
             - ./microservices/pro/.meteor/local/isopacks
@@ -407,38 +421,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_www_{{ checksum
+              meteor_system_master_14_www_{{ checksum
               "./microservices/www/.meteor/release" }}_{{ checksum
               "./microservices/www/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_www-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_www-{{ .Branch }}-'
-            - meteor_microservice_master_8_www-
+            - 'meteor_microservice_master_14_www-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_www-{{ .Branch }}-'
+            - meteor_microservice_master_14_www-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -456,6 +472,12 @@ jobs:
           name: Generate language files
           command: npm run lang www
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0
+            libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth
+            xvfb
+      - run:
           name: Run e2e tests
           command: |2-
 
@@ -465,14 +487,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_www_{{ checksum
+            meteor_system_master_14_www_{{ checksum
             "./microservices/www/.meteor/release" }}_{{ checksum
             "./microservices/www/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_www-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_www-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/www/.meteor/local/bundler-cache
             - ./microservices/www/.meteor/local/isopacks
@@ -489,38 +511,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_app_{{ checksum
+              meteor_system_master_14_app_{{ checksum
               "./microservices/app/.meteor/release" }}_{{ checksum
               "./microservices/app/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_app-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_app-{{ .Branch }}-'
-            - meteor_microservice_master_8_app-
+            - 'meteor_microservice_master_14_app-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_app-{{ .Branch }}-'
+            - meteor_microservice_master_14_app-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -538,6 +562,12 @@ jobs:
           name: Generate language files
           command: npm run lang app
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0
+            libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth
+            xvfb
+      - run:
           name: Run e2e tests
           command: |2-
 
@@ -547,14 +577,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_app_{{ checksum
+            meteor_system_master_14_app_{{ checksum
             "./microservices/app/.meteor/release" }}_{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_app-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_app-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/app/.meteor/local/bundler-cache
             - ./microservices/app/.meteor/local/isopacks
@@ -571,38 +601,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_admin_{{ checksum
+              meteor_system_master_14_admin_{{ checksum
               "./microservices/admin/.meteor/release" }}_{{ checksum
               "./microservices/admin/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_admin-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_admin-{{ .Branch }}-'
-            - meteor_microservice_master_8_admin-
+            - 'meteor_microservice_master_14_admin-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_admin-{{ .Branch }}-'
+            - meteor_microservice_master_14_admin-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -620,6 +652,12 @@ jobs:
           name: Generate language files
           command: npm run lang admin
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0
+            libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth
+            xvfb
+      - run:
           name: Run e2e tests
           command: |2-
 
@@ -629,14 +667,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_admin_{{ checksum
+            meteor_system_master_14_admin_{{ checksum
             "./microservices/admin/.meteor/release" }}_{{ checksum
             "./microservices/admin/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_admin-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_admin-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/admin/.meteor/local/bundler-cache
             - ./microservices/admin/.meteor/local/isopacks
@@ -653,38 +691,40 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_8-{{ .Branch }}-'
-            - source_master_8-
+            - 'source_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_14-{{ .Branch }}-'
+            - source_master_14-
       - restore_cache:
           name: Restore global cache
           keys:
-            - 'global_master_8-{{ .Branch }}-{{ .Revision }}'
-            - 'global_master_8-{{ .Branch }}-'
-            - global_master_8-
+            - 'global_master_14-{{ .Branch }}-{{ .Revision }}'
+            - 'global_master_14-{{ .Branch }}-'
+            - global_master_14-
       - restore_cache:
           name: Restore node_modules
           keys:
-            - 'node_modules_master_8_{{ checksum "./package-lock.json" }}'
+            - 'node_modules_master_14_{{ checksum "./package-lock.json" }}'
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_8_pro_{{ checksum
+              meteor_system_master_14_pro_{{ checksum
               "./microservices/pro/.meteor/release" }}_{{ checksum
               "./microservices/pro/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_8_pro-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_pro-{{ .Branch }}-'
-            - meteor_microservice_master_8_pro-
+            - 'meteor_microservice_master_14_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_14_pro-{{ .Branch }}-'
+            - meteor_microservice_master_14_pro-
       - restore_cache:
           name: Restore meteor backend
           keys:
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_8_backend-{{ .Branch }}-'
-            - meteor_microservice_master_8_backend-
+            - >-
+              meteor_microservice_master_14_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_14_backend-{{ .Branch }}-'
+            - meteor_microservice_master_14_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -702,6 +742,12 @@ jobs:
           name: Generate language files
           command: npm run lang pro
       - run:
+          name: Install cypress dependencies
+          command: >-
+            sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0
+            libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth
+            xvfb
+      - run:
           name: Run e2e tests
           command: |2-
 
@@ -711,14 +757,14 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_8_pro_{{ checksum
+            meteor_system_master_14_pro_{{ checksum
             "./microservices/pro/.meteor/release" }}_{{ checksum
             "./microservices/pro/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: 'meteor_microservice_master_8_pro-{{ .Branch }}-{{ .Revision }}'
+          key: 'meteor_microservice_master_14_pro-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./microservices/pro/.meteor/local/bundler-cache
             - ./microservices/pro/.meteor/local/isopacks

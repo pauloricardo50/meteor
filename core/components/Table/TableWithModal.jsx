@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { AutoFormDialog } from '../AutoForm2/AutoFormDialog';
-import Dialog from '../Material/Dialog';
-import Table from '.';
 import Button from '../Button';
+import Dialog from '../Material/Dialog';
 import T from '../Translation';
+import Table from '.';
 
 const getModal = ({
   modalType,
@@ -13,8 +13,13 @@ const getModal = ({
   open,
   setOpen,
   activeRow,
+  ModalComponent,
 }) => {
   const props = activeRow ? getModalProps({ row: activeRow, setOpen }) : {};
+
+  if (ModalComponent) {
+    return <ModalComponent {...props} open={open} setOpen={setOpen} />;
+  }
 
   if (modalType === 'form') {
     return (
@@ -51,6 +56,7 @@ const TableWithModal = ({
   getModalProps,
   modalProps,
   rows,
+  ModalComponent,
   ...rest
 }) => {
   const [open, setOpen] = useState(false);
@@ -87,6 +93,7 @@ const TableWithModal = ({
         open,
         setOpen,
         activeRow,
+        ModalComponent,
       })}
       <Table {...rest} rows={mappedRows} />
     </>

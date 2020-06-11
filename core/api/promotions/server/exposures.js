@@ -1,19 +1,20 @@
+import { Roles } from 'meteor/alanning:roles';
 import { Match } from 'meteor/check';
 
-import { ROLES } from 'core/api/users/userConstants';
-import { exposeQuery } from '../../queries/queryHelpers';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
+import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
+import { PROMOTION_STATUS } from '../promotionConstants';
 import {
   adminPromotions,
   appPromotion,
-  promotionSearch,
-  proPromotions,
   proPromotionUsers,
+  proPromotions,
+  promotionSearch,
+  promotionsList,
 } from '../queries';
-import { PROMOTION_STATUS } from '../promotionConstants';
-import UserService from '../../users/server/UserService';
-
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
 
 exposeQuery({
@@ -109,11 +110,8 @@ exposeQuery({
 
         const isAdmin =
           currentUser &&
-          currentUser.roles &&
-          currentUser.roles.length &&
-          currentUser.roles.some(role =>
-            [ROLES.ADMIN, ROLES.DEV].includes(role),
-          );
+          (Roles.userIsInRole(currentUser, ROLES.ADMIN) ||
+            Roles.userIsInRole(ROLES.DEV));
 
         const promotionsWithFilteredNotes = isAdmin
           ? promotions
@@ -172,4 +170,19 @@ exposeQuery({
     },
   },
   options: { allowFilterById: true },
+});
+
+exposeQuery({
+  query: promotionsList,
+  overrides: {
+    firewall() {},
+    embody: body => {
+      body.$filter = ({ filters }) => {
+        filters.isTest = { $ne: true };
+        filters.status = {
+          $in: [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.FINISHED],
+        };
+      };
+    },
+  },
 });

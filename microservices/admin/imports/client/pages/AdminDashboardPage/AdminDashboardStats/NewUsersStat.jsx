@@ -1,16 +1,17 @@
 import React from 'react';
+import moment from 'moment';
 import CountUp from 'react-countup';
 import { compose, withState } from 'recompose';
-import moment from 'moment';
 
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { newUsers, userHistogram } from 'core/api/stats/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
-import { Percent } from 'core/components/Translation';
-import Select from 'core/components/Select';
+import { ROLES } from 'core/api/users/userConstants';
 import Histogram from 'core/components/charts/Histogram';
-import IconButton from 'core/components/IconButton';
 import DialogSimple from 'core/components/DialogSimple';
-import { ROLES } from 'imports/core/api/constants';
+import IconButton from 'core/components/IconButton';
+import Select from 'core/components/Select';
+import { Percent } from 'core/components/Translation';
+
 import StatItem from './StatItem';
 
 const formatDate = date =>
@@ -48,6 +49,7 @@ const NewUsersStat = ({
             ]}
             onChange={setPeriod}
             value={period}
+            className="mr-8"
           />
           <Select
             label="Email vérifié?"
@@ -86,12 +88,14 @@ export default compose(
     query: newUsers,
     dataName: 'newUsers',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    deps: ({ period, verified }) => [period, verified],
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: userHistogram,
     dataName: 'userHistogram',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    deps: ({ period, verified }) => [period, verified],
     refetchOnMethodCall: false,
   }),
 )(NewUsersStat);

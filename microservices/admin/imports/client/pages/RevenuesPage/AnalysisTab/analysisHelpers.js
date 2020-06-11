@@ -1,21 +1,24 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
 
-import {
-  LOANS_COLLECTION,
-  REVENUES_COLLECTION,
-  USERS_COLLECTION,
-  BORROWERS_COLLECTION,
-  ACTIVITIES_COLLECTION,
-  TASKS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
+import { ACTIVITIES_COLLECTION } from 'core/api/activities/activityConstants';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
+import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
+
 import analysisConfig from './analysisConfig';
 
 export const analysisCollections = Object.keys(analysisConfig);
 
 export const createBodyFromMap = map => {
-  const body = {};
+  const body = {
+    // $options: { limit: 10 },
+  };
 
   Object.keys(map).forEach(path => {
     const config = map[path];
@@ -107,6 +110,12 @@ export const analysisBodies = {
   [TASKS_COLLECTION]: createBodyFromMap(analysisConfig[TASKS_COLLECTION]),
   [ORGANISATIONS_COLLECTION]: createBodyFromMap(
     analysisConfig[ORGANISATIONS_COLLECTION],
+  ),
+  [INSURANCE_REQUESTS_COLLECTION]: createBodyFromMap(
+    analysisConfig[INSURANCE_REQUESTS_COLLECTION],
+  ),
+  [INSURANCES_COLLECTION]: createBodyFromMap(
+    analysisConfig[INSURANCES_COLLECTION],
   ),
 };
 

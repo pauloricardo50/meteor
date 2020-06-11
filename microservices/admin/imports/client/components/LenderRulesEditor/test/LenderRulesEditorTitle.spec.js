@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import LenderRulesEditorTitle from '../LenderRulesEditorTitle';

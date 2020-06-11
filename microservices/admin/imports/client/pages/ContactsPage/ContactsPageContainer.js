@@ -1,4 +1,8 @@
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { adminContacts as query } from 'core/api/contacts/queries';
+import { contact } from 'core/api/fragments';
 
-export default withSmartQuery({ query, dataName: 'contacts' });
+export default withSmartQuery({
+  query: CONTACTS_COLLECTION,
+  params: contact(),
+});

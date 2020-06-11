@@ -1,5 +1,5 @@
-import Notifications from './notifications';
 import { LOANS_COLLECTION } from '../loans/loanConstants';
+import Notifications from './notifications';
 
 Notifications.addReducers({
   relatedDoc: {

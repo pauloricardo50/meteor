@@ -1,22 +1,24 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { shouldAnonymize } from 'core/api/promotions/promotionClientHelpers';
-import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import T from '../../../../../Translation';
+import { PROMOTION_OPTION_STATUS } from '../../../../../../api/promotionOptions/promotionOptionConstants';
+import {
+  getPromotionCustomerOwnerType,
+  shouldAnonymize,
+} from '../../../../../../api/promotions/promotionClientHelpers';
+import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
-import { getPromotionCustomerOwnerType } from '../../../../../../api/promotions/promotionClientHelpers';
+import T from '../../../../../Translation';
+import PromotionReservationProgress from '../../../../PromotionReservationProgress';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
-import PromotionReservationProgress from '../../../PromotionReservations/PromotionReservationProgress/PromotionReservationProgress';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
 const isAdmin = Meteor.microservice === 'admin';
 
 const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { status, promotionLots } = promotionOption;
   const { users = [] } = promotion;
   const { $metadata: { permissions } = {} } =
@@ -24,7 +26,6 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
   const [promotionLot] = promotionLots;
   const {
     $metadata: { invitedBy },
-    agreementDuration,
   } = promotion;
 
   const customerOwnerType = getPromotionCustomerOwnerType({
@@ -50,6 +51,8 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
         promotionOption={promotionOption}
         promotionLotName={promotionLot.name}
         status={status}
+        buttonProps={{ size: 'small' }}
+        loan={loan}
       />
     );
   }
@@ -61,7 +64,14 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
           id="PromotionReservationsTable.modalTitle"
           values={{
             lotName: <b>{promotionLot.name}</b>,
-            customerName: <b>{loan.user.name}</b>,
+            customerName: (
+              <b>
+                {loan.user?.name ||
+                  [loan.userCache?.firstName, loan.userCache?.lastName]
+                    .filter(x => x)
+                    .join(' ')}
+              </b>
+            ),
           }}
         />
       }
@@ -71,7 +81,8 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
           <PromotionReservationProgress
             loan={loan}
             promotionOption={promotionOption}
-            className="mr-8"
+            className="mr-8 flex"
+            StepperProps={{ style: { padding: 0 } }}
           />
           <Button
             raised

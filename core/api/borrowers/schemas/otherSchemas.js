@@ -1,23 +1,23 @@
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/autoFormConstants';
 import {
-  percentageField,
-  moneyField,
   address,
+  moneyField,
+  negativeMoneyField,
+  percentageField,
 } from '../../helpers/sharedSchemas';
 import { autoValueSentenceCase } from '../../helpers/sharedSchemaValues';
-
+import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import {
-  RESIDENCY_PERMIT,
-  GENDER,
-  CIVIL_STATUS,
-  OTHER_INCOME,
-  EXPENSES,
-  OWN_FUNDS_TYPES,
   BORROWER_ACTIVITY_TYPES,
+  CIVIL_STATUS,
+  EXPENSES,
+  GENDER,
+  OTHER_INCOME,
+  OWN_FUNDS_TYPES,
+  RESIDENCY_PERMIT,
 } from '../borrowerConstants';
-import { RESIDENCE_TYPE } from '../../constants';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
@@ -246,8 +246,8 @@ export const ownCompaniesSchema = {
   'ownCompanies.$': Object,
   'ownCompanies.$.description': { type: String, optional: false },
   'ownCompanies.$.ownership': percentageField,
-  'ownCompanies.$.netIncome2016': moneyField,
-  'ownCompanies.$.netIncome2017': moneyField,
-  'ownCompanies.$.netIncome2018': moneyField,
-  'ownCompanies.$.netIncome2019': moneyField,
+  'ownCompanies.$.netIncome2016': negativeMoneyField,
+  'ownCompanies.$.netIncome2017': negativeMoneyField,
+  'ownCompanies.$.netIncome2018': negativeMoneyField,
+  'ownCompanies.$.netIncome2019': negativeMoneyField,
 };

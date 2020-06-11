@@ -1,32 +1,34 @@
 import bodyParser from 'body-parser';
-import moment from 'moment';
 import multipart from 'connect-multiparty';
+import moment from 'moment';
 
-import SlackService from '../../slack/server/SlackService';
-import {
-  REST_API_ERRORS,
-  BODY_SIZE_LIMIT,
-  FILE_UPLOAD_DIR,
-} from './restApiConstants';
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
 import {
-  getRequestPath,
-  getHeader,
-  getRequestMethod,
+  checkCustomAuth,
+  getAnalyticsParams,
   getErrorObject,
-  getPublicKey,
-  verifySignature,
-  getSignature,
-  logRequest,
-  trackRequest,
+  getHeader,
   getMatchingPathOptions,
-  getSimpleAuthToken,
+  getPublicKey,
+  getRequestMethod,
+  getRequestPath,
   getRequestType,
+  getSignature,
+  getSimpleAuthToken,
+  logRequest,
   requestTypeIsAllowed,
   shouldSkipMiddleware,
-  checkCustomAuth,
+  trackRequest,
+  verifySignature,
 } from './helpers';
-import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
+import { NONCE_TTL, addNonce, nonceExists } from './noncesHandler';
+import {
+  BODY_SIZE_LIMIT,
+  FILE_UPLOAD_DIR,
+  HTTP_STATUS_CODES,
+  REST_API_ERRORS,
+} from './restApiConstants';
 
 const bodyParserJsonMiddleware = () =>
   bodyParser.json({ limit: BODY_SIZE_LIMIT });
@@ -264,17 +266,19 @@ const errorMiddleware = options => (error, req, res, next) => {
   const { status, errorName, message } = getErrorObject(error, res);
   const { user = {}, body = {}, params = {}, query = {}, headers = {} } = req;
 
-  SlackService.sendError({
-    error,
-    additionalData: [
-      Object.keys(body).length > 0 && { body },
-      Object.keys(params).length > 0 && { params },
-      Object.keys(query).length > 0 && { query },
-      Object.keys(headers).length > 0 && { headers },
-    ].filter(x => x),
-    userId: user._id,
-    url: getRequestPath(req),
-  });
+  if (status !== HTTP_STATUS_CODES.NOT_FOUND) {
+    ErrorLogger.handleError({
+      error,
+      additionalData: [
+        Object.keys(body).length > 0 && { body },
+        Object.keys(params).length > 0 && { params },
+        Object.keys(query).length > 0 && { query },
+        Object.keys(headers).length > 0 && { headers },
+      ].filter(x => x),
+      userId: user._id,
+      url: getRequestPath(req),
+    });
+  }
 
   logRequest({ req, result: JSON.stringify({ status, errorName, message }) });
   if (Object.keys(user) > 0) {
@@ -308,6 +312,16 @@ const multipartMiddleware = options => (req, res, next) => {
   return middleware(req, res, next);
 };
 
+const analyticsMiddleware = options => (req, res, next) => {
+  const analyticsParams = getAnalyticsParams({ req, options });
+
+  if (analyticsParams) {
+    req.analyticsParams = analyticsParams;
+  }
+
+  next();
+};
+
 const customAuthMiddleware = options => (req, res, next) => {
   if (shouldSkipMiddleware({ req, middleware: 'customAuthMiddleware' })) {
     return next();
@@ -337,5 +351,6 @@ export const preMiddlewares = [
   basicAuthMiddleware,
   customAuthMiddleware,
   replayHandlerMiddleware,
+  analyticsMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

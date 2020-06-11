@@ -1,12 +1,12 @@
-import ListMaterial from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import React, { Children } from 'react';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import { shouldUpdate } from 'recompose';
 import { connectField, filterDOMProps, joinName } from 'uniforms';
 
+import ListMaterial from '../Material/List';
+import { FIELDS_TO_IGNORE } from './autoFormConstants';
 import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
-import { FIELDS_TO_IGNORE } from './constants';
 
 const List = ({
   addIcon,

@@ -1,20 +1,20 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
+import generator from '../../../../factories/server';
 import SlackService from '../../../../slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';
-import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
-import referCustomerAPI from '../referCustomer';
 import {
   fetchAndCheckResponse,
-  makeHeaders,
   getTimestampAndNonce,
+  makeHeaders,
 } from '../../test/apiTestHelpers.test';
+import referCustomerAPI from '../referCustomer';
 
 const customerToRefer = {
   email: 'test@example.com',
@@ -97,6 +97,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org3', name: 'Org 3' },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -104,6 +106,8 @@ describe('REST: referCustomer', function() {
           emails: [{ address: 'pro2@org.com', verified: true }],
           organisations: [{ _id: 'org', $metadata: { isMain: true } }],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -113,6 +117,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org2', $metadata: { isMain: true }, name: 'Org 2' },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -122,6 +128,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org3', $metadata: { isMain: true, title: 'CEO' } },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
       ],
     });
@@ -134,14 +142,11 @@ describe('REST: referCustomer', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToRefer.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToRefer.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
     expect(customer.referredByUserLink).to.equal('pro');
     expect(customer.referredByOrganisationLink).to.equal('org');
     expect(customer.loans[0].shareSolvency).to.equal(undefined);
@@ -157,14 +162,11 @@ describe('REST: referCustomer', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToRefer.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToRefer.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+    });
     expect(customer.referredByUserLink).to.equal('pro');
     expect(customer.referredByOrganisationLink).to.equal('org');
     expect(customer.loans[0].shareSolvency).to.equal(true);
@@ -180,15 +182,12 @@ describe('REST: referCustomer', function() {
       },
     });
 
-    const customer = UserService.get(
-      { 'emails.address': { $in: [customerToRefer.email] } },
-      {
-        referredByUserLink: 1,
-        referredByOrganisationLink: 1,
-        loans: { shareSolvency: 1 },
-        tasks: { description: 1 },
-      },
-    );
+    const customer = UserService.getByEmail(customerToRefer.email, {
+      referredByUserLink: 1,
+      referredByOrganisationLink: 1,
+      loans: { shareSolvency: 1 },
+      tasks: { description: 1 },
+    });
     expect(customer.referredByUserLink).to.equal('pro');
     expect(customer.referredByOrganisationLink).to.equal('org');
     expect(customer.loans[0].shareSolvency).to.equal(undefined);
@@ -200,10 +199,9 @@ describe('REST: referCustomer', function() {
       const interval = Meteor.setInterval(() => {
         if (tasks.length === 0 && intervalCount < 10) {
           tasks =
-            UserService.get(
-              { 'emails.address': { $in: [customerToRefer.email] } },
-              { tasks: { description: 1 } },
-            ).tasks || [];
+            UserService.getByEmail(customerToRefer.email, {
+              tasks: { description: 1 },
+            }).tasks || [];
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);
@@ -230,7 +228,10 @@ describe('REST: referCustomer', function() {
       },
     });
 
-    const customer = UserService.getByEmail(customerToRefer.email);
+    const customer = UserService.getByEmail(customerToRefer.email, {
+      referredByOrganisationLink: 1,
+      referredByUserLink: 1,
+    });
     expect(customer.referredByUserLink).to.equal('pro2');
     expect(customer.referredByOrganisationLink).to.equal('org');
 
@@ -245,7 +246,10 @@ describe('REST: referCustomer', function() {
       },
     });
 
-    const customer = UserService.getByEmail(customerToRefer.email);
+    const customer = UserService.getByEmail(customerToRefer.email, {
+      referredByOrganisationLink: 1,
+      referredByUserLink: 1,
+    });
     expect(customer.referredByUserLink).to.equal('pro4');
     expect(customer.referredByOrganisationLink).to.equal('org');
 

@@ -1,33 +1,29 @@
 import React from 'react';
 import moment from 'moment';
 
+import Calculator from '../../utils/Calculator';
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
-import OfferFeedbackContainer from './OfferFeedbackContainer';
 import HtmlPreview from '../HtmlPreview';
+import OfferFeedbackContainer from './OfferFeedbackContainer';
 
-const getButtonOtherProps = ({ offer }) => {
+const getButtonOtherProps = ({ offer, loan }) => {
   let otherProps = {};
-
+  const { _id: offerId } = offer;
   const {
-    lender: {
-      contact,
-      organisation: { name: organisationName },
-      loan: { user },
-    },
-    property,
-  } = offer;
+    contact,
+    organisation: { name: organisationName },
+  } = Calculator.selectLenderForOfferId({ loan, offerId });
+  const property = Calculator.selectProperty({ loan });
+  const { userCache } = loan;
 
-  const { assignedEmployee, name: userName } = user || {};
-  const { name: assignedEmployeeName, email: assignedEmployeeEmail } =
-    assignedEmployee || {};
+  const { name: userName } = userCache || {};
   const { email: contactEmail, name: contactName } = contact || {};
   const { address1, zipCode, city } = property || {};
 
   // Should disable button
   if (
-    !assignedEmployeeEmail ||
     !contactEmail ||
-    !user ||
+    !userCache?._id ||
     !property ||
     !address1 ||
     !zipCode ||
@@ -37,21 +33,16 @@ const getButtonOtherProps = ({ offer }) => {
   }
 
   // Should display tooltip
-  if (!user) {
+  if (!userCache?._id) {
     otherProps = {
       ...otherProps,
       tooltip:
         'Assignez ce dossier à un compte utilisateur pour entrer un feedback',
     };
-  } else if (!assignedEmployee) {
+  } else if (!userCache.assignedEmployeeCache?._id) {
     otherProps = {
       ...otherProps,
       tooltip: `Assignez un conseiller à ${userName} pour entrer un feedback`,
-    };
-  } else if (!assignedEmployeeEmail) {
-    otherProps = {
-      ...otherProps,
-      tooltip: `Ajoutez une addresse email au conseiller ${assignedEmployeeName} pour entrer un feedback`,
     };
   } else if (!contact) {
     otherProps = {
@@ -78,9 +69,10 @@ const getButtonOtherProps = ({ offer }) => {
   return otherProps;
 };
 
-const OfferFeedback = ({ onSubmit, schema, offer }) => {
+const OfferFeedback = ({ onSubmit, schema, offer, loan }) => {
   const { feedback = {} } = offer;
   const { message, date } = feedback;
+
   return (
     <AutoFormDialog
       onSubmit={onSubmit}
@@ -90,7 +82,7 @@ const OfferFeedback = ({ onSubmit, schema, offer }) => {
         label: 'Feedback',
         raised: true,
         primary: true,
-        ...getButtonOtherProps({ offer }),
+        ...getButtonOtherProps({ offer, loan }),
       }}
       emptyDialog={!!message}
       title="Feedback de l'offre"

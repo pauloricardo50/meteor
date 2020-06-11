@@ -1,25 +1,26 @@
-import React, { useState, useContext } from 'react';
-import SimpleSchema from 'simpl-schema';
+import React, { useContext, useMemo, useState } from 'react';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import {
-  toggleNotifications,
-  promotionUpdate,
-  insertPromotionProperty,
-  lotInsert,
-  promotionRemove,
-} from '../../../../api/methods';
-import { BasePromotionSchema } from '../../../../api/promotions/schemas/PromotionSchema';
-import {
-  S3_ACLS,
-  ONE_KB,
-  PROPERTY_TYPE,
-  LOT_TYPES,
-} from '../../../../api/constants';
+import { S3_ACLS } from '../../../../api/files/fileConstants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
-import ConfirmModal from '../../../ModalManager/ConfirmModal';
+import { LOT_TYPES } from '../../../../api/lots/lotConstants';
+import { lotInsert } from '../../../../api/lots/methodDefinitions';
+import {
+  addPromotionLotGroup,
+  insertPromotionProperty,
+  promotionRemove,
+  promotionUpdate,
+  toggleNotifications,
+} from '../../../../api/promotions/methodDefinitions';
+import {
+  BasePromotionSchema,
+  basePromotionLayout,
+} from '../../../../api/promotions/schemas/PromotionSchema';
+import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import { ModalManagerContext } from '../../../ModalManager';
+import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import DialogForm from '../../../ModalManager/DialogForm';
 import T from '../../../Translation';
 import PromotionMetadataContext from '../PromotionMetadata';
@@ -29,40 +30,63 @@ const promotionDocuments = [
     id: 'promotionImage',
     acl: S3_ACLS.PUBLIC_READ,
     noTooltips: true,
-    maxSize: 500 * ONE_KB,
+    displayableFile: true,
   },
   {
     id: 'promotionDocuments',
     acl: S3_ACLS.PUBLIC_READ,
     noTooltips: true,
   },
-  { id: 'logos', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  {
+    id: 'logos',
+    acl: S3_ACLS.PUBLIC_READ,
+    noTooltips: true,
+    displayableFile: true,
+  },
   { id: 'promotionGuide', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
 ];
 
-export const promotionLotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true, placeholder: 'A' } },
-  value: { ...moneyField, defaultValue: 0 },
-  landValue: { ...moneyField, defaultValue: 0 },
-  constructionValue: { ...moneyField, defaultValue: 0 },
-  additionalMargin: { ...moneyField, defaultValue: 0 },
-  propertyType: {
-    type: String,
-    allowedValues: Object.values(PROPERTY_TYPE),
-    uniforms: { placeholder: null },
-  },
-  insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
-  terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
-  gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
-  roomCount: { type: Number, optional: true, min: 0, max: 100 },
-  bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
-  yearlyExpenses: moneyField,
-  description: {
-    type: String,
-    optional: true,
-    uniforms: { placeholder: 'Attique avec la meilleure vue du bâtiment' },
-  },
-});
+export const getPromotionLotSchema = (promotionLotGroups = []) =>
+  new SimpleSchema({
+    name: { type: String, uniforms: { autoFocus: true, placeholder: 'A' } },
+    promotionLotGroupIds: {
+      type: Array,
+      optional: true,
+      condition: !!promotionLotGroups.length,
+      uniforms: {
+        displayEmpty: false,
+        placeholder: '',
+      },
+    },
+    'promotionLotGroupIds.$': {
+      type: String,
+      allowedValues: promotionLotGroups.map(({ id }) => id),
+      uniforms: {
+        transform: id =>
+          promotionLotGroups.find(({ id: groupId }) => id === groupId).label,
+      },
+    },
+    value: { ...moneyField, defaultValue: 0 },
+    landValue: { ...moneyField, defaultValue: 0 },
+    constructionValue: { ...moneyField, defaultValue: 0 },
+    additionalMargin: { ...moneyField, defaultValue: 0 },
+    propertyType: {
+      type: String,
+      allowedValues: Object.values(PROPERTY_TYPE),
+      uniforms: { placeholder: null },
+    },
+    insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+    terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+    gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+    roomCount: { type: Number, optional: true, min: 0, max: 100 },
+    bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
+    yearlyExpenses: moneyField,
+    description: {
+      type: String,
+      optional: true,
+      uniforms: { placeholder: 'Attique avec la meilleure vue du bâtiment' },
+    },
+  });
 
 export const lotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
@@ -79,6 +103,16 @@ export const lotSchema = new SimpleSchema({
   value: { ...moneyField, min: 0 },
 });
 
+export const promotionLotGroupSchema = new SimpleSchema({
+  label: {
+    type: String,
+    uniforms: {
+      label: <T id="Forms.promotionLotGroup.label" />,
+      placeholder: 'Immeuble A',
+    },
+  },
+});
+
 const getOptions = ({
   metadata: { permissions, enableNotifications },
   openModal,
@@ -86,8 +120,9 @@ const getOptions = ({
   openDocumentsModal,
   openProInvitationModal,
   openLinkLoanModal,
+  openPromotionLotGroupsModal = () => null,
 }) => {
-  const { _id: promotionId } = promotion;
+  const { _id: promotionId, promotionLotGroups = [] } = promotion;
   const {
     canModifyPromotion,
     canManageDocuments,
@@ -96,7 +131,11 @@ const getOptions = ({
     canRemovePromotion,
     canLinkLoan,
   } = permissions;
-  const { isPro } = useContext(CurrentUserContext);
+  const { isPro } = useCurrentUser();
+  const promotionLotSchema = useMemo(
+    () => getPromotionLotSchema(promotionLotGroups),
+    [promotionLotGroups],
+  );
 
   return [
     {
@@ -123,6 +162,7 @@ const getOptions = ({
             schema={BasePromotionSchema}
             title={<T id="PromotionAdministration.updatePromotion" />}
             onSubmit={object => promotionUpdate.run({ promotionId, object })}
+            layout={basePromotionLayout}
           />,
           { maxWidth: 'sm', fullWidth: true },
         ),
@@ -137,6 +177,12 @@ const getOptions = ({
       dividerTop: true,
       condition: canAddPros,
       onClick: openProInvitationModal,
+    },
+    {
+      id: 'managePromotionLotGroups',
+      dividerTop: true,
+      condition: canModifyPromotion,
+      onClick: openPromotionLotGroupsModal,
     },
     {
       id: 'addPromotionLot',
@@ -200,6 +246,10 @@ export default withProps(({ promotion }) => {
   const [openDocumentsModal, setOpenDocumentsModal] = useState(false);
   const [openProInvitationModal, setOpenProInvitationModal] = useState(false);
   const [openLinkLoanModal, setOpenLinkLoanModal] = useState(false);
+  const [
+    openPromotionLotGroupsModal,
+    setOpenPromotionLotGroupsModal,
+  ] = useState(false);
 
   return {
     options: getOptions({
@@ -209,6 +259,7 @@ export default withProps(({ promotion }) => {
       openDocumentsModal: () => setOpenDocumentsModal(true),
       openProInvitationModal: () => setOpenProInvitationModal(true),
       openLinkLoanModal: () => setOpenLinkLoanModal(true),
+      openPromotionLotGroupsModal: () => setOpenPromotionLotGroupsModal(true),
     }),
     promotionDocuments,
     openDocumentsModal,
@@ -218,5 +269,7 @@ export default withProps(({ promotion }) => {
     openLinkLoanModal,
     setOpenLinkLoanModal,
     permissions: metadata.permissions,
+    openPromotionLotGroupsModal,
+    setOpenPromotionLotGroupsModal,
   };
 });

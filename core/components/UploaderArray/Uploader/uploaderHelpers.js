@@ -1,22 +1,50 @@
 import { Meteor } from 'meteor/meteor';
 
-import { withStateHandlers, withProps, lifecycle } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
+import { useIntl } from 'react-intl';
+import { lifecycle, withProps, withStateHandlers } from 'recompose';
 
-import {
-  FILE_STATUS,
-  ALLOWED_FILE_TYPES,
-  MAX_FILE_SIZE,
-} from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
+import {
+  ALLOWED_FILE_TYPES,
+  FILE_STATUS,
+  MAX_DISPLAYABLE_FILE_SIZE,
+  MAX_FILE_SIZE,
+  ONE_KB,
+} from '../../../api/files/fileConstants';
 
-const checkFile = (file, currentValue = [], tempFiles = []) => {
-  if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
+export const getMaxSize = ({ displayableFile, maxSize, maxSizeOverride }) => {
+  if (maxSizeOverride) {
+    return maxSizeOverride;
+  }
+
+  if (maxSize) {
+    return displayableFile
+      ? Math.min(MAX_DISPLAYABLE_FILE_SIZE, maxSize)
+      : Math.min(MAX_FILE_SIZE, maxSize);
+  }
+
+  return displayableFile ? MAX_DISPLAYABLE_FILE_SIZE : MAX_FILE_SIZE;
+};
+
+export const checkFile = ({
+  file,
+  currentValue = [],
+  tempFiles = [],
+  allowedFileTypes = ALLOWED_FILE_TYPES,
+  displayableFile = false,
+  maxSize,
+  maxSizeOverride,
+}) => {
+  if (file.type && allowedFileTypes.indexOf(file.type) < 0) {
     return 'fileType';
   }
-  if (file.size > MAX_FILE_SIZE) {
+
+  const maxFileSize = getMaxSize({ displayableFile, maxSize, maxSizeOverride });
+
+  if (file.size && file.size > maxFileSize) {
     return 'fileSize';
   }
   if (
@@ -61,6 +89,18 @@ export const tempFileState = withStateHandlers(
   },
 );
 
+export const formatMaxFileSize = maxSize => {
+  if (maxSize / (ONE_KB * ONE_KB) >= 1) {
+    return `${maxSize / (ONE_KB * ONE_KB)}MB`;
+  }
+
+  if (maxSize / ONE_KB >= 1) {
+    return `${maxSize / ONE_KB}KB`;
+  }
+
+  return `${maxSize}B`;
+};
+
 export const addProps = withProps(
   ({
     addTempFiles,
@@ -71,56 +111,82 @@ export const addProps = withProps(
     setTempSuccessFiles,
     handleSuccess,
     addTempSuccessFile,
-    intl: { formatMessage: f },
-  }) => ({
-    handleAddFiles: files => {
-      const fileArray = [];
-      let showError = false;
+    uploadDirectiveProps,
+  }) => {
+    const {
+      maxSize,
+      displayableFile,
+      allowedFileTypes,
+      maxSizeOverride,
+    } = uploadDirectiveProps;
 
-      files.forEach(file => {
-        const isValid = checkFile(
-          file,
-          [...currentValue, ...tempSuccessFiles],
-          tempFiles,
-        );
-        if (isValid === true) {
-          fileArray.push(file);
-        } else {
-          showError = isValid;
+    const { formatMessage: f } = useIntl();
+    return {
+      handleAddFiles: files => {
+        const fileArray = [];
+        let showError = false;
+
+        files.forEach(file => {
+          const isValid = checkFile({
+            file,
+            currentValue: [...currentValue, ...tempSuccessFiles],
+            tempFiles,
+            allowedFileTypes,
+            displayableFile,
+            maxSize,
+            maxSizeOverride,
+          });
+          if (isValid === true) {
+            fileArray.push(file);
+          } else {
+            showError = isValid;
+          }
+        });
+
+        if (showError) {
+          import('../../../utils/notification').then(
+            ({ default: notification }) => {
+              notification.error({
+                message: f({ id: `errors.${showError}.title` }),
+                description: f(
+                  {
+                    id: `errors.${showError}.description`,
+                  },
+                  {
+                    displayableFile,
+                    maxSize: formatMaxFileSize(
+                      getMaxSize({ displayableFile, maxSize, maxSizeOverride }),
+                    ),
+                  },
+                ),
+              });
+            },
+          );
+          return;
         }
-      });
 
-      if (showError) {
-        import('../../../utils/notification').then(
-          ({ default: notification }) => {
-            notification.error({
-              message: f({ id: `errors.${showError}.title` }),
-              description: f({ id: `errors.${showError}.description` }),
-            });
-          },
-        );
-        return;
-      }
+        addTempFiles(files);
+      },
+      handleUploadComplete: (file, url) => {
+        addTempSuccessFile(file);
+        if (handleSuccess) {
+          handleSuccess(file, url);
+        }
+      },
+      handleRemove: key =>
+        deleteFile(key).then(() => {
+          // Filter temp files if this is not a real file from the DB
+          setTempSuccessFiles(
+            tempSuccessFiles.filter(({ Key }) => Key !== key),
+          );
 
-      addTempFiles(files);
-    },
-    handleUploadComplete: (file, url) => {
-      addTempSuccessFile(file);
-      if (handleSuccess) {
-        handleSuccess(file, url);
-      }
-    },
-    handleRemove: key =>
-      deleteFile(key).then(() => {
-        // Filter temp files if this is not a real file from the DB
-        setTempSuccessFiles(tempSuccessFiles.filter(({ Key }) => Key !== key));
-
-        // Wait for a sec before pinging the DB again
-        setTimeout(() => {
-          ClientEventService.emit(MODIFIED_FILES_EVENT);
-        }, 0);
-      }),
-  }),
+          // Wait for a sec before pinging the DB again
+          setTimeout(() => {
+            ClientEventService.emit(MODIFIED_FILES_EVENT);
+          }, 0);
+        }),
+    };
+  },
 );
 
 export const propHasChanged = (oldProp, newProp) =>

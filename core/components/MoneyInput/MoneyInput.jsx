@@ -1,41 +1,51 @@
 import React from 'react';
+import cx from 'classnames';
 import MaskedInput from 'react-text-mask';
 
-import InputAdornment from '../Material/InputAdornment';
-import FormHelperText from '../Material/FormHelperText';
-import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
-import FormControl from '../Material/FormControl';
-import Input from '../Material/Input';
+import { toDecimalNumber, toNumber } from '../../utils/conversionFunctions';
 import {
+  swissFrancDecimalNegativeMask,
   swissFrancMask,
   swissFrancMaskDecimal,
-  swissFrancDecimalNegativeMask,
+  swissFrancNegativeMask,
 } from '../../utils/textMasks';
-import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
+import FormControl from '../Material/FormControl';
+import FormHelperText from '../Material/FormHelperText';
+import Input from '../Material/Input';
+import InputAdornment from '../Material/InputAdornment';
+import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 
 const MoneyInput = ({
+  decimal = false,
   fullWidth = true,
   helperText,
   label,
+  margin,
+  negative = false,
   onChange,
   required,
-  margin,
-  decimal = false,
-  negative = false,
+  className,
   ...props
 }) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
   const parse = decimal ? toDecimalNumber : toNumber;
 
-  const mask = decimal
-    ? negative
-      ? swissFrancDecimalNegativeMask
-      : swissFrancMaskDecimal
-    : swissFrancMask;
+  let mask;
+  if (decimal) {
+    if (negative) {
+      mask = swissFrancDecimalNegativeMask;
+    } else {
+      mask = swissFrancMaskDecimal;
+    }
+  } else if (negative) {
+    mask = swissFrancNegativeMask;
+  } else {
+    mask = swissFrancMask;
+  }
 
   return (
     <FormControl
-      className="money-input"
+      className={cx('money-input', className)}
       required={required}
       fullWidth={fullWidth}
       margin={margin}
@@ -54,4 +64,5 @@ const MoneyInput = ({
     </FormControl>
   );
 };
+
 export default MoneyInput;

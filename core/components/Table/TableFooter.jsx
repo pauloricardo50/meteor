@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import PropTypes from 'prop-types';
 
 const TableFooter = ({
   rowCount,

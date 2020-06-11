@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
 import DropdownMenu from 'core/components/DropdownMenu';
+import T from 'core/components/Translation';
 
 const styles = {
   icon: {

@@ -1,7 +1,10 @@
 import React from 'react';
-import { withProps, compose, withState } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
-import { promotionOptionRemove, promotionOptionInsert } from 'core/api';
+import {
+  promotionOptionInsert,
+  promotionOptionRemove,
+} from '../../../../api/promotionOptions/methodDefinitions';
 import Checkbox from '../../../Checkbox';
 
 export const PromotionLotSelector = ({

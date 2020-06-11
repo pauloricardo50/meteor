@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Table from '../Table';
 import Select from '../Select';
+import Table from '../Table';
 import ReferredUsersTableContainer from './ReferredUsersTableContainer';
 
 const ReferredUsersTable = ({

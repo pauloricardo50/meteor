@@ -1,21 +1,21 @@
-import { PURCHASE_TYPE } from 'core/redux/widget1/widget1Constants';
-import { PROPERTY_CATEGORY } from 'core/api/constants';
-import {
-  getPropertyArray,
-  getPropertyLoanArray,
-} from '../../arrays/PropertyFormArray';
-import { getPercent } from '../general';
-import {
-  getCountedArray,
-  getMissingFieldIds,
-  getRequiredFieldIds,
-} from '../formArrayHelpers';
+import { getPropertyDocuments } from '../../api/files/documents';
 import {
   filesPercent,
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
-import { getPropertyDocuments } from '../../api/files/documents';
+import { propertyHasDetailedValue } from '../../api/properties/propertyClientHelper';
+import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
+import {
+  getPropertyArray,
+  getPropertyLoanArray,
+} from '../../arrays/PropertyFormArray';
+import {
+  getCountedArray,
+  getMissingFieldIds,
+  getRequiredFieldIds,
+} from '../formArrayHelpers';
+import { getPercent } from '../general';
 import MiddlewareManager from '../MiddlewareManager';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
@@ -34,10 +34,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     propertyPercent({ loan, structureId, property }) {
       const { borrowers } = loan;
-      const structure = this.selectStructure({ loan, structureId });
-      const propertyToCalculateWith = property || structure.property;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
-      if (!propertyToCalculateWith) {
+      if (!propertyToCalculateWith?._id) {
         return 0;
       }
 
@@ -74,11 +74,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyFilesProgress({ loan, structureId, property }) {
-      const structure = this.selectStructure({ loan, structureId });
-      const propertyToCalculateWith = property || structure.property;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
-      if (!propertyToCalculateWith) {
-        return 0;
+      if (!propertyToCalculateWith?._id) {
+        return { percent: 0, count: 0 };
       }
 
       return filesPercent({
@@ -134,7 +134,6 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getRequiredPropertyFields({ loan, structureId, property }) {
       const { borrowers } = loan;
       const selectedProperty = this.selectProperty({ loan, structureId });
-
       const propertyToCalculateWith = property || selectedProperty;
 
       const formArray1 = getPropertyArray({
@@ -218,23 +217,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     hasDetailedPropertyValue({ loan, structureId }) {
-      const propertyExactValue = this.selectPropertyKey({
-        key: 'value',
-        loan,
-        structureId,
+      return propertyHasDetailedValue({
+        property: this.selectProperty({ loan, structureId }),
       });
-      const landValue = this.selectPropertyKey({
-        key: 'landValue',
-        loan,
-        structureId,
-      });
-      const constructionValue = this.selectPropertyKey({
-        key: 'constructionValue',
-        loan,
-        structureId,
-      });
-
-      return !propertyExactValue || !!(landValue && constructionValue);
     }
 
     isPromotionProperty({ loan, structureId }) {
@@ -245,18 +230,29 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     isNewProperty({ loan, structureId }) {
       return !!(
         this.isPromotionProperty({ loan, structureId }) ||
-        this.selectPropertyKey({ loan, structureId, key: 'isNew' }) ||
-        loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION
+        this.selectPropertyKey({ loan, structureId, key: 'isNew' })
       );
     }
 
-    isUserProperty({ loan, structureId }) {
+    isUserProperty({ loan, structureId, property }) {
       const propertyCategory = this.selectPropertyKey({
         loan,
         structureId,
+        property,
         key: 'category',
       });
 
       return propertyCategory === PROPERTY_CATEGORY.USER;
+    }
+
+    getYearlyPropertyIncome({ loan, structureId }) {
+      const investmentRent =
+        this.selectPropertyKey({
+          loan,
+          structureId,
+          key: 'investmentRent',
+        }) || 0;
+
+      return this.realEstateIncomeConsideration * investmentRent;
     }
   };

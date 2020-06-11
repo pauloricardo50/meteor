@@ -1,11 +1,17 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import Box from '../../../Box';
 import Recap from '../../../Recap';
 import T, { MetricArea, Money } from '../../../Translation';
+import { getPromotionLotValue } from '../PromotionManagement/helpers';
+
+const isApp = Meteor.microservice === 'app';
 
 const getPromotionLotValueRecapArray = promotionLot => {
   const { lots = [], properties } = promotionLot;
+
   const property = properties.length > 0 && properties[0];
 
   const {
@@ -24,26 +30,26 @@ const getPromotionLotValueRecapArray = promotionLot => {
     },
     {
       label: promotionLot.name,
-      value: <Money value={propertyValue} />,
+      value: <Money value={isApp ? totalValue : propertyValue} />,
       spacing: false,
-      hide: propertyValue !== totalValue,
+      hide: !isApp && propertyValue !== totalValue,
     },
     {
       label: <T id="Forms.landValue" />,
       value: <Money value={landValue} />,
-      hide: !landValue,
+      hide: isApp || !landValue,
     },
     {
       label: <T id="Forms.constructionValue" />,
       value: <Money value={constructionValue} />,
-      hide: !constructionValue,
+      hide: isApp || !constructionValue,
     },
     {
       label: <T id="Forms.additionalMargin" />,
       value: <Money value={additionalMargin} />,
-      hide: !additionalMargin,
+      hide: isApp || !additionalMargin,
     },
-    ...lots.map(({ _id, name, type, value }) => ({
+    ...lots.map(({ _id, name, value }) => ({
       label: name,
       key: _id,
       value: <Money value={value} />,
@@ -59,7 +65,7 @@ const getPromotionLotValueRecapArray = promotionLot => {
 };
 
 const getPromotionLotRecapArray = promotionLot => {
-  const { lots = [], properties } = promotionLot;
+  const { properties } = promotionLot;
   const property = properties.length > 0 && properties[0];
   const {
     bathroomCount,
@@ -114,15 +120,20 @@ const getPromotionLotRecapArray = promotionLot => {
   ];
 };
 
-const PromotionLotDetailRecaps = ({ promotionLot }) => (
-  <>
-    <Box>
-      <Recap array={getPromotionLotValueRecapArray(promotionLot)} />
-    </Box>
-    <Box>
-      <Recap array={getPromotionLotRecapArray(promotionLot)} />
-    </Box>
-  </>
-);
+const PromotionLotDetailRecaps = ({ promotionLot }) => {
+  const promotionLotValue = getPromotionLotValue(promotionLot);
+  return (
+    <>
+      {typeof promotionLotValue === 'number' ? (
+        <Box>
+          <Recap array={getPromotionLotValueRecapArray(promotionLot)} />
+        </Box>
+      ) : null}
+      <Box>
+        <Recap array={getPromotionLotRecapArray(promotionLot)} />
+      </Box>
+    </>
+  );
+};
 
 export default PromotionLotDetailRecaps;

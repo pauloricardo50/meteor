@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
+import CollectionService from '../../helpers/server/CollectionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import LenderRules from '../lenderRules';
-import CollectionService from '../../helpers/server/CollectionService';
 import {
-  DEFAULT_VALUE_FOR_ALL,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
+  DEFAULT_VALUE_FOR_ALL,
 } from '../lenderRulesConstants';
 
 class LenderRulesService extends CollectionService {
@@ -40,8 +40,14 @@ class LenderRulesService extends CollectionService {
 
   insert({ organisationId, object = {}, logicRules }) {
     const { lenderRules = [] } = OrganisationService.get(organisationId, {
-      lenderRules: { _id: 1 },
+      lenderRules: { _id: 1, filter: 1 },
     });
+
+    if (logicRules?.[0] === true && lenderRules.length > 0) {
+      throw new Meteor.Error(
+        "Vous ne pouvez pas initialiser les critères d'octroi 2 fois",
+      );
+    }
 
     const lenderRulesId = super.insert({
       ...object,

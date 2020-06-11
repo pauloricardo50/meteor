@@ -1,14 +1,14 @@
 import { Mongo } from 'meteor/mongo';
-import { COLLECTIONS } from '../constants';
 
-export const createCollection = (collectionName, schema) => {
-  const Collection = new Mongo.Collection(collectionName);
+export const makeCollectionTransform = collectionName => doc => ({
+  ...doc,
+  _collection: collectionName,
+});
 
-  if (Object.values(COLLECTIONS).indexOf(collectionName) === -1) {
-    throw new Error(
-      `No collection "${collectionName}" found in 'COLLECTIONS' constant`,
-    );
-  }
+export const initializeCollection = (collectionName, schema) => {
+  const Collection = new Mongo.Collection(collectionName, {
+    transform: makeCollectionTransform(collectionName),
+  });
 
   Collection.deny({
     insert: () => true,
@@ -25,6 +25,12 @@ export const createCollection = (collectionName, schema) => {
   if (schema) {
     Collection.attachSchema(schema);
   }
+
+  return Collection;
+};
+
+export const createCollection = (collectionName, schema) => {
+  const Collection = initializeCollection(collectionName, schema);
 
   return Collection;
 };

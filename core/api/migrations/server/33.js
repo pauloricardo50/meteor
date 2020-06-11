@@ -1,9 +1,10 @@
 import { Migrations } from 'meteor/percolate:migrations';
+import { Roles } from 'meteor/alanning:roles';
 
-import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_EVENT_METADATA } from 'core/api/activities/activityConstants';
+import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
 import UserService from '../../users/server/UserService';
-import { ROLES, ACQUISITION_CHANNELS } from '../../users/userConstants';
+import { ACQUISITION_CHANNELS, ROLES } from '../../users/userConstants';
 
 export const up = () => {
   const users = UserService.fetch({
@@ -43,7 +44,10 @@ export const up = () => {
           { _id },
           {
             $set: {
-              acquisitionChannel: referredByUser.roles.includes(ROLES.ADMIN)
+              acquisitionChannel: Roles.userIsInRole(
+                referredByUser,
+                ROLES.ADMIN,
+              )
                 ? ACQUISITION_CHANNELS.REFERRAL_ADMIN
                 : ACQUISITION_CHANNELS.REFERRAL_PRO,
             },

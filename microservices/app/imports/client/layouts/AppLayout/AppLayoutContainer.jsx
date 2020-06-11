@@ -1,23 +1,23 @@
-import { useContext } from 'react';
-import { compose, withProps, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withProps } from 'recompose';
 
-import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { userLoans } from 'core/api/loans/queries';
-import { currentInterestRates } from 'core/api/interestRates/queries';
-import getBaseRedirect, {
-  isOnAllowedRoute,
-  isLogin,
-} from 'core/utils/redirection';
-import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
-import { injectCalculator } from 'core/containers/withCalculator';
 import { userLoan } from 'core/api/fragments';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import { currentInterestRates } from 'core/api/interestRates/queries';
+import { userLoans } from 'core/api/loans/queries';
+import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import { injectCalculator } from 'core/containers/withCalculator';
+import withMatchParam from 'core/containers/withMatchParam';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import getBaseRedirect, {
+  isLogin,
+  isOnAllowedRoute,
+} from 'core/utils/redirection';
+
 import {
-  withSideNavContextProvider,
   withSideNavContext,
+  withSideNavContextProvider,
 } from './SideNavContext';
 
 const WITHOUT_LOAN = [
@@ -69,6 +69,12 @@ const fragment = {
 const withUserLoan = withSmartQuery({
   query: userLoans,
   params: ({ loanId }) => ({ loanId, $body: fragment }),
+  deps: ({ loanId }) => {
+    // Make sure the currentUser is in the dependencies here, or else
+    // the query can get stuck when it's undefined on initial launch
+    const currentUser = useCurrentUser();
+    return [loanId, currentUser?._id];
+  },
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
   skip: ({ loanId }) => !loanId,
@@ -76,13 +82,12 @@ const withUserLoan = withSmartQuery({
 
 const withInterestRates = withSmartQuery({
   query: currentInterestRates,
-  queryOptions: { shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   refetchOnMethodCall: false,
 });
 
 const withRedirect = withProps(({ history }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });

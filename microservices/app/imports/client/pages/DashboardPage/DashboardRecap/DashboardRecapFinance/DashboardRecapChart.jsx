@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import DonutChart from 'core/components/charts/DonutChart';
 import T from 'core/components/Translation';
 import { withCalculator } from 'core/containers/withCalculator';
+
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 

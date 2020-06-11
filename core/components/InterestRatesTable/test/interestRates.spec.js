@@ -1,8 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { INTEREST_RATES } from 'core/api/constants';
-import interestRates, { TRENDS } from '../interestRates';
+import {
+  INTEREST_RATES,
+  TRENDS,
+} from '../../../api/interestRates/interestRatesConstants';
+import interestRates from '../interestRates';
 
 describe('interestRates', () => {
   it('should be an array of objects', () => {

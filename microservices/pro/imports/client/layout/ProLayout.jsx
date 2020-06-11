@@ -1,15 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+
 import ProLayoutContainer from './ProLayoutContainer';
-import ProTopNav from './ProTopNav';
 import ProSideNav from './ProSideNav';
+import ProTopNav from './ProTopNav';
 
 const ProLayout = ({ children, redirect, ...props }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
 
   if (redirect) {
     return <Redirect to={redirect} />;
@@ -25,7 +26,7 @@ const ProLayout = ({ children, redirect, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton currentUser={currentUser} />
+      <ContactButton />
     </div>
   );
 };

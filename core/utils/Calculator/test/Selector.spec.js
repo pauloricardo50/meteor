@@ -97,6 +97,7 @@ describe('Calculator Selector', () => {
       structure.propertyValue = undefined;
       structure.propertyId = undefined;
       structure.property = undefined;
+      params.loan.properties = [];
       expect(Calculator.selectPropertyValue(params)).to.equal(0);
     });
 

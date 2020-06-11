@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
-import colors from 'core/config/colors';
+import PropTypes from 'prop-types';
 
+import colors from '../../config/colors';
 import WaveController from './WaveController';
 
 const getValueInRange = (min, max) => Math.random() * (max - min) + min;

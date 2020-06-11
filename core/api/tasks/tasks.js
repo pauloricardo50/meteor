@@ -1,14 +1,13 @@
 import SimpleSchema from 'simpl-schema';
 
+import { createCollection } from '../helpers/collectionHelpers';
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
+import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
 import {
-  TASK_STATUS,
   TASKS_COLLECTION,
   TASK_PRIORITIES,
+  TASK_STATUS,
 } from './taskConstants';
-
-import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
-import { createCollection } from '../helpers/collectionHelpers';
 
 const Tasks = createCollection(TASKS_COLLECTION);
 
@@ -104,6 +103,10 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  insuranceRequestLink: { type: Object, optional: true },
+  'insuranceRequestLink._id': { type: String, optional: true },
+  insuranceLink: { type: Object, optional: true },
+  'insuranceLink._id': { type: String, optional: true },
   isPrivate: {
     type: Boolean,
     defaultValue: false,

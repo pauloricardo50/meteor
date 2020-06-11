@@ -1,12 +1,11 @@
+import { Meteor } from 'meteor/meteor';
+
 import { withProps } from 'recompose';
 
-import {
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  MORTGAGE_NOTES_COLLECTION,
-} from '../../api/constants';
-import * as methods from '../../api/methods';
+import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
+import { LOANS_COLLECTION } from '../../api/loans/loanConstants';
+import { MORTGAGE_NOTES_COLLECTION } from '../../api/mortgageNotes/mortgageNoteConstants';
+import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
@@ -19,72 +18,74 @@ const makeFunc = ({ idKey, beforeUpdate, func, override }) => rawParams => {
     beforeUpdate(params);
   }
 
-  return methods[func].run(params);
+  return new Promise((resolve, reject) =>
+    Meteor.call(func, params, (err, result) =>
+      err ? reject(err) : resolve(result),
+    ),
+  );
 };
 
-const AutoFormContainer = withProps(
-  ({ collection, beforeUpdate, overrides = {} }) => {
-    let popFunc;
-    let pushFunc;
-    let updateFunc;
-    let idKey;
+const AutoFormContainer = withProps(({ beforeUpdate, overrides = {}, doc }) => {
+  let popFunc;
+  let pushFunc;
+  let updateFunc;
+  let idKey;
 
-    const {
-      popFunc: popFuncOverride,
-      pushFunc: pushFuncOverride,
-      updateFunc: updateFuncOverride,
-    } = overrides;
+  const {
+    popFunc: popFuncOverride,
+    pushFunc: pushFuncOverride,
+    updateFunc: updateFuncOverride,
+  } = overrides;
 
-    switch (collection) {
-      case LOANS_COLLECTION:
-        updateFunc = 'loanUpdate';
-        popFunc = 'popLoanValue';
-        pushFunc = 'pushLoanValue';
-        idKey = 'loanId';
-        break;
-      case BORROWERS_COLLECTION:
-        updateFunc = 'borrowerUpdate';
-        popFunc = 'popBorrowerValue';
-        pushFunc = 'pushBorrowerValue';
-        idKey = 'borrowerId';
+  switch (doc._collection) {
+    case LOANS_COLLECTION:
+      updateFunc = 'loanUpdate';
+      popFunc = 'popLoanValue';
+      pushFunc = 'pushLoanValue';
+      idKey = 'loanId';
+      break;
+    case BORROWERS_COLLECTION:
+      updateFunc = 'borrowerUpdate';
+      popFunc = 'popBorrowerValue';
+      pushFunc = 'pushBorrowerValue';
+      idKey = 'borrowerId';
 
-        break;
-      case PROPERTIES_COLLECTION:
-        updateFunc = 'propertyUpdate';
-        popFunc = 'popPropertyValue';
-        pushFunc = 'pushPropertyValue';
-        idKey = 'propertyId';
-        break;
-      case MORTGAGE_NOTES_COLLECTION:
-        updateFunc = 'mortgageNoteUpdate';
-        idKey = 'mortgageNoteId';
-        break;
+      break;
+    case PROPERTIES_COLLECTION:
+      updateFunc = 'propertyUpdate';
+      popFunc = 'popPropertyValue';
+      pushFunc = 'pushPropertyValue';
+      idKey = 'propertyId';
+      break;
+    case MORTGAGE_NOTES_COLLECTION:
+      updateFunc = 'mortgageNoteUpdate';
+      idKey = 'mortgageNoteId';
+      break;
 
-      default:
-        throw new Error(`Invalid collection in AutoForm: ${collection}`);
-    }
+    default:
+      throw new Error(`Invalid collection in AutoForm: ${doc._ollection}`);
+  }
 
-    return {
-      updateFunc: makeFunc({
-        idKey,
-        beforeUpdate,
-        func: updateFunc,
-        override: updateFuncOverride,
-      }),
-      popFunc: makeFunc({
-        idKey,
-        beforeUpdate,
-        func: popFunc,
-        override: popFuncOverride,
-      }),
-      pushFunc: makeFunc({
-        idKey,
-        beforeUpdate,
-        func: pushFunc,
-        override: pushFuncOverride,
-      }),
-    };
-  },
-);
+  return {
+    updateFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: updateFunc,
+      override: updateFuncOverride,
+    }),
+    popFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: popFunc,
+      override: popFuncOverride,
+    }),
+    pushFunc: makeFunc({
+      idKey,
+      beforeUpdate,
+      func: pushFunc,
+      override: pushFuncOverride,
+    }),
+  };
+});
 
 export default AutoFormContainer;

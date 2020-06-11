@@ -16,7 +16,7 @@ body {
 
 // Nicer styling for a tags, removes horrible blue color
 // And avoid it if this is a button
-a:not([role="button"]) {
+a:not([role='button']) {
   cursor: pointer;
 
   color: inherit;
@@ -117,10 +117,10 @@ hr {
 }
 
 .error-box {
-  padding: 2px;
+  padding: 1px 4px;
 
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: $error;
 }
 
@@ -129,45 +129,11 @@ hr {
 }
 
 .warning-box {
-  padding: 2px;
+  padding: 1px 4px;
 
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: $warning;
-}
-
-// A pretty heart-beat animation on anything
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  25% {
-    transform: scale(0.97);
-  }
-  35% {
-    transform: scale(0.9);
-  }
-  45% {
-    transform: scale(1.1);
-  }
-  55% {
-    transform: scale(0.9);
-  }
-  65% {
-    transform: scale(1.1);
-  }
-  75% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.heart-beat {
-  animation-name: heartBeat;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
 }
 
 // A .description <p /> is a nice styled paragraph optimized for reading
@@ -209,6 +175,10 @@ p.description,
     align-items: center;
   }
 
+  &.start-align {
+    align-items: flex-start;
+  }
+
   &.sb {
     justify-content: space-between;
   }
@@ -219,6 +189,18 @@ p.description,
 
   &.c {
     justify-content: center;
+  }
+
+  &.fs {
+    justify-content: flex-start;
+  }
+
+  &.end-align {
+    align-items: flex-end;
+  }
+
+  &.nowrap {
+    flex-wrap: nowrap;
   }
 }
 
@@ -254,36 +236,6 @@ p.description,
 
 .mui-select {
   min-width: 120px;
-}
-
-// To display choices with proper hover effects
-.choice {
-  display: flex;
-
-  box-sizing: content-box;
-  margin-bottom: 16px;
-  padding: 16px;
-
-  border: solid 1px $grey1;
-  border-radius: 4px;
-}
-
-.choice:hover {
-  cursor: pointer;
-
-  border: solid 1px $primary;
-}
-
-.choice.chosen {
-  border: solid 2px $primary;
-}
-
-.choice.chosen.disabled {
-  border: solid 2px $success;
-}
-
-.choice.disabled {
-  cursor: default !important;
 }
 
 .text-center {
@@ -337,11 +289,22 @@ p.description,
   margin: 0;
 }
 
+.m-2 {
+  margin: 2px;
+}
+
+.m-4 {
+  margin: 4px;
+}
+
 .m-8 {
   margin: 8px;
 }
 .m-16 {
   margin: 16px;
+}
+.p-4 {
+  padding: 4px;
 }
 .p-8 {
   padding: 8px;
@@ -349,20 +312,30 @@ p.description,
 .p-16 {
   padding: 16px;
 }
+.p-32 {
+  padding: 32px;
+}
 
 .mb-0 {
   margin-bottom: 0;
 }
 
-.mt-0{
+.mt-0 {
   margin-top: 0;
 }
 
 .mt-4 {
   margin-top: 4px;
 }
+.mt-8 {
+  margin-top: 8px;
+}
 .mt-16 {
   margin-top: 16px;
+}
+
+.mb-4 {
+  margin-bottom: 4px;
 }
 
 .mb-8 {
@@ -370,6 +343,10 @@ p.description,
 }
 .mb-16 {
   margin-bottom: 16px;
+}
+
+.mr-2 {
+  margin-right: 2px;
 }
 
 .mr-4 {
@@ -382,6 +359,10 @@ p.description,
 
 .mr-16 {
   margin-right: 16px;
+}
+
+.ml-2 {
+  margin-left: 2px;
 }
 
 .ml-4 {
@@ -406,6 +387,10 @@ p.description,
 
 .mt-32 {
   margin-top: 32px;
+}
+
+.mt-40 {
+  margin-top: 40px;
 }
 
 .pointer:hover {
@@ -468,7 +453,7 @@ p.description,
     thead {
       color: $title-text;
 
-      font-weight: bold;
+      font-weight: 400;
     }
 
     td,
@@ -492,4 +477,16 @@ p.description,
 
 .fs-150 {
   font-size: 1.5rem;
+}
+
+.ellipsis {
+  display: block;
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }

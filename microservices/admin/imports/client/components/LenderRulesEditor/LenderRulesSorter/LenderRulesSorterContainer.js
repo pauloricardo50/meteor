@@ -1,5 +1,6 @@
-import { compose, withStateHandlers, withProps } from 'recompose';
-import { setLenderRulesOrder } from 'core/api/methods/index';
+import { compose, withProps, withStateHandlers } from 'recompose';
+
+import { setLenderRulesOrder } from 'core/api/lenderRules/methodDefinitions';
 
 // initialize them to their index in case they are not defined
 const initializeOrders = ({ lenderRules = [] }) => ({

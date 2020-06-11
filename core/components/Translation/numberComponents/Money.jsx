@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
+import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 import { toMoney } from '../../../utils/conversionFunctions';
 
@@ -36,7 +37,7 @@ const Money = ({
   tooltip,
 }) => {
   const component = (
-    <Tag className={className}>
+    <Tag className={cx('no-wrap', className)}>
       {getValue({ displayZero, value, currency, rounded })}
     </Tag>
   );

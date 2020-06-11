@@ -1,5 +1,5 @@
-import FinancingCalculator from '../../FinancingCalculator';
 import Calculator from '../../../../../utils/Calculator';
+import FinancingCalculator from '../../FinancingCalculator';
 import { getPropertyExpenses } from '../../FinancingResult/financingResultHelpers';
 
 export const getAmortizationForStructureWithOffer = ({
@@ -14,9 +14,7 @@ export const getAmortizationForStructureWithOffer = ({
   });
 
 export const getInterestsForStructureWithOffer = props =>
-  (FinancingCalculator.getInterestsWithTranches(props) *
-    props.structure.wantedLoan) /
-  12;
+  FinancingCalculator.getInterestsWithTranches(props) / 12;
 
 export const getMonthlyForStructureWithOffer = props => {
   const amort = getAmortizationForStructureWithOffer(props);

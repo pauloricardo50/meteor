@@ -1,16 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { CurrentUserContext } from '../../containers/CurrentUserContext';
+import useCurrentUser from '../../hooks/useCurrentUser';
 import useMedia from '../../hooks/useMedia';
+import { getMainOrganisation } from '../../utils/userFunctions';
 import Button from '../Button';
 import T from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 
 const TopNavButtons = ({ children, history }) => {
-  const currentUser = useContext(CurrentUserContext);
-  const { name, organisations } = currentUser || {};
+  const currentUser = useCurrentUser();
+  const { name } = currentUser || {};
   const isMobile = useMedia({ maxWidth: 768 });
+  const mainOrganisation = getMainOrganisation(currentUser);
 
   return (
     <div className="buttons">
@@ -18,13 +20,9 @@ const TopNavButtons = ({ children, history }) => {
       {currentUser ? (
         <>
           {!isMobile && (
-            <div className="flex-col">
+            <div className="flex-col mr-4">
               <span>{name}</span>
-              <span className="secondary">
-                {organisations &&
-                  organisations.length > 0 &&
-                  organisations[0].name}
-              </span>
+              <span className="secondary">{mainOrganisation?.name}</span>
             </div>
           )}
           <TopNavDropdown currentUser={currentUser} />

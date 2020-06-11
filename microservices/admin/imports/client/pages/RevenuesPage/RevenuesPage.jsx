@@ -2,10 +2,11 @@ import React from 'react';
 
 import Tabs from 'core/components/Tabs';
 import { createRoute } from 'core/utils/routerUtils';
-import RevenuesPageTab from './RevenuesPageTab';
+
+import AnalysisTab from './AnalysisTab/loadable';
 import CommissionsTab from './CommissionsTab';
 import MonitoringTab from './MonitoringTab';
-import AnalysisTab from './AnalysisTab/loadable';
+import RevenuesPageTab from './RevenuesPageTab';
 
 const tabs = [
   {

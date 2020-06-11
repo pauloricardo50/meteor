@@ -1,6 +1,6 @@
 import {
-  ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
+  ORGANISATION_TYPES,
 } from '../../organisationConstants';
 
 export const generateOrganisationsWithLenderRules = ({

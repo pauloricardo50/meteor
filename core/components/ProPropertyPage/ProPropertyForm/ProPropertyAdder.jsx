@@ -1,9 +1,10 @@
 import React from 'react';
-import { mapProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps } from 'recompose';
 
-import { proPropertyInsert } from '../../../api/methods';
+import { proPropertyInsert } from '../../../api/properties/methodDefinitions';
 import { createRoute } from '../../../utils/routerUtils';
+import Icon from '../../Icon';
 import T from '../../Translation';
 import ProPropertyForm from './ProPropertyForm';
 
@@ -16,6 +17,11 @@ export default compose(
         .then(propertyId =>
           history.push(createRoute('/properties/:propertyId', { propertyId })),
         ),
-    buttonLabel: <T id="ProDashboardPage.addProperty" />,
+    buttonProps: {
+      label: <T id="ProDashboardPage.addProperty" />,
+      icon: <Icon type="add" />,
+    },
+    title: 'Ajouter un bien immobilier',
+    description: 'Vous pourrez y inviter vos collegues et clients après',
   })),
 )(ProPropertyForm);

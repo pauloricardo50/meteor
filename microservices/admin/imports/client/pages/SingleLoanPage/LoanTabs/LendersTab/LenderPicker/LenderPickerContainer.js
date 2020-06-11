@@ -1,11 +1,13 @@
-import { withProps, compose, withState } from 'recompose';
-import SimpleSchema from 'simpl-schema';
+import { compose, withProps, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
-import { lenderInsert, lenderRemove } from 'core/api/methods';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import { lenderRules } from 'core/api/fragments';
+import { lenderInsert, lenderRemove } from 'core/api/lenders/methodDefinitions';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+  ORGANISATION_TAGS,
+} from 'core/api/organisations/organisationConstants';
 
 const formatOrganisations = orgs =>
   orgs.reduce(
@@ -13,28 +15,27 @@ const formatOrganisations = orgs =>
     {},
   );
 
-const tagPickerSchema = new SimpleSchema({
-  tags: {
-    type: Array,
-    defaultValue: null,
-    uniforms: { placeholder: 'Tous' },
-  },
-  'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
-});
-
 export default compose(
   withState('tags', 'setTags', [ORGANISATION_TAGS.CH_RETAIL]),
+  withState('hasRules', 'setHasRules', true),
   withSmartQuery({
-    query: adminOrganisations,
-    params: ({ tags }) => ({
-      features: [ORGANISATION_FEATURES.LENDER],
-      tags,
-      $body: { name: 1, logo: 1, type: 1, lenderRules: lenderRules() },
+    query: ORGANISATIONS_COLLECTION,
+    params: ({ tags, hasRules }) => ({
+      $filters: {
+        features: ORGANISATION_FEATURES.LENDER,
+        ...(tags?.length ? { tags: { $in: tags } } : {}),
+        ...(hasRules ? { lenderRulesCount: { $gte: 1 } } : {}),
+      },
+      name: 1,
+      logo: 1,
+      type: 1,
+      lenderRules: lenderRules(),
+      $options: { sort: { name: 1 } },
     }),
+    deps: ({ tags, hasRules }) => [tags, hasRules],
     dataName: 'organisations',
   }),
   withProps(({ organisations, loan: { _id: loanId, lenders }, setTags }) => ({
-    tagPickerSchema,
     filterOrganisations: ({ tags = [] }) => setTags(tags),
     count: organisations.length,
     organisations: formatOrganisations(organisations),

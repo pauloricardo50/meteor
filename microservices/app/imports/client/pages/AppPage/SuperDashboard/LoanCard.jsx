@@ -1,10 +1,10 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { withState, compose } from 'recompose';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { createRoute } from 'core/utils/routerUtils';
-import LoanCardHeader from './LoanCardHeader';
+
 import LoanCardBody from './LoanCardBody';
+import LoanCardHeader from './LoanCardHeader';
 
 const handleCardClick = ({ history, linkDisabled, loanId }) => () => {
   if (!linkDisabled) {
@@ -12,7 +12,9 @@ const handleCardClick = ({ history, linkDisabled, loanId }) => () => {
   }
 };
 
-const LoanCard = ({ loan = {}, disableLink, linkDisabled, history }) => {
+const LoanCard = ({ loan = {} }) => {
+  const history = useHistory();
+  const [linkDisabled, disableLink] = useState(false);
   const { _id: loanId } = loan;
 
   return (
@@ -26,7 +28,4 @@ const LoanCard = ({ loan = {}, disableLink, linkDisabled, history }) => {
   );
 };
 
-export default compose(
-  withRouter,
-  withState('linkDisabled', 'disableLink', false),
-)(LoanCard);
+export default LoanCard;

@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
-import DropdownMenu from 'core/components/DropdownMenu';
 
+import Button from 'core/components/Button';
+import DropdownMenu from 'core/components/DropdownMenu';
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 
 export const links = [
@@ -32,18 +33,22 @@ const WwwTopNavLinksList = ({ variant }) => {
           to={`/${link}`}
           className={`www-top-nav-link ${variant}`}
         >
-          <h5 className="www-top-nav-link-label">
+          <Button className="www-top-nav-link-label" primary>
             <T id={`WwwTopNavLinks.${link}`} />
-          </h5>
+          </Button>
         </Link>
       ))}
       <span className="divider" />
       <DropdownMenu
         className={`www-top-nav-link ${variant}`}
         renderTrigger={({ handleOpen }) => (
-          <h5 className="www-top-nav-link-label" onClick={handleOpen}>
+          <Button
+            className="www-top-nav-link-label"
+            primary
+            onClick={handleOpen}
+          >
             <T id="WwwTopNavLinks.login" />
-          </h5>
+          </Button>
         )}
         options={[
           {

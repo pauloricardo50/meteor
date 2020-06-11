@@ -1,15 +1,16 @@
 import SimpleSchema from 'simpl-schema';
 
-import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
-import {
-  createdAt,
-  updatedAt,
-  percentageField,
-  moneyField,
-  cacheField,
-  documentsField,
-} from '../helpers/sharedSchemas';
 import { createCollection } from '../helpers/collectionHelpers';
+import {
+  cacheField,
+  createdAt,
+  documentsField,
+  moneyField,
+  percentageField,
+  updatedAt,
+} from '../helpers/sharedSchemas';
+import { INTEREST_RATES } from '../interestRates/interestRatesConstants';
+import { OFFERS_COLLECTION } from './offerConstants';
 
 const Offers = createCollection(OFFERS_COLLECTION);
 
@@ -56,14 +57,16 @@ export const OfferSchema = new SimpleSchema({
   documents: documentsField,
 });
 
-export const AdminOfferSchema = OfferSchema.omit(
-  'lenderLink',
-  'organisationLink',
-  'contactLink',
-  'createdAt',
-  'updatedAt',
-  'feedback',
-  'lenderCache',
+export const AdminOfferSchema = OfferSchema.pick(
+  'maxAmount',
+  'amortizationGoal',
+  'amortizationYears',
+  'fees',
+  'epotekFees',
+  ...Object.values(INTEREST_RATES),
+  'conditions',
+  'withCounterparts',
+  'enableOffer',
 );
 
 // Attach schema

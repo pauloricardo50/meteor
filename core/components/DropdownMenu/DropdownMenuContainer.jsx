@@ -1,28 +1,12 @@
 import React from 'react';
-import { compose, withProps, withStateHandlers, withState } from 'recompose';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
+import { compose, withProps, withState, withStateHandlers } from 'recompose';
 
+import Icon from '../Icon';
 import Link from '../Link';
 import Divider from '../Material/Divider';
 import MenuItem from '../Material/MenuItem';
-import Icon from '../Icon';
-
-const styles = theme => ({
-  menuItem: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      '& $colorClass': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-  menuItemRoot: {
-    height: 'unset',
-  },
-  colorClass: {},
-});
 
 const mapOption = (
   {
@@ -37,7 +21,6 @@ const mapOption = (
     ...otherProps
   },
   handleClose,
-  { menuItem: menuItemClass, menuItemRoot, colorClass },
 ) => {
   const arr = [
     <MenuItem
@@ -54,19 +37,13 @@ const mapOption = (
       }}
       {...otherProps}
       component={link ? Link : null}
-      className={menuItemClass}
-      classes={{ root: menuItemRoot }}
     >
       {icon && (
-        <ListItemIcon className={colorClass}>
+        <ListItemIcon>
           <Icon type={icon} />
         </ListItemIcon>
       )}
-      <ListItemText
-        classes={{ primary: colorClass, secondary: colorClass }}
-        primary={label}
-        secondary={secondary}
-      />
+      <ListItemText primary={label} secondary={secondary} />
     </MenuItem>,
   ];
 
@@ -102,7 +79,6 @@ const addState = compose(
 
 export default compose(
   addState,
-  withStyles(styles),
   withProps(
     ({
       options = [],

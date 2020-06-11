@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const organisationInsert = new Method({
@@ -53,6 +54,6 @@ export const setCommissionRates = new Method({
   name: 'setCommissionRates',
   params: {
     organisationId: String,
-    commissionRates: Array,
+    commissionRates: Object,
   },
 });

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import cx from 'classnames';
-import { capitalize } from '@material-ui/core/utils';
-
 import MuiIconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import { capitalize } from '@material-ui/core/utils';
+import cx from 'classnames';
+import PropTypes from 'prop-types';
+
 import Icon from '../Icon';
 
 const styles = theme => ({
@@ -42,6 +42,7 @@ class IconButton extends Component {
       size = 'medium',
       className,
       loading,
+      controlledTooltipProps = {},
       ...rest
     } = this.props;
 
@@ -69,7 +70,11 @@ class IconButton extends Component {
 
     if (tooltip) {
       return (
-        <Tooltip placement={tooltipPlacement} title={tooltip}>
+        <Tooltip
+          placement={tooltipPlacement}
+          title={tooltip}
+          {...controlledTooltipProps}
+        >
           {button}
         </Tooltip>
       );

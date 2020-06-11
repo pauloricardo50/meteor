@@ -1,13 +1,16 @@
 import React from 'react';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import { ListItemText, ListItemSecondaryAction } from 'core/components/List';
-import DialogSimple from 'core/components/DialogSimple';
-import Button from 'core/components/Button/Button';
-import T from 'core/components/Translation';
-import TextField from 'imports/core/components/Material/TextField';
 import { userSearch } from 'core/api/users/queries';
+import { ROLES } from 'core/api/users/userConstants';
+import Button from 'core/components/Button/Button';
 import CollectionSearch from 'core/components/CollectionSearch/CollectionSearch';
-import { ROLES } from 'core/api/constants';
+import DialogSimple from 'core/components/DialogSimple';
+import Icon from 'core/components/Icon';
+import TextField from 'core/components/Material/TextField';
+import T from 'core/components/Translation';
+
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';
 
 const renderUserSearcher = ({ organisation, setUserId }) => (
@@ -29,7 +32,6 @@ const renderUserSearcher = ({ organisation, setUserId }) => (
       organisation.users &&
       organisation.users.map(({ _id }) => _id).includes(user._id)
     }
-    type="list"
   />
 );
 
@@ -72,7 +74,8 @@ const OrganisationUserAdder = props => {
     <DialogSimple
       primary
       raised
-      label="Ajouter un compte existant"
+      label="Compte existant"
+      buttonProps={{ icon: <Icon type="add" /> }}
       title="Ajouter compte"
       style={{ width: '100%' }}
       renderProps

@@ -7,14 +7,14 @@
 
 
 .link {
-  text-decoration: underline;
+  text-decoration: underline !important;
 
   &:hover {
-    color: $primary;
+    color: $primary !important;
     cursor: pointer;
 
     > * {
-      color: $primary;
+      color: $primary !important;
     }
   }
 }
@@ -37,6 +37,7 @@
     align-items: center;
     justify-content: center;
     align-self:center;
+    margin-bottom: 16px;
 
     .refresh {
       position: absolute;
@@ -73,6 +74,7 @@
       margin-top: 0px;
       color: #ababab;
       font-weight: 200;
+      margin-bottom: 16px;
     }
 
     .front-contact-add-user {
@@ -83,6 +85,11 @@
 
       hr {
         width: 100%;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 16px;
       }
 
     }
@@ -99,7 +106,7 @@
   border: 1px solid #cdcdcd;
   align-self:center;
   width: -webkit-fill-available;
-  margin: 16px 0;
+  margin-bottom: 16px;
 
   &-top {
     display: flex;
@@ -171,4 +178,22 @@
   td {
     padding: 4px 0;
   }
+}
+
+.front-contact-task {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.front-tag {
+  border: 1px solid #ababab;
+  border-radius: 4px;
+  text-transform: uppercase;
+  padding: 4px;
+  margin-right: 4px;
+  background-color: #f7f7f7;
+  margin-bottom: 4px;
 }

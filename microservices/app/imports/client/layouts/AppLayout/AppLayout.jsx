@@ -1,16 +1,17 @@
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
+import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
-import { APPLICATION_TYPES } from 'imports/core/api/constants';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
-import Navs from './Navs';
-import AppLayoutContainer from './AppLayoutContainer';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
+import AppLayoutContainer from './AppLayoutContainer';
+import Navs from './Navs';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
@@ -38,7 +39,7 @@ const renderMobile = props => {
 };
 
 const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
 
@@ -48,11 +49,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
 
   return (
     <div className={rootClasses}>
-      <Navs
-        {...props}
-        shouldShowSideNav={shouldShowSideNav}
-        currentUser={currentUser}
-      />
+      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
       <div className={classes} id="scroll-layout">
         <LayoutErrorBoundary>
           <div className="wrapper">
@@ -61,7 +58,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton currentUser={currentUser} />
+      <ContactButton />
       {currentUser && <AnonymousLoanClaimer currentUser={currentUser} />}
       <AnonymousLoanRemover />
     </div>

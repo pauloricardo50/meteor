@@ -3,12 +3,13 @@ import { Mongo } from 'meteor/mongo';
 
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
+import queryString from 'query-string';
 
-import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
-import { ddpWithUserId } from '../../methods/methodHelpers';
 import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
+import { ddpWithUserId } from '../../methods/methodHelpers';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 
 const EPOTEK_IPS = ['213.3.47.70'];
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
@@ -17,6 +18,7 @@ const FRONT_API_TOKEN = Meteor.settings.front?.apiToken;
 const API_PATH = 'https://api2.frontapp.com';
 const LOANS_TAG_ID = 'tag_9hgg2';
 export const LOANS_TAG_URL = `https://api2.frontapp.com/tags/${LOANS_TAG_ID}`;
+const FRONT_WEBHOOK_ANALYTICS_USER_ID = 'front_webhook';
 
 const frontEndpoints = {
   updateConversation: {
@@ -33,44 +35,52 @@ const frontEndpoints = {
   },
   deleteTag: {
     method: 'DELETE',
-    makeEndpoint: ({ tagId }) => `https://api2.frontapp.com/tags/${tagId}`,
+    makeEndpoint: ({ tagId }) => `/tags/${tagId}`,
   },
   listTagChildren: {
     method: 'GET',
-    makeEndpoint: ({ parentTagId }) =>
-      `https://api2.frontapp.com/tags/${parentTagId}/children`,
+    makeEndpoint: ({ parentTagId }) => `/tags/${parentTagId}/children`,
   },
   listTagConversations: {
     method: 'GET',
     makeEndpoint: ({ tagId, q, pageToken, limit }) => {
-      const url = new URL(
-        `https://api2.frontapp.com/tags/${tagId}/conversations`,
-      );
+      const query = queryString.stringify({
+        q,
+        page_token: pageToken,
+        limit,
+      });
 
-      if (q) {
-        url.searchParams.append('q', q);
-      }
-
-      if (pageToken) {
-        url.searchParams.append('page_token', pageToken);
-      }
-
-      if (limit) {
-        url.searchParams.append('limit', limit);
-      }
-
-      return url.href;
+      return `/tags/${tagId}/conversations?${query}`;
     },
+  },
+  getConversation: {
+    method: 'GET',
+    makeEndpoint: ({ conversationId }) => `/conversations/${conversationId}`,
+  },
+  listTeamMates: {
+    method: 'GET',
+    makeEndpoint: () => `/teammates`,
+  },
+  updateConversationAssignee: {
+    method: 'PUT',
+    makeEndpoint: ({ conversationId }) =>
+      `/conversations/${conversationId}/assignee`,
+  },
+  getTag: {
+    method: 'GET',
+    makeEndpoint: ({ tagId }) => `/tags/${tagId}`,
   },
 };
 
 const WEBHOOKS = {
   AUTO_TAG: 'auto-tag',
+  AUTO_ASSIGN: 'auto-assign',
   TEST: 'test',
 };
 
 // always stub the API in tests
 const ENABLE_API = Meteor.isProduction;
+// const ENABLE_API = true;
 
 export class FrontService {
   constructor({ fetch, isEnabled }) {
@@ -102,7 +112,10 @@ export class FrontService {
     const user =
       email &&
       UserService.get(
-        { 'emails.0.address': email, roles: { $in: [ROLES.DEV, ROLES.ADMIN] } },
+        {
+          'emails.address': email,
+          'roles._id': { $in: [ROLES.DEV, ROLES.ADMIN] },
+        },
         { _id: 1 },
       );
 
@@ -128,7 +141,6 @@ export class FrontService {
     const data = req.body;
 
     const isValid = this.validateFrontSignature(data, signature);
-
     return {
       isAuthenticated: isValid,
       error:
@@ -137,11 +149,16 @@ export class FrontService {
           ERROR_CODES.UNAUTHORIZED,
           'Front signature verification failed',
         ),
+      user: {
+        _id: FRONT_WEBHOOK_ANALYTICS_USER_ID,
+        name: 'Front webhook',
+        organisations: [{ name: 'Front webhook' }],
+      },
     };
   }
 
-  handleRequest(body) {
-    const { type, params, user } = body;
+  handleRequest({ user, body }) {
+    const { type, params } = body;
 
     if (type === 'QUERY_ONE' || type === 'QUERY') {
       return this.handleQuery({ user, type, ...params });
@@ -187,6 +204,10 @@ export class FrontService {
       return this.handleAutoTag(body);
     }
 
+    if (webhookName === WEBHOOKS.AUTO_ASSIGN) {
+      return this.handleAutoAssign(body);
+    }
+
     if (webhookName === WEBHOOKS.TEST) {
       return this.callFrontApi({ endpoint: 'identity' });
     }
@@ -224,9 +245,17 @@ export class FrontService {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${FRONT_API_TOKEN}`,
       },
-      body: body && JSON.stringify(body),
+      ...(body ? { body: JSON.stringify(body) } : {}),
     })
-      .then(result => result.json())
+      .then(async result => {
+        try {
+          const response = await result.text();
+          return JSON.parse(response);
+        } catch (e) {
+          // Sometimes Front response cannot be parsed...
+          return {};
+        }
+      })
       .then(result => {
         console.log('callFrontApi result:', endpoint);
         console.log('params:', params);
@@ -268,6 +297,35 @@ export class FrontService {
     });
   }
 
+  listTeam() {
+    return this.callFrontApi({
+      endpoint: 'listTeamMates',
+    });
+  }
+
+  getTeamMateId = async email => {
+    const user = UserService.getByEmail(email, { frontUserId: 1 });
+
+    if (!user) {
+      return;
+    }
+    if (user.frontUserId) {
+      return user.frontUserId;
+    }
+    const { _results: teamMates = [] } = await this.listTeam();
+    const teamMate = teamMates.find(
+      ({ email: teamMateEmail }) => teamMateEmail === email,
+    );
+
+    if (teamMate?.id) {
+      UserService.update({
+        userId: user._id,
+        object: { frontUserId: teamMate.id },
+      });
+    }
+    return teamMate?.id;
+  };
+
   async getLoanTagId({ loanId, loanName }) {
     const { _results = [] } = await this.listTagChildren({
       parentTagId: LOANS_TAG_ID,
@@ -288,12 +346,49 @@ export class FrontService {
     return frontTagId;
   }
 
+  updateConversationTags({ conversation, tags = [], appendTags = true }) {
+    const { id: conversationId, tags: currentTags = [] } = conversation;
+
+    let newTags = tags;
+
+    if (appendTags) {
+      const currentTagIds = currentTags.map(({ id }) => id);
+      newTags = [...currentTagIds, ...newTags];
+    }
+
+    return this.callFrontApi({
+      endpoint: 'updateConversation',
+      params: { conversationId },
+      body: { tag_ids: newTags },
+    });
+  }
+
+  getRecipientUser({ conversation, role }) {
+    const { last_message: { recipients = [] } = {} } = conversation;
+    const recipient = recipients.find(
+      ({ role: recipientRole, handle }) => recipientRole === role && !!handle,
+    );
+    const email = recipient?.handle;
+    const recipientUser =
+      email &&
+      UserService.getByEmail(
+        email,
+        {
+          assignedEmployee: { email: 1 },
+          loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+        },
+        { 'roles._id': { $in: [ROLES.USER, ROLES.PRO] } },
+      );
+
+    return recipientUser;
+  }
+
   async handleAutoTag({ conversation }) {
     if (!conversation) {
       return;
     }
 
-    const { id: conversationId, tags = [], recipient } = conversation;
+    const { tags = [] } = conversation;
 
     const hasLoanTag = tags.find(
       ({ _links }) => _links?.related?.parent_tag === LOANS_TAG_URL,
@@ -304,13 +399,7 @@ export class FrontService {
       return;
     }
 
-    const email = recipient.role === 'from' && recipient.handle;
-    const recipientUser =
-      email &&
-      UserService.get(
-        { 'emails.0.address': email, roles: ROLES.USER },
-        { loans: { name: 1, frontTagId: 1 } },
-      );
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
 
     if (!recipientUser) {
       // If the user is not found in our DB
@@ -332,13 +421,133 @@ export class FrontService {
       });
     }
 
-    const currentTagIds = tags.map(({ id }) => id);
+    return this.updateConversationTags({ conversation, tags: [frontTagId] });
+  }
 
-    return this.callFrontApi({
-      endpoint: 'updateConversation',
-      params: { conversationId },
-      body: { tag_ids: [...currentTagIds, frontTagId] },
+  async tagLoan({ loanId, conversationId }) {
+    const loan = LoanService.get(loanId, {
+      frontTagId: 1,
+      name: 1,
     });
+
+    let { frontTagId } = loan;
+    const { name: loanName } = loan;
+
+    if (!frontTagId) {
+      frontTagId = await this.getLoanTagId({ loanId, loanName });
+    }
+
+    const conversation = await this.callFrontApi({
+      endpoint: 'getConversation',
+      params: { conversationId },
+    });
+    const { tags: currentTags = [] } = conversation;
+
+    return this.updateConversationTags({
+      conversation,
+      tags: [frontTagId],
+    }).then(() => ({
+      tagIds: [...currentTags.map(({ id }) => id), frontTagId],
+    }));
+  }
+
+  async untagLoan({ loanId, conversationId }) {
+    const { frontTagId } = LoanService.get(loanId, {
+      frontTagId: 1,
+    });
+
+    if (!frontTagId) {
+      return;
+    }
+
+    const conversation = await this.callFrontApi({
+      endpoint: 'getConversation',
+      params: { conversationId },
+    });
+
+    const { tags: currentTags = [] } = conversation;
+    const currentTagIds = currentTags.map(({ id }) => id);
+    const newTags = currentTagIds.filter(tag => tag !== frontTagId);
+
+    return this.updateConversationTags({
+      conversation,
+      tags: newTags,
+      appendTags: false,
+    }).then(() => ({
+      tagIds: newTags,
+    }));
+  }
+
+  updateConversationAssignee({ conversationId, assigneeId = null }) {
+    return this.callFrontApi({
+      endpoint: 'updateConversationAssignee',
+      params: { conversationId },
+      body: { assignee_id: assigneeId },
+    });
+  }
+
+  async handleAutoAssign({ conversation }) {
+    if (!conversation) {
+      return;
+    }
+
+    const { assignee, id: conversationId } = conversation;
+
+    if (assignee) {
+      // The conversation is already assigned
+      return;
+    }
+
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+
+    if (!recipientUser) {
+      // User not found
+      return;
+    }
+
+    const { assignedEmployee, loans = [] } = recipientUser;
+
+    let assigneeEmail;
+
+    if (loans.length === 1) {
+      const [{ mainAssignee }] = loans;
+      assigneeEmail = mainAssignee.email;
+    } else if (assignedEmployee) {
+      assigneeEmail = assignedEmployee.email;
+    }
+
+    if (!assigneeEmail) {
+      // No assignee found
+      return;
+    }
+
+    const assigneeId = await this.getTeamMateId(assigneeEmail);
+
+    if (!assigneeId) {
+      // Assignee not found in team
+      return;
+    }
+
+    return this.updateConversationAssignee({ conversationId, assigneeId });
+  }
+
+  async getTag({ tagId }) {
+    let parentTag = {};
+    const tag = await this.callFrontApi({
+      endpoint: 'getTag',
+      params: { tagId },
+    });
+
+    const { _links: { related } = {} } = tag;
+
+    if (related?.parent_tag) {
+      parentTag = await this.callFrontApi({
+        endpoint: 'getTag',
+        params: { tagId: related.parent_tag.split('/').slice(-1)[0] },
+      });
+    }
+
+    return { ...tag, parentTag };
   }
 }
 

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { compose, withProps } from 'recompose';
 
-import updateForProps from 'core/containers/updateForProps';
-import TopNav from 'core/components/TopNav';
 import IconButton from 'core/components/IconButton';
+import TopNav from 'core/components/TopNav';
+import updateForProps from 'core/containers/updateForProps';
 import useSearchParams from 'core/hooks/useSearchParams';
-import NotificationsManager from '../../components/NotificationsManager';
+
 import AdminSearch from '../../components/AdminSearch';
+import NotificationsManager from '../../components/NotificationsManager';
 import TaskAdder from '../../components/TasksTable/TaskAdder';
 
 const AdminTopNav = ({

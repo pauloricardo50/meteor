@@ -5,16 +5,17 @@ import { _ } from 'meteor/underscore';
 
 import crypto from 'crypto';
 
-import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import Security from '../../security';
 import {
-  OBJECT_STORAGE_PATH,
   BUCKET_NAME,
-  OBJECT_STORAGE_REGION,
   FILE_STATUS,
-  S3_ACLS,
   MAX_FILE_SIZE,
+  OBJECT_STORAGE_PATH,
+  OBJECT_STORAGE_REGION,
   ONE_KB,
+  S3_ACLS,
 } from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
@@ -106,7 +107,11 @@ const exoscaleStorageService = {
     return directive.maxSize || MAX_FILE_SIZE;
   },
 
-  getDefaultStatus(meta) {
+  getDefaultStatus(meta, method) {
+    if (Security.isUserAdmin(method.userId)) {
+      return FILE_STATUS.VALID;
+    }
+
     if (
       [ORGANISATIONS_COLLECTION, PROMOTIONS_COLLECTION].includes(
         meta.collection,
@@ -157,7 +162,7 @@ const exoscaleStorageService = {
         file,
         meta,
       ),
-      'x-amz-meta-status': this.getDefaultStatus(meta),
+      'x-amz-meta-status': this.getDefaultStatus(meta, method),
     };
 
     const bucketUrl = _.isFunction(directive.bucketUrl)

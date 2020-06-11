@@ -1,17 +1,17 @@
 import { compose } from 'recompose';
 
 import { FinanceCalculator } from '../FinanceCalculator';
-import { withLoanCalculator } from './LoanCalculator';
 import { withBorrowerCalculator } from './BorrowerCalculator';
-import { withOfferCalculator } from './OfferCalculator';
-import { withPropertyCalculator } from './PropertyCalculator';
-import { withPromotionCalculator } from './PromotionCalculator';
-import { withCombinedCalculator } from './CombinedCalculator';
-import { withSelector } from './Selector';
-import { withLenderRulesInitializator } from './LenderRulesInitializator';
-import { withSolvencyCalculator } from './SolvencyCalculator';
 import { withConfig } from './classUtils';
+import { withCombinedCalculator } from './CombinedCalculator';
+import { withLenderRulesInitializator } from './LenderRulesInitializator';
+import { withLoanCalculator } from './LoanCalculator';
 import { financeCalculatorArgumentMapper } from './middleware';
+import { withOfferCalculator } from './OfferCalculator';
+import { withPromotionCalculator } from './PromotionCalculator';
+import { withPropertyCalculator } from './PropertyCalculator';
+import { withSelector } from './Selector';
+import { withSolvencyCalculator } from './SolvencyCalculator';
 
 const MappedFinanceCalculator = withConfig({
   middlewareObject: financeCalculatorArgumentMapper,

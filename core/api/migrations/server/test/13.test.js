@@ -1,9 +1,11 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { resetDatabase } from '../../../../utils/testHelpers';
 
-import { up, down } from '../13';
-import { Loans, Borrowers } from '../../..';
+/* eslint-env mocha */
+
+import Borrowers from '../../../borrowers';
+import Loans from '../../../loans/loans';
+import { down, up } from '../13';
 
 describe('Migration 13', function() {
   this.timeout(10000);

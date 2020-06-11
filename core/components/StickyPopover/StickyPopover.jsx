@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import PropTypes from 'prop-types';
 
 export default class PopoverStickOnHover extends React.Component {
   constructor(props) {
@@ -50,11 +50,18 @@ export default class PopoverStickOnHover extends React.Component {
   };
 
   render() {
-    const { component, children, placement, title, forceOpen } = this.props;
+    const {
+      component,
+      children,
+      placement,
+      title,
+      forceOpen,
+      paperProps,
+    } = this.props;
     const { showPopover } = this.state;
     const show = forceOpen || showPopover;
 
-    const enhancedChildren = React.Children.map(children, child =>
+    const [enhancedChildren] = React.Children.map(children, child =>
       React.cloneElement(child, {
         onMouseEnter: this.handleMouseEnter,
         onMouseLeave: this.handleMouseLeave,
@@ -63,7 +70,7 @@ export default class PopoverStickOnHover extends React.Component {
         onBlur: this.handleMouseLeave,
         showPopover,
       }),
-    )[0];
+    );
 
     return (
       <>
@@ -81,6 +88,7 @@ export default class PopoverStickOnHover extends React.Component {
             style={{ padding: 8 }}
             elevation={15}
             className="popover-content"
+            {...paperProps}
           >
             {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
             {component}
@@ -93,7 +101,7 @@ export default class PopoverStickOnHover extends React.Component {
 
 PopoverStickOnHover.defaultProps = {
   delay: 0,
-  exitDelay: 100,
+  exitDelay: 200,
   onMouseEnter: undefined,
   placement: 'right-start',
   title: null,

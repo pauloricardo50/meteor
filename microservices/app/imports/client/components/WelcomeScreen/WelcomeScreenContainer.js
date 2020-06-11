@@ -1,9 +1,10 @@
-import { compose, withProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps, withState } from 'recompose';
 
-import { loanUpdate } from 'core/api/methods';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import { createRoute } from 'core/utils/routerUtils';
-import APP_ROUTES from 'imports/startup/client/appRoutes';
+
+import APP_ROUTES from '../../../startup/client/appRoutes';
 
 export default compose(
   withState(
@@ -13,14 +14,7 @@ export default compose(
   ),
   withRouter,
   withProps(
-    ({
-      dontShowAgain,
-      rerender,
-      rerenderState,
-      loan: { _id: loanId },
-      page,
-      history,
-    }) => ({
+    ({ dontShowAgain, rerender, loan: { _id: loanId }, page, history }) => ({
       handleClick: () => {
         window.hideWelcomeScreen = true;
 
@@ -31,7 +25,7 @@ export default compose(
           // Else, this is shown instead of the dashboard, so hide it using the
           // `window` object, but react does not re-render when you change window
           // So toggling this boolean state does the trick
-          rerender(!rerenderState);
+          rerender(s => !s);
         }
 
         if (dontShowAgain) {

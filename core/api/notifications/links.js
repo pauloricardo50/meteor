@@ -1,8 +1,8 @@
-import Notifications from './notifications';
-import Users from '../users';
 import Activities from '../activities';
-import Tasks from '../tasks';
 import Revenues from '../revenues';
+import Tasks from '../tasks';
+import Users from '../users';
+import Notifications from './notifications';
 
 Notifications.addLinks({
   recipients: {

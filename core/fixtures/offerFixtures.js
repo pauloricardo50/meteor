@@ -1,18 +1,18 @@
 import shuffle from 'lodash/shuffle';
 
-import { adminLoan, adminProperty } from 'core/api/fragments';
+import { adminProperty } from '../api/fragments';
+import LenderService from '../api/lenders/server/LenderService';
+import LoanService from '../api/loans/server/LoanService';
 import { getRandomOffer } from '../api/offers/fakes';
 import OfferService from '../api/offers/server/OfferService';
-import LenderService from '../api/lenders/server/LenderService';
 import OrganisationService from '../api/organisations/server/OrganisationService';
-import LoanService from '../api/loans/server/LoanService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createOrganisations } from './organisationFixtures';
 
 const getOrgIds = () => OrganisationService.fetch({}).map(({ _id }) => _id);
 
 export const createFakeOffer = loanId => {
-  const loan = LoanService.get(loanId, { ...adminLoan(), propertyIds: 1 });
+  const loan = LoanService.get(loanId, { propertyIds: 1, structures: 1 });
   const property =
     loan.propertyIds &&
     loan.propertyIds.length &&
@@ -23,7 +23,7 @@ export const createFakeOffer = loanId => {
   }
 
   const offer = getRandomOffer(
-    { loan: { ...loan, _id: loan._id }, property },
+    { loan: { ...loan, _id: loanId }, property },
     true,
   );
   let allOrganisationIds = getOrgIds();
@@ -48,7 +48,7 @@ export const createFakeOffer = loanId => {
     lenderId = lender._id;
   } else {
     lenderId = LenderService.insert({
-      lender: { loanId: loan._id },
+      lender: { loanId },
       contactId: null,
       organisationId: randomOrganisationId,
     });

@@ -9,25 +9,18 @@ const LoanNotes = ({ notes = [] }) => {
   const shownNotes = notes.slice(0, 2);
 
   return (
-    <FrontCardItem
-      label="Notes"
-    ><div className="loan-notes" style={{ marginTop: 4 }}>
+    <FrontCardItem label="Notes">
+      <div className="admin-notes" style={{ marginTop: 4 }}>
         <div className="flex-col">
           {shownNotes.length ? (
             shownNotes.map(shownNote => {
-              const {
-                note,
-                id,
-                date,
-                updatedBy,
-                isSharedWithPros,
-              } = shownNote;
+              const { note, id, date, updatedBy, isSharedWithPros } = shownNote;
               const { name, src } = employeesById[updatedBy] || {};
 
               return (
                 <div
                   key={id}
-                  className={cx('mb-16 loan-notes-note', {
+                  className={cx('mb-16 admin-notes-note', {
                     shared: isSharedWithPros,
                   })}
                 >
@@ -53,10 +46,11 @@ const LoanNotes = ({ notes = [] }) => {
               );
             })
           ) : (
-              <p className="secondary mt-4">Aucune note pour l'instant</p>
-            )}
+            <p className="secondary mt-4">Aucune note pour l'instant</p>
+          )}
         </div>
-      </div></FrontCardItem>
+      </div>
+    </FrontCardItem>
   );
 };
 

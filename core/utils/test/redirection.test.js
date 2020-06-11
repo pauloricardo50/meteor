@@ -1,15 +1,15 @@
 /* eslint-env mocha */
-import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { ROLES } from '../../api/users/userConstants';
 import { getRedirectIfInRoleForOtherApp } from '../redirection';
-import { ROLES } from '../../api/constants';
 
-describe('getRedirectIfInRoleForOtherApp', () => {
+describe('redirection getRedirectIfInRoleForOtherApp', () => {
   const token = Random.id();
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('getRedirectIfInRoleForOtherApp', () => {
     delete Accounts._storedLoginToken;
   });
 
-  const userWithRole = role => ({ roles: [role] });
+  const userWithRole = role => ({ roles: [{ _id: role }] });
   const urlFor = service =>
     `${Meteor.settings.public.subdomains[service]}/login-token/${token}`;
 

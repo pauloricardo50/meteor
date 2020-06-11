@@ -30,6 +30,7 @@ export default compose(
       setState,
       method,
       methodParams,
+      func,
     }) => ({
       onSearch: event => {
         event.preventDefault();
@@ -68,6 +69,16 @@ export default compose(
                   : undefined,
               }),
             );
+        } else if (func) {
+          func({ searchQuery: newSearchQuery, ...queryParams }).then(results =>
+            setResults({
+              setState,
+              searchResults,
+              newSearchQuery,
+              resultsFilter,
+              results,
+            }),
+          );
         }
       },
       hideResults: () => {

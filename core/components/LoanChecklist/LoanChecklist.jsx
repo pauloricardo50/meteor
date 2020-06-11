@@ -1,15 +1,16 @@
 import React from 'react';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import T from '../Translation';
 import {
   getChecklistMissingInformations,
   isAnyBasicDocumentRequested,
 } from './helpers';
-import LoanChecklistSection from './LoanChecklistSection';
 import LoanChecklistList from './LoanChecklistList';
+import LoanChecklistSection from './LoanChecklistSection';
 
-const LoanChecklist = ({ intl: { formatMessage }, ...props }) => {
+const LoanChecklist = props => {
+  const { formatMessage } = useIntl();
   const { fields, documents } = getChecklistMissingInformations(
     props,
     formatMessage,
@@ -48,4 +49,4 @@ const LoanChecklist = ({ intl: { formatMessage }, ...props }) => {
   );
 };
 
-export default injectIntl(LoanChecklist);
+export default LoanChecklist;

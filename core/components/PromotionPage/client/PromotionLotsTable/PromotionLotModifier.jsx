@@ -1,14 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
-import { withProps, compose, withState } from 'recompose';
+import React, { useMemo } from 'react';
+import { compose, withProps } from 'recompose';
 
-import { propertyUpdate, promotionLotRemove } from '../../../../api/methods';
-import { PROMOTION_LOT_STATUS } from '../../../../api/constants';
-import T from '../../../Translation';
+import {
+  promotionLotRemove,
+  updateLotPromotionLotGroups,
+} from '../../../../api/promotionLots/methodDefinitions';
+import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
+import { propertyUpdate } from '../../../../api/properties/methodDefinitions';
 import { AutoFormDialog } from '../../../AutoForm2';
-import Button from '../../../Button';
-import { promotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
+import T from '../../../Translation';
+import { getPromotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 
 const disableModification = promotionLotStatus => {
   const isAdmin = Meteor.microservice === 'admin';
@@ -20,14 +23,21 @@ const disableModification = promotionLotStatus => {
 const ProPromotionLotModifier = ({
   promotionLot,
   updateProperty,
-  submitting,
   deletePromotionLot,
   className,
+  promotion,
 }) => {
-  const model =
-    promotionLot.properties &&
-    promotionLot.properties.length > 0 &&
-    promotionLot.properties[0];
+  const { promotionLotGroupIds } = promotionLot;
+  const schema = useMemo(
+    () => getPromotionLotSchema(promotion?.promotionLotGroups),
+    [promotionLot, promotion],
+  );
+
+  const property =
+    promotionLot?.properties?.length && promotionLot.properties[0];
+
+  const model = { ...property, promotionLotGroupIds };
+
   return (
     <AutoFormDialog
       buttonProps={{
@@ -39,45 +49,29 @@ const ProPromotionLotModifier = ({
       }}
       title={<T id="PromotionLotPage.modifyPromotionLot" />}
       description={<T id="PromotionPage.promotionLotValueDescription" />}
-      schema={promotionLotSchema}
+      schema={schema}
       onSubmit={updateProperty}
-      submitting={submitting}
       model={model}
-      renderAdditionalActions={({
-        closeDialog,
-        setDisableActions,
-        disabled,
-      }) => (
-        <Button
-          onClick={() => {
-            setDisableActions(true);
-            return deletePromotionLot()
-              .then(closeDialog)
-              .finally(() => setDisableActions(false));
-          }}
-          error
-          disabled={submitting || disabled}
-        >
-          <T id="general.delete" />
-        </Button>
-      )}
+      onDelete={() => deletePromotionLot()}
     />
   );
 };
 
 export default compose(
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ promotionLot, setSubmitting }) => ({
-    updateProperty: property =>
-      propertyUpdate.run({
-        propertyId: promotionLot.properties[0]._id,
-        object: property,
-      }),
-    deletePromotionLot: () => {
-      setSubmitting(true);
-      return promotionLotRemove
-        .run({ promotionLotId: promotionLot._id })
-        .then(() => setSubmitting(false));
-    },
+  withProps(({ promotionLot }) => ({
+    updateProperty: ({ promotionLotGroupIds, ...property }) =>
+      propertyUpdate
+        .run({
+          propertyId: promotionLot.properties[0]._id,
+          object: property,
+        })
+        .then(() =>
+          updateLotPromotionLotGroups.run({
+            promotionLotId: promotionLot._id,
+            promotionLotGroupIds,
+          }),
+        ),
+    deletePromotionLot: () =>
+      promotionLotRemove.run({ promotionLotId: promotionLot._id }),
   })),
 )(ProPromotionLotModifier);

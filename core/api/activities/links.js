@@ -1,26 +1,46 @@
-import Notifications from '../notifications';
+import InsuranceRequests from '../insuranceRequests';
+import Insurances from '../insurances';
+import LinkInitializer from '../links/LinkInitializer';
 import Loans from '../loans';
-import Activities from './activities';
+import Notifications from '../notifications';
 import Users from '../users';
+import Activities from './activities';
 
-Activities.addLinks({
-  notifications: {
-    collection: Notifications,
-    inversedBy: 'activity',
-    autoremove: true,
-  },
-  loan: {
-    collection: Loans,
-    field: 'loanLink',
-    metadata: true,
-  },
-  user: {
-    collection: Users,
-    field: 'userLink',
-    metadata: true,
-  },
-  createdByUser: {
-    collection: Users,
-    field: 'createdBy',
-  },
+LinkInitializer.directInit(() => {
+  Activities.addLinks({
+    loan: {
+      collection: Loans,
+      field: 'loanLink',
+      metadata: true,
+    },
+    user: {
+      collection: Users,
+      field: 'userLink',
+      metadata: true,
+    },
+    createdByUser: {
+      collection: Users,
+      field: 'createdBy',
+    },
+    insuranceRequest: {
+      collection: InsuranceRequests,
+      field: 'insuranceRequestLink',
+      metadata: true,
+    },
+    insurance: {
+      collection: Insurances,
+      field: 'insuranceLink',
+      metadata: true,
+    },
+  });
+});
+
+LinkInitializer.inversedInit(() => {
+  Activities.addLinks({
+    notifications: {
+      collection: Notifications,
+      inversedBy: 'activity',
+      autoremove: true,
+    },
+  });
 });

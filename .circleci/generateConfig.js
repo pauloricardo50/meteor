@@ -1,20 +1,20 @@
-import { writeYAML } from '../.deployment/utils';
+import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_8'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_14'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'circleci/openjdk:10-jdk-node-browsers', // Has browsers, like chrome, necessary to run client-side tests
+      image: 'circleci/openjdk:8-jdk-node-browsers-legacy', // Has browsers, like chrome, necessary to run client-side tests
       environment: {
         // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',
         LANGUAGE: 'C.UTF-8',
         LC_ALL: 'C.UTF-8',
         LC_NUMERIC: 'en_US.UTF-8',
-        METEOR_VERSION: '1.9',
+        METEOR_VERSION: '1.10.2',
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
@@ -24,6 +24,7 @@ const defaultJobValues = {
         // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
+        RTL_SKIP_AUTO_CLEANUP: 1,
       },
     },
   ],
@@ -138,6 +139,10 @@ const makePrepareJob = () => ({
       'Install node_modules',
       'meteor npm --prefix microservices/backend ci',
     ),
+    runCommand(
+      'Install expect',
+      'sudo apt-get update && sudo apt-get install expect',
+    ),
     runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
     saveCache(
       'Cache meteor backend',
@@ -179,6 +184,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       `,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
+    testsType === 'e2e' && runCommand('Install cypress dependencies', 'sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb'),
     runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
@@ -193,7 +199,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
-  ],
+  ].filter(x => x),
 });
 
 // Final config

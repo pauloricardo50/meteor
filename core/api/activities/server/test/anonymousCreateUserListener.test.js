@@ -1,16 +1,16 @@
-/* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import { anonymousCreateUser } from '../../../methods';
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
+import { anonymousCreateUser } from '../../../users/methodDefinitions';
 import UserService from '../../../users/server/UserService';
 import {
-  ACTIVITY_TYPES,
   ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
 } from '../../activityConstants';
+
+/* eslint-env mocha */
 
 describe('anonymousCreateUserListener', function() {
   this.timeout(10000);
@@ -22,14 +22,26 @@ describe('anonymousCreateUserListener', function() {
           _id: 'org1',
           name: 'Organisation 1',
           users: [
-            { _id: 'pro1', _factory: 'pro', $metadata: { isMain: true } },
+            {
+              _id: 'pro1',
+              _factory: 'pro',
+              $metadata: { isMain: true },
+              firstName: 'TestFirstName',
+              lastName: 'TestLastName',
+            },
           ],
         },
         { _id: 'org2', name: 'Organisation 2' },
       ],
       users: [
         { _id: 'adminId', _factory: 'admin' },
-        { _id: 'pro2', _factory: 'pro' },
+        {
+          _id: 'pro2',
+          _factory: 'pro',
+
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
+        },
       ],
     });
   });
@@ -48,11 +60,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({
@@ -79,11 +91,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({
@@ -102,7 +114,11 @@ describe('anonymousCreateUserListener', function() {
 
   it('adds activities on the user when he is referred by a pro', async () => {
     const userId = await anonymousCreateUser.run({
-      user: { email: 'john.doe@test.com' },
+      user: {
+        email: 'john.doe@test.com',
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
+      },
       referralId: 'pro1',
       trackingId: '123',
     });
@@ -114,11 +130,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({
@@ -140,7 +156,11 @@ describe('anonymousCreateUserListener', function() {
 
   it('adds activities on the user when user is referred by pro user without any org', async () => {
     const userId = await anonymousCreateUser.run({
-      user: { email: 'john.doe@test.com' },
+      user: {
+        email: 'john.doe@test.com',
+        firstName: 'TestFirstName',
+        lastName: 'TestLastName',
+      },
       referralId: 'pro2',
       trackingId: '123',
     });
@@ -152,11 +172,11 @@ describe('anonymousCreateUserListener', function() {
     expect(activities.length).to.equal(2);
     expect(activities[0]).to.deep.include({
       type: ACTIVITY_TYPES.EMAIL,
-      description: 'Bienvenue chez e-Potek, de e-Potek <info@e-potek.ch>',
+      description: 'Bienvenue chez e-Potek, de e-Potek <team@e-potek.ch>',
       metadata: {
         emailId: EMAIL_IDS.ENROLL_ACCOUNT,
         to: 'john.doe@test.com',
-        from: 'e-Potek <info@e-potek.ch>',
+        from: 'e-Potek <team@e-potek.ch>',
       },
     });
     expect(activities[1]).to.deep.include({

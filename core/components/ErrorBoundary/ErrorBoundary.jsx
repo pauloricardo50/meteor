@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { compose, withProps } from 'recompose';
+
+import { logError } from '../../api/errorLogger/methodDefinitions';
+import withErrorCatcher from '../../containers/withErrorCatcher';
+import FrontError from './FrontError';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
-import withErrorCatcher from '../../containers/withErrorCatcher';
-import { logError } from '../../api/slack/methodDefinitions';
-import FrontError from './FrontError';
 
 const sendToKadira = error => {
   // Error should also log to kadira
   const { Kadira } = window;
   if (Kadira && Kadira.trackError) {
-    Kadira.trackError('react', error.stack.toString());
+    Kadira.trackError('react', error?.stack?.toString());
   }
 };
 export class ErrorBoundary extends Component {
@@ -90,6 +90,7 @@ export default compose(
   withErrorCatcher,
   withProps({
     onCatch: (error, info) => {
+      console.error(error);
       sendToKadira(error);
       logError.run({
         error: JSON.parse(

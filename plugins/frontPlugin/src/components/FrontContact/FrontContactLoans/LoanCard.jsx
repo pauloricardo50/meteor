@@ -1,20 +1,24 @@
 import React from 'react';
 
-import FrontCard from '../../FrontCard/FrontCard';
-import FrontCardItem from '../../FrontCard/FrontCardItem';
-import StatusLabel from '../../../core/components/StatusLabel';
-import {
-  LOANS_COLLECTION,
-  LOAN_CATEGORIES,
-} from '../../../core/api/loans/loanConstants';
-import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
+import { LOAN_CATEGORIES } from '../../../core/api/loans/loanConstants';
 import { employeesById } from '../../../core/arrays/epotekEmployees';
+import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
+import StatusLabel from '../../../core/components/StatusLabel';
+import FrontCard from '../../FrontCard/FrontCard';
 import FrontContactTasks from '../FrontContactTasks/FrontContactTasks';
 import LoanNotes from './LoanNotes';
+import LoanTagger from './LoanTagger';
 
 const { Front, subdomains } = window;
 
-const LoanCard = ({ loan, expanded, refetch }) => {
+const LoanCard = ({
+  loan,
+  expanded,
+  refetch,
+  conversation,
+  tagIds,
+  setTagIds,
+}) => {
   const {
     _id,
     name,
@@ -23,6 +27,7 @@ const LoanCard = ({ loan, expanded, refetch }) => {
     mainAssignee,
     tasks = [],
     adminNotes = [],
+    _collection,
   } = loan;
 
   return (
@@ -41,11 +46,12 @@ const LoanCard = ({ loan, expanded, refetch }) => {
       }
       subtitle={
         <div className="flex sb center-align" style={{ flexGrow: 1 }}>
-          <div>
+          <div className="flex-col start-align">
             <StatusLabel
               status={status}
-              collection={LOANS_COLLECTION}
-              className="mr-8"
+              collection={_collection}
+              className="mb-4"
+              small
             />
 
             {category === LOAN_CATEGORIES.PREMIUM && <PremiumBadge small />}
@@ -63,6 +69,13 @@ const LoanCard = ({ loan, expanded, refetch }) => {
       }
       expanded={expanded}
     >
+      <LoanTagger
+        loan={loan}
+        conversation={conversation}
+        tagIds={tagIds}
+        setTagIds={setTagIds}
+        refetch={refetch}
+      />
       <LoanNotes notes={adminNotes} />
       <FrontContactTasks tasks={tasks} refetch={refetch} />
     </FrontCard>

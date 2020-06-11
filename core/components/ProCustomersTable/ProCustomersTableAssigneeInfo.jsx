@@ -1,12 +1,14 @@
 import React from 'react';
+import { faCommentLines } from '@fortawesome/pro-duotone-svg-icons/faCommentLines';
 import moment from 'moment';
 import SimpleSchema from 'simpl-schema';
 
-import Icon from 'core/components/Icon';
-import IconButton from 'core/components/IconButton';
-import { employeesById } from 'core/arrays/epotekEmployees';
-import { AutoFormDialog } from 'core/components/AutoForm2';
-import { proAddLoanTask } from 'core/api/tasks/methodDefinitions';
+import { proAddLoanTask } from '../../api/tasks/methodDefinitions';
+import { employeesById } from '../../arrays/epotekEmployees';
+import colors from '../../config/colors';
+import { AutoFormDialog } from '../AutoForm2';
+import Icon, { FaIcon } from '../Icon';
+import IconButton from '../IconButton';
 
 const schema = new SimpleSchema({
   note: {
@@ -53,10 +55,15 @@ const ProCustomersTableAssigneeInfo = ({
   return (
     <div className="flex center-align">
       <Icon
-        type="info"
+        type={
+          <FaIcon
+            icon={faCommentLines}
+            color={hasProNote ? colors.primary : colors.borderGrey}
+          />
+        }
         tooltip={tooltip}
-        color={hasProNote ? 'primary' : ''}
         className="mr-8"
+        style={{ fontSize: 16 }}
       />
       <AutoFormDialog
         schema={schema}

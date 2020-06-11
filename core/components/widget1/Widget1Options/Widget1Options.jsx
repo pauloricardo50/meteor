@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
 import { widget1Constants } from '../../../redux/widget1';
+import Tab from '../../Material/Tab';
+import Tabs from '../../Material/Tabs';
+import T from '../../Translation';
 import Widget1OptionsContainer from './Widget1OptionsContainer';
 
 const Widget1Options = ({ purchaseType, setPurchaseType }) => {
@@ -25,9 +25,9 @@ const Widget1Options = ({ purchaseType, setPurchaseType }) => {
             label={
               <div className="label" id={option}>
                 <img src={`/img/widget1_${option}.svg`} alt={option} />
-                <h4>
+                <span className="tab-label font-size-5">
                   <T id={`Widget1OptionSelector.${option}`} />
-                </h4>
+                </span>
               </div>
             }
             className="widget1-option"

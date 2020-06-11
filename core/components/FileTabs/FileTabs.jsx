@@ -1,27 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
-import { PROPERTY_CATEGORY } from '../../api/constants';
-import Calculator from '../../utils/Calculator';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../api/events/ClientEventService';
-import { addBorrower } from '../../api/methods';
-import VerticalAligner from '../VerticalAligner';
-import Tabs from '../Tabs';
-import FileTabsContainer from './FileTabsContainer';
-import FileTabLabel from './FileTabLabel';
-import SingleFileTab from './SingleFileTab';
-import T from '../Translation';
+import { addBorrower } from '../../api/methods/methodDefinitions';
+import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
+import Calculator from '../../utils/Calculator';
 import ConfirmMethod from '../ConfirmMethod';
-import ZipLoan from './ZipLoan';
-import LoanGoogleDrive from './LoanGoogleDrive';
+import Icon from '../Icon';
 import RadioTabs from '../RadioButtons/RadioTabs';
+import Tabs from '../Tabs';
+import T from '../Translation';
+import VerticalAligner from '../VerticalAligner';
+import FileTabLabel from './FileTabLabel';
+import FileTabsContainer from './FileTabsContainer';
+import LoanGoogleDrive from './LoanGoogleDrive';
+import SingleFileTab from './SingleFileTab';
+import ZipLoan from './ZipLoan';
 
 const isPropertyFilesDisabled = (disabled, property) => {
   if (disabled) {
@@ -106,7 +107,6 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                         >
                           <SingleFileTab
                             doc={borrower}
-                            collection="borrowers"
                             disabled={disabled}
                             currentUser={currentUser}
                             loan={loan}
@@ -124,11 +124,12 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                         <div>
                           <ConfirmMethod
                             method={() => addBorrower.run({ loanId: loan._id })}
-                            label="Ajouter emprunteur"
+                            label="Emprunteur"
                             buttonProps={{
                               raised: true,
                               primary: true,
                               style: { marginBottom: 16 },
+                              icon: <Icon type="add" />,
                             }}
                           />
                         </div>
@@ -158,7 +159,6 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                     content: (
                       <SingleFileTab
                         doc={property}
-                        collection="properties"
                         disabled={isPropertyFilesDisabled(disabled, property)}
                         currentUser={currentUser}
                         loan={loan}
@@ -176,7 +176,6 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
               content: (
                 <SingleFileTab
                   doc={loan}
-                  collection="loans"
                   disabled={disabled}
                   currentUser={currentUser}
                   loan={loan}

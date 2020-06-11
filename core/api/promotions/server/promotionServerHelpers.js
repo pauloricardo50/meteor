@@ -1,12 +1,12 @@
-import UserService from '../../users/server/UserService';
+import { anonymizeLoan } from '../../loans/helpers';
+import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import UserService from '../../users/server/UserService';
 import {
+  clientGetBestPromotionLotStatus,
   shouldAnonymize as clientShouldAnonymize,
   getPromotionCustomerOwnerType as getCustomerOwnerType,
-  clientGetBestPromotionLotStatus,
 } from '../promotionClientHelpers';
-import LoanService from '../../loans/server/LoanService';
-import { anonymizeLoan } from '../../loans/helpers';
 
 const getUserPromotionPermissions = ({ userId, promotionId }) => {
   const { promotions = [] } = UserService.get(userId, {

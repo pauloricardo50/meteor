@@ -1,7 +1,7 @@
-import * as cantonConfigs from './cantonConfigs';
-import Calculator from '../Calculator';
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { NOTARY_FEES } from '../../config/financeConstants';
-import { PURCHASE_TYPE } from '../../api/constants';
+import Calculator from '../Calculator';
+import * as cantonConfigs from './cantonConfigs';
 
 const roundToCents = val => Number(val.toFixed(2));
 
@@ -27,7 +27,7 @@ class NotaryFeesCalculator {
   }
 
   hasDetailedConfig() {
-    return cantonConfigs[this.canton];
+    return !!cantonConfigs[this.canton];
   }
 
   shouldUseConstructionMath({ loan, structureId }) {
@@ -49,7 +49,7 @@ class NotaryFeesCalculator {
       return this.getDefaultFees({ propertyValue });
     }
 
-    const { residenceType } = loan;
+    const { residenceType, purchaseType } = loan;
 
     const mortgageNoteIncrease = Calculator.getMortgageNoteIncrease({
       loan,
@@ -69,6 +69,7 @@ class NotaryFeesCalculator {
       residenceType,
       mortgageNoteIncrease,
       propertyTransferTax: buyersContractFees.propertyRegistrationTax,
+      purchaseType,
     });
 
     const roundedResult = roundObjectKeys({
@@ -88,6 +89,7 @@ class NotaryFeesCalculator {
     propertyValue,
     mortgageNoteIncrease,
     residenceType,
+    purchaseType,
   }) {
     if (!this.hasDetailedConfig()) {
       return this.getDefaultFees({ propertyValue });
@@ -107,6 +109,7 @@ class NotaryFeesCalculator {
       mortgageNoteIncrease,
       residenceType,
       propertyTransferTax: this.propertyRegistrationTax({ propertyValue }),
+      purchaseType,
     });
 
     const roundedResult = roundObjectKeys({
@@ -185,7 +188,9 @@ class NotaryFeesCalculator {
 
     // Emoluments du notaire
     const notaryIncomeFromProperty = this.notaryIncomeFromProperty({
-      propertyValue: landValue + additionalMargin,
+      landValue,
+      constructionValue,
+      additionalMargin,
     });
 
     // Registre foncier
@@ -251,12 +256,14 @@ class NotaryFeesCalculator {
     mortgageNoteIncrease,
     residenceType,
     propertyTransferTax,
+    purchaseType,
   }) {
     const buyersContractDeductions = this.buyersContractDeductions
       ? this.buyersContractDeductions({
           residenceType,
           propertyValue,
           transferTax: propertyTransferTax,
+          purchaseType,
         })
       : 0;
 
@@ -267,6 +274,7 @@ class NotaryFeesCalculator {
           mortgageNoteRegistrationTax: this.mortgageNoteRegistrationTax({
             mortgageNoteIncrease,
           }),
+          purchaseType,
         })
       : 0;
 

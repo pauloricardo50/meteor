@@ -4,14 +4,21 @@ import { Roles } from 'meteor/alanning:roles';
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
-import { ROLES, COLLECTIONS } from '../constants';
-import { DOCUMENT_USER_PERMISSIONS } from './constants';
+import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
+import { ROLES } from '../users/userConstants';
+import { DOCUMENT_USER_PERMISSIONS } from './securityConstants';
 
 export const SECURITY_ERROR = 'NOT_AUTHORIZED';
 
 export default class Security {
   static hasRole(userId, role) {
     return Roles.userIsInRole(userId, role);
+  }
+
+  static hasAssignedRole(userId, role) {
+    const roles = Roles.getRolesForUser(userId, { onlyAssigned: true });
+    return !!roles.find(r => r === role);
   }
 
   static handleUnauthorized(message) {
@@ -54,7 +61,7 @@ export default class Security {
   }
 
   static isUserAdmin(userId) {
-    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
+    return this.hasRole(userId, [ROLES.ADMIN, ROLES.DEV]);
   }
 
   static isUserDev(userId) {
@@ -62,16 +69,12 @@ export default class Security {
   }
 
   static isUserPro(userId) {
-    return (
-      this.hasRole(userId, ROLES.PRO) ||
-      this.hasRole(userId, ROLES.ADMIN) ||
-      this.hasRole(userId, ROLES.DEV)
-    );
+    return this.hasRole(userId, [ROLES.PRO, ROLES.ADMIN, ROLES.DEV]);
   }
 
   static currentUserIsAdmin() {
     const userId = Meteor.userId();
-    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
+    return this.isUserAdmin(userId);
   }
 
   static checkCurrentUserIsAdmin() {
@@ -99,12 +102,10 @@ export default class Security {
   }
 
   static checkOwnership(doc, userId) {
-    userId = userId || Meteor.userId();
-    const userIdIsValid = doc && doc.userId === userId;
+    const finaluserId = userId || Meteor.userId();
+    const userIdIsValid = doc && doc.userId === finaluserId;
     const userLinksIsValid =
-      doc &&
-      doc.userLinks &&
-      doc.userLinks.filter(({ _id }) => userId === _id).length > 0;
+      doc?.userLinks?.filter(({ _id }) => finaluserId === _id).length > 0;
 
     if (!(userIdIsValid || userLinksIsValid)) {
       this.handleUnauthorized('Checking ownership');
@@ -186,15 +187,8 @@ export default class Security {
         throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
     }
 
-    const isAllowed = allowedRoles.some(allowedRole =>
-      this.hasRole(userId, allowedRole),
-    );
-
-    if (!isAllowed) {
-      return false;
-    }
-
-    return true;
+    // Returns true if any of the roles matches
+    return Roles.userIsInRole(userId, allowedRoles);
   }
 
   static minimumRole(role) {
@@ -213,15 +207,11 @@ export default class Security {
 
     const me = doc.users.find(({ _id }) => _id === userId);
 
-    return (
-      me &&
-      me.$metadata &&
-      me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
-    );
+    return me?.$metadata?.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY;
   };
 
   static isAllowedToModifyFiles({ collection, docId, userId, fileKey }) {
-    const keyId = fileKey.split('/')[0];
+    const [keyId] = fileKey.split('/');
 
     if (keyId !== docId) {
       this.handleUnauthorized('Invalid fileKey or docId');
@@ -233,14 +223,14 @@ export default class Security {
     } catch (error) {}
 
     switch (collection) {
-      case COLLECTIONS.PROMOTIONS_COLLECTION: {
+      case PROMOTIONS_COLLECTION: {
         this.promotions.isAllowedToManageDocuments({
           promotionId: docId,
           userId,
         });
         break;
       }
-      case COLLECTIONS.PROPERTIES_COLLECTION: {
+      case PROPERTIES_COLLECTION: {
         if (this.properties.isPromotionLot(docId)) {
           this.promotions.isAllowedToManagePromotionLotDocuments({
             propertyId: docId,

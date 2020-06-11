@@ -1,7 +1,7 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
 import { toMoney } from '../../../../utils/conversionFunctions';
+import T from '../../../Translation';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
 const OwnFundsLabel = ({ id, labelValue, ...data }) => {

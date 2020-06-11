@@ -1,20 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import LoanSelector from './LoanSelector';
-import SideNavHeader from './SideNavHeader';
 import LoanSideNav from './LoanSideNav';
+import SideNavHeader from './SideNavHeader';
 
-const SideNavUser = ({
-  currentUser,
-  style,
-  fixed,
-  closeDrawer,
-  history,
-  loan,
-}) => {
+const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
+  const history = useHistory();
+  const currentUser = useCurrentUser();
+
   // Return an empty side nav if there is no loan
   if (!currentUser) {
     return (
@@ -62,9 +60,7 @@ const SideNavUser = ({
 
 SideNavUser.propTypes = {
   closeDrawer: PropTypes.func.isRequired,
-  currentUser: PropTypes.object.isRequired,
   fixed: PropTypes.bool,
-  history: PropTypes.object.isRequired,
   style: PropTypes.object,
 };
 
@@ -73,4 +69,4 @@ SideNavUser.defaultProps = {
   style: {},
 };
 
-export default withRouter(SideNavUser);
+export default SideNavUser;

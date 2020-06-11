@@ -1,10 +1,11 @@
+import { Factory } from 'meteor/dburles:factory';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import MortgageNoteService from '../MortgageNoteService';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
+import MortgageNoteService from '../MortgageNoteService';
 
 describe('MortgageNoteService', () => {
   beforeEach(() => {

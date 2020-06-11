@@ -26,6 +26,7 @@ export default class FinancingSectionSummary extends PureComponent {
       sectionProps,
       content,
       expandedClass,
+      summaryRoot,
       ...rest
     } = this.props;
     const { structures } = sectionProps;
@@ -33,7 +34,7 @@ export default class FinancingSectionSummary extends PureComponent {
     return (
       <ExpansionPanelSummary
         className="section-summary"
-        classes={{ content, expanded: expandedClass }}
+        classes={{ content, expanded: expandedClass, root: summaryRoot }}
         {...rest}
       >
         <SummaryContent

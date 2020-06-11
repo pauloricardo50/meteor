@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { incoherentAssignees } from 'core/api/users/queries';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { USERS_COLLECTION } from 'core/api/constants';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import StatItem from './StatItem';
 
 const IncoherentAssignees = ({ showAll }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { data: users = [], loading } = useStaticMeteorData({
     query: incoherentAssignees,
     refetchOnMethodCall: false,
@@ -54,10 +54,7 @@ const IncoherentAssignees = ({ showAll }) => {
               <div className="flex-col">
                 {!loading &&
                   users.map(user => (
-                    <CollectionIconLink
-                      key={user._id}
-                      relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-                    />
+                    <CollectionIconLink key={user._id} relatedDoc={user} />
                   ))}
               </div>
             </>

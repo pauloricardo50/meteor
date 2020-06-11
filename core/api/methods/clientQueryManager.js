@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import ClientEventService from '../events/ClientEventService';
 
 const isActive = () => !!global.window;

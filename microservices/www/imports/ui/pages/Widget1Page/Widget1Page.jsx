@@ -2,45 +2,28 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
 import { compose } from 'recompose';
 
+import CTAS from 'core/api/analytics/ctas';
+import { ctaClicked } from 'core/api/analytics/helpers';
 import Button from 'core/components/Button';
-import T from 'core/components/Translation';
 import PageHead from 'core/components/PageHead';
 import {
-  TooltipProviderContainer,
   TOOLTIP_LISTS,
+  TooltipProviderContainer,
 } from 'core/components/tooltips/TooltipContext';
+import T from 'core/components/Translation';
+import Widget1Options from 'core/components/widget1/Widget1Options';
 import Widget1Part1 from 'core/components/widget1/Widget1Part1';
 import Widget1Part2 from 'core/components/widget1/Widget1Part2';
-import Widget1Options from 'core/components/widget1/Widget1Options';
-import { ctaClicked } from 'core/api/analytics/helpers';
-import CTAS from 'core/api/analytics/ctas';
-import { WWW_ROUTES } from 'imports/startup/shared/Routes';
-import Widget1PageDisclaimer from './Widget1PageDisclaimer';
-import Widget1PageContainer from './Widget1PageContainer';
+
+import { WWW_ROUTES } from '../../../startup/shared/Routes';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
+import Widget1PageContainer from './Widget1PageContainer';
+import Widget1PageDisclaimer from './Widget1PageDisclaimer';
 
-const getUrl = ({ salary, fortune, propertyValue }) => {
-  const queryparams = {
-    property: Math.round(propertyValue),
-    income: Math.round(salary),
-    fortune: Math.round(fortune),
-  };
-
-  return `/start/2?${queryString.stringify(queryparams)}`;
-};
-
-const Widget1Page = ({
-  step,
-  finishedTutorial,
-  finma,
-  fields,
-  history,
-  ...rest
-}) => {
+const Widget1Page = ({ step, finishedTutorial, finma, fields, history }) => {
   const showPart2 = finishedTutorial;
   return (
     <WwwLayout className="widget1-page">

@@ -1,21 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import SecurityService from '../../security';
-import Intl from '../../../utils/server/intl';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+
+import intl from '../../../utils/intl';
+import { ServerIntlProvider } from '../../../utils/server/intl';
 import ServerEventService from '../../events/server/ServerEventService';
-import { ROLES } from '../../constants';
+import SecurityService from '../../security';
+import { ROLES } from '../../users/userConstants';
 import {
-  FROM_DEFAULT,
   CTA_URL_DEFAULT,
   EMAIL_I18N_NAMESPACE,
   EMAIL_PARTS,
+  FROM_DEFAULT,
 } from '../emailConstants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
 const ADMIN_URL = Meteor.settings.public.subdomains.admin;
 const PRO_URL = Meteor.settings.public.subdomains.pro;
+
+const { formatMessage } = intl;
 
 /**
  * emailFooter - Returns the default email footer for all emails
@@ -25,12 +31,12 @@ const PRO_URL = Meteor.settings.public.subdomains.pro;
  * @return {type} a HTML string
  */
 export const getEmailFooter = (footerType, allowUnsubscribe) =>
-  Intl.formatMessage({
+  formatMessage({
     id: `emails.${footerType}`,
     values: {
       url: `<a href="${WWW_URL}" target="_blank" style="color:inherit;">e-potek.ch</a><br />`,
       unsubscribe: allowUnsubscribe
-        ? `<a href="*|UNSUB|*" style="color:inherit;">${Intl.formatMessage({
+        ? `<a href="*|UNSUB|*" style="color:inherit;">${formatMessage({
             id: 'emails.unsubscribe',
           })}</a>`
         : '',
@@ -43,7 +49,7 @@ export const getEmailPart = ({
   intlValues = {},
   intlFallback = '',
 }) =>
-  Intl.formatMessage({
+  formatMessage({
     id: `${EMAIL_I18N_NAMESPACE}.${emailId}.${part}`,
     values: intlValues,
     fallback: intlFallback,
@@ -97,9 +103,7 @@ export const getEmailContent = (emailId, intlValues) => {
 export const getAccountsUrl = path => (user, url) => {
   const userIsUser = Roles.userIsInRole(user, ROLES.USER);
   const userIsPro = Roles.userIsInRole(user, ROLES.PRO);
-  const userIsAdmin =
-    Roles.userIsInRole(user, ROLES.ADMIN) ||
-    Roles.userIsInRole(user, ROLES.DEV);
+  const userIsAdmin = Roles.userIsInRole(user, [ROLES.ADMIN, ROLES.DEV]);
   const token = url.split(`/${path}/`)[1];
 
   if (userIsUser) {
@@ -195,3 +199,8 @@ Meteor.methods({
     return emailListeners;
   },
 });
+
+export const renderEmailComponent = ({ Component, props }) =>
+  ReactDOMServer.renderToStaticMarkup(
+    <ServerIntlProvider>{Component(props)}</ServerIntlProvider>,
+  );

@@ -1,11 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { COLLECTIONS } from '../../constants';
+
 import SecurityService from '../../security';
+import { COLLECTIONS } from '../../server/serverConstants';
 
 Meteor.startup(() => {
   Object.values(COLLECTIONS).forEach(collectionName => {
     const Collection = Mongo.Collection.get(collectionName);
+
     Collection.expose({
       firewall(filters, options, userId) {
         SecurityService.checkUserIsAdmin(userId);
@@ -13,6 +15,7 @@ Meteor.startup(() => {
       publication: true,
       method: true,
       blocking: false,
+      body: () => true, // This lets you ignore all nested firewalls
     });
   });
 });

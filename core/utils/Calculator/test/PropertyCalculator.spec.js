@@ -1,14 +1,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Calculator from '..';
 import {
-  PROPERTY_DOCUMENTS,
   DOCUMENTS,
-  STEPS,
-  PROPERTY_CATEGORY,
-} from '../../../api/constants';
+  PROPERTY_DOCUMENTS,
+} from '../../../api/files/fileConstants';
 import { initialDocuments } from '../../../api/properties/propertiesAdditionalDocuments';
+import Calculator from '..';
 
 describe('PropertyCalculator', () => {
   let params;
@@ -21,7 +19,6 @@ describe('PropertyCalculator', () => {
         structure: { property },
         borrowers: [{}],
         properties: [property],
-        step: STEPS.SOLVENCY,
       },
     };
   });
@@ -33,6 +30,7 @@ describe('PropertyCalculator', () => {
 
     it('returns 1 for a complete property', () => {
       params.loan.structure.property = {
+        _id: 'propertyId',
         value: 1,
         propertyType: '',
         address1: 'yo',
@@ -47,6 +45,7 @@ describe('PropertyCalculator', () => {
         isCoproperty: false,
         country: 'CH',
       };
+      params.loan.properties = [params.loan.structure.property];
       params.loan.residenceType = ' ';
       expect(Calculator.propertyPercent(params)).to.deep.equal(1);
     });

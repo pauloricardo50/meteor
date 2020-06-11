@@ -1,9 +1,9 @@
-import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import { ROLES } from '../api/constants';
 import { IMPERSONATE_ROUTE } from '../api/impersonation/impersonation';
+import { ROLES } from '../api/users/userConstants';
 
 export const isLogin = path => path.slice(0, 6) === '/login';
 

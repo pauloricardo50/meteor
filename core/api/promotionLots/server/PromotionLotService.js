@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
 import Calculator from '../../../utils/Calculator';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import CollectionService from '../../helpers/server/CollectionService';
-import PromotionLots from '../promotionLots';
+import { PROMOTION_OPTION_STATUS } from '../../promotionOptions/promotionOptionConstants';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import PromotionLots from '../promotionLots';
 
 class PromotionLotService extends CollectionService {
   constructor() {
@@ -75,19 +76,31 @@ class PromotionLotService extends CollectionService {
   cancelPromotionLotReservation({ promotionOptionId }) {
     const { promotionLots } = PromotionOptionService.get(promotionOptionId, {
       loan: { _id: 1 },
-      promotionLots: { _id: 1 },
+      promotionLots: { _id: 1, promotionOptions: { status: 1 } },
     });
 
-    const [{ _id: promotionLotId }] = promotionLots;
+    const [{ _id: promotionLotId, promotionOptions = [] }] = promotionLots;
 
-    this.update({
-      promotionLotId,
-      object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
-    });
-    this.removeLink({
-      id: promotionLotId,
-      linkName: 'attributedTo',
-    });
+    // Make promotion lot available again only if no other promotion option status is SOLD or RESERVED
+    if (
+      !promotionOptions
+        .filter(({ _id }) => _id !== promotionOptionId)
+        .some(({ status: promotionOptionStatus }) =>
+          [
+            PROMOTION_OPTION_STATUS.SOLD,
+            PROMOTION_OPTION_STATUS.RESERVED,
+          ].includes(promotionOptionStatus),
+        )
+    ) {
+      this.update({
+        promotionLotId,
+        object: { status: PROMOTION_LOT_STATUS.AVAILABLE },
+      });
+      this.removeLink({
+        id: promotionLotId,
+        linkName: 'attributedTo',
+      });
+    }
 
     return PromotionOptionService.cancelReservation({
       promotionOptionId,
@@ -108,6 +121,75 @@ class PromotionLotService extends CollectionService {
 
     return PromotionOptionService.sellLot({
       promotionOptionId,
+    });
+  }
+
+  addToPromotionLotGroup({ promotionLotId, promotionLotGroupId }) {
+    const {
+      promotionLotGroupIds = [],
+      promotion: { promotionLotGroups = [] } = {},
+    } = this.get(promotionLotId, {
+      promotionLotGroupIds: 1,
+      promotion: { promotionLotGroups: 1 },
+    });
+
+    if (!promotionLotGroups.some(({ id }) => id === promotionLotGroupId)) {
+      throw new Meteor.Error(`Group "${promotionLotGroupId}" does not exist`);
+    }
+
+    if (promotionLotGroupIds.some(id => id === promotionLotGroupId)) {
+      throw new Meteor.Error(
+        `Promotion lot is already part of "${promotionLotGroupId}"`,
+      );
+    }
+
+    return this.update({
+      promotionLotId,
+      object: {
+        promotionLotGroupIds: [...promotionLotGroupIds, promotionLotGroupId],
+      },
+    });
+  }
+
+  removeFromPromotionLotGroup({ promotionLotId, promotionLotGroupId }) {
+    const { promotionLotGroupIds = [] } = this.get(promotionLotId, {
+      promotionLotGroupIds: 1,
+    });
+
+    if (!promotionLotGroupIds.some(id => id === promotionLotGroupId)) {
+      throw new Meteor.Error(
+        `Group "${promotionLotGroupId}" not found in PromotionLotGroupIds`,
+      );
+    }
+
+    const groupIndex = promotionLotGroupIds.indexOf(promotionLotGroupId);
+
+    const newGroups = promotionLotGroupIds;
+    newGroups.splice(groupIndex, 1);
+
+    return this.update({
+      promotionLotId,
+      object: { promotionLotGroupIds: newGroups },
+    });
+  }
+
+  updatePromotionLotGroups({ promotionLotId, promotionLotGroupIds = [] }) {
+    const {
+      promotionLotGroupIds: currentPromotionLotGroupIds = [],
+    } = this.get(promotionLotId, { promotionLotGroupIds: 1 });
+
+    const toKeep = currentPromotionLotGroupIds.filter(id =>
+      promotionLotGroupIds.some(groupId => groupId === id),
+    );
+    const toAdd = promotionLotGroupIds.filter(
+      id => !currentPromotionLotGroupIds.some(groupId => groupId === id),
+    );
+
+    const newPromotionLotGroupIds = [...toKeep, ...toAdd];
+
+    return this.update({
+      promotionLotId,
+      object: { promotionLotGroupIds: newPromotionLotGroupIds },
     });
   }
 }

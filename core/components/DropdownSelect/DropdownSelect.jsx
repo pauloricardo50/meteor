@@ -1,11 +1,10 @@
 import React from 'react';
+import Menu from '@material-ui/core/Menu';
 import PropTypes from 'prop-types';
 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-
-import DropdownSelectContainer from './DropdownSelectContainer';
 import IconButton from '../IconButton';
+import MenuItem from '../Material/MenuItem';
+import DropdownSelectContainer from './DropdownSelectContainer';
 
 const DropdownSelect = ({
   handleClick,

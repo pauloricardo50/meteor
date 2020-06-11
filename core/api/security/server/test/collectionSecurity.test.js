@@ -1,21 +1,26 @@
+import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+import { Factory } from 'meteor/dburles:factory';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { Meteor } from 'meteor/meteor';
-import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
-import { PROMOTION_PERMISSIONS } from 'core/api/promotions/promotionConstants';
-import { LOAN_STATUS } from 'core/api/loans/loanConstants';
-import SecurityService, { SECURITY_ERROR } from '../..';
-import { ROLES } from '../../../constants';
-import PromotionService from '../../../promotions/server/PromotionService';
-import LoanService from '../../../loans/server/LoanService';
+import { resetDatabase } from '../../../../utils/testHelpers';
+import Borrowers from '../../../borrowers';
 import generator from '../../../factories/server';
-import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
-import { clearBucket } from '../../../files/server/test/S3Service.test';
 import S3Service from '../../../files/server/S3Service';
-import { Loans, Borrowers, Properties, Promotions } from '../../..';
+import { clearBucket } from '../../../files/server/test/S3Service.test';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
+import Loans from '../../../loans/loans';
+import LoanService from '../../../loans/server/LoanService';
+import Promotions from '../../../promotions';
+import { PROMOTION_PERMISSIONS } from '../../../promotions/promotionConstants';
+import PromotionService from '../../../promotions/server/PromotionService';
+import Properties from '../../../properties';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { ROLES } from '../../../users/userConstants';
+import SecurityService, { SECURITY_ERROR } from '../..';
 
 const uploadFile = (key, metadata = {}) => {
   const json = { hello: 'world' };
@@ -762,10 +767,13 @@ describe('Collection Security', () => {
     });
   });
 
-  describe('FileSecurity', () => {
-    describe('isAllowedToAccess', () => {
+  describe('FileSecurity', function() {
+    this.timeout(10000);
+
+    describe('isAllowedToAccess ', () => {
       let userId;
       let user;
+      const prefix = 'FileSecurity.test';
 
       before(function() {
         if (Meteor.settings.public.microservice !== 'pro') {
@@ -775,9 +783,9 @@ describe('Collection Security', () => {
         }
       });
 
-      beforeEach(() => {
+      beforeEach(async () => {
         resetDatabase();
-        clearBucket();
+        await clearBucket(prefix);
         user = Factory.create('user');
         userId = user._id;
         sinon.stub(Meteor, 'user').callsFake(() => user);
@@ -790,10 +798,10 @@ describe('Collection Security', () => {
       });
 
       it('should return true if the user is dev', async () => {
-        Meteor.users.update(userId, { $set: { roles: ['dev'] } });
-        await uploadFile('test/hello.json');
+        Roles.addUsersToRoles(userId, 'dev');
+        await uploadFile(`${prefix}/hello.json`);
         const isAllowed = await SecurityService.files.isAllowedToAccess({
-          key: 'test/hello.json',
+          key: `${prefix}/hello.json`,
           userId,
         });
 
@@ -801,10 +809,10 @@ describe('Collection Security', () => {
       });
 
       it('should return true if the user is admin', async () => {
-        Meteor.users.update(userId, { $set: { roles: 'admin' } });
-        await uploadFile('test/hello.json');
+        Roles.addUsersToRoles(userId, 'admin');
+        await uploadFile(`${prefix}/hello.json`);
         const isAllowed = await SecurityService.files.isAllowedToAccess({
-          key: 'test/hello.json',
+          key: `${prefix}/hello.json`,
           userId,
         });
 
@@ -812,10 +820,10 @@ describe('Collection Security', () => {
       });
 
       it('should throw if file is admin only and user is user', async () => {
-        await uploadFile('test/hello.json', { roles: 'admin' });
+        await uploadFile(`${prefix}/hello.json`, { roles: 'admin' });
         try {
           await SecurityService.files.isAllowedToAccess({
-            key: 'test/hello.json',
+            key: `${prefix}/hello.json`,
             userId,
           });
           expect(1).to.equal(0, 'Should throw');
@@ -825,11 +833,11 @@ describe('Collection Security', () => {
       });
 
       it('should throw if file is admin only and user is pro', async () => {
-        Meteor.users.update(userId, { $set: { roles: 'pro' } });
-        await uploadFile('test/hello.json', { roles: 'admin' });
+        Roles.addUsersToRoles(userId, 'pro');
+        await uploadFile(`${prefix}/hello.json`, { roles: 'admin' });
         try {
           await SecurityService.files.isAllowedToAccess({
-            key: 'test/hello.json',
+            key: `${prefix}/hello.json`,
             userId,
           });
           expect(1).to.equal(0, 'Should throw');
@@ -839,10 +847,10 @@ describe('Collection Security', () => {
       });
 
       it('should throw if no loan or borrower is associated to this account', async () => {
-        await uploadFile('test/hello.json');
+        await uploadFile(`${prefix}/hello.json`);
         try {
           await SecurityService.files.isAllowedToAccess({
-            key: 'test/hello.json',
+            key: `${prefix}/hello.json`,
             userId,
           });
           expect(1).to.equal(0, 'Should throw');
@@ -853,6 +861,7 @@ describe('Collection Security', () => {
 
       it('should return true if this user has the loan', async () => {
         const loan = Factory.create('loan', { userId });
+        // Let's not prefix this file key, it'll just stay uploaded, no big deal
         const key = `${loan._id}/hello.json`;
 
         await uploadFile(key);
@@ -877,6 +886,8 @@ describe('Collection Security', () => {
 
         expect(isAllowed).to.equal(true);
         Borrowers.remove(borrower._id);
+
+        return clearBucket(borrower._id);
       });
 
       it('should return true if this user has the property', async () => {
@@ -891,6 +902,7 @@ describe('Collection Security', () => {
 
         expect(isAllowed).to.equal(true);
         Properties.remove(property._id);
+        return clearBucket(property._id);
       });
 
       describe('with a pro property', () => {
@@ -904,7 +916,10 @@ describe('Collection Security', () => {
           key = `${property._id}/hello.json`;
         });
 
-        afterEach(() => Properties.remove(property._id));
+        afterEach(() => {
+          Properties.remove(property._id);
+          return clearBucket(property._id);
+        });
 
         it('should return true when the file is public', async () => {
           await uploadFile(key);
@@ -917,7 +932,7 @@ describe('Collection Security', () => {
         });
 
         it('should return true when the file is pro only with a pro user', async () => {
-          Meteor.users.update(userId, { $set: { roles: 'pro' } });
+          Roles.addUsersToRoles(userId, 'pro');
 
           await uploadFile(key, { roles: 'pro' });
           const isAllowed = await SecurityService.files.isAllowedToAccess({
@@ -949,7 +964,10 @@ describe('Collection Security', () => {
           key = `${promotion._id}/hello.json`;
         });
 
-        afterEach(() => Promotions.remove(promotion._id));
+        afterEach(() => {
+          Promotions.remove(promotion._id);
+          return clearBucket(promotion._id);
+        });
 
         it('should return true when the file is public', async () => {
           await uploadFile(key);
@@ -962,7 +980,7 @@ describe('Collection Security', () => {
         });
 
         it('should return true when the file is pro only with a pro user', async () => {
-          Meteor.users.update(userId, { $set: { roles: 'pro' } });
+          Roles.addUsersToRoles(userId, 'pro');
 
           await uploadFile(key, { roles: 'pro' });
           const isAllowed = await SecurityService.files.isAllowedToAccess({

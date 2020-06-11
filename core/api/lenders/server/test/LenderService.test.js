@@ -1,14 +1,17 @@
-/* eslint-env mocha */
-import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
+import { expect } from 'chai';
+
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
-import TaskService from '../../../tasks/server/TaskService';
 import OfferService from '../../../offers/server/OfferService';
 import OrganisationService from '../../../organisations/server/OrganisationService';
+import TaskService from '../../../tasks/server/TaskService';
 import LenderService from '../LenderService';
+
+/* eslint-env mocha */
+
 
 describe('LenderService', () => {
   beforeEach(() => {
@@ -58,6 +61,16 @@ describe('LenderService', () => {
       const lender = LenderService.get(lenderId, { contact: { firstName: 1 } });
 
       expect(lender.contact.firstName).to.equal('John');
+    });
+
+    it('inserts a proper offersCache', () => {
+      generator({
+        organisations: {},
+        loans: { lenders: { _id: 'lenderId', offers: {} } },
+      });
+
+      const lender = LenderService.get('lenderId', { offersCache: 1 });
+      expect(lender.offersCache.length).to.equal(1);
     });
   });
 

@@ -1,42 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
-import merge from 'lodash/merge';
-import omit from 'lodash/omit';
-
-import OrganisationService from '../../organisations/server/OrganisationService';
-import UserService from '../../users/server/UserService';
-import assigneeReducer from '../../reducers/assigneeReducer';
-import { userLoan } from '../../fragments';
+import { calculatorLoan } from '../../fragments';
 import { isMeteorMethod } from '../../methods/methodHelpers';
-import Loans from '../loans';
+import OrganisationService from '../../organisations/server/OrganisationService';
+import assigneeReducer from '../../reducers/assigneeReducer';
+import UserService from '../../users/server/UserService';
 import { getLoanProgress } from '../helpers';
-
-const body = merge(
-  {},
-  omit(userLoan(), [
-    'maxPropertyValue',
-    'offers',
-    'promotions',
-    'user',
-    'promotionOptions',
-    'borrowers.mortgageNotes',
-    'borrowers.loans',
-  ]),
-  {
-    documents: 1,
-    borrowers: {
-      documents: 1,
-    },
-    properties: {
-      documents: 1,
-    },
-  },
-);
+import Loans from '../loans';
 
 Loans.addReducers({
   ...assigneeReducer(),
   loanProgress: {
-    body,
+    body: calculatorLoan(),
     reduce: getLoanProgress,
   },
   referredByText: {

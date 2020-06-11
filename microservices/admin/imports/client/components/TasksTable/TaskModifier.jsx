@@ -1,14 +1,15 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { TASK_STATUS } from 'core/api/constants';
-import { adminUsers } from 'core/api/users/queries';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
+
 import TaskModifierDateSetter from './TaskModifierDateSetter';
 import { dueAtFuncs, dueAtTimeFuncs } from './taskModifierHelpers';
 
@@ -90,14 +91,23 @@ export const schema = new SimpleSchema({
     type: String,
     optional: true,
     customAllowedValues: {
-      query: adminUsers,
-      params: () => ({ $body: { name: 1 }, admins: true }),
+      query: USERS_COLLECTION,
+      params: {
+        $filters: { 'roles._id': ROLES.ADVISOR },
+        firstName: 1,
+        office: 1,
+        $options: { sort: { firstName: 1 } },
+      },
     },
     uniforms: {
-      transform: ({ name }) => name,
+      transform: user => user?.firstName,
       labelProps: { shrink: true },
       label: 'Assigner conseiller',
       placeholder: null,
+      grouping: {
+        groupBy: 'office',
+        format: office => <T id={`Forms.office.${office}`} />,
+      },
     },
   },
   isPrivate: {
@@ -141,7 +151,7 @@ const getTime = date => {
   return `${hours}:${minutes}`;
 };
 
-const TaskModifier = ({ task, updateTask, open, setOpen, submitting }) => {
+const TaskModifier = ({ task, updateTask, open, setOpen }) => {
   const model = { ...task, dueAtTime: getTime(task.dueAt) };
   return (
     <AutoFormDialog
@@ -151,22 +161,12 @@ const TaskModifier = ({ task, updateTask, open, setOpen, submitting }) => {
       onSubmit={updateTask}
       open={open}
       setOpen={setOpen}
-      submitting={submitting}
       title="Modifier tâche"
       layout={taskFormLayout}
     />
   );
 };
 
-export default compose(
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
-    updateTask: values => {
-      setSubmitting(true);
-      return taskUpdate
-        .run({ taskId, object: values })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-  })),
-)(TaskModifier);
+export default withProps(({ task: { _id: taskId } }) => ({
+  updateTask: values => taskUpdate.run({ taskId, object: values }),
+}))(TaskModifier);

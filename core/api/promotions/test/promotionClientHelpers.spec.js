@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
 import {
-  shouldAnonymize,
   getPromotionCustomerOwnerType,
+  shouldAnonymize,
 } from '../promotionClientHelpers';
 import { PROMOTION_INVITED_BY_TYPE } from '../promotionConstants';
-import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
 
 describe('promotionClientHelpers', () => {
   context('shouldAnonymize', () => {

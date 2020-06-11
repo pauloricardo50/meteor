@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useMemo } from 'react';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Redirect } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
+import AutoForm from '../AutoForm2/AutoForm';
 import Loading from '../Loading/Loading';
 import T from '../Translation';
-import AutoForm from '../AutoForm2';
 import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 SimpleSchema.setDefaultMessages({
@@ -78,6 +78,18 @@ const getSchema = ({
       condition: () => hasAdditionalInfo,
     },
     ...passwordSchema,
+    newsletterSignup: {
+      type: Boolean,
+      optional: true,
+      uniforms: {
+        checkboxes: true,
+        label: (
+          <span className="newsletter-signup">
+            <T id="PasswordResetPage.newsletterSignup" />
+          </span>
+        ),
+      },
+    },
     hasReadPrivacyPolicy: {
       type: Boolean,
       optional: true,
@@ -108,7 +120,11 @@ const getSchema = ({
         ),
       },
     },
-  }).omit(...omitFields, !isEnrollment && 'hasReadPrivacyPolicy');
+  }).omit(
+    ...omitFields,
+    !isEnrollment && 'hasReadPrivacyPolicy',
+    !isEnrollment && 'newsletterSignup',
+  );
 };
 
 export const PasswordResetPage = ({
@@ -128,17 +144,20 @@ export const PasswordResetPage = ({
     return <Loading />;
   }
 
-  const schema = getSchema({ isEnrollment, user });
+  const schema = useMemo(() => getSchema({ isEnrollment, user }));
 
   return (
-    <div id="password-reset-page" className="password-reset-page">
+    <div
+      id="password-reset-page"
+      className="password-reset-page animated fadeInUp"
+    >
       <div className="card1 card-top">
         <div className="top">
           <div className="text">
             <FontAwesomeIcon icon={faUserCircle} className="icon" />
             <h1>{user.name}</h1>
           </div>
-          <h4 className="description secondary text-center">
+          <h4 className="description secondary text-center mb-32">
             <T
               id={`PasswordResetPage.${
                 isEnrollment ? 'enrollment' : 'description'

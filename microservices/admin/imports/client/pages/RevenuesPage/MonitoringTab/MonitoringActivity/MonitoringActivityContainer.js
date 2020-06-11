@@ -1,37 +1,83 @@
-import { compose, withState } from 'recompose';
+import { useState } from 'react';
 import moment from 'moment';
+import { withProps } from 'recompose';
 
-import { loanStatusChanges } from 'core/api/monitoring/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { collectionStatusChanges } from 'core/api/monitoring/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
-export default compose(
-  withState('activityRange', 'setActivityRange', {
+export const MonitoringActivityFilterContainer = withProps(() => {
+  const { data: organisations = [], loading } = useStaticMeteorData({
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { referredUsersCount: { $gte: 1 } },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
+  });
+
+  const [activityRange, setActivityRange] = useState({
     startDate: moment()
       .subtract(30, 'd')
       .toDate(),
     endDate: moment()
       .endOf('day')
       .toDate(),
-  }),
-  withState('createdAtRange', 'setCreatedAtRange', {
+  });
+
+  const [createdAtRange, setCreatedAtRange] = useState({
     startDate: null,
     endDate: null,
-  }),
-  withSmartQuery({
-    query: loanStatusChanges,
-    params: ({
-      activityRange: { startDate: fromDate, endDate: toDate },
-      createdAtRange: {
-        startDate: loanCreatedAtFrom,
-        endDate: loanCreatedAtTo,
+  });
+
+  const [organisationId, setOrganisationId] = useState();
+  const [acquisitionChannel, setAcquisitionChannel] = useState();
+
+  return {
+    activityRange,
+    setActivityRange,
+    createdAtRange,
+    setCreatedAtRange,
+    organisationId,
+    setOrganisationId,
+    acquisitionChannel,
+    setAcquisitionChannel,
+    organisations: loading ? [] : organisations,
+  };
+});
+
+export default withProps(
+  ({
+    activityRange: { startDate: fromDate, endDate: toDate },
+    createdAtRange: { startDate, endDate },
+    collection,
+    organisationId,
+    acquisitionChannel,
+  }) => {
+    const { data } = useStaticMeteorData(
+      {
+        query: collectionStatusChanges,
+        params: {
+          fromDate,
+          toDate,
+          createdAtFrom: startDate,
+          createdAtTo: endDate,
+          collection,
+          organisationId,
+          acquisitionChannel,
+        },
       },
-    }) => ({
-      fromDate,
-      toDate,
-      loanCreatedAtFrom,
-      loanCreatedAtTo,
-      breakdown: 'assignee',
-    }),
-    dataName: 'data',
-  }),
+      [
+        fromDate,
+        toDate,
+        startDate,
+        endDate,
+        collection,
+        organisationId,
+        acquisitionChannel,
+      ],
+    );
+
+    return { data };
+  },
 );

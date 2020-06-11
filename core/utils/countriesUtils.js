@@ -8,16 +8,12 @@ export const getSortedCountriesCodes = () => {
   );
   return [
     ...COMMON_COUNTRIES,
-    ...restCountries.sort((a, b) => {
-      if (countries.getName(a, 'fr') > countries.getName(b, 'fr')) {
-        return 1;
-      }
-
-      if (countries.getName(a, 'fr') < countries.getName(b, 'fr')) {
-        return -1;
-      }
-
-      return 0;
-    }),
+    ...restCountries.sort((a, b) =>
+      countries
+        .getName(a, 'fr')
+        .localeCompare(countries.getName(b, 'fr'), 'fr', {
+          ignorePunctuation: true,
+        }),
+    ),
   ];
 };

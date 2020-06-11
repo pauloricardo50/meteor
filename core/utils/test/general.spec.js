@@ -2,8 +2,12 @@
 import { expect } from 'chai';
 import times from 'lodash/times';
 
-import { getAggregatePercent } from 'core/utils/general';
-import { arrayify, getPercent, normalize } from '../general';
+import {
+  arrayify,
+  getAggregatePercent,
+  getPercent,
+  normalize,
+} from '../general';
 
 describe('general helpers', () => {
   describe('arrayify', () => {

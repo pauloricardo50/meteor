@@ -1,25 +1,75 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { withProps } from 'recompose';
 
-import StatusLabel from 'core/components/StatusLabel';
-import { LOANS_COLLECTION } from 'core/api/constants';
-import { ModalManagerContext } from 'core/components/ModalManager';
-import { loanSetStatus } from 'imports/core/api/methods/index';
-import LoanStatusModifierContainer from './LoanStatusModifierContainer';
+import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { loanSetStatus } from 'core/api/loans/methodDefinitions';
+import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 
-const LoanStatusModifier = ({ loan, additionalActions, ...props }) => {
-  const { openModal } = useContext(ModalManagerContext);
+import StatusModifier from '../../../components/StatusModifier';
+import { CancelButton } from '../../../components/StatusModifier/StatusModifier';
+import LoanDisbursementDate from '../LoanTabs/OverviewTab/LoanDisbursementDate';
+import RealRevenuesDialogContent from './RealRevenuesDialogContent';
+import UnsuccessfulDialogPipeline from './UnsuccessfulDialogContent/UnsucessfulDialogPipeline';
 
-  return (
-    <StatusLabel
-      collection={LOANS_COLLECTION}
-      status={loan.status}
-      allowModify
-      docId={loan._id}
-      additionalActions={additionalActions(openModal)}
-      method={status => loanSetStatus.run({ loanId: loan._id, status })}
-      {...props}
-    />
+const requiresRevenueStatus = status =>
+  [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(
+    status,
   );
+
+export const additionalActionsConfig = {
+  [LOAN_STATUS.ONGOING]: ({ resolve, doc: loan }) => ({
+    bypass: loan?.disbursementDate,
+    modals: [
+      {
+        description:
+          'Veuillez entrer une date approximative pour le décaissement des fonds',
+        content: ({ closeAll }) => (
+          <LoanDisbursementDate
+            loan={loan}
+            onSubmit={() => {
+              closeAll();
+              resolve();
+            }}
+          />
+        ),
+        important: true,
+      },
+    ],
+  }),
+  [LOAN_STATUS.UNSUCCESSFUL]: UnsuccessfulDialogPipeline,
+  DEFAULT: ({ resolve, reject, doc: loan, status, prevStatus }) => ({
+    bypass: requiresRevenueStatus(prevStatus) || !requiresRevenueStatus(status),
+    modals: [
+      {
+        content: ({ closeModal }) => (
+          <RealRevenuesDialogContent
+            loan={loan}
+            closeModal={closeModal}
+            confirmNewStatus={() => resolve()}
+          />
+        ),
+        actions: ({ closeAll }) => [
+          <CancelButton closeAll={closeAll} reject={reject} key="close" />,
+          <Button
+            primary
+            label={<T id="general.ok" />}
+            onClick={() => {
+              resolve();
+              closeAll();
+            }}
+            key="ok"
+          />,
+        ],
+      },
+    ],
+  }),
 };
 
-export default LoanStatusModifierContainer(LoanStatusModifier);
+const LoanStatusModifierContainer = withProps(({ loan }) => ({
+  doc: loan,
+  method: status => loanSetStatus.run({ loanId: loan._id, status }),
+  additionalActionsConfig,
+}));
+
+export default LoanStatusModifierContainer(StatusModifier);

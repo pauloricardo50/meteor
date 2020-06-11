@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
 import { withRouter } from 'react-router-dom';
 
-import TopNavlogo from 'core/components/TopNav/TopNavLogo';
-import TopNavButtons from 'core/components/TopNav/TopNavButtons';
 import IconButton from 'core/components/IconButton';
+import TopNavButtons from 'core/components/TopNav/TopNavButtons';
+import TopNavlogo from 'core/components/TopNav/TopNavLogo';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import useMedia from 'core/hooks/useMedia';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+
 import UserCreator from '../../components/UserCreator';
 
 const blacklist = ['/signup/', '/enroll-account/'];
@@ -29,7 +30,7 @@ const renderButtons = ({ location: { pathname, search } }) => {
 };
 
 const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const isMobile = useMedia({ maxWidth: 768 });
 
   return (
@@ -42,13 +43,14 @@ const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
         <TopNavlogo />
 
         {renderButtons(history) && (
-          <div className="flex space-children">
+          <div className="flex">
             {!isMobile && !currentUser && (
               <UserCreator
                 buttonProps={{
                   raised: true,
                   primary: true,
                   label: 'Créez votre compte',
+                  className: 'mr-8',
                 }}
                 ctaId="topNav"
               />

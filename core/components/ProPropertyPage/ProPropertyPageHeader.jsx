@@ -1,19 +1,26 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 
-import { Money } from 'core/components/Translation';
-import { propertyDelete } from 'core/api/methods/index';
-import { ProPropertyModifier } from './ProPropertyForm';
-import PropertyDocumentsManager from './PropertyDocumentsManager';
-import StatusLabel from '../StatusLabel';
-import { PROPERTIES_COLLECTION, ROLES } from '../../api/constants';
+import { propertyDelete } from '../../api/properties/methodDefinitions';
+import { ROLES } from '../../api/users/userConstants';
 import ConfirmMethod from '../ConfirmMethod';
+import StatusLabel from '../StatusLabel';
+import { Money } from '../Translation';
+import PropertyDocumentsManager from './PropertyDocumentsManager';
+import { ProPropertyModifier } from './ProPropertyForm';
 
 const ProPropertyPageHeader = ({ property, permissions }) => {
-  const { address, totalValue, _id: propertyId, status } = property;
+  const {
+    address,
+    totalValue,
+    _id: propertyId,
+    status,
+    _collection,
+  } = property;
   const { canModifyProperty } = permissions;
-  const isDev = Meteor.user().roles.includes(ROLES.DEV);
+  const isDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
 
   return (
     <div className="pro-property-page-header">
@@ -22,7 +29,7 @@ const ProPropertyPageHeader = ({ property, permissions }) => {
           <h1>{address}</h1>
           <StatusLabel
             status={status}
-            collection={PROPERTIES_COLLECTION}
+            collection={_collection}
             allowModify={canModifyProperty}
             docId={propertyId}
           />

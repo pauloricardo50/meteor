@@ -1,10 +1,11 @@
 import React from 'react';
-import { withProps, compose } from 'recompose';
-import { withRouter } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileInvoiceDollar } from '@fortawesome/pro-light-svg-icons/faFileInvoiceDollar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
 
 import Button from 'core/components/Button';
+
 import DialogContentSection from '../DialogContentSection';
 
 const RealRevenuesDialogContent = ({ onClick }) => (

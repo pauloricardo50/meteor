@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 
 import PageHead from '../PageHead';
 import T from '../Translation';
@@ -25,9 +24,9 @@ const Page = ({
           'full-width': topFullWidth || !shouldShowSideNav,
         })}
       >
-        <h3 className="title fixed-size bold secondary">
+        <h1 className="font-size-4 title fixed-size bold secondary">
           {title || <T id={`${id}.title`} />}
-        </h3>
+        </h1>
         {rightComponent}
       </div>
     )}
@@ -58,4 +57,4 @@ Page.defaultProps = {
   title: undefined,
 };
 
-export default injectIntl(Page);
+export default Page;

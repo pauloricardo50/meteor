@@ -1,13 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { InputAndSlider } from '../FinancingSection';
+import Calculator from '../../../../utils/Calculator';
 import DialogSimple from '../../../DialogSimple';
 import IconButton from '../../../IconButton';
-import T from '../../../Translation';
 import Recap from '../../../Recap';
+import T from '../../../Translation';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import Calculator from '../../../../utils/Calculator';
+import { FinancingField } from '../FinancingSection';
 
 const FinancingProjectFees = ({ className, ...props }) => {
   const { loan, structureId } = props;
@@ -22,17 +22,23 @@ const FinancingProjectFees = ({ className, ...props }) => {
     key: 'notaryFees',
   });
   const hasNotaryFeesOverride = notaryFees >= 0 && notaryFees !== null;
-  const hasDetailedFees = Calculator.getFeesCalculator({
+  const hasDetailedFees = Calculator.getNotaryFeesCalculator({
     loan,
     structureId,
   }).hasDetailedConfig();
   return (
     <div className={cx(className, 'notary-fees')}>
-      <InputAndSlider {...props} />
+      <FinancingField {...props} />
       <DialogSimple
         closeOnly
         renderTrigger={({ handleOpen }) => (
-          <IconButton type="help" onClick={handleOpen} />
+          <IconButton
+            type="help"
+            onClick={handleOpen}
+            className="ml-8"
+            size="small"
+            color={hasNotaryFeesOverride ? '' : 'primary'}
+          />
         )}
       >
         <div className="notary-fees-dialog">

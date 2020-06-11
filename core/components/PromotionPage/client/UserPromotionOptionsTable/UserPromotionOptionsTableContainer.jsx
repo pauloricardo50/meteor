@@ -1,17 +1,15 @@
 import React from 'react';
-import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { compose, mapProps, withState } from 'recompose';
 
+import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import { toMoney } from '../../../../utils/conversionFunctions';
-import T from '../../../Translation';
 import StatusLabel from '../../../StatusLabel';
-import {
-  PROMOTION_OPTIONS_COLLECTION,
-  PROMOTION_STATUS,
-} from '../../../../api/constants';
+import T from '../../../Translation';
+import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
+import { getPromotionLotValue } from '../PromotionManagement/helpers';
 import PrioritySetter from './PrioritySetter';
 import RequestReservation from './RequestReservation';
-import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -23,14 +21,16 @@ const makeMapPromotionOption = ({
   isAdmin,
 }) => (promotionOption, index, arr) => {
   const {
+    _collection,
     _id: promotionOptionId,
     promotionLots,
-    loan: {
-      user: { _id: userId },
-    },
+    loan: promotionOptionLoan,
     status,
   } = promotionOption;
-  const { name, value } = (promotionLots && promotionLots[0]) || {};
+  const promotionLot = (promotionLots?.length && promotionLots[0]) || {};
+  const { name, value } = promotionLot;
+
+  const promotionLotValue = getPromotionLotValue(promotionLot);
   return {
     id: promotionOptionId,
     promotionOption,
@@ -50,25 +50,27 @@ const makeMapPromotionOption = ({
       { raw: name, label: name },
       !isDashboardTable && {
         raw: status,
-        label: (
-          <StatusLabel
-            status={status}
-            collection={PROMOTION_OPTIONS_COLLECTION}
-          />
-        ),
+        label: <StatusLabel status={status} collection={_collection} />,
       },
-      { raw: value, label: toMoney(value) },
+      {
+        raw: value,
+        label:
+          typeof promotionLotValue === 'number'
+            ? toMoney(promotionLotValue)
+            : promotionLotValue,
+      },
       !isAdmin && (
         <RequestReservation
           key="reservation"
           promotionOption={promotionOption}
           promotionLotName={name}
           status={status}
+          loan={loan}
         />
       ),
       !!isAdmin && (
         <PromotionLotReservation
-          loan={loan}
+          loan={loan || promotionOptionLoan}
           promotion={promotion}
           promotionOption={promotionOption}
         />
@@ -77,10 +79,7 @@ const makeMapPromotionOption = ({
   };
 };
 
-const makeSortByPriority = priorityOrder => (
-  { _id: optionId1 },
-  { _id: optionId2 },
-) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
+const sortByPriority = ({ priorityOrder: A }, { priorityOrder: B }) => A - B;
 
 const columnOptions = ({
   isDashboardTable = false,
@@ -124,45 +123,31 @@ export default compose(
       isDashboardTable,
       isAdmin,
       className,
+      promotionOptions = loan.promotionOptions,
       ...rest
-    }) => {
-      const { promotionOptions } = loan;
-
-      let priorityOrder =
-        promotion.loans &&
-        promotion.loans[0] &&
-        promotion.loans[0].$metadata.priorityOrder;
-
-      // On admin, the priorityOrder is on the promotion itself
-      if (!priorityOrder) {
-        priorityOrder =
-          promotion.$metadata && promotion.$metadata.priorityOrder;
-      }
-
-      return {
-        rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(
-          makeMapPromotionOption({
-            isLoading,
-            setLoading,
-            isDashboardTable,
-            promotionStatus: promotion.status,
-            isAdmin,
-            loan,
-            promotion,
-          }),
-        ),
-        columnOptions: columnOptions({
+    }) => ({
+      rows: promotionOptions.sort(sortByPriority).map(
+        makeMapPromotionOption({
+          isLoading,
+          setLoading,
           isDashboardTable,
           promotionStatus: promotion.status,
           isAdmin,
+          loan,
+          promotion,
         }),
+      ),
+      columnOptions: columnOptions({
         isDashboardTable,
-        className,
-        promotionOptions,
-        promotion,
-        loan,
-        ...rest,
-      };
-    },
+        promotionStatus: promotion.status,
+        isAdmin,
+      }),
+      isDashboardTable,
+      className,
+      promotionOptions,
+      promotion,
+      loan,
+      ...rest,
+    }),
   ),
 );

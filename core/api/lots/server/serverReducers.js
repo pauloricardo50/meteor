@@ -1,5 +1,5 @@
-import Lots from '..';
 import assigneeReducer from '../../reducers/assigneeReducer';
+import Lots from '..';
 
 Lots.addReducers({
   ...assigneeReducer(

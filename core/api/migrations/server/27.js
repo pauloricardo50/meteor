@@ -1,16 +1,16 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import PromotionOptions from 'core/api/promotionOptions';
 import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
-import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
-import PromotionService from '../../promotions/server/PromotionService';
+import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import PromotionOptions from '../../promotionOptions';
 import {
   PROMOTION_OPTION_AGREEMENT_STATUS,
-  PROMOTION_OPTION_STATUS,
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../../promotionOptions/promotionOptionConstants';
-import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import PromotionService from '../../promotions/server/PromotionService';
 
 const handlePromotions = async () => {
   await PromotionService.collection

@@ -1,14 +1,14 @@
-import { withProps, compose } from 'recompose';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 
-import { toMoney } from 'core/utils/conversionFunctions';
+import { toMoney } from '../../../../utils/conversionFunctions';
 import {
   getTotalAdditionalLotsValue,
-  getTotalLandValue,
-  getTotalConstructionValue,
   getTotalAdditionalMargin,
-  getTotalValue,
+  getTotalConstructionValue,
+  getTotalLandValue,
   getTotalUndetailedValue,
+  getTotalValue,
 } from './helpers';
 
 const getData = (promotionLots = []) => {
@@ -88,10 +88,11 @@ const getConfig = (promotionLots = [], formatMessage) => ({
   ],
 });
 
-export default compose(
-  injectIntl,
-  withProps(({ promotionLots = [], intl: { formatMessage } }) => ({
+export default withProps(({ promotionLots = [] }) => {
+  const { formatMessage } = useIntl();
+
+  return {
     config: getConfig(promotionLots, formatMessage),
     data: getData(promotionLots),
-  })),
-);
+  };
+});

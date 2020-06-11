@@ -1,15 +1,13 @@
-import { Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
-import { formatLoanWithDocuments } from '../../../utils/loanFunctions';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
+import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
 import {
-  adminLoans,
   anonymousLoan,
-  fullLoan,
   loanSearch,
   proLoans2,
   proLoansAggregate,
@@ -17,116 +15,8 @@ import {
   proPropertyLoans,
   userLoans,
 } from '../queries';
-import { LOAN_STATUS } from '../loanConstants';
-import {
-  proPromotionLoansResolver,
-  proPropertyLoansResolver,
-} from './resolvers';
 import { getProLoanFilters } from './exposureHelpers';
-
-exposeQuery({
-  query: adminLoans,
-  overrides: {
-    embody: (body, params) => {
-      body.$filter = ({
-        filters,
-        params: {
-          _id,
-          assignedEmployeeId,
-          category,
-          createdAt,
-          hasPromotion,
-          lenderId,
-          name,
-          noPromotion,
-          owned,
-          promotionId,
-          relevantOnly,
-          status,
-          step,
-        },
-      }) => {
-        if (_id) {
-          filters._id = _id;
-        }
-
-        if (name) {
-          filters.name = name;
-        }
-
-        if (owned) {
-          filters.userId = { $exists: true };
-        }
-
-        if (assignedEmployeeId) {
-          filters['userCache.assignedEmployeeCache._id'] = assignedEmployeeId;
-        }
-
-        if (createdAt) {
-          filters.createdAt = createdAt;
-        }
-
-        if (relevantOnly) {
-          filters.status = {
-            $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
-          };
-          filters.anonymous = { $ne: true };
-        }
-
-        if (step) {
-          filters.step = step;
-        }
-
-        if (category) {
-          filters.category = category;
-        }
-
-        if (status) {
-          filters.status = status;
-        }
-
-        if (hasPromotion) {
-          filters.$or = [
-            { 'promotionLinks.0._id': { $exists: true } },
-            { 'financedPromotionLink._id': { $exists: true } },
-          ];
-        }
-
-        if (promotionId) {
-          filters.$or = [
-            { 'promotionLinks.0._id': promotionId },
-            { 'financedPromotionLink._id': promotionId },
-          ];
-        }
-
-        if (noPromotion) {
-          filters.promotionLinks = { $in: [[], null] };
-        }
-
-        if (lenderId) {
-          filters.lendersCache = {
-            $elemMatch: { 'organisationLink._id': lenderId },
-          };
-        }
-      };
-    },
-    validateParams: {
-      _id: Match.Maybe(String),
-      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String)),
-      category: Match.Maybe(Match.OneOf(Object, String)),
-      createdAt: Match.Maybe(Object),
-      hasPromotion: Match.Maybe(Boolean),
-      lenderId: Match.Maybe(Match.OneOf(Object, String)),
-      name: Match.Maybe(String),
-      noPromotion: Match.Maybe(Boolean),
-      owned: Match.Maybe(Boolean),
-      promotionId: Match.Maybe(Match.OneOf(Object, String)),
-      relevantOnly: Match.Maybe(Boolean),
-      status: Match.Maybe(Match.OneOf(Object, String)),
-      step: Match.Maybe(Match.OneOf(Object, String)),
-    },
-  },
-});
+import { proPropertyLoansResolver } from './resolvers';
 
 exposeQuery({
   query: anonymousLoan,
@@ -140,30 +30,29 @@ exposeQuery({
 });
 
 exposeQuery({
-  query: fullLoan,
-  overrides: {
-    embody: body => {
-      body.$postFilter = (loans = []) => loans.map(formatLoanWithDocuments);
-    },
-  },
-  options: { allowFilterById: true },
-});
-
-exposeQuery({
   query: loanSearch,
   overrides: {
     firewall(userId) {
       SecurityService.checkUserIsAdmin(userId);
     },
     embody: body => {
-      body.$filter = ({ filters, params: { searchQuery } }) => {
-        Object.assign(
-          filters,
-          createSearchFilters(['name', '_id', 'customName'], searchQuery),
+      body.$filter = ({ filters, params: { searchQuery, userId } }) => {
+        const search = createSearchFilters(
+          ['name', '_id', 'customName'],
+          searchQuery,
         );
+
+        if (userId) {
+          filters.$and = [search, { userId }];
+        } else {
+          Object.assign(filters, search);
+        }
       };
     },
-    validateParams: { searchQuery: Match.Maybe(String) },
+    validateParams: {
+      searchQuery: Match.Maybe(String),
+      userId: Match.Maybe(String),
+    },
   },
 });
 
@@ -174,16 +63,52 @@ exposeQuery({
       const { promotionId } = params;
       params.userId = userId;
       SecurityService.checkUserIsPro(userId);
+
       SecurityService.promotions.isAllowedToView({ userId, promotionId });
+    },
+    embody: body => {
+      body.$filter = ({
+        filters,
+        params: { promotionId, status, invitedBy },
+      }) => {
+        if (promotionId) {
+          filters['promotionLinks._id'] = promotionId;
+        }
+
+        if (status) {
+          filters.status = status;
+        }
+
+        if (invitedBy) {
+          filters['promotionLinks.invitedBy'] = invitedBy;
+        }
+      };
+
+      body.$postFilter = (loans, { userId }) => {
+        try {
+          SecurityService.checkUserIsAdmin(userId);
+          return loans;
+        } catch (error) {
+          const currentUser = UserService.get(userId, {
+            promotions: { _id: 1 },
+            organisations: { userLinks: 1 },
+          });
+
+          const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
+            currentUser,
+          });
+
+          return loans.map(loan => promotionLoanAnonymizer(loan));
+        }
+      };
     },
     validateParams: {
       promotionId: String,
       userId: String,
       status: Match.Maybe(Match.OneOf(Object, String)),
+      invitedBy: Match.Maybe(Match.OneOf(String, null)),
     },
   },
-  resolver: ({ userId, promotionId, status }) =>
-    proPromotionLoansResolver({ calledByUserId: userId, promotionId, status }),
 });
 
 exposeQuery({
@@ -211,8 +136,14 @@ exposeQuery({
     firewall(userId, { referredByUserId }) {
       SecurityService.checkUserIsPro(userId);
 
-      if (referredByUserId && referredByUserId !== 'nobody') {
-        const org = UserService.getUserMainOrganisation(userId);
+      if (
+        referredByUserId &&
+        referredByUserId !== 'nobody' &&
+        referredByUserId !== 'referral'
+      ) {
+        const org = UserService.getUserMainOrganisation(userId, {
+          userLinks: 1,
+        });
         if (!org.userLinks.find(({ _id }) => _id === userId)) {
           SecurityService.handleUnauthorized('Not allowed');
         }
@@ -241,6 +172,11 @@ exposeQuery({
           if (referredByUserId === 'nobody') {
             forceReferralFilter = [
               { 'userCache.referredByUserLink': { $in: [false, null] } },
+            ];
+          }
+          if (referredByUserId === 'referral') {
+            forceReferralFilter = [
+              { 'userCache.referredByUserLink': { $exists: true, $ne: '' } },
             ];
           }
           filters.$and = [{ $or: filters.$or }, { $or: forceReferralFilter }];

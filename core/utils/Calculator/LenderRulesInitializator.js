@@ -1,6 +1,6 @@
-import { parseFilter } from 'core/api/lenderRules/helpers';
-import { getMatchingRules } from '../../api/lenderRules/helpers';
-import { LENDER_RULES_VARIABLES, OWN_FUNDS_TYPES } from '../../api/constants';
+import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
+import { getMatchingRules, parseFilter } from '../../api/lenderRules/helpers';
+import { LENDER_RULES_VARIABLES } from '../../api/lenderRules/lenderRulesConstants';
 
 //
 
@@ -22,14 +22,12 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
-      this.setOrganisationName(sortedlenderRules);
+      this.setOrganisationName(loan, sortedlenderRules);
       this.ruleOrigin = {};
       this.matchedRules = [];
 
       // Global rules
       const globalRules = this.getGlobalLenderRules({
-        loan,
-        structureId,
         lenderRules: sortedlenderRules,
       });
       this.applyRules(globalRules);
@@ -53,10 +51,13 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.cleanUpUnusedRules();
     }
 
-    setOrganisationName = lenderRules => {
-      this.organisationName = lenderRules.length
-        ? lenderRules[0].organisation && lenderRules[0].organisation.name
-        : null;
+    setOrganisationName = (loan, lenderRules) => {
+      if (lenderRules?.[0].organisationCache?.name) {
+        this.organisationName = lenderRules?.[0].organisationCache?.name;
+        return;
+      }
+
+      this.organisationName = null;
     };
 
     storeRuleOrigin(rules, lenderRulesId) {

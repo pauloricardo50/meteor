@@ -1,22 +1,22 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
-import { injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { Roles } from 'meteor/alanning:roles';
 
-import { ROLES } from 'core/api/constants';
-import { organisationRemove } from 'core/api/methods';
-import T from 'core/components/Translation/Translation';
-import Chip from 'core/components/Material/Chip';
+import React from 'react';
+import queryString from 'query-string';
+import { useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
+
+import { organisationRemove } from 'core/api/organisations/methodDefinitions';
+import { ROLES } from 'core/api/users/userConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
+import Chip from 'core/components/Material/Chip';
+import T from 'core/components/Translation/Translation';
+
 import OrganisationModifier from './OrganisationModifier';
 
-const SingleOrganisationPage = ({
-  organisation,
-  history,
-  intl: { formatMessage },
-  currentUser,
-}) => {
+const SingleOrganisationPage = ({ organisation, currentUser }) => {
+  const { formatMessage } = useIntl();
+  const history = useHistory();
+
   const {
     _id: organisationId,
     logo,
@@ -61,7 +61,7 @@ const SingleOrganisationPage = ({
           </div>
         </span>
         <div>
-          {currentUser.roles.includes(ROLES.DEV) && (
+          {Roles.userIsInRole(currentUser, ROLES.DEV) && (
             <ConfirmMethod
               keyword={name}
               buttonProps={{
@@ -82,4 +82,4 @@ const SingleOrganisationPage = ({
   );
 };
 
-export default compose(withRouter, injectIntl)(SingleOrganisationPage);
+export default SingleOrganisationPage;

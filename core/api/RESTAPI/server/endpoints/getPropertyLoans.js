@@ -1,8 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 
-import PropertyService from 'core/api/properties/server/PropertyService';
 import { proPropertyLoans } from '../../../loans/queries';
-import { getImpersonateUserId, checkQuery } from './helpers';
+import PropertyService from '../../../properties/server/PropertyService';
+import { checkQuery, getImpersonateUserId } from './helpers';
 
 const querySchema = new SimpleSchema({
   'impersonate-user': { type: String, optional: true },

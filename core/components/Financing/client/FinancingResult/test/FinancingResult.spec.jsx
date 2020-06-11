@@ -1,19 +1,24 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { IntlProvider, intlShape } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 
-import { mount } from 'core/utils/testHelpers/enzyme';
-import messages from 'core/lang/fr.json';
-import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import FinancingResult from '../FinancingResult';
-import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import messages from '../../../../../lang/fr.json';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../../utils/Calculator';
+import { mount } from '../../../../../utils/testHelpers/enzyme';
+import {
+  cleanup,
+  render,
+} from '../../../../../utils/testHelpers/testing-library';
+import MoneyInput from '../../../../MoneyInput';
 import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
+import { Provider } from '../../containers/loan-context';
+import FinancingResult from '../FinancingResult';
 
 const expectResult = (component, name, value) => {
   const val = component()
@@ -34,22 +39,24 @@ const expectResult = (component, name, value) => {
 describe('FinancingResult', () => {
   let props;
   let loan;
-  const { intl } = new IntlProvider({
-    defaultLocale: 'fr',
-    messages,
-  }).getChildContext();
   const component = ({ calc } = {}) =>
     mount(
-      <ScrollSync>
-        <Provider value={{ loan, Calculator: calc || Calculator }}>
-          <FinancingResult {...props} />
-        </Provider>
-      </ScrollSync>,
-      {
-        context: { intl },
-        childContextTypes: { intl: intlShape },
-      },
+      <IntlProvider defaultLocale="fr" messages={messages}>
+        <ScrollSync>
+          <Provider value={{ loan, Calculator: calc || Calculator }}>
+            <FinancingResult {...props} />
+          </Provider>
+        </ScrollSync>
+      </IntlProvider>,
     );
+
+  const Component = ({ calc }) => (
+    <ScrollSync>
+      <Provider value={{ loan, Calculator: calc || Calculator }}>
+        <FinancingResult {...props} />
+      </Provider>
+    </ScrollSync>
+  );
 
   beforeEach(() => {
     props = {};
@@ -58,17 +65,18 @@ describe('FinancingResult', () => {
       borrowers: [],
       properties: [],
     };
+    return cleanup();
   });
 
   context('renders the correct results for a standard structure', () => {
     beforeEach(() => {
       const structure = {
         id: 'a',
-        loanTranches: [{ type: 'interest10', value: 1 }],
+        loanTranches: [{ type: 'interest10', value: 800000 }],
         propertyId: 'house',
         propertyWork: 0,
         wantedLoan: 800000,
-        ownFunds: [{ type: 'bankFortune', value: 250000 }],
+        ownFunds: [{ type: 'bankFortune', value: 250000, borrowerId: 'john' }],
       };
       loan = {
         selectedStructure: 'a',
@@ -95,13 +103,11 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find(
-        '.financing-structures-result-chart .total',
-      );
-      const string = monthly.text();
-      const hasNonZeroNumber = /[1-9]/.test(string);
-      // Interests rates change constantly, can't pin a precise value
-      expect(hasNonZeroNumber).to.equal(true);
+      const { getByTestId } = render(<Component />);
+      const total = getByTestId('financing-total');
+
+      // Replace any white space character with a proper space
+      expect(total.textContent.replace(/\s/g, ' ')).to.equal('CHF 1 600 /mois');
     });
 
     it('interestsCost', () => {
@@ -118,8 +124,14 @@ describe('FinancingResult', () => {
       expectResult(component, '.amortizationCost', 833);
     });
 
-    it('propertyCost', () => {
-      expectResult(component, '.propertyCost', 100);
+    it('monthlyPropertyCost', () => {
+      const val = component()
+        .find('.monthlyPropertyCost')
+        .last()
+        .find(MoneyInput)
+        .props().value;
+
+      expect(val).to.equal(100);
     });
 
     it('borrowRatio', () => {
@@ -148,8 +160,8 @@ describe('FinancingResult', () => {
       const structure = {
         id: 'a',
         loanTranches: [
-          { type: 'interest2', value: 0.8 },
-          { type: 'interestLibor', value: 0.2 },
+          { type: 'interest2', value: 0.8 * 1080000 },
+          { type: 'interestLibor', value: 0.2 * 1080000 },
         ],
         propertyId: 'house',
         offerId: 'offer',
@@ -182,6 +194,7 @@ describe('FinancingResult', () => {
           {
             _id: 'Mary',
             salary: 200000,
+            bankFortune: [{ value: 50000 }],
             donation: [{ value: 200000 }],
             insurance2: [{ value: 2000 }],
             insurance3A: [{ value: 0 }],
@@ -191,7 +204,7 @@ describe('FinancingResult', () => {
           {
             _id: 'house',
             value: 1000000,
-            yearlyExpenses: 1200,
+            yearlyExpenses: 2400,
           },
         ],
         offers: [
@@ -213,7 +226,7 @@ describe('FinancingResult', () => {
       );
       const string = monthly.text();
       const value = string.match(/\d/g).join('');
-      expect(value).to.equal('9720');
+      expect(value).to.equal('9820');
     });
 
     it('interestsCost', () => {
@@ -221,10 +234,11 @@ describe('FinancingResult', () => {
         .find('.interestsCost')
         .last();
       const string = interestsCost.text();
-      const value = string.match(/\d/g).join('');
+      const [value, rate] = string.split('(');
 
       // Average of 1.8% interests
-      expect(value).to.equal('1620');
+      expect(value.match(/\d/g).join('')).to.equal('1620');
+      expect(rate.match(/\d/g).join('')).to.equal('0018');
     });
 
     it('amortizationCost', () => {
@@ -232,8 +246,14 @@ describe('FinancingResult', () => {
       expectResult(component, '.amortizationCost', '8 000');
     });
 
-    it('propertyCost', () => {
-      expectResult(component, '.propertyCost', 100);
+    it('monthlyPropertyCost', () => {
+      const val = component()
+        .find('.monthlyPropertyCost')
+        .last()
+        .find(MoneyInput)
+        .props().value;
+
+      expect(val).to.equal(200);
     });
 
     it('borrowRatio', () => {
@@ -248,10 +268,12 @@ describe('FinancingResult', () => {
 
     it('remainingCash', () => {
       expectResult(component, '.remainingCash', '100 000');
+      expectResult(component, '.remainingCash', '50 000');
     });
 
     it('remainingInsurance2', () => {
-      expectResult(component, '.remainingInsurance2', '3 000');
+      expectResult(component, '.remainingInsurance2', '1 000');
+      expectResult(component, '.remainingInsurance2', '2 000');
     });
 
     it('remainingInsurance3A', () => {

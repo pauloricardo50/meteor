@@ -1,42 +1,48 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { Helmet } from 'react-helmet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons/faExclamationCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'classnames';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
+import {
+  sendEnrollmentEmail,
+  toggleAccount,
+} from 'core/api/users/methodDefinitions';
+import { ROLES } from 'core/api/users/userConstants';
+import Users from 'core/api/users/users';
+import NewsletterSignup from 'core/components/AccountPage/NewsletterSignup';
+import AssignedRole from 'core/components/AssignedRole';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import EmailModifier from 'core/components/EmailModifier';
+import Icon from 'core/components/Icon';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import Toggle from 'core/components/Toggle';
 import TooltipArray from 'core/components/TooltipArray';
 import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
-import Roles from 'core/components/Roles';
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import Toggle from 'core/components/Toggle';
-import { sendEnrollmentEmail, toggleAccount } from 'core/api';
-import {
-  ROLES,
-  USERS_COLLECTION,
-  ORGANISATIONS_COLLECTION,
-  ACQUISITION_CHANNELS,
-} from 'core/api/constants';
-import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
-import EmailModifier from 'core/components/EmailModifier';
+import IntlDate from 'core/components/Translation/formattingComponents/IntlDate';
 import UpdateField from 'core/components/UpdateField';
+
 import RolePicker from '../../components/RolePicker';
-import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
+import UserAssigneeSelect from '../../components/UserAssigneeSelect';
 import { UserModifier } from '../../components/UserDialogForm';
-import UserDeleter from './UserDeleter';
+import LastSeen from './LastSeen';
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
 import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
-import LastSeen from './LastSeen';
+import SingleUserPageInformation, {
+  SingleUserPageInformationItem,
+} from './SingleUserPageInformation';
+import UserDeleter from './UserDeleter';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
     _id: userId,
-    assignedEmployee,
+    assignedEmployeeCache,
     createdAt,
     roles = [],
     phoneNumbers,
@@ -46,65 +52,31 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     emails = [],
     isDisabled,
   } = user;
-  const { roles: currentUserRoles = [] } = currentUser || {};
-  const allowAssign =
-    currentUserRoles.includes(ROLES.DEV) ||
-    (!roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN));
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => toggleAccount.run({ userId });
+  const isAdvisor = Roles.userIsInRole(user, ROLES.ADVISOR);
 
   return (
     <div className="single-user-page-header">
-      <Helmet>
-        <title>{name}</title>
-      </Helmet>
       <div className="top">
-        <h1>
-          {name}
+        <h1>{name}</h1>
 
-          <small className="secondary">
-            &nbsp;-&nbsp;
-            <Roles roles={roles} />
-          </small>
-
-          <RolePicker userId={userId} />
-        </h1>
         <UserModifier user={user} />
         <ConfirmMethod
           method={() => sendEnrollmentEmail.run({ userId })}
           label="Envoyer email d'invitation"
           keyword="ENVOYER"
         />
-        <UserDeleter user={user} currentUser={currentUser} />
+        <UserDeleter userId={userId} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
-      <Toggle
-        labelLeft={<T id="SingleUserPage.Enabled" />}
-        toggled={!isDisabled}
-        onToggle={toggleUserAccount}
-      />
-      <div className="bottom">
-        <div>
-          <LastSeen userId={userId} />
-        </div>
-        <div className="organisations">
-          {!!organisations.length && (
-            <TooltipArray
-              items={organisations.map(organisation => (
-                <CollectionIconLink
-                  key={organisation._id}
-                  relatedDoc={{
-                    ...organisation,
-                    collection: ORGANISATIONS_COLLECTION,
-                  }}
-                />
-              ))}
-              title="Organisations"
-            />
-          )}
-        </div>
-        <div className="email">
-          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
+
+      <SingleUserPageInformation>
+        <SingleUserPageInformationItem className="email" label="Email">
+          <Icon type="mail" />{' '}
+          <a href={`mailto:${email}`}>
+            <h4 className="m-0">{email}</h4>
+          </a>
           <Tooltip
             title={
               emailVerified
@@ -119,64 +91,137 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
               )}
             />
           </Tooltip>{' '}
-          <EmailModifier userId={userId} email={email} />
-        </div>
-        {!!(phoneNumbers && phoneNumbers.length) && (
-          <div className="phone">
-            <Icon type="phone" />{' '}
-            <TooltipArray
-              title="Numéros de téléphone"
-              items={phoneNumbers.map(number => (
-                <a key={number} href={`tel:${number}`}>
-                  <span>
-                    {number}
-                    &nbsp;
-                  </span>
-                </a>
-              ))}
-            />
-          </div>
-        )}
+          <EmailModifier userId={userId} email={email} buttonLabel="Modifier" />
+        </SingleUserPageInformationItem>
 
-        <p className="secondary created-at">
-          <T id="UsersTable.createdAt" />{' '}
-          {moment(createdAt).format('D MMM YY à HH:mm:ss')}
-        </p>
-
-        {allowAssign && (
-          <div className="flex-col">
-            <div className="assigned-employee space-children">
-              {assignedEmployee && (
-                <>
-                  <T id="UsersTable.assignedTo" />
-                  <CollectionIconLink
-                    relatedDoc={{
-                      ...assignedEmployee,
-                      collection: USERS_COLLECTION,
-                    }}
-                  />
-                </>
-              )}
-              <UserAssignDropdown doc={user} />
-            </div>
-            <div className="assigned-employee space-children">
-              <ReferredByAssignDropdown user={user} />
-            </div>
-            <div className="assigned-employee space-children">
-              <ReferredByOrganisationAssignDropdown user={user} />
-            </div>
-            <div>
-              <UpdateField
-                collection={USERS_COLLECTION}
-                doc={user}
-                fields={['acquisitionChannel']}
-                autosaveDelay={250}
-                style={{ maxWidth: 250 }}
+        <SingleUserPageInformationItem className="phone" label="Téléphone" C>
+          <Icon type="phone" />{' '}
+          <h4 className="m-0">
+            {phoneNumbers?.length ? (
+              <TooltipArray
+                title="Numéros de téléphone"
+                items={phoneNumbers.map(number => (
+                  <a key={number} href={`tel:${number}`}>
+                    <span>
+                      {number}
+                      &nbsp;
+                    </span>
+                  </a>
+                ))}
               />
-            </div>
-          </div>
+            ) : (
+              '-'
+            )}
+          </h4>
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem
+          label="Rôle"
+          className="flex center-align"
+        >
+          <h4 className="m-0 mr-8">
+            <AssignedRole roles={roles} />
+          </h4>
+          <RolePicker userId={userId} />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem label="Créé">
+          <Tooltip title={moment(createdAt).format('D MMM YYYY à HH:mm:ss')}>
+            <h4 className="m-0">
+              <IntlDate type="relative" value={createdAt} style="long" />
+            </h4>
+          </Tooltip>
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem label="Conseiller e-Potek">
+          <UserAssigneeSelect
+            userId={userId}
+            assignedEmployeeId={assignedEmployeeCache?._id}
+          />
+        </SingleUserPageInformationItem>
+
+        {isAdvisor && (
+          <SingleUserPageInformationItem label="Bureau e-Potek">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['office']}
+              autosaveDelay={250}
+              style={{ maxWidth: 200 }}
+            />
+          </SingleUserPageInformationItem>
         )}
-      </div>
+
+        <SingleUserPageInformationItem
+          Component="h4"
+          label="Statut"
+          className="m-0"
+        >
+          <Toggle
+            labelLeft={<T id="SingleUserPage.Enabled" />}
+            toggled={!isDisabled}
+            onToggle={toggleUserAccount}
+            className="disabled-toggle"
+          />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem label="Dernière connexion">
+          <LastSeen userId={userId} />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem
+          Component="h4"
+          className="organisations m-0"
+          label="Organisations"
+        >
+          {organisations.length ? (
+            <TooltipArray
+              items={organisations.map(organisation => (
+                <CollectionIconLink
+                  key={organisation._id}
+                  relatedDoc={organisation}
+                />
+              ))}
+              title="Organisations"
+            />
+          ) : (
+            'Aucune'
+          )}
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem
+          label="Referral Pro"
+          Component="h4"
+          className="m-0"
+        >
+          <ReferredByAssignDropdown user={user} />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem
+          label="Referral Pro organisation"
+          Component="h4"
+          className="m-0"
+        >
+          <ReferredByOrganisationAssignDropdown user={user} />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem label="Canal d'acquisition">
+          <UpdateField
+            collection={Users}
+            doc={user}
+            fields={['acquisitionChannel']}
+            autosaveDelay={250}
+            style={{ maxWidth: 250, minWidth: 150 }}
+          />
+        </SingleUserPageInformationItem>
+
+        <SingleUserPageInformationItem label="Newsletter" className="m-0">
+          <NewsletterSignup
+            userId={userId}
+            label={<h4 className="m-0">Inscrit</h4>}
+          />
+        </SingleUserPageInformationItem>
+      </SingleUserPageInformation>
     </div>
   );
 };

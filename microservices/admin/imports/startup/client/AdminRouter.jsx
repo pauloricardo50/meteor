@@ -1,11 +1,14 @@
+import { Meteor } from 'meteor/meteor';
+import { useTracker } from 'meteor/react-meteor-data';
+
 import React from 'react';
 
+import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
-import { getUserLocale, getFormats } from 'core/utils/localization';
-import { currentUser } from 'core/api/users/queries';
+import { getFormats, getUserLocale } from 'core/utils/localization';
+
 import messagesFR from '../../../lang/fr.json';
 import AdminLayout from '../../client/layouts/AdminLayout';
-import AdminStore from '../../client/components/AdminStore';
 import ADMIN_ROUTES from './adminRoutes';
 
 const AdminRoutes = props => (
@@ -16,31 +19,34 @@ const AdminRoutes = props => (
   </Switch>
 );
 
-const AdminRouter = () => (
-  <BaseRouter
-    locale={getUserLocale()}
-    messages={messagesFR}
-    formats={getFormats()}
-    routes={ADMIN_ROUTES}
-    currentUser={{
-      query: currentUser,
-      params: () => ({
-        $body: {
+const AdminRouter = () => {
+  const { userId } = useTracker(() => ({ userId: Meteor.userId() }), []);
+
+  return (
+    <BaseRouter
+      locale={getUserLocale()}
+      messages={messagesFR}
+      formats={getFormats()}
+      routes={ADMIN_ROUTES}
+      currentUser={{
+        query: userId && USERS_COLLECTION,
+        params: () => ({
+          $filters: { _id: userId },
           email: 1,
           emails: 1,
           name: 1,
           organisations: { name: 1 },
           roles: 1,
-        },
-      }),
-    }}
-  >
-    <AdminStore>
+          defaultBoardId: 1,
+        }),
+        deps: [userId],
+      }}
+    >
       <AdminLayout type="admin">
         <AdminRoutes />
       </AdminLayout>
-    </AdminStore>
-  </BaseRouter>
-);
+    </BaseRouter>
+  );
+};
 
 export default AdminRouter;

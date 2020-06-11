@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const promotionLotInsert = new Method({
@@ -56,4 +58,19 @@ export const sellPromotionLot = new Method({
   params: {
     promotionOptionId: String,
   },
+});
+
+export const addLotToPromotionLotGroup = new Method({
+  name: 'addLotToPromotionLotGroup',
+  params: { promotionLotId: String, promotionLotGroupId: String },
+});
+
+export const removeLotFromPromotionLotGroup = new Method({
+  name: 'removeLotFromPromotionLotGroup',
+  params: { promotionLotId: String, promotionLotGroupId: String },
+});
+
+export const updateLotPromotionLotGroups = new Method({
+  name: 'updateLotPromotionLotGroups',
+  params: { promotionLotId: String, promotionLotGroupIds: Match.Maybe(Array) },
 });

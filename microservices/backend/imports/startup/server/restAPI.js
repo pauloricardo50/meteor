@@ -1,29 +1,29 @@
 import { Meteor } from 'meteor/meteor';
 
-import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
+import FrontService from 'core/api/front/server/FrontService';
 import {
-  getPropertyLoansAPI,
-  getUserAPI,
-  interestRatesAPI,
-  inviteUserToPromotionAPI,
-  inviteCustomerToProPropertiesAPI,
-  mortgageEstimateAPI,
-  referCustomerAPI,
-  testEndpointAPI,
-  updatePropertyAPI,
-  insertPropertyAPI,
-  uploadFileAPI,
-  deleteFileAPI,
-  getPropertyAPI,
-  zipLoanAPI,
-  setPropertyUserPermissionsAPI,
-  addProUserToPropertyAPI,
   addLoanNoteAPI,
+  addProUserToPropertyAPI,
+  deleteFileAPI,
   frontPluginAPI,
   frontWebhookAPI,
+  getPropertyAPI,
+  getPropertyLoansAPI,
+  getUserAPI,
+  insertPropertyAPI,
+  interestRatesAPI,
+  inviteCustomerToProPropertiesAPI,
+  inviteUserToPromotionAPI,
+  mortgageEstimateAPI,
+  referCustomerAPI,
+  setPropertyUserPermissionsAPI,
+  testEndpointAPI,
+  updatePropertyAPI,
+  uploadFileAPI,
+  zipLoanAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
-import { makeFileUploadDir, flushFileUploadDir } from 'core/utils/filesUtils';
-import FrontService from 'core/api/front/server/FrontService';
+import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
+import { flushFileUploadDir, makeFileUploadDir } from 'core/utils/filesUtils';
 
 const api = new RESTAPI();
 api.addEndpoint(
@@ -111,6 +111,10 @@ api.addEndpoint('/properties', 'POST', insertPropertyAPI, {
 api.addEndpoint('/files', 'POST', uploadFileAPI, {
   multipart: true,
   endpointName: 'Upload file',
+  analyticsParams: req => {
+    const { files: { file = {} } = {} } = req;
+    return { fileSize: file.size };
+  },
 });
 api.addEndpoint('/files', 'DELETE', deleteFileAPI, {
   rsaAuth: true,
@@ -144,10 +148,30 @@ api.addEndpoint('/loans/add-note', 'POST', addLoanNoteAPI, {
 api.addEndpoint('/front-plugin', 'POST', frontPluginAPI, {
   customAuth: FrontService.checkPluginAuthentication.bind(FrontService),
   endpointName: 'Front plugin',
+  analyticsParams: req => {
+    const { body: { type, params = {} } = {} } = req;
+    const analyticsParams = { type };
+
+    if (type === 'QUERY_ONE' || type === 'QUERY') {
+      const { collectionName } = params;
+      analyticsParams.collectionName = collectionName;
+    } else if (type === 'METHOD') {
+      const { methodName } = params;
+      analyticsParams.methodName = methodName;
+    }
+
+    return analyticsParams;
+  },
 });
 api.addEndpoint('/front-webhooks/:webhookName', 'POST', frontWebhookAPI, {
   customAuth: FrontService.checkWebhookAuthentication.bind(FrontService),
   endpointName: 'Front webhooks',
+  analyticsParams: req => {
+    // req.params is set by connect-route, after all middlewares
+    const { url } = req;
+    const [webhookName] = url.split('/').slice(-1);
+    return { webhookName };
+  },
 });
 
 Meteor.startup(() => {

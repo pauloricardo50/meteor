@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from 'core/components/Icon';
+import Icon from '../Icon';
 import { TRENDS } from './interestRates';
 
 const InterestsTableTrend = ({ trend }) => {

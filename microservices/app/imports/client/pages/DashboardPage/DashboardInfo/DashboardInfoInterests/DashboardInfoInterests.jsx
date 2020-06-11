@@ -1,12 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 
-import T from 'core/components/Translation';
 import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../../../startup/client/appRoutes';
-import DashboardInfoInterestsTable from './DashboardInfoInterestsTable';
 import DashboardInfoInterestsContainer from './DashboardInfoInterestsContainer';
+import DashboardInfoInterestsTable from './DashboardInfoInterestsTable';
 
 const DashboardInfoInterests = props => {
   const {
@@ -48,6 +49,14 @@ const DashboardInfoInterests = props => {
         )}
 
         <DashboardInfoInterestsTable {...props} />
+
+        {!enableOffers && (
+          <p className="text-center" style={{ marginBottom: 0 }}>
+            <small>
+              <T id="DashboardInfoInterests.disclaimer" />
+            </small>
+          </p>
+        )}
       </div>
     </div>
   );

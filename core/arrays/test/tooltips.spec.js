@@ -2,11 +2,11 @@
 import { expect } from 'chai';
 
 import {
-  tooltips,
-  tooltipsById,
+  TOOLTIP_LISTS,
   generalTooltips,
   offerTableTooltips,
-  TOOLTIP_LISTS,
+  tooltips,
+  tooltipsById,
 } from '../tooltips';
 
 describe('tooltips', () => {

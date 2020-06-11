@@ -3,8 +3,8 @@ import { Match } from 'meteor/check';
 import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-import { appPromotionOption, proPromotionOptions } from '../queries';
 import UserService from '../../users/server/UserService';
+import { appPromotionOption, proPromotionOptions } from '../queries';
 
 exposeQuery({
   query: appPromotionOption,
@@ -59,7 +59,19 @@ exposeQuery({
     },
     embody: (body, embodyParams) => {
       body.$filter = ({ filters, params }) => {
-        const { promotionLotId, status, promotionId } = params;
+        const {
+          promotionLotId,
+          status,
+          promotionId,
+          loanStatus,
+          invitedBy,
+          promotionOptionId,
+          promotionLotGroupId,
+        } = params;
+
+        if (promotionOptionId) {
+          filters._id = promotionOptionId;
+        }
 
         if (status) {
           filters.status = status;
@@ -74,13 +86,27 @@ exposeQuery({
             $elemMatch: { _id: promotionLotId },
           };
         }
+
+        if (loanStatus) {
+          filters['loanCache.status'] = loanStatus;
+        }
+
+        if (invitedBy) {
+          filters['loanCache.promotionLinks.0.invitedBy'] = invitedBy;
+        }
+
+        if (promotionLotGroupId) {
+          filters[
+            'promotionLotCache.0.promotionLotGroupIds'
+          ] = promotionLotGroupId;
+        }
       };
 
       body.$postFilter = (promotionOptions = [], params) => {
         const { anonymize = false, userId } = params;
         const currentUser = UserService.get(userId, {
           promotions: { _id: 1 },
-          organisations: { users: { _id: 1 } },
+          organisations: { userLinks: 1 },
         });
         return anonymize
           ? promotionOptions.map(makePromotionOptionAnonymizer({ currentUser }))
@@ -88,11 +114,15 @@ exposeQuery({
       };
     },
     validateParams: {
+      anonymize: Match.Maybe(Boolean),
+      invitedBy: Match.Maybe(Match.OneOf(String, null)),
+      loanStatus: Match.Maybe(Match.OneOf(String, Object)),
       promotionId: Match.Maybe(String),
       promotionLotId: Match.Maybe(String),
-      userId: String,
-      anonymize: Match.Maybe(Boolean),
       status: Match.Maybe(Match.OneOf(String, Object)),
+      userId: String,
+      promotionOptionId: Match.Maybe(String),
+      promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
 });

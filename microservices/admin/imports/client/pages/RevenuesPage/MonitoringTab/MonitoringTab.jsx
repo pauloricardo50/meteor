@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/constants';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import MonitoringActivity from './MonitoringActivity';
+
 import LoanMonitoringChart from './LoanMonitoringChart';
+import { MonitoringActivities } from './MonitoringActivity';
+import UnsuccessfulReasons from './UnsuccessfulReasons/UnsuccessfulReasons';
 
 const MonitoringTab = () => {
   const [revenueDateRange, setRevenueDateRange] = useState({
@@ -20,15 +21,24 @@ const MonitoringTab = () => {
   });
 
   const { data: admins, loading: userLoading } = useStaticMeteorData({
-    query: adminUsers,
-    params: { roles: [ROLES.ADMIN], $body: { name: 1 } },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      firstName: 1,
+      office: 1,
+      $options: { sort: { firstName: 1 } },
+    },
   });
   const {
     data: referringOrganisations,
     loading: orgLoading,
   } = useStaticMeteorData({
-    query: adminOrganisations,
-    params: { hasReferredUsers: true, $body: { name: 1 } },
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { referredUsersCount: { $gte: 1 } },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
   });
 
   if (userLoading || orgLoading) {
@@ -73,8 +83,8 @@ const MonitoringTab = () => {
         }}
       />
 
-      <h2 className="text-center">Activité</h2>
-      <MonitoringActivity />
+      <MonitoringActivities />
+      {/* <UnsuccessfulReasons /> */}
     </div>
   );
 };

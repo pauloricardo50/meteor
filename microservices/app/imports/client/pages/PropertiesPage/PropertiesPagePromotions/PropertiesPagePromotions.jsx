@@ -1,6 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+
 import PromotionDetail from './PromotionDetail';
 import PromotionOptionDetail from './PromotionOptionDetail';
 
@@ -31,13 +32,12 @@ const PropertiesPagePromotions = ({
     <div className="promotion-options">
       {promotionOptions
         .sort(
-          ({ priority: priority1 }, { priority: priority2 }) =>
+          ({ priorityOrder: priority1 }, { priorityOrder: priority2 }) =>
             priority1 - priority2,
         )
         .map(promotionOption => (
           <PromotionOptionDetail
             promotionOption={promotionOption}
-            loanId={loanId}
             key={promotionOption._id}
           />
         ))}

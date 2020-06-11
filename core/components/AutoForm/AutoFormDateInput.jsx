@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import AutoFormTextInput from './AutoFormTextInput';
 import DatePicker from '../DateInput/DatePicker';
+import AutoFormTextInput from './AutoFormTextInput';
 
 class AutoFormDateInput extends Component {
   constructor() {
@@ -11,27 +11,27 @@ class AutoFormDateInput extends Component {
   }
 
   render() {
-    const { inputProps } = this.props;
+    const { InputProps } = this.props;
     const { focused } = this.state;
 
     return (
       <AutoFormTextInput
         {...this.props}
         showValidIconOnChange
-        savingIconStyle={{ top: 10 }}
-        inputProps={{
-          ...inputProps,
-          date: true,
-          inputType: 'date',
-          inputComponent: DatePicker,
-          // onDateChange: date => onChange(date ? date.toDate() : undefined, id),
-          onFocusChange: ({ focused: nextFocused }) =>
-            this.setState({ focused: nextFocused }),
-          focused,
+        savingIconStyle={{ top: 2 }}
+        inputComponent={DatePicker}
+        InputProps={{
+          ...InputProps,
+          inputProps: {
+            onFocusChange: ({ focused: nextFocused }) =>
+              this.setState({ focused: nextFocused }),
+            focused,
+          },
           placeholder: null,
           notched: true,
+          date: true,
         }}
-        inputLabelProps={{ shrink: true }}
+        InputLabelProps={{ shrink: true }}
       />
     );
   }

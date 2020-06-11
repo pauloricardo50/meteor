@@ -1,7 +1,8 @@
+import React from 'react';
 import { compose, mapProps, withProps } from 'recompose';
 
-import { PROPERTY_DOCUMENTS } from 'core/api/constants';
-import { withSmartQuery } from '../../api';
+import { withSmartQuery } from '../../api/containerToolkit';
+import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
 import { userProperty } from '../../api/properties/queries';
 
 const getPropertyDocuments = property => {
@@ -17,11 +18,12 @@ export default compose(
     simple,
     loan,
   })),
+  Component => props => <Component {...props} key={props.propertyId} />,
   withSmartQuery({
     query: userProperty,
     params: ({ propertyId }) => ({ _id: propertyId }),
     // Don't refetch this since it will get the opengraph data
-    queryOptions: { reactive: false, single: true, shouldRefetch: () => false },
+    queryOptions: { single: true },
     dataName: 'property',
   }),
   withProps(({ property }) => ({

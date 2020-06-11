@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
+import { ERROR_CODES, LOT_ERRORS } from '../../errors';
 import CollectionService from '../../helpers/server/CollectionService';
-import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import { LOT_ERRORS, ERROR_CODES } from '../../errors';
 import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
+import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import Lots from '../lots';
 
 export class LotService extends CollectionService {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
 import Icon from 'core/components/Icon/Icon';
-import { adminLoanInsert } from 'core/api/loans/index';
-import AllTasksTable from '../../components/TasksTable/AllTasksTable';
+import T from 'core/components/Translation';
+
+import LoanAdder from '../../components/LoanSummaryList/LoanAdder';
+import TasksTableWithPriority from '../../components/TasksDataTable/TasksTableWithPriority';
 import { UserAdder } from '../../components/UserDialogForm';
 import AdminDashboardStats from './AdminDashboardStats';
 
@@ -23,23 +23,13 @@ const AdminDashboardPage = ({ currentUser, history }) => (
 
       <div className="flex space-children">
         <UserAdder currentUser={currentUser} />
-        <Button
-          primary
-          raised
-          onClick={() =>
-            adminLoanInsert
-              .run({})
-              .then(loanId => history.push(`/loans/${loanId}`))
-          }
-        >
-          Nouvelle hypothèque
-        </Button>
+        <LoanAdder onSuccess={loanId => history.push(`/loans/${loanId}`)} />
       </div>
 
       <h2 className="text-center">
         <T id="AdminDashboardPage.tasks" />
       </h2>
-      <AllTasksTable withPriority />
+      <TasksTableWithPriority />
     </section>
   </>
 );

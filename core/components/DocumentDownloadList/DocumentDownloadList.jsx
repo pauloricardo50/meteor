@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { shouldDisplayFile } from 'core/api/files/fileHelpers';
-import Icon from '../Icon';
+import { shouldDisplayFile } from '../../api/files/fileHelpers';
 import Downloader from '../Downloader';
+import Icon from '../Icon';
 
 const getIconForFileType = key => {
   const extension = key.split('.').slice(-1)[0];

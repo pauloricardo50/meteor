@@ -1,21 +1,21 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
 
+import { OWNER, PURCHASE_TYPE } from '../api/loans/loanConstants';
 import {
-  PROPERTY_TYPE,
-  PURCHASE_TYPE,
-  OWNER,
-  RESIDENCE_TYPE,
-  MINERGIE_CERTIFICATE,
-  HOUSE_TYPE,
   FLAT_TYPE,
+  HOUSE_TYPE,
+  MINERGIE_CERTIFICATE,
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
   VOLUME_NORM,
-} from 'core/api/constants';
-import CantonField from 'core/components/CantonField/CantonField';
+} from '../api/properties/propertyConstants';
+import CantonField from '../components/CantonField/CantonField';
+import CityField from '../components/CityField/CityField';
 import {
-  getSortedCountriesCodes,
   COMMON_COUNTRIES,
-} from 'core/utils/countriesUtils';
+  getSortedCountriesCodes,
+} from '../utils/countriesUtils';
 
 const mapInput = input => {
   const intlSafeObject = { ...input };
@@ -140,6 +140,18 @@ export const getPropertyArray = ({ loan, property }) => {
   const array = [
     { id: 'value', type: 'textInput', money: true },
     {
+      id: 'originalValue',
+      type: 'textInput',
+      money: true,
+      condition: r.purchaseType === PURCHASE_TYPE.REFINANCING,
+    },
+    {
+      id: 'originalPurchaseYear',
+      type: 'textInput',
+      number: true,
+      condition: r.purchaseType === PURCHASE_TYPE.REFINANCING,
+    },
+    {
       id: 'investmentRent',
       type: 'textInput',
       money: true,
@@ -187,8 +199,9 @@ export const getPropertyArray = ({ loan, property }) => {
       type: 'textInput',
     },
     {
+      type: 'custom',
       id: 'city',
-      type: 'textInput',
+      component: <CityField doc={property} />,
     },
     {
       id: 'country',

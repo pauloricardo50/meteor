@@ -1,5 +1,6 @@
 import ogs from 'open-graph-scraper';
-import SlackService from 'core/api/slack/server/SlackService';
+
+import { logError } from '../api/errorLogger/methodDefinitions';
 
 export const getOpenGraphMeta = url => {
   const options = { url, timeout: 4000 };
@@ -7,7 +8,7 @@ export const getOpenGraphMeta = url => {
     .then(results => results.data)
     .catch(error => {
       if (error) {
-        SlackService.sendError({
+        logError.run({
           error,
           additionalData: ['getOpenGraphMeta error', url, options],
         });

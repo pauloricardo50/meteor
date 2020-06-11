@@ -2,19 +2,18 @@ import { Meteor } from 'meteor/meteor';
 
 import { Component } from 'react';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
-import { analyticsPage } from 'core/api/methods';
-
-import { getCookie, setCookie, parseCookies } from 'core/utils/cookiesHelpers';
-import { getMatchingPath } from 'core/api/analytics/helpers';
+import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
+import { getMatchingPath } from '../../api/analytics/helpers';
+import { analyticsPage } from '../../api/analytics/methodDefinitions';
+import { getCookie, parseCookies, setCookie } from '../../utils/cookiesHelpers';
 import { impersonate } from '../Impersonate/ImpersonatePage/ImpersonatePage';
 
 export default class HistoryWatcher extends Component {
   componentDidMount() {
     const { history } = this.props;
     this.generateTrackingId();
-    this.loadPage(history.location.pathname);
-    this.unlisten = history.listen(({ pathname }) => this.loadPage(pathname));
+    this.loadPage(history.location);
+    this.unlisten = history.listen(location => this.loadPage(location));
 
     if (Meteor.isDevelopment && !(Meteor.isTest || Meteor.isAppTest)) {
       const adminId = sessionStorage.getItem('dev_impersonate_adminId');
@@ -54,7 +53,8 @@ export default class HistoryWatcher extends Component {
       history: this.props.history,
     });
 
-  loadPage(pathname) {
+  loadPage(location) {
+    const { pathname } = location;
     const {
       path,
       route,
@@ -72,6 +72,12 @@ export default class HistoryWatcher extends Component {
       queryParams: params,
       queryString,
     });
+
+    if (window.gtag) {
+      window.gtag('config', window.GA_TAG, {
+        page_path: location.pathname + location.search,
+      });
+    }
   }
 
   render() {

@@ -1,18 +1,19 @@
 import '../shared-startup';
 import './init';
-
-import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
-
 import 'core/api/api';
 import 'core/api/client/api';
-
 // Put admin-only collections here for them to work on the client in queries
 import 'core/api/analysisReports';
-
 import 'core/startup/accounts-config';
 import './css';
 import 'react-dates/initialize'; // Fix issue #750
+import 'core/startup/client/report-reconnects';
+
+import { Meteor } from 'meteor/meteor';
+
+import React from 'react';
+import { render } from 'react-dom';
+
 import AdminRouter from './AdminRouter';
 
 /**
@@ -30,7 +31,7 @@ const start = testElement => {
   }
 
   // Render react-router routes
-  render(AdminRouter(), testElement || document.getElementById('react-root'));
+  render(<AdminRouter />, testElement || document.getElementById('react-root'));
 };
 
 export default start;

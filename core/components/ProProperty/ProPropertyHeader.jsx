@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { PROPERTY_DOCUMENTS, COLLECTIONS } from 'core/api/constants';
-import { Money } from '../Translation';
-import Icon from '../Icon';
+import { PROPERTY_DOCUMENTS } from '../../api/files/fileConstants';
+import Loans from '../../api/loans';
+import ExternalUrl from '../ExternalUrl';
 import ImageCarrousel from '../ImageCarrousel';
-import ProPropertyRecap from './ProPropertyRecap';
+import { Money } from '../Translation';
 import UpdateField from '../UpdateField';
+import ProPropertyRecap from './ProPropertyRecap';
 
 const getImages = (documents = {}, imageUrls = []) => {
   let images = [];
@@ -65,7 +66,7 @@ const ProPropertyheader = ({ property, loan }) => {
             <UpdateField
               doc={loan}
               fields={['residenceType']}
-              collection={COLLECTIONS.LOANS_COLLECTION}
+              collection={Loans}
               className="residence-type-setter"
             />
           )}
@@ -76,18 +77,7 @@ const ProPropertyheader = ({ property, loan }) => {
           </p>
         )}
         <ProPropertyRecap property={property} />
-        {externalUrl && (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={externalUrl}
-            className="card1 card-top card-hover flex-col center external-link"
-          >
-            <Icon type="openInNew" className="external-link-icon" size={40} />
-            {ogSiteName && <h2>{ogSiteName}</h2>}
-            <h4 className="secondary">Ouvrir site externe</h4>
-          </a>
-        )}
+        {externalUrl && <ExternalUrl description={ogSiteName} />}
       </div>
       <ImageCarrousel images={getImages(documents, imageUrls)} />
     </div>

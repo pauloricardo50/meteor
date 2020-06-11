@@ -1,25 +1,29 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import { IntlProvider } from 'react-intl';
 import { MemoryRouter } from 'react-router-dom';
-import { IntlProvider, intlShape } from 'react-intl';
 
-import { mount } from './enzyme';
-import { getUserLocale, getFormats } from '../localization';
 import messages from '../../lang/fr.json';
+import { getFormats, getUserLocale } from '../localization';
+import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = ({ Component, props = {}, withRouter, withStore }) => {
   const customMountData = {};
-  const intlProvider = new IntlProvider({
-    locale: getUserLocale(),
-    messages,
-    formats: getFormats(),
-    defaultLocale: 'fr',
-  });
-  const { intl } = intlProvider.getChildContext();
 
-  let testComponent = <Component {...props} />;
+  const locale = getUserLocale();
+
+  let testComponent = (
+    <IntlProvider
+      locale={locale}
+      messages={messages}
+      formats={getFormats()}
+      defaultLocale="fr-CH"
+    >
+      <Component {...props} />
+    </IntlProvider>
+  );
 
   if (withRouter) {
     testComponent = (
@@ -42,10 +46,7 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
   }
 
   return {
-    mountedComponent: mount(testComponent, {
-      context: { intl },
-      childContextTypes: { intl: intlShape },
-    }),
+    mountedComponent: mount(testComponent),
     customMountData,
   };
 };

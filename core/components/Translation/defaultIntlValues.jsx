@@ -8,7 +8,8 @@ const defaultIntlValues = {
       <br />
     </span>
   ),
-  purchaseType: '',
+  // For some "select" strings that need a default value
+  purchaseType: 'ACQUISITION',
   name: '',
 };
 

@@ -1,10 +1,10 @@
 import SecurityService from '../../security';
-import InterestRatesService from './InterestRatesService';
 import {
   interestRatesInsert,
   interestRatesRemove,
   interestRatesUpdate,
 } from '../methodDefinitions';
+import InterestRatesService from './InterestRatesService';
 
 interestRatesInsert.setHandler((context, { interestRates }) => {
   SecurityService.checkCurrentUserIsAdmin();

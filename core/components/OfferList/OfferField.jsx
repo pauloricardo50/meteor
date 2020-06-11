@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T, IntlNumber } from '../Translation';
+import { IntlNumber, T } from '../Translation';
 
 const OfferField = ({
   offer,

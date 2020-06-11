@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Table, { ORDER } from 'core/components/Table';
-import InterestRatesTableContainer from './InterestRatesTableContainer';
+
 import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
+import InterestRatesTableContainer from './InterestRatesTableContainer';
 
 const InterestRatesTable = ({
   rows,

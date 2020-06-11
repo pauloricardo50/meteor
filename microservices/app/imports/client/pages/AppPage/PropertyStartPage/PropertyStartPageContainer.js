@@ -1,15 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 
-import { compose, withProps, lifecycle } from 'recompose';
+import { compose, lifecycle, withProps } from 'recompose';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { anonymousProperty } from 'core/api/properties/queries';
-import { createRoute } from 'core/utils/routerUtils';
-import { anonymousLoanInsert, userLoanInsert } from 'core/api/methods';
-import { LOCAL_STORAGE_REFERRAL } from 'core/api/constants';
-import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { parseCookies } from 'core/utils/cookiesHelpers';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
+import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
+import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
+import {
+  anonymousLoanInsert,
+  userLoanInsert,
+} from 'core/api/loans/methodDefinitions';
+import { anonymousProperty } from 'core/api/properties/queries';
+import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
+import { parseCookies } from 'core/utils/cookiesHelpers';
+import { createRoute } from 'core/utils/routerUtils';
+
 import APP_ROUTES from '../../../../startup/client/appRoutes';
 
 export default compose(
@@ -26,11 +30,8 @@ export default compose(
         totalValue: 1,
       },
     }),
-    queryOptions: {
-      single: true,
-      shouldRefetch: ({ propertyId }, { propertyId: nextPropertyId }) =>
-        nextPropertyId !== propertyId,
-    },
+    queryOptions: { single: true },
+    deps: ({ propertyId }) => [propertyId],
     dataName: 'anonymousProperty',
     renderMissingDoc: false,
     refetchOnMethodCall: false,
@@ -42,8 +43,8 @@ export default compose(
       const { currentUser, history, propertyId } = this.props;
       if (currentUser) {
         const { loans = [] } = currentUser;
-        const loanWithProperty = loans.find(({ properties }) =>
-          properties.some(({ _id }) => _id === propertyId),
+        const loanWithProperty = loans.find(({ propertyIds }) =>
+          propertyIds.some(_id => _id === propertyId),
         );
 
         if (loanWithProperty) {

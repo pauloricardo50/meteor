@@ -2,14 +2,14 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import { createRoute } from '../../../utils/routerUtils';
-import { getUserNameAndOrganisation } from '../../../api/helpers';
-import { proPropertyUsers } from '../../../api/properties/queries';
 import { withSmartQuery } from '../../../api/containerToolkit';
-import { removeProFromProperty } from '../../../api';
-import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';
-import ImpersonateLink from '../../Impersonate/ImpersonateLink';
+import { getUserNameAndOrganisation } from '../../../api/helpers';
+import { removeProFromProperty } from '../../../api/properties/methodDefinitions';
+import { proPropertyUsers } from '../../../api/properties/queries';
+import { createRoute } from '../../../utils/routerUtils';
 import IconButton from '../../IconButton/IconButton';
+import ImpersonateLink from '../../Impersonate/ImpersonateLink';
+import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';
 import T from '../../Translation';
 
 const columnOptions = ({ permissions }) => {
@@ -93,8 +93,16 @@ export default compose(
   withRouter,
   withSmartQuery({
     query: proPropertyUsers,
-    params: ({ property: { _id: propertyId } }) => ({ propertyId }),
-    queryOptions: { reactive: false },
+    params: ({ property: { _id: propertyId } }) => ({
+      propertyId,
+      $body: {
+        users: {
+          email: 1,
+          name: 1,
+          organisations: { name: 1 },
+        },
+      },
+    }),
     dataName: 'proUsers',
   }),
   withProps(

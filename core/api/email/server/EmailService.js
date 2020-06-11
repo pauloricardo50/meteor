@@ -1,22 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 
-import ActivityService from 'core/api/activities/server/ActivityService';
-import S3Service from 'core/api/files/server/S3Service';
+import ActivityService from '../../activities/server/ActivityService';
+import S3Service from '../../files/server/S3Service';
 import UserService from '../../users/server/UserService';
+import { FROM_EMAIL, FROM_NAME } from '../emailConstants';
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
 import {
-  sendMandrillTemplate,
   getMandrillTemplate,
   getSimpleMandrillTemplate,
   renderMandrillTemplate,
+  sendMandrillTemplate,
 } from './mandrill';
-import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
 export const skipEmails =
   (Meteor.isDevelopment || Meteor.isDevEnvironment || Meteor.isStaging) &&
   !isEmailTestEnv;
+
 // export const skipEmails = false;
 
 class EmailService {
@@ -28,7 +29,7 @@ class EmailService {
       params,
     });
     const template = getMandrillTemplate(templateOptions);
-    return sendMandrillTemplate(template).then(response => {
+    return sendMandrillTemplate(template, address).then(response => {
       this.emailLogger({ emailId, address, template, response });
       this.addEmailActivity({ address, template, emailId, response });
     });

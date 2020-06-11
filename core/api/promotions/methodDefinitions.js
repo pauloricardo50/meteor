@@ -1,4 +1,5 @@
 import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const promotionInsert = new Method({
@@ -85,14 +86,6 @@ export const editPromotionLoan = new Method({
   },
 });
 
-export const reuseConstructionTimeline = new Method({
-  name: 'reuseConstructionTimeline',
-  params: {
-    fromPromotionId: String,
-    toPromotionId: String,
-  },
-});
-
 export const toggleNotifications = new Method({
   name: 'toggleNotifications',
   params: {
@@ -115,4 +108,24 @@ export const promotionSetStatus = new Method({
     promotionId: String,
     status: String,
   },
+});
+
+export const addPromotionLotGroup = new Method({
+  name: 'addPromotionLotGroup',
+  params: { promotionId: String, label: String },
+});
+
+export const removePromotionLotGroup = new Method({
+  name: 'removePromotionLotGroup',
+  params: { promotionId: String, promotionLotGroupId: String },
+});
+
+export const updatePromotionLotGroup = new Method({
+  name: 'updatePromotionLotGroup',
+  params: { promotionId: String, promotionLotGroupId: String, label: String },
+});
+
+export const updatePromotionTimeline = new Method({
+  name: 'updatePromotionTimeline',
+  params: { promotionId: String, constructionTimeline: Object },
 });

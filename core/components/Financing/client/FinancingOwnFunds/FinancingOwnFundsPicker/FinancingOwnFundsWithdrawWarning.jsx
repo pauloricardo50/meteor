@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { OWN_FUNDS_USAGE_TYPES, OWN_FUNDS_TYPES } from 'core/api/constants';
-import Icon from 'core/components/Icon';
-import { MIN_INSURANCE2_WITHDRAW } from 'core/config/financeConstants';
-import { toMoney } from 'core/utils/conversionFunctions';
+import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import { MIN_INSURANCE2_WITHDRAW } from '../../../../../config/financeConstants';
+import { toMoney } from '../../../../../utils/conversionFunctions';
+import Icon from '../../../../Icon';
 import T from '../../../../Translation';
 
 const FinancingOwnFundsWithdrawWarning = ({ usageType, type, value }) => {

@@ -17,13 +17,12 @@ export default class Navs extends Component {
 
   render() {
     const { open } = this.state;
-    const { shouldShowSideNav, currentUser } = this.props;
+    const { shouldShowSideNav } = this.props;
 
     return (
       <div className="navs">
         <AppTopNav
           shouldShowSideNav={shouldShowSideNav}
-          currentUser={currentUser}
           toggleDrawer={this.handleToggle}
         />
 

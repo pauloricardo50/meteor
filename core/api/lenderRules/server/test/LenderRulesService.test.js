@@ -1,10 +1,10 @@
+import { Factory } from 'meteor/dburles:factory';
+
 /* eslint-env mocha */
 import { expect } from 'chai';
 import jsonLogic from 'json-logic-js';
 
-import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { EXPENSE_TYPES } from '../../lenderRulesConstants';
 import LenderRulesService from '../LenderRulesService';
@@ -30,6 +30,14 @@ describe('LenderRulesService', () => {
       });
 
       expect(lenderRules.length).to.equal(3);
+    });
+
+    it('throws if you try to do it twice', () => {
+      LenderRulesService.initialize({ organisationId });
+
+      expect(() => LenderRulesService.initialize({ organisationId })).to.throw(
+        '2 fois',
+      );
     });
   });
 

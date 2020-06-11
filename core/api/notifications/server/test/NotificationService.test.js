@@ -1,13 +1,14 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import TaskService from 'core/api/tasks/server/TaskService';
-import ActivityService from 'core/api/activities/server/ActivityService';
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import NotificationService from '../NotificationService';
+import { resetDatabase } from '../../../../utils/testHelpers';
+import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
+import ActivityService from '../../../activities/server/ActivityService';
 import generator from '../../../factories/server';
+import TaskService from '../../../tasks/server/TaskService';
+import { TASK_STATUS } from '../../../tasks/taskConstants';
+import { ROLES } from '../../../users/userConstants';
+import NotificationService from '../NotificationService';
 
 describe('NotificationService', () => {
   const tomorrow = new Date();
@@ -96,15 +97,15 @@ describe('NotificationService', () => {
       expect(notifications[1].taskLink._id).to.equal('b');
     });
 
-    it('adds all admins on a due task notification if no one is assigned to it', () => {
+    it('adds all advisors on a due task notification if no one is assigned to it', () => {
       generator({
         users: [
-          { _id: 'userId1', _factory: 'admin' },
-          { _id: 'userId2', _factory: 'admin' },
-          { _id: 'userId3', _factory: 'admin' },
-          { _id: 'userId4', _factory: 'user' },
-          { _id: 'userId5', _factory: 'pro' },
-          { _id: 'userId6', _factory: 'dev' },
+          { _id: 'userId1', _factory: ROLES.ADVISOR },
+          { _id: 'userId2', _factory: ROLES.ADVISOR },
+          { _id: 'userId3', _factory: ROLES.ADVISOR },
+          { _id: 'userId4', _factory: ROLES.USER },
+          { _id: 'userId5', _factory: ROLES.PRO },
+          { _id: 'userId6', _factory: ROLES.DEV },
         ],
         tasks: {
           _factory: null,

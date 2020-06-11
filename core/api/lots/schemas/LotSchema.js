@@ -1,6 +1,12 @@
 import SimpleSchema from 'simpl-schema';
+
+import {
+  cacheField,
+  createdAt,
+  moneyField,
+  updatedAt,
+} from '../../helpers/sharedSchemas';
 import { LOT_TYPES } from '../lotConstants';
-import { createdAt, updatedAt, moneyField } from '../../helpers/sharedSchemas';
 
 const LotSchema = new SimpleSchema({
   createdAt,
@@ -16,6 +22,8 @@ const LotSchema = new SimpleSchema({
     ...moneyField,
     optional: false,
   },
+  promotionCache: { type: Array, optional: true },
+  'promotionCache.$': cacheField,
 });
 
 export default LotSchema;

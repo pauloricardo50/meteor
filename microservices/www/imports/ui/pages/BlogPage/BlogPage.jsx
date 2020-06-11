@@ -1,9 +1,10 @@
 import React from 'react';
 import { lifecycle } from 'recompose';
 
-import T from 'core/components/Translation';
-import PageHead from 'core/components/PageHead';
 import { fetchBlogPosts } from 'core/api/blog';
+import PageHead from 'core/components/PageHead';
+import T from 'core/components/Translation';
+
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 import BlogList from './BlogList';

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import Icon from 'core/components/Icon/Icon';
+import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { CONTACTS_COLLECTION } from 'core/api/constants';
+import Icon from 'core/components/Icon/Icon';
+
 import ContactsPageContainer from './ContactsPageContainer';
 import ContactsTable from './ContactsTable/ContactsTable';
 

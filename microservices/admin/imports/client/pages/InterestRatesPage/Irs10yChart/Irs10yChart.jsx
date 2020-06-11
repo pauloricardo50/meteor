@@ -3,6 +3,7 @@ import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
 
 import Chart from 'core/components/charts/Chart';
+
 import Irs10yChartContainer from './Irs10yChartContainer';
 
 const Irs10yChart = ({ title, lines, config }) => (

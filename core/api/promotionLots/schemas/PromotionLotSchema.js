@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
+
+import { cacheField, createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
-import { createdAt, updatedAt, cacheField } from '../../helpers/sharedSchemas';
 
 const PromotionLotSchema = new SimpleSchema({
   createdAt,
@@ -22,6 +23,9 @@ const PromotionLotSchema = new SimpleSchema({
   // https://github.com/Herteby/denormalize/issues/17
   promotionCache: { type: Array, optional: true },
   'promotionCache.$': cacheField,
+  promotionLotGroupIds: { type: Array, optional: true },
+  'promotionLotGroupIds.$': String,
+  loanCount: { type: Number, optional: true },
 });
 
 export default PromotionLotSchema;

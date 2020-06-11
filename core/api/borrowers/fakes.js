@@ -1,26 +1,23 @@
-import { OTHER_INCOME, EXPENSES } from './borrowerConstants';
-import { RESIDENCE_TYPE } from '../constants';
+import { RESIDENCE_TYPE } from '../properties/propertyConstants';
+import { EXPENSES, OTHER_INCOME } from './borrowerConstants';
 
 export const emptyFakeBorrower = {};
 
 export const fakeBorrower = {
-  firstName: 'Marie',
-  lastName: 'Rochat',
-  gender: 'F',
   address1: 'Chemin du Mont 3',
-  zipCode: 1400,
-  city: 'Yverdon-les-Bains',
-  citizenships: 'Suisse, Français',
   birthDate: '1980-03-01',
-  birthPlace: 'Lausanne',
-  civilStatus: 'SINGLE',
   childrenCount: 2,
+  citizenships: 'Suisse, Français',
+  city: 'Yverdon-les-Bains',
+  civilStatus: 'SINGLE',
   company: 'Deloitte',
-  personalBank: 'BCGE',
+  firstName: 'Marie',
+  gender: 'F',
   isSwiss: true,
   isUSPerson: false,
-  worksForOwnCompany: false,
+  lastName: 'Rochat',
   sameAddress: true,
+  zipCode: 1400,
 };
 
 export const completeFakeBorrower = {

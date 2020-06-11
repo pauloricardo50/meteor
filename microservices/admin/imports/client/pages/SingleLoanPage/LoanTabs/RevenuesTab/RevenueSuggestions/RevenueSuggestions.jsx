@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { Percent, Money } from 'core/components/Translation';
-import { REVENUE_TYPES } from 'core/api/constants';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { COMMISSION_RATES_TYPE } from 'core/api/commissionRates/commissionRateConstants';
+import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
+import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
+import { Money, Percent } from 'core/components/Translation';
+import useMeteorData from 'core/hooks/useMeteorData';
 
 const getLastDateinXMonths = offset => {
   const inXMonths = new Date();
@@ -13,10 +15,53 @@ const getLastDateinXMonths = offset => {
 
 const toPercentString = value => `${value * 100}%`;
 
-const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
-  const { lenders, structure, revenues } = loan;
+const useData = loanId => {
+  const { data: loan, isInitialLoad } = useMeteorData({
+    query: LOANS_COLLECTION,
+    params: {
+      $filters: { _id: loanId },
+      lenders: {
+        organisation: { name: 1, commissionRates: { type: 1, rates: 1 } },
+      },
+      structure: 1,
+      userCache: 1,
+    },
+    type: 'single',
+  });
+  const { data: referralOrganisation } = useMeteorData(
+    {
+      query: !isInitialLoad && ORGANISATIONS_COLLECTION,
+      params: {
+        $filters: {
+          _id: loan?.userCache?.referredByOrganisationLink || 'none',
+        },
+        name: 1,
+        commissionRate: 1,
+        enabledCommissionTypes: 1,
+      },
+      type: 'single',
+    },
+    [loan],
+  );
+
+  return { loan, referralOrganisation, isInitialLoad };
+};
+
+const RevenueSuggestions = ({ loanId, suggestRevenue }) => {
+  const { loan, referralOrganisation, isInitialLoad } = useData(loanId);
+
+  if (isInitialLoad) {
+    return <div>Loading...</div>;
+  }
+
+  const { lenders, structure } = loan;
   const { wantedLoan } = structure;
   const hasReferral = !!referralOrganisation;
+  const referralIsCommissionned =
+    hasReferral &&
+    referralOrganisation?.enabledCommissionTypes?.includes(
+      REVENUE_TYPES.MORTGAGE,
+    );
 
   if (!lenders || !lenders.length) {
     return (
@@ -31,8 +76,13 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
         {lenders.map(lender => {
           const { organisation } = lender;
           const { commissionRates = [] } = organisation;
-          const hasCommissionRate = commissionRates.length === 1;
-          const commission = hasCommissionRate && commissionRates[0].rate;
+          const [commissionCommissionRates] = commissionRates.filter(
+            ({ type }) => type === COMMISSION_RATES_TYPE.COMMISSIONS,
+          );
+          const hasCommissionRate =
+            commissionCommissionRates?.rates?.length === 1;
+          const commission =
+            hasCommissionRate && commissionCommissionRates.rates[0].rate;
           const amount = commission * wantedLoan;
 
           return (
@@ -47,7 +97,7 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
                   expectedAt: getLastDateinXMonths(3),
                   amount: hasCommissionRate ? amount : 0,
                   sourceOrganisationLink: { _id: lender.organisation._id },
-                  organisationLinks: hasReferral
+                  organisationLinks: referralIsCommissionned
                     ? [
                         {
                           _id: referralOrganisation._id,
@@ -83,8 +133,12 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
               )}
               <div>
                 Retrocession pour:{' '}
-                <b>{hasReferral ? referralOrganisation.name : 'Personne'}</b>{' '}
-                {hasReferral && (
+                <b>
+                  {referralIsCommissionned
+                    ? referralOrganisation.name
+                    : 'Personne'}
+                </b>{' '}
+                {referralIsCommissionned && (
                   <Percent value={referralOrganisation.commissionRate} />
                 )}
               </div>
@@ -96,17 +150,4 @@ const RevenueSuggestions = ({ loan, suggestRevenue, referralOrganisation }) => {
   );
 };
 
-export default withSmartQuery({
-  query: adminOrganisations,
-  params: ({ loan: { user } }) => ({
-    _id:
-      (user &&
-        user.referredByOrganisation &&
-        user.referredByOrganisation._id) ||
-      'none',
-    $body: { name: 1, commissionRate: 1 },
-  }),
-  dataName: 'referralOrganisation',
-  queryOptions: { single: true },
-  renderMissingDoc: false,
-})(RevenueSuggestions);
+export default RevenueSuggestions;

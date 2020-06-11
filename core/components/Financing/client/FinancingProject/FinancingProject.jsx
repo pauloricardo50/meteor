@@ -1,62 +1,82 @@
 import React from 'react';
 
-import T from 'core/components/Translation';
-import FinancingSection, {
-  InputAndSlider,
-  CalculatedValue,
-} from '../FinancingSection';
-import FinancingPropertyPicker from './FinancingPropertyPicker';
-import FinancingProjectFees from './FinancingProjectFees';
+import { PURCHASE_TYPE } from '../../../../api/loans/loanConstants';
 import Calculator from '../../../../utils/Calculator';
+import T from '../../../Translation';
+import FinancingSection, {
+  CalculatedValue,
+  FinancingDateField,
+  FinancingField,
+} from '../FinancingSection';
+import FinancingProjectFees from './FinancingProjectFees';
+import FinancingPropertyPicker from './FinancingPropertyPicker';
 
 const MAX_NOTARY_FEES_RATE = 0.1;
 
-const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
+const calculateDefaultNotaryFees = data => Calculator.getNotaryFees(data).total;
 
 const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
   MAX_NOTARY_FEES_RATE;
 
-const FinancingProject = props => (
-  <FinancingSection
-    summaryConfig={[
-      {
-        id: 'project',
-        label: (
-          <span className="section-title">
-            <T id="FinancingProject.title" />
-          </span>
-        ),
-        Component: CalculatedValue,
-        value: Calculator.getProjectValue,
-      },
-    ]}
-    detailConfig={[
-      { Component: FinancingPropertyPicker, id: 'propertyId' },
-      {
-        Component: InputAndSlider,
-        id: 'propertyValue',
-        calculatePlaceholder: data => Calculator.selectPropertyValue(data),
-        max: 100000000,
-        allowUndefined: true,
-        forceUndefined: true,
-        maxSlider: 5000000,
-      },
-      {
-        Component: FinancingProjectFees,
-        id: 'notaryFees',
-        calculatePlaceholder: calculateDefaultNotaryFees,
-        max: calculateMaxNotaryFees,
-        allowUndefined: true,
-      },
-      {
-        Component: InputAndSlider,
-        id: 'propertyWork',
-        max: 10000000,
-        maxSlider: 1000000,
-      },
-    ]}
-  />
-);
+const FinancingProject = ({ purchaseType }) => {
+  const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
+
+  return (
+    <FinancingSection
+      summaryConfig={[
+        {
+          id: 'project',
+          label: (
+            <span className="section-title">
+              {isRefinancing ? (
+                <T id="FinancingProject.refinancing.title" />
+              ) : (
+                <T id="FinancingProject.title" />
+              )}
+            </span>
+          ),
+          Component: CalculatedValue,
+          value: isRefinancing
+            ? Calculator.selectPropertyValue
+            : Calculator.getProjectValue,
+        },
+      ]}
+      detailConfig={[
+        {
+          Component: FinancingPropertyPicker,
+          id: 'propertyId',
+        },
+        {
+          Component: FinancingField,
+          id: 'propertyValue',
+          calculatePlaceholder: data => Calculator.selectPropertyValue(data),
+          max: 100000000,
+          allowUndefined: true,
+          forceUndefined: true,
+        },
+        {
+          Component: FinancingField,
+          id: 'propertyWork',
+          max: 10000000,
+          condition: !isRefinancing,
+        },
+        {
+          Component: FinancingProjectFees,
+          id: 'notaryFees',
+          calculatePlaceholder: calculateDefaultNotaryFees,
+          max: calculateMaxNotaryFees,
+          allowUndefined: true,
+          condition: !isRefinancing,
+        },
+        {
+          id: 'refinancingDate',
+          Component: FinancingDateField,
+          condition: isRefinancing,
+        },
+      ]}
+    />
+  );
+};
 
 export default FinancingProject;

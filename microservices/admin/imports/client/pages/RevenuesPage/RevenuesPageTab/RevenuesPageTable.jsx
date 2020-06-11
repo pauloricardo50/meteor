@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 
-import T from 'core/components/Translation';
-import Select from 'core/components/Select';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   REVENUE_STATUS,
   REVENUE_TYPES,
-  ORGANISATIONS_COLLECTION,
-} from 'core/api/constants';
-import MongoSelect from 'core/components/Select/MongoSelect';
+} from 'core/api/revenues/revenueConstants';
 import employees from 'core/arrays/epotekEmployees';
+import Select from 'core/components/Select';
+import MongoSelect from 'core/components/Select/MongoSelect';
+import T from 'core/components/Translation';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+
 import RevenuesTable from '../../../components/RevenuesTable';
 import { revenuesFilter } from './revenuePageHelpers';
 
@@ -83,10 +84,8 @@ const RevenuesPageTable = props => {
         )}
       </div>
       <RevenuesTable
-        displayLoan
-        displayActions
         filterRevenues={() => ({ status, type })}
-        initialOrderBy={2}
+        initialOrderBy="date"
         postFilter={revenues =>
           revenuesFilter({ assignee, referrer, revenues })
         }

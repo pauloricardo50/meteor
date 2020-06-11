@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { sortData, ORDER } from '../tableHelpers';
+import { ORDER, sortData } from '../tableHelpers';
 
 describe('<Table />', () => {
   describe('sortData', () => {

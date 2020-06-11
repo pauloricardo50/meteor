@@ -1,26 +1,30 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import { faPlus } from '@fortawesome/pro-light-svg-icons/faPlus';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import ConfirmMethod from 'core/components/ConfirmMethod';
-import T from 'core/components/Translation';
-import { promotionOptionActivateReservation } from 'core/api/methods';
-import { PROMOTION_OPTION_STATUS } from 'core/api/constants';
-import colors from 'core/config/colors';
-import { getUserNameAndOrganisation } from 'core/api/helpers';
+import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { promotionOptionActivateReservation } from '../../../../api/promotionOptions/methodDefinitions';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
+import colors from '../../../../config/colors';
+import ConfirmMethod from '../../../ConfirmMethod';
+import T from '../../../Translation';
 
-const RequestReservation = ({ promotionOption, promotionLotName, status }) => {
-  const {
-    _id: promotionOptionId,
-    loan: { promotions = [] },
-  } = promotionOption;
+const isApp = Meteor.microservice === 'app';
 
-  const [promotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-    users = [],
-  } = promotion;
+const RequestReservation = ({
+  promotionOption,
+  promotionLotName,
+  status,
+  buttonProps,
+  loan = promotionOption.loan,
+}) => {
+  const { _id: promotionOptionId, loanCache } = promotionOption;
+  const [promotionLink] = loanCache[0].promotionLinks;
+  const { invitedBy } = promotionLink;
+  const [{ users = [] }] = loan.promotions;
 
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });
@@ -37,6 +41,8 @@ const RequestReservation = ({ promotionOption, promotionLotName, status }) => {
         raised: true,
         disabled: status !== PROMOTION_OPTION_STATUS.INTERESTED,
         style: { alignSelf: 'center' },
+        size: 'small',
+        ...buttonProps,
       }}
       title={<T id="PromotionPage.lots.requestReservation.title" />}
       description={
@@ -56,7 +62,7 @@ const RequestReservation = ({ promotionOption, promotionLotName, status }) => {
           </span>
           <T
             id="PromotionPage.lots.requestReservation.description"
-            values={{ promotionLotName, proName }}
+            values={{ promotionLotName, proName, isApp }}
           />
         </div>
       }

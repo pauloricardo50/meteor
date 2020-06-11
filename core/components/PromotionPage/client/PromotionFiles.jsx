@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock } from '@fortawesome/pro-light-svg-icons/faLock';
 
-import { getFileRolesArray } from 'core/api/files/fileHelpers';
-import { FILE_ROLES } from 'core/api/constants';
+import React from 'react';
+import { faLock } from '@fortawesome/pro-light-svg-icons/faLock';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { FILE_ROLES } from '../../../api/files/fileConstants';
+import { getFileRolesArray } from '../../../api/files/fileHelpers';
 import DocumentDownloadList from '../../DocumentDownloadList';
 
 const isAdmin = Meteor.microservice === 'admin';

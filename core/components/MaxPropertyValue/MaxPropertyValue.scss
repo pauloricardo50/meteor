@@ -218,7 +218,7 @@ $footer-height: 64px;
     background-color: $primary;
 
     .calculate {
-      padding: 4px 16px;
+      padding: 2px 12px;
 
       border: 1px solid white;
       border-radius: $border-radius;
@@ -228,10 +228,6 @@ $footer-height: 64px;
     h3,
     h4 {
       color: white;
-
-      @include screen(small) {
-        font-size: 1.3rem;
-      }
     }
 
     h2,

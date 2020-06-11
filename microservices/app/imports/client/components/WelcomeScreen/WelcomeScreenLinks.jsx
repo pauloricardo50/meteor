@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useContext } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard } from '@fortawesome/pro-light-svg-icons/faAddressCard';
+import { faChartLineDown } from '@fortawesome/pro-light-svg-icons/faChartLineDown';
 import { faCogs } from '@fortawesome/pro-light-svg-icons/faCogs';
 import { faHandsHelping } from '@fortawesome/pro-light-svg-icons/faHandsHelping';
-import { faChartLineDown } from '@fortawesome/pro-light-svg-icons/faChartLineDown';
 import { faLanguage } from '@fortawesome/pro-light-svg-icons/faLanguage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import T from 'core/components/Translation';
@@ -86,7 +86,7 @@ const WelcomeScreenLinks = () => {
       }).map(({ icon, label, items }, index) => (
         <div key={index} className="welcome-screen-links-link">
           <FontAwesomeIcon icon={icon} className="icon" />
-          <h4>
+          <h4 className="font-size-5">
             <T id={label} />
           </h4>
           <div className="welcome-screen-links-link-items">

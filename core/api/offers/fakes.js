@@ -41,7 +41,6 @@ const rand = (min, max) => round(Math.random() * (max - min) + min);
 
 export const getRandomOffer = ({ loan }) => {
   const rate1 = rand(0.007, 0.012);
-  const rate2 = rand(0.005, 0.009);
 
   const loanWanted = loan.structures[0].wantedLoan;
   const maxAmountLimited = loanWanted > 100000000 ? 100000000 : loanWanted;

@@ -2,7 +2,6 @@ import {{schema}} from './schemas/{{schemaFile}}';
 import { {{collectionConstant}} } from './{{constantsFile}}';
 import { createCollection } from '../helpers/collectionHelpers';
 
-const {{collection}} = createCollection({{collectionConstant}});
+const {{collection}} = createCollection({{collectionConstant}}, {{schema}});
 
-{{collection}}.attachSchema({{schema}});
 export default {{collection}};

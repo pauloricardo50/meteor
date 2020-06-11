@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import {
-  PROMOTION_LOT_STATUS,
   PROMOTION_LOT_REDUCED_STATUS,
-} from 'core/api/constants';
+  PROMOTION_LOT_STATUS,
+} from './promotionLotConstants';
 import PromotionLots from './promotionLots';
 
 PromotionLots.addReducers({
@@ -50,7 +51,11 @@ PromotionLots.addReducers({
         }
       }
 
-      if ([PROMOTION_LOT_STATUS.SOLD].includes(status)) {
+      if (
+        [PROMOTION_LOT_STATUS.SOLD, PROMOTION_LOT_STATUS.RESERVED].includes(
+          status,
+        )
+      ) {
         return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
       }
 

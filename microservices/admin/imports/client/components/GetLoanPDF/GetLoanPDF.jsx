@@ -1,11 +1,13 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ROLES } from 'core/api/constants';
+import { ROLES } from 'core/api/users/userConstants';
 import Icon from 'core/components/Icon/Icon';
+
 import GetLoanPDFContainer from './GetLoanPDFContainer';
 import PdfDownloadDialog from './PdfDownloadDialog';
 
@@ -25,7 +27,7 @@ const GetLoanPDF = ({ handlePDF, handleHTML, loan }) => (
       loan={loan}
       dialogTitle="Télécharger PDF anonyme"
     />
-    {Meteor.user().roles.includes(ROLES.DEV) && (
+    {Roles.userIsInRole(Meteor.user(), ROLES.DEV) && (
       <PdfDownloadDialog
         onSubmit={values => handleHTML(values)}
         buttonLabel={'<HTML />'}

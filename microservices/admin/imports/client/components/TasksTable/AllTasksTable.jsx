@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { compose, withState } from 'recompose';
 import moment from 'moment';
+import { compose, withState } from 'recompose';
 
-import { withSmartQuery } from 'core/api';
-import { TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
+
 import TasksTable, { taskTableFragment } from './TasksTable';
 
 const getUptoDate = uptoDate => {
@@ -50,6 +51,8 @@ export const withTasksQuery = compose(
       $filters: getQueryFilters({ assignee, status, uptoDate }),
       ...taskTableFragment,
     }),
+    deps: ({ assignee, status, uptoDate }) =>
+      Object.values(getQueryFilters({ assignee, status, uptoDate })),
     queryOptions: { reactive: false, pollingMs: 5000 },
     dataName: 'tasks',
   }),

@@ -1,22 +1,30 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { createRoute } from '../../../../../utils/routerUtils';
 import Chip from '../../../../Material/Chip';
-import Link from '../../../../Link';
 
-const getChipColor = ({ currentId, userId, promotionLots }) => {
-  const attributedTo =
-    promotionLots[0].attributedTo && promotionLots[0].attributedTo.user._id;
+const getChipColor = ({ currentId, userId, promotionLots, loanId }) => {
+  let attributedTo;
+  let isAttributedToUser;
+
+  // TODO: Remove this when attributedTo.user._id is no longer used
+  if (loanId) {
+    attributedTo = promotionLots[0]?.attributedToLink?._id;
+    isAttributedToUser = attributedTo === loanId;
+  } else {
+    attributedTo = promotionLots[0]?.attributedTo?.user?._id;
+    isAttributedToUser = attributedTo === userId;
+  }
   const promotionLotId = promotionLots[0]._id;
+  const isCurrent = currentId === promotionLotId;
 
-  if (attributedTo && attributedTo === userId) {
+  if (isAttributedToUser) {
     return 'success';
   }
-  if (attributedTo && attributedTo !== userId) {
+  if (attributedTo && !isAttributedToUser) {
     return 'error';
   }
-  if (currentId === promotionLotId) {
+  if (isCurrent) {
     return 'primary';
   }
 
@@ -38,43 +46,29 @@ const getTooltip = color => {
 };
 
 const PriorityOrder = ({
-  promotion,
   promotionOptions = [],
   currentId,
   userId,
+  loanId,
 }) => {
-  const { priorityOrder = [] } = promotion.$metadata;
-  const options = priorityOrder.map(promotionOptionId =>
-    promotionOptions.find(({ _id }) => _id === promotionOptionId),
+  const sortedPromotionOptions = promotionOptions.sort(
+    ({ priorityOrder: A }, { priorityOrder: B }) => A - B,
   );
 
   return (
     <div className="priority-order">
-      {options.map(({ _id, name, solvency, promotionLots }) => {
-        const chipColor = getChipColor({ currentId, userId, promotionLots });
+      {sortedPromotionOptions.map(({ _id, name, promotionLots }) => {
+        const chipColor = getChipColor({
+          currentId,
+          userId,
+          promotionLots,
+          loanId,
+        });
 
         return (
-          <Link
-            to={createRoute(
-              '/promotions/:promotionId/promotionLots/:promotionLotId',
-              {
-                promotionId: promotion._id,
-                promotionLotId: promotionLots[0]._id,
-              },
-            )}
-            key={`${_id}${promotionLots[0]._id}`}
-            onClick={event => event.stopPropagation()}
-          >
-            <Tooltip placement="bottom" title={getTooltip(chipColor)}>
-              <Chip
-                clickable
-                label={name}
-                className={chipColor}
-                // icon={<PromotionOptionSolvency solvency={solvency} />}
-                style={{ cursor: 'pointer' }}
-              />
-            </Tooltip>
-          </Link>
+          <Tooltip key={_id} placement="bottom" title={getTooltip(chipColor)}>
+            <Chip label={name} className={chipColor} />
+          </Tooltip>
         );
       })}
     </div>

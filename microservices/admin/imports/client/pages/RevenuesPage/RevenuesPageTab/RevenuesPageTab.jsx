@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { REVENUES_COLLECTION } from 'core/api/constants';
-import Icon from 'core/components/Icon/Icon';
+import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
+import Icon from 'core/components/Icon/Icon';
 import Tabs from 'core/components/Tabs';
 import { createRoute } from 'core/utils/routerUtils';
+
 import RevenueAdder from '../../../components/RevenuesTable/RevenueAdder';
-import RevenuesPageTable from './RevenuesPageTable';
-import RevenuesPageCalendar from './RevenuesPageCalendar';
 import RevenuesDistribution from './RevenuesDistribution';
+import RevenuesPageCalendar from './RevenuesPageCalendar';
+import RevenuesPageTable from './RevenuesPageTable';
 
 const RevenuesPageTab = props => {
   const [open, setOpen] = useState(false);

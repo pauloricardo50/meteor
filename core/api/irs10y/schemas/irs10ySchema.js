@@ -1,8 +1,9 @@
 import SimpleSchema from 'simpl-schema';
+
 import {
   createdAt,
-  updatedAt,
   percentageField,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
 
 const Irs10ySchema = new SimpleSchema({

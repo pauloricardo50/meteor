@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import T from 'core/components/Translation';
 import Box from 'core/components/Box';
-import { makeGenerateBackgroundInfo, BACKGROUND_INFO_TYPE } from './helpers';
+import T from 'core/components/Translation';
+
+import { BACKGROUND_INFO_TYPE, makeGenerateBackgroundInfo } from './helpers';
 
 const makeSchema = loan =>
   new SimpleSchema({
@@ -27,7 +28,7 @@ const makeSchema = loan =>
     organisationId: {
       type: String,
       optional: true,
-      allowedValues: loan.lenders.map(
+      allowedValues: loan.lenders?.map(
         ({ organisation }) => organisation && organisation._id,
       ),
       uniforms: {
@@ -106,44 +107,48 @@ const PdfDownloadDialog = ({
   buttonLabel,
   icon,
   dialogTitle,
-}) => (
-  <AutoFormDialog
-    title={dialogTitle}
-    schema={makeSchema(loan)}
-    onSubmit={onSubmit}
-    buttonProps={{
-      raised: true,
-      primary: true,
-      label: buttonLabel,
-      icon,
-      style: { marginRight: 4 },
-    }}
-    model={{ structureIds: loan.structures.map(({ id }) => id) }}
-    layout={[
-      {
-        Component: Box,
-        title: <h4>Général</h4>,
-        className: 'mb-32',
-        fields: ['structureIds', 'organisationId'],
-      },
-      {
-        Component: Box,
-        title: <h4>Contexte</h4>,
-        layout: [
-          {
-            className: 'mb-32',
-            fields: ['backgroundInfoType', 'additionalInfo'],
-          },
-          {
-            className: 'grid-2',
-            fields: ['askForMaxLoan', 'includeMissingDocuments'],
-          },
-          'customBackgroundInfo',
-          'backgroundInfoPreview',
-        ],
-      },
-    ]}
-  />
-);
+}) => {
+  const schema = useMemo(() => makeSchema(loan), [loan]);
+
+  return (
+    <AutoFormDialog
+      title={dialogTitle}
+      schema={schema}
+      onSubmit={onSubmit}
+      buttonProps={{
+        raised: true,
+        primary: true,
+        label: buttonLabel,
+        icon,
+        style: { marginRight: 4 },
+      }}
+      model={{ structureIds: loan.structures.map(({ id }) => id) }}
+      layout={[
+        {
+          Component: Box,
+          title: <h4>Général</h4>,
+          className: 'mb-32',
+          fields: ['structureIds', 'organisationId'],
+        },
+        {
+          Component: Box,
+          title: <h4>Contexte</h4>,
+          layout: [
+            {
+              className: 'mb-32',
+              fields: ['backgroundInfoType', 'additionalInfo'],
+            },
+            {
+              className: 'grid-2',
+              fields: ['askForMaxLoan', 'includeMissingDocuments'],
+            },
+            'customBackgroundInfo',
+            'backgroundInfoPreview',
+          ],
+        },
+      ]}
+    />
+  );
+};
 
 export default PdfDownloadDialog;

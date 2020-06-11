@@ -1,23 +1,27 @@
+import Lenders from '../lenders';
+import LinkInitializer from '../links/LinkInitializer';
+import Organisations from '../organisations';
+import Tasks from '../tasks';
+import Users from '../users';
 import Contacts from '.';
 
-import { Users, Organisations, Lenders, Offers, Tasks } from '..';
-import LinkInitializer from '../links/LinkInitializer';
-
-Contacts.addLinks({
-  user: {
-    collection: Users,
-    field: 'userLink',
-    type: 'one',
-    metadata: true,
-  },
-  organisations: {
-    collection: Organisations,
-    inversedBy: 'contacts',
-  },
-  lenders: {
-    collection: Lenders,
-    inversedBy: 'contact',
-  },
+LinkInitializer.directInit(() => {
+  Contacts.addLinks({
+    user: {
+      collection: Users,
+      field: 'userLink',
+      type: 'one',
+      metadata: true,
+    },
+    organisations: {
+      collection: Organisations,
+      inversedBy: 'contacts',
+    },
+    lenders: {
+      collection: Lenders,
+      inversedBy: 'contact',
+    },
+  });
 });
 
 LinkInitializer.inversedInit(() => {

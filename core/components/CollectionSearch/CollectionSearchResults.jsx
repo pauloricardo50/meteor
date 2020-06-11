@@ -1,12 +1,11 @@
 import React from 'react';
-
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
-import List, { ListItem } from '../List';
+
 import Loading from '../Loading/Loading';
+import List from '../Material/List';
+import ListItem from '../Material/ListItem';
 
 const ItemsPopper = ({
   showResults,
@@ -16,7 +15,7 @@ const ItemsPopper = ({
   isEmpty,
   results,
   renderItem,
-  onClickItem = () => {},
+  onClickItem,
   disableItem = () => false,
 }) => (
   <Popper
@@ -36,23 +35,28 @@ const ItemsPopper = ({
         }
       }}
     >
-      <Paper>
+      <Paper className="collection-search-results-container">
         {isLoading ? (
           <Loading small />
         ) : isEmpty ? (
-          <MenuItem>Aucun résultat</MenuItem>
+          <div className="secondary font-size-3 text-center p-8">
+            Aucun résultat
+          </div>
         ) : (
-          <MenuList>
-            {results.map((result, index) => (
-              <MenuItem
-                key={index}
-                onClick={() => onClickItem(result)}
+          <List>
+            {results.map(result => (
+              <ListItem
+                key={result._id}
+                onClick={() => onClickItem?.(result)}
                 disabled={disableItem(result)}
+                button={!!onClickItem}
               >
-                {renderItem(result, hideResults)}
-              </MenuItem>
+                {typeof renderItem === 'function'
+                  ? renderItem(result, hideResults)
+                  : React.cloneElement(renderItem, { result, hideResults })}
+              </ListItem>
             ))}
-          </MenuList>
+          </List>
         )}
       </Paper>
     </ClickAwayListener>
@@ -65,30 +69,43 @@ const ItemsList = ({
   isLoading,
   isEmpty,
   results,
-  onClickItem = () => {},
+  onClickItem,
   disableItem = () => false,
   renderItem,
-}) =>
-  showResults ? (
-    <List className="flex-col">
-      {isLoading ? (
-        <Loading small />
-      ) : isEmpty ? (
-        <ListItem>Aucun résultat</ListItem>
-      ) : (
-        results.map((result, index) => (
-          <ListItem
-            key={index}
-            onClick={() => onClickItem(result)}
-            button
-            disabled={disableItem(result)}
-          >
-            {renderItem(result, hideResults)}
-          </ListItem>
-        ))
-      )}
+}) => {
+  if (!showResults) {
+    return null;
+  }
+
+  if (isLoading) {
+    return <Loading small />;
+  }
+
+  if (isEmpty) {
+    return (
+      <div className="secondary font-size-3 text-center p-8">
+        Aucun résultat
+      </div>
+    );
+  }
+
+  return (
+    <List className="collection-search-results">
+      {results.map(result => (
+        <ListItem
+          key={result._id}
+          onClick={() => onClickItem?.(result)}
+          disabled={disableItem(result)}
+          button={!!onClickItem}
+        >
+          {typeof renderItem === 'function'
+            ? renderItem(result, hideResults)
+            : React.cloneElement(renderItem, { result, hideResults })}
+        </ListItem>
+      ))}
     </List>
-  ) : null;
+  );
+};
 
 const CollectionSearchResults = ({ type, ...props }) => {
   switch (type) {

@@ -1,26 +1,21 @@
-import { cancelPromotionLotReservation } from 'core/api/methods/index';
 import ServerEventService from '../../events/server/ServerEventService';
-import PromotionService from './PromotionService';
-
+import LoanService from '../../loans/server/LoanService';
+import { cancelPromotionLotReservation } from '../../promotionLots/methodDefinitions';
 import { removeLoanFromPromotion } from '../methodDefinitions';
 
 ServerEventService.addBeforeMethodListener(
   removeLoanFromPromotion,
   ({ context, params }) => {
     context.unblock();
-    const { loanId, promotionId } = params;
-
-    const { promotionLots = [] } = PromotionService.get(promotionId, {
-      promotionLots: { attributedTo: 1 },
+    const { loanId } = params;
+    const { promotionOptions = [] } = LoanService.get(loanId, {
+      promotionOptions: { _id: 1 },
     });
 
     return Promise.all(
-      promotionLots
-        .filter(({ attributedTo }) => attributedTo === loanId)
-        .map(({ _id: promotionLotId }) =>
-          // Also sets the status to AVAILABLE
-          cancelPromotionLotReservation.run({ promotionLotId }),
-        ),
+      promotionOptions.map(({ _id: promotionOptionId }) =>
+        cancelPromotionLotReservation.run({ promotionOptionId }),
+      ),
     );
   },
 );
