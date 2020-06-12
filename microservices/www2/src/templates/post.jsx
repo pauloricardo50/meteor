@@ -7,7 +7,7 @@ import PageSections from '../components/PageSections';
 import CTAsSection from '../components/CTAsSection';
 import NewsletterSignup from '../components/NewsletterSignup';
 import RecommendedBlogPosts from '../components/RecommendedBlogPosts';
-import { getLanguageData } from '../utils/languages.js';
+import { getLanguageData, getShortLang } from '../utils/languages.js';
 import '../styles/post.scss';
 
 export const query = graphql`
@@ -170,7 +170,7 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
   // handle unknown posts that don't get redirected to a 404
   if (!blogPost) return <NotFound pageType="post" pageLang={lang} />;
 
-  const languageData = getLanguageData(lang);
+  const languageData = getLanguageData(getShortLang(pageContext.lang));
 
   const articleCTAsSection = sharedSections[0]?.node.body.find(
     section => section.type === 'ctas_section',

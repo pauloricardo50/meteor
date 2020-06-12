@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link } from 'gatsby';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { linkResolver } from '../../utils/linkResolver';
-import './MenuItems.scss';
+
+const useStyles = makeStyles({
+  gutters: {
+    paddingLeft: '2rem',
+  },
+});
 
 const MenuItems = ({ menuLinks, subMenu }) => {
   return menuLinks.map((menuLink, idx) => {
+    const classes = subMenu ? useStyles() : null;
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
     const primaryLabel = menuLink.primary?.label || menuLink.sub_label;
 
@@ -14,7 +21,7 @@ const MenuItems = ({ menuLinks, subMenu }) => {
         <MenuItem
           key={idx}
           component={Link}
-          className={subMenu ? 'submenu-link' : null}
+          classes={classes}
           to={linkResolver(primaryLink._meta)}
         >
           {primaryLabel}
@@ -24,11 +31,7 @@ const MenuItems = ({ menuLinks, subMenu }) => {
 
     if (primaryLink?._linkType === 'Link.web') {
       return (
-        <MenuItem
-          key={idx}
-          className={subMenu ? 'submenu-link' : null}
-          to={primaryLink.url}
-        >
+        <MenuItem key={idx} classes={classes} to={primaryLink.url}>
           {primaryLabel}
         </MenuItem>
       );
