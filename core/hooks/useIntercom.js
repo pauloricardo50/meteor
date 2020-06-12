@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { getIntercomSettings } from '../api/intercom/methodDefinitions';
 import usePrevious from './usePrevious';

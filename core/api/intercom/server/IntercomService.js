@@ -47,14 +47,28 @@ export class IntercomService {
     let result = { app_id: APP_ID };
 
     if (userId) {
-      const { email, name, phoneNumbers = [] } = UserService.get(userId, {
+      const {
+        email,
+        name,
+        phoneNumbers = [],
+        intercomId,
+        assignedEmployeeId,
+      } = UserService.get(userId, {
         email: 1,
         name: 1,
         phoneNumbers: 1,
+        intercomId: 1,
+        assignedEmployeeId: 1,
       });
       const hmac = crypto.createHmac('sha256', IDENTITY_VERIFICATION_SECRET);
       hmac.update(email);
       const digest = hmac.digest('hex');
+
+      // If user has no intercomId yet
+      // it means that his owner is not set on intercom
+      if (!intercomId && assignedEmployeeId) {
+        this.updateContactOwner({ userId, adminId: assignedEmployeeId });
+      }
 
       result = {
         ...result,
