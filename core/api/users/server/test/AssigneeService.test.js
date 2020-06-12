@@ -161,7 +161,7 @@ describe('AssigneeService', () => {
               assignedEmployee: { _id: 'advisor1', _factory: ROLES.ADVISOR },
             },
             referredByOrganisation: {
-              assignedEmployee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
+              assignee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
             },
           },
         ],
@@ -179,22 +179,16 @@ describe('AssigneeService', () => {
             referredByUser: {
               organisations: [
                 {
-                  assignedEmployee: {
-                    _id: 'advisor4',
-                    _factory: ROLES.ADVISOR,
-                  },
+                  assignee: { _id: 'advisor4', _factory: ROLES.ADVISOR },
                 },
                 {
                   $metadata: { isMain: true },
-                  assignedEmployee: {
-                    _id: 'advisor3',
-                    _factory: ROLES.ADVISOR,
-                  },
+                  assignee: { _id: 'advisor3', _factory: ROLES.ADVISOR },
                 },
               ],
             },
             referredByOrganisation: {
-              assignedEmployee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
+              assignee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
             },
           },
         ],
@@ -212,7 +206,7 @@ describe('AssigneeService', () => {
             _id: 'user',
             referredByUser: {},
             referredByOrganisation: {
-              assignedEmployee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
+              assignee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
             },
           },
         ],
@@ -235,7 +229,7 @@ describe('AssigneeService', () => {
               },
               organisations: {
                 $metadata: { isMain: true },
-                assignedEmployee: {
+                assignee: {
                   _id: 'advisor3',
                   _factory: ROLES.ADVISOR,
                   roundRobinTimeout: 'Not here either',
@@ -243,7 +237,7 @@ describe('AssigneeService', () => {
               },
             },
             referredByOrganisation: {
-              assignedEmployee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
+              assignee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
             },
           },
         ],

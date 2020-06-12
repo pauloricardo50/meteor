@@ -668,6 +668,23 @@ export class UserServiceClass extends CollectionService {
     });
   }
 
+  getReferral(userId) {
+    const { referredByUser, referredByOrganisation } = this.get(userId, {
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+    });
+
+    // If the referredByUser is not in the organisation referredByOrganisation,
+    // this could return inaccurate data. Make sure you understand what this does
+    if (referredByUser) {
+      const { _id: proId } = referredByUser;
+      const mainOrg = this.getUserMainOrganisation(proId);
+      return { user: referredByUser, organisation: mainOrg || {} };
+    }
+
+    return { organisation: referredByOrganisation || {}, user: {} };
+  }
+
   toggleAccount({ userId }) {
     const { isDisabled } = this.get(userId, { isDisabled: 1 });
     const nextValue = !isDisabled;
