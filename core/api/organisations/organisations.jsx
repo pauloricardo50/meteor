@@ -86,7 +86,11 @@ export const OrganisationSchema = new SimpleSchema({
       transform: type => <T id={`Forms.type.${type}`} />,
     },
   },
-  assignedEmployeeId: {
+  assigneeLink: {
+    type: Object,
+    optional: true,
+  },
+  'assigneeLink._id': {
     type: String,
     optional: true,
   },

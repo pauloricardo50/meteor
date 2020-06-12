@@ -18,7 +18,8 @@ const schema = OrganisationSchema.omit(
   'revenuesCount',
   'insuranceProductLinks',
 ).extend({
-  assignedEmployeeId: {
+  assigneeLink: { type: Object, optional: true, uniforms: { label: null } },
+  'assigneeLink._id': {
     type: String,
     optional: true,
     customAllowedValues: {

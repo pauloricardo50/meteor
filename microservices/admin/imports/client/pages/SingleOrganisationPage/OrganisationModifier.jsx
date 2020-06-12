@@ -24,7 +24,7 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
           layout: [
             { className: 'grid-2', fields: ['name', 'type'] },
             { className: 'grid-2', fields: ['features', 'tags'] },
-            { fields: 'assignedEmployeeId' },
+            { fields: 'assigneeLink' },
           ],
         },
         {

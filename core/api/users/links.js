@@ -59,7 +59,7 @@ LinkInitializer.inversedInit(() => {
     },
     assignedOrganisations: {
       collection: Organisations,
-      inversedBy: 'assignedEmployee',
+      inversedBy: 'assignee',
     },
     assignedPromotions: {
       collection: Promotions,

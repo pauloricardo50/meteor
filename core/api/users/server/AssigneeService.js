@@ -36,9 +36,9 @@ class AssigneeService {
       loans: { promotions: { assignedEmployeeId: 1 } },
       referredByUser: {
         assignedEmployeeId: 1,
-        organisations: { assignedEmployeeId: 1 },
+        organisations: { assigneeLink: 1 },
       },
-      referredByOrganisation: { assignedEmployeeId: 1 },
+      referredByOrganisation: { assigneeLink: 1 },
       roles: 1,
     });
 
@@ -48,9 +48,9 @@ class AssigneeService {
       ({ $metadata }) => $metadata.isMain,
     );
     this.referredByUserOrganisationAssignee =
-      referredByUserMainOrganisation?.assignedEmployeeId;
+      referredByUserMainOrganisation?.assigneeLink?._id;
     this.referredByOrganisationAssignee =
-      referredByOrganisation?.assignedEmployeeId;
+      referredByOrganisation?.assigneeLink?._id;
     this.shouldAutoAssign = SecurityService.hasAssignedRole(
       { roles },
       ROLES.USER,

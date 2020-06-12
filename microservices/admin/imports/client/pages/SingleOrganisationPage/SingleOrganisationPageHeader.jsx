@@ -21,7 +21,7 @@ const SingleOrganisationPage = ({ organisation, currentUser }) => {
   const {
     _id: organisationId,
     address,
-    assignedEmployeeId,
+    assigneeLink,
     features = [],
     logo,
     name,
@@ -38,7 +38,7 @@ const SingleOrganisationPage = ({ organisation, currentUser }) => {
             <div className="flex center-align">
               <h1 className="mr-8">{name}</h1>
               <Advisor
-                advisorId={assignedEmployeeId}
+                advisorId={assigneeLink?._id}
                 tooltip="Conseiller par défaut des referrals"
               />
             </div>

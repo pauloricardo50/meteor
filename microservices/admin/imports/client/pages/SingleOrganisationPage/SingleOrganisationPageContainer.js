@@ -22,7 +22,7 @@ export default compose(
       address: 1,
       address1: 1,
       address2: 1,
-      assignedEmployeeId: 1,
+      assigneeLink: 1,
       canton: 1,
       city: 1,
       features: 1,
