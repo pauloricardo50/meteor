@@ -11,6 +11,7 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import Chip from 'core/components/Material/Chip';
 import T from 'core/components/Translation/Translation';
 
+import Advisor from '../../components/Advisor/Advisor';
 import OrganisationModifier from './OrganisationModifier';
 
 const SingleOrganisationPage = ({ organisation, currentUser }) => {
@@ -19,20 +20,29 @@ const SingleOrganisationPage = ({ organisation, currentUser }) => {
 
   const {
     _id: organisationId,
+    address,
+    assigneeLink,
+    features = [],
     logo,
     name,
-    type,
-    features = [],
-    address,
     tags = [],
+    type,
   } = organisation;
   return (
     <>
       <div className="single-organisation-page-header">
-        <span className="flex flex-row center">
+        <div className="flex flex-row center">
           {logo ? <img src={logo} alt={name} /> : name}
+
           <div className="single-organisation-page-header-type">
-            <h1>{name}</h1>
+            <div className="flex center-align">
+              <h1 className="mr-8">{name}</h1>
+              <Advisor
+                advisorId={assigneeLink?._id}
+                tooltip="Conseiller par défaut des referrals"
+              />
+            </div>
+
             <h2 className="secondary">
               <T id={`Forms.type.${type}`} />
               {features.length > 0 && <>&nbsp;-&nbsp;</>}
@@ -42,6 +52,7 @@ const SingleOrganisationPage = ({ organisation, currentUser }) => {
                 )
                 .join(', ')}
             </h2>
+
             <h3 className="flex center space-children">
               {tags.map(tag => (
                 <Chip
@@ -59,7 +70,8 @@ const SingleOrganisationPage = ({ organisation, currentUser }) => {
               ))}
             </h3>
           </div>
-        </span>
+        </div>
+
         <div>
           {Roles.userIsInRole(currentUser, ROLES.DEV) && (
             <ConfirmMethod

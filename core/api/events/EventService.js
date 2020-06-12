@@ -13,7 +13,6 @@ export default class EventService {
   }
 
   emit(eventName, ...args) {
-    this.logEmittedEvent(eventName, ...args);
     this.emmitter.emit(eventName, ...args);
   }
 
@@ -99,13 +98,6 @@ export default class EventService {
       console.log(error);
       throw error;
     });
-  }
-
-  logEmittedEvent(eventName, ...args) {
-    if (IS_LOGGING && !Meteor.isTest) {
-      // console.log(`Event "${eventName}" triggered with params:`);
-      // console.log(params);
-    }
   }
 
   logListener(eventName, ...args) {

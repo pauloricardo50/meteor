@@ -1,4 +1,10 @@
 {
+  "Forms.isInRoundRobin": "Round robin activé",
+  "Forms.roundRobinTimeout": "Pause round robin",
+  "Forms.roundRobinTimeout.placeholder": "À Ibiza ⛷",
+  "Financing.bankValue": "[ADMIN] Valeur retenue par le prêteur",
+  "Forms.bankValue": "Valeur retenue par le prêteur",
+  "Forms.bankValue.placeholder": "CHF 800 000",
   "Forms.promotionShare": "Quote-part terrain",
   "PromotionLotTimeline.initialConstructionPayment": "Versement EG à la signature",
   "PromotionTimeline.start": "Début",
@@ -2522,7 +2528,6 @@
   "general.validate": "Valider",
   "general.calculate": "Calculer",
   "general.yes": "Oui",
-  "GoogleMapsAutocomplete.label": "Addresse de la propriété",
   "HomeDev.CTA": "M'avertir par e-mail",
   "HomeDev.description": "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
   "HomeDev.title": "En Développement",

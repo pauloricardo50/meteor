@@ -11,6 +11,12 @@ import Users from '../users/users';
 import Organisations from './organisations';
 
 Organisations.addLinks({
+  assignee: {
+    collection: Users,
+    field: 'assigneeLink',
+    type: 'one',
+    metadata: true,
+  },
   contacts: {
     collection: Contacts,
     field: 'contactIds',

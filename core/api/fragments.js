@@ -331,7 +331,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
   displayWelcomeScreen: 1,
-  // offers: 1,
   lenders: {
     organisation: { name: 1, logo: 1 },
     offers: {
@@ -602,7 +601,6 @@ export const proOrganisation = () => ({
   generatedProductions: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
-  offers: 1,
   offerCount: 1,
   users: organisationUser(),
   enabledCommissionTypes: 1,
@@ -668,7 +666,7 @@ export const formPromotionOption = () => ({
   fullVerification: 1,
   loanCache: 1, // Useful for invitedBy
   priorityOrder: 1,
-  promotionLots: { properties: { totalValue: 1 } },
+  promotionLots: { properties: { totalValue: 1, bankValue: 1 } },
   reservationAgreement: 1,
   reservationDeposit: 1,
   simpleVerification: 1,
@@ -840,6 +838,7 @@ export const formProperty = () => ({
   address1: 1,
   address2: 1,
   areaNorm: 1,
+  bankValue: 1,
   bathroomCount: 1,
   canton: 1,
   category: 1,
@@ -907,6 +906,7 @@ export const adminProperty = ({ withSort } = {}) => ({
 export const promotionProperty = () => ({
   additionalMargin: 1,
   address: 1,
+  bankValue: 1,
   bathroomCount: 1,
   canton: 1,
   constructionValue: 1,

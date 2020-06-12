@@ -18,7 +18,7 @@ const insertNewLoan = ({
   const {
     properties = [],
     borrowers = [],
-    user: { _id: userId },
+    userCache: { _id: userId },
   } = loan;
 
   const userProperties = properties.filter(

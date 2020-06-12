@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import { PURCHASE_TYPE } from '../../../../api/loans/loanConstants';
@@ -18,6 +20,20 @@ const calculateDefaultNotaryFees = data => Calculator.getNotaryFees(data).total;
 const calculateMaxNotaryFees = data =>
   (Calculator.selectPropertyValue(data) + data.structure.propertyWork) *
   MAX_NOTARY_FEES_RATE;
+
+const isAdmin = Meteor.microservice === 'admin';
+
+const oneStructureHasBankValue = ({ loan }) => {
+  const { structures = [] } = loan;
+  return structures.some(
+    ({ id }) =>
+      Calculator.selectPropertyKey({
+        loan,
+        structureId: id,
+        key: 'bankValue',
+      }) > 0,
+  );
+};
 
 const FinancingProject = ({ purchaseType }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
@@ -54,6 +70,17 @@ const FinancingProject = ({ purchaseType }) => {
           max: 100000000,
           allowUndefined: true,
           forceUndefined: true,
+        },
+        {
+          id: 'bankValue',
+          Component: CalculatedValue,
+          value: ({ loan, structureId }) =>
+            Calculator.selectPropertyKey({
+              loan,
+              structureId,
+              key: 'bankValue',
+            }),
+          condition: data => isAdmin && oneStructureHasBankValue(data),
         },
         {
           Component: FinancingField,

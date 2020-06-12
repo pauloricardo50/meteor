@@ -57,6 +57,10 @@ LinkInitializer.inversedInit(() => {
       collection: Loans,
       inversedBy: 'assignees',
     },
+    assignedOrganisations: {
+      collection: Organisations,
+      inversedBy: 'assignee',
+    },
     assignedPromotions: {
       collection: Promotions,
       inversedBy: 'assignedEmployee',

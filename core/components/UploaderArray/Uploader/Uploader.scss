@@ -64,16 +64,14 @@
 
     padding-bottom: 8px;
 
-    .text {
-      display: flex;
-      align-items: flex-end;
-      flex-grow: 1;
-      flex-wrap: wrap;
-    }
+      h3 {
+        margin: 0;
+        display: inline;
+      }
 
-    h3 {
-      margin: 0;
-    }
+      .file-count {
+        white-space: nowrap;
+      }
   }
 }
 

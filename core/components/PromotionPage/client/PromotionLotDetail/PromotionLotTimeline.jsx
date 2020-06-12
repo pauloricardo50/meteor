@@ -21,7 +21,7 @@ const PromotionLotTimeline = ({
   const hasDetailedValue = propertyHasDetailedValue({ property });
 
   const initialPaymentDate = showExactDates ? (
-    <IntlDate value={signingDate} />
+    <IntlDate value={signingDate} year="numeric" month="long" day="numeric" />
   ) : (
     <T id="PromotionTimelineHeader.undetermined" />
   );
@@ -45,7 +45,7 @@ const PromotionLotTimeline = ({
       columns: [
         {
           id: 'landAndMargin',
-          value: landValue,
+          value: landValue + additionalMargin,
           Header: () => (
             <ConstructionTimelineItem
               description={<T id="Forms.promotionShare" />}
@@ -56,7 +56,7 @@ const PromotionLotTimeline = ({
         },
         {
           id: 'initialConstructionPayment',
-          value: additionalMargin,
+          value: initialConstructionPayment,
           Header: () => (
             <ConstructionTimelineItem
               description={

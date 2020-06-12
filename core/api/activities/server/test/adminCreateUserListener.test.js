@@ -13,14 +13,13 @@ import {
 
 /* eslint-env mocha */
 
-
 describe('adminCreateUserListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({
       users: {
         _id: 'admin',
-        _factory: 'admin',
+        _factory: ROLES.ADVISOR,
         firstName: 'Admin',
         lastName: 'E-Potek',
       },
@@ -30,12 +29,12 @@ describe('adminCreateUserListener', () => {
   it('adds activity on the user', async () => {
     await ddpWithUserId('admin', () =>
       adminCreateUser.run({
-        options: {
+        user: {
           firstName: 'John',
           lastName: 'Doe',
           email: 'john.doe@test.com',
+          role: ROLES.USER,
         },
-        role: ROLES.USER,
       }),
     );
 
