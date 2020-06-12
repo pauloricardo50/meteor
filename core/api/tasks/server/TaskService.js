@@ -139,14 +139,10 @@ class TaskService extends CollectionService {
     }
 
     const doc = Mongo.Collection.get(collection)
-      .createQuery({
-        $filters: { _id: docId },
-        assigneeLink: 1,
-        assignedEmployeeId: 1,
-      })
+      .createQuery({ $filters: { _id: docId }, assignee: 1 })
       .fetchOne();
 
-    return doc?.assignedEmployeeId || doc.assigneeLink?._id;
+    return doc?.assignee?._id;
   };
 
   proAddLoanTask = ({ userId, loanId, note }) => {
