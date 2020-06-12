@@ -240,6 +240,16 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             />
           </SingleUserPageInformationItem>
         )}
+        {currentUserIsDev && (
+          <SingleUserPageInformationItem label="Intercom">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['intercomId']}
+              autoSaveDelay={500}
+            />
+          </SingleUserPageInformationItem>
+        )}
       </SingleUserPageInformation>
     </div>
   );

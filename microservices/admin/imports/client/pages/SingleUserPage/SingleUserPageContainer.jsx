@@ -53,6 +53,7 @@ export default compose(
       referredByOrganisation: { name: 1 },
       referredByUser: { name: 1 },
       roundRobinTimeout: 1,
+      intercomId: 1,
     }),
     queryOptions: { reactive: false, single: true },
     dataName: 'user',

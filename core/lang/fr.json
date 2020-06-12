@@ -1,4 +1,6 @@
 {
+  "Forms.intercomId": "ID intercom",
+  "Forms.intercomId.placeholder": "abcdef123456",
   "Forms.isInRoundRobin": "Round robin activé",
   "Forms.roundRobinTimeout": "Pause round robin",
   "Forms.roundRobinTimeout.placeholder": "À Ibiza ⛷",
