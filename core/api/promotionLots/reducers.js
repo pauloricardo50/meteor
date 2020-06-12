@@ -62,4 +62,24 @@ PromotionLots.addReducers({
       return status;
     },
   },
+  attributedToUser: {
+    body: {
+      attributedToLink: 1,
+      promotionOptions: {
+        loanCache: 1,
+        loan: { userCache: 1 },
+      },
+    },
+    reduce: ({ attributedToLink = {}, promotionOptions = [] }) => {
+      const { _id: attributedToLoanId } = attributedToLink;
+
+      if (attributedToLoanId) {
+        const attributedToPromotionOption = promotionOptions.find(
+          ({ loanCache }) => loanCache?.[0]?._id === attributedToLoanId,
+        );
+
+        return attributedToPromotionOption;
+      }
+    },
+  },
 });
