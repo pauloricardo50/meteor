@@ -11,9 +11,12 @@ export const AdminsProvider = Component => props => {
     query: USERS_COLLECTION,
     params: {
       $filters: { 'roles._id': ROLES.ADMIN },
+      $options: { sort: { firstName: 1 } },
+      firstName: 1,
       isInRoundRobin: 1,
-      roundRobinTimeout: 1,
+      office: 1,
       roles: 1,
+      roundRobinTimeout: 1,
     },
   });
   const allData = data.map(user => ({
@@ -23,8 +26,13 @@ export const AdminsProvider = Component => props => {
     role: user.roles[0]._id,
   }));
 
+  const filteredData = {
+    all: allData,
+    advisors: allData.filter(({ role }) => role === ROLES.ADVISOR),
+  };
+
   return (
-    <AdminsContext.Provider value={allData}>
+    <AdminsContext.Provider value={filteredData}>
       <Component {...props} />
     </AdminsContext.Provider>
   );

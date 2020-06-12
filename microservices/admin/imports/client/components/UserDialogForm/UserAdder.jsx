@@ -17,6 +17,7 @@ import T from 'core/components/Translation';
 import useMeteorData from 'core/hooks/useMeteorData';
 import useSearchParams from 'core/hooks/useSearchParams';
 
+import { useAdmins } from '../AdminsContext/AdminsContext';
 import { userFormSchema } from './userDialogFormHelpers';
 
 export const userFormLayout = [
@@ -135,15 +136,7 @@ const UserAdder = ({ buttonProps }) => {
       $options: { sort: { name: 1 } },
     },
   });
-  const { data: advisors = [] } = useMeteorData({
-    query: USERS_COLLECTION,
-    params: {
-      $filters: { 'roles._id': ROLES.ADVISOR },
-      $options: { sort: { firstName: 1 } },
-      firstName: 1,
-      office: 1,
-    },
-  });
+  const { advisors } = useAdmins();
   const schema = useMemo(() => getSchema(organisations, advisors), [
     organisations,
     advisors,

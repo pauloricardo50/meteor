@@ -8,9 +8,9 @@ import { useAdmins } from '../../components/AdminsContext/AdminsContext';
 import Advisor from '../../components/Advisor/Advisor';
 
 const AdvisorsStatus = () => {
-  const admins = useAdmins();
+  const { advisors } = useAdmins();
 
-  const inRoundRobin = admins.filter(({ isInRoundRobin }) => isInRoundRobin);
+  const inRoundRobin = advisors.filter(({ isInRoundRobin }) => isInRoundRobin);
 
   const available = inRoundRobin.filter(
     ({ roundRobinTimeout }) => !roundRobinTimeout,
