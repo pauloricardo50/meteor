@@ -71,7 +71,9 @@ describe('Single Insurance Request Page', () => {
     cy.contains('button', 'Compte').click();
     cy.get('input[name=firstName]').type('John');
     cy.get('input[name=lastName]').type('The tester');
-    cy.get('input[name=email]').type('test-insurance@e-potek.ch{enter}');
+    cy.get('input[name=email]').type('test-insurance@e-potek.ch');
+    cy.setSelect('assignedEmployeeId', 3);
+    cy.get('[role="dialog"] form').submit();
     cy.url().should('include', '/users/');
 
     // Create an insuranceRequest, and set assignees
