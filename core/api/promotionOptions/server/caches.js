@@ -10,8 +10,7 @@ PromotionOptionService.cache(
     referenceField: 'promotionOptionLinks:_id',
     cacheField: 'loanCache',
   },
-  { 'loanCache.0.promotionLinks': { $exists: false } },
-  // { 'loanCache._id': { $exists: false } },
+  // { 'loanCache.0.promotionLinks': { $exists: false } },
 );
 
 PromotionOptionService.cache(
@@ -22,5 +21,5 @@ PromotionOptionService.cache(
     referenceField: 'promotionLotLinks:_id',
     cacheField: 'promotionLotCache',
   },
-  { promotionLotCache: { $exists: false } },
+  // { promotionLotCache: { $exists: false } },
 );

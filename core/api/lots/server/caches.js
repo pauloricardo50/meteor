@@ -9,5 +9,5 @@ LotService.cache(
     type: 'many-inversed',
     referenceField: 'lotLinks:_id',
   },
-  { promotionCache: { $exists: false } },
+  // { promotionCache: { $exists: false } },
 );
