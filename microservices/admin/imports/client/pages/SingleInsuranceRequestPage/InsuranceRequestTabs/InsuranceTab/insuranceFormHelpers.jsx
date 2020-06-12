@@ -7,6 +7,7 @@ import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
 import {
   insuranceInsert,
   insuranceModify,
+  insuranceUpdateStatus,
 } from 'core/api/insurances/methodDefinitions';
 import InsuranceSchema from 'core/api/insurances/schemas/InsuranceSchema';
 import T from 'core/components/Translation';
@@ -19,12 +20,13 @@ import InsuranceFormEndDateSetter from './InsuranceFormEndDateSetter';
 
 const { formatMessage } = intl;
 
-export const getSchema = ({ borrowers, organisations }) =>
+export const getSchema = ({ borrowers, organisations, type }) =>
   new SimpleSchema({
     status: {
       type: String,
       allowedValues: Object.values(INSURANCE_STATUS),
       defaultValue: INSURANCE_STATUS.SUGGESTED,
+      condition: () => type === 'update',
     },
     borrowerId: {
       type: String,
@@ -216,22 +218,25 @@ export const makeInsuranceMethod = ({
   }
 
   if (type === 'update') {
-    return insuranceModify.run({
-      insuranceId: insurance._id,
-      borrowerId,
-      organisationId,
-      insuranceProductId,
-      insurance: {
-        status,
-        premium,
-        startDate,
-        endDate,
-        premiumFrequency,
-        guaranteedCapital,
-        nonGuaranteedCapital,
-        deathCapital,
-        disabilityPension,
-      },
-    });
+    return insuranceModify
+      .run({
+        insuranceId: insurance._id,
+        borrowerId,
+        organisationId,
+        insuranceProductId,
+        insurance: {
+          premium,
+          startDate,
+          endDate,
+          premiumFrequency,
+          guaranteedCapital,
+          nonGuaranteedCapital,
+          deathCapital,
+          disabilityPension,
+        },
+      })
+      .then(() =>
+        insuranceUpdateStatus.run({ insuranceId: insurance._id, status }),
+      );
   }
 };
