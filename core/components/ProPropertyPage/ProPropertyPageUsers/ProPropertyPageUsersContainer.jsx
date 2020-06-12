@@ -100,6 +100,7 @@ export default compose(
           email: 1,
           name: 1,
           organisations: { name: 1 },
+          roles: 1,
         },
       },
     }),

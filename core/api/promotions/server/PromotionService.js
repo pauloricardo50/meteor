@@ -9,6 +9,7 @@ import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
+import AssigneeService from '../../users/server/AssigneeService';
 import UserService from '../../users/server/UserService';
 import {
   PROMOTION_PERMISSIONS_FULL_ACCESS,
@@ -136,7 +137,7 @@ class PromotionService extends CollectionService {
 
     if (isNewUser) {
       const admin = UserService.get(promotion.assignedEmployeeId, { _id: 1 });
-      UserService.assignAdminToUser({ userId, adminId: admin?._id });
+      AssigneeService.assignAdminToUser({ userId, adminId: admin?._id });
     }
 
     return Promise.resolve(loanId);

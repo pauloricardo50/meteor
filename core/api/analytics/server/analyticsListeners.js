@@ -516,7 +516,7 @@ addAnalyticsListener({
     const {
       name: userName,
       email: userEmail,
-      assignedEmployee: { name: assigneeName, _id: assigneeId },
+      assignedEmployee: { name: assigneeName, _id: assigneeId } = {},
       referredByUser,
       referredByOrganisation,
     } = UserService.get(userId, {
