@@ -14,17 +14,13 @@ const UserReservation = ({
 }) => {
   const {
     reservationAgreement: { expirationDate, startDate },
-    promotionLots,
     status,
+    name,
   } = promotionOption;
-  const [promotionLot] = promotionLots;
   return (
     <div className={cx('user-reservation', className)}>
       <h3>
-        <T
-          id="UserReservation.title"
-          values={{ promotionLotName: promotionLot.name }}
-        />
+        <T id="UserReservation.title" values={{ promotionLotName: name }} />
       </h3>
 
       <div className="user-reservation-info">

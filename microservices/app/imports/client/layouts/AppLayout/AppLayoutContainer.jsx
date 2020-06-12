@@ -69,7 +69,7 @@ const fragment = merge({}, calculatorLoan(), {
   userCache: 1,
   name: 1,
   promotionOptions: { name: 1 },
-  promotions: { name: 1, lenderOrganisationLink: 1 },
+  promotions: { name: 1, lenderOrganisationLink: 1, status: 1, documents: 1 },
   properties: { address: 1, $options: { sort: { createdAt: 1 } } },
   shareSolvency: 1,
   step: 1,
