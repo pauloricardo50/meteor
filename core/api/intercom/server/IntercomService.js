@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 
@@ -67,7 +68,11 @@ export class IntercomService {
       // If user has no intercomId yet
       // it means that his owner is not set on intercom
       if (!intercomId && assignedEmployeeId) {
-        this.updateContactOwner({ userId, adminId: assignedEmployeeId });
+        try {
+          this.updateContactOwner({ userId, adminId: assignedEmployeeId });
+        } catch (error) {
+          ErrorLogger.logError({ error });
+        }
       }
 
       result = {
