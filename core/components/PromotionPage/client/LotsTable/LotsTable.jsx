@@ -154,7 +154,6 @@ const LotsTable = ({ promotion: { _id: promotionId, promotionLots } }) => {
           ]}
           modalType="form"
           getModalProps={getModalProps}
-          initialPageSize={10}
         />
       </div>
     </Element>

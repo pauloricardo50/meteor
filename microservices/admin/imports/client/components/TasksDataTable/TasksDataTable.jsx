@@ -117,6 +117,7 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
         initialSort={{ id: 'dueAt', desc: true }}
         modalType="form"
         getModalProps={getModalProps}
+        initialPageSize={25}
         {...rest}
       />
     </>

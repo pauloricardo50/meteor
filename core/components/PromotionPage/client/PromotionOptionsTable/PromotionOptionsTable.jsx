@@ -222,7 +222,6 @@ const PromotionOptionsTable = ({ promotion }) => {
             ),
           },
         ]}
-        initialPageSize={10}
         modalType="dialog"
         getModalProps={getModalProps}
         initialHiddenColumns={
