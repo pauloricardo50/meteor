@@ -10,18 +10,25 @@ import Advisor from '../../components/Advisor/Advisor';
 const AdvisorsStatus = () => {
   const { advisors } = useAdmins();
 
+  const notInRoundRobinAvailable = advisors.filter(
+    ({ isInRoundRobin, roundRobinTimeout }) =>
+      !isInRoundRobin && !roundRobinTimeout,
+  );
   const inRoundRobin = advisors.filter(({ isInRoundRobin }) => isInRoundRobin);
 
   const available = inRoundRobin.filter(
     ({ roundRobinTimeout }) => !roundRobinTimeout,
   );
-  const unavailable = inRoundRobin.filter(
+  const unavailable = advisors.filter(
     ({ roundRobinTimeout }) => roundRobinTimeout,
   );
 
   return (
-    <div className="animated fadeIn">
-      <div className="flex align-items mb-8">
+    <div
+      className="animated fadeIn flex-col"
+      style={{ alignItems: 'flex-end' }}
+    >
+      <div className="flex center-align">
         <DialogSimple
           renderTrigger={({ handleOpen }) => (
             <IconButton
@@ -77,19 +84,38 @@ const AdvisorsStatus = () => {
           Ça mettra aussi en pause les "Règles de base" plus haut pour toi.
         </DialogSimple>
 
-        <h4 className="m-0">Conseillers en round-robin</h4>
+        <h4 className="m-0">Conseillers</h4>
       </div>
 
-      <div className="flex mb-8" style={{ justifyContent: 'flex-end' }}>
-        {available.map(({ _id }) => (
-          <Advisor key={_id} advisorId={_id} className="ml-4" />
-        ))}
-      </div>
+      <div className="flex">
+        <div className="flex-col" style={{ alignItems: 'flex-end' }}>
+          <h5 className="secondary m-0">Dispo</h5>
+          <div className="flex mb-8">
+            {notInRoundRobinAvailable.map(({ _id }) => (
+              <Advisor key={_id} advisorId={_id} className="ml-4" />
+            ))}
+          </div>
+        </div>
 
-      <div className="flex" style={{ justifyContent: 'flex-end' }}>
-        {unavailable.map(({ _id }) => (
-          <Advisor key={_id} advisorId={_id} className="ml-4" />
-        ))}
+        <div className="ml-16 flex-col" style={{ alignItems: 'flex-end' }}>
+          <h5 className="secondary m-0">Round-robin</h5>
+          <div className="flex mb-8">
+            {available.map(({ _id }) => (
+              <Advisor key={_id} advisorId={_id} className="ml-4" />
+            ))}
+          </div>
+        </div>
+
+        {unavailable.length > 0 && (
+          <div className="ml-16 flex-col" style={{ alignItems: 'flex-end' }}>
+            <h5 className="secondary m-0">Pas dispo</h5>
+            <div className="flex">
+              {unavailable.map(({ _id }) => (
+                <Advisor key={_id} advisorId={_id} className="ml-4" />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

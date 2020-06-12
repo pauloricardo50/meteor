@@ -19,7 +19,7 @@ const AdminDashboardPage = ({ history }) => (
       </Helmet>
       <div className="flex sb">
         <div>
-          <h1 className="flex center-align mt-0">
+          <h1 className="flex center-align m-0 mb-8">
             <Icon type="home" style={{ marginRight: 8 }} size={32} />
             <span>Admin Dashboard</span>
           </h1>
