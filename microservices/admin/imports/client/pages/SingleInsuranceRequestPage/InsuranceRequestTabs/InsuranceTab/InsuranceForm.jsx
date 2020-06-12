@@ -11,9 +11,9 @@ import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import { getSchema, makeInsuranceMethod } from './insuranceFormHelpers';
 
-const getLayout = type => [
+const layout = [
   {
-    fields: [type === 'update' && 'status', 'borrowerId'].filter(x => x),
+    fields: ['borrowerId'].filter(x => x),
     Component: Box,
     className: 'grid-row mb-32',
     title: <h5>Général</h5>,
@@ -90,7 +90,6 @@ export default withProps(({ insuranceRequest, insurance = {}, type }) => {
             organisations: organisations.filter(
               ({ insuranceProducts = [] }) => !!insuranceProducts.length,
             ),
-            type,
           }),
     [loading, borrowers, organisations],
   );
@@ -112,6 +111,6 @@ export default withProps(({ insuranceRequest, insurance = {}, type }) => {
       history,
     }),
     loading,
-    layout: getLayout(type),
+    layout,
   };
 });
