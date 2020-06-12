@@ -9,6 +9,7 @@ import NodeRSA from 'node-rsa';
 
 import CollectionService from '../../helpers/server/CollectionService';
 import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
+import IntercomService from '../../intercom/server/IntercomService';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -199,6 +200,14 @@ export class UserServiceClass extends CollectionService {
       const newAssignee = this.get(adminId, { name: 1 }) || {};
 
       this.update({ userId, object: { assignedEmployeeId: adminId } });
+
+      // TODO: Put this in new AssigneeService
+      try {
+        IntercomService.updateContactOwner({ userId, adminId });
+      } catch (error) {
+        console.log('IntercomAPI error:', error);
+      }
+
       return { oldAssignee, newAssignee };
     }
 
@@ -207,6 +216,7 @@ export class UserServiceClass extends CollectionService {
       object: { assignedEmployeeId: true },
       operator: '$unset',
     });
+
     return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
   };
 
