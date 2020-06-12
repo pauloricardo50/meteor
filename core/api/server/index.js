@@ -47,9 +47,6 @@ import UserService from '../users/server/UserService';
 import { COLLECTIONS } from './serverConstants';
 
 process.on('uncaughtException', error => {
-  if (!Meteor.isProduction) {
-    console.error('uncaughtException error', JSON.stringify(error, null, 2));
-  }
   ErrorLogger.handleError({
     error,
     additionalData: ['Server uncaughtException'],
@@ -58,9 +55,6 @@ process.on('uncaughtException', error => {
 });
 
 process.on('unhandledRejection', error => {
-  if (!Meteor.isProduction) {
-    console.error('unhandledRejection error', JSON.stringify(error, null, 2));
-  }
   ErrorLogger.handleError({
     error,
     additionalData: ['Server unhandledRejection'],

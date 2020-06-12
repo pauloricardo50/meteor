@@ -152,7 +152,7 @@ describe('AssigneeService', () => {
       expect(service.getSuggestedAssigneeId()).to.equal('advisor1');
     });
 
-    it('returns the assignee of the referring pro next, ignoring the organisation assignee', () => {
+    it("returns the assignee of the referring pro next, ignoring the organisation's assignee", () => {
       generator({
         users: [
           {
@@ -419,10 +419,6 @@ describe('AssigneeService', () => {
 
       expect(assignedEmployee.email).to.equal(employees[1]);
     });
-
-    it.skip('should send new users who have a hard-coded organisation assignee into the round-robin if that assignee is unavailable', () => {
-      // TODO: Stop hard-coding assignees, and set them on the organisation
-    });
   });
 
   describe('setAssignee', () => {
@@ -440,10 +436,10 @@ describe('AssigneeService', () => {
       expect(user.assignedEmployeeId).to.equal(undefined);
     });
 
-    it('does nothing if no userId is passed in the constructor', () => {
+    it('does not throw if no userId is passed in the constructor', () => {
       generator({ users: { _factory: ROLES.ADVISOR } });
       const service = new AssigneeService();
-      service.setAssignee();
+      expect(() => service.setAssignee()).to.not.throw();
     });
 
     it('sets the assignees in the right order', () => {

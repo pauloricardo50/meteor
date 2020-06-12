@@ -62,7 +62,8 @@ class AssigneeService {
       return false;
     }
 
-    const isInList = this.advisors.find(({ _id }) => _id === assigneeId);
+    // Do this in cases when devs or observers are assigned to users, just let them do it
+    const isInList = this.advisors.some(({ _id }) => _id === assigneeId);
     return (
       !isInList ||
       !this.unavailableAdvisors.some(({ _id }) => _id === assigneeId)
@@ -171,7 +172,7 @@ class AssigneeService {
     // Escape hatch, if all advisors are unavailable, ignore their unavailability
     // Avoids infinite loops in the while loop below
     if (allAreUnavailable) {
-      return this.roundRobinAdvisors[0]._id;
+      return this.roundRobinAdvisors[roundRobinIndex]._id;
     }
 
     const isUnavailable = index =>
@@ -187,25 +188,25 @@ class AssigneeService {
 
     return this.roundRobinAdvisors[roundRobinIndex]._id;
   }
+
+  static assignAdminToUser = ({ userId, adminId }) => {
+    const { assignedEmployee: oldAssignee = {} } =
+      UserService.get(userId, { assignedEmployee: { name: 1 } }) || {};
+
+    if (adminId) {
+      const newAssignee = UserService.get(adminId, { name: 1 }) || {};
+
+      UserService.update({ userId, object: { assignedEmployeeId: adminId } });
+      return { oldAssignee, newAssignee };
+    }
+
+    UserService._update({
+      id: userId,
+      object: { assignedEmployeeId: true },
+      operator: '$unset',
+    });
+    return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
+  };
 }
-
-AssigneeService.assignAdminToUser = ({ userId, adminId }) => {
-  const { assignedEmployee: oldAssignee = {} } =
-    UserService.get(userId, { assignedEmployee: { name: 1 } }) || {};
-
-  if (adminId) {
-    const newAssignee = UserService.get(adminId, { name: 1 }) || {};
-
-    UserService.update({ userId, object: { assignedEmployeeId: adminId } });
-    return { oldAssignee, newAssignee };
-  }
-
-  UserService._update({
-    id: userId,
-    object: { assignedEmployeeId: true },
-    operator: '$unset',
-  });
-  return { oldAssignee, newAssignee: { _id: adminId, name: 'Personne' } };
-};
 
 export default AssigneeService;

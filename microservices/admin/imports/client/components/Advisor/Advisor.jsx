@@ -7,11 +7,12 @@ import Tooltip from 'core/components/Material/Tooltip';
 import { useAdmins } from '../AdminsContext/AdminsContext';
 
 const Advisor = ({ advisorId, className, tooltip: tooltipExtension }) => {
+  const admins = useAdmins();
+
   if (!advisorId) {
     return null;
   }
 
-  const admins = useAdmins();
   const advisor = admins.find(({ _id }) => _id === advisorId);
 
   if (!advisor) {
