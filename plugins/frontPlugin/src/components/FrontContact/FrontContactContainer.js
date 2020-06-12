@@ -11,8 +11,13 @@ const taskFragment = {
   title: 1,
 };
 
-const contactFragment = email => ({
-  $filters: { 'emails.0.address': { $in: [email, email.toLowerCase()] } },
+const contactFragment = handle => ({
+  $filters: {
+    $or: [
+      { 'emails.0.address': { $in: [handle, handle.toLowerCase()] } },
+      { intercomId: handle },
+    ],
+  },
   address1: 1,
   address2: 1,
   city: 1,
@@ -80,7 +85,7 @@ export default withProps(({ contact }) => {
               ...contact,
               email,
               phoneNumbers: [phone],
-              name: name || email,
+              name: name || email || handle,
             });
           });
         }

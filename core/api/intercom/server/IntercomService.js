@@ -122,8 +122,6 @@ export class IntercomService {
   }
 
   getContact = async ({ email, contactId }) => {
-    let contact = {};
-
     if (email) {
       const body = {
         query: {
@@ -138,17 +136,15 @@ export class IntercomService {
         body,
       });
 
-      contact = data[0];
+      const [contact] = data;
+      return contact;
     }
-
     if (contactId) {
-      contact = await this.callIntercomAPI({
+      return this.callIntercomAPI({
         endpoint: 'getContact',
         params: { contactId },
       });
     }
-
-    return contact;
   };
 
   listAdmins = async () => {
@@ -159,16 +155,14 @@ export class IntercomService {
   };
 
   getAdmin = async ({ email }) => {
-    const admins = this.listAdmins();
-    const [admin = {}] = admins.find(
-      ({ email: adminEmail }) => email === adminEmail,
-    );
+    const admins = await this.listAdmins();
+    const admin = admins.find(({ email: adminEmail }) => email === adminEmail);
 
     return admin;
   };
 
   getIntercomId = async ({ userId }) => {
-    let { email, assignedRoles, intercomId } = UserService.get(userId, {
+    const { email, assignedRoles, intercomId } = UserService.get(userId, {
       email: 1,
       assignedRoles: 1,
     });
@@ -178,18 +172,19 @@ export class IntercomService {
     }
 
     const [role] = assignedRoles;
+    let contact;
 
     if (role === ROLES.ADVISOR) {
-      intercomId = await this.getAdminId({ email })?._id;
+      contact = await this.getAdmin({ email });
     } else {
-      intercomId = await this.getContact({ email })?._id;
+      contact = await this.getContact({ email });
     }
 
-    if (intercomId) {
-      UserService.update({ userId, object: { intercomId } });
+    if (contact?.id) {
+      UserService.update({ userId, object: { intercomId: contact.id } });
     }
 
-    return intercomId;
+    return contact.id;
   };
 
   updateContactOwner = async ({ userId, adminId }) => {
