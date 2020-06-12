@@ -21,9 +21,13 @@ import {
 } from '../../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import PropertyService from '../../../properties/server/PropertyService';
+import TaskService from '../../../tasks/server/TaskService';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
-import { removeLoanFromPromotion } from '../../methodDefinitions';
+import {
+  removeLoanFromPromotion,
+  submitPromotionInterestForm,
+} from '../../methodDefinitions';
 import {
   PROMOTION_STATUS,
   PROMOTION_TYPES,
@@ -1263,6 +1267,108 @@ describe('PromotionService', function() {
       });
 
       expect(promotionLotGroupIds).to.deep.equal(['group1']);
+    });
+  });
+
+  describe('submitPromotionInterestForm', () => {
+    it('should throw if the promotion does not exist', async () => {
+      try {
+        await submitPromotionInterestForm.run({
+          name: 'Joe Jackson',
+          email: 'test1@e-potek.ch',
+          phoneNumber: '12345',
+          promotionId: 'promoId',
+        });
+        expect(1).to.equal(2, 'Should not throw');
+      } catch (error) {
+        expect(error.message).to.include('invalide');
+      }
+    });
+
+    it('should throw if the email is invalid', async () => {
+      try {
+        await submitPromotionInterestForm.run({
+          name: 'Joe Jackson',
+          email: 'test1@e-potek.',
+          promotionId: 'promoId',
+        });
+        expect(1).to.equal(2, 'Should not throw');
+      } catch (error) {
+        expect(error.message).to.include('email valable');
+      }
+    });
+
+    it('should add a task for the right admin', async () => {
+      generator({
+        users: { _id: 'a', _factory: ROLES.ADVISOR },
+        promotions: {
+          _id: 'promoId',
+          name: 'Promo 1 test',
+          assignedEmployee: { _id: 'b', _factory: ROLES.ADVISOR },
+        },
+      });
+
+      await submitPromotionInterestForm.run({
+        details: 'Interested!',
+        name: 'Joe Jackson',
+        email: 'test1@e-potek.ch',
+        phoneNumber: '12345',
+        promotionId: 'promoId',
+      });
+
+      await checkEmails(1);
+
+      const tasks = TaskService.fetch({
+        assigneeLink: 1,
+        title: 1,
+        description: 1,
+      });
+      const [{ assigneeLink, title, description }] = tasks;
+
+      expect(tasks.length).to.equal(1);
+      expect(assigneeLink._id).to.equal('b');
+      expect(title).to.include('Promo 1 test');
+      expect(description).to.include('Joe Jackson');
+      expect(description).to.include('test1@e-potek.ch');
+      expect(description).to.include('12345');
+      expect(description).to.include('Interested!');
+    });
+
+    it('should send an email to the user who made the request', async () => {
+      generator({
+        promotions: { _id: 'p', name: 'Promo 2 test' },
+      });
+
+      await submitPromotionInterestForm.run({
+        details: 'Interested!',
+        name: 'Joe Jackson',
+        email: 'test2@e-potek.ch',
+        phoneNumber: '12345',
+        promotionId: 'p',
+      });
+
+      const [
+        {
+          emailId,
+          address,
+          template: {
+            message: { subject, global_merge_vars },
+          },
+        },
+      ] = await checkEmails(1);
+      const { content: title } = global_merge_vars.find(
+        ({ name }) => name === 'TITLE',
+      );
+      const { content: body } = global_merge_vars.find(
+        ({ name }) => name === 'BODY',
+      );
+
+      expect(title).to.include('Merci');
+      expect(body).to.include('Joe Jackson');
+      expect(body).to.include('Promo 2 test');
+      expect(emailId).to.equal(EMAIL_IDS.PROMOTION_INTEREST_FORM);
+      expect(address).to.equal('test2@e-potek.ch');
+      expect(subject).to.include('Promo 2 test');
     });
   });
 });

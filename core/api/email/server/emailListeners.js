@@ -386,21 +386,15 @@ addEmailListener({
 addEmailListener({
   description: 'Formulaire de contact promotion -> Client',
   method: submitPromotionInterestForm,
-  func: ({ params }) =>
-    sendEmailToAddress.serverRun({
+  func: ({ params }) => {
+    const { name: promotionName } = PromotionService.get(params.promotionId, {
+      name: 1,
+    });
+
+    return sendEmailToAddress.serverRun({
       emailId: EMAIL_IDS.PROMOTION_INTEREST_FORM,
       address: params.email,
-      params,
-    }),
-});
-
-addEmailListener({
-  description: 'Formulaire de contact promotion -> team@e-potek.ch',
-  method: submitPromotionInterestForm,
-  func: ({ params }) =>
-    sendEmailToAddress.serverRun({
-      emailId: EMAIL_IDS.PROMOTION_INTEREST_FORM_ADMIN,
-      address: INTERNAL_EMAIL,
-      params,
-    }),
+      params: { ...params, promotionName },
+    });
+  },
 });

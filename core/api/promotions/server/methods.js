@@ -1,3 +1,7 @@
+import { Meteor } from 'meteor/meteor';
+
+import SimpleSchema from 'simpl-schema';
+
 import SecurityService from '../../security';
 import {
   addProUserToPromotion,
@@ -147,4 +151,13 @@ updatePromotionTimeline.setHandler(({ userId }, params) => {
 });
 
 // This method needs to exist as its being listened to in EmailListeners
-submitPromotionInterestForm.setHandler(() => null);
+submitPromotionInterestForm.setHandler((context, { promotionId, email }) => {
+  if (!SimpleSchema.RegEx.Email.test(email)) {
+    throw new Meteor.Error('Veuillez saisir un email valable');
+  }
+
+  const promotion = PromotionService.get(promotionId, { _id: 1 });
+  if (!promotion) {
+    throw new Meteor.Error('Cette promotion est invalide');
+  }
+});
