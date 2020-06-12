@@ -4,7 +4,6 @@ import { getUserNameAndOrganisation } from '../../../api/helpers';
 import ProCustomer from '../../ProCustomer';
 
 const PromotionCustomer = ({ user, invitedBy, promotionUsers }) => {
-  const { _id, name, phoneNumbers = ['-'], email } = user;
   const invitedByUser =
     invitedBy &&
     promotionUsers &&
