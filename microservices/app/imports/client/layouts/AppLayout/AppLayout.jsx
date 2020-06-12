@@ -7,6 +7,7 @@ import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import useCurrentUser from 'core/hooks/useCurrentUser';
+import useIntercom from 'core/hooks/useIntercom';
 
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
@@ -42,6 +43,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
   const currentUser = useCurrentUser();
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
+  useIntercom();
 
   if (redirect) {
     return <Redirect to={redirect} />;

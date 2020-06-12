@@ -1,8 +1,15 @@
-import { useEffect } from 'react';
+import { Meteor } from 'meteor/meteor';
 
+import { useEffect, useState } from 'react';
+
+import { getIntercomSettings } from '../api/intercom/methodDefinitions';
 import usePrevious from './usePrevious';
 
-const APP_ID = 'fzxlw28z';
+const defaultSettings = {
+  alignment: 'right',
+  horizontal_padding: 16,
+  vertical_padding: 16,
+};
 
 // This is exported as a convenience API
 export const IntercomAPI = (method, ...args) => {
@@ -13,7 +20,17 @@ export const IntercomAPI = (method, ...args) => {
   }
 };
 
-const initializeIntercom = () => {
+const getIntercomUserSettings = async () => {
+  const interconSettings = await getIntercomSettings.run();
+  return { ...defaultSettings, ...interconSettings };
+};
+
+const initializeIntercom = async () => {
+  const intercomSettings = await getIntercomUserSettings();
+
+  window.intercomSettings = intercomSettings;
+  const { app_id } = intercomSettings;
+
   const w = window;
   const ic = w.Intercom;
   if (typeof ic === 'function') {
@@ -33,7 +50,7 @@ const initializeIntercom = () => {
       const s = d.createElement('script');
       s.type = 'text/javascript';
       s.async = true;
-      s.src = `https://widget.intercom.io/widget/${APP_ID}`;
+      s.src = `https://widget.intercom.io/widget/${app_id}`;
       const x = d.getElementsByTagName('script')[0];
       x.parentNode && x.parentNode.insertBefore(s, x);
     };
@@ -47,21 +64,7 @@ const initializeIntercom = () => {
   }
 };
 
-const defaultSettings = {
-  app_id: APP_ID,
-  alignment: 'right',
-  horizontal_padding: 16,
-  vertical_padding: 16,
-};
-
-const useItercom = ({ userId, email } = {}) => {
-  const intercomSettings = {
-    ...defaultSettings,
-    email,
-    user_id: userId,
-  };
-  window.intercomSettings = intercomSettings;
-
+const useIntercom = () => {
   // Initialization
   useEffect(() => {
     initializeIntercom();
@@ -73,20 +76,21 @@ const useItercom = ({ userId, email } = {}) => {
     };
   }, []);
 
-  const previousUserId = usePrevious(userId);
+  const previousUserId = usePrevious(Meteor.userId);
 
   useEffect(() => {
-    if (previousUserId && !userId) {
+    if (previousUserId && !Meteor.userId) {
       // If the user was previously logged in, and logged out, shut down and start over
       IntercomAPI('shutdown');
+      const intercomSettings = getIntercomUserSettings();
       IntercomAPI('boot', intercomSettings);
-    } else if (userId) {
+    } else if (Meteor.userId) {
       // If the user was not logged in, just call 'update' to let Intercom know
       IntercomAPI('update');
     }
-  }, [userId]);
+  }, [Meteor.userId]);
 
   return null;
 };
 
-export default useItercom;
+export default useIntercom;

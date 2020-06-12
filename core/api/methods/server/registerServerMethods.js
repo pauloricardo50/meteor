@@ -32,4 +32,5 @@ import '../../insuranceProducts/server/methods';
 import '../../commissionRates/server/methods';
 import '../../gpsStats/server/methods';
 import '../../errorLogger/server/methods';
+import '../../intercom/server/methods';
 import './methods';
