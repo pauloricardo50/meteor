@@ -56,6 +56,7 @@ const fragment = merge({}, calculatorLoan(), {
   borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
   contacts: 1,
   customName: 1,
+  displayWelcomeScreen: 1,
   enableOffers: 1,
   lenders: {
     offers: {

@@ -73,10 +73,11 @@ const getTextLabel = (promotionOption, loan) => {
   return `PromotionReservationDeadline.${status}`;
 };
 
-const PromotionReservationDeadlineText = ({ loan, promotionOption }) => {
-  const {
-    loan: { promotions = [] },
-  } = promotionOption;
+const PromotionReservationDeadlineText = ({
+  promotionOption,
+  loan = promotionOption.loan,
+}) => {
+  const { promotions } = loan;
   const [promotion] = promotions;
   const {
     $metadata: { invitedBy },
