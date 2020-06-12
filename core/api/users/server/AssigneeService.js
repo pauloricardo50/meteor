@@ -1,3 +1,5 @@
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
+import IntercomService from '../../intercom/server/IntercomService';
 import SecurityService from '../../security';
 import { ROLES } from '../roles/roleConstants';
 import { ASSIGNEE } from '../userConstants';
@@ -105,6 +107,15 @@ class AssigneeService {
         linkName: 'assignedEmployee',
         linkId: assigneeId,
       });
+
+      try {
+        IntercomService.updateContactOwner({
+          userId: this.newUserId,
+          adminId: assigneeId,
+        });
+      } catch (error) {
+        ErrorLogger.logError({ error });
+      }
     }
   }
 
@@ -197,6 +208,13 @@ class AssigneeService {
       const newAssignee = UserService.get(adminId, { name: 1 }) || {};
 
       UserService.update({ userId, object: { assignedEmployeeId: adminId } });
+
+      try {
+        IntercomService.updateContactOwner({ userId, adminId });
+      } catch (error) {
+        ErrorLogger.logError({ error });
+      }
+
       return { oldAssignee, newAssignee };
     }
 

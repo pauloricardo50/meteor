@@ -162,14 +162,23 @@ export class IntercomService {
   };
 
   getIntercomId = async ({ userId }) => {
-    const { email, assignedRoles, intercomId } = UserService.get(userId, {
-      email: 1,
-      assignedRoles: 1,
+    const { intercomId } = UserService.get(userId, {
+      intercomId: 1,
     });
 
     if (intercomId) {
       return intercomId;
     }
+
+    const contactId = await this.setIntercomId({ userId });
+    return contactId;
+  };
+
+  setIntercomId = async ({ userId }) => {
+    const { email, assignedRoles } = UserService.get(userId, {
+      email: 1,
+      assignedRoles: 1,
+    });
 
     const [role] = assignedRoles;
     let contact;
