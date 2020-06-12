@@ -31,6 +31,10 @@ const intercomEndpoints = {
     method: 'GET',
     makeEndpoint: () => '/admins',
   },
+  getContact: {
+    method: 'GET',
+    makeEndpoint: ({ contactId }) => `/contacts/${contactId}`,
+  },
 };
 
 export class IntercomService {
@@ -117,23 +121,34 @@ export class IntercomService {
       });
   }
 
-  getContactId = async ({ email }) => {
-    const body = {
-      query: {
-        field: 'email',
-        operator: '=',
-        value: email,
-      },
-    };
+  getContact = async ({ email, contactId }) => {
+    let contact = {};
 
-    const { data = [] } = await this.callIntercomAPI({
-      endpoint: 'searchContacts',
-      body,
-    });
+    if (email) {
+      const body = {
+        query: {
+          field: 'email',
+          operator: '=',
+          value: email,
+        },
+      };
 
-    const [{ id } = {}] = data;
+      const { data = [] } = await this.callIntercomAPI({
+        endpoint: 'searchContacts',
+        body,
+      });
 
-    return id;
+      contact = data[0];
+    }
+
+    if (contactId) {
+      contact = await this.callIntercomAPI({
+        endpoint: 'getContact',
+        params: { contactId },
+      });
+    }
+
+    return contact;
   };
 
   listAdmins = async () => {
@@ -143,13 +158,13 @@ export class IntercomService {
     return admins;
   };
 
-  getAdminId = async ({ email }) => {
+  getAdmin = async ({ email }) => {
     const admins = this.listAdmins();
-    const [{ id } = {}] = admins.find(
+    const [admin = {}] = admins.find(
       ({ email: adminEmail }) => email === adminEmail,
     );
 
-    return id;
+    return admin;
   };
 
   getIntercomId = async ({ userId }) => {
@@ -165,9 +180,9 @@ export class IntercomService {
     const [role] = assignedRoles;
 
     if (role === ROLES.ADVISOR) {
-      intercomId = await this.getAdminId({ email });
+      intercomId = await this.getAdminId({ email })?._id;
     } else {
-      intercomId = await this.getContactId({ email });
+      intercomId = await this.getContact({ email })?._id;
     }
 
     if (intercomId) {
