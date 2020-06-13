@@ -746,6 +746,7 @@ export const basePromotion = () => ({
   contacts: 1,
   createdAt: 1,
   documents: 1,
+  lenderOrganisationLink: 1,
   lenderOrganisation: { name: 1, logo: 1 },
   loans: { _id: 1, createdAt: 1 },
   lots: {

@@ -37,7 +37,6 @@ const promotionFragment = {
   loanCount: 1,
   name: 1,
   projectStatus: 1,
-  lenderOrganisation: { name: 1 },
   promotionLoan: { name: 1, proNotes: 1 },
   promotionLotGroups: 1,
   promotionLotLinks: 1,
