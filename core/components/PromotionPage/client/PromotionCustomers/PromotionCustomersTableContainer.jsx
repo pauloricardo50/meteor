@@ -36,7 +36,6 @@ const getColumns = ({
       <PromotionCustomer
         user={loan.user}
         invitedBy={loan.promotions[0].$metadata?.invitedBy}
-        promotionUsers={promotionUsers}
       />
     ),
   },

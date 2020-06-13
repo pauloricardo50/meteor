@@ -9,105 +9,95 @@ import PromotionCustomer from '../PromotionCustomer';
 import LotChip from './LotChip';
 import PromotionLotGroupChip from './PromotionLotGroupChip';
 
-const getProColumns = promotion => {
-  const { promotionLotGroups = [], users: promotionUsers = [] } = promotion;
+const getProColumns = ({ promotionLotGroups = [] }) => [
+  {
+    Header: <T id="PromotionPage.lots.name" />,
+    accessor: 'name',
+  },
+  {
+    Header: <T id="PromotionPage.lots.group" />,
+    accessor: 'promotionLotGroupIds',
+    Cell: ({ value: promotionLotGroupIds = [] }) => (
+      <div>
+        {promotionLotGroupIds.map(promotionLotGroupId => {
+          const promotionLotGroup = promotionLotGroups.find(
+            ({ id }) => id === promotionLotGroupId,
+          );
 
-  return [
-    {
-      Header: <T id="PromotionPage.lots.name" />,
-      accessor: 'name',
-    },
-    {
-      Header: <T id="PromotionPage.lots.group" />,
-      accessor: 'promotionLotGroupIds',
-      Cell: ({ value: promotionLotGroupIds = [] }) => (
-        <div>
-          {promotionLotGroupIds.map(promotionLotGroupId => {
-            const promotionLotGroup = promotionLotGroups.find(
-              ({ id }) => id === promotionLotGroupId,
-            );
+          return (
+            promotionLotGroup && (
+              <PromotionLotGroupChip
+                key={promotionLotGroupId}
+                promotionLotGroup={promotionLotGroup}
+              />
+            )
+          );
+        })}
+      </div>
+    ),
+    disableSortBy: true,
+  },
+  {
+    Header: <T id="PromotionPage.lots.status" />,
+    accessor: 'status',
+    Cell: ({ value: status }) => (
+      <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+    ),
+  },
+  {
+    Header: <T id="PromotionPage.lots.totalValue" />,
+    accessor: 'value',
+    align: 'right',
+    disableSortBy: true,
+    Cell: ({ value }) => (
+      <span style={{ whiteSpace: 'nowrap' }}>
+        {typeof value === 'number' ? (
+          <b>
+            <Money value={value} />
+          </b>
+        ) : (
+          value
+        )}
+      </span>
+    ),
+  },
+  {
+    Header: <T id="PromotionPage.lots.lots" />,
+    accessor: 'lots',
+    Cell: ({ value: lots = [] }) => (
+      <div className="lot-chips">
+        {lots.map(lot => (
+          <LotChip lot={lot} key={lot._id} />
+        ))}
+      </div>
+    ),
+    disableSortBy: true,
+  },
+  {
+    Header: <T id="PromotionPage.lots.loans" />,
+    accessor: 'loanCount',
+    Cell: ({ value: loanCount }) => (
+      <span className="loan-count">{loanCount}</span>
+    ),
+  },
+  {
+    Header: <T id="PromotionPage.lots.attributedTo" />,
+    accessor: 'attributedToUser',
+    Cell: ({ value: attributedToUser }) => {
+      if (!attributedToUser) {
+        return null;
+      }
 
-            return (
-              promotionLotGroup && (
-                <PromotionLotGroupChip
-                  key={promotionLotGroupId}
-                  promotionLotGroup={promotionLotGroup}
-                />
-              )
-            );
-          })}
-        </div>
-      ),
-      disableSortBy: true,
-    },
-    {
-      Header: <T id="PromotionPage.lots.status" />,
-      accessor: 'status',
-      Cell: ({ value: status }) => (
-        <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
-      ),
-    },
-    {
-      Header: <T id="PromotionPage.lots.totalValue" />,
-      accessor: 'value',
-      align: 'right',
-      disableSortBy: true,
-      Cell: ({ value }) => (
-        <span style={{ whiteSpace: 'nowrap' }}>
-          {typeof value === 'number' ? (
-            <b>
-              <Money value={value} />
-            </b>
-          ) : (
-            value
-          )}
-        </span>
-      ),
-    },
-    {
-      Header: <T id="PromotionPage.lots.lots" />,
-      accessor: 'lots',
-      Cell: ({ value: lots = [] }) => (
-        <div className="lot-chips">
-          {lots.map(lot => (
-            <LotChip lot={lot} key={lot._id} />
-          ))}
-        </div>
-      ),
-      disableSortBy: true,
-    },
-    {
-      Header: <T id="PromotionPage.lots.loans" />,
-      accessor: 'loanCount',
-      Cell: ({ value: loanCount }) => (
-        <span className="loan-count">{loanCount}</span>
-      ),
-    },
-    {
-      Header: <T id="PromotionPage.lots.attributedTo" />,
-      accessor: 'attributedToUser',
-      Cell: ({ value: attributedToUser }) => {
-        if (!attributedToUser) {
-          return null;
-        }
+      const {
+        loan: { userCache },
+        loanCache,
+      } = attributedToUser;
+      const [{ invitedBy }] = loanCache[0].promotionLinks;
 
-        const {
-          loan: { userCache },
-          loanCache,
-        } = attributedToUser;
-        const [{ invitedBy }] = loanCache[0].promotionLinks;
-
-        return (
-          <PromotionCustomer
-            user={userCache}
-            invitedBy={invitedBy}
-            promotionUsers={promotionUsers}
-          />
-        );
-      },
+      return <PromotionCustomer user={userCache} invitedBy={invitedBy} />;
     },
-  ];
-};
+  },
+];
 
 const ProPromotionLotsTableContainer = withProps(({ promotion }) => {
   const { _id: promotionId, promotionLotGroups = [] } = promotion;

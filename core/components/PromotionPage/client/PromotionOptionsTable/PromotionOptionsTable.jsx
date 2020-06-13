@@ -195,13 +195,7 @@ const PromotionOptionsTable = ({ promotion }) => {
                   $metadata: { invitedBy },
                 },
               ] = promotions;
-              return (
-                <PromotionCustomer
-                  user={user}
-                  invitedBy={invitedBy}
-                  promotionUsers={promotionUsers}
-                />
-              );
+              return <PromotionCustomer user={user} invitedBy={invitedBy} />;
             },
           },
           {

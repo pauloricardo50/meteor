@@ -2,9 +2,13 @@ import React from 'react';
 
 import { getUserNameAndOrganisation } from '../../../api/helpers';
 import ProCustomer from '../../ProCustomer';
+import { usePromotion } from './PromotionPageContext';
 
-const PromotionCustomer = ({ user, invitedBy, promotionUsers }) => {
-  const invitedByUser = promotionUsers?.find(({ _id: id }) => id === invitedBy);
+const PromotionCustomer = ({ user, invitedBy }) => {
+  const {
+    promotion: { users },
+  } = usePromotion();
+  const invitedByUser = users?.find(({ _id: id }) => id === invitedBy);
 
   return (
     <ProCustomer
