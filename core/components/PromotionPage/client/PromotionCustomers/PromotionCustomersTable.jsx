@@ -16,7 +16,7 @@ const PromotionCustomersTable = ({
   promotion: { users = [] },
 }) => (
   <>
-    <div className="flex">
+    <div className="flex mb-16">
       <MongoSelect
         value={status}
         onChange={setStatus}
