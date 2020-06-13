@@ -532,7 +532,9 @@ describe('PromotionOptionService', function() {
     });
   });
 
-  describe('mergeReservationAgreementFiles', () => {
+  describe('mergeReservationAgreementFiles', function() {
+    this.retries(3);
+
     it('merges temp agreement files to promotion option', async () => {
       generator({
         users: { _id: 'adminId', _factory: 'admin' },
