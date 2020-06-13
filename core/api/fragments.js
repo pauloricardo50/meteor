@@ -705,6 +705,7 @@ export const proPromotionOption = () => ({
     status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
   },
+  name: 1,
   promotion: { users: { _id: 1 }, agreementDuration: 1 },
 });
 
@@ -718,6 +719,7 @@ export const appPromotionOption = () => ({
     promotions: { _id: 1, users: { name: 1, organisations: { name: 1 } } },
   },
   lots: { description: 1, name: 1, type: 1, value: 1 },
+  name: 1,
   promotionLots: appPromotionLot(),
   updatedAt: 1,
 });

@@ -20,14 +20,13 @@ import PromotionLotGroupChip from '../PromotionLotsTable/PromotionLotGroupChip';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
 const getModalProps = promotionOption => {
-  const { promotionLots, loan } = promotionOption;
-  const [promotionLot] = promotionLots;
+  const { name, loan } = promotionOption;
   return {
     title: (
       <T
         id="PromotionReservationsTable.modalTitle"
         values={{
-          lotName: <b>{promotionLot.name}</b>,
+          lotName: <b>{name}</b>,
           customerName: <b>{loan.user.name}</b>,
         }}
       />
@@ -126,7 +125,7 @@ const PromotionOptionsTable = ({ promotion }) => {
             $body: {
               bank: 1,
               createdAt: 1,
-              promotionLots: { name: 1, promotionLotGroupIds: 1 },
+              promotionLots: { promotionLotGroupIds: 1 },
               fullVerification: 1,
               loanCache: 1,
               loan: {
@@ -134,6 +133,7 @@ const PromotionOptionsTable = ({ promotion }) => {
                 promotions: { _id: 1 },
                 proNote: 1,
               },
+              name: 1,
               priorityOrder: 1,
               reservationAgreement: 1,
               reservationDeposit: 1,
@@ -146,7 +146,7 @@ const PromotionOptionsTable = ({ promotion }) => {
         columns={[
           {
             Header: <T id="PromotionOptionsTable.lotName" />,
-            accessor: 'promotionLots.0.name',
+            accessor: 'name',
             disableSortBy: true,
           },
           {
