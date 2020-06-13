@@ -273,6 +273,12 @@ export const query = graphql`
               content
             }
           }
+          ... on PRISMIC_PageBodyVideo_embed {
+            type
+            primary {
+              video
+            }
+          }
           ... on PRISMIC_PageBodyMortgage_rates {
             type
           }

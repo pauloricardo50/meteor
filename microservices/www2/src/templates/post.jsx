@@ -60,6 +60,12 @@ export const query = graphql`
               content
             }
           }
+          ... on PRISMIC_PostBodyVideo_embed {
+            type
+            primary {
+              video
+            }
+          }
         }
       }
 
@@ -211,8 +217,7 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
                     <span className="date-spacer">•</span>
                   </div>
                 )}
-                {/* TODO: correct usage of time tag */}
-                {/* TODO: localize date display */}
+
                 <time>{blogPost.date}</time>
               </div>
             </div>
