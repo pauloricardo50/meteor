@@ -41,3 +41,8 @@ export const OFFICES = {
   GENEVA: 'GENEVA',
   LAUSANNE: 'LAUSANNE',
 };
+
+export const ASSIGNEE = {
+  NONE: 'NONE',
+  ROUND_ROBIN: 'ROUND_ROBIN',
+};

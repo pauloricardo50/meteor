@@ -23,7 +23,7 @@ export default Component => {
     constructor(props) {
       super(props);
       this.state = {
-        data: null,
+        data: props.data || null,
         error: null,
         loading: false,
       };
@@ -198,7 +198,7 @@ export default Component => {
             // If the value is falsy, just transform it
             return transform(value);
           }
-          return transform(data.find(item => (item && item._id) === value));
+          return transform(data.find(item => item?._id === value));
         };
       }
       return transform;

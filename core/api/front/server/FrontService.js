@@ -256,14 +256,8 @@ export class FrontService {
           return {};
         }
       })
-      .then(result => {
-        console.log('callFrontApi result:', endpoint);
-        console.log('params:', params);
-        console.log('result:', result);
-        return result;
-      })
       .catch(error => {
-        console.log('FrontApi error:', error);
+        console.error('FrontApi error:', error);
         throw error;
       });
   }

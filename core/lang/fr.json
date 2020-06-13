@@ -1,5 +1,8 @@
 {
   "PromotionLotLoansTable.loanStatus" : "Statut du dossier hypothécaire",
+  "Forms.isInRoundRobin": "Round robin activé",
+  "Forms.roundRobinTimeout": "Pause round robin",
+  "Forms.roundRobinTimeout.placeholder": "À Ibiza ⛷",
   "Financing.bankValue": "[ADMIN] Valeur retenue par le prêteur",
   "Forms.bankValue": "Valeur retenue par le prêteur",
   "Forms.bankValue.placeholder": "CHF 800 000",

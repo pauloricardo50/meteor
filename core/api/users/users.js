@@ -121,6 +121,15 @@ export const UserSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(OFFICES),
   },
+  isInRoundRobin: {
+    type: Boolean,
+    optional: true,
+  },
+  roundRobinTimeout: {
+    type: String,
+    optional: true,
+    uniforms: { helperText: 'CTRL + CMD + Espace pour ajouter un emoji' },
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);

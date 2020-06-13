@@ -22,8 +22,9 @@ const OrganisationModifier = ({ schema, organisation, updateOrganisation }) => {
           title: <h5>Général</h5>,
           className: 'mb-32',
           layout: [
-            { className: 'grid-col', fields: ['name', 'type'] },
-            { fields: ['features', 'tags'] },
+            { className: 'grid-2', fields: ['name', 'type'] },
+            { className: 'grid-2', fields: ['features', 'tags'] },
+            { fields: 'assigneeLink' },
           ],
         },
         {
