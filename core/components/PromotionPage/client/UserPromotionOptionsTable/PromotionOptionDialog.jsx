@@ -17,6 +17,7 @@ const PromotionOptionDialog = ({
   return (
     <div className="flex-col">
       <PromotionLotDetail promotionLot={promotionLot} promotion={promotion} />
+      <div className="m-8" />
       {canReserve && (
         <RequestReservation
           promotionOption={promotionOption}

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import cx from 'classnames';
 
@@ -9,8 +11,11 @@ import PromotionLotDetail from '../PromotionLotDetail';
 import AppPromotionLotsTableContainer from './AppPromotionLotsTableContainer';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 
+// This modal is only needed in full width when displaying the PromotionLotLoansTable
+const isApp = Meteor.microservice === 'app';
+
 const makeGetModalProps = ({ promotion }) => promotionLot => ({
-  fullWidth: true,
+  fullWidth: !isApp,
   maxWidth: false,
   title: <div>Lot {promotionLot?.name}</div>,
   children: (

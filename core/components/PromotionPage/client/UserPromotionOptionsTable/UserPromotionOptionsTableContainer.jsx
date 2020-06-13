@@ -24,9 +24,9 @@ const makeMapPromotionOption = ({
     promotionLots,
     loan: promotionOptionLoan,
     status,
+    name,
   } = promotionOption;
-  const promotionLot = (promotionLots?.length && promotionLots[0]) || {};
-  const { name, value } = promotionLot;
+  const promotionLot = promotionLots?.[0] || {};
 
   const promotionLotValue = getPromotionLotValue(promotionLot);
   return {
@@ -51,7 +51,7 @@ const makeMapPromotionOption = ({
         label: <StatusLabel status={status} collection={_collection} />,
       },
       {
-        raw: value,
+        raw: promotionLotValue,
         label:
           typeof promotionLotValue === 'number'
             ? toMoney(promotionLotValue)
@@ -119,6 +119,7 @@ export default mapProps(
   }) => {
     const [isLoading, setLoading] = useState(false);
 
+    console.log('promotionOptions:', promotionOptions);
     return {
       rows: promotionOptions.sort(sortByPriority).map(
         makeMapPromotionOption({

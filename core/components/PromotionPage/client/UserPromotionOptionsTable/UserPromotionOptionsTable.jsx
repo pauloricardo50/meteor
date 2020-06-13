@@ -23,14 +23,11 @@ const UserPromotionOptionsTable = ({
     <TableWithModal
       modalType="dialog"
       getModalProps={({ row: { promotionOption }, setOpen }) => {
-        const { promotionLots } = promotionOption;
-        const [promotionLot] = promotionLots;
+        const { name } = promotionOption;
         return {
-          fullWidth: true,
-          maxWidth: false,
           title: (
             <div className="modal-promotion-lot-title">
-              <span>{promotionLot?.name}</span>
+              <span>Lot {name}</span>
             </div>
           ),
           children: (
