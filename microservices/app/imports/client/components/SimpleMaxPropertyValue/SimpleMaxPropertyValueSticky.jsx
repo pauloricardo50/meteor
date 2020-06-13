@@ -52,7 +52,7 @@ const getFooter = ({
 
   if (!maxPropertyValue && !canCalculateSolvency) {
     return (
-      <div className="font-size-3">
+      <div className="font-size-4">
         <T id="MaxPropertyValue.stickyFooterEmpty" />
       </div>
     );
@@ -84,7 +84,7 @@ const getFooter = ({
   );
 };
 
-const SimpleMaxPropertyValueSticky = props => {
+const SimpleMaxPropertyValueSticky = (props) => {
   const { loan, residenceType } = props;
   const { maxPropertyValue, maxPropertyValueExists, purchaseType } = loan;
   const canCalculateSolvency = Calculator.canCalculateSolvency({ loan });
