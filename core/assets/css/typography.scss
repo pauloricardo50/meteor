@@ -42,6 +42,10 @@ h6 {
 
   font-weight: $bold;
 
+  b, .bold {
+    font-weight: $title-bold;
+  }
+
   &.inherit-color {
     color: inherit;
   }
