@@ -34,9 +34,16 @@ export const OfferSchema = new SimpleSchema({
   epotekFees: moneyField,
   // For each existing rate, insert an allowed value in the schema
   ...Object.values(INTEREST_RATES).reduce(
-    (accumulator, interestKey) => ({
-      ...accumulator,
-      [interestKey]: percentageField,
+    (obj, interestKey) => ({
+      ...obj,
+      [interestKey]: {
+        ...percentageField,
+        uniforms: {
+          ...percentageField.uniforms,
+          fullWidth: false,
+          style: { width: 100, marginRight: 4 },
+        },
+      },
     }),
     {},
   ),
