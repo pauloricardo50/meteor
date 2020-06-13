@@ -1,5 +1,6 @@
 import React from 'react';
 import Badge from '@material-ui/core/Badge';
+import cx from 'classnames';
 
 import Link from 'core/components/Link';
 import Tooltip from 'core/components/Material/Tooltip';
@@ -29,7 +30,7 @@ const Advisor = ({ advisorId, className, tooltip: tooltipExtension }) => {
   );
 
   return (
-    <Link className={className} to={`/users/${advisorId}`}>
+    <Link className={cx('advisor', className)} to={`/users/${advisorId}`}>
       <Tooltip
         title={
           <div>

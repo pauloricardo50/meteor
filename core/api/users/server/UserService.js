@@ -70,7 +70,7 @@ export class UserServiceClass extends CollectionService {
     assignedEmployeeId,
     email,
     password,
-    referredByOrganisation,
+    referredByOrganisationId,
     referredByUserId,
     role = ROLES.USER,
     sendEnrollmentEmail,
@@ -83,10 +83,10 @@ export class UserServiceClass extends CollectionService {
       this.setReferredBy({ userId: newUserId, proId: referredByUserId });
     }
 
-    if (referredByOrganisation) {
+    if (referredByOrganisationId) {
       this.setReferredByOrganisation({
         userId: newUserId,
-        organisationId: referredByOrganisation._id,
+        organisationId: referredByOrganisationId,
       });
     }
 
@@ -96,7 +96,7 @@ export class UserServiceClass extends CollectionService {
     this.setAcquisitionChannel({
       newUserId,
       referredByUserId,
-      referredByOrganisation,
+      referredByOrganisationId,
     });
 
     if (sendEnrollmentEmail) {
@@ -698,7 +698,7 @@ export class UserServiceClass extends CollectionService {
   setAcquisitionChannel({
     newUserId,
     referredByUserId,
-    referredByOrganisation,
+    referredByOrganisationId,
   }) {
     const APIUser = getAPIUser();
 
@@ -707,7 +707,7 @@ export class UserServiceClass extends CollectionService {
         userId: newUserId,
         object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_API },
       });
-    } else if (referredByUserId || referredByOrganisation) {
+    } else if (referredByUserId || referredByOrganisationId) {
       const userReferral =
         referredByUserId && this.get(referredByUserId, { roles: 1 });
       const isReferralAdmin =

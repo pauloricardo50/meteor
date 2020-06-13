@@ -41,7 +41,7 @@ export const adminCreateUser = new Method({
       firstName: Match.Maybe(String),
       lastName: Match.Maybe(String),
       phoneNumbers: Match.Maybe([String]),
-      referredByOrganisation: Match.Maybe(String),
+      referredByOrganisationId: Match.Maybe(String),
       referredByUserId: Match.Maybe(String),
       role: Match.Maybe(String),
       sendEnrollmentEmail: Match.Maybe(Boolean),

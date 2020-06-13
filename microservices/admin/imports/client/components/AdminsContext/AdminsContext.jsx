@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 
+import { updateDocument } from 'core/api/methods/methodDefinitions';
+import { updateUser } from 'core/api/users/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { employeesById } from 'core/arrays/epotekEmployees';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import useMeteorData from 'core/hooks/useMeteorData';
-
-import useCurrentUser from '../../../core/hooks/useCurrentUser';
 
 export const AdminsContext = React.createContext();
 
@@ -22,6 +23,7 @@ export const AdminsProvider = Component => props => {
         roles: 1,
         roundRobinTimeout: 1,
       },
+      refetchOnMethodCall: [updateUser, updateDocument],
     },
     [currentUser?._id], // Make sure there is no race condition, where the current user is not yet logged in
   );

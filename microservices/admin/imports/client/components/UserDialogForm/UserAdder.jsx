@@ -30,7 +30,7 @@ export const userFormLayout = [
       'email',
       'phoneNumbers',
       'referredByUserId',
-      'referredByOrganisation',
+      'referredByOrganisationId',
       'organisations',
     ],
   },
@@ -74,21 +74,22 @@ const getSchema = (organisations, advisors) =>
           placeholder: null,
         },
       },
-      referredByOrganisation: {
+      referredByOrganisationId: {
         type: String,
         optional: true,
-        allowedValues: organisations,
+        allowedValues: organisations.map(({ _id }) => _id),
         uniforms: {
-          transform: organisation =>
-            organisation ? organisation.name : 'Aucune',
+          transform: organisationId =>
+            organisations.find(({ _id }) => _id === organisationId)?.name ||
+            'Aucune',
           labelProps: { shrink: true },
           label: 'Référé par organisation',
           placeholder: null,
         },
         customAutoValue: model => {
-          const { referredByUserId, referredByOrganisation } = model;
-          if (referredByOrganisation) {
-            return referredByOrganisation;
+          const { referredByUserId, referredByOrganisationId } = model;
+          if (referredByOrganisationId) {
+            return referredByOrganisationId;
           }
 
           if (!referredByUserId) {
@@ -101,7 +102,7 @@ const getSchema = (organisations, advisors) =>
             ),
           );
 
-          return org;
+          return org?._id;
         },
       },
       assignedEmployeeId: {

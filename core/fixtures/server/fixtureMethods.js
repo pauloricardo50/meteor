@@ -121,7 +121,6 @@ Meteor.methods({
     generateDevs = false,
     generateAdmins = false,
     generateUsers = false,
-    generateLoans = false,
     generateOrganisations = false,
     generateUnownedLoan = false,
     generateTestUser = false,
