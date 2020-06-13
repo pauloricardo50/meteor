@@ -4,11 +4,7 @@ import { getUserNameAndOrganisation } from '../../../api/helpers';
 import ProCustomer from '../../ProCustomer';
 
 const PromotionCustomer = ({ user, invitedBy, promotionUsers }) => {
-  const invitedByUser =
-    invitedBy &&
-    promotionUsers &&
-    !!promotionUsers.length &&
-    promotionUsers.find(({ _id: id }) => id === invitedBy);
+  const invitedByUser = promotionUsers?.find(({ _id: id }) => id === invitedBy);
 
   return (
     <ProCustomer

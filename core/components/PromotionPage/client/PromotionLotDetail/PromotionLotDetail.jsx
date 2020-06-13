@@ -23,7 +23,11 @@ import PromotionLotTimeline from './PromotionLotTimeline';
 
 const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const { lots = [], _id: promotionLotId, status, documents } = promotionLot;
-  const { lots: allLots, constructionTimeline = [], signingDate } = promotion;
+  const {
+    _id: promotionId,
+    constructionTimeline = [],
+    signingDate,
+  } = promotion;
   const {
     permissions: { canModifyLots, canSeeCustomers, canManageDocuments },
   } = usePromotion();
@@ -51,20 +55,12 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
       {children}
       <section className="top">
         <PromotionLotDetailRecaps promotionLot={promotionLot} />
-        {lots.length > 0 && (
-          <Box>
-            <h4>
-              <T id="PromotionLotPage.manageLot" />
-            </h4>
-            <PromotionLotsManager
-              promotionLotId={promotionLotId}
-              lots={lots}
-              allLots={allLots}
-              status={status}
-              canModifyLots={canModifyLots}
-            />
-          </Box>
-        )}
+        <PromotionLotsManager
+          promotionId={promotionId}
+          promotionLotId={promotionLotId}
+          lots={lots}
+          status={status}
+        />
         {files.length > 0 && (
           <Box>
             <h4>
