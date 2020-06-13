@@ -11,6 +11,7 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../../Translation';
+import { usePromotion } from '../PromotionPageContext';
 
 const isApp = Meteor.microservice === 'app';
 
@@ -77,12 +78,10 @@ const PromotionReservationDeadlineText = ({
   promotionOption,
   loan = promotionOption.loan,
 }) => {
-  const { promotions } = loan;
-  const [promotion] = promotions;
+  const { invitedBy } = promotionOption;
   const {
-    $metadata: { invitedBy },
-    users = [],
-  } = promotion;
+    promotion: { users },
+  } = usePromotion();
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });
 

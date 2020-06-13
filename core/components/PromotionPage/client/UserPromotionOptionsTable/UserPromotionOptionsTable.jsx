@@ -30,7 +30,7 @@ const UserPromotionOptionsTable = ({
           maxWidth: false,
           title: (
             <div className="modal-promotion-lot-title">
-              <span>{promotionLot && promotionLot.name}</span>
+              <span>{promotionLot?.name}</span>
             </div>
           ),
           children: (

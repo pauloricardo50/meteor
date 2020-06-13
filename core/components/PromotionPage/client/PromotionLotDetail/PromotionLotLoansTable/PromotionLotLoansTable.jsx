@@ -15,6 +15,7 @@ import StatusLabel from '../../../../StatusLabel';
 import T, { IntlDate } from '../../../../Translation';
 import PromotionCustomer from '../../PromotionCustomer';
 import PriorityOrder from './PriorityOrder';
+import PromotionLotReservation from './PromotionLotReservation/PromotionLotReservation';
 
 const PromotionLotLoansTable = ({ promotionLotId }) => {
   const [status, setStatus] = useState({
@@ -42,18 +43,23 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
             $body: {
               bank: 1,
               createdAt: 1,
-              invitedBy: 1,
               fullVerification: 1,
+              invitedBy: 1,
               loan: {
-                status: 1,
                 promotionOptions: {
                   name: 1,
                   priorityOrder: 1,
                   promotionLots: { attributedToLink: 1 },
                 },
+                proNote: 1,
+                status: 1,
                 user: { name: 1, email: 1, phoneNumber: 1 },
               },
               priorityOrder: 1,
+              promotionLots: { status: 1, name: 1 },
+              reservationAgreement: 1,
+              reservationDeposit: 1,
+              simpleVerification: 1,
               status: 1,
             },
           },
@@ -143,14 +149,9 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
             accessor: 'attribute',
             Header: <T id="PromotionLotLoansTable.attribute" />,
             disableSortBy: true,
-            // Cell: ({}) => (
-            //   <PromotionLotReservation
-            //     loan={loan}
-            //     promotion={promotion}
-            //     promotionOption={promotionOption}
-            //     key="promotionLotAttributer"
-            //   />
-            // ),
+            Cell: ({ row: { original: promotionOption } }) => (
+              <PromotionLotReservation promotionOption={promotionOption} />
+            ),
           },
         ]}
       />

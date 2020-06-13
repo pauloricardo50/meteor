@@ -1,6 +1,5 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose, mapProps, withState } from 'recompose';
+import React, { useState } from 'react';
+import { mapProps } from 'recompose';
 
 import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants';
 import { toMoney } from '../../../../utils/conversionFunctions';
@@ -59,13 +58,12 @@ const makeMapPromotionOption = ({
             ? toMoney(promotionLotValue)
             : promotionLotValue,
       },
-      !isAdmin && (
+      !isAdmin && !isDashboardTable && (
         <RequestReservation
           key="reservation"
           promotionOption={promotionOption}
           promotionLotName={name}
           status={status}
-          loan={loan}
         />
       ),
       !!isAdmin && (
@@ -94,7 +92,7 @@ const columnOptions = ({
     { id: 'name' },
     !isDashboardTable && { id: 'status' },
     { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
-    !isAdmin && { id: 'requestReservation' },
+    !isAdmin && !isDashboardTable && { id: 'requestReservation' },
     !!isAdmin && { id: 'reservation' },
   ]
     .filter(x => x !== false)
@@ -111,21 +109,19 @@ const columnOptions = ({
         id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
-export default compose(
-  withRouter,
-  withState('isLoading', 'setLoading', false),
-  mapProps(
-    ({
-      promotion,
-      loan,
-      isLoading,
-      setLoading,
-      isDashboardTable,
-      isAdmin,
-      className,
-      promotionOptions = loan.promotionOptions,
-      ...rest
-    }) => ({
+export default mapProps(
+  ({
+    promotion,
+    loan,
+    isDashboardTable,
+    isAdmin,
+    className,
+    promotionOptions = loan.promotionOptions,
+    ...rest
+  }) => {
+    const [isLoading, setLoading] = useState(false);
+
+    return {
       rows: promotionOptions.sort(sortByPriority).map(
         makeMapPromotionOption({
           isLoading,
@@ -147,7 +143,9 @@ export default compose(
       promotionOptions,
       promotion,
       loan,
+      isLoading,
+      setLoading,
       ...rest,
-    }),
-  ),
+    };
+  },
 );

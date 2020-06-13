@@ -1,7 +1,6 @@
 import React from 'react';
 
 import colors from '../../../../../config/colors';
-import Button from '../../../../Button';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import T from '../../../../Translation';
 import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
@@ -84,9 +83,7 @@ const PromotionReservationDetailActions = ({
           disabled: confirmReservationIsDisabled,
           tooltip: confirmReservationIsDisabled ? (
             <T id="PromotionReservationActions.confirmReservation.tooltip" />
-          ) : (
-            undefined
-          ),
+          ) : undefined,
           className: 'mr-8 mb-8',
         }}
         label={<T id="PromotionReservationActions.confirmReservation" />}

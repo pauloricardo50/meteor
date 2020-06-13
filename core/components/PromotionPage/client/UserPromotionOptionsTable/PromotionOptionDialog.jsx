@@ -1,15 +1,11 @@
 import React from 'react';
 
-import { promotionOptionRemove } from '../../../../api/promotionOptions/methodDefinitions';
 import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
-import Checkbox from '../../../Checkbox';
-import T from '../../../Translation';
 import PromotionLotDetail from '../PromotionLotDetail';
 import RequestReservation from './RequestReservation';
 
 const PromotionOptionDialog = ({
   promotionOption = { promotionLots: [{}] },
-  handleClose,
   promotion,
 }) => {
   const { promotionLots } = promotionOption;
