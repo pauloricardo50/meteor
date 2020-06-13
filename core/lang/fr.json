@@ -1,4 +1,5 @@
 {
+  "PromotionReservationDeadline.yourBroker": "votre courtier",
   "PromotionLotLoansTable.loanStatus" : "Statut du dossier hypothécaire",
   "Forms.isInRoundRobin": "Round robin activé",
   "Forms.roundRobinTimeout": "Pause round robin",

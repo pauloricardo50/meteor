@@ -665,6 +665,7 @@ export const formPromotionOption = () => ({
   bank: 1,
   canton: 1,
   fullVerification: 1,
+  invitedBy: 1,
   loanCache: 1, // Useful for invitedBy
   priorityOrder: 1,
   promotionLots: { properties: { totalValue: 1, bankValue: 1 } },

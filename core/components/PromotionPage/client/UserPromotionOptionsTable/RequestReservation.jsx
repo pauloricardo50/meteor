@@ -20,10 +20,9 @@ const RequestReservation = ({
   promotionLotName,
   status,
   buttonProps,
+  promotion,
 }) => {
-  const {
-    promotion: { users = [] },
-  } = usePromotion();
+  const { promotion: { users = [] } = promotion } = usePromotion();
   const { _id: promotionOptionId, invitedBy } = promotionOption;
 
   const pro = users.find(({ _id }) => _id === invitedBy);

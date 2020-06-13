@@ -189,15 +189,28 @@ export const makePromotionLotAnonymizer = ({ currentUser }) => promotionLot => {
   return { attributedTo: loan, ...rest };
 };
 
-export const makePromotionOptionAnonymizer = ({ currentUser }) => {
+export const makePromotionOptionAnonymizer = ({
+  userId,
+  promotionId,
+  promotionLotId,
+}) => {
+  const currentUser = UserService.get(userId, {
+    promotions: { _id: 1 },
+    organisations: { userLinks: 1 },
+  });
   const { promotions: currentUserPromotions = [] } = currentUser;
 
+  if (!promotionId) {
+    const { promotion } = PromotionLotService.get(promotionLotId, {
+      promotion: { _id: 1 },
+    });
+    promotionId = promotion._id;
+  }
+
   return promotionOption => {
-    const { loan, promotionLots = [] } = promotionOption;
+    const { loan, promotionLots = [], invitedBy } = promotionOption;
     const [promotionLot] = promotionLots;
     const { status: promotionLotStatus, attributedTo } = promotionLot;
-    const { promotions, _id: loanId } = loan;
-    const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
 
     const customerOwnerType = getCustomerOwnerType({
       invitedBy,
@@ -219,7 +232,7 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
       customerOwnerType,
       permissions,
       promotionLotStatus,
-      isAttributed: attributedTo === loanId,
+      isAttributed: attributedTo === loan?._id,
     });
 
     return {

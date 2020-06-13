@@ -16,7 +16,6 @@ const makeMapPromotionOption = ({
   isDashboardTable = false,
   promotionStatus,
   loan,
-  promotion,
   isAdmin,
 }) => (promotionOption, index, arr) => {
   const {
@@ -69,7 +68,6 @@ const makeMapPromotionOption = ({
       !!isAdmin && (
         <PromotionLotReservation
           loan={loan || promotionOptionLoan}
-          promotion={promotion}
           promotionOption={promotionOption}
         />
       ),

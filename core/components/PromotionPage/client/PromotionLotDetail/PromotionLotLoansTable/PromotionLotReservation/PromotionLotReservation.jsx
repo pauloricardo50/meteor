@@ -23,7 +23,7 @@ const getAnonymize = (promotionLotStatus, invitedBy) => {
     return false;
   }
 
-  const { permissions } = usePromotion();
+  const { proUser } = usePromotion();
   const currentUser = useCurrentUser();
   const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
@@ -32,7 +32,7 @@ const getAnonymize = (promotionLotStatus, invitedBy) => {
 
   return shouldAnonymize({
     customerOwnerType,
-    permissions,
+    permissions: proUser?.$metadata?.permissions,
     promotionLotStatus,
   });
 };
@@ -56,6 +56,7 @@ const PromotionLotReservation = ({
         promotionLotName={name}
         status={status}
         buttonProps={{ size: 'small' }}
+        promotion={loan.promotions?.[0]}
       />
     );
   }
@@ -83,6 +84,7 @@ const PromotionLotReservation = ({
         <div className="flex center-align">
           <PromotionReservationProgress
             promotionOption={promotionOption}
+            loan={loan}
             className="mr-8 flex"
             StepperProps={{ style: { padding: 0 } }}
           />

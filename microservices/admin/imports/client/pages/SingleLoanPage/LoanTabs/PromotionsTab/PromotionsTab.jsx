@@ -1,5 +1,6 @@
 import React from 'react';
 import merge from 'lodash/merge';
+import { compose, withProps } from 'recompose';
 
 import { formPromotionOption } from 'core/api/fragments';
 import { PROMOTION_OPTIONS_COLLECTION } from 'core/api/promotionOptions/promotionOptionConstants';
@@ -7,6 +8,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import useMeteorData from 'core/hooks/useMeteorData';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 
 const PromotionsTab = ({ loan }) => {
   const [promotion] = loan.promotions;
@@ -43,4 +45,7 @@ const PromotionsTab = ({ loan }) => {
   );
 };
 
-export default PromotionsTab;
+export default compose(
+  withProps(({ loan }) => ({ promotion: loan.promotions[0] })),
+  withPromotionPageContext(),
+)(PromotionsTab);

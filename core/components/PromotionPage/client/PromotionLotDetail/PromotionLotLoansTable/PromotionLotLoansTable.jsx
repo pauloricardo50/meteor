@@ -141,7 +141,7 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
               <PriorityOrder
                 promotionOptions={promotionOptions}
                 loanId={loanId}
-                currentId={promotionLotId}
+                currentPromotionLotId={promotionLotId}
               />
             ),
           },

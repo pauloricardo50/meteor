@@ -66,16 +66,12 @@ const makePermissions = props => ({
   canSeeUsers: true,
 });
 
-const getEnableNotifications = ({
-  promotion,
-  currentUser: { _id: userId },
-}) => {
+const getProUser = ({ promotion, currentUser: { _id: userId } }) => {
   const { userLinks = [], users = [] } = promotion;
-  const user =
+  return (
     userLinks.find(({ _id }) => _id === userId) ||
-    users.find(({ _id }) => _id === userId);
-
-  return user.enableNotifications || user.$metadata.enableNotifications;
+    users.find(({ _id }) => _id === userId)
+  );
 };
 
 const ProPromotionPageContainer = compose(
@@ -90,10 +86,15 @@ const ProPromotionPageContainer = compose(
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
-  withPromotionPageContext(props => ({
-    enableNotifications: getEnableNotifications(props),
-    permissions: makePermissions(props),
-  })),
+  withPromotionPageContext(props => {
+    const proUser = getProUser(props);
+    const enableNotifications = proUser?.$metadata?.enableNotifications;
+    return {
+      enableNotifications,
+      permissions: makePermissions(props),
+      proUser: getProUser(props),
+    };
+  }),
   withProps({ route: PRO_ROUTES.PRO_PROMOTION_PAGE.path }),
 );
 
