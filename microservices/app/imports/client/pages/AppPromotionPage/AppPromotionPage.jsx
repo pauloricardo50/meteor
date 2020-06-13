@@ -54,7 +54,6 @@ const AppPromotionPageContainer = compose(
       loanId,
       $body: promotionFragment,
     }),
-    deps: ({ promotionId, loan: { _id: loanId } }) => [promotionId, loanId],
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
