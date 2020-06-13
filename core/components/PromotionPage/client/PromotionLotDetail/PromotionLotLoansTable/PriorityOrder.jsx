@@ -3,20 +3,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import Chip from '../../../../Material/Chip';
 
-const getChipColor = ({ currentId, userId, promotionLots, loanId }) => {
-  let attributedTo;
-  let isAttributedToUser;
-
-  // TODO: Remove this when attributedTo.user._id is no longer used
-  if (loanId) {
-    attributedTo = promotionLots[0]?.attributedToLink?._id;
-    isAttributedToUser = attributedTo === loanId;
-  } else {
-    attributedTo = promotionLots[0]?.attributedTo?.user?._id;
-    isAttributedToUser = attributedTo === userId;
-  }
+const getChipColor = ({ currentPromotionLotId, promotionLots, loanId }) => {
+  const attributedTo = promotionLots[0]?.attributedToLink?._id;
+  const isAttributedToUser = attributedTo === loanId;
   const promotionLotId = promotionLots[0]._id;
-  const isCurrent = currentId === promotionLotId;
+  const isCurrent = currentPromotionLotId === promotionLotId;
 
   if (isAttributedToUser) {
     return 'success';
@@ -47,8 +38,7 @@ const getTooltip = color => {
 
 const PriorityOrder = ({
   promotionOptions = [],
-  currentId,
-  userId,
+  currentPromotionLotId,
   loanId,
 }) => {
   const sortedPromotionOptions = promotionOptions.sort(
@@ -59,8 +49,7 @@ const PriorityOrder = ({
     <div className="priority-order">
       {sortedPromotionOptions.map(({ _id, name, promotionLots }) => {
         const chipColor = getChipColor({
-          currentId,
-          userId,
+          currentPromotionLotId,
           promotionLots,
           loanId,
         });

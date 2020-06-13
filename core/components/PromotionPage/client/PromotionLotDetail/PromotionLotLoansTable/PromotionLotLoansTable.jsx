@@ -46,7 +46,11 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
               fullVerification: 1,
               loan: {
                 status: 1,
-                promotionOptions: { name: 1, priorityOrder: 1 },
+                promotionOptions: {
+                  name: 1,
+                  priorityOrder: 1,
+                  promotionLots: { attributedToLink: 1 },
+                },
                 user: { name: 1, email: 1, phoneNumber: 1 },
               },
               priorityOrder: 1,
@@ -121,19 +125,19 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
           {
             accessor: 'loanCache.0.promotionLinks.0.priorityOrder',
             Header: <T id="PromotionLotLoansTable.priorityOrder" />,
-            // Cell: ({
-            //   row: {
-            //     original: {
-            //       loan: { promotionOptions },
-            //     },
-            //   },
-            // }) => (
-            //   <PriorityOrder
-            //     promotionOptions={promotionOptions}
-            //     // userId={user?._id}
-            //     // currentId={promotionLotId}
-            //   />
-            // ),
+            Cell: ({
+              row: {
+                original: {
+                  loan: { _id: loanId, promotionOptions },
+                },
+              },
+            }) => (
+              <PriorityOrder
+                promotionOptions={promotionOptions}
+                loanId={loanId}
+                currentId={promotionLotId}
+              />
+            ),
           },
           {
             accessor: 'attribute',

@@ -691,7 +691,11 @@ export const proPromotionOption = () => ({
     },
     promotionOptions: {
       name: 1,
-      promotionLots: { attributedTo: { user: { _id: 1 } }, status: 1 },
+      promotionLots: {
+        attributedToLink: 1,
+        attributedTo: { user: { _id: 1 } },
+        status: 1,
+      },
       loan: { loanProgress: 1 },
     },
     proNote: 1,

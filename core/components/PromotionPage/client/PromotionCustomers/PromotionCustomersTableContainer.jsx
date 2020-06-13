@@ -126,9 +126,7 @@ export default withProps(({ promotion }) => {
         promotionOptions: {
           name: 1,
           priorityOrder: 1,
-          promotionLots: {
-            attributedToLink: 1,
-          },
+          promotionLots: { attributedToLink: 1 },
         },
         user: {
           name: 1,
