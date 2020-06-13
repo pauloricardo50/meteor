@@ -193,6 +193,7 @@ const PromotionSchema = new SimpleSchema({
   'promotionLotGroups.$': Object,
   'promotionLotGroups.$.id': String,
   'promotionLotGroups.$.label': String,
+  loanCount: { type: SimpleSchema.Integer, optional: true },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

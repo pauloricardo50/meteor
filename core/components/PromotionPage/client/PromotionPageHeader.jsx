@@ -24,7 +24,7 @@ const PromotionPageHeader = ({ promotion }) => {
     documents: { promotionImage = [{ url: '/img/placeholder.png' }] } = {},
     name,
     promotionLoan,
-    promotionLots = [],
+    promotionLotLinks = [],
     status,
     zipCode,
   } = promotion;
@@ -63,7 +63,7 @@ const PromotionPageHeader = ({ promotion }) => {
           <h2 className="font-size-4">
             <T
               id="PromotionPage.subtitle"
-              values={{ promotionLotCount: promotionLots.length }}
+              values={{ promotionLotCount: promotionLotLinks.length }}
             />
           </h2>
           <div className="promotion-page-header-linkers">

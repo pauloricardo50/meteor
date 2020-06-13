@@ -12,7 +12,7 @@ const shouldDisplayFilesTab = documents =>
 
 const getTabs = ({
   permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
-  promotion: { users = [], loans = [], documents },
+  promotion: { users = [], loanCount, documents },
 }) =>
   [
     { id: 'management', shouldDisplay: canSeeManagement },
@@ -26,7 +26,7 @@ const getTabs = ({
     {
       id: 'customers',
       label: (
-        <T id="PromotionPageTabs.customers" values={{ count: loans.length }} />
+        <T id="PromotionPageTabs.customers" values={{ count: loanCount }} />
       ),
       shouldDisplay: canSeeCustomers,
     },

@@ -733,6 +733,7 @@ export const loanPromotionOption = () => ({
 // //
 // // Promotion fragments
 // //
+
 export const basePromotion = () => ({
   address: 1,
   address1: 1,
@@ -756,6 +757,7 @@ export const basePromotion = () => ({
     status: 1,
   },
   name: 1,
+  promotionLotLinks: 1,
   promotionLots: {
     status: 1,
     reducedStatus: 1,
@@ -786,8 +788,10 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
+  authorizationStatus: 1,
   description: 1,
   externalUrl: 1,
+  loanCount: 1,
   promotionLots: {
     attributedTo: { user: { name: 1 } },
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
@@ -801,7 +805,6 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     promotionLotGroupIds: 1,
   },
   promotionLoan: { _id: 1, name: 1, proNotes: 1, adminNotes: 1 },
-  authorizationStatus: 1,
   projectStatus: 1,
   isTest: 1,
   ...(withFilteredLoan
