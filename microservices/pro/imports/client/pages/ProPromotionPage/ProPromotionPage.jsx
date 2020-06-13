@@ -1,9 +1,7 @@
 import React from 'react';
-import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { proPromotion } from 'core/api/fragments';
 import { proPromotions } from 'core/api/promotions/queries';
 import {
   isAllowedToAddLotsToPromotion,
@@ -22,46 +20,38 @@ import withMatchParam from 'core/containers/withMatchParam';
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const promotionFragment = {
-  ...pick(proPromotion(), [
-    'address',
-    'address1',
-    'agreementDuration',
-    'canton',
-    'city',
-    'constructionTimeline',
-    'contacts',
-    'documents',
-    'lenderOrganisation',
-    'name',
-    'status',
-    'type',
-    'users',
-    'zipCode',
-    'signingDate',
-    'country',
-    'promotionLotGroups',
-    'assignedEmployee',
-    'description',
-    'externalUrl',
-    'promotionLoan',
-    'authorizationStatus',
-    'projectStatus',
-    'isTest',
-    'loans',
-  ]),
-  promotionLots: {
-    status: 1,
+  address: 1,
+  address1: 1,
+  agreementDuration: 1,
+  assignedEmployee: { name: 1 },
+  authorizationStatus: 1,
+  canton: 1,
+  city: 1,
+  constructionTimeline: 1,
+  contacts: 1,
+  country: 1,
+  description: 1,
+  documents: 1,
+  externalUrl: 1,
+  isTest: 1,
+  loanCount: 1,
+  name: 1,
+  projectStatus: 1,
+  lenderOrganisation: { name: 1 },
+  promotionLoan: { name: 1, proNotes: 1 },
+  promotionLotGroups: 1,
+  promotionLotLinks: 1,
+  signingDate: 1,
+  status: 1,
+  type: 1,
+  users: {
+    email: 1,
     name: 1,
-    value: 1,
-    properties: {
-      landValue: 1,
-      constructionValue: 1,
-      additionalMargin: 1,
-      value: 1,
-    },
-    lots: { value: 1 },
-    promotionLotGroupIds: 1,
+    organisations: { name: 1 },
+    phoneNumbers: 1,
+    roles: 1,
   },
+  zipCode: 1,
 };
 
 const makePermissions = props => ({
