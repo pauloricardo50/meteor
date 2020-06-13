@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
 import CollectionIconLink from '../../IconLink/CollectionIconLink';
@@ -13,7 +13,7 @@ import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
-import PromotionMetadataContext from './PromotionMetadata';
+import { usePromotion } from './PromotionPageContext';
 
 const PromotionPageHeader = ({ promotion }) => {
   const {
@@ -35,7 +35,7 @@ const PromotionPageHeader = ({ promotion }) => {
       canLinkAssignee,
       canLinkLender,
     },
-  } = useContext(PromotionMetadataContext);
+  } = usePromotion();
 
   return (
     <ImageCarrousel

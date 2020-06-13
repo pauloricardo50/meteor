@@ -15,7 +15,7 @@ import Chip from '../../../Material/Chip';
 import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';
 import { lotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
-import PromotionMetadataContext from '../PromotionMetadata';
+import { usePromotion } from '../PromotionPageContext';
 
 const scrollToAdditionalLotsTable = () => {
   scroller.scrollTo('additional-lots-table', {
@@ -83,7 +83,7 @@ const LotsTable = ({ promotion: { _id: promotionId, promotionLots } }) => {
   const { formatMessage } = useIntl();
   const {
     permissions: { canModifyLots },
-  } = useContext(PromotionMetadataContext);
+  } = usePromotion();
   const schema = useMemo(
     () => additionalLotModifierSchema({ promotionLots, formatMessage }),
     [promotionLots],

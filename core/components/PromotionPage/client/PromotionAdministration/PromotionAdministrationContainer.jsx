@@ -23,7 +23,7 @@ import { ModalManagerContext } from '../../../ModalManager';
 import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import DialogForm from '../../../ModalManager/DialogForm';
 import T from '../../../Translation';
-import PromotionMetadataContext from '../PromotionMetadata';
+import { usePromotion } from '../PromotionPageContext';
 
 const promotionDocuments = [
   {
@@ -158,7 +158,8 @@ export const promotionLotGroupSchema = new SimpleSchema({
 });
 
 const getOptions = ({
-  metadata: { permissions, enableNotifications },
+  permissions,
+  enableNotifications,
   openModal,
   promotion,
   openDocumentsModal,
@@ -285,7 +286,7 @@ const getOptions = ({
 };
 
 export default withProps(({ promotion }) => {
-  const metadata = useContext(PromotionMetadataContext);
+  const { permissions, enableNotifications } = usePromotion();
   const { openModal } = useContext(ModalManagerContext);
   const [openDocumentsModal, setOpenDocumentsModal] = useState(false);
   const [openProInvitationModal, setOpenProInvitationModal] = useState(false);
@@ -297,7 +298,8 @@ export default withProps(({ promotion }) => {
 
   return {
     options: getOptions({
-      metadata,
+      permissions,
+      enableNotifications,
       openModal,
       promotion,
       openDocumentsModal: () => setOpenDocumentsModal(true),
@@ -312,7 +314,7 @@ export default withProps(({ promotion }) => {
     setOpenProInvitationModal,
     openLinkLoanModal,
     setOpenLinkLoanModal,
-    permissions: metadata.permissions,
+    permissions,
     openPromotionLotGroupsModal,
     setOpenPromotionLotGroupsModal,
   };

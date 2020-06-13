@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { withProps } from 'recompose';
 
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
@@ -8,7 +8,7 @@ import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
 import ProCustomer from '../../../ProCustomer';
 import TooltipArray from '../../../TooltipArray';
 import T from '../../../Translation';
-import PromotionMetadataContext from '../PromotionMetadata';
+import { usePromotion } from '../PromotionPageContext';
 import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
 import PromotionUserRolesModifier from './PromotionUserRolesModifier';
 
@@ -109,7 +109,7 @@ const makeMapPromotionUser = ({
 };
 
 export default withProps(({ promotion: { _id: promotionId, users } }) => {
-  const { permissions } = useContext(PromotionMetadataContext);
+  const { permissions } = usePromotion();
   return {
     columnOptions: makeColumnOptions(permissions),
     rows: users

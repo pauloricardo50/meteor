@@ -5,6 +5,7 @@ import { withSmartQuery } from 'core/api/containerToolkit';
 import { proPromotion } from 'core/api/fragments';
 import { appPromotion } from 'core/api/promotions/queries';
 import PromotionPage from 'core/components/PromotionPage/client';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
 
@@ -57,6 +58,7 @@ const AppPromotionPageContainer = compose(
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
+  withPromotionPageContext(),
   withProps(({ promotion, promotionId, loan }) => ({
     invitedByUser: getInvitedByUser({ promotion, promotionId, loan }),
     route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, { loanId: loan._id }),

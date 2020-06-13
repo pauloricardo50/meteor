@@ -10,7 +10,7 @@ import { proPromotion } from 'core/api/fragments';
 import { proPromotions } from 'core/api/promotions/queries';
 import { ROLES } from 'core/api/users/userConstants';
 import PromotionPage from 'core/components/PromotionPage/client';
-import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import withMatchParam from 'core/containers/withMatchParam';
 
 import ADMIN_ROUTES from '../../../startup/client/adminRoutes';
@@ -70,7 +70,7 @@ const AdminPromotionPageContainer = compose(
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
   }),
-  injectPromotionMetadata({
+  withPromotionPageContext(() => ({
     permissions: {
       canAddLots: true,
       canAddPros: true,
@@ -91,7 +91,7 @@ const AdminPromotionPageContainer = compose(
       canModifyAdminNote: true,
       canManageProUsers: true,
     },
-  }),
+  })),
   withProps({ route: ADMIN_ROUTES.ADMIN_PROMOTION_PAGE.path }),
 );
 

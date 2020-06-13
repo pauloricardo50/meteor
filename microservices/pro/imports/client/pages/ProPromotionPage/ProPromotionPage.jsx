@@ -16,7 +16,7 @@ import {
   isAllowedToSeePromotionCustomers,
 } from 'core/api/security/clientSecurityHelpers';
 import PromotionPage from 'core/components/PromotionPage/client';
-import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import withMatchParam from 'core/containers/withMatchParam';
 
 import PRO_ROUTES from '../../../startup/client/proRoutes';
@@ -101,12 +101,11 @@ const ProPromotionPageContainer = compose(
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
-  withProps(makePermissions),
-  withProps({ route: PRO_ROUTES.PRO_PROMOTION_PAGE.path }),
-  injectPromotionMetadata(props => ({
+  withPromotionPageContext(props => ({
     enableNotifications: getEnableNotifications(props),
     permissions: makePermissions(props),
   })),
+  withProps({ route: PRO_ROUTES.PRO_PROMOTION_PAGE.path }),
 );
 
 export default ProPromotionPageContainer(PromotionPage);

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { compose, mapProps } from 'recompose';
 
 import withSmartQuery from '../../../../api/containerToolkit/withSmartQuery';
@@ -15,7 +15,7 @@ import DocumentDownloadList from '../../../DocumentDownloadList';
 import T from '../../../Translation';
 import LotDocumentsManager from '../PromotionLotsTable/LotDocumentsManager';
 import PromotionLotModifier from '../PromotionLotsTable/PromotionLotModifier';
-import PromotionMetadataContext from '../PromotionMetadata';
+import { usePromotion } from '../PromotionPageContext';
 import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
 import PromotionLotsManager from './PromotionLotsManager';
@@ -26,7 +26,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const { lots: allLots, constructionTimeline = [], signingDate } = promotion;
   const {
     permissions: { canModifyLots, canSeeCustomers, canManageDocuments },
-  } = useContext(PromotionMetadataContext);
+  } = usePromotion();
   const currentUser = useCurrentUser();
   const files = (documents && documents.promotionPropertyDocuments) || [];
 
