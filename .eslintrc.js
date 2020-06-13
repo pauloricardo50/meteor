@@ -77,16 +77,17 @@ module.exports = {
     indent: 'off',
     'max-len': 0,
     'no-underscore-dangle': 0,
+    // 'object-curly-newline' conflicts with prettier
     // The most sane value, allows objects to stay on a single line if possible
-    'object-curly-newline': [
-      'error',
-      {
-        ObjectExpression: { multiline: true, consistent: true },
-        ObjectPattern: { multiline: true, consistent: true },
-        ImportDeclaration: { multiline: true, consistent: true },
-        ExportDeclaration: { multiline: true, consistent: true },
-      },
-    ],
+    // 'object-curly-newline': [
+    //   'error',
+    //   {
+    //     ObjectExpression: { multiline: true,  },
+    //     ObjectPattern: { multiline: true,  },
+    //     ImportDeclaration: { multiline: true,  },
+    //     ExportDeclaration: { multiline: true,  },
+    //   },
+    // ],
     'object-property-newline': [
       'error',
       { allowAllPropertiesOnSameLine: true },
