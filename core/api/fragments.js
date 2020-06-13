@@ -425,6 +425,7 @@ export const proLoans = () => ({
     status: 1,
     lenderOrganisationLink: 1,
   },
+  promotionInvitedBy: 1,
   promotionLinks: 1,
   promotionOptions: {
     priorityOrder: 1,
