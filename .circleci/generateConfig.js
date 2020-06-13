@@ -1,7 +1,7 @@
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_14'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_15'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
