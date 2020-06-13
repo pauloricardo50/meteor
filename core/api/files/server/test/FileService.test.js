@@ -167,7 +167,10 @@ describe('FileService', function() {
     });
   });
 
-  describe('autoRenameFile', () => {
+  describe('autoRenameFile', function() {
+    this.timeout(15000);
+    this.retries(3);
+
     const documentId = 'autoRenameFile-test';
     const generateAndRenameFiles = async (count, date = '') => {
       await asyncForEach([...Array(count)], async (_, i) => {
