@@ -53,6 +53,7 @@ const cachePaths = {
     `./microservices/${name}/.meteor/local/bundler-cache`,
     `./microservices/${name}/.meteor/local/isopacks`,
     `./microservices/${name}/.meteor/local/plugin-cache`,
+    `./microservices/${name}/.meteor/local/resolver-result-cache.json`,
   ],
   nodeModules: () => './node_modules',
   source: () => '.',
