@@ -23,8 +23,9 @@ class RevenueService extends CollectionService {
 
     if (insuranceId) {
       const { insuranceRequest } = InsuranceService.get(insuranceId, {
-        insuranceRequest: { _id: 1 },
+        insuranceRequest: { _id: 1, loan: { _id: 1 } },
       });
+
       this.addLink({
         id: revenueId,
         linkName: 'insurance',
@@ -35,14 +36,33 @@ class RevenueService extends CollectionService {
         linkName: 'insuranceRequest',
         linkId: insuranceRequest._id,
       });
+
+      if (insuranceRequest.loan) {
+        this.addLink({
+          id: revenueId,
+          linkName: 'loan',
+          linkId: insuranceRequest.loan._id,
+        });
+      }
     }
 
     if (insuranceRequestId) {
+      const { loan } = InsuranceRequestService.get(insuranceRequestId, {
+        loan: { _id: 1 },
+      });
       this.addLink({
         id: revenueId,
         linkName: 'insuranceRequest',
         linkId: insuranceRequestId,
       });
+
+      if (loan) {
+        this.addLink({
+          id: revenueId,
+          linkName: 'loan',
+          linkId: loan._id,
+        });
+      }
     }
 
     return revenueId;
@@ -125,7 +145,7 @@ class RevenueService extends CollectionService {
     });
 
     if (revenues?.length) {
-      revenues.forEach(revenue => {
+      revenues.forEach((revenue) => {
         const { insurance, _id: revenueId } = revenue;
 
         if (!insurance) {

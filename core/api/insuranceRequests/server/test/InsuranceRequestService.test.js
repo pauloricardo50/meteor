@@ -3,6 +3,9 @@ import { expect } from 'chai';
 import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import InsuranceRequestService from '../InsuranceRequestService';
+import LoanService from '../../../loans/server/LoanService';
+import RevenueService from '../../../revenues/server/RevenueService';
+import { REVENUE_TYPES } from '../../../revenues/revenueConstants';
 
 describe('InsuranceRequestService', () => {
   beforeEach(() => resetDatabase());
@@ -212,6 +215,115 @@ describe('InsuranceRequestService', () => {
         percent: 50,
         isMain: false,
       });
+    });
+  });
+
+  describe('linkLoan', () => {
+    it('links any existing revenues to the loan', () => {
+      generator({
+        loans: { _id: 'loanId', revenues: [{}, {}] },
+        insuranceRequests: { _id: 'irId', revenues: [{}, {}, {}] },
+      });
+
+      InsuranceRequestService.linkLoan({
+        loanId: 'loanId',
+        insuranceRequestId: 'irId',
+      });
+
+      const insuranceRequest = InsuranceRequestService.get('irId', {
+        revenues: { _id: 1 },
+      });
+      expect(insuranceRequest.revenues.length).to.equal(3);
+
+      const loan = LoanService.get('loanId', { revenues: { _id: 1 } });
+      expect(loan.revenues.length).to.equal(5);
+    });
+  });
+
+  describe('linkNewLoan', () => {
+    it('links any existing revenues to the new loan', () => {
+      generator({
+        insuranceRequests: { _id: 'irId', revenues: [{}, {}, {}] },
+      });
+
+      const loanId = InsuranceRequestService.linkNewLoan({
+        loanId: 'loanId',
+        insuranceRequestId: 'irId',
+      });
+
+      const insuranceRequest = InsuranceRequestService.get('irId', {
+        revenues: { _id: 1 },
+      });
+      expect(insuranceRequest.revenues.length).to.equal(3);
+
+      const loan = LoanService.get(loanId, { revenues: { _id: 1 } });
+      expect(loan.revenues.length).to.equal(3);
+    });
+  });
+
+  describe('unlinkLoan', () => {
+    it('removes the link between the 2', () => {
+      generator({
+        loans: {
+          insuranceRequests: { _id: 'irId' },
+        },
+      });
+
+      InsuranceRequestService.unlinkLoan({ insuranceRequestId: 'irId' });
+
+      const { loan } = InsuranceRequestService.get('irId', {
+        loan: { _id: 1 },
+      });
+
+      expect(loan).to.equal(undefined);
+    });
+
+    it('does not throw if there is no linked loan', () => {
+      generator({
+        insuranceRequests: { _id: 'irId' },
+        loans: {},
+      });
+
+      expect(() =>
+        InsuranceRequestService.unlinkLoan({ insuranceRequestId: 'irId' }),
+      ).to.not.throw();
+    });
+
+    it('unlinks any revenues that are on the insuranceRequest', () => {
+      const revenue = {
+        amount: 100,
+        type: REVENUE_TYPES.MORTGAGE,
+        expectedAt: new Date(),
+      };
+      generator({
+        loans: { _id: 'loanId', insuranceRequests: { _id: 'irId' } },
+      });
+
+      RevenueService.insert({ revenue, loanId: 'loanId' });
+      RevenueService.insert({ revenue, loanId: 'loanId' });
+      RevenueService.insert({ revenue, insuranceRequestId: 'irId' });
+      RevenueService.insert({ revenue, insuranceRequestId: 'irId' });
+      RevenueService.insert({ revenue, insuranceRequestId: 'irId' });
+
+      // Check all revenues are properly linked
+      const insuranceRequest = InsuranceRequestService.get('irId', {
+        revenues: { _id: 1 },
+      });
+      expect(insuranceRequest.revenues.length).to.equal(3);
+
+      const loan = LoanService.get('loanId', { revenues: { _id: 1 } });
+      expect(loan.revenues.length).to.equal(5);
+
+      InsuranceRequestService.unlinkLoan({ insuranceRequestId: 'irId' });
+
+      // Check revenues that are on the loan only are not unlinked
+      const insuranceRequest2 = InsuranceRequestService.get('irId', {
+        revenues: { _id: 1 },
+      });
+      expect(insuranceRequest2.revenues.length).to.equal(3);
+
+      const loan2 = LoanService.get('loanId', { revenues: { _id: 1 } });
+      expect(loan2.revenues.length).to.equal(2);
     });
   });
 });

@@ -13,7 +13,7 @@ const RevenuesTab = ({
   referralIsCommissionned,
 }) => {
   const [openRevenueAdder, setOpenRevenueAdder] = useState(false);
-  const { assignees = [] } = insuranceRequest;
+  const { _id: insuranceRequestId, assignees = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
 
   return (
@@ -41,8 +41,8 @@ const RevenuesTab = ({
       </h3>
       <RevenuesTable
         insuranceRequest={insuranceRequest}
-        filterRevenues={({ insuranceRequest: { _id } }) => ({
-          'insuranceRequestCache._id': _id,
+        filterRevenues={() => ({
+          'insuranceRequestCache._id': insuranceRequestId,
         })}
         firstColumnLabel="Assurance"
       />

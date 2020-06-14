@@ -11,6 +11,7 @@ RevenueService.cache(
     fields: { _id: 1, name: 1 },
     referenceField: 'revenueLinks',
   },
+  {},
   // { loanCache: { $exists: false } },
 );
 
