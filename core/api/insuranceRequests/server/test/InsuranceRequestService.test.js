@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import InsuranceRequestService from '../InsuranceRequestService';
+import LoanService from '../../../loans/server/LoanService';
 
 describe('InsuranceRequestService', () => {
   beforeEach(() => resetDatabase());
@@ -212,6 +213,49 @@ describe('InsuranceRequestService', () => {
         percent: 50,
         isMain: false,
       });
+    });
+  });
+
+  describe('linkLoan', () => {
+    it('links any existing revenues to the loan', () => {
+      generator({
+        loans: { _id: 'loanId', revenues: [{}, {}] },
+        insuranceRequests: { _id: 'irId', revenues: [{}, {}, {}] },
+      });
+
+      InsuranceRequestService.linkLoan({
+        loanId: 'loanId',
+        insuranceRequestId: 'irId',
+      });
+
+      const insuranceRequest = InsuranceRequestService.get('irId', {
+        revenues: { _id: 1 },
+      });
+      expect(insuranceRequest.revenues.length).to.equal(3);
+
+      const loan = LoanService.get('loanId', { revenues: { _id: 1 } });
+      expect(loan.revenues.length).to.equal(5);
+    });
+  });
+
+  describe('linkNewLoan', () => {
+    it('links any existing revenues to the new loan', () => {
+      generator({
+        insuranceRequests: { _id: 'irId', revenues: [{}, {}, {}] },
+      });
+
+      const loanId = InsuranceRequestService.linkNewLoan({
+        loanId: 'loanId',
+        insuranceRequestId: 'irId',
+      });
+
+      const insuranceRequest = InsuranceRequestService.get('irId', {
+        revenues: { _id: 1 },
+      });
+      expect(insuranceRequest.revenues.length).to.equal(3);
+
+      const loan = LoanService.get(loanId, { revenues: { _id: 1 } });
+      expect(loan.revenues.length).to.equal(3);
     });
   });
 });

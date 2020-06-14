@@ -14,7 +14,7 @@ describe('RevenueService', () => {
     resetDatabase();
   });
 
-  describe.only('insert', () => {
+  describe('insert', () => {
     it('adds a link to a loan', () => {
       generator({ loans: { _id: 'loanId' } });
 

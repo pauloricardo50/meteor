@@ -74,7 +74,7 @@ class InsuranceRequestService extends CollectionService {
     }
 
     if (borrowerIds?.length) {
-      borrowerIds.forEach(borrowerId =>
+      borrowerIds.forEach((borrowerId) =>
         this.linkBorrower({ insuranceRequestId, borrowerId }),
       );
     }
@@ -174,7 +174,7 @@ class InsuranceRequestService extends CollectionService {
     }
 
     const orderedStatuses = INSURANCE_REQUEST_STATUS_ORDER.filter(
-      s =>
+      (s) =>
         ![
           INSURANCE_REQUEST_STATUS.PENDING,
           INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
@@ -308,6 +308,7 @@ class InsuranceRequestService extends CollectionService {
       linkName: 'loan',
       linkId: loanId,
     });
+    this.linkAllRevenues({ loanId, insuranceRequestId });
   }
 
   linkNewLoan({ insuranceRequestId }) {
@@ -322,8 +323,23 @@ class InsuranceRequestService extends CollectionService {
     });
 
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
+    this.linkAllRevenues({ loanId, insuranceRequestId });
 
     return loanId;
+  }
+
+  linkAllRevenues({ loanId, insuranceRequestId }) {
+    const { revenues = [] } = this.get(insuranceRequestId, {
+      revenues: { _id: 1 },
+    });
+
+    revenues.forEach(({ _id: revenueId }) => {
+      LoanService.addLink({
+        id: loanId,
+        linkName: 'revenues',
+        linkId: revenueId,
+      });
+    });
   }
 
   remove({ insuranceRequestId }) {
