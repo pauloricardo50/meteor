@@ -141,10 +141,7 @@ const makePrepareJob = () => ({
     runCommand(
       'Install node_modules',
       `
-      meteor npm \
-      --prefix microservices/backend install \
-      --only=dev \
-      --ignore-scripts
+      meteor npm --prefix microservices/backend ci
       `,
     ),
     runCommand(
@@ -156,6 +153,11 @@ const makePrepareJob = () => ({
       'Cache meteor backend',
       cacheKeys.meteorMicroservice('backend'),
       cachePaths.meteorMicroservice('backend'),
+    ),
+    saveCache(
+      'Cache meteor system',
+      cacheKeys.meteorSystem('backend'),
+      cachePaths.meteorSystem(),
     ),
   ],
 });
