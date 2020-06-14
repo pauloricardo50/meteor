@@ -12,7 +12,7 @@ import {
   testCollectionInsert,
 } from '../collection-app-test';
 
-const insertTestData = n => {
+const insertTestData = (n) => {
   const promises = [...Array(n)].map((_, index) =>
     testCollectionInsert.run({
       _id: `test${index}`,
@@ -24,7 +24,7 @@ const insertTestData = n => {
 };
 
 const fetchQueries = ({ queries = [], params, promise }) => {
-  queries.forEach(query => {
+  queries.forEach((query) => {
     promise = promise.then(
       (items = {}) =>
         new Promise((resolve, reject) => {
@@ -59,13 +59,15 @@ const insertAndFetchTestData = (
       fetchQuery2 && query2,
       fetchQuery3 && query3,
       fetchQuery4 && query4,
-    ].filter(x => x),
+    ].filter((x) => x),
     params,
     promise,
   });
 };
 
-describe('exposeQuery', () => {
+describe('exposeQuery', function () {
+  this.retires(2);
+
   beforeEach(() => resetDatabase());
 
   it('returns expected data without using overrides', async () => {
@@ -229,6 +231,6 @@ describe('exposeQuery', () => {
       expect(name).to.equal('test3');
     });
 
-    await new Promise(res => Meteor.logout(res));
+    await new Promise((res) => Meteor.logout(res));
   });
 });
