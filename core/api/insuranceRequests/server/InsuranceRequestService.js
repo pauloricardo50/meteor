@@ -342,6 +342,29 @@ class InsuranceRequestService extends CollectionService {
     });
   }
 
+  unlinkLoan({ insuranceRequestId }) {
+    const { loan, revenues = [] } = this.get(insuranceRequestId, {
+      loan: { _id: 1 },
+      revenues: { _id: 1 },
+    });
+
+    if (loan) {
+      this.removeLink({
+        id: insuranceRequestId,
+        linkName: 'loan',
+        linkId: loan._id,
+      });
+
+      revenues.forEach(({ _id: revenueId }) => {
+        LoanService.removeLink({
+          id: loan._id,
+          linkName: 'revenues',
+          linkId: revenueId,
+        });
+      });
+    }
+  }
+
   remove({ insuranceRequestId }) {
     const { insurances = [], revenues = [] } = this.get(insuranceRequestId, {
       insurances: { _id: 1, revenues: { status: 1 } },

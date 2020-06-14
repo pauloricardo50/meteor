@@ -235,10 +235,7 @@ describe('RevenueService', () => {
       const revenue = RevenueService.get('rev', { loanCache: 1 });
 
       expect(revenue.loanCache).to.deep.equal([
-        {
-          _id: 'loanId',
-          name: '18-0001',
-        },
+        { _id: 'loanId', name: '18-0001' },
       ]);
     });
   });
@@ -275,16 +272,12 @@ describe('RevenueService', () => {
       generator({
         revenues: {
           _id: 'revId',
-          loan: {
-            _factory: 'loan',
-          },
+          loan: {},
           organisations: { $metadata: { commissionRate: 0.1 } },
         },
       });
 
-      const result = RevenueService.get('revId', {
-        loan: { _id: 1 },
-      });
+      const result = RevenueService.get('revId', { loan: { _id: 1 } });
 
       expect(result.loan._collection).to.equal('loans');
     });
