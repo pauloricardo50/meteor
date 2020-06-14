@@ -36,7 +36,7 @@ api.addEndpoint('/files', 'POST', uploadFileAPI, {
   },
 });
 
-describe('REST: uploadFile', function() {
+describe.skip('REST: uploadFile', function() {
   this.timeout(10000);
 
   before(function() {

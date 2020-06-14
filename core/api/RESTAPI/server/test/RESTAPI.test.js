@@ -512,7 +512,7 @@ describe('RESTAPI', function() {
     });
   });
 
-  it('allows multipart/form-data requests on multipart endpoints', () => {
+  it.skip('allows multipart/form-data requests on multipart endpoints', () => {
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
     return uploadFile({
@@ -525,7 +525,7 @@ describe('RESTAPI', function() {
     });
   });
 
-  it('does not allow multipart/form-data requests on non multipart endpoints', () => {
+  it.skip('does not allow multipart/form-data requests on non multipart endpoints', () => {
     const filePath = `${FILE_UPLOAD_DIR}/myFile.txt`;
     appendFileSync(filePath, 'Hello');
     return uploadFile({
