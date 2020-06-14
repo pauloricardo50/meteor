@@ -26,7 +26,7 @@ const runMicroservice = () => {
       '--port',
       port,
       '--exclude-archs',
-      'web.browser.legacy,web.cordova',
+      'web.browser.legacy',
     ],
     options: {
       cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),
