@@ -1,13 +1,13 @@
 import writeYAML from '../scripts/writeYAML';
 
-const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const WORKING_DIRECTORY = '/home/circleci/app';
+const CACHE_VERSION = 'circleci_performance_11_1'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'circleci/openjdk:8-jdk-node-browsers-legacy', // Has browsers, like chrome, necessary to run client-side tests
+      image: 'cypress/base:12', // Has Node installed with dependencies to run cypress
       environment: {
         // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',
@@ -21,10 +21,11 @@ const defaultJobValues = {
         // METEOR_PROFILE: 1000, // If you need to debug meteor, set this to a number (in ms)
         CIRCLE_CI: 1, // Helpful in your tests, to know whether you're in circle CI or not
         DEBUG: false, // Helps
-        // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
+        METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
         RTL_SKIP_AUTO_CLEANUP: 1,
+        HOME: '/home/circleci' // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
       },
     },
   ],
@@ -46,8 +47,8 @@ const cacheKeys = {
 };
 
 const cachePaths = {
-  global: () => '~/.cache',
-  meteorSystem: () => '~/.meteor',
+  global: () => '/home/circleci/.cache',
+  meteorSystem: () => '/home/circleci/.meteor',
   meteorMicroservice: name => [
     `./microservices/${name}/.meteor/local/bundler-cache`,
     `./microservices/${name}/.meteor/local/isopacks`,
@@ -141,7 +142,7 @@ const makePrepareJob = () => ({
     ),
     runCommand(
       'Install expect',
-      'sudo apt-get update && sudo apt-get install expect',
+      'apt-get update && apt-get install expect',
     ),
     runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
     saveCache(
