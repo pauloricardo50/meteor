@@ -137,10 +137,10 @@ const makePrepareJob = () => ({
       cacheKeys.meteorMicroservice('backend'),
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    runCommand(
-      'Install node_modules',
-      'meteor npm --prefix microservices/backend ci',
-    ),
+    // runCommand(
+    //   'Install node_modules',
+    //   'meteor npm --prefix microservices/backend ci',
+    // ),
     runCommand(
       'Install expect',
       'apt-get update && apt-get install expect -y',
