@@ -137,9 +137,15 @@ const makePrepareJob = () => ({
       cacheKeys.meteorMicroservice('backend'),
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    // We only need to install the babel plugins since they affect babel cache
     runCommand(
       'Install node_modules',
-      'meteor npm --prefix microservices/backend install --only=dev',
+      `
+      meteor npm \
+      --prefix microservices/backend install \
+      --only=dev \
+      --ignore-scripts
+      `,
     ),
     runCommand(
       'Install expect',

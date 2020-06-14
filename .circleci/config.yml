@@ -84,7 +84,9 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: meteor npm --prefix microservices/backend install --only=dev
+          command: >-
+            meteor npm --prefix microservices/backend install --only=dev
+            --ignore-scripts
       - run:
           name: Install expect
           command: apt-get update && apt-get install expect -y
