@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const analyticsLogin = new Method({
@@ -24,7 +26,7 @@ export const analyticsPage = new Method({
 export const analyticsVerifyEmail = new Method({
   name: 'analyticsVerifyEmail',
   params: {
-    trackingId: String,
+    trackingId: Match.Maybe(String), // Can be optional if cookies are blocked
   },
   doNotRefetchQueries: true,
 });
