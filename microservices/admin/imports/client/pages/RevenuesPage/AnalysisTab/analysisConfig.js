@@ -26,26 +26,19 @@ import {
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import intl from 'core/utils/intl';
+import { LOAN_STATUS } from '../../../../core/api/loans/loanConstants';
+import { INSURANCE_REQUEST_STATUS } from '../../../../core/api/insuranceRequests/insuranceRequestConstants';
 
 const { formatMessage } = intl;
 
-const makeFormatDate = key => ({ [key]: date }) =>
+const makeFormatDate = (key) => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
 
-const sevenDaysAgo = moment()
-  .day(-7)
-  .hour(0)
-  .minute(0);
+const sevenDaysAgo = moment().day(-7).hour(0).minute(0);
 
-const fifteenDaysAgo = moment()
-  .day(-15)
-  .hour(0)
-  .minute(0);
+const fifteenDaysAgo = moment().day(-15).hour(0).minute(0);
 
-const thirtyDaysAgo = moment()
-  .day(-30)
-  .hour(0)
-  .minute(0);
+const thirtyDaysAgo = moment().day(-30).hour(0).minute(0);
 
 const analysisConfig = {
   [LOANS_COLLECTION]: {
@@ -68,7 +61,7 @@ const analysisConfig = {
           emails: 1,
         },
         format: ({ user }) =>
-          user?.assignedRoles?.map(role =>
+          user?.assignedRoles?.map((role) =>
             formatMessage({ id: `roles.${role}` }),
           ),
       },
@@ -192,21 +185,46 @@ const analysisConfig = {
         }
       },
     },
-    activities: {
-      fragment: {
-        metadata: { event: 1 },
-        date: 1,
-        $options: { sort: { date: -1 } },
+    activities: [
+      {
+        fragment: {
+          metadata: { event: 1, details: { nextStatus: 1 } },
+          date: 1,
+          details: 1,
+          $options: { sort: { date: -1 } },
+        },
+        label: 'Dernier changement de statut',
+        format: ({ activities = [] }) => {
+          const lastChangedStatus = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+          );
+          return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+        },
       },
-      label: 'Dernier changement de statut',
-      format: ({ activities = [] }) => {
-        const lastChangedStatus = activities.find(
-          ({ metadata }) =>
-            metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
-        );
-        return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+      {
+        label: 'Passage à finalisé',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
+              metadata?.details?.nextStatus === LOAN_STATUS.FINALIZED,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
+        },
       },
-    },
+      {
+        label: 'Passage à facturation',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
+              metadata?.details?.nextStatus === LOAN_STATUS.BILLING,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
+        },
+      },
+    ],
     unsuccessfulReason: {
       label: "Raison d'archivage",
       format: ({ unsuccessfulReason }) =>
@@ -314,7 +332,7 @@ const analysisConfig = {
     assignedRoles: {
       id: 'Forms.roles',
       format: ({ assignedRoles }) =>
-        assignedRoles.map(role => formatMessage({ id: `roles.${role}` })),
+        assignedRoles.map((role) => formatMessage({ id: `roles.${role}` })),
     },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
     'referredByUser.name': { label: 'Référé par compte' },
@@ -471,8 +489,9 @@ const analysisConfig = {
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
-        `${INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) +
-          1}) ${formatMessage({ id: `Forms.status.${status}` })}`,
+        `${
+          INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) + 1
+        }) ${formatMessage({ id: `Forms.status.${status}` })}`,
     },
     user: [
       {
@@ -483,7 +502,7 @@ const analysisConfig = {
           emails: 1,
         },
         format: ({ user }) =>
-          user?.assignedRoles?.map(role =>
+          user?.assignedRoles?.map((role) =>
             formatMessage({ id: `roles.${role}` }),
           ),
       },
@@ -547,7 +566,7 @@ const analysisConfig = {
       {
         fragment: {
           type: 1,
-          metadata: { event: 1 },
+          metadata: { event: 1, details: 1 },
           date: 1,
           $options: { sort: { date: -1 } },
         },
@@ -583,6 +602,32 @@ const analysisConfig = {
           );
 
           return financialPlanningDone ? 'Oui' : 'Non';
+        },
+      },
+      {
+        label: 'Passage à finalisé',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event ===
+                ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS &&
+              metadata?.details?.nextStatus ===
+                INSURANCE_REQUEST_STATUS.FINALIZED,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
+        },
+      },
+      {
+        label: 'Passage à facturation',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event ===
+                ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS &&
+              metadata?.details?.nextStatus ===
+                INSURANCE_REQUEST_STATUS.BILLING,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
         },
       },
     ],
@@ -639,7 +684,7 @@ const analysisConfig = {
           },
         },
         format: ({ insuranceRequest: { user } = {} }) =>
-          user?.assignedRoles?.map(role =>
+          user?.assignedRoles?.map((role) =>
             formatMessage({ id: `roles.${role}` }),
           ),
       },

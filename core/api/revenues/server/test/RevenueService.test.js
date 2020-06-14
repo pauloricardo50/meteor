@@ -14,6 +14,106 @@ describe('RevenueService', () => {
     resetDatabase();
   });
 
+  describe.only('insert', () => {
+    it('adds a link to a loan', () => {
+      generator({ loans: { _id: 'loanId' } });
+
+      const id = RevenueService.insert({
+        revenue: {
+          amount: 100,
+          type: REVENUE_TYPES.MORTGAGE,
+          expectedAt: new Date(),
+        },
+        loanId: 'loanId',
+      });
+      const revenue = RevenueService.get(id, { loan: { _id: 1 } });
+      expect(revenue.loan._id).to.equal('loanId');
+    });
+
+    it('adds a link to the insuranceRequest and loan if insuranceId is passed', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          insuranceRequests: {
+            _id: 'iRId',
+            insurances: { _id: 'insuranceId' },
+          },
+        },
+      });
+
+      const id = RevenueService.insert({
+        revenue: {
+          amount: 100,
+          type: REVENUE_TYPES.MORTGAGE,
+          expectedAt: new Date(),
+        },
+        insuranceId: 'insuranceId',
+      });
+      const revenue = RevenueService.get(id, {
+        loan: { _id: 1 },
+        insuranceRequest: { _id: 1 },
+        insurance: { _id: 1 },
+      });
+
+      expect(revenue.loan._id).to.equal('loanId');
+      expect(revenue.insuranceRequest._id).to.equal('iRId');
+      expect(revenue.insurance._id).to.equal('insuranceId');
+    });
+
+    it('adds a link to the loan if insuranceRequestId is passed', () => {
+      generator({
+        loans: { _id: 'loanId', insuranceRequests: { _id: 'iRId' } },
+      });
+
+      const id = RevenueService.insert({
+        revenue: {
+          amount: 100,
+          type: REVENUE_TYPES.MORTGAGE,
+          expectedAt: new Date(),
+        },
+        insuranceRequestId: 'iRId',
+      });
+      const revenue = RevenueService.get(id, {
+        loan: { _id: 1 },
+        insuranceRequest: { _id: 1 },
+      });
+
+      expect(revenue.loan._id).to.equal('loanId');
+      expect(revenue.insuranceRequest._id).to.equal('iRId');
+    });
+
+    it('does not fail if you pass both insuranceId and insuranceRequestId', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          insuranceRequests: {
+            _id: 'iRId',
+            insurances: { _id: 'insuranceId' },
+          },
+        },
+      });
+
+      const id = RevenueService.insert({
+        revenue: {
+          amount: 100,
+          type: REVENUE_TYPES.MORTGAGE,
+          expectedAt: new Date(),
+        },
+        insuranceId: 'insuranceId',
+        insuranceRequestId: 'iRId',
+      });
+      const revenue = RevenueService.get(id, {
+        loan: { _id: 1 },
+        insuranceRequest: { _id: 1 },
+        insurance: { _id: 1 },
+      });
+
+      expect(revenue.loan._id).to.equal('loanId');
+      expect(revenue.insuranceRequest._id).to.equal('iRId');
+      expect(revenue.insurance._id).to.equal('insuranceId');
+    });
+  });
+
   describe('getGeneratedRevenues', () => {
     it('returns 0 if no revenues exist', () => {
       generator({
