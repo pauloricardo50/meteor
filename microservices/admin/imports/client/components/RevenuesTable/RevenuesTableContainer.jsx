@@ -29,7 +29,7 @@ const formatDateTime = (date, status) => {
   return text;
 };
 
-const getColumnOptions = firstColumnLabel =>
+const getColumnOptions = (firstColumnLabel) =>
   [
     { id: 'loan', label: firstColumnLabel || 'Dossier' },
     { id: 'revenueStatus' },
@@ -39,12 +39,11 @@ const getColumnOptions = firstColumnLabel =>
     { id: 'sourceOrganisationLink' },
     { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
     { id: 'actions' },
-  ].map(i => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
+  ].map((i) => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
 
-export const makeMapRevenue = ({
-  setOpenModifier,
-  setRevenueToModify,
-}) => revenue => {
+export const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (
+  revenue,
+) => {
   const {
     _collection,
     _id: revenueId,
@@ -63,12 +62,7 @@ export const makeMapRevenue = ({
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   let title;
-  if (loan) {
-    title = {
-      raw: loan && loan.name,
-      label: loan && <CollectionIconLink relatedDoc={loan} />,
-    };
-  } else if (insurance) {
+  if (insurance) {
     title = {
       raw: insurance && insurance.name,
       label: insurance && <CollectionIconLink relatedDoc={insurance} />,
@@ -79,6 +73,11 @@ export const makeMapRevenue = ({
       label: insuranceRequest && (
         <CollectionIconLink relatedDoc={insuranceRequest} />
       ),
+    };
+  } else if (loan) {
+    title = {
+      raw: loan && loan.name,
+      label: loan && <CollectionIconLink relatedDoc={loan} />,
     };
   }
 
@@ -118,7 +117,7 @@ export const makeMapRevenue = ({
         ),
       },
       <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />,
-    ].filter(cell => cell !== null),
+    ].filter((cell) => cell !== null),
     handleClick: () => {
       setRevenueToModify(revenue);
       setOpenModifier(true);
