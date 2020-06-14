@@ -142,7 +142,7 @@ const makePrepareJob = () => ({
     ),
     runCommand(
       'Install expect',
-      'apt-get update && apt-get install expect',
+      'apt-get update && apt-get install expect -y',
     ),
     runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
     saveCache(

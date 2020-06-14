@@ -87,7 +87,7 @@ jobs:
           command: meteor npm --prefix microservices/backend ci
       - run:
           name: Install expect
-          command: apt-get update && apt-get install expect
+          command: apt-get update && apt-get install expect -y
       - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
