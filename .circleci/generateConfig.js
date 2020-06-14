@@ -139,7 +139,7 @@ const makePrepareJob = () => ({
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand(
       'Install node_modules',
-      'meteor npm --prefix microservices/backend insta --only=dev',
+      'meteor npm --prefix microservices/backend install --only=dev',
     ),
     runCommand(
       'Install expect',
