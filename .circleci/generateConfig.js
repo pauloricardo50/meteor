@@ -131,13 +131,13 @@ const makePrepareJob = () => ({
     ),
 
     // Build and cache backend
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem('backend')),
     restoreCache(
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    // We only need to install the babel plugins since they affect babel cache
+    // We can skip postinstall scripts since we don't actually need the app to run
+    // ony successfully build so we can update the cache.
     runCommand(
       'Install node_modules',
       `
@@ -153,11 +153,6 @@ const makePrepareJob = () => ({
       'Cache meteor backend',
       cacheKeys.meteorMicroservice('backend'),
       cachePaths.meteorMicroservice('backend'),
-    ),
-    saveCache(
-      'Cache meteor system',
-      cacheKeys.meteorSystem('backend'),
-      cachePaths.meteorSystem(),
     ),
   ],
 });

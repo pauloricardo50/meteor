@@ -63,13 +63,6 @@ jobs:
           paths:
             - ./node_modules
       - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_circleci_performance_11_1_backend_{{ checksum
-              "./microservices/backend/.meteor/release" }}_{{ checksum
-              "./microservices/backend/.meteor/versions" }}
-      - restore_cache:
           name: Restore meteor backend
           keys:
             - >-
@@ -105,14 +98,6 @@ jobs:
             - ./microservices/backend/.meteor/local/isopacks
             - ./microservices/backend/.meteor/local/plugin-cache
             - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_circleci_performance_11_1_backend_{{ checksum
-            "./microservices/backend/.meteor/release" }}_{{ checksum
-            "./microservices/backend/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
   Www - e2e tests:
     working_directory: /home/circleci/app
     docker: *ref_0
