@@ -4,11 +4,11 @@ import { compose, withProps } from 'recompose';
 
 import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import Link from 'core/components/Link';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 
 import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
@@ -43,11 +43,7 @@ const DashboardRecapPromotion = ({ loan, promotion }) => {
           loan={loan}
         />
       ) : (
-        <UserPromotionOptionsTable
-          promotion={promotion}
-          loan={loan}
-          isDashboardTable
-        />
+        <UserPromotionOptionsTable loan={loan} isDashboardTable />
       )}
     </Link>
   );

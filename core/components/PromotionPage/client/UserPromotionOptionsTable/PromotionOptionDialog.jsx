@@ -6,7 +6,6 @@ import RequestReservation from './RequestReservation';
 
 const PromotionOptionDialog = ({
   promotionOption = { promotionLots: [{}] },
-  promotion,
 }) => {
   const { promotionLots } = promotionOption;
   const [promotionLot] = promotionLots;
@@ -16,7 +15,7 @@ const PromotionOptionDialog = ({
 
   return (
     <div className="flex-col">
-      <PromotionLotDetail promotionLot={promotionLot} promotion={promotion} />
+      <PromotionLotDetail promotionLot={promotionLot} />
       <div className="m-8" />
       {canReserve && (
         <RequestReservation

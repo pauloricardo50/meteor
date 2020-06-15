@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { calculatorLoan, userLoan } from 'core/api/fragments';
+import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
 import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
@@ -68,7 +68,11 @@ const fragment = merge({}, calculatorLoan(), {
   },
   userCache: 1,
   name: 1,
-  promotionOptions: { name: 1, promotionLots: { reducedStatus: 1, value: 1 } },
+  promotionOptions: {
+    name: 1,
+    priorityOrder: 1,
+    promotionLots: { reducedStatus: 1, value: 1 },
+  },
   promotions: {
     name: 1,
     lenderOrganisationLink: 1,

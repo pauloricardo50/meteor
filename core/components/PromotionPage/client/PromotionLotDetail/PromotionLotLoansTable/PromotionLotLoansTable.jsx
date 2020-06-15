@@ -109,9 +109,9 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
             ),
           },
           {
-            accessor: 'buyer',
+            accessor: 'loanCache.0.userCache.lastName',
             Header: <T id="PromotionLotLoansTable.buyer" />,
-            disableSortBy: true,
+            // disableSortBy: true,
             Cell: ({
               row: {
                 original: {

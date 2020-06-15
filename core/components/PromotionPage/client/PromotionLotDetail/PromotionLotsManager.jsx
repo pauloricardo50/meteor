@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { addLotToPromotionLot } from '../../../../api/promotionLots/methodDefinitions';
 import { lots as lotsQuery } from '../../../../api/lots/queries';
+import { addLotToPromotionLot } from '../../../../api/promotionLots/methodDefinitions';
 import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLotConstants';
 import useMeteorData from '../../../../hooks/useMeteorData';
+import Box from '../../../Box';
 import DropdownMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
 import LotChip from '../PromotionLotsTable/LotChip';
 import { usePromotion } from '../PromotionPageContext';
-import Box from '../../../Box';
 
 const getOptions = (allLots, promotionLotId) => {
   const unassignedLots = allLots.filter(lot => lot.promotionLots.length === 0);
@@ -47,7 +47,7 @@ const PromotionLotsManager = ({
 
   return (
     <Box>
-      <h4>
+      <h4 className="mt-0">
         <T id="PromotionLotPage.manageLot" />
       </h4>
       <div className="promotion-lots-manager">

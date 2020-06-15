@@ -24,12 +24,8 @@ import PromotionLotTimeline from './PromotionLotTimeline';
 const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
   const { lots = [], _id: promotionLotId, status, documents } = promotionLot;
   const {
-    _id: promotionId,
-    constructionTimeline = [],
-    signingDate,
-  } = promotion;
-  const {
     permissions: { canModifyLots, canSeeCustomers, canManageDocuments },
+    promotion: { _id: promotionId, constructionTimeline = [], signingDate },
   } = usePromotion();
   const currentUser = useCurrentUser();
   const files = (documents && documents.promotionPropertyDocuments) || [];
@@ -63,7 +59,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
         />
         {files.length > 0 && (
           <Box>
-            <h4>
+            <h4 className="mt-0">
               <T id="PromotionLotPage.downloads" />
             </h4>
             <DocumentDownloadList files={files} />
@@ -98,9 +94,8 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
 const isApp = Meteor.microservice === 'app';
 
 export default compose(
-  mapProps(({ promotionLot: { _id: promotionLotId }, promotion }) => ({
+  mapProps(({ promotionLot: { _id: promotionLotId } }) => ({
     promotionLotId,
-    promotion,
   })),
   withSmartQuery({
     query: isApp ? appPromotionLots : proPromotionLots,

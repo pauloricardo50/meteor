@@ -2,6 +2,7 @@ import React from 'react';
 
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { removeProFromPromotion } from '../../../../api/promotions/methodDefinitions';
+import ConfirmMethod from '../../../ConfirmMethod';
 import Table from '../../../DataTable/Table';
 import IconButton from '../../../IconButton';
 import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
@@ -13,7 +14,7 @@ import PromotionUserRoles from './PromotionUserRoles';
 
 const PromotionUsers = () => {
   const {
-    promotion: { _id: promotionId, users },
+    promotion: { _id: promotionId, name: promotionName, users },
     permissions: { canManageProUsers },
   } = usePromotion();
 
@@ -73,24 +74,20 @@ const PromotionUsers = () => {
                     size="small"
                   />
 
-                  <IconButton
-                    onClick={() => {
-                      const confirm = window.confirm(
-                        `Supprimer ${getUserNameAndOrganisation({
-                          user,
-                        })} de la promotion ?`,
-                      );
-                      if (confirm) {
-                        return removeProFromPromotion.run({
-                          promotionId,
-                          userId: user._id,
-                        });
-                      }
-                      return Promise.resolve();
+                  <ConfirmMethod
+                    TriggerComponent={IconButton}
+                    buttonProps={{
+                      type: 'close',
+                      size: 'small',
+                      tooltip: 'Enlever de la promotion',
                     }}
-                    type="close"
-                    tooltip="Enlever de la promotion"
-                    size="small"
+                    method={() =>
+                      removeProFromPromotion.run({
+                        promotionId,
+                        userId: user._id,
+                      })
+                    }
+                    description={`Enlever ${user.name} de la promotion ${promotionName}?`}
                   />
                 </div>
               ),

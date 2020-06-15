@@ -82,16 +82,16 @@ const getProColumns = ({ promotionLotGroups = [] }) => [
   },
   {
     Header: <T id="PromotionPage.lots.attributedTo" />,
-    accessor: 'attributedToUser',
-    Cell: ({ value: attributedToUser }) => {
-      if (!attributedToUser) {
+    accessor: 'attributedToPromotionOption',
+    Cell: ({ value: attributedToPromotionOption }) => {
+      if (!attributedToPromotionOption) {
         return null;
       }
 
       const {
         loan: { userCache },
         loanCache,
-      } = attributedToUser;
+      } = attributedToPromotionOption;
       const [{ invitedBy }] = loanCache[0].promotionLinks;
 
       return <PromotionCustomer user={userCache} invitedBy={invitedBy} />;

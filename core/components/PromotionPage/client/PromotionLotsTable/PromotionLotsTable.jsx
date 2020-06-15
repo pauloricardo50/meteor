@@ -14,13 +14,11 @@ import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 // This modal is only needed in full width when displaying the PromotionLotLoansTable
 const isApp = Meteor.microservice === 'app';
 
-const makeGetModalProps = ({ promotion }) => promotionLot => ({
+const getModalProps = promotionLot => ({
   fullWidth: !isApp,
   maxWidth: false,
   title: <div>Lot {promotionLot?.name}</div>,
-  children: (
-    <PromotionLotDetail promotionLot={promotionLot} promotion={promotion} />
-  ),
+  children: <PromotionLotDetail promotionLot={promotionLot} />,
 });
 
 const PromotionLotsTable = ({
@@ -36,7 +34,6 @@ const PromotionLotsTable = ({
   initialHiddenColumns,
 }) => {
   const { promotionLotGroups = [] } = promotion;
-  const getModalProps = makeGetModalProps({ promotion });
 
   return (
     <div className={cx('promotion-lots-table', className)}>

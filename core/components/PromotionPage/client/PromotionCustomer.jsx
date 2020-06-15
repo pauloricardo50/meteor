@@ -8,7 +8,7 @@ const PromotionCustomer = ({ user, invitedBy }) => {
   const {
     promotion: { users },
   } = usePromotion();
-  const invitedByUser = users?.find(({ _id: id }) => id === invitedBy);
+  const invitedByUser = users?.find(({ _id }) => _id === invitedBy);
 
   return (
     <ProCustomer

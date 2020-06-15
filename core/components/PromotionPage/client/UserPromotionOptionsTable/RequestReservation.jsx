@@ -15,15 +15,9 @@ import { usePromotion } from '../PromotionPageContext';
 
 const isApp = Meteor.microservice === 'app';
 
-const RequestReservation = ({
-  promotionOption,
-  promotionLotName,
-  status,
-  buttonProps,
-  promotion,
-}) => {
+const RequestReservation = ({ promotionOption, buttonProps, promotion }) => {
   const { promotion: { users = [] } = promotion } = usePromotion();
-  const { _id: promotionOptionId, invitedBy } = promotionOption;
+  const { _id: promotionOptionId, invitedBy, name, status } = promotionOption;
 
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });
@@ -61,7 +55,7 @@ const RequestReservation = ({
           </span>
           <T
             id="PromotionPage.lots.requestReservation.description"
-            values={{ promotionLotName, proName, isApp }}
+            values={{ promotionLotName: name, proName, isApp }}
           />
         </div>
       }

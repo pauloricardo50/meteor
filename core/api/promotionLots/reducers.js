@@ -62,7 +62,7 @@ PromotionLots.addReducers({
       return status;
     },
   },
-  attributedToUser: {
+  attributedToPromotionOption: {
     body: {
       attributedToLink: 1,
       promotionOptions: {

@@ -6,9 +6,9 @@ import { formPromotionOption } from 'core/api/fragments';
 import { PROMOTION_OPTIONS_COLLECTION } from 'core/api/promotionOptions/promotionOptionConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import useMeteorData from 'core/hooks/useMeteorData';
-import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 
 const PromotionsTab = ({ loan }) => {
   const [promotion] = loan.promotions;
@@ -38,7 +38,6 @@ const PromotionsTab = ({ loan }) => {
       <UserPromotionOptionsTable
         loan={loan}
         promotionOptions={promotionOptions}
-        promotion={promotion}
         isAdmin
       />
     </>

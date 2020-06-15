@@ -16,6 +16,9 @@ const path = require('path');
 // Got some inspiration from react-boilerplate and looked at their setup
 // They are importing the prettier config, as done below
 
+// Here's a list of rules that we should not use, as prettier manages them
+// and disables them anyways: https://github.com/prettier/eslint-config-prettier
+
 const prettierOptions = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '.prettierrc'), 'utf8'),
 );
@@ -77,17 +80,6 @@ module.exports = {
     indent: 'off',
     'max-len': 0,
     'no-underscore-dangle': 0,
-    // 'object-curly-newline' conflicts with prettier
-    // The most sane value, allows objects to stay on a single line if possible
-    // 'object-curly-newline': [
-    //   'error',
-    //   {
-    //     ObjectExpression: { multiline: true,  },
-    //     ObjectPattern: { multiline: true,  },
-    //     ImportDeclaration: { multiline: true,  },
-    //     ExportDeclaration: { multiline: true,  },
-    //   },
-    // ],
     'object-property-newline': [
       'error',
       { allowAllPropertiesOnSameLine: true },
