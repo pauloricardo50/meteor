@@ -2331,6 +2331,7 @@
   "Forms.parkingInside.placeholder": "1",
   "Forms.parkingInside": "Places de parc intérieur",
   "Forms.promotionLot": "Allouer au lot",
+  "Forms.promotionLotId": "Allouer au lot",
   "Forms.insideArea.placeholder": "150",
   "Forms.insideArea.recapPlaceholder": "À préciser",
   "Forms.insideArea": "Surface habitable en m2",

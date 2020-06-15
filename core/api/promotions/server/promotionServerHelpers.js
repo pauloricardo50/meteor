@@ -1,6 +1,7 @@
 import { anonymizeLoan } from '../../loans/helpers';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
 import {
   clientGetBestPromotionLotStatus,
@@ -38,7 +39,7 @@ const getCustomerInvitedBy = ({ customerId, promotionId }) => {
       }, [])
       .find(({ _id }) => _id === promotionId) || {};
 
-  return $metadata && $metadata.invitedBy;
+  return $metadata?.invitedBy;
 };
 
 const getPromotionLotStatus = ({ promotionLotId }) => {
@@ -145,14 +146,11 @@ export const makeLoanAnonymizer = ({
       );
 
       if (currentUserPromotion) {
-        permissions =
-          currentUserPromotion.$metadata &&
-          currentUserPromotion.$metadata.permissions;
+        permissions = currentUserPromotion.$metadata?.permissions;
       }
 
       promotionLotStatus = promotionLot.status;
-      attributedTo =
-        promotionLot.attributedToLink && promotionLot.attributedToLink._id;
+      attributedTo = promotionLot.attributedToLink?._id;
     }
 
     let isAttributed = loanId === attributedTo;
@@ -193,6 +191,7 @@ export const makePromotionOptionAnonymizer = ({
   userId,
   promotionId,
   promotionLotId,
+  promotionOptionId,
 }) => {
   const currentUser = UserService.get(userId, {
     promotions: { _id: 1 },
@@ -200,8 +199,13 @@ export const makePromotionOptionAnonymizer = ({
   });
   const { promotions: currentUserPromotions = [] } = currentUser;
 
-  if (!promotionId) {
+  if (!promotionId && promotionLotId) {
     const { promotion } = PromotionLotService.get(promotionLotId, {
+      promotion: { _id: 1 },
+    });
+    promotionId = promotion._id;
+  } else if (!promotionId && promotionOptionId) {
+    const { promotion } = PromotionOptionService.get(promotionOptionId, {
       promotion: { _id: 1 },
     });
     promotionId = promotion._id;
@@ -223,9 +227,7 @@ export const makePromotionOptionAnonymizer = ({
     );
 
     if (currentUserPromotion) {
-      permissions =
-        currentUserPromotion.$metadata &&
-        currentUserPromotion.$metadata.permissions;
+      permissions = currentUserPromotion.$metadata?.permissions;
     }
 
     const anonymize = clientShouldAnonymize({

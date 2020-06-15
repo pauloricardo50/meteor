@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   LOANS_COLLECTION,
@@ -17,12 +17,100 @@ import PromotionCustomer from '../../PromotionCustomer';
 import PriorityOrder from './PriorityOrder';
 import PromotionLotReservation from './PromotionLotReservation/PromotionLotReservation';
 
+const columns = promotionLotId => [
+  {
+    accessor: 'loan._id',
+    Header: <T id="PromotionLotLoansTable.loanName" />,
+    style: { whiteSpace: 'nowrap' },
+    disableSortBy: true,
+    Cell: ({
+      row: {
+        original: { loan },
+      },
+    }) => (
+      <CollectionIconLink
+        key="loan"
+        relatedDoc={loan}
+        noRoute={Meteor.microservice === 'pro'}
+      />
+    ),
+  },
+  {
+    accessor: 'status',
+    Header: <T id="PromotionLotLoansTable.status" />,
+    Cell: ({
+      value,
+      row: {
+        original: {
+          loan: { status: loanStatus },
+        },
+      },
+    }) => (
+      <>
+        <StatusLabel
+          status={loanStatus}
+          collection={LOANS_COLLECTION}
+          className="mr-4"
+        />
+        <StatusLabel status={value} collection={PROMOTION_OPTIONS_COLLECTION} />
+      </>
+    ),
+  },
+  {
+    accessor: 'loanCache.0.userCache.lastName',
+    Header: <T id="PromotionLotLoansTable.buyer" />,
+    // disableSortBy: true,
+    Cell: ({
+      row: {
+        original: {
+          invitedBy,
+          loan: { user },
+        },
+      },
+    }) => <PromotionCustomer user={user} invitedBy={invitedBy} />,
+  },
+  {
+    accessor: 'createdAt',
+    Header: <T id="PromotionLotLoansTable.date" />,
+    Cell: ({ value }) => (
+      <IntlDate value={value} type="relative" style="long" />
+    ),
+  },
+  {
+    accessor: 'loanCache.0.promotionLinks.0.priorityOrder',
+    Header: <T id="PromotionLotLoansTable.priorityOrder" />,
+    Cell: ({
+      row: {
+        original: {
+          loan: { _id: loanId, promotionOptions },
+        },
+      },
+    }) => (
+      <PriorityOrder
+        promotionOptions={promotionOptions}
+        loanId={loanId}
+        currentPromotionLotId={promotionLotId}
+      />
+    ),
+  },
+  {
+    accessor: 'attribute',
+    Header: <T id="PromotionLotLoansTable.attribute" />,
+    disableSortBy: true,
+    Cell: ({ row: { original: promotionOption } }) => (
+      <PromotionLotReservation promotionOption={promotionOption} />
+    ),
+  },
+];
+
 const PromotionLotLoansTable = ({ promotionLotId }) => {
   const [status, setStatus] = useState({
     $in: Object.values(LOAN_STATUS).filter(
       s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST,
     ),
   });
+
+  const memoColumns = useMemo(() => columns(promotionLotId), []);
 
   return (
     <>
@@ -32,8 +120,9 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
         options={LOAN_STATUS}
         id="status"
         label={<T id="PromotionLotLoansTable.loanStatus" />}
-        style={{ minWidth: 250 }}
+        style={{ minWidth: 250, marginBottom: 16 }}
       />
+
       <DataTable
         queryConfig={{
           query: proPromotionOptions,
@@ -66,96 +155,10 @@ const PromotionLotLoansTable = ({ promotionLotId }) => {
         }}
         queryDeps={[status]}
         initialSort="status"
-        columns={[
-          {
-            accessor: 'loan._id',
-            Header: <T id="PromotionLotLoansTable.loanName" />,
-            style: { whiteSpace: 'nowrap' },
-            disableSortBy: true,
-            Cell: ({
-              row: {
-                original: { loan },
-              },
-            }) => (
-              <CollectionIconLink
-                key="loan"
-                relatedDoc={loan}
-                noRoute={Meteor.microservice === 'pro'}
-              />
-            ),
-          },
-          {
-            accessor: 'status',
-            Header: <T id="PromotionLotLoansTable.status" />,
-            Cell: ({
-              value,
-              row: {
-                original: {
-                  loan: { status: loanStatus },
-                },
-              },
-            }) => (
-              <>
-                <StatusLabel
-                  status={loanStatus}
-                  collection={LOANS_COLLECTION}
-                  className="mr-4"
-                />
-                <StatusLabel
-                  status={value}
-                  collection={PROMOTION_OPTIONS_COLLECTION}
-                />
-              </>
-            ),
-          },
-          {
-            accessor: 'loanCache.0.userCache.lastName',
-            Header: <T id="PromotionLotLoansTable.buyer" />,
-            // disableSortBy: true,
-            Cell: ({
-              row: {
-                original: {
-                  invitedBy,
-                  loan: { user },
-                },
-              },
-            }) => <PromotionCustomer user={user} invitedBy={invitedBy} />,
-          },
-          {
-            accessor: 'createdAt',
-            Header: <T id="PromotionLotLoansTable.date" />,
-            Cell: ({ value }) => (
-              <IntlDate value={value} type="relative" style="long" />
-            ),
-          },
-          {
-            accessor: 'loanCache.0.promotionLinks.0.priorityOrder',
-            Header: <T id="PromotionLotLoansTable.priorityOrder" />,
-            Cell: ({
-              row: {
-                original: {
-                  loan: { _id: loanId, promotionOptions },
-                },
-              },
-            }) => (
-              <PriorityOrder
-                promotionOptions={promotionOptions}
-                loanId={loanId}
-                currentPromotionLotId={promotionLotId}
-              />
-            ),
-          },
-          {
-            accessor: 'attribute',
-            Header: <T id="PromotionLotLoansTable.attribute" />,
-            disableSortBy: true,
-            Cell: ({ row: { original: promotionOption } }) => (
-              <PromotionLotReservation promotionOption={promotionOption} />
-            ),
-          },
-        ]}
+        columns={memoColumns}
       />
     </>
   );
 };
+
 export default PromotionLotLoansTable;

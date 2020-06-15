@@ -22,7 +22,13 @@ const PromotionReservationDetailActions = ({
   confirmReservation,
   sellPromotionLot,
 }) => (
-  <div className="flex center mt-16">
+  <div
+    className="flex center mt-16"
+    onClick={e => {
+      e.stopPropagation();
+      e.preventDefault();
+    }}
+  >
     {canUploadReservationAgreement && (
       <PromotionLotReservationForm
         agreementDuration={agreementDuration}
@@ -83,7 +89,9 @@ const PromotionReservationDetailActions = ({
           disabled: confirmReservationIsDisabled,
           tooltip: confirmReservationIsDisabled ? (
             <T id="PromotionReservationActions.confirmReservation.tooltip" />
-          ) : undefined,
+          ) : (
+            undefined
+          ),
           className: 'mr-8 mb-8',
         }}
         label={<T id="PromotionReservationActions.confirmReservation" />}

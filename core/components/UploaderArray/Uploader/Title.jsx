@@ -7,7 +7,6 @@ import FileStatusIcon from './FileStatusIcon';
 
 const Title = ({
   fileMeta: { id, label, noTooltips, tooltipSuffix, required, tooltip },
-  doubleTooltip,
   currentValue,
   displayFull,
   toggleDisplayFull,
@@ -61,7 +60,6 @@ const Title = ({
 Title.propTypes = {
   currentValue: PropTypes.arrayOf(PropTypes.object),
   displayFull: PropTypes.bool.isRequired,
-  doubleTooltip: PropTypes.bool,
   fileMeta: PropTypes.object.isRequired,
   handleRemove: PropTypes.func.isRequired,
   label: PropTypes.string,
@@ -73,7 +71,6 @@ Title.propTypes = {
 };
 
 Title.defaultProps = {
-  doubleTooltip: false,
   noTooltips: false,
   required: false,
   tooltipSuffix: undefined,

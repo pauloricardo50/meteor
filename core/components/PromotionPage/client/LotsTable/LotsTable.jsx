@@ -1,7 +1,6 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Element, scroller } from 'react-scroll';
-import SimpleSchema from 'simpl-schema';
 
 import { lotRemove, lotUpdate } from '../../../../api/lots/methodDefinitions';
 import { lots } from '../../../../api/lots/queries';
@@ -14,7 +13,7 @@ import DataTable from '../../../DataTable';
 import Chip from '../../../Material/Chip';
 import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';
-import { lotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
+import { getLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
 import { usePromotion } from '../PromotionPageContext';
 
 const scrollToAdditionalLotsTable = () => {
@@ -26,30 +25,7 @@ const scrollToAdditionalLotsTable = () => {
   });
 };
 
-const additionalLotModifierSchema = ({ promotionLots = [], formatMessage }) =>
-  lotSchema.extend(
-    new SimpleSchema({
-      promotionLot: {
-        type: String,
-        allowedValues: promotionLots.map(({ _id }) => _id),
-        optional: true,
-        uniforms: {
-          transform: _id =>
-            _id ? (
-              promotionLots.find(promotionLot => promotionLot._id === _id).name
-            ) : (
-              <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
-            ),
-          labelProps: { shrink: true },
-          placeholder: formatMessage({
-            id: 'PromotionPage.AdditionalLotsTable.nonAllocated',
-          }),
-        },
-      },
-    }),
-  );
-
-const makeGetModalProps = ({ schema, canModifyLots }) => lot => {
+const makeGetModalProps = ({ canModifyLots, lotSchema }) => lot => {
   const disableModal =
     !canModifyLots ||
     [PROMOTION_LOT_STATUS.RESERVED, PROMOTION_LOT_STATUS.SOLD].includes(
@@ -58,19 +34,13 @@ const makeGetModalProps = ({ schema, canModifyLots }) => lot => {
 
   return {
     disableModal,
-    schema,
+    schema: lotSchema,
     model: {
       ...lot,
-      promotionLot: lot.promotionLots?.length && lot.promotionLots[0]._id,
+      promotionLotId: lot.promotionLots?.[0]?._id,
     },
     title: <T id="PromotionPage.modifyLot" />,
-    onSubmit: ({
-      _id: lotId,
-      name,
-      description,
-      value,
-      promotionLot: promotionLotId,
-    }) =>
+    onSubmit: ({ _id: lotId, name, description, value, promotionLotId }) =>
       lotUpdate.run({
         lotId,
         object: { promotionLotId, name, description, value },
@@ -79,16 +49,16 @@ const makeGetModalProps = ({ schema, canModifyLots }) => lot => {
   };
 };
 
-const LotsTable = ({ promotion: { _id: promotionId, promotionLots } }) => {
-  const { formatMessage } = useIntl();
+const LotsTable = ({ promotion: { _id: promotionId } }) => {
   const {
     permissions: { canModifyLots },
   } = usePromotion();
-  const schema = useMemo(
-    () => additionalLotModifierSchema({ promotionLots, formatMessage }),
-    [promotionLots],
+  const { formatMessage } = useIntl();
+  const lotSchema = useMemo(
+    () => getLotSchema({ promotionId, formatMessage }),
+    [],
   );
-  const getModalProps = makeGetModalProps({ schema, canModifyLots });
+  const getModalProps = makeGetModalProps({ canModifyLots, lotSchema });
 
   return (
     <Element name="additional-lots-table">

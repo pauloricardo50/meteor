@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,6 +7,7 @@ import { S3_ACLS } from '../../../../api/files/fileConstants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
 import { lotInsert } from '../../../../api/lots/methodDefinitions';
+import { proPromotionLots } from '../../../../api/promotionLots/queries';
 import {
   insertPromotionProperty,
   promotionRemove,
@@ -132,20 +134,38 @@ export const promotionLotFormLayout = [
   },
 ];
 
-export const lotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
-  type: {
-    type: String,
-    allowedValues: Object.values(LOT_TYPES),
-    uniforms: { displayEmpty: false },
-  },
-  description: {
-    type: String,
-    optional: true,
-    uniforms: { placeholder: 'Parking en enfilade' },
-  },
-  value: { ...moneyField, min: 0 },
-});
+export const getLotSchema = ({ promotionId, formatMessage }) =>
+  new SimpleSchema({
+    name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
+    type: {
+      type: String,
+      allowedValues: Object.values(LOT_TYPES),
+      uniforms: { displayEmpty: false },
+    },
+    description: {
+      type: String,
+      optional: true,
+      uniforms: { placeholder: 'Parking en enfilade' },
+    },
+    value: { ...moneyField, min: 0 },
+    promotionLotId: {
+      type: String,
+      customAllowedValues: {
+        query: proPromotionLots,
+        params: {
+          promotionId,
+          $body: { name: 1 },
+        },
+      },
+      optional: true,
+      uniforms: {
+        transform: ({ name }) => name,
+        placeholder: formatMessage({
+          id: 'PromotionPage.AdditionalLotsTable.nonAllocated',
+        }),
+      },
+    },
+  });
 
 export const promotionLotGroupSchema = new SimpleSchema({
   label: {
@@ -180,6 +200,11 @@ const getOptions = ({
   const promotionLotSchema = useMemo(
     () => getPromotionLotSchema(promotionLotGroups),
     [promotionLotGroups],
+  );
+  const { formatMessage } = useIntl();
+  const lotSchema = useMemo(
+    () => getLotSchema({ promotionId, formatMessage }),
+    [],
   );
 
   return [

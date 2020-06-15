@@ -12,9 +12,9 @@ import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import T from '../../../../../Translation';
 import PromotionReservationProgress from '../../../../PromotionReservationProgress';
+import { usePromotion } from '../../../PromotionPageContext';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
-import { usePromotion } from '../../../PromotionPageContext';
 
 const isAdmin = Meteor.microservice === 'admin';
 
@@ -61,6 +61,12 @@ const PromotionLotReservation = ({
     );
   }
 
+  const userName =
+    loan.user?.name ||
+    [loan.userCache?.firstName, loan.userCache?.lastName]
+      .filter(x => x)
+      .join(' ');
+
   return (
     <DialogSimple
       title={
@@ -68,14 +74,7 @@ const PromotionLotReservation = ({
           id="PromotionReservationsTable.modalTitle"
           values={{
             lotName: <b>{name}</b>,
-            customerName: (
-              <b>
-                {loan.user?.name ||
-                  [loan.userCache?.firstName, loan.userCache?.lastName]
-                    .filter(x => x)
-                    .join(' ')}
-              </b>
-            ),
+            customerName: <b>{userName}</b>,
           }}
         />
       }
