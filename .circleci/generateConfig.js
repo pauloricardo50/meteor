@@ -141,11 +141,15 @@ const makePrepareJob = () => ({
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
-    // We can skip postinstall scripts since we don't actually need the app to run
-    // ony successfully build so we can update the cache.
     runCommand(
       'Install node_modules',
       `
+      # Wait until meteor is installed
+      until [ -f $HOME/.meteor-installed ]; do
+        echo "$HOME/.meteor-installed does not exist. Waiting 1s"
+        sleep 1
+      done
+
       meteor npm --prefix microservices/backend ci
       `,
     ),

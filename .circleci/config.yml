@@ -80,6 +80,12 @@ jobs:
           name: Install node_modules
           command: |2-
 
+                  # Wait until meteor is installed
+                  until [ -f $HOME/.meteor-installed ]; do
+                    echo "$HOME/.meteor-installed does not exist. Waiting 1s"
+                    sleep 1
+                  done
+
                   meteor npm --prefix microservices/backend ci
                   
       - run:
