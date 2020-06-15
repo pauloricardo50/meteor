@@ -21,6 +21,8 @@
   }
 
   .contact {
+    margin-top: 56px;
+
     &-email,
     &-phone {
       // Mobile/Title/H4
@@ -29,16 +31,19 @@
       font-style: normal;
       line-height: 1.4;
       letter-spacing: normal;
-      color: #2c2c2c;
+      color: $body-text;
     }
 
     hr {
+      margin: 20px 0;
       height: 1px;
-      // border: solid 0.5px var(--2c2c2c-20);
-      color: rgba(#2c2c2c, 0.2);
+      color: $body-text-light;
     }
 
     &-locations {
+      display: inline-flex;
+      flex-direction: column;
+      margin-bottom: 76px;
       // Mobile/Plain/M/Light
       font-size: 14px;
       font-weight: 300;
@@ -48,30 +53,55 @@
       color: #000000;
     }
 
-    &-notices {
-      // Mobile/Plain/M/Light
-      font-size: 14px;
+    .location {
+      border: 0.5px solid $body-text-light;
+      border-radius: 4px;
+      padding: 10px;
+    }
+
+    .location-city {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .location-map-icon {
+      margin-left: 20px;
+      color: $primary;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .footer-notices {
+      margin: 56px 0 24px;
+      // Desktop/Plain/S
+      font-size: 12px;
       font-weight: 300;
-      font-stretch: normal;
       font-style: normal;
-      line-height: 1.5;
+      line-height: normal;
       letter-spacing: normal;
       color: rgba(0, 0, 0, 0.5);
 
       a {
-        color: #2e7eff;
+        color: $primary;
+      }
+
+      > p {
+        margin: 5px 0;
+      }
+
+      h5,
+      h6 {
+        // Mobile/Plain/M/Light
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 14px;
       }
     }
+  }
 
-    &-social {
-      // Desktop/Plain/M/Light
-      font-size: 16px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.44;
-      letter-spacing: normal;
-      color: #000000;
-    }
+  .social-links + .language-picker {
+    margin-left: 40px;
   }
 
   @media (min-width: $med) {
@@ -91,12 +121,13 @@
         font-style: normal;
         line-height: 1.42;
         letter-spacing: normal;
-        color: #2c2c2c;
+        color: $body-text;
       }
     }
 
     .contact {
       flex-basis: 384px;
+      margin-top: 0;
 
       &-email,
       &-phone {
@@ -106,13 +137,12 @@
         font-style: normal;
         line-height: 1.42;
         letter-spacing: normal;
-        color: #2c2c2c;
+        color: $body-text;
       }
 
       hr {
         height: 1px;
-        // border: solid 0.5px var(--2c2c2c-20);
-        color: rgba(#2c2c2c, 0.2);
+        color: $body-text-light;
       }
 
       &-locations {
@@ -125,30 +155,12 @@
         color: #000000;
       }
 
-      &-notices {
-        // Desktop/Plain/M/Light
-        font-size: 16px;
-        font-weight: 300;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.44;
-        letter-spacing: normal;
-        color: rgba(0, 0, 0, 0.5);
-
-        a {
-          color: #2e7eff;
+      .footer-notices {
+        h5,
+        h6 {
+          // Desktop/Plain/M/Light
+          font-size: 16px;
         }
-      }
-
-      &-social {
-        // Desktop/Plain/M/Light
-        font-size: 16px;
-        font-weight: 300;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.44;
-        letter-spacing: normal;
-        color: #000000;
       }
     }
   }

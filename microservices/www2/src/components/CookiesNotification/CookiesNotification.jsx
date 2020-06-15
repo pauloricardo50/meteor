@@ -6,7 +6,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Button from '../Button';
 import LanguageContext from '../../contexts/LanguageContext';
-import useAllCookiesNotifications from '../../hooks/useAllCookiesNotifications';
+import useContentBlock from '../../hooks/useContentBlock';
 import { getLanguageData } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
 
@@ -53,13 +53,15 @@ const CookiesNotification = () => {
   const [language] = useContext(LanguageContext);
   const [cookies, setCookie] = useCookies(acceptCookie);
   const [visible, setVisible] = useState(true);
-  const allCookiesNotifications = useAllCookiesNotifications();
 
-  const cookieNotification = allCookiesNotifications.find(({ node }) =>
-    node._meta.lang.includes(language),
-  );
+  const cookieNotification = useContentBlock({
+    uid: 'cookies-notification',
+    lang: language,
+  });
 
   if (!cookieNotification) return null;
+
+  const message = RichText.render(cookieNotification, linkResolver);
 
   const handleAccept = () => {
     setCookie(acceptCookie, true, {
@@ -86,7 +88,7 @@ const CookiesNotification = () => {
     >
       <SnackbarContent
         classes={useSnackbarContentStyles()}
-        message={RichText.render(cookieNotification.node.content, linkResolver)}
+        message={message}
         action={[
           <Button key="decline" contained onClick={() => handleDecline()}>
             {getLanguageData(language).cookieDecline}
