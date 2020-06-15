@@ -30,7 +30,6 @@ const DevPageContainer = compose(
             generateDevs: true,
             generateAdmins: true,
             generateUsers: true,
-            generateLoans: true,
             generateOrganisations: true,
             generateUnownedLoan: true,
             generateTestUser: true,

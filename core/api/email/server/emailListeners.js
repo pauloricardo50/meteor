@@ -16,6 +16,7 @@ import LoanService from '../../loans/server/LoanService';
 import { submitContactForm } from '../../methods/methodDefinitions';
 import { offerSendFeedback } from '../../offers/methodDefinitions';
 import OfferService from '../../offers/server/OfferService';
+import { submitPromotionInterestForm } from '../../promotions/methodDefinitions';
 import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import { proInviteUser } from '../../users/methodDefinitions';
@@ -379,5 +380,21 @@ addEmailListener({
         },
       });
     }
+  },
+});
+
+addEmailListener({
+  description: 'Formulaire de contact promotion -> Client',
+  method: submitPromotionInterestForm,
+  func: ({ params }) => {
+    const { name: promotionName } = PromotionService.get(params.promotionId, {
+      name: 1,
+    });
+
+    return sendEmailToAddress.serverRun({
+      emailId: EMAIL_IDS.PROMOTION_INTEREST_FORM,
+      address: params.email,
+      params: { ...params, promotionName },
+    });
   },
 });

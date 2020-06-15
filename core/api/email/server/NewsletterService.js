@@ -7,6 +7,10 @@ class NewsletterService {
   }
 
   updateUser({ userId, status }) {
+    if (!userId) {
+      return;
+    }
+
     const {
       email,
       firstName,

@@ -63,7 +63,9 @@ const TestComponent = ({
   );
 };
 
-describe('usePaginatedMeteorData', () => {
+describe('usePaginatedMeteorData', function () {
+  this.retries(2);
+
   beforeEach(async () => {
     await cleanup();
     // Important, hard earned, lesson: Calling resetDatabase on the client resets the websocket
@@ -185,12 +187,12 @@ describe('usePaginatedMeteorData', () => {
 
   describe('global queries', () => {
     beforeEach(async () => {
-      await new Promise(res => Meteor.logout(res));
+      await new Promise((res) => Meteor.logout(res));
       await userLogin({ role: ROLES.ADMIN });
     });
 
     afterEach(async () => {
-      await new Promise(res => Meteor.logout(res));
+      await new Promise((res) => Meteor.logout(res));
     });
 
     it('loads', async () => {
