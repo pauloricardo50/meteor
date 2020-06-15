@@ -1477,6 +1477,7 @@ describe('LoanService', function() {
 
   describe('setMaxPropertyValueOrBorrowRatio', function() {
     this.timeout(10000);
+    this.retries(2);
 
     it('finds the ideal borrowRatio', () => {
       generator({

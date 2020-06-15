@@ -13,6 +13,8 @@ import {
   generateExpiringSoonReservationTasks,
   generateTenDayExpirationReminderTasks,
 } from '../../promotionOptions/server/methods';
+import { submitPromotionInterestForm } from '../../promotions/methodDefinitions';
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import {
@@ -269,6 +271,24 @@ ServerEventService.addAfterMethodListener(
           description: "S'assurer que tout est prêt pour le décaissement",
         },
       });
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  submitPromotionInterestForm,
+  ({ params: { details, email, name, phoneNumber, promotionId } }) => {
+    const { name: promotionName } = PromotionService.get(promotionId, {
+      name: 1,
+    });
+
+    TaskService.insert({
+      object: {
+        collection: PROMOTIONS_COLLECTION,
+        docId: promotionId,
+        title: `Nouveau client intéressé par ${promotionName}, depuis notre site web`,
+        description: `Nom: ${name}\nEmail: ${email}\nTél: ${phoneNumber}\nDétails: ${details}`,
+      },
     });
   },
 );

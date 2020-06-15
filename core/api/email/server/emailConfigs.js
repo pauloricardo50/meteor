@@ -527,6 +527,26 @@ const checkAllEmailAreDefined = () => {
   }
 };
 
+addEmailConfig(EMAIL_IDS.PROMOTION_INTEREST_FORM, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    // params.details check is required because details is optional
+    // and it breaks react-intl if not provided
+    details: params.details || '',
+  }),
+});
+
+addEmailConfig(EMAIL_IDS.PROMOTION_INTEREST_FORM_ADMIN, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    details: params.details || 'Pas de message',
+  }),
+});
+
 Meteor.startup(checkAllEmailAreDefined);
 
 export default emailConfigs;

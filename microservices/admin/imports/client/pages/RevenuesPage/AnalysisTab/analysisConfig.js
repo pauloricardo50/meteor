@@ -26,19 +26,29 @@ import {
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import intl from 'core/utils/intl';
-import { LOAN_STATUS } from '../../../../core/api/loans/loanConstants';
+
 import { INSURANCE_REQUEST_STATUS } from '../../../../core/api/insuranceRequests/insuranceRequestConstants';
+import { LOAN_STATUS } from '../../../../core/api/loans/loanConstants';
 
 const { formatMessage } = intl;
 
-const makeFormatDate = (key) => ({ [key]: date }) =>
+const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
 
-const sevenDaysAgo = moment().day(-7).hour(0).minute(0);
+const sevenDaysAgo = moment()
+  .day(-7)
+  .hour(0)
+  .minute(0);
 
-const fifteenDaysAgo = moment().day(-15).hour(0).minute(0);
+const fifteenDaysAgo = moment()
+  .day(-15)
+  .hour(0)
+  .minute(0);
 
-const thirtyDaysAgo = moment().day(-30).hour(0).minute(0);
+const thirtyDaysAgo = moment()
+  .day(-30)
+  .hour(0)
+  .minute(0);
 
 const analysisConfig = {
   [LOANS_COLLECTION]: {
@@ -61,7 +71,7 @@ const analysisConfig = {
           emails: 1,
         },
         format: ({ user }) =>
-          user?.assignedRoles?.map((role) =>
+          user?.assignedRoles?.map(role =>
             formatMessage({ id: `roles.${role}` }),
           ),
       },
@@ -240,7 +250,19 @@ const analysisConfig = {
     },
   },
   [REVENUES_COLLECTION]: {
-    amount: { id: 'Forms.amount' },
+    amount: [
+      { id: 'Forms.amount' },
+      {
+        label: 'Montant net de commissions',
+        format: ({ amount, organisations }) => {
+          const commission = organisations.reduce(
+            (t, { $metadata: { commissionRate } }) => t + commissionRate,
+            0,
+          );
+          return amount * (1 - commission);
+        },
+      },
+    ],
     type: { id: 'Forms.type' },
     status: { id: 'Forms.status' },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
@@ -332,7 +354,7 @@ const analysisConfig = {
     assignedRoles: {
       id: 'Forms.roles',
       format: ({ assignedRoles }) =>
-        assignedRoles.map((role) => formatMessage({ id: `roles.${role}` })),
+        assignedRoles.map(role => formatMessage({ id: `roles.${role}` })),
     },
     'referredByOrganisation.name': { id: 'Forms.referredBy' },
     'referredByUser.name': { label: 'Référé par compte' },
@@ -489,9 +511,8 @@ const analysisConfig = {
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
-        `${
-          INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) + 1
-        }) ${formatMessage({ id: `Forms.status.${status}` })}`,
+        `${INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) +
+          1}) ${formatMessage({ id: `Forms.status.${status}` })}`,
     },
     user: [
       {
@@ -502,7 +523,7 @@ const analysisConfig = {
           emails: 1,
         },
         format: ({ user }) =>
-          user?.assignedRoles?.map((role) =>
+          user?.assignedRoles?.map(role =>
             formatMessage({ id: `roles.${role}` }),
           ),
       },
@@ -684,7 +705,7 @@ const analysisConfig = {
           },
         },
         format: ({ insuranceRequest: { user } = {} }) =>
-          user?.assignedRoles?.map((role) =>
+          user?.assignedRoles?.map(role =>
             formatMessage({ id: `roles.${role}` }),
           ),
       },

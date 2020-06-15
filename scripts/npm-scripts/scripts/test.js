@@ -36,7 +36,7 @@ const spawnArgs = [
   '--port',
   port,
   '--exclude-archs',
-  '"web.browser.legacy, web.cordova"',
+  'web.browser.legacy',
   ...args,
 ];
 

@@ -1117,7 +1117,9 @@ class LoanService extends CollectionService {
       assignees: { email: 1, name: 1 },
     });
 
-    return assignees.find(({ $metadata: { isMain } }) => isMain);
+    return assignees.length === 1
+      ? assignees[0]
+      : assignees.find(({ $metadata: { isMain } }) => isMain);
   }
 
   linkBorrower({ loanId, borrowerId }) {
