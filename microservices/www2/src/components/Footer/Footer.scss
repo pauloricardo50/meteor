@@ -98,16 +98,6 @@
         font-size: 14px;
       }
     }
-
-    &-social {
-      // Desktop/Plain/M/Light
-      font-size: 16px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.44;
-      letter-spacing: normal;
-      color: #000000;
-    }
   }
 
   @media (min-width: $med) {
@@ -167,17 +157,6 @@
           // Desktop/Plain/M/Light
           font-size: 16px;
         }
-      }
-
-      &-social {
-        // Desktop/Plain/M/Light
-        font-size: 16px;
-        font-weight: 300;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.44;
-        letter-spacing: normal;
-        color: #000000;
       }
     }
   }
