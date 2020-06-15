@@ -8,13 +8,16 @@ import FrontError from './FrontError';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
 
-const sendToKadira = error => {
+const sendToMonti = error => {
   // Error should also log to kadira
-  const { Kadira } = window;
-  if (Kadira && Kadira.trackError) {
-    Kadira.trackError('react', error?.stack?.toString());
+  const { Monti } = window;
+  if (Monti && Monti.trackError) {
+    Monti.trackError('react', error?.message, {
+      stacks: error?.stack,
+    });
   }
 };
+
 export class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -91,7 +94,7 @@ export default compose(
   withProps({
     onCatch: (error, info) => {
       console.error(error);
-      sendToKadira(error);
+      sendToMonti(error);
       logError.run({
         error: JSON.parse(
           JSON.stringify(error, Object.getOwnPropertyNames(error)),
