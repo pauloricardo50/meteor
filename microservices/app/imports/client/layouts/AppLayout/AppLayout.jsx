@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
+import ImpersonateNotification from 'core/components/ImpersonateNotification';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 import useIntercom from 'core/hooks/useIntercom';
 
@@ -60,7 +60,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton />
+      <ImpersonateNotification />
       {currentUser && <AnonymousLoanClaimer currentUser={currentUser} />}
       <AnonymousLoanRemover />
     </div>

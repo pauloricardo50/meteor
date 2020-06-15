@@ -22,15 +22,28 @@ const getIcon = ({ followed, shared, userIsConnected }) => {
 
 const getText = ({ followed, shared, userIsConnected }) => {
   if (userIsConnected && !shared) {
-    return <h4>Le client est connecté</h4>;
+    return (
+      <h4>
+        Le client est connecté{getIcon({ followed, shared, userIsConnected })}
+      </h4>
+    );
   }
 
   if (userIsConnected && shared && !followed) {
-    return <h4>Le client ne vous suit pas</h4>;
+    return (
+      <h4>
+        Le client ne vous suit pas
+        {getIcon({ followed, shared, userIsConnected })}
+      </h4>
+    );
   }
 
   if (userIsConnected && shared && followed) {
-    return <h4>Le client vous suit</h4>;
+    return (
+      <h4>
+        Le client vous suit{getIcon({ followed, shared, userIsConnected })}
+      </h4>
+    );
   }
 };
 
@@ -43,9 +56,6 @@ const AdminImpersonateNotification = ({ impersonatedSession }) => {
 
   return (
     <div className="impersonate-notification">
-      {getIcon({ followed, shared, userIsConnected })}
-      {getText({ followed, shared, userIsConnected })}
-
       <Button
         fab
         className={shared ? classes.error : classes.success}
@@ -58,6 +68,7 @@ const AdminImpersonateNotification = ({ impersonatedSession }) => {
       >
         <Icon type={shared ? 'close' : 'airplay'} />
       </Button>
+      {getText({ followed, shared, userIsConnected })}
     </div>
   );
 };
