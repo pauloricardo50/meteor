@@ -116,6 +116,10 @@ const makePrepareJob = () => ({
   ...defaultJobValues,
   resource_class: 'large',
   steps: [
+    runCommand('Install meteor', `
+      bash ./scripts/circleci/install_meteor.sh
+      touch $HOME/.meteor-instaled
+    `, null, true),
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
@@ -125,7 +129,11 @@ const makePrepareJob = () => ({
     ),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
     runCommand('Install backend dependencies', `
-      bash ./scripts/circleci/install_meteor.sh
+      # Wait until meteor is installed
+      until [ -f $HOME/.meteor-installed ]; do
+        echo "$HOME/.meteor-installed does not exist. Waiting 1s"
+        sleep 1
+      done
       meteor npm --prefix microservices/backend ci
       touch $HOME/.backend-prepared
     `, null, true),
@@ -146,18 +154,18 @@ const makePrepareJob = () => ({
       cacheKeys.meteorMicroservice('backend'),
     ),
     runCommand(
+      'Install expect',
+      'apt-get update && apt-get install expect -y',
+    ),
+    runCommand(
       'Wait for backend dependencies',
       `
-      # Wait until meteor is installed and npm dependencies installed
+      # Wait until backend npm dependencies are installed
       until [ -f $HOME/.backend-prepared ]; do
         echo "$HOME/.backend-prepared does not exist. Waiting 1s"
         sleep 1
       done
       `,
-    ),
-    runCommand(
-      'Install expect',
-      'apt-get update && apt-get install expect -y',
     ),
     runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
     saveCache(

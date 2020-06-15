@@ -23,6 +23,14 @@ jobs:
           HOME: /home/circleci
     resource_class: large
     steps:
+      - run:
+          name: Install meteor
+          command: |2-
+
+                  bash ./scripts/circleci/install_meteor.sh
+                  touch $HOME/.meteor-instaled
+                
+          background: true
       - restore_cache:
           name: Restore source
           keys:
@@ -42,7 +50,11 @@ jobs:
           name: Install backend dependencies
           command: |2-
 
-                  bash ./scripts/circleci/install_meteor.sh
+                  # Wait until meteor is installed
+                  until [ -f $HOME/.meteor-installed ]; do
+                    echo "$HOME/.meteor-installed does not exist. Waiting 1s"
+                    sleep 1
+                  done
                   meteor npm --prefix microservices/backend ci
                   touch $HOME/.backend-prepared
                 
@@ -82,18 +94,18 @@ jobs:
               }}-
             - meteor_microservice_circleci_performance_11_1_backend-
       - run:
+          name: Install expect
+          command: apt-get update && apt-get install expect -y
+      - run:
           name: Wait for backend dependencies
           command: |2-
 
-                  # Wait until meteor is installed and npm dependencies installed
+                  # Wait until backend npm dependencies are installed
                   until [ -f $HOME/.backend-prepared ]; do
                     echo "$HOME/.backend-prepared does not exist. Waiting 1s"
                     sleep 1
                   done
                   
-      - run:
-          name: Install expect
-          command: apt-get update && apt-get install expect -y
       - run:
           name: Build backend
           command: ./scripts/circleci/build_backend.sh
