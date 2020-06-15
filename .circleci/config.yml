@@ -23,14 +23,6 @@ jobs:
           HOME: /home/circleci
     resource_class: large
     steps:
-      - run:
-          name: Install meteor
-          command: |2-
-
-                  bash ./scripts/circleci/install_meteor.sh
-                  touch $HOME/.meteor-instaled
-                
-          background: true
       - restore_cache:
           name: Restore source
           keys:
@@ -41,6 +33,14 @@ jobs:
       - run:
           name: Init submodules
           command: git submodule sync && git submodule update --init --recursive
+      - run:
+          name: Install meteor
+          command: |2-
+
+                  bash ./scripts/circleci/install_meteor.sh
+                  touch $HOME/.meteor-instaled
+                
+          background: true
       - save_cache:
           name: Cache source
           key: 'source_circleci_performance_11_1-{{ .Branch }}-{{ .Revision }}'

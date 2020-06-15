@@ -116,10 +116,6 @@ const makePrepareJob = () => ({
   ...defaultJobValues,
   resource_class: 'large',
   steps: [
-    runCommand('Install meteor', `
-      bash ./scripts/circleci/install_meteor.sh
-      touch $HOME/.meteor-instaled
-    `, null, true),
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
@@ -127,6 +123,10 @@ const makePrepareJob = () => ({
       'Init submodules',
       'git submodule sync && git submodule update --init --recursive',
     ),
+    runCommand('Install meteor', `
+      bash ./scripts/circleci/install_meteor.sh
+      touch $HOME/.meteor-instaled
+    `, null, true),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
     runCommand('Install backend dependencies', `
       # Wait until meteor is installed
