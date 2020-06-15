@@ -1,11 +1,43 @@
 .page-navigation {
-  ul {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-  }
   a {
-    padding: 10px 20px;
-    font-weight: bold;
+    display: inline-block;
+    opacity: 0.5;
+    border-bottom: 5px solid transparent;
+    padding: 13px 0;
+    // Mobile/Plain/M/Light
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.74px;
+    color: $body-text;
+    transition: all 0.3s;
+
+    &.active,
+    &:hover {
+      opacity: 1;
+      border-color: $primary;
+      transition: all 0.3s;
+    }
+
+    + a {
+      margin-left: 16px;
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    a {
+      padding: 33px 0;
+      // Desktop/Plain/M/Light
+      font-size: 16px;
+      font-weight: 500;
+      font-style: normal;
+      line-height: 1.44;
+      letter-spacing: 0.85px;
+
+      + a {
+        margin-left: 50px;
+      }
+    }
   }
 }

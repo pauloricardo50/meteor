@@ -32,11 +32,7 @@ exports.sourceNodes = async ({
     gpsStats.forEach(gpsStat => {
       const node = {
         id: createNodeId(gpsStat.city),
-        city: gpsStat.city,
-        zipCode: gpsStat.zipCode,
-        lat: gpsStat.lat,
-        long: gpsStat.long,
-        count: gpsStat.count,
+        ...gpsStat,
         internal: {
           type: 'gpsStat',
           contentDigest: createContentDigest(gpsStat),
