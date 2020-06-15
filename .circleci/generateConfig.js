@@ -124,10 +124,14 @@ const makePrepareJob = () => ({
       'git submodule sync && git submodule update --init --recursive',
     ),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
+    runCommand('Install backend dependencies', `
+      bash ./scripts/circleci/install_meteor.sh
+      meteor npm --prefix microservices/backend ci
+      touch $HOME/.backend-prepared
+    `, null, true),
 
     // Prepare node_modules cache
     restoreCache('Restore global cache', cacheKeys.global()),
-    runCommand('Install meteor', './scripts/circleci/install_meteor.sh', null, true),
     runCommand('Install project node_modules', 'npm ci'),
     saveCache('Cache globals', cacheKeys.global(), cachePaths.global()),
     saveCache(
@@ -142,15 +146,13 @@ const makePrepareJob = () => ({
       cacheKeys.meteorMicroservice('backend'),
     ),
     runCommand(
-      'Install node_modules',
+      'Wait for backend dependencies',
       `
-      # Wait until meteor is installed
-      until [ -f $HOME/.meteor-installed ]; do
-        echo "$HOME/.meteor-installed does not exist. Waiting 1s"
+      # Wait until meteor is installed and npm dependencies installed
+      until [ -f $HOME/.backend-prepared ]; do
+        echo "$HOME/.backend-prepared does not exist. Waiting 1s"
         sleep 1
       done
-
-      meteor npm --prefix microservices/backend ci
       `,
     ),
     runCommand(
