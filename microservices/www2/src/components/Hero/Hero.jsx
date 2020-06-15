@@ -26,7 +26,11 @@ const FullWidthImage = ({ primary, fields }) => (
   <div
     className="full-width-image"
     style={{ backgroundImage: `url(${primary.images.url})` }}
+    itemProp="image"
+    itemScope
+    itemType="https://schema.org/ImageObject"
   >
+    <meta itemProp="url" content={primary.images.url} />
     <div className="wrapper">
       {primary.content && RichText.asText(primary.content) !== '' ? (
         <>

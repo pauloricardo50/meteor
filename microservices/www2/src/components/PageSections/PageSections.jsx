@@ -18,6 +18,7 @@ import Quote from '../Quote';
 import Team from '../Team';
 import Testimonials from '../Testimonials';
 import Text from '../Text';
+import VideoEmbed from '../VideoEmbed';
 
 const PageSections = ({ sections }) =>
   sections.map((section, idx) => {
@@ -46,6 +47,7 @@ const PageSections = ({ sections }) =>
             team: <Team {...section} />,
             testimonial: <Testimonials {...section} />,
             text: <Text {...section} />,
+            video_embed: <VideoEmbed {...section} />,
           }[section.type]
         }
       </div>

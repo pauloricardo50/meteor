@@ -60,6 +60,12 @@ export const query = graphql`
               content
             }
           }
+          ... on PRISMIC_PostBodyVideo_embed {
+            type
+            primary {
+              video
+            }
+          }
         }
       }
 
@@ -180,16 +186,20 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
     section => section.type === 'newsletter_signup',
   );
 
-  // TODO: add structured data - https://developers.google.com/search/docs/data-types/article
   return (
     <Layout pageContext={pageContext} pageName={blogPost.title}>
-      <div className="post" data-wio-id={blogPost._meta.id}>
+      <div
+        className="post"
+        data-wio-id={blogPost._meta.id}
+        itemScope
+        itemType="http://schema.org/BlogPosting"
+      >
         <div className="post-header">
           <div className="back-to-blog">
             <Link to={languageData.blogLink}>{languageData.blogLinkText}</Link>
           </div>
 
-          <h1 className="post-title">
+          <h1 className="post-title" itemProp="headline">
             {blogPost.title ? RichText.asText(blogPost.title) : 'Untitled'}
           </h1>
 
@@ -206,20 +216,30 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
 
               <div className="post-detail">
                 {blogPost.author.name && (
-                  <div className="post-author">
-                    {`${blogPost.author.name}, ${blogPost.author.title}`}
+                  <div
+                    className="post-author"
+                    itemProp="author"
+                    itemScope
+                    itemType="https://schema.org/Person"
+                  >
+                    <span itemProp="name">{blogPost.author.name}</span>
+                    {', '}
+                    <span itemProp="jobTitle">{blogPost.author.title}</span>
                     <span className="date-spacer">•</span>
                   </div>
                 )}
-                {/* TODO: correct usage of time tag */}
-                {/* TODO: localize date display */}
-                <time>{blogPost.date}</time>
+
+                <time itemProp="datePublished">{blogPost.date}</time>
               </div>
             </div>
           )}
         </div>
 
-        {blogPost.body && <PageSections sections={blogPost.body} />}
+        {blogPost.body && (
+          <div itemProp="articleBody">
+            <PageSections sections={blogPost.body} />
+          </div>
+        )}
 
         {articleNewsletterSignup && (
           <div className="container">
