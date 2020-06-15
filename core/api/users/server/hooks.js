@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 import formatNumbersHook from '../../../utils/phoneFormatting';
 import NewsletterService from '../../email/server/NewsletterService';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
-import { IntercomService } from '../../intercom/server/IntercomService';
+import IntercomService from '../../intercom/server/IntercomService';
 import { ROLES } from '../roles/roleConstants';
 import Users from '../users';
 

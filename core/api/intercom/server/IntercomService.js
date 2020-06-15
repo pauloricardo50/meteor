@@ -156,7 +156,7 @@ export class IntercomService {
       });
 
       const [contact] = data;
-      return contact;
+      return contact || {};
     }
     if (contactId) {
       return this.callIntercomAPI({
@@ -177,7 +177,7 @@ export class IntercomService {
     const admins = await this.listAdmins();
     const admin = admins.find(({ email: adminEmail }) => email === adminEmail);
 
-    return admin;
+    return admin || {};
   };
 
   getIntercomId = async ({ userId }) => {
