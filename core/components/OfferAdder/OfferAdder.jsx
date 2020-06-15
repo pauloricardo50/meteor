@@ -16,6 +16,53 @@ const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
   {},
 );
 
+export const offerFormLayout = [
+  {
+    Component: Box,
+    className: 'grid-2 mb-32',
+    title: <h5>Général</h5>,
+    fields: ['lender', 'enableOffer'],
+  },
+  {
+    Component: Box,
+    title: <h5>Offre</h5>,
+    className: 'mb-32',
+    layout: [
+      {
+        className: 'grid-3',
+        fields: ['maxAmount', 'amortizationGoal', 'amortizationYears'],
+      },
+      { className: 'flex sb', fields: ['interest*'] },
+    ],
+  },
+  {
+    Component: Box,
+    className: 'mb-32',
+    title: <h5>Conditions</h5>,
+    fields: ['withCounterparts', 'conditions'],
+  },
+  {
+    Component: Box,
+    className: 'mb-32 grid-2',
+    title: <h5>Frais</h5>,
+    fields: ['fees', 'epotekFees'],
+  },
+  {
+    Component: Box,
+    className: 'mb-32',
+    title: <h5>Contreparties</h5>,
+    layout: [
+      'hasCounterparts',
+      'counterparts',
+      {
+        className: 'grid-2',
+        fields: ['hasFlatDiscount', 'flatDiscount'],
+      },
+      { className: 'flex sb', fields: ['discount_*'] },
+    ],
+  },
+];
+
 const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
   <AutoFormDialog
     schema={schema}
@@ -32,52 +79,7 @@ const OfferAdder = ({ schema, insertOffer, buttonProps }) => (
     fullWidth
     maxWidth="md"
     important
-    layout={[
-      {
-        Component: Box,
-        className: 'grid-2 mb-32',
-        title: <h5>Général</h5>,
-        fields: ['lender', 'enableOffer'],
-      },
-      {
-        Component: Box,
-        title: <h5>Offre</h5>,
-        className: 'mb-32',
-        layout: [
-          {
-            className: 'grid-3',
-            fields: ['maxAmount', 'amortizationGoal', 'amortizationYears'],
-          },
-          { className: 'flex sb', fields: ['interest*'] },
-        ],
-      },
-      {
-        Component: Box,
-        className: 'mb-32',
-        title: <h5>Conditions</h5>,
-        fields: ['withCounterparts', 'conditions'],
-      },
-      {
-        Component: Box,
-        className: 'mb-32 grid-2',
-        title: <h5>Frais</h5>,
-        fields: ['fees', 'epotekFees'],
-      },
-      {
-        Component: Box,
-        className: 'mb-32',
-        title: <h5>Contreparties</h5>,
-        layout: [
-          'hasCounterparts',
-          'counterparts',
-          {
-            className: 'grid-2',
-            fields: ['hasFlatDiscount', 'flatDiscount'],
-          },
-          { className: 'flex sb', fields: ['discount_*'] },
-        ],
-      },
-    ]}
+    layout={offerFormLayout}
   />
 );
 

@@ -138,8 +138,14 @@ class TaskService extends CollectionService {
       }
     }
 
+    let fragment = { assignee: 1 };
+
+    if (collection === ORGANISATIONS_COLLECTION) {
+      fragment = { assignee: { _id: 1 } };
+    }
+
     const doc = Mongo.Collection.get(collection)
-      .createQuery({ $filters: { _id: docId }, assignee: 1 })
+      .createQuery({ $filters: { _id: docId }, ...fragment })
       .fetchOne();
 
     return doc?.assignee?._id;

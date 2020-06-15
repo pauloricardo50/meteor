@@ -27,6 +27,9 @@ import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import intl from 'core/utils/intl';
 
+import { INSURANCE_REQUEST_STATUS } from '../../../../core/api/insuranceRequests/insuranceRequestConstants';
+import { LOAN_STATUS } from '../../../../core/api/loans/loanConstants';
+
 const { formatMessage } = intl;
 
 const makeFormatDate = key => ({ [key]: date }) =>
@@ -192,21 +195,46 @@ const analysisConfig = {
         }
       },
     },
-    activities: {
-      fragment: {
-        metadata: { event: 1 },
-        date: 1,
-        $options: { sort: { date: -1 } },
+    activities: [
+      {
+        fragment: {
+          metadata: { event: 1, details: { nextStatus: 1 } },
+          date: 1,
+          details: 1,
+          $options: { sort: { date: -1 } },
+        },
+        label: 'Dernier changement de statut',
+        format: ({ activities = [] }) => {
+          const lastChangedStatus = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
+          );
+          return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+        },
       },
-      label: 'Dernier changement de statut',
-      format: ({ activities = [] }) => {
-        const lastChangedStatus = activities.find(
-          ({ metadata }) =>
-            metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
-        );
-        return lastChangedStatus && makeFormatDate('date')(lastChangedStatus);
+      {
+        label: 'Passage à finalisé',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
+              metadata?.details?.nextStatus === LOAN_STATUS.FINALIZED,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
+        },
       },
-    },
+      {
+        label: 'Passage à facturation',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
+              metadata?.details?.nextStatus === LOAN_STATUS.BILLING,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
+        },
+      },
+    ],
     unsuccessfulReason: {
       label: "Raison d'archivage",
       format: ({ unsuccessfulReason }) =>
@@ -222,7 +250,19 @@ const analysisConfig = {
     },
   },
   [REVENUES_COLLECTION]: {
-    amount: { id: 'Forms.amount' },
+    amount: [
+      { id: 'Forms.amount' },
+      {
+        label: 'Montant net de commissions',
+        format: ({ amount, organisations }) => {
+          const commission = organisations.reduce(
+            (t, { $metadata: { commissionRate } }) => t + commissionRate,
+            0,
+          );
+          return amount * (1 - commission);
+        },
+      },
+    ],
     type: { id: 'Forms.type' },
     status: { id: 'Forms.status' },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
@@ -547,7 +587,7 @@ const analysisConfig = {
       {
         fragment: {
           type: 1,
-          metadata: { event: 1 },
+          metadata: { event: 1, details: 1 },
           date: 1,
           $options: { sort: { date: -1 } },
         },
@@ -583,6 +623,32 @@ const analysisConfig = {
           );
 
           return financialPlanningDone ? 'Oui' : 'Non';
+        },
+      },
+      {
+        label: 'Passage à finalisé',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event ===
+                ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS &&
+              metadata?.details?.nextStatus ===
+                INSURANCE_REQUEST_STATUS.FINALIZED,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
+        },
+      },
+      {
+        label: 'Passage à facturation',
+        format: ({ activities }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event ===
+                ACTIVITY_EVENT_METADATA.INSURANCE_REQUEST_CHANGE_STATUS &&
+              metadata?.details?.nextStatus ===
+                INSURANCE_REQUEST_STATUS.BILLING,
+          );
+          return finalizedActivity && makeFormatDate('date')(finalizedActivity);
         },
       },
     ],

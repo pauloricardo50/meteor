@@ -4,6 +4,7 @@ import { offerDelete } from '../../api/offers/methodDefinitions';
 import { AutoFormDialog } from '../AutoForm2';
 import T from '../Translation';
 import OfferModiferContainer from './OfferModifierContainer';
+import { offerFormLayout } from '../OfferAdder/OfferAdder';
 
 const OfferModifier = ({ onSubmit, offer, schema, ...props }) => (
   <AutoFormDialog
@@ -17,6 +18,8 @@ const OfferModifier = ({ onSubmit, offer, schema, ...props }) => (
       style: { alignSelf: 'center' },
     }}
     onDelete={() => offerDelete.run({ offerId: offer._id })}
+    layout={offerFormLayout.slice(0, -1)} // Don't use last poart
+    maxWidth="md"
     {...props}
   />
 );

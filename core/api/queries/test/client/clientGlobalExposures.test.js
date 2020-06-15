@@ -10,11 +10,13 @@ import {
 } from '../../../../utils/testHelpers';
 import { ROLES } from '../../../users/userConstants';
 
-describe('Global Exposures', () => {
+describe('Global Exposures', function () {
+  this.retries(2);
+
   beforeEach(() => resetDatabase());
 
-  afterEach(done =>
-    Meteor.logout(err => {
+  afterEach((done) =>
+    Meteor.logout((err) => {
       done(err);
     }),
   );

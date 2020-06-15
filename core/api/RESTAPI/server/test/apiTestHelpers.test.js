@@ -149,7 +149,7 @@ export const makeHeaders = ({
   }
 
   return {
-    'Content-Type': 'application/json',
+    ...(isMultipart ? {} : { 'Content-Type': 'application/json' }),
     'X-EPOTEK-Authorization': `EPOTEK ${keyPair.publicKey.replace(
       /\r?\n|\r/g,
       '',
