@@ -12,6 +12,7 @@ import { render } from 'react-dom';
 
 import { initGoogleTagManager } from 'core/utils/googleTagManager';
 import initHotjar from 'core/utils/hotjar';
+import 'core/startup/client/report-reconnects';
 
 import AppRouter from './AppRouter';
 
