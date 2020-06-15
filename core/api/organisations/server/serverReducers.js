@@ -1,13 +1,11 @@
 import { COMMISSION_RATES_TYPE } from '../../commissionRates/commissionRateConstants';
 import CommissionRateService from '../../commissionRates/server/CommissionRateService';
 import InsuranceService from '../../insurances/server/InsuranceService';
-import assigneeReducer from '../../reducers/assigneeReducer';
 import RevenueService from '../../revenues/server/RevenueService';
 import { getCurrentRate } from '../helpers';
 import Organisations from '..';
 
 Organisations.addReducers({
-  ...assigneeReducer(),
   generatedRevenues: {
     body: { _id: 1 },
     reduce: ({ _id: organisationId }) =>
