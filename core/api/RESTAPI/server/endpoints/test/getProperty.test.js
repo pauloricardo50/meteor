@@ -124,7 +124,7 @@ describe('REST: getProperty', function() {
     });
   });
 
-  it.skip('returns property with files', () => {
+  it('returns property with files', () => {
     PropertyService.setProUserPermissions({
       propertyId,
       userId: 'pro2',
