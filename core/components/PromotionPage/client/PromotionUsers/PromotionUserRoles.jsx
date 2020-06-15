@@ -42,7 +42,12 @@ const PromotionUserRoles = ({ user }) => {
             })
           }
           triggerComponent={handleOpen => (
-            <IconButton type="edit" size="small" onClick={handleOpen} />
+            <IconButton
+              type="edit"
+              size="small"
+              onClick={handleOpen}
+              tooltip="Modifier rôles"
+            />
           )}
           title={`Changer rôles de ${name} sur ${promotionName}`}
         />

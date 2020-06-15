@@ -1805,6 +1805,7 @@
   "AdminPromotionPage.PromotionUsers.permissions": "Permissions",
   "AdminPromotionPage.PromotionUsers.actions": "Actions",
   "AdminPromotionPage.searchUser": "Rechercher un compte",
+  "AdminPromotionPage.addUser": "Ajouter",
   "AllUsersTable.actions": "Actions",
   "AllUsersTable.assignedTo": "Assigné à",
   "AllUsersTable.createdAt": "Créé le",

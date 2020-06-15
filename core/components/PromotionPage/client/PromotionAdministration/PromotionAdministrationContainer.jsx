@@ -152,10 +152,7 @@ export const getLotSchema = ({ promotionId, formatMessage }) =>
       type: String,
       customAllowedValues: {
         query: proPromotionLots,
-        params: {
-          promotionId,
-          $body: { name: 1 },
-        },
+        params: { promotionId, $body: { name: 1 } },
       },
       optional: true,
       uniforms: {
