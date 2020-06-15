@@ -8,3 +8,5 @@ else
   echo "Meteor directory not found. Installing Meteor $METEOR_VERSION..."
   curl "https://install.meteor.com?release=$METEOR_VERSION" | /bin/sh
 fi
+
+touch $HOME/.meteor-installed

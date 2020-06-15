@@ -2,6 +2,11 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 BACKEND_PATH="$SCRIPT_PATH/../../microservices/backend"
 
+until [ -f $HOME/.meteor-installed ]; do
+  echo "$HOME/.meteor-installed does not exist. Waiting 1s"
+  sleep 1
+done
+
 # Expect lets you wait for command output before doing something else
 # 1. Set the timeout to 30 mins, by default it's 10 seconds
 # 2. cd to the right place, and "spawn" a command that expect will be watching

@@ -46,6 +46,10 @@ jobs:
               "./package-lock.json" }}
             - global_circleci_performance_11_1_2-
       - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+          background: true
+      - run:
           name: Install project node_modules
           command: npm ci
       - save_cache:
@@ -72,9 +76,6 @@ jobs:
               meteor_microservice_circleci_performance_11_1_backend-{{ .Branch
               }}-
             - meteor_microservice_circleci_performance_11_1_backend-
-      - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
           command: |2-

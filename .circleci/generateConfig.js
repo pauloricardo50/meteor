@@ -60,8 +60,13 @@ const cachePaths = {
 };
 
 // Circle CI Commands
-const runCommand = (name, command, timeout) => ({
-  run: { name, command, ...(timeout ? { no_output_timeout: timeout } : {}) },
+const runCommand = (name, command, timeout, background = false) => ({
+  run: {
+    name,
+    command,
+    ...(background ? { background: true } : {}),
+    ...(timeout ? { no_output_timeout: timeout } : {})
+  },
 });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
@@ -122,6 +127,7 @@ const makePrepareJob = () => ({
 
     // Prepare node_modules cache
     restoreCache('Restore global cache', cacheKeys.global()),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh', null, true),
     runCommand('Install project node_modules', 'npm ci'),
     saveCache('Cache globals', cacheKeys.global(), cachePaths.global()),
     saveCache(
@@ -135,7 +141,6 @@ const makePrepareJob = () => ({
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
-    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     // We can skip postinstall scripts since we don't actually need the app to run
     // ony successfully build so we can update the cache.
     runCommand(
