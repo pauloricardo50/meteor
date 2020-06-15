@@ -13,7 +13,7 @@ const LanguagePicker = () => {
   return (
     <div className="language-picker">
       {languageData.map(({ display, shortLang }) => (
-        <span
+        <div
           key={shortLang}
           className="language-option"
           onClick={() => {
@@ -26,7 +26,7 @@ const LanguagePicker = () => {
           data-active={language === shortLang}
         >
           {display}
-        </span>
+        </div>
       ))}
     </div>
   );
