@@ -14,7 +14,7 @@ if [ -e ~/.meteor/meteor ]; then
     METEOR_PATH=/usr/local/bin/meteor;
   fi
 
-  sudo ln -sf $HOME/.meteor/meteor "$METEOR_PATH";
+  ln -sf $HOME/.meteor/meteor "$METEOR_PATH";
   echo "Done symlinking meteor binary."
 else
   echo "Meteor directory not found.";
