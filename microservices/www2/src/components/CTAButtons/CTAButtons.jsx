@@ -34,6 +34,9 @@ const CTAButtons = ({ buttons }) => (
             link
             to={to}
           >
+            {/* TODO: replace text with icon */}
+            {button.cta_icon && <div>icon: {button.cta_icon}</div>}
+
             {button.cta_text}
           </Button>
         );

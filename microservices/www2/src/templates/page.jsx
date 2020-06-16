@@ -44,6 +44,7 @@ export const query = graphql`
             fields {
               illustration
               content
+              cta_icon_1
               cta_text_1
               cta_style_1
               cta_link_1 {
@@ -72,6 +73,7 @@ export const query = graphql`
                   title
                 }
               }
+              cta_icon_2
               cta_text_2
               cta_style_2
               cta_link_2 {
@@ -121,6 +123,7 @@ export const query = graphql`
               content
             }
             fields {
+              cta_icon
               cta_text
               cta_style
               cta_link {
@@ -164,6 +167,7 @@ export const query = graphql`
               images
             }
             fields {
+              cta_icon
               cta_text
               cta_style
               cta_link {
@@ -293,6 +297,7 @@ export const query = graphql`
               content
             }
             fields {
+              cta_icon
               cta_text
               cta_style
               cta_link {
