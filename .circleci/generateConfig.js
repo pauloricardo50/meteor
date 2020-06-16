@@ -230,11 +230,11 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
     // 'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
     // 'Admin - unit tests': testMicroserviceJob({
-    //   name: 'admin',
-    //   testsType: 'unit',
+      // name: 'admin',
+      // testsType: 'unit',
     // }),
     // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
     'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
