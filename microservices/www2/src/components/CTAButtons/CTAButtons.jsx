@@ -8,6 +8,7 @@ const CTAButtons = ({ buttons }) => (
     {buttons.length > 0 &&
       buttons.map((button, idx) => {
         const linkType = button.cta_link?._linkType;
+        const ctaStyle = button.cta_style;
 
         if (!linkType) return null;
 
@@ -27,8 +28,9 @@ const CTAButtons = ({ buttons }) => (
           <Button
             key={idx}
             className="cta--button"
-            raised
-            primary={idx === 0}
+            raised={ctaStyle !== 'flat'}
+            primary={ctaStyle === 'primary'}
+            secondary={ctaStyle === 'secondary'}
             link
             to={to}
           >

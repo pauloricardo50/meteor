@@ -45,6 +45,7 @@ export const query = graphql`
               illustration
               content
               cta_text_1
+              cta_style_1
               cta_link_1 {
                 _linkType
                 __typename
@@ -72,6 +73,7 @@ export const query = graphql`
                 }
               }
               cta_text_2
+              cta_style_2
               cta_link_2 {
                 _linkType
                 __typename
@@ -120,6 +122,7 @@ export const query = graphql`
             }
             fields {
               cta_text
+              cta_style
               cta_link {
                 _linkType
                 __typename
@@ -162,6 +165,7 @@ export const query = graphql`
             }
             fields {
               cta_text
+              cta_style
               cta_link {
                 _linkType
                 __typename
@@ -290,6 +294,7 @@ export const query = graphql`
             }
             fields {
               cta_text
+              cta_style
               cta_link {
                 _linkType
                 __typename
