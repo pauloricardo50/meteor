@@ -69,6 +69,7 @@ const analysisConfig = {
           assignedRoles: 1,
           referredByOrganisation: { name: 1 },
           emails: 1,
+          acquisitionChannel: 1,
         },
         format: ({ user }) =>
           user?.assignedRoles?.map(role =>
@@ -87,6 +88,10 @@ const analysisConfig = {
       {
         label: 'A un compte',
         format: ({ user }) => (user ? 'Oui' : 'Non'),
+      },
+      {
+        label: "Canal d'acquisition",
+        format: ({ user }) => user?.acquisitionChannel,
       },
     ],
     createdAt: [
@@ -309,6 +314,7 @@ const analysisConfig = {
           promotions: { name: 1 },
           user: {
             referredByOrganisation: { name: 1 },
+            acquisitionChannel: 1,
           },
           purchaseType: 1,
         },
@@ -339,6 +345,10 @@ const analysisConfig = {
       {
         id: 'Type du dossier',
         format: ({ loan }) => loan?.purchaseType,
+      },
+      {
+        id: "Canal d'acquisition",
+        format: ({ loan }) => loan?.user?.acquisitionChannel,
       },
     ],
   },
