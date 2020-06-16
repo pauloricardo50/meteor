@@ -33,8 +33,6 @@ describe('DataTable', () => {
 
     const table = getByTestId('data-table');
 
-    expect(!!within(table).getByTestId('loading')).to.equal(true);
-
     await waitFor(() =>
       expect(within(table).getAllByRole('row').length).to.equal(4),
     );
@@ -54,8 +52,6 @@ describe('DataTable', () => {
     );
 
     const table = getByTestId('data-table');
-
-    expect(!!within(table).getByTestId('loading')).to.equal(true);
 
     await waitFor(() =>
       expect(within(table).getAllByRole('row').length).to.equal(12),
