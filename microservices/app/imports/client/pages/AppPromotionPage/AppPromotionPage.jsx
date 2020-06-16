@@ -1,8 +1,6 @@
-import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { proPromotion } from 'core/api/fragments';
 import { appPromotion } from 'core/api/promotions/queries';
 import PromotionPage from 'core/components/PromotionPage/client';
 import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
@@ -13,27 +11,31 @@ import appRoutes from '../../../startup/client/appRoutes';
 import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 
 const promotionFragment = {
-  ...pick(proPromotion({ withFilteredLoan: true }), [
-    'address',
-    'address1',
-    'agreementDuration',
-    'canton',
-    'city',
-    'constructionTimeline',
-    'contacts',
-    'documents',
-    'name',
-    'status',
-    'type',
-    'zipCode',
-    'signingDate',
-    'country',
-    'promotionLotGroups',
-    'description',
-    'externalUrl',
-    'loans',
-  ]),
-  promotionLots: { _id: 1 },
+  address: 1,
+  address1: 1,
+  agreementDuration: 1,
+  assignedEmployee: { name: 1 },
+  canton: 1,
+  city: 1,
+  constructionTimeline: 1,
+  contacts: 1,
+  country: 1,
+  description: 1,
+  documents: 1,
+  externalUrl: 1,
+  name: 1,
+  promotionLotLinks: 1,
+  signingDate: 1,
+  status: 1,
+  type: 1,
+  users: {
+    email: 1,
+    name: 1,
+    organisations: { name: 1 },
+    phoneNumbers: 1,
+    roles: 1,
+  },
+  zipCode: 1,
 };
 
 const getInvitedByUser = ({ promotion, promotionId, loan }) => {
