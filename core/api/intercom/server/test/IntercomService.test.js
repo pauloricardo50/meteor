@@ -10,7 +10,6 @@ const fetchStub = sinon.stub();
 const IntercomService = new IntercomServiceClass({
   fetch: fetchStub,
   isEnabled: true,
-  id: 'test',
 });
 
 describe('IntercomService', () => {

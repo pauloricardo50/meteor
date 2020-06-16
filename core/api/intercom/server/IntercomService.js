@@ -38,10 +38,9 @@ const intercomEndpoints = {
 };
 
 export class IntercomService {
-  constructor({ fetch, isEnabled, id }) {
+  constructor({ fetch, isEnabled }) {
     this.isEnabled = isEnabled;
     this.fetch = fetch;
-    this.getContact.id = id;
   }
 
   getIntercomSettings({ userId }) {
