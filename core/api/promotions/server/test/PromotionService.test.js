@@ -162,13 +162,13 @@ describe('PromotionService', function() {
         users: [
           {
             _id: adminId,
-            _factory: 'admin',
+            _factory: ROLES.ADVISOR,
             firstName: 'Admin',
             lastName: 'User',
           },
           {
             _id: 'proId',
-            _factory: 'pro',
+            _factory: ROLES.PRO,
             firstName: 'Pro',
             lastName: 'User',
           },
@@ -270,17 +270,17 @@ describe('PromotionService', function() {
         user: newUser,
       });
 
-      return PromotionService.inviteUser({
+      PromotionService.inviteUser({
         promotionId,
         userId,
         isNewUser,
-      }).then(() => {
-        const user = UserService.getByEmail(newUser.email, {
-          assignedEmployeeId: 1,
-        });
-        const { assignedEmployeeId } = user;
-        expect(assignedEmployeeId).to.equal(adminId);
       });
+
+      const user = UserService.getByEmail(newUser.email, {
+        assignedEmployeeId: 1,
+      });
+      const { assignedEmployeeId } = user;
+      expect(assignedEmployeeId).to.equal(adminId);
     });
   });
 

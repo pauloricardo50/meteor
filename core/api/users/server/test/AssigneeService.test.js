@@ -78,9 +78,9 @@ describe('AssigneeService', () => {
   it('creates a shortlist of advisors who are part of the round-robin', () => {
     generator({
       users: [
-        { _factory: ROLES.ADVISOR, isInRoundRobin: true },
         { _factory: ROLES.ADVISOR },
-        { _factory: ROLES.ADVISOR, isInRoundRobin: true },
+        { _factory: ROLES.ADVISOR, isInRoundRobin: false },
+        { _factory: ROLES.ADVISOR },
       ],
     });
 
@@ -270,7 +270,6 @@ describe('AssigneeService', () => {
           _id: email.slice(0, 1),
           _factory: ROLES.ADVISOR,
           emails: [{ address: email, verified: true }],
-          isInRoundRobin: true,
         })),
       });
     });
@@ -439,7 +438,7 @@ describe('AssigneeService', () => {
     it('sets the assignees in the right order', () => {
       generator({
         users: [
-          { _id: 'advisor1', _factory: ROLES.ADVISOR, isInRoundRobin: true },
+          { _id: 'advisor1', _factory: ROLES.ADVISOR },
           {
             _id: 'userId',
             referredByUser: {
@@ -460,17 +459,17 @@ describe('AssigneeService', () => {
         users: [
           {
             _id: 'user1',
-            assignedEmployee: {
-              _id: 'advisor1',
-              _factory: ROLES.ADVISOR,
-              isInRoundRobin: true,
-            },
+            assignedEmployee: { _id: 'advisor1', _factory: ROLES.ADVISOR },
           },
-          { _id: 'advisor2', _factory: ROLES.ADVISOR, isInRoundRobin: true },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
           {
             _id: 'user2',
             referredByUser: {
-              assignedEmployee: { _id: 'advisor3', _factory: ROLES.ADVISOR },
+              assignedEmployee: {
+                _id: 'advisor3',
+                _factory: ROLES.ADVISOR,
+                isInRoundRobin: false,
+              },
             },
           },
         ],

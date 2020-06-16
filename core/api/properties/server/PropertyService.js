@@ -93,7 +93,11 @@ class PropertyService extends CollectionService {
       );
     }
 
-    LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });
+    return LoanService.insertPropertyLoan({
+      userId,
+      propertyIds,
+      shareSolvency,
+    });
   };
 
   addProUser({ propertyId, userId }) {

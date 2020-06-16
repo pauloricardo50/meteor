@@ -33,7 +33,10 @@ class AssigneeService {
       loans = [],
       roles,
     } = UserService.get(newUserId, {
-      loans: { promotions: { assignedEmployeeId: 1 } },
+      loans: {
+        $options: { sort: { createdAt: 1 } },
+        promotions: { assignedEmployeeId: 1 },
+      },
       referredByUser: {
         assignedEmployeeId: 1,
         organisations: { assigneeLink: 1 },

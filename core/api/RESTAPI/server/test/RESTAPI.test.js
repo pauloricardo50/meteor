@@ -684,6 +684,7 @@ describe('RESTAPI', function() {
         'roles',
         'isDisabled',
         'defaultBoardId',
+        'isInRoundRobin',
       ]);
       return fetchAndCheckResponse({
         url: '/fiberAPIUser',
