@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 
-import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 
@@ -39,9 +38,10 @@ const intercomEndpoints = {
 };
 
 export class IntercomService {
-  constructor({ fetch, isEnabled }) {
+  constructor({ fetch, isEnabled, id }) {
     this.isEnabled = isEnabled;
     this.fetch = fetch;
+    this.getContact.id = id;
   }
 
   getIntercomSettings({ userId }) {
@@ -68,11 +68,7 @@ export class IntercomService {
       // If user has no intercomId yet
       // it means that his owner is not set on intercom
       if (!intercomId && assignedEmployeeId) {
-        try {
-          this.updateContactOwner({ userId, adminId: assignedEmployeeId });
-        } catch (error) {
-          ErrorLogger.logError({ error });
-        }
+        this.updateContactOwner({ userId, adminId: assignedEmployeeId });
       }
 
       result = {
@@ -104,10 +100,6 @@ export class IntercomService {
     const path = API_PATH + makeEndpoint(params);
 
     if (!this.isEnabled) {
-      console.log("Would've called Intercom API", endpoint);
-      console.log('params:', params);
-      console.log('body:', body);
-
       return Promise.resolve({});
     }
 
@@ -128,19 +120,13 @@ export class IntercomService {
           return {};
         }
       })
-      .then(result => {
-        console.log('callIntercomAPI result:', endpoint);
-        console.log('params:', params);
-        console.log('result:', result);
-        return result;
-      })
       .catch(error => {
         console.log('IntercomAPI error:', error);
         throw error;
       });
   }
 
-  getContact = async ({ email, contactId }) => {
+  async getContact({ email, contactId }) {
     if (email) {
       const body = {
         query: {
@@ -164,23 +150,23 @@ export class IntercomService {
         params: { contactId },
       });
     }
-  };
+  }
 
-  listAdmins = async () => {
+  async listAdmins() {
     const { admins = [] } = await this.callIntercomAPI({
       endpoint: 'listAdmins',
     });
     return admins;
-  };
+  }
 
-  getAdmin = async ({ email }) => {
+  async getAdmin({ email }) {
     const admins = await this.listAdmins();
     const admin = admins.find(({ email: adminEmail }) => email === adminEmail);
 
     return admin || {};
-  };
+  }
 
-  getIntercomId = async ({ userId }) => {
+  async getIntercomId({ userId }) {
     const { intercomId } = UserService.get(userId, {
       intercomId: 1,
     });
@@ -191,9 +177,9 @@ export class IntercomService {
 
     const contactId = await this.setIntercomId({ userId });
     return contactId;
-  };
+  }
 
-  setIntercomId = async ({ userId }) => {
+  async setIntercomId({ userId }) {
     const { email, assignedRoles } = UserService.get(userId, {
       email: 1,
       assignedRoles: 1,
@@ -212,23 +198,15 @@ export class IntercomService {
       UserService.update({ userId, object: { intercomId: contact.id } });
     }
 
-    return contact.id;
-  };
+    return contact?.id;
+  }
 
-  updateContactOwner = async ({ userId, adminId }) => {
+  async updateContactOwner({ userId, adminId }) {
     const contactId = await this.getIntercomId({ userId });
     const adminIntercomId = await this.getIntercomId({ userId: adminId });
 
-    if (!contactId) {
-      throw new Error(
-        `No contact found on intercom for user with id "${userId}"`,
-      );
-    }
-
-    if (!adminIntercomId) {
-      throw new Error(
-        `No admin found on intercom for admin with id "${adminId}"`,
-      );
+    if (!contactId || !adminIntercomId) {
+      return;
     }
 
     return this.callIntercomAPI({
@@ -238,7 +216,7 @@ export class IntercomService {
         owner_id: adminIntercomId,
       },
     });
-  };
+  }
 }
 
 export default new IntercomService({ fetch: nodeFetch, isEnabled: ENABLE_API });

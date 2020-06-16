@@ -108,14 +108,10 @@ class AssigneeService {
         linkId: assigneeId,
       });
 
-      try {
-        IntercomService.updateContactOwner({
-          userId: this.newUserId,
-          adminId: assigneeId,
-        });
-      } catch (error) {
-        ErrorLogger.logError({ error });
-      }
+      IntercomService.updateContactOwner({
+        userId: this.newUserId,
+        adminId: assigneeId,
+      });
     }
   }
 
