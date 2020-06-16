@@ -4,18 +4,9 @@ import {
 } from '../../imports/core/cypress/server/e2eConstants';
 
 const constructionTimeline = [
-  {
-    startDate: '2020-03-01',
-    percent: 30,
-  },
-  {
-    startDate: '2020-05-01',
-    percent: 30,
-  },
-  {
-    startDate: '2020-09-01',
-    percent: 20,
-  },
+  { startDate: '2020-03-01', percent: 30 },
+  { startDate: '2020-05-01', percent: 30 },
+  { startDate: '2020-09-01', percent: 20 },
 ];
 
 describe('Admin promotion', () => {
@@ -23,9 +14,7 @@ describe('Admin promotion', () => {
     cy.initiateTest();
 
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData', {
-      generateAdmins: true,
-    });
+    cy.callMethod('generateTestData', { generateAdmins: true });
     cy.callMethod('insertFullPromotion');
   });
 
@@ -68,18 +57,32 @@ describe('Admin promotion', () => {
 
       cy.contains('visitor1@e-potek.ch')
         .parents('tr')
-        .find(`input[name=roles]`)
+        .find(`[aria-label="Modifier rôles"]`)
+        .click();
+
+      cy.get(`input[name=roles]`)
         .parent()
         .click();
 
+      // Remove role
       cy.get('#menu-roles')
         .contains('Visiteur')
         .click();
+
+      // Add role
       cy.get('#menu-roles')
         .contains('Promoteur')
         .click();
+      cy.get('[role=dialog] form').submit();
 
-      cy.get('body').type('{esc}');
+      cy.contains('visitor1@e-potek.ch')
+        .parents('tr')
+        .contains('Promoteur')
+        .should('exist');
+      cy.contains('visitor1@e-potek.ch')
+        .parents('tr')
+        .contains('Visiteur')
+        .should('not.exist');
 
       cy.get('table tbody tr').should('have.length', 5);
 
@@ -87,10 +90,12 @@ describe('Admin promotion', () => {
         .parents('tr')
         .find('[aria-label="Enlever de la promotion"]')
         .click();
+      cy.contains('Confirmer').click();
 
       cy.get('table tbody tr').should('have.length', 4);
 
-      cy.contains('Ajouter un pro').click();
+      cy.contains('button', 'Administration').click();
+      cy.contains('Ajouter un Pro').click();
       cy.get('[role=dialog]')
         .find('input[name="collection-search"]')
         .last()

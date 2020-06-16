@@ -5,13 +5,18 @@ import React from 'react';
 import { USERS_COLLECTION } from '../../api/users/userConstants';
 import { CollectionIconLink } from '../IconLink';
 
-const ProCustomer = ({ user, invitedByUser }) => {
-  const { _id, name, phoneNumbers = ['-'], email, assignedEmployee } = user;
+const ProCustomer = ({ user, invitedByUser, ...props }) => {
+  const {
+    _id,
+    assignedEmployee,
+    email,
+    firstName,
+    lastName,
+    name = [firstName, lastName].filter(x => x).join(' '),
+    phoneNumbers = ['-'],
+  } = user;
   const isPro = Meteor.microservice === 'pro';
-  const assigneeNumber =
-    assignedEmployee &&
-    assignedEmployee.phoneNumbers &&
-    assignedEmployee.phoneNumbers[0];
+  const assigneePhoneNumber = assignedEmployee?.phoneNumbers?.[0];
 
   return (
     <CollectionIconLink
@@ -57,7 +62,9 @@ const ProCustomer = ({ user, invitedByUser }) => {
 
                         <div>
                           <b>Tél:</b>{' '}
-                          <a href={`tel:${assigneeNumber}`}>{assigneeNumber}</a>
+                          <a href={`tel:${assigneePhoneNumber}`}>
+                            {assigneePhoneNumber}
+                          </a>
                         </div>
                       </div>
                     )
@@ -68,6 +75,7 @@ const ProCustomer = ({ user, invitedByUser }) => {
           </div>
         )
       }
+      {...props}
     />
   );
 };

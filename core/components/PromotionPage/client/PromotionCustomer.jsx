@@ -2,14 +2,13 @@ import React from 'react';
 
 import { getUserNameAndOrganisation } from '../../../api/helpers';
 import ProCustomer from '../../ProCustomer';
+import { usePromotion } from './PromotionPageContext';
 
-const PromotionCustomer = ({ user, invitedBy, promotionUsers }) => {
-  const { _id, name, phoneNumbers = ['-'], email } = user;
-  const invitedByUser =
-    invitedBy &&
-    promotionUsers &&
-    !!promotionUsers.length &&
-    promotionUsers.find(({ _id: id }) => id === invitedBy);
+const PromotionCustomer = ({ user, invitedBy }) => {
+  const {
+    promotion: { users },
+  } = usePromotion();
+  const invitedByUser = users?.find(({ _id }) => _id === invitedBy);
 
   return (
     <ProCustomer

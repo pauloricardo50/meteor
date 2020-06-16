@@ -90,7 +90,7 @@ export default class PopoverStickOnHover extends React.Component {
             className="popover-content"
             {...paperProps}
           >
-            {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
+            {title && <h4 className="mt-0 mb-4">{title}</h4>}
             {component}
           </Paper>
         </Popper>

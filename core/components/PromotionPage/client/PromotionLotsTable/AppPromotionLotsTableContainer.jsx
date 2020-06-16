@@ -132,6 +132,13 @@ const AppPromotionLotsTableContainer = withProps(
         showAllLots,
         promotionLotIds,
         promotionLotGroupId,
+        $body: {
+          name: 1,
+          promotionLotGroupIds: 1,
+          reducedStatus: 1,
+          value: 1,
+          lots: { type: 1, name: 1, value: 1 },
+        },
       },
     };
 

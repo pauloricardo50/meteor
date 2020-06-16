@@ -86,6 +86,7 @@ exposeQuery({
       promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
+  options: { allowFilterById: true },
 });
 
 exposeQuery({
@@ -99,7 +100,7 @@ exposeQuery({
     embody: body => {
       body.$filter = ({
         filters,
-        params: { _id, promotionId, status, promotionLotGroupId },
+        params: { promotionId, status, promotionLotGroupId },
       }) => {
         promotionLotFilters({
           filters,
@@ -127,4 +128,5 @@ exposeQuery({
       promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
+  options: { allowFilterById: true },
 });

@@ -81,7 +81,7 @@ export const useStaticMeteorData = (
       const finalQuery = getQuery(refetchQuery, refetchParams);
 
       if (!finalQuery) {
-        setData(null, undefined);
+        setData(undefined, undefined);
         return;
       }
 

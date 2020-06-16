@@ -61,7 +61,12 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   maxPropertyValue: 1,
   name: 1,
   promotionOptions: { name: 1 },
-  promotions: { name: 1, lenderOrganisationLink: 1 },
+  promotions: {
+    agreementDuration: 1,
+    lenderOrganisationLink: 1,
+    name: 1,
+    users: { name: 1 },
+  },
   proNote: 1,
   properties: { address: 1, $options: { sort: { createdAt: 1 } } },
   shareSolvency: 1,

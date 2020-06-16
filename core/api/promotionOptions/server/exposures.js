@@ -3,7 +3,6 @@ import { Match } from 'meteor/check';
 import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-import UserService from '../../users/server/UserService';
 import { appPromotionOption, proPromotionOptions } from '../queries';
 
 exposeQuery({
@@ -102,15 +101,28 @@ exposeQuery({
         }
       };
 
-      body.$postFilter = (promotionOptions = [], params) => {
-        const { anonymize = false, userId } = params;
-        const currentUser = UserService.get(userId, {
-          promotions: { _id: 1 },
-          organisations: { userLinks: 1 },
+      body.$postFilter = (
+        promotionOptions = [],
+        {
+          anonymize = false,
+          userId,
+          promotionId,
+          promotionLotId,
+          promotionOptionId,
+        },
+      ) => {
+        if (!anonymize) {
+          return promotionOptions;
+        }
+
+        const anonymizer = makePromotionOptionAnonymizer({
+          promotionId,
+          promotionLotId,
+          promotionOptionId,
+          userId,
         });
-        return anonymize
-          ? promotionOptions.map(makePromotionOptionAnonymizer({ currentUser }))
-          : promotionOptions;
+
+        return promotionOptions.map(anonymizer);
       };
     },
     validateParams: {

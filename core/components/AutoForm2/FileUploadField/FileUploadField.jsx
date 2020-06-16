@@ -54,7 +54,7 @@ export default compose(
         currentValue={currentValue}
         handleUploadFailed={handleUploadFailed}
         deleteFile={deleteFile}
-        fileMeta={{ id: name }}
+        fileMeta={{ id: name, noTooltips: true }}
         uploadDirective={SLINGSHOT_DIRECTIVE_NAME_TEMP}
         displayFull
         showFull

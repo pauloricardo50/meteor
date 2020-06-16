@@ -28,6 +28,7 @@ import { USERS_COLLECTION } from '../../../api/users/userConstants';
 import colors from '../../../config/colors';
 import AssignedRole from '../../AssignedRole';
 import FullDate from '../../dateComponents/FullDate';
+import ImpersonateLink from '../../Impersonate/ImpersonateLink';
 import PremiumBadge from '../../PremiumBadge';
 import StatusLabel from '../../StatusLabel';
 import TooltipArray from '../../TooltipArray';
@@ -82,15 +83,18 @@ export const titles = {
       )}
     </span>
   ),
-  [USERS_COLLECTION]: ({ name, roles, isDisabled }) => (
-    <span>
-      {isDisabled && (
-        <p className="flex center error-box m-0 mb-8">Désactivé</p>
-      )}
-      {name}
-      &nbsp;
-      <AssignedRole className="secondary" roles={roles} />
-    </span>
+  [USERS_COLLECTION]: ({ _id, name, roles, isDisabled }) => (
+    <div className="flex center-align sb">
+      <div>
+        {isDisabled && (
+          <p className="flex center error-box m-0 mb-8">Désactivé</p>
+        )}
+        {name}
+        &nbsp;
+        <AssignedRole className="secondary" roles={roles} />
+      </div>
+      <ImpersonateLink user={{ _id, roles }} size="small" className="ml-4" />
+    </div>
   ),
   [BORROWERS_COLLECTION]: ({ name, age }) => (
     <span>

@@ -111,13 +111,6 @@ describe('Pro promotion', () => {
         .first()
         .then(tr => {
           cy.wrap(tr).should('not.contain', 'XXX');
-          console.log(
-            'tr',
-            cy
-              .wrap(tr)
-              .find('.icon-link')
-              .last(),
-          );
           cy.wrap(tr)
             .find('.icon-link')
             .last()
@@ -194,21 +187,25 @@ describe('Pro promotion', () => {
       });
 
       cy.get('@loanCount').then(count => {
-        cy.get('.promotion-lot-loans-table tbody tr').should(
-          'have.length',
-          count,
-        );
+        cy.contains('Acquéreurs intéressés')
+          .parents('section')
+          .find('tbody tr')
+          .should('have.length', count);
       });
 
       cy.contains('Réserver').click();
       cy.contains('Confirmer').click();
 
-      cy.get('.promotion-lot-loans-table')
+      cy.contains('Acquéreurs intéressés')
+        .parents('section')
+        .find('table')
         .contains('Réservation en cours')
         .should('exist');
-      cy.get('.promotion-lot-loans-table')
-        .contains('Détail')
-        .should('exist')
+
+      cy.contains('Acquéreurs intéressés')
+        .parents('section')
+        .find('table')
+        .contains('button', 'Détail')
         .click();
 
       cy.contains('Uploader convention').click();
@@ -341,6 +338,8 @@ describe('Pro promotion', () => {
       });
 
       it('should modify lots', () => {
+        cy.callMethod('insertPromotion');
+
         cy.callMethod('setUserPermissions', {
           permissions: {
             canModifyPromotion: true,
@@ -368,7 +367,7 @@ describe('Pro promotion', () => {
         cy.setSelect('type', 'BASEMENT');
         cy.get('input[name=value]').clear();
         cy.get('input[name=value]').type('{backspace}2500'); // Remove initial 0
-        cy.setSelect('promotionLot', 1);
+        cy.setSelect('promotionLotId', 1);
         cy.contains('Ok').click();
 
         cy.contains('Lot 2').should('exist');

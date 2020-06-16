@@ -16,7 +16,7 @@ const PromotionCustomersTable = ({
   promotion: { users = [] },
 }) => (
   <>
-    <div className="flex">
+    <div className="flex mb-16">
       <MongoSelect
         value={status}
         onChange={setStatus}
@@ -44,7 +44,7 @@ const PromotionCustomersTable = ({
         grouping={{ groupBy: 'organisations.0.name' }}
       />
     </div>
-    <DataTable initialPageSize={10} {...dataTableProps} />
+    <DataTable {...dataTableProps} />
   </>
 );
 

@@ -29,7 +29,7 @@ const AppPromotionPageOverview = ({ loan, promotion }) => {
         ))}
       {residenceType && promotionOptions && promotionOptions.length > 0 && (
         <div className="card1 card-top promotion-options-table">
-          <UserPromotionOptionsTable promotion={promotion} loan={loan} />
+          <UserPromotionOptionsTable loan={loan} />
         </div>
       )}
       {residenceType && (

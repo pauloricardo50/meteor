@@ -4,7 +4,6 @@ import AutoFormDialog from '../../../../AutoForm2/AutoFormDialog';
 import PromotionUserPermissionsModifierContainer from './PromotionUserPermissionsModifierContainer';
 
 const PromotionUserModifier = ({
-  promotionId,
   user,
   schema,
   model,
@@ -21,6 +20,7 @@ const PromotionUserModifier = ({
       label: canModify ? 'Modifier' : 'Voir',
       raised: true,
       primary: true,
+      size: 'small',
     }}
     disabled={!canModify}
   />

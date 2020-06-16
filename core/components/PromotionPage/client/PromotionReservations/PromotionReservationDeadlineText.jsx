@@ -11,6 +11,7 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../../Translation';
+import { usePromotion } from '../PromotionPageContext';
 
 const isApp = Meteor.microservice === 'app';
 
@@ -77,14 +78,16 @@ const PromotionReservationDeadlineText = ({
   promotionOption,
   loan = promotionOption.loan,
 }) => {
-  const { promotions } = loan;
-  const [promotion] = promotions;
+  const { invitedBy } = promotionOption;
   const {
-    $metadata: { invitedBy },
-    users = [],
-  } = promotion;
-  const pro = users.find(({ _id }) => _id === invitedBy);
-  const proName = getUserNameAndOrganisation({ user: pro });
+    promotion: { users },
+  } = usePromotion();
+  const pro = users?.find(({ _id }) => _id === invitedBy);
+  const proName = pro ? (
+    getUserNameAndOrganisation({ user: pro })
+  ) : (
+    <T id="PromotionReservationDeadline.yourBroker" />
+  );
 
   const textLabel = getTextLabel(promotionOption, loan);
   const values = { isApp, proName };
@@ -94,7 +97,8 @@ const PromotionReservationDeadlineText = ({
       <h3 className="font-size-2 mt-0">
         <T id={textLabel} values={values} />
       </h3>
-      <p className="description ">
+
+      <p className="description">
         <T id={`${textLabel}.description`} values={values} />
       </p>
     </div>
