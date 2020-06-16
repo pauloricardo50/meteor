@@ -125,7 +125,7 @@ const makePrepareJob = () => ({
     ),
     runCommand('Install meteor', `
       bash ./scripts/circleci/install_meteor.sh
-      touch $HOME/.meteor-instaled
+      touch $HOME/.meteor-installed
     `, null, true),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
     runCommand('Install backend dependencies', `
