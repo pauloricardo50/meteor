@@ -1,6 +1,7 @@
 import { anonymizeLoan } from '../../loans/helpers';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import UserService from '../../users/server/UserService';
 import {
   clientGetBestPromotionLotStatus,
@@ -38,7 +39,7 @@ const getCustomerInvitedBy = ({ customerId, promotionId }) => {
       }, [])
       .find(({ _id }) => _id === promotionId) || {};
 
-  return $metadata && $metadata.invitedBy;
+  return $metadata?.invitedBy;
 };
 
 const getPromotionLotStatus = ({ promotionLotId }) => {
@@ -145,14 +146,11 @@ export const makeLoanAnonymizer = ({
       );
 
       if (currentUserPromotion) {
-        permissions =
-          currentUserPromotion.$metadata &&
-          currentUserPromotion.$metadata.permissions;
+        permissions = currentUserPromotion.$metadata?.permissions;
       }
 
       promotionLotStatus = promotionLot.status;
-      attributedTo =
-        promotionLot.attributedToLink && promotionLot.attributedToLink._id;
+      attributedTo = promotionLot.attributedToLink?._id;
     }
 
     let isAttributed = loanId === attributedTo;
@@ -189,15 +187,34 @@ export const makePromotionLotAnonymizer = ({ currentUser }) => promotionLot => {
   return { attributedTo: loan, ...rest };
 };
 
-export const makePromotionOptionAnonymizer = ({ currentUser }) => {
+export const makePromotionOptionAnonymizer = ({
+  userId,
+  promotionId,
+  promotionLotId,
+  promotionOptionId,
+}) => {
+  const currentUser = UserService.get(userId, {
+    promotions: { _id: 1 },
+    organisations: { userLinks: 1 },
+  });
   const { promotions: currentUserPromotions = [] } = currentUser;
 
+  if (!promotionId && promotionLotId) {
+    const { promotion } = PromotionLotService.get(promotionLotId, {
+      promotion: { _id: 1 },
+    });
+    promotionId = promotion._id;
+  } else if (!promotionId && promotionOptionId) {
+    const { promotion } = PromotionOptionService.get(promotionOptionId, {
+      promotion: { _id: 1 },
+    });
+    promotionId = promotion._id;
+  }
+
   return promotionOption => {
-    const { loan, promotionLots = [] } = promotionOption;
+    const { loan, promotionLots = [], invitedBy } = promotionOption;
     const [promotionLot] = promotionLots;
     const { status: promotionLotStatus, attributedTo } = promotionLot;
-    const { promotions, _id: loanId } = loan;
-    const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
 
     const customerOwnerType = getCustomerOwnerType({
       invitedBy,
@@ -210,16 +227,14 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
     );
 
     if (currentUserPromotion) {
-      permissions =
-        currentUserPromotion.$metadata &&
-        currentUserPromotion.$metadata.permissions;
+      permissions = currentUserPromotion.$metadata?.permissions;
     }
 
     const anonymize = clientShouldAnonymize({
       customerOwnerType,
       permissions,
       promotionLotStatus,
-      isAttributed: attributedTo === loanId,
+      isAttributed: attributedTo === loan?._id,
     });
 
     return {

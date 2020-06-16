@@ -23,7 +23,7 @@ export const IntlDate = ({ type, ...props }) => {
           <FormattedRelativeTime
             unit={unit}
             value={selectedValue}
-            style="short"
+            style="short" // Can be short, long, or narrow
             {...rest}
           />
         </span>

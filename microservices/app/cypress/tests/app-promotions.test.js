@@ -43,7 +43,11 @@ describe('App Promotions', () => {
 
     cy.get('.promotion-options-table table tbody tr').should('have.length', 2);
 
-    cy.contains('Réserver')
+    cy.wait(1000);
+
+    cy.contains('Mes lots')
+      .parents('div')
+      .contains('Réserver')
       .first()
       .click();
     cy.contains('Confirmer').click();

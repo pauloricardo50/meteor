@@ -20,6 +20,10 @@ export const anonymizeLoan = ({ loan, shouldAnonymize }) => {
     return loan;
   }
 
+  if (!loan) {
+    return;
+  }
+
   const { properties = [] } = loan;
 
   return {

@@ -4,6 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 import get from 'lodash/get';
 
 import { flattenObject } from '../helpers';
+import { PROMOTION_OPTIONS_COLLECTION } from '../promotionOptions/promotionOptionConstants';
 import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
 import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
 import { ROLES } from '../users/userConstants';
@@ -240,6 +241,10 @@ export default class Security {
         }
 
         this.properties.isAllowedToUpdate(docId, userId);
+        break;
+      }
+      case PROMOTION_OPTIONS_COLLECTION: {
+        this.minimumRole(ROLES.ADMIN)(userId);
         break;
       }
       default:

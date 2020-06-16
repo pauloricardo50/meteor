@@ -1,8 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
+import { compose, withProps } from 'recompose';
 
 import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import Link from 'core/components/Link';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import Calculator from 'core/utils/Calculator';
@@ -36,20 +38,17 @@ const DashboardRecapPromotion = ({ loan, promotion }) => {
       <h2 className="secondary">{promotion.name}</h2>
       {Calculator.hasActivePromotionOption({ loan }) ? (
         <UserReservation
-          promotionOption={Calculator.getMostActivePromotionOption({
-            loan,
-          })}
+          promotionOption={Calculator.getMostActivePromotionOption({ loan })}
           progressVariant="icon"
           loan={loan}
         />
       ) : (
-        <UserPromotionOptionsTable
-          promotion={promotion}
-          loan={loan}
-          isDashboardTable
-        />
+        <UserPromotionOptionsTable loan={loan} isDashboardTable />
       )}
     </Link>
   );
 };
-export default DashboardRecapPromotion;
+export default compose(
+  withProps(({ loan }) => ({ promotion: loan.promotions[0] })),
+  withPromotionPageContext(),
+)(DashboardRecapPromotion);

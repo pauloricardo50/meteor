@@ -35,7 +35,7 @@ import TableWithModal from './Table/TableWithModal';
 const DataTable = ({
   queryConfig,
   queryDeps,
-  initialPageSize = paginationOptions[1],
+  initialPageSize = paginationOptions[0],
   columns,
   initialSort,
   ...rest

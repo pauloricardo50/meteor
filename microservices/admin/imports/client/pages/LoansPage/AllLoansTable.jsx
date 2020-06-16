@@ -38,6 +38,7 @@ const AllLoansTable = () => {
       )}
 
       <DataTable
+        initialPageSize={25}
         queryConfig={{
           query: LOANS_COLLECTION,
           params: {

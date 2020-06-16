@@ -8,6 +8,7 @@ import T, { IntlDate } from 'core/components/Translation';
 
 const UsersTable = () => (
   <DataTable
+    initialPageSize={25}
     queryConfig={{
       query: USERS_COLLECTION,
       params: {

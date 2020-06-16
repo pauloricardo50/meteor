@@ -4,10 +4,9 @@ import { updateDocument } from 'core/api/methods/methodDefinitions';
 import { updateUser } from 'core/api/users/methodDefinitions';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { employeesById } from 'core/arrays/epotekEmployees';
+import AdminsContext from 'core/contexts/AdminsContext';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 import useMeteorData from 'core/hooks/useMeteorData';
-
-export const AdminsContext = React.createContext();
 
 export const AdminsProvider = Component => props => {
   const currentUser = useCurrentUser();

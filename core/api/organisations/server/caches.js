@@ -9,7 +9,7 @@ OrganisationService.cacheCount(
     referenceField: 'organisationLink._id',
     cacheField: 'lenderRulesCount',
   },
-  // { loanCount: { $exists: false } },
+  // { lenderRulesCount: { $exists: false } },
 );
 
 OrganisationService.cacheCount(

@@ -425,6 +425,7 @@ export const proLoans = () => ({
     status: 1,
     lenderOrganisationLink: 1,
   },
+  promotionInvitedBy: 1,
   promotionLinks: 1,
   promotionOptions: {
     priorityOrder: 1,
@@ -614,6 +615,7 @@ export const proPromotionLot = () => ({
     user: { name: 1, phoneNumbers: 1, email: 1 },
     promotions: { _id: 1 },
   },
+  attributedToPromotionOption: 1,
   createdAt: 1,
   documents: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
@@ -664,6 +666,7 @@ export const formPromotionOption = () => ({
   bank: 1,
   canton: 1,
   fullVerification: 1,
+  invitedBy: 1,
   loanCache: 1, // Useful for invitedBy
   priorityOrder: 1,
   promotionLots: { properties: { totalValue: 1, bankValue: 1 } },
@@ -690,7 +693,11 @@ export const proPromotionOption = () => ({
     },
     promotionOptions: {
       name: 1,
-      promotionLots: { attributedTo: { user: { _id: 1 } }, status: 1 },
+      promotionLots: {
+        attributedToLink: 1,
+        attributedTo: { user: { _id: 1 } },
+        status: 1,
+      },
       loan: { loanProgress: 1 },
     },
     proNote: 1,
@@ -698,6 +705,7 @@ export const proPromotionOption = () => ({
     status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
   },
+  name: 1,
   promotion: { users: { _id: 1 }, agreementDuration: 1 },
 });
 
@@ -711,6 +719,7 @@ export const appPromotionOption = () => ({
     promotions: { _id: 1, users: { name: 1, organisations: { name: 1 } } },
   },
   lots: { description: 1, name: 1, type: 1, value: 1 },
+  name: 1,
   promotionLots: appPromotionLot(),
   updatedAt: 1,
 });
@@ -732,6 +741,7 @@ export const loanPromotionOption = () => ({
 // //
 // // Promotion fragments
 // //
+
 export const basePromotion = () => ({
   address: 1,
   address1: 1,
@@ -744,6 +754,7 @@ export const basePromotion = () => ({
   contacts: 1,
   createdAt: 1,
   documents: 1,
+  lenderOrganisationLink: 1,
   lenderOrganisation: { name: 1, logo: 1 },
   loans: { _id: 1, createdAt: 1 },
   lots: {
@@ -755,6 +766,7 @@ export const basePromotion = () => ({
     status: 1,
   },
   name: 1,
+  promotionLotLinks: 1,
   promotionLots: {
     status: 1,
     reducedStatus: 1,
@@ -785,8 +797,10 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
+  authorizationStatus: 1,
   description: 1,
   externalUrl: 1,
+  loanCount: 1,
   promotionLots: {
     attributedTo: { user: { name: 1 } },
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
@@ -800,7 +814,6 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     promotionLotGroupIds: 1,
   },
   promotionLoan: { _id: 1, name: 1, proNotes: 1, adminNotes: 1 },
-  authorizationStatus: 1,
   projectStatus: 1,
   isTest: 1,
   ...(withFilteredLoan

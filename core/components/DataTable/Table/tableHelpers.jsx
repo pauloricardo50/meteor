@@ -43,6 +43,14 @@ export const getTableHooks = ({ addRowProps, selectable, sortable }) => {
     });
   }
 
+  // Try to use the _id as a key for rows to avoid unnecessary remounting
+  array.push(hooks =>
+    hooks.getRowProps.push((rowProps, { row }) => ({
+      ...rowProps,
+      key: row.original?._id || rowProps.key,
+    })),
+  );
+
   if (addRowProps) {
     array.push(hooks =>
       hooks.getRowProps.push((rowProps, { row }) => ({

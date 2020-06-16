@@ -22,7 +22,7 @@ const Table = ({
   hooks = [],
   initialHiddenColumns,
   initialPageIndex = 0,
-  initialPageSize = paginationOptions[1],
+  initialPageSize = paginationOptions[0],
   initialSort, // { id: columnAccessor, desc: true }
   onStateChange,
   padding = 'default',

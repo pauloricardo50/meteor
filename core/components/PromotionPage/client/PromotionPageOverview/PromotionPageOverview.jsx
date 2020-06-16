@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { Element } from 'react-scroll';
 
 import T from '../../../Translation';
 import LotsTable from '../LotsTable';
 import { ProPromotionLotsTable } from '../PromotionLotsTable';
-import PromotionMetadataContext from '../PromotionMetadata';
 import PromotionOptionsTable from '../PromotionOptionsTable';
+import { usePromotion } from '../PromotionPageContext';
 import PromotionTimeline from '../PromotionTimeline';
 import PromotionTimelineForm from '../PromotionTimelineForm';
 import AppPromotionPageOverview from './AppPromotionPageOverview';
@@ -15,7 +15,7 @@ import AppPromotionPageOverview from './AppPromotionPageOverview';
 const PromotionPageOverview = ({ promotion, loan }) => {
   const {
     permissions: { canChangeTimeline },
-  } = useContext(PromotionMetadataContext);
+  } = usePromotion();
   const isApp = Meteor.microservice === 'app';
   const { constructionTimeline, signingDate } = promotion;
 

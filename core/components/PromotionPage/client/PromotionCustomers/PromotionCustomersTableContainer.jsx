@@ -21,14 +21,7 @@ import PromotionCustomersTableActions from './PromotionCustomersTableActions';
 
 const isAdmin = Meteor.microservice === 'admin';
 
-const getColumns = ({
-  currentUser,
-  promotion: {
-    _id: promotionId,
-    users: promotionUsers = [],
-    promotionLots = [],
-  },
-}) => [
+const getColumns = ({ currentUser, promotion: { promotionLots = [] } }) => [
   {
     Header: <T id="PromotionCustomersTable.customer" />,
     accessor: 'userCache.lastName',
@@ -36,7 +29,6 @@ const getColumns = ({
       <PromotionCustomer
         user={loan.user}
         invitedBy={loan.promotions[0].$metadata?.invitedBy}
-        promotionUsers={promotionUsers}
       />
     ),
   },
@@ -52,10 +44,8 @@ const getColumns = ({
     accessor: 'promotionLinks.0.invitedBy',
     Cell: ({ row: { original: loan } }) => (
       <InvitedByAssignDropdown
-        promotionUsers={promotionUsers}
-        invitedBy={loan.promotions[0]?.$metadata.invitedBy}
+        invitedBy={loan.promotionInvitedBy}
         loanId={loan._id}
-        promotionId={promotionId}
       />
     ),
   },
@@ -122,13 +112,12 @@ export default withProps(({ promotion }) => {
         promotionLinks: 1,
         userCache: 1,
         status: 1,
+        promotionInvitedBy: 1,
         promotions: { status: 1, users: { _id: 1 } },
         promotionOptions: {
           name: 1,
           priorityOrder: 1,
-          promotionLots: {
-            attributedToLink: 1,
-          },
+          promotionLots: { attributedToLink: 1 },
         },
         user: {
           name: 1,

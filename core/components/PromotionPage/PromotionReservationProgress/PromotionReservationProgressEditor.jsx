@@ -1,8 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useState } from 'react';
 
 import T from '../../Translation';
 import PromotionReservationProgress from './PromotionReservationProgress';
 import StatusDateDialogForm from './StatusDateDialogForm';
+
+const isAdmin = Meteor.microservice === 'admin';
 
 const PromotionReservationProgressEditor = ({ promotionOption, loan }) => {
   const [dialogId, setDialogId] = useState();
@@ -16,21 +20,23 @@ const PromotionReservationProgressEditor = ({ promotionOption, loan }) => {
         </h3>
       </div>
 
-      <StatusDateDialogForm
-        promotionOptionId={promotionOption._id}
-        loanId={loan._id}
-        id={dialogId}
-        status={status}
-        openDialog={!!dialogId}
-        setOpenDialog={() => setDialogId()}
-      />
+      {isAdmin && (
+        <StatusDateDialogForm
+          promotionOptionId={promotionOption._id}
+          loanId={loan._id}
+          id={dialogId}
+          status={status}
+          openDialog={!!dialogId}
+          setOpenDialog={() => setDialogId()}
+        />
+      )}
 
       <PromotionReservationProgress
         promotionOption={promotionOption}
         showLabels
         showLoanProgress
         vertical
-        onClick={id => setDialogId(id)}
+        onClick={isAdmin && (id => setDialogId(id))}
       />
     </>
   );

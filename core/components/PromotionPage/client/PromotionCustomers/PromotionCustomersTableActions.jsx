@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { isAllowedToRemoveCustomerFromPromotion } from '../../../../api/security/clientSecurityHelpers';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
@@ -16,7 +16,6 @@ const PromotionCustomersTableActions = ({
   setOpenDialog,
   editLots,
   loan,
-  loading,
   currentUser,
 }) => {
   const { user = {}, promotionOptions = [], isAnonymized } = loan;
@@ -27,6 +26,13 @@ const PromotionCustomersTableActions = ({
     customerOwnerType,
   });
   const isAllowedToSee = !isAnonymized;
+  const schema = useMemo(
+    () =>
+      CustomerAdderUserSchema({
+        promotion,
+      }).pick('promotionLotIds', 'showAllLots'),
+    [],
+  );
 
   if (isAllowedToSee) {
     options.push({
@@ -58,9 +64,7 @@ const PromotionCustomersTableActions = ({
       />
       <AutoFormDialog
         open={openDialog}
-        schema={CustomerAdderUserSchema({
-          promotion,
-        }).pick('promotionLotIds', 'showAllLots')}
+        schema={schema}
         model={{
           promotionLotIds: promotionOptions.map(
             ({ promotionLots }) => promotionLots[0]._id,

@@ -89,12 +89,8 @@ const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
 
   return (
     <>
-      {getModal({
-        modalType,
-        handleClose,
-        open,
-        modalProps,
-      })}
+      {getModal({ modalType, handleClose, open, modalProps })}
+
       <Table
         {...rest}
         hooks={[

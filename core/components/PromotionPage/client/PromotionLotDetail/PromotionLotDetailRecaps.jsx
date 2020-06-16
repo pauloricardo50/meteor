@@ -80,7 +80,7 @@ const getPromotionLotRecapArray = promotionLot => {
     {
       title: true,
       label: 'Recap.promotionLot',
-      labelStyle: { textAlign: 'left' },
+      labelStyle: { textAlign: 'left', marginTop: 0 },
     },
     {
       label: 'Forms.insideArea',
