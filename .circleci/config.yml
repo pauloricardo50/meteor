@@ -38,7 +38,7 @@ jobs:
           command: |2-
 
                   bash ./scripts/circleci/install_meteor.sh
-                  touch $HOME/.meteor-instaled
+                  touch $HOME/.meteor-installed
                 
           background: true
       - save_cache:
