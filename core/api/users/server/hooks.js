@@ -49,6 +49,7 @@ Users.before.remove((userId, { emails }) => {
   }
 });
 
+// Not sure if this is required as UserService.createUser already calls IntercomService
 Users.after.insert((userId, user) => {
   const { intercomId } = user;
   const userIsAdmin = Roles.userIsInRole(user, [ROLES.ADMIN, ROLES.DEV]);

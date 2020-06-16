@@ -240,6 +240,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             />
           </SingleUserPageInformationItem>
         )}
+        {/* This will be used to manually set Advisors intercomId */}
         {currentUserIsDev && (
           <SingleUserPageInformationItem label="Intercom">
             <UpdateField
