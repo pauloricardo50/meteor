@@ -51,8 +51,7 @@ const AdminDashboardStats = ({
           <CustomersWithoutAssignees showAll={showAll} />
           <RevenuesWithoutAssignees showAll={showAll} />
           <RevenuesWithoutCommissions showAll={showAll} />
-          {/* FIXME: bugged */}
-          {/* <IncoherentAssignees showAll={showAll} /> */}
+          <IncoherentAssignees showAll={showAll} />
           <LoansWithoutLenders showAll={showAll} />
           <LoansWithoutAssignees showAll={showAll} />
           <LoansThatShouldBeFinalized showAll={showAll} />

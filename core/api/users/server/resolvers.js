@@ -58,6 +58,14 @@ export const incoherentAssigneesResolver = () =>
         },
       },
     },
-    { $match: { distinct: 0 } },
+    // Remove the first element of the array, as that's the assignedEmployee
+    {
+      $project: {
+        name: 1,
+        assignedEmployeeId: 1,
+        distinct: { $slice: ['$distinct', 1, 100] },
+      },
+    },
+    { $match: { distinct: { $eq: 0, $ne: 1 } } },
     { $addFields: { _collection: 'users' } },
   ]);
