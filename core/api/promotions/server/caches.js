@@ -4,7 +4,7 @@ import PromotionService from './PromotionService';
 PromotionService.cacheCount(
   {
     collection: Loans,
-    referenceField: 'promotionLinks._id',
+    referenceField: 'promotionLinks.0._id',
     cacheField: 'loanCount',
   },
   { loanCount: { $exists: false } },
