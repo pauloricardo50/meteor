@@ -56,13 +56,12 @@ exports.sourceNodes = async ({
     reporter.success('e-Potek: retrieve promotions data');
 
     promotions.forEach(promotion => {
+      const { _id: id, documents, ...rest } = promotion;
+
       const node = {
-        id: promotion._id,
-        name: promotion.name,
-        images: promotion.documents.promotionImage,
-        address: promotion.address,
-        lotsCount: promotion.lotsCount,
-        isTest: promotion.isTest,
+        id,
+        images: documents.promotionImage,
+        ...rest,
         internal: {
           type: 'promotion',
           contentDigest: createContentDigest(promotion),

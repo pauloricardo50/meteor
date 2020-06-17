@@ -1,43 +1,47 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '../Button';
 import useAllPromotion from '../../hooks/useAllPromotion';
+import LanguageContext from '../../contexts/LanguageContext';
+import { getLanguageData } from '../../utils/languages';
 import './PromotionsGrid.scss';
 
-const PromotionsGridItem = ({ promotion }) => (
+const PromotionsGridItem = ({ language, promotion }) => (
   <div className="promotion-item">
     {/* TODO: add slider for multiple images */}
     {promotion.images && (
-      <img
-        src={promotion.images[0].url}
-        alt={`${promotion.name}_${promotion.images[0].name}`}
-      />
-    )}
-    <h2>
-      {promotion.name}
-      <span>{promotion.address}</span>
-    </h2>
-    <p className="promotion-summary">
-      {/* {promotion.summary} */}
-      No data from API, so... Lorem ipsum dolor sit amet, consectetur adipiscing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </p>
-    <div className="promotion-footer">
-      <div className="promoter">
-        {/* Promoteur<span>{promotion.promoter.name}</span> */}
-        Promoteur<span>No data from API</span>
+      <div className="promotion-item__images">
+        {promotion.images.map(promoImage => (
+          <img
+            key={promoImage.name}
+            src={promoImage.url}
+            alt={`${promotion.name}_${promoImage.name}`}
+          />
+        ))}
       </div>
+    )}
+
+    <h3 className="promotion-item__name">
+      {promotion.name}
+      {/* <span>{promotion.address}</span> */}
+    </h3>
+
+    {promotion.summary && (
+      <p className="promotion-item__summary">{promotion.summary}</p>
+    )}
+
+    <div className="promotion-item__footer">
       <div className="interest-button">
-        <Button primary raised className="button" type="submit">
-          {/* TODO: hardcode for now, translation will be added later */}
-          Je suis intéressé
+        <Button raised className="button" type="submit">
+          {getLanguageData(language).promoInterest}
         </Button>
       </div>
     </div>
   </div>
 );
 
-const PromotionsGrid = ({ fields }) => {
+const PromotionsGrid = () => {
   const promotions = useAllPromotion();
+  const [language] = useContext(LanguageContext);
 
   return (
     <div className="promotions container">
@@ -45,7 +49,11 @@ const PromotionsGrid = ({ fields }) => {
       <div className="promotions-grid">
         {promotions &&
           promotions.map(promotion => (
-            <PromotionsGridItem key={promotion.id} promotion={promotion} />
+            <PromotionsGridItem
+              key={promotion.id}
+              language={language}
+              promotion={promotion}
+            />
           ))}
       </div>
     </div>
