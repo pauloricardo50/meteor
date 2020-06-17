@@ -4,6 +4,7 @@ import { RichText } from 'prismic-reactjs';
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
+import PageShare from '../components/PageShare';
 import CTAsSection from '../components/CTAsSection';
 import NewsletterSignup from '../components/NewsletterSignup';
 import RecommendedBlogPosts from '../components/RecommendedBlogPosts';
@@ -200,7 +201,7 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
           </div>
 
           <h1 className="post-title" itemProp="headline">
-            {blogPost.title ? RichText.asText(blogPost.title) : 'Untitled'}
+            {RichText.asText(blogPost.title)}
           </h1>
 
           {blogPost.author && (
@@ -240,6 +241,8 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
             <PageSections sections={blogPost.body} />
           </div>
         )}
+
+        <PageShare title={RichText.asText(blogPost.title)} />
 
         {articleNewsletterSignup && (
           <div className="container">
