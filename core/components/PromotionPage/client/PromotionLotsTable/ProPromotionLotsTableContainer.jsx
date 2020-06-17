@@ -117,7 +117,7 @@ const ProPromotionLotsTableContainer = withProps(({ promotion }) => {
         value: 1,
         lots: { type: 1, name: 1, value: 1 },
         loanCount: 1,
-        attributedToUser: 1,
+        attributedToPromotionOption: 1,
       },
     },
   };
