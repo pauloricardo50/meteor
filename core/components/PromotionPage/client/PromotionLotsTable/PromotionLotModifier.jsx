@@ -28,12 +28,11 @@ const ProPromotionLotModifier = ({
   updateProperty,
   deletePromotionLot,
   className,
-  promotion,
 }) => {
   const { promotionLotGroupIds } = promotionLot;
   const schema = useMemo(
-    () => getPromotionLotSchema(promotion?.promotionLotGroups),
-    [promotionLot, promotion],
+    () => getPromotionLotSchema(promotionLot.promotion?.promotionLotGroups),
+    [promotionLot],
   );
 
   const property =
