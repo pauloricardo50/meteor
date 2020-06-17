@@ -19,7 +19,7 @@ const IntercomService = new IntercomServiceClass({
   isEnabled: true,
 });
 
-describe.only('IntercomService', () => {
+describe('IntercomService', () => {
   beforeEach(() => {
     resetDatabase();
     fetchStub.reset();
