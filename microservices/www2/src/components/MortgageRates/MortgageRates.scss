@@ -20,11 +20,11 @@
 
     .heading-0,
     .rate-type {
-      flex: 0 1 95px;
+      flex: 1;
     }
 
     .heading-2 {
-      margin-right: 36px;
+      // margin-right: 36px;
     }
 
     .heading-2,
@@ -45,21 +45,6 @@
 
       &-header {
         padding-bottom: 24px;
-      }
-
-      .heading-0,
-      .rate-type {
-        flex: 0 1 369px;
-      }
-
-      .heading-2 {
-        margin-right: 36px;
-      }
-
-      .heading-2,
-      .rate-range {
-        flex: 1;
-        text-align: right;
       }
     }
   }

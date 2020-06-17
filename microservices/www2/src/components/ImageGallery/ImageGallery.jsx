@@ -7,7 +7,9 @@ const ImageGallery = ({ primary, fields }) => {
 
   return (
     <section id={primary.section_id} className="image-gallery">
-      <div className="content">{RichText.render(primary.content)}</div>
+      <div className="content container">
+        {RichText.render(primary.content)}
+      </div>
 
       <div className={galleryClasses} aria-hidden="true">
         {fields.length &&

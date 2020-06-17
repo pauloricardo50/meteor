@@ -6,10 +6,12 @@ const ImageCarousel = ({ primary, fields }) => {
   const [currIndex, setCurrIndex] = useState(0);
 
   // TODO: add timing function, or find component that does this simply
-
   return (
-    <section id={primary.section_id} className="image-carousel">
-      <div className="content">
+    <section
+      id={primary.section_id}
+      className="image-carousel container--desktop"
+    >
+      <div className="content container--mobile">
         {RichText.render(primary.section_heading)}
 
         <ol className="captions">

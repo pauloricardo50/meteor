@@ -32,6 +32,8 @@ const useSummaryStyles = makeStyles(theme => ({
 
 const useDetailStyles = makeStyles(theme => ({
   root: {
+    paddingLeft: 0,
+    paddingRight: 0,
     fontSize: '16px',
     fontWeight: 300,
     fontStyle: 'normal',
@@ -56,11 +58,11 @@ const FAQ = ({ primary, fields }) => {
         <html itemScope itemType="https://schema.org/FAQPage" />
       </Helmet>
 
-      <h1 className="faq-heading" itemProp="name">
+      <h1 className="faq-heading container" itemProp="name">
         {RichText.asText(primary.section_heading)}
       </h1>
 
-      <div className="nada">
+      <div className="container">
         {fields.map((field, idx) => (
           <ExpansionPanel
             key={idx}

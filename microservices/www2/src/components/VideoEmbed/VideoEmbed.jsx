@@ -11,7 +11,7 @@ const VideoEmbed = ({ primary }) => {
   const aspectRatio = `${(100 * video.height) / video.width}%`;
 
   return (
-    <div className="video-embed">
+    <div className="video-embed container--desktop">
       <div
         className="video-embed__wrapper"
         style={{ paddingBottom: aspectRatio }}

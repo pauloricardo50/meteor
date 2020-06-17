@@ -324,7 +324,7 @@ const Page = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
 
   return (
     <Layout pageContext={pageContext} pageName={page.name}>
-      <div className="container page" data-wio-id={page._meta.id}>
+      <div className="page" data-wio-id={page._meta.id}>
         {page.body && <PageSections sections={page.body} />}
       </div>
     </Layout>

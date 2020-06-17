@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+// import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import TrendIcon from './TrendIcon';
@@ -62,7 +62,6 @@ const MortgageRates = () => {
     getCurrentRates();
   }, []);
 
-  // TODO: get chart component
   return (
     <section className="mortgage-rates container">
       <div className="rates-table">
@@ -79,10 +78,10 @@ const MortgageRates = () => {
             <ExpansionPanel
               key={idx}
               expanded={expanded === `panel-${idx}`}
-              onChange={handleChange(`panel-${idx}`)}
+              // onChange={handleChange(`panel-${idx}`)}
             >
               <ExpansionPanelSummary
-                expandIcon={<AddCircleOutlineIcon />}
+                // expandIcon={<AddCircleOutlineIcon />}
                 aria-controls={`panel-${idx}-content`}
                 id={`panel-${idx}-header`}
                 classes={classes}
@@ -95,19 +94,6 @@ const MortgageRates = () => {
                   {makePercent(rate.rateLow)} - {makePercent(rate.rateHigh)}
                 </div>
               </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                {/* temp div and styles to simulate where chart would be */}
-                <div
-                  style={{
-                    backgroundColor: '#efefef',
-                    padding: '100px 50px',
-                    width: '100%',
-                    textAlign: 'center',
-                  }}
-                >
-                  Rate History Chart will go here
-                </div>
-              </ExpansionPanelDetails>
             </ExpansionPanel>
           ))}
       </div>
