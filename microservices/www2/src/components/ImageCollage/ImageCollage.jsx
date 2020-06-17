@@ -18,7 +18,7 @@ const ImageCollage = ({ primary, fields }) => {
   });
 
   return (
-    <section id={primary.section_id} className="image-collage">
+    <section id={primary.section_id} className="image-collage container">
       <div className="content">
         {RichText.render(primary.content)}
 

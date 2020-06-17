@@ -245,13 +245,7 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
         <PageShare title={RichText.asText(blogPost.title)} />
 
         {articleNewsletterSignup && (
-          <div className="container">
-            <NewsletterSignup
-              {...articleNewsletterSignup}
-              placement="article"
-            />
-            ,
-          </div>
+          <NewsletterSignup {...articleNewsletterSignup} placement="article" />
         )}
 
         <RecommendedBlogPosts
@@ -259,11 +253,7 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
           recentPosts={recentPosts}
         />
 
-        {articleCTAsSection && (
-          <div className="container">
-            <CTAsSection {...articleCTAsSection} />
-          </div>
-        )}
+        {articleCTAsSection && <CTAsSection {...articleCTAsSection} />}
       </div>
     </Layout>
   );

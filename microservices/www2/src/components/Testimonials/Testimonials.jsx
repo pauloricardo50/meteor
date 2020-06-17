@@ -4,7 +4,7 @@ import './Testimonials.scss';
 
 const Testimonials = ({ primary, fields }) => (
   <div className="testimonials">
-    <div className="testimonials__heading">
+    <div className="testimonials__heading container">
       {RichText.render(primary.testimonials_heading)}
       {/* TODO: add left/right navigation */}
     </div>

@@ -4,7 +4,7 @@ import CTAButtons from '../CTAButtons';
 import './CTAsSection.scss';
 
 const CTAsSection = ({ primary, fields }) => (
-  <section id={primary.section_id} className="ctas-section">
+  <section id={primary.section_id} className="ctas-section container">
     {fields &&
       fields.map((cta, idx) => {
         // reformat buttons as expected by CTAButtons

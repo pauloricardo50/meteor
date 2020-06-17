@@ -4,7 +4,7 @@ import CTAButtons from '../CTAButtons';
 import './Hero.scss';
 
 const EqualSplit = ({ primary, fields }) => (
-  <section className="equal-split no-top-pad">
+  <section className="equal-split no-top-pad container">
     <div
       className="equal-split__image"
       style={{ backgroundImage: `url(${primary.images.url})` }}
@@ -46,7 +46,6 @@ const FullWidthImage = ({ primary, fields }) => (
 );
 
 const Hero = ({ primary, fields }) => {
-  // NOTE: no field validation in Prismic, so data checks will need to be added
   if (!primary.images?.url) return null;
 
   switch (primary.image_layout) {

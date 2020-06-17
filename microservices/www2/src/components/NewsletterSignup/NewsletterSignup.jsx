@@ -60,7 +60,10 @@ const NewsletterSignup = ({ primary, placement }) => {
 
     case 'article':
       return (
-        <section id={primary.section_id} className="newsletter-signup--article">
+        <section
+          id={primary.section_id}
+          className="newsletter-signup--article container"
+        >
           <div className="newsletter-signup__content">
             {RichText.render(primary.section_heading)}
 
@@ -79,7 +82,10 @@ const NewsletterSignup = ({ primary, placement }) => {
 
     default:
       return (
-        <section id={primary.section_id} className="newsletter-signup">
+        <section
+          id={primary.section_id}
+          className="newsletter-signup container"
+        >
           <div className="newsletter-signup__content">
             {RichText.render(primary.section_heading)}
 
