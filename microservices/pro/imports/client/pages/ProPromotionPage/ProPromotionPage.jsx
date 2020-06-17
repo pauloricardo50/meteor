@@ -50,6 +50,7 @@ const promotionFragment = {
     phoneNumbers: 1,
     roles: 1,
   },
+  loans: { _id: 1 },
   zipCode: 1,
 };
 
