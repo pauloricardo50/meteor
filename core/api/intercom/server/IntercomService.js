@@ -20,7 +20,7 @@ const APP_ID = 'fzxlw28z';
 const IDENTITY_VERIFICATION_SECRET = 'AR5jRm9Amz-1odTHjRWdOUbI-f4wzyglPsk_D993';
 const ACCESS_TOKEN =
   'dG9rOmUxYWNhZGY3XzI2ODNfNDM5Zl9hOGRjXzA4MDM3ZjM5MzBlNDoxOjA=';
-const CLIENT_SECRET = '8aa9e62d-f979-4dfc-ac8c-f4c36bc8eabf';
+export const CLIENT_SECRET = '8aa9e62d-f979-4dfc-ac8c-f4c36bc8eabf';
 
 const API_PATH = 'https://api.intercom.io';
 const INTERCOM_WEBHOOK_ANALYTICS_USER_ID = 'intercom_webhook';
@@ -262,7 +262,7 @@ export class IntercomService {
         undefined,
       );
 
-    if (isImpersonating || !userId) {
+    if (isImpersonating || !userId || !trackingId) {
       return;
     }
 
@@ -276,8 +276,8 @@ export class IntercomService {
   }
 
   checkWebhookAuthentication(req) {
-    const signature = req.headers['x-hub-signature'];
-    const data = req.body;
+    const signature = req?.headers?.['x-hub-signature'];
+    const data = req?.body;
 
     const isValid = this.validateIntercomSignature(data, signature);
 
@@ -333,8 +333,8 @@ export class IntercomService {
   async handleNewConversation(conversation) {
     const {
       id: conversationId,
-      user: { id: contactId, email: contactEmail },
-      assignee: { id: assigneeId },
+      user: { id: contactId, email: contactEmail } = {},
+      assignee: { id: assigneeId } = {},
     } = conversation;
 
     const contact = contactId
@@ -357,7 +357,8 @@ export class IntercomService {
     }
 
     const user =
-      !contact?.ownerId &&
+      !contact?.owner_id &&
+      contactEmail &&
       UserService.getByEmail(contactEmail, {
         assignedEmployee: { intercomId: 1 },
       });
@@ -376,8 +377,8 @@ export class IntercomService {
   async handleAdminResponse(conversation) {
     // Conversation should automatically be assigned to replying admin
     const {
-      user: { id: contactId },
-      assignee: { id: assigneeId },
+      user: { id: contactId } = {},
+      assignee: { id: assigneeId } = {},
     } = conversation;
 
     const contact = await this.getContact({ contactId });
@@ -397,16 +398,20 @@ export class IntercomService {
       );
     }
 
-    return this.callIntercomAPI({
-      endpoint: 'updateContact',
-      params: { contactId },
-      body: { owner_id: assigneeId },
-    });
+    if (contactId && assigneeId) {
+      return this.callIntercomAPI({
+        endpoint: 'updateContact',
+        params: { contactId },
+        body: { owner_id: assigneeId },
+      });
+    }
+
+    return Promise.resolve();
   }
 
   async handleUserResponse(conversation) {
     const {
-      user: { id: contactId },
+      user: { id: contactId } = {},
       assignee: { id: assigneeId } = {},
     } = conversation;
 
