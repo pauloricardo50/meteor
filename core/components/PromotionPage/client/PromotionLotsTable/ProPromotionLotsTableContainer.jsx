@@ -83,8 +83,7 @@ const getProColumns = ({ promotionLotGroups = [] }) => [
   {
     Header: <T id="PromotionPage.lots.attributedTo" />,
     accessor: 'attributedToPromotionOption',
-    Cell: ({ value: attributedToPromotionOption, row: { original } }) => {
-      console.log('original:', original);
+    Cell: ({ value: attributedToPromotionOption }) => {
       if (!attributedToPromotionOption) {
         return null;
       }
