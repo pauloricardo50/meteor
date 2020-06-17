@@ -83,7 +83,8 @@ const getProColumns = ({ promotionLotGroups = [] }) => [
   {
     Header: <T id="PromotionPage.lots.attributedTo" />,
     accessor: 'attributedToPromotionOption',
-    Cell: ({ value: attributedToPromotionOption }) => {
+    Cell: ({ value: attributedToPromotionOption, row: { original } }) => {
+      console.log('original:', original);
       if (!attributedToPromotionOption) {
         return null;
       }
@@ -117,7 +118,7 @@ const ProPromotionLotsTableContainer = withProps(({ promotion }) => {
         value: 1,
         lots: { type: 1, name: 1, value: 1 },
         loanCount: 1,
-        attributedToUser: 1,
+        attributedToPromotionOption: 1,
       },
     },
   };
