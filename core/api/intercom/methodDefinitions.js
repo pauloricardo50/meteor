@@ -15,3 +15,9 @@ export const getIntercomContact = new Method({
     contactId: Match.Maybe(String),
   },
 });
+
+export const updateIntercomVisitorTrackingId = new Method({
+  name: 'updateIntercomVisitorTrackingId',
+  params: { visitorId: Match.Maybe(String), cookies: Match.Maybe(Object) },
+  doNotRefetchQueries: true,
+});

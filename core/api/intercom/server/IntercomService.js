@@ -3,6 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 
+import { TRACKING_COOKIE } from '../../analytics/analyticsConstants';
+import EVENTS from '../../analytics/events';
+import Analytics from '../../analytics/server/Analytics';
+import { ERROR_CODES } from '../../errors';
+import SessionService from '../../sessions/server/SessionService';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 
@@ -15,8 +20,10 @@ const APP_ID = 'fzxlw28z';
 const IDENTITY_VERIFICATION_SECRET = 'AR5jRm9Amz-1odTHjRWdOUbI-f4wzyglPsk_D993';
 const ACCESS_TOKEN =
   'dG9rOmUxYWNhZGY3XzI2ODNfNDM5Zl9hOGRjXzA4MDM3ZjM5MzBlNDoxOjA=';
+const CLIENT_SECRET = '8aa9e62d-f979-4dfc-ac8c-f4c36bc8eabf';
 
 const API_PATH = 'https://api.intercom.io';
+const INTERCOM_WEBHOOK_ANALYTICS_USER_ID = 'intercom_webhook';
 
 const intercomEndpoints = {
   searchContacts: {
@@ -34,6 +41,30 @@ const intercomEndpoints = {
   getContact: {
     method: 'GET',
     makeEndpoint: ({ contactId }) => `/contacts/${contactId}`,
+  },
+  updateVisitor: {
+    method: 'PUT',
+    makeEndpoint: () => '/visitors',
+  },
+  assignConversation: {
+    method: 'POST',
+    makeEndpoint: ({ conversationId }) =>
+      `/conversations/${conversationId}/parts`,
+  },
+};
+
+const WEBHOOK_TOPICS = {
+  USER_STARTED_CONVERSATION: {
+    topic: 'conversation.user.created',
+    method: 'handleNewConversation',
+  },
+  USER_REPLIED: {
+    topic: 'conversation.user.replied',
+    method: 'handleUserResponse',
+  },
+  ADMIN_REPLIED: {
+    topic: 'conversation.admin.replied',
+    method: 'handleAdminResponse',
   },
 };
 
@@ -215,6 +246,186 @@ export class IntercomService {
         owner_id: adminIntercomId,
       },
     });
+  }
+
+  async updateVisitorTrackingId({ context, visitorId, cookies = {} }) {
+    const isImpersonating = SessionService.isImpersonatedSession(
+      context?.connection?.id,
+    );
+
+    const trackingId = cookies[TRACKING_COOKIE];
+
+    const userId =
+      visitorId ||
+      Object.keys(cookies).reduce(
+        (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
+        undefined,
+      );
+
+    if (isImpersonating || !userId) {
+      return;
+    }
+
+    return this.callIntercomAPI({
+      endpoint: 'updateVisitor',
+      body: {
+        user_id: userId,
+        custom_attributes: { [TRACKING_COOKIE]: trackingId },
+      },
+    });
+  }
+
+  checkWebhookAuthentication(req) {
+    const signature = req.headers['x-hub-signature'];
+    const data = req.body;
+
+    const isValid = this.validateIntercomSignature(data, signature);
+
+    return {
+      isAuthenticated: isValid,
+      error:
+        !isValid &&
+        new Meteor.Error(
+          ERROR_CODES.UNAUTHORIZED,
+          'Intercom signature verification failed',
+        ),
+      user: {
+        _id: INTERCOM_WEBHOOK_ANALYTICS_USER_ID,
+        name: 'Intercom webhook',
+        organisations: [{ name: 'Intercom webhook' }],
+      },
+    };
+  }
+
+  validateIntercomSignature(data, rawSignature) {
+    const signature = rawSignature.replace('sha1=', '');
+    const hash = crypto
+      .createHmac('sha1', CLIENT_SECRET)
+      .update(JSON.stringify(data))
+      .digest('hex');
+
+    return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
+  }
+
+  handleWebhook({ body }) {
+    const { data: { item } = {}, topic } = body;
+
+    const method = Object.values(WEBHOOK_TOPICS).find(
+      ({ topic: t }) => t === topic,
+    )?.method;
+
+    return method ? this[method](item) : Promise.resolve();
+  }
+
+  async assignConversation({ conversationId, assigneeId }) {
+    return this.callIntercomAPI({
+      endpoint: 'assignConversation',
+      params: { conversationId },
+      body: {
+        type: 'admin',
+        admin_id: assigneeId,
+        assignee_id: assigneeId,
+        message_type: 'assignment',
+      },
+    });
+  }
+
+  async handleNewConversation(conversation) {
+    const {
+      id: conversationId,
+      user: { id: contactId, email: contactEmail },
+      assignee: { id: assigneeId },
+    } = conversation;
+
+    const contact = contactId
+      ? await this.getContact({ contactId })
+      : await this.getContact({ email: contactEmail });
+
+    const trackingId = contact?.custom_attributes?.epotek_trackingid;
+
+    if (trackingId) {
+      const analytics = new Analytics();
+      analytics.track(EVENTS.INTERCOM_STARTED_A_CONVERSATION, {}, trackingId);
+    }
+
+    if (assigneeId) {
+      return this.callIntercomAPI({
+        endpoint: 'updateContact',
+        params: { contactId },
+        body: { owner_id: assigneeId },
+      });
+    }
+
+    const user =
+      !contact?.ownerId &&
+      UserService.getByEmail(contactEmail, {
+        assignedEmployee: { intercomId: 1 },
+      });
+
+    const assignedEmployeeIntercomId = user?.assignedEmployee?.intercomId;
+
+    const assignee = contact?.owner_id || assignedEmployeeIntercomId;
+
+    if (assignee) {
+      return this.assignConversation({ conversationId, assigneeId: assignee });
+    }
+
+    return Promise.resolve();
+  }
+
+  async handleAdminResponse(conversation) {
+    // Conversation should automatically be assigned to replying admin
+    const {
+      user: { id: contactId },
+      assignee: { id: assigneeId },
+    } = conversation;
+
+    const contact = await this.getContact({ contactId });
+    const assignee = UserService.get({ intercomId: assigneeId }, { name: 1 });
+
+    const trackingId = contact?.custom_attributes?.epotek_trackingid;
+
+    if (trackingId) {
+      const analytics = new Analytics();
+      analytics.track(
+        EVENTS.INTERCOM_RECEIVED_ADMIN_RESPONSE,
+        {
+          assigneeId: assignee?._id,
+          assigneeName: assignee?.name,
+        },
+        trackingId,
+      );
+    }
+
+    return this.callIntercomAPI({
+      endpoint: 'updateContact',
+      params: { contactId },
+      body: { owner_id: assigneeId },
+    });
+  }
+
+  async handleUserResponse(conversation) {
+    const {
+      user: { id: contactId },
+      assignee: { id: assigneeId } = {},
+    } = conversation;
+
+    const contact = await this.getContact({ contactId });
+    const assignee = UserService.get({ intercomId: assigneeId }, { name: 1 });
+
+    const trackingId = contact?.custom_attributes?.epotek_trackingid;
+
+    if (trackingId) {
+      const analytics = new Analytics();
+      analytics.track(
+        EVENTS.INTERCOM_SENT_A_MESSAGE,
+        {
+          assigneeId: assignee?._id,
+          assigneeName: assignee?.name,
+        },
+        trackingId,
+      );
+    }
   }
 }
 

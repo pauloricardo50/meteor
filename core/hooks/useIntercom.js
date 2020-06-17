@@ -2,7 +2,11 @@ import { Meteor } from 'meteor/meteor';
 
 import { useEffect } from 'react';
 
-import { getIntercomSettings } from '../api/intercom/methodDefinitions';
+import {
+  getIntercomSettings,
+  updateIntercomVisitorTrackingId,
+} from '../api/intercom/methodDefinitions';
+import { parseCookies } from '../utils/cookiesHelpers';
 import usePrevious from './usePrevious';
 
 const defaultSettings = {
@@ -21,8 +25,8 @@ export const IntercomAPI = (method, ...args) => {
 };
 
 const getIntercomUserSettings = async () => {
-  const interconSettings = await getIntercomSettings.run();
-  return { ...defaultSettings, ...interconSettings };
+  const intercomSettings = await getIntercomSettings.run({});
+  return { ...defaultSettings, ...intercomSettings };
 };
 
 const initializeIntercom = async () => {
@@ -38,21 +42,28 @@ const initializeIntercom = async () => {
     ic('update', w.intercomSettings);
   } else {
     const d = document;
-    var i = function() {
+    var i = function () {
       i.c(arguments);
     };
     i.q = [];
-    i.c = function(args) {
+    i.c = function (args) {
       i.q.push(args);
     };
     w.Intercom = i;
-    const l = function() {
+    const l = function () {
       const s = d.createElement('script');
       s.type = 'text/javascript';
       s.async = true;
       s.src = `https://widget.intercom.io/widget/${app_id}`;
       const x = d.getElementsByTagName('script')[0];
       x.parentNode && x.parentNode.insertBefore(s, x);
+      s.addEventListener('load', function () {
+        window.Intercom('onShow', function () {
+          const visitorId = window.Intercom('getVisitorId');
+          const cookies = parseCookies();
+          updateIntercomVisitorTrackingId.run({ visitorId, cookies });
+        });
+      });
     };
     if (document.readyState === 'complete') {
       l();

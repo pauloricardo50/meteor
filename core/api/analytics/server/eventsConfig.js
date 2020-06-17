@@ -44,7 +44,8 @@ export const EVENTS_CONFIG = {
       },
       {
         name: 'type',
-        optional: ({ endpointName }) => endpointName !== 'Front plugin',
+        optional: ({ endpointName }) =>
+          !['Front plugin', 'Intercom webhooks'].includes(endpointName),
       },
       {
         name: 'collectionName',
@@ -67,6 +68,10 @@ export const EVENTS_CONFIG = {
       {
         name: 'webhookName',
         optional: ({ endpointName }) => endpointName !== 'Front webhooks',
+      },
+      {
+        name: 'topic',
+        optional: ({ endpointName }) => endpointName !== 'Intercom webhooks',
       },
     ],
   },
@@ -181,6 +186,23 @@ export const EVENTS_CONFIG = {
       { name: 'referringUserName', optional: true },
       { name: 'referringOrganisationId', optional: true },
       { name: 'referringOrganisationName', optional: true },
+      { name: 'assigneeId', optional: true },
+      { name: 'assigneeName', optional: true },
+    ],
+  },
+  [EVENTS.INTERCOM_STARTED_A_CONVERSATION]: {
+    name: 'User Started Intercom conversation',
+  },
+  [EVENTS.INTERCOM_RECEIVED_ADMIN_RESPONSE]: {
+    name: 'User Received Intercom admin response',
+    properties: [
+      { name: 'assigneeId', optional: true },
+      { name: 'assigneeName', optional: true },
+    ],
+  },
+  [EVENTS.INTERCOM_SENT_A_MESSAGE]: {
+    name: 'User Sent Intercom message',
+    properties: [
       { name: 'assigneeId', optional: true },
       { name: 'assigneeName', optional: true },
     ],
