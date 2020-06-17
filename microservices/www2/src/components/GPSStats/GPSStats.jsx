@@ -1,6 +1,6 @@
 import React from 'react';
 import { RichText } from 'prismic-reactjs';
-import Button from '../Button';
+import CTAButtons from '../CTAButtons';
 import useAllGPSStat from '../../hooks/useAllGPSStat';
 import './GPSStats.scss';
 
@@ -10,28 +10,9 @@ const GPSStats = ({ primary, fields }) => {
   return (
     <section className="gps-stats container">
       <div className="gps-stats-content">
-        {primary.content && RichText.asText(primary.content) !== '' ? (
-          <>
-            {RichText.render(primary.content)}
+        {primary.content && RichText.render(primary.content)}
 
-            <div>
-              {/* TODO: add logic for ExternalLink vs. Page */}
-              {fields.length > 0 &&
-                fields.map((field, idx) => (
-                  <Button
-                    key={idx}
-                    className="cta--button"
-                    raised
-                    primary
-                    link
-                    to={field.cta_link.url}
-                  >
-                    {field.cta_text}
-                  </Button>
-                ))}
-            </div>
-          </>
-        ) : null}
+        <CTAButtons buttons={fields} />
       </div>
 
       {/* TODO: get mapping component/libray */}
