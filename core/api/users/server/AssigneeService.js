@@ -205,11 +205,7 @@ class AssigneeService {
 
       UserService.update({ userId, object: { assignedEmployeeId: adminId } });
 
-      try {
-        IntercomService.updateContactOwner({ userId, adminId });
-      } catch (error) {
-        ErrorLogger.logError({ error });
-      }
+      IntercomService.updateContactOwner({ userId, adminId });
 
       return { oldAssignee, newAssignee };
     }

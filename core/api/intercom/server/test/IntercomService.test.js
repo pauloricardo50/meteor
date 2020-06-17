@@ -19,7 +19,7 @@ const IntercomService = new IntercomServiceClass({
   isEnabled: true,
 });
 
-describe('IntercomService', () => {
+describe.only('IntercomService', () => {
   beforeEach(() => {
     resetDatabase();
     fetchStub.reset();
@@ -167,7 +167,7 @@ describe('IntercomService', () => {
       expect(contact.id).to.equal('12345');
     });
 
-    it('returns empty object if no contact is found by email', async () => {
+    it('returns undefined if no contact is found by email', async () => {
       callIntercomAPIStub.resolves({ error: 'Not found' });
 
       const contact = await IntercomService.getContact({
@@ -185,7 +185,7 @@ describe('IntercomService', () => {
         },
       });
 
-      expect(Object.keys(contact).length).to.equal(0);
+      expect(contact).to.equal(undefined);
     });
 
     it('fetches the contact by id', async () => {

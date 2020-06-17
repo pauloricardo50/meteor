@@ -6,6 +6,7 @@ import nodeFetch from 'node-fetch';
 import { TRACKING_COOKIE } from '../../analytics/analyticsConstants';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import { ERROR_CODES } from '../../errors';
 import SessionService from '../../sessions/server/SessionService';
 import UserService from '../../users/server/UserService';
@@ -151,7 +152,7 @@ export class IntercomService {
         }
       })
       .catch(error => {
-        console.log('IntercomAPI error:', error);
+        ErrorLogger.logError({ error, additionalData: ['IntercomAPI error'] });
         throw error;
       });
   }
@@ -172,7 +173,7 @@ export class IntercomService {
       });
 
       const [contact] = data;
-      return contact || {};
+      return contact;
     }
     if (contactId) {
       return this.callIntercomAPI({

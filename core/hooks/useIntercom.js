@@ -7,6 +7,7 @@ import {
   updateIntercomVisitorTrackingId,
 } from '../api/intercom/methodDefinitions';
 import { parseCookies } from '../utils/cookiesHelpers';
+import useCurrentUser from './useCurrentUser';
 import usePrevious from './usePrevious';
 
 const defaultSettings = {
@@ -87,10 +88,12 @@ const useIntercom = () => {
     };
   }, []);
 
-  const previousUserId = usePrevious(Meteor.userId);
+  const currentUser = useCurrentUser();
+
+  const previousUserId = usePrevious(currentUser?._id);
 
   useEffect(() => {
-    if (previousUserId && !Meteor.userId) {
+    if (previousUserId && !currentUser?._id) {
       // If the user was previously logged in, and logged out, shut down and start over
       IntercomAPI('shutdown');
       const intercomSettings = getIntercomUserSettings();
@@ -99,7 +102,7 @@ const useIntercom = () => {
       // If the user was not logged in, just call 'update' to let Intercom know
       IntercomAPI('update');
     }
-  }, [Meteor.userId]);
+  }, [currentUser]);
 
   return null;
 };

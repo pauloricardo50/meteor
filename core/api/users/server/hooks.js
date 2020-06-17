@@ -1,11 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 
 import formatNumbersHook from '../../../utils/phoneFormatting';
 import NewsletterService from '../../email/server/NewsletterService';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
-import IntercomService from '../../intercom/server/IntercomService';
-import { ROLES } from '../roles/roleConstants';
 import Users from '../users';
 
 formatNumbersHook(Users, 'phoneNumbers');
@@ -47,16 +44,4 @@ Users.before.remove((userId, { emails }) => {
       });
     }
   }
-});
-
-// Not sure if this is required as UserService.createUser already calls IntercomService
-Users.after.insert((userId, user) => {
-  const { intercomId } = user;
-  const userIsAdmin = Roles.userIsInRole(user, [ROLES.ADMIN, ROLES.DEV]);
-
-  if (userIsAdmin || intercomId) {
-    return;
-  }
-
-  IntercomService.setIntercomId({ userId: user._id });
 });
