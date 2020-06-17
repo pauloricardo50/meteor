@@ -61,9 +61,3 @@ const PageShare = ({ title }) => {
 };
 
 export default PageShare;
-
-// .Rectangle {
-//   width: 50px;
-//   height: 200px;
-//   background-color: #f4f4f4;
-// }
