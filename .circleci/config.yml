@@ -33,32 +33,11 @@ jobs:
       - run:
           name: Init submodules
           command: git submodule sync && git submodule update --init --recursive
-      - run:
-          name: Install meteor
-          command: |2-
-
-                  bash ./scripts/circleci/install_meteor.sh
-                  touch $HOME/.meteor-installed
-                
-          background: true
       - save_cache:
           name: Cache source
           key: 'source_circleci_performance_11_1-{{ .Branch }}-{{ .Revision }}'
           paths:
             - .
-      - run:
-          name: Install backend dependencies
-          command: |2-
-
-                  # Wait until meteor is installed
-                  until [ -f $HOME/.meteor-installed ]; do
-                    echo "$HOME/.meteor-installed does not exist. Waiting 1s"
-                    sleep 1
-                  done
-                  meteor npm --prefix microservices/backend ci
-                  touch $HOME/.backend-prepared
-                
-          background: true
       - restore_cache:
           name: Restore global cache
           keys:
@@ -83,43 +62,6 @@ jobs:
             "./package-lock.json" }}
           paths:
             - ./node_modules
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_circleci_performance_11_1_backend-{{ .Branch
-              }}-{{ .Revision }}
-            - >-
-              meteor_microservice_circleci_performance_11_1_backend-{{ .Branch
-              }}-
-            - meteor_microservice_circleci_performance_11_1_backend-
-      - run:
-          name: Install expect
-          command: apt-get update && apt-get install expect -y
-      - run:
-          name: Wait for backend dependencies
-          command: |2-
-
-                  # Wait until backend npm dependencies are installed
-                  until [ -f $HOME/.backend-prepared ]; do
-                    echo "$HOME/.backend-prepared does not exist. Waiting 1s"
-                    sleep 1
-                  done
-                  
-      - run:
-          name: Build backend
-          command: ./scripts/circleci/build_backend.sh
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor backend
-          key: >-
-            meteor_microservice_circleci_performance_11_1_backend-{{ .Branch
-            }}-{{ .Revision }}
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
   Www - unit tests:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -215,6 +157,16 @@ jobs:
             - ./microservices/www/.meteor/local/isopacks
             - ./microservices/www/.meteor/local/plugin-cache
             - ./microservices/www/.meteor/local/resolver-result-cache.json
+      - save_cache:
+          name: Cache meteor backend
+          key: >-
+            meteor_microservice_circleci_performance_11_1_backend-{{ .Branch
+            }}-{{ .Revision }}
+          paths:
+            - ./microservices/backend/.meteor/local/bundler-cache
+            - ./microservices/backend/.meteor/local/isopacks
+            - ./microservices/backend/.meteor/local/plugin-cache
+            - ./microservices/backend/.meteor/local/resolver-result-cache.json
       - store_test_results:
           path: ./results
       - store_artifacts:
@@ -309,6 +261,16 @@ jobs:
             - ./microservices/www/.meteor/local/isopacks
             - ./microservices/www/.meteor/local/plugin-cache
             - ./microservices/www/.meteor/local/resolver-result-cache.json
+      - save_cache:
+          name: Cache meteor backend
+          key: >-
+            meteor_microservice_circleci_performance_11_1_backend-{{ .Branch
+            }}-{{ .Revision }}
+          paths:
+            - ./microservices/backend/.meteor/local/bundler-cache
+            - ./microservices/backend/.meteor/local/isopacks
+            - ./microservices/backend/.meteor/local/plugin-cache
+            - ./microservices/backend/.meteor/local/resolver-result-cache.json
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
