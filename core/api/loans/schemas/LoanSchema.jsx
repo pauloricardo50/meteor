@@ -45,7 +45,6 @@ const LoanSchema = new SimpleSchema({
     defaultValue: LOAN_STATUS.LEAD,
     allowedValues: Object.values(LOAN_STATUS),
   },
-  general: { type: Object, optional: true, blackbox: true, defaultValue: {} }, // To be removed once migrations are done
   name: { type: String, unique: true, regEx: /^\d{2}-\d{4}$/ },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
