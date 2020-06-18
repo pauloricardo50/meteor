@@ -201,7 +201,9 @@ const PromotionOptionsTable = ({ promotion }) => {
           {
             Header: <T id="PromotionOptionsTable.createdAt" />,
             accessor: 'createdAt',
-            Cell: ({ value }) => <IntlDate value={value} type="relative" />,
+            Cell: ({ value }) => (
+              <IntlDate value={value} type="relative" style="long" />
+            ),
           },
           {
             Header: <T id="PromotionOptionsTable.progress" />,
