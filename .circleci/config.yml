@@ -21,6 +21,7 @@ jobs:
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
           RTL_SKIP_AUTO_CLEANUP: 1
           HOME: /home/circleci
+          DISPLAY: ':99.0'
     resource_class: large
     steps:
       - restore_cache:
@@ -112,6 +113,15 @@ jobs:
               }}-
             - meteor_microservice_circleci_performance_11_1_backend-
       - run:
+          name: Setup display
+          command: |2-
+
+                    apt-get update && apt-get install xvfb -y
+                    export DISPLAY=':99.0'
+                    Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+                  
+          background: true
+      - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
       - run:
@@ -123,14 +133,6 @@ jobs:
 
                   meteor npm --prefix microservices/www ci
                   meteor npm --prefix microservices/backend ci
-                  
-      - run:
-          name: Setup display
-          command: |2-
-
-                    apt-get update && apt-get install xvfb -y
-                    export DISPLAY=':99.0'
-                    Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
                   
       - run:
           name: Generate language files

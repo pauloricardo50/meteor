@@ -25,7 +25,8 @@ const defaultJobValues = {
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
         RTL_SKIP_AUTO_CLEANUP: 1,
-        HOME: '/home/circleci' // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
+        HOME: '/home/circleci', // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
+        DISPLAY: ':99.0'
       },
     },
   ],
@@ -154,6 +155,14 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
+    testsType === 'unit' && runCommand(
+      'Setup display',
+      `
+        apt-get update && apt-get install xvfb -y
+        export DISPLAY=':99.0'
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+      `, null, true
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -167,14 +176,6 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       meteor npm --prefix microservices/backend ci
       `,
     ),
-    testsType === 'unit' && runCommand(
-      'Setup display',
-      `
-        apt-get update && apt-get install xvfb -y
-        export DISPLAY=':99.0'
-        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      `
-      ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),
     saveCache(
