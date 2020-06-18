@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import generator from '../../factories/server';
@@ -17,7 +16,6 @@ import {
   cleanDatabase,
   generateScenario,
   getMixpanelAuthorization,
-  migrateRoles,
   migrateToLatest,
   referralExists,
   removeAdditionalDoc,
@@ -104,11 +102,6 @@ removeAdditionalDoc.setHandler((context, { collection, ...rest }) => {
 migrateToLatest.setHandler(({ userId }) => {
   SecurityService.checkCurrentUserIsDev();
   migrate();
-});
-
-migrateRoles.setHandler(({ userId }) => {
-  SecurityService.checkCurrentUserIsDev();
-  Roles._forwardMigrate();
 });
 
 updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
