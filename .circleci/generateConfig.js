@@ -160,7 +160,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       `
         apt-get update && apt-get install xvfb -y
         export DISPLAY=':99.0'
-        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
       `, null, true
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
