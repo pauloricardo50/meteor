@@ -207,6 +207,14 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       meteor npm --prefix microservices/backend ci
       `,
     ),
+    testsType === 'unit' && runCommand(
+      'Setup display',
+      `
+        apt-get update && apt-get install xvfb -y
+        export DISPLAY=':99.0'
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+      `
+      ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),
     saveCache(
