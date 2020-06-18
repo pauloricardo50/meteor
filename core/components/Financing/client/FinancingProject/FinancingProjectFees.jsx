@@ -3,6 +3,7 @@ import cx from 'classnames';
 
 import Calculator from '../../../../utils/Calculator';
 import DialogSimple from '../../../DialogSimple';
+import Icon from '../../../Icon';
 import IconButton from '../../../IconButton';
 import Recap from '../../../Recap';
 import T from '../../../Translation';
@@ -26,14 +27,25 @@ const FinancingProjectFees = ({ className, ...props }) => {
     loan,
     structureId,
   }).hasDetailedConfig();
+
   return (
     <div className={cx(className, 'notary-fees')}>
-      <FinancingField {...props} />
+      <FinancingField
+        {...props}
+        helperText={
+          !hasNotaryFeesOverride && hasDetailedFees ? (
+            <T
+              id="FinancingProjectFees.inputHelperText"
+              values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
+            />
+          ) : null
+        }
+      />
       <DialogSimple
         closeOnly
         renderTrigger={({ handleOpen }) => (
           <IconButton
-            type="help"
+            type="info"
             onClick={handleOpen}
             className="ml-8"
             size="small"
@@ -45,21 +57,24 @@ const FinancingProjectFees = ({ className, ...props }) => {
           <h3>
             <T id="general.notaryFees" />
           </h3>
-          <div>
-            {hasNotaryFeesOverride ? (
-              <T id="FinancingProjectFees.notaryFeesOverride" />
-            ) : (
-              <T
-                id={
-                  canton
-                    ? hasDetailedFees
-                      ? 'FinancingProjectFees.description'
-                      : 'FinancingProjectFees.descriptionNoDetail'
-                    : 'FinancingProjectFees.noCanton'
-                }
-                values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
-              />
-            )}
+          <div className="flex center-align nowrap">
+            <Icon size={40} type="warning" className="mr-16" color="primary" />
+            <div>
+              {hasNotaryFeesOverride ? (
+                <T id="FinancingProjectFees.notaryFeesOverride" />
+              ) : (
+                <T
+                  id={
+                    canton
+                      ? hasDetailedFees
+                        ? 'FinancingProjectFees.description'
+                        : 'FinancingProjectFees.descriptionNoDetail'
+                      : 'FinancingProjectFees.noCanton'
+                  }
+                  values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
+                />
+              )}
+            </div>
           </div>
           {!hasNotaryFeesOverride && (
             <Recap

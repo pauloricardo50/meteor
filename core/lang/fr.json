@@ -1,4 +1,5 @@
 {
+  "FinancingProjectFees.inputHelperText": "Estimation pour le canton de {canton}",
   "PromotionReservationDeadline.yourBroker": "votre courtier",
   "PromotionLotLoansTable.loanStatus" : "Statut du dossier hypothécaire",
   "Forms.isInRoundRobin": "Round robin activé",
@@ -1281,8 +1282,8 @@
   "Recap.propertyRegistrationTaxDeductions": "Déductions sur les droits d'enregistrement",
   "Recap.mortgageNoteRegistrationTaxDeductions": "Déductions sur les droits d'enregistrement",
   "Recap.mortgageNoteDeductions": "Déductions sur la cédule",
-  "FinancingProjectFees.description": "Les frais de notaire indiqués sont calculés pour le canton de {canton}, et sont une estimation qui inclut une marge variable. Parfois il faut encore ajouter des honoraires, et/ou d'autres frais au cas par cas.",
-  "FinancingProjectFees.descriptionNoDetail": "Ces frais de notaire sont estimés de façon simple pour le canton de {canton}. Ils représentent 5% du prix d'achat, et peuvent être faux pour certains cantons. Nous vous recommandons d'entrer une valeur vous-même.",
+  "FinancingProjectFees.description": "Attention : Les frais de notaires indiqués ici sont une estimation qui inclut une marge variable. Ils sont calculés pour le canton de {canton}. Parfois il faut encore ajouter des honoraires, et/ou d'autres frais au cas par cas. Vous pouvez remplacer cette estimation par le montant exact si vous le connaissez.{verticalSpace}Veuillez contacter un notaire pour obtenir le coût réel.",
+  "FinancingProjectFees.descriptionNoDetail": "Attention: Ces frais de notaires sont une estimation simple pour le canton de {canton}. Ils représentent 5% du prix d'achat et peuvent parfois être éloignés de la réalité. Nous vous recommandons d'entrer la valeur exacte si vous la connaissez.{verticalSpace}Veuillez contacter un notaire pour obtenir le coût réel.",
   "Forms.canton.AG": "Aargau",
   "Forms.canton.AR": "Appenzell Ausserrhoden",
   "Forms.canton.AI": "Appenzell Innerrhoden",
