@@ -25,8 +25,7 @@ const defaultJobValues = {
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
         RTL_SKIP_AUTO_CLEANUP: 1,
-        HOME: '/home/circleci', // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
-        DISPLAY: ':99.0'
+        HOME: '/home/circleci' // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
       },
     },
   ],
@@ -158,8 +157,8 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     testsType === 'unit' && runCommand(
       'Setup display',
       `
+        echo "export DISPLAY=':99.0'" >> $BASH_ENV
         apt-get update && apt-get install xvfb -y
-        export DISPLAY=':99.0'
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
       `, null, true
     ),

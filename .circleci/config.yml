@@ -21,7 +21,6 @@ jobs:
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
           RTL_SKIP_AUTO_CLEANUP: 1
           HOME: /home/circleci
-          DISPLAY: ':99.0'
     resource_class: large
     steps:
       - restore_cache:
@@ -116,6 +115,7 @@ jobs:
           name: Setup display
           command: |2-
 
+                    echo "export DISPLAY=':99.0'" >> $BASH_ENV
                     apt-get update && apt-get install xvfb -y
                     export DISPLAY=':99.0'
                     Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
