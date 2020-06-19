@@ -16,11 +16,13 @@ class PropertyService extends CollectionService {
     super(Properties);
   }
 
-  insert = ({ property, userId, loanId }) => {
+  insert = ({ property, loanId }) => {
     this.checkPropertyValue({ property });
-    const propertyId = super.insert({ ...property, userId });
+    const propertyId = super.insert(property);
     if (loanId) {
+      const { userId } = LoanService.get(loanId, { userId: 1 });
       LoanService.addPropertyToLoan({ loanId, propertyId });
+      this.addLink({ id: propertyId, linkName: 'user', linkId: userId });
     }
 
     return propertyId;
@@ -93,7 +95,11 @@ class PropertyService extends CollectionService {
       );
     }
 
-    LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });
+    return LoanService.insertPropertyLoan({
+      userId,
+      propertyIds,
+      shareSolvency,
+    });
   };
 
   addProUser({ propertyId, userId }) {

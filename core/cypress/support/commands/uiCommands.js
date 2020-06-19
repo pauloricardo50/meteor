@@ -66,6 +66,7 @@ Cypress.Commands.add(
       if (typeof value === 'string') {
         prevSubject
           .find(`input[name=${name}]`)
+          .should('not.be.disabled')
           .parent()
           .click()
           .get(`[data-value=${value}]`)
@@ -73,6 +74,7 @@ Cypress.Commands.add(
       } else {
         prevSubject
           .find(`input[name=${name}]`)
+          .should('not.be.disabled')
           .parent()
           .click()
           .get('ul[role=listbox]')
@@ -82,6 +84,7 @@ Cypress.Commands.add(
       }
     } else if (typeof value === 'string') {
       cy.get(`input[name=${name}]`)
+        .should('not.be.disabled')
         .parent()
         .click()
         .get(`[data-value=${value}]`)
@@ -89,6 +92,7 @@ Cypress.Commands.add(
     } else {
       // Support clicking on nth item
       cy.get(`input[name=${name}]`)
+        .should('not.be.disabled')
         .parent()
         .click()
         .get('ul[role=listbox]')

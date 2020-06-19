@@ -96,7 +96,7 @@ const addPromotionOptions = (loanId, promotion) => {
   );
 };
 
-const createUsers = async ({
+const createUsers = ({
   users,
   promotionId,
   promotion,
@@ -106,7 +106,6 @@ const createUsers = async ({
   const brokerIds = proIds.slice(0, 2);
 
   console.log('creating users');
-  const promises = [];
   for (let i = 0; i < range(users).length; i += 1) {
     console.log(`creating user ${i + 1}`);
 
@@ -134,24 +133,19 @@ const createUsers = async ({
       },
     });
 
-    promises.push(
-      PromotionService.inviteUser({
-        promotionId,
-        userId: promotionCustomerId,
-        sendInvitation: false,
-        pro: { _id: withInvitedBy ? Meteor.userId() : shuffle(brokerIds)[0] },
-      }).then(loanId => {
-        const promotionOptionIds = addPromotionOptions(loanId, promotion);
-        LoanService.setPromotionPriorityOrder({
-          loanId,
-          promotionId,
-          priorityOrder: promotionOptionIds,
-        });
-      }),
-    );
+    const loanId = PromotionService.inviteUser({
+      promotionId,
+      userId: promotionCustomerId,
+      sendInvitation: false,
+      pro: { _id: withInvitedBy ? Meteor.userId() : shuffle(brokerIds)[0] },
+    });
+    const promotionOptionIds = addPromotionOptions(loanId, promotion);
+    LoanService.setPromotionPriorityOrder({
+      loanId,
+      promotionId,
+      priorityOrder: promotionOptionIds,
+    });
   }
-
-  await Promise.all(promises);
 };
 
 const addPromotionPros = ({ promotionId }) => {
@@ -234,7 +228,7 @@ export const createPromotionDemo = async (
     }
   }
 
-  await createUsers({
+  createUsers({
     users,
     promotionId,
     promotion,

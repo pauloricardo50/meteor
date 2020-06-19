@@ -31,7 +31,14 @@ const NewUsersStat = ({
     value={<CountUp end={newUsers.count} />}
     increment={<Percent showPlus value={newUsers.change} />}
     positive={newUsers.change > 0}
-    title="Nouveaux clients"
+    title={
+      <div className="text-center">
+        <div>Nouveaux clients</div>
+        <div>
+          <small className="secondary">{period} derniers jours</small>
+        </div>
+      </div>
+    }
     large
     top={
       <>

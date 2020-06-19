@@ -162,13 +162,13 @@ describe('PromotionService', function() {
         users: [
           {
             _id: adminId,
-            _factory: 'admin',
+            _factory: ROLES.ADVISOR,
             firstName: 'Admin',
             lastName: 'User',
           },
           {
             _id: 'proId',
-            _factory: 'pro',
+            _factory: ROLES.PRO,
             firstName: 'Pro',
             lastName: 'User',
           },
@@ -270,17 +270,17 @@ describe('PromotionService', function() {
         user: newUser,
       });
 
-      return PromotionService.inviteUser({
+      PromotionService.inviteUser({
         promotionId,
         userId,
         isNewUser,
-      }).then(() => {
-        const user = UserService.getByEmail(newUser.email, {
-          assignedEmployeeId: 1,
-        });
-        const { assignedEmployeeId } = user;
-        expect(assignedEmployeeId).to.equal(adminId);
       });
+
+      const user = UserService.getByEmail(newUser.email, {
+        assignedEmployeeId: 1,
+      });
+      const { assignedEmployeeId } = user;
+      expect(assignedEmployeeId).to.equal(adminId);
     });
   });
 
@@ -375,6 +375,38 @@ describe('PromotionService', function() {
 
       expect(promotionLot.status).to.equal(PROMOTION_LOT_STATUS.AVAILABLE);
       expect(promotionLot.attributedToLink).to.deep.equal({});
+    });
+
+    it('updates the loanCount', () => {
+      generator({
+        properties: [{ _id: 'prop1' }, { _id: 'prop2' }],
+        promotions: {
+          _id: 'promotionId',
+          promotionLots: [
+            {
+              _id: 'lot1',
+              promotionOptions: {
+                _id: 'promotionOptionId',
+                loan: { _id: 'loanId' },
+                promotion: { _id: 'promotionId' },
+              },
+              propertyLinks: [{ _id: 'prop1' }],
+            },
+          ],
+          loans: [{ _id: 'loanId' }, {}],
+        },
+      });
+
+      const p1 = PromotionService.get('promotionId', { loanCount: 2 });
+      expect(p1.loanCount).to.equal(2);
+
+      PromotionService.removeLoan({
+        promotionId: 'promotionId',
+        loanId: 'loanId',
+      });
+
+      const p2 = PromotionService.get('promotionId', { loanCount: 2 });
+      expect(p2.loanCount).to.equal(1);
     });
   });
 

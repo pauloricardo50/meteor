@@ -21,7 +21,7 @@ import PromotionLotLoansTable from './PromotionLotLoansTable';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
 
-const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
+const PromotionLotDetail = ({ promotionLot, children }) => {
   const { lots = [], _id: promotionLotId, status, documents } = promotionLot;
   const {
     permissions: { canModifyLots, canSeeCustomers, canManageDocuments },
@@ -34,11 +34,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
     <div className="promotion-lot-detail">
       <div className="flex mb-8">
         {canModifyLots && (
-          <PromotionLotModifier
-            className="mr-8"
-            promotionLot={promotionLot}
-            promotion={promotion}
-          />
+          <PromotionLotModifier className="mr-8" promotionLot={promotionLot} />
         )}
         {canManageDocuments && (
           <LotDocumentsManager
@@ -106,6 +102,8 @@ export default compose(
         lots: { type: 1, name: 1, value: 1 },
         properties: { ...formProperty(), name: 1 },
         status: 1,
+        promotionLotGroupIds: 1,
+        promotion: { promotionLotGroups: 1 },
       },
     }),
     dataName: 'promotionLot',

@@ -87,7 +87,8 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 0,
     'no-nested-ternary': 0,
-    'newline-per-chained-call': [2, { ignoreChainWithDepth: 4 }],
+    // Let this be managed by prettier
+    'newline-per-chained-call': 0,
     'prefer-arrow-callback': 0,
     // Let this rule be managed by prettier
     // https://github.com/prettier/prettier/issues/5309
@@ -172,14 +173,9 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/anchor-is-valid': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
-    'jsx-a11y/label-has-for': [
-      2,
-      {
-        components: ['Label'],
-        required: { every: ['id'] },
-        allowChildren: false,
-      },
-    ],
+    // Way too much configuration required for these rules to work..
+    'jsx-a11y/label-has-for': 0,
+    'jsx-a11y/label-has-associated-control': 0,
 
     // eslint-plugin-react rules
 

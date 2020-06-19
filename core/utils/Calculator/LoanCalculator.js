@@ -676,25 +676,30 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     hasCompleteStructure({ loan }) {
-      return loan.structures.some(({ id }) => {
-        const fundsRequired = this.getRequiredOwnFunds({
-          loan,
-          structureId: id,
-        });
+      return loan.structures.some(
+        ({ id, wantedLoan, propertyValue, propertyId, promotionOptionId }) => {
+          if (!(propertyValue || propertyId || promotionOptionId)) {
+            return false;
+          }
 
-        if (fundsRequired === 0) {
+          if (!wantedLoan) {
+            return false;
+          }
+
+          if (!this.getRequiredOwnFunds({ loan, structureId: id })) {
+            return false;
+          }
+
+          if (
+            !this.isMissingOwnFunds({ loan, structureId: id }) &&
+            !this.hasTooMuchOwnFunds({ loan, structureId: id })
+          ) {
+            return true;
+          }
+
           return false;
-        }
-
-        if (
-          !this.isMissingOwnFunds({ loan, structureId: id }) &&
-          !this.hasTooMuchOwnFunds({ loan, structureId: id })
-        ) {
-          return true;
-        }
-
-        return false;
-      });
+        },
+      );
     }
 
     getRequiredPledgedOwnFunds({ loan, structureId }) {

@@ -100,7 +100,6 @@ class PromotionService extends CollectionService {
   inviteUser({
     promotionId,
     userId,
-    isNewUser,
     pro = {},
     promotionLotIds,
     showAllLots,
@@ -135,12 +134,7 @@ class PromotionService extends CollectionService {
       shareSolvency,
     });
 
-    if (isNewUser) {
-      const admin = UserService.get(promotion.assignedEmployeeId, { _id: 1 });
-      AssigneeService.assignAdminToUser({ userId, adminId: admin?._id });
-    }
-
-    return Promise.resolve(loanId);
+    return loanId;
   }
 
   addProUser({ promotionId, userId, permissions = {} }) {

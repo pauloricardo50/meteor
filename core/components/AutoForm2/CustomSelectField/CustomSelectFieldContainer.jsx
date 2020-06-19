@@ -222,13 +222,7 @@ export default Component => {
         return <span className="error">{error.message || error.reason}</span>;
       }
 
-      if (loading) {
-        return <Loading small />;
-      }
-
-      if (!values || !values.length) {
-        return null;
-      }
+      const isUsable = !loading && values?.length > 0;
 
       return (
         <Component
@@ -240,6 +234,7 @@ export default Component => {
           renderValue={this.renderValue}
           transform={this.makeTransform() || this.formatOption}
           data={data}
+          disabled={rest.disabled || !isUsable}
         />
       );
     }

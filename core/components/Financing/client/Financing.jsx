@@ -63,4 +63,5 @@ const Financing = ({ loan }) => {
     </ScrollSync>
   );
 };
+
 export default FinancingContainer(Financing);

@@ -374,7 +374,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
+        !!UserService.getUserByPasswordResetToken({
+          token: 'some unknown token',
         }),
       ).to.equal(false);
     });
@@ -508,7 +509,7 @@ describe('UserService', function() {
       ).to.throw('Ce client existe déjà');
     });
 
-    it('invites user to promotion', async () => {
+    it('invites user to promotion', () => {
       generator({
         properties: { _id: 'prop' },
         promotions: {
@@ -529,7 +530,7 @@ describe('UserService', function() {
         proId,
         admin,
         pro,
-      } = await UserService.proInviteUser({
+      } = UserService.proInviteUser({
         user: {
           ...userToInvite,
           showAllLots: false,
@@ -563,7 +564,43 @@ describe('UserService', function() {
       expect(loan.promotionOptionLinks.length).to.equal(1);
     });
 
-    it('invites user to multiple promotions', async () => {
+    it('does not assign the promotionAssignee if he/she is away', () => {
+      generator({
+        users: [
+          { _id: 'admin1', _factory: ROLES.ADVISOR, roundRobinTimeout: 'Gone' },
+          { _id: 'admin2', _factory: ROLES.ADVISOR },
+        ],
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'admin1',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
+      // Force assignee to go to admin2
+      UserService.update({
+        userId: 'adminId',
+        object: { roundRobinTimeout: 'Gone too' },
+      });
+      const { admin } = UserService.proInviteUser({
+        user: {
+          ...userToInvite,
+          showAllLots: false,
+          promotionLotIds: ['pLotId'],
+        },
+        promotionIds: ['promotionId'],
+        proUserId: 'proId',
+      });
+
+      expect(admin._id).to.equal('admin2');
+    });
+
+    it('invites user to multiple promotions', () => {
       generator({
         promotions: [
           {
@@ -589,7 +626,7 @@ describe('UserService', function() {
         ],
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
@@ -617,7 +654,7 @@ describe('UserService', function() {
       expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
     });
 
-    it('throws if user is already invited to promotion', async () => {
+    it('throws if user is already invited to promotion', () => {
       generator({
         promotions: {
           _id: 'promotionId',
@@ -631,7 +668,7 @@ describe('UserService', function() {
         },
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         promotionIds: ['promotionId'],
         proUserId: 'proId',
@@ -691,7 +728,7 @@ describe('UserService', function() {
       ).to.equal(true);
     });
 
-    it('invites user to multiple pro properties', async () => {
+    it('invites user to multiple pro properties', () => {
       generator({
         properties: [
           {
@@ -713,7 +750,7 @@ describe('UserService', function() {
         ],
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId1', 'propertyId2'],
         proUserId: 'proId',
@@ -736,7 +773,7 @@ describe('UserService', function() {
       expect(loan.propertyIds[1]).to.equal('propertyId2');
     });
 
-    it('invites user to multiple pro properties and promotions', async () => {
+    it('invites user to multiple pro properties and promotions', () => {
       generator({
         properties: [
           {
@@ -780,7 +817,7 @@ describe('UserService', function() {
         ],
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId1', 'propertyId2'],
         promotionIds: ['promotionId1', 'promotionId2'],
@@ -923,7 +960,7 @@ describe('UserService', function() {
       expect(ctaUrl).to.include(`enroll-account/${token}`);
     });
 
-    it('throws if user is already invited to pro property', async () => {
+    it('throws if user is already invited to pro property', () => {
       generator({
         properties: {
           _id: 'propertyId',
@@ -935,7 +972,7 @@ describe('UserService', function() {
         },
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId'],
         proUserId: 'proId',
@@ -950,7 +987,7 @@ describe('UserService', function() {
       ).to.throw('Ce client est déjà invité à ce bien immobilier');
     });
 
-    it('invites existing users to a new promotion', async () => {
+    it('invites existing users to a new promotion', () => {
       generator({
         users: {
           _id: 'userId',
@@ -968,7 +1005,7 @@ describe('UserService', function() {
         },
       });
 
-      const { isNewUser, proId } = await UserService.proInviteUser({
+      const { isNewUser, proId } = UserService.proInviteUser({
         user: {
           email: 'Test@e-potek.ch',
           firstName: 'John',
@@ -1078,7 +1115,7 @@ describe('UserService', function() {
       expect(emails.length).to.equal(1);
     });
 
-    it('sets the right assignee to the user if it is a promotion', async () => {
+    it('sets the right assignee to the user if it is a promotion', () => {
       generator({
         properties: { _id: 'prop' },
         promotions: {
@@ -1094,7 +1131,7 @@ describe('UserService', function() {
         users: { _id: 'adminId2' },
       });
 
-      const { userId } = await UserService.proInviteUser({
+      const { userId } = UserService.proInviteUser({
         user: {
           ...userToInvite,
           showAllLots: false,

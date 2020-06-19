@@ -72,8 +72,10 @@ export default compose(
   withState(
     'expanded',
     'changeExpanded',
-    ({ sectionProps: { Calculator, loan } }) =>
-      !Calculator.hasCompleteStructure({ loan }),
+    ({ sectionProps: { Calculator, loan } }) => {
+      const hasCompleteStructure = Calculator.hasCompleteStructure({ loan });
+      return !hasCompleteStructure;
+    },
   ),
   lifecycle({
     componentDidMount() {

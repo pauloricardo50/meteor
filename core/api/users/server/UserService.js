@@ -43,7 +43,7 @@ export class UserServiceClass extends CollectionService {
         ...mergedFragment,
       });
       if (candidateUsers.length === 1) {
-        user = candidateUsers[0];
+        [user] = candidateUsers;
       }
     }
 
@@ -77,6 +77,7 @@ export class UserServiceClass extends CollectionService {
     referredByUserId,
     role = ROLES.USER,
     sendEnrollmentEmail,
+    setAssignee = true,
     ...additionalData
   }) => {
     const newUserId = this.createUser({ options: { email, password }, role });
@@ -93,8 +94,10 @@ export class UserServiceClass extends CollectionService {
       });
     }
 
-    const assigneeService = new AssigneeService(newUserId);
-    assigneeService.setAssignee(assignedEmployeeId);
+    if (setAssignee) {
+      const assigneeService = new AssigneeService(newUserId);
+      assigneeService.setAssignee(assignedEmployeeId);
+    }
 
     this.setAcquisitionChannel({
       newUserId,
@@ -335,20 +338,24 @@ export class UserServiceClass extends CollectionService {
       );
     }
 
-    const { userId, pro, admin } = this.proCreateUser({
+    const { userId, pro } = this.proCreateUser({
       user,
       proUserId,
     });
 
     const loanId = LoanService.fullLoanInsert({ userId });
     LoanService.update({ loanId, object: { shareSolvency } });
+    const { assignedEmployee } = this.get(userId, {
+      assignedEmployee: { name: 1 },
+    });
 
-    return { userId, admin, pro, isNewUser: true };
+    return { userId, admin: assignedEmployee, pro, isNewUser: true };
   };
 
   proCreateUser = ({
     user: { email, firstName, lastName, phoneNumber },
     proUserId,
+    setAssignee,
   }) => {
     let pro;
 
@@ -372,14 +379,14 @@ export class UserServiceClass extends CollectionService {
         lastName,
         phoneNumbers: [phoneNumber].filter(x => x),
         referredByUserId: proUserId,
+        setAssignee,
       });
     } else {
       const { _id: existingUserId } = this.getByEmail(email, { _id: 1 });
       userId = existingUserId;
     }
 
-    const user = this.get(userId, { assignedEmployee: { name: 1 } });
-    return { userId, admin: user.assignedEmployee, pro, isNewUser };
+    return { userId, pro, isNewUser };
   };
 
   proInviteUser = ({
@@ -400,38 +407,30 @@ export class UserServiceClass extends CollectionService {
     }
 
     const { invitedBy } = user;
-    const { userId, admin, pro, isNewUser } = this.proCreateUser({
+    const { userId, pro, isNewUser } = this.proCreateUser({
       user,
       proUserId: proUserId || invitedBy,
+      setAssignee: false, // Wait for loans to be created before setting it manually
     });
 
-    let promises = [];
-
     if (propertyIds && propertyIds.length) {
-      promises = [
-        ...promises,
-        PropertyService.inviteUser({
-          propertyIds,
-          userId,
-          shareSolvency,
-        }),
-      ];
+      PropertyService.inviteUser({
+        propertyIds,
+        userId,
+        shareSolvency,
+      });
     }
     if (promotionIds && promotionIds.length) {
-      promises = [
-        ...promises,
-        ...promotionIds.map(promotionId =>
-          PromotionService.inviteUser({
-            promotionId,
-            userId,
-            isNewUser,
-            pro,
-            promotionLotIds: user.promotionLotIds,
-            showAllLots: user.showAllLots,
-            shareSolvency,
-          }),
-        ),
-      ];
+      promotionIds.map(promotionId =>
+        PromotionService.inviteUser({
+          promotionId,
+          userId,
+          pro,
+          promotionLotIds: user.promotionLotIds,
+          showAllLots: user.showAllLots,
+          shareSolvency,
+        }),
+      );
     }
     if (properties && properties.length) {
       const internalPropertyIds = properties.map(property => {
@@ -458,23 +457,28 @@ export class UserServiceClass extends CollectionService {
         return propertyId;
       });
 
-      promises = [
-        ...promises,
-        PropertyService.inviteUser({
-          propertyIds: internalPropertyIds,
-          userId,
-          shareSolvency,
-        }),
-      ];
+      PropertyService.inviteUser({
+        propertyIds: internalPropertyIds,
+        userId,
+        shareSolvency,
+      });
     }
 
-    return Promise.all(promises).then(() => ({
+    if (isNewUser) {
+      const assigneeService = new AssigneeService(userId);
+      assigneeService.setAssignee();
+    }
+    const { assignedEmployee: admin } = this.get(userId, {
+      assignedEmployee: { name: 1 },
+    });
+
+    return {
       userId,
       isNewUser,
       proId: proUserId || invitedBy,
       admin,
       pro,
-    }));
+    };
   };
 
   getEnrollmentUrl({ userId }) {

@@ -75,6 +75,7 @@ Object.values(ROLES).forEach(role => {
     lastName: () => faker.name.lastName(),
     firstName: () => faker.name.firstName(),
     phoneNumbers: [TEST_PHONE],
+    isInRoundRobin: role === ROLES.ADVISOR,
   }).after(({ _id }) => {
     Roles.setUserRoles(_id, role);
   });

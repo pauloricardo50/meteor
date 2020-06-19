@@ -8,6 +8,7 @@ import { proPromotions as promotionsFragment } from '../../api/fragments';
 import { proPromotions } from '../../api/promotions/queries';
 import { createRoute } from '../../utils/routerUtils';
 import StatusLabel from '../StatusLabel';
+import TestBadge from '../TestBadge';
 import T from '../Translation';
 
 const makeMapPromotion = history => ({
@@ -20,14 +21,20 @@ const makeMapPromotion = history => ({
   reservedPromotionLots,
   availablePromotionLots,
   promotionLots = [],
-  loans = [],
+  loanCount,
+  isTest,
 }) => ({
   id: _id,
   columns: [
     name,
     {
       raw: status,
-      label: <StatusLabel status={status} collection={_collection} />,
+      label: (
+        <div>
+          <StatusLabel status={status} collection={_collection} />
+          {isTest && <TestBadge />}
+        </div>
+      ),
     },
     {
       raw: createdAt && createdAt.getTime(),
@@ -37,7 +44,7 @@ const makeMapPromotion = history => ({
     availablePromotionLots.length,
     reservedPromotionLots.length,
     soldPromotionLots.length,
-    loans.length,
+    loanCount,
   ],
   handleClick: () =>
     history.push(createRoute('/promotions/:promotionId', { promotionId: _id })),
@@ -66,7 +73,20 @@ export default compose(
   withSmartQuery({
     query: proPromotions,
     queryOptions: { reactive: false },
-    params: { $body: promotionsFragment() },
+    params: {
+      $body: {
+        availablePromotionLots: 1,
+        createdAt: 1,
+        isTest: 1,
+        loanCount: 1,
+        name: 1,
+        promotionLotLinks: 1,
+        promotionLots: { _id: 1 },
+        reservedPromotionLots: 1,
+        soldPromotionLots: 1,
+        status: 1,
+      },
+    },
     dataName: 'promotions',
     renderMissingDoc: false,
   }),

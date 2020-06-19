@@ -59,8 +59,8 @@ const fragment = merge({}, calculatorLoan(), {
   enableOffers: 1,
   lenders: {
     offers: {
-      enableOffer: 1,
       conditions: 1,
+      enableOffer: 1,
       withCounterparts: 1,
     },
     organisation: { logo: 1 },
@@ -73,10 +73,10 @@ const fragment = merge({}, calculatorLoan(), {
     promotionLots: { reducedStatus: 1, value: 1 },
   },
   promotions: {
-    name: 1,
-    lenderOrganisationLink: 1,
-    status: 1,
     documents: 1,
+    lenderOrganisationLink: 1,
+    name: 1,
+    status: 1,
     users: { name: 1, organisations: { name: 1 } },
   },
   properties: { address: 1, $options: { sort: { createdAt: 1 } } },

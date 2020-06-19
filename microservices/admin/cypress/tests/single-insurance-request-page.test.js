@@ -85,9 +85,7 @@ describe('Single Insurance Request Page', () => {
     cy.get('input[name="assigneeLinks.0.isMain"]').uncheck();
     cy.get('button.list-add-field').click();
     cy.setSelect('"assigneeLinks.1._id"', 0);
-    cy.get('input[name="assigneeLinks.1.percent"]')
-      .clear()
-      .type('60');
+    cy.get('input[name="assigneeLinks.1.percent"]').clear().type('60');
     cy.get('input[name="assigneeLinks.1.isMain"]').check();
     cy.get('input[name="updateUserAssignee"]').check();
     cy.get('[role="dialog"] form').submit();
@@ -98,9 +96,7 @@ describe('Single Insurance Request Page', () => {
       'exist',
     );
     cy.contains('.timeline', 'Dossier créé').should('exist');
-    cy.get('.assignees')
-      .children()
-      .should('have.length', 2);
+    cy.get('.assignees').children().should('have.length', 2);
 
     // Check each tab
     cy.contains('.core-tabs-tab', 'Assurés').click();
@@ -131,22 +127,14 @@ describe('Single Insurance Request Page', () => {
     cy.contains('.tasks-table', 'Cypress Task').should('exist');
 
     // Add activity
-    cy.get('.timeline')
-      .children()
-      .should('have.length', 1);
+    cy.get('.timeline').children().should('have.length', 1);
     cy.contains('.single-insurance-request-page button', 'Activité').click();
     cy.get('input[name=docId]').check();
     cy.get('input[name=title]').type('Cypress Activity');
     cy.setSelect('type', 6);
     cy.get('[role="dialog"] form').submit();
-    cy.get('.timeline')
-      .children()
-      .should('have.length', 2);
-    cy.get('.timeline')
-      .children()
-      .its(1)
-      .contains('Cypress')
-      .should('exist');
+    cy.get('.timeline').children().should('have.length', 2);
+    cy.get('.timeline').children().its(1).contains('Cypress').should('exist');
   });
 
   it('can add insurances and revenues', () => {
@@ -166,9 +154,7 @@ describe('Single Insurance Request Page', () => {
     cy.contains('[role="dialog"] label', 'Produit').should('exist');
     cy.setSelect('insuranceProductId', 0);
     cy.get('input[name="premium"]').type(100);
-    cy.get('input[name="premiumFrequency"]')
-      .first()
-      .check();
+    cy.get('input[name="premiumFrequency"]').first().check();
     cy.get('input[name="startDate"]').type('2020-01-01');
     cy.contains('Retraite').click();
     cy.get('[role="dialog"] form').submit();
@@ -201,12 +187,8 @@ describe('Single Insurance Request Page', () => {
 
     // Link existing loan
     cy.contains('Lier un dossier').click();
-    cy.get('[role="dialog"] input')
-      .its(1)
-      .type(' ');
-    cy.contains('[role="dialog"] button', 'Réutiliser')
-      .first()
-      .click();
+    cy.get('[role="dialog"] input').its(1).type(' ');
+    cy.contains('[role="dialog"] button', 'Réutiliser').first().click();
 
     cy.get('.admin-section .icon-link').should('have.length', 1);
   });

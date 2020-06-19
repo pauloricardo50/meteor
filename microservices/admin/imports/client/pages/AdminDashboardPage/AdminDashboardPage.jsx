@@ -12,7 +12,6 @@ import AdvisorsStatus from './AdvisorsStatus';
 
 const AdminDashboardPage = ({ history }) => (
   <>
-    <AdminDashboardStats />
     <section className="card1 card-top admin-dashboard-page">
       <Helmet>
         <title>Dashboard</title>
@@ -38,6 +37,8 @@ const AdminDashboardPage = ({ history }) => (
       </h2>
       <TasksTableWithPriority />
     </section>
+
+    <AdminDashboardStats />
   </>
 );
 

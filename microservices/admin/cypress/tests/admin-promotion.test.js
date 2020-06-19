@@ -162,6 +162,7 @@ describe('Admin promotion', () => {
         .click()
         .get(`[data-value=VALIDATED]`)
         .click();
+      cy.get('input[name=date]').type('2020-01-01T10:10');
 
       cy.contains('Ok').click();
       cy.contains('Oui').click();
