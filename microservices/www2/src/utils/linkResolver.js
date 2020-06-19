@@ -14,6 +14,5 @@ exports.linkResolver = function linkResolver(doc) {
     page: `/${shortLang}/${uid}`,
   }[type];
 
-  // TODO: default may not be root, depending upon how localized homepages are configured
   return resolvedLink || '/';
 };

@@ -73,14 +73,7 @@ export const query = graphql`
       allPosts(lang: $lang, first: 3, sortBy: date_DESC) {
         edges {
           node {
-            _meta {
-              id
-              uid
-              tags
-              type
-              lang
-            }
-            title
+            ...prismicPostFields
             date
             body {
               ... on PRISMIC_PostBodyHero {
@@ -121,14 +114,7 @@ export const query = graphql`
                       url
                     }
                     ... on PRISMIC_Page {
-                      _linkType
-                      _meta {
-                        id
-                        uid
-                        type
-                        lang
-                      }
-                      name
+                      ...prismicPageFields
                     }
                   }
                   cta_text_2
@@ -138,14 +124,7 @@ export const query = graphql`
                       url
                     }
                     ... on PRISMIC_Page {
-                      _linkType
-                      _meta {
-                        id
-                        uid
-                        type
-                        lang
-                      }
-                      name
+                      ...prismicPageFields
                     }
                   }
                 }
@@ -167,7 +146,12 @@ export const query = graphql`
   }
 `;
 
-const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
+const Post = ({
+  data,
+  lang,
+  location,
+  pageContext: { rootQuery, ...pageContext },
+}) => {
   const {
     post: blogPost,
     allPosts: { edges: recentPosts },
@@ -242,7 +226,10 @@ const Post = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
           </div>
         )}
 
-        <PageShare title={RichText.asText(blogPost.title)} />
+        <PageShare
+          title={RichText.asText(blogPost.title)}
+          location={location}
+        />
 
         {articleNewsletterSignup && (
           <NewsletterSignup {...articleNewsletterSignup} placement="article" />

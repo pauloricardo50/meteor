@@ -27,13 +27,7 @@ const useAllMenus = () => {
                         _linkType
                         __typename
                         ... on PRISMIC_Page {
-                          _meta {
-                            id
-                            uid
-                            type
-                            tags
-                            lang
-                          }
+                          ...prismicPageFields
                         }
                       }
                     }
@@ -43,13 +37,7 @@ const useAllMenus = () => {
                         _linkType
                         __typename
                         ... on PRISMIC_Page {
-                          _meta {
-                            id
-                            uid
-                            type
-                            tags
-                            lang
-                          }
+                          ...prismicPageFields
                         }
                       }
                     }
