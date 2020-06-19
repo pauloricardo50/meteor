@@ -14,14 +14,6 @@ import { ROLES } from '../../users/userConstants';
 const ENABLE_API = Meteor.isProduction || Meteor.isTest;
 // const ENABLE_API = true;
 
-// const APP_ID = 'fzxlw28z';
-
-// TODO:Put these in secrets manager
-// const IDENTITY_VERIFICATION_SECRET = 'AR5jRm9Amz-1odTHjRWdOUbI-f4wzyglPsk_D993';
-// const ACCESS_TOKEN =
-//   'dG9rOmUxYWNhZGY3XzI2ODNfNDM5Zl9hOGRjXzA4MDM3ZjM5MzBlNDoxOjA=';
-// export const CLIENT_SECRET = '8aa9e62d-f979-4dfc-ac8c-f4c36bc8eabf';
-
 const API_PATH = 'https://api.intercom.io';
 const INTERCOM_WEBHOOK_ANALYTICS_USER_ID = 'intercom_webhook';
 
