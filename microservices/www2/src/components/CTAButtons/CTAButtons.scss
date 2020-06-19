@@ -1,3 +1,7 @@
 .cta-buttons {
   display: inherit;
 }
+
+.cta--button + .cta--button {
+  margin-left: 20px;
+}

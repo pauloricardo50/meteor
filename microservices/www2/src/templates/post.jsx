@@ -108,6 +108,7 @@ export const query = graphql`
                   content
                   illustration
                   cta_text_1
+                  cta_style_1
                   cta_link_1 {
                     ... on PRISMIC__ExternalLink {
                       _linkType
@@ -118,6 +119,7 @@ export const query = graphql`
                     }
                   }
                   cta_text_2
+                  cta_style_2
                   cta_link_2 {
                     ... on PRISMIC__ExternalLink {
                       _linkType

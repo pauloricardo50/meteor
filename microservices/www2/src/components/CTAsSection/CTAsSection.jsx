@@ -10,22 +10,28 @@ const CTAsSection = ({ primary, fields }) => (
         // reformat buttons as expected by CTAButtons
         const buttons = [
           {
+            cta_icon: cta.cta_icon_1,
             cta_text: cta.cta_text_1,
             cta_link: cta.cta_link_1,
+            cta_style: cta.cta_style_1,
           },
           {
+            cta_icon: cta.cta_icon_2,
             cta_text: cta.cta_text_2,
             cta_link: cta.cta_link_2,
+            cta_style: cta.cta_style_2,
           },
         ];
 
         return (
           <div key={idx} className="cta-block">
-            <img
-              className="cta-block__image"
-              src={cta.illustration.url}
-              alt=""
-            />
+            {cta.illustration?.url && (
+              <img
+                className="cta-block__image"
+                src={cta.illustration.url}
+                alt=""
+              />
+            )}
 
             <div className="cta-block__content">
               {RichText.render(cta.content)}
