@@ -4,19 +4,11 @@ import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 
-// TODO: refactor to use fragments
 export const query = graphql`
   query PRISMIC_PAGE($uid: String!, $lang: String!) {
     prismic {
       page(uid: $uid, lang: $lang) {
-        _meta {
-          id
-          uid
-          type
-          tags
-          lang
-        }
-        name
+        ...prismicPageFields
         body {
           ... on PRISMIC_PageBodyBlog_posts {
             type
@@ -53,22 +45,10 @@ export const query = graphql`
                   _linkType
                 }
                 ... on PRISMIC_Page {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  name
+                  ...prismicPageFields
                 }
                 ... on PRISMIC_Post {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  title
+                  ...prismicPostFields
                 }
               }
               cta_text_2
@@ -80,22 +60,10 @@ export const query = graphql`
                   _linkType
                 }
                 ... on PRISMIC_Page {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  name
+                  ...prismicPageFields
                 }
                 ... on PRISMIC_Post {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  title
+                  ...prismicPostFields
                 }
               }
             }
@@ -128,13 +96,7 @@ export const query = graphql`
                   _linkType
                 }
                 ... on PRISMIC_Page {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  name
+                  ...prismicPageFields
                 }
               }
             }
@@ -170,13 +132,7 @@ export const query = graphql`
                   _linkType
                 }
                 ... on PRISMIC_Page {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  name
+                  ...prismicPageFields
                 }
               }
             }
@@ -228,12 +184,7 @@ export const query = graphql`
                 _linkType
                 __typename
                 ... on PRISMIC_Page {
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
+                  ...prismicPageFields
                 }
               }
             }
@@ -298,14 +249,7 @@ export const query = graphql`
                   _linkType
                 }
                 ... on PRISMIC_Page {
-                  _linkType
-                  _meta {
-                    id
-                    uid
-                    type
-                    lang
-                  }
-                  name
+                  ...prismicPageFields
                 }
               }
             }

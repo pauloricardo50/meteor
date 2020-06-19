@@ -9,8 +9,8 @@ import WhatsappIcon from 'react-share/lib/WhatsappIcon';
 import WhatsappShareButton from 'react-share/lib/WhatsappShareButton';
 import './PageShare.scss';
 
-const PageShare = ({ title }) => {
-  const url = window.location.href;
+const PageShare = ({ title, location }) => {
+  const url = location.href;
   const iconColor = '#2e7eff';
   const bgStyle = {
     fill: 'transparent',
