@@ -18,10 +18,10 @@ Our brand website is built on the following stack:
 ### Development
 
 1. Install the gatsby CLI: `npm install -g gatsby-cli`
-2. Add 2 environment files `.env.development` and `.env.production` with the repo and api key from Prismic (https://e-potek.prismic.io/settings/apps/):
+2. Add 2 environment files `.env.development` and `.env.production` with the api key from Prismic (called "Permanent access tokens") (https://e-potek.prismic.io/settings/apps/):
 
 ```
-PRISMIC_REPO=
+PRISMIC_REPO=e-potek
 PRISMIC_API_KEY=
 ```
 
