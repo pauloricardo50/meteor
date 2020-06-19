@@ -5,3 +5,12 @@ export const CHECKLIST_ITEM_STATUS = {
   VALIDATED: 'VALIDATED',
   VALIDATED_BY_ADMIN: 'VALIDATED_BY_ADMIN',
 };
+
+export const CHECKLIST_QUERIES = {
+  LOAN_CHECKLISTS: 'LOAN_CHECKLISTS',
+};
+
+export const CHECKLIST_ITEM_ACCESS = {
+  USER: 'user',
+  ADMIN: 'admin',
+};

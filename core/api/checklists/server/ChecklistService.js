@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import CollectionService from '../../helpers/server/CollectionService';
@@ -16,7 +17,7 @@ class ChecklistService extends CollectionService {
     });
   }
 
-  updateItem({ checklistId, itemId, title, description }) {
+  updateItem({ checklistId, itemId, title, description, access }) {
     return this.baseUpdate(
       { _id: checklistId, 'items.id': itemId },
       {
@@ -24,6 +25,7 @@ class ChecklistService extends CollectionService {
           'items.$.title': title,
           'items.$.description': description,
           'items.$.updatedAt': new Date(),
+          'items.$.access': access,
         },
       },
     );
@@ -41,7 +43,36 @@ class ChecklistService extends CollectionService {
     );
   }
 
-  reorderItems({ checklistId, itemIds }) {}
+  reorderItems({ checklistId, itemIds }) {
+    const { items } = this.get(checklistId, { items: 1 });
+
+    if (items.length !== itemIds.length) {
+      throw new Meteor.Error(
+        'itemIds should have the same length as the item array',
+      );
+    }
+
+    return this.baseUpdate(checklistId, {
+      $set: {
+        items: items.sort(
+          ({ id: idA }, { id: idB }) =>
+            itemIds.indexOf(idA) - itemIds.indexOf(idB),
+        ),
+      },
+    });
+  }
+
+  removeItem({ checklistId, itemId }) {
+    return this.baseUpdate(checklistId, { $pull: { items: { id: itemId } } });
+  }
+
+  changeChecklist({ fromChecklistId, toChecklistId, itemId }) {
+    const fromChecklist = this.get(fromChecklistId, { items: 1 });
+    const item = fromChecklist.items.find(({ id }) => id === itemId);
+
+    this.removeItem({ checklistId: fromChecklistId, itemId });
+    return this.baseUpdate(toChecklistId, { $push: { items: item } });
+  }
 }
 
 export default new ChecklistService();

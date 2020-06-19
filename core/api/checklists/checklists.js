@@ -4,6 +4,7 @@ import { createCollection } from '../helpers/collectionHelpers';
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 import {
   CHECKLISTS_COLLECTION,
+  CHECKLIST_ITEM_ACCESS,
   CHECKLIST_ITEM_STATUS,
 } from './checklistConstants';
 
@@ -24,7 +25,11 @@ const ChecklistSchema = new SimpleSchema({
     defaultValue: CHECKLIST_ITEM_STATUS.TO_DO,
   },
   'items.$.statusDate': { type: Date, defaultValue: new Date() },
-  'items.$.access': { type: String, defaultValue: new Date() },
+  'items.$.access': {
+    type: String,
+    allowedValues: Object.values(CHECKLIST_ITEM_ACCESS),
+    defaultValue: CHECKLIST_ITEM_ACCESS.USER,
+  },
 });
 
 const Checklists = createCollection(CHECKLISTS_COLLECTION, ChecklistSchema);
