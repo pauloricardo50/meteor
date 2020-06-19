@@ -45,9 +45,7 @@ class ActivityService extends CollectionService {
       { _id: 1 },
     );
     this.rawCollection.update(
-      {
-        _id: createdAtActivity._id,
-      },
+      { _id: createdAtActivity._id },
       { $set: { date: createdAt } },
     );
   }

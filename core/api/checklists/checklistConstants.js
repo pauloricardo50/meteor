@@ -1,0 +1,7 @@
+export const CHECKLISTS_COLLECTION = 'checklists';
+
+export const CHECKLIST_ITEM_STATUS = {
+  TO_DO: 'TO_DO',
+  VALIDATED: 'VALIDATED',
+  VALIDATED_BY_ADMIN: 'VALIDATED_BY_ADMIN',
+};
