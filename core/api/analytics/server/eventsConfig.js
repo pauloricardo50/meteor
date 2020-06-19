@@ -234,6 +234,20 @@ export const EVENTS_CONFIG = {
       { name: 'assigneeName', optional: true },
     ],
   },
+  [EVENTS.INTERCOM_OPENED_MESSENGER]: {
+    name: 'User Opened Intercom messenger',
+    properties: [
+      { name: 'userEmail', optional: true },
+      { name: 'userName', optional: true },
+      { name: 'userId', optional: true },
+      { name: 'referringUserId', optional: true },
+      { name: 'referringUserName', optional: true },
+      { name: 'referringOrganisationId', optional: true },
+      { name: 'referringOrganisationName', optional: true },
+      { name: 'assigneeId', optional: true },
+      { name: 'assigneeName', optional: true },
+    ],
+  },
 };
 
 export const TRACKING_ORIGIN = {

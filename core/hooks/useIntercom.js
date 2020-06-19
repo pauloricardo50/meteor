@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
 import { useEffect } from 'react';
+import useImpersonatedSession from 'imports/core/hooks/useImpersonatedSession';
 
+import { TRACKING_COOKIE } from '../api/analytics/analyticsConstants';
+import { analyticsOpenedIntercom } from '../api/analytics/methodDefinitions';
 import {
   getIntercomSettings,
   updateIntercomVisitorTrackingId,
@@ -23,6 +26,18 @@ export const IntercomAPI = (method, ...args) => {
   } else {
     console.warn('Intercom not initialized yet');
   }
+};
+
+const getTrackingIds = () => {
+  const visitorId = window.Intercom('getVisitorId');
+  const cookies = parseCookies();
+  const trackingId = cookies?.[TRACKING_COOKIE];
+  const intercomId = Object.keys(cookies).reduce(
+    (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
+    undefined,
+  );
+
+  return { visitorId, trackingId, intercomId };
 };
 
 const getIntercomUserSettings = async () => {
@@ -58,11 +73,15 @@ const initializeIntercom = async () => {
       s.src = `https://widget.intercom.io/widget/${app_id}`;
       const x = d.getElementsByTagName('script')[0];
       x.parentNode && x.parentNode.insertBefore(s, x);
+
       s.addEventListener('load', function () {
+        updateIntercomVisitorTrackingId.run(getTrackingIds());
+
         window.Intercom('onShow', function () {
-          const visitorId = window.Intercom('getVisitorId');
-          const cookies = parseCookies();
-          updateIntercomVisitorTrackingId.run({ visitorId, cookies });
+          updateIntercomVisitorTrackingId.run(getTrackingIds());
+          analyticsOpenedIntercom.run({
+            trackingId: getTrackingIds().trackingId,
+          });
         });
       });
     };
@@ -77,16 +96,20 @@ const initializeIntercom = async () => {
 };
 
 const useIntercom = () => {
+  const [impersonatedSession] = useImpersonatedSession();
+  console.log('render');
   // Initialization
   useEffect(() => {
-    initializeIntercom();
+    if (!impersonatedSession?.shared) {
+      initializeIntercom();
 
-    return () => {
-      IntercomAPI('shutdown');
-      delete window.Intercom;
-      delete window.intercomSettings;
-    };
-  }, []);
+      return () => {
+        IntercomAPI('shutdown');
+        delete window.Intercom;
+        delete window.intercomSettings;
+      };
+    }
+  }, [impersonatedSession?.shared]);
 
   const currentUser = useCurrentUser();
 
@@ -96,13 +119,13 @@ const useIntercom = () => {
     if (previousUserId && !currentUser?._id) {
       // If the user was previously logged in, and logged out, shut down and start over
       IntercomAPI('shutdown');
-      const intercomSettings = getIntercomUserSettings();
-      IntercomAPI('boot', intercomSettings);
+      // const intercomSettings = getIntercomUserSettings();
+      IntercomAPI('boot');
     } else if (Meteor.userId) {
       // If the user was not logged in, just call 'update' to let Intercom know
       IntercomAPI('update');
     }
-  }, [currentUser]);
+  }, [currentUser?._id]);
 
   return null;
 };

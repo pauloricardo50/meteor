@@ -44,3 +44,9 @@ export const analyticsCTA = new Method({
   },
   doNotRefetchQueries: true,
 });
+
+export const analyticsOpenedIntercom = new Method({
+  name: 'analyticsOpenedIntercom',
+  params: { trackingId: Match.Maybe(String) },
+  doNotRefetchQueries: true,
+});

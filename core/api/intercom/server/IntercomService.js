@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 
-import { TRACKING_COOKIE } from '../../analytics/analyticsConstants';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
@@ -244,19 +243,17 @@ export class IntercomService {
     return data[0];
   }
 
-  async updateVisitorTrackingId({ context, visitorId, cookies = {} }) {
+  async updateVisitorTrackingId({
+    context,
+    visitorId,
+    trackingId,
+    intercomId,
+  }) {
     const isImpersonating = SessionService.isImpersonatedSession(
       context?.connection?.id,
     );
 
-    const trackingId = cookies[TRACKING_COOKIE];
-
-    const userId =
-      visitorId ||
-      Object.keys(cookies).reduce(
-        (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
-        undefined,
-      );
+    const userId = visitorId || intercomId;
 
     if (isImpersonating || !userId || !trackingId) {
       return;
@@ -273,20 +270,20 @@ export class IntercomService {
     const visitorType = visitor?.type;
     const visitorIsFound = !!visitor;
 
-    if (!visitorIsFound || visitor?.custom_attributes?.[TRACKING_COOKIE]) {
+    if (!visitorIsFound || visitor?.custom_attributes?.epotek_trackingid) {
       return;
     }
 
     if (visitorType === 'visitor') {
       return this.updateVisitor({
         visitorId: userId,
-        custom_attributes: { [TRACKING_COOKIE]: trackingId },
+        custom_attributes: { epotek_trackingid: trackingId },
       });
     }
     if (visitorType === 'contact') {
       return this.updateContact({
         contactId: visitor.id,
-        custom_attributes: { [TRACKING_COOKIE]: trackingId },
+        custom_attributes: { epotek_trackingid: trackingId },
       });
     }
   }

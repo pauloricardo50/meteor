@@ -608,7 +608,7 @@ describe('IntercomService', function () {
 
       const visitor = await IntercomService.updateVisitorTrackingId({
         visitorId: VISITOR_INTERCOM_ID,
-        cookies: { epotek_trackingid: '12345' },
+        trackingId: '12345',
       });
 
       expect(visitor.custom_attributes).to.deep.include({
@@ -621,7 +621,7 @@ describe('IntercomService', function () {
 
       await IntercomService.updateVisitorTrackingId({
         visitorId: CONTACT_INTERCOM_VISITOR_ID,
-        cookies: { epotek_trackingid: '12345' },
+        trackingId: '12345',
       });
 
       const contact = await IntercomService.getContact({
@@ -672,7 +672,7 @@ describe('IntercomService', function () {
 
       const response = await IntercomService.updateVisitorTrackingId({
         visitorId: 'wrong',
-        cookies: { epotek_trackingid: '12345' },
+        trackingId: '12345',
       });
       expect(logErrorSpy.args[0][0].error.message).to.include(
         'Visitor Not Found',
@@ -685,12 +685,12 @@ describe('IntercomService', function () {
 
       await IntercomService.updateVisitorTrackingId({
         visitorId: VISITOR_INTERCOM_ID,
-        cookies: { epotek_trackingid: '12345' },
+        trackingId: '12345',
       });
 
       const response = await IntercomService.updateVisitorTrackingId({
         visitorId: VISITOR_INTERCOM_ID,
-        cookies: { epotek_trackingid: '54321' },
+        trackingId: '54321',
       });
 
       const visitor = await IntercomService.getVisitor({

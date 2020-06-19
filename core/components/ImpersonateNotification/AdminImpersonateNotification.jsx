@@ -23,7 +23,7 @@ const getIcon = ({ followed, shared, userIsConnected }) => {
 const getText = ({ followed, shared, userIsConnected }) => {
   if (userIsConnected && !shared) {
     return (
-      <h4>
+      <h4 style={{ marginRight: '72px' }}>
         Le client est connecté{getIcon({ followed, shared, userIsConnected })}
       </h4>
     );
