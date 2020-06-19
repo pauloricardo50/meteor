@@ -18,9 +18,13 @@ import {
 } from '../methodDefinitions';
 import PropertyService from './PropertyService';
 
-propertyInsert.setHandler((context, params) => {
-  const userId = checkInsertUserId(params.userId);
-  return PropertyService.insert({ ...params, userId });
+propertyInsert.setHandler(({ userId }, params) => {
+  if (params.loanId) {
+    SecurityService.loans.isAllowedToUpdate(params.loanId);
+  } else {
+    SecurityService.checkUserIsAdmin(userId);
+  }
+  return PropertyService.insert({ ...params });
 });
 propertyInsert.setRateLimit({ rate: 1, timeRange: 30000 }); // Once every 30sec
 
