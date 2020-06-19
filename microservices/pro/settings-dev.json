@@ -38,5 +38,11 @@
   },
   "mailchimp": {
     "API_KEY": "5e8afd137d0894b8660e15a1df431abe-us15"
+  },
+  "intercom": {
+    "APP_ID": "b74k57hm",
+    "IDENTITY_VERIFICATION_SECRET":"-nyOpV5PeuTCKAsDR04eDp0at48zUn8aiYXEywfK",
+    "ACCESS_TOKEN":"dG9rOmYwMDYwZjQ1X2FmMWFfNGM2OV84Y2EwXzQ5OWFlNjM1NWY2NzoxOjA=",
+    "CLIENT_SECRET":"58b25051-6288-4eb2-b73a-571dee699740"
   }
 }

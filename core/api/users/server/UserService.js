@@ -64,7 +64,7 @@ export class UserServiceClass extends CollectionService {
     }
     Roles.setUserRoles(newUserId, role);
 
-    IntercomService.setIntercomId({ userId: newUserId });
+    IntercomService.getIntercomId({ userId: newUserId });
 
     return newUserId;
   };
