@@ -9,11 +9,20 @@ class ChecklistService extends CollectionService {
     super(Checklists);
   }
 
-  addItem({ checklistId, title, description }) {
-    const itemId = Random.id();
+  insertTemplate({ template }) {
+    const { items, ...data } = template;
 
+    return this.insert({ ...data, items: items.map(this.makeNewItem) });
+  }
+
+  makeNewItem(data) {
+    const itemId = Random.id();
+    return { ...data, id: itemId };
+  }
+
+  addItem({ checklistId, title, description }) {
     return this.baseUpdate(checklistId, {
-      $push: { items: { title, description, id: itemId } },
+      $push: { items: this.makeNewItem({ title, description }) },
     });
   }
 

@@ -1,3 +1,4 @@
+import '../checklists/server/caches';
 import '../insuranceRequests/server/caches';
 import '../insurances/server/caches';
 import '../lenderRules/server/caches';

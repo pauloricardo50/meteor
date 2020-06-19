@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 
 import { createCollection } from '../helpers/collectionHelpers';
-import { createdAt, updatedAt } from '../helpers/sharedSchemas';
+import { cacheField, createdAt, updatedAt } from '../helpers/sharedSchemas';
 import {
   CHECKLISTS_COLLECTION,
   CHECKLIST_ITEM_ACCESS,
@@ -30,6 +30,8 @@ const ChecklistSchema = new SimpleSchema({
     allowedValues: Object.values(CHECKLIST_ITEM_ACCESS),
     defaultValue: CHECKLIST_ITEM_ACCESS.USER,
   },
+  closingLoanCache: { type: Array, optional: true },
+  'closingLoanCache.$': cacheField,
 });
 
 const Checklists = createCollection(CHECKLISTS_COLLECTION, ChecklistSchema);

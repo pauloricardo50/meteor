@@ -18,6 +18,8 @@ import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
+import ChecklistService from '../../checklists/server/ChecklistService';
+import CHECKLIST_TEMPLATES from '../../checklists/server/checklistTemplates';
 import {
   calculatorLoan,
   lenderRules as lenderRulesFragment,
@@ -717,10 +719,11 @@ class LoanService extends CollectionService {
     // If there are at least 3 organisations, show a special label
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
-      ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      ? `${
+          secondMax && secondMax.organisationName
+        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
+          max.borrowRatio * 100
+        ).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -915,9 +918,7 @@ class LoanService extends CollectionService {
   }
 
   expireAnonymousLoans() {
-    const lastWeek = moment()
-      .subtract(5, 'days')
-      .toDate();
+    const lastWeek = moment().subtract(5, 'days').toDate();
 
     return this.baseUpdate(
       {
@@ -1198,6 +1199,37 @@ class LoanService extends CollectionService {
 
   linkProperty({ loanId, propertyId }) {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
+
+  addClosingChecklists({ loanId }) {
+    let template;
+    const { hasPromotion, purchaseType } = this.get(loanId, {
+      hasPromotion: 1,
+      purchaseType: 1,
+    });
+
+    if (hasPromotion) {
+      template = 'PROMOTION_ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+      template = 'ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      template = 'REFINANCING';
+    } else {
+      throw new Meteor.Error('Pas de template pour ce dossier');
+    }
+
+    const data = CHECKLIST_TEMPLATES[template];
+
+    data.forEach(checklist => {
+      const checklistId = ChecklistService.insertTemplate({
+        template: checklist,
+      });
+      this.addLink({
+        id: loanId,
+        linkName: 'closingChecklists',
+        linkId: checklistId,
+      });
+    });
   }
 }
 

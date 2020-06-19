@@ -196,6 +196,9 @@ const LoanSchema = new SimpleSchema({
       placeholder: '',
     },
   },
+  closingChecklistLinks: { type: Array, optional: true },
+  'closingChecklistLinks.$': Object,
+  'closingChecklistLinks.$._id': String,
 });
 
 export default LoanSchema;
