@@ -69,8 +69,8 @@ const Layout = ({ children, location, pageContext, pageName }) => {
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content={title} />
           <meta property="og:locale" content={pageContext.lang} />
-          <meta property="og:url" content={location.href} />
           <meta property="og:image" content={epotekLogo} />
+          {location && <meta property="og:url" content={location.href} />}
         </Helmet>
 
         <TopNav />
