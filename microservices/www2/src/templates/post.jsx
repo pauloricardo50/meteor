@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { RichText } from 'prismic-reactjs';
+import Helmet from 'react-helmet';
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
@@ -174,7 +175,27 @@ const Post = ({
   );
 
   return (
-    <Layout pageContext={pageContext} pageName={blogPost.title}>
+    <Layout
+      location={location}
+      pageContext={pageContext}
+      pageName={blogPost.title}
+    >
+      <Helmet>
+        <meta property="og:type" content="article" />
+        {blogPost.date && (
+          <meta property="article:published_time" content={blogPost.date} />
+        )}
+        {blogPost.author && (
+          <meta property="article:author" content={blogPost.author.name} />
+        )}
+        {blogPost._meta.tags && (
+          <meta property="article:tag" content={blogPost._meta.tags} />
+        )}
+        {/* TODO: need to get url of first hero image in blogPost.body -- OR --
+          add a meta tag in the hero when a specific prop is passed
+        <meta property="og:image" content={firstHeroImageUrl} />
+        */}
+      </Helmet>
       <div
         className="post"
         data-wio-id={blogPost._meta.id}

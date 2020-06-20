@@ -12,9 +12,10 @@ import {
   getLongLang,
 } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
+import epotekLogo from '../../images/epotek_logo.png';
 import '../../styles/main.scss';
 
-const Layout = ({ children, pageContext, pageName }) => {
+const Layout = ({ children, location, pageContext, pageName }) => {
   const data = useStaticQuery(graphql`
     query SiteQuery {
       site {
@@ -61,9 +62,15 @@ const Layout = ({ children, pageContext, pageName }) => {
       <LanguageContext.Provider value={[language, setLanguage]}>
         <Helmet>
           <html lang={pageLang} />
-          <meta charSet="utf-8" />
           <title>{`${title} | ${pageTitle}`}</title>
           <meta name="description" content={description} />
+          <meta name="og:title" content={pageTitle} />
+          <meta name="og:description" content={description} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content={title} />
+          <meta property="og:locale" content={pageContext.lang} />
+          <meta property="og:url" content={location.href} />
+          <meta property="og:image" content={epotekLogo} />
         </Helmet>
 
         <TopNav />
