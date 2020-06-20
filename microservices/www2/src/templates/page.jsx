@@ -270,14 +270,19 @@ export const query = graphql`
   }
 `;
 
-const Page = ({ data, lang, pageContext: { rootQuery, ...pageContext } }) => {
+const Page = ({
+  data,
+  lang,
+  location,
+  pageContext: { rootQuery, ...pageContext },
+}) => {
   const { page } = data.prismic;
 
   // handle unknown pages that don't get redirected to 404
   if (!page) return <NotFound pageType="page" pageLang={lang} />;
 
   return (
-    <Layout pageContext={pageContext} pageName={page.name}>
+    <Layout location={location} pageContext={pageContext} pageName={page.name}>
       <div className="page" data-wio-id={page._meta.id}>
         {page.body && <PageSections sections={page.body} />}
       </div>
