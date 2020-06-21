@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import CollectionService from '../../helpers/server/CollectionService';
+import { CHECKLIST_ITEM_STATUS } from '../checklistConstants';
 import Checklists from '../checklists';
 
 class ChecklistService extends CollectionService {
@@ -53,6 +54,36 @@ class ChecklistService extends CollectionService {
       {
         $set: {
           'items.$.status': status,
+          'items.$.statusDate': new Date(),
+        },
+      },
+    );
+  }
+
+  incrementItemStatus({ checklistId, itemId, isAdmin }) {
+    const { items } = this.get(checklistId, { items: { id: 1, status: 1 } });
+    const { status } = items.find(({ id }) => id === itemId);
+
+    const nextStatus =
+      status === CHECKLIST_ITEM_STATUS.TO_DO
+        ? isAdmin
+          ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
+          : CHECKLIST_ITEM_STATUS.VALIDATED
+        : status === CHECKLIST_ITEM_STATUS.VALIDATED
+        ? isAdmin
+          ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
+          : CHECKLIST_ITEM_STATUS.TO_DO
+        : isAdmin
+        ? CHECKLIST_ITEM_STATUS.TO_DO
+        : status;
+
+    if (nextStatus === status) return;
+
+    return this.baseUpdate(
+      { _id: checklistId, 'items.id': itemId },
+      {
+        $set: {
+          'items.$.status': nextStatus,
           'items.$.statusDate': new Date(),
         },
       },

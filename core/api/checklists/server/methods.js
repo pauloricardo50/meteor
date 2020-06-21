@@ -1,11 +1,10 @@
 import SecurityService from '../../security';
-import { CHECKLIST_ITEM_STATUS } from '../checklistConstants';
 import {
   addChecklistItem,
   changeItemChecklist,
+  incrementChecklistItemStatus,
   removeChecklistItem,
   updateChecklistItem,
-  updateChecklistItemStatus,
   updateChecklistOrder,
 } from '../methodDefinitions';
 import ChecklistService from './ChecklistService';
@@ -20,14 +19,13 @@ updateChecklistItem.setHandler(({ userId }, params) => {
   return ChecklistService.updateItem(params);
 });
 
-updateChecklistItemStatus.setHandler(({ userId }, params) => {
-  if (params.status === CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN) {
-    SecurityService.checkUserIsAdmin(userId);
-  } else {
-    // TODO: Check user can access checklist
-  }
-  return ChecklistService.updateItemStatus(params);
-});
+incrementChecklistItemStatus.setHandler(({ userId }, params) =>
+  // TODO: Check user can access checklist
+  ChecklistService.incrementItemStatus({
+    ...params,
+    isAdmin: SecurityService.isUserAdmin(userId),
+  }),
+);
 
 updateChecklistOrder.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);

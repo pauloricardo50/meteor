@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { CHECKLIST_ITEM_STATUS } from './checklistConstants';
 
-const getCheckistCompletion = checklist => {
+export const getCheckistCompletion = checklist => {
   const { items } = checklist;
 
   const isAdmin = Meteor.microservice === 'admin';
@@ -10,7 +10,10 @@ const getCheckistCompletion = checklist => {
   const doneItems = items.filter(({ status }) =>
     isAdmin
       ? status === CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
-      : status === CHECKLIST_ITEM_STATUS.VALIDATED,
+      : [
+          CHECKLIST_ITEM_STATUS.VALIDATED,
+          CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN,
+        ].includes(status),
   );
 
   return {

@@ -27,7 +27,10 @@ const LoanClosingChecklist = ({
       title={
         <div>
           <T id="LoanClosingChecklist.dialogTitle" />
-          &nbsp;({completion.done}/{completion.total})
+          &nbsp;
+          <span className="secondary">
+            ({completion.done}/{completion.total})
+          </span>
         </div>
       }
       openOnMount

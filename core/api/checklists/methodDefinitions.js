@@ -22,12 +22,11 @@ export const updateChecklistItem = new Method({
   },
 });
 
-export const updateChecklistItemStatus = new Method({
-  name: 'updateChecklistItemStatus',
+export const incrementChecklistItemStatus = new Method({
+  name: 'incrementChecklistItemStatus',
   params: {
     checklistId: String,
     itemId: String,
-    status: String,
   },
 });
 

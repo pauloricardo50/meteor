@@ -45,9 +45,9 @@ const AdminLoanClosingChecklist = ({
   return (
     <LoanClosingChecklist
       checklists={checklists}
-      renderTrigger={({ handleOpen }) => (
+      renderTrigger={({ handleOpen, done, total }) => (
         <Button onClick={handleOpen} secondary {...buttonProps}>
-          Checklist de closing
+          Checklist de closing ({done}/{total})
         </Button>
       )}
       loanId={loanId}
