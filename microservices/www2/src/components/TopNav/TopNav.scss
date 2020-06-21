@@ -1,12 +1,6 @@
 .top-nav {
-  // position: static;
-  // z-index: $z-nav;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 0.5px solid rgba(44, 44, 44, 0.2);
   height: 55px;
-  background-color: #fff;
   padding: 0 8px;
 
   @media screen and (min-width: $med) {
