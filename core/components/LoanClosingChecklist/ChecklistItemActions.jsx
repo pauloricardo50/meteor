@@ -38,6 +38,7 @@ const ChecklistItemActions = ({ item, checklistId }) => {
             onClick={handleOpen}
             size="small"
             className="mr-4"
+            tooltip="Modifier"
           />
         )}
         onSubmit={values =>
@@ -63,7 +64,7 @@ const ChecklistItemActions = ({ item, checklistId }) => {
       <ConfirmMethod
         TriggerComponent={IconButton}
         method={() => removeChecklistItem.run({ checklistId, itemId })}
-        buttonProps={{ type: 'close', size: 'small' }}
+        buttonProps={{ type: 'close', size: 'small', tooltip: 'Supprimer' }}
         description={
           requiresDocument ? 'Supprimera aussi les fichiers uploadés' : null
         }

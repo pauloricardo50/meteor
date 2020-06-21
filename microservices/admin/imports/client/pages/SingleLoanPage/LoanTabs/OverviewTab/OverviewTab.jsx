@@ -13,6 +13,7 @@ import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import Calculator from 'core/utils/Calculator';
 
+import Icon from '../../../../../core/components/Icon/Icon';
 import AdminTimeline from '../../../../components/AdminTimeline';
 import AssigneesManager from '../../../../components/AssigneesManager';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
@@ -78,6 +79,7 @@ const OverviewTab = props => {
           />
           <AdminLoanClosingChecklist
             loanId={loan._id}
+            showClosingChecklists={loan.showClosingChecklists}
             buttonProps={{
               raised: true,
               className: 'ml-32',
@@ -85,6 +87,11 @@ const OverviewTab = props => {
               tooltip:
                 !allowClosingChecklists(status) &&
                 'Passez en closing pour activer les checklists',
+              icon: (
+                <Icon
+                  type={loan.showClosingChecklists ? 'eye' : 'eyeCrossed'}
+                />
+              ),
             }}
           />
         </div>

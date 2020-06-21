@@ -7,7 +7,11 @@ import Button from '../Button';
 import ConfirmMethod from '../ConfirmMethod';
 import LoanClosingChecklist from './LoanClosingChecklist';
 
-const AdminLoanClosingChecklist = ({ loanId, buttonProps }) => {
+const AdminLoanClosingChecklist = ({
+  loanId,
+  showClosingChecklists,
+  buttonProps,
+}) => {
   const { data: checklists, loading } = useMeteorData({
     query: loanChecklists,
     params: {
@@ -46,6 +50,8 @@ const AdminLoanClosingChecklist = ({ loanId, buttonProps }) => {
           Checklist de closing
         </Button>
       )}
+      loanId={loanId}
+      showClosingChecklists={showClosingChecklists}
     />
   );
 };

@@ -41,6 +41,13 @@ class ChecklistService extends CollectionService {
   }
 
   updateItemStatus({ checklistId, itemId, status }) {
+    const { items } = this.get(checklistId, { items: { id: 1, status: 1 } });
+
+    const item = items.find(({ id }) => id === itemId);
+    if (item.status === status) {
+      return;
+    }
+
     return this.baseUpdate(
       { _id: checklistId, 'items.id': itemId },
       {

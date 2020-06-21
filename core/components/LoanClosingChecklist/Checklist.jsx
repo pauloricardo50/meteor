@@ -13,7 +13,7 @@ const Checklist = ({
   checklist: { _id: checklistId, title, description, items },
 }) => (
   <div className="ml-8 mr-8">
-    <h3>{title}</h3>
+    <h4>{title}</h4>
     {description && <p className="description">{description}</p>}
 
     {items.map(item => (

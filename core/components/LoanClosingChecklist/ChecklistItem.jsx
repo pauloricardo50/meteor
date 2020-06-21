@@ -10,7 +10,7 @@ import { updateChecklistItemStatus } from '../../api/checklists/methodDefinition
 import colors from '../../config/colors';
 import DropdownMenu from '../DropdownMenu';
 import { FaIcon } from '../Icon';
-import T from '../Translation';
+import T, { IntlDate } from '../Translation';
 import ChecklistItemActions from './ChecklistItemActions';
 
 const isApp = Meteor.microservice === 'app';
@@ -37,7 +37,7 @@ const getDropdownConfig = status => {
 const getOptions = (itemId, checklistId) => {
   const options = [
     {
-      label: <T id="Checklist.TO_DO" />,
+      label: <T id="Forms.status.TO_DO" />,
       onClick: () =>
         updateChecklistItemStatus.run({
           itemId,
@@ -46,7 +46,7 @@ const getOptions = (itemId, checklistId) => {
         }),
     },
     {
-      label: <T id="Checklist.VALIDATED" />,
+      label: <T id="Forms.status.VALIDATED" />,
       onClick: () =>
         updateChecklistItemStatus.run({
           itemId,
@@ -57,7 +57,7 @@ const getOptions = (itemId, checklistId) => {
   ];
   if (isAdmin) {
     options.push({
-      label: <T id="Checklist.VALIDATED_BY_ADMIN" />,
+      label: <T id="Forms.status.VALIDATED_BY_ADMIN" />,
       onClick: () =>
         updateChecklistItemStatus.run({
           itemId,
@@ -71,12 +71,24 @@ const getOptions = (itemId, checklistId) => {
 };
 
 const ChecklistItem = ({ item, checklistId }) => {
-  const { id, title, description, status } = item;
+  const { id, title, description, status, statusDate } = item;
   return (
     <div className="flex center-align mb-8">
       <DropdownMenu
         noWrapper
-        buttonProps={{ size: 'small', className: 'mr-8' }}
+        buttonProps={{
+          size: 'small',
+          className: 'mr-8',
+          tooltip: (
+            <T
+              id="LoanClosingChecklist.statusDateTooltip"
+              values={{
+                date: <IntlDate value={statusDate} />,
+                time: <IntlDate value={statusDate} type="time" />,
+              }}
+            />
+          ),
+        }}
         disabled={isApp && status === CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN}
         options={getOptions(id, checklistId)}
         {...getDropdownConfig(status)}
