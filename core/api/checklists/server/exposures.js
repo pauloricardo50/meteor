@@ -6,7 +6,9 @@ import { loanChecklists } from '../queries';
 exposeQuery({
   query: loanChecklists,
   overrides: {
-    firewall(userId, { loanId }) {},
+    firewall(userId, { loanId }) {
+      // TODO: Add security
+    },
     embody: body => {
       body.$filter = ({ filters, params: { loanId } }) => {
         filters['closingLoanCache._id'] = loanId;

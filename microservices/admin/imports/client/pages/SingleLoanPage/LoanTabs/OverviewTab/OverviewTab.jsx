@@ -6,6 +6,7 @@ import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import AdminNotes from 'core/components/AdminNotes';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
+import AdminLoanClosingChecklist from 'core/components/LoanClosingChecklist/AdminLoanClosingChecklist';
 import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import Recap from 'core/components/Recap';
 import T from 'core/components/Translation';
@@ -19,6 +20,11 @@ import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
 import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
+
+const allowClosingChecklists = status =>
+  [LOAN_STATUS.CLOSING, LOAN_STATUS.FINALIZED, LOAN_STATUS.BILLING].indexOf(
+    status,
+  ) >= 0;
 
 const OverviewTab = props => {
   const {
@@ -69,6 +75,17 @@ const OverviewTab = props => {
           <LoanChecklistEmailSender
             loan={loan}
             currentUser={props.currentUser}
+          />
+          <AdminLoanClosingChecklist
+            loanId={loan._id}
+            buttonProps={{
+              raised: true,
+              className: 'ml-32',
+              disabled: !allowClosingChecklists(status),
+              tooltip:
+                !allowClosingChecklists(status) &&
+                'Passez en closing pour activer les checklists',
+            }}
           />
         </div>
       </div>
