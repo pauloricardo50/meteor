@@ -1,6 +1,8 @@
 import React from 'react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Menu from '@material-ui/core/Menu';
 import IconButton from 'core/components/IconButton';
+import LoginMenu from '../LoginMenu';
 import MenuItems from '../MenuItems';
 import getMenuLinks from '../../utils/getMenuLinks';
 
@@ -14,6 +16,8 @@ const MainMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const matches = useMediaQuery(theme => theme.breakpoints.down('md'));
 
   const menuLinks = getMenuLinks('main');
 
@@ -36,6 +40,8 @@ const MainMenu = () => {
         onClose={handleClose}
       >
         <MenuItems menuLinks={menuLinks} />
+
+        {matches && <LoginMenu placement="mobile-nav" />}
       </Menu>
     </div>
   );

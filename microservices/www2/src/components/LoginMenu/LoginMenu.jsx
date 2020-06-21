@@ -6,6 +6,7 @@ import PersonOutline from '@material-ui/icons/PersonOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
+import './LoginMenu.scss';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LoginMenu = () => {
+const LoginMenu = ({ placement }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [language] = useContext(LanguageContext);
 
@@ -35,7 +36,11 @@ const LoginMenu = () => {
   };
 
   return (
-    <div className="login-menu">
+    <div
+      className={`login-menu${
+        placement === 'mobile-nav' ? ' mobile-nav' : null
+      }`}
+    >
       <Button
         classes={useStyles()}
         aria-controls="login-menu"
