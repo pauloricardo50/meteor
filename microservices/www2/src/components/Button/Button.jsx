@@ -10,8 +10,6 @@ import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
 
 import Icon from 'core/components/Icon';
-// TODO: need to override Link component in core components
-// import Link from '../Link';
 import { Link } from 'gatsby';
 
 const styles = theme => ({
