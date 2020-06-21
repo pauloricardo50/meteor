@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { CHECKLIST_ITEM_STATUS } from './checklistConstants';
 
-export const getCheckistCompletion = checklist => {
+export const getChecklistCompletion = checklist => {
   const { items } = checklist;
 
   const isAdmin = Meteor.microservice === 'admin';
@@ -27,7 +27,7 @@ export const getCompletionRate = checklists => {
   const totalCount = checklists.reduce((l, c) => l + c.items.length, 0);
   return checklists.reduce(
     (obj, checklist) => {
-      const result = getCheckistCompletion(checklist);
+      const result = getChecklistCompletion(checklist);
 
       return {
         done: obj.done + result.done,

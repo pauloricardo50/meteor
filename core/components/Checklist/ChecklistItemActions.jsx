@@ -7,8 +7,7 @@ import {
 } from '../../api/checklists/methodDefinitions';
 import ConfirmMethod from '../ConfirmMethod';
 import IconButton from '../IconButton';
-import T from '../Translation';
-import ChecklistItemForm from './ChecklistItemForm';
+import ChecklistItemForm from '../LoanClosingChecklist/ChecklistItemForm';
 
 const getIconProps = access => {
   if (access === CHECKLIST_ITEM_ACCESS.USER) {

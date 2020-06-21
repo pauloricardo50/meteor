@@ -118,7 +118,10 @@ class ChecklistService extends CollectionService {
     const item = fromChecklist.items.find(({ id }) => id === itemId);
 
     this.removeItem({ checklistId: fromChecklistId, itemId });
-    return this.baseUpdate(toChecklistId, { $push: { items: item } });
+    this.baseUpdate(toChecklistId, { $push: { items: item } });
+    return this.get(toChecklistId, { items: { id: 1 } }).items.map(
+      ({ id }) => id,
+    );
   }
 }
 

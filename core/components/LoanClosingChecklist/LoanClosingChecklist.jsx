@@ -1,13 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { getCompletionRate } from '../../api/checklists/checklistHelpers';
 import { loanUpdate } from '../../api/loans/methodDefinitions';
+import Checklist from '../Checklist';
 import DialogSimple from '../DialogSimple';
 import Toggle from '../Toggle/Toggle';
 import T from '../Translation';
-import Checklist from './Checklist';
 
 const isAdmin = Meteor.microservice === 'admin';
 
@@ -36,7 +38,7 @@ const LoanClosingChecklist = ({
       openOnMount
       maxWidth={false}
     >
-      <div>
+      <DndProvider backend={HTML5Backend}>
         {isAdmin && (
           <Toggle
             toggled={showClosingChecklists}
@@ -54,7 +56,7 @@ const LoanClosingChecklist = ({
             <Checklist key={checklist._id} checklist={checklist} />
           ))}
         </div>
-      </div>
+      </DndProvider>
     </DialogSimple>
   );
 };

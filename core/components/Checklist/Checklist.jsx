@@ -2,20 +2,21 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import { getCheckistCompletion } from '../../api/checklists/checklistHelpers';
+import { getChecklistCompletion } from '../../api/checklists/checklistHelpers';
 import { addChecklistItem } from '../../api/checklists/methodDefinitions';
+import ChecklistItemForm from '../LoanClosingChecklist/ChecklistItemForm';
 import T, { Percent } from '../Translation';
 import ChecklistItem from './ChecklistItem';
-import ChecklistItemForm from './ChecklistItemForm';
 
 const isAdmin = Meteor.microservice === 'admin';
 
 const Checklist = ({ checklist }) => {
   const { _id: checklistId, title, description, items } = checklist;
-  const { done, total } = getCheckistCompletion(checklist);
+  const { done, total } = getChecklistCompletion(checklist);
+  const itemIds = items.map(({ id }) => id);
 
   return (
-    <div className="ml-8 mr-8">
+    <div className="checklist ml-8 mr-8">
       <h4>
         {title}{' '}
         <small className="secondary">
@@ -25,8 +26,14 @@ const Checklist = ({ checklist }) => {
       {description && <p className="description">{description}</p>}
 
       {items.map(item => (
-        <ChecklistItem key={item.id} item={item} checklistId={checklistId} />
+        <ChecklistItem
+          key={item.id}
+          item={item}
+          checklistId={checklistId}
+          itemIds={itemIds}
+        />
       ))}
+
       {isAdmin && (
         <div className="text-center">
           <ChecklistItemForm

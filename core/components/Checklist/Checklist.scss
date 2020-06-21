@@ -1,0 +1,21 @@
+.checklist {
+  &-item {
+    position: relative;
+
+    &-up, &-down {
+      position: absolute;
+      left: 50%;
+      background-color: white !important;
+      padding: 0;
+      z-index: 1;
+    }
+
+    &-up {
+      top: -12px;
+    }
+    
+    &-down {
+      bottom: -12px;
+    }
+  }
+}
