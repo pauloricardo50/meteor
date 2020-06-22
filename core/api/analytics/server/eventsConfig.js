@@ -202,6 +202,9 @@ export const EVENTS_CONFIG = {
       { name: 'referringOrganisationName', optional: true },
       { name: 'assigneeId', optional: true },
       { name: 'assigneeName', optional: true },
+      { name: 'lastPageTitle', optional: true },
+      { name: 'lastPagePath', optional: true },
+      { name: 'lastPageMicroservice', optional: true },
     ],
   },
   [EVENTS.INTERCOM_RECEIVED_ADMIN_RESPONSE]: {
@@ -218,6 +221,9 @@ export const EVENTS_CONFIG = {
       { name: 'assigneeName', optional: true },
       { name: 'answeringAdminId', optional: true },
       { name: 'answeringAdminName', optional: true },
+      { name: 'lastPageTitle', optional: true },
+      { name: 'lastPagePath', optional: true },
+      { name: 'lastPageMicroservice', optional: true },
     ],
   },
   [EVENTS.INTERCOM_SENT_A_MESSAGE]: {
@@ -232,6 +238,9 @@ export const EVENTS_CONFIG = {
       { name: 'referringOrganisationName', optional: true },
       { name: 'assigneeId', optional: true },
       { name: 'assigneeName', optional: true },
+      { name: 'lastPageTitle', optional: true },
+      { name: 'lastPagePath', optional: true },
+      { name: 'lastPageMicroservice', optional: true },
     ],
   },
   [EVENTS.INTERCOM_OPENED_MESSENGER]: {
@@ -246,6 +255,9 @@ export const EVENTS_CONFIG = {
       { name: 'referringOrganisationName', optional: true },
       { name: 'assigneeId', optional: true },
       { name: 'assigneeName', optional: true },
+      { name: 'lastPageTitle', optional: true },
+      { name: 'lastPagePath', optional: true },
+      { name: 'lastPageMicroservice', optional: true },
     ],
   },
 };

@@ -581,7 +581,11 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: analyticsOpenedIntercom,
-  func: ({ analytics, params: { trackingId }, context }) => {
+  func: ({
+    analytics,
+    params: { trackingId, lastPageTitle, lastPagePath, lastPageMicroservice },
+    context,
+  }) => {
     const { userId } = context;
 
     let params = {};
@@ -605,6 +609,9 @@ addAnalyticsListener({
         referringByOrganisationName: user?.referredByOrganisation?.name,
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
+        lastPageTitle,
+        lastPagePath,
+        lastPageMicroservice,
       };
     }
 

@@ -78,6 +78,10 @@ const config = function () {
         message_type: 'assignment',
       },
     }),
+    listEvents: ({ userId }) => ({
+      method: 'GET',
+      path: `/events?type=user&intercom_user_id=${userId}`,
+    }),
   };
 
   const webhookTopics = {
@@ -320,12 +324,20 @@ export class IntercomService {
     return method ? this[method](item) : Promise.resolve();
   }
 
-  trackEvent({ event, contact, email, additionalProperties = {} }) {
+  async trackEvent({ event, contact, email, additionalProperties = {} }) {
     const trackingId = contact?.custom_attributes?.epotek_trackingid;
 
     if (!trackingId) {
       return;
     }
+
+    const contactId = contact?.id;
+
+    const { events = [] } =
+      (await this.listEvents({ userId: contactId })) || {};
+    const [lastPageEvent] = events
+      .filter(({ event_name }) => event_name === 'last-page')
+      .sort(({ createdAt: a }, { createdAt: b }) => b - a);
 
     const user =
       email &&
@@ -350,6 +362,9 @@ export class IntercomService {
         referringByOrganisationName: user?.referredByOrganisation?.name,
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
+        lastPageTitle: lastPageEvent?.metadata?.title,
+        lastPageMicroservice: lastPageEvent?.metadata?.microservice,
+        lastPagePath: lastPageEvent?.metadata?.pathname,
         ...additionalProperties,
       },
       trackingId,

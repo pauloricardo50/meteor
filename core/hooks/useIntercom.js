@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { useEffect } from 'react';
 import useImpersonatedSession from 'imports/core/hooks/useImpersonatedSession';
+import { useHistory } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from '../api/analytics/analyticsConstants';
 import { analyticsOpenedIntercom } from '../api/analytics/methodDefinitions';
@@ -45,7 +46,7 @@ const getIntercomUserSettings = async () => {
   return { ...defaultSettings, ...intercomSettings };
 };
 
-const initializeIntercom = async () => {
+const initializeIntercom = async history => {
   const intercomSettings = await getIntercomUserSettings();
 
   window.intercomSettings = intercomSettings;
@@ -76,11 +77,19 @@ const initializeIntercom = async () => {
 
       s.addEventListener('load', function () {
         updateIntercomVisitorTrackingId.run(getTrackingIds());
+        window.Intercom('trackEvent', 'last-page', {
+          title: document?.title,
+          pathname: history?.location?.pathname,
+          microservice: Meteor.microservice,
+        });
 
         window.Intercom('onShow', function () {
           updateIntercomVisitorTrackingId.run(getTrackingIds());
           analyticsOpenedIntercom.run({
             trackingId: getTrackingIds().trackingId,
+            lastPageTitle: document?.title,
+            lastPagePath: history?.location?.pathname,
+            lastPageMicroservice: Meteor.microservice,
           });
         });
       });
@@ -97,11 +106,12 @@ const initializeIntercom = async () => {
 
 const useIntercom = () => {
   const [impersonatedSession] = useImpersonatedSession();
+  const history = useHistory();
   console.log('render');
   // Initialization
   useEffect(() => {
     if (!impersonatedSession?.shared) {
-      initializeIntercom();
+      initializeIntercom(history);
 
       return () => {
         IntercomAPI('shutdown');
