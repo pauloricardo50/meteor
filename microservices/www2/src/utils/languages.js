@@ -17,6 +17,7 @@ const languageData = {
     recentNewslettersToggle: `See previous newsletters`,
     signupButtonText: `Sign up`,
     getALoanText: `Get a loan`,
+    signupErrorText: `There was a problem subscribing. Please try again`,
     signupSuccessText: `Thank you for subscribing!`,
     recommendedArticleHeader: `This might interest you`,
     rateTable: {
@@ -41,6 +42,7 @@ const languageData = {
     promoInterest: `Je suis intéressé`,
     signupButtonText: `S'inscrire`,
     getALoanText: `Obtenir un prêt`,
+    signupErrorText: `Un problème est survenu lors de l'inscription. Veuillez réessayer.`,
     signupSuccessText: `Merci de vous être abonné!`,
     recentNewslettersToggle: `Voir les newsletter précédentes`,
     recommendedArticleHeader: `Ceci pourrait vous intéresser`,

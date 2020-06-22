@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { RichText } from 'prismic-reactjs';
+import Loading from 'core/components/Loading';
 import TextInput from 'core/components/TextInput/TextInput';
 import Button from '../Button';
 import RecentNewsletters from './RecentNewsletters';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
+import meteorClient from '../../utils/meteorClient';
 import './NewsletterSignup.scss';
 
-// TODO: replace with meteorClient call to subscribeToNewsletter
 const simulateSignup = () => {
   return new Promise(resolve => {
     setTimeout(() => resolve({ status: 200 }), 1000);
@@ -16,16 +17,39 @@ const simulateSignup = () => {
 
 const NewsletterSignup = ({ primary, placement }) => {
   const [email, setEmail] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
   const [language] = useContext(LanguageContext);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const result = await simulateSignup();
-    if (result.status === 200) setSuccess(true);
+    if (!email) return;
+
+    try {
+      setLoading(true);
+      const result = await simulateSignup();
+      // const result = await meteorClient.call('subscribeToNewsletter', {
+      //   email,
+      // });
+
+      if (result.status === 200) {
+        setLoading(false);
+        setSuccess(true);
+      } else {
+        console.log({ result });
+        setLoading(false);
+        setSuccess(false);
+      }
+    } catch (error) {
+      console.log({ error });
+      setLoading(false);
+      setSuccess(false);
+    }
   };
 
   const SignupForm = () => {
+    if (loading) return <Loading small />;
+
     if (success) {
       return (
         <div className="success-message">
@@ -45,6 +69,12 @@ const NewsletterSignup = ({ primary, placement }) => {
         <Button primary raised className="button" type="submit">
           {getLanguageData(language).signupButtonText}
         </Button>
+
+        {success === false && (
+          <div className="error-message">
+            {getLanguageData(language).signupErrorText}
+          </div>
+        )}
       </form>
     );
   };

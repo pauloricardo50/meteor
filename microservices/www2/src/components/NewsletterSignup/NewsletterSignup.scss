@@ -33,7 +33,18 @@
     font-style: normal;
     line-height: 1.42;
     letter-spacing: normal;
-    color: $primary;
+    color: $success;
+  }
+
+  .error-message {
+    margin-top: 20px;
+    // not in mocks
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: normal;
+    color: $error-dark;
   }
 
   &--article {
