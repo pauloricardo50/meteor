@@ -333,11 +333,15 @@ export class IntercomService {
 
     const contactId = contact?.id;
 
-    const { events = [] } =
-      (await this.listEvents({ userId: contactId })) || {};
-    const [lastPageEvent] = events
-      .filter(({ event_name }) => event_name === 'last-page')
-      .sort(({ createdAt: a }, { createdAt: b }) => b - a);
+    const data = await this.listEvents({ userId: contactId });
+
+    let lastPageEvent;
+
+    if (data?.events?.length) {
+      lastPageEvent = data.events
+        .filter(({ event_name }) => event_name === 'last-page')
+        .sort(({ createdAt: a }, { createdAt: b }) => b - a)[0];
+    }
 
     const user =
       email &&
@@ -382,7 +386,7 @@ export class IntercomService {
       ? await this.getContact({ contactId })
       : await this.getContactByEmail({ email: contactEmail });
 
-    this.trackEvent({
+    await this.trackEvent({
       event: EVENTS.INTERCOM_STARTED_A_CONVERSATION,
       contact,
       email: contactEmail,
@@ -419,7 +423,7 @@ export class IntercomService {
     const contact = await this.getContact({ contactId });
     const admin = UserService.get({ intercomId: assigneeId }, { name: 1 });
 
-    this.trackEvent({
+    await this.trackEvent({
       event: EVENTS.INTERCOM_RECEIVED_ADMIN_RESPONSE,
       contact,
       email: contactEmail,
@@ -440,7 +444,7 @@ export class IntercomService {
     const { user: { id: contactId, email: contactEmail } = {} } = conversation;
 
     const contact = await this.getContact({ contactId });
-    this.trackEvent({
+    await this.trackEvent({
       event: EVENTS.INTERCOM_SENT_A_MESSAGE,
       contact,
       email: contactEmail,

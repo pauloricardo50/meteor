@@ -120,9 +120,9 @@ describe('IntercomService', function () {
       });
     });
 
-    it('returns the contacts with a contain filter on name', async () => {
+    it('returns the contacts with a contain filter on email', async () => {
       const { data = [] } = await IntercomService.searchContacts({
-        filters: { name: { value: 'Test', operator: '~' } },
+        filters: { email: { value: 'digital+intercom', operator: '~' } },
       });
 
       expect(data.length).to.equal(1);
@@ -258,6 +258,7 @@ describe('IntercomService', function () {
     });
 
     it('unassigns a conversation', async function () {
+      this.timeout(15000);
       await IntercomService.assignConversation({
         conversationId: CONVERSATION_INTERCOM_ID,
         assigneeId: ADMIN_INTERCOM_ID,
