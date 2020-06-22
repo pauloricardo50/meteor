@@ -12,7 +12,7 @@ import {
   SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE,
 } from '../../../api/files/fileConstants';
 import {
-  autoRenameFile,
+  handleSuccessfulUpload,
   moveFile,
   setFileAdminName,
   setFileError,
@@ -20,7 +20,6 @@ import {
   setFileStatus,
   updateDocumentsCache,
 } from '../../../api/files/methodDefinitions';
-import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
 import withMatchParam from '../../../containers/withMatchParam';
 import AdditionalDocModifier from './AdditionalDocModifier';
 import {
@@ -37,16 +36,7 @@ import {
 const addMeteorProps = withProps(
   ({
     handleSuccess,
-    fileMeta: {
-      id: fileId,
-      label,
-      acl,
-      maxSize,
-      requiredByAdmin,
-      category,
-      tooltip,
-      maxSizeOverride,
-    },
+    fileMeta,
     loanId,
     docId,
     collection,
@@ -55,6 +45,16 @@ const addMeteorProps = withProps(
     allowSetRoles = false,
     displayableFile = false,
   }) => {
+    const {
+      id: fileId,
+      label,
+      acl,
+      maxSize,
+      requiredByAdmin,
+      category,
+      tooltip,
+      maxSizeOverride,
+    } = fileMeta;
     const { formatMessage: f } = useIntl();
     const uploadDirective = displayableFile
       ? maxSizeOverride
@@ -66,19 +66,18 @@ const addMeteorProps = withProps(
       : ALLOWED_FILE_TYPES;
 
     return {
-      handleSuccess: async (file, url) => {
-        ClientEventService.emit(MODIFIED_FILES_EVENT);
-        await notifyOfUpload.run({
-          fileName: file.name,
-          docLabel: label || f({ id: `files.${fileId}` }),
+      handleSuccess: (file, url) => {
+        ClientEventService.emit(MODIFIED_FILES_EVENT, fileMeta);
+
+        handleSuccessfulUpload.run({
+          collection,
+          docId,
           loanId,
+          fileName: file.name,
+          fileKey: file.Key,
+          fileMeta,
+          autoRenameFiles,
         });
-
-        await updateDocumentsCache.run({ collection, docId });
-
-        if (autoRenameFiles) {
-          await autoRenameFile.run({ key: file.Key, collection });
-        }
 
         if (handleSuccess) {
           handleSuccess(file, url);

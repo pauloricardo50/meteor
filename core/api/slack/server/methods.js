@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
-import { notifyAssignee, notifyOfUpload } from '../methodDefinitions';
+import { notifyAssignee } from '../methodDefinitions';
 import { slackCurrentUserFragment } from './slackListeners';
 import SlackService from './SlackService';
 
@@ -16,11 +16,4 @@ notifyAssignee.setHandler((context, { message, title }) => {
     title,
     link: `${Meteor.settings.public.subdomains.admin}/users/${context.userId}`,
   });
-});
-
-notifyOfUpload.setHandler((context, params) => {
-  context.unblock();
-  SecurityService.checkLoggedIn();
-  const user = UserService.get(context.userId, slackCurrentUserFragment);
-  SlackService.notifyOfUpload({ currentUser: user, ...params });
 });

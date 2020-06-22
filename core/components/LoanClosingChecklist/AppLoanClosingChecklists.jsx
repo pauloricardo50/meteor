@@ -5,11 +5,11 @@ import { loanChecklists } from '../../api/checklists/queries';
 import useMeteorData from '../../hooks/useMeteorData';
 import LoanClosingChecklist from './LoanClosingChecklist';
 
-const AppLoanClosingChecklists = ({ loanId, renderTrigger }) => {
+const AppLoanClosingChecklists = ({ loan, renderTrigger }) => {
   const { data: checklists, loading } = useMeteorData({
     query: loanChecklists,
     params: {
-      loanId,
+      loanId: loan._id,
       $body: {
         title: 1,
         description: 1,
@@ -32,7 +32,7 @@ const AppLoanClosingChecklists = ({ loanId, renderTrigger }) => {
     <LoanClosingChecklist
       checklists={filteredChecklists}
       renderTrigger={renderTrigger}
-      loanId={loanId}
+      loan={loan}
     />
   );
 };

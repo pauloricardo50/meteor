@@ -1,43 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { faCheck } from '@fortawesome/pro-duotone-svg-icons/faCheck';
-import { faCheckDouble } from '@fortawesome/pro-duotone-svg-icons/faCheckDouble';
-import { faCircle } from '@fortawesome/pro-duotone-svg-icons/faCircle';
 import { useDrag, useDrop } from 'react-dnd';
 
-import { CHECKLIST_ITEM_STATUS } from '../../api/checklists/checklistConstants';
 import {
   changeItemChecklist,
-  incrementChecklistItemStatus,
   updateChecklistOrder,
 } from '../../api/checklists/methodDefinitions';
 import colors from '../../config/colors';
-import { FaIcon } from '../Icon';
-import IconButton from '../IconButton';
-import T, { IntlDate } from '../Translation';
 import ChecklistItemActions from './ChecklistItemActions';
+import ChecklistItemContent from './ChecklistItemContent';
+import ChecklistItemStatus from './ChecklistItemStatus';
 
-const isApp = Meteor.microservice === 'app';
 const isAdmin = Meteor.microservice === 'admin';
-
-const getDropdownConfig = status => {
-  if (status === CHECKLIST_ITEM_STATUS.TO_DO) {
-    return {
-      type: <FaIcon icon={faCircle} color={colors.primary} />,
-    };
-  }
-
-  if (status === CHECKLIST_ITEM_STATUS.VALIDATED) {
-    return {
-      type: <FaIcon icon={faCheck} color={colors.success} />,
-    };
-  }
-
-  return {
-    type: <FaIcon icon={faCheckDouble} color={colors.success} />,
-  };
-};
 
 const moveItem = async ({
   fromChecklistId,
@@ -60,10 +35,9 @@ const moveItem = async ({
   updateChecklistOrder.run({ checklistId: toChecklistId, itemIds });
 };
 
-const ChecklistItem = ({ item, checklistId, itemIds }) => {
-  const { id, title, description, status, statusDate } = item;
+const useDragDrop = ({ itemId, checklistId, itemIds }) => {
   const [{ isDragging }, drag] = useDrag({
-    item: { id, checklistId, type: 'checklistItem' },
+    item: { id: itemId, checklistId, type: 'checklistItem' },
     collect: monitor => ({ isDragging: monitor.isDragging() }),
     end: (_, monitor) => {
       if (!monitor.didDrop()) {
@@ -77,7 +51,7 @@ const ChecklistItem = ({ item, checklistId, itemIds }) => {
       moveItem({
         fromChecklistId: checklistId,
         toChecklistId: droppedOnChecklistId,
-        itemId: id,
+        itemId,
         replaceId,
         itemIds,
       });
@@ -87,42 +61,32 @@ const ChecklistItem = ({ item, checklistId, itemIds }) => {
     accept: 'checklistItem',
     canDrop: () => true,
     collect: monitor => ({ isOver: monitor.isOver() }),
-    drop: () => ({ droppedOnId: id, droppedOnChecklistId: checklistId }),
+    drop: () => ({ droppedOnId: itemId, droppedOnChecklistId: checklistId }),
+  });
+
+  return { isDragging, isOver, drag, drop };
+};
+
+const ChecklistItem = ({ item, checklistId, itemIds }) => {
+  const { id: itemId } = item;
+  const { isDragging, isOver, drag, drop } = useDragDrop({
+    itemId,
+    checklistId,
+    itemIds,
   });
 
   return (
     <div
-      className="checklist-item flex center-align pb-4 pt-4 animated fadeIn"
+      className="checklist-item flex pb-8 pt-8 animated fadeIn"
       ref={node => drag(drop(node))}
       style={{
         opacity: isDragging ? 0 : 1,
-        border: `solid 1px ${isOver ? colors.primary : 'white'}`,
-        boxSizing: 'content-box',
+        borderColor: isOver ? colors.primary : 'white',
       }}
     >
-      <IconButton
-        {...getDropdownConfig(status)}
-        onClick={() =>
-          incrementChecklistItemStatus.run({ checklistId, itemId: id })
-        }
-        className="mr-8"
-        size="small"
-        disabled={isApp && status === CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN}
-        tooltip={
-          <T
-            id="LoanClosingChecklist.statusDateTooltip"
-            values={{
-              date: <IntlDate value={statusDate} />,
-              time: <IntlDate value={statusDate} type="time" />,
-            }}
-          />
-        }
-      />
+      <ChecklistItemStatus checklistId={checklistId} item={item} />
 
-      <div style={{ flexGrow: 1, maxWidth: 300 }}>
-        <h5 className="m-0">{title}</h5>
-        {description && <p className="secondary m-0">{description}</p>}
-      </div>
+      <ChecklistItemContent item={item} />
 
       {isAdmin && (
         <ChecklistItemActions item={item} checklistId={checklistId} />

@@ -149,11 +149,15 @@ class ChecklistService extends CollectionService {
     });
   }
 
-  removeItem({ checklistId, itemId }) {
+  removeItem({ checklistId, itemId, keepAdditionalDoc }) {
     const result = this.baseUpdate(checklistId, {
       $pull: { items: { id: itemId } },
     });
-    this.removeAdditionalDoc({ checklistId, itemId });
+
+    if (!keepAdditionalDoc) {
+      this.removeAdditionalDoc({ checklistId, itemId });
+    }
+
     return result;
   }
 
@@ -161,7 +165,11 @@ class ChecklistService extends CollectionService {
     const fromChecklist = this.get(fromChecklistId, { items: 1 });
     const item = fromChecklist.items.find(({ id }) => id === itemId);
 
-    this.removeItem({ checklistId: fromChecklistId, itemId });
+    this.removeItem({
+      checklistId: fromChecklistId,
+      itemId,
+      keepAdditionalDoc: true,
+    });
     this.baseUpdate(toChecklistId, { $push: { items: item } });
     return this.get(toChecklistId, { items: { id: 1 } }).items.map(
       ({ id }) => id,
@@ -190,7 +198,7 @@ class ChecklistService extends CollectionService {
             id: Random.id(),
             label: item.title,
             category: 'CLOSING',
-            requiredByAdmin: item.accesss === CHECKLIST_ITEM_ACCESS.USER,
+            requiredByAdmin: item.access === CHECKLIST_ITEM_ACCESS.USER,
             tooltip: item.description,
             checklistItemId: itemId,
           },
@@ -215,7 +223,7 @@ class ChecklistService extends CollectionService {
         {
           $set: {
             'additionalDocuments.$.requiredByAdmin':
-              item.accesss === CHECKLIST_ITEM_ACCESS.USER,
+              item.access === CHECKLIST_ITEM_ACCESS.USER,
             'additionalDocuments.$.label': item.title,
             'additionalDocuments.$.tooltip': item.description,
           },

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { getChecklistCompletion } from '../../api/checklists/checklistHelpers';
 import { addChecklistItem } from '../../api/checklists/methodDefinitions';
+import Icon from '../Icon';
 import ChecklistItemForm from '../LoanClosingChecklist/ChecklistItemForm';
 import T, { Percent } from '../Translation';
 import ChecklistItem from './ChecklistItem';
@@ -40,7 +41,14 @@ const Checklist = ({ checklist }) => {
             onSubmit={values =>
               addChecklistItem.run({ checklistId, ...values })
             }
-            buttonProps={{ primary: true, label: <T id="general.add" /> }}
+            buttonProps={{
+              primary: true,
+              label: <T id="general.add" />,
+              outlined: true,
+              size: 'small',
+              icon: <Icon type="add" />,
+              className: 'mt-8',
+            }}
             title="Ajouter un élément"
           />
         </div>

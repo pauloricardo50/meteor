@@ -23,9 +23,12 @@ import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
 
 const allowClosingChecklists = status =>
-  [LOAN_STATUS.CLOSING, LOAN_STATUS.FINALIZED, LOAN_STATUS.BILLING].indexOf(
-    status,
-  ) >= 0;
+  [
+    LOAN_STATUS.ONGOING,
+    LOAN_STATUS.CLOSING,
+    LOAN_STATUS.FINALIZED,
+    LOAN_STATUS.BILLING,
+  ].indexOf(status) >= 0;
 
 const OverviewTab = props => {
   const {
@@ -78,15 +81,14 @@ const OverviewTab = props => {
             currentUser={props.currentUser}
           />
           <AdminLoanClosingChecklist
-            loanId={loan._id}
-            showClosingChecklists={loan.showClosingChecklists}
+            loan={loan}
             buttonProps={{
               raised: true,
               className: 'ml-32',
               disabled: !allowClosingChecklists(status),
               tooltip:
                 !allowClosingChecklists(status) &&
-                'Passez en closing pour activer les checklists',
+                'Passez à "En cours" pour activer les checklists',
               icon: (
                 <Icon
                   type={loan.showClosingChecklists ? 'eye' : 'eyeCrossed'}

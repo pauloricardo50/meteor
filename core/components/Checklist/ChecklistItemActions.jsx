@@ -29,7 +29,7 @@ const ChecklistItemActions = ({ item, checklistId }) => {
   return (
     <div>
       <ChecklistItemForm
-        model={{ title, description }}
+        model={{ title, description, requiresDocument }}
         title="Modifier"
         triggerComponent={handleOpen => (
           <IconButton

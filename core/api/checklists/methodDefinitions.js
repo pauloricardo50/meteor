@@ -8,17 +8,19 @@ export const addChecklistItem = new Method({
     checklistId: String,
     title: String,
     description: Match.Maybe(String),
+    requiresDocument: Match.Maybe(Boolean),
   },
 });
 
 export const updateChecklistItem = new Method({
   name: 'updateChecklistItem',
   params: {
-    checklistId: String,
-    itemId: String,
-    title: Match.Maybe(String),
-    description: Match.Maybe(String),
     access: Match.Maybe(String),
+    checklistId: String,
+    description: Match.Maybe(String),
+    itemId: String,
+    requiresDocument: Match.Maybe(Boolean),
+    title: Match.Maybe(String),
   },
 });
 

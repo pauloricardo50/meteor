@@ -390,5 +390,35 @@ describe('ChecklistService', () => {
       expect(checklist1.items[1].id).to.equal('b2');
       expect(checklist2.items[0].id).to.equal('a2');
     });
+
+    it('does not remove the additionalDoc when changing checklists', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          closingChecklists: [
+            { _id: 'c1' },
+            { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
+          ],
+        },
+      });
+
+      const newItemId = ChecklistService.addItem({
+        checklistId: 'c2',
+        title: 'do stuff',
+        description: 'yo',
+        requiresDocument: true,
+      });
+
+      ChecklistService.changeChecklist({
+        fromChecklistId: 'c2',
+        toChecklistId: 'c1',
+        itemId: newItemId,
+      });
+
+      const { additionalDocuments } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments.length).to.equal(1);
+    });
   });
 });

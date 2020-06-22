@@ -1,12 +1,12 @@
 import SecurityService from '../../security';
 import { FILE_STATUS } from '../fileConstants';
 import {
-  autoRenameFile,
   deleteFile,
   deleteTempFile,
   downloadFile,
   getSignedUrl,
   getZipLoanUrl,
+  handleSuccessfulUpload,
   moveFile,
   setFileAdminName,
   setFileError,
@@ -124,11 +124,6 @@ deleteTempFile.setHandler(({ userId }, { fileKey }) => {
   return FileService.deleteFile(fileKey);
 });
 
-autoRenameFile.setHandler(({ userId }, { key, collection }) => {
-  SecurityService.files.isAllowedToAccess({ userId, key });
-  return FileService.autoRenameFile(key, collection);
-});
-
 setFileRoles.setHandler(({ userId }, { docId, collection, Key, roles }) => {
   SecurityService.isAllowedToModifyFiles({
     collection,
@@ -138,3 +133,17 @@ setFileRoles.setHandler(({ userId }, { docId, collection, Key, roles }) => {
   });
   return FileService.setFileRoles({ Key, roles });
 });
+
+handleSuccessfulUpload.setHandler(
+  async (context, { docId, collection, autoRenameFiles, fileKey }) => {
+    context.unblock();
+    SecurityService.checkLoggedIn();
+
+    console.log('yooo!');
+    await FileService.updateDocumentsCache({ docId, collection });
+
+    if (autoRenameFiles) {
+      FileService.autoRenameFile(fileKey, collection);
+    }
+  },
+);

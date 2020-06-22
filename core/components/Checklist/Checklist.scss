@@ -1,21 +1,23 @@
 .checklist {
+
   &-item {
     position: relative;
+    align-items: flex-start;
+    border: 1px solid white;
 
-    &-up, &-down {
-      position: absolute;
-      left: 50%;
-      background-color: white !important;
-      padding: 0;
-      z-index: 1;
+    h5 {
+      line-height: 22px; // Match icon height, which is 21.75px;
     }
 
-    &-up {
-      top: -12px;
-    }
-    
-    &-down {
-      bottom: -12px;
+    .uploader {
+      &.uploader {
+        padding: 0;
+        padding-top: 4px;
+      }
+
+      .file-name {
+        max-width: 110px;
+      }
     }
   }
 }

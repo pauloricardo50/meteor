@@ -1,4 +1,6 @@
 {
+  "files.category.CLOSING": "Les dernières étapes",
+  "Forms.requiresDocument": "Requiert un document",
   "LoanClosingChecklist.makeProgress": "Avancez dans les dernières étapes",
   "Forms.status.TO_DO": "À faire",
   "Forms.status.VALIDATED_BY_ADMIN": "Validé par le conseiller",

@@ -7,6 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { getCompletionRate } from '../../api/checklists/checklistHelpers';
 import { loanUpdate } from '../../api/loans/methodDefinitions';
 import Checklist from '../Checklist';
+import { withChecklistContext } from '../Checklist/ChecklistContext';
 import DialogSimple from '../DialogSimple';
 import Toggle from '../Toggle/Toggle';
 import T from '../Translation';
@@ -14,10 +15,10 @@ import T from '../Translation';
 const isAdmin = Meteor.microservice === 'admin';
 
 const LoanClosingChecklist = ({
-  showClosingChecklists,
-  loanId,
+  loan,
   checklists,
   renderTrigger,
+  openOnMount,
 }) => {
   const completion = getCompletionRate(checklists);
   return (
@@ -36,15 +37,16 @@ const LoanClosingChecklist = ({
         </div>
       }
       maxWidth={false}
+      openOnMount={openOnMount}
     >
       <DndProvider backend={HTML5Backend}>
         {isAdmin && (
           <Toggle
-            toggled={showClosingChecklists}
+            toggled={loan.showClosingChecklists}
             onToggle={() =>
               loanUpdate.run({
-                loanId,
-                object: { showClosingChecklists: !showClosingChecklists },
+                loanId: loan._id,
+                object: { showClosingChecklists: !loan.showClosingChecklists },
               })
             }
             labelRight="Afficher checklist au client"
@@ -60,4 +62,6 @@ const LoanClosingChecklist = ({
   );
 };
 
-export default LoanClosingChecklist;
+export default withChecklistContext(({ loan }) => ({ uploaderDoc: loan }))(
+  LoanClosingChecklist,
+);

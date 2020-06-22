@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { loanChecklists } from '../../api/checklists/queries';
 import { addClosingChecklists } from '../../api/loans/methodDefinitions';
@@ -7,15 +7,12 @@ import Button from '../Button';
 import ConfirmMethod from '../ConfirmMethod';
 import LoanClosingChecklist from './LoanClosingChecklist';
 
-const AdminLoanClosingChecklist = ({
-  loanId,
-  showClosingChecklists,
-  buttonProps,
-}) => {
+const AdminLoanClosingChecklist = ({ loan, buttonProps }) => {
+  const [openOnMount, setOpenOnMount] = useState(false);
   const { data: checklists, loading } = useMeteorData({
     query: loanChecklists,
     params: {
-      loanId,
+      loanId: loan._id,
       $body: {
         title: 1,
         description: 1,
@@ -37,7 +34,10 @@ const AdminLoanClosingChecklist = ({
           secondary: true,
           ...buttonProps,
         }}
-        method={() => addClosingChecklists.run({ loanId })}
+        method={() => {
+          setOpenOnMount(true);
+          return addClosingChecklists.run({ loanId: loan._id });
+        }}
       />
     );
   }
@@ -50,8 +50,8 @@ const AdminLoanClosingChecklist = ({
           Checklist de closing ({done}/{total})
         </Button>
       )}
-      loanId={loanId}
-      showClosingChecklists={showClosingChecklists}
+      loan={loan}
+      openOnMount={openOnMount}
     />
   );
 };
