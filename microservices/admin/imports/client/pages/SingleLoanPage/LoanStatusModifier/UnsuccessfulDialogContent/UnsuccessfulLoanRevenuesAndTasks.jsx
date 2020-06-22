@@ -1,7 +1,9 @@
 import React from 'react';
+import { REVENUES_COLLECTION } from 'imports/core/api/revenues/revenueConstants';
 
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
+import Loading from 'core/components/Loading';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 import RevenuesTable from '../../../../components/RevenuesTable';
@@ -13,36 +15,31 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
   returnValue,
   closeModal,
 }) => {
-  const { _id: loanId, tasksCache = [], revenues = [] } = loan;
-  const activeTasks = tasksCache.filter(
-    ({ status }) => status === TASK_STATUS.ACTIVE,
-  );
+  const { _id: loanId, revenues = [] } = loan;
   const expectedRevenues = revenues.filter(
     ({ status }) => status === REVENUE_STATUS.EXPECTED,
   );
 
-  if (!activeTasks.length && !expectedRevenues.length) {
+  const { loading: loadingTasks, data: tasks = [] } = useReactiveMeteorData({
+    query: TASKS_COLLECTION,
+    params: {
+      $filters: { 'loanLink._id': loanId, status: TASK_STATUS.ACTIVE },
+      ...taskTableFragment,
+    },
+  });
+
+  if (loadingTasks) {
+    return <Loading />;
+  }
+
+  if (!expectedRevenues.length && !tasks.length) {
     closeModal({ ...returnValue });
     return null;
   }
 
-  let tasks = [];
-
-  if (activeTasks.length) {
-    const { loading, data } = useReactiveMeteorData({
-      query: TASKS_COLLECTION,
-      params: {
-        $filters: { 'loanLink._id': loanId, status: TASK_STATUS.ACTIVE },
-        ...taskTableFragment,
-      },
-    });
-
-    tasks = !loading ? data : [];
-  }
-
   return (
     <div>
-      {!!activeTasks.length && (
+      {!!tasks.length && (
         <>
           <h3 className="mb-8">Tâches</h3>
           <TasksTable tasks={tasks} relatedTo={false} />
