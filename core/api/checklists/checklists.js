@@ -25,6 +25,7 @@ const ChecklistSchema = new SimpleSchema({
     defaultValue: CHECKLIST_ITEM_STATUS.TO_DO,
   },
   'items.$.statusDate': { type: Date, defaultValue: new Date() },
+  'items.$.requiresDocument': { type: Boolean, optional: true },
   'items.$.access': {
     type: String,
     allowedValues: Object.values(CHECKLIST_ITEM_ACCESS),

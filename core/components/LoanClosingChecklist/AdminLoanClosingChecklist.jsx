@@ -34,7 +34,7 @@ const AdminLoanClosingChecklist = ({
       <ConfirmMethod
         buttonProps={{
           label: 'Préparer le closing',
-          primary: true,
+          secondary: true,
           ...buttonProps,
         }}
         method={() => addClosingChecklists.run({ loanId })}

@@ -35,7 +35,6 @@ const LoanClosingChecklist = ({
           </span>
         </div>
       }
-      openOnMount
       maxWidth={false}
     >
       <DndProvider backend={HTML5Backend}>

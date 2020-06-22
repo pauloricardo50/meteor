@@ -2,7 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import CollectionService from '../../helpers/server/CollectionService';
-import { CHECKLIST_ITEM_STATUS } from '../checklistConstants';
+import LoanService from '../../loans/server/LoanService';
+import {
+  CHECKLIST_ITEM_ACCESS,
+  CHECKLIST_ITEM_STATUS,
+} from '../checklistConstants';
 import Checklists from '../checklists';
 
 class ChecklistService extends CollectionService {
@@ -21,14 +25,36 @@ class ChecklistService extends CollectionService {
     return { ...data, id: itemId };
   }
 
-  addItem({ checklistId, title, description }) {
-    return this.baseUpdate(checklistId, {
-      $push: { items: this.makeNewItem({ title, description }) },
-    });
+  addItem({ checklistId, title, description, requiresDocument }) {
+    const newItem = this.makeNewItem({ title, description, requiresDocument });
+    this.baseUpdate(checklistId, { $push: { items: newItem } });
+
+    if (requiresDocument) {
+      this.addAdditionalDocument({ checklistId, itemId: newItem.id });
+    }
+
+    return newItem.id;
   }
 
-  updateItem({ checklistId, itemId, title, description, access }) {
-    return this.baseUpdate(
+  getItem({ checklistId, itemId }) {
+    let selector = { items: { $elemMatch: { id: itemId } } };
+    if (checklistId) {
+      selector = checklistId;
+    }
+
+    const result = this.get(selector, { items: 1 });
+    return result.items.find(({ id }) => id === itemId);
+  }
+
+  updateItem({
+    checklistId,
+    itemId,
+    title,
+    description,
+    access,
+    requiresDocument,
+  }) {
+    const result = this.baseUpdate(
       { _id: checklistId, 'items.id': itemId },
       {
         $set: {
@@ -36,9 +62,23 @@ class ChecklistService extends CollectionService {
           'items.$.description': description,
           'items.$.updatedAt': new Date(),
           'items.$.access': access,
+          'items.$.requiresDocument': requiresDocument,
         },
       },
     );
+    const item = this.getItem({ itemId });
+
+    if (item.requiresDocument) {
+      this.addAdditionalDocument({ checklistId, itemId });
+    }
+
+    if (!item.requiresDocument) {
+      this.removeAdditionalDoc({ checklistId, itemId });
+    }
+
+    this.updateAdditionalDocument({ itemId });
+
+    return result;
   }
 
   updateItemStatus({ checklistId, itemId, status }) {
@@ -110,7 +150,11 @@ class ChecklistService extends CollectionService {
   }
 
   removeItem({ checklistId, itemId }) {
-    return this.baseUpdate(checklistId, { $pull: { items: { id: itemId } } });
+    const result = this.baseUpdate(checklistId, {
+      $pull: { items: { id: itemId } },
+    });
+    this.removeAdditionalDoc({ checklistId, itemId });
+    return result;
   }
 
   changeChecklist({ fromChecklistId, toChecklistId, itemId }) {
@@ -122,6 +166,81 @@ class ChecklistService extends CollectionService {
     return this.get(toChecklistId, { items: { id: 1 } }).items.map(
       ({ id }) => id,
     );
+  }
+
+  addAdditionalDocument({ checklistId, itemId }) {
+    const { closingLoan, items } = this.get(checklistId, {
+      closingLoan: { _id: 1, additionalDocuments: 1 },
+      items: 1,
+    });
+    const item = items.find(({ id }) => id === itemId);
+
+    if (closingLoan?._id) {
+      if (
+        closingLoan.additionalDocuments.find(
+          ({ checklistItemId }) => checklistItemId === itemId,
+        )
+      ) {
+        return;
+      }
+
+      LoanService.baseUpdate(closingLoan._id, {
+        $push: {
+          additionalDocuments: {
+            id: Random.id(),
+            label: item.title,
+            category: 'CLOSING',
+            requiredByAdmin: item.accesss === CHECKLIST_ITEM_ACCESS.USER,
+            tooltip: item.description,
+            checklistItemId: itemId,
+          },
+        },
+      });
+    }
+  }
+
+  updateAdditionalDocument({ itemId }) {
+    const { closingLoan, items } = this.get(
+      { items: { $elemMatch: { id: itemId } } },
+      { items: 1, closingLoan: { _id: 1 } },
+    );
+    const item = items.find(({ id }) => id === itemId);
+
+    if (item.requiresDocument && closingLoan?._id) {
+      LoanService.baseUpdate(
+        {
+          _id: closingLoan._id,
+          'additionalDocuments.checklistItemId': itemId,
+        },
+        {
+          $set: {
+            'additionalDocuments.$.requiredByAdmin':
+              item.accesss === CHECKLIST_ITEM_ACCESS.USER,
+            'additionalDocuments.$.label': item.title,
+            'additionalDocuments.$.tooltip': item.description,
+          },
+        },
+      );
+    }
+  }
+
+  removeAdditionalDoc({ checklistId, itemId }) {
+    const { closingLoan } = this.get(checklistId, {
+      closingLoan: { _id: 1, additionalDocuments: 1 },
+    });
+
+    if (closingLoan?._id) {
+      const additionalDoc = closingLoan.additionalDocuments.find(
+        ({ checklistItemId }) => checklistItemId === itemId,
+      );
+
+      if (additionalDoc) {
+        LoanService.removeAdditionalDoc({
+          id: closingLoan._id,
+          additionalDocId: additionalDoc.id,
+        });
+      }
+    }
   }
 }
 

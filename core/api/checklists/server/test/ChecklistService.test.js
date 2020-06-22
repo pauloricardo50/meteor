@@ -3,7 +3,11 @@ import { expect } from 'chai';
 
 import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server/generator';
-import { CHECKLIST_ITEM_STATUS } from '../../checklistConstants';
+import LoanService from '../../../loans/server/LoanService';
+import {
+  CHECKLIST_ITEM_ACCESS,
+  CHECKLIST_ITEM_STATUS,
+} from '../../checklistConstants';
 import ChecklistService from '../ChecklistService';
 
 describe('ChecklistService', () => {
@@ -48,6 +52,38 @@ describe('ChecklistService', () => {
       expect(checklist.items[0].id).to.equal('a');
       expect(checklist.items[1].title).to.equal('do stuff');
     });
+
+    it('adds an additionalDocument on the loan if requiresDocument is true', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          closingChecklists: [
+            { _id: 'c1' },
+            { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
+          ],
+        },
+      });
+
+      ChecklistService.addItem({
+        checklistId: 'c2',
+        title: 'do stuff',
+        description: 'yo',
+        requiresDocument: true,
+      });
+      const checklist = ChecklistService.get('c2', { items: 1 });
+      expect(checklist.items[1].requiresDocument).to.equal(true);
+
+      const { additionalDocuments } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments.length).to.equal(1);
+      expect(additionalDocuments[0].checklistItemId).to.equal(
+        checklist.items[1].id,
+      );
+      expect(additionalDocuments[0].label).to.equal('do stuff');
+      expect(additionalDocuments[0].tooltip).to.equal('yo');
+      expect(additionalDocuments[0].category).to.equal('CLOSING');
+    });
   });
 
   describe('updateItem', () => {
@@ -81,6 +117,113 @@ describe('ChecklistService', () => {
       expect(checklist.items[1].updatedAt.getTime()).to.not.equal(
         start.getTime(),
       );
+    });
+
+    it('updates the additionalDocument label, tooltip and visibility', () => {
+      generator({
+        loans: [
+          {},
+          {
+            _id: 'loanId',
+            closingChecklists: [
+              { _id: 'c1' },
+              { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
+            ],
+          },
+        ],
+      });
+
+      ChecklistService.addItem({
+        checklistId: 'c2',
+        title: 'A',
+        description: 'yo',
+        requiresDocument: true,
+      });
+      const itemId2 = ChecklistService.addItem({
+        checklistId: 'c2',
+        title: 'B',
+        description: 'yo',
+        requiresDocument: true,
+      });
+
+      const { additionalDocuments } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments.length).to.equal(2);
+
+      ChecklistService.updateItem({
+        checklistId: 'c2',
+        itemId: itemId2,
+        title: 'B2',
+        access: CHECKLIST_ITEM_ACCESS.ADMIN,
+      });
+      const {
+        additionalDocuments: additionalDocuments2,
+      } = LoanService.get('loanId', { additionalDocuments: 1 });
+      expect(additionalDocuments2[1].label).to.equal('B2');
+      expect(additionalDocuments2[1].requiredByAdmin).to.equal(false);
+    });
+
+    it('adds an additionalDocument if requiresDocument is changed to true', () => {
+      generator({
+        loans: [
+          {},
+          {
+            _id: 'loanId',
+            closingChecklists: [
+              { _id: 'c1' },
+              { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
+            ],
+          },
+        ],
+      });
+
+      const { additionalDocuments } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments.length).to.equal(0);
+
+      ChecklistService.updateItem({
+        checklistId: 'c2',
+        itemId: 'a',
+        requiresDocument: true,
+      });
+
+      const {
+        additionalDocuments: additionalDocuments2,
+      } = LoanService.get('loanId', { additionalDocuments: 1 });
+      expect(additionalDocuments2[0].label).to.equal('yo');
+    });
+
+    it('removes the additionalDocument if requiresDocument is changed to false', () => {
+      generator({
+        loans: [
+          {},
+          {
+            _id: 'loanId',
+            closingChecklists: [
+              { _id: 'c1' },
+              { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
+            ],
+          },
+        ],
+      });
+
+      ChecklistService.updateItem({
+        checklistId: 'c2',
+        itemId: 'a',
+        requiresDocument: true,
+      });
+      ChecklistService.updateItem({
+        checklistId: 'c2',
+        itemId: 'a',
+        requiresDocument: false,
+      });
+
+      const { additionalDocuments } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments.length).to.equal(0);
     });
   });
 
@@ -184,6 +327,36 @@ describe('ChecklistService', () => {
       expect(items.length).to.equal(2);
       expect(items[0].id).to.equal('a');
       expect(items[1].id).to.equal('c');
+    });
+
+    it('removes the additional document if there is any', () => {
+      generator({
+        loans: [
+          {},
+          {
+            _id: 'loanId',
+            closingChecklists: [
+              { _id: 'c1' },
+              { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
+            ],
+          },
+        ],
+      });
+
+      ChecklistService.updateItem({
+        checklistId: 'c2',
+        itemId: 'a',
+        requiresDocument: true,
+      });
+      ChecklistService.removeItem({
+        checklistId: 'c2',
+        itemId: 'a',
+      });
+
+      const { additionalDocuments } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(additionalDocuments.length).to.equal(0);
     });
   });
 
