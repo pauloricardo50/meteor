@@ -1294,5 +1294,48 @@ describe('UserService', function () {
       });
       expect(assignedEmployeeId).to.equal('adminId');
     });
+
+    it('invites user to promotion with invitationNote', async () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({
+          user: {
+            ...userToInvite,
+            showAllLots: false,
+            promotionLotIds: ['pLotId'],
+          },
+          promotionIds: ['promotionId'],
+          invitationNote: 'Ma man',
+        }),
+      );
+
+      const { tasks = [] } = UserService.getByEmail(userToInvite.email, {
+        tasks: { description: 1, assigneeLink: 1 },
+      });
+
+      expect(tasks.length).to.equal(1);
+      const [
+        {
+          description,
+          assigneeLink: { _id: assigneeId },
+        },
+      ] = tasks;
+
+      expect(description).to.include('Ma man');
+      expect(assigneeId).to.equal('adminId');
+    });
   });
 });
