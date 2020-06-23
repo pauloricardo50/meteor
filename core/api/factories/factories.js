@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import Activities from '../activities';
 import Borrowers from '../borrowers/borrowers';
+import Checklists from '../checklists/checklists';
 import CommissionRates from '../commissionRates';
 import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
 import Contacts from '../contacts';
@@ -287,10 +288,7 @@ Factory.define('insurance', Insurances, {
     }
   },
   startDate: () => new Date(),
-  endDate: () =>
-    moment()
-      .add(10, 'years')
-      .toDate(),
+  endDate: () => moment().add(10, 'years').toDate(),
 });
 
 Factory.define('commissionRate', CommissionRates, {
@@ -306,4 +304,8 @@ Factory.define('insuranceProduct', InsuranceProducts, {
   category: INSURANCE_PRODUCT_CATEGORIES['3A_INSURANCE'],
   revaluationFactor: 2,
   maxProductionYears: 35,
+});
+
+Factory.define('checklist', Checklists, {
+  title: 'Todo list',
 });

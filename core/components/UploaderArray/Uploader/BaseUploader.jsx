@@ -9,6 +9,7 @@ const BaseUploader = ({
   toggleDisplayFull,
   handleMoveFile = () => {},
   variant,
+  showTop,
   ...rest
 }) => {
   const {
@@ -26,7 +27,9 @@ const BaseUploader = ({
       handleMoveFile={handleMoveFile(destinationFiles)}
       variant={variant}
     >
-      <UploaderTop toggleDisplayFull={toggleDisplayFull} {...rest} />
+      {showTop && (
+        <UploaderTop toggleDisplayFull={toggleDisplayFull} {...rest} />
+      )}
       {displayFull && <UploaderBottom {...rest} id={id} />}
     </FileDropper>
   );
@@ -35,6 +38,11 @@ const BaseUploader = ({
 BaseUploader.propTypes = {
   displayFull: PropTypes.bool.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
+  showTop: PropTypes.bool,
+};
+
+BaseUploader.defaultProps = {
+  showTop: true,
 };
 
 export default BaseUploader;

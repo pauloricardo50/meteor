@@ -8,7 +8,7 @@ import T from '../Translation';
 export default class DialogSimple extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, disabled: false, isCancel: true };
+    this.state = { open: !!props.openOnMount, disabled: false, isCancel: true };
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {

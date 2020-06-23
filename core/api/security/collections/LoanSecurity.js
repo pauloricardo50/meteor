@@ -7,7 +7,7 @@ class LoanSecurity {
     Security.checkLoggedIn();
   }
 
-  static isAllowedToUpdate(loanId, userId) {
+  static isAllowedToAccess(loanId, userId) {
     if (!loanId) {
       Security.handleUnauthorized();
     }
@@ -22,6 +22,10 @@ class LoanSecurity {
     } else {
       this.checkAnonymousLoan(loanId);
     }
+  }
+
+  static isAllowedToUpdate(loanId, userId) {
+    return this.isAllowedToAccess(loanId, userId);
   }
 
   static isAllowedToDelete() {

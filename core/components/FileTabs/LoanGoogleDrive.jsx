@@ -42,4 +42,5 @@ export default withSmartQuery({
   query: loanGoogleDriveFiles,
   dataName: 'googleDrive',
   params: ({ loanId }) => ({ loanId }),
+  refetchOnMethodCall: false,
 })(LoanGoogleDrive);

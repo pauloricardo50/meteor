@@ -10,6 +10,7 @@ import Security from '../../security/Security';
 import UserService from '../../users/server/UserService';
 import { LOAN_STATUS, STEPS } from '../loanConstants';
 import {
+  addClosingChecklists,
   addNewMaxStructure,
   addNewStructure,
   adminLoanInsert,
@@ -366,4 +367,9 @@ loanGetReusableProperties.setHandler(({ userId }, params) => {
 loanLinkProperty.setHandler(({ userId }, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   return LoanService.linkProperty(params);
+});
+
+addClosingChecklists.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.addClosingChecklists(params);
 });

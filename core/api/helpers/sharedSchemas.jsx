@@ -46,6 +46,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
   'additionalDocuments.$.category': { type: String, optional: true },
   'additionalDocuments.$.tooltip': { type: String, optional: true },
+  'additionalDocuments.$.checklistItemId': { type: String, optional: true },
 });
 
 export const address = {
