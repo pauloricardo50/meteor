@@ -2317,7 +2317,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe.only('addClosingChecklists', () => {
+  describe('addClosingChecklists', () => {
     it('adds 2 checklists depending on the loan', () => {
       generator({ loans: { _id: 'loanId' } });
 

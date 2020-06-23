@@ -10,7 +10,7 @@ import {
 } from '../../checklistConstants';
 import ChecklistService from '../ChecklistService';
 
-describe.only('ChecklistService', () => {
+describe('ChecklistService', () => {
   beforeEach(() => {
     resetDatabase();
   });
