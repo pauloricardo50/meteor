@@ -162,7 +162,7 @@ const addMeteorProps = withProps(
       allowStatusChange: true,
       allowSetRoles,
       dragProps: { collection },
-      uploaderTopRight: canModify && (
+      uploaderTopRight: canModify && !fileMeta.checklistItemId && (
         <AdditionalDocModifier
           collection={collection}
           docId={docId}
