@@ -484,7 +484,7 @@ class LoanService extends CollectionService {
 
     // Only assign someone new to this loan if there are no current assignees
     if (!assigneeLinks || assigneeLinks.length === 0) {
-      newAssignee = user && user.assignedEmployee && user.assignedEmployee._id;
+      newAssignee = user?.assignedEmployee?._id;
     }
 
     borrowers.forEach(({ loans = [], name }) => {
@@ -521,11 +521,19 @@ class LoanService extends CollectionService {
     }
 
     borrowers.forEach(({ _id: borrowerId }) => {
-      BorrowerService.update({ borrowerId, object: { userId } });
+      BorrowerService.addLink({
+        id: borrowerId,
+        linkName: 'user',
+        linkId: userId,
+      });
     });
     properties.forEach(({ _id: propertyId, category }) => {
       if (category === PROPERTY_CATEGORY.USER) {
-        PropertyService.update({ propertyId, object: { userId } });
+        PropertyService.addLink({
+          id: propertyId,
+          linkName: 'user',
+          linkId: userId,
+        });
       }
     });
 
@@ -560,6 +568,8 @@ class LoanService extends CollectionService {
         }
       }
     }
+
+    return referralId;
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
@@ -717,10 +727,11 @@ class LoanService extends CollectionService {
     // If there are at least 3 organisations, show a special label
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
-      ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      ? `${
+          secondMax && secondMax.organisationName
+        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
+          max.borrowRatio * 100
+        ).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -915,9 +926,7 @@ class LoanService extends CollectionService {
   }
 
   expireAnonymousLoans() {
-    const lastWeek = moment()
-      .subtract(5, 'days')
-      .toDate();
+    const lastWeek = moment().subtract(5, 'days').toDate();
 
     return this.baseUpdate(
       {

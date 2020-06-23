@@ -45,7 +45,7 @@ import {
 import LoanService from '../LoanService';
 import { generateDisbursedSoonLoansTasks } from '../methods';
 
-describe('LoanService', function() {
+describe('LoanService', function () {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -766,6 +766,7 @@ describe('LoanService', function() {
             properties: [{ _id: 'propId2' }, { _id: 'propId1' }],
           },
         ],
+        users: { _id: 'dude' },
       });
 
       expect(() =>
@@ -1475,7 +1476,7 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueOrBorrowRatio', function() {
+  describe('setMaxPropertyValueOrBorrowRatio', function () {
     this.timeout(10000);
     this.retries(2);
 
@@ -1636,9 +1637,7 @@ describe('LoanService', function() {
         promises.push(
           LoanService.rawCollection.insert({
             anonymous: true,
-            updatedAt: moment()
-              .subtract(index, 'days')
-              .toDate(),
+            updatedAt: moment().subtract(index, 'days').toDate(),
             _id: index,
             name: index,
           }),
@@ -1653,9 +1652,7 @@ describe('LoanService', function() {
     it('does not update loans already at UNSUCCESSFUL status', async () => {
       await LoanService.rawCollection.insert({
         anonymous: true,
-        updatedAt: moment()
-          .subtract(10, 'days')
-          .toDate(),
+        updatedAt: moment().subtract(10, 'days').toDate(),
         _id: 'a',
         name: 'b',
         status: LOAN_STATUS.UNSUCCESSFUL,
@@ -1745,9 +1742,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '1',
-          date: moment()
-            .subtract(3, 'd')
-            .toDate(),
+          date: moment().subtract(3, 'd').toDate(),
         },
       });
       LoanService.setAdminNote({
@@ -1755,9 +1750,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '2',
-          date: moment()
-            .subtract(2, 'd')
-            .toDate(),
+          date: moment().subtract(2, 'd').toDate(),
         },
       });
       LoanService.setAdminNote({
@@ -1765,9 +1758,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '3',
-          date: moment()
-            .subtract(1, 'd')
-            .toDate(),
+          date: moment().subtract(1, 'd').toDate(),
         },
       });
 
@@ -1782,9 +1773,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '1',
-          date: moment()
-            .subtract(1, 'd')
-            .toDate(),
+          date: moment().subtract(1, 'd').toDate(),
           isSharedWithPros: true,
         },
       });
@@ -1811,9 +1800,7 @@ describe('LoanService', function() {
           userId: 'userId',
           note: {
             note: '1',
-            date: moment()
-              .add(1, 'd')
-              .toDate(),
+            date: moment().add(1, 'd').toDate(),
             isSharedWithPros: true,
           },
         }),
@@ -2012,9 +1999,7 @@ describe('LoanService', function() {
           _factory: 'user',
           assignedEmployeeId: 'admin',
         },
-        disbursementDate: moment(today)
-          .add(offset, 'days')
-          .toDate(),
+        disbursementDate: moment(today).add(offset, 'days').toDate(),
       }));
 
     afterEach(() => {
@@ -2048,9 +2033,7 @@ describe('LoanService', function() {
       expect(tasks.length).to.equal(2);
       tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
         expect(title).to.include(
-          moment(today)
-            .add(10, 'days')
-            .format('DD.MM.YYYY'),
+          moment(today).add(10, 'days').format('DD.MM.YYYY'),
         );
         expect(adminId).to.equal('admin');
       });
