@@ -228,9 +228,6 @@ jobs:
                   meteor npm --prefix microservices/backend ci
                   
       - run:
-          name: Generate language files
-          command: npm run lang backend
-      - run:
           name: Run unit tests
           command: cd ./microservices/backend && meteor npm run test-ci
           no_output_timeout: 30m
