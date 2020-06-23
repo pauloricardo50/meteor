@@ -15,10 +15,7 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
   returnValue,
   closeModal,
 }) => {
-  const { _id: loanId, revenues = [] } = loan;
-  const expectedRevenues = revenues.filter(
-    ({ status }) => status === REVENUE_STATUS.EXPECTED,
-  );
+  const { _id: loanId } = loan;
 
   const { loading: loadingTasks, data: tasks = [] } = useReactiveMeteorData({
     query: TASKS_COLLECTION,
@@ -28,11 +25,45 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
     },
   });
 
-  if (loadingTasks) {
+  const {
+    loading: loadingRevenues,
+    data: revenues = [],
+  } = useReactiveMeteorData({
+    query: REVENUES_COLLECTION,
+    params: {
+      $filters: { 'loanCache._id': loanId, status: REVENUE_STATUS.EXPECTED },
+      amount: 1,
+      assigneeLink: 1,
+      description: 1,
+      expectedAt: 1,
+      loan: {
+        name: 1,
+        borrowers: { name: 1 },
+        user: { name: 1 },
+        userCache: 1,
+        assigneeLinks: 1,
+      },
+      paidAt: 1,
+      sourceOrganisationLink: 1,
+      sourceOrganisation: { name: 1 },
+      status: 1,
+      type: 1,
+      organisationLinks: 1,
+      organisations: { name: 1 },
+      insurance: {
+        name: 1,
+        insuranceRequest: { _id: 1 },
+        borrower: { name: 1 },
+      },
+      insuranceRequest: { name: 1 },
+    },
+  });
+
+  if (loadingTasks || loadingRevenues) {
     return <Loading />;
   }
 
-  if (!expectedRevenues.length && !tasks.length) {
+  if (!revenues.length && !tasks.length) {
     closeModal({ ...returnValue });
     return null;
   }
@@ -45,15 +76,10 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
           <TasksTable tasks={tasks} relatedTo={false} />
         </>
       )}
-      {!!expectedRevenues.length && (
+      {!!revenues.length && (
         <>
           <h3 className="mb-8">Revenus</h3>
-          <RevenuesTable
-            filterRevenues={() => ({
-              'loanCache.0._id': loanId,
-              status: REVENUE_STATUS.EXPECTED,
-            })}
-          />
+          <RevenuesTable revenues={revenues} />
         </>
       )}
     </div>
