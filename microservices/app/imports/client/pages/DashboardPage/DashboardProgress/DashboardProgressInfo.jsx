@@ -74,7 +74,7 @@ const DashboardProgressInfo = ({ loan }) => {
 
       {showClosingChecklists && (
         <AppLoanClosingChecklists
-          loanId={loan._id}
+          loan={loan}
           renderTrigger={({ handleOpen, done, total }) => (
             <TodoItem
               label={

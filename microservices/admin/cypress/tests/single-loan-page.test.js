@@ -130,7 +130,7 @@ describe('Single Loan Page', () => {
     cy.get('label[for="IDENTITY"] .title-top svg.error').should('not.exist');
   });
 
-  it.only('adds closing checklists and manipulates them', () => {
+  it('adds closing checklists and manipulates them', () => {
     cy.contains('button', 'Hypothèque').click();
     cy.contains('button', 'Acquisition').click();
 
@@ -145,26 +145,34 @@ describe('Single Loan Page', () => {
     cy.get('input[name=disbursementDate]').last().type('2020-01-01');
 
     cy.get('.status-label').should('contain', 'En cours');
-    cy.contains('En cours').click();
-    cy.contains('Closing').click({ force: true });
-    cy.get('[role=dialog]').contains('button', 'Ok').click();
 
     cy.contains('Préparer le closing').should('not.be.disabled');
     cy.contains('Préparer le closing').click();
     cy.contains('Confirmer').click();
-    cy.contains('Checklist de closing').click();
+    cy.get('[role=dialog]').contains('Les dernières étapes').should('exist');
 
     cy.get('.checklist')
       .first()
       .find('.checklist-item')
       .should('have.length', 7);
 
-    cy.get('button[label="Supprimer"]').first().click();
+    cy.get('[role=dialog] button[aria-label=Supprimer]').first().click();
     cy.contains('Confirmer').click();
 
     cy.get('.checklist')
       .first()
       .find('.checklist-item')
       .should('have.length', 6);
+
+    cy.get('[role=dialog]').contains('button', 'Ajouter').first().click();
+    cy.get('input[name=title]').type('Do stuff');
+    cy.get('input[name=description]').type('Here is a description');
+    cy.get('input[name=requiresDocument]').check();
+    cy.get('[role=dialog] form').submit();
+
+    cy.get('.checklist')
+      .first()
+      .find('.checklist-item')
+      .should('have.length', 7);
   });
 });
