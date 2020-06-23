@@ -207,7 +207,7 @@ addAnalyticsListener({
         _id: referredByOrganisationId,
         name: referredByOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = UserService.get(userId, {
       name: 1,
       email: 1,
@@ -240,9 +240,15 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: analyticsVerifyEmail,
-  func: ({ analytics, params: { trackingId }, user }) => {
+  func: ({ analytics, params: { trackingId }, context: { userId } }) => {
+    const user = UserService.get(userId, {
+      name: 1,
+      email: 1,
+      referredByOrganisation: { name: 1 },
+      referredByUser: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
     const {
-      _id: userId,
       name: userName,
       email: userEmail,
       referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
@@ -250,7 +256,7 @@ addAnalyticsListener({
         _id: referredByOrganisationId,
         name: referredByOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
     analytics.identify(trackingId);
     analytics.track(EVENTS.USER_VERIFIED_EMAIL, {
@@ -353,7 +359,7 @@ addAnalyticsListener({
         _id: referredByOrganisationId,
         name: referredByOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
 
     analytics.track(EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED, {
@@ -443,7 +449,7 @@ addAnalyticsListener({
         _id: referredByOrganisationId,
         name: referredByOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
 
     analytics.track(EVENTS.LOAN_BORROWERS_INSERTED, {
@@ -499,7 +505,7 @@ addAnalyticsListener({
         _id: referredByOrganisationId,
         name: referredByOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
     analytics.track(
       EVENTS.LOAN_CREATED,

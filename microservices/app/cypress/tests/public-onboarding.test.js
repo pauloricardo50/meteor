@@ -23,10 +23,7 @@ describe('Public onboarding', () => {
 
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
 
     cy.get('input#firstName').should('not.exist');
     cy.get('input#salary').should('exist');
@@ -37,10 +34,7 @@ describe('Public onboarding', () => {
 
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
     cy.get('input#salary').type('300');
     // Wait for form save
     cy.wait(500);
@@ -76,10 +70,7 @@ describe('Public onboarding', () => {
     cy.callMethod('generateProFixtures');
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
 
     cy.get('input#salary').type('120000');
     cy.get('input#netSalary').type('100000');
@@ -115,10 +106,7 @@ describe('Public onboarding', () => {
   it('Should attach an anonymous loan to a new user account', () => {
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
 
     cy.get('input#salary').type('300');
     cy.wait(500);
@@ -149,9 +137,7 @@ describe('Public onboarding', () => {
 
   it('should ask to create an account if the user wants to go further', () => {
     cy.contains('button', 'Acquisition').click();
-    cy.get('.simple-dashboard-page-ctas button')
-      .last()
-      .click();
+    cy.get('.simple-dashboard-page-ctas button').last().click();
 
     cy.contains('Soyez accompagné').should('exist');
   });
@@ -160,10 +146,7 @@ describe('Public onboarding', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
     cy.get('input#salary').type('300');
     cy.wait(500);
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
@@ -226,9 +209,7 @@ describe('Public onboarding', () => {
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
-    cy.get('.welcome-screen')
-      .contains('Login')
-      .click();
+    cy.get('.welcome-screen').contains('Login').click();
     // cy.contains('.welcome-screen', 'Login').click(); // Why no work?
     cy.get('input[name="email"]').type(USER_EMAIL);
     cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);
@@ -416,10 +397,7 @@ describe('Public onboarding', () => {
       cy.get('[name="previousLoanTranches.1.duration"]').type('5');
       cy.get('[role="dialog"] form').submit();
 
-      cy.get('.borrowers-adder')
-        .find('button')
-        .first()
-        .click();
+      cy.get('.borrowers-adder').find('button').first().click();
 
       cy.get('input#salary').type('170000');
       cy.wait(500);

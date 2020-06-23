@@ -573,7 +573,9 @@ describe('PromotionOptionService', function () {
     });
   });
 
-  describe('uploadAgreement', () => {
+  describe('uploadAgreement', function () {
+    this.retries(2);
+
     it('uploads the agreement', async () => {
       generator({
         properties: { _id: 'propId' },
@@ -662,7 +664,7 @@ describe('PromotionOptionService', function () {
         promotionOptionId: 'pO2',
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
-        .catch((error) => {
+        .catch(error => {
           expect(error.message).to.include('Aucune convention');
         });
     });
@@ -694,7 +696,7 @@ describe('PromotionOptionService', function () {
         promotionOptionId: 'pO2',
       })
         .then(() => expect(1).to.equal(2, 'This should not throw'))
-        .catch((error) => {
+        .catch(error => {
           expect(error).to.not.equal(undefined);
           expect(error.message).to.include('Aucune convention');
         });
