@@ -71,6 +71,7 @@ export const CustomerAdderUserSchema = ({
       condition: ({ promotionLotIds = [] }) => promotionLotIds.length > 0,
       optional: true,
     },
+    invitationNote: { type: String, optional: true },
   });
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;
@@ -99,15 +100,17 @@ const CustomerAdder = ({
           : undefined,
       }}
       schema={schema}
-      onSubmit={user =>
-        proInviteUser.run({ user, promotionIds: [promotionId] }).then(() => {
-          resetForm();
-          history.push(
-            createRoute('/promotions/:promotionId/customers', {
-              promotionId,
-            }),
-          );
-        })
+      onSubmit={({ invitationNote, ...user }) =>
+        proInviteUser
+          .run({ user, promotionIds: [promotionId], invitationNote })
+          .then(() => {
+            resetForm();
+            history.push(
+              createRoute('/promotions/:promotionId/customers', {
+                promotionId,
+              }),
+            );
+          })
       }
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."
