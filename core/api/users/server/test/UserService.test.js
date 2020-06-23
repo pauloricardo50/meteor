@@ -222,7 +222,6 @@ describe('UserService', function () {
     it('sets the referral if specified in the cookies', () => {
       generator({
         loans: { _id: 'loanId', anonymous: true },
-        organisations: [{ _id: 'org2' }, { _id: 'org1' }],
         users: { _id: 'pro1', _factory: ROLES.PRO },
       });
 

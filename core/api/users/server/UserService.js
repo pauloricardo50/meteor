@@ -92,8 +92,7 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (setAssignee) {
-      const assigneeService = new AssigneeService(newUserId);
-      assigneeService.setAssignee(assignedEmployeeId);
+      new AssigneeService(newUserId).setAssignee(assignedEmployeeId);
     }
 
     this.setAcquisitionChannel({
@@ -155,8 +154,7 @@ export class UserServiceClass extends CollectionService {
       });
     }
 
-    const assigneeService = new AssigneeService(userId);
-    const newAssigneeId = assigneeService.setAssignee();
+    const newAssigneeId = new AssigneeService(userId).setAssignee();
 
     if (loanId && newAssigneeId) {
       LoanService.setAssignees({
@@ -483,8 +481,7 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (isNewUser) {
-      const assigneeService = new AssigneeService(userId);
-      assigneeService.setAssignee();
+      new AssigneeService(userId).setAssignee();
     }
     const { assignedEmployee: admin } = this.get(userId, {
       assignedEmployee: { name: 1 },
