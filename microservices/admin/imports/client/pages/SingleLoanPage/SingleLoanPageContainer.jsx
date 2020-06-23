@@ -72,7 +72,6 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   shareSolvency: 1,
   status: 1,
   step: 1,
-  revenues: { status: 1 },
   unsuccessfulReason: 1,
   userCache: 1,
   userFormsEnabled: 1,
