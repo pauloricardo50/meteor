@@ -12,7 +12,9 @@ const backendPort = MICROSERVICE_PORTS.backend + PORT_OFFSETS.test;
 const backend = new Process();
 const test = new Process();
 
-runBackend({ process: backend, args: ['--test', ...args] });
+if (microservice !== 'backend') {
+  runBackend({ process: backend, args: ['--test', ...args] });
+}
 
 process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;
 

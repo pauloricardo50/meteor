@@ -209,6 +209,7 @@ const makeConfig = () => ({
     Prepare: makePrepareJob(),
     // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
     'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    'Core - unit tests': testMicroserviceJob({ name: 'backend', testsType: 'unit' }),
     // 'Admin - unit tests': testMicroserviceJob({
       // name: 'admin',
       // testsType: 'unit',
@@ -229,6 +230,7 @@ const makeConfig = () => ({
         'Prepare',
         // { 'Www - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Core - unit tests': { requires: ['Prepare'] } },
         // { 'Admin - unit tests': { requires: ['Prepare'] } },
         // { 'Pro - unit tests': { requires: ['Prepare'] } },
         // { 'Www - e2e tests': { requires: ['Prepare'] } },

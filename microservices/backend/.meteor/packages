@@ -43,7 +43,8 @@ littledata:synced-cron
 qualia:prod-shell
 jquery
 montiapm:profiler
+epotek:google-maps
 
 # Backend doesn't need a client architecture
 # Minifier to remove client js to reduce deployment time
-zodern:remove-client-js
+# zodern:remove-client-js
