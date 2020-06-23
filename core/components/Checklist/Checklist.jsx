@@ -13,7 +13,7 @@ const isAdmin = Meteor.microservice === 'admin';
 
 const Checklist = ({ checklist }) => {
   const { _id: checklistId, title, description, items } = checklist;
-  const { done, total } = getChecklistCompletion(checklist);
+  const { percent } = getChecklistCompletion(checklist);
   const itemIds = items.map(({ id }) => id);
 
   return (
@@ -21,7 +21,7 @@ const Checklist = ({ checklist }) => {
       <h4>
         {title}{' '}
         <small className="secondary">
-          <Percent value={done / total} rounded />
+          <Percent value={percent} rounded />
         </small>
       </h4>
       {description && <p className="description">{description}</p>}

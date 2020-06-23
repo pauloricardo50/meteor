@@ -10,7 +10,7 @@ import {
 } from '../../checklistConstants';
 import ChecklistService from '../ChecklistService';
 
-describe('ChecklistService', () => {
+describe.only('ChecklistService', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -39,10 +39,7 @@ describe('ChecklistService', () => {
   describe('addItem', () => {
     it('adds an item to the checklist', () => {
       generator({
-        checklists: [
-          { _id: 'c1' },
-          { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
-        ],
+        checklists: [{ _id: 'c2', items: [{ id: 'a', title: 'yo' }] }],
       });
 
       ChecklistService.addItem({ checklistId: 'c2', title: 'do stuff' });
@@ -57,10 +54,7 @@ describe('ChecklistService', () => {
       generator({
         loans: {
           _id: 'loanId',
-          closingChecklists: [
-            { _id: 'c1' },
-            { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
-          ],
+          closingChecklists: [{ _id: 'c2', items: [{ id: 'a', title: 'yo' }] }],
         },
       });
 
@@ -91,7 +85,6 @@ describe('ChecklistService', () => {
       const start = new Date();
       generator({
         checklists: [
-          { _id: 'c1' },
           {
             _id: 'c2',
             items: [
@@ -126,7 +119,6 @@ describe('ChecklistService', () => {
           {
             _id: 'loanId',
             closingChecklists: [
-              { _id: 'c1' },
               { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
             ],
           },
@@ -171,7 +163,6 @@ describe('ChecklistService', () => {
           {
             _id: 'loanId',
             closingChecklists: [
-              { _id: 'c1' },
               { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
             ],
           },
@@ -202,7 +193,6 @@ describe('ChecklistService', () => {
           {
             _id: 'loanId',
             closingChecklists: [
-              { _id: 'c1' },
               { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
             ],
           },
@@ -232,7 +222,6 @@ describe('ChecklistService', () => {
       const start = new Date();
       generator({
         checklists: [
-          { _id: 'c1' },
           {
             _id: 'c2',
             items: [
@@ -309,7 +298,6 @@ describe('ChecklistService', () => {
     it('removes the right item in the checklist', () => {
       generator({
         checklists: [
-          { _id: 'c1' },
           {
             _id: 'c2',
             items: [
@@ -336,7 +324,6 @@ describe('ChecklistService', () => {
           {
             _id: 'loanId',
             closingChecklists: [
-              { _id: 'c1' },
               { _id: 'c2', items: [{ id: 'a', title: 'yo' }] },
             ],
           },

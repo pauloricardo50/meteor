@@ -19,7 +19,7 @@ export const getChecklistCompletion = checklist => {
   return {
     done: doneItems.length,
     total: items.length,
-    percent: doneItems.length / items.length,
+    percent: items.length === 0 ? 0 : doneItems.length / items.length,
   };
 };
 
@@ -32,7 +32,10 @@ export const getCompletionRate = checklists => {
       return {
         done: obj.done + result.done,
         total: obj.total + result.total,
-        percent: obj.percent + (result.percent * result.total) / totalCount,
+        percent:
+          totalCount === 0
+            ? 0
+            : obj.percent + (result.percent * result.total) / totalCount,
       };
     },
     { done: 0, total: 0, percent: 0 },

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-export const ChecklistContext = React.createContext();
+const ChecklistContext = React.createContext();
 
 export const useChecklistContext = () => useContext(ChecklistContext);
 

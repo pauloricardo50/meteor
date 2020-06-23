@@ -51,6 +51,10 @@ class ChecklistService extends CollectionService {
   }
 
   getItem({ checklistId, itemId }) {
+    if (!itemId) {
+      return;
+    }
+
     let selector = { items: { $elemMatch: { id: itemId } } };
     if (checklistId) {
       selector = checklistId;
@@ -118,18 +122,20 @@ class ChecklistService extends CollectionService {
     const { items } = this.get(checklistId, { items: { id: 1, status: 1 } });
     const { status } = items.find(({ id }) => id === itemId);
 
-    const nextStatus =
-      status === CHECKLIST_ITEM_STATUS.TO_DO
-        ? isAdmin
-          ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
-          : CHECKLIST_ITEM_STATUS.VALIDATED
-        : status === CHECKLIST_ITEM_STATUS.VALIDATED
-        ? isAdmin
-          ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
-          : CHECKLIST_ITEM_STATUS.TO_DO
-        : isAdmin
-        ? CHECKLIST_ITEM_STATUS.TO_DO
-        : status;
+    let nextStatus;
+
+    if (status === CHECKLIST_ITEM_STATUS.TODO) {
+      nextStatus = isAdmin
+        ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
+        : CHECKLIST_ITEM_STATUS.VALIDATED;
+    } else if (status === CHECKLIST_ITEM_STATUS.VALIDATED) {
+      nextStatus = isAdmin
+        ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
+        : CHECKLIST_ITEM_STATUS.TO_DO;
+    } else {
+      // VALIDATED_BY_ADMIN
+      nextStatus = isAdmin ? CHECKLIST_ITEM_STATUS.TO_DO : status;
+    }
 
     if (nextStatus === status) return;
 
@@ -197,15 +203,12 @@ class ChecklistService extends CollectionService {
     });
     const item = items.find(({ id }) => id === itemId);
 
-    if (closingLoan?._id) {
-      if (
-        closingLoan.additionalDocuments.find(
-          ({ checklistItemId }) => checklistItemId === itemId,
-        )
-      ) {
-        return;
-      }
-
+    if (
+      closingLoan?._id &&
+      !closingLoan.additionalDocuments.find(
+        ({ checklistItemId }) => checklistItemId === itemId,
+      )
+    ) {
       LoanService.baseUpdate(closingLoan._id, {
         $push: {
           additionalDocuments: {

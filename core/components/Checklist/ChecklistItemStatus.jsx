@@ -15,20 +15,20 @@ import T, { IntlDate } from '../Translation';
 const isApp = Meteor.microservice === 'app';
 
 const getDropdownConfig = status => {
-  if (status === CHECKLIST_ITEM_STATUS.TO_DO) {
-    return {
-      type: <FaIcon icon={faCircle} color={colors.primary} />,
-    };
-  }
-
   if (status === CHECKLIST_ITEM_STATUS.VALIDATED) {
     return {
       type: <FaIcon icon={faCheck} color={colors.success} />,
     };
   }
 
+  if (status === CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN) {
+    return {
+      type: <FaIcon icon={faCheckDouble} color={colors.success} />,
+    };
+  }
+
   return {
-    type: <FaIcon icon={faCheckDouble} color={colors.success} />,
+    type: <FaIcon icon={faCircle} color={colors.primary} />,
   };
 };
 

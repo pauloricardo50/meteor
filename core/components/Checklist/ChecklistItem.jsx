@@ -81,7 +81,7 @@ const ChecklistItem = ({ item, checklistId, itemIds }) => {
       ref={node => drag(drop(node))}
       style={{
         opacity: isDragging ? 0 : 1,
-        borderColor: isOver ? colors.primary : 'white',
+        borderColor: isOver ? colors.primary : 'transparent',
       }}
     >
       <ChecklistItemStatus checklistId={checklistId} item={item} />

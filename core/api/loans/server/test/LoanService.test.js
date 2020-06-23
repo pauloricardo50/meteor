@@ -12,6 +12,7 @@ import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
+import CHECKLIST_TEMPLATES from '../../../checklists/server/checklistTemplates';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import { INTEREST_RATES } from '../../../interestRates/interestRatesConstants';
@@ -2316,7 +2317,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('addClosingChecklists', () => {
+  describe.only('addClosingChecklists', () => {
     it('adds 2 checklists depending on the loan', () => {
       generator({ loans: { _id: 'loanId' } });
 
@@ -2331,8 +2332,12 @@ describe('LoanService', function () {
       );
 
       expect(closingChecklists.length).to.equal(2);
-      expect(closingChecklists[0].items.length).to.equal(7);
-      expect(closingChecklists[1].items.length).to.equal(6);
+      expect(closingChecklists[0].items.length).to.equal(
+        CHECKLIST_TEMPLATES.ACQUISITION[0].items.length,
+      );
+      expect(closingChecklists[1].items.length).to.equal(
+        CHECKLIST_TEMPLATES.ACQUISITION[1].items.length,
+      );
       expect(additionalDocuments.length).to.equal(3);
       additionalDocuments.forEach(({ checklistItemId }) => {
         expect(!!checklistItemId).to.equal(true);
@@ -2353,8 +2358,12 @@ describe('LoanService', function () {
       );
 
       expect(closingChecklists.length).to.equal(2);
-      expect(closingChecklists[0].items.length).to.equal(7);
-      expect(closingChecklists[1].items.length).to.equal(8);
+      expect(closingChecklists[0].items.length).to.equal(
+        CHECKLIST_TEMPLATES.PROMOTION_ACQUISITION[0].items.length,
+      );
+      expect(closingChecklists[1].items.length).to.equal(
+        CHECKLIST_TEMPLATES.PROMOTION_ACQUISITION[1].items.length,
+      );
       expect(additionalDocuments.length).to.equal(5);
     });
 
@@ -2374,8 +2383,12 @@ describe('LoanService', function () {
       );
 
       expect(closingChecklists.length).to.equal(2);
-      expect(closingChecklists[0].items.length).to.equal(6);
-      expect(closingChecklists[1].items.length).to.equal(9);
+      expect(closingChecklists[0].items.length).to.equal(
+        CHECKLIST_TEMPLATES.REFINANCING[0].items.length,
+      );
+      expect(closingChecklists[1].items.length).to.equal(
+        CHECKLIST_TEMPLATES.REFINANCING[1].items.length,
+      );
       expect(additionalDocuments.length).to.equal(4);
     });
 

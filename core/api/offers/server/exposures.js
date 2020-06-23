@@ -8,11 +8,7 @@ exposeQuery({
   query: loanOffers,
   overrides: {
     firewall(userId, { loanId }) {
-      SecurityService.checkLoggedIn();
-
-      if (loanId) {
-        SecurityService.loans.isAllowedToUpdate(loanId);
-      }
+      SecurityService.loans.isAllowedToUpdate(loanId);
     },
     embody: body => {
       body.$filter = ({ filters, params: { loanId } }) => {

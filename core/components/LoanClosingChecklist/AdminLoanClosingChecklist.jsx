@@ -9,7 +9,7 @@ import LoanClosingChecklist from './LoanClosingChecklist';
 
 const AdminLoanClosingChecklist = ({ loan, buttonProps }) => {
   const [openOnMount, setOpenOnMount] = useState(false);
-  const { data: checklists, loading } = useMeteorData({
+  const { data: checklists = [], loading } = useMeteorData({
     query: loanChecklists,
     params: {
       loanId: loan._id,
@@ -23,10 +23,10 @@ const AdminLoanClosingChecklist = ({ loan, buttonProps }) => {
   });
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
-  if (!loading && checklists.length === 0) {
+  if (checklists.length === 0) {
     return (
       <ConfirmMethod
         buttonProps={{

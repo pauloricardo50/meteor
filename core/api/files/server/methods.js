@@ -139,7 +139,6 @@ handleSuccessfulUpload.setHandler(
     context.unblock();
     SecurityService.checkLoggedIn();
 
-    console.log('yooo!');
     await FileService.updateDocumentsCache({ docId, collection });
 
     if (autoRenameFiles) {

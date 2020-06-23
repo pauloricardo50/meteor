@@ -84,7 +84,7 @@ const OverviewTab = props => {
             loan={loan}
             buttonProps={{
               raised: true,
-              className: 'ml-32',
+              className: 'ml-32 animated fadeIn',
               disabled: !allowClosingChecklists(status),
               tooltip:
                 !allowClosingChecklists(status) &&
