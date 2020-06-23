@@ -1218,16 +1218,12 @@ class LoanService extends CollectionService {
       throw new Meteor.Error('Pas de template pour ce dossier');
     }
 
-    const data = CHECKLIST_TEMPLATES[template];
+    const checklists = CHECKLIST_TEMPLATES[template];
 
-    data.forEach(checklist => {
-      const checklistId = ChecklistService.insertTemplate({
+    checklists.forEach(checklist => {
+      ChecklistService.insertTemplate({
         template: checklist,
-      });
-      this.addLink({
-        id: loanId,
-        linkName: 'closingChecklists',
-        linkId: checklistId,
+        closingLoanId: loanId,
       });
     });
   }

@@ -2322,13 +2322,21 @@ describe('LoanService', function () {
 
       LoanService.addClosingChecklists({ loanId: 'loanId' });
 
-      const { closingChecklists } = LoanService.get('loanId', {
-        closingChecklists: { title: 1, items: 1 },
-      });
+      const { closingChecklists, additionalDocuments } = LoanService.get(
+        'loanId',
+        {
+          closingChecklists: { title: 1, items: 1 },
+          additionalDocuments: 1,
+        },
+      );
 
       expect(closingChecklists.length).to.equal(2);
       expect(closingChecklists[0].items.length).to.equal(7);
       expect(closingChecklists[1].items.length).to.equal(6);
+      expect(additionalDocuments.length).to.equal(3);
+      additionalDocuments.forEach(({ checklistItemId }) => {
+        expect(!!checklistItemId).to.equal(true);
+      });
     });
 
     it('adds a promotion specific checklist', () => {
@@ -2336,13 +2344,18 @@ describe('LoanService', function () {
 
       LoanService.addClosingChecklists({ loanId: 'loanId' });
 
-      const { closingChecklists } = LoanService.get('loanId', {
-        closingChecklists: { title: 1, items: 1 },
-      });
+      const { closingChecklists, additionalDocuments } = LoanService.get(
+        'loanId',
+        {
+          closingChecklists: { title: 1, items: 1 },
+          additionalDocuments: 1,
+        },
+      );
 
       expect(closingChecklists.length).to.equal(2);
       expect(closingChecklists[0].items.length).to.equal(7);
       expect(closingChecklists[1].items.length).to.equal(8);
+      expect(additionalDocuments.length).to.equal(5);
     });
 
     it('adds a refinancing specific checklist', () => {
@@ -2352,13 +2365,18 @@ describe('LoanService', function () {
 
       LoanService.addClosingChecklists({ loanId: 'loanId' });
 
-      const { closingChecklists } = LoanService.get('loanId', {
-        closingChecklists: { title: 1, items: 1 },
-      });
+      const { closingChecklists, additionalDocuments } = LoanService.get(
+        'loanId',
+        {
+          closingChecklists: { title: 1, items: 1 },
+          additionalDocuments: 1,
+        },
+      );
 
       expect(closingChecklists.length).to.equal(2);
       expect(closingChecklists[0].items.length).to.equal(6);
       expect(closingChecklists[1].items.length).to.equal(9);
+      expect(additionalDocuments.length).to.equal(4);
     });
 
     it('adds a cache on the checklist', () => {

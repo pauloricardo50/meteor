@@ -14,10 +14,24 @@ class ChecklistService extends CollectionService {
     super(Checklists);
   }
 
-  insertTemplate({ template }) {
+  insertTemplate({ template, closingLoanId }) {
     const { items, ...data } = template;
+    const mappedItems = items.map(this.makeNewItem);
 
-    return this.insert({ ...data, items: items.map(this.makeNewItem) });
+    const checklistId = this.insert({ ...data, items: mappedItems });
+    this.addLink({
+      id: checklistId,
+      linkName: 'closingLoan',
+      linkId: closingLoanId,
+    });
+
+    mappedItems
+      .filter(({ requiresDocument }) => requiresDocument)
+      .forEach(({ id: itemId }) => {
+        this.addAdditionalDocument({ checklistId, itemId });
+      });
+
+    return checklistId;
   }
 
   makeNewItem(data) {
