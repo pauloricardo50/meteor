@@ -9,12 +9,14 @@ import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { INSURANCE_PRODUCT_FEATURES } from 'core/api/insuranceProducts/insuranceProductConstants';
 import {
   INSURANCE_REQUESTS_COLLECTION,
+  INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUEST_STATUS_ORDER,
   UNSUCCESSFUL_INSURANCE_REQUESTS_REASONS,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
+  LOAN_STATUS,
   LOAN_STATUS_ORDER,
   UNSUCCESSFUL_LOAN_REASONS,
 } from 'core/api/loans/loanConstants';
@@ -25,30 +27,19 @@ import {
 } from 'core/api/revenues/revenueConstants';
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import { employeesById } from 'core/arrays/epotekEmployees';
 import intl from 'core/utils/intl';
-
-import { INSURANCE_REQUEST_STATUS } from '../../../../core/api/insuranceRequests/insuranceRequestConstants';
-import { LOAN_STATUS } from '../../../../core/api/loans/loanConstants';
 
 const { formatMessage } = intl;
 
 const makeFormatDate = key => ({ [key]: date }) =>
   date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
 
-const sevenDaysAgo = moment()
-  .day(-7)
-  .hour(0)
-  .minute(0);
+const sevenDaysAgo = moment().day(-7).hour(0).minute(0);
 
-const fifteenDaysAgo = moment()
-  .day(-15)
-  .hour(0)
-  .minute(0);
+const fifteenDaysAgo = moment().day(-15).hour(0).minute(0);
 
-const thirtyDaysAgo = moment()
-  .day(-30)
-  .hour(0)
-  .minute(0);
+const thirtyDaysAgo = moment().day(-30).hour(0).minute(0);
 
 const analysisConfig = {
   [LOANS_COLLECTION]: {
@@ -239,6 +230,34 @@ const analysisConfig = {
           return finalizedActivity && makeFormatDate('date')(finalizedActivity);
         },
       },
+      {
+        label: 'Semaines avant facturation',
+        format: ({ activities, createdAt }) => {
+          const finalizedActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
+              metadata?.details?.nextStatus === LOAN_STATUS.BILLING,
+          );
+
+          return finalizedActivity
+            ? moment(finalizedActivity.date).diff(createdAt, 'weeks')
+            : undefined;
+        },
+      },
+      {
+        label: 'Semaines avant sans-suite',
+        format: ({ activities, createdAt }) => {
+          const unsuccessfulActivity = activities.find(
+            ({ metadata }) =>
+              metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
+              metadata?.details?.nextStatus === LOAN_STATUS.UNSUCCESSFUL,
+          );
+
+          return unsuccessfulActivity
+            ? moment(unsuccessfulActivity.date).diff(createdAt, 'weeks')
+            : undefined;
+        },
+      },
     ],
     unsuccessfulReason: {
       label: "Raison d'archivage",
@@ -252,6 +271,16 @@ const analysisConfig = {
               })
             : 'Autre'
           : undefined,
+    },
+    insuranceRequests: {
+      fragment: { status: 1 },
+      label: 'A un dossier assurance valide',
+      format: ({ insuranceRequests = [] }) =>
+        insuranceRequests.some(
+          ({ status }) => status !== INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
+        )
+          ? 'Oui'
+          : 'Non',
     },
   },
   [REVENUES_COLLECTION]: {
@@ -458,6 +487,51 @@ const analysisConfig = {
       id: 'Forms.assignedTo',
       format: ({ assignee }) => assignee?.name,
     },
+    createdBy: {
+      id: 'Créé par',
+      format: ({ createdBy }) => {
+        const employee = employeesById[createdBy];
+        return employee?.name;
+      },
+    },
+    completedAt: [
+      {
+        label: 'Complété Mois-Année',
+        format: makeFormatDate('completedAt'),
+      },
+      {
+        label: "Heures entre complété et date d'échéance",
+        format: ({ completedAt, dueAt }) => {
+          if (!completedAt || !dueAt) {
+            return;
+          }
+
+          const delta = moment(completedAt).diff(dueAt, 'hours');
+
+          if (Math.abs(delta) > 60 * 24) {
+            return;
+          }
+
+          return delta;
+        },
+      },
+      {
+        label: 'Heures entre complété et créé',
+        format: ({ completedAt, createdAt }) => {
+          if (!completedAt) {
+            return;
+          }
+
+          const delta = moment(completedAt).diff(createdAt, 'hours');
+
+          if (Math.abs(delta) > 60 * 24) {
+            return;
+          }
+
+          return delta;
+        },
+      },
+    ],
   },
   [ORGANISATIONS_COLLECTION]: {
     name: {
@@ -521,8 +595,9 @@ const analysisConfig = {
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
-        `${INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) +
-          1}) ${formatMessage({ id: `Forms.status.${status}` })}`,
+        `${
+          INSURANCE_REQUEST_STATUS_ORDER.indexOf(status) + 1
+        }) ${formatMessage({ id: `Forms.status.${status}` })}`,
     },
     user: [
       {
