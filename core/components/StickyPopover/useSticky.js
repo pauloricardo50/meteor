@@ -1,42 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const useSticky = ({ enterDelay = 0, exitDelay = 200 } = {}) => {
+const useSticky = ({ enterDelay = 0, exitDelay = 200, onMouseEnter } = {}) => {
   const [show, setShow] = useState(false);
-  const [enterTimeout, setEnterTimeout] = useState(null);
-  const [exitTimeout, setExitTimeout] = useState(null);
+  const enterTimeout = useRef();
+  const exitTimeout = useRef();
 
-  useEffect(
-    () => () => {
-      clearTimeout(enterTimeout);
-      clearTimeout(exitTimeout);
-    },
-    [enterTimeout, exitTimeout],
-  );
+  useEffect(() => () => {
+    clearTimeout(enterTimeout.current);
+    clearTimeout(exitTimeout.current);
+  });
 
   const onTargetEnter = () => {
-    clearTimeout(enterTimeout);
-    setEnterTimeout(setTimeout(() => setShow(true), enterDelay));
+    clearTimeout(enterTimeout.current);
+    enterTimeout.current = setTimeout(() => {
+      setShow(true);
+
+      if (onMouseEnter) {
+        onMouseEnter();
+      }
+    }, enterDelay);
   };
 
   const onStickyEnter = () => {
-    clearTimeout(exitTimeout);
+    clearTimeout(exitTimeout.current);
     setShow(true);
   };
 
   const onMouseLeave = () => {
-    clearTimeout(enterTimeout);
-    setExitTimeout(setTimeout(() => setShow(false), exitDelay));
+    clearTimeout(enterTimeout.current);
+    exitTimeout.current = setTimeout(() => setShow(false), exitDelay);
   };
 
   return {
-    targetProps: {
-      onMouseEnter: onTargetEnter,
-      onMouseLeave,
-    },
-    stickyProps: {
-      onMouseEnter: onStickyEnter,
-      onMouseLeave,
-    },
+    targetProps: { onMouseEnter: onTargetEnter, onMouseLeave },
+    stickyProps: { onMouseEnter: onStickyEnter, onMouseLeave },
     show,
   };
 };
