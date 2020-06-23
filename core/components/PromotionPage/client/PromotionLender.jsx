@@ -12,7 +12,11 @@ const schema = new SimpleSchema({
     optional: true,
     customAllowedValues: {
       query: ORGANISATIONS_COLLECTION,
-      params: { $filters: { lenderRulesCount: { $gte: 1 } }, name: 1 },
+      params: {
+        $filters: { lenderRulesCount: { $gte: 1 } },
+        name: 1,
+        $options: { sort: { name: 1 } },
+      },
       allowNull: true,
     },
     uniforms: {
