@@ -18,6 +18,8 @@ import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
+import ChecklistService from '../../checklists/server/ChecklistService';
+import CHECKLIST_TEMPLATES from '../../checklists/server/checklistTemplates';
 import {
   calculatorLoan,
   lenderRules as lenderRulesFragment,
@@ -1207,6 +1209,33 @@ class LoanService extends CollectionService {
 
   linkProperty({ loanId, propertyId }) {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
+
+  addClosingChecklists({ loanId }) {
+    let template;
+    const { hasPromotion, purchaseType } = this.get(loanId, {
+      hasPromotion: 1,
+      purchaseType: 1,
+    });
+
+    if (hasPromotion) {
+      template = 'PROMOTION_ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+      template = 'ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      template = 'REFINANCING';
+    } else {
+      throw new Meteor.Error('Pas de template pour ce dossier');
+    }
+
+    const checklists = CHECKLIST_TEMPLATES[template];
+
+    checklists.forEach(checklist => {
+      ChecklistService.insertTemplate({
+        template: checklist,
+        closingLoanId: loanId,
+      });
+    });
   }
 }
 

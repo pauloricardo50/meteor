@@ -2,13 +2,18 @@ import React from 'react';
 import cx from 'classnames';
 
 // http://codepen.io/TaniaLD/pen/oKxep
-const Loading = ({ small, fullScreen }) => (
+const Loading = ({ small, fullScreen, className, ...rest }) => (
   // Fade it in so that the loader doesn't show up if loading is super fast
   <div
-    className={cx('loading-container animated fadeIn', { small, fullScreen })}
+    className={cx(
+      'loading-container animated fadeIn',
+      { small, fullScreen },
+      className,
+    )}
     aria-label="Loading"
     role="alert"
     data-testid="loading"
+    {...rest}
   >
     <div className="loading-box">
       <div className="loader2" />

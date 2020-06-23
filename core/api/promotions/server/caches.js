@@ -7,6 +7,5 @@ PromotionService.cacheCount(
     referenceField: 'promotionLinks.0._id',
     cacheField: 'loanCount',
   },
-  {},
   // { loanCount: { $exists: false } },
 );

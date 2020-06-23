@@ -1,13 +1,15 @@
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
-@import '{}/imports/core/components/AutoForm/AutoForm.scss';
 @import '{}/imports/core/components/AccountPage/AccountPage.scss';
 @import '{}/imports/core/components/AccountPage/DeveloperSection/DeveloperSection.scss';
+@import '{}/imports/core/components/AdminNotes/AdminNotes.scss';
+@import '{}/imports/core/components/AutoForm/AutoForm.scss';
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
 @import '{}/imports/core/components/AutoForm2/AutoForm.scss';
 @import '{}/imports/core/components/BorrowerAddPartner/BorrowerAddPartner.scss';
 @import '{}/imports/core/components/Box/Box.scss';
 @import '{}/imports/core/components/ButtonSwitch/ButtonSwitch.scss';
+@import '{}/imports/core/components/Checklist/Checklist.scss';
 @import '{}/imports/core/components/ClickToEditField/ClickToEditField.scss';
 @import '{}/imports/core/components/CollectionSearch/CollectionSearch.scss';
 @import '{}/imports/core/components/ConstructionTimeline/ConstructionTimeline.scss';
@@ -30,7 +32,6 @@
 @import '{}/imports/core/components/Linkify/Linkify.scss';
 @import '{}/imports/core/components/Loading/Loading.scss';
 @import '{}/imports/core/components/LoanChecklist/LoanChecklist.scss';
-@import '{}/imports/core/components/AdminNotes/AdminNotes.scss';
 @import '{}/imports/core/components/LoanProgress/LoanProgress.scss';
 @import '{}/imports/core/components/LoginPage/LoginPage.scss';
 @import '{}/imports/core/components/maps/GoogleMap.scss';
@@ -43,6 +44,7 @@
 @import '{}/imports/core/components/Page/Page.scss';
 @import '{}/imports/core/components/PasswordResetPage/PasswordResetPage.scss';
 @import '{}/imports/core/components/PremiumBadge/PremiumBadge.scss';
+@import '{}/imports/core/components/ProgressBar/ProgressBar.scss';
 @import '{}/imports/core/components/ProgressCircle/ProgressCircle.scss';
 @import '{}/imports/core/components/PromotionPage/client/PromotionPage.scss';
 @import '{}/imports/core/components/PropertyForm/PropertyForm.scss';
@@ -59,7 +61,6 @@
 @import '{}/imports/core/components/Toggle/Toggle.scss';
 @import '{}/imports/core/components/tooltips/Tooltip.scss';
 @import '{}/imports/core/components/TopNav/TopNav.scss';
-@import '{}/imports/core/components/ProgressBar/ProgressBar.scss';
 @import '{}/imports/core/components/TranchePicker/TranchePicker.scss';
 @import '{}/imports/core/components/UploaderArray/Uploader/Uploader.scss';
 @import '{}/imports/core/components/Waves/Waves.scss';

@@ -260,3 +260,8 @@ export const loanLinkProperty = new Method({
   name: 'loanLinkProperty',
   params: { loanId: String, propertyId: String },
 });
+
+export const addClosingChecklists = new Method({
+  name: 'addClosingChecklists',
+  params: { loanId: String },
+});
