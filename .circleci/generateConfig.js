@@ -180,7 +180,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Install node_modules',
       `
       meteor npm --prefix microservices/${name} ci
-      meteor npm --prefix microservices/backend ci
+      ${name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''}
       `,
     ),
     name !== 'backend' && runCommand('Generate language files', `npm run lang ${name}`),

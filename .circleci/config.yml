@@ -225,7 +225,7 @@ jobs:
           command: |2-
 
                   meteor npm --prefix microservices/backend ci
-                  meteor npm --prefix microservices/backend ci
+                  
                   
       - run:
           name: Run unit tests
