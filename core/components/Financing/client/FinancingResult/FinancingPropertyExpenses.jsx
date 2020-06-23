@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 
 import { propertyUpdate } from '../../../../api/properties/methodDefinitions';
+import { PROPERTY_CATEGORY } from '../../../../api/properties/propertyConstants';
 import { LightTheme } from '../../../Themes';
 import T, { Money } from '../../../Translation';
 import { FinancingField } from '../FinancingSection/components/FinancingField';
@@ -36,6 +37,14 @@ const FinancingPropertyExpenses = props => {
     return (
       <div className="monthlyPropertyCost">
         <Money value={0} />
+      </div>
+    );
+  }
+
+  if (property.category !== PROPERTY_CATEGORY.USER) {
+    return (
+      <div className="monthlyPropertyCost">
+        <Money value={property.yearlyExpenses / 12} />
       </div>
     );
   }
