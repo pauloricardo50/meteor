@@ -171,8 +171,19 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     runCommand(
       'Install node_modules',
       `
-      meteor npm --prefix microservices/${name} ci
+      function installBackend {
+        meteor npm --prefix microservices/${name} ci
+        touch $HOME/.npm-backend-done
+      }
+
+      installBackend &
+
       ${name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''}
+
+      until [ -f $HOME/.npm-backend-done ]; do
+        echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+        sleep 1
+      done
       `,
     ),
     name !== 'backend' && runCommand('Generate language files', `npm run lang ${name}`),

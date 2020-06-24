@@ -116,8 +116,19 @@ jobs:
           name: Install node_modules
           command: |2-
 
-                  meteor npm --prefix microservices/app ci
+                  function installBackend {
+                    meteor npm --prefix microservices/app ci
+                    touch $HOME/.npm-backend-done
+                  }
+
+                  installBackend &
+
                   meteor npm --prefix microservices/backend ci
+
+                  until [ -f $HOME/.npm-backend-done ]; do
+                    echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+                    sleep 1
+                  done
                   
       - run:
           name: Generate language files
@@ -216,8 +227,19 @@ jobs:
           name: Install node_modules
           command: |2-
 
-                  meteor npm --prefix microservices/backend ci
+                  function installBackend {
+                    meteor npm --prefix microservices/backend ci
+                    touch $HOME/.npm-backend-done
+                  }
+
+                  installBackend &
+
                   
+
+                  until [ -f $HOME/.npm-backend-done ]; do
+                    echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+                    sleep 1
+                  done
                   
       - run:
           name: Run unit tests
