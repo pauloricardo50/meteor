@@ -124,7 +124,7 @@ class ChecklistService extends CollectionService {
 
     let nextStatus;
 
-    if (status === CHECKLIST_ITEM_STATUS.TODO) {
+    if (status === CHECKLIST_ITEM_STATUS.TO_DO) {
       nextStatus = isAdmin
         ? CHECKLIST_ITEM_STATUS.VALIDATED_BY_ADMIN
         : CHECKLIST_ITEM_STATUS.VALIDATED;
