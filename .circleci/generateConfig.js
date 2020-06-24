@@ -38,7 +38,7 @@ const defaultJobValues = {
 const cacheKeys = {
   global: () => `global_${CACHE_VERSION}_2-{{ checksum "./package-lock.json" }}`,
   meteorSystem: name =>
-    `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_system_${CACHE_VERSION}_${name}_2_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>

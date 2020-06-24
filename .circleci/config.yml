@@ -80,7 +80,7 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_app_{{ checksum
+              meteor_system_master_16_app_2_{{ checksum
               "./microservices/app/.meteor/release" }}_{{ checksum
               "./microservices/app/.meteor/versions" }}
       - restore_cache:
@@ -140,7 +140,7 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_16_app_{{ checksum
+            meteor_system_master_16_app_2_{{ checksum
             "./microservices/app/.meteor/release" }}_{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
@@ -189,7 +189,7 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_backend_{{ checksum
+              meteor_system_master_16_backend_2_{{ checksum
               "./microservices/backend/.meteor/release" }}_{{ checksum
               "./microservices/backend/.meteor/versions" }}
       - restore_cache:
@@ -248,7 +248,7 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_master_16_backend_{{ checksum
+            meteor_system_master_16_backend_2_{{ checksum
             "./microservices/backend/.meteor/release" }}_{{ checksum
             "./microservices/backend/.meteor/versions" }}
           paths:
