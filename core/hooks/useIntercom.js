@@ -105,21 +105,17 @@ const initializeIntercom = async history => {
 };
 
 const useIntercom = () => {
-  const [impersonatedSession] = useImpersonatedSession();
   const history = useHistory();
-  console.log('render');
   // Initialization
   useEffect(() => {
-    if (!impersonatedSession?.shared) {
-      initializeIntercom(history);
+    initializeIntercom(history);
 
-      return () => {
-        IntercomAPI('shutdown');
-        delete window.Intercom;
-        delete window.intercomSettings;
-      };
-    }
-  }, [impersonatedSession?.shared]);
+    return () => {
+      IntercomAPI('shutdown');
+      delete window.Intercom;
+      delete window.intercomSettings;
+    };
+  });
 
   const currentUser = useCurrentUser();
 

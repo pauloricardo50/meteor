@@ -22,34 +22,39 @@ const ADMIN_INTERCOM_ID = '3829629';
 const ADMIN_INTERCOM_EMAIL = 'quentin@e-potek.ch';
 const CONVERSATION_INTERCOM_ID = '97872100000001';
 
+const resetContact = () =>
+  IntercomService.updateContact({
+    contactId: CONTACT_INTERCOM_ID,
+    owner_id: null,
+    custom_attributes: {
+      epotek_trackingid: null,
+      test: null,
+    },
+  });
+
+const resetVisitor = () =>
+  IntercomService.updateVisitor({
+    visitorId: VISITOR_INTERCOM_ID,
+    custom_attributes: {
+      epotek_trackingid: null,
+      test: null,
+    },
+  });
+
+const resetConversation = () =>
+  IntercomService.assignConversation({
+    conversationId: CONVERSATION_INTERCOM_ID,
+    adminId: ADMIN_INTERCOM_ID,
+    assigneeId: '0',
+  });
+
 describe('IntercomService', function () {
-  this.timeout(10000);
+  this.timeout(15000);
   let logErrorSpy;
 
   beforeEach(async function () {
     resetDatabase();
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
-    await IntercomService.updateContact({
-      contactId: CONTACT_INTERCOM_ID,
-      owner_id: null,
-      custom_attributes: {
-        epotek_trackingid: null,
-        test: null,
-      },
-    });
-    await IntercomService.updateVisitor({
-      visitorId: VISITOR_INTERCOM_ID,
-      custom_attributes: {
-        epotek_trackingid: null,
-        test: null,
-      },
-    });
-
-    await IntercomService.assignConversation({
-      conversationId: CONVERSATION_INTERCOM_ID,
-      adminId: ADMIN_INTERCOM_ID,
-      assigneeId: '0',
-    });
   });
 
   afterEach(() => {
@@ -71,58 +76,12 @@ describe('IntercomService', function () {
       });
     });
 
-    it('returns the contacts with a filter on name', async () => {
-      const { data = [] } = await IntercomService.searchContacts({
-        filters: { name: { value: CONTACT_INTERCOM_NAME } },
-      });
-
-      expect(data.length).to.equal(1);
-      const [contact] = data;
-
-      expect(contact).to.deep.include({
-        email: CONTACT_INTERCOM_EMAIL,
-        name: CONTACT_INTERCOM_NAME,
-      });
-    });
-
     it('returns the contacts with filters on name and email', async () => {
       const { data = [] } = await IntercomService.searchContacts({
         filters: {
           name: { value: CONTACT_INTERCOM_NAME },
           email: { value: CONTACT_INTERCOM_EMAIL },
         },
-      });
-
-      expect(data.length).to.equal(1);
-      const [contact] = data;
-
-      expect(contact).to.deep.include({
-        email: CONTACT_INTERCOM_EMAIL,
-        name: CONTACT_INTERCOM_NAME,
-      });
-    });
-
-    it('returns the contacts with filters on name and email with OR operator', async () => {
-      const { data = [] } = await IntercomService.searchContacts({
-        filters: {
-          name: { value: 'some name' },
-          email: { value: CONTACT_INTERCOM_EMAIL },
-        },
-        operator: 'OR',
-      });
-
-      expect(data.length).to.equal(1);
-      const [contact] = data;
-
-      expect(contact).to.deep.include({
-        email: CONTACT_INTERCOM_EMAIL,
-        name: CONTACT_INTERCOM_NAME,
-      });
-    });
-
-    it('returns the contacts with a contain filter on email', async () => {
-      const { data = [] } = await IntercomService.searchContacts({
-        filters: { email: { value: 'digital+intercom', operator: '~' } },
       });
 
       expect(data.length).to.equal(1);
@@ -163,16 +122,13 @@ describe('IntercomService', function () {
       expect(logErrorSpy.args[0][0].error.message).to.include('User Not Found');
       expect(contact).to.equal(undefined);
     });
-
-    it('returns undefined if contactId is undefined', async () => {
-      const contact = await IntercomService.getContact({});
-
-      expect(logErrorSpy.args[0][0].error.message).to.include('User Not Found');
-      expect(contact).to.equal(undefined);
-    });
   });
 
   describe('updateContact', () => {
+    before(async () => {
+      await resetContact();
+    });
+
     it('updates a contact and returns the updated contact', async () => {
       const contact = await IntercomService.updateContact({
         contactId: CONTACT_INTERCOM_ID,
@@ -226,6 +182,10 @@ describe('IntercomService', function () {
   });
 
   describe('updateVisitor', () => {
+    before(async () => {
+      await resetVisitor();
+    });
+
     it('updates a visitor', async () => {
       const visitor = await IntercomService.updateVisitor({
         visitorId: VISITOR_INTERCOM_ID,
@@ -249,6 +209,10 @@ describe('IntercomService', function () {
   });
 
   describe('assignConversation', () => {
+    before(async () => {
+      await resetConversation();
+    });
+
     it('assigns a conversation', async () => {
       const { assignee } = await IntercomService.assignConversation({
         conversationId: CONVERSATION_INTERCOM_ID,
@@ -257,7 +221,8 @@ describe('IntercomService', function () {
       expect(assignee.id).to.equal(ADMIN_INTERCOM_ID);
     });
 
-    it('unassigns a conversation', async function () {
+    // We don't use conversation un-assignments
+    it.skip('unassigns a conversation', async function () {
       this.timeout(15000);
       await IntercomService.assignConversation({
         conversationId: CONVERSATION_INTERCOM_ID,
@@ -294,8 +259,12 @@ describe('IntercomService', function () {
   describe('getIntercomSettings', () => {
     let updateContactOwnerSpy;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       updateContactOwnerSpy = sinon.spy(IntercomService, 'updateContactOwner');
+    });
+
+    before(async () => {
+      await resetContact();
     });
 
     afterEach(() => {
@@ -484,27 +453,8 @@ describe('IntercomService', function () {
   });
 
   describe('updateContactOwner', () => {
-    it('updates the contact owner', async () => {
-      generator({
-        users: [
-          {
-            _id: 'admin',
-            _factory: 'advisor',
-            intercomId: ADMIN_INTERCOM_ID,
-          },
-          {
-            _id: 'user',
-            emails: [{ address: CONTACT_INTERCOM_EMAIL, verified: true }],
-          },
-        ],
-      });
-
-      const contact = await IntercomService.updateContactOwner({
-        userId: 'user',
-        adminId: 'admin',
-      });
-
-      expect(String(contact.owner_id)).to.equal(ADMIN_INTERCOM_ID);
+    before(async () => {
+      await resetContact();
     });
 
     it('does not update the contact owner when admin is not found on intercom', async () => {
@@ -547,6 +497,29 @@ describe('IntercomService', function () {
 
       expect(response).to.equal(undefined);
       expect(contact.owner_id).to.equal(null);
+    });
+
+    it('updates the contact owner', async () => {
+      generator({
+        users: [
+          {
+            _id: 'admin',
+            _factory: 'advisor',
+            intercomId: ADMIN_INTERCOM_ID,
+          },
+          {
+            _id: 'user',
+            emails: [{ address: CONTACT_INTERCOM_EMAIL, verified: true }],
+          },
+        ],
+      });
+
+      const contact = await IntercomService.updateContactOwner({
+        userId: 'user',
+        adminId: 'admin',
+      });
+
+      expect(String(contact.owner_id)).to.equal(ADMIN_INTERCOM_ID);
     });
   });
 
@@ -604,34 +577,9 @@ describe('IntercomService', function () {
       isImpersonatedSessionStub.restore();
     });
 
-    it('updates the visitor tracking id', async () => {
-      isImpersonatedSessionStub.returns(false);
-
-      const visitor = await IntercomService.updateVisitorTrackingId({
-        visitorId: VISITOR_INTERCOM_ID,
-        trackingId: '12345',
-      });
-
-      expect(visitor.custom_attributes).to.deep.include({
-        epotek_trackingid: '12345',
-      });
-    });
-
-    it('updates a contact tracking id', async () => {
-      isImpersonatedSessionStub.returns(false);
-
-      await IntercomService.updateVisitorTrackingId({
-        visitorId: CONTACT_INTERCOM_VISITOR_ID,
-        trackingId: '12345',
-      });
-
-      const contact = await IntercomService.getContact({
-        contactId: CONTACT_INTERCOM_ID,
-      });
-
-      expect(contact.custom_attributes).to.deep.include({
-        epotek_trackingid: '12345',
-      });
+    before(async () => {
+      await resetVisitor();
+      await resetContact();
     });
 
     it('does not update visitor if user is being impersonated', async () => {
@@ -699,6 +647,20 @@ describe('IntercomService', function () {
       });
 
       expect(response).to.equal(undefined);
+      expect(visitor.custom_attributes).to.deep.include({
+        epotek_trackingid: '12345',
+      });
+    });
+
+    it('updates the visitor tracking id', async () => {
+      isImpersonatedSessionStub.returns(false);
+      await resetVisitor();
+
+      const visitor = await IntercomService.updateVisitorTrackingId({
+        visitorId: VISITOR_INTERCOM_ID,
+        trackingId: '12345',
+      });
+
       expect(visitor.custom_attributes).to.deep.include({
         epotek_trackingid: '12345',
       });
@@ -792,29 +754,24 @@ describe('IntercomService', function () {
 
   describe('handleNewConversation', () => {
     let analyticsSpy;
+    let assignConversationStub;
 
     beforeEach(() => {
       analyticsSpy = sinon.spy(NoOpAnalytics.prototype, 'track');
+      // We stub assignConversation here because this endpoint is really slow
+      assignConversationStub = sinon.stub(
+        IntercomService,
+        'assignConversation',
+      );
     });
 
     afterEach(() => {
       NoOpAnalytics.prototype.track.restore();
+      assignConversationStub.restore();
     });
 
-    it('tracks the event if contact has a tracking id', async () => {
-      await IntercomService.updateContact({
-        contactId: CONTACT_INTERCOM_ID,
-        custom_attributes: { epotek_trackingid: 'trackingId' },
-      });
-      await IntercomService.handleNewConversation({
-        id: CONVERSATION_INTERCOM_ID,
-        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
-      });
-
-      expect(analyticsSpy.args[0][0]).to.deep.include({
-        anonymousId: 'trackingId',
-        event: 'User Started Intercom conversation',
-      });
+    before(async () => {
+      await resetContact();
     });
 
     it('does not track the event if contact has no tracking id', async () => {
@@ -824,20 +781,6 @@ describe('IntercomService', function () {
       });
 
       expect(analyticsSpy.called).to.equal(false);
-    });
-
-    it('assigns contact to conversation assignee', async () => {
-      await IntercomService.handleNewConversation({
-        id: CONVERSATION_INTERCOM_ID,
-        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
-        assignee: { id: ADMIN_INTERCOM_ID },
-      });
-
-      const contact = await IntercomService.getContact({
-        contactId: CONTACT_INTERCOM_ID,
-      });
-
-      expect(String(contact.owner_id)).to.equal(ADMIN_INTERCOM_ID);
     });
 
     it('does not assign contact to undefined conversation assignee', async () => {
@@ -851,39 +794,6 @@ describe('IntercomService', function () {
       });
 
       expect(contact.owner_id).to.equal(null);
-    });
-
-    it('assigns conversation to contact owner', async () => {
-      await IntercomService.updateContact({
-        contactId: CONTACT_INTERCOM_ID,
-        owner_id: ADMIN_INTERCOM_ID,
-      });
-      const conversation = await IntercomService.handleNewConversation({
-        id: CONVERSATION_INTERCOM_ID,
-        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
-      });
-
-      expect(conversation.assignee.id).to.equal(ADMIN_INTERCOM_ID);
-    });
-
-    it('assigns conversation to user assignee', async () => {
-      generator({
-        users: [
-          { _id: 'admin', _factory: 'advisor', intercomId: ADMIN_INTERCOM_ID },
-          {
-            _id: 'user',
-            emails: [{ address: CONTACT_INTERCOM_EMAIL, verified: true }],
-            assignedEmployeeId: 'admin',
-          },
-        ],
-      });
-
-      const conversation = await IntercomService.handleNewConversation({
-        id: CONVERSATION_INTERCOM_ID,
-        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
-      });
-
-      expect(conversation.assignee.id).to.equal(ADMIN_INTERCOM_ID);
     });
 
     it('does not assign conversation if no assignee is found', async () => {
@@ -939,6 +849,78 @@ describe('IntercomService', function () {
 
       expect(response).to.equal(undefined);
     });
+
+    it('tracks the event if contact has a tracking id', async () => {
+      await IntercomService.updateContact({
+        contactId: CONTACT_INTERCOM_ID,
+        custom_attributes: { epotek_trackingid: 'trackingId' },
+      });
+      await IntercomService.handleNewConversation({
+        id: CONVERSATION_INTERCOM_ID,
+        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
+      });
+
+      expect(analyticsSpy.args[0][0]).to.deep.include({
+        anonymousId: 'trackingId',
+        event: 'User Started Intercom conversation',
+      });
+    });
+
+    it('assigns contact to conversation assignee', async () => {
+      await IntercomService.handleNewConversation({
+        id: CONVERSATION_INTERCOM_ID,
+        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
+        assignee: { id: ADMIN_INTERCOM_ID },
+      });
+
+      const contact = await IntercomService.getContact({
+        contactId: CONTACT_INTERCOM_ID,
+      });
+
+      expect(String(contact.owner_id)).to.equal(ADMIN_INTERCOM_ID);
+    });
+
+    it('assigns conversation to contact owner', async () => {
+      assignConversationStub.resolves({});
+      await IntercomService.updateContact({
+        contactId: CONTACT_INTERCOM_ID,
+        owner_id: ADMIN_INTERCOM_ID,
+      });
+
+      await IntercomService.handleNewConversation({
+        id: CONVERSATION_INTERCOM_ID,
+        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
+      });
+
+      expect(assignConversationStub.args[0][0]).to.deep.include({
+        conversationId: CONVERSATION_INTERCOM_ID,
+        assigneeId: Number(ADMIN_INTERCOM_ID),
+      });
+    });
+
+    it('assigns conversation to user assignee', async () => {
+      assignConversationStub.resolves({});
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'advisor', intercomId: ADMIN_INTERCOM_ID },
+          {
+            _id: 'user',
+            emails: [{ address: CONTACT_INTERCOM_EMAIL, verified: true }],
+            assignedEmployeeId: 'admin',
+          },
+        ],
+      });
+
+      await IntercomService.handleNewConversation({
+        id: CONVERSATION_INTERCOM_ID,
+        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
+      });
+
+      expect(assignConversationStub.args[0][0]).to.deep.include({
+        conversationId: CONVERSATION_INTERCOM_ID,
+        assigneeId: Number(ADMIN_INTERCOM_ID),
+      });
+    });
   });
 
   describe('handleAdminResponse', () => {
@@ -950,6 +932,19 @@ describe('IntercomService', function () {
 
     afterEach(() => {
       NoOpAnalytics.prototype.track.restore();
+    });
+
+    before(async () => {
+      await resetContact();
+    });
+
+    it('does not track the event if contact has no tracking id', async () => {
+      await IntercomService.handleAdminResponse({
+        user: { id: CONTACT_INTERCOM_ID },
+        assignee: { id: ADMIN_INTERCOM_ID },
+      });
+
+      expect(analyticsSpy.called).to.equal(false);
     });
 
     it('tracks the event if contact has a tracking id', async () => {
@@ -993,25 +988,8 @@ describe('IntercomService', function () {
       });
     });
 
-    it('does not track the event if contact has no tracking id', async () => {
-      await IntercomService.handleAdminResponse({
-        user: { id: CONTACT_INTERCOM_ID },
-        assignee: { id: ADMIN_INTERCOM_ID },
-      });
-
-      expect(analyticsSpy.called).to.equal(false);
-    });
-
-    it('assigns the contact to the replying admin', async () => {
-      const contact = await IntercomService.handleAdminResponse({
-        user: { id: CONTACT_INTERCOM_ID },
-        assignee: { id: ADMIN_INTERCOM_ID },
-      });
-
-      expect(String(contact.owner_id)).to.equal(ADMIN_INTERCOM_ID);
-    });
-
     it('does not assign the contact to the undefined replying admin', async () => {
+      await resetContact();
       const response = await IntercomService.handleAdminResponse({
         user: { id: CONTACT_INTERCOM_ID },
       });
@@ -1022,12 +1000,13 @@ describe('IntercomService', function () {
       expect(contact.owner_id).to.equal(null);
     });
 
-    it('does not assign the undefined contact to the replying admin', async () => {
-      const response = await IntercomService.handleAdminResponse({
+    it('assigns the contact to the replying admin', async () => {
+      const contact = await IntercomService.handleAdminResponse({
+        user: { id: CONTACT_INTERCOM_ID },
         assignee: { id: ADMIN_INTERCOM_ID },
       });
 
-      expect(response).to.equal(undefined);
+      expect(String(contact.owner_id)).to.equal(ADMIN_INTERCOM_ID);
     });
   });
 
@@ -1040,6 +1019,35 @@ describe('IntercomService', function () {
 
     afterEach(() => {
       NoOpAnalytics.prototype.track.restore();
+    });
+
+    before(async () => {
+      await resetContact();
+    });
+
+    it('does not track the event if contact has no tracking id', async () => {
+      generator({
+        users: [
+          {
+            _id: 'admin',
+            _factory: 'advisor',
+            firstName: 'Admin',
+            lastName: 'E-Potek',
+            intercomId: ADMIN_INTERCOM_ID,
+          },
+          {
+            _id: 'user',
+            assignedEmployeeId: 'admin',
+            emails: [{ address: CONTACT_INTERCOM_EMAIL, verified: true }],
+          },
+        ],
+      });
+
+      await IntercomService.handleUserResponse({
+        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
+      });
+
+      expect(analyticsSpy.called).to.equal(false);
     });
 
     it('tracks the event if contact has a tracking id', async () => {
@@ -1078,31 +1086,6 @@ describe('IntercomService', function () {
         assigneeId: 'admin',
         assigneeName: 'Admin E-Potek',
       });
-    });
-
-    it('does not track the event if contact has no tracking id', async () => {
-      generator({
-        users: [
-          {
-            _id: 'admin',
-            _factory: 'advisor',
-            firstName: 'Admin',
-            lastName: 'E-Potek',
-            intercomId: ADMIN_INTERCOM_ID,
-          },
-          {
-            _id: 'user',
-            assignedEmployeeId: 'admin',
-            emails: [{ address: CONTACT_INTERCOM_EMAIL, verified: true }],
-          },
-        ],
-      });
-
-      await IntercomService.handleUserResponse({
-        user: { id: CONTACT_INTERCOM_ID, email: CONTACT_INTERCOM_EMAIL },
-      });
-
-      expect(analyticsSpy.called).to.equal(false);
     });
   });
 });

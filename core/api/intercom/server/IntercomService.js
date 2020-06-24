@@ -119,7 +119,7 @@ const config = function () {
           if (errors.length) {
             ErrorLogger.logError({
               error: new Error(errors?.[0]?.message),
-              additionalData: ['IntercomAPI error'],
+              additionalData: ['IntercomAPI fetch error'],
             });
             return undefined;
           }
