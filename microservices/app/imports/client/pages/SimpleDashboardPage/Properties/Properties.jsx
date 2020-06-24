@@ -2,6 +2,7 @@ import React from 'react';
 
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import T from 'core/components/Translation';
 
 import PropertyCard from './PropertyCard';
@@ -56,4 +57,6 @@ const Properties = ({ loan }) => {
   );
 };
 
-export default Properties;
+export default withPromotionPageContext(({ loan }) => ({
+  promotion: loan.promotions[0],
+}))(Properties);
