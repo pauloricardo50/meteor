@@ -491,7 +491,6 @@ class PromotionService extends CollectionService {
     promotionLotIds = [],
   }) {
     const {
-      adminNotes,
       hasPromotion,
       lenders,
       properties = [],
