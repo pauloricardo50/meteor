@@ -1,5 +1,6 @@
 import PromotionOptions from '../../promotionOptions';
 import Promotions from '../../promotions';
+import Properties from '../../properties';
 import PromotionLotService from './PromotionLotService';
 
 PromotionLotService.cache(
@@ -20,4 +21,15 @@ PromotionLotService.cacheCount(
     cacheField: 'loanCount',
   },
   // { loanCount: { $exists: false } },
+);
+
+PromotionLotService.cache(
+  {
+    cacheField: 'propertyCache',
+    collection: Properties,
+    fields: { _id: 1, name: 1 },
+    type: 'many',
+    referenceField: 'propertyLinks:_id',
+  },
+  { propertyCache: { $exists: false } },
 );
