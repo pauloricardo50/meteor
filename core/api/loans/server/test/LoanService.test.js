@@ -35,8 +35,14 @@ import {
 } from '../../../revenues/revenueConstants';
 import SlackService from '../../../slack/server/SlackService';
 import TaskService from '../../../tasks/server/TaskService';
+import { TASK_STATUS, TASK_TYPES } from '../../../tasks/taskConstants';
 import UserService from '../../../users/server/UserService';
-import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import {
+  LOANS_COLLECTION,
+  LOAN_CATEGORIES,
+  LOAN_STATUS,
+  STEPS,
+} from '../../loanConstants';
 import {
   loanSetAdminNote,
   loanSetStatus,
@@ -2000,15 +2006,18 @@ describe('LoanService', function () {
           _factory: 'user',
           assignedEmployeeId: 'admin',
         },
-        disbursementDate: moment(today).add(offset, 'days').toDate(),
+        disbursementDate: moment(today)
+          .add(offset, 'days')
+          .startOf('day')
+          .toDate(),
       }));
 
     afterEach(() => {
       SlackService.send.restore();
     });
 
-    let today;
     let spy;
+    let today;
 
     beforeEach(async () => {
       today = new Date();
@@ -2025,19 +2034,42 @@ describe('LoanService', function () {
       });
       spy = sinon.spy();
       sinon.stub(SlackService, 'send').callsFake(spy);
-      await generateDisbursedSoonLoansTasks.serverRun({});
     });
 
     it('generates the tasks for the loans disbursed in 10 days', async () => {
-      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1, type: 1 });
 
       expect(tasks.length).to.equal(2);
-      tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
+      tasks.forEach(({ title, assigneeLink: { _id: adminId }, type }) => {
         expect(title).to.include(
           moment(today).add(10, 'days').format('DD.MM.YYYY'),
         );
         expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
       });
+    });
+
+    it('does not generate the tasks again', async () => {
+      TaskService.insert({
+        object: {
+          collection: LOANS_COLLECTION,
+          docId: 'l4',
+          type: TASK_TYPES.LOAN_DISBURSED_SOON,
+          title: 'Disbursed soon task',
+        },
+      });
+
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({ loan: { _id: 1 }, title: 1 });
+
+      expect(tasks.length).to.equal(2);
+      const [task1, task2] = tasks;
+      expect(task1.title).to.equal('Disbursed soon task');
+      expect(task1.loan?._id).to.equal('l4');
+      expect(task2.loan?._id).to.equal('l6');
     });
   });
 

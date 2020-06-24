@@ -52,9 +52,11 @@ LoanService.cache(
       title: 1,
       isPrivate: 1,
       assigneeLink: 1,
+      type: 1,
     },
     referenceField: 'loanLink._id',
   },
+  {},
   // { tasksCache: { $exists: false } },
 );
 

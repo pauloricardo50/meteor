@@ -1,10 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
+import { TASK_STATUS } from 'imports/core/api/tasks/taskConstants';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
+
+import { TASK_TYPES } from 'core/api/tasks/taskConstants';
 
 import {
   FEEDBACK_OPTIONS,
@@ -1113,8 +1116,17 @@ class LoanService extends CollectionService {
     const disbursedIn10Days = this.fetch({
       $filters: {
         disbursementDate: {
-          $lte: in11Days.startOf('day').toDate(),
+          $exists: true,
+          $lt: in11Days.startOf('day').toDate(),
           $gte: in10Days.startOf('day').toDate(),
+        },
+        tasksCache: {
+          $not: {
+            $elemMatch: {
+              type: TASK_TYPES.LOAN_DISBURSED_SOON,
+              status: TASK_STATUS.ACTIVE,
+            },
+          },
         },
       },
       _id: 1,
