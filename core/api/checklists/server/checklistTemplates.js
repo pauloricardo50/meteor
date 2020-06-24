@@ -23,9 +23,13 @@ const ACQUISITION_TEMPLATE = [
       { title: 'Validation de la date de départ' },
       { title: 'Contrat de crédit signé et retourné', requiresDocument: true },
       {
-        title: 'Tous les fonds propres selon la constitution du plan financier',
+        title: 'Fonds propres versés',
+        description: 'Selon le plan financier',
       },
-      { title: 'Toutes les garanties selon la constitution du plan financier' },
+      {
+        title: 'Nantissements et cédules mis en place',
+        description: 'Selon le plan financier',
+      },
       { title: 'Confirmation closing définitif' },
     ],
   },
@@ -42,9 +46,13 @@ const PROMOTION_ACQUISITION_TEMPLATE = [
       { title: 'Projet de contrat EG transmis', requiresDocument: true },
       { title: 'Contrat EG signé et retourné', requiresDocument: true },
       {
-        title: 'Tous les fonds propres selon la constitution du plan financier',
+        title: 'Fonds propres versés',
+        description: 'Selon le plan financier',
       },
-      { title: 'Toutes les garanties selon la constitution du plan financier' },
+      {
+        title: 'Nantissements et cédules mis en place',
+        description: 'Selon le plan financier',
+      },
       { title: 'Confirmation closing définitif' },
     ],
   },
@@ -75,9 +83,13 @@ const REFINANCING_TEMPLATE = [
       { title: 'Engagement de remise des cédules', requiresDocument: true },
       { title: 'Acte de constitution des cédules', requiresDocument: true },
       {
-        title: 'Tous les fonds propres selon la constitution du plan financier',
+        title: 'Fonds propres versés',
+        description: 'Selon le plan financier',
       },
-      { title: 'Toutes les garanties selon la constitution du plan financier' },
+      {
+        title: 'Nantissements et cédules mis en place',
+        description: 'Selon le plan financier',
+      },
       { title: 'Confirmation closing définitif' },
     ],
   },

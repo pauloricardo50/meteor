@@ -16,7 +16,10 @@ import LoanService from '../../loans/server/LoanService';
 import { submitContactForm } from '../../methods/methodDefinitions';
 import { offerSendFeedback } from '../../offers/methodDefinitions';
 import OfferService from '../../offers/server/OfferService';
-import { submitPromotionInterestForm } from '../../promotions/methodDefinitions';
+import {
+  attachLoanToPromotion,
+  submitPromotionInterestForm,
+} from '../../promotions/methodDefinitions';
 import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import { proInviteUser } from '../../users/methodDefinitions';
@@ -395,6 +398,48 @@ addEmailListener({
       emailId: EMAIL_IDS.PROMOTION_INTEREST_FORM,
       address: params.email,
       params: { ...params, promotionName },
+    });
+  },
+});
+
+addEmailListener({
+  description: 'Promotion rattachée à un dossier existant -> Client',
+  method: attachLoanToPromotion,
+  func: async ({ params: { promotionId, loanId, invitedBy } }) => {
+    const promotion = PromotionService.get(promotionId, {
+      name: 1,
+      contacts: 1,
+      assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
+    });
+    const { user } = LoanService.get(loanId, { user: { firstName: 1 } });
+    const ctaUrl = Meteor.settings.public.subdomains.app;
+
+    const {
+      promotionImage,
+      logos,
+      promotionGuide,
+    } = await FileService.listFilesForDocByCategory(promotionId);
+    const coverImageUrl =
+      promotionImage && promotionImage.length > 0 && promotionImage[0].url;
+    const logoUrls = logos && logos.map(({ url }) => url);
+    let attachments = [];
+
+    if (promotionGuide) {
+      attachments = [promotionGuide[0].Key];
+    }
+
+    return sendEmail.serverRun({
+      emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+      userId: user._id,
+      params: {
+        promotion,
+        coverImageUrl,
+        logoUrls,
+        ctaUrl,
+        name: user.firstName || 'Mme/Mr.',
+        invitedBy,
+        attachments,
+      },
     });
   },
 });

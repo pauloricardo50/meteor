@@ -4,8 +4,10 @@ import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import { ACTIVITY_EVENT_METADATA } from '../../../activities/activityConstants';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
+import { LOAN_STATUS } from '../../../loans/loanConstants';
 import LoanService from '../../../loans/server/LoanService';
 import LotService from '../../../lots/server/LotService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
@@ -20,11 +22,13 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
 import TaskService from '../../../tasks/server/TaskService';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
 import {
+  attachLoanToPromotion,
   removeLoanFromPromotion,
   submitPromotionInterestForm,
 } from '../../methodDefinitions';
@@ -35,7 +39,7 @@ import {
 } from '../../promotionConstants';
 import PromotionService from '../PromotionService';
 
-describe('PromotionService', function() {
+describe('PromotionService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -1399,6 +1403,318 @@ describe('PromotionService', function() {
       expect(emailId).to.equal(EMAIL_IDS.PROMOTION_INTEREST_FORM);
       expect(address).to.equal('test2@e-potek.ch');
       expect(subject).to.include('Promo 2 test');
+    });
+  });
+
+  describe('attachLoanToPromotion', () => {
+    it('throws if the loan is already on a promotion', () => {
+      generator({
+        loans: { _id: 'loanId', promotions: { _id: 'promoId2' } },
+        promotions: { _id: 'promoId' },
+      });
+
+      expect(() =>
+        PromotionService.attachLoanToPromotion({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+        }),
+      ).to.throw('already on a promotion');
+    });
+
+    it('throws if there is no user on the loan', () => {
+      generator({
+        loans: { _id: 'loanId' },
+        promotions: { _id: 'promoId' },
+      });
+
+      expect(() =>
+        PromotionService.attachLoanToPromotion({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+        }),
+      ).to.throw('needs a user');
+    });
+
+    it('throws if the user is already on this promotion on another loan', () => {
+      generator({
+        users: {
+          loans: [{ promotions: { _id: 'promoId' } }, { _id: 'loanId' }],
+        },
+      });
+
+      expect(() =>
+        PromotionService.attachLoanToPromotion({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+        }),
+      ).to.throw('déjà invité à cette promotion');
+    });
+
+    it('throws if the promotion is not ready', () => {
+      generator({
+        users: { loans: { _id: 'loanId' } },
+        promotions: { _id: 'promoId' },
+      });
+
+      expect(() =>
+        PromotionService.attachLoanToPromotion({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+        }),
+      ).to.throw('Il faut ajouter des lots');
+    });
+
+    it('adds the promotion on the loan', () => {
+      generator({
+        users: { loans: { _id: 'loanId' } },
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      PromotionService.attachLoanToPromotion({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+      });
+
+      const { promotions } = LoanService.get('loanId', {
+        promotions: { _id: 1 },
+      });
+      expect(promotions[0]._id).to.equal('promoId');
+    });
+
+    it('adds promotionOptions for each promotionLotId', () => {
+      generator({
+        users: { loans: { _id: 'loanId' } },
+        promotions: {
+          _id: 'promoId',
+          promotionLots: [{ _id: 'pLot1' }, { _id: 'pLot2' }, {}],
+        },
+      });
+
+      PromotionService.attachLoanToPromotion({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+        promotionLotIds: ['pLot1', 'pLot2'],
+      });
+
+      const { promotionOptions } = LoanService.get('loanId', {
+        promotionOptions: { _id: 1 },
+      });
+
+      expect(promotionOptions.length).to.equal(2);
+    });
+
+    it('throws if the status of the loan is too advanced', () => {
+      generator({
+        users: { loans: { _id: 'loanId', status: LOAN_STATUS.CLOSING } },
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      expect(() =>
+        PromotionService.attachLoanToPromotion({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+        }),
+      ).to.throw('closing');
+    });
+
+    it('throws if there are any offers on the loan', () => {
+      generator({
+        users: {
+          loans: { _id: 'loanId', lenders: [{}, { offers: [{}, {}] }] },
+        },
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      expect(() =>
+        PromotionService.attachLoanToPromotion({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+        }),
+      ).to.throw('offres sur ce dossier');
+    });
+
+    it('resets the loan ', () => {
+      generator({
+        users: {
+          loans: {
+            _id: 'loanId',
+            structures: [{ id: 'a' }, { id: 'b' }],
+            selectedStructure: 'a',
+            maxPropertyValue: {
+              canton: 'GE',
+              date: new Date(),
+              main: {
+                max: {
+                  propertyValue: 100,
+                  borrowRatio: 0.8,
+                  organisationName: 'Yo',
+                },
+              },
+              second: {
+                max: {
+                  propertyValue: 100,
+                  borrowRatio: 0.8,
+                  organisationName: 'Yo',
+                },
+              },
+            },
+          },
+        },
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      PromotionService.attachLoanToPromotion({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+      });
+
+      const {
+        structures,
+        selectedStructure,
+        maxPropertyValue,
+      } = LoanService.get('loanId', {
+        structures: 1,
+        selectedStructure: 1,
+        maxPropertyValue: 1,
+      });
+
+      expect(structures.length).to.equal(1);
+      expect(structures[0].id).to.equal(selectedStructure);
+      expect(structures[0].id).to.not.equal('a');
+      expect(structures[0].id).to.not.equal('b');
+
+      expect(maxPropertyValue).to.equal(undefined);
+    });
+
+    it('unlinks any existing properties, but keeps them in the DB', () => {
+      generator({
+        users: {
+          loans: {
+            _id: 'loanId',
+            properties: [
+              { _id: 'prop', category: PROPERTY_CATEGORY.USER },
+              { category: PROPERTY_CATEGORY.PRO },
+            ],
+          },
+          properties: { _id: 'prop' },
+        },
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      PromotionService.attachLoanToPromotion({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+      });
+
+      const { properties = [] } = LoanService.get('loanId', {
+        properties: { _id: 1 },
+      });
+
+      expect(properties.length).to.equal(0);
+
+      const reusableProperties = LoanService.getReusableProperties({
+        loanId: 'loanId',
+      });
+      expect(reusableProperties.length).to.equal(1);
+    });
+
+    it('unshares any existing proNotes', () => {
+      generator({
+        users: {
+          loans: {
+            _id: 'loanId',
+            adminNotes: [
+              {
+                id: 'a',
+                note: 'yo1',
+                updatedBy: 'adminId',
+                isSharedWithPros: true,
+              },
+              { id: 'b', note: 'yo2', updatedBy: 'adminId' },
+              {
+                id: 'c',
+                note: 'yo3',
+                updatedBy: 'adminId',
+                isSharedWithPros: true,
+              },
+            ],
+          },
+        },
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      PromotionService.attachLoanToPromotion({
+        loanId: 'loanId',
+        promotionId: 'promoId',
+      });
+
+      const { adminNotes = [] } = LoanService.get('loanId', {
+        adminNotes: 1,
+      });
+
+      expect(
+        adminNotes.every(({ isSharedWithPros }) => !isSharedWithPros),
+      ).to.equal(true);
+    });
+
+    it('adds an activity on the loan', async () => {
+      generator({
+        users: [
+          { loans: { _id: 'loanId' } },
+          { _id: 'advisorId', _factory: ROLES.ADVISOR },
+          { _id: 'pro1', _factory: ROLES.PRO },
+        ],
+        promotions: { _id: 'promoId', promotionLots: {} },
+      });
+
+      await ddpWithUserId('advisorId', () =>
+        attachLoanToPromotion.run({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+          invitedBy: 'pro1',
+          showAllLots: true,
+        }),
+      );
+
+      const { activities = [] } = LoanService.get('loanId', {
+        activities: { metadata: 1, $options: { sort: { createdAt: -1 } } },
+      });
+
+      expect(activities[0].metadata.event).to.equal(
+        ACTIVITY_EVENT_METADATA.ATTACHED_LOAN_TO_PROMOTION,
+      );
+
+      await checkEmails(1);
+    });
+
+    it('sends an invitation email to the customer', async () => {
+      generator({
+        users: [
+          {
+            loans: { _id: 'loanId' },
+            emails: [{ address: 'customer@e-potek.ch', verified: true }],
+          },
+          { _id: 'advisorId', _factory: ROLES.ADVISOR },
+          { _id: 'pro1', _factory: ROLES.PRO },
+        ],
+        promotions: { _id: 'promoId', promotionLots: {}, name: 'The promo' },
+      });
+
+      await ddpWithUserId('advisorId', () =>
+        attachLoanToPromotion.run({
+          loanId: 'loanId',
+          promotionId: 'promoId',
+          invitedBy: 'pro1',
+          showAllLots: true,
+        }),
+      );
+
+      const emails = await checkEmails(1);
+      expect(emails.length).to.equal(1);
+      const [email] = emails;
+      expect(email.emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
+      expect(email.address).to.equal('customer@e-potek.ch');
+      expect(email.template.message.subject).to.include('The promo');
     });
   });
 });
