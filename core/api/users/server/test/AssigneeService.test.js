@@ -27,43 +27,19 @@ describe('AssigneeService', () => {
     });
     await UserService.rawCollection.update(
       { _id: 'a' },
-      {
-        $set: {
-          createdAt: moment()
-            .subtract(1, 'days')
-            .toDate(),
-        },
-      },
+      { $set: { createdAt: moment().subtract(1, 'days').toDate() } },
     );
     await UserService.rawCollection.update(
       { _id: 'b' },
-      {
-        $set: {
-          createdAt: moment()
-            .add(1, 'days')
-            .toDate(),
-        },
-      },
+      { $set: { createdAt: moment().add(1, 'days').toDate() } },
     );
     await UserService.rawCollection.update(
       { _id: 'c' },
-      {
-        $set: {
-          createdAt: moment()
-            .subtract(2, 'days')
-            .toDate(),
-        },
-      },
+      { $set: { createdAt: moment().subtract(2, 'days').toDate() } },
     );
     await UserService.rawCollection.update(
       { _id: 'd' },
-      {
-        $set: {
-          createdAt: moment()
-            .add(2, 'days')
-            .toDate(),
-        },
-      },
+      { $set: { createdAt: moment().add(2, 'days').toDate() } },
     );
 
     const service = new AssigneeService();

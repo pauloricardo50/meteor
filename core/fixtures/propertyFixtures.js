@@ -42,7 +42,10 @@ export const createFakeProperty = userId => {
     copropertyPercentage: 400,
   };
 
-  return { ...property, _id: PropertyService.insert({ property, userId }) };
+  return {
+    ...property,
+    _id: PropertyService.insert({ property: { ...property, userId } }),
+  };
 };
 
 export const getRelatedPropertyIds = usersIds =>

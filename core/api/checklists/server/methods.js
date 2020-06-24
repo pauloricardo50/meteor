@@ -1,0 +1,54 @@
+import SecurityService from '../../security';
+import {
+  addChecklistItem,
+  changeItemChecklist,
+  incrementChecklistItemStatus,
+  removeChecklistItem,
+  updateChecklistItem,
+  updateChecklistOrder,
+} from '../methodDefinitions';
+import ChecklistService from './ChecklistService';
+
+const canUpdateChecklist = (userId, checklistId) => {
+  try {
+    SecurityService.checkUserIsAdmin(userId);
+  } catch (error) {
+    const { closingLoan } = ChecklistService.get(checklistId, {
+      closingLoan: { _id: 1 },
+    });
+    SecurityService.loans.isAllowedToUpdate(closingLoan?._id, userId);
+  }
+};
+
+addChecklistItem.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return ChecklistService.addItem(params);
+});
+
+updateChecklistItem.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return ChecklistService.updateItem(params);
+});
+
+incrementChecklistItemStatus.setHandler(({ userId }, params) => {
+  canUpdateChecklist(userId, params.checklistId);
+  return ChecklistService.incrementItemStatus({
+    ...params,
+    isAdmin: SecurityService.isUserAdmin(userId),
+  });
+});
+
+updateChecklistOrder.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return ChecklistService.reorderItems(params);
+});
+
+removeChecklistItem.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return ChecklistService.removeItem(params);
+});
+
+changeItemChecklist.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return ChecklistService.changeChecklist(params);
+});

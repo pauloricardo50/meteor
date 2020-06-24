@@ -1,4 +1,6 @@
+import intl from '../../../utils/intl';
 import ServerEventService from '../../events/server/ServerEventService';
+import { handleSuccessfulUpload } from '../../files/methodDefinitions';
 import { userLoanInsert } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
@@ -29,6 +31,7 @@ import {
   promotionLotSold,
   referralOnlyNotification,
 } from './slackNotifications';
+import SlackService from './SlackService';
 
 export const slackCurrentUserFragment = {
   name: 1,
@@ -267,6 +270,27 @@ ServerEventService.addAfterMethodListener(
       assignedEmployee,
       startDate,
       expirationDate,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  handleSuccessfulUpload,
+  ({
+    context,
+    params: {
+      fileName,
+      loanId,
+      fileMeta: { id, label },
+    },
+  }) => {
+    context.unblock();
+    const user = UserService.get(context.userId, slackCurrentUserFragment);
+    SlackService.notifyOfUpload({
+      currentUser: user,
+      fileName,
+      loanId,
+      docLabel: label || intl.formatMessage({ id: `files.${id}` }),
     });
   },
 );

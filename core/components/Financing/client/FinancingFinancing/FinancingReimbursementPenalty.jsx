@@ -4,7 +4,6 @@ import cx from 'classnames';
 import Calculator from '../../../../utils/Calculator';
 import DialogSimple from '../../../DialogSimple';
 import IconButton from '../../../IconButton';
-import Recap from '../../../Recap';
 import T from '../../../Translation';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { FinancingField } from '../FinancingSection';

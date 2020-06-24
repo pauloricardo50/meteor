@@ -1,13 +1,13 @@
 import writeYAML from '../scripts/writeYAML';
 
-const WORKING_DIRECTORY = '~/app';
+const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'circleci/openjdk:8-jdk-node-browsers-legacy', // Has browsers, like chrome, necessary to run client-side tests
+      image: 'cypress/base:12', // Has Node installed with dependencies to run cypress
       environment: {
         // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',
@@ -18,13 +18,14 @@ const defaultJobValues = {
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
-        // METEOR_PROFILE: 1000, // If you need to debug meteor, set this to a number (in ms)
+        METEOR_PROFILE: 100, // If you need to debug meteor, set this to a number (in ms)
         CIRCLE_CI: 1, // Helpful in your tests, to know whether you're in circle CI or not
         DEBUG: false, // Helps
-        // METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
+        METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
         RTL_SKIP_AUTO_CLEANUP: 1,
+        HOME: '/home/circleci' // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
       },
     },
   ],
@@ -35,7 +36,7 @@ const defaultJobValues = {
 // like: "my_cache_name_${CACHE_VERSION}"
 // Then follow with the variable identifiers, each separated by a hyphen "-"
 const cacheKeys = {
-  global: () => `global_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
+  global: () => `global_${CACHE_VERSION}_2-{{ checksum "./package-lock.json" }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
@@ -46,20 +47,26 @@ const cacheKeys = {
 };
 
 const cachePaths = {
-  global: () => '~/.cache',
-  meteorSystem: () => '~/.meteor',
+  global: () => '/home/circleci/.cache',
+  meteorSystem: () => '/home/circleci/.meteor',
   meteorMicroservice: name => [
     `./microservices/${name}/.meteor/local/bundler-cache`,
     `./microservices/${name}/.meteor/local/isopacks`,
     `./microservices/${name}/.meteor/local/plugin-cache`,
+    `./microservices/${name}/.meteor/local/resolver-result-cache.json`,
   ],
   nodeModules: () => './node_modules',
   source: () => '.',
 };
 
 // Circle CI Commands
-const runCommand = (name, command, timeout) => ({
-  run: { name, command, ...(timeout ? { no_output_timeout: timeout } : {}) },
+const runCommand = (name, command, timeout, background = false) => ({
+  run: {
+    name,
+    command,
+    ...(background ? { background: true } : {}),
+    ...(timeout ? { no_output_timeout: timeout } : {})
+  },
 });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
@@ -117,7 +124,6 @@ const makePrepareJob = () => ({
       'git submodule sync && git submodule update --init --recursive',
     ),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
-
     // Prepare node_modules cache
     restoreCache('Restore global cache', cacheKeys.global()),
     runCommand('Install project node_modules', 'npm ci'),
@@ -126,28 +132,6 @@ const makePrepareJob = () => ({
       'Cache node_modules',
       cacheKeys.nodeModules(),
       cachePaths.nodeModules(),
-    ),
-
-    // Build and cache backend
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem('backend')),
-    restoreCache(
-      'Restore meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
-    ),
-    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    runCommand(
-      'Install node_modules',
-      'meteor npm --prefix microservices/backend ci',
-    ),
-    runCommand(
-      'Install expect',
-      'sudo apt-get update && sudo apt-get install expect',
-    ),
-    runCommand('Build backend', './scripts/circleci/build_backend.sh', '30m'),
-    saveCache(
-      'Cache meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
-      cachePaths.meteorMicroservice('backend'),
     ),
   ],
 });
@@ -170,6 +154,14 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
+    testsType === 'unit' && runCommand(
+      'Setup display',
+      `
+        echo "export DISPLAY=':99.0'" >> $BASH_ENV
+        apt-get update && apt-get install xvfb -y
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
+      `, null, true
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -184,7 +176,6 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       `,
     ),
     name !== 'backend' && runCommand('Generate language files', `npm run lang ${name}`),
-    testsType === 'e2e' && runCommand('Install cypress dependencies', 'sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb'),
     runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
@@ -195,6 +186,11 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Cache meteor microservice',
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
+    ),
+    saveCache(
+      'Cache meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+      cachePaths.meteorMicroservice('backend'),
     ),
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),

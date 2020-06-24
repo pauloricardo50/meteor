@@ -109,6 +109,8 @@ class AssigneeService {
         linkId: assigneeId,
       });
     }
+
+    return assigneeId;
   }
 
   getSuggestedAssigneeId() {

@@ -342,6 +342,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
     },
   },
   properties: userProperty({ withSort }),
+  showClosingChecklists: 1,
   user: appUser(),
   userFormsEnabled: 1,
   maxPropertyValue: userMaxPropertyValue,
