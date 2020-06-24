@@ -1,3 +1,4 @@
 cypress/*/*/**
 !/cypress/server/appCypressMethods.app-tests.js
 imports/core/**/*.spec.js
+imports/core/**/*.test.js
