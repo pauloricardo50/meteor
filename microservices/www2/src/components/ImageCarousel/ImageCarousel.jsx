@@ -1,6 +1,7 @@
+import './ImageCarousel.scss';
+
 import React, { useState } from 'react';
 import { RichText } from 'prismic-reactjs';
-import './ImageCarousel.scss';
 
 const ImageCarousel = ({ primary, fields }) => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -35,8 +36,8 @@ const ImageCarousel = ({ primary, fields }) => {
       <div className="current-image">
         {/* TODO: add fade transtion animation wrapper ? */}
         <img
-          src={fields[currIndex].image.url}
-          alt={fields[currIndex].image.alt}
+          src={fields[currIndex].image?.url}
+          alt={fields[currIndex].image?.alt}
         />
       </div>
     </section>

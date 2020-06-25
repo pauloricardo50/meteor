@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'gatsby';
-import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'gatsby';
+
 import { linkResolver } from '../../utils/linkResolver';
 
 const useStyles = makeStyles({
@@ -10,8 +11,8 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuItems = ({ menuLinks, subMenu }) => {
-  return menuLinks.map((menuLink, idx) => {
+const MenuItems = ({ menuLinks, subMenu }) =>
+  menuLinks.map((menuLink, idx) => {
     const classes = subMenu ? useStyles() : null;
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
     const primaryLabel = menuLink.primary?.label || menuLink.sub_label;
@@ -37,7 +38,7 @@ const MenuItems = ({ menuLinks, subMenu }) => {
       );
     }
 
-    if (menuLink.fields[0].sub_link) {
+    if (menuLink.fields?.[0]?.sub_link) {
       return (
         <React.Fragment key={idx}>
           <MenuItem disabled>{primaryLabel}</MenuItem>
@@ -49,6 +50,5 @@ const MenuItems = ({ menuLinks, subMenu }) => {
 
     return null;
   });
-};
 
 export default MenuItems;

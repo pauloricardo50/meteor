@@ -1,11 +1,13 @@
+import './Team.scss';
+
 import React from 'react';
 import { RichText } from 'prismic-reactjs';
+
 import IconButton from 'core/components/IconButton';
-import './Team.scss';
 
 const EMAIL = 'team@e-potek.ch';
 
-const getMailTo = name =>
+const getMailTo = (name) =>
   `mailto:${EMAIL}?subject=${encodeURI(`Contacter ${name}`)}`;
 
 const Team = ({ primary, fields }) => (
@@ -23,8 +25,8 @@ const Team = ({ primary, fields }) => (
                 <div className="inner-circle center">
                   <img
                     className="profile-image"
-                    src={field.portrait.url}
-                    alt={field.portrait.alt}
+                    src={field.portrait?.url}
+                    alt={field.portrait?.alt}
                   />
                 </div>
               </div>

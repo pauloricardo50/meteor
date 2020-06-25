@@ -1,6 +1,7 @@
+import './Testimonials.scss';
+
 import React from 'react';
 import { RichText } from 'prismic-reactjs';
-import './Testimonials.scss';
 
 const Testimonials = ({ primary, fields }) => (
   <div className="testimonials">
@@ -18,7 +19,7 @@ const Testimonials = ({ primary, fields }) => (
                 <div className="inner-circle center">
                   <img
                     className="profile-image"
-                    src={field.profile_image.url}
+                    src={field.profile_image?.url}
                     alt={field.customer_name}
                   />
                 </div>
