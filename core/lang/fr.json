@@ -1,4 +1,6 @@
 {
+  "PDF.projectInfos.property.balconyArea": "Surface des balcons",
+  "Forms.balconyArea": "Surface des balcons",
   "files.category.CLOSING": "Les dernières étapes",
   "Forms.requiresDocument": "Requiert un document",
   "LoanClosingChecklist.makeProgress": "Avancez dans les dernières étapes",
