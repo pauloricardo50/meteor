@@ -1684,18 +1684,24 @@ describe('PromotionService', function () {
         ACTIVITY_EVENT_METADATA.ATTACHED_LOAN_TO_PROMOTION,
       );
 
-      await checkEmails(1);
+      await checkEmails(2);
     });
 
-    it('sends an invitation email to the customer', async () => {
+    it('sends an invitation email to the customer and notification to the pro', async () => {
       generator({
         users: [
           {
             loans: { _id: 'loanId' },
+            firstName: 'Joe',
+            lastName: 'Jackson',
             emails: [{ address: 'customer@e-potek.ch', verified: true }],
           },
           { _id: 'advisorId', _factory: ROLES.ADVISOR },
-          { _id: 'pro1', _factory: ROLES.PRO },
+          {
+            _id: 'pro1',
+            _factory: ROLES.PRO,
+            emails: [{ address: 'pro@e-potek.ch', verified: true }],
+          },
         ],
         promotions: { _id: 'promoId', promotionLots: {}, name: 'The promo' },
       });
@@ -1709,12 +1715,27 @@ describe('PromotionService', function () {
         }),
       );
 
-      const emails = await checkEmails(1);
-      expect(emails.length).to.equal(1);
-      const [email] = emails;
-      expect(email.emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-      expect(email.address).to.equal('customer@e-potek.ch');
-      expect(email.template.message.subject).to.include('The promo');
+      const emails = await checkEmails(2);
+
+      const userEmail = emails.find(
+        ({ emailId }) => emailId === EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+      );
+      const proEmail = emails.find(
+        ({ emailId }) =>
+          emailId === EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
+      );
+
+      expect(userEmail.address).to.equal('customer@e-potek.ch');
+      expect(userEmail.template.message.subject).to.include('The promo');
+
+      expect(proEmail.address).to.equal('pro@e-potek.ch');
+      expect(proEmail.template.message.subject).to.include('The promo');
+      expect(proEmail.template.message.subject).to.include('Joe Jackson');
+
+      const body = proEmail.template.message.global_merge_vars.find(
+        ({ name }) => name === 'BODY',
+      ).content;
+      expect(body).to.include('customer@e-potek.ch');
     });
   });
 });

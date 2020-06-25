@@ -411,7 +411,9 @@ addEmailListener({
       contacts: 1,
       assignedEmployee: { firstName: 1, name: 1, phoneNumbers: 1 },
     });
-    const { user } = LoanService.get(loanId, { user: { firstName: 1 } });
+    const { user } = LoanService.get(loanId, {
+      user: { firstName: 1, name: 1, email: 1 },
+    });
     const ctaUrl = Meteor.settings.public.subdomains.app;
 
     const {
@@ -428,18 +430,29 @@ addEmailListener({
       attachments = [promotionGuide[0].Key];
     }
 
-    return sendEmail.serverRun({
-      emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
-      userId: user._id,
-      params: {
-        promotion,
-        coverImageUrl,
-        logoUrls,
-        ctaUrl,
-        name: user.firstName || 'Mme/Mr.',
-        invitedBy,
-        attachments,
-      },
-    });
+    return Promise.all([
+      sendEmail.serverRun({
+        emailId: EMAIL_IDS.CONFIRM_PROMOTION_USER_INVITATION,
+        userId: invitedBy,
+        params: {
+          customerName: user.name,
+          email: user.email,
+          promotionName: promotion.name,
+        },
+      }),
+      sendEmail.serverRun({
+        emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
+        userId: user._id,
+        params: {
+          promotion,
+          coverImageUrl,
+          logoUrls,
+          ctaUrl,
+          name: user.firstName || 'Mme/Mr.',
+          invitedBy,
+          attachments,
+        },
+      }),
+    ]);
   },
 });

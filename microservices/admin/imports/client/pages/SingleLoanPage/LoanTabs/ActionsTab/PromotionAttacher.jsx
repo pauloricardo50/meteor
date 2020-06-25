@@ -3,15 +3,20 @@ import SimpleSchema from 'simpl-schema';
 
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { PROMOTION_LOTS_COLLECTION } from 'core/api/promotionLots/promotionLotConstants';
 import { attachLoanToPromotion } from 'core/api/promotions/methodDefinitions';
 import {
   PROMOTIONS_COLLECTION,
   PROMOTION_STATUS,
 } from 'core/api/promotions/promotionConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
+import PromotionLotGroupChip from 'core/components/PromotionPage/client/PromotionLotsTable/PromotionLotGroupChip';
 
-import { PROMOTION_LOTS_COLLECTION } from '../../../../../core/api/promotionLots/promotionLotConstants';
-import PromotionLotGroupChip from '../../../../../core/components/PromotionPage/client/PromotionLotsTable/PromotionLotGroupChip';
+SimpleSchema.setDefaultMessages({
+  messages: {
+    fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moins un lot' },
+  },
+});
 
 const schema = new SimpleSchema({
   promotionId: {
@@ -77,6 +82,11 @@ const schema = new SimpleSchema({
       ),
       placeholder: null,
     },
+    custom() {
+      if (this.value.length === 0) {
+        return 'emptyPromotionLotIds';
+      }
+    },
   },
   'promotionLotIds.$': {
     type: String,
@@ -137,7 +147,7 @@ const PromotionAttacher = ({ loan }) => {
           <br />
           Merci de vérifier que ça ne pose pas de problème au client.
           <br />
-          Le client recevra un email d'invitation à la promotion.
+          <h4>Le client et le courtier recevront un email.</h4>
         </div>
       }
     />
