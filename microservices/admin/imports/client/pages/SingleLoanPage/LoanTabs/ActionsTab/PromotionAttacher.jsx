@@ -1,12 +1,91 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import { attachLoanToPromotion } from 'core/api/promotions/methodDefinitions';
+import {
+  PROMOTIONS_COLLECTION,
+  PROMOTION_STATUS,
+} from 'core/api/promotions/promotionConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 
+import { PROMOTION_LOTS_COLLECTION } from '../../../../../core/api/promotionLots/promotionLotConstants';
+import PromotionLotGroupChip from '../../../../../core/components/PromotionPage/client/PromotionLotsTable/PromotionLotGroupChip';
+
 const schema = new SimpleSchema({
-  showAllLots: { type: Boolean, defaultValue: false },
+  promotionId: {
+    type: String,
+    customAllowedValues: {
+      query: PROMOTIONS_COLLECTION,
+      params: {
+        $filters: { status: PROMOTION_STATUS.OPEN },
+        name: 1,
+      },
+    },
+    uniforms: {
+      transform: ({ name }) => name,
+      label: 'Promotion',
+    },
+  },
+  invitedBy: {
+    type: String,
+    customAllowedValues: {
+      query: PROMOTIONS_COLLECTION,
+      params: ({ promotionId }) => ({
+        $filters: { _id: promotionId },
+        users: { name: 1, organisations: { name: 1 } },
+      }),
+      postProcess: promotions => promotions[0].users,
+    },
+    uniforms: {
+      transform: user => getUserNameAndOrganisation({ user }),
+    },
+    condition: ({ promotionId }) => !!promotionId,
+  },
+  promotionLotIds: {
+    type: Array,
+    condition: ({ promotionId }) => !!promotionId,
+    customAllowedValues: {
+      query: PROMOTION_LOTS_COLLECTION,
+      params: ({ promotionId }) => ({
+        $filters: { 'promotionCache.0._id': promotionId },
+        name: 1,
+        promotion: { promotionLotGroups: 1 },
+        promotionLotGroupIds: 1,
+      }),
+    },
+    uniforms: {
+      transform: ({ name, promotion, promotionLotGroupIds = [] }) => (
+        <div>
+          {name}&nbsp;
+          {promotionLotGroupIds.map(promotionLotGroupId => {
+            const promotionLotGroup = promotion.promotionLotGroups.find(
+              ({ id }) => id === promotionLotGroupId,
+            );
+
+            return (
+              promotionLotGroup && (
+                <PromotionLotGroupChip
+                  key={promotionLotGroupId}
+                  promotionLotGroup={promotionLotGroup}
+                />
+              )
+            );
+          })}
+        </div>
+      ),
+      placeholder: null,
+    },
+  },
+  'promotionLotIds.$': {
+    type: String,
+  },
+  showAllLots: {
+    type: Boolean,
+    defaultValue: false,
+    condition: ({ promotionLotIds }) => !!promotionLotIds?.length,
+  },
 });
 
 const getDisableReason = ({ status, hasPromotion, userCache, lenders }) => {

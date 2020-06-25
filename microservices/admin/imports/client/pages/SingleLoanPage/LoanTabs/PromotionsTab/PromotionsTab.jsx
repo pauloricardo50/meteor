@@ -17,6 +17,7 @@ const PromotionsTab = ({ loan }) => {
     params: {
       $filters: { 'loanCache._id': loan._id },
       ...merge({}, formPromotionOption(), {
+        name: 1,
         promotionLots: { name: 1, value: 1 },
         loanCache: 1,
       }),
