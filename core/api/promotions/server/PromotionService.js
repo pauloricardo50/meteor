@@ -104,8 +104,11 @@ class PromotionService extends CollectionService {
     promotionLotIds,
     showAllLots,
     shareSolvency,
+    skipCheckPromotionIsReady = false,
   }) {
-    this.checkPromotionIsReady({ promotionId });
+    if (!skipCheckPromotionIsReady) {
+      this.checkPromotionIsReady({ promotionId });
+    }
     const promotion = this.get(promotionId, {
       status: 1,
       assignedEmployeeId: 1,

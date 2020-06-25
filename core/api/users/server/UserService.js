@@ -422,6 +422,12 @@ export class UserServiceClass extends CollectionService {
       return this.proReferUser({ user, proUserId, shareSolvency });
     }
 
+    if (promotionIds?.length) {
+      promotionIds.forEach(promotionId => {
+        PromotionService.checkPromotionIsReady({ promotionId });
+      });
+    }
+
     const { invitedBy } = user;
     const { userId, pro, isNewUser } = this.proCreateUser({
       user,
@@ -445,6 +451,7 @@ export class UserServiceClass extends CollectionService {
           promotionLotIds: user.promotionLotIds,
           showAllLots: user.showAllLots,
           shareSolvency,
+          skipCheckPromotionIsReady: true,
         }),
       );
     }
