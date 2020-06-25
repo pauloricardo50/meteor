@@ -6,6 +6,8 @@ import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
+import { TASK_TYPES } from 'core/api/tasks/taskConstants';
+
 import {
   FEEDBACK_OPTIONS,
   makeFeedback,
@@ -44,6 +46,7 @@ import {
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
+import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,
@@ -1113,8 +1116,17 @@ class LoanService extends CollectionService {
     const disbursedIn10Days = this.fetch({
       $filters: {
         disbursementDate: {
-          $lte: in11Days.startOf('day').toDate(),
+          $exists: true,
+          $lt: in11Days.startOf('day').toDate(),
           $gte: in10Days.startOf('day').toDate(),
+        },
+        tasksCache: {
+          $not: {
+            $elemMatch: {
+              type: TASK_TYPES.LOAN_DISBURSED_SOON,
+              status: TASK_STATUS.ACTIVE,
+            },
+          },
         },
       },
       _id: 1,

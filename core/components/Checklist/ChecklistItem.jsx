@@ -39,6 +39,7 @@ const useDragDrop = ({ itemId, checklistId, itemIds }) => {
   const [{ isDragging }, drag] = useDrag({
     item: { id: itemId, checklistId, type: 'checklistItem' },
     collect: monitor => ({ isDragging: monitor.isDragging() }),
+    canDrag: () => isAdmin,
     end: (_, monitor) => {
       if (!monitor.didDrop()) {
         return;

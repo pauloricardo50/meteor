@@ -24,6 +24,7 @@ import {
 } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import { USERS_COLLECTION } from '../../users/userConstants';
+import { TASK_TYPES } from '../taskConstants';
 import TaskService from './TaskService';
 
 const newUserTask = ({ userId, ...params }) =>
@@ -269,6 +270,7 @@ ServerEventService.addAfterMethodListener(
             disbursementDate,
           ).format('DD.MM.YYYY')}`,
           description: "S'assurer que tout est prêt pour le décaissement",
+          type: TASK_TYPES.LOAN_DISBURSED_SOON,
         },
       });
     });

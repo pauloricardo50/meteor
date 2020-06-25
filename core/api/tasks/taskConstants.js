@@ -17,3 +17,7 @@ export const TASK_PRIORITIES = {
   DEFAULT: 'DEFAULT',
   HIGH: 'HIGH',
 };
+
+export const TASK_TYPES = {
+  LOAN_DISBURSED_SOON: 'LOAN_DISBURSED_SOON',
+};
