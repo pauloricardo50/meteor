@@ -20,6 +20,7 @@ const schema = PropertySchema.pick(
   'insideArea',
   'landArea',
   'terraceArea',
+  'balconyArea',
   'gardenArea',
   'cnstructionYear',
   'externalUrl',

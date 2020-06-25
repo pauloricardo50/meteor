@@ -122,6 +122,11 @@ const getPropertyRows = loan => {
         flatType === FLAT_TYPE.TERRACE_APARTMENT,
     },
     {
+      label: <T id="PDF.projectInfos.property.balconyArea" />,
+      data: `${balconyArea} m2`,
+      condition: !!balconyArea,
+    },
+    {
       label: <T id="PDF.projectInfos.property.numberOfFloors" />,
       data: numberOfFloors,
       condition: !!numberOfFloors && propertyType === PROPERTY_TYPE.FLAT,
