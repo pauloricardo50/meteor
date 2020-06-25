@@ -12,6 +12,7 @@ import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
 const getPropertyRows = loan => {
   const {
     address1,
+    balconyArea,
     city,
     constructionYear,
     flatType,
