@@ -109,3 +109,14 @@ export const submitPromotionInterestForm = new Method({
   },
   rateLimit: { global: { limit: 3, timeRange: 30000 } },
 });
+
+export const attachLoanToPromotion = new Method({
+  name: 'attachLoanToPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
+    invitedBy: String,
+    showAllLots: Boolean,
+    promotionLotIds: Match.Maybe(Array),
+  },
+});

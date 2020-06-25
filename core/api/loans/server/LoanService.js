@@ -1204,6 +1204,14 @@ class LoanService extends CollectionService {
       properties: { address: 1, totalValue: 1 },
     });
 
+    // In case a property is unlinked from any loan
+    const unlinkedUserProperties = PropertyService.fetch({
+      $filters: { userId },
+      address: 1,
+      totalValue: 1,
+      loans: { _id: 1 },
+    }).filter(({ loans = [] }) => loans.length === 0);
+
     const reusableProperties = loans
       .reduce(
         (allProperties, { properties = [] }) => [
@@ -1216,7 +1224,7 @@ class LoanService extends CollectionService {
         ({ _id }) => !currentProperties.some(property => _id === property._id),
       );
 
-    return reusableProperties;
+    return [...reusableProperties, ...unlinkedUserProperties];
   }
 
   linkProperty({ loanId, propertyId }) {

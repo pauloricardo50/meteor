@@ -1,6 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
-import ActivityService from '../../activities/server/ActivityService';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
 import { calculatorLoan } from '../../fragments';
@@ -33,7 +30,6 @@ import {
   loanShareSolvency,
   loanUnlinkPromotion,
   loanUpdate,
-  loanUpdateCreatedAt,
   loanUpdatePromotionInvitedBy,
   popLoanValue,
   pushLoanValue,
@@ -281,25 +277,6 @@ loanSetCreatedAtActivityDescription.setHandler(({ userId }, params) => {
 loanSetStatus.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.setStatus(params);
-});
-
-loanUpdateCreatedAt.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
-  const { loanId, createdAt } = params;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const date = new Date(createdAt);
-  date.setHours(0, 0, 0, 0);
-
-  if (date > today) {
-    throw new Meteor.Error(
-      'La date de création ne peut pas être dans le futur',
-    );
-  }
-
-  LoanService.update({ loanId, object: { createdAt } });
-  return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
 });
 
 sendLoanChecklist.setHandler(

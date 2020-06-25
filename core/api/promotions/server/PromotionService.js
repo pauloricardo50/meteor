@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import CollectionService from '../../helpers/server/CollectionService';
+import { LOAN_STATUS } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
@@ -483,6 +484,108 @@ class PromotionService extends CollectionService {
     });
 
     this.update({ promotionId, object: { constructionTimeline } });
+  }
+
+  attachLoanToPromotion({
+    loanId,
+    promotionId,
+    invitedBy,
+    showAllLots,
+    promotionLotIds = [],
+  }) {
+    const {
+      hasPromotion,
+      lenders,
+      properties = [],
+      status,
+      userId,
+    } = LoanService.get(loanId, {
+      adminNotes: 1,
+      hasPromotion: 1,
+      lenders: { offers: { _id: 1 } },
+      properties: { _id: 1 },
+      status: 1,
+      userId: 1,
+    });
+
+    if (
+      [
+        LOAN_STATUS.CLOSING,
+        LOAN_STATUS.BILLING,
+        LOAN_STATUS.FINALIZED,
+        LOAN_STATUS.UNSUCCESSFUL,
+      ].includes(status)
+    ) {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.BAD_REQUEST,
+        'Pas possible pour les dossiers en closing et +',
+      );
+    }
+
+    if (hasPromotion) {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        'Loan is already on a promotion',
+      );
+    }
+
+    if (!userId) {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.BAD_REQUEST,
+        'Loan needs a user account',
+      );
+    }
+
+    if (UserService.hasPromotion({ userId, promotionId })) {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        'Ce client est déjà invité à cette promotion',
+      );
+    }
+
+    if (lenders?.length && lenders.some(({ offers = [] }) => offers.length)) {
+      throw new Meteor.Error(
+        HTTP_STATUS_CODES.CONFLICT,
+        "Il reste des offres sur ce dossier, veuillez les supprimer d'abord",
+      );
+    }
+
+    this.checkPromotionIsReady({ promotionId });
+
+    this.addLink({
+      id: promotionId,
+      linkName: 'loans',
+      linkId: loanId,
+      metadata: { invitedBy, showAllLots },
+    });
+
+    promotionLotIds.forEach(promotionLotId => {
+      PromotionOptionService.insert({ promotionLotId, loanId, promotionId });
+    });
+
+    LoanService.baseUpdate(
+      loanId,
+      {
+        $set: {
+          structures: [],
+          selectedStructure: '',
+          'adminNotes.$[].isSharedWithPros': false,
+        },
+        $unset: { maxPropertyValue: 1 },
+      },
+      // Fails because of simple schema: https://github.com/aldeed/simpl-schema/issues/378
+      { bypassCollection2: true },
+    );
+
+    properties.forEach(({ _id: propertyId }) => {
+      LoanService.removeLink({
+        id: loanId,
+        linkName: 'properties',
+        linkId: propertyId,
+      });
+    });
+
+    LoanService.addNewStructure({ loanId });
   }
 }
 
