@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import { TASK_STATUS } from 'imports/core/api/tasks/taskConstants';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
@@ -47,6 +46,7 @@ import {
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
+import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,

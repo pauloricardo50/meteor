@@ -2028,7 +2028,7 @@ describe('LoanService', function () {
           { offset: 5 },
           { offset: 9 },
           { offset: 10 },
-          { offset: 11 },
+          { offset: 12 },
           { offset: 10 },
         ]),
       });
@@ -2052,24 +2052,64 @@ describe('LoanService', function () {
     });
 
     it('does not generate the tasks again', async () => {
-      TaskService.insert({
+      await generateDisbursedSoonLoansTasks.serverRun({});
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({
+        title: 1,
+        assigneeLink: 1,
+        type: 1,
+      });
+
+      expect(tasks.length).to.equal(2);
+      tasks.forEach(({ title, assigneeLink: { _id: adminId }, type }) => {
+        expect(title).to.include(
+          moment(today).add(10, 'days').format('DD.MM.YYYY'),
+        );
+        expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
+      });
+    });
+
+    it('regenerates the task if disbursementDate changed and task was completed', async () => {
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const task = TaskService.get({ 'loanLink._id': 'l4' }, { _id: 1 });
+      TaskService.update({
+        taskId: task._id,
+        object: { status: TASK_STATUS.COMPLETED },
+      });
+
+      LoanService.update({
+        loanId: 'l4',
         object: {
-          collection: LOANS_COLLECTION,
-          docId: 'l4',
-          type: TASK_TYPES.LOAN_DISBURSED_SOON,
-          title: 'Disbursed soon task',
+          disbursementDate: moment(today)
+            .add(11, 'days')
+            .startOf('day')
+            .toDate(),
         },
       });
 
+      const clock = sinon.useFakeTimers(Date.now());
+      clock.tick(24 * 60 * 60 * 1000);
       await generateDisbursedSoonLoansTasks.serverRun({});
+      clock.restore();
 
-      const tasks = TaskService.fetch({ loan: { _id: 1 }, title: 1 });
+      const tasks = TaskService.fetch({
+        loan: { _id: 1 },
+        assigneeLink: 1,
+        type: 1,
+      });
 
-      expect(tasks.length).to.equal(2);
-      const [task1, task2] = tasks;
-      expect(task1.title).to.equal('Disbursed soon task');
-      expect(task1.loan?._id).to.equal('l4');
-      expect(task2.loan?._id).to.equal('l6');
+      expect(tasks.length).to.equal(3);
+      tasks.forEach(({ assigneeLink: { _id: adminId }, type }) => {
+        expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
+      });
+      const [task1, task2, task3] = tasks;
+      expect(task1.loan._id).to.equal('l4');
+      expect(task2.loan._id).to.equal('l6');
+      expect(task3.loan._id).to.equal('l4');
     });
   });
 
