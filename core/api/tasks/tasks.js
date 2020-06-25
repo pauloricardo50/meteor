@@ -122,6 +122,11 @@ export const TasksSchema = new SimpleSchema({
     allowedValues: Object.values(TASK_TYPES),
     optional: true,
   },
+  metadata: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
 });
 
 Tasks.attachSchema(TasksSchema);
