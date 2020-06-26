@@ -52,7 +52,16 @@ const analysisConfig = {
         })}`,
     },
     residenceType: { id: 'Forms.residenceType' },
-    purchaseType: { id: 'Forms.purchaseType' },
+    purchaseType: {
+      id: 'Forms.purchaseType',
+      format: ({ purchaseType, promotions }) => {
+        if (promotions?.length) {
+          return 'Acquisition Promo';
+        }
+
+        return purchaseType;
+      },
+    },
     user: [
       {
         id: 'Forms.roles',
