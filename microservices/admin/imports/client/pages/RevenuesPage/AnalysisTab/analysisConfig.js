@@ -136,9 +136,21 @@ const analysisConfig = {
     revenues: [
       {
         id: 'Revenus totaux',
-        fragment: { amount: 1, status: 1 },
+        fragment: { amount: 1, status: 1, organisationLinks: 1 },
         format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus totaux - commissions',
+        format: ({ revenues = [] }) =>
+          revenues.reduce((t, { amount, organisationLinks = [] }) => {
+            const totalCommission = organisationLinks.reduce(
+              (tot, { commissionRate }) => tot + commissionRate,
+              0,
+            );
+
+            return t + amount * (1 - totalCommission);
+          }, 0),
       },
       {
         label: 'Revenus encaissés',
@@ -146,6 +158,20 @@ const analysisConfig = {
           revenues
             .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
             .reduce((t, { amount }) => t + amount, 0),
+      },
+      {
+        label: 'Revenus encaissés - commissions',
+        format: ({ revenues = [] }) =>
+          revenues
+            .filter(({ status }) => status === REVENUE_STATUS.CLOSED)
+            .reduce((t, { amount, organisationLinks = [] }) => {
+              const totalCommission = organisationLinks.reduce(
+                (tot, { commissionRate }) => tot + commissionRate,
+                0,
+              );
+
+              return t + amount * (1 - totalCommission);
+            }, 0),
       },
       {
         label: 'Revenus projetés',

@@ -31,5 +31,5 @@ PromotionLotService.cache(
     type: 'many',
     referenceField: 'propertyLinks:_id',
   },
-  { propertyCache: { $exists: false } },
+  // { propertyCache: { $exists: false } },
 );
