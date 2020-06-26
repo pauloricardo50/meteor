@@ -17,7 +17,6 @@ const config = {
       path: __dirname + '/../microservices/admin',
       exceptions: [
         'AccountPage',
-        'AdminFilesTab',
         'AdminPromotionPage',
         'ArrayInput',
         'AutoForm',
@@ -44,7 +43,6 @@ const config = {
         'LoginPage',
         'MaxPropertyValue',
         'methods',
-        'Microlocation',
         'MortgageNotesForm',
         'offer',
         'OfferAdder',
@@ -52,9 +50,6 @@ const config = {
         'PDF',
         'ProCustomersTable',
         'Promotion',
-        'PromotionCustomersTable',
-        'PromotionLotGroupsManager',
-        'PromotionLotPage',
         'ProOrganisationUserAdder',
         'PropertyAdder',
         'PropertyForm',
@@ -71,7 +66,6 @@ const config = {
       path: __dirname + '/../microservices/app',
       exceptions: [
         'AccountPage',
-        'AdminFilesTab',
         'AmortizationChart',
         'ArrayInput',
         'AutoForm',
@@ -142,7 +136,7 @@ const config = {
     {
       id: 'www',
       path: __dirname + '/../microservices/www',
-      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1', 'ContactButton', 'CalendlyModal'],
+      exceptions: ['Forms', 'offer',  'Widget1', 'ContactButton', 'CalendlyModal'],
     },
   ],
   // List of strings that don't have a component file associated to them, so
@@ -152,8 +146,6 @@ const config = {
     'BorrowersSummary',
     'e-Potek',
     'errors',
-    'ExpensesChart',
-    'ExpensesChartInterests',
     'ExternalUrl',
     'File',
     'FileTabs',
