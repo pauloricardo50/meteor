@@ -182,11 +182,12 @@ export class IntercomService {
   }
 
   async getIntercomId({ userId }) {
-    const { intercomId, email, assignedRoles } = UserService.get(userId, {
-      intercomId: 1,
-      email: 1,
-      assignedRoles: 1,
-    });
+    const { intercomId, email, assignedRoles = [] } =
+      UserService.get(userId, {
+        intercomId: 1,
+        email: 1,
+        assignedRoles: 1,
+      }) || {};
 
     if (intercomId) {
       return intercomId;
