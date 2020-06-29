@@ -6,6 +6,7 @@ import SecurityService from '../../security';
 import {
   addProUserToPromotion,
   addPromotionLotGroup,
+  attachLoanToPromotion,
   editPromotionLoan,
   insertPromotionProperty,
   promotionInsert,
@@ -160,4 +161,9 @@ submitPromotionInterestForm.setHandler((context, { promotionId, email }) => {
   if (!promotion) {
     throw new Meteor.Error('Cette promotion est invalide');
   }
+});
+
+attachLoanToPromotion.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.attachLoanToPromotion(params);
 });

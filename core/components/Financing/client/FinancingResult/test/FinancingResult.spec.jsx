@@ -6,6 +6,7 @@ import { ScrollSync } from 'react-scroll-sync';
 
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import { PROPERTY_CATEGORY } from '../../../../../api/properties/propertyConstants';
 import messages from '../../../../../lang/fr.json';
 import Calculator, {
   Calculator as CalculatorClass,
@@ -21,9 +22,7 @@ import { Provider } from '../../containers/loan-context';
 import FinancingResult from '../FinancingResult';
 
 const expectResult = (component, name, value) => {
-  const val = component()
-    .find(name)
-    .last();
+  const val = component().find(name).last();
 
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
@@ -96,6 +95,7 @@ describe('FinancingResult', () => {
             _id: 'house',
             value: 1000000,
             yearlyExpenses: 1200,
+            category: PROPERTY_CATEGORY.USER,
           },
         ],
         currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
@@ -111,9 +111,7 @@ describe('FinancingResult', () => {
     });
 
     it('interestsCost', () => {
-      const interestsCost = component()
-        .find('.interestsCost')
-        .last();
+      const interestsCost = component().find('.interestsCost').last();
       const string = interestsCost.text();
       const hasNonZeroNumber = /[1-9]/.test(string);
 
@@ -205,6 +203,7 @@ describe('FinancingResult', () => {
             _id: 'house',
             value: 1000000,
             yearlyExpenses: 2400,
+            category: PROPERTY_CATEGORY.USER,
           },
         ],
         offers: [
@@ -230,9 +229,7 @@ describe('FinancingResult', () => {
     });
 
     it('interestsCost', () => {
-      const interestsCost = component()
-        .find('.interestsCost')
-        .last();
+      const interestsCost = component().find('.interestsCost').last();
       const string = interestsCost.text();
       const [value, rate] = string.split('(');
 

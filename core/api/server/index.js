@@ -19,9 +19,8 @@ import './mongoIndexes';
 import './caches';
 import './serverCollections';
 
-import { Meteor } from 'meteor/meteor';
-
 import BorrowerService from '../borrowers/server/BorrowerService';
+import ChecklistService from '../checklists/server/ChecklistService';
 import CommissionRateService from '../commissionRates/server/CommissionRateService';
 import ContactService from '../contacts/server/ContactService';
 import ErrorLogger from '../errorLogger/server/ErrorLogger';
@@ -84,4 +83,5 @@ export const Services = {
   [COLLECTIONS.INSURANCES_COLLECTION]: InsuranceService,
   [COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION]: InsuranceProductService,
   [COLLECTIONS.COMMISSION_RATES_COLLECTION]: CommissionRateService,
+  [COLLECTIONS.CHECKLISTS_COLLECTION]: ChecklistService,
 };

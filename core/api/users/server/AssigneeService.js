@@ -116,6 +116,8 @@ class AssigneeService {
         adminId: assigneeId,
       });
     }
+
+    return assigneeId;
   }
 
   getSuggestedAssigneeId() {

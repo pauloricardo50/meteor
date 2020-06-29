@@ -1,5 +1,6 @@
 import ServerEventService from '../../events/server/ServerEventService';
 import SessionService from '../../sessions/server/SessionService';
+import UserService from '../../users/server/UserService';
 import Analytics from './Analytics';
 
 export const impersonateMiddleware = context => () => next => (...args) => {
@@ -23,6 +24,7 @@ export const addAnalyticsListener = ({
   ServerEventService.addAfterMethodListener(method, props => {
     props.context.unblock();
     const analytics = new Analytics(analyticsProps(props) || props.context);
+
     func({ ...props, analytics });
   });
 };

@@ -8,7 +8,7 @@ import T from '../Translation';
 export default class DialogSimple extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, disabled: false, isCancel: true };
+    this.state = { open: !!props.openOnMount, disabled: false, isCancel: true };
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -38,22 +38,22 @@ export default class DialogSimple extends Component {
       bodyStyle,
       buttonProps,
       buttonStyle,
-      closeOnly,
       children,
+      closeOnly,
       contentStyle,
       important,
       label,
+      onClose = () => null,
       onOpen,
       passProps,
       primary,
       raised = true,
       renderProps,
+      renderTrigger,
       rootStyle,
       secondary,
       style,
       title,
-      renderTrigger,
-      onClose = () => null,
       ...otherProps
     } = this.props;
 

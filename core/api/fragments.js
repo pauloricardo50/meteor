@@ -342,6 +342,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
     },
   },
   properties: userProperty({ withSort }),
+  showClosingChecklists: 1,
   user: appUser(),
   userFormsEnabled: 1,
   maxPropertyValue: userMaxPropertyValue,
@@ -854,6 +855,7 @@ export const formProperty = () => ({
   address1: 1,
   address2: 1,
   areaNorm: 1,
+  balconyArea: 1,
   bankValue: 1,
   bathroomCount: 1,
   canton: 1,
@@ -922,6 +924,7 @@ export const adminProperty = ({ withSort } = {}) => ({
 export const promotionProperty = () => ({
   additionalMargin: 1,
   address: 1,
+  balconyArea: 1,
   bankValue: 1,
   bathroomCount: 1,
   canton: 1,

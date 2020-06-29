@@ -6,6 +6,8 @@ import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
+import { TASK_TYPES } from 'core/api/tasks/taskConstants';
+
 import {
   FEEDBACK_OPTIONS,
   makeFeedback,
@@ -18,6 +20,8 @@ import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
+import ChecklistService from '../../checklists/server/ChecklistService';
+import CHECKLIST_TEMPLATES from '../../checklists/server/checklistTemplates';
 import {
   calculatorLoan,
   lenderRules as lenderRulesFragment,
@@ -42,6 +46,7 @@ import {
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
+import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,
@@ -484,7 +489,7 @@ class LoanService extends CollectionService {
 
     // Only assign someone new to this loan if there are no current assignees
     if (!assigneeLinks || assigneeLinks.length === 0) {
-      newAssignee = user && user.assignedEmployee && user.assignedEmployee._id;
+      newAssignee = user?.assignedEmployee?._id;
     }
 
     borrowers.forEach(({ loans = [], name }) => {
@@ -521,11 +526,19 @@ class LoanService extends CollectionService {
     }
 
     borrowers.forEach(({ _id: borrowerId }) => {
-      BorrowerService.update({ borrowerId, object: { userId } });
+      BorrowerService.addLink({
+        id: borrowerId,
+        linkName: 'user',
+        linkId: userId,
+      });
     });
     properties.forEach(({ _id: propertyId, category }) => {
       if (category === PROPERTY_CATEGORY.USER) {
-        PropertyService.update({ propertyId, object: { userId } });
+        PropertyService.addLink({
+          id: propertyId,
+          linkName: 'user',
+          linkId: userId,
+        });
       }
     });
 
@@ -560,6 +573,8 @@ class LoanService extends CollectionService {
         }
       }
     }
+
+    return referralId;
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
@@ -717,10 +732,11 @@ class LoanService extends CollectionService {
     // If there are at least 3 organisations, show a special label
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
-      ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      ? `${
+          secondMax && secondMax.organisationName
+        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
+          max.borrowRatio * 100
+        ).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -915,9 +931,7 @@ class LoanService extends CollectionService {
   }
 
   expireAnonymousLoans() {
-    const lastWeek = moment()
-      .subtract(5, 'days')
-      .toDate();
+    const lastWeek = moment().subtract(5, 'days').toDate();
 
     return this.baseUpdate(
       {
@@ -1102,8 +1116,17 @@ class LoanService extends CollectionService {
     const disbursedIn10Days = this.fetch({
       $filters: {
         disbursementDate: {
-          $lte: in11Days.startOf('day').toDate(),
+          $exists: true,
+          $lt: in11Days.startOf('day').toDate(),
           $gte: in10Days.startOf('day').toDate(),
+        },
+        tasksCache: {
+          $not: {
+            $elemMatch: {
+              type: TASK_TYPES.LOAN_DISBURSED_SOON,
+              status: TASK_STATUS.ACTIVE,
+            },
+          },
         },
       },
       _id: 1,
@@ -1181,6 +1204,14 @@ class LoanService extends CollectionService {
       properties: { address: 1, totalValue: 1 },
     });
 
+    // In case a property is unlinked from any loan
+    const unlinkedUserProperties = PropertyService.fetch({
+      $filters: { userId },
+      address: 1,
+      totalValue: 1,
+      loans: { _id: 1 },
+    }).filter(({ loans = [] }) => loans.length === 0);
+
     const reusableProperties = loans
       .reduce(
         (allProperties, { properties = [] }) => [
@@ -1193,11 +1224,38 @@ class LoanService extends CollectionService {
         ({ _id }) => !currentProperties.some(property => _id === property._id),
       );
 
-    return reusableProperties;
+    return [...reusableProperties, ...unlinkedUserProperties];
   }
 
   linkProperty({ loanId, propertyId }) {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
+
+  addClosingChecklists({ loanId }) {
+    let template;
+    const { hasPromotion, purchaseType } = this.get(loanId, {
+      hasPromotion: 1,
+      purchaseType: 1,
+    });
+
+    if (hasPromotion) {
+      template = 'PROMOTION_ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+      template = 'ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      template = 'REFINANCING';
+    } else {
+      throw new Meteor.Error('Pas de template pour ce dossier');
+    }
+
+    const checklists = CHECKLIST_TEMPLATES[template];
+
+    checklists.forEach(checklist => {
+      ChecklistService.insertTemplate({
+        template: checklist,
+        closingLoanId: loanId,
+      });
+    });
   }
 }
 

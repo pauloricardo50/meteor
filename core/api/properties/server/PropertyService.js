@@ -22,7 +22,9 @@ class PropertyService extends CollectionService {
     if (loanId) {
       const { userId } = LoanService.get(loanId, { userId: 1 });
       LoanService.addPropertyToLoan({ loanId, propertyId });
-      this.addLink({ id: propertyId, linkName: 'user', linkId: userId });
+      if (userId) {
+        this.addLink({ id: propertyId, linkName: 'user', linkId: userId });
+      }
     }
 
     return propertyId;

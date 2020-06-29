@@ -32,7 +32,7 @@ export const UploaderArray = ({
             getFileMeta({ doc, id: documentObject.id }) || documentObject
           }
           key={doc._id + documentObject.id}
-          currentValue={doc.documents && doc.documents[documentObject.id]}
+          currentValue={doc.documents?.[documentObject.id]}
           docId={doc._id}
           doc={doc}
           allowRequireByAdmin={allowRequireByAdmin}

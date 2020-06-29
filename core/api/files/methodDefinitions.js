@@ -88,14 +88,6 @@ export const deleteTempFile = new Method({
   },
 });
 
-export const autoRenameFile = new Method({
-  name: 'autoRenameFile',
-  params: {
-    key: String,
-    collection: String,
-  },
-});
-
 export const setFileRoles = new Method({
   name: 'setFileRoles',
   params: {
@@ -103,5 +95,18 @@ export const setFileRoles = new Method({
     roles: Array,
     docId: String,
     collection: String,
+  },
+});
+
+export const handleSuccessfulUpload = new Method({
+  name: 'handleSuccessfulUpload',
+  params: {
+    collection: String,
+    docId: String,
+    loanId: Match.Maybe(String),
+    fileName: String,
+    fileKey: String,
+    fileMeta: Object,
+    autoRenameFiles: Match.Maybe(Boolean),
   },
 });

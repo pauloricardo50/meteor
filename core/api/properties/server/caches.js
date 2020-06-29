@@ -7,6 +7,5 @@ PropertyService.cacheCount(
     referenceField: 'propertyIds',
     cacheField: 'loanCount',
   },
-  {},
   // { loanCount: { $exists: false } },
 );

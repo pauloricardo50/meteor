@@ -1,10 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
-import { compose, withProps } from 'recompose';
 
 import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import Link from 'core/components/Link';
-import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
+import {
+  usePromotion,
+  withPromotionPageContext,
+} from 'core/components/PromotionPage/client/PromotionPageContext';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import UserReservation from 'core/components/PromotionPage/client/UserReservation';
 import Calculator from 'core/utils/Calculator';
@@ -12,7 +14,8 @@ import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../../../startup/client/appRoutes';
 
-const DashboardRecapPromotion = ({ loan, promotion }) => {
+const DashboardRecapPromotion = ({ loan }) => {
+  const { promotion } = usePromotion();
   const { status } = promotion;
   const { promotionImage = [] } = promotion.documents || {};
 
@@ -48,7 +51,7 @@ const DashboardRecapPromotion = ({ loan, promotion }) => {
     </Link>
   );
 };
-export default compose(
-  withProps(({ loan }) => ({ promotion: loan.promotions[0] })),
-  withPromotionPageContext(),
-)(DashboardRecapPromotion);
+
+export default withPromotionPageContext(({ loan }) => ({
+  promotion: loan.promotions[0],
+}))(DashboardRecapPromotion);

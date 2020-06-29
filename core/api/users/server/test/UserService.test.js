@@ -14,10 +14,10 @@ import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
 import { proInviteUser } from '../../methodDefinitions';
-import { ROLES } from '../../userConstants';
+import { ACQUISITION_CHANNELS, ROLES } from '../../userConstants';
 import UserService from '../UserService';
 
-describe('UserService', function() {
+describe('UserService', function () {
   this.timeout(10000);
 
   const firstName = 'TestFirstName';
@@ -179,6 +179,155 @@ describe('UserService', function() {
 
       user = UserService.get(userId, { assignedEmployeeId: 1 });
       expect(user.assignedEmployeeId).to.equal('testAdminId');
+    });
+  });
+
+  describe('anonymousCreateUser', () => {
+    it('sets REFERRAL_ORGANIC acquisitionChannel if the user is referred', () => {
+      generator({
+        organisations: [{ _id: 'org1' }],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        referralId: 'org1',
+      });
+
+      const { acquisitionChannel } = UserService.get(userId, {
+        acquisitionChannel: 1,
+      });
+      expect(acquisitionChannel).to.equal(
+        ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+      );
+    });
+
+    it('ignores the referralId of the user if the loan already has one', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, referralId: 'org1' },
+        organisations: [{ _id: 'org2' }, { _id: 'org1' }],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+        referralId: 'org2',
+      });
+
+      const { referredByOrganisation } = UserService.get(userId, {
+        referredByOrganisation: { _id: 1 },
+      });
+      expect(referredByOrganisation._id).to.equal('org1');
+    });
+
+    it('sets the referral if specified in the cookies', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true },
+        users: { _id: 'pro1', _factory: ROLES.PRO },
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+        referralId: 'pro1',
+      });
+
+      const { referredByUser } = UserService.get(userId, {
+        referredByUser: { _id: 1 },
+      });
+      expect(referredByUser._id).to.equal('pro1');
+    });
+
+    it('should assign the referrals assignee to the new user and loan if it exists', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, referralId: 'org2' },
+        users: [
+          { _id: 'pro1', _factory: ROLES.PRO },
+          { _id: 'advisor1', _factory: ROLES.ADVISOR },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+        ],
+        organisations: [{ _id: 'org2', assignee: { _id: 'advisor2' } }],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+      });
+
+      const { assignedEmployee, loans } = UserService.get(userId, {
+        assignedEmployee: { _id: 1 },
+        loans: { assignees: { _id: 1 } },
+      });
+
+      expect(assignedEmployee._id).to.equal('advisor2');
+      expect(loans[0].assignees[0]._id).to.equal('advisor2');
+    });
+
+    it('should cascade to the first available advisor', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, referralId: 'pro1' },
+        users: [
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            roundRobinTimeout: 'Not here!',
+          },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+          {
+            _id: 'pro1',
+            _factory: ROLES.PRO,
+            assignedEmployee: { _id: 'advisor1' },
+          },
+        ],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+      });
+
+      const { assignedEmployee, loans } = UserService.get(userId, {
+        assignedEmployee: { _id: 1 },
+        loans: { assignees: { _id: 1 } },
+      });
+
+      expect(assignedEmployee._id).to.equal('advisor2');
+      expect(loans[0].assignees[0]._id).to.equal('advisor2');
+    });
+
+    it('assigns new users in round robin', () => {
+      generator({
+        users: [
+          { _id: 'advisor1', _factory: ROLES.ADVISOR },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+          { _id: 'advisor3', _factory: ROLES.ADVISOR },
+        ],
+      });
+
+      const user1 = UserService.anonymousCreateUser({
+        user: { email: 'test1@e-potek.ch' },
+      });
+      const user2 = UserService.anonymousCreateUser({
+        user: { email: 'test2@e-potek.ch' },
+      });
+      const user3 = UserService.anonymousCreateUser({
+        user: { email: 'test3@e-potek.ch' },
+      });
+      const user4 = UserService.anonymousCreateUser({
+        user: { email: 'test4@e-potek.ch' },
+      });
+
+      expect(
+        UserService.get(user1, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor1');
+      expect(
+        UserService.get(user2, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor2');
+      expect(
+        UserService.get(user3, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor3');
+      expect(
+        UserService.get(user4, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor1');
     });
   });
 
@@ -1144,6 +1293,66 @@ describe('UserService', function() {
         assignedEmployeeId: 1,
       });
       expect(assignedEmployeeId).to.equal('adminId');
+    });
+
+    it('invites user to promotion with invitationNote', async () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({
+          user: {
+            ...userToInvite,
+            showAllLots: false,
+            promotionLotIds: ['pLotId'],
+          },
+          promotionIds: ['promotionId'],
+          invitationNote: 'Ma man',
+        }),
+      );
+
+      const { tasks = [] } = UserService.getByEmail(userToInvite.email, {
+        tasks: { description: 1, assigneeLink: 1 },
+      });
+
+      expect(tasks.length).to.equal(1);
+      const [
+        {
+          description,
+          assigneeLink: { _id: assigneeId },
+        },
+      ] = tasks;
+
+      expect(description).to.include('Ma man');
+      expect(assigneeId).to.equal('adminId');
+    });
+
+    it('should not create the user if the promotion is not ready', () => {
+      generator({
+        promotions: { _id: 'promoId', name: 'Yo', city: '', promotionLots: {} },
+      });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: { email: 'test@e-potek.ch' },
+          promotionIds: ['promoId'],
+        }),
+      ).to.throw('Il faut ajouter un nom');
+
+      expect(
+        UserService.findOne({ 'emails.address': 'test@e-potek.ch' }),
+      ).to.equal(undefined);
     });
   });
 });

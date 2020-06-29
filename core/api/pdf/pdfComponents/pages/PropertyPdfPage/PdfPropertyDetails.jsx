@@ -12,6 +12,7 @@ import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
 const getPropertyRows = loan => {
   const {
     address1,
+    balconyArea,
     city,
     constructionYear,
     flatType,
@@ -120,6 +121,11 @@ const getPropertyRows = loan => {
         !!terraceArea &&
         propertyType === PROPERTY_TYPE.FLAT &&
         flatType === FLAT_TYPE.TERRACE_APARTMENT,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.balconyArea" />,
+      data: `${balconyArea} m2`,
+      condition: !!balconyArea,
     },
     {
       label: <T id="PDF.projectInfos.property.numberOfFloors" />,

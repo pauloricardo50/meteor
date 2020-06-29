@@ -1,6 +1,5 @@
 import React from 'react';
 import merge from 'lodash/merge';
-import { compose, withProps } from 'recompose';
 
 import { formPromotionOption } from 'core/api/fragments';
 import { PROMOTION_OPTIONS_COLLECTION } from 'core/api/promotionOptions/promotionOptionConstants';
@@ -17,6 +16,7 @@ const PromotionsTab = ({ loan }) => {
     params: {
       $filters: { 'loanCache._id': loan._id },
       ...merge({}, formPromotionOption(), {
+        name: 1,
         promotionLots: { name: 1, value: 1 },
         loanCache: 1,
       }),
@@ -44,7 +44,6 @@ const PromotionsTab = ({ loan }) => {
   );
 };
 
-export default compose(
-  withProps(({ loan }) => ({ promotion: loan.promotions[0] })),
-  withPromotionPageContext(),
-)(PromotionsTab);
+export default withPromotionPageContext(({ loan }) => ({
+  promotion: loan.promotions[0],
+}))(PromotionsTab);

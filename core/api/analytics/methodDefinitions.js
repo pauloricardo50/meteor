@@ -8,6 +8,7 @@ export const analyticsLogin = new Method({
   params: {
     type: String,
   },
+  hideClientError: true,
 });
 
 export const analyticsPage = new Method({
@@ -21,6 +22,7 @@ export const analyticsPage = new Method({
     queryString: Object,
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsVerifyEmail = new Method({
@@ -29,6 +31,7 @@ export const analyticsVerifyEmail = new Method({
     trackingId: Match.Maybe(String), // Can be optional if cookies are blocked
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsCTA = new Method({
@@ -43,6 +46,7 @@ export const analyticsCTA = new Method({
     queryString: Object,
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsOpenedIntercom = new Method({

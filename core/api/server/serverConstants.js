@@ -1,6 +1,7 @@
 import { ACTIVITIES_COLLECTION } from '../activities/activityConstants';
 import { ANALYSIS_REPORTS_COLLECTION } from '../analysisReports/analysisReportConstants';
 import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
+import { CHECKLISTS_COLLECTION } from '../checklists/checklistConstants';
 import { COMMISSION_RATES_COLLECTION } from '../commissionRates/commissionRateConstants';
 import { CONTACTS_COLLECTION } from '../contacts/contactsConstants';
 import { INSURANCE_PRODUCTS_COLLECTION } from '../insuranceProducts/insuranceProductConstants';
@@ -54,4 +55,5 @@ export const COLLECTIONS = {
   INSURANCE_PRODUCTS_COLLECTION,
   COMMISSION_RATES_COLLECTION,
   NOTIFICATIONS_COLLECTION,
+  CHECKLISTS_COLLECTION,
 };

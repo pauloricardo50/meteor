@@ -86,6 +86,7 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
     },
     insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
     terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+    balconyArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
     gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
     roomCount: { type: Number, optional: true, min: 0, max: 100 },
     bathroomCount: { type: Number, optional: true, min: 0, max: 100 },

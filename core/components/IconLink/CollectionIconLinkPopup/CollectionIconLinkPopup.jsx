@@ -67,7 +67,7 @@ export default class CollectionIconLinkPopup extends Component {
         component={replacementPopup || this.getPopoverContent()}
         title={this.getPopoverTitle()}
         onMouseEnter={!data && !replacementPopup ? this.loadData : null}
-        delay={data ? 0 : 200}
+        enterDelay={data ? 0 : 200}
         forceOpen={forceOpen}
         placement={placement}
       >
