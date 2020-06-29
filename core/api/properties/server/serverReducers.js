@@ -8,13 +8,11 @@ Properties.addReducers({
   openGraphData: {
     body: { externalUrl: 1 },
     reduce: ({ externalUrl }) => {
-      const asyncFunc = createMeteorAsyncFunction(getOpenGraphMeta);
-
       if (externalUrl) {
-        return asyncFunc(externalUrl);
+        const asyncFunc = createMeteorAsyncFunction(getOpenGraphMeta);
+        const externalStuff = asyncFunc(externalUrl);
+        return externalStuff;
       }
-
-      return undefined;
     },
   },
 });
