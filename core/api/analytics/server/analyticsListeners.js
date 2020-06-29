@@ -482,20 +482,25 @@ addAnalyticsListener({
     params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
-    const { name: loanName, purchaseType, user = {} } = LoanService.get(
-      loanId,
-      {
+    const {
+      name: loanName,
+      purchaseType,
+      user = {},
+      promotions = [],
+    } = LoanService.get(loanId, {
+      name: 1,
+      purchaseType: 1,
+      user: {
         name: 1,
-        purchaseType: 1,
-        user: {
-          name: 1,
-          email: 1,
-          referredByOrganisation: { name: 1 },
-          referredByUser: { name: 1 },
-          assignedEmployee: { name: 1 },
-        },
+        email: 1,
+        referredByOrganisation: { name: 1 },
+        referredByUser: { name: 1 },
+        assignedEmployee: { name: 1 },
       },
-    );
+      promotions: { name: 1 },
+    });
+
+    const [promotion] = promotions;
 
     const {
       _id: userId,
@@ -526,6 +531,8 @@ addAnalyticsListener({
         referredByOrganisationName,
         assigneeId,
         assigneeName,
+        promotionId: promotion?._id,
+        promotionName: promotion?.name,
       },
       trackingId,
     );
