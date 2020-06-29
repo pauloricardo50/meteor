@@ -79,7 +79,6 @@ const config = {
         'BorrowerAddPartner',
         'BorrowerRemover',
         'BorrowersPage',
-        'CalendlyModal',
         'collections',
         'ConditionsButton',
         'ConfirmMethod',
@@ -119,7 +118,6 @@ const config = {
         'collections',
         'CommissionRatesViewer',
         'ConfirmMethod',
-        'ContactButton',
         'EmailVerification',
         'files',
         'Forms',
@@ -142,7 +140,7 @@ const config = {
     {
       id: 'www',
       path: __dirname + '/../microservices/www',
-      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1', 'ContactButton', 'CalendlyModal'],
+      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1'],
     },
   ],
   // List of strings that don't have a component file associated to them, so

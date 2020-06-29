@@ -1,10 +1,17 @@
 import React from 'react';
 
+import useImpersonatedSession from '../../hooks/useImpersonatedSession';
 import AdminImpersonateNotification from './AdminImpersonateNotification';
 import UserImpersonateNotification from './UserImpersonateNotification';
 
-const ImpersonateNotification = ({ impersonatedSession, options }) => {
-  const { shouldRenderAdminNotification } = options;
+const ImpersonateNotification = () => {
+  const [impersonatedSession, options] = useImpersonatedSession();
+
+  const { shouldRenderNotification, shouldRenderAdminNotification } = options;
+
+  if (!shouldRenderNotification) {
+    return null;
+  }
 
   return shouldRenderAdminNotification ? (
     <AdminImpersonateNotification

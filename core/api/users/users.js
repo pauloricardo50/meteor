@@ -121,6 +121,10 @@ export const UserSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(OFFICES),
   },
+  intercomId: {
+    type: String,
+    optional: true,
+  },
   isInRoundRobin: {
     type: Boolean,
     optional: true,

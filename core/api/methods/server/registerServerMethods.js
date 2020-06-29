@@ -13,6 +13,7 @@ import '../../impersonation/server/methods';
 import '../../insuranceProducts/server/methods';
 import '../../insuranceRequests/server/methods';
 import '../../insurances/server/methods';
+import '../../intercom/server/methods';
 import '../../interestRates/server/methods';
 import '../../irs10y/server/methods';
 import '../../lenderRules/server/methods';

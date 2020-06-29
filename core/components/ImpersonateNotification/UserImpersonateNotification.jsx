@@ -31,7 +31,10 @@ const UserImpersonateNotification = ({ impersonatedSession, options }) => {
         options={options}
       />
       <div className="impersonate-notification">
-        <img src={adminImage} />
+        <UserImpersonateNotificationButton
+          impersonatedSession={impersonatedSession}
+          options={options}
+        />
         <h4>
           {followAdmin ? (
             <T
@@ -44,11 +47,8 @@ const UserImpersonateNotification = ({ impersonatedSession, options }) => {
               values={{ adminFirstName }}
             />
           )}
+          <img src={adminImage} />
         </h4>
-        <UserImpersonateNotificationButton
-          impersonatedSession={impersonatedSession}
-          options={options}
-        />
       </div>
     </>
   );

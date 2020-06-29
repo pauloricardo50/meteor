@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { ContactButtonContext } from 'core/components/ContactButton/ContactButtonContext';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 
 const DeactivatedFormInfo = ({ loan: { userFormsEnabled }, style }) => {
-  const { toggleOpenContact } = useContext(ContactButtonContext);
   if (userFormsEnabled) {
     return null;
   }
@@ -18,7 +16,7 @@ const DeactivatedFormInfo = ({ loan: { userFormsEnabled }, style }) => {
         onClick={event => {
           event.stopPropagation();
           event.preventDefault();
-          toggleOpenContact();
+          window.Intercom('show');
         }}
       >
         <Icon type="info" className="icon" />

@@ -11,8 +11,13 @@ const taskFragment = {
   title: 1,
 };
 
-const contactFragment = email => ({
-  $filters: { 'emails.0.address': { $in: [email, email.toLowerCase()] } },
+const contactFragment = handle => ({
+  $filters: {
+    $or: [
+      { 'emails.0.address': { $in: [handle, handle.toLowerCase()] } },
+      { intercomId: handle },
+    ],
+  },
   address1: 1,
   address2: 1,
   city: 1,
@@ -26,13 +31,15 @@ const contactFragment = email => ({
 });
 
 export default withProps(({ contact }) => {
-  const { handle, display_name } = contact;
+  const { handle, display_name, source } = contact;
   const [loading, setLoading] = useState(true);
   const [epotekContact, setEpotekContact] = useState();
+  const [intercomContact, setIntercomContact] = useState();
   const [collection, setCollection] = useState();
 
   const isEpotekResource = !!epotekContact;
-  let finalContact = epotekContact;
+  const isIntercomContact = source === 'intercom';
+  let finalContact = epotekContact || intercomContact;
 
   const refetch = () => {
     EpotekFrontApi.queryOne('users', {
@@ -68,6 +75,23 @@ export default withProps(({ contact }) => {
           });
         }
       })
+      .then(() => {
+        if (!isEpotekResource && isIntercomContact) {
+          return EpotekFrontApi.callMethod('getIntercomContact', {
+            contactId: handle,
+          }).then(result => {
+            const { email, phone, name } = result;
+            setIntercomContact({
+              ...contact,
+              email,
+              phoneNumbers: [phone],
+              name: name || email || handle,
+            });
+          });
+        }
+
+        return Promise.resolve();
+      })
       .then(() => setLoading(false))
       .catch(e => {
         setLoading(false);
@@ -77,13 +101,14 @@ export default withProps(({ contact }) => {
 
   useEffect(refetch, []);
 
-  if (!isEpotekResource) {
+  if (!isEpotekResource && !isIntercomContact) {
     finalContact = { ...contact, email: handle, name: display_name || handle };
   }
 
   return {
     loading,
     isEpotekResource,
+    isIntercomContact,
     finalContact,
     collection,
     refetch,
