@@ -952,6 +952,7 @@ export const userProperty = ({ withSort } = {}) => {
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
   loanCount: 1,
+  status: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
