@@ -5,12 +5,7 @@ import {
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
 import { exposeQuery } from '../../queries/queryHelpers';
-import { adminBorrowers, borrowerSearch } from '../queries';
-
-exposeQuery({
-  query: adminBorrowers,
-  options: { allowFilterById: true },
-});
+import { borrowerSearch } from '../queries';
 
 exposeQuery({
   query: borrowerSearch,
