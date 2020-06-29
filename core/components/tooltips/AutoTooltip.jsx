@@ -20,7 +20,7 @@ const parseTextForTooltips = props =>
   reactStringReplace(
     reformatString(props.children),
     createRegexThatFindsAnyWordFromList(props.tooltipList),
-    (match, index) => (
+    match => (
       <TextWithTooltip {...props} key={match} match={match}>
         {match}
       </TextWithTooltip>
