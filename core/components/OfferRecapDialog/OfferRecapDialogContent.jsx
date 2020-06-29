@@ -26,7 +26,7 @@ const OfferRecapDialogContent = ({ offer = {} }) => {
       <img src={logo} alt={name} />
 
       <h3>
-        <T id="offer.createdAt" />
+        <T id="Forms.createdAt" />
       </h3>
       <p>{moment(createdAt).format('DD.MM.YYYY')}</p>
 
@@ -48,7 +48,7 @@ const OfferRecapDialogContent = ({ offer = {} }) => {
       {!!fees && (
         <>
           <h3>
-            <T id="offer.fees" />
+            <T id="Forms.fees" />
           </h3>
           <Money value={fees} />
         </>
@@ -57,19 +57,19 @@ const OfferRecapDialogContent = ({ offer = {} }) => {
       {!!epotekFees && (
         <>
           <h3>
-            <T id="offer.epotekFees" />
+            <T id="Forms.epotekFees" />
           </h3>
           <Money value={epotekFees} />
         </>
       )}
 
       <h3>
-        <T id="offer.maxAmount" />
+        <T id="Forms.maxAmount" />
       </h3>
       <Money value={maxAmount} />
 
       <h3>
-        <T id="offer.amortizationGoal" />
+        <T id="Forms.amortizationGoal" />
       </h3>
       <span className="flex flex-row">
         <Percent value={amortizationGoal} />
@@ -77,7 +77,7 @@ const OfferRecapDialogContent = ({ offer = {} }) => {
       </span>
 
       <h3>
-        <T id="offer.interests" />
+        <T id="Forms.rate" />
       </h3>
       <div className="rates">
         {Object.keys(rates).map(rate => (
@@ -93,7 +93,7 @@ const OfferRecapDialogContent = ({ offer = {} }) => {
       </div>
 
       <h3>
-        <T id="offer.feedback" />
+        <T id="Forms.feedback" />
       </h3>
       <p style={{ whiteSpace: 'pre-line' }}>
         {feedback || 'Pas encore de feedback'}
