@@ -1,4 +1,5 @@
 {
+  "ProDashboardPage.ExternalPropertyAdder.description": "Ajoutez un bien immobilier Pro avec les champs supplémentaires que vous pouvez utiliser dans notre API.",
   "PDF.projectInfos.property.balconyArea": "Surface des balcons",
   "Forms.balconyArea": "Surface des balcons",
   "files.category.CLOSING": "Les dernières étapes",
@@ -2127,7 +2128,6 @@
   "Forms.areaNorm": "Type de surface",
   "Forms.assignedTo": "Assigné à",
   "Forms.balconyArea.placeholder": "20",
-  "Forms.balconyArea": "Surface des balcons en m2",
   "Forms.bank3A": "Banque 3A",
   "Forms.bank3A.value": "Capital disponible",
   "Forms.bank3A.description": "Description",
