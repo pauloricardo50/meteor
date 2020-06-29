@@ -48,3 +48,14 @@ export const analyticsCTA = new Method({
   doNotRefetchQueries: true,
   hideClientError: true,
 });
+
+export const analyticsOpenedIntercom = new Method({
+  name: 'analyticsOpenedIntercom',
+  params: {
+    trackingId: Match.Maybe(String),
+    lastPageTitle: Match.Maybe(String),
+    lastPagePath: Match.Maybe(String),
+    lastPageMicroservice: Match.Maybe(String),
+  },
+  doNotRefetchQueries: true,
+});

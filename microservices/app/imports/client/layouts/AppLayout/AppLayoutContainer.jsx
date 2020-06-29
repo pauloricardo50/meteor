@@ -6,7 +6,6 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -139,5 +138,4 @@ export default compose(
   })),
   withSideNavContextProvider,
   withSideNavContext,
-  withContactButtonProvider,
 );

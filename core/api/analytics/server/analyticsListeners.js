@@ -23,6 +23,7 @@ import EVENTS from '../events';
 import {
   analyticsCTA,
   analyticsLogin,
+  analyticsOpenedIntercom,
   analyticsPage,
   analyticsVerifyEmail,
 } from '../methodDefinitions';
@@ -747,5 +748,48 @@ addAnalyticsListener({
       organisationId,
       organisationName,
     });
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsOpenedIntercom,
+  func: ({
+    analytics,
+    params: { trackingId, lastPageTitle, lastPagePath, lastPageMicroservice },
+    context,
+  }) => {
+    const { userId } = context;
+
+    let params = {
+      lastPageTitle,
+      lastPagePath,
+      lastPageMicroservice,
+    };
+
+    if (userId) {
+      const user = UserService.get(userId, {
+        name: 1,
+        email: 1,
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { intercomId: 1, name: 1 },
+      });
+
+      params = {
+        ...params,
+        userId: user?._id,
+        userName: user?.name,
+        userEmail: user?.email,
+        referringUserId: user?.referredByUser?._id,
+        referringUserName: user?.referredByUser?.name,
+        referringOrganisationId: user?.referredByOrganisation?._id,
+        referringByOrganisationName: user?.referredByOrganisation?.name,
+        assigneeId: user?.assignedEmployee?._id,
+        assigneeName: user?.assignedEmployee?.name,
+      };
+      analytics.identify(trackingId);
+    }
+
+    analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params, trackingId);
   },
 });

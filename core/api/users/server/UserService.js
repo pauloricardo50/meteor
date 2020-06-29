@@ -9,6 +9,7 @@ import NodeRSA from 'node-rsa';
 
 import CollectionService from '../../helpers/server/CollectionService';
 import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
+import IntercomService from '../../intercom/server/IntercomService';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -62,6 +63,8 @@ export class UserServiceClass extends CollectionService {
       throw new Meteor.Error('New user must have a role');
     }
     Roles.setUserRoles(newUserId, role);
+
+    IntercomService.getIntercomId({ userId: newUserId });
 
     return newUserId;
   };

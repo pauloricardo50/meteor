@@ -240,6 +240,17 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             />
           </SingleUserPageInformationItem>
         )}
+        {/* This will be used to manually set Advisors intercomId */}
+        {currentUserIsDev && (
+          <SingleUserPageInformationItem label="Intercom">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['intercomId']}
+              autoSaveDelay={500}
+            />
+          </SingleUserPageInformationItem>
+        )}
       </SingleUserPageInformation>
     </div>
   );

@@ -24,7 +24,6 @@ const getPropertyRows = loan => {
     numberOfFloors,
     parkingInside = 0,
     parkingOutside = 0,
-    promotion,
     propertyType,
     renovationYear,
     roomCount,
@@ -35,7 +34,8 @@ const getPropertyRows = loan => {
     yearlyExpenses,
     zipCode,
   } = Calculator.selectProperty({ loan });
-  const { residenceType } = loan;
+  const { residenceType, promotions = [] } = loan;
+  const [promotion] = promotions;
 
   return [
     {
@@ -52,7 +52,7 @@ const getPropertyRows = loan => {
       data: (
         <T
           id="PDF.projectInfos.property.promotionNameData"
-          values={{ name: promotion && promotion.name }}
+          values={{ name: promotion?.name }}
         />
       ),
       condition: !!promotion,

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
+import ImpersonateNotification from 'core/components/ImpersonateNotification';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import ProLayoutContainer from './ProLayoutContainer';
@@ -25,8 +25,7 @@ const ProLayout = ({ children, redirect, ...props }) => {
           {React.cloneElement(children, { ...props, currentUser })}
         </LayoutErrorBoundary>
       </div>
-
-      <ContactButton />
+      <ImpersonateNotification />
     </div>
   );
 };

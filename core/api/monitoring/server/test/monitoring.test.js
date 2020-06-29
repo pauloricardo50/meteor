@@ -273,7 +273,7 @@ describe('monitoring', () => {
     });
   });
 
-  describe('collectionStatusChanges', function() {
+  describe('collectionStatusChanges', function () {
     this.timeout(5000);
 
     describe('with loans', () => {
@@ -314,12 +314,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'loans',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -386,12 +382,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'loans',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -424,12 +416,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'loans',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -489,12 +477,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           organisationId: 'org',
           collection: 'loans',
         }).sort((a, b) => a._id.localeCompare(b._id));
@@ -563,12 +547,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
           collection: 'loans',
         }).sort((a, b) => a._id.localeCompare(b._id));
@@ -637,12 +617,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'insuranceRequests',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -712,12 +688,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'insuranceRequests',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -756,12 +728,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'insuranceRequests',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -824,12 +792,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           organisationId: 'org',
           collection: 'insuranceRequests',
         }).sort((a, b) => a._id.localeCompare(b._id));
@@ -901,12 +865,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
           collection: 'insuranceRequests',
         }).sort((a, b) => a._id.localeCompare(b._id));
@@ -979,12 +939,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           collection: 'insurances',
         }).sort((a, b) => a._id.localeCompare(b._id));
 
@@ -1071,12 +1027,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           organisationId: 'org',
           collection: 'insurances',
         }).sort((a, b) => a._id.localeCompare(b._id));
@@ -1152,12 +1104,8 @@ describe('monitoring', () => {
         );
 
         const result = collectionStatusChanges({
-          fromDate: moment()
-            .subtract(1, 'd')
-            .toDate(),
-          toDate: moment()
-            .add(1, 'd')
-            .toDate(),
+          fromDate: moment().subtract(1, 'd').toDate(),
+          toDate: moment().add(1, 'd').toDate(),
           acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
           collection: 'insurances',
         }).sort((a, b) => a._id.localeCompare(b._id));
