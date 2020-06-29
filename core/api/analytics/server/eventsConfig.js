@@ -6,7 +6,7 @@ export const EVENTS_CONFIG = {
     properties: [
       'userId',
       { name: 'userName', optional: true },
-      { name: 'userEmail', optional: true },
+      'userEmail',
       { name: 'referringUserId', optional: true },
       { name: 'referringUserName', optional: true },
       { name: 'referringOrganisationId', optional: true },
