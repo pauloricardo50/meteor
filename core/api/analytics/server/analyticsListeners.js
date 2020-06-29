@@ -760,7 +760,11 @@ addAnalyticsListener({
   }) => {
     const { userId } = context;
 
-    let params = {};
+    let params = {
+      lastPageTitle,
+      lastPagePath,
+      lastPageMicroservice,
+    };
 
     if (userId) {
       const user = UserService.get(userId, {
@@ -772,6 +776,7 @@ addAnalyticsListener({
       });
 
       params = {
+        ...params,
         userId: user?._id,
         userName: user?.name,
         userEmail: user?.email,
@@ -781,13 +786,10 @@ addAnalyticsListener({
         referringByOrganisationName: user?.referredByOrganisation?.name,
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
-        lastPageTitle,
-        lastPagePath,
-        lastPageMicroservice,
       };
+      analytics.identify(trackingId);
     }
 
-    analytics.identify(trackingId);
-    analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params);
+    analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params, trackingId);
   },
 });
