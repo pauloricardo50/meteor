@@ -673,7 +673,9 @@ export const formPromotionOption = () => ({
   invitedBy: 1,
   loanCache: 1, // Useful for invitedBy
   priorityOrder: 1,
-  promotionLots: { properties: { totalValue: 1, bankValue: 1 } },
+  promotionLots: {
+    properties: formProperty(),
+  },
   reservationAgreement: 1,
   reservationDeposit: 1,
   simpleVerification: 1,
