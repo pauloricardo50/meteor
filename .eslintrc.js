@@ -94,7 +94,7 @@ module.exports = {
     // https://github.com/prettier/prettier/issues/5309
     'arrow-parens': 0,
     'prefer-destructuring': [
-      'error',
+      'warn',
       {
         VariableDeclarator: {
           array: true,
