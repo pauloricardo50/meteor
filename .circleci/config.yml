@@ -331,7 +331,7 @@ workflows:
       - Www - e2e tests:
           requires:
             - Prepare
-      - Www- deploy:
+      - Www - deploy:
           requires:
-            - Www- e2e tests
+            - Www - e2e tests
             - Www - unit tests

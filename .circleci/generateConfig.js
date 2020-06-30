@@ -291,8 +291,7 @@ const makeConfig = () => ({
         // { 'App - e2e tests': { requires: ['Prepare'] } },
         // { 'Admin - e2e tests': { requires: ['Prepare'] } },
         // { 'Pro - e2e tests': { requires: ['Prepare'] } },
-
-        { 'Www- deploy': { requires: ['Www- e2e tests', 'Www - unit tests'] } },
+        { 'Www - deploy': { requires: ['Www - e2e tests', 'Www - unit tests'] } },
       ],
     },
   },
