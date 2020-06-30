@@ -41,7 +41,7 @@ const withOptions = withProps(({ offers, loan }) => ({
     ...getAvailableRates(offers, loan).map(rate => ({ id: rate })),
   ].map(({ id }) => ({
     id,
-    label: <T id={`offer.${id}`} />,
+    label: <T id={`FinancingOffers.${id}`} />,
   })),
 }));
 

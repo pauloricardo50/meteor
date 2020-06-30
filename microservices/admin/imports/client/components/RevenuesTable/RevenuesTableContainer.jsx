@@ -132,7 +132,14 @@ export default compose(
   withSmartQuery({
     query: REVENUES_COLLECTION,
     params: ({ filterRevenues, ...props }) => ({
-      ...(filterRevenues ? { $filters: filterRevenues(props) } : {}),
+      ...(filterRevenues
+        ? {
+            $filters:
+              typeof filterRevenues === 'function'
+                ? filterRevenues(props)
+                : filterRevenues,
+          }
+        : {}),
       amount: 1,
       assigneeLink: 1,
       description: 1,

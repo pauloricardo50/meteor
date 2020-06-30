@@ -6,6 +6,7 @@ import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';
 import PromotionLotReservation from '../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservation';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
+import { usePromotion } from '../PromotionPageContext';
 import PrioritySetter from './PrioritySetter';
 import PromotionOptionDialog from './PromotionOptionDialog';
 import RequestReservation from './RequestReservation';
@@ -17,6 +18,9 @@ const UserPromotionOptionsTable = ({
   className,
   promotionOptions = loan.promotionOptions,
 }) => {
+  const { promotion } = usePromotion();
+  const hasTimeline = promotion.constructionTimeline?.steps?.length > 0;
+
   const [isLoading, setLoading] = useState(false);
 
   return (
@@ -106,6 +110,8 @@ const UserPromotionOptionsTable = ({
           const { name } = promotionOption;
 
           return {
+            fullWidth: true,
+            maxWidth: hasTimeline ? false : undefined,
             title: (
               <div className="modal-promotion-lot-title">
                 <span>Lot {name}</span>

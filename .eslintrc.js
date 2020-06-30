@@ -94,7 +94,7 @@ module.exports = {
     // https://github.com/prettier/prettier/issues/5309
     'arrow-parens': 0,
     'prefer-destructuring': [
-      'error',
+      'warn',
       {
         VariableDeclarator: {
           array: true,
@@ -108,7 +108,7 @@ module.exports = {
       { enforceForRenamedProperties: false },
     ],
     camelcase: [
-      'error',
+      'warn',
       {
         ignoreDestructuring: true,
         allow: [
@@ -139,6 +139,7 @@ module.exports = {
     'consistent-return': 0,
     // They're very useful for confirming things, and much more performant than Dialogs
     'no-alert': 0,
+    'no-param-reassign': "warn",
 
     // eslint-plugin-import rules
 

@@ -94,7 +94,6 @@ exposeQuery({
         ownReferredUsers,
         referredByUserId,
       } = params;
-
       SecurityService.checkUserIsPro(userId);
 
       if (providedUserId) {
@@ -128,10 +127,10 @@ exposeQuery({
       }) => {
         let organisationId;
         if (!providedOrganisationId) {
-          const { organisations = [] } = UserService.get(userId, {
-            organisations: { _id: 1 },
+          const mainOrganisation = UserService.getUserMainOrganisation(userId, {
+            _id: 1,
           });
-          organisationId = !!organisations.length && organisations[0]._id;
+          organisationId = mainOrganisation?._id;
         } else {
           organisationId = providedOrganisationId;
         }

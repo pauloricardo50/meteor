@@ -100,14 +100,6 @@ export const loanBorrower = ({ withSort } = {}) => ({
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
-export const adminBorrower = () => ({
-  ...loanBorrower(),
-  loans: loan(),
-  user: appUser(),
-});
-
-export const fullBorrower = adminBorrower;
-
 // //
 // // Contact fragments
 // //
@@ -954,6 +946,7 @@ export const userProperty = ({ withSort } = {}) => {
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
   loanCount: 1,
+  status: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
@@ -1094,7 +1087,7 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const adminRevenue = () => ({
+const adminRevenue = () => ({
   amount: 1,
   // Keep these in the right order
   assigneeLink: 1,

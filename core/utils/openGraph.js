@@ -7,9 +7,10 @@ export const getOpenGraphMeta = url => {
   return ogs(options)
     .then(results => results.data)
     .catch(error => {
-      if (error) {
+      if (error?.error !== 'Page Not Found') {
+        // Ignore errors if the page has simply been removed from the web
         logError.run({
-          error,
+          error: new Error(error),
           additionalData: ['getOpenGraphMeta error', url, options],
         });
       }

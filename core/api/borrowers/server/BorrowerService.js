@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { adminBorrower } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import LoanService from '../../loans/server/LoanService';
@@ -62,7 +61,7 @@ class BorrowerService extends CollectionService {
 
   remove = ({ borrowerId, loanId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    const borrower = this.get(borrowerId, adminBorrower());
+    const borrower = this.get(borrowerId, { loans: { _id: 1 } });
     if (borrower.loans && borrower.loans.length > 1) {
       const loansLink = this.getLink(borrowerId, 'loans');
       if (loanId) {

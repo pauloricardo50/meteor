@@ -50,7 +50,7 @@ then
 
 else
   echo -e "$SECTION_START Creating language files $SECTION_END"
-  meteor npx babel-node ./createLanguages.js $MICROSERVICE
+  node -r esm ./createLanguages.js $MICROSERVICE
 fi
 
 ln -s ../../../core ../microservices/$MICROSERVICE/imports/core
