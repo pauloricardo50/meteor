@@ -111,7 +111,7 @@
   "Forms.unsuccessfulReason.PROJECT_CHANGED_PROFESSIONAL_SITUATION": "Le client a eu un changement de situation professionnelle majeur",
   "Forms.unsuccessfulReason.PROJECT_CHANGED_PROPERTY_NOT_AVAILABLE": "Le bien immobilier n'est plus disponible",
   "Forms.unsuccessfulReason.PROJECT_CHANGED_PRICE_RAISED": "Le prix du bien a augmenté",
-  "Forms.unsuccessfulReason.CONTACT_LOSS_UNREACHABLE": "Le client n'a jamais pu être contacté",
+  "Forms.unsuccessfulReason.CONTACT_LOSS_UNREACHABLE": "Aucun moyen de contacter le client, mail(s) et téléphone(s) incorrect(s)",
   "Forms.unsuccessfulReason.CONTACT_LOSS_NO_ANSWER": "Le client n'a pas répondu après 3 mails de relance",
   "Forms.unsuccessfulReason.other": "Autre raison",
   "Recap.incomeAndExpenses": "Revenus et charges",
