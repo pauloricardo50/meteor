@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
@@ -81,6 +82,20 @@ const constructionTimelineSchema = {
   startPercent: percentageField,
   steps: { type: Array, defaultValue: [] },
   'steps.$': Object,
+  'steps.$.id': {
+    type: String,
+    autoValue() {
+      if (this.isInsert) {
+        return this.value || Random.id();
+      }
+
+      if (this.isUpdate) {
+        return this.value;
+      }
+
+      this.unset();
+    },
+  },
   'steps.$.description': String,
   'steps.$.startDate': { ...dateField, optional: false },
   'steps.$.percent': { ...percentageField, optional: false },
