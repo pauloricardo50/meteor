@@ -97,7 +97,7 @@ describe('TaskService', () => {
     });
   });
 
-  describe.only('generatePromotionStepReminders', () => {
+  describe('generatePromotionStepReminders', () => {
     it('generates the tasks', async () => {
       const in10Days = moment().add(10, 'days').startOf('day').toDate();
 
