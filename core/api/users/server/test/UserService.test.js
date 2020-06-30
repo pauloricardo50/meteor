@@ -17,7 +17,7 @@ import { proInviteUser } from '../../methodDefinitions';
 import { ACQUISITION_CHANNELS, ROLES } from '../../userConstants';
 import UserService from '../UserService';
 
-describe.only('UserService', function () {
+describe('UserService', function () {
   this.timeout(10000);
 
   const firstName = 'TestFirstName';
@@ -1295,7 +1295,7 @@ describe.only('UserService', function () {
       expect(assignedEmployeeId).to.equal('adminId');
     });
 
-    it.only('invites user to promotion with invitationNote', async () => {
+    it('invites user to promotion with invitationNote', async () => {
       generator({
         properties: { _id: 'prop' },
         promotions: {
