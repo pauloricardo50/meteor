@@ -52,3 +52,11 @@ export const taskRemove = new Method({
     taskId: String,
   },
 });
+
+export const taskSnooze = new Method({
+  name: 'taskSnooze',
+  params: {
+    taskId: String,
+    workingDays: Number,
+  },
+});

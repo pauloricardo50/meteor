@@ -6,6 +6,7 @@ import {
   taskComplete,
   taskInsert,
   taskRemove,
+  taskSnooze,
   taskUpdate,
 } from '../methodDefinitions';
 import TaskService from './TaskService';
@@ -46,4 +47,9 @@ proAddLoanTask.setHandler(({ userId }, params) => {
 taskRemove.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return TaskService.remove(params);
+});
+
+taskSnooze.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return TaskService.snooze(params);
 });

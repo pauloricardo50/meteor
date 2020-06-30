@@ -165,6 +165,7 @@ module.exports = {
     // the original module during tests.
     // So for testing, importing the same module as named is helpful
     'import/no-named-as-default': 0,
+    'import/no-cycle': 1,
 
     // eslint-plugin-jsx-a11y rules
 

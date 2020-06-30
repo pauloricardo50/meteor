@@ -23,9 +23,9 @@ class TaskService extends CollectionService {
     super(Tasks);
   }
 
-  insert = ({
+  insert({
     object: { collection, dueAt, dueAtTime, docId, assigneeLink = {}, ...rest },
-  }) => {
+  }) {
     let assignee = assigneeLink._id;
     if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
@@ -74,17 +74,25 @@ class TaskService extends CollectionService {
     }
 
     return taskId;
-  };
+  }
 
-  remove = ({ taskId }) => Tasks.remove(taskId);
+  remove({ taskId }) {
+    return Tasks.remove(taskId);
+  }
 
-  update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
+  update({ taskId, object }) {
+    return Tasks.update(taskId, { $set: object });
+  }
 
-  getTaskById = taskId => this.get(taskId, taskFragment());
+  getTaskById(taskId) {
+    return this.get(taskId, taskFragment());
+  }
 
-  getTasksForDoc = docId => Tasks.find({ docId }).fetch();
+  getTasksForDoc(docId) {
+    return Tasks.find({ docId }).fetch();
+  }
 
-  getDueDate = ({ dueAt, dueAtTime }) => {
+  getDueDate({ dueAt, dueAtTime }) {
     if (dueAt && !dueAtTime) {
       return dueAt;
     }
@@ -108,16 +116,17 @@ class TaskService extends CollectionService {
       }
       return date.toDate();
     }
-  };
+  }
 
-  complete = ({ taskId }) =>
-    this.update({
+  complete({ taskId }) {
+    return this.update({
       taskId,
       object: { status: TASK_STATUS.COMPLETED, completedAt: new Date() },
     });
+  }
 
-  changeStatus = ({ taskId, newStatus }) =>
-    this.update({
+  changeStatus({ taskId, newStatus }) {
+    return this.update({
       taskId,
       object: {
         status: newStatus,
@@ -125,12 +134,13 @@ class TaskService extends CollectionService {
           newStatus === TASK_STATUS.COMPLETED ? new Date() : undefined,
       },
     });
+  }
 
-  changeAssignedTo = ({ taskId, newAssigneeId }) => {
+  changeAssignedTo({ taskId, newAssigneeId }) {
     this.addLink({ id: taskId, linkName: 'assignee', linkId: newAssigneeId });
-  };
+  }
 
-  getAssigneeForDoc = (docId, collection) => {
+  getAssigneeForDoc(docId, collection) {
     if (collection === LOANS_COLLECTION) {
       const mainAssignee = LoanService.getMainAssignee({ loanId: docId });
       if (mainAssignee) {
@@ -149,9 +159,9 @@ class TaskService extends CollectionService {
       .fetchOne();
 
     return doc?.assignee?._id;
-  };
+  }
 
-  proAddLoanTask = ({ userId, loanId, note }) => {
+  proAddLoanTask({ userId, loanId, note }) {
     const pro = UserService.get(userId, {
       name: 1,
       organisations: { name: 1 },
@@ -165,7 +175,34 @@ class TaskService extends CollectionService {
         description: `${note}`,
       },
     });
-  };
+  }
+
+  snooze({ taskId, workingDays }) {
+    const { dueAt } = this.get(taskId, { dueAt: 1 });
+    const isInPast = dueAt && dueAt.getTime() < new Date().getTime();
+    const dateToStartFrom = moment(isInPast ? undefined : dueAt);
+    let daysRemaining = workingDays;
+
+    while (daysRemaining > 0) {
+      dateToStartFrom.add(1, 'days');
+
+      if (dateToStartFrom.day() !== 0 && dateToStartFrom.day() !== 6) {
+        daysRemaining -= 1;
+      }
+    }
+
+    return this.update({
+      taskId,
+      object: {
+        dueAt: dateToStartFrom
+          .hours(8)
+          .minutes(0)
+          .seconds(0)
+          .milliseconds(0)
+          .toDate(),
+      },
+    });
+  }
 }
 
 export default new TaskService();
