@@ -16,7 +16,7 @@ import {
   getStepGettingDisbursedSoon,
 } from '../promotionServerHelpers';
 
-describe.only('promotionServerHelpers', () => {
+describe('promotionServerHelpers', () => {
   beforeEach(() => {
     resetDatabase();
   });
