@@ -1,3 +1,5 @@
+import TaskService from 'imports/core/api/tasks/server/TaskService';
+
 import CronService from 'core/api/cron/server/CronService';
 import FileService from 'core/api/files/server/FileService';
 import Irs10yService from 'core/api/irs10y/server/Irs10yService';
@@ -120,4 +122,13 @@ CronService.addCron(
         .then(gettingDisbursed => gettingDisbursed.length),
   },
   { cronitorId: 'wYNCRc' },
+);
+
+CronService.addCron(
+  {
+    name: 'Generate tasks for promotion steps getting disbursed soon',
+    frequency: 'every 1 day',
+    func: () => TaskService.generatePromotionStepReminders(),
+  },
+  { cronitorId: '1qi00X' },
 );

@@ -13,6 +13,7 @@ import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import { ORGANISATIONS_COLLECTION } from '../../organisations/organisationConstants';
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
+import { getPromotionStepReminders } from '../../promotions/server/promotionServerHelpers';
 import UserService from '../../users/server/UserService';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import { TASK_STATUS } from '../taskConstants';
@@ -198,6 +199,36 @@ class TaskService extends CollectionService {
           .toDate(),
       },
     });
+  }
+
+  generatePromotionStepReminders() {
+    const tasks = getPromotionStepReminders();
+    const numberOfTasks = tasks.reduce(
+      (total, { loanIds = [] }) => total + loanIds.length,
+      0,
+    );
+
+    tasks.forEach(({ step, loanIds = [] }) => {
+      const { type, id, date, description } = step;
+      const delta = Math.ceil(moment(date).diff(new Date(), 'days', true));
+
+      loanIds.forEach(loanId => {
+        this.insert({
+          object: {
+            collection: LOANS_COLLECTION,
+            docId: loanId,
+            type,
+            title: `La tranche "${description}" sera décaissée dans ${delta} jours, contactez le client et le prêteur`,
+            metadata: {
+              stepId: id,
+              stepDate: date,
+            },
+          },
+        });
+      });
+    });
+
+    return Promise.resolve(numberOfTasks);
   }
 }
 
