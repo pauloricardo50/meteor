@@ -52,6 +52,13 @@ describe('IntercomService', function () {
   this.timeout(15000);
   let logErrorSpy;
 
+  before(() => {
+    if (Meteor.settings.public.microservice !== 'pro') {
+      this.parent.pending = true;
+      this.skip();
+    }
+  });
+
   beforeEach(async function () {
     resetDatabase();
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
@@ -214,10 +221,13 @@ describe('IntercomService', function () {
     });
 
     it('assigns a conversation', async () => {
-      const { assignee } = await IntercomService.assignConversation({
+      const conversation = await IntercomService.assignConversation({
         conversationId: CONVERSATION_INTERCOM_ID,
         assigneeId: ADMIN_INTERCOM_ID,
       });
+
+      const { assignee } = conversation;
+
       expect(assignee.id).to.equal(ADMIN_INTERCOM_ID);
     });
 
