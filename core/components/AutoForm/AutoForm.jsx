@@ -145,8 +145,9 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   if (childProps.InputProps.info) {
     childProps.InputProps.info = (
       <T
-        id={`Forms.${childProps.InputProps.intlId ||
-          childProps.InputProps.id}.info`}
+        id={`Forms.${
+          childProps.InputProps.intlId || childProps.InputProps.id
+        }.info`}
       />
     );
   }

@@ -5,7 +5,7 @@ import Icon from 'core/components/Icon/Icon';
 import T from 'core/components/Translation';
 
 import LoanAdder from '../../components/LoanSummaryList/LoanAdder';
-import TasksTableWithPriority from '../../components/TasksDataTable/TasksTableWithPriority';
+import TasksDataTableWithPriority from '../../components/TasksDataTable/TasksDataTableWithPriority';
 import { UserAdder } from '../../components/UserDialogForm';
 import AdminDashboardStats from './AdminDashboardStats';
 import AdvisorsStatus from './AdvisorsStatus';
@@ -35,7 +35,7 @@ const AdminDashboardPage = ({ history }) => (
       <h2 className="text-center">
         <T id="AdminDashboardPage.tasks" />
       </h2>
-      <TasksTableWithPriority />
+      <TasksDataTableWithPriority />
     </section>
 
     <AdminDashboardStats />
