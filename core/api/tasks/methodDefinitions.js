@@ -45,3 +45,10 @@ export const proAddLoanTask = new Method({
     note: String,
   },
 });
+
+export const taskRemove = new Method({
+  name: 'taskRemove',
+  params: {
+    taskId: String,
+  },
+});

@@ -5,6 +5,7 @@ import {
   taskChangeStatus,
   taskComplete,
   taskInsert,
+  taskRemove,
   taskUpdate,
 } from '../methodDefinitions';
 import TaskService from './TaskService';
@@ -40,4 +41,9 @@ proAddLoanTask.setHandler(({ userId }, params) => {
   // Not doing this, because this is a method called by our partners
   // There's no security risk to let this happen
   return TaskService.proAddLoanTask({ userId, ...params });
+});
+
+taskRemove.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return TaskService.remove(params);
 });

@@ -106,7 +106,7 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
           {
             accessor: '_id',
             Header: 'Actions',
-            style: { width: 96 },
+            style: { width: 64 },
             disableSortBy: true,
             Cell: ({ value, row: { original } }) => (
               <TasksTableActions taskId={value} priority={original.priority} />
@@ -123,4 +123,5 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
     </>
   );
 };
+
 export default TasksDataTable;

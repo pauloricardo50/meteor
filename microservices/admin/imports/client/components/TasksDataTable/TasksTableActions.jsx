@@ -1,12 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 
-import {
-  taskChangeStatus,
-  taskComplete,
-  taskUpdate,
-} from 'core/api/tasks/methodDefinitions';
-import { TASK_PRIORITIES, TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { taskComplete, taskUpdate } from 'core/api/tasks/methodDefinitions';
+import { TASK_PRIORITIES } from 'core/api/tasks/taskConstants';
 import IconButton from 'core/components/IconButton';
 
 const TasksTableActions = ({ taskId, priority }) => (
@@ -20,19 +16,6 @@ const TasksTableActions = ({ taskId, priority }) => (
       type="check"
       tooltip="Compléter tâche"
       className="success"
-    />
-    <IconButton
-      onClick={e => {
-        e.stopPropagation();
-        taskChangeStatus.run({
-          taskId,
-          newStatus: TASK_STATUS.CANCELLED,
-        });
-      }}
-      size="small"
-      type="close"
-      tooltip="Annuler tâche"
-      className="error"
     />
     <IconButton
       onClick={e => {
