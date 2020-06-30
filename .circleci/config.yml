@@ -154,300 +154,6 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
-  App - unit tests:
-    working_directory: /home/circleci/app
-    docker: *ref_0
-    resource_class: medium+
-    steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
-      - restore_cache:
-          name: Restore global cache
-          keys:
-            - 'global_master_16_2-{{ checksum "./package-lock.json" }}'
-            - global_master_16_2-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_app_{{ checksum
-              "./microservices/app/.meteor/release" }}_{{ checksum
-              "./microservices/app/.meteor/versions" }}
-      - restore_cache:
-          name: Restore meteor microservice
-          keys:
-            - 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_16_app-{{ .Branch }}-'
-            - meteor_microservice_master_16_app-
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
-            - meteor_microservice_master_16_backend-
-      - run:
-          name: Setup display
-          command: |2-
-
-                    echo "export DISPLAY=':99.0'" >> $BASH_ENV
-                    apt-get update && apt-get install xvfb -y
-                    Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
-                  
-          background: true
-      - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Create results directory
-          command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/app ci
-                  meteor npm --prefix microservices/backend ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang app
-      - run:
-          name: Run unit tests
-          command: cd ./microservices/app && meteor npm run test-ci
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_master_16_app_{{ checksum
-            "./microservices/app/.meteor/release" }}_{{ checksum
-            "./microservices/app/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
-      - save_cache:
-          name: Cache meteor microservice
-          key: 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/app/.meteor/local/bundler-cache
-            - ./microservices/app/.meteor/local/isopacks
-            - ./microservices/app/.meteor/local/plugin-cache
-            - ./microservices/app/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor backend
-          key: 'meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - store_test_results:
-          path: ./results
-      - store_artifacts:
-          path: ./results
-  Admin - unit tests:
-    working_directory: /home/circleci/app
-    docker: *ref_0
-    resource_class: medium+
-    steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
-      - restore_cache:
-          name: Restore global cache
-          keys:
-            - 'global_master_16_2-{{ checksum "./package-lock.json" }}'
-            - global_master_16_2-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_admin_{{ checksum
-              "./microservices/admin/.meteor/release" }}_{{ checksum
-              "./microservices/admin/.meteor/versions" }}
-      - restore_cache:
-          name: Restore meteor microservice
-          keys:
-            - 'meteor_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_16_admin-{{ .Branch }}-'
-            - meteor_microservice_master_16_admin-
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
-            - meteor_microservice_master_16_backend-
-      - run:
-          name: Setup display
-          command: |2-
-
-                    echo "export DISPLAY=':99.0'" >> $BASH_ENV
-                    apt-get update && apt-get install xvfb -y
-                    Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
-                  
-          background: true
-      - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Create results directory
-          command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/admin ci
-                  meteor npm --prefix microservices/backend ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang admin
-      - run:
-          name: Run unit tests
-          command: cd ./microservices/admin && meteor npm run test-ci
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_master_16_admin_{{ checksum
-            "./microservices/admin/.meteor/release" }}_{{ checksum
-            "./microservices/admin/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
-      - save_cache:
-          name: Cache meteor microservice
-          key: 'meteor_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/admin/.meteor/local/bundler-cache
-            - ./microservices/admin/.meteor/local/isopacks
-            - ./microservices/admin/.meteor/local/plugin-cache
-            - ./microservices/admin/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor backend
-          key: 'meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - store_test_results:
-          path: ./results
-      - store_artifacts:
-          path: ./results
-  Pro - unit tests:
-    working_directory: /home/circleci/app
-    docker: *ref_0
-    resource_class: medium+
-    steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
-      - restore_cache:
-          name: Restore global cache
-          keys:
-            - 'global_master_16_2-{{ checksum "./package-lock.json" }}'
-            - global_master_16_2-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_pro_{{ checksum
-              "./microservices/pro/.meteor/release" }}_{{ checksum
-              "./microservices/pro/.meteor/versions" }}
-      - restore_cache:
-          name: Restore meteor microservice
-          keys:
-            - 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_16_pro-{{ .Branch }}-'
-            - meteor_microservice_master_16_pro-
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
-            - meteor_microservice_master_16_backend-
-      - run:
-          name: Setup display
-          command: |2-
-
-                    echo "export DISPLAY=':99.0'" >> $BASH_ENV
-                    apt-get update && apt-get install xvfb -y
-                    Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
-                  
-          background: true
-      - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Create results directory
-          command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/pro ci
-                  meteor npm --prefix microservices/backend ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang pro
-      - run:
-          name: Run unit tests
-          command: cd ./microservices/pro && meteor npm run test-ci
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_master_16_pro_{{ checksum
-            "./microservices/pro/.meteor/release" }}_{{ checksum
-            "./microservices/pro/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
-      - save_cache:
-          name: Cache meteor microservice
-          key: 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/pro/.meteor/local/bundler-cache
-            - ./microservices/pro/.meteor/local/isopacks
-            - ./microservices/pro/.meteor/local/plugin-cache
-            - ./microservices/pro/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor backend
-          key: 'meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - store_test_results:
-          path: ./results
-      - store_artifacts:
-          path: ./results
   Www - e2e tests:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -540,10 +246,14 @@ jobs:
           path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
-  App - e2e tests:
+  Www - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
     resource_class: medium+
+    build:
+      branches:
+        only:
+          - chore/deploy-staging-ci
     steps:
       - restore_cache:
           name: Restore source
@@ -552,11 +262,6 @@ jobs:
             - 'source_master_16-{{ .Branch }}-'
             - source_master_16-
       - restore_cache:
-          name: Restore global cache
-          keys:
-            - 'global_master_16_2-{{ checksum "./package-lock.json" }}'
-            - global_master_16_2-
-      - restore_cache:
           name: Restore node_modules
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
@@ -564,258 +269,57 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_app_{{ checksum
-              "./microservices/app/.meteor/release" }}_{{ checksum
-              "./microservices/app/.meteor/versions" }}
+              meteor_system_master_16_www_{{ checksum
+              "./microservices/www/.meteor/release" }}_{{ checksum
+              "./microservices/www/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_16_app-{{ .Branch }}-'
-            - meteor_microservice_master_16_app-
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
-            - meteor_microservice_master_16_backend-
+            - 'meteor_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_16_www-{{ .Branch }}-'
+            - meteor_microservice_master_16_www-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
       - run:
-          name: Create results directory
-          command: mkdir ./results
-      - run:
           name: Install node_modules
           command: |2-
 
-                  meteor npm --prefix microservices/app ci
-                  meteor npm --prefix microservices/backend ci
+                  meteor npm --prefix microservices/www ci
                   
       - run:
           name: Generate language files
-          command: npm run lang app
+          command: npm run lang www
       - run:
-          name: Run e2e tests
+          name: Install GCloud
           command: |2-
 
-                    cd ./microservices/app && meteor npm run test-e2e-ci
-                    
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_master_16_app_{{ checksum
-            "./microservices/app/.meteor/release" }}_{{ checksum
-            "./microservices/app/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
-      - save_cache:
-          name: Cache meteor microservice
-          key: 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/app/.meteor/local/bundler-cache
-            - ./microservices/app/.meteor/local/isopacks
-            - ./microservices/app/.meteor/local/plugin-cache
-            - ./microservices/app/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor backend
-          key: 'meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - store_test_results:
-          path: ./e2e-results
-      - store_artifacts:
-          path: ./e2e-results
-  Admin - e2e tests:
-    working_directory: /home/circleci/app
-    docker: *ref_0
-    resource_class: medium+
-    steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
-      - restore_cache:
-          name: Restore global cache
-          keys:
-            - 'global_master_16_2-{{ checksum "./package-lock.json" }}'
-            - global_master_16_2-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_admin_{{ checksum
-              "./microservices/admin/.meteor/release" }}_{{ checksum
-              "./microservices/admin/.meteor/versions" }}
-      - restore_cache:
-          name: Restore meteor microservice
-          keys:
-            - 'meteor_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_16_admin-{{ .Branch }}-'
-            - meteor_microservice_master_16_admin-
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
-            - meteor_microservice_master_16_backend-
+                  cd ~
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  apt-get install apt-transport-https ca-certificates gnupg
+                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+                  apt-get update && apt-get install google-cloud-sdk
+
+                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
+                  rm ./gcloud-key.json
+                
       - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Create results directory
-          command: mkdir ./results
-      - run:
-          name: Install node_modules
+          name: Deploy
           command: |2-
 
-                  meteor npm --prefix microservices/admin ci
-                  meteor npm --prefix microservices/backend ci
+                    cd deploy
+                    ENVIRONMENT="staging"
+
+                    if [ "$CIRCLE_BRANCH" = "chore/deploy-staging-ci" ]; then
+                      ENVIRONMENT="staging"
+                    else
+                      echo "Deployments not configured for this branch"
+                      exit 1
+                    fi
+
+                    node run-all -e $ENVIRONMENT --apps www validate
                   
-      - run:
-          name: Generate language files
-          command: npm run lang admin
-      - run:
-          name: Run e2e tests
-          command: |2-
-
-                    cd ./microservices/admin && meteor npm run test-e2e-ci
-                    
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_master_16_admin_{{ checksum
-            "./microservices/admin/.meteor/release" }}_{{ checksum
-            "./microservices/admin/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
-      - save_cache:
-          name: Cache meteor microservice
-          key: 'meteor_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/admin/.meteor/local/bundler-cache
-            - ./microservices/admin/.meteor/local/isopacks
-            - ./microservices/admin/.meteor/local/plugin-cache
-            - ./microservices/admin/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor backend
-          key: 'meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - store_test_results:
-          path: ./e2e-results
-      - store_artifacts:
-          path: ./e2e-results
-  Pro - e2e tests:
-    working_directory: /home/circleci/app
-    docker: *ref_0
-    resource_class: medium+
-    steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
-      - restore_cache:
-          name: Restore global cache
-          keys:
-            - 'global_master_16_2-{{ checksum "./package-lock.json" }}'
-            - global_master_16_2-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_pro_{{ checksum
-              "./microservices/pro/.meteor/release" }}_{{ checksum
-              "./microservices/pro/.meteor/versions" }}
-      - restore_cache:
-          name: Restore meteor microservice
-          keys:
-            - 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
-            - 'meteor_microservice_master_16_pro-{{ .Branch }}-'
-            - meteor_microservice_master_16_pro-
-      - restore_cache:
-          name: Restore meteor backend
-          keys:
-            - >-
-              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
-            - meteor_microservice_master_16_backend-
-      - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Create results directory
-          command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/pro ci
-                  meteor npm --prefix microservices/backend ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang pro
-      - run:
-          name: Run e2e tests
-          command: |2-
-
-                    cd ./microservices/pro && meteor npm run test-e2e-ci
-                    
-          no_output_timeout: 30m
-      - save_cache:
-          name: Cache meteor system
-          key: >-
-            meteor_system_master_16_pro_{{ checksum
-            "./microservices/pro/.meteor/release" }}_{{ checksum
-            "./microservices/pro/.meteor/versions" }}
-          paths:
-            - /home/circleci/.meteor
-      - save_cache:
-          name: Cache meteor microservice
-          key: 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/pro/.meteor/local/bundler-cache
-            - ./microservices/pro/.meteor/local/isopacks
-            - ./microservices/pro/.meteor/local/plugin-cache
-            - ./microservices/pro/.meteor/local/resolver-result-cache.json
-      - save_cache:
-          name: Cache meteor backend
-          key: 'meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./microservices/backend/.meteor/local/bundler-cache
-            - ./microservices/backend/.meteor/local/isopacks
-            - ./microservices/backend/.meteor/local/plugin-cache
-            - ./microservices/backend/.meteor/local/resolver-result-cache.json
-      - store_test_results:
-          path: ./e2e-results
-      - store_artifacts:
-          path: ./e2e-results
 workflows:
   version: 2
   Build and test:
@@ -824,24 +328,10 @@ workflows:
       - Www - unit tests:
           requires:
             - Prepare
-      - App - unit tests:
-          requires:
-            - Prepare
-      - Admin - unit tests:
-          requires:
-            - Prepare
-      - Pro - unit tests:
-          requires:
-            - Prepare
       - Www - e2e tests:
           requires:
             - Prepare
-      - App - e2e tests:
+      - Www- deploy:
           requires:
-            - Prepare
-      - Admin - e2e tests:
-          requires:
-            - Prepare
-      - Pro - e2e tests:
-          requires:
-            - Prepare
+            - Www- e2e tests
+            - Www - unit tests

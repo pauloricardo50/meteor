@@ -62,6 +62,10 @@ const { argv } = yargs
     description: 'Run command in parallel for all apps',
     type: 'boolean',
   })
+  .option('deploy-ci', {
+    description: 'forces deploys to be done in serial',
+    type: 'boolean'
+  })
   .describe('apps', 'comma separated list of app names to run the command for');
 
 const mupCommands = getMupCommand();

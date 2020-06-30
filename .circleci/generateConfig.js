@@ -2,6 +2,7 @@ import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const STAGING_BRANCH = 'chore/deploy-staging-ci';
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -198,25 +199,84 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
   ].filter(x => x),
 });
 
+const makeDeployJob = ({ name, job }) => ({
+  ...job,
+  ...defaultJobValues,
+  resource_class: 'medium+',
+  build: {
+    branches: {
+      only: [
+        STAGING_BRANCH
+      ]
+    }
+  },
+  steps: [
+    restoreCache('Restore source', cacheKeys.source()),
+    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
+    restoreCache(
+      'Restore meteor microservice',
+      cacheKeys.meteorMicroservice(name),
+    ),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    runCommand(
+      'Install node_modules',
+      `
+      meteor npm --prefix microservices/${name} ci
+      `,
+    ),
+    runCommand('Generate language files', `npm run lang ${name}`),
+    runCommand('Install GCloud', 
+    `
+      cd ~
+      echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+      apt-get install apt-transport-https ca-certificates gnupg
+      curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+      apt-get update && apt-get install google-cloud-sdk
+
+      echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+      gcloud auth activate-service-account  --key-file=./gcloud-key.json
+      rm ./gcloud-key.json
+    `),
+    runCommand(
+      'Deploy',
+      `
+        cd deploy
+        ENVIRONMENT="staging"
+
+        if [ "$CIRCLE_BRANCH" = "${STAGING_BRANCH}" ]; then
+          ENVIRONMENT="staging"
+        else
+          echo "Deployments not configured for this branch"
+          exit 1
+        fi
+
+        node run-all -e $ENVIRONMENT --apps ${name} validate
+      `
+    )
+  ]
+})
+
 // Final config
 const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
     'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
-    'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
-    'Admin - unit tests': testMicroserviceJob({
-      name: 'admin',
-      testsType: 'unit',
-    }),
-    'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    // 'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    // 'Admin - unit tests': testMicroserviceJob({
+    //   name: 'admin',
+    //   testsType: 'unit',
+    // }),
+    // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
     'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
-    'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
-    'Admin - e2e tests': testMicroserviceJob({
-      name: 'admin',
-      testsType: 'e2e',
-    }),
-    'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
+    // 'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
+    // 'Admin - e2e tests': testMicroserviceJob({
+    //   name: 'admin',
+    //   testsType: 'e2e',
+    // }),
+    // 'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
+    'Www - deploy': makeDeployJob({ name: 'www' })
   },
   workflows: {
     version: 2,
@@ -224,13 +284,15 @@ const makeConfig = () => ({
       jobs: [
         'Prepare',
         { 'Www - unit tests': { requires: ['Prepare'] } },
-        { 'App - unit tests': { requires: ['Prepare'] } },
-        { 'Admin - unit tests': { requires: ['Prepare'] } },
-        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        // { 'App - unit tests': { requires: ['Prepare'] } },
+        // { 'Admin - unit tests': { requires: ['Prepare'] } },
+        // { 'Pro - unit tests': { requires: ['Prepare'] } },
         { 'Www - e2e tests': { requires: ['Prepare'] } },
-        { 'App - e2e tests': { requires: ['Prepare'] } },
-        { 'Admin - e2e tests': { requires: ['Prepare'] } },
-        { 'Pro - e2e tests': { requires: ['Prepare'] } },
+        // { 'App - e2e tests': { requires: ['Prepare'] } },
+        // { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        // { 'Pro - e2e tests': { requires: ['Prepare'] } },
+
+        { 'Www- deploy': { requires: ['Www- e2e tests', 'Www - unit tests'] } },
       ],
     },
   },
