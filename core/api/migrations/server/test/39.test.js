@@ -3,9 +3,9 @@ import { expect } from 'chai';
 
 import { resetDatabase } from '../../../../utils/testHelpers';
 import TaskService from '../../../tasks/server/TaskService';
-import { up } from '../38';
+import { up } from '../39';
 
-describe('Migration 38', () => {
+describe('Migration 39', () => {
   beforeEach(() => {
     resetDatabase();
   });

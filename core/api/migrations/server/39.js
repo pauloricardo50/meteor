@@ -21,7 +21,7 @@ export const up = () => {
 export const down = () => {};
 
 Migrations.add({
-  version: 38,
+  version: 39,
   name: 'Remove cancelled status on tasks',
   up,
   down,
