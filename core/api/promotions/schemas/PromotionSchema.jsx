@@ -85,15 +85,7 @@ const constructionTimelineSchema = {
   'steps.$.id': {
     type: String,
     autoValue() {
-      if (this.isInsert) {
-        return this.value || Random.id();
-      }
-
-      if (this.isUpdate) {
-        return this.value;
-      }
-
-      this.unset();
+      return this.value || Random.id();
     },
   },
   'steps.$.description': String,

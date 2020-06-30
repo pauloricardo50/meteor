@@ -347,19 +347,6 @@ describe('promotionServerHelpers', () => {
   });
 
   describe('getLoansWithoutStepReminderTask', () => {
-    it('returns null if no promotion option status is SOLD', () => {
-      const loans = getLoansWithoutStepReminderTask({
-        promotionOptions: [
-          {
-            status: PROMOTION_OPTION_STATUS.INTERESTED,
-            loanCache: [{ _id: 'loan' }],
-          },
-        ],
-      });
-
-      expect(loans).to.equal(null);
-    });
-
     it('returns an empty array if the loan already have the task', () => {
       const step = {
         type: TASK_TYPES.PROMOTION_STEP_REMINDER,
@@ -382,7 +369,7 @@ describe('promotionServerHelpers', () => {
         promotionOptions: [
           {
             status: PROMOTION_OPTION_STATUS.SOLD,
-            loanCache: [{ _id: 'loan' }],
+            loanCache: { _id: ['loan'] },
           },
         ],
         step,
@@ -403,7 +390,7 @@ describe('promotionServerHelpers', () => {
         promotionOptions: [
           {
             status: PROMOTION_OPTION_STATUS.SOLD,
-            loanCache: [{ _id: 'loan' }],
+            loanCache: { _id: ['loan'] },
           },
         ],
         step,
@@ -435,7 +422,7 @@ describe('promotionServerHelpers', () => {
         promotionOptions: [
           {
             status: PROMOTION_OPTION_STATUS.SOLD,
-            loanCache: [{ _id: 'loan' }],
+            loanCache: { _id: ['loan'] },
           },
         ],
         step,
@@ -470,7 +457,7 @@ describe('promotionServerHelpers', () => {
         promotionOptions: [
           {
             status: PROMOTION_OPTION_STATUS.SOLD,
-            loanCache: [{ _id: 'loan' }],
+            loanCache: { _id: ['loan'] },
           },
         ],
         step,
@@ -519,10 +506,20 @@ describe('promotionServerHelpers', () => {
                 },
               ],
             },
-            promotionOptions: {
-              loan: { _id: 'loan3' },
-              status: PROMOTION_OPTION_STATUS.SOLD,
-            },
+            promotionOptions: [
+              {
+                loan: { _id: 'loan3' },
+                status: PROMOTION_OPTION_STATUS.SOLD,
+              },
+              {
+                loan: { _id: 'loan4' },
+                status: PROMOTION_OPTION_STATUS.SOLD,
+              },
+              {
+                loan: { _id: 'loan5' },
+                status: PROMOTION_OPTION_STATUS.INTERESTED,
+              },
+            ],
           },
         ],
       });
@@ -555,7 +552,7 @@ describe('promotionServerHelpers', () => {
         date: in10Days,
         description: 'My step',
       });
-      expect(task3.loanIds).to.deep.include('loan3');
+      expect(task3).to.deep.include({ loanIds: ['loan3', 'loan4'] });
     });
   });
 });

@@ -12,7 +12,10 @@ import {
   shouldAnonymize as clientShouldAnonymize,
   getPromotionCustomerOwnerType as getCustomerOwnerType,
 } from '../promotionClientHelpers';
-import { PROMOTION_STATUS } from '../promotionConstants';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_STEP_REMINDER_DELAY,
+} from '../promotionConstants';
 import PromotionService from './PromotionService';
 
 const getUserPromotionPermissions = ({ userId, promotionId }) => {
@@ -257,7 +260,10 @@ export const getStepGettingDisbursedSoon = ({
   signingDate,
 }) => {
   const today = moment().startOf('day').toDate();
-  const in10Days = moment().add(10, 'days').startOf('day').toDate();
+  const delay = moment()
+    .add(PROMOTION_STEP_REMINDER_DELAY, 'days')
+    .startOf('day')
+    .toDate();
 
   const {
     startPercent,
@@ -271,7 +277,7 @@ export const getStepGettingDisbursedSoon = ({
   if (
     startPercent > 0 &&
     signingDate.getTime() >= today.getTime() &&
-    signingDate.getTime() <= in10Days.getTime()
+    signingDate.getTime() <= delay.getTime()
   ) {
     step = {
       type: TASK_TYPES.PROMOTION_SIGNING_DATE_STEP_REMINDER,
@@ -282,7 +288,7 @@ export const getStepGettingDisbursedSoon = ({
   } else if (
     endPercent > 0 &&
     endDate.getTime() >= today.getTime() &&
-    endDate.getTime() <= in10Days.getTime()
+    endDate.getTime() <= delay.getTime()
   ) {
     step = {
       type: TASK_TYPES.PROMOTION_END_DATE_STEP_REMINDER,
@@ -294,7 +300,7 @@ export const getStepGettingDisbursedSoon = ({
     steps.some(({ startDate, id, description }) => {
       if (
         startDate.getTime() >= today.getTime() &&
-        startDate.getTime() <= in10Days.getTime()
+        startDate.getTime() <= delay.getTime()
       ) {
         step = {
           type: TASK_TYPES.PROMOTION_STEP_REMINDER,
@@ -313,7 +319,10 @@ export const getStepGettingDisbursedSoon = ({
 
 export const getPromotionsGettingDisbursedSoon = () => {
   const today = moment().startOf('day').toDate();
-  const in10Days = moment().add(10, 'days').startOf('day').toDate();
+  const delay = moment()
+    .add(PROMOTION_STEP_REMINDER_DELAY, 'days')
+    .startOf('day')
+    .toDate();
 
   const promotionFilters = {
     status: { $in: [PROMOTION_STATUS.FINISHED, PROMOTION_STATUS.OPEN] },
@@ -321,17 +330,17 @@ export const getPromotionsGettingDisbursedSoon = () => {
     $or: [
       // Signing date step
       {
-        signingDate: { $lte: in10Days, $gte: today },
+        signingDate: { $lte: delay, $gte: today },
         'constructionTimeline.startPercent': { $ne: 0, $exists: true },
       },
       // Handover of the keys step
       {
-        'constructionTimeline.endDate': { $lte: in10Days, $gte: today },
+        'constructionTimeline.endDate': { $lte: delay, $gte: today },
         'constructionTimeline.endPercent': { $ne: 0, $exists: true },
       },
       // Inbetween step
       {
-        'constructionTimeline.steps.startDate': { $lte: in10Days, $gte: today },
+        'constructionTimeline.steps.startDate': { $lte: delay, $gte: today },
       },
     ],
   };
@@ -341,7 +350,13 @@ export const getPromotionsGettingDisbursedSoon = () => {
   const promotions = PromotionService.fetch({
     $filters: promotionFilters,
     constructionTimeline: 1,
-    promotionOptions: { status: 1, loanCache: 1 },
+    promotionOptions: {
+      status: 1,
+      loanCache: { _id: 1 },
+      $filter({ filters }) {
+        filters.status = PROMOTION_OPTION_STATUS.SOLD;
+      },
+    },
     signingDate: 1,
   });
 
@@ -354,8 +369,7 @@ export const getLoansWithoutStepReminderTask = ({
 }) => {
   // Filter SOLD promotion options
   const loanIds = promotionOptions
-    .filter(({ status }) => status === PROMOTION_OPTION_STATUS.SOLD)
-    .map(({ loanCache }) => loanCache?.[0]?._id)
+    .map(({ loanCache }) => loanCache?._id?.[0])
     .filter(x => x);
 
   if (!loanIds?.length) {

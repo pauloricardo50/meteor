@@ -57,7 +57,7 @@ LoanService.cache(
     },
     referenceField: 'loanLink._id',
   },
-  {},
+  { 'tasksCache.metadata': { $exists: false } },
   // { tasksCache: { $exists: false } },
 );
 
