@@ -8,8 +8,8 @@
     "start2": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500 --exclude-archs web.browser",
     "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505 --exclude-archs web.browser",
     "update-meteor-packages": "node -r esm ../../scripts/npm-scripts/run-script.js update-meteor-packages",
-    "test-core": "TEST_SERVER=0 node -r esm ../../scripts/npm-scripts/run-script.js test",
-    "test-ci": "TEST_SERVER=0 ../../scripts/circleci/run-script-ci.sh test-ci"
+    "test-core": "node -r esm ../../scripts/npm-scripts/run-script.js test",
+    "test-ci": "../../scripts/circleci/run-script-ci.sh test-ci"
   },
   "dependencies": {
     "@babel/runtime": "7.8.3",
@@ -106,6 +106,9 @@
     "mainModule": {
       "server": "server/main.js",
       "client": "client/main.js"
+    },
+    "testModule": {
+      "server": "/imports/core/startup/tests/server.js"
     }
   }
 }
