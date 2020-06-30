@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
-import {
-  taskChangeStatus,
-  taskComplete,
-} from 'core/api/tasks/methodDefinitions';
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { taskComplete } from 'core/api/tasks/methodDefinitions';
 import IconButton from 'core/components/IconButton';
+
+import TaskSnoozer from '../../../../components/TasksDataTable/TaskSnoozer';
 
 const InsuranceRequestBoardCardTask = ({ title = 'Tâche sans titre', _id }) => {
   const [showButtons, setShowButtons] = useState(false);
@@ -28,19 +26,7 @@ const InsuranceRequestBoardCardTask = ({ title = 'Tâche sans titre', _id }) => 
             tooltip="Compléter tâche"
             className="task-complete-button"
           />
-          <IconButton
-            onClick={e => {
-              e.stopPropagation();
-              taskChangeStatus.run({
-                taskId: _id,
-                newStatus: TASK_STATUS.CANCELLED,
-              });
-            }}
-            size="tiny"
-            type="close"
-            tooltip="Annuler tâche"
-            className="task-cancel-button"
-          />
+          <TaskSnoozer taskId={_id} className="task-cancel-button" />
         </span>
       )}
     </span>

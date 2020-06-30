@@ -33,7 +33,7 @@ describe('nextDueTaskReducer', () => {
     taskDate2.setDate(taskDate2.getDate() - 2);
     const tasksCache = [
       { dueAt: taskDate1, title: 'task A', status: TASK_STATUS.ACTIVE },
-      { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.CANCELLED },
+      { dueAt: taskDate2, title: 'task B', status: TASK_STATUS.COMPLETED },
     ];
     const loan = { tasksCache };
     expect(nextDueTaskReducer(loan)).to.deep.include({

@@ -94,7 +94,7 @@ describe('TaskService', () => {
     });
   });
 
-  describe.only('taskSnooze', () => {
+  describe('taskSnooze', () => {
     let clock;
 
     beforeEach(() => {

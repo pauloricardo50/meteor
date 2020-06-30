@@ -3,7 +3,6 @@ export const TASKS_COLLECTION = 'tasks';
 export const TASK_STATUS = {
   ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED',
 };
 
 export const TASK_QUERIES = {

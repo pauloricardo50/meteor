@@ -66,11 +66,7 @@ class TaskService extends CollectionService {
       this.addLink({ id: taskId, linkName: 'insuranceRequest', linkId: docId });
     }
     if (assignee) {
-      this.addLink({
-        id: taskId,
-        linkName: 'assignee',
-        linkId: assignee,
-      });
+      this.addLink({ id: taskId, linkName: 'assignee', linkId: assignee });
     }
 
     return taskId;
