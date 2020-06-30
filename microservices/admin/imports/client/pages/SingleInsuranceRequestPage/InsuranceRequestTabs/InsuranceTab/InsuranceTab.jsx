@@ -24,12 +24,15 @@ const InsuranceTab = props => {
     referralIsCommissionned,
   } = props;
   const {
-    revenues = [],
+    _id: insuranceId,
     insuranceProduct: { name: insuranceProductName },
     organisation: { _id: organisationId },
   } = insurance;
-  const { assignees = [] } = insuranceRequest;
+  const { assignees = [], revenues = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
+  const insuranceRevenues = revenues.filter(
+    ({ insurance: i }) => i?._id === insuranceId,
+  );
 
   const [openRevenueAdder, setOpenRevenueAdder] = useState(false);
 
@@ -59,12 +62,10 @@ const InsuranceTab = props => {
             buttonProps={{ className: 'ml-8' }}
           />
         </h3>
-        {revenues.length ? (
+        {insuranceRevenues.length ? (
           <RevenuesTable
             insurance={insurance}
-            filterRevenues={({ insurance: { _id: insuranceId } }) => ({
-              'insuranceCache._id': insuranceId,
-            })}
+            filterRevenues={{ 'insuranceCache._id': insuranceId }}
           />
         ) : (
           <InsuranceEstimatedRevenue

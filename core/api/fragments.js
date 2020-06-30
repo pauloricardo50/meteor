@@ -1087,7 +1087,7 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const adminRevenue = () => ({
+const adminRevenue = () => ({
   amount: 1,
   // Keep these in the right order
   assigneeLink: 1,
