@@ -116,7 +116,7 @@
       "server": "server/main.js"
     },
     "testModule": {
-      "server": "/imports/core/startup/tests/server.js"
+      "server": "/imports/core/lib/server/serverTestSetup.test.js"
     },
     "nodeModules": {
       "recompile": {
