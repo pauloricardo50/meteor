@@ -1,18 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 
 import merge from 'lodash/merge';
+import uniq from 'lodash/uniq';
 
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
-  INSURANCE_REQUEST_STATUS_ORDER,
 } from '../../insuranceRequests/insuranceRequestConstants';
-import {
-  INSURANCES_COLLECTION,
-  INSURANCE_STATUS_ORDER,
-} from '../../insurances/insuranceConstants';
+import { INSURANCES_COLLECTION } from '../../insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
   LOAN_STATUS,
@@ -287,61 +284,35 @@ const getCollectionFilters = ({ collection, fromDate, toDate }) => {
   return filters;
 };
 
-const getCollectionCreatedAtFilters = ({
-  singularCollection,
-  createdAtFrom,
-  createdAtTo,
-  collection,
-}) => {
-  const filters = {};
-
-  if (collection === LOANS_COLLECTION) {
-    filters[`${singularCollection}.status`] = { $ne: LOAN_STATUS.TEST };
-  } else if (collection === INSURANCE_REQUESTS_COLLECTION) {
-    filters[`${singularCollection}.status`] = {
-      $ne: INSURANCE_REQUEST_STATUS.TEST,
-    };
-  }
-
-  if (!createdAtFrom && !createdAtTo) {
-    return filters;
-  }
-
-  if (createdAtFrom) {
-    filters[`${singularCollection}.createdAt`] = {
-      $gte: createdAtFrom,
-    };
-  }
-
-  if (createdAtTo) {
-    filters[`${singularCollection}.createdAt`] =
-      filters[`${singularCollection}.createdAt`] || {};
-    filters[`${singularCollection}.createdAt`].$lte = createdAtTo;
-  }
-
-  return filters;
-};
-
-const getCollectionFragment = ({ collection, singularCollection }) => {
+const getRawCollectionFragment = collection => {
   if (collection === INSURANCES_COLLECTION) {
     return {
-      [`${singularCollection}._id`]: 1,
-      [`${singularCollection}.name`]: 1,
-      [`${singularCollection}.insuranceRequestCache`]: 1,
-      [`${singularCollection}.createdAt`]: 1,
-      [`${singularCollection}.status`]: 1,
+      _id: 1,
+      name: 1,
+      insuranceRequestCache: 1,
+      createdAt: 1,
+      status: 1,
     };
   }
 
   return {
-    [`${singularCollection}._id`]: 1,
-    [`${singularCollection}.name`]: 1,
-    [`${singularCollection}.userCache`]: 1,
-    [`${singularCollection}.assigneeLinks`]: 1,
-    [`${singularCollection}.createdAt`]: 1,
-    [`${singularCollection}.status`]: 1,
+    _id: 1,
+    name: 1,
+    userCache: 1,
+    assigneeLinks: 1,
+    createdAt: 1,
+    status: 1,
   };
 };
+
+const prefixObjectKeys = (obj, prefix) =>
+  Object.keys(obj).reduce((o, key) => ({ ...o, [prefix + key]: obj[key] }), {});
+
+const getCollectionFragment = ({ collection, singularCollection }) =>
+  prefixObjectKeys(
+    getRawCollectionFragment(collection),
+    `${singularCollection}.`,
+  );
 
 const getCollectionAssigneeInput = ({ collection, singularCollection }) => {
   if (collection === INSURANCES_COLLECTION) {
@@ -369,15 +340,15 @@ const addCollectionFields = ({ filters, singularCollection, collection }) => {
         },
       },
     });
+  } else {
+    addFields.push({
+      $match: {
+        [`${singularCollection}.status`]: {
+          $nin: [LOAN_STATUS.TEST, INSURANCE_REQUEST_STATUS.TEST],
+        },
+      },
+    });
   }
-
-  addFields.push({
-    $match: getCollectionCreatedAtFilters({
-      singularCollection,
-      collection,
-      ...filters,
-    }),
-  });
 
   addFields.push({
     $match: getCollectionReferralFilter({
@@ -421,98 +392,68 @@ const getStatusChangePipeline = ({ collection, ...filters }) => {
     },
     ...addCollectionFields({ filters, singularCollection, collection }),
     {
-      $group: {
-        _id: {
-          // Extract the main assignee
-          assigneeId: {
-            $reduce: {
-              input: getCollectionAssigneeInput({
-                collection,
-                singularCollection,
-              }),
-              initialValue: '',
-              in: {
-                $cond: {
-                  if: { $eq: ['$$this.isMain', true] },
-                  then: '$$this._id',
-                  else: '',
-                },
+      $addFields: {
+        mainAssigneeId: {
+          $arrayElemAt: [
+            {
+              $filter: {
+                input: getCollectionAssigneeInput({
+                  collection,
+                  singularCollection,
+                }),
+                cond: { $eq: ['$$this.isMain', true] },
               },
             },
-          },
-          prevStatus: '$metadata.details.prevStatus',
-          nextStatus: '$metadata.details.nextStatus',
+            0,
+          ],
         },
-        activities: { $push: '$$ROOT' },
-        count: { $sum: 1 },
       },
     },
+    { $addFields: { mainAssigneeId: '$mainAssigneeId._id' } },
+    { $match: { mainAssigneeId: { $exists: true } } },
     {
       $group: {
-        _id: '$_id.assigneeId',
-        statusChanges: {
-          $push: {
-            prevStatus: '$_id.prevStatus',
-            nextStatus: '$_id.nextStatus',
-            count: '$count',
-          },
+        _id: {
+          mainAssigneeId: '$mainAssigneeId',
+          nextStatus: '$metadata.details.nextStatus',
         },
-        totalStatusChangeCount: { $sum: '$count' },
-        [collection]: { $push: `$activities.${singularCollection}` },
+        count: { $sum: 1 },
+        docIds: { $push: `$${singularCollection}._id` },
       },
     },
-    // Simple array flattening, as these ids arrive in the form of an array of arrays
-    {
-      $addFields: {
-        [collection]: {
-          $reduce: {
-            input: `$${collection}`,
-            initialValue: [],
-            in: { $concatArrays: ['$$value', '$$this'] },
-          },
-        },
-      },
-    },
-    // Add this stage for consistency
-    { $sort: { '_id.assigneeId': 1 } },
+    { $sort: { '_id.mainAssigneeId': 1 } },
   ];
 };
 
-const makeCollectionStatusChangeSort = collection => (
-  { prevStatus: prevStatusA },
-  { prevStatus: prevStatusB },
-) => {
-  let statusOrder;
-
-  switch (collection) {
-    case LOANS_COLLECTION:
-      statusOrder = LOAN_STATUS_ORDER;
-      break;
-    case INSURANCE_REQUESTS_COLLECTION:
-      statusOrder = INSURANCE_REQUEST_STATUS_ORDER;
-      break;
-    case INSURANCES_COLLECTION:
-      statusOrder = INSURANCE_STATUS_ORDER;
-      break;
-    default:
-      break;
-  }
-
-  return statusOrder.indexOf(prevStatusA) - statusOrder.indexOf(prevStatusB);
-};
-
 export const collectionStatusChanges = args => {
-  const { collection } = args;
   const pipeline = getStatusChangePipeline(args);
 
   const results = ActivityService.aggregate(pipeline);
+  const combinedResults = results.reduce(
+    (arr, { count, _id: { mainAssigneeId, nextStatus }, docIds = [] }) => {
+      const currentValue = arr.find(({ _id }) => _id === mainAssigneeId);
+      const filteredArray = arr.filter(({ _id }) => _id !== mainAssigneeId);
+      return [
+        ...filteredArray,
+        {
+          ...currentValue,
+          _id: mainAssigneeId,
+          [nextStatus]: count,
+          docIds: [...(currentValue?.docIds || []), ...docIds],
+        },
+      ];
+    },
+    [],
+  );
 
-  const res = results.map(({ statusChanges, ...data }) => ({
-    ...data,
-    statusChanges: statusChanges.sort(
-      makeCollectionStatusChangeSort(collection),
-    ),
-  }));
+  const filteredUniques = combinedResults.map(obj => {
+    const uniques = uniq(obj.docIds);
+    return {
+      ...obj,
+      docIds: uniques,
+      uniques: uniques.length,
+    };
+  });
 
-  return res;
+  return filteredUniques;
 };

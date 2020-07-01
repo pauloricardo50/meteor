@@ -87,6 +87,7 @@ const TableWithModal = ({ getModalProps, modalType, hooks = [], ...rest }) => {
     return null;
   }, [rowId, rest?.data]);
 
+  console.log('modalProps:', modalProps);
   return (
     <>
       {getModal({ modalType, handleClose, open, modalProps })}

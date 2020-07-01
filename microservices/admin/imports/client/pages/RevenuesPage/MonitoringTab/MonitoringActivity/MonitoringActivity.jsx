@@ -1,30 +1,20 @@
 import React from 'react';
 
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
-import TableWithModal from 'core/components/Table/TableWithModal';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import TableWithModal from 'core/components/DataTable/Table/TableWithModal';
+import Loading from 'core/components/Loading/Loading';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import useMeteorData from 'core/hooks/useMeteorData';
 
 import MonitoringActivityContainer from './MonitoringActivityContainer';
-import {
-  getColumnOptions,
-  getRows,
-  makeGetModalProps,
-} from './monitoringActivityHelpers';
+import { collectionStatuses } from './monitoringActivityHelpers';
+import MonitoringActivityModalList from './MonitoringActivityModalList';
 
-const sharedColumnOptions = [
-  { id: 'assignee', label: 'Conseiller principal' },
-  { id: 'count', label: 'Nb. de dossiers distincts' },
-];
+const getTotal = (data, key) =>
+  data.reduce((tot, row) => tot + (row[key] || 0), 0);
 
-const MonitoringActivity = ({
-  createdAtRange,
-  data = [],
-  staticData,
-  staticDataIsLoading,
-  collection,
-}) => {
-  const hasCreatedAtRange = createdAtRange.startDate || createdAtRange.endDate;
-  const { data: admins, loading: usersLoading } = useStaticMeteorData({
+const MonitoringActivity = ({ data = [], loading, collection }) => {
+  const { data: admins, loading: usersLoading } = useMeteorData({
     query: USERS_COLLECTION,
     params: {
       $filters: { 'roles._id': ROLES.ADVISOR },
@@ -33,33 +23,60 @@ const MonitoringActivity = ({
     },
   });
 
-  const isLoading = hasCreatedAtRange
-    ? usersLoading && staticDataIsLoading
-    : usersLoading;
-
-  const rows = isLoading
-    ? []
-    : getRows({
-        data,
-        admins,
-        staticData,
-        hasCreatedAtRange,
-        collection,
-      });
+  if (usersLoading || loading) {
+    return <Loading />;
+  }
 
   return (
     <TableWithModal
-      modalType="dialog"
-      rows={rows}
-      columnOptions={[
-        ...sharedColumnOptions,
-        ...getColumnOptions({
-          hasCreatedAtRange,
-          collection,
+      data={data}
+      columns={[
+        {
+          Header: 'Conseiller principal',
+          accessor: ({ _id }) =>
+            admins.find(({ _id: adminId }) => _id === adminId)?.firstName ||
+            'Personne',
+        },
+        {
+          Header: (
+            <div className="flex-col center-align">
+              <div>Dossiers uniques</div>
+              <div>Total: {getTotal(data, 'uniques')}</div>
+            </div>
+          ),
+          accessor: 'uniques',
+        },
+        ...collectionStatuses[collection].map(status => {
+          const total = getTotal(data, status);
+          return {
+            Header: (
+              <div className="flex-col center-align">
+                <div className="mb-4">
+                  ->
+                  <StatusLabel collection={collection} status={status} />
+                </div>
+                <div>Total: {total} </div>
+              </div>
+            ),
+            accessor: status,
+          };
         }),
-      ]}
-      initialOrderBy="count"
-      getModalProps={makeGetModalProps({ collection })}
+      ].filter(x => x)}
+      getModalProps={({ _id, docIds }) => {
+        const firstName =
+          admins.find(({ _id: adminId }) => _id === adminId)?.firstName ||
+          'Personne';
+        return {
+          title: firstName,
+          children: (
+            <MonitoringActivityModalList
+              docIds={docIds}
+              collection={collection}
+            />
+          ),
+        };
+      }}
+      modalType="dialog"
     />
   );
 };

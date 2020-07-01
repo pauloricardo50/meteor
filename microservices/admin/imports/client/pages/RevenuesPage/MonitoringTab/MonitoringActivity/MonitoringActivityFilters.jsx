@@ -8,14 +8,9 @@ import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import MongoSelect from 'core/components/Select/MongoSelect';
 import T from 'core/components/Translation';
 
-// Date at which we started enforcing continuous status changes
-const minDate = moment('15/11/2019', 'DD/MM/YYYY');
-
 const MonitoringActivityFilters = ({
   activityRange,
   setActivityRange,
-  createdAtRange,
-  setCreatedAtRange,
   organisationId,
   setOrganisationId,
   acquisitionChannel,
@@ -41,45 +36,12 @@ const MonitoringActivityFilters = ({
         primary
         onClick={() => {
           setActivityRange({
-            startDate: moment()
-              .subtract(30, 'd')
-              .toDate(),
+            startDate: moment().subtract(30, 'd').toDate(),
             endDate: moment().toDate(),
-          });
-          setCreatedAtRange({
-            startDate: null,
-            endDate: null,
           });
         }}
       >
         Activité dans les 30 derniers jours
-      </Button>
-    </Box>
-    <Box title="Date de création du dossier" className="mr-8">
-      <div className="flex-col mb-8">
-        <DateRangePicker
-          range={createdAtRange}
-          onChange={setCreatedAtRange}
-          numberOfMonths={3}
-          id="createdAt"
-          enableOutsideDays={false}
-          isOutsideRange={date => date && date.isBefore(minDate)}
-        />
-      </div>
-
-      <Button
-        raised
-        primary
-        className="mr-8"
-        onClick={() => {
-          setActivityRange({ startDate: null, endDate: null });
-          setCreatedAtRange({
-            startDate: moment(minDate).toDate(),
-            endDate: moment().toDate(),
-          });
-        }}
-      >
-        Performance totale des conseillers
       </Button>
     </Box>
     <MongoSelect
@@ -106,4 +68,5 @@ const MonitoringActivityFilters = ({
     />
   </div>
 );
+
 export default MonitoringActivityFilters;

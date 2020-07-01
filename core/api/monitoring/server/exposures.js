@@ -26,8 +26,6 @@ exposeQuery({
     validateParams: {
       fromDate: Match.Maybe(Match.OneOf(null, Date)),
       toDate: Match.Maybe(Match.OneOf(null, Date)),
-      createdAtFrom: Match.Maybe(Match.OneOf(null, Date)),
-      createdAtTo: Match.Maybe(Match.OneOf(null, Date)),
       collection: String,
       organisationId: Match.Maybe(Object),
       acquisitionChannel: Match.Maybe(Object),

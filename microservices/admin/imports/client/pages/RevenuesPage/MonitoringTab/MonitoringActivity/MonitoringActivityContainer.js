@@ -4,10 +4,10 @@ import { withProps } from 'recompose';
 
 import { collectionStatusChanges } from 'core/api/monitoring/queries';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
-import { useStaticMeteorData } from 'core/hooks/useMeteorData';
+import useMeteorData from 'core/hooks/useMeteorData';
 
 export const MonitoringActivityFilterContainer = withProps(() => {
-  const { data: organisations = [], loading } = useStaticMeteorData({
+  const { data: organisations = [], loading } = useMeteorData({
     query: ORGANISATIONS_COLLECTION,
     params: {
       $filters: { referredUsersCount: { $gte: 1 } },
@@ -17,17 +17,8 @@ export const MonitoringActivityFilterContainer = withProps(() => {
   });
 
   const [activityRange, setActivityRange] = useState({
-    startDate: moment()
-      .subtract(30, 'd')
-      .toDate(),
-    endDate: moment()
-      .endOf('day')
-      .toDate(),
-  });
-
-  const [createdAtRange, setCreatedAtRange] = useState({
-    startDate: null,
-    endDate: null,
+    startDate: moment().subtract(30, 'd').toDate(),
+    endDate: moment().endOf('day').toDate(),
   });
 
   const [organisationId, setOrganisationId] = useState();
@@ -36,8 +27,6 @@ export const MonitoringActivityFilterContainer = withProps(() => {
   return {
     activityRange,
     setActivityRange,
-    createdAtRange,
-    setCreatedAtRange,
     organisationId,
     setOrganisationId,
     acquisitionChannel,
@@ -49,35 +38,25 @@ export const MonitoringActivityFilterContainer = withProps(() => {
 export default withProps(
   ({
     activityRange: { startDate: fromDate, endDate: toDate },
-    createdAtRange: { startDate, endDate },
     collection,
     organisationId,
     acquisitionChannel,
   }) => {
-    const { data } = useStaticMeteorData(
+    const { data, loading } = useMeteorData(
       {
         query: collectionStatusChanges,
         params: {
-          fromDate,
-          toDate,
-          createdAtFrom: startDate,
-          createdAtTo: endDate,
-          collection,
-          organisationId,
           acquisitionChannel,
+          collection,
+          fromDate,
+          organisationId,
+          toDate,
         },
       },
-      [
-        fromDate,
-        toDate,
-        startDate,
-        endDate,
-        collection,
-        organisationId,
-        acquisitionChannel,
-      ],
+      [acquisitionChannel, collection, fromDate, organisationId, toDate],
     );
 
-    return { data };
+    console.log('data:', data);
+    return { data, loading };
   },
 );
