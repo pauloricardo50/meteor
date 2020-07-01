@@ -10,15 +10,9 @@ import TasksTableFilters from './TasksTableFilters';
 const getUptoDate = uptoDate => {
   switch (uptoDate) {
     case 'TODAY':
-      return moment()
-        .endOf('day')
-        .toDate();
+      return moment().endOf('day').toDate();
     case 'TOMORROW':
-      return moment()
-        .endOf('day')
-        .add(1, 'days')
-        .endOf('day')
-        .toDate();
+      return moment().endOf('day').add(1, 'days').endOf('day').toDate();
 
     default:
       return null;
@@ -38,7 +32,7 @@ const getQueryFilters = ({ assignee, status, uptoDate }) => {
   return { 'assigneeLink._id': assignee, status, $or };
 };
 
-const TasksTableWithPriority = () => {
+const TasksDataTableWithPriority = () => {
   const currentUser = useContext(CurrentUserContext);
   const [assignee, setAssignee] = useState({
     $in: [currentUser._id, undefined],
@@ -78,4 +72,4 @@ const TasksTableWithPriority = () => {
   );
 };
 
-export default TasksTableWithPriority;
+export default TasksDataTableWithPriority;

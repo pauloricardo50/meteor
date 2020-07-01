@@ -1,7 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-
-import React from 'react';
-import { withProps } from 'recompose';
+import React, { useState } from 'react';
 
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
@@ -14,8 +11,11 @@ import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import useSearchParams from 'core/hooks/useSearchParams';
 
-import { taskFormLayout, schema as taskSchema } from './TaskModifier';
+import { taskFormSchema } from './taskFormHelpers';
+import { taskFormLayout } from './TaskModifier';
 
 const getCollectionLabel = collection => {
   switch (collection) {
@@ -38,53 +38,49 @@ const getCollectionLabel = collection => {
   }
 };
 
-export const CollectionTaskInserterForm = ({
-  title,
-  description,
-  label,
-  schema,
-  ...props
-}) => (
-  <div className="collection-task-inserter-form mr-8">
+const TaskAdder = ({
+  collection,
+  docId,
+  label = 'Tâche',
+  model = {},
+  schema = taskFormSchema,
+  onSubmit = values =>
+    taskInsert.run({ object: { docId, collection, ...values } }),
+  className,
+  watchSearchParams,
+  ...rest
+}) => {
+  const currentUser = useCurrentUser();
+  const initialSearchParams = useSearchParams();
+  const [searchParams, setSearchParams] = useState(initialSearchParams);
+  const openOnMount = searchParams.addTask;
+
+  const finalModel = watchSearchParams ? searchParams || model : model;
+
+  return (
     <AutoFormDialog
-      schema={schema || taskSchema.omit('status')}
-      title={title}
-      description={description}
+      schema={schema.omit('status')}
+      model={{ ...finalModel, assigneeLink: { _id: currentUser._id } }}
       buttonProps={{
+        label,
         raised: true,
         primary: true,
-        label,
         icon: <Icon type="add" />,
+        className,
       }}
-      {...props}
+      onSubmit={values => onSubmit(values).then(() => setSearchParams({}))}
+      title={<T id="TaskAdder.title" />}
+      description={
+        <T
+          id="TaskAdder.description"
+          values={{ collectionLabel: getCollectionLabel(collection) }}
+        />
+      }
+      layout={taskFormLayout}
+      openOnMount={openOnMount}
+      {...rest}
     />
-  </div>
-);
+  );
+};
 
-const CollectionTaskInserter = withProps(
-  ({ doc: { _id: docId, _collection }, model = {}, resetForm = () => {} }) => ({
-    onSubmit: values =>
-      taskInsert
-        .run({
-          object: { docId, collection: _collection, ...values },
-        })
-        .then(() => resetForm()),
-    model: {
-      ...model,
-      assigneeLink: {
-        _id: Meteor.userId(),
-      },
-    },
-    label: <T id="CollectionTaskInserter.label" />,
-    title: <T id="CollectionTaskInserter.title" />,
-    description: (
-      <T
-        id="CollectionTaskInserter.description"
-        values={{ collectionLabel: getCollectionLabel(_collection) }}
-      />
-    ),
-    layout: taskFormLayout,
-  }),
-);
-
-export default CollectionTaskInserter(CollectionTaskInserterForm);
+export default TaskAdder;

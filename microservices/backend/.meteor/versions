@@ -76,7 +76,7 @@ mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
 mongo-livedata@1.0.12
-montiapm:agent@2.39.0-beta.4
+montiapm:agent@2.39.0-beta.5
 montiapm:agent-binary-deps@2.0.0
 montiapm:profiler@1.5.0
 npm-bcrypt@0.9.3

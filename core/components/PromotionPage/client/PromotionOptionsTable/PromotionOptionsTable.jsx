@@ -8,8 +8,6 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../../api/promotionOptions/promotionOptionConstants';
 import { proPromotionOptions } from '../../../../api/promotionOptions/queries';
-import { PROMOTION_USERS_ROLES } from '../../../../api/promotions/promotionConstants';
-import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Select from '../../../Select';
 import MongoSelect from '../../../Select/MongoSelect';
 import StatusLabel from '../../../StatusLabel';
@@ -41,7 +39,6 @@ const getModalProps = promotionOption => {
 };
 
 const PromotionOptionsTable = ({ promotion }) => {
-  const currentUser = useCurrentUser();
   const {
     _id: promotionId,
     users: promotionUsers = [],
@@ -55,15 +52,7 @@ const PromotionOptionsTable = ({ promotion }) => {
       PROMOTION_OPTION_STATUS.SOLD,
     ],
   });
-  const [invitedByFilter, setInvitedByFilter] = useState(() => {
-    // Only initialise this filter for brokers
-    const userIsInPromotion = promotionUsers.find(
-      ({ _id, $metadata }) =>
-        _id === currentUser._id &&
-        $metadata.roles.includes(PROMOTION_USERS_ROLES.BROKER),
-    );
-    return userIsInPromotion ? currentUser._id : null;
-  });
+  const [invitedByFilter, setInvitedByFilter] = useState(null);
 
   const [promotionLotGroupIdFilter, setPromotionLotGroupIdFilter] = useState();
 

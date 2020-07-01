@@ -7,8 +7,7 @@ import Loading from 'core/components/Loading';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 import RevenuesTable from '../../../../components/RevenuesTable';
-import TasksTable from '../../../../components/TasksTable';
-import { taskTableFragment } from '../../../../components/TasksTable/TasksTable';
+import TasksDataTable from '../../../../components/TasksDataTable';
 
 const UnsuccessfulLoanRevenuesAndTasks = ({
   loan,
@@ -21,7 +20,7 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
     query: TASKS_COLLECTION,
     params: {
       $filters: { 'loanLink._id': loanId, status: TASK_STATUS.ACTIVE },
-      ...taskTableFragment,
+      _id: 1,
     },
   });
 
@@ -73,7 +72,10 @@ const UnsuccessfulLoanRevenuesAndTasks = ({
       {!!tasks.length && (
         <>
           <h3 className="mb-8">Tâches</h3>
-          <TasksTable tasks={tasks} relatedTo={false} />
+          <TasksDataTable
+            filters={{ 'loanLink._id': loanId, status: TASK_STATUS.ACTIVE }}
+            showRelatedTo={false}
+          />
         </>
       )}
       {!!revenues.length && (

@@ -25,10 +25,7 @@ Tasks.before.update(
         modifier.$set.completedAt = null;
       }
 
-      if (
-        newStatus === TASK_STATUS.COMPLETED ||
-        newStatus === TASK_STATUS.CANCELLED
-      ) {
+      if (newStatus === TASK_STATUS.COMPLETED) {
         NotificationService.readNotificationAll({
           filters: { 'taskLink._id': taskId },
         });
