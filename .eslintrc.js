@@ -204,6 +204,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 0,
     'react/prop-types': 0,
+    'react/jsx-filename-extension': 1,
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 0,
