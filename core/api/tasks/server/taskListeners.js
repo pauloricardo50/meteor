@@ -1,10 +1,12 @@
 import moment from 'moment';
 
+import { employeesByEmail } from '../../../arrays/epotekEmployees';
 import ServerEventService from '../../events/server/ServerEventService';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import {
   loanShareSolvency,
+  notifyInsuranceTeamForPotential,
   setMaxPropertyValueOrBorrowRatio,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
@@ -290,6 +292,23 @@ ServerEventService.addAfterMethodListener(
         docId: promotionId,
         title: `Nouveau client intéressé par ${promotionName}, depuis notre site web`,
         description: `Nom: ${name}\nEmail: ${email}\nTél: ${phoneNumber}\nDétails: ${details}`,
+      },
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  notifyInsuranceTeamForPotential,
+  ({ context, params: { loanId } }) => {
+    context.unblock();
+
+    TaskService.insert({
+      object: {
+        collection: LOANS_COLLECTION,
+        docId: loanId,
+        assigneeLink: { _id: employeesByEmail['jeanluc@e-potek.ch']._id },
+        createdBy: context.userId,
+        title: 'Dossier hypothécaire avec potentiel prévoyance',
       },
     });
   },

@@ -1,4 +1,5 @@
 import React from 'react';
+import InsurancePotential from 'imports/client/components/InsurancePotential/InsurancePotential';
 import PropTypes from 'prop-types';
 
 import Loans from 'core/api/loans';
@@ -42,6 +43,7 @@ const OverviewTab = props => {
 
   return (
     <div className="overview-tab">
+      <InsurancePotential loan={loan} hideWhenCompleted />
       <div className="admin-section card1">
         <div className="card-top">
           {status === LOAN_STATUS.UNSUCCESSFUL && (
