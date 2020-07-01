@@ -12,7 +12,7 @@
   "Forms.status.VALIDATED_BY_ADMIN": "Validé par le conseiller",
   "LoanClosingChecklist.statusDateTooltip": "Dernier changement le {date} à {time}",
   "LoanClosingChecklist.dialogTitle": "Les dernières étapes",
-  "FinancingProjectFees.inputHelperText": "Estimation pour le canton de {canton}",
+  "FinancingProjectFees.inputHelperText": "Estimation pour : {canton}",
   "PromotionReservationDeadline.yourBroker": "votre courtier",
   "PromotionLotLoansTable.loanStatus" : "Statut du dossier hypothécaire",
   "Forms.isInRoundRobin": "Round robin activé",
