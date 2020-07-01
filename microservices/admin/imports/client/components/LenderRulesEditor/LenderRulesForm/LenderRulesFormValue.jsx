@@ -42,7 +42,7 @@ const getSelectProps = variable => {
 };
 
 const LenderRulesFormValue = props => {
-  const { model, parent, onChange } = props;
+  const { model, parent, onChange, value } = props;
   const index = Number(parent.name.slice(-1));
   const { variable } = model.rules[index];
   const shouldDisplay = !!variable;
@@ -84,7 +84,7 @@ const LenderRulesFormValue = props => {
     return (
       <RadioButtons
         {...props}
-        onChange={onChange}
+        onChange={nextValue => onChange(nextValue)}
         options={[
           { id: false, label: 'Faux' },
           { id: true, label: 'Vrai' },
@@ -101,13 +101,7 @@ const LenderRulesFormValue = props => {
       {...selectProps}
       displayEmpty={false}
       placeholder
-      value={
-        selectProps.multiple
-          ? Array.isArray(props.value)
-            ? props.value
-            : []
-          : props.value
-      }
+      value={selectProps.multiple ? (Array.isArray(value) ? value : []) : value}
     />
   );
 };
