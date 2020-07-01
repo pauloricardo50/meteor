@@ -1,10 +1,10 @@
 import React from 'react';
-import InsurancePotential from 'imports/client/components/InsurancePotential/InsurancePotential';
 import PropTypes from 'prop-types';
 
 import Loans from 'core/api/loans';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import AdminNotes from 'core/components/AdminNotes';
+import Icon from 'core/components/Icon/Icon';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklistEmail/LoanChecklistEmailSender';
 import AdminLoanClosingChecklist from 'core/components/LoanClosingChecklist/AdminLoanClosingChecklist';
@@ -14,10 +14,10 @@ import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import Calculator from 'core/utils/Calculator';
 
-import Icon from '../../../../../core/components/Icon/Icon';
 import AdminTimeline from '../../../../components/AdminTimeline';
 import AssigneesManager from '../../../../components/AssigneesManager';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
+import InsurancePotential from '../../../../components/InsurancePotential/InsurancePotential';
 import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
 import LoanObject from './LoanObject';

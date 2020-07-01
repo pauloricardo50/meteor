@@ -1,7 +1,9 @@
 import React from 'react';
-import { REVENUES_COLLECTION } from 'imports/core/api/revenues/revenueConstants';
 
-import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
+import {
+  REVENUES_COLLECTION,
+  REVENUE_STATUS,
+} from 'core/api/revenues/revenueConstants';
 import { TASKS_COLLECTION, TASK_STATUS } from 'core/api/tasks/taskConstants';
 import Loading from 'core/components/Loading';
 import { useReactiveMeteorData } from 'core/hooks/useMeteorData';

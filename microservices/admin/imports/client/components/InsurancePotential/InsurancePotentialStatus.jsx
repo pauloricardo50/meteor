@@ -1,6 +1,6 @@
 import React from 'react';
-import { INSURANCE_POTENTIAL } from 'imports/core/api/loans/loanConstants';
 
+import { INSURANCE_POTENTIAL } from 'core/api/loans/loanConstants';
 import colors from 'core/config/colors';
 
 const InsurancePotentialStatus = ({ insurancePotential }) => {
