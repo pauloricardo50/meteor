@@ -7,6 +7,7 @@ import TaskSnoozer from '../../../../components/TasksDataTable/TaskSnoozer';
 
 const InsuranceRequestBoardCardTask = ({ title = 'Tâche sans titre', _id }) => {
   const [showButtons, setShowButtons] = useState(false);
+
   return (
     <span
       onMouseEnter={() => setShowButtons(true)}
@@ -26,7 +27,10 @@ const InsuranceRequestBoardCardTask = ({ title = 'Tâche sans titre', _id }) => 
             tooltip="Compléter tâche"
             className="task-complete-button"
           />
-          <TaskSnoozer taskId={_id} className="task-cancel-button" />
+          <TaskSnoozer
+            taskId={_id}
+            buttonProps={{ className: 'task-snooze-button', size: 'tiny' }}
+          />
         </span>
       )}
     </span>

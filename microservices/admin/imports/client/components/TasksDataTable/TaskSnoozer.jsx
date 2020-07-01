@@ -3,13 +3,13 @@ import React from 'react';
 import { taskSnooze } from 'core/api/tasks/methodDefinitions';
 import DropdownMenu from 'core/components/DropdownMenu';
 
-const TaskSnoozer = ({ taskId, className }) => (
+const TaskSnoozer = ({ taskId, buttonProps }) => (
   <DropdownMenu
     buttonProps={{
       type: 'snooze',
       size: 'small',
-      className,
       tooltip: 'Snoozer',
+      ...buttonProps,
     }}
     options={[
       {

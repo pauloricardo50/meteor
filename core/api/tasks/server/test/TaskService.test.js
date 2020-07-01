@@ -133,8 +133,8 @@ describe('TaskService', () => {
     });
 
     it('sets the date to monday if done on a friday', () => {
-      const someSaturday = moment('2020-06-26');
-      clock = sinon.useFakeTimers(someSaturday.toDate().getTime());
+      const someFriday = moment('2020-06-26');
+      clock = sinon.useFakeTimers(someFriday.toDate().getTime());
 
       generator({ tasks: { _id: 'taskId' } });
       TaskService.snooze({ taskId: 'taskId', workingDays: 1 });

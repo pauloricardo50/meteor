@@ -19,7 +19,7 @@ const TasksTableActions = ({ taskId, priority }) => (
       tooltip="Compléter tâche"
       className="success mr-4"
     />
-    <TaskSnoozer taskId={taskId} className="mr-4" />
+    <TaskSnoozer taskId={taskId} buttonProps={{ className: 'mr-4' }} />
     <IconButton
       onClick={e => {
         e.stopPropagation();

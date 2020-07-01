@@ -6,9 +6,9 @@ import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { taskInsert } from 'core/api/tasks/methodDefinitions';
 
 import { getActivitySchema } from '../../../../components/AdminTimeline/AdminActivityAdder';
-import { schema } from '../../../../components/TasksTable/TaskModifier';
+import { taskFormSchema } from '../../../../components/TaskForm/taskFormHelpers';
 
-const taskSchema = schema.omit('assigneeLink', 'status');
+const taskSchema = taskFormSchema.omit('assigneeLink', 'status');
 
 export default compose(
   withProps(({ loanId }) => ({
