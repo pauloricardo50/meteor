@@ -37,7 +37,7 @@ force-ssl@1.1.0                      # Automatically route users to https
 edgee:slingshot
 epotek:google-maps
 tmeasday:acceptance-test-driver
-montiapm:agent
+montiapm:agent@2.39.0-beta.5
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import@0.5.2
