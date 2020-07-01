@@ -97,6 +97,88 @@ describe('TaskService', () => {
     });
   });
 
+  describe('taskSnooze', () => {
+    let clock;
+
+    beforeEach(() => {
+      const someMonday = moment('2020-06-29');
+      clock = sinon.useFakeTimers(someMonday.toDate().getTime());
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('sets a new dueAt if there is none yet', () => {
+      generator({ tasks: { _id: 'taskId' } });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(moment(dueAt).day()).to.equal(2); // Sunday is 0
+      expect(dueAt.getHours()).to.equal(8);
+      expect(dueAt.getMinutes()).to.equal(0);
+    });
+
+    it('sets the date to monday if done on a saturday', () => {
+      const someSaturday = moment('2020-06-27');
+      clock = sinon.useFakeTimers(someSaturday.toDate().getTime());
+
+      generator({ tasks: { _id: 'taskId' } });
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(moment(dueAt).day()).to.equal(1);
+      expect(dueAt.getDate()).to.equal(29);
+    });
+
+    it('sets the date to monday if done on a friday', () => {
+      const someFriday = moment('2020-06-26');
+      clock = sinon.useFakeTimers(someFriday.toDate().getTime());
+
+      generator({ tasks: { _id: 'taskId' } });
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(moment(dueAt).day()).to.equal(1);
+      expect(dueAt.getDate()).to.equal(29);
+    });
+
+    it('adds multiple days to the date', () => {
+      generator({ tasks: { _id: 'taskId' } });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 4 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(dueAt.getMonth()).to.equal(6); // January is 0
+      expect(dueAt.getDate()).to.equal(3);
+    });
+
+    it('adds days to the dueAt if it is in the future', () => {
+      generator({
+        tasks: { _id: 'taskId', dueAt: moment('2020-07-02').toDate() },
+      });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(dueAt.getMonth()).to.equal(6);
+      expect(dueAt.getDate()).to.equal(3);
+    });
+
+    it('ignores dueAt if in the past', () => {
+      generator({
+        tasks: { _id: 'taskId', dueAt: moment('2020-06-25').toDate() },
+      });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(dueAt.getMonth()).to.equal(5);
+      expect(dueAt.getDate()).to.equal(30);
+    });
+  });
+
   describe('generatePromotionStepReminders', () => {
     it('generates the tasks', async () => {
       const in10Days = moment().add(10, 'days').startOf('day').toDate();

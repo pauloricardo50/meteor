@@ -8,7 +8,7 @@ import useSearchParams from 'core/hooks/useSearchParams';
 
 import AdminSearch from '../../components/AdminSearch';
 import NotificationsManager from '../../components/NotificationsManager';
-import TaskAdder from '../../components/TasksTable/TaskAdder';
+import TaskAdder from '../../components/TaskForm/TaskAdder';
 
 const AdminTopNav = ({
   setOpenSearch,

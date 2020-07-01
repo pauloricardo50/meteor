@@ -1336,6 +1336,8 @@ describe('UserService', function () {
 
       expect(description).to.include('Ma man');
       expect(assigneeId).to.equal('adminId');
+
+      await checkEmails(2);
     });
 
     it('should not create the user if the promotion is not ready', () => {

@@ -965,7 +965,7 @@ export const baseTask = () => ({
   updatedAt: 1,
 });
 
-export const task = () => ({
+const task = () => ({
   ...baseTask(),
   assigneeLink: 1,
   assignee: simpleUser(),
