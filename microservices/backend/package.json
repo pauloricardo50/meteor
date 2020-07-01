@@ -106,9 +106,6 @@
     "mainModule": {
       "server": "server/main.js",
       "client": "client/main.js"
-    },
-    "testModule": {
-      "server": "/imports/core/startup/tests/server.js"
     }
   }
 }
