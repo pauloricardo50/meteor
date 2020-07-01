@@ -36,6 +36,7 @@ import './35';
 import './36';
 import './37';
 import './38';
+import './39';
 
 import { Migrations } from 'meteor/percolate:migrations';
 
