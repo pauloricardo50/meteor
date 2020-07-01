@@ -1,14 +1,11 @@
 import React, { useMemo } from 'react';
-import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { taskInsert } from 'core/api/tasks/methodDefinitions';
 import Box from 'core/components/Box';
-import T from 'core/components/Translation';
-import useCurrentUser from 'core/hooks/useCurrentUser';
 
-import { CollectionTaskInserterForm } from '../../../components/TasksTable/CollectionTaskInserter';
-import { schema as taskSchema } from '../../../components/TasksTable/TaskModifier';
+import TaskAdder from '../../../components/TaskForm/TaskAdder';
+import { taskFormSchema } from '../../../components/TaskForm/taskFormHelpers';
 
 const getSchema = ({ insurances = [], _id: insuranceRequestId, name }) =>
   new SimpleSchema({
@@ -35,38 +32,26 @@ const getSchema = ({ insurances = [], _id: insuranceRequestId, name }) =>
         checkboxes: true,
       },
     },
-  }).extend(taskSchema.omit('status'));
+  }).extend(taskFormSchema.omit('status'));
 
-export default withProps(
-  ({ doc: insuranceRequest, model = {}, resetForm = () => {} }) => {
-    const currentUser = useCurrentUser();
-    const schema = useMemo(() => getSchema(insuranceRequest), [
-      insuranceRequest,
-    ]);
+const InsuranceRequestTaskInserter = ({ insuranceRequest, ...rest }) => {
+  const schema = useMemo(() => getSchema(insuranceRequest), [insuranceRequest]);
 
-    return {
-      schema,
-      onSubmit: ({ linkId, ...values }) =>
-        taskInsert
-          .run({
-            object: {
-              insuranceRequestLink: { _id: insuranceRequest._id },
-              ...(linkId !== insuranceRequest._id
-                ? { insuranceLink: { _id: linkId } }
-                : {}),
-              ...values,
-            },
-          })
-          .then(() => resetForm()),
-      model: {
-        ...model,
-        assigneeLink: {
-          _id: currentUser?._id,
-        },
-      },
-      label: <T id="CollectionTaskInserter.label" />,
-      title: <T id="CollectionTaskInserter.title" />,
-      layout: [
+  return (
+    <TaskAdder
+      schema={schema}
+      onSubmit={({ linkId, ...values }) =>
+        taskInsert.run({
+          object: {
+            insuranceRequestLink: { _id: insuranceRequest._id },
+            ...(linkId !== insuranceRequest._id
+              ? { insuranceLink: { _id: linkId } }
+              : {}),
+            ...values,
+          },
+        })
+      }
+      layout={[
         {
           Component: Box,
           className: 'mb-32',
@@ -86,7 +71,10 @@ export default withProps(
             { className: 'grid-2', fields: ['dueAt', 'dueAtTime'] },
           ],
         },
-      ],
-    };
-  },
-)(CollectionTaskInserterForm);
+      ]}
+      {...rest}
+    />
+  );
+};
+
+export default InsuranceRequestTaskInserter;

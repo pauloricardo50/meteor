@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { taskUpdate } from 'core/api/tasks/methodDefinitions';
+import { taskRemove, taskUpdate } from 'core/api/tasks/methodDefinitions';
 
 import {
   taskFormLabels,
@@ -28,6 +28,7 @@ export const getTasksTableModalProps = task => {
     onSubmit: values => taskUpdate.run({ taskId: task?._id, object: values }),
     title: 'Modifier tâche',
     layout: taskFormLayout,
+    onDelete: () => taskRemove.run({ taskId: task?._id }),
   };
 };
 

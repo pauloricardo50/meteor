@@ -253,15 +253,16 @@ $button-height: 30px;
   }
 
   .task-complete-button {
+    flex-shrink: 0;
     margin-right: 4px;
 
     color: white;
     background-color: $success;
   }
 
-  .task-cancel-button {
+  .task-snooze-button {
     color: white;
-    background-color: $error;
+    background-color: $warning;
   }
 }
 

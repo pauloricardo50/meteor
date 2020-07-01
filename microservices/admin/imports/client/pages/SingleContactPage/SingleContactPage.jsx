@@ -3,7 +3,7 @@ import React from 'react';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import CollectionTasksDataTable from '../../components/TasksDataTable/CollectionTasksDataTable';
 import OffersTable from '../SingleOrganisationPage/OffersTable/OffersTable';
 import SingleContactPageContainer from './SingleContactPageContainer';
 import SingleContactPageHeader from './SingleContactPageHeader';
@@ -31,7 +31,11 @@ const SingleContactPage = ({ contact }) => (
   <div className="card1 card-top">
     <SingleContactPageHeader contact={contact} />
     <SingleContactPageInfos contact={contact} />
-    <CollectionTasksTable doc={contact} withTaskInsert withQueryTaskInsert />
+    <CollectionTasksDataTable
+      docId={contact._id}
+      collection={contact._collection}
+      className="single-loan-page-tasks card1 card-top"
+    />
     {contact.offers && !!contact.offers.length && (
       <Tabs tabs={tabs({ offers: contact.offers })} />
     )}

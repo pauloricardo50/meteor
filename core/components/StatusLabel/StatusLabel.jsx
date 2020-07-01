@@ -93,7 +93,6 @@ export const getStatuses = collection => {
       return {
         [TASK_STATUS.ACTIVE]: colors.primary,
         [TASK_STATUS.COMPLETED]: colors.success,
-        [TASK_STATUS.CANCELLED]: colors.error,
       };
 
     case LENDERS_COLLECTION:
