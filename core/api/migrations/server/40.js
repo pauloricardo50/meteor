@@ -4,10 +4,10 @@ import { INSURANCE_POTENTIAL } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 
 export const up = () => {
-  const loans = LoanService.fetch(
-    { 'insuranceRequestLinks._id': { $exists: true } },
-    { _id: 1 },
-  );
+  const loans = LoanService.fetch({
+    $filters: { 'insuranceRequestLinks._id': { $exists: true } },
+    _id: 1,
+  });
 
   return Promise.all(
     loans.map(({ _id }) =>
@@ -20,10 +20,10 @@ export const up = () => {
 };
 
 export const down = () => {
-  const loans = LoanService.fetch(
-    { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
-    { _id: 1 },
-  );
+  const loans = LoanService.fetch({
+    $filters: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+    _id: 1,
+  });
 
   return Promise.all(
     loans.map(({ _id }) =>
@@ -36,7 +36,7 @@ export const down = () => {
 };
 
 Migrations.add({
-  version: 39,
+  version: 40,
   name:
     'Set insurancePotential to VALIDATED on loans with linkes insurance requests',
   up,

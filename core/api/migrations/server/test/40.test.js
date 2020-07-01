@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import { resetDatabase } from '../../../../utils/testHelpers';
 import { INSURANCE_POTENTIAL } from '../../../loans/loanConstants';
 import LoanService from '../../../loans/server/LoanService';
-import { down, up } from '../39';
+import { down, up } from '../40';
 
 /* eslint-env-mocha */
 
-describe('Migration 39', () => {
+describe('Migration 40', () => {
   beforeEach(() => {
     resetDatabase();
   });
