@@ -4,7 +4,6 @@ import { Mongo } from 'meteor/mongo';
 import moment from 'moment';
 
 import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
-import { task as taskFragment } from '../../fragments';
 import { getUserNameAndOrganisation } from '../../helpers';
 import CollectionService from '../../helpers/server/CollectionService';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../insuranceRequests/insuranceRequestConstants';
@@ -40,7 +39,7 @@ class TaskService extends CollectionService {
       );
     }
 
-    const taskId = Tasks.insert({
+    const taskId = this.insert({
       dueAt: this.getDueDate({ dueAt, dueAtTime }),
       ...rest,
     });
@@ -74,19 +73,11 @@ class TaskService extends CollectionService {
   }
 
   remove({ taskId }) {
-    return Tasks.remove(taskId);
+    return this.remove(taskId);
   }
 
   update({ taskId, object }) {
-    return Tasks.update(taskId, { $set: object });
-  }
-
-  getTaskById(taskId) {
-    return this.get(taskId, taskFragment());
-  }
-
-  getTasksForDoc(docId) {
-    return Tasks.find({ docId }).fetch();
+    return this.baseUpdate(taskId, { $set: object });
   }
 
   getDueDate({ dueAt, dueAtTime }) {
