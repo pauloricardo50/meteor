@@ -34,7 +34,7 @@ export class RateLimiter {
     const isTest = Meteor.isAppTest;
 
     if (isTest) {
-      return { limit, timeRange };
+      return { limit: defaultDevLimit, timeRange };
     }
 
     if (isDev) {
