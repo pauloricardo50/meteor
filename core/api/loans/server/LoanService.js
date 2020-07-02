@@ -1257,6 +1257,10 @@ class LoanService extends CollectionService {
       });
     });
   }
+
+  updateInsurancePotential({ loanId, insurancePotential }) {
+    return this._update({ id: loanId, object: { insurancePotential } });
+  }
 }
 
 export default new LoanService({});

@@ -5,7 +5,13 @@ import Icon from 'core/components/Icon';
 
 import InsuranceRequestAdderContainer from './InsuranceRequestAdderContainer';
 
-const InsuranceRequestAdder = ({ schema, model, onSubmit, loading }) => {
+const InsuranceRequestAdder = ({
+  schema,
+  model,
+  onSubmit,
+  loading,
+  buttonProps = {},
+}) => {
   if (loading) {
     return null;
   }
@@ -21,6 +27,7 @@ const InsuranceRequestAdder = ({ schema, model, onSubmit, loading }) => {
         primary: true,
         icon: <Icon type="add" />,
         className: 'ml-8',
+        ...buttonProps,
       }}
     />
   );

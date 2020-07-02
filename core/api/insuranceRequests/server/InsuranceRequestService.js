@@ -14,6 +14,7 @@ import {
 import CollectionService from '../../helpers/server/CollectionService';
 import { INSURANCE_STATUS } from '../../insurances/insuranceConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
+import { INSURANCE_POTENTIAL } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
 import UserService from '../../users/server/UserService';
@@ -55,6 +56,10 @@ class InsuranceRequestService extends CollectionService {
 
     if (loan) {
       this.linkLoan({ insuranceRequestId, loanId });
+      LoanService._update({
+        id: loanId,
+        object: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+      });
       const { user: { _id: loanUserId } = {} } = loan;
       if (loanUserId) {
         this.addLink({
@@ -74,7 +79,7 @@ class InsuranceRequestService extends CollectionService {
     }
 
     if (borrowerIds?.length) {
-      borrowerIds.forEach((borrowerId) =>
+      borrowerIds.forEach(borrowerId =>
         this.linkBorrower({ insuranceRequestId, borrowerId }),
       );
     }
@@ -174,7 +179,7 @@ class InsuranceRequestService extends CollectionService {
     }
 
     const orderedStatuses = INSURANCE_REQUEST_STATUS_ORDER.filter(
-      (s) =>
+      s =>
         ![
           INSURANCE_REQUEST_STATUS.PENDING,
           INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
@@ -308,6 +313,10 @@ class InsuranceRequestService extends CollectionService {
       linkName: 'loan',
       linkId: loanId,
     });
+    LoanService._update({
+      id: loanId,
+      object: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+    });
     this.linkAllRevenues({ loanId, insuranceRequestId });
   }
 
@@ -323,6 +332,11 @@ class InsuranceRequestService extends CollectionService {
     });
 
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
+    LoanService._update({
+      id: loanId,
+      object: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+    });
+
     this.linkAllRevenues({ loanId, insuranceRequestId });
 
     return loanId;
@@ -355,6 +369,12 @@ class InsuranceRequestService extends CollectionService {
         linkId: loan._id,
       });
 
+      LoanService._update({
+        id: loan._id,
+        object: { insurancePotential: true },
+        operator: '$unset',
+      });
+
       revenues.forEach(({ _id: revenueId }) => {
         LoanService.removeLink({
           id: loan._id,
@@ -366,10 +386,14 @@ class InsuranceRequestService extends CollectionService {
   }
 
   remove({ insuranceRequestId }) {
-    const { insurances = [], revenues = [] } = this.get(insuranceRequestId, {
-      insurances: { _id: 1, revenues: { status: 1 } },
-      revenues: { status: 1 },
-    });
+    const { insurances = [], revenues = [], loan } = this.get(
+      insuranceRequestId,
+      {
+        insurances: { _id: 1, revenues: { status: 1 } },
+        revenues: { status: 1 },
+        loan: { _id: 1 },
+      },
+    );
 
     if (
       insurances
@@ -390,6 +414,14 @@ class InsuranceRequestService extends CollectionService {
     insurances.forEach(({ _id: insuranceId }) =>
       InsuranceService.remove({ insuranceId }),
     );
+
+    if (loan) {
+      LoanService._update({
+        id: loan._id,
+        object: { insurancePotential: true },
+        operator: '$unset',
+      });
+    }
 
     return super.remove(insuranceRequestId);
   }
