@@ -39,7 +39,7 @@ class TaskService extends CollectionService {
       );
     }
 
-    const taskId = this.insert({
+    const taskId = super.insert({
       dueAt: this.getDueDate({ dueAt, dueAtTime }),
       ...rest,
     });
@@ -73,7 +73,7 @@ class TaskService extends CollectionService {
   }
 
   remove({ taskId }) {
-    return this.remove(taskId);
+    return super.remove(taskId);
   }
 
   update({ taskId, object }) {
