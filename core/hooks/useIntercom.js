@@ -9,7 +9,6 @@ import {
   getIntercomSettings,
   updateIntercomVisitorTrackingId,
 } from '../api/intercom/methodDefinitions';
-import useImpersonatedSession from '../useImpersonatedSession';
 import { parseCookies } from '../utils/cookiesHelpers';
 import useCurrentUser from './useCurrentUser';
 import usePrevious from './usePrevious';
