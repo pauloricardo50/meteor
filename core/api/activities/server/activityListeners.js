@@ -535,15 +535,16 @@ ServerEventService.addAfterMethodListener(
     const { userId } = context;
 
     let data;
-    if (insurancePotential === INSURANCE_POTENTIAL.INSUFFICIENT) {
+    if (insurancePotential === INSURANCE_POTENTIAL.NONE) {
       data = {
-        event: ACTIVITY_EVENT_METADATA.LOAN_INSUFFICIENT_INSURANCE_POTENTIAL,
+        event: ACTIVITY_EVENT_METADATA.LOAN_NO_INSURANCE_POTENTIAL,
         title: 'Potentiel prévoyance insuffisant',
       };
     } else if (insurancePotential === INSURANCE_POTENTIAL.VALIDATED) {
       data = {
         event: ACTIVITY_EVENT_METADATA.LOAN_VALIDATED_INSURANCE_POTENTIAL,
-        title: 'Potentiel prévoyance validé, dossier assurance créé',
+        title: 'Potentiel prévoyance validé',
+        description: 'Dossier assurance créé',
       };
     }
 

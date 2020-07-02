@@ -14,13 +14,14 @@ const InsurancePotential = ({ loan, hideWhenCompleted = false }) => {
     borrowers,
   });
 
-  if (
-    ([INSURANCE_POTENTIAL.VALIDATED, INSURANCE_POTENTIAL.INSUFFICIENT].includes(
-      insurancePotential,
-    ) ||
-      insuranceRequests?.length) &&
-    hideWhenCompleted
-  ) {
+  const hasAlreadyBeenChecked = [
+    INSURANCE_POTENTIAL.VALIDATED,
+    INSURANCE_POTENTIAL.NONE,
+  ].includes(insurancePotential);
+
+  const hasInsuranceRequest = !!insuranceRequests?.length;
+
+  if ((hasAlreadyBeenChecked || hasInsuranceRequest) && hideWhenCompleted) {
     return null;
   }
 
@@ -36,7 +37,7 @@ const InsurancePotential = ({ loan, hideWhenCompleted = false }) => {
 
   if (!insurancePotential) {
     border = `1px solid ${colors.warning}`;
-  } else if (insurancePotential === INSURANCE_POTENTIAL.TRANSMITTED) {
+  } else if (insurancePotential === INSURANCE_POTENTIAL.NOTIFIED) {
     border = `1px solid ${colors.primary}`;
   }
 

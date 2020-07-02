@@ -308,7 +308,7 @@ ServerEventService.addAfterMethodListener(
         docId: loanId,
         assigneeLink: { _id: employeesByEmail['jeanluc@e-potek.ch']._id },
         createdBy: context.userId,
-        title: 'Dossier hypothécaire avec potentiel prévoyance',
+        title: 'Valider le potentiel prévoyance identifié sur ce dossier',
       },
     });
   },

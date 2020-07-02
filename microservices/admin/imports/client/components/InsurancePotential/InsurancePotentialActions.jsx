@@ -17,7 +17,7 @@ const InsurancePotentialActions = ({ loan }) => {
   const history = useHistory();
 
   if (
-    [INSURANCE_POTENTIAL.INSUFFICIENT, INSURANCE_POTENTIAL.VALIDATED].includes(
+    [INSURANCE_POTENTIAL.NONE, INSURANCE_POTENTIAL.VALIDATED].includes(
       insurancePotential,
     )
   ) {
@@ -31,10 +31,10 @@ const InsurancePotentialActions = ({ loan }) => {
           method={() => notifyInsuranceTeamForPotential.run({ loanId })}
           buttonProps={{ primary: true, raised: true }}
           label="Valider et notifier la team prévoyance"
-          description="Une tâche va être créée dans la team prévoyance"
+          description="Une tâche va être créée pour la team prévoyance"
         />
       )}
-      {insurancePotential === INSURANCE_POTENTIAL.TRANSMITTED && (
+      {insurancePotential === INSURANCE_POTENTIAL.NOTIFIED && (
         <InsuranceRequestAdder
           loan={loan}
           user={user}
@@ -55,18 +55,18 @@ const InsurancePotentialActions = ({ loan }) => {
           }
         />
       )}
-      {[undefined, INSURANCE_POTENTIAL.TRANSMITTED].includes(
+      {[undefined, INSURANCE_POTENTIAL.NOTIFIED].includes(
         insurancePotential,
       ) && (
         <ConfirmMethod
           method={() =>
             updateInsurancePotential.run({
               loanId,
-              insurancePotential: INSURANCE_POTENTIAL.INSUFFICIENT,
+              insurancePotential: INSURANCE_POTENTIAL.NONE,
             })
           }
           buttonProps={{ error: true, outlined: true }}
-          label="Potentiel insuffisant"
+          label="Pas de potentiel"
         />
       )}
     </div>

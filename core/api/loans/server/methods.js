@@ -357,7 +357,7 @@ notifyInsuranceTeamForPotential.setHandler(({ userId }, { loanId }) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.updateInsurancePotential({
     loanId,
-    insurancePotential: INSURANCE_POTENTIAL.TRANSMITTED,
+    insurancePotential: INSURANCE_POTENTIAL.NOTIFIED,
   });
 });
 
