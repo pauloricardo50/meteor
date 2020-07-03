@@ -65,7 +65,8 @@ const loanFragment = merge({}, calculatorLoan(), {
     },
     organisation: { logo: 1 },
   },
-  userCache: 1,
+  maxPropertyValue: 1,
+  maxPropertyValueExists: 1,
   name: 1,
   promotionOptions: {
     name: 1,
@@ -83,9 +84,8 @@ const loanFragment = merge({}, calculatorLoan(), {
   shareSolvency: 1,
   showClosingChecklists: 1,
   step: 1,
+  userCache: 1,
   userFormsEnabled: 1,
-  maxPropertyValue: 1,
-  maxPropertyValueExists: 1,
 });
 
 const withUserLoan = withSmartQuery({
