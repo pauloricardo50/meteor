@@ -364,7 +364,7 @@ export class IntercomService {
         referringUserId: user?.referredByUser?._id,
         referringUserName: user?.referredByUser?.name,
         referringOrganisationId: user?.referredByOrganisation?._id,
-        referringByOrganisationName: user?.referredByOrganisation?.name,
+        referringOrganisationName: user?.referredByOrganisation?.name,
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
         lastPageTitle: lastPageEvent?.metadata?.title,

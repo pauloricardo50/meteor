@@ -14,5 +14,5 @@ if (Meteor.isAppTest) {
 }
 
 Accounts.onLogin(({ type }) => {
-  analyticsLogin.run({ type });
+  analyticsLogin.run({ loginType: type });
 });

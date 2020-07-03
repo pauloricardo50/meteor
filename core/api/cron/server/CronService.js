@@ -21,14 +21,7 @@ export const TestCronitor = {
 class CronService {
   init() {
     SyncedCron.config({
-      logger: ({ level, message, tag }) => {
-        if (Meteor.isProduction) {
-          console.log('---------------------- CRON LOG ----------------------');
-          console.log('Level', level);
-          console.log('Message', message);
-          console.log('Tag', tag);
-        }
-      },
+      logger: () => {},
     });
 
     Meteor.startup(() => {

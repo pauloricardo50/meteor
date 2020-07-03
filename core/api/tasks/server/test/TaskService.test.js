@@ -121,6 +121,7 @@ describe('TaskService', () => {
     });
 
     it('sets the date to monday if done on a saturday', () => {
+      clock.restore();
       const someSaturday = moment('2020-06-27');
       clock = sinon.useFakeTimers(someSaturday.toDate().getTime());
 
@@ -133,6 +134,7 @@ describe('TaskService', () => {
     });
 
     it('sets the date to monday if done on a friday', () => {
+      clock.restore();
       const someFriday = moment('2020-06-26');
       clock = sinon.useFakeTimers(someFriday.toDate().getTime());
 
