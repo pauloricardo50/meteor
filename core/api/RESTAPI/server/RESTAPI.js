@@ -121,7 +121,7 @@ export default class RESTAPI {
     const stringified = JSON.stringify(result || '');
 
     // LOGS
-    logRequest({ req, result: stringified });
+    logRequest({ req, result: stringified, simple: true });
 
     trackRequest({ req, result: stringified });
 
