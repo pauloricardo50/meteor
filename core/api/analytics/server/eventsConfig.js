@@ -20,7 +20,7 @@ export const EVENTS_CONFIG = {
   [EVENTS.USER_LOGGED_IN]: {
     name: 'User Logged in',
     properties: [
-      'type',
+      'loginType',
       { name: 'userName', optional: true },
       { name: 'userEmail', optional: true },
       { name: 'referringUserId', optional: true },
