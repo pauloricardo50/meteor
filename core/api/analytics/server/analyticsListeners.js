@@ -311,7 +311,12 @@ addAnalyticsListener({
       name: loanName,
       purchaseType,
     } = loan;
-    const { canton, main = {}, second = {}, type } = maxPropertyValue;
+    const {
+      canton,
+      main = {},
+      second = {},
+      type: interfaceType,
+    } = maxPropertyValue;
     const {
       min: {
         borrowRatio: mainMinBorrowRatio,
@@ -367,7 +372,7 @@ addAnalyticsListener({
       loanId,
       loanName,
       canton,
-      type,
+      interfaceType,
       anonymous,
       purchaseType,
       proPropertyValue: property.value,
