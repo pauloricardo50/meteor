@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Loans from 'core/api/loans';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { PDF_TYPES } from 'core/api/pdf/pdfConstants';
 import AdminNotes from 'core/components/AdminNotes';
 import Icon from 'core/components/Icon/Icon';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
@@ -18,6 +19,7 @@ import AdminTimeline from '../../../../components/AdminTimeline';
 import AssigneesManager from '../../../../components/AssigneesManager';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import InsurancePotential from '../../../../components/InsurancePotential/InsurancePotential';
+import PdfDisplayer from '../../../../components/PdfDisplayer/PdfDisplayer';
 import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
 import LoanObject from './LoanObject';
@@ -36,6 +38,7 @@ const OverviewTab = props => {
     loan,
     currentUser: { roles },
   } = props;
+  console.log('loan:', loan);
   const { borrowers, _id: loanId, frontTagId, status } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,

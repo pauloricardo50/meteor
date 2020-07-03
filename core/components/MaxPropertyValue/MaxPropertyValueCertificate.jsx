@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useMemo } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import fileSaver from 'file-saver';
@@ -81,7 +83,7 @@ const MaxPropertyValueCertificate = ({ loan }) => {
   const { residenceType, borrowers } = loan;
   const has2Borrowers = borrowers?.length > 1;
   const schema = useMemo(() => getSchema(has2Borrowers), [has2Borrowers]);
-  const disabled = !currentUser?._id;
+  const disabled = !currentUser?._id && Meteor.microservice !== 'admin';
 
   return (
     <MuiThemeProvider theme={createTheme()}>

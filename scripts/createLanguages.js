@@ -73,6 +73,7 @@ const config = {
         'roles',
         'Search',
         'SearchResults',
+        'SimpleFinancingCertificate',
         'StatusIconTooltip',
         'steps',
         'Table',

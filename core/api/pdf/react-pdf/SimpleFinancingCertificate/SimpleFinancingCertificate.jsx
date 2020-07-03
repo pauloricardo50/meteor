@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import {
   Document,
@@ -17,7 +15,9 @@ import { setupMoment } from '../../../../utils/localization/localizationHelpers'
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import Text from '../Text';
 
-const assetUrl = 'https://app.e-potek.ch';
+// Use fixed url once the new font files are deployed
+const assetUrl = 'http://localhost:5000';
+// const assetUrl = 'https://app.e-potek.ch';
 
 Font.register({
   family: 'Manrope-extralight',
@@ -111,10 +111,7 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
           <T id="SimpleFinancingCertificate.loanName" values={{ name }} />
         </Text>
 
-        <Image
-          src={`${Meteor.settings.public.subdomains.app}/img/epotek-logo.png`}
-          style={styles.logo}
-        />
+        <Image src={`${assetUrl}/img/epotek-logo.png`} style={styles.logo} />
 
         <Text size={24} style={{ alignSelf: 'center', marginBottom: 8 }}>
           <T id="SimpleFinancingCertificate.title" />
