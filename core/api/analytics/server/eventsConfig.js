@@ -148,7 +148,7 @@ export const EVENTS_CONFIG = {
       'type',
       'purchaseType',
       { name: 'anonymous', optional: true },
-      { name: 'proProperty', optional: true },
+      { name: 'proPropertyId', optional: true },
       { name: 'proPropertyValue', optional: true },
       { name: 'proPropertyAddress', optional: true },
       { name: 'mainMinBorrowRatio', optional: true },

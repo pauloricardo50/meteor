@@ -371,7 +371,7 @@ addAnalyticsListener({
       anonymous,
       purchaseType,
       proPropertyValue: property.value,
-      proProperty: property._id,
+      proPropertyId: property._id,
       proPropertyAddress: property.address,
       mainMinBorrowRatio,
       mainMaxBorrowRatio,
