@@ -1,19 +1,13 @@
 import React from 'react';
-import {
-  Document,
-  Font,
-  Image,
-  Page,
-  StyleSheet,
-  View,
-} from '@react-pdf/renderer';
-import moment from 'moment';
+import { Document, Font, Image, Page, StyleSheet } from '@react-pdf/renderer';
 
-import TDefault, { Money } from '../../../../components/Translation';
-import Calculator from '../../../../utils/Calculator';
-import { setupMoment } from '../../../../utils/localization/localizationHelpers';
+import { Money } from '../../../../components/Translation';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
+import T from '../PdfTranslation';
 import Text from '../Text';
+import SimpleFinancingCertificateDetails from './SimpleFinancingCertificateDetails';
+import SimpleFinancingCertificateFooter from './SimpleFinancingCertificateFooter';
+import SimpleFinancingCertificateHeader from './SimpleFinancingCertificateHeader';
 
 // Use fixed url once the new font files are deployed
 const assetUrl = 'http://localhost:5000';
@@ -38,44 +32,23 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignItems: 'stretch',
   },
-  headerLeft: {
-    position: 'absolute',
-    top: '15mm',
-    left: '25mm',
-  },
-  headerRight: {
-    position: 'absolute',
-    top: '15mm',
-    right: '25mm',
-  },
   logo: {
     width: 120,
     height: 120,
     alignSelf: 'center',
     marginBottom: 16,
   },
-  footer: {
-    position: 'absolute',
-    flexDirection: 'column',
-    bottom: '15mm',
-    right: '25mm',
-    left: '25mm',
-    alignItems: 'center',
-  },
 });
-
-const T = p => <TDefault {...p} noTooltips />;
 
 // Create Document Component
 const SimpleFinancingCertificate = ({ loan = {} }) => {
   const {
-    name = '20-0001',
+    name,
     borrowers,
-    maxPropertyValue: { canton = 'GE', main, second } = {},
+    maxPropertyValue: { canton, main, second } = {},
     residenceType,
     purchaseType,
   } = loan;
-  setupMoment();
   let propertyValue;
   let borrowRatio;
 
@@ -88,28 +61,10 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
     borrowRatio = second.max.borrowRatio;
   }
 
-  const loanValue = propertyValue * borrowRatio;
-  const ownFunds = propertyValue - loanValue;
-
-  const notaryFees = Calculator.getNotaryFees({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: loanValue,
-      propertyValue,
-      canton,
-      purchaseType,
-    }),
-  }).total;
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.headerLeft} size={10}>
-          {moment().format('D MMMM YYYY, à HH:mm')}
-        </Text>
-        <Text style={styles.headerRight} size={10}>
-          <T id="SimpleFinancingCertificate.loanName" values={{ name }} />
-        </Text>
+        <SimpleFinancingCertificateHeader name={name} />
 
         <Image src={`${assetUrl}/img/epotek-logo.png`} style={styles.logo} />
 
@@ -125,7 +80,7 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
 
         <Text style={{ marginBottom: 32 }}>
           <T
-            id="SimpleFinancingCertificate.text"
+            id={`SimpleFinancingCertificate.${purchaseType}.text`}
             values={{
               name1: (
                 <Text style={{ fontFamily: 'Manrope-semibold' }}>
@@ -156,65 +111,15 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
           <T id={`Forms.canton.${canton}`} />
         </Text>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Text style={{ marginBottom: 8 }}>
-              <T id="general.mortgageLoan" />
-            </Text>
-            <Text style={{ fontFamily: 'Manrope-semibold' }}>
-              <Money value={loanValue} tag={React.Fragment} />
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Text style={{ marginBottom: 8 }}>
-              <T id="general.ownFunds" />
-            </Text>
-            <Text style={{ fontFamily: 'Manrope-semibold' }}>
-              <Money value={ownFunds} tag={React.Fragment} />
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ marginBottom: 8 }}>
-              <T id="general.notaryFees" />
-            </Text>
-            <Text style={{ fontFamily: 'Manrope-semibold' }}>
-              ~
-              <Money
-                value={Math.ceil(notaryFees / 100) * 100}
-                tag={React.Fragment}
-              />
-            </Text>
-          </View>
-        </View>
+        <SimpleFinancingCertificateDetails
+          propertyValue={propertyValue}
+          borrowRatio={borrowRatio}
+          purchaseType={purchaseType}
+          residenceType={residenceType}
+          canton={canton}
+        />
 
-        <View style={styles.footer}>
-          <Text
-            size={8}
-            style={{
-              textAlign: 'center',
-              marginBottom: 32,
-              marginRight: 8,
-              marginLeft: 8,
-              color: '#c3c3c3',
-            }}
-          >
-            <T id="SimpleFinancingCertificate.disclaimer" />
-          </Text>
-          <Text size={10}>
-            <T
-              id={
-                canton === 'GE'
-                  ? 'SimpleFinancingCertificate.footerGE'
-                  : 'SimpleFinancingCertificate.footerVD'
-              }
-            />
-          </Text>
-        </View>
+        <SimpleFinancingCertificateFooter canton={canton} />
       </Page>
     </Document>
   );

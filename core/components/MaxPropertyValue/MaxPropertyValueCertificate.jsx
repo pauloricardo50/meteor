@@ -6,6 +6,7 @@ import fileSaver from 'file-saver';
 import SimpleSchema from 'simpl-schema';
 
 import { borrowerUpdate } from '../../api/borrowers/methodDefinitions';
+import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { loanUpdate } from '../../api/loans/methodDefinitions';
 import { getSimpleFinancingCertificate } from '../../api/pdf/methodDefinitions';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
@@ -80,10 +81,14 @@ const makeHandleSubmit = ({ _id: loanId, name, borrowers }) => async ({
 
 const MaxPropertyValueCertificate = ({ loan }) => {
   const currentUser = useCurrentUser();
-  const { residenceType, borrowers } = loan;
+  const { residenceType, borrowers, purchaseType } = loan;
   const has2Borrowers = borrowers?.length > 1;
   const schema = useMemo(() => getSchema(has2Borrowers), [has2Borrowers]);
   const disabled = !currentUser?._id && Meteor.microservice !== 'admin';
+
+  if (purchaseType !== PURCHASE_TYPE.ACQUISITION) {
+    return null;
+  }
 
   return (
     <MuiThemeProvider theme={createTheme()}>

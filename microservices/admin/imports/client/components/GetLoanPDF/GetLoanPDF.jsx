@@ -5,6 +5,7 @@ import React from 'react';
 import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { PDF_TYPES } from 'core/api/pdf/pdfConstants';
 import { ROLES } from 'core/api/users/userConstants';
 import Icon from 'core/components/Icon/Icon';
@@ -19,7 +20,14 @@ const GetLoanPDF = ({ handlePDF, handleHTML, loan }) => (
       <PdfDisplayer
         pdfType={PDF_TYPES.SIMPLE_FINANCING_CERTIFICATE}
         pdfProps={{ loan }}
-        buttonProps={{ label: 'Accord de principe', className: 'mr-4' }}
+        buttonProps={{
+          label: 'Accord de principe',
+          className: 'mr-4',
+          disabled: loan.purchaseType !== PURCHASE_TYPE.ACQUISITION,
+          tooltip:
+            loan.purchaseType !== PURCHASE_TYPE.ACQUISITION &&
+            "Uniquement pour les acquisitions pour l'instant",
+        }}
       />
     )}
     <PdfDownloadDialog
