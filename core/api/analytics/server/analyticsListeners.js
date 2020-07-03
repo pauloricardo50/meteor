@@ -96,11 +96,6 @@ addAnalyticsListener({
     params: { loanId },
   }) => {
     const { userId: adminId } = context;
-    let referredByOrganisation;
-    let referredByUser;
-    let assigneeId;
-    let assigneeName;
-    let customerName;
     const {
       userId: customerId,
       category: loanCategory,
@@ -119,27 +114,10 @@ addAnalyticsListener({
       mainAssignee: 1,
     });
     const { name: adminName } = UserService.get(adminId, { name: 1 });
-    if (customerId) {
-      const user = UserService.get(customerId, {
-        referredByUser: { name: 1 },
-        referredByOrganisation: { name: 1 },
-        assignedEmployee: { name: 1 },
-        name: 1,
-      });
-      assigneeId = mainAssignee?._id;
-      assigneeName = mainAssignee?.name;
-      referredByOrganisation = user.referredByOrganisation?.name;
-      referredByUser = user.referredByUser?.name;
-      customerName = user.name;
-    }
 
-    analytics.track(EVENTS.LOAN_STATUS_CHANGED, {
+    let properties = {
       adminId,
       adminName,
-      assigneeId,
-      assigneeName,
-      customerId,
-      customerName,
       loanCategory,
       loanId,
       loanName,
@@ -148,9 +126,31 @@ addAnalyticsListener({
       loanStep,
       nextStatus,
       prevStatus,
-      referredByOrganisation,
-      referredByUser,
-    });
+    };
+
+    if (customerId) {
+      const user = UserService.get(customerId, {
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { name: 1 },
+        name: 1,
+        email: 1,
+      });
+
+      properties = {
+        ...properties,
+        assigneeId: mainAssignee?._id,
+        assigneeName: mainAssignee?.name,
+        referringOrganisationName: user.referredByOrganisation?.name,
+        referringOrganisationId: user.referredByOrganisation?._id,
+        referringUserName: user.referredByUser?.name,
+        referringUserId: user.referredByUser?._id,
+        userName: user.name,
+        userEmail: user.email,
+      };
+    }
+
+    analytics.track(EVENTS.LOAN_STATUS_CHANGED, properties);
   },
 });
 
