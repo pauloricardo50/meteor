@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import {
   Document,
@@ -9,30 +11,31 @@ import {
 } from '@react-pdf/renderer';
 import moment from 'moment';
 
-import intl from 'core/utils/intl';
-
-import { toMoney } from '../../../../utils/conversionFunctions';
-import { CANTONS } from '../../../loans/loanConstants';
+import TDefault, { Money } from '../../../../components/Translation';
+import Calculator from '../../../../utils/Calculator';
+import { setupMoment } from '../../../../utils/localization/localizationHelpers';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import Text from '../Text';
 
+const assetUrl = 'https://app.e-potek.ch';
+
 Font.register({
-  family: 'Manrope-regular',
-  src: '/fonts/Manrope-Light.ttf',
+  family: 'Manrope-extralight',
+  src: `${assetUrl}/fonts/Manrope-ExtraLight.ttf`,
   fontWeight: 300,
 });
 Font.register({
-  family: 'Manrope-bold',
-  src: '/fonts/Manrope-SemiBold.ttf',
+  family: 'Manrope-semibold',
+  src: `${assetUrl}/fonts/Manrope-SemiBold.ttf`,
   fontWeight: 600,
 });
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    fontFamily: 'Manrope-regular',
+    fontFamily: 'Manrope-extralight',
     padding: '25mm',
-    fontSize: 12,
+    fontSize: 10,
     alignItems: 'stretch',
   },
   headerLeft: {
@@ -61,6 +64,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const T = p => <TDefault {...p} noTooltips />;
+
 // Create Document Component
 const SimpleFinancingCertificate = ({ loan = {} }) => {
   const {
@@ -68,20 +73,34 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
     borrowers,
     maxPropertyValue: { canton = 'GE', main, second } = {},
     residenceType,
+    purchaseType,
   } = loan;
-  let value;
+  setupMoment();
+  let propertyValue;
   let borrowRatio;
 
   if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
-    value = main.max.propertyValue;
+    propertyValue = main.max.propertyValue;
     borrowRatio = main.max.borrowRatio;
   }
   if (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE) {
-    value = second.max.propertyValue;
+    propertyValue = second.max.propertyValue;
     borrowRatio = second.max.borrowRatio;
   }
 
-  const { formatMessage } = intl;
+  const loanValue = propertyValue * borrowRatio;
+  const ownFunds = propertyValue - loanValue;
+
+  const notaryFees = Calculator.getNotaryFees({
+    loan: Calculator.createLoanObject({
+      residenceType,
+      wantedLoan: loanValue,
+      propertyValue,
+      canton,
+      purchaseType,
+    }),
+  }).total;
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -89,57 +108,72 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
           {moment().format('D MMMM YYYY, à HH:mm')}
         </Text>
         <Text style={styles.headerRight} size={10}>
-          {formatMessage({
-            id: 'SimpleFinancingCertificate.loanName',
-            values: { name },
-          })}
+          <T id="SimpleFinancingCertificate.loanName" values={{ name }} />
         </Text>
 
-        <Image src="/img/epotek-logo.png" style={styles.logo} />
+        <Image
+          src={`${Meteor.settings.public.subdomains.app}/img/epotek-logo.png`}
+          style={styles.logo}
+        />
 
         <Text size={24} style={{ alignSelf: 'center', marginBottom: 8 }}>
-          {formatMessage({ id: 'SimpleFinancingCertificate.title' })}
+          <T id="SimpleFinancingCertificate.title" />
         </Text>
         <Text
           size={16}
-          style={{ alignSelf: 'center', opacity: 0.7, marginBottom: 40 }}
+          style={{ alignSelf: 'center', color: '#838383', marginBottom: 40 }}
         >
-          {formatMessage({ id: 'SimpleFinancingCertificate.subtitle' })}
+          <T id="SimpleFinancingCertificate.subtitle" />
         </Text>
 
         <Text style={{ marginBottom: 32 }}>
-          {formatMessage({
-            id: 'SimpleFinancingCertificate.text',
-            values: {
-              name1: borrowers?.[0]?.name,
-              name2: borrowers?.[1]?.name || false,
-            },
-          })}
+          <T
+            id="SimpleFinancingCertificate.text"
+            values={{
+              name1: (
+                <Text style={{ fontFamily: 'Manrope-semibold' }}>
+                  {borrowers?.[0]?.name}
+                </Text>
+              ),
+              name2:
+                borrowers?.length > 1 ? (
+                  <Text style={{ fontFamily: 'Manrope-semibold' }}>
+                    {borrowers?.[1]?.name}
+                  </Text>
+                ) : (
+                  false
+                ),
+            }}
+          />
         </Text>
 
         <Text size={36} style={{ alignSelf: 'center', marginBottom: 8 }}>
-          CHF {toMoney(value)}
+          <Money value={propertyValue} tag={React.Fragment} />
         </Text>
         <Text
           size={10}
-          style={{ alignSelf: 'center', opacity: 0.5, marginBottom: 64 }}
+          style={{ alignSelf: 'center', color: '#b3b3b3', marginBottom: 64 }}
         >
-          {formatMessage({ id: `Forms.residenceType.${residenceType}` })} –{' '}
-          {formatMessage({ id: `Forms.canton.${canton}` })}
+          <T id={`Forms.residenceType.${residenceType}`} />
+          {' – '}
+          <T id={`Forms.canton.${canton}`} />
         </Text>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <View
-            style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Text style={{ marginBottom: 8 }}>
-              {formatMessage({ id: 'Forms.mortgageLoan' })}
+              <T id="general.mortgageLoan" />
             </Text>
-            <Text style={{ fontFamily: 'Manrope-bold' }}>
-              CHF {toMoney(value * borrowRatio)}
+            <Text style={{ fontFamily: 'Manrope-semibold' }}>
+              <Money value={loanValue} tag={React.Fragment} />
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <Text style={{ marginBottom: 8 }}>
+              <T id="general.ownFunds" />
+            </Text>
+            <Text style={{ fontFamily: 'Manrope-semibold' }}>
+              <Money value={ownFunds} tag={React.Fragment} />
             </Text>
           </View>
           <View
@@ -149,44 +183,39 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
             }}
           >
             <Text style={{ marginBottom: 8 }}>
-              {formatMessage({ id: 'Forms.ownFunds' })}
+              <T id="general.notaryFees" />
             </Text>
-            <Text style={{ fontFamily: 'Manrope-bold' }}>
-              CHF {toMoney(value * (1 - borrowRatio))}
+            <Text style={{ fontFamily: 'Manrope-semibold' }}>
+              ~
+              <Money
+                value={Math.ceil(notaryFees / 100) * 100}
+                tag={React.Fragment}
+              />
             </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ marginBottom: 8 }}>
-              {formatMessage({ id: 'Forms.notaryFees' })}
-            </Text>
-            <Text style={{ fontFamily: 'Manrope-bold' }}>CHF 5 000</Text>
           </View>
         </View>
 
         <View style={styles.footer}>
           <Text
-            size={7}
+            size={8}
             style={{
               textAlign: 'center',
-              marginBottom: 16,
+              marginBottom: 32,
               marginRight: 8,
               marginLeft: 8,
+              color: '#c3c3c3',
             }}
           >
-            {formatMessage({ id: 'SimpleFinancingCertificate.disclaimer' })}
+            <T id="SimpleFinancingCertificate.disclaimer" />
           </Text>
           <Text size={10}>
-            {formatMessage({
-              id:
+            <T
+              id={
                 canton === 'GE'
                   ? 'SimpleFinancingCertificate.footerGE'
-                  : 'SimpleFinancingCertificate.footerVD',
-            })}
+                  : 'SimpleFinancingCertificate.footerVD'
+              }
+            />
           </Text>
         </View>
       </Page>

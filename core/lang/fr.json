@@ -1,9 +1,12 @@
 {
+  "MaxPropertyValueCertificate.disabledTooltip": "Accessible dès que vous aurez saisi vos coordonnées",
+  "MaxPropertyValueCertificate.download": "Téléchargez votre accord de principe",
+  "MaxPropertyValueCertificate.description": "Personnalisez-le avec votre nom.",
   "SimpleFinancingCertificate.title": "Accord de principe",
   "SimpleFinancingCertificate.subtitle": "e-Potek SA",
   "SimpleFinancingCertificate.loanName": "Dossier {name}",
-  "SimpleFinancingCertificate.text": "e-Potek SA, affiliée à la FINMA sous le no. 33'709, atteste que sur la base des informations fournies et non vérifiées, {name1} et {name2, select, false {} other {et {name2}}} ont la capacité d’acheter un bien immobilier à hauteur de :",
-  "SimpleFinancingCertificate.disclaimer": "Les informations fournies dans le présent document ne sont pas juridiquement contraignantes et ne constituent pas une offre de financement. L’interprétation des explications et des notions utilisées dans ce document sont exprimées sous réserve de l’analyse complète du dossier et de la situation de l’acquéreur. Toute modification demeure réservée sans préavis et sans obligation de mise à jour.",
+  "SimpleFinancingCertificate.text": "e-Potek SA, affiliée à la FINMA sous le no. 33'709, atteste que sur la base des informations fournies et non vérifiées, {name1}{name2, select, false { a} other { et {name2} ont}} la capacité d’acheter un bien immobilier à hauteur de :",
+  "SimpleFinancingCertificate.disclaimer": "Tous ces éléments vous sont donnés à titre purement indicatif, ils peuvent être révisés en tout temps et sont basés uniquement sur les données en notre possession dont vous attestez la justesse et l'exhaustivité. Ce document ne peut pas être juridiquement contraignant et ne constitue ni une offre ni un engagement de la part d'e-Potek. Les frais de notaire indiqués sont une estimation qui peut inclure une marge variable, seul un notaire peut vous donner les frais réels.",
   "SimpleFinancingCertificate.footerGE": "e-Potek SA – Place de Neuve 2, 1204 Genève – +41 22 566 01 10",
   "SimpleFinancingCertificate.footerVD": "e-Potek SA – Route des Monts-de-Lavaux 1, 1092 Belmont-sur-Lausanne – +41 21 566 19 99",
 

@@ -8,6 +8,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import Select from '../Select';
 import T from '../Translation';
+import MaxPropertyValueCertificate from './MaxPropertyValueCertificate';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 import MaxPropertyValueSharing from './MaxPropertyValueSharing';
 
@@ -89,6 +90,7 @@ const MaxPropertyValueResults = ({
           previousLoan={previousLoan}
         />
       </div>
+      <MaxPropertyValueCertificate loan={loan} />
       <Button
         raised
         disabled={Meteor.microservice === 'app' && !shouldRecalculate}
