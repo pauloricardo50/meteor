@@ -7,7 +7,6 @@ import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
@@ -38,9 +37,9 @@ import TaskService from '../../../tasks/server/TaskService';
 import { TASK_STATUS, TASK_TYPES } from '../../../tasks/taskConstants';
 import UserService from '../../../users/server/UserService';
 import {
-  LOANS_COLLECTION,
   LOAN_CATEGORIES,
   LOAN_STATUS,
+  PURCHASE_TYPE,
   STEPS,
 } from '../../loanConstants';
 import {

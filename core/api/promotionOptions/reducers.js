@@ -32,6 +32,6 @@ PromotionOptions.addReducers({
     body: {
       loanCache: 1,
     },
-    reduce: ({ loanCache }) => loanCache[0]?.promotionLinks?.[0]?.invitedby,
+    reduce: ({ loanCache }) => loanCache[0]?.promotionLinks?.[0]?.invitedBy,
   },
 });

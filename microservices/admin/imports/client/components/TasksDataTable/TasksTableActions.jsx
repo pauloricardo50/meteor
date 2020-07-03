@@ -1,16 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-import {
-  taskChangeStatus,
-  taskComplete,
-  taskUpdate,
-} from 'core/api/tasks/methodDefinitions';
-import { TASK_PRIORITIES, TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { taskComplete, taskUpdate } from 'core/api/tasks/methodDefinitions';
+import { TASK_PRIORITIES } from 'core/api/tasks/taskConstants';
 import IconButton from 'core/components/IconButton';
 
+import TaskSnoozer from './TaskSnoozer';
+
 const TasksTableActions = ({ taskId, priority }) => (
-  <div className="flex space-children">
+  <div className="flex">
     <IconButton
       onClick={e => {
         e.stopPropagation();
@@ -19,21 +17,9 @@ const TasksTableActions = ({ taskId, priority }) => (
       size="small"
       type="check"
       tooltip="Compléter tâche"
-      className="success"
+      className="success mr-4"
     />
-    <IconButton
-      onClick={e => {
-        e.stopPropagation();
-        taskChangeStatus.run({
-          taskId,
-          newStatus: TASK_STATUS.CANCELLED,
-        });
-      }}
-      size="small"
-      type="close"
-      tooltip="Annuler tâche"
-      className="error"
-    />
+    <TaskSnoozer taskId={taskId} buttonProps={{ className: 'mr-4' }} />
     <IconButton
       onClick={e => {
         e.stopPropagation();

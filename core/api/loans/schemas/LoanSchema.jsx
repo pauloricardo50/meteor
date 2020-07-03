@@ -16,6 +16,7 @@ import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import {
   APPLICATION_TYPES,
   CANTONS,
+  INSURANCE_POTENTIAL,
   LOAN_CATEGORIES,
   LOAN_STATUS,
   OWNER,
@@ -167,6 +168,11 @@ const LoanSchema = new SimpleSchema({
   insuranceRequestLinks: { type: Array, optional: true, defaultValue: [] },
   'insuranceRequestLinks.$': Object,
   'insuranceRequestLinks.$._id': String,
+  insurancePotential: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(INSURANCE_POTENTIAL),
+  },
 
   // Cache fields
   lendersCache: { type: Array, optional: true },

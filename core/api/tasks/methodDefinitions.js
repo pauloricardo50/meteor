@@ -45,3 +45,18 @@ export const proAddLoanTask = new Method({
     note: String,
   },
 });
+
+export const taskRemove = new Method({
+  name: 'taskRemove',
+  params: {
+    taskId: String,
+  },
+});
+
+export const taskSnooze = new Method({
+  name: 'taskSnooze',
+  params: {
+    taskId: String,
+    workingDays: Number,
+  },
+});

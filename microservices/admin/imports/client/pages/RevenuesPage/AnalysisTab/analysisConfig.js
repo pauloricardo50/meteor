@@ -245,7 +245,11 @@ const analysisConfig = {
       },
       {
         label: 'Passage à finalisé',
-        format: ({ activities }) => {
+        format: ({ activities, status }) => {
+          if (status !== LOAN_STATUS.FINALIZED) {
+            return;
+          }
+
           const finalizedActivity = activities.find(
             ({ metadata }) =>
               metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&
@@ -256,7 +260,10 @@ const analysisConfig = {
       },
       {
         label: 'Passage à facturation',
-        format: ({ activities }) => {
+        format: ({ activities, status }) => {
+          if (![LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(status)) {
+            return;
+          }
           const finalizedActivity = activities.find(
             ({ metadata }) =>
               metadata?.event === ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS &&

@@ -1,8 +1,8 @@
 import React from 'react';
 import ListItemText from '@material-ui/core/ListItemText';
-import { INSURANCE_PRODUCT_FEATURES } from 'imports/core/api/insuranceProducts/insuranceProductConstants';
 import SimpleSchema from 'simpl-schema';
 
+import { INSURANCE_PRODUCT_FEATURES } from 'core/api/insuranceProducts/insuranceProductConstants';
 import {
   insuranceInsert,
   insuranceModify,

@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import { useEffect } from 'react';
-import useImpersonatedSession from 'imports/core/hooks/useImpersonatedSession';
 import { useHistory } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from '../api/analytics/analyticsConstants';

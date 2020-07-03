@@ -228,7 +228,6 @@ export default Component => {
         return <span className="error">{error.message || error.reason}</span>;
       }
 
-      console.log('values:', values);
       const isUsable = !loading && values?.length > 0;
 
       return (

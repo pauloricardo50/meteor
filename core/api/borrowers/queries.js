@@ -1,12 +1,5 @@
-import { adminBorrower } from '../fragments';
 import { BORROWER_QUERIES } from './borrowerConstants';
 import Borrowers from '.';
-
-export const adminBorrowers = Borrowers.createQuery(
-  BORROWER_QUERIES.ADMIN_BORROWERS,
-  { ...adminBorrower(), $options: { sort: { lastName: 1 } } },
-  { scoped: true },
-);
 
 export const borrowerSearch = Borrowers.createQuery(
   BORROWER_QUERIES.BORROWER_SEARCH,

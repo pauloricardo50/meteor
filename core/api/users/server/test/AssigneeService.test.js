@@ -109,25 +109,6 @@ describe('AssigneeService', () => {
   });
 
   describe('getSuggestedAssigneeId', () => {
-    it('returns the promotion assigneeId as a priority', () => {
-      generator({
-        promotions: {
-          assignedEmployee: { _id: 'advisor1', _factory: ROLES.ADVISOR },
-          loans: {
-            user: {
-              _id: 'user',
-              referredByUser: {
-                assignedEmployee: { _id: 'advisor2', _factory: ROLES.ADVISOR },
-              },
-            },
-          },
-        },
-      });
-
-      const service = new AssigneeService('user');
-      expect(service.getSuggestedAssigneeId()).to.equal('advisor1');
-    });
-
     it("returns the assignee of the referring pro next, ignoring the organisation's assignee", () => {
       generator({
         users: [

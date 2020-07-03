@@ -53,10 +53,11 @@ LoanService.cache(
       isPrivate: 1,
       assigneeLink: 1,
       type: 1,
+      metadata: 1,
     },
     referenceField: 'loanLink._id',
   },
-  // {},
+  // { 'tasksCache.metadata': { $exists: false } },
   // { tasksCache: { $exists: false } },
 );
 

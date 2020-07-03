@@ -46,7 +46,7 @@ const OfferPickerListItem = props => {
       )}
 
       <OfferPickerListItemValue
-        label={<T id="offer.maxAmount" />}
+        label={<T id="Forms.maxAmount" />}
         value={toMoney(maxAmount)}
       />
 

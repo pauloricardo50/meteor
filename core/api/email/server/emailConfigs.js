@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import { setupMoment } from '../../../utils/localization';
 import {
   CTA_URL_DEFAULT,
   EMAIL_IDS,
@@ -334,13 +335,16 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       mainRecipientIsBcc,
     };
   },
-  createIntlValues: params => ({
-    ...params,
-    today: moment().format('DD MMM YYYY'),
-  }),
+  createIntlValues: params => {
+    setupMoment();
+    return {
+      ...params,
+      today: moment().format('D MMMM YYYY'),
+    };
+  },
 });
 
-const promotionEmailOverridesPro = function(params, { title, body, cta }) {
+const promotionEmailOverridesPro = function (params, { title, body, cta }) {
   const {
     promotionId,
     promotionOptionId,
@@ -375,7 +379,7 @@ const promotionEmailOverridesPro = function(params, { title, body, cta }) {
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
-const promotionEmailOverridesUser = function(
+const promotionEmailOverridesUser = function (
   { fromEmail },
   { title, body, cta },
 ) {

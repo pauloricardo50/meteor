@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import CountUp from 'react-countup';
 import { withState } from 'recompose';
 
+import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
 import useMedia from '../../../hooks/useMedia';
-import { PURCHASE_TYPE } from '../../../redux/widget1/widget1Constants';
 import Calculator from '../../../utils/Calculator';
 import Button from '../../Button';
 import T, { Money } from '../../Translation';

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import CollectionTasksDataTable from '../../components/TasksDataTable/CollectionTasksDataTable';
 import UnsuccessfulReasonModal from '../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContacts from './SingleLoanPageContacts';
@@ -18,10 +18,9 @@ const SingleLoanPage = props => {
       </Helmet>
       <SingleLoanPageHeader loan={loan} />
       <div className="single-loan-page-sub-header">
-        <CollectionTasksTable
-          doc={loan}
-          withTaskInsert
-          withQueryTaskInsert
+        <CollectionTasksDataTable
+          docId={loan._id}
+          collection={loan._collection}
           className="single-loan-page-tasks card1 card-top"
         />
         <SingleLoanPageContacts loanId={loan._id} />

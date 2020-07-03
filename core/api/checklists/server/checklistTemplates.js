@@ -33,11 +33,6 @@ const ACQUISITION_TEMPLATE = [
         description: 'Demandez le contrat à votre conseiller',
         requiresDocument: true,
       },
-      {
-        title: 'Dossier complet',
-        description:
-          "Finissez de renseigner vos informations et d'uploader vos documents",
-      },
     ],
   },
   {
