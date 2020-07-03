@@ -147,6 +147,7 @@ addAnalyticsListener({
         referringUserId: user.referredByUser?._id,
         userName: user.name,
         userEmail: user.email,
+        userId: user._id,
       };
     }
 
@@ -795,7 +796,7 @@ addAnalyticsListener({
         referringUserId: user?.referredByUser?._id,
         referringUserName: user?.referredByUser?.name,
         referringOrganisationId: user?.referredByOrganisation?._id,
-        referringByOrganisationName: user?.referredByOrganisation?.name,
+        referringOrganisationName: user?.referredByOrganisation?.name,
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
       };

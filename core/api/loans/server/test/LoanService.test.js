@@ -1246,13 +1246,13 @@ describe('LoanService', function () {
 
           expect(spy.calledOnce).to.equal(true);
           expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
-          expect(spy.args[0][1]).to.deep.equal({
+          expect(spy.args[0][1]).to.deep.include({
             adminId: 'adminId2',
             adminName: 'Admin 2',
             assigneeId: 'adminId1',
             assigneeName: 'Admin 1',
-            customerId: 'customerId',
-            customerName: 'Customer 1',
+            userId: 'customerId',
+            userName: 'Customer 1',
             loanCategory: LOAN_CATEGORIES.STANDARD,
             loanId: 'myLoan',
             loanName: '20-0001',
@@ -1261,8 +1261,8 @@ describe('LoanService', function () {
             loanStep: STEPS.SOLVENCY,
             nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
             prevStatus: LOAN_STATUS.LEAD,
-            referredByOrganisation: 'Org 1',
-            referredByUser: 'Pro 1',
+            referringOrganisationName: 'Org 1',
+            referringUserName: 'Pro 1',
           });
         })
         .finally(() => {

@@ -140,6 +140,7 @@ export const EVENTS_CONFIG = {
       'nextStatus',
       'prevStatus',
       { name: 'userName', optional: true },
+      { name: 'userId', optional: true },
       { name: 'userEmail', optional: true },
       { name: 'referringUserId', optional: true },
       { name: 'referringUserName', optional: true },
