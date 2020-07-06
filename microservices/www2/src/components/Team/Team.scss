@@ -50,6 +50,12 @@
       }
     }
 
+    &__contact {
+      svg {
+        color: $primary;
+      }
+    }
+
     &__content {
       flex: 1;
       padding-top: 12px;
@@ -74,6 +80,7 @@
       line-height: 1.44;
       letter-spacing: normal;
       color: $body-text;
+      margin-bottom: 8px;
     }
   }
 
