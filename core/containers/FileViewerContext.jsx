@@ -71,3 +71,5 @@ export const withFileViewerContext = Component => props => (
     {fileViewerProps => <Component {...props} {...fileViewerProps} />}
   </Consumer>
 );
+
+export default useFileViewer;
