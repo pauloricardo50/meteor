@@ -3,45 +3,63 @@ import Button from '../Button';
 import { linkResolver } from '../../utils/linkResolver';
 import './CTAButtons.scss';
 
-const CTAButtons = ({ buttons }) => (
-  <div className="cta-buttons">
-    {buttons.length > 0 &&
-      buttons.map((button, idx) => {
+const CTAButtons = ({ buttons }) => {
+  if (!buttons.length) return null;
+
+  return (
+    <div className="cta-buttons">
+      {buttons.map((button, idx) => {
         const linkType = button.cta_link?._linkType;
         const ctaStyle = button.cta_style;
-
-        if (!linkType) return null;
-
-        let to = '';
 
         if (linkType === 'Link.document') {
           const meta = button.cta_link._meta;
           if (!meta) return null;
-          to = linkResolver(meta);
-        } else if (linkType === 'Link.web') {
-          to = button.cta_link.url;
+
+          return (
+            <Button
+              key={idx}
+              className="cta--button"
+              raised={ctaStyle !== 'flat'}
+              primary={ctaStyle === 'primary'}
+              secondary={ctaStyle === 'secondary'}
+              link
+              to={linkResolver(meta)}
+            >
+              {/* TODO: replace text with icon */}
+              {button.cta_icon && <div>icon: {button.cta_icon}</div>}
+
+              {button.cta_text}
+            </Button>
+          );
         }
 
-        if (!to) return null;
+        if (linkType === 'Link.web') {
+          return (
+            <a
+              key={idx}
+              href={button.cta_link.url || undefined}
+              target={`${button.cta_text}-tab`}
+            >
+              <Button
+                className="cta--button"
+                raised={ctaStyle !== 'flat'}
+                primary={ctaStyle === 'primary'}
+                secondary={ctaStyle === 'secondary'}
+              >
+                {/* TODO: replace text with icon */}
+                {button.cta_icon && <div>icon: {button.cta_icon}</div>}
 
-        return (
-          <Button
-            key={idx}
-            className="cta--button"
-            raised={ctaStyle !== 'flat'}
-            primary={ctaStyle === 'primary'}
-            secondary={ctaStyle === 'secondary'}
-            link
-            to={to}
-          >
-            {/* TODO: replace text with icon */}
-            {button.cta_icon && <div>icon: {button.cta_icon}</div>}
+                {button.cta_text}
+              </Button>
+            </a>
+          );
+        }
 
-            {button.cta_text}
-          </Button>
-        );
+        return null;
       })}
-  </div>
-);
+    </div>
+  );
+};
 
 export default CTAButtons;
