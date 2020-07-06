@@ -1,9 +1,11 @@
 .page-links {
+  border-bottom: 1px solid $border-grey;
+
   a {
     display: inline-block;
     opacity: 0.5;
     border-bottom: 5px solid transparent;
-    padding: 13px 0;
+    padding: 16px 0;
     // Mobile/Plain/M/Light
     font-size: 14px;
     font-weight: 500;
@@ -28,7 +30,6 @@
 
   @media screen and (min-width: $med) {
     a {
-      padding: 33px 0;
       // Desktop/Plain/M/Light
       font-size: 16px;
       font-weight: 500;
