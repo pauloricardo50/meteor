@@ -53,12 +53,16 @@ const applyTransformToData = ({
   key,
   formatMessage,
 }) => {
-  const { id: translationId, label, format } = transform;
+  const { id: translationId, label, format, formsFormat } = transform;
   const translatedKey = label || formatMessage({ id: translationId });
   const rawValue = get(obj, key);
 
   if (format) {
     newObj[translatedKey] = format(obj);
+  } else if (formsFormat && rawValue) {
+    newObj[translatedKey] = formatMessage({
+      id: `Forms.${key}.${rawValue}`,
+    });
   } else {
     newObj[translatedKey] = rawValue;
   }

@@ -46,7 +46,7 @@ const thirtyDaysAgo = moment().day(-30).hour(0).minute(0);
 
 const analysisConfig = {
   [LOANS_COLLECTION]: {
-    category: { id: 'Forms.category' },
+    category: { id: 'Forms.category', formsFormat: true },
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
@@ -54,7 +54,7 @@ const analysisConfig = {
           id: `Forms.status.${status}`,
         })}`,
     },
-    residenceType: { id: 'Forms.residenceType' },
+    residenceType: { id: 'Forms.residenceType', formsFormat: true },
     purchaseType: {
       id: 'Forms.purchaseType',
       format: ({ purchaseType, promotions }) => {
@@ -94,7 +94,11 @@ const analysisConfig = {
       },
       {
         label: "Canal d'acquisition",
-        format: ({ user }) => user?.acquisitionChannel,
+        format: ({ user }) =>
+          user?.acquisitionChannel &&
+          formatMessage({
+            id: `Forms.acquisitionChannel.${user?.acquisitionChannel}`,
+          }),
       },
     ],
     createdAt: [
@@ -122,7 +126,10 @@ const analysisConfig = {
           moment(createdAt).isAfter(thirtyDaysAgo) ? 'Oui' : 'Non',
       },
     ],
-    anonymous: { id: 'Forms.anonymous' },
+    anonymous: {
+      id: 'Forms.anonymous',
+      format: ({ anonymous }) => (anonymous ? 'Oui' : 'Non'),
+    },
     assignees: [
       {
         fragment: { name: 1 },
@@ -342,8 +349,8 @@ const analysisConfig = {
         },
       },
     ],
-    type: { id: 'Forms.type' },
-    status: { id: 'Forms.status' },
+    type: { id: 'Forms.type', formsFormat: true },
+    status: { id: 'Forms.status', formsFormat: true },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
     paidAt: {
       label: 'Payé Mois-Année',
@@ -392,7 +399,9 @@ const analysisConfig = {
           },
           purchaseType: 1,
         },
-        format: ({ loan }) => loan && loan.category,
+        format: ({ loan }) =>
+          loan?.category &&
+          formatMessage({ id: `Forms.category.${loan.category}` }),
       },
       {
         label: 'Statut du dossier',
@@ -418,11 +427,17 @@ const analysisConfig = {
       },
       {
         label: 'Type du dossier',
-        format: ({ loan }) => loan?.purchaseType,
+        format: ({ loan }) =>
+          loan?.purchaseType &&
+          formatMessage({ id: `Forms.purchaseType.${loan.purchaseType}` }),
       },
       {
         label: "Canal d'acquisition",
-        format: ({ loan }) => loan?.user?.acquisitionChannel,
+        format: ({ loan }) =>
+          loan?.user?.acquisitionChannel &&
+          formatMessage({
+            id: `Forms.acquisitionChannel.${loan.user.acquisitionChannel}`,
+          }),
       },
     ],
   },
@@ -447,7 +462,7 @@ const analysisConfig = {
       format: makeFormatDate('createdAt'),
     },
     'assignedEmployee.name': { label: 'Conseiller' },
-    acquisitionChannel: { id: 'Forms.acquisitionChannel' },
+    acquisitionChannel: { id: 'Forms.acquisitionChannel', formsFormat: true },
     loans: {
       fragment: { _id: 1 },
       label: 'Nb. de dossiers',
@@ -456,9 +471,12 @@ const analysisConfig = {
   },
   [BORROWERS_COLLECTION]: {
     age: { id: 'Forms.age' },
-    gender: { id: 'Forms.gender' },
-    isSwiss: { id: 'Forms.isSwiss' },
-    civilStatus: { id: 'Forms.civilStatus' },
+    gender: { id: 'Forms.gender', formsFormat: true },
+    isSwiss: {
+      id: 'Forms.isSwiss',
+      format: ({ isSwiss }) => (isSwiss ? 'Oui' : 'Non'),
+    },
+    civilStatus: { id: 'Forms.civilStatus', formsFormat: true },
     createdAt: {
       label: 'Création Mois-Année',
       format: makeFormatDate('createdAt'),
@@ -477,7 +495,7 @@ const analysisConfig = {
       label: 'Créé par',
       format: ({ createdByUser }) => createdByUser?.name,
     },
-    type: { id: 'Forms.type' },
+    type: { id: 'Forms.type', formsFormat: true },
     date: { id: 'Forms.date', format: makeFormatDate('date') },
     metadata: [
       {
@@ -522,11 +540,15 @@ const analysisConfig = {
       },
       {
         label: 'Catégorie du dossier',
-        format: ({ loan }) => loan?.category,
+        format: ({ loan }) =>
+          loan?.category &&
+          formatMessage({ id: `Forms.category.${loan.category}` }),
       },
       {
         label: 'Type du dossier',
-        format: ({ loan }) => loan?.purchaseType,
+        format: ({ loan }) =>
+          loan?.purchaseType &&
+          formatMessage({ id: `Forms.purchaseType.${loan.purchaseType}` }),
       },
       {
         id: 'Forms.wantedLoan',
@@ -571,7 +593,7 @@ const analysisConfig = {
       label: 'Échéance Mois-Année',
       format: makeFormatDate('dueAt'),
     },
-    status: { id: 'Forms.status' },
+    status: { id: 'Forms.status', formsFormat: true },
     assignee: {
       fragment: { name: 1 },
       id: 'Forms.assignedTo',
@@ -624,35 +646,21 @@ const analysisConfig = {
     ],
   },
   [ORGANISATIONS_COLLECTION]: {
-    name: {
-      id: 'Forms.name',
-    },
-    type: {
-      id: 'Forms.type',
-    },
-    features: {
-      id: 'Forms.features',
-    },
+    name: { id: 'Forms.name' },
+    type: { id: 'Forms.type', formsFormat: true },
+    features: { id: 'Forms.features', formsFormat: true },
     userLinks: {
       label: 'Nb. de comptes',
       format: ({ userLinks = [] }) => userLinks.length,
     },
-    referredUsersCount: {
-      label: 'Nb. de clients référés',
-    },
-    commissionRate: {
-      label: 'Taux de commissionnement actuel',
-    },
-    generatedRevenues: {
-      label: 'Revenus générés',
-    },
+    referredUsersCount: { label: 'Nb. de clients référés' },
+    commissionRate: { label: 'Taux de commissionnement actuel' },
+    generatedRevenues: { label: 'Revenus générés' },
     lenders: [
       {
         fragment: {
           offers: { maxAmount: 1 },
-          loan: {
-            structureCache: { offerId: 1 },
-          },
+          loan: { structureCache: { offerId: 1 } },
         },
         label: 'Offres faites',
         format: ({ lenders = [] }) =>
@@ -1055,9 +1063,7 @@ const analysisConfig = {
             : 'Non',
       },
     ],
-    premium: {
-      id: 'Forms.premium',
-    },
+    premium: { id: 'Forms.premium' },
     premiumFrequency: {
       id: 'Forms.premiumFrequency',
       format: ({ premiumFrequency }) =>
