@@ -76,6 +76,7 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   unsuccessfulReason: 1,
   userCache: 1,
   userFormsEnabled: 1,
+  insurancePotential: 1,
 });
 
 export default compose(

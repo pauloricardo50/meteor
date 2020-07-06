@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import merge from 'lodash/merge';
 import set from 'lodash/set';
 
 import { ACTIVITIES_COLLECTION } from 'core/api/activities/activityConstants';
@@ -15,9 +16,10 @@ import analysisConfig from './analysisConfig';
 
 export const analysisCollections = Object.keys(analysisConfig);
 
-export const createBodyFromMap = map => {
-  const body = {
+export const createBodyFromMap = ({ fragment: initialFragment, ...map }) => {
+  let body = {
     // $options: { limit: 10 },
+    ...initialFragment,
   };
 
   Object.keys(map).forEach(path => {
@@ -37,7 +39,8 @@ export const createBodyFromMap = map => {
       throw new Error('Can only have one fragment in array description');
     }
 
-    set(body, path, fragment);
+    // Try to merge everything perfectly without losing keys
+    body = merge({}, body, set({ ...body }, path, fragment));
   });
 
   return body;
@@ -50,12 +53,16 @@ const applyTransformToData = ({
   key,
   formatMessage,
 }) => {
-  const { id: translationId, label, format } = transform;
+  const { id: translationId, label, format, formsFormat } = transform;
   const translatedKey = label || formatMessage({ id: translationId });
   const rawValue = get(obj, key);
 
   if (format) {
     newObj[translatedKey] = format(obj);
+  } else if (formsFormat && rawValue) {
+    newObj[translatedKey] = formatMessage({
+      id: `Forms.${key}.${rawValue}`,
+    });
   } else {
     newObj[translatedKey] = rawValue;
   }
@@ -66,12 +73,14 @@ export const mapData = ({
   collection,
   formatMessage,
   map = analysisConfig[collection],
-}) =>
-  data.map(obj => {
+}) => {
+  const { fragment, ...finalMap } = map;
+
+  return data.map(obj => {
     const newObj = {};
 
-    Object.keys(map).forEach(key => {
-      const transforms = map[key];
+    Object.keys(finalMap).forEach(key => {
+      const transforms = finalMap[key];
 
       if (Array.isArray(transforms)) {
         transforms.forEach(transform => {
@@ -96,6 +105,7 @@ export const mapData = ({
 
     return newObj;
   });
+};
 
 export const analysisBodies = {
   [LOANS_COLLECTION]: createBodyFromMap(analysisConfig[LOANS_COLLECTION]),
@@ -118,6 +128,7 @@ export const analysisBodies = {
     analysisConfig[INSURANCES_COLLECTION],
   ),
 };
+console.log('analysisBodies:', analysisBodies);
 
 // FIXME: Not working yet, bug in react-pivottable
 // If you assign this function's return value to the PivotTableUI component
@@ -132,7 +143,7 @@ export const getDefaultSettingsForCollection = ({
     return;
   }
 
-  const map = analysisConfig[collection];
+  const { fragment, ...map } = analysisConfig[collection];
 
   const defaultFilters = Object.values(map)
     .filter(config => !!config.defaultValue)

@@ -100,14 +100,6 @@ export const loanBorrower = ({ withSort } = {}) => ({
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
-export const adminBorrower = () => ({
-  ...loanBorrower(),
-  loans: loan(),
-  user: appUser(),
-});
-
-export const fullBorrower = adminBorrower;
-
 // //
 // // Contact fragments
 // //
@@ -673,7 +665,9 @@ export const formPromotionOption = () => ({
   invitedBy: 1,
   loanCache: 1, // Useful for invitedBy
   priorityOrder: 1,
-  promotionLots: { properties: { totalValue: 1, bankValue: 1 } },
+  promotionLots: {
+    properties: formProperty(),
+  },
   reservationAgreement: 1,
   reservationDeposit: 1,
   simpleVerification: 1,
@@ -855,6 +849,7 @@ export const formProperty = () => ({
   address1: 1,
   address2: 1,
   areaNorm: 1,
+  balconyArea: 1,
   bankValue: 1,
   bathroomCount: 1,
   canton: 1,
@@ -923,6 +918,7 @@ export const adminProperty = ({ withSort } = {}) => ({
 export const promotionProperty = () => ({
   additionalMargin: 1,
   address: 1,
+  balconyArea: 1,
   bankValue: 1,
   bathroomCount: 1,
   canton: 1,
@@ -950,6 +946,7 @@ export const userProperty = ({ withSort } = {}) => {
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
   loanCount: 1,
+  status: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
@@ -968,7 +965,7 @@ export const baseTask = () => ({
   updatedAt: 1,
 });
 
-export const task = () => ({
+const task = () => ({
   ...baseTask(),
   assigneeLink: 1,
   assignee: simpleUser(),
@@ -1090,7 +1087,7 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const adminRevenue = () => ({
+const adminRevenue = () => ({
   amount: 1,
   // Keep these in the right order
   assigneeLink: 1,

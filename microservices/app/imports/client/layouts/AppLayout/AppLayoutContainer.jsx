@@ -6,7 +6,6 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -66,7 +65,8 @@ const loanFragment = merge({}, calculatorLoan(), {
     },
     organisation: { logo: 1 },
   },
-  userCache: 1,
+  maxPropertyValue: 1,
+  maxPropertyValueExists: 1,
   name: 1,
   promotionOptions: {
     name: 1,
@@ -84,9 +84,8 @@ const loanFragment = merge({}, calculatorLoan(), {
   shareSolvency: 1,
   showClosingChecklists: 1,
   step: 1,
+  userCache: 1,
   userFormsEnabled: 1,
-  maxPropertyValue: 1,
-  maxPropertyValueExists: 1,
 });
 
 const withUserLoan = withSmartQuery({
@@ -139,5 +138,4 @@ export default compose(
   })),
   withSideNavContextProvider,
   withSideNavContext,
-  withContactButtonProvider,
 );

@@ -12,6 +12,7 @@ import PdfTable, { ROW_TYPES } from '../../PdfTable/PdfTable';
 const getPropertyRows = loan => {
   const {
     address1,
+    balconyArea,
     city,
     constructionYear,
     flatType,
@@ -23,7 +24,6 @@ const getPropertyRows = loan => {
     numberOfFloors,
     parkingInside = 0,
     parkingOutside = 0,
-    promotion,
     propertyType,
     renovationYear,
     roomCount,
@@ -34,7 +34,8 @@ const getPropertyRows = loan => {
     yearlyExpenses,
     zipCode,
   } = Calculator.selectProperty({ loan });
-  const { residenceType } = loan;
+  const { residenceType, promotions = [] } = loan;
+  const [promotion] = promotions;
 
   return [
     {
@@ -51,7 +52,7 @@ const getPropertyRows = loan => {
       data: (
         <T
           id="PDF.projectInfos.property.promotionNameData"
-          values={{ name: promotion && promotion.name }}
+          values={{ name: promotion?.name }}
         />
       ),
       condition: !!promotion,
@@ -120,6 +121,11 @@ const getPropertyRows = loan => {
         !!terraceArea &&
         propertyType === PROPERTY_TYPE.FLAT &&
         flatType === FLAT_TYPE.TERRACE_APARTMENT,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.balconyArea" />,
+      data: `${balconyArea} m2`,
+      condition: !!balconyArea,
     },
     {
       label: <T id="PDF.projectInfos.property.numberOfFloors" />,

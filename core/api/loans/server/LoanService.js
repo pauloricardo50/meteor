@@ -6,6 +6,8 @@ import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
+import { TASK_TYPES } from 'core/api/tasks/taskConstants';
+
 import {
   FEEDBACK_OPTIONS,
   makeFeedback,
@@ -44,6 +46,7 @@ import {
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
+import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,
@@ -1113,8 +1116,17 @@ class LoanService extends CollectionService {
     const disbursedIn10Days = this.fetch({
       $filters: {
         disbursementDate: {
-          $lte: in11Days.startOf('day').toDate(),
+          $exists: true,
+          $lt: in11Days.startOf('day').toDate(),
           $gte: in10Days.startOf('day').toDate(),
+        },
+        tasksCache: {
+          $not: {
+            $elemMatch: {
+              type: TASK_TYPES.LOAN_DISBURSED_SOON,
+              status: TASK_STATUS.ACTIVE,
+            },
+          },
         },
       },
       _id: 1,
@@ -1192,6 +1204,14 @@ class LoanService extends CollectionService {
       properties: { address: 1, totalValue: 1 },
     });
 
+    // In case a property is unlinked from any loan
+    const unlinkedUserProperties = PropertyService.fetch({
+      $filters: { userId },
+      address: 1,
+      totalValue: 1,
+      loans: { _id: 1 },
+    }).filter(({ loans = [] }) => loans.length === 0);
+
     const reusableProperties = loans
       .reduce(
         (allProperties, { properties = [] }) => [
@@ -1204,7 +1224,7 @@ class LoanService extends CollectionService {
         ({ _id }) => !currentProperties.some(property => _id === property._id),
       );
 
-    return reusableProperties;
+    return [...reusableProperties, ...unlinkedUserProperties];
   }
 
   linkProperty({ loanId, propertyId }) {
@@ -1236,6 +1256,10 @@ class LoanService extends CollectionService {
         closingLoanId: loanId,
       });
     });
+  }
+
+  updateInsurancePotential({ loanId, insurancePotential }) {
+    return this._update({ id: loanId, object: { insurancePotential } });
   }
 }
 

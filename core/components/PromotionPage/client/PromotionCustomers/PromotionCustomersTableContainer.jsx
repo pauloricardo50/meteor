@@ -10,7 +10,6 @@ import {
 } from '../../../../api/loans/loanConstants';
 import { proPromotionLoans } from '../../../../api/loans/queries';
 import { getPromotionCustomerOwnerType } from '../../../../api/promotions/promotionClientHelpers';
-import { PROMOTION_USERS_ROLES } from '../../../../api/promotions/promotionConstants';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
 import StatusLabel from '../../../StatusLabel';
 import T from '../../../Translation';
@@ -84,21 +83,13 @@ const getColumns = ({ currentUser, promotion: { promotionLots = [] } }) => [
 
 export default withProps(({ promotion }) => {
   const currentUser = useCurrentUser();
-  const { _id: promotionId, users: promotionUsers = [] } = promotion;
+  const { _id: promotionId } = promotion;
   const [status, setStatus] = useState({
     $in: Object.values(LOAN_STATUS).filter(
       s => s !== LOAN_STATUS.UNSUCCESSFUL && s !== LOAN_STATUS.TEST,
     ),
   });
-  const [invitedBy, setInvitedBy] = useState(() => {
-    // Only initialise this filter for brokers
-    const userIsInPromotion = promotionUsers.find(
-      ({ _id, $metadata }) =>
-        _id === currentUser._id &&
-        $metadata.roles.includes(PROMOTION_USERS_ROLES.BROKER),
-    );
-    return userIsInPromotion ? currentUser._id : null;
-  });
+  const [invitedBy, setInvitedBy] = useState(null);
 
   const queryConfig = {
     query: proPromotionLoans,

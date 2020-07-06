@@ -7,7 +7,6 @@ import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
@@ -35,8 +34,14 @@ import {
 } from '../../../revenues/revenueConstants';
 import SlackService from '../../../slack/server/SlackService';
 import TaskService from '../../../tasks/server/TaskService';
+import { TASK_STATUS, TASK_TYPES } from '../../../tasks/taskConstants';
 import UserService from '../../../users/server/UserService';
-import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import {
+  LOAN_CATEGORIES,
+  LOAN_STATUS,
+  PURCHASE_TYPE,
+  STEPS,
+} from '../../loanConstants';
 import {
   loanSetAdminNote,
   loanSetStatus,
@@ -1240,13 +1245,13 @@ describe('LoanService', function () {
 
           expect(spy.calledOnce).to.equal(true);
           expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
-          expect(spy.args[0][1]).to.deep.equal({
+          expect(spy.args[0][1]).to.deep.include({
             adminId: 'adminId2',
             adminName: 'Admin 2',
             assigneeId: 'adminId1',
             assigneeName: 'Admin 1',
-            customerId: 'customerId',
-            customerName: 'Customer 1',
+            userId: 'customerId',
+            userName: 'Customer 1',
             loanCategory: LOAN_CATEGORIES.STANDARD,
             loanId: 'myLoan',
             loanName: '20-0001',
@@ -1255,8 +1260,8 @@ describe('LoanService', function () {
             loanStep: STEPS.SOLVENCY,
             nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
             prevStatus: LOAN_STATUS.LEAD,
-            referredByOrganisation: 'Org 1',
-            referredByUser: 'Pro 1',
+            referringOrganisationName: 'Org 1',
+            referringUserName: 'Pro 1',
           });
         })
         .finally(() => {
@@ -2000,15 +2005,18 @@ describe('LoanService', function () {
           _factory: 'user',
           assignedEmployeeId: 'admin',
         },
-        disbursementDate: moment(today).add(offset, 'days').toDate(),
+        disbursementDate: moment(today)
+          .add(offset, 'days')
+          .startOf('day')
+          .toDate(),
       }));
 
     afterEach(() => {
       SlackService.send.restore();
     });
 
-    let today;
     let spy;
+    let today;
 
     beforeEach(async () => {
       today = new Date();
@@ -2019,25 +2027,88 @@ describe('LoanService', function () {
           { offset: 5 },
           { offset: 9 },
           { offset: 10 },
-          { offset: 11 },
+          { offset: 12 },
           { offset: 10 },
         ]),
       });
       spy = sinon.spy();
       sinon.stub(SlackService, 'send').callsFake(spy);
-      await generateDisbursedSoonLoansTasks.serverRun({});
     });
 
     it('generates the tasks for the loans disbursed in 10 days', async () => {
-      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1, type: 1 });
 
       expect(tasks.length).to.equal(2);
-      tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
+      tasks.forEach(({ title, assigneeLink: { _id: adminId }, type }) => {
         expect(title).to.include(
           moment(today).add(10, 'days').format('DD.MM.YYYY'),
         );
         expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
       });
+    });
+
+    it('does not generate the tasks again', async () => {
+      await generateDisbursedSoonLoansTasks.serverRun({});
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({
+        title: 1,
+        assigneeLink: 1,
+        type: 1,
+      });
+
+      expect(tasks.length).to.equal(2);
+      tasks.forEach(({ title, assigneeLink: { _id: adminId }, type }) => {
+        expect(title).to.include(
+          moment(today).add(10, 'days').format('DD.MM.YYYY'),
+        );
+        expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
+      });
+    });
+
+    it('regenerates the task if disbursementDate changed and task was completed', async () => {
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const task = TaskService.get({ 'loanLink._id': 'l4' }, { _id: 1 });
+      TaskService.update({
+        taskId: task._id,
+        object: { status: TASK_STATUS.COMPLETED },
+      });
+
+      LoanService.update({
+        loanId: 'l4',
+        object: {
+          disbursementDate: moment(today)
+            .add(11, 'days')
+            .startOf('day')
+            .toDate(),
+        },
+      });
+
+      const clock = sinon.useFakeTimers(Date.now());
+      clock.tick(24 * 60 * 60 * 1000);
+      await generateDisbursedSoonLoansTasks.serverRun({});
+      clock.restore();
+
+      const tasks = TaskService.fetch({
+        loan: { _id: 1 },
+        assigneeLink: 1,
+        type: 1,
+      });
+
+      expect(tasks.length).to.equal(3);
+      tasks.forEach(({ assigneeLink: { _id: adminId }, type }) => {
+        expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
+      });
+      const [task1, task2, task3] = tasks;
+      expect(task1.loan._id).to.equal('l4');
+      expect(task2.loan._id).to.equal('l6');
+      expect(task3.loan._id).to.equal('l4');
     });
   });
 

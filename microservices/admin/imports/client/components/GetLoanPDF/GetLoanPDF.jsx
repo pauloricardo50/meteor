@@ -5,27 +5,37 @@ import React from 'react';
 import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { PDF_TYPES } from 'core/api/pdf/pdfConstants';
 import { ROLES } from 'core/api/users/userConstants';
 import Icon from 'core/components/Icon/Icon';
 
+import PdfDisplayer from '../PdfDisplayer/PdfDisplayer';
 import GetLoanPDFContainer from './GetLoanPDFContainer';
 import PdfDownloadDialog from './PdfDownloadDialog';
 
 const GetLoanPDF = ({ handlePDF, handleHTML, loan }) => (
   <>
+    {!!loan.maxPropertyValue?.date && (
+      <PdfDisplayer
+        pdfType={PDF_TYPES.SIMPLE_FINANCING_CERTIFICATE}
+        pdfProps={{ loan }}
+        buttonProps={{
+          label: 'Accord de principe',
+          className: 'mr-4',
+          disabled: loan.purchaseType !== PURCHASE_TYPE.ACQUISITION,
+          tooltip:
+            loan.purchaseType !== PURCHASE_TYPE.ACQUISITION &&
+            "Uniquement pour les acquisitions pour l'instant",
+        }}
+      />
+    )}
     <PdfDownloadDialog
       onSubmit={values => handlePDF(values)}
-      buttonLabel="PDF"
+      buttonLabel="PDF du dossier"
       icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
       loan={loan}
       dialogTitle="Télécharger PDF"
-    />
-    <PdfDownloadDialog
-      onSubmit={values => handlePDF({ ...values, anonymous: true })}
-      buttonLabel="PDF anonyme"
-      icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
-      loan={loan}
-      dialogTitle="Télécharger PDF anonyme"
     />
     {Roles.userIsInRole(Meteor.user(), ROLES.DEV) && (
       <PdfDownloadDialog

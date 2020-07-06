@@ -25,7 +25,7 @@ class UpdateWatcherService extends CollectionService {
 
   addUpdateWatching({ collection, fields, shouldWatch = () => true }) {
     const that = this;
-    const hookHandle = collection.after.update(function(
+    const hookHandle = collection.after.update(function (
       userId,
       doc,
       fieldNames,
@@ -181,13 +181,19 @@ class UpdateWatcherService extends CollectionService {
     const title = this.getNotificationTitle({ docId, collection });
     const message = this.formatUpdatedFields(updatedFields);
 
-    updateWatcherNotification({
-      user,
-      title,
-      collection,
-      docId,
-      message,
-    });
+    const docExists = !!Mongo.Collection.get(collection)
+      .find({ _id: docId })
+      .count();
+
+    if (docExists) {
+      updateWatcherNotification({
+        user,
+        title,
+        collection,
+        docId,
+        message,
+      });
+    }
 
     this.remove(updateWatcherId);
   }
@@ -203,8 +209,9 @@ class UpdateWatcherService extends CollectionService {
     switch (collection) {
       case BORROWERS_COLLECTION: {
         const { firstName, lastName } = doc;
-        return `Modifications pour l'emprunteur "${firstName ||
-          ''} ${lastName || ''}"`;
+        return `Modifications pour l'emprunteur "${firstName || ''} ${
+          lastName || ''
+        }"`;
       }
 
       case PROPERTIES_COLLECTION: {

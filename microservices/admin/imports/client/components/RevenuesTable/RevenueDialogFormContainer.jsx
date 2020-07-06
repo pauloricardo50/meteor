@@ -17,7 +17,7 @@ import Box from 'core/components/Box';
 import T from 'core/components/Translation';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 
-const getSchema = (currentUser) =>
+const getSchema = currentUser =>
   RevenueSchema.omit(
     'assigneeLink',
     'createdAt',
@@ -41,7 +41,7 @@ const getSchema = (currentUser) =>
         },
       },
       uniforms: {
-        transform: (assignee) => assignee?.firstName,
+        transform: assignee => assignee?.firstName,
         labelProps: { shrink: true },
         label: 'Responsable du revenu',
         displayEmtpy: false,
@@ -54,10 +54,10 @@ const getSchema = (currentUser) =>
       type: String,
       customAllowedValues: {
         query: ORGANISATIONS_COLLECTION,
-        params: () => ({ name: 1, $options: { sort: { name: 1 } } }),
+        params: { name: 1, $options: { sort: { name: 1 } } },
       },
       uniforms: {
-        transform: (org) => org?.name,
+        transform: org => org?.name,
         labelProps: { shrink: true },
         label: <T id="Forms.organisationName" />,
         displayEmtpy: false,
@@ -74,10 +74,10 @@ const getSchema = (currentUser) =>
       type: String,
       customAllowedValues: {
         query: ORGANISATIONS_COLLECTION,
-        params: () => ({ name: 1, $options: { sort: { name: 1 } } }),
+        params: { name: 1, $options: { sort: { name: 1 } } },
       },
       uniforms: {
-        transform: (org) => org?.name,
+        transform: org => org?.name,
         displayEmpty: false,
         labelProps: { shrink: true },
         placeholder: '',
@@ -139,7 +139,7 @@ export default compose(
       return {
         schema,
         model: revenue,
-        insertRevenue: (model) =>
+        insertRevenue: model =>
           revenueInsert.run({
             revenue: model,
             loanId: loan?._id,
@@ -150,7 +150,7 @@ export default compose(
           revenueUpdate.run({ revenueId, object }).finally(() => {
             onSubmitted();
           }),
-        deleteRevenue: (revenueId) =>
+        deleteRevenue: revenueId =>
           revenueRemove.run({ revenueId }).finally(() => {
             onSubmitted();
           }),

@@ -3,9 +3,14 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 import colors from './colors';
 
-const createTheme = ({ fontSize = 14 }) => {
+const createTheme = ({ fontSize = 14 } = {}) => {
   const theme = createMuiTheme(
     {
+      props: {
+        MuiTextField: {
+          variant: 'outlined',
+        },
+      },
       overrides: {
         MuiToolbar: {
           root: {

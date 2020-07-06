@@ -198,11 +198,6 @@ export const loanSetStatus = new Method({
   params: { loanId: String, status: String },
 });
 
-export const loanUpdateCreatedAt = new Method({
-  name: 'loanUpdateCreatedAt',
-  params: { loanId: String, createdAt: Date },
-});
-
 export const sendLoanChecklist = new Method({
   name: 'sendLoanChecklist',
   params: {
@@ -264,4 +259,14 @@ export const loanLinkProperty = new Method({
 export const addClosingChecklists = new Method({
   name: 'addClosingChecklists',
   params: { loanId: String },
+});
+
+export const notifyInsuranceTeamForPotential = new Method({
+  name: 'notifyInsuranceTeamForPotential',
+  params: { loanId: String },
+});
+
+export const updateInsurancePotential = new Method({
+  name: 'updateInsurancePotential',
+  params: { loanId: String, insurancePotential: String },
 });

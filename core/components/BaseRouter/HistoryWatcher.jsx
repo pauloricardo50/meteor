@@ -36,12 +36,8 @@ export default class HistoryWatcher extends Component {
     const trackingId = getCookie(TRACKING_COOKIE);
     if (!trackingId) {
       const randomId =
-        Math.random()
-          .toString(36)
-          .substr(2) +
-        Math.random()
-          .toString(36)
-          .substr(2);
+        Math.random().toString(36).substr(2) +
+        Math.random().toString(36).substr(2);
       setCookie(TRACKING_COOKIE, randomId);
     }
   }

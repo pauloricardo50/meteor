@@ -23,6 +23,7 @@ import EVENTS from '../events';
 import {
   analyticsCTA,
   analyticsLogin,
+  analyticsOpenedIntercom,
   analyticsPage,
   analyticsVerifyEmail,
 } from '../methodDefinitions';
@@ -95,11 +96,6 @@ addAnalyticsListener({
     params: { loanId },
   }) => {
     const { userId: adminId } = context;
-    let referredByOrganisation;
-    let referredByUser;
-    let assigneeId;
-    let assigneeName;
-    let customerName;
     const {
       userId: customerId,
       category: loanCategory,
@@ -118,27 +114,10 @@ addAnalyticsListener({
       mainAssignee: 1,
     });
     const { name: adminName } = UserService.get(adminId, { name: 1 });
-    if (customerId) {
-      const user = UserService.get(customerId, {
-        referredByUser: { name: 1 },
-        referredByOrganisation: { name: 1 },
-        assignedEmployee: { name: 1 },
-        name: 1,
-      });
-      assigneeId = mainAssignee?._id;
-      assigneeName = mainAssignee?.name;
-      referredByOrganisation = user.referredByOrganisation?.name;
-      referredByUser = user.referredByUser?.name;
-      customerName = user.name;
-    }
 
-    analytics.track(EVENTS.LOAN_STATUS_CHANGED, {
+    let properties = {
       adminId,
       adminName,
-      assigneeId,
-      assigneeName,
-      customerId,
-      customerName,
       loanCategory,
       loanId,
       loanName,
@@ -147,9 +126,32 @@ addAnalyticsListener({
       loanStep,
       nextStatus,
       prevStatus,
-      referredByOrganisation,
-      referredByUser,
-    });
+    };
+
+    if (customerId) {
+      const user = UserService.get(customerId, {
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { name: 1 },
+        name: 1,
+        email: 1,
+      });
+
+      properties = {
+        ...properties,
+        assigneeId: mainAssignee?._id,
+        assigneeName: mainAssignee?.name,
+        referringOrganisationName: user.referredByOrganisation?.name,
+        referringOrganisationId: user.referredByOrganisation?._id,
+        referringUserName: user.referredByUser?.name,
+        referringUserId: user.referredByUser?._id,
+        userName: user.name,
+        userEmail: user.email,
+        userId: user._id,
+      };
+    }
+
+    analytics.track(EVENTS.LOAN_STATUS_CHANGED, properties);
   },
 });
 
@@ -160,10 +162,10 @@ addAnalyticsListener({
     const {
       name: userName,
       email: userEmail,
-      referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
       referredByOrganisation: {
-        _id: referredByOrganisationId,
-        name: referredByOrganisationName,
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName },
     } = UserService.get(userId, {
@@ -185,10 +187,10 @@ addAnalyticsListener({
       userId,
       userName,
       userEmail,
-      referredByUserId,
-      referredByUserName,
-      referredByOrganisationId,
-      referredByOrganisationName,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
       assigneeId,
       assigneeName,
     });
@@ -202,10 +204,10 @@ addAnalyticsListener({
     const {
       name: userName,
       email: userEmail,
-      referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
       referredByOrganisation: {
-        _id: referredByOrganisationId,
-        name: referredByOrganisationName,
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = UserService.get(userId, {
@@ -221,10 +223,10 @@ addAnalyticsListener({
       userId,
       userName,
       userEmail,
-      referredByUserId,
-      referredByUserName,
-      referredByOrganisationId,
-      referredByOrganisationName,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
       assigneeId,
       assigneeName,
     });
@@ -251,10 +253,10 @@ addAnalyticsListener({
     const {
       name: userName,
       email: userEmail,
-      referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
       referredByOrganisation: {
-        _id: referredByOrganisationId,
-        name: referredByOrganisationName,
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
@@ -263,10 +265,10 @@ addAnalyticsListener({
       userId,
       userName,
       userEmail,
-      referredByUserId,
-      referredByUserName,
-      referredByOrganisationId,
-      referredByOrganisationName,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
       assigneeId,
       assigneeName,
     });
@@ -310,7 +312,12 @@ addAnalyticsListener({
       name: loanName,
       purchaseType,
     } = loan;
-    const { canton, main = {}, second = {}, type } = maxPropertyValue;
+    const {
+      canton,
+      main = {},
+      second = {},
+      type: interfaceType,
+    } = maxPropertyValue;
     const {
       min: {
         borrowRatio: mainMinBorrowRatio,
@@ -354,10 +361,10 @@ addAnalyticsListener({
       _id: userId,
       name: userName,
       email: userEmail,
-      referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
       referredByOrganisation: {
-        _id: referredByOrganisationId,
-        name: referredByOrganisationName,
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
@@ -366,11 +373,11 @@ addAnalyticsListener({
       loanId,
       loanName,
       canton,
-      type,
+      interfaceType,
       anonymous,
       purchaseType,
       proPropertyValue: property.value,
-      proProperty: property._id,
+      proPropertyId: property._id,
       proPropertyAddress: property.address,
       mainMinBorrowRatio,
       mainMaxBorrowRatio,
@@ -389,10 +396,10 @@ addAnalyticsListener({
       userId,
       userName,
       userEmail,
-      referredByUserId,
-      referredByUserName,
-      referredByOrganisationId,
-      referredByOrganisationName,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
       assigneeId,
       assigneeName,
     });
@@ -444,10 +451,10 @@ addAnalyticsListener({
       _id: userId,
       name: userName,
       email: userEmail,
-      referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
       referredByOrganisation: {
-        _id: referredByOrganisationId,
-        name: referredByOrganisationName,
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
@@ -464,10 +471,10 @@ addAnalyticsListener({
       userId,
       userName,
       userEmail,
-      referredByUserId,
-      referredByUserName,
-      referredByOrganisationId,
-      referredByOrganisationName,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
       assigneeId,
       assigneeName,
     });
@@ -481,29 +488,34 @@ addAnalyticsListener({
     params: { proPropertyId, referralId, trackingId },
     result: loanId,
   }) => {
-    const { name: loanName, purchaseType, user = {} } = LoanService.get(
-      loanId,
-      {
+    const {
+      name: loanName,
+      purchaseType,
+      user = {},
+      promotions = [],
+    } = LoanService.get(loanId, {
+      name: 1,
+      purchaseType: 1,
+      user: {
         name: 1,
-        purchaseType: 1,
-        user: {
-          name: 1,
-          email: 1,
-          referredByOrganisation: { name: 1 },
-          referredByUser: { name: 1 },
-          assignedEmployee: { name: 1 },
-        },
+        email: 1,
+        referredByOrganisation: { name: 1 },
+        referredByUser: { name: 1 },
+        assignedEmployee: { name: 1 },
       },
-    );
+      promotions: { name: 1 },
+    });
+
+    const [promotion] = promotions;
 
     const {
       _id: userId,
       name: userName,
       email: userEmail,
-      referredByUser: { _id: referredByUserId, name: referredByUserName } = {},
+      referredByUser: { _id: referringUserId, name: referringUserName } = {},
       referredByOrganisation: {
-        _id: referredByOrganisationId,
-        name: referredByOrganisationName,
+        _id: referringOrganisationId,
+        name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
@@ -519,12 +531,14 @@ addAnalyticsListener({
         userId,
         userName,
         userEmail,
-        referredByUserId,
-        referredByUserName,
-        referredByOrganisationId,
-        referredByOrganisationName,
+        referringUserId,
+        referringUserName,
+        referringOrganisationId,
+        referringOrganisationName,
         assigneeId,
         assigneeName,
+        promotionId: promotion?._id,
+        promotionName: promotion?.name,
       },
       trackingId,
     );
@@ -747,5 +761,48 @@ addAnalyticsListener({
       organisationId,
       organisationName,
     });
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsOpenedIntercom,
+  func: ({
+    analytics,
+    params: { trackingId, lastPageTitle, lastPagePath, lastPageMicroservice },
+    context,
+  }) => {
+    const { userId } = context;
+
+    let params = {
+      lastPageTitle,
+      lastPagePath,
+      lastPageMicroservice,
+    };
+
+    if (userId) {
+      const user = UserService.get(userId, {
+        name: 1,
+        email: 1,
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { intercomId: 1, name: 1 },
+      });
+
+      params = {
+        ...params,
+        userId: user?._id,
+        userName: user?.name,
+        userEmail: user?.email,
+        referringUserId: user?.referredByUser?._id,
+        referringUserName: user?.referredByUser?.name,
+        referringOrganisationId: user?.referredByOrganisation?._id,
+        referringOrganisationName: user?.referredByOrganisation?.name,
+        assigneeId: user?.assignedEmployee?._id,
+        assigneeName: user?.assignedEmployee?.name,
+      };
+      analytics.identify(trackingId);
+    }
+
+    analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params, trackingId);
   },
 });

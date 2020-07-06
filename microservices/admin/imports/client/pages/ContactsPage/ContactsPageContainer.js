@@ -5,4 +5,5 @@ import { contact } from 'core/api/fragments';
 export default withSmartQuery({
   query: CONTACTS_COLLECTION,
   params: contact(),
+  dataName: 'contacts',
 });

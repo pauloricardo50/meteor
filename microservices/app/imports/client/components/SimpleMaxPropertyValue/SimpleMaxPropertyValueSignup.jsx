@@ -2,11 +2,12 @@ import React from 'react';
 import { faCheckCircle } from '@fortawesome/pro-light-svg-icons/faCheckCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import MaxPropertyValueCertificate from 'core/components/MaxPropertyValue/MaxPropertyValueCertificate';
 import T from 'core/components/Translation';
 
 import UserCreatorForm from '../UserCreator/UserCreatorForm';
 
-const SimpleMaxPropertyValueSignup = ({ fixed }) => (
+const SimpleMaxPropertyValueSignup = ({ loan }) => (
   <div className="max-property-value">
     <h2>
       <T id="MaxPropertyValue.signup.title" />
@@ -27,6 +28,7 @@ const SimpleMaxPropertyValueSignup = ({ fixed }) => (
         ctaId="maxPropertyValue"
       />
     </div>
+    <MaxPropertyValueCertificate loan={loan} />
   </div>
 );
 

@@ -12,7 +12,12 @@ import PromotionLotGroupChip from './PromotionLotGroupChip';
 const getProColumns = ({ promotionLotGroups = [] }) => [
   {
     Header: <T id="PromotionPage.lots.name" />,
-    accessor: 'name',
+    accessor: 'propertyCache.0.name',
+    Cell: ({
+      row: {
+        original: { name },
+      },
+    }) => name,
   },
   {
     Header: <T id="PromotionPage.lots.group" />,

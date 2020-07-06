@@ -54,7 +54,7 @@ const RevenueSuggestions = ({ loanId, suggestRevenue }) => {
     return <div>Loading...</div>;
   }
 
-  const { lenders, structure } = loan;
+  const { lenders, structure = {} } = loan;
   const { wantedLoan } = structure;
   const hasReferral = !!referralOrganisation;
   const referralIsCommissionned =

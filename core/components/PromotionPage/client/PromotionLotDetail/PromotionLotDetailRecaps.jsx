@@ -74,6 +74,7 @@ const getPromotionLotRecapArray = promotionLot => {
     yearlyExpenses,
     roomCount,
     terraceArea,
+    balconyArea,
   } = property;
 
   return [
@@ -92,6 +93,11 @@ const getPromotionLotRecapArray = promotionLot => {
       label: 'Forms.terraceArea',
       value: <MetricArea value={terraceArea} />,
       hide: !terraceArea,
+    },
+    {
+      label: 'Forms.balconyArea',
+      value: <MetricArea value={balconyArea} />,
+      hide: !balconyArea,
     },
     {
       label: 'Forms.gardenArea',

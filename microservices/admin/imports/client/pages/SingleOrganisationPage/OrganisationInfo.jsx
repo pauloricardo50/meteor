@@ -4,7 +4,7 @@ import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationCon
 import AdminNote from 'core/components/AdminNote';
 import UploaderArray from 'core/components/UploaderArray';
 
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import CollectionTasksDataTable from '../../components/TasksDataTable/CollectionTasksDataTable';
 
 const organisationDocuments = [{ id: 'OTHER', noTooltips: true }];
 
@@ -29,10 +29,10 @@ const OrganisationInfo = ({
       allowRequireByAdmin={false}
       variant="simple"
     />
-    <CollectionTasksTable
-      doc={{ _id, _collection }}
-      collection={ORGANISATIONS_COLLECTION}
-      withTaskInsert
+    <CollectionTasksDataTable
+      docId={_id}
+      collection={_collection}
+      className="single-loan-page-tasks card1 card-top"
     />
   </div>
 );

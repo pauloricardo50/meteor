@@ -4,29 +4,63 @@ const ACQUISITION_TEMPLATE = [
   {
     title: 'Obtention du contrat de crédit',
     items: [
-      { title: "Projet d'acte de vente transmis", requiresDocument: true },
-      { title: 'Offre ferme obtenue', access: CHECKLIST_ITEM_ACCESS.ADMIN },
-      { title: 'Offre ferme acceptée', access: CHECKLIST_ITEM_ACCESS.ADMIN },
       {
-        title: 'Mise en relation client/prêteur',
+        title: "Projet d'acte de vente transmis",
+        description:
+          "Demandez le projet d'acte au notaire et transmettez le à votre conseiller",
+        requiresDocument: true,
+      },
+      {
+        title: 'Offre ferme obtenue',
+        description: "Réactualiser l'offre si besoin",
         access: CHECKLIST_ITEM_ACCESS.ADMIN,
       },
-      { title: 'Ouverture des comptes' },
-      { title: 'Contrat de crédit édité', requiresDocument: true },
-      { title: 'Documents et informations essentielles manquantes' },
+      {
+        title: 'Offre ferme acceptée',
+        description: 'Par le client',
+        access: CHECKLIST_ITEM_ACCESS.ADMIN,
+      },
+      {
+        title: 'Client mis en relation avec le prêteur',
+        access: CHECKLIST_ITEM_ACCESS.ADMIN,
+      },
+      {
+        title: 'Comptes bancaires ouverts',
+        description: 'Ouvrez vos nouveaux comptes chez votre prêteur',
+      },
+      {
+        title: 'Contrat de crédit édité',
+        description: 'Demandez le contrat à votre conseiller',
+        requiresDocument: true,
+      },
     ],
   },
   {
     title: 'Déblocage des fonds',
     items: [
-      { title: 'Fixation des taux' },
-      { title: 'Validation de la date de départ' },
-      { title: 'Contrat de crédit signé et retourné', requiresDocument: true },
       {
-        title: 'Tous les fonds propres selon la constitution du plan financier',
+        title: 'Contrat de crédit signé et retourné',
+        description:
+          'Signez et transmettez votre contrat à votre prêteur et à votre conseiller',
+        requiresDocument: true,
       },
-      { title: 'Toutes les garanties selon la constitution du plan financier' },
-      { title: 'Confirmation closing définitif' },
+      {
+        title: 'Acte de nantissement signé',
+        description: 'Pour les nantissements prévus dans votre plan financier',
+      },
+      {
+        title: 'Date de décaissement validée',
+        description: 'La date à laquelle votre prêt débutera',
+      },
+      {
+        title: 'Taux fixés',
+        description: 'Obtenez les taux définitifs de votre prêt',
+      },
+      {
+        title: 'Fonds propres versés',
+        description:
+          'Faites les démarches auprès des caisses de pension/assurances en cas de retrait',
+      },
     ],
   },
 ];
@@ -34,51 +68,45 @@ const ACQUISITION_TEMPLATE = [
 const PROMOTION_ACQUISITION_TEMPLATE = [
   ACQUISITION_TEMPLATE[0],
   {
-    title: 'Déblocage des fonds',
+    ...ACQUISITION_TEMPLATE[1],
     items: [
-      { title: 'Fixation des taux' },
-      { title: 'Validation de la date de départ' },
-      { title: 'Contrat de crédit signé et retourné', requiresDocument: true },
-      { title: 'Projet de contrat EG transmis', requiresDocument: true },
-      { title: 'Contrat EG signé et retourné', requiresDocument: true },
+      ...ACQUISITION_TEMPLATE[1].items.slice(0, 4),
       {
-        title: 'Tous les fonds propres selon la constitution du plan financier',
+        title: 'Projet de contrat EG transmis',
+        description: "Demandez le contrat à l'entreprise générale",
+        requiresDocument: true,
       },
-      { title: 'Toutes les garanties selon la constitution du plan financier' },
-      { title: 'Confirmation closing définitif' },
+      {
+        title: 'Contrat EG signé et retourné',
+        description:
+          "Signez et transmettez votre contrat à l'entreprise générale et à votre conseiller",
+        requiresDocument: true,
+      },
+      ...ACQUISITION_TEMPLATE[1].items.slice(-1),
     ],
   },
 ];
 
 const REFINANCING_TEMPLATE = [
   {
-    title: 'Obtention du contrat de crédit',
-    items: [
-      { title: 'Offre ferme obtenue', access: CHECKLIST_ITEM_ACCESS.ADMIN },
-      { title: 'Offre ferme acceptée', access: CHECKLIST_ITEM_ACCESS.ADMIN },
-      {
-        title: 'Mise en relation client/prêteur',
-        access: CHECKLIST_ITEM_ACCESS.ADMIN,
-      },
-      { title: 'Ouverture des comptes' },
-      { title: 'Contrat de crédit édité', requiresDocument: true },
-      { title: 'Documents et informations essentielles manquantes' },
-    ],
+    ...ACQUISITION_TEMPLATE[0],
+    items: [...ACQUISITION_TEMPLATE[0].items.slice(1)],
   },
   {
     title: 'Déblocage des fonds',
     items: [
-      { title: 'Fixation des taux' },
-      { title: 'Validation de la date de départ' },
-      { title: 'Contrat de crédit signé et retourné' },
-      { title: 'Décompte de remboursement', requiresDocument: true },
-      { title: 'Engagement de remise des cédules', requiresDocument: true },
-      { title: 'Acte de constitution des cédules', requiresDocument: true },
+      ...ACQUISITION_TEMPLATE[1].items.slice(0, 4),
       {
-        title: 'Tous les fonds propres selon la constitution du plan financier',
+        title: 'Décompte de remboursement transmis',
+        description: 'Demandez ce document à votre prêteur actuel',
+        requiresDocument: true,
       },
-      { title: 'Toutes les garanties selon la constitution du plan financier' },
-      { title: 'Confirmation closing définitif' },
+      {
+        title: 'Engagement de remise des cédules transmis',
+        description: 'Demandez ce document à votre prêteur actuel',
+        requiresDocument: true,
+      },
+      ...ACQUISITION_TEMPLATE[1].items.slice(-1),
     ],
   },
 ];

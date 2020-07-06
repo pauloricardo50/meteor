@@ -20,6 +20,7 @@ const schema = PropertySchema.pick(
   'insideArea',
   'landArea',
   'terraceArea',
+  'balconyArea',
   'gardenArea',
   'cnstructionYear',
   'externalUrl',
@@ -38,6 +39,8 @@ const ExternalPropertyAdder = props => (
       primary: true,
       icon: <Icon type="add" />,
     }}
+    title={<T id="ProDashboardPage.ExternalPropertyAdder" />}
+    description={<T id="ProDashboardPage.ExternalPropertyAdder.description" />}
   />
 );
 

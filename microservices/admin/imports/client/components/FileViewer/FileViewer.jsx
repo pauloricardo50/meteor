@@ -5,6 +5,8 @@ import IconButton from 'core/components/IconButton';
 import { withFileViewerContext } from 'core/containers/FileViewerContext';
 import Loadable from 'core/utils/loadable';
 
+import PdfFileViewer from './PdfFileViewer';
+
 // import ReactFileViewer from 'react-file-viewer';
 
 const ReactFileViewer = Loadable({ loader: () => import('react-file-viewer') });
@@ -67,9 +69,17 @@ class FileViewer extends Component {
   }, 500);
 
   render() {
-    const { filePath, fileType, hideFileViewer } = this.props;
+    const {
+      filePath,
+      fileType,
+      hideFileViewer,
+      fileViewerType,
+      pdfType,
+      pdfProps,
+    } = this.props;
     const { width } = this.state;
-    if (!filePath) {
+
+    if (!filePath && !pdfType) {
       return null;
     }
 
@@ -86,11 +96,16 @@ class FileViewer extends Component {
             className="file-viewer-resizer"
             onMouseDown={this.handleMouseDown}
           />
-          <ReactFileViewer
-            fileType={fileType}
-            filePath={filePath}
-            key={filePath}
-          />
+          {fileViewerType === 'file' && (
+            <ReactFileViewer
+              fileType={fileType}
+              filePath={filePath}
+              key={filePath}
+            />
+          )}
+          {fileViewerType === 'pdf' && (
+            <PdfFileViewer pdfType={pdfType} pdfProps={pdfProps} />
+          )}
         </div>
       </div>
     );

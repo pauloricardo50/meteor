@@ -15,8 +15,12 @@
     height: calc(100% - 64px);
   }
 
-  canvas {
+  canvas, iframe {
     width: 100%;
+  }
+
+  iframe {
+    height: inherit;
   }
 
   .pg-viewer-wrapper,
@@ -31,8 +35,9 @@
   &-closer {
     position: absolute;
     z-index: 1;
-    top: 16px;
+    top: 40px;
     right: 16px;
+    color: $error;
   }
 
   &-resizer {

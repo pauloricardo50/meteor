@@ -1,19 +1,9 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import TextInput from '../TextInput';
 import DatePicker from './DatePicker';
-
-// Make sure the underline shows
-const styles = {
-  underline: {
-    '&:before': {
-      zIndex: 1,
-    },
-  },
-};
 
 class DateInput extends Component {
   constructor(props) {
@@ -82,4 +72,4 @@ DateInput.defaultProps = {
   openDirection: undefined,
 };
 
-export default withStyles(styles)(DateInput);
+export default DateInput;

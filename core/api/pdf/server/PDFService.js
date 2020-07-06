@@ -19,7 +19,6 @@ const PDF_URL = 'https://docraptor.com/docs';
 const loanBankFragment = merge({}, calculatorLoan(), {
   name: 1,
   borrowers: { address: 1, name: 1, age: 1 },
-  properties: { promotion: { name: 1 } },
   user: {
     assignedEmployee: {
       name: 1,
@@ -27,6 +26,7 @@ const loanBankFragment = merge({}, calculatorLoan(), {
       phoneNumbers: 1,
     },
   },
+  promotions: { name: 1 },
 });
 
 class PDFService {
@@ -152,9 +152,7 @@ class PDFService {
 
     return fetch(PDF_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
       .then(res => {

@@ -4,7 +4,10 @@ import SimpleSchema from 'simpl-schema';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { anonymousCreateUser } from 'core/api/users/methodDefinitions';
+import {
+  anonymousCreateUser,
+  getEnrollUrl,
+} from 'core/api/users/methodDefinitions';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 import { getCookie } from 'core/utils/cookiesHelpers';
 import { createRoute } from 'core/utils/routerUtils';
@@ -37,7 +40,7 @@ export default compose(
           loanId: loanId || undefined,
           ctaId,
         })
-        .finally(() => {
+        .then(userId => {
           localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
           localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
           history.push(
@@ -45,6 +48,11 @@ export default compose(
               email: values.email,
             }),
           );
+
+          // Useful in dev mode, check the console to get the enrollment URL
+          if (process.env.NODE_ENV === 'development') {
+            getEnrollUrl.run({ userId }).then(console.log);
+          }
         });
     },
   })),

@@ -1336,6 +1336,25 @@ describe('UserService', function () {
 
       expect(description).to.include('Ma man');
       expect(assigneeId).to.equal('adminId');
+
+      await checkEmails(2);
+    });
+
+    it('should not create the user if the promotion is not ready', () => {
+      generator({
+        promotions: { _id: 'promoId', name: 'Yo', city: '', promotionLots: {} },
+      });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: { email: 'test@e-potek.ch' },
+          promotionIds: ['promoId'],
+        }),
+      ).to.throw('Il faut ajouter un nom');
+
+      expect(
+        UserService.findOne({ 'emails.address': 'test@e-potek.ch' }),
+      ).to.equal(undefined);
     });
   });
 });

@@ -1,3 +1,5 @@
+import ErrorLogger from '../../errorLogger/server/ErrorLogger';
+import IntercomService from '../../intercom/server/IntercomService';
 import SecurityService from '../../security';
 import { ROLES } from '../roles/roleConstants';
 import { ASSIGNEE } from '../userConstants';
@@ -27,25 +29,18 @@ class AssigneeService {
       return;
     }
 
-    const {
-      referredByUser,
-      referredByOrganisation,
-      loans = [],
-      roles,
-    } = UserService.get(newUserId, {
-      loans: {
-        $options: { sort: { createdAt: 1 } },
-        promotions: { assignedEmployeeId: 1 },
+    const { referredByUser, referredByOrganisation, roles } = UserService.get(
+      newUserId,
+      {
+        referredByUser: {
+          assignedEmployeeId: 1,
+          organisations: { assigneeLink: 1 },
+        },
+        referredByOrganisation: { assigneeLink: 1 },
+        roles: 1,
       },
-      referredByUser: {
-        assignedEmployeeId: 1,
-        organisations: { assigneeLink: 1 },
-      },
-      referredByOrganisation: { assigneeLink: 1 },
-      roles: 1,
-    });
+    );
 
-    this.promotionAssignee = loans[0]?.promotions?.[0]?.assignedEmployeeId;
     this.referredByUserAssignee = referredByUser?.assignedEmployeeId;
     const referredByUserMainOrganisation = referredByUser?.organisations?.find(
       ({ $metadata }) => $metadata.isMain,
@@ -108,16 +103,17 @@ class AssigneeService {
         linkName: 'assignedEmployee',
         linkId: assigneeId,
       });
+
+      IntercomService.updateContactOwner({
+        userId: this.newUserId,
+        adminId: assigneeId,
+      });
     }
 
     return assigneeId;
   }
 
   getSuggestedAssigneeId() {
-    if (this.isAvailable(this.promotionAssignee)) {
-      return this.promotionAssignee;
-    }
-
     if (this.isAvailable(this.referredByUserAssignee)) {
       return this.referredByUserAssignee;
     }
@@ -202,6 +198,9 @@ class AssigneeService {
       const newAssignee = UserService.get(adminId, { name: 1 }) || {};
 
       UserService.update({ userId, object: { assignedEmployeeId: adminId } });
+
+      IntercomService.updateContactOwner({ userId, adminId });
+
       return { oldAssignee, newAssignee };
     }
 
