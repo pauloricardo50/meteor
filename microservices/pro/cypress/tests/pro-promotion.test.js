@@ -51,25 +51,15 @@ describe('Pro promotion', () => {
       });
       cy.refetch();
 
-      cy.get('.mui-select')
-        .contains('dev+pro1@e-potek.ch')
-        .click();
-      cy.contains('Tous').click();
-
       cy.get('tbody tr').should('have.length', 4);
 
       cy.get('tbody tr')
         .first()
         .then(tr => {
           cy.wrap(tr).should('contain', 'XXX');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseover');
+          cy.wrap(tr).find('.icon-link').last().trigger('mouseover');
           cy.get('.popover-content').should('contain', 'XXX');
-          cy.wrap(tr)
-            .get('.button')
-            .should('not.exist');
+          cy.wrap(tr).get('.button').should('not.exist');
         });
 
       // customers are invited by user
@@ -80,19 +70,11 @@ describe('Pro promotion', () => {
         .first()
         .then(tr => {
           cy.wrap(tr).should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseover');
+          cy.wrap(tr).find('.icon-link').last().trigger('mouseover');
           cy.get('.popover-content').should('not.contain', 'Personne');
           cy.get('.popover-content').should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .get('.button')
-            .should('not.exist');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseleave');
+          cy.wrap(tr).get('.button').should('not.exist');
+          cy.wrap(tr).find('.icon-link').last().trigger('mouseleave');
         });
 
       // customers are invited by user's organisation member
@@ -111,15 +93,10 @@ describe('Pro promotion', () => {
         .first()
         .then(tr => {
           cy.wrap(tr).should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseover');
+          cy.wrap(tr).find('.icon-link').last().trigger('mouseover');
           cy.get('.popover-content').should('not.contain', 'Personne');
           cy.get('.popover-content').should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .get('.button')
-            .should('not.exist');
+          cy.wrap(tr).get('.button').should('not.exist');
         });
 
       // Can now delete customers
@@ -135,13 +112,9 @@ describe('Pro promotion', () => {
       cy.refetch();
       cy.wait(500);
 
-      cy.get('.actions')
-        .first()
-        .click();
+      cy.get('.actions').first().click();
 
-      cy.contains('Supprimer')
-        .first()
-        .click();
+      cy.contains('Supprimer').first().click();
 
       cy.refetch();
 
@@ -181,9 +154,7 @@ describe('Pro promotion', () => {
         });
 
       cy.get('@lotIndex').then(lotIndex => {
-        cy.get('.promotion-lots-table tbody tr')
-          .eq(lotIndex)
-          .click();
+        cy.get('.promotion-lots-table tbody tr').eq(lotIndex).click();
       });
 
       cy.get('@loanCount').then(count => {
@@ -355,9 +326,7 @@ describe('Pro promotion', () => {
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('not.exist');
-        cy.get('.promotion-lots-table')
-          .contains('Lot 2')
-          .should('not.exist');
+        cy.get('.promotion-lots-table').contains('Lot 2').should('not.exist');
 
         cy.contains('Lot 1').click();
         cy.wait(2000); // Try to wait for focus to settle
@@ -376,9 +345,7 @@ describe('Pro promotion', () => {
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('exist');
-        cy.get('.promotion-lots-table')
-          .contains('Lot 2')
-          .should('exist');
+        cy.get('.promotion-lots-table').contains('Lot 2').should('exist');
       });
 
       it('should remove lots', () => {
@@ -394,9 +361,7 @@ describe('Pro promotion', () => {
         cy.contains('Test promotion').click();
         cy.contains('Afficher lots annexes').click();
 
-        cy.get('.additional-lots-table')
-          .contains('Lot 2')
-          .click();
+        cy.get('.additional-lots-table').contains('Lot 2').click();
 
         cy.contains('Supprimer').click();
         cy.contains('Confirmer').click();
