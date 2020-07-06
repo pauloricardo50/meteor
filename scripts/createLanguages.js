@@ -144,6 +144,7 @@ const config = {
         'Search',
         'SearchResults',
         'SimpleDashboardPage',
+        'SimpleFinancingCertificate',
         'StatusIconTooltip',
         'steps',
         'Table',

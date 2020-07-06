@@ -13,6 +13,7 @@ import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import createTheme from '../../config/muiCustom';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import { base64ToBlob } from '../../utils/base64-to-blob';
+import { formatMessage } from '../../utils/intl';
 import { AutoFormDialog } from '../AutoForm2';
 import Box from '../Box';
 import Icon from '../Icon';
@@ -73,7 +74,10 @@ const makeHandleSubmit = ({ _id: loanId, name, borrowers }) => async ({
   const string = await getSimpleFinancingCertificate.run({ loanId });
   fileSaver.saveAs(
     base64ToBlob(string),
-    `e-Potek, Accord de principe – ${name}.pdf`,
+    `${formatMessage({
+      id: 'SimpleFinancingCertificate.pdfTitle',
+      values: { name },
+    })}.pdf`,
   );
 
   return result;

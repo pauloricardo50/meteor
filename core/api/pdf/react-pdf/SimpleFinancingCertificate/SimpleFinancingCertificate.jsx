@@ -1,44 +1,19 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
-import { Document, Font, Image, Page, StyleSheet } from '@react-pdf/renderer';
+import { Image } from '@react-pdf/renderer';
 
 import { Money } from '../../../../components/Translation';
+import { formatMessage } from '../../../../utils/intl';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
+import PdfDocument from '../PdfDocument';
+import PdfPage from '../PdfPage';
 import T from '../PdfTranslation';
+import { assetUrl } from '../reactPdfHelpers';
 import Text from '../Text';
 import SimpleFinancingCertificateDetails from './SimpleFinancingCertificateDetails';
 import SimpleFinancingCertificateFooter from './SimpleFinancingCertificateFooter';
 import SimpleFinancingCertificateHeader from './SimpleFinancingCertificateHeader';
-
-// Use fixed url once the new font files are deployed
-const assetUrl = 'http://localhost:5000';
-// const assetUrl = 'https://app.e-potek.ch';
-
-Font.register({
-  family: 'Manrope-extralight',
-  src: `${assetUrl}/fonts/Manrope-ExtraLight.ttf`,
-  fontWeight: 300,
-});
-Font.register({
-  family: 'Manrope-semibold',
-  src: `${assetUrl}/fonts/Manrope-SemiBold.ttf`,
-  fontWeight: 600,
-});
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    fontFamily: 'Manrope-extralight',
-    padding: '25mm',
-    fontSize: 10,
-    alignItems: 'stretch',
-  },
-  logo: {
-    width: 120,
-    height: 120,
-    alignSelf: 'center',
-    marginBottom: 16,
-  },
-});
 
 // Create Document Component
 const SimpleFinancingCertificate = ({ loan = {} }) => {
@@ -55,18 +30,34 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
   if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
     propertyValue = main.max.propertyValue;
     borrowRatio = main.max.borrowRatio;
-  }
-  if (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE) {
+  } else if (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE) {
     propertyValue = second.max.propertyValue;
     borrowRatio = second.max.borrowRatio;
+  } else {
+    throw new Meteor.Error(
+      "L'accord de principe en PDF n'est disponible que pour les résidences principales et secondaires pour le moment",
+    );
   }
 
   return (
-    <Document>
-      <Page size="A4" style={styles.page}>
+    <PdfDocument
+      title={formatMessage({
+        id: 'SimpleFinancingCertificate.pdfTitle',
+        values: { name },
+      })}
+    >
+      <PdfPage>
         <SimpleFinancingCertificateHeader name={name} />
 
-        <Image src={`${assetUrl}/img/epotek-logo.png`} style={styles.logo} />
+        <Image
+          src={`${assetUrl}/img/epotek-logo.png`}
+          style={{
+            width: 120,
+            height: 120,
+            alignSelf: 'center',
+            marginBottom: 16,
+          }}
+        />
 
         <Text size={24} style={{ alignSelf: 'center', marginBottom: 8 }}>
           <T id="SimpleFinancingCertificate.title" />
@@ -120,8 +111,8 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
         />
 
         <SimpleFinancingCertificateFooter canton={canton} />
-      </Page>
-    </Document>
+      </PdfPage>
+    </PdfDocument>
   );
 };
 export default SimpleFinancingCertificate;
