@@ -4,9 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
-import { adminProperties } from 'core/api/properties/queries';
-import { USERS_COLLECTION } from 'core/api/users/userConstants';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_CATEGORY,
+} from 'core/api/properties/propertyConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { IntlNumber } from 'core/components/Translation';
 
@@ -69,22 +70,19 @@ const columnOptions = [
 
 const PropertiesTableContainer = compose(
   withSmartQuery({
-    query: adminProperties,
+    query: PROPERTIES_COLLECTION,
     params: {
-      $body: {
-        address1: 1,
-        category: 1,
-        city: 1,
-        createdAt: 1,
-        loans: { name: 1 },
-        name: 1,
-        promotion: { name: 1 },
-        updatedAt: 1,
-        user: { name: 1 },
-        value: 1,
-      },
+      address1: 1,
+      category: 1,
+      city: 1,
+      createdAt: 1,
+      loans: { name: 1 },
+      name: 1,
+      promotion: { name: 1 },
+      updatedAt: 1,
+      user: { name: 1 },
+      value: 1,
     },
-    queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',
   }),
