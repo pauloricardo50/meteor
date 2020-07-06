@@ -1,19 +1,21 @@
+import './NewsletterSignup.scss';
+
 import React, { useContext, useState } from 'react';
 import { RichText } from 'prismic-reactjs';
+
 import Loading from 'core/components/Loading';
 import TextInput from 'core/components/TextInput/TextInput';
-import Button from '../Button';
-import RecentNewsletters from './RecentNewsletters';
+
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 import meteorClient from '../../utils/meteorClient';
-import './NewsletterSignup.scss';
+import Button from '../Button';
+import RecentNewsletters from './RecentNewsletters';
 
-const simulateSignup = () => {
-  return new Promise(resolve => {
+const simulateSignup = () =>
+  new Promise((resolve) => {
     setTimeout(() => resolve({ status: 200 }), 1000);
   });
-};
 
 const NewsletterSignup = ({ primary, placement }) => {
   const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ const NewsletterSignup = ({ primary, placement }) => {
   const [success, setSuccess] = useState('');
   const [language] = useContext(LanguageContext);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) return;
 
@@ -61,9 +63,12 @@ const NewsletterSignup = ({ primary, placement }) => {
     return (
       <form onSubmit={handleSubmit} className="signup-form">
         <TextInput
+          label="Email"
           className="email"
           value={email}
-          onChange={e => setEmail(e.currentTarget.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
         />
 
         <Button primary raised className="button" type="submit">

@@ -1,14 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import useAllNewsletter from '../../hooks/useAllNewsletter';
+
 import LanguageContext from '../../contexts/LanguageContext';
+import useAllNewsletter from '../../hooks/useAllNewsletter';
 import { getLanguageData } from '../../utils/languages';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'inline-flex',
     border: 'none',
@@ -26,7 +27,7 @@ const RecentNewsletters = () => {
   const allNewsletters = useAllNewsletter();
   const [expanded, setExpanded] = useState(false);
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -40,8 +41,8 @@ const RecentNewsletters = () => {
       >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls={`panel-content`}
-          id={`panel-header`}
+          aria-controls="panel-content"
+          id="panel-header"
           classes={useStyles()}
         >
           {getLanguageData(language).recentNewslettersToggle}
@@ -59,9 +60,8 @@ const RecentNewsletters = () => {
               return (
                 <li key={id} className="newsletter">
                   <a href={url} title={title} target="_new">
-                    {newsletterTitle}
-                    <br />
-                    {newsletterDate}
+                    <div className="mb-4">{newsletterTitle}</div>
+                    <div className="secondary">{newsletterDate}</div>
                   </a>
                 </li>
               );

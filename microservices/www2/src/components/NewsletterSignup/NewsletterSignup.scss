@@ -2,7 +2,9 @@
   &__content {
     margin-right: auto;
     margin-left: auto;
-    max-width: 600px;
+    max-width: $site-width;
+    display: flex;
+    flex-direction: column;
   }
 
   h1,
@@ -111,8 +113,20 @@
 }
 
 .signup-form {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+
   .MuiFormControl-root + button {
     margin-left: 12px;
+  }
+
+  .email {
+    width: 200px;
+
+    @media screen and (min-width: $med) {
+      width: 300px;
+    }
   }
 }
 
@@ -124,21 +138,13 @@
   .newsletter {
     a {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 54px;
+      flex-direction: column;
       border-radius: 5px;
       border: solid 1px #cccccc;
-      padding-right: 15px;
-      padding-left: 15px;
-      // Manrope-Light
-      font-size: 16px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: center;
-      color: black;
+      padding: 8px;
+      &:hover {
+        border-color: $primary;
+      }
     }
 
     + .newsletter {

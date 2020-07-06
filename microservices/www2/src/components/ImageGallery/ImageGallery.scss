@@ -23,6 +23,7 @@
     overflow-x: auto;
     width: 100%;
     margin: 0px auto;
+    max-width: 1200px;
 
     // hide horizontal scrollbar
     &::-webkit-scrollbar {
@@ -36,7 +37,8 @@
     img {
       display: block;
       max-width: 100%;
-      width: 194px;
+      // width: 194px;
+      height: 40px;
     }
 
     img + img {
@@ -72,9 +74,6 @@
     }
 
     .gallery {
-      img {
-        width: 484px;
-      }
 
       img + img {
         margin-left: 116px;
