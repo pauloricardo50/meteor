@@ -1198,7 +1198,7 @@ describe('LoanService', function () {
       });
     });
 
-    it('the method calls analytics', () => {
+    it('the method calls analytics', async () => {
       const spy = sinon.spy();
       sinon.stub(Analytics.prototype, 'track').callsFake(spy);
       generator({
@@ -1231,42 +1231,41 @@ describe('LoanService', function () {
         ],
       });
 
-      return ddpWithUserId('adminId2', () =>
+      const result = await ddpWithUserId('adminId2', () =>
         loanSetStatus.run({
           loanId: 'myLoan',
           status: LOAN_STATUS.QUALIFIED_LEAD,
         }),
-      )
-        .then(result => {
-          expect(result).to.deep.equal({
-            prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
-          });
+      );
+      expect(result).to.deep.equal({
+        prevStatus: LOAN_STATUS.LEAD,
+        nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+      });
 
-          expect(spy.calledOnce).to.equal(true);
-          expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
-          expect(spy.args[0][1]).to.deep.include({
-            adminId: 'adminId2',
-            adminName: 'Admin 2',
-            assigneeId: 'adminId1',
-            assigneeName: 'Admin 1',
-            userId: 'customerId',
-            userName: 'Customer 1',
-            loanCategory: LOAN_CATEGORIES.STANDARD,
-            loanId: 'myLoan',
-            loanName: '20-0001',
-            loanPurchaseType: PURCHASE_TYPE.ACQUISITION,
-            loanResidenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-            loanStep: STEPS.SOLVENCY,
-            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            prevStatus: LOAN_STATUS.LEAD,
-            referringOrganisationName: 'Org 1',
-            referringUserName: 'Pro 1',
-          });
-        })
-        .finally(() => {
-          Analytics.prototype.track.restore();
-        });
+      await new Promise(r => setTimeout(r, 500));
+
+      expect(spy.calledOnce).to.equal(true);
+      expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
+      expect(spy.args[0][1]).to.deep.include({
+        adminId: 'adminId2',
+        adminName: 'Admin 2',
+        assigneeId: 'adminId1',
+        assigneeName: 'Admin 1',
+        userId: 'customerId',
+        userName: 'Customer 1',
+        loanCategory: LOAN_CATEGORIES.STANDARD,
+        loanId: 'myLoan',
+        loanName: '20-0001',
+        loanPurchaseType: PURCHASE_TYPE.ACQUISITION,
+        loanResidenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        loanStep: STEPS.SOLVENCY,
+        nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
+        prevStatus: LOAN_STATUS.LEAD,
+        referringOrganisationName: 'Org 1',
+        referringUserName: 'Pro 1',
+      });
+
+      Analytics.prototype.track.restore();
     });
 
     it('does not allow to change to the same status', () => {

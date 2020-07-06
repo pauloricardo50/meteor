@@ -29,9 +29,7 @@ PromotionOptions.addReducers({
       promotionLots.length > 0 ? promotionLots[0].promotion.canton : undefined,
   },
   invitedBy: {
-    body: {
-      loanCache: 1,
-    },
+    body: { loanCache: 1 },
     reduce: ({ loanCache }) => loanCache[0]?.promotionLinks?.[0]?.invitedBy,
   },
 });
