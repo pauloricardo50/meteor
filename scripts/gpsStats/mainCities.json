@@ -4,10 +4,6 @@
     "city": "Lausanne"
   },
   {
-    "zipCode": 1110,
-    "city": "Morges"
-  },
-  {
     "zipCode": 1200,
     "city": "Genève"
   },
@@ -16,24 +12,8 @@
     "city": "Yverdon-les-Bains"
   },
   {
-    "zipCode": 1630,
-    "city": "Bulle"
-  },
-  {
     "zipCode": 1700,
     "city": "Fribourg"
-  },
-  {
-    "zipCode": 1820,
-    "city": "Montreux"
-  },
-  {
-    "zipCode": 1870,
-    "city": "Monthey"
-  },
-  {
-    "zipCode": 1920,
-    "city": "Martigny"
   },
   {
     "zipCode": 1950,
@@ -42,14 +22,6 @@
   {
     "zipCode": 2000,
     "city": "Neuchâtel"
-  },
-  {
-    "zipCode": 2300,
-    "city": "La Chaux-de-Fonds"
-  },
-  {
-    "zipCode": 2500,
-    "city": "Bienne"
   },
   {
     "zipCode": 2540,
@@ -70,14 +42,6 @@
   {
     "zipCode": 3800,
     "city": "Interlaken"
-  },
-  {
-    "zipCode": 3900,
-    "city": "Viège"
-  },
-  {
-    "zipCode": 3960,
-    "city": "Sierre"
   },
   {
     "zipCode": 4000,
