@@ -1,0 +1,23 @@
+.checklist {
+
+  &-item {
+    position: relative;
+    align-items: flex-start;
+    border: 1px solid white;
+
+    h5 {
+      line-height: 22px; // Match icon height, which is 21.75px;
+    }
+
+    .uploader {
+      &.uploader {
+        padding: 0;
+        padding-top: 4px;
+      }
+
+      .file-name {
+        max-width: 110px;
+      }
+    }
+  }
+}

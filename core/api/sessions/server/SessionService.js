@@ -5,7 +5,7 @@ import CollectionService from '../../helpers/server/CollectionService';
 import UserService from '../../users/server/UserService';
 import Sessions from '../sessions';
 
-class SessionService extends CollectionService {
+export class SessionService extends CollectionService {
   constructor() {
     super(Sessions);
   }
@@ -19,7 +19,7 @@ class SessionService extends CollectionService {
     const { roles = [] } = user || {};
     return this.baseUpdate(
       { connectionId },
-      { $set: { userId, role: roles.length ? roles[0] : undefined } },
+      { $set: { userId, role: roles.length ? roles[0]._id : undefined } },
     );
   }
 
@@ -51,9 +51,7 @@ class SessionService extends CollectionService {
   }
 
   removeOldSessions() {
-    const fifteenMinutesAgo = moment()
-      .subtract(15, 'minutes')
-      .toDate();
+    const fifteenMinutesAgo = moment().subtract(15, 'minutes').toDate();
 
     const removed = this.remove({ updatedAt: { $lte: fifteenMinutesAgo } });
     return removed;

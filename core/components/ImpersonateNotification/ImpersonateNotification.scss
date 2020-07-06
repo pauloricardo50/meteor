@@ -1,0 +1,62 @@
+.impersonate-notification {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 10000;
+  
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  
+    height: 50px;
+  
+    border-radius: 50px;
+    background-color: white;
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
+  
+    img {
+      width: 32px;
+      height: 32px;
+      margin-left: 8px;
+  
+      border-radius: 50%;
+    }
+  
+    h4 {
+      margin-right: 8px;
+      margin-left: 8px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  
+    .impersonate-icon {
+      width: 32px;
+      height: 32px;
+      margin-left: 8px;
+    }
+  
+    &-dialog {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+  
+      img {
+        border-radius: 50%;
+      }
+  
+      p {
+        margin-bottom: 40px;
+      }
+  
+      .actions {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+  
+        > *:first-child {
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }

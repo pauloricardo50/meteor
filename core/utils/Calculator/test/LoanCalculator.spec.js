@@ -14,6 +14,7 @@ import {
   PROPERTY_CATEGORY,
   RESIDENCE_TYPE,
 } from '../../../api/properties/propertyConstants';
+import { REAL_ESTATE_INCOME_ALGORITHMS } from '../../../config/financeConstants';
 import Calculator, { Calculator as CalculatorClass } from '..';
 
 describe('LoanCalculator', () => {
@@ -160,7 +161,7 @@ describe('LoanCalculator', () => {
             structure: {
               property: { value: 100000 },
               wantedLoan: 500000,
-              loanTranches: [{ value: 1, type: 'myRate' }],
+              loanTranches: [{ value: 500000, type: 'myRate' }],
             },
           },
           interestRates: { myRate: 0.012 },
@@ -175,7 +176,7 @@ describe('LoanCalculator', () => {
             structure: {
               property: { value: 100000 },
               wantedLoan: 500000,
-              loanTranches: [{ value: 1, type: 'myRate' }],
+              loanTranches: [{ value: 500000, type: 'myRate' }],
               offer: { myRate: 0.012 },
             },
           },
@@ -540,7 +541,7 @@ describe('LoanCalculator', () => {
               wantedLoan: 960000,
               property: { value: 1200000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 960000 }],
             },
             currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
           },
@@ -556,7 +557,7 @@ describe('LoanCalculator', () => {
               wantedLoan: 960000,
               property: { value: 1200000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 960000 }],
             },
           },
           interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
@@ -576,7 +577,7 @@ describe('LoanCalculator', () => {
                 [INTEREST_RATES.YEARS_10]: 0.02,
               },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 960000 }],
             },
           },
           interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
@@ -585,16 +586,16 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe('getTheoreticalMonthly', () => {
+  describe('getMonthlyProjectCost', () => {
     it('uses the default theoretical rate', () => {
       expect(
-        Calculator.getTheoreticalMonthly({
+        Calculator.getMonthlyProjectCost({
           loan: {
             structure: {
               wantedLoan: 960000,
               property: { value: 1200000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 960000 }],
             },
           },
         }),
@@ -607,13 +608,13 @@ describe('LoanCalculator', () => {
         theoreticalInterestRate: 0.01,
       });
       expect(
-        Calc.getTheoreticalMonthly({
+        Calc.getMonthlyProjectCost({
           loan: {
             structure: {
               wantedLoan: 960000,
               property: { value: 1200000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 960000 }],
             },
           },
         }),
@@ -634,13 +635,13 @@ describe('LoanCalculator', () => {
       // 2800 for the other property
 
       expect(
-        Calc.getTheoreticalMonthly({
+        Calc.getMonthlyProjectCost({
           loan: {
             structure: {
               wantedLoan: 960000,
               property: { value: 1200000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 960000 }],
             },
             borrowers: [
               {
@@ -656,6 +657,8 @@ describe('LoanCalculator', () => {
 
   describe('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
+      // Valeurs magiques qui donnent 33.33%
+      // Tu peux le retrouver en utilisant notre calculateur pour une acquisition de 1mio
       expect(
         Calculator.getIncomeRatio({
           loan: {
@@ -663,7 +666,7 @@ describe('LoanCalculator', () => {
               wantedLoan: 800000,
               property: { value: 1000000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
             },
             borrowers: [{ salary: 180000 }],
           },
@@ -680,7 +683,7 @@ describe('LoanCalculator', () => {
               wantedLoan: 800000,
               property: { value: 1000000 },
               propertyWork: 0,
-              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
             },
             borrowers: [
               { expenses: [{ value: 10000, description: EXPENSES.LEASING }] },
@@ -689,6 +692,161 @@ describe('LoanCalculator', () => {
           interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
         }),
       ).to.equal(1);
+    });
+
+    it('includes investmentRent on the property', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeConsideration: 0.5,
+      });
+
+      expect(
+        calc.getIncomeRatio({
+          loan: {
+            structure: {
+              wantedLoan: 800000,
+              property: { value: 1000000, investmentRent: 40000 },
+              propertyWork: 0,
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
+            },
+            borrowers: [{ salary: 160000 }],
+          },
+          interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+        }),
+      ).to.be.within(0.33, 0.34);
+    });
+
+    it('Calculates property income based on positive and negative deltas', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000, investmentRent: 36000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [{ salary: 160000 }],
+        },
+      });
+
+      expect(incomeRatio).to.equal(0.15);
+    });
+
+    it('Adds the borrower expenses to expenses', () => {
+      const calc = new CalculatorClass({
+        expensesSubtractFromIncome: [],
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              salary: 160000,
+              expenses: [{ value: 20000, description: EXPENSES.LEASING }],
+            },
+          ],
+        },
+      });
+
+      expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
+    });
+
+    it('Splits the right borrower expenses between expenses and income', () => {
+      const calc = new CalculatorClass({
+        expensesSubtractFromIncome: [EXPENSES.LEASING],
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              salary: 160000,
+              expenses: [
+                { value: 20000, description: EXPENSES.LEASING },
+                { value: 10000, description: EXPENSES.PENSIONS },
+              ],
+            },
+          ],
+        },
+      });
+
+      expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
+    });
+
+    it('Adds negative deltas to expenses using positive negative split algorithm', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              salary: 160000,
+              realEstate: [
+                // 30'000 expenses
+                {
+                  value: 1000000,
+                  loan: 800000,
+                  income: 0,
+                  theoreticalExpenses: 30000,
+                },
+                // 20'000 income
+                {
+                  value: 1000000,
+                  loan: 800000,
+                  income: 20000,
+                  theoreticalExpenses: 0,
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      // 90'000 / 180'000
+      expect(Math.round(incomeRatio * 100) / 100).to.equal(0.5);
+    });
+
+    it('returns 0 if a property pays for itself', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeAlgorithm:
+          REAL_ESTATE_INCOME_ALGORITHMS.POSITIVE_NEGATIVE_SPLIT,
+      });
+
+      const incomeRatio = calc.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000, investmentRent: 60000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [{ salary: 160000 }],
+        },
+      });
+
+      expect(incomeRatio).to.equal(0);
     });
   });
 
@@ -1191,6 +1349,7 @@ describe('LoanCalculator', () => {
       expect(
         Calculator.getMissingOwnFunds({
           loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
             properties: [{ _id: 'propertyId', value: 1000000, canton: 'GE' }],
             structures: [
               {
@@ -1699,6 +1858,141 @@ describe('LoanCalculator', () => {
         },
       });
       expect(cashRatio).to.equal(0.05);
+    });
+  });
+
+  describe('getMaxLoanValue', () => {
+    it('returns 80% of the propertyValue', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', propertyValue: 1000000 }],
+          selectedStructure: 'struct',
+        },
+      });
+      expect(maxLoan).to.equal(800000);
+    });
+
+    it('returns 75% of the propertyValue for investment properties', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', propertyValue: 1000000 }],
+          selectedStructure: 'struct',
+          residenceType: RESIDENCE_TYPE.INVESTMENT,
+        },
+      });
+      expect(maxLoan).to.equal(750000);
+    });
+
+    it('returns the maxAmount from the offer', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', offerId: 'o', propertyValue: 1000000 }],
+          lenders: [{ offers: [{ _id: 'o', maxAmount: 10 }] }],
+          selectedStructure: 'struct',
+        },
+      });
+      expect(maxLoan).to.equal(10);
+    });
+
+    it('increases the max loan by the pledged own funds amount', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [
+            {
+              id: 'struct',
+              propertyValue: 1000000,
+              ownFunds: [
+                {
+                  value: 20000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_2,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+              ],
+            },
+          ],
+          selectedStructure: 'struct',
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        },
+      });
+      expect(maxLoan).to.equal(820000);
+    });
+
+    it('caps the max loan amount at maxBorrowRatioWithPledge', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [
+            {
+              id: 'struct',
+              propertyValue: 1000000,
+              ownFunds: [
+                {
+                  value: 120000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_2,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+              ],
+            },
+          ],
+          selectedStructure: 'struct',
+          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        },
+      });
+      expect(maxLoan).to.equal(900000);
+    });
+
+    it('counts propertyWork in the math', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [
+            { id: 'struct', propertyValue: 1000000, propertyWork: 100000 },
+          ],
+          selectedStructure: 'struct',
+        },
+      });
+      expect(maxLoan).to.equal(880000);
+    });
+
+    it('floors to nearest 1000', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', propertyValue: 1234567 }],
+          selectedStructure: 'struct',
+        },
+      });
+      expect(maxLoan).to.equal(987000);
+    });
+
+    it("uses the property's value", () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', propertyId: 'p' }],
+          selectedStructure: 'struct',
+          properties: [{ _id: 'p', value: 1000000 }],
+        },
+      });
+      expect(maxLoan).to.equal(800000);
+    });
+
+    it('uses the property bankValue', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', propertyId: 'p' }],
+          selectedStructure: 'struct',
+          properties: [{ _id: 'p', value: 1000000, bankValue: 900000 }],
+        },
+      });
+      expect(maxLoan).to.equal(720000);
+    });
+
+    it('ignores the bankValue if it is 0', () => {
+      const maxLoan = Calculator.getMaxLoanValue({
+        loan: {
+          structures: [{ id: 'struct', propertyId: 'p' }],
+          selectedStructure: 'struct',
+          properties: [{ _id: 'p', value: 1000000, bankValue: 0 }],
+        },
+      });
+      expect(maxLoan).to.equal(800000);
     });
   });
 });

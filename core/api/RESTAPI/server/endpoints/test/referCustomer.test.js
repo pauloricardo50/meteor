@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import SlackService from '../../../../slack/server/SlackService';
 import UserService from '../../../../users/server/UserService';
@@ -98,6 +97,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org3', name: 'Org 3' },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -105,6 +106,8 @@ describe('REST: referCustomer', function() {
           emails: [{ address: 'pro2@org.com', verified: true }],
           organisations: [{ _id: 'org', $metadata: { isMain: true } }],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -114,6 +117,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org2', $metadata: { isMain: true }, name: 'Org 2' },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -123,6 +128,8 @@ describe('REST: referCustomer', function() {
             { _id: 'org3', $metadata: { isMain: true, title: 'CEO' } },
           ],
           assignedEmployeeId: 'admin',
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
       ],
     });

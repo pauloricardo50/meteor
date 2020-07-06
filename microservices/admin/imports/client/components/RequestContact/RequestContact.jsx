@@ -13,10 +13,16 @@ const RequestContact = ({
 }) => (
   <div key={email} className={className}>
     <div className="flex center-align">
-      <Icon type={icon} className="mr-4" />
-      <h4>
-        {name} <small className="secondary">{title}</small>
-      </h4>
+      <div
+        className="flex center-align mr-4"
+        style={{ whiteSpace: 'pre-wrap' }}
+      >
+        <Icon type={icon} className="mr-4" />
+        <h4 className="font-size-5">{name}</h4>
+      </div>
+      <h5>
+        <small className="secondary">{title}</small>
+      </h5>
     </div>
     <div className="flex center-align">
       <span className="flex center-align mr-8">

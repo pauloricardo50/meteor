@@ -14,13 +14,17 @@ class ClickToEditField extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { onSubmit, toggleEdit, value } = this.props;
+    const { onSubmit, toggleEdit, value, onBlur } = this.props;
     const nextValue = this.input.current.value;
 
     if (nextValue !== value) {
       onSubmit(nextValue).then(() => toggleEdit(false));
     } else {
       toggleEdit(false);
+    }
+
+    if (onBlur) {
+      onBlur();
     }
   };
 
@@ -41,6 +45,7 @@ class ClickToEditField extends Component {
       disabled,
       children,
       style,
+      onFocus = () => null,
     } = this.props;
 
     const displayValue = value || placeholder;
@@ -54,7 +59,10 @@ class ClickToEditField extends Component {
         })}
         onClick={
           allowEditing && !disabled
-            ? () => toggleEdit(true, () => this.input.current.focus())
+            ? () => {
+                onFocus();
+                toggleEdit(true, () => this.input.current.focus());
+              }
             : null
         }
         style={style}

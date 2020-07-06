@@ -21,5 +21,7 @@ export default compose(
       label: <T id="ProDashboardPage.addProperty" />,
       icon: <Icon type="add" />,
     },
+    title: 'Ajouter un bien immobilier',
+    description: 'Vous pourrez y inviter vos collegues et clients après',
   })),
 )(ProPropertyForm);

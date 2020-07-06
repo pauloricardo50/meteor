@@ -2,8 +2,10 @@ import React from 'react';
 import { compose, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
-import { adminPromotions } from 'core/api/promotions/queries';
+import {
+  PROMOTIONS_COLLECTION,
+  PROMOTION_STATUS,
+} from 'core/api/promotions/promotionConstants';
 import {
   BasePromotionsTableContainer,
   PromotionsTable,
@@ -13,10 +15,22 @@ import MongoSelect from 'core/components/Select/MongoSelect';
 export default compose(
   withState('status', 'setStatus'),
   withSmartQuery({
-    query: adminPromotions,
-    params: ({ status }) => ({ status }),
+    query: PROMOTIONS_COLLECTION,
+    params: ({ status }) => ({
+      $filters: { status },
+      availablePromotionLots: 1,
+      createdAt: 1,
+      isTest: 1,
+      loanCount: 1,
+      name: 1,
+      promotionLotLinks: 1,
+      promotionLots: { _id: 1 },
+      reservedPromotionLots: 1,
+      soldPromotionLots: 1,
+      status: 1,
+    }),
+    deps: ({ status }) => [status],
     dataName: 'promotions',
-    queryOptions: { reactive: false },
     renderMissingDoc: false,
   }),
   Component => ({ status, setStatus, ...props }) => (

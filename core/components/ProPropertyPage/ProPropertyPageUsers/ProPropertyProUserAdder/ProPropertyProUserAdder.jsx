@@ -3,7 +3,7 @@ import React from 'react';
 import withContextConsumer from '../../../../api/containerToolkit/withContextConsumer';
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { addProUserToProperty } from '../../../../api/properties/methodDefinitions';
-import { getUserByEmail } from '../../../../api/users/methodDefinitions';
+import { getProByEmail } from '../../../../api/users/methodDefinitions';
 import { userSearch } from '../../../../api/users/queries';
 import { ROLES } from '../../../../api/users/userConstants';
 import CollectionSearch from '../../../CollectionSearch';
@@ -25,7 +25,7 @@ const ProPropertyProUserAdder = ({ property, permissions: { isAdmin } }) => {
         query={isAdmin && userSearch}
         title="Rechercher un compte Pro"
         queryParams={{ roles: [ROLES.PRO] }}
-        method={!isAdmin && getUserByEmail}
+        method={!isAdmin && getProByEmail}
         methodParams={({ searchQuery }) => ({ email: searchQuery })}
         placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}
         resultsFilter={(results = []) =>

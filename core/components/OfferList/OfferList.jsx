@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import Calculator from '../../utils/Calculator';
 import makeSort from '../../utils/sorting';
 import ConditionsButton from '../ConditionsButton';
 import T from '../Translation';
@@ -30,68 +31,49 @@ const sortOffers = (offers, sort, isAscending) => {
   const sorter = makeSort(isAscending);
   return offers.sort((a, b) => sorter(a[sort], b[sort]));
 };
-class OfferList extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = { sort: 'maxAmount', isAscending: false };
+const OfferList = ({ loan }) => {
+  const [sort, setSort] = useState('maxAmount');
+  const [isAscending, setIsAscending] = useState(false);
+  const toggleAscending = () => setIsAscending(s => !s);
+  const offers = Calculator.selectOffers({ loan });
+
+  if (offers.length === 0) {
+    return <h3 className="secondary text-center">Pas encore d'offres</h3>;
   }
 
-  handleChange = value => this.setState({ sort: value });
+  const sortedOffers = sortOffers(offers, sort, isAscending);
 
-  handleChangeOrder = () =>
-    this.setState(prev => ({ isAscending: !prev.isAscending }));
+  return (
+    <div className="flex-col" style={{ width: '100%' }}>
+      <OfferListSorting
+        sort={sort}
+        options={[
+          ...getOfferValues({}).filter(({ component }) => !component),
+          { key: 'createdAt' },
+        ].map(({ key, id }) => ({
+          id: key || id,
+          label: <T id={`Forms.${key || id}`} />,
+        }))}
+        handleChange={setSort}
+        handleChangeOrder={toggleAscending}
+        isAscending={isAscending}
+      />
 
-  render() {
-    const { offers, property } = this.props;
-    const { sort, isAscending } = this.state;
-
-    const filteredOffers = sortOffers(offers, sort, isAscending);
-
-    if (filteredOffers.length === 0) {
-      return <h3 className="secondary text-center">Pas encore d'offres</h3>;
-    }
-
-    return (
-      <div className="flex-col" style={{ width: '100%' }}>
-        <OfferListSorting
-          sort={sort}
-          options={[
-            ...getOfferValues({}).filter(({ component }) => !component),
-            { key: 'createdAt' },
-          ].map(({ key, id }) => ({
-            id: key || id,
-            label: <T id={`offer.${key || id}`} />,
-          }))}
-          handleChange={this.handleChange}
-          handleChangeOrder={this.handleChangeOrder}
-          isAscending={isAscending}
+      {sortedOffers.map(offer => (
+        <Offer
+          offerValues={getOfferValues(offer)}
+          offer={offer}
+          loan={loan}
+          key={offer._id}
         />
-
-        {filteredOffers.map(offer => (
-          <Offer
-            offerValues={getOfferValues(offer)}
-            offer={{ ...offer, property }}
-            key={offer._id}
-          />
-        ))}
-      </div>
-    );
-  }
-}
-
-OfferList.propTypes = {
-  allowDelete: PropTypes.bool,
-  disabled: PropTypes.bool,
-  loan: PropTypes.object.isRequired,
-  offers: PropTypes.array,
-  property: PropTypes.object.isRequired,
+      ))}
+    </div>
+  );
 };
 
-OfferList.defaultProps = {
-  offers: [],
-  disabled: false,
-  allowDelete: false,
+OfferList.propTypes = {
+  loan: PropTypes.object.isRequired,
 };
 
 export default OfferList;

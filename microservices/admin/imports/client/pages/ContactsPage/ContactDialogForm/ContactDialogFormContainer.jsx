@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -11,7 +11,7 @@ import {
 } from 'core/api/contacts/methodDefinitions';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { address } from 'core/api/helpers/sharedSchemas';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import T from 'core/components/Translation';
 import useSearchParams from 'core/hooks/useSearchParams';
 
@@ -24,8 +24,8 @@ const schema = existingOrganisations =>
     'organisations.$._id': {
       type: String,
       customAllowedValues: {
-        query: adminOrganisations,
-        params: () => ({ $body: { name: 1 } }),
+        query: ORGANISATIONS_COLLECTION,
+        params: () => ({ name: 1, $options: { sort: { name: 1 } } }),
       },
       uniforms: {
         transform: ({ name }) => name,
@@ -108,13 +108,12 @@ const changeOrganisations = ({ contactId, organisations, useSameAddress }) =>
 
 export default compose(
   withSmartQuery({
-    query: adminOrganisations,
+    query: ORGANISATIONS_COLLECTION,
     queryOptions: { reactive: false },
-    params: { $body: { _id: 1 } },
+    params: { _id: 1, $options: { sort: { name: 1 } } },
     dataName: 'existingOrganisations',
     smallLoader: true,
   }),
-  withState('submitting', 'setSubmitting', false),
   withProps(({ existingOrganisations, model }) => {
     const initialSearchParams = useSearchParams();
     const [searchParams, setSearchParams] = useState(initialSearchParams);

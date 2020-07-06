@@ -10,7 +10,11 @@ import CollectionService from '../../helpers/server/CollectionService';
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
 import { getEffectiveDuration } from '../helpers';
-import { INSURANCES_COLLECTION, INSURANCE_STATUS } from '../insuranceConstants';
+import {
+  INSURANCES_COLLECTION,
+  INSURANCE_STATUS,
+  INSURANCE_STATUS_ORDER,
+} from '../insuranceConstants';
 import Insurances from '../insurances';
 
 class InsuranceService extends CollectionService {
@@ -202,6 +206,58 @@ class InsuranceService extends CollectionService {
     }
 
     return super.remove(insuranceId);
+  }
+
+  verifyStatusChange({ insuranceId, status }) {
+    const { status: prevStatus } = this.get(insuranceId, { status: 1 });
+
+    if (prevStatus === status) {
+      throw new Meteor.Error("Ce statut est le même qu'avant");
+    }
+
+    const orderedStatuses = INSURANCE_STATUS_ORDER.filter(
+      s => s !== INSURANCE_STATUS.DECLINED,
+    );
+
+    if (
+      !orderedStatuses.includes(status) ||
+      !orderedStatuses.includes(prevStatus)
+    ) {
+      return;
+    }
+
+    const statusIndex = orderedStatuses.indexOf(status);
+    const prevStatusIndex = orderedStatuses.indexOf(prevStatus);
+
+    // Status change does not respect the order
+    if (
+      statusIndex !== prevStatusIndex + 1 &&
+      statusIndex !== prevStatusIndex - 1
+    ) {
+      throw new Meteor.Error('Vous ne pouvez pas sauter des statuts');
+    }
+  }
+
+  updateStatus({ insuranceId, status }) {
+    this.verifyStatusChange({ insuranceId, status });
+
+    const {
+      borrowerLink: { _id: borrowerId } = {},
+      insuranceProductLink: { _id: insuranceProductId } = {},
+      organisationLink: { _id: organisationId } = {},
+    } = this.get(insuranceId, {
+      borrowerLink: 1,
+      insuranceProductLink: 1,
+      organisationLink: 1,
+    });
+
+    return this.update({
+      insuranceId,
+      borrowerId,
+      organisationId,
+      insuranceProductId,
+      insurance: { status },
+    });
   }
 }
 

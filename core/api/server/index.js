@@ -19,9 +19,8 @@ import './mongoIndexes';
 import './caches';
 import './serverCollections';
 
-import { Meteor } from 'meteor/meteor';
-
 import BorrowerService from '../borrowers/server/BorrowerService';
+import ChecklistService from '../checklists/server/ChecklistService';
 import CommissionRateService from '../commissionRates/server/CommissionRateService';
 import ContactService from '../contacts/server/ContactService';
 import ErrorLogger from '../errorLogger/server/ErrorLogger';
@@ -47,9 +46,6 @@ import UserService from '../users/server/UserService';
 import { COLLECTIONS } from './serverConstants';
 
 process.on('uncaughtException', error => {
-  if (!Meteor.isProduction) {
-    console.log('uncaughtException error', JSON.stringify(error, null, 2));
-  }
   ErrorLogger.handleError({
     error,
     additionalData: ['Server uncaughtException'],
@@ -58,9 +54,6 @@ process.on('uncaughtException', error => {
 });
 
 process.on('unhandledRejection', error => {
-  if (!Meteor.isProduction) {
-    console.log('unhandledRejection error', JSON.stringify(error, null, 2));
-  }
   ErrorLogger.handleError({
     error,
     additionalData: ['Server unhandledRejection'],
@@ -90,4 +83,5 @@ export const Services = {
   [COLLECTIONS.INSURANCES_COLLECTION]: InsuranceService,
   [COLLECTIONS.INSURANCE_PRODUCTS_COLLECTION]: InsuranceProductService,
   [COLLECTIONS.COMMISSION_RATES_COLLECTION]: CommissionRateService,
+  [COLLECTIONS.CHECKLISTS_COLLECTION]: ChecklistService,
 };

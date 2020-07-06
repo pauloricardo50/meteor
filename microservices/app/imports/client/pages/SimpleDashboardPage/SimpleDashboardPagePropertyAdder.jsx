@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { PropertyAdder } from 'core/components/PropertyForm';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import useMedia from 'core/hooks/useMedia';
 
 const triggerComponent = ({ onClick }) => (
@@ -18,7 +18,7 @@ const triggerComponent = ({ onClick }) => (
 );
 
 const SimpleDashboardPagePropertyAdder = ({ loanId }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const fullScreen = useMedia({ maxWidth: 768 });
 
   return (

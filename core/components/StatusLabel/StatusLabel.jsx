@@ -93,7 +93,6 @@ export const getStatuses = collection => {
       return {
         [TASK_STATUS.ACTIVE]: colors.primary,
         [TASK_STATUS.COMPLETED]: colors.success,
-        [TASK_STATUS.CANCELLED]: colors.error,
       };
 
     case LENDERS_COLLECTION:
@@ -135,8 +134,8 @@ export const getStatuses = collection => {
       return {
         [INSURANCE_STATUS.SUGGESTED]: colors.mix,
         [INSURANCE_STATUS.SIGNED]: colors.tertiary,
-        [INSURANCE_STATUS.DECLINED]: colors.error,
         [INSURANCE_STATUS.POLICED]: colors.success,
+        [INSURANCE_STATUS.DECLINED]: colors.error,
       };
 
     default:

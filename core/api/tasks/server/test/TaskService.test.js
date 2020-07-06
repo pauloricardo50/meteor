@@ -1,10 +1,15 @@
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
+import sinon from 'sinon';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
+import generator from '../../../factories/server';
+import { PROMOTION_OPTION_STATUS } from '../../../promotionOptions/promotionOptionConstants';
+import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
+import PromotionService from '../../../promotions/server/PromotionService';
 import { TASK_STATUS } from '../../taskConstants';
 import TaskService from '../TaskService';
 
@@ -89,6 +94,326 @@ describe('TaskService', () => {
       });
 
       expect(moment(newDate).isValid()).to.equal(true);
+    });
+  });
+
+  describe('taskSnooze', () => {
+    let clock;
+
+    beforeEach(() => {
+      const someMonday = moment('2020-06-29');
+      clock = sinon.useFakeTimers(someMonday.toDate().getTime());
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('sets a new dueAt if there is none yet', () => {
+      generator({ tasks: { _id: 'taskId' } });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(moment(dueAt).day()).to.equal(2); // Sunday is 0
+      expect(dueAt.getHours()).to.equal(8);
+      expect(dueAt.getMinutes()).to.equal(0);
+    });
+
+    it('sets the date to monday if done on a saturday', () => {
+      clock.restore();
+      const someSaturday = moment('2020-06-27');
+      clock = sinon.useFakeTimers(someSaturday.toDate().getTime());
+
+      generator({ tasks: { _id: 'taskId' } });
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(moment(dueAt).day()).to.equal(1);
+      expect(dueAt.getDate()).to.equal(29);
+    });
+
+    it('sets the date to monday if done on a friday', () => {
+      clock.restore();
+      const someFriday = moment('2020-06-26');
+      clock = sinon.useFakeTimers(someFriday.toDate().getTime());
+
+      generator({ tasks: { _id: 'taskId' } });
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(moment(dueAt).day()).to.equal(1);
+      expect(dueAt.getDate()).to.equal(29);
+    });
+
+    it('adds multiple days to the date', () => {
+      generator({ tasks: { _id: 'taskId' } });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 4 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(dueAt.getMonth()).to.equal(6); // January is 0
+      expect(dueAt.getDate()).to.equal(3);
+    });
+
+    it('adds days to the dueAt if it is in the future', () => {
+      generator({
+        tasks: { _id: 'taskId', dueAt: moment('2020-07-02').toDate() },
+      });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(dueAt.getMonth()).to.equal(6);
+      expect(dueAt.getDate()).to.equal(3);
+    });
+
+    it('ignores dueAt if in the past', () => {
+      generator({
+        tasks: { _id: 'taskId', dueAt: moment('2020-06-25').toDate() },
+      });
+
+      TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
+
+      const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
+      expect(dueAt.getMonth()).to.equal(5);
+      expect(dueAt.getDate()).to.equal(30);
+    });
+  });
+
+  describe('generatePromotionStepReminders', () => {
+    it('generates the tasks', async () => {
+      const in10Days = moment().add(10, 'days').startOf('day').toDate();
+
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'advisor' },
+          { _id: 'user1', assignedEmployeeId: 'admin' },
+          { _id: 'user2', assignedEmployeeId: 'admin' },
+          { _id: 'user3', assignedEmployeeId: 'admin' },
+        ],
+        promotions: [
+          {
+            _id: 'promo1',
+            status: PROMOTION_STATUS.FINISHED,
+            signingDate: in10Days,
+            constructionTimeline: { startPercent: 1 },
+            promotionOptions: {
+              loan: { _id: 'loan1', user: { _id: 'user1' } },
+              status: PROMOTION_OPTION_STATUS.SOLD,
+            },
+          },
+          {
+            _id: 'promo2',
+            status: PROMOTION_STATUS.FINISHED,
+            constructionTimeline: { endDate: in10Days, endPercent: 1 },
+            promotionOptions: {
+              loan: { _id: 'loan2', user: { _id: 'user2' } },
+              status: PROMOTION_OPTION_STATUS.SOLD,
+            },
+          },
+          {
+            _id: 'promo3',
+            status: PROMOTION_STATUS.FINISHED,
+            constructionTimeline: {
+              steps: [
+                {
+                  id: '1234',
+                  startDate: in10Days,
+                  percent: 1,
+                  description: 'My step',
+                },
+              ],
+            },
+            promotionOptions: {
+              loan: { _id: 'loan3', user: { _id: 'user3' } },
+              status: PROMOTION_OPTION_STATUS.SOLD,
+            },
+          },
+        ],
+      });
+
+      const numberOfTasks = await TaskService.generatePromotionStepReminders();
+
+      expect(numberOfTasks).to.equal(3);
+
+      const tasks = TaskService.fetch({
+        loanLink: 1,
+        title: 1,
+        assigneeLink: 1,
+      });
+
+      expect(tasks.length).to.equal(3);
+
+      const [task1, task2, task3] = tasks;
+
+      expect(task1).to.deep.include({
+        title:
+          'La tranche "Signature" sera décaissée dans 10 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan1' },
+        assigneeLink: { _id: 'admin' },
+      });
+      expect(task2).to.deep.include({
+        title:
+          'La tranche "Remise des clés" sera décaissée dans 10 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan2' },
+        assigneeLink: { _id: 'admin' },
+      });
+      expect(task3).to.deep.include({
+        title:
+          'La tranche "My step" sera décaissée dans 10 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan3' },
+        assigneeLink: { _id: 'admin' },
+      });
+    });
+
+    it('does not generates the tasks twice', async () => {
+      const in10Days = moment().add(10, 'days').startOf('day').toDate();
+
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'advisor' },
+          { _id: 'user1', assignedEmployeeId: 'admin' },
+        ],
+        promotions: [
+          {
+            _id: 'promo1',
+            status: PROMOTION_STATUS.FINISHED,
+            signingDate: in10Days,
+            constructionTimeline: { startPercent: 1 },
+            promotionOptions: {
+              loan: { _id: 'loan1', user: { _id: 'user1' } },
+              status: PROMOTION_OPTION_STATUS.SOLD,
+            },
+          },
+        ],
+      });
+
+      let numberOfTasks = await TaskService.generatePromotionStepReminders();
+      expect(numberOfTasks).to.equal(1);
+
+      numberOfTasks = await TaskService.generatePromotionStepReminders();
+      expect(numberOfTasks).to.equal(0);
+
+      const tasks = TaskService.fetch({
+        loanLink: 1,
+        title: 1,
+        assigneeLink: 1,
+      });
+
+      expect(tasks.length).to.equal(1);
+      expect(tasks[0]).to.deep.include({
+        title:
+          'La tranche "Signature" sera décaissée dans 10 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan1' },
+        assigneeLink: { _id: 'admin' },
+      });
+    });
+
+    it('does not generates the tasks twice 3 days after', async () => {
+      const in10Days = moment().add(10, 'days').startOf('day').toDate();
+
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'advisor' },
+          { _id: 'user1', assignedEmployeeId: 'admin' },
+        ],
+        promotions: [
+          {
+            _id: 'promo1',
+            status: PROMOTION_STATUS.FINISHED,
+            signingDate: in10Days,
+            constructionTimeline: { startPercent: 1 },
+            promotionOptions: {
+              loan: { _id: 'loan1', user: { _id: 'user1' } },
+              status: PROMOTION_OPTION_STATUS.SOLD,
+            },
+          },
+        ],
+      });
+
+      let numberOfTasks = await TaskService.generatePromotionStepReminders();
+      expect(numberOfTasks).to.equal(1);
+
+      const clock = sinon.useFakeTimers(Date.now());
+      clock.tick(3 * 24 * 60 * 60 * 1000);
+
+      numberOfTasks = await TaskService.generatePromotionStepReminders();
+      expect(numberOfTasks).to.equal(0);
+
+      clock.restore();
+
+      const tasks = TaskService.fetch({
+        loanLink: 1,
+        title: 1,
+        assigneeLink: 1,
+      });
+
+      expect(tasks.length).to.equal(1);
+      expect(tasks[0]).to.deep.include({
+        title:
+          'La tranche "Signature" sera décaissée dans 10 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan1' },
+        assigneeLink: { _id: 'admin' },
+      });
+    });
+
+    it('regenerates the task if the step date changed', async () => {
+      const in10Days = moment().add(10, 'days').startOf('day').toDate();
+      const in5Days = moment().add(5, 'days').startOf('day').toDate();
+
+      generator({
+        users: [
+          { _id: 'admin', _factory: 'advisor' },
+          { _id: 'user1', assignedEmployeeId: 'admin' },
+        ],
+        promotions: [
+          {
+            _id: 'promo1',
+            status: PROMOTION_STATUS.FINISHED,
+            signingDate: in10Days,
+            constructionTimeline: { startPercent: 1 },
+            promotionOptions: {
+              loan: { _id: 'loan1', user: { _id: 'user1' } },
+              status: PROMOTION_OPTION_STATUS.SOLD,
+            },
+          },
+        ],
+      });
+
+      let numberOfTasks = await TaskService.generatePromotionStepReminders();
+      expect(numberOfTasks).to.equal(1);
+
+      PromotionService._update({
+        id: 'promo1',
+        object: { signingDate: in5Days },
+      });
+
+      numberOfTasks = await TaskService.generatePromotionStepReminders();
+      expect(numberOfTasks).to.equal(1);
+
+      const tasks = TaskService.fetch({
+        loanLink: 1,
+        title: 1,
+        assigneeLink: 1,
+      });
+
+      expect(tasks.length).to.equal(2);
+      const [task1, task2] = tasks;
+
+      expect(task1).to.deep.include({
+        title:
+          'La tranche "Signature" sera décaissée dans 10 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan1' },
+        assigneeLink: { _id: 'admin' },
+      });
+
+      expect(task2).to.deep.include({
+        title:
+          'La tranche "Signature" sera décaissée dans 5 jours, contactez le client et le prêteur',
+        loanLink: { _id: 'loan1' },
+        assigneeLink: { _id: 'admin' },
+      });
     });
   });
 });

@@ -29,8 +29,9 @@ export const getFormats = () => ({
   },
 });
 
-export const setupMoment = () => {
-  moment.locale('fr', {
+export const setupMoment = (locale = 'fr') => {
+  // TODO: Make this locale friendly
+  moment.locale(locale, {
     months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split(
       '_',
     ),

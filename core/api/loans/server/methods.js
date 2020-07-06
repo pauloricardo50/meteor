@@ -1,15 +1,13 @@
-import { Meteor } from 'meteor/meteor';
-
-import ActivityService from '../../activities/server/ActivityService';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmailToAddress } from '../../email/server/methods';
-import { adminLoan } from '../../fragments';
+import { calculatorLoan } from '../../fragments';
 import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
 import Security from '../../security/Security';
 import UserService from '../../users/server/UserService';
-import { LOAN_STATUS, STEPS } from '../loanConstants';
+import { INSURANCE_POTENTIAL, LOAN_STATUS, STEPS } from '../loanConstants';
 import {
+  addClosingChecklists,
   addNewMaxStructure,
   addNewStructure,
   adminLoanInsert,
@@ -32,8 +30,8 @@ import {
   loanShareSolvency,
   loanUnlinkPromotion,
   loanUpdate,
-  loanUpdateCreatedAt,
   loanUpdatePromotionInvitedBy,
+  notifyInsuranceTeamForPotential,
   popLoanValue,
   pushLoanValue,
   removeStructure,
@@ -44,6 +42,7 @@ import {
   setLoanStep,
   setMaxPropertyValueOrBorrowRatio,
   switchBorrower,
+  updateInsurancePotential,
   updateStructure,
   userLoanInsert,
 } from '../methodDefinitions';
@@ -111,6 +110,7 @@ userLoanInsert.setHandler(
     });
   },
 );
+userLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 export const addStructureHandler = (context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
@@ -182,11 +182,13 @@ setMaxPropertyValueOrBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.setMaxPropertyValueOrBorrowRatio(params);
 });
+setMaxPropertyValueOrBorrowRatio.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
 addNewMaxStructure.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.addNewMaxStructure(params);
 });
+addNewMaxStructure.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
 setLoanStep.setHandler((context, params) => {
   const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
@@ -245,12 +247,14 @@ anonymousLoanInsert.setHandler((context, params) => {
 
   return loanId;
 });
+anonymousLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
 loanInsertBorrowers.setHandler((context, params) => {
   const { loanId } = params;
   SecurityService.loans.isAllowedToUpdate(loanId);
   LoanService.insertBorrowers(params);
 });
+loanInsertBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
 
 adminLoanReset.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -277,25 +281,6 @@ loanSetStatus.setHandler(({ userId }, params) => {
   return LoanService.setStatus(params);
 });
 
-loanUpdateCreatedAt.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
-  const { loanId, createdAt } = params;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const date = new Date(createdAt);
-  date.setHours(0, 0, 0, 0);
-
-  if (date > today) {
-    throw new Meteor.Error(
-      'La date de création ne peut pas être dans le futur',
-    );
-  }
-
-  LoanService.update({ loanId, object: { createdAt } });
-  return ActivityService.updateCreatedAtActivity({ createdAt, loanId });
-});
-
 sendLoanChecklist.setHandler(
   ({ userId }, { loanId, address, emailParams, basicDocumentsOnly }) => {
     SecurityService.checkUserIsAdmin(userId);
@@ -303,7 +288,7 @@ sendLoanChecklist.setHandler(
       email: assigneeAddress,
       name: assigneeName,
     } = UserService.get(userId, { email: 1, name: 1 });
-    const loan = LoanService.get(loanId, adminLoan());
+    const loan = LoanService.get(loanId, calculatorLoan());
     return sendEmailToAddress.serverRun({
       address,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
@@ -361,4 +346,22 @@ loanGetReusableProperties.setHandler(({ userId }, params) => {
 loanLinkProperty.setHandler(({ userId }, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   return LoanService.linkProperty(params);
+});
+
+addClosingChecklists.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.addClosingChecklists(params);
+});
+
+notifyInsuranceTeamForPotential.setHandler(({ userId }, { loanId }) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.updateInsurancePotential({
+    loanId,
+    insurancePotential: INSURANCE_POTENTIAL.NOTIFIED,
+  });
+});
+
+updateInsurancePotential.setHandler(({ userId }, params) => {
+  SecurityService.checkCurrentUserIsAdmin(userId);
+  return LoanService.updateInsurancePotential(params);
 });

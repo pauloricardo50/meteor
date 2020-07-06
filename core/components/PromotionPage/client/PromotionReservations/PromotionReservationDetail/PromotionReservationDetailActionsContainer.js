@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { useContext } from 'react';
 import { withProps } from 'recompose';
 
 import {
@@ -18,26 +17,22 @@ import {
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
 import { getPromotionCustomerOwnerType } from '../../../../../api/promotions/promotionClientHelpers';
 import { isAllowedToManageCustomerPromotionReservation } from '../../../../../api/security/clientSecurityHelpers';
-import { CurrentUserContext } from '../../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../../hooks/useCurrentUser';
 import Calculator from '../../../../../utils/Calculator';
+import { usePromotion } from '../../PromotionPageContext';
 
 export default withProps(({ promotionOption }) => {
+  const { promotion } = usePromotion();
   const {
     _id: promotionOptionId,
     status,
-    promotion,
-    loan: { promotions = [] },
     reservationAgreement: { status: reservationAgreementStatus },
+    invitedBy,
   } = promotionOption;
 
   const { agreementDuration } = promotion;
 
-  const [loanPromotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-  } = loanPromotion;
-
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
     currentUser,

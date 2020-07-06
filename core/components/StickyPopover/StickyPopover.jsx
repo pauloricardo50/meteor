@@ -1,110 +1,80 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import PropTypes from 'prop-types';
 
-export default class PopoverStickOnHover extends React.Component {
-  constructor(props) {
-    super(props);
+import useSticky from './useSticky';
 
-    this.state = { showPopover: false };
-    this.enterTimeout = null;
-    this.exitTimeout = null;
-    this.ref = React.createRef();
-  }
+const StickyPopover = ({
+  enterDelay,
+  exitDelay,
+  component,
+  children,
+  placement,
+  title,
+  forceOpen,
+  paperProps,
+  onMouseEnter,
+}) => {
+  const { show, targetProps, stickyProps } = useSticky({
+    enterDelay,
+    exitDelay,
+    onMouseEnter,
+  });
+  const ref = useRef();
+  const finalShow = forceOpen || show;
 
-  componentWillUnmount() {
-    if (this.enterTimeout) {
-      clearTimeout(this.enterTimeout);
-    }
-    if (this.exitTimeout) {
-      clearTimeout(this.exitTimeout);
-    }
-  }
+  const [enhancedChildren] = React.Children.map(children, child =>
+    React.cloneElement(child, {
+      ...targetProps,
+      ref,
+      onFocus: targetProps.handleMouseEnter,
+      onBlur: targetProps.handleMouseLeave,
+      showPopover: finalShow,
+    }),
+  );
 
-  handleMouseEnter = () => {
-    const { delay, onMouseEnter } = this.props;
-
-    clearTimeout(this.exitTimeout);
-    this.enterTimeout = setTimeout(() => {
-      this.setState({ showPopover: true }, () => {
-        if (onMouseEnter) {
-          onMouseEnter();
-        }
-      });
-    }, delay);
-  };
-
-  handleMousePopoverEnter = () => {
-    clearTimeout(this.exitTimeout);
-    this.setState({ showPopover: true });
-  };
-
-  handleMouseLeave = () => {
-    const { exitDelay } = this.props;
-
-    clearTimeout(this.enterTimeout);
-    this.exitTimeout = setTimeout(() => {
-      this.setState({ showPopover: false });
-    }, exitDelay);
-  };
-
-  render() {
-    const { component, children, placement, title, forceOpen } = this.props;
-    const { showPopover } = this.state;
-    const show = forceOpen || showPopover;
-
-    const [enhancedChildren] = React.Children.map(children, child =>
-      React.cloneElement(child, {
-        onMouseEnter: this.handleMouseEnter,
-        onMouseLeave: this.handleMouseLeave,
-        ref: this.ref,
-        onFocus: this.handleMouseEnter,
-        onBlur: this.handleMouseLeave,
-        showPopover,
-      }),
-    );
-
-    return (
-      <>
-        {enhancedChildren}
-        <Popper
-          open={show}
-          anchorEl={this.ref.current}
-          placement={placement}
-          onMouseEnter={this.handleMousePopoverEnter}
-          onMouseLeave={this.handleMouseLeave}
-          onClick={e => e.stopPropagation()}
-          style={{ zIndex: 9999 }}
+  return (
+    <>
+      {enhancedChildren}
+      <Popper
+        open={finalShow}
+        anchorEl={ref.current}
+        placement={placement}
+        onClick={e => e.stopPropagation()}
+        style={{ zIndex: 9999 }}
+        {...stickyProps}
+      >
+        <Paper
+          style={{ padding: 8 }}
+          elevation={15}
+          className="popover-content"
+          {...paperProps}
         >
-          <Paper
-            style={{ padding: 8 }}
-            elevation={15}
-            className="popover-content"
-          >
-            {title && <h4 style={{ marginTop: 0 }}>{title}</h4>}
-            {component}
-          </Paper>
-        </Popper>
-      </>
-    );
-  }
-}
-
-PopoverStickOnHover.defaultProps = {
-  delay: 0,
-  exitDelay: 100,
-  onMouseEnter: undefined,
-  placement: 'right-start',
-  title: null,
+          {title && <h4 className="mt-0 mb-4">{title}</h4>}
+          {component}
+        </Paper>
+      </Popper>
+    </>
+  );
 };
 
-PopoverStickOnHover.propTypes = {
+StickyPopover.propTypes = {
   children: PropTypes.element.isRequired,
   component: PropTypes.node.isRequired,
-  delay: PropTypes.number,
+  enterDelay: PropTypes.number,
   exitDelay: PropTypes.number,
   onMouseEnter: PropTypes.func,
   placement: PropTypes.string,
   title: PropTypes.node,
 };
+
+StickyPopover.defaultProps = {
+  enterDelay: 0,
+  exitDelay: 200,
+  onMouseEnter: undefined,
+  placement: 'right-start',
+  title: null,
+};
+
+export default StickyPopover;

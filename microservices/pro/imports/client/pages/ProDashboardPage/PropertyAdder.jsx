@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
 import { address, moneyField } from 'core/api/helpers/sharedSchemas';
@@ -20,29 +20,33 @@ export const proPropertySchema = new SimpleSchema({
   value: { ...moneyField, optional: false },
 });
 
-const PropertyAdder = ({ history, currentUser: { _id: userId } }) => (
-  <AutoFormDialog
-    title={<T id="ProDashboardPage.addProperty" />}
-    buttonProps={{
-      label: <T id="ProDashboardPage.addProperty" />,
-      raised: true,
-      primary: true,
-      icon: <Icon type="add" />,
-    }}
-    schema={proPropertySchema}
-    onSubmit={property =>
-      proPropertyInsert
-        .run({
-          property: { ...property, category: PROPERTY_CATEGORY.PRO },
-          userId,
-        })
-        .then(propertyId =>
-          history.push(
-            createRoute(PRO_ROUTES.PRO_PROPERTY_PAGE.path, { propertyId }),
-          ),
-        )
-    }
-  />
-);
+const PropertyAdder = ({ currentUser: { _id: userId } }) => {
+  const history = useHistory();
 
-export default withRouter(PropertyAdder);
+  return (
+    <AutoFormDialog
+      title={<T id="ProDashboardPage.addProperty" />}
+      buttonProps={{
+        label: <T id="ProDashboardPage.addProperty" />,
+        raised: true,
+        primary: true,
+        icon: <Icon type="add" />,
+      }}
+      schema={proPropertySchema}
+      onSubmit={property =>
+        proPropertyInsert
+          .run({
+            property: { ...property, category: PROPERTY_CATEGORY.PRO },
+            userId,
+          })
+          .then(propertyId =>
+            history.push(
+              createRoute(PRO_ROUTES.PRO_PROPERTY_PAGE.path, { propertyId }),
+            ),
+          )
+      }
+    />
+  );
+};
+
+export default PropertyAdder;

@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import HtmlPreview from 'core/components/HtmlPreview';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -11,7 +10,7 @@ import StatusLabel from 'core/components/StatusLabel';
 import T from 'core/components/Translation';
 
 const columnOptions = [
-  { id: 'createdAt', label: <T id="offer.createdAt" /> },
+  { id: 'createdAt', label: <T id="Forms.createdAt" /> },
   { id: 'loanId', label: <T id="Forms.loan" /> },
   { id: 'status', label: <T id="Forms.status" /> },
   { id: 'contact', label: <T id="Forms.contact" /> },
@@ -41,7 +40,7 @@ const makeMapOffer = ({ setOfferDialog }) => offer => {
       {
         raw: loan.status,
         label: (
-          <StatusLabel status={loan.status} collection={LOANS_COLLECTION} />
+          <StatusLabel status={loan.status} collection={loan._collection} />
         ),
       },
       {

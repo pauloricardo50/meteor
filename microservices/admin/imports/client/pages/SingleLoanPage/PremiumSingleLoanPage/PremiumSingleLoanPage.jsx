@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import PremiumBadge from 'core/components/PremiumBadge/PremiumBadge';
 
-import CollectionTasksTable from '../../../components/TasksTable/CollectionTasksTable';
+import CollectionTasksDataTable from '../../../components/TasksDataTable/CollectionTasksDataTable';
+import UnsuccessfulReasonModal from '../../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
 import SingleLoanPageContacts from '../SingleLoanPageContacts';
 import SingleLoanPageCustomName from '../SingleLoanPageCustomName';
 import SingleLoanPageHeader from '../SingleLoanPageHeader';
@@ -25,16 +25,15 @@ const PremiumSingleLoanPage = props => {
         loanId={loan._id}
       />
       <div className="single-loan-page-sub-header">
-        <CollectionTasksTable
-          doc={loan}
-          collection={LOANS_COLLECTION}
-          withTaskInsert
-          withQueryTaskInsert
+        <CollectionTasksDataTable
+          docId={loan._id}
+          collection={loan._collection}
           className="single-loan-page-tasks card1 card-top"
         />
         <SingleLoanPageContacts loanId={loan._id} />
       </div>
       <PremiumLoanTabs {...props} />
+      <UnsuccessfulReasonModal loan={loan} />
     </div>
   );
 };

@@ -10,7 +10,9 @@ const OfferPickerListItemValue = ({
     <p className="secondary" {...labelProps}>
       {label}
     </p>
-    <h4 {...valueProps}>{value}</h4>
+    <h4 className="font-size-5" {...valueProps}>
+      {value}
+    </h4>
   </>
 );
 

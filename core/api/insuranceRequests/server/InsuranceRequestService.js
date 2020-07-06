@@ -14,6 +14,7 @@ import {
 import CollectionService from '../../helpers/server/CollectionService';
 import { INSURANCE_STATUS } from '../../insurances/insuranceConstants';
 import InsuranceService from '../../insurances/server/InsuranceService';
+import { INSURANCE_POTENTIAL } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import { REVENUE_STATUS } from '../../revenues/revenueConstants';
 import UserService from '../../users/server/UserService';
@@ -55,6 +56,10 @@ class InsuranceRequestService extends CollectionService {
 
     if (loan) {
       this.linkLoan({ insuranceRequestId, loanId });
+      LoanService._update({
+        id: loanId,
+        object: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+      });
       const { user: { _id: loanUserId } = {} } = loan;
       if (loanUserId) {
         this.addLink({
@@ -285,11 +290,11 @@ class InsuranceRequestService extends CollectionService {
   }
 
   addBorrower({ insuranceRequestId, amount = 1 }) {
-    const {
-      user: { _id: userId },
-    } = this.get(insuranceRequestId, { user: { _id: 1 } });
+    const { user: { _id: userId } = {} } = this.get(insuranceRequestId, {
+      user: { _id: 1 },
+    });
 
-    return [...Array(amount)].map(i =>
+    return [...Array(amount)].map(() =>
       BorrowerService.insert({ userId, insuranceRequestId }),
     );
   }
@@ -308,6 +313,11 @@ class InsuranceRequestService extends CollectionService {
       linkName: 'loan',
       linkId: loanId,
     });
+    LoanService._update({
+      id: loanId,
+      object: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+    });
+    this.linkAllRevenues({ loanId, insuranceRequestId });
   }
 
   linkNewLoan({ insuranceRequestId }) {
@@ -322,15 +332,68 @@ class InsuranceRequestService extends CollectionService {
     });
 
     this.addLink({ id: insuranceRequestId, linkName: 'loan', linkId: loanId });
+    LoanService._update({
+      id: loanId,
+      object: { insurancePotential: INSURANCE_POTENTIAL.VALIDATED },
+    });
+
+    this.linkAllRevenues({ loanId, insuranceRequestId });
 
     return loanId;
   }
 
-  remove({ insuranceRequestId }) {
-    const { insurances = [], revenues = [] } = this.get(insuranceRequestId, {
-      insurances: { _id: 1, revenues: { status: 1 } },
-      revenues: { status: 1 },
+  linkAllRevenues({ loanId, insuranceRequestId }) {
+    const { revenues = [] } = this.get(insuranceRequestId, {
+      revenues: { _id: 1 },
     });
+
+    revenues.forEach(({ _id: revenueId }) => {
+      LoanService.addLink({
+        id: loanId,
+        linkName: 'revenues',
+        linkId: revenueId,
+      });
+    });
+  }
+
+  unlinkLoan({ insuranceRequestId }) {
+    const { loan, revenues = [] } = this.get(insuranceRequestId, {
+      loan: { _id: 1 },
+      revenues: { _id: 1 },
+    });
+
+    if (loan) {
+      this.removeLink({
+        id: insuranceRequestId,
+        linkName: 'loan',
+        linkId: loan._id,
+      });
+
+      LoanService._update({
+        id: loan._id,
+        object: { insurancePotential: true },
+        operator: '$unset',
+      });
+
+      revenues.forEach(({ _id: revenueId }) => {
+        LoanService.removeLink({
+          id: loan._id,
+          linkName: 'revenues',
+          linkId: revenueId,
+        });
+      });
+    }
+  }
+
+  remove({ insuranceRequestId }) {
+    const { insurances = [], revenues = [], loan } = this.get(
+      insuranceRequestId,
+      {
+        insurances: { _id: 1, revenues: { status: 1 } },
+        revenues: { status: 1 },
+        loan: { _id: 1 },
+      },
+    );
 
     if (
       insurances
@@ -351,6 +414,14 @@ class InsuranceRequestService extends CollectionService {
     insurances.forEach(({ _id: insuranceId }) =>
       InsuranceService.remove({ insuranceId }),
     );
+
+    if (loan) {
+      LoanService._update({
+        id: loan._id,
+        object: { insurancePotential: true },
+        operator: '$unset',
+      });
+    }
 
     return super.remove(insuranceRequestId);
   }

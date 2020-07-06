@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import T from '../../Translation';
-import PromotionMetadataContext from './PromotionMetadata';
 import PromotionPageContent from './PromotionPageContent';
+import { usePromotion } from './PromotionPageContext';
 import PromotionPageHeader from './PromotionPageHeader';
 import PromotionPageTabs from './PromotionPageTabs';
 
@@ -12,12 +12,12 @@ const shouldDisplayFilesTab = documents =>
 
 const getTabs = ({
   permissions: { canSeeCustomers, canSeeUsers, canSeeManagement },
-  promotion: { users = [], loans = [], documents },
+  promotion: { users = [], loanCount, documents },
 }) =>
   [
     { id: 'management', shouldDisplay: canSeeManagement },
     { id: 'overview', shouldDisplay: true },
-    { id: 'map', shouldDisplay: true },
+    { id: 'description', shouldDisplay: true },
     { id: 'partners', shouldDisplay: true },
     {
       id: 'files',
@@ -26,7 +26,7 @@ const getTabs = ({
     {
       id: 'customers',
       label: (
-        <T id="PromotionPageTabs.customers" values={{ count: loans.length }} />
+        <T id="PromotionPageTabs.customers" values={{ count: loanCount }} />
       ),
       shouldDisplay: canSeeCustomers,
     },
@@ -46,7 +46,7 @@ const getTabs = ({
 
 const PromotionPage = ({ promotion, route, ...props }) => {
   const { name } = promotion;
-  const { permissions } = useContext(PromotionMetadataContext);
+  const { permissions } = usePromotion();
   const tabs = getTabs({ permissions, promotion });
 
   return (

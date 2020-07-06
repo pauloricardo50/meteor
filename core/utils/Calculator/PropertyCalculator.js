@@ -4,12 +4,12 @@ import {
   getMissingDocumentIds,
   getRequiredDocumentIds,
 } from '../../api/files/fileHelpers';
+import { propertyHasDetailedValue } from '../../api/properties/propertyClientHelper';
 import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
 import {
   getPropertyArray,
   getPropertyLoanArray,
 } from '../../arrays/PropertyFormArray';
-import { PURCHASE_TYPE } from '../../redux/widget1/widget1Constants';
 import {
   getCountedArray,
   getMissingFieldIds,
@@ -34,10 +34,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     propertyPercent({ loan, structureId, property }) {
       const { borrowers } = loan;
-      const structure = this.selectStructure({ loan, structureId });
-      const propertyToCalculateWith = property || structure.property;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
-      if (!propertyToCalculateWith) {
+      if (!propertyToCalculateWith?._id) {
         return 0;
       }
 
@@ -74,11 +74,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     getPropertyFilesProgress({ loan, structureId, property }) {
-      const structure = this.selectStructure({ loan, structureId });
-      const propertyToCalculateWith = property || structure.property;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
-      if (!propertyToCalculateWith) {
-        return 0;
+      if (!propertyToCalculateWith?._id) {
+        return { percent: 0, count: 0 };
       }
 
       return filesPercent({
@@ -134,7 +134,6 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getRequiredPropertyFields({ loan, structureId, property }) {
       const { borrowers } = loan;
       const selectedProperty = this.selectProperty({ loan, structureId });
-
       const propertyToCalculateWith = property || selectedProperty;
 
       const formArray1 = getPropertyArray({
@@ -218,23 +217,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     hasDetailedPropertyValue({ loan, structureId }) {
-      const propertyExactValue = this.selectPropertyKey({
-        key: 'value',
-        loan,
-        structureId,
+      return propertyHasDetailedValue({
+        property: this.selectProperty({ loan, structureId }),
       });
-      const landValue = this.selectPropertyKey({
-        key: 'landValue',
-        loan,
-        structureId,
-      });
-      const constructionValue = this.selectPropertyKey({
-        key: 'constructionValue',
-        loan,
-        structureId,
-      });
-
-      return !propertyExactValue || !!(landValue && constructionValue);
     }
 
     isPromotionProperty({ loan, structureId }) {
@@ -258,5 +243,16 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
 
       return propertyCategory === PROPERTY_CATEGORY.USER;
+    }
+
+    getYearlyPropertyIncome({ loan, structureId }) {
+      const investmentRent =
+        this.selectPropertyKey({
+          loan,
+          structureId,
+          key: 'investmentRent',
+        }) || 0;
+
+      return this.realEstateIncomeConsideration * investmentRent;
     }
   };

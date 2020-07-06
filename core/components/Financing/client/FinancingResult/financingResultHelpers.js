@@ -2,7 +2,7 @@ import { OWN_FUNDS_USAGE_TYPES } from '../../../../api/loans/loanConstants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../utils/Calculator';
-import FinanceCalculator, { getProperty } from '../FinancingCalculator';
+import FinanceCalculator from '../FinancingCalculator';
 
 const initCalc = ({
   loan,
@@ -37,7 +37,7 @@ export const getInterests = params => {
   const {
     structure: { wantedLoan },
   } = params;
-  return (FinanceCalculator.getInterestsWithTranches(params) * wantedLoan) / 12;
+  return FinanceCalculator.getInterestsWithTranches(params) / 12;
 };
 
 export const getAmortization = params => {
@@ -48,7 +48,7 @@ export const getAmortization = params => {
 };
 
 export const getPropertyExpenses = data => {
-  const property = getProperty(data);
+  const property = Calculator.selectProperty(data);
   return Math.round((property && property.yearlyExpenses) / 12 || 0);
 };
 

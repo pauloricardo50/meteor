@@ -2,8 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import merge from 'lodash/merge';
 
-import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
-import ActivityService from '../../activities/server/ActivityService';
 import { LOAN_STATUS, LOAN_STATUS_ORDER } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
 import {
@@ -11,9 +9,7 @@ import {
   REVENUE_STATUS,
 } from '../../revenues/revenueConstants';
 
-const defaultFilters = {
-  status: { $nin: [LOAN_STATUS.TEST] },
-};
+const defaultFilters = { status: { $nin: [LOAN_STATUS.TEST] } };
 
 const getPredicate = (filters = {}) => ({
   $match: merge({}, defaultFilters, filters),
@@ -199,168 +195,4 @@ export const loanMonitoring = args => {
   }
 
   return result;
-};
-
-const getFilters = ({ fromDate, toDate }) => {
-  const filters = {
-    'metadata.event': ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
-  };
-
-  if (fromDate) {
-    filters.createdAt = { $gte: fromDate };
-  }
-
-  if (toDate) {
-    filters.createdAt = filters.createdAt || {};
-    filters.createdAt.$lte = toDate;
-  }
-
-  return filters;
-};
-
-const getLoanFilters = ({ loanCreatedAtFrom, loanCreatedAtTo }) => {
-  const filters = {};
-
-  if (!loanCreatedAtFrom && !loanCreatedAtTo) {
-    return {};
-  }
-
-  if (loanCreatedAtFrom) {
-    filters['loan.createdAt'] = { $gte: loanCreatedAtFrom };
-  }
-
-  if (loanCreatedAtTo) {
-    filters['loan.createdAt'] = filters['loan.createdAt'] || {};
-    filters['loan.createdAt'].$lte = loanCreatedAtTo;
-  }
-
-  return filters;
-};
-
-const assigneeBreakdown = filters => [
-  { $match: getFilters(filters) },
-  {
-    $lookup: {
-      from: 'loans',
-      localField: 'loanLink._id',
-      foreignField: '_id',
-      as: 'loan',
-    },
-  },
-  {
-    $project: {
-      _id: 1,
-      metadata: 1,
-      'loan._id': 1,
-      'loan.name': 1,
-      'loan.userCache': 1,
-      'loan.assigneeLinks': 1,
-      'loan.createdAt': 1,
-      'loan.status': 1,
-    },
-  },
-  { $addFields: { loan: { $arrayElemAt: ['$loan', 0] } } },
-  { $addFields: { loan: { _collection: 'loans' } } },
-  { $match: getLoanFilters(filters) },
-
-  {
-    $group: {
-      _id: {
-        // Extract the main assignee
-        assigneeId: {
-          $reduce: {
-            input: '$loan.assigneeLinks',
-            initialValue: '',
-            in: {
-              $cond: {
-                if: { $eq: ['$$this.isMain', true] },
-                then: '$$this._id',
-                else: '',
-              },
-            },
-          },
-        },
-        prevStatus: '$metadata.details.prevStatus',
-        nextStatus: '$metadata.details.nextStatus',
-      },
-      activities: { $push: '$$ROOT' },
-      count: { $sum: 1 },
-    },
-  },
-  {
-    $group: {
-      _id: '$_id.assigneeId',
-      statusChanges: {
-        $push: {
-          prevStatus: '$_id.prevStatus',
-          nextStatus: '$_id.nextStatus',
-          count: '$count',
-        },
-      },
-      totalStatusChangeCount: { $sum: '$count' },
-      loans: { $push: '$activities.loan' },
-    },
-  },
-  // Simple array flattening, as these ids arrive in the form of an array of arrays
-  {
-    $addFields: {
-      loans: {
-        $reduce: {
-          input: '$loans',
-          initialValue: [],
-          in: { $concatArrays: ['$$value', '$$this'] },
-        },
-      },
-    },
-  },
-  // Add this stage for consistency
-  { $sort: { '_id.assigneeId': 1 } },
-];
-
-const loanStatusChangePipeline = filters => [
-  { $match: getFilters(filters) },
-  { $addFields: { _collection: 'loans' } },
-  {
-    $group: {
-      _id: {
-        prevStatus: '$metadata.details.prevStatus',
-        nextStatus: '$metadata.details.nextStatus',
-      },
-      count: { $sum: 1 },
-      loanIds: { $push: '$loanLink._id' },
-    },
-  },
-];
-
-export const loanStatusChanges = args => {
-  const { breakdown, ...filters } = args;
-
-  let pipeline = [];
-
-  if (breakdown === 'assignee') {
-    pipeline = assigneeBreakdown(filters);
-  } else if (breakdown) {
-    throw new Meteor.Error('breakdown property can only be "assignee"');
-  } else {
-    pipeline = loanStatusChangePipeline(filters);
-  }
-
-  const results = ActivityService.aggregate(pipeline);
-
-  if (breakdown === 'assignee') {
-    return results.map(({ statusChanges, ...data }) => ({
-      ...data,
-      statusChanges: statusChanges.sort(
-        ({ prevStatus: prevStatusA }, { prevStatus: prevStatusB }) =>
-          LOAN_STATUS_ORDER.indexOf(prevStatusA) -
-          LOAN_STATUS_ORDER.indexOf(prevStatusB),
-      ),
-    }));
-  }
-
-  return results.sort(
-    ({ _id: _idA }, { _id: _idB }) =>
-      LOAN_STATUS_ORDER.indexOf(_idA.prevStatus) -
-      LOAN_STATUS_ORDER.indexOf(_idB.prevStatus),
-  );
 };

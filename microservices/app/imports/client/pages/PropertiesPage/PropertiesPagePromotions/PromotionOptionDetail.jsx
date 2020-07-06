@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { PROMOTION_LOTS_COLLECTION } from 'core/api/promotionLots/promotionLotConstants';
 import { getPromotionLotValue } from 'core/components/PromotionPage/client/PromotionManagement/helpers';
 import StatusLabel from 'core/components/StatusLabel';
 import T, { Money } from 'core/components/Translation';
 
 const PromotionOptionDetail = ({
-  promotionOption: { name, promotionLots, priority },
+  promotionOption: { name, promotionLots, priorityOrder },
 }) => {
-  const [{ reducedStatus }] = promotionLots;
+  const [{ reducedStatus, _collection }] = promotionLots;
   const promotionLotValue = getPromotionLotValue(promotionLots[0]);
 
   return (
@@ -17,10 +16,7 @@ const PromotionOptionDetail = ({
         <span className="mr-8">
           <T id="PromotionOptionDetail.title" values={{ name }} />
         </span>
-        <StatusLabel
-          status={reducedStatus}
-          collection={PROMOTION_LOTS_COLLECTION}
-        />
+        <StatusLabel status={reducedStatus} collection={_collection} />
       </h2>
       <h3 className="secondary">
         {typeof promotionLotValue === 'number' ? (
@@ -33,7 +29,7 @@ const PromotionOptionDetail = ({
       <h4 className="priority font-size-2">
         <T
           id="PromotionOptionDetail.priority"
-          values={{ priority: priority + 1 }}
+          values={{ priority: priorityOrder + 1 }}
         />
       </h4>
     </div>

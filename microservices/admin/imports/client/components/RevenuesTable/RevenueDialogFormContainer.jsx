@@ -1,9 +1,9 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import merge from 'lodash/merge';
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { percentageField } from 'core/api/helpers/sharedSchemas';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   revenueInsert,
   revenueRemove,
@@ -11,12 +11,11 @@ import {
 } from 'core/api/revenues/methodDefinitions';
 import { REVENUE_STATUS } from 'core/api/revenues/revenueConstants';
 import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
 import Box from 'core/components/Box';
 import T from 'core/components/Translation';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
 const getSchema = currentUser =>
   RevenueSchema.omit(
@@ -34,11 +33,15 @@ const getSchema = currentUser =>
       type: String,
       defaultValue: currentUser?._id,
       customAllowedValues: {
-        query: adminUsers,
-        params: () => ({ roles: [ROLES.ADMIN], $body: { name: 1 } }),
+        query: USERS_COLLECTION,
+        params: {
+          $filters: { 'roles._id': ROLES.ADVISOR },
+          firstName: 1,
+          $options: { sort: { firstName: 1 } },
+        },
       },
       uniforms: {
-        transform: assignee => assignee?.name,
+        transform: assignee => assignee?.firstName,
         labelProps: { shrink: true },
         label: 'Responsable du revenu',
         displayEmtpy: false,
@@ -50,8 +53,8 @@ const getSchema = currentUser =>
       optional: true,
       type: String,
       customAllowedValues: {
-        query: adminOrganisations,
-        params: () => ({ $body: { name: 1 } }),
+        query: ORGANISATIONS_COLLECTION,
+        params: { name: 1, $options: { sort: { name: 1 } } },
       },
       uniforms: {
         transform: org => org?.name,
@@ -70,8 +73,8 @@ const getSchema = currentUser =>
     'organisationLinks.$._id': {
       type: String,
       customAllowedValues: {
-        query: adminOrganisations,
-        params: () => ({ $body: { name: 1 } }),
+        query: ORGANISATIONS_COLLECTION,
+        params: { name: 1, $options: { sort: { name: 1 } } },
       },
       uniforms: {
         transform: org => org?.name,
@@ -95,7 +98,7 @@ const getSchema = currentUser =>
 const revenueFormLayout = [
   {
     Component: Box,
-    title: <h4>Général</h4>,
+    title: <h5>Général</h5>,
     className: 'mb-32',
     layout: [
       { className: 'grid-col', fields: ['amount', 'type'] },
@@ -104,79 +107,53 @@ const revenueFormLayout = [
   },
   {
     Component: Box,
-    title: <h4>Responsable</h4>,
+    title: <h5>Responsable</h5>,
     className: 'mb-32 grid-2',
     fields: ['assigneeLink._id'],
   },
   {
     Component: Box,
-    title: <h4>Payé par</h4>,
+    title: <h5>Payé par</h5>,
     className: 'mb-32 grid-2',
     fields: ['expectedAt', 'sourceOrganisationLink._id', 'paidAt'],
   },
   {
     Component: Box,
-    title: <h4>Commissions à payer</h4>,
+    title: <h5>Commissions à payer</h5>,
     fields: ['organisationLinks'],
   },
 ];
 
 export default compose(
-  withState('submitting', 'setSubmitting', false),
   withProps(
     ({
       loan,
       insurance,
       revenue,
       insuranceRequest,
-      setSubmitting,
-      setOpen,
       onSubmitted = () => null,
     }) => {
-      const currentUser = useContext(CurrentUserContext);
+      const currentUser = useCurrentUser();
       const schema = useMemo(() => getSchema(currentUser), [currentUser]);
 
       return {
         schema,
         model: revenue,
         insertRevenue: model =>
-          revenueInsert
-            .run({
-              revenue: model,
-              loanId: loan?._id,
-              insuranceId: insurance?._id,
-              insuranceRequestId: insuranceRequest?._id,
-            })
-            .then(() => setOpen && setOpen(false)),
-        modifyRevenue: ({ _id: revenueId, ...object }) => {
-          setSubmitting(true);
-          return revenueUpdate
-            .run({ revenueId, object })
-            .then(() => setOpen(false))
-            .finally(() => {
-              setSubmitting(false);
-              onSubmitted();
-            });
-        },
-        deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
-          setSubmitting(true);
-          setDisableActions(true);
-          const confirm = window.confirm('Êtes-vous sûr ?');
-          if (confirm) {
-            return revenueRemove
-              .run({ revenueId })
-              .then(closeDialog)
-              .finally(() => {
-                setDisableActions(false);
-                setSubmitting(false);
-                onSubmitted();
-              });
-          }
-
-          setDisableActions(false);
-          setSubmitting(false);
-          return Promise.resolve();
-        },
+          revenueInsert.run({
+            revenue: model,
+            loanId: loan?._id,
+            insuranceId: insurance?._id,
+            insuranceRequestId: insuranceRequest?._id,
+          }),
+        modifyRevenue: ({ _id: revenueId, ...object }) =>
+          revenueUpdate.run({ revenueId, object }).finally(() => {
+            onSubmitted();
+          }),
+        deleteRevenue: revenueId =>
+          revenueRemove.run({ revenueId }).finally(() => {
+            onSubmitted();
+          }),
         layout: revenueFormLayout,
       };
     },

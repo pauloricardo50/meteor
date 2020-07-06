@@ -9,6 +9,8 @@ import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
 import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { withProps } from 'recompose';
@@ -16,6 +18,8 @@ import { withProps } from 'recompose';
 import { SUCCESS } from 'core/api/constants';
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+import List from 'core/components/Material/List';
+import ListItem from 'core/components/Material/ListItem';
 import PercentWithStatus from 'core/components/PercentWithStatus/PercentWithStatus';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
@@ -78,7 +82,7 @@ const sideNavLinks = [
 ];
 
 export const LoanSideNav = ({ loan, links, closeDrawer }) => (
-  <ul className="loan-side-nav">
+  <List className="loan-side-nav">
     {links
       .filter(({ condition }) => (condition ? condition(loan) : true))
       .map(link =>
@@ -107,23 +111,30 @@ export const LoanSideNav = ({ loan, links, closeDrawer }) => (
             onClick={closeDrawer}
             {...otherProps}
           >
-            <FontAwesomeIcon icon={icon} className="icon" />
-            <span className="text">
-              <T id={`${id}.title`} />
-              {percent && progress !== false && (
-                <span className="progress">
-                  <PercentWithStatus
-                    value={progress}
-                    status={progress >= 1 ? SUCCESS : null}
-                    rounded
-                  />
-                </span>
-              )}
-            </span>
+            <ListItem button>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={icon} />
+              </ListItemIcon>
+              <ListItemText
+                className="loan-side-nav-text"
+                primary={<T id={`${id}.title`} />}
+                secondary={
+                  percent && progress !== false ? (
+                    <span className="progress">
+                      <PercentWithStatus
+                        value={progress}
+                        status={progress >= 1 ? SUCCESS : null}
+                        rounded
+                      />
+                    </span>
+                  ) : null // Make sure nothing is rendered to center the label
+                }
+              />
+            </ListItem>
           </NavLink>
         );
       })}
-  </ul>
+  </List>
 );
 
 LoanSideNav.propTypes = {

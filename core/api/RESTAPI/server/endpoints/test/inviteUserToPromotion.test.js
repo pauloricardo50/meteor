@@ -1,14 +1,14 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import { PROMOTION_STATUS } from '../../../../promotions/promotionConstants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
+import { ROLES } from '../../../../users/userConstants';
 import RESTAPI from '../../RESTAPI';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import {
@@ -75,10 +75,10 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function() {
+describe('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
@@ -94,11 +94,20 @@ describe('REST: inviteUserToPromotion', function() {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: {
-        _id: 'pro',
-        _factory: 'pro',
-        organisations: { _id: 'org', name: 'org', $metadata: { isMain: true } },
-      },
+      users: [
+        {
+          _id: 'pro',
+          _factory: ROLES.PRO,
+          organisations: {
+            _id: 'org',
+            name: 'org',
+            $metadata: { isMain: true },
+          },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
+        },
+        { _factory: ROLES.ADVISOR },
+      ],
       promotions: {
         _id: 'promotionId',
         _factory: 'promotion',

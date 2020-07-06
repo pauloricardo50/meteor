@@ -67,6 +67,9 @@ export default compose(
         createdAt: 1,
       },
     }),
+    deps: ({ referredByUserId, organisationId }) => [
+      getReferredBy(referredByUserId, organisationId),
+    ],
     queryOptions: { reactive: false },
     dataName: 'customers',
   }),

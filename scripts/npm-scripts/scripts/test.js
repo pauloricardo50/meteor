@@ -18,9 +18,12 @@ process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;
 
 const env = {
   ...process.env,
+  NODE_ICU_DATA: `${__dirname}/../../../microservices/${microservice}/node_modules/full-icu`, // FIXME: This prevents tests from starting
   METEOR_PACKAGE_DIRS: 'packages:../../meteorPackages',
   QUALIA_ONE_BUNDLE_TYPE: 'modern',
   TEST_WATCH: 1,
+  BABEL_ENV: 'test',
+  RTL_SKIP_AUTO_CLEANUP: 1, // We do this in our tests
   // TEST_SERVER: 0, // If you only want client tests
 };
 
@@ -33,7 +36,7 @@ const spawnArgs = [
   '--port',
   port,
   '--exclude-archs',
-  '"web.browser.legacy, web.cordova"',
+  'web.browser.legacy',
   ...args,
 ];
 

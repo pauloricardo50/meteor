@@ -309,14 +309,13 @@ export const formatParams = params =>
     {},
   );
 
-export const logRequest = ({ req, result }) => {
+export const logRequest = ({ req, result, simple }) => {
   const {
     user: { _id, emails } = {},
     body = {},
     params = {},
     query = {},
     headers = {},
-    verifiedFormat,
     duration,
   } = req;
 
@@ -327,12 +326,15 @@ export const logRequest = ({ req, result }) => {
   console.log('----- API CALL -----');
   console.log('USER:', JSON.stringify({ _id, emails }, null, 2));
   console.log('URL:', getRequestPath(req));
-  console.log('HEADERS:', JSON.stringify(headers, null, 2));
-  console.log('BODY:', JSON.stringify(body, null, 2));
-  console.log('PARAMS:', JSON.stringify(params, null, 2));
-  console.log('QUERY:', JSON.stringify(query, null, 2));
-  console.log('VERIFIED FORMAT:', verifiedFormat);
-  console.log('RESULT:', result);
+
+  if (!simple) {
+    console.log('HEADERS:', JSON.stringify(headers, null, 2));
+    console.log('BODY:', JSON.stringify(body, null, 2));
+    console.log('PARAMS:', JSON.stringify(params, null, 2));
+    console.log('QUERY:', JSON.stringify(query, null, 2));
+    console.log('RESULT:', result);
+  }
+
   console.log('DURATION:', duration);
   console.log('-----------------');
 };

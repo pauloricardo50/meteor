@@ -1,30 +1,51 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { LOANS_COLLECTION } from '../../../../api/loans/loanConstants';
 import Promotions from '../../../../api/promotions';
-import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
-import AdminNote from '../../../AdminNote';
+import { proPromotions } from '../../../../api/promotions/queries';
+import useMeteorData from '../../../../hooks/useMeteorData';
 import AdminNotes from '../../../AdminNotes';
+import Loading from '../../../Loading';
 import UpdateField from '../../../UpdateField';
-import PromotionMetadataContext from '../PromotionMetadata';
 import LoansChart from './LoansChart';
 import LotsChart from './LotsChart';
 import LotsValueChart from './LotsValueChart';
 import PromotionRecap from './PromotionRecap';
 
 const PromotionManagement = ({ promotion }) => {
-  const {
-    permissions: { canModifyAdminNote },
-  } = useContext(PromotionMetadataContext);
-  const {
-    _id: promotionId,
-    adminNote,
-    promotionLots = [],
-    loans = [],
-    promotionLoan,
-  } = promotion;
+  const { _id: promotionId, promotionLoan } = promotion;
+  const { data, loading } = useMeteorData({
+    query: proPromotions,
+    params: {
+      _id: promotionId,
+      $body: {
+        promotionLots: {
+          lots: { value: 1 },
+          name: 1,
+          properties: {
+            landValue: 1,
+            constructionValue: 1,
+            additionalMargin: 1,
+            value: 1,
+          },
+          promotionLotGroupIds: 1,
+          status: 1,
+          value: 1,
+        },
+        loans: { createdAt: 1 },
+      },
+    },
+    refetchOnMethodCall: false,
+    type: 'single',
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const { promotionLots = [], loans = [] } = data;
+
   return (
     <div className="promotion-management card1 card-top">
       {Meteor.microservice === 'admin' && (
@@ -36,7 +57,7 @@ const PromotionManagement = ({ promotion }) => {
           />
         </div>
       )}
-      <PromotionRecap promotion={promotion} />
+      <PromotionRecap promotion={{ ...promotion, promotionLots }} />
       <div className="promotion-management-charts">
         <LotsChart promotionLots={promotionLots} />
         <LotsValueChart promotionLots={promotionLots} />
@@ -45,17 +66,9 @@ const PromotionManagement = ({ promotion }) => {
       {promotionLoan && (
         <AdminNotes
           doc={promotionLoan}
-          collection={LOANS_COLLECTION}
           title="Notes sur le dossier de développement"
         />
       )}
-      {(Meteor.microservice === 'admin' || adminNote) && <h3>Notes e-Potek</h3>}
-      <AdminNote
-        adminNote={adminNote}
-        docId={promotionId}
-        collection={PROMOTIONS_COLLECTION}
-        allowEditing={canModifyAdminNote}
-      />
     </div>
   );
 };

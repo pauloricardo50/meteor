@@ -2,11 +2,10 @@ import React from 'react';
 
 import { getPropertyDocuments } from '../../api/files/documents';
 import {
-  ONE_KB,
+  MAX_DISPLAYABLE_FILE_SIZE,
   PROPERTY_DOCUMENTS,
   S3_ACLS,
 } from '../../api/files/fileConstants';
-import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import DialogSimple from '../DialogSimple';
 import T from '../Translation';
 import UploaderArray from '../UploaderArray';
@@ -16,9 +15,9 @@ const propertyDocuments = property =>
     ...doc,
     metadata: {
       acl: S3_ACLS.PUBLIC_READ,
-      maxSize:
+      maxSizeOverride:
         doc.id === PROPERTY_DOCUMENTS.PROPERTY_PICTURES
-          ? 500 * ONE_KB
+          ? MAX_DISPLAYABLE_FILE_SIZE
           : undefined,
     },
   }));
@@ -32,7 +31,6 @@ const PropertyDocumentsManager = ({ property, canModifyProperty }) => (
   >
     <UploaderArray
       doc={property}
-      collection={PROPERTIES_COLLECTION}
       documentArray={propertyDocuments(property)}
       allowRequireByAdmin={false}
       allowSetRoles={canModifyProperty}

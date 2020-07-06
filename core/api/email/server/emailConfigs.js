@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import { setupMoment } from '../../../utils/localization';
 import {
   CTA_URL_DEFAULT,
   EMAIL_IDS,
@@ -12,11 +13,10 @@ import {
   FOOTER_TYPES,
   FROM_EMAIL,
 } from '../emailConstants';
-import PromotionLogos from './components/PromotionLogos';
-import PromotionOptionProgress, {
-  getPromotionProgressData,
+import EmailPromotionOptionProgress, {
   promotionOptionProgressStyles,
-} from './components/PromotionOptionProgress';
+} from './components/EmailPromotionOptionProgress';
+import PromotionLogos from './components/PromotionLogos';
 import {
   getAccountsUrl,
   notificationAndCtaTemplateDefaultOverride,
@@ -304,7 +304,9 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
     { title, cta },
   ) {
     const { variables } = this.template;
-    const ctaUrl = `${Meteor.settings.public.subdomains.app}/loans/${loan._id}`;
+    // This page is accessible without a user account, so make sure we send the
+    // person to the login page first. Otherwise he will see a "doc not found" error message
+    const ctaUrl = `${Meteor.settings.public.subdomains.app}/login?path=/loans/${loan._id}`;
 
     return {
       variables: [
@@ -333,14 +335,23 @@ addEmailConfig(EMAIL_IDS.LOAN_CHECKLIST, {
       mainRecipientIsBcc,
     };
   },
-  createIntlValues: params => ({
-    ...params,
-    today: moment().format('DD MMM YYYY'),
-  }),
+  createIntlValues: params => {
+    setupMoment();
+    return {
+      ...params,
+      today: moment().format('D MMMM YYYY'),
+    };
+  },
 });
 
-const promotionEmailOverridesPro = function(params, { title, body, cta }) {
-  const { promotionId, promotionOptionId, fromEmail, showProgress } = params;
+const promotionEmailOverridesPro = function (params, { title, body, cta }) {
+  const {
+    promotionId,
+    promotionOptionId,
+    fromEmail,
+    showProgress,
+    anonymize,
+  } = params;
   const { variables } = this.template;
 
   return {
@@ -359,8 +370,8 @@ const promotionEmailOverridesPro = function(params, { title, body, cta }) {
           {
             name: 'body-content-1',
             content: renderEmailComponent({
-              Component: PromotionOptionProgress,
-              props: getPromotionProgressData({ promotionOptionId }),
+              Component: EmailPromotionOptionProgress,
+              props: { promotionOptionId, anonymize },
             }),
           },
         ]
@@ -368,7 +379,7 @@ const promotionEmailOverridesPro = function(params, { title, body, cta }) {
     senderAddress: fromEmail || FROM_EMAIL,
   };
 };
-const promotionEmailOverridesUser = function(
+const promotionEmailOverridesUser = function (
   { fromEmail },
   { title, body, cta },
 ) {
@@ -396,6 +407,11 @@ addEmailConfig(EMAIL_IDS.RESERVE_PROMOTION_LOT, {
 });
 
 addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides: promotionEmailOverridesPro,
+});
+
+addEmailConfig(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides: promotionEmailOverridesPro,
 });
@@ -514,6 +530,26 @@ const checkAllEmailAreDefined = () => {
     );
   }
 };
+
+addEmailConfig(EMAIL_IDS.PROMOTION_INTEREST_FORM, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    // params.details check is required because details is optional
+    // and it breaks react-intl if not provided
+    details: params.details || '',
+  }),
+});
+
+addEmailConfig(EMAIL_IDS.PROMOTION_INTEREST_FORM_ADMIN, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    details: params.details || 'Pas de message',
+  }),
+});
 
 Meteor.startup(checkAllEmailAreDefined);
 

@@ -39,7 +39,7 @@ describe('offerPickerHelpers', () => {
           structure: {
             wantedLoan: 960000,
             propertyWork: 0,
-            loanTranches: [{ type: 'interest10', value: 1 }],
+            loanTranches: [{ type: 'interest10', value: 960000 }],
             offerId: 'off',
             propertyId: 'prop',
           },
@@ -56,7 +56,7 @@ describe('offerPickerHelpers', () => {
         structure: {
           wantedLoan: 960000,
           propertyWork: 0,
-          loanTranches: [{ type: 'interest10', value: 1 }],
+          loanTranches: [{ type: 'interest10', value: 960000 }],
           offerId: 'off',
           propertyId: 'prop',
         },

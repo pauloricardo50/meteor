@@ -143,13 +143,7 @@ export const PropertySchema = new SimpleSchema({
     condition: ({ propertyType }) =>
       propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
   },
-  investmentRent: {
-    // Rent of property if investment
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
+  investmentRent: moneyField,
   ...address,
   constructionYear: {
     type: SimpleSchema.Integer,
@@ -181,6 +175,11 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
   },
   terraceArea: {
+    type: SimpleSchema.Integer,
+    optional: true,
+    min: 0,
+  },
+  balconyArea: {
     type: SimpleSchema.Integer,
     optional: true,
     min: 0,
@@ -316,6 +315,7 @@ export const PropertySchema = new SimpleSchema({
   },
   documents: documentsField,
   loanCount: { type: Number, optional: true },
+  bankValue: moneyField,
 });
 
 const protectedKeys = [

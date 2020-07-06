@@ -1,3 +1,4 @@
+import InsuranceRequests from '../../insuranceRequests';
 import Tasks from '../../tasks';
 import InsuranceService from './InsuranceService';
 
@@ -17,4 +18,20 @@ InsuranceService.cache(
     referenceField: 'insuranceLink._id',
   },
   // {},
+);
+
+InsuranceService.cache(
+  {
+    cacheField: 'insuranceRequestCache',
+    type: 'many-inverse',
+    collection: InsuranceRequests,
+    fields: {
+      assigneeLinks: 1,
+      userCache: 1,
+    },
+    referenceField: 'insuranceLinks:_id',
+  },
+  // {
+  //   insuranceRequestCache: { $exists: false },
+  // },
 );

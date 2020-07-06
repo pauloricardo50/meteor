@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 import { updateDocument } from '../../api/methods/methodDefinitions';
+import Button from '../Button';
 import ClickToEditField from '../ClickToEditField';
 import Icon from '../Icon';
 
@@ -16,32 +17,52 @@ const AdminNote = ({
   style,
   allowEditing,
   ...rest
-}) => (
-  <ClickToEditField
-    value={adminNote}
-    onSubmit={value =>
-      updateDocument.run({ collection, docId, object: { adminNote: value } })
-    }
-    placeholder={allowEditing ? placeholder || '# Ajouter une note' : ''}
-    inputProps={{
-      style: { width: '100%' },
-      multiline: true,
-      placeholder: tutorial,
-    }}
-    style={style}
-    allowEditing={allowEditing}
-    {...rest}
-  >
-    {({ value, isEditing }) =>
-      isEditing ? (
-        <Icon type="help" tooltip={tutorial} />
-      ) : (
-        <div>
-          <ReactMarkdown source={value} className="markdown" />
-        </div>
-      )
-    }
-  </ClickToEditField>
-);
+}) => {
+  const noteShouldBeSliced = adminNote?.length > 400;
+  const [displayFullNote, setDisplayFullNote] = useState(!noteShouldBeSliced);
+  const displayedNote = displayFullNote ? adminNote : adminNote.slice(0, 400);
+  return (
+    <>
+      <ClickToEditField
+        value={displayedNote}
+        onSubmit={value =>
+          updateDocument.run({
+            collection,
+            docId,
+            object: { adminNote: value },
+          })
+        }
+        placeholder={allowEditing ? placeholder || '# Ajouter une note' : ''}
+        inputProps={{
+          style: { width: '100%' },
+          multiline: true,
+          placeholder: tutorial,
+        }}
+        style={style}
+        allowEditing={allowEditing}
+        onFocus={() => noteShouldBeSliced && setDisplayFullNote(true)}
+        onBlur={() => noteShouldBeSliced && setDisplayFullNote(false)}
+        {...rest}
+      >
+        {({ value, isEditing }) =>
+          isEditing ? (
+            <Icon type="help" tooltip={tutorial} />
+          ) : (
+            <div>
+              <ReactMarkdown source={value} className="markdown" />
+            </div>
+          )
+        }
+      </ClickToEditField>
+      {noteShouldBeSliced && (
+        <Button
+          onClick={() => setDisplayFullNote(!displayFullNote)}
+          label={displayFullNote ? 'Afficher moins' : 'Afficher plus'}
+          primary
+        />
+      )}
+    </>
+  );
+};
 
 export default AdminNote;

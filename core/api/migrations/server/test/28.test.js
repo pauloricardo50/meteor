@@ -1,12 +1,13 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
 import { employeesByEmail } from '../../../../arrays/epotekEmployees';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import { down, up } from '../28';
+
+/* eslint-env mocha */
+
 
 describe('Migration 28', () => {
   beforeEach(() => resetDatabase());
@@ -51,8 +52,8 @@ describe('Migration 28', () => {
     });
 
     it('sets the user as the assignee', async () => {
-      generator({users: { _id: 'user1', assignedEmployee: { _id: 'admin1' } },
-      });
+      generator({
+        users: { _id: 'user1', assignedEmployee: { _id: 'admin1' } },});
       LoanService.rawInsert({
         name: 'a',
         adminNote: 'yo',

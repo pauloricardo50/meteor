@@ -1,20 +1,20 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { setAPIUser } from '../../../RESTAPI/server/helpers';
 import { proInviteUser } from '../../../users/methodDefinitions';
 import UserService from '../../../users/server/UserService';
+import { ROLES } from '../../../users/userConstants';
 import {
   ACTIVITY_EVENT_METADATA,
   ACTIVITY_TYPES,
 } from '../../activityConstants';
 import ActivityService from '../ActivityService';
+
+/* eslint-env mocha */
 
 describe('proInviteUserListener', function() {
   this.timeout(10000);
@@ -22,7 +22,7 @@ describe('proInviteUserListener', function() {
   beforeEach(() => {
     resetDatabase();
     generator({
-      users: { _id: 'adminId', _factory: 'admin' },
+      users: { _id: 'adminId', _factory: ROLES.ADVISOR },
       organisations: [
         {
           _id: 'org',
@@ -31,21 +31,20 @@ describe('proInviteUserListener', function() {
           users: [
             {
               _id: 'pro',
-              _factory: 'pro',
+              _factory: ROLES.PRO,
               firstName: 'Pro',
               lastName: 'Account',
               $metadata: { isMain: true },
             },
             {
               _id: 'pro3',
-              _factory: 'pro',
+              _factory: ROLES.PRO,
               $metadata: { isMain: false },
             },
           ],
         },
         {
           _id: 'api',
-          _factory: 'organisation',
           name: 'OrganisationAPI',
           users: [{ _id: 'pro3', $metadata: { isMain: true } }],
         },

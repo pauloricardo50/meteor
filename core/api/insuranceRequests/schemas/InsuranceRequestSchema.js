@@ -8,7 +8,10 @@ import {
   documentsField,
   updatedAt,
 } from '../../helpers/sharedSchemas';
-import { INSURANCE_REQUEST_STATUS } from '../insuranceRequestConstants';
+import {
+  INSURANCE_REQUEST_STATUS,
+  UNSUCCESSFUL_INSURANCE_REQUESTS_REASONS,
+} from '../insuranceRequestConstants';
 
 const InsuranceRequestSchema = new SimpleSchema({
   createdAt,
@@ -72,6 +75,16 @@ const InsuranceRequestSchema = new SimpleSchema({
   'insurancesCache.$': cacheField,
   ...additionalDocuments([]),
   documents: documentsField,
+  unsuccessfulReason: {
+    type: String,
+    optional: true,
+    uniforms: {
+      recommendedValues: Object.values(UNSUCCESSFUL_INSURANCE_REQUESTS_REASONS),
+      withCustomOther: true,
+      displayEmpty: false,
+      placeholder: '',
+    },
+  },
 });
 
 export default InsuranceRequestSchema;

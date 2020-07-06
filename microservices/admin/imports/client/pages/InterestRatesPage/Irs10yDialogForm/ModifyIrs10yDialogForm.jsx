@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
 
 import Irs10yDialogFormContainer from './Irs10yDialogFormContainer';
 
@@ -13,7 +11,6 @@ const ModifyIrs10ytRatesDialogForm = ({
   open,
   setOpen,
   irs10yToModify,
-  submitting,
 }) => (
   <AutoFormDialog
     noButton
@@ -22,20 +19,7 @@ const ModifyIrs10ytRatesDialogForm = ({
     onSubmit={modifyIrs10y}
     open={open}
     setOpen={setOpen}
-    submitting={submitting}
-    renderAdditionalActions={({ disabled, setDisableActions }) => (
-      <Button
-        label={<T id="InterestRates.remove" />}
-        error
-        outlined
-        onClick={() => {
-          setDisableActions(true);
-          return removeIrs10y(irs10yToModify._id).finally(() =>
-            setDisableActions(false),
-          );
-        }}
-      />
-    )}
+    onDelete={() => removeIrs10y(irs10yToModify._id)}
   />
 );
 

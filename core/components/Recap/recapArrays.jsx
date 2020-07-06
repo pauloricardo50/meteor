@@ -7,10 +7,9 @@ import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import Calculator from '../../utils/Calculator';
 import { toMoney } from '../../utils/conversionFunctions';
 import PercentWithStatus from '../PercentWithStatus/PercentWithStatus';
-import { MetricArea, Percent, T } from '../Translation';
+import T, { MetricArea, Money, Percent } from '../Translation';
 
 export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
-  const bonusIncome = calc.getBonusIncome({ loan });
   const borrowRatio = calc.getBorrowRatio({ loan });
   const fortune = calc.getFortune({ loan });
   const incomeRatio = calc.getIncomeRatio({ loan });
@@ -20,7 +19,6 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   const maxBorrowRatio = calc.getMaxBorrowRatio({ loan });
   const monthly = calc.getMonthly({ loan });
   const notaryFees = calc.getNotaryFees({ loan }).total;
-  const otherIncome = calc.getOtherIncome({ loan });
   const ownFundsNonPledged = calc.getNonPledgedOwnFunds({ loan });
   const ownFundsPledged = calc.getTotalPledged({ loan });
   const project = calc.getProjectValue({ loan });
@@ -32,17 +30,16 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
   });
   const realEstateDebt = calc.getRealEstateDebt({ loan });
   const realEstateFortune = calc.getRealEstateFortune({ loan });
-  const realEstateIncome = calc.getRealEstateIncomeTotal({ loan });
   const realEstateValue = calc.getRealEstateValue({ loan });
-  const salary = calc.getSalary({ loan });
-  const expenses = calc.getFormattedExpenses({ loan }).subtract;
   const totalFinancing = calc.getTotalFinancing({ loan });
   const totalFunds = calc.getTotalFunds({ loan });
-  const totalIncome = calc.getTotalIncome({ loan });
   const isRefinancing = loan.purchaseType === PURCHASE_TYPE.REFINANCING;
   const previousLoanValue = calc.getPreviousLoanValue({ loan });
   const loanEvolution = calc.getLoanEvolution({ loan });
   const reimbursementPenalty = calc.selectReimbursementPenalty({ loan });
+  const projectCost = calc.getMonthlyProjectCost({ loan });
+  const projectIncome = calc.getMonthlyProjectIncome({ loan });
+  const donation = calc.getDonationFortune({ loan });
 
   return [
     {
@@ -199,6 +196,11 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       hide: !insuranceFortuneRest,
     },
     {
+      label: 'Recap.donation',
+      value: toMoney(donation),
+      hide: !donation,
+    },
+    {
       label: 'Recap.availableFunds',
       value: <span className="sum">{toMoney(totalFunds)}</span>,
       hide: !realEstateFortune,
@@ -226,41 +228,15 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
     },
     {
       title: true,
-      label: 'general.income',
-    },
-    {
-      label: 'general.salary',
-      value: toMoney(salary),
-    },
-    {
-      label: 'Recap.consideredBonus',
-      value: toMoney(bonusIncome),
-      hide: !bonusIncome,
-    },
-    {
-      label: 'Recap.otherIncome',
-      value: toMoney(otherIncome),
-      hide: !otherIncome,
-    },
-    {
-      label: 'Recap.realEstateIncome',
-      value: `- ${toMoney(realEstateIncome)}`,
-      hide: !realEstateIncome,
-    },
-    {
-      label: 'Recap.expenses',
-      value: `- ${toMoney(expenses)}`,
-      hide: !expenses,
+      label: 'Recap.incomeAndExpenses',
     },
     {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(totalIncome)}</span>,
-      spacingTop: true,
-      bold: true,
+      value: toMoney(projectIncome * 12),
     },
     {
-      title: true,
-      label: 'general.lenders',
+      label: 'Recap.expenses',
+      value: toMoney(projectCost * 12),
     },
   ];
 };
@@ -630,7 +606,9 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       title: true,
       label: 'Recap.buyersContract',
-      intlValues: { value: toMoney(propertyValue) },
+      intlValues: {
+        value: <Money value={propertyValue} />,
+      },
       hide: !buyersContractFees,
     },
     ...(buyersContractFees ? getRecapForObject(buyersContractValues) : []),
@@ -659,7 +637,9 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       title: true,
       label: 'Recap.mortgageNote',
-      intlValues: { value: toMoney(mortgageNoteIncrease) },
+      intlValues: {
+        value: <Money value={mortgageNoteIncrease} />,
+      },
       hide: !mortgageNoteFees,
     },
     ...(mortgageNoteFees ? getRecapForObject(mortgageNoteValues) : []),

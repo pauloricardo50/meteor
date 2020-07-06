@@ -68,7 +68,7 @@ const RevenueCard = ({
           )}
         </div>
       </div>
-      <div>{description}</div>
+      <div className="secondary">{description}</div>
       {sourceOrganisation && (
         <div className="source-organisation">
           <CollectionIconLink relatedDoc={sourceOrganisation} />

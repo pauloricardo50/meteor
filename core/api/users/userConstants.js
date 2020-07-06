@@ -1,22 +1,15 @@
 // Not actually used to create a meteor collection, but useful to switch()
 // on collection names
-export const USERS_COLLECTION = 'users';
+export { ROLES } from './roles/roleConstants';
 
-export const ROLES = {
-  ADMIN: 'admin',
-  DEV: 'dev',
-  USER: 'user',
-  PRO: 'pro',
-};
+export const USERS_COLLECTION = 'users';
 
 export const USER_QUERIES = {
   ADMIN_USERS: 'ADMIN_USERS',
   APP_USER: 'APP_USER',
-  CURRENT_USER: 'CURRENT_USER',
   INCOHERENT_ASSIGNEES: 'INCOHERENT_ASSIGNEES',
   PRO_REFERRED_BY: 'PRO_REFERRED_BY',
   PRO_USER: 'PRO_USER',
-  REFERRED_USERS: 'REFERRED_USERS',
   USER_EMAILS: 'USER_EMAILS',
   USER_SEARCH: 'USER_SEARCH',
 };
@@ -32,6 +25,7 @@ export const ACQUISITION_CHANNELS = {
   REFERRAL_PRO: 'REFERRAL_PRO',
   REFERRAL_ADMIN: 'REFERRAL_ADMIN',
   REFERRAL_API: 'REFERRAL_API',
+  REFERRAL_ORGANIC: 'REFERRAL_ORGANIC',
   GOOGLE: 'GOOGLE',
   NEWSLETTER: 'NEWSLETTER',
   FRIENDS: 'FRIENDS',
@@ -41,4 +35,14 @@ export const ACQUISITION_CHANNELS = {
   WEBSITE: 'WEBSITE',
   FACEBOOK: 'FACEBOOK',
   LINKEDIN: 'LINKEDIN',
+};
+
+export const OFFICES = {
+  GENEVA: 'GENEVA',
+  LAUSANNE: 'LAUSANNE',
+};
+
+export const ASSIGNEE = {
+  NONE: 'NONE',
+  ROUND_ROBIN: 'ROUND_ROBIN',
 };

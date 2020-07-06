@@ -2,8 +2,8 @@ import Calculator from '../../utils/Calculator';
 import { ANONYMIZED_STRING } from '../security/securityConstants';
 
 export const getLoanProgress = loan => ({
-  info: Calculator.getValidFieldsRatio({ loan }),
-  documents: Calculator.getValidDocumentsRatio({ loan }),
+  info: loan && Calculator.getValidFieldsRatio({ loan }),
+  documents: loan && Calculator.getValidDocumentsRatio({ loan }),
 });
 
 const ANONYMIZED_USER = {
@@ -18,6 +18,10 @@ const anonymizeUser = ({ user, anonymous }) =>
 export const anonymizeLoan = ({ loan, shouldAnonymize }) => {
   if (!shouldAnonymize) {
     return loan;
+  }
+
+  if (!loan) {
+    return;
   }
 
   const { properties = [] } = loan;

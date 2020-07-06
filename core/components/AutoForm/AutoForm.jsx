@@ -145,8 +145,9 @@ const makeMapInputs = parentProps => (singleInput, index) => {
   if (childProps.InputProps.info) {
     childProps.InputProps.info = (
       <T
-        id={`Forms.${childProps.InputProps.intlId ||
-          childProps.InputProps.id}.info`}
+        id={`Forms.${
+          childProps.InputProps.intlId || childProps.InputProps.id
+        }.info`}
       />
     );
   }
@@ -177,7 +178,6 @@ const AutoForm = ({
 
 AutoForm.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object),
-  collection: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   docId: PropTypes.string.isRequired,
   formClasses: PropTypes.string,

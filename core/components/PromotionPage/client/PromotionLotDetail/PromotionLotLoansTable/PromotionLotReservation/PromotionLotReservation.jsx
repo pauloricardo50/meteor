@@ -1,46 +1,49 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { PROMOTION_OPTION_STATUS } from '../../../../../../api/promotionOptions/promotionOptionConstants';
 import {
   getPromotionCustomerOwnerType,
   shouldAnonymize,
 } from '../../../../../../api/promotions/promotionClientHelpers';
-import { CurrentUserContext } from '../../../../../../containers/CurrentUserContext';
+import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import Button from '../../../../../Button';
 import DialogSimple from '../../../../../DialogSimple';
 import T from '../../../../../Translation';
-import PromotionReservationProgress from '../../../../PromotionReservationProgress/PromotionReservationProgress';
+import PromotionReservationProgress from '../../../../PromotionReservationProgress';
+import { usePromotion } from '../../../PromotionPageContext';
 import PromotionReservationDetail from '../../../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 import RequestReservation from '../../../UserPromotionOptionsTable/RequestReservation';
 
 const isAdmin = Meteor.microservice === 'admin';
 
-const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
-  const currentUser = useContext(CurrentUserContext);
-  const { status, promotionLots } = promotionOption;
-  const { users = [] } = promotion;
-  const { $metadata: { permissions } = {} } =
-    users.find(({ _id }) => _id === currentUser._id) || {};
-  const [promotionLot] = promotionLots;
-  const {
-    $metadata: { invitedBy },
-    agreementDuration,
-  } = promotion;
+const getAnonymize = (promotionLotStatus, invitedBy) => {
+  if (isAdmin) {
+    return false;
+  }
 
+  const { proUser } = usePromotion();
+  const currentUser = useCurrentUser();
   const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
     currentUser,
   });
-  const { status: promotionLotStatus } = promotionLot;
-  const anonymize = isAdmin
-    ? false
-    : shouldAnonymize({
-        customerOwnerType,
-        permissions,
-        promotionLotStatus,
-      });
+
+  return shouldAnonymize({
+    customerOwnerType,
+    permissions: proUser?.$metadata?.permissions,
+    promotionLotStatus,
+  });
+};
+
+const PromotionLotReservation = ({
+  promotionOption,
+  loan = promotionOption.loan,
+}) => {
+  const { status, promotionLots, invitedBy } = promotionOption;
+  const [{ status: promotionLotStatus, name }] = promotionLots;
+  const anonymize = getAnonymize(promotionLotStatus, invitedBy);
 
   if (anonymize) {
     return null;
@@ -50,12 +53,19 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
     return (
       <RequestReservation
         promotionOption={promotionOption}
-        promotionLotName={promotionLot.name}
+        promotionLotName={name}
         status={status}
         buttonProps={{ size: 'small' }}
+        promotion={loan.promotions?.[0]}
       />
     );
   }
+
+  const userName =
+    loan.user?.name ||
+    [loan.userCache?.firstName, loan.userCache?.lastName]
+      .filter(x => x)
+      .join(' ');
 
   return (
     <DialogSimple
@@ -63,8 +73,8 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
         <T
           id="PromotionReservationsTable.modalTitle"
           values={{
-            lotName: <b>{promotionLot.name}</b>,
-            customerName: <b>{loan.user.name}</b>,
+            lotName: <b>{name}</b>,
+            customerName: <b>{userName}</b>,
           }}
         />
       }
@@ -72,9 +82,10 @@ const PromotionLotReservation = ({ loan, promotion, promotionOption }) => {
       renderTrigger={({ handleOpen }) => (
         <div className="flex center-align">
           <PromotionReservationProgress
-            loan={loan}
             promotionOption={promotionOption}
-            className="mr-8"
+            loan={loan}
+            className="mr-8 flex"
+            StepperProps={{ style: { padding: 0 } }}
           />
           <Button
             raised

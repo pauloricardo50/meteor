@@ -11,7 +11,7 @@ shell-server            # Server-side component of the `meteor shell` command
 force-ssl                     # Automatically route users to https
 
 # Accounts
-alanning:roles@1.2.19
+alanning:roles@2.1.0
 accounts-password
 epotek:accounts-ui
 
@@ -32,7 +32,7 @@ meteorhacks:inject-initial
 edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
-montiapm:agent@2.39.0-beta.4
+montiapm:agent@2.39.0-beta.5
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import
@@ -40,7 +40,10 @@ dynamic-import
 matb33:collection-hooks
 percolate:migrations
 littledata:synced-cron
-zodern:standard-minifier-js@4.0.0-beta.5
 qualia:prod-shell
 jquery
 montiapm:profiler
+
+# Backend doesn't need a client architecture
+# Minifier to remove client js to reduce deployment time
+zodern:remove-client-js

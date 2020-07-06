@@ -9,7 +9,6 @@ import {
   PURCHASE_TYPE,
   STEPS,
 } from '../api/loans/loanConstants';
-import { adminLoans } from '../api/loans/queries';
 import LoanService from '../api/loans/server/LoanService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createFakeBorrowers } from './borrowerFixtures';
@@ -180,9 +179,9 @@ export const addLoanWithData = ({
 }) => {
   const loanId = LoanService.fullLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
-  const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+  const loan = LoanService.get(loanId, { structures: { id: 1 } });
   const propertyId = properties.length
-    ? PropertyService.insert({ property: {}, userId })
+    ? PropertyService.insert({ property: { userId } })
     : undefined;
 
   if (propertyId) {
@@ -206,8 +205,8 @@ export const addLoanWithData = ({
     structure: {
       propertyId,
       loanTranches: [
-        { type: INTEREST_RATES.YEARS_10, value: 0.8 },
-        { type: INTEREST_RATES.YEARS_5, value: 0.2 },
+        { type: INTEREST_RATES.YEARS_10, value: 0.8 * 1000000 },
+        { type: INTEREST_RATES.YEARS_5, value: 0.2 * 1000000 },
       ],
       ...getRandomStructure(1000000, borrowerId1),
     },

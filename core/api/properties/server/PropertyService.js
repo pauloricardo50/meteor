@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { adminLoan } from '../../fragments';
 import CollectionService from '../../helpers/server/CollectionService';
 import LoanService from '../../loans/server/LoanService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
@@ -17,17 +16,44 @@ class PropertyService extends CollectionService {
     super(Properties);
   }
 
-  insert = ({ property, userId, loanId }) => {
-    const propertyId = super.insert({ ...property, userId });
+  insert = ({ property, loanId }) => {
+    this.checkPropertyValue({ property });
+    const propertyId = super.insert(property);
     if (loanId) {
+      const { userId } = LoanService.get(loanId, { userId: 1 });
       LoanService.addPropertyToLoan({ loanId, propertyId });
+      if (userId) {
+        this.addLink({ id: propertyId, linkName: 'user', linkId: userId });
+      }
     }
 
     return propertyId;
   };
 
-  update = ({ propertyId, object }) =>
-    Properties.update(propertyId, { $set: object });
+  update = ({ propertyId, object }) => {
+    this.checkPropertyValue({ propertyId, property: object });
+
+    return Properties.update(propertyId, { $set: object });
+  };
+
+  checkPropertyValue = ({ propertyId, property }) => {
+    const { value, landValue, additionalMargin, constructionValue } = property;
+    let { category } = property;
+
+    if (!category) {
+      category = this.get(propertyId, { category: 1 })?.category;
+    }
+
+    if (category !== PROPERTY_CATEGORY.PROMOTION) {
+      return;
+    }
+
+    if (value && (landValue || additionalMargin || constructionValue)) {
+      throw new Meteor.Error(
+        'Vous devez spécifier une valeur totale OU détaillée',
+      );
+    }
+  };
 
   remove = ({ propertyId, loanId }) => {
     const property = this.get(propertyId, { loans: { _id: 1 }, category: 1 });
@@ -37,7 +63,7 @@ class PropertyService extends CollectionService {
         const loansLink = this.getLink(propertyId, 'loans');
         loansLink.remove(loanId);
         return removePropertyFromLoan({
-          loan: LoanService.get(loanId, adminLoan()),
+          loan: LoanService.get(loanId, { _id: 1, structures: 1 }),
           propertyId,
         });
       }
@@ -71,7 +97,11 @@ class PropertyService extends CollectionService {
       );
     }
 
-    LoanService.insertPropertyLoan({ userId, propertyIds, shareSolvency });
+    return LoanService.insertPropertyLoan({
+      userId,
+      propertyIds,
+      shareSolvency,
+    });
   };
 
   addProUser({ propertyId, userId }) {
@@ -111,7 +141,7 @@ class PropertyService extends CollectionService {
   }
 
   removeCustomerFromProperty({ propertyId, loanId }) {
-    const loan = LoanService.get(loanId, adminLoan());
+    const loan = LoanService.get(loanId, { _id: 1, structures: 1 });
     const { structures = [] } = loan;
 
     if (structures.length) {

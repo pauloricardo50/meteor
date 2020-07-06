@@ -23,10 +23,7 @@ describe('Public onboarding', () => {
 
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
 
     cy.get('input#firstName').should('not.exist');
     cy.get('input#salary').should('exist');
@@ -37,10 +34,7 @@ describe('Public onboarding', () => {
 
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
     cy.get('input#salary').type('300');
     // Wait for form save
     cy.wait(500);
@@ -76,10 +70,7 @@ describe('Public onboarding', () => {
     cy.callMethod('generateProFixtures');
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
 
     cy.get('input#salary').type('120000');
     cy.get('input#netSalary').type('100000');
@@ -115,10 +106,7 @@ describe('Public onboarding', () => {
   it('Should attach an anonymous loan to a new user account', () => {
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
 
     cy.get('input#salary').type('300');
     cy.wait(500);
@@ -149,9 +137,7 @@ describe('Public onboarding', () => {
 
   it('should ask to create an account if the user wants to go further', () => {
     cy.contains('button', 'Acquisition').click();
-    cy.get('.simple-dashboard-page-ctas button')
-      .last()
-      .click();
+    cy.get('.simple-dashboard-page-ctas button').last().click();
 
     cy.contains('Soyez accompagné').should('exist');
   });
@@ -160,10 +146,7 @@ describe('Public onboarding', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.borrowers-adder')
-      .find('button')
-      .first()
-      .click();
+    cy.get('.borrowers-adder').find('button').first().click();
     cy.get('input#salary').type('300');
     cy.wait(500);
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
@@ -226,9 +209,7 @@ describe('Public onboarding', () => {
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
-    cy.get('.welcome-screen')
-      .contains('Login')
-      .click();
+    cy.get('.welcome-screen').contains('Login').click();
     // cy.contains('.welcome-screen', 'Login').click(); // Why no work?
     cy.get('input[name="email"]').type(USER_EMAIL);
     cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);
@@ -257,11 +238,13 @@ describe('Public onboarding', () => {
 
     cy.window().then(window => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      cy.callMethod('getLoan', loanId).then(({ referralId }) => {
-        cy.get('@userId').then(userId => {
-          expect(referralId).to.equal(userId);
-        });
-      });
+      cy.callMethod('getLoan', loanId, { referralId: 1 }).then(
+        ({ referralId }) => {
+          cy.get('@userId').then(userId => {
+            expect(referralId).to.equal(userId);
+          });
+        },
+      );
     });
   });
 
@@ -274,9 +257,11 @@ describe('Public onboarding', () => {
 
     cy.window().then(window => {
       const loanId = window.localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      cy.callMethod('getLoan', loanId).then(({ referralId }) => {
-        expect(referralId).to.equal(undefined);
-      });
+      cy.callMethod('getLoan', loanId, { referralId: 1 }).then(
+        ({ referralId }) => {
+          expect(referralId).to.equal(undefined);
+        },
+      );
     });
   });
 
@@ -295,13 +280,15 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getUser', 'dev@e-potek.ch').then(
-      ({ referredByUserLink }) => {
-        cy.get('@userId').then(userId => {
-          expect(referredByUserLink).to.equal(userId);
-        });
-      },
-    );
+    cy.callMethod(
+      'getUser',
+      { 'emails.0.address': 'dev@e-potek.ch' },
+      { referredByUserLink: 1 },
+    ).then(({ referredByUserLink }) => {
+      cy.get('@userId').then(userId => {
+        expect(referredByUserLink).to.equal(userId);
+      });
+    });
   });
 
   it('should create an account with organisation referralId', () => {
@@ -320,13 +307,15 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getUser', 'dev@e-potek.ch').then(
-      ({ referredByOrganisationLink }) => {
-        cy.get('@orgId').then(orgId => {
-          expect(referredByOrganisationLink).to.equal(orgId);
-        });
-      },
-    );
+    cy.callMethod(
+      'getUser',
+      { 'emails.0.address': 'dev@e-potek.ch' },
+      { referredByOrganisationLink: 1 },
+    ).then(({ referredByOrganisationLink }) => {
+      cy.get('@orgId').then(orgId => {
+        expect(referredByOrganisationLink).to.equal(orgId);
+      });
+    });
   });
 
   it('should not let override the referralId with an invalid one', () => {
@@ -348,13 +337,15 @@ describe('Public onboarding', () => {
     cy.url().should('include', '/signup/dev@e-potek.ch');
     cy.get('.signup-success').should('exist');
 
-    cy.callMethod('getUser', 'dev@e-potek.ch').then(
-      ({ referredByUserLink }) => {
-        cy.get('@userId').then(userId => {
-          expect(referredByUserLink).to.equal(userId);
-        });
-      },
-    );
+    cy.callMethod(
+      'getUser',
+      { 'emails.0.address': 'dev@e-potek.ch' },
+      { referredByUserLink: 1 },
+    ).then(({ referredByUserLink }) => {
+      cy.get('@userId').then(userId => {
+        expect(referredByUserLink).to.equal(userId);
+      });
+    });
   });
 
   it('should not route to an existing loan if a new property is expected', () => {
@@ -394,7 +385,7 @@ describe('Public onboarding', () => {
       cy.setSelect('residenceType', 1);
       cy.get('[name="address1"]').type('Place de neuve 2');
       cy.get('[name="zipCode"]').type('1204');
-      cy.get('[name="city"]').type('Genève');
+      cy.setSelect('city', 1);
       cy.get('[name="previousLoanTranches.0.value"]').type('500000');
       cy.get('[name="previousLoanTranches.0.dueDate"]').type('2020-01-01');
       cy.get('[name="previousLoanTranches.0.rate"]').type('0.8');
@@ -406,10 +397,7 @@ describe('Public onboarding', () => {
       cy.get('[name="previousLoanTranches.1.duration"]').type('5');
       cy.get('[role="dialog"] form').submit();
 
-      cy.get('.borrowers-adder')
-        .find('button')
-        .first()
-        .click();
+      cy.get('.borrowers-adder').find('button').first().click();
 
       cy.get('input#salary').type('170000');
       cy.wait(500);

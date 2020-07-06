@@ -5,6 +5,7 @@ const numberMask = {
   suffix: '',
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: ' ',
+  allowLeadingZeroes: 1,
 };
 
 export const swissFrancMask = createNumberMask(numberMask);

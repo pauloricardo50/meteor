@@ -1,13 +1,16 @@
 import SecurityService from '../../security';
 import {
   addLotToPromotionLot,
+  addLotToPromotionLotGroup,
   cancelPromotionLotReservation,
   promotionLotInsert,
   promotionLotRemove,
   promotionLotUpdate,
+  removeLotFromPromotionLotGroup,
   removeLotLink,
   reservePromotionLot,
   sellPromotionLot,
+  updateLotPromotionLotGroups,
 } from '../methodDefinitions';
 import PromotionLotService from './PromotionLotService';
 
@@ -76,3 +79,42 @@ sellPromotionLot.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionLotService.sellPromotionLot(params);
 });
+
+addLotToPromotionLotGroup.setHandler(
+  ({ userId }, { promotionLotId, promotionLotGroupId }) => {
+    SecurityService.promotions.isAllowedToModifyPromotionLot({
+      promotionLotId,
+      userId,
+    });
+    return PromotionLotService.addToPromotionLotGroup({
+      promotionLotId,
+      promotionLotGroupId,
+    });
+  },
+);
+
+removeLotFromPromotionLotGroup.setHandler(
+  ({ userId }, { promotionLotId, promotionLotGroupId }) => {
+    SecurityService.promotions.isAllowedToModifyPromotionLot({
+      promotionLotId,
+      userId,
+    });
+    return PromotionLotService.removeFromPromotionLotGroup({
+      promotionLotId,
+      promotionLotGroupId,
+    });
+  },
+);
+
+updateLotPromotionLotGroups.setHandler(
+  ({ userId }, { promotionLotId, promotionLotGroupIds }) => {
+    SecurityService.promotions.isAllowedToModifyPromotionLot({
+      promotionLotId,
+      userId,
+    });
+    return PromotionLotService.updatePromotionLotGroups({
+      promotionLotId,
+      promotionLotGroupIds,
+    });
+  },
+);

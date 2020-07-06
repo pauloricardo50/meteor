@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import pick from 'lodash/pick';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import UserService from '../../../../users/server/UserService';
 import RESTAPI from '../../RESTAPI';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';

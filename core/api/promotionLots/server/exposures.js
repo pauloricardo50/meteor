@@ -32,6 +32,7 @@ const promotionLotFilters = ({
   status,
   showAllLots,
   promotionLotIds,
+  promotionLotGroupId,
 }) => {
   if (promotionId) {
     filters.promotionCache = { $elemMatch: { _id: promotionId } };
@@ -39,6 +40,10 @@ const promotionLotFilters = ({
 
   if (status) {
     filters.status = status;
+  }
+
+  if (promotionLotGroupId) {
+    filters.promotionLotGroupIds = promotionLotGroupId;
   }
 
   if (showAllLots === false) {
@@ -55,7 +60,13 @@ exposeQuery({
     embody: body => {
       body.$filter = ({
         filters,
-        params: { promotionId, status, showAllLots, promotionLotIds },
+        params: {
+          promotionId,
+          status,
+          showAllLots,
+          promotionLotIds,
+          promotionLotGroupId,
+        },
       }) => {
         promotionLotFilters({
           filters,
@@ -63,6 +74,7 @@ exposeQuery({
           status,
           showAllLots,
           promotionLotIds,
+          promotionLotGroupId,
         });
       };
     },
@@ -71,8 +83,10 @@ exposeQuery({
       status: Match.Maybe(Match.OneOf(String, Object)),
       showAllLots: Match.Maybe(Match.OneOf(Boolean, undefined)),
       promotionLotIds: Match.Maybe(Match.OneOf(Array, undefined)),
+      promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
+  options: { allowFilterById: true },
 });
 
 exposeQuery({
@@ -84,8 +98,16 @@ exposeQuery({
       promotionLotSecurity({ _id, userId, promotionId });
     },
     embody: body => {
-      body.$filter = ({ filters, params: { _id, promotionId, status } }) => {
-        promotionLotFilters({ filters, promotionId, status });
+      body.$filter = ({
+        filters,
+        params: { promotionId, status, promotionLotGroupId },
+      }) => {
+        promotionLotFilters({
+          filters,
+          promotionId,
+          status,
+          promotionLotGroupId,
+        });
       };
       body.$postFilter = (results, { _userId }) => {
         try {
@@ -94,7 +116,7 @@ exposeQuery({
         } catch (error) {
           const currentUser = UserService.get(_userId, {
             promotions: { _id: 1 },
-            organisations: { users: { _id: 1 } },
+            organisations: { userLinks: 1 },
           });
           return results.map(makePromotionLotAnonymizer({ currentUser }));
         }
@@ -103,6 +125,8 @@ exposeQuery({
     validateParams: {
       promotionId: Match.Maybe(String),
       status: Match.Maybe(Match.OneOf(String, Object)),
+      promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
+  options: { allowFilterById: true },
 });

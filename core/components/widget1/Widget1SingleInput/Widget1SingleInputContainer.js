@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
 
 import { widget1Actions, widget1Constants } from '../../../redux/widget1';
-import { toNumber } from '../../../utils/conversionFunctions';
 
 const isLoanValue = name => widget1Constants.CAPPED_FIELDS.includes(name);
 
@@ -22,11 +21,7 @@ const withConnect = connect(
     purchaseType: widget1.purchaseType,
   }),
   (dispatch, { name }) => ({
-    setInputValue: event => {
-      let { value } = event.target;
-      if (value) {
-        value = toNumber(value);
-      }
+    setInputValue: value => {
       dispatch(widget1Actions.setValue(name, value));
     },
     setValue: value => dispatch(widget1Actions.setValue(name, value)),

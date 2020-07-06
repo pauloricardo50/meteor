@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 
 import {
@@ -10,14 +12,12 @@ import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import { ROLES } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
-import RadioButtons from 'core/components/RadioButtons';
-import StickyPopover from 'core/components/StickyPopover';
 import T from 'core/components/Translation';
 
 import { LiveQueryMonitor } from '../../liveSync';
 import { ACTIONS, GROUP_BY, NO_PROMOTION } from '../loanBoardConstants';
 import { additionalLoanBoardFields } from '../loanBoardHelpers';
-import LoanBoardOptionsCheckboxes from './LoanBoardOptionsCheckboxes';
+import LoanBoardOptionsSelect from './LoanBoardOptionsSelect';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {
   if (!prev.includes(null) && next.includes(null)) {
@@ -87,7 +87,7 @@ const LoanBoardOptionsContent = ({
     ...devAndAdmins.map(admin => ({
       id: admin._id,
       label: admin.firstName,
-      hide: admin.roles.includes(ROLES.DEV),
+      hide: Roles.userIsInRole(admin, ROLES.DEV),
     })),
   ];
   const statusOptions = [
@@ -142,7 +142,7 @@ const LoanBoardOptionsContent = ({
   return (
     <>
       <div className="left">
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Conseiller"
           value={assignedEmployeeValue}
           options={assignedEmployeeOptions}
@@ -154,21 +154,21 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Statut"
           value={statusValue}
           options={statusOptions}
           onChange={next => makeOnChange('status', dispatch)(statusValue, next)}
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Étape du dossier"
           value={stepValue}
           options={stepOptions}
           onChange={next => makeOnChange('step', dispatch)(stepValue, next)}
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Catégorie"
           value={categoryValue}
           options={categoryOptions}
@@ -177,7 +177,7 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Type de prêt"
           value={purchaseTypeValue}
           options={purchaseTypeOptions}
@@ -186,7 +186,7 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Prêteurs"
           value={lenderIdValue}
           options={lenderOptions}
@@ -195,7 +195,7 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Promotions"
           value={promotionIdValue}
           options={promotionIdOptions}
@@ -204,7 +204,7 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Statut de la promotion"
           value={promotionStatusValue}
           options={promotionStatusOptions}
@@ -216,7 +216,7 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <LoanBoardOptionsCheckboxes
+        <LoanBoardOptionsSelect
           label="Infos supplémentaires"
           value={additionalFields}
           options={additionalFieldOptions}
@@ -228,26 +228,15 @@ const LoanBoardOptionsContent = ({
           }
         />
 
-        <div>
-          <StickyPopover
-            component={
-              <RadioButtons
-                options={groupByOptions}
-                onChange={newValue =>
-                  dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
-                }
-                value={groupBy}
-                radioGroupStyle={{ flexDirection: 'column' }}
-              />
-            }
-            placement="bottom"
-          >
-            <div>Mode d'affichage</div>
-          </StickyPopover>
-          <div className="secondary">
-            {groupByOptions.find(({ id }) => id === groupBy).label}
-          </div>
-        </div>
+        <LoanBoardOptionsSelect
+          label="Affichage"
+          value={groupBy}
+          options={groupByOptions}
+          onChange={newValue =>
+            dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue })
+          }
+          multiple={false}
+        />
 
         <LiveQueryMonitor
           devAndAdmins={devAndAdmins}

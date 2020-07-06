@@ -11,10 +11,12 @@ import {
 import {
   PROMOTION_OPTION_BANK_STATUS,
   PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+  PROMOTION_OPTION_STATUS,
 } from '../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import { expirePromotionOptionReservation } from '../../promotionOptions/server/serverMethods';
 import { PROMOTION_EMAIL_RECIPIENTS } from '../../promotions/promotionConstants';
+import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import { EMAIL_IDS } from '../emailConstants';
@@ -55,13 +57,12 @@ const getPromotionOptionMailParams = (
   let userName = 'e-Potek';
 
   if (userId) {
-    const { name, roles } = UserService.get(userId, { name: 1, roles: 1 });
-    const isUser = roles.includes(ROLES.USER);
+    const user = UserService.get(userId, { name: 1, roles: 1 });
 
-    if (isUser && anonymize) {
+    if (SecurityService.hasAssignedRole(user, ROLES.USER) && anonymize) {
       userName = 'un acquéreur';
     } else {
-      userName = name;
+      userName = user.name;
     }
   }
 
@@ -78,6 +79,7 @@ const getPromotionOptionMailParams = (
       : 'Le conseiller',
     invitedBy: getUserNameAndOrganisation({ user: invitedByUser }),
     showProgress,
+    anonymize,
   };
 };
 
@@ -196,7 +198,27 @@ export const PROMOTION_EMAILS = [
   {
     description: "Annulation de la réservation d'un lot -> Pros",
     method: cancelPromotionLotReservation,
+    shouldSend: ({ result: { oldStatus } }) =>
+      [PROMOTION_OPTION_STATUS.RESERVED, PROMOTION_OPTION_STATUS.SOLD].includes(
+        oldStatus,
+      ),
     emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION,
+    recipients: [
+      PROMOTION_EMAIL_RECIPIENTS.BROKER,
+      PROMOTION_EMAIL_RECIPIENTS.BROKERS,
+      PROMOTION_EMAIL_RECIPIENTS.PROMOTER,
+    ],
+    showProgress: false,
+  },
+  {
+    description: "Interruption du processus de réservation d'un lot -> Pros",
+    method: cancelPromotionLotReservation,
+    shouldSend: ({ result: { oldStatus } }) =>
+      ![
+        PROMOTION_OPTION_STATUS.RESERVED,
+        PROMOTION_OPTION_STATUS.SOLD,
+      ].includes(oldStatus),
+    emailId: EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS,
     recipients: [
       PROMOTION_EMAIL_RECIPIENTS.BROKER,
       PROMOTION_EMAIL_RECIPIENTS.BROKERS,

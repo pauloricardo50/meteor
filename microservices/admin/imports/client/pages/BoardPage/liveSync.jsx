@@ -49,6 +49,7 @@ export const withLiveSync = compose(
     query: liveSyncs,
     params: ({ activateLoanBoardSync }) => ({ userId: activateLoanBoardSync }),
     queryOptions: { reactive: true, single: true },
+    deps: ({ activateLoanBoardSync }) => [activateLoanBoardSync],
     dataName: 'liveSyncOptions',
     renderMissingDoc: false,
   }),

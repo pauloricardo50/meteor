@@ -49,6 +49,12 @@ describe('Pro promotion', () => {
           },
         },
       });
+      cy.refetch();
+
+      cy.get('.mui-select')
+        .contains('dev+pro1@e-potek.ch')
+        .click();
+      cy.contains('Tous').click();
 
       cy.get('tbody tr').should('have.length', 4);
 
@@ -69,6 +75,7 @@ describe('Pro promotion', () => {
       // customers are invited by user
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL });
       cy.refetch();
+      cy.wait(500);
       cy.get('tbody tr')
         .first()
         .then(tr => {
@@ -99,6 +106,7 @@ describe('Pro promotion', () => {
       });
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
       cy.refetch();
+      cy.wait(500);
       cy.get('tbody tr')
         .first()
         .then(tr => {
@@ -124,6 +132,8 @@ describe('Pro promotion', () => {
           canInviteCustomers: true,
         },
       });
+      cy.refetch();
+      cy.wait(500);
 
       cy.get('.actions')
         .first()
@@ -162,7 +172,7 @@ describe('Pro promotion', () => {
       cy.contains('Promotions').click();
       cy.contains('En cours').click();
 
-      cy.get('td.col-loans')
+      cy.get('span.loan-count')
         .invoke('text')
         .then(text => {
           const counts = text.split('');
@@ -177,21 +187,25 @@ describe('Pro promotion', () => {
       });
 
       cy.get('@loanCount').then(count => {
-        cy.get('.promotion-lot-loans-table tbody tr').should(
-          'have.length',
-          count,
-        );
+        cy.contains('Acquéreurs intéressés')
+          .parents('section')
+          .find('tbody tr')
+          .should('have.length', count);
       });
 
       cy.contains('Réserver').click();
       cy.contains('Confirmer').click();
 
-      cy.get('.promotion-lot-loans-table')
+      cy.contains('Acquéreurs intéressés')
+        .parents('section')
+        .find('table')
         .contains('Réservation en cours')
         .should('exist');
-      cy.get('.promotion-lot-loans-table')
-        .contains('Détail')
-        .should('exist')
+
+      cy.contains('Acquéreurs intéressés')
+        .parents('section')
+        .find('table')
+        .contains('button', 'Détail')
         .click();
 
       cy.contains('Uploader convention').click();
@@ -230,30 +244,6 @@ describe('Pro promotion', () => {
     });
 
     context('with an existing promotion', () => {
-      it('should add a promotion', () => {
-        cy.contains('Promotions').click();
-
-        cy.contains('.pro-dashboard-page', 'Rien à afficher');
-
-        cy.contains('Promotion immobilière').click();
-
-        cy.get('input[name=name]').type('New promotion');
-        cy.setSelect('type', 'CREDIT');
-        cy.get('input[name=address1]').type('Chemin Auguste-Vilbert 14');
-        cy.get('input[name=address2]').type('1er étage');
-        cy.get('input[name=zipCode]').type('1218');
-        cy.get('input[name=city]').type('Le Grand-Saconnex');
-        cy.get('input[name=agreementDuration]').type('14{enter}');
-
-        cy.url().should('include', 'promotions/');
-        cy.get('h1').should('contain', 'New promotion');
-        cy.contains('Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex').should(
-          'exist',
-        );
-
-        cy.contains('Préparation').should('exist');
-      });
-
       it('should render buttons based on permissions', () => {
         cy.callMethod('insertPromotion');
         cy.callMethod('resetUserPermissions');
@@ -348,6 +338,8 @@ describe('Pro promotion', () => {
       });
 
       it('should modify lots', () => {
+        cy.callMethod('insertPromotion');
+
         cy.callMethod('setUserPermissions', {
           permissions: {
             canModifyPromotion: true,
@@ -375,7 +367,7 @@ describe('Pro promotion', () => {
         cy.setSelect('type', 'BASEMENT');
         cy.get('input[name=value]').clear();
         cy.get('input[name=value]').type('{backspace}2500'); // Remove initial 0
-        cy.setSelect('promotionLot', 1);
+        cy.setSelect('promotionLotId', 1);
         cy.contains('Ok').click();
 
         cy.contains('Lot 2').should('exist');
@@ -407,6 +399,7 @@ describe('Pro promotion', () => {
           .click();
 
         cy.contains('Supprimer').click();
+        cy.contains('Confirmer').click();
         cy.contains('Lot 2').should('not.exist');
       });
     });

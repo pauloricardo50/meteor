@@ -6,12 +6,15 @@ import RequestContact from '../../../components/RequestContact';
 
 const SingleLoanPageContacts = ({ loanId }) => {
   const { loading, contacts } = useLoanContacts(loanId);
+
+  const showLoading = loading && !contacts;
+
   return (
     <div className="single-loan-page-contacts card1 card-top">
       <h3>Contacts</h3>
 
       <div className="scroll-wrapper">
-        {!loading &&
+        {!showLoading &&
           contacts.map(contact => (
             <RequestContact
               {...contact}
@@ -20,7 +23,7 @@ const SingleLoanPageContacts = ({ loanId }) => {
             />
           ))}
       </div>
-      {!loading && contacts.length === 0 && (
+      {!showLoading && contacts.length === 0 && (
         <h2 className="secondary text-center">Pas de contacts</h2>
       )}
     </div>

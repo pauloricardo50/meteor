@@ -1,9 +1,6 @@
 import React, { useRef } from 'react';
 
-import {
-  LOANS_COLLECTION,
-  LOAN_CATEGORIES,
-} from '../../../core/api/loans/loanConstants';
+import { LOAN_CATEGORIES } from '../../../core/api/loans/loanConstants';
 import CollectionSearch from '../../../core/components/CollectionSearch';
 import { getLoanLinkTitle } from '../../../core/components/IconLink/collectionIconLinkHelpers';
 import PremiumBadge from '../../../core/components/PremiumBadge/PremiumBadge';
@@ -12,7 +9,7 @@ import LoanTagger from '../FrontContactLoans/LoanTagger';
 
 const Loan = ({ conversation, tagIds, setTagIds, result: loan, refetch }) => {
   const ref = useRef(null);
-  const { name, status, category } = loan;
+  const { name, status, category, _collection } = loan;
   const title = getLoanLinkTitle(loan);
 
   return (
@@ -36,7 +33,7 @@ const Loan = ({ conversation, tagIds, setTagIds, result: loan, refetch }) => {
           {category === LOAN_CATEGORIES.PREMIUM && <PremiumBadge small />}
           <StatusLabel
             status={status}
-            collection={LOANS_COLLECTION}
+            collection={_collection}
             className="mb-4"
             small
           />

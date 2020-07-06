@@ -10,7 +10,7 @@ import { Services } from '../../server';
 import { assignAdminToUser } from '../../users/methodDefinitions';
 
 // Pads a number with zeros: 4 --> 0004
-const zeroPadding = (num, places) => {
+export const zeroPadding = (num, places) => {
   const zero = places - num.toString().length + 1;
   return Array(+(zero > 0 && zero)).join('0') + num;
 };

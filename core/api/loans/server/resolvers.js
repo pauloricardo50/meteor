@@ -3,7 +3,6 @@ import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDe
 import merge from 'lodash/merge';
 
 import { proLoans } from '../../fragments';
-import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import {
   PROPERTY_CATEGORY,
   PROPERTY_SOLVENCY,
@@ -66,7 +65,12 @@ const isSolventForProProperty = ({
 
 const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
   // Remove these 2 properties from the loan
-  const { maxPropertyValue, shareSolvency, properties, ...loan } = loanObject;
+  const {
+    maxPropertyValue,
+    shareSolvency,
+    properties = [],
+    ...loan
+  } = loanObject;
 
   const propertiesWithSolvency = properties.map(property => ({
     ...property,
@@ -85,19 +89,6 @@ const handleLoanSolvencySharing = ({ isAdmin = false }) => loanObject => {
   };
 };
 
-const anonymizePromotionLoans = ({ loans = [], userId }) => {
-  const currentUser = UserService.get(userId, {
-    promotions: { _id: 1 },
-    organisations: { users: { _id: 1 } },
-  });
-
-  const promotionLoanAnonymizer = makePromotionLoanAnonymizer({
-    currentUser,
-  });
-
-  return loans.map(loan => promotionLoanAnonymizer(loan));
-};
-
 const anonymizePropertyLoans = ({ loans = [], userId }) => {
   const currentUser = UserService.get(userId, {
     organisations: { users: { _id: 1 } },
@@ -113,31 +104,6 @@ const anonymizePropertyLoans = ({ loans = [], userId }) => {
       currentUser,
     })(loan);
   });
-};
-
-export const proPromotionLoansResolver = ({
-  calledByUserId,
-  promotionId,
-  status,
-  anonymous,
-  referredByUserId,
-}) => {
-  const loans = LoanService.fetch({
-    $filters: {
-      'promotionLinks._id': promotionId,
-      status,
-      anonymous,
-      'userCache.referredByUserLink': referredByUserId,
-    },
-    ...proLoansFragment,
-  });
-
-  try {
-    SecurityService.checkUserIsAdmin(calledByUserId);
-    return loans;
-  } catch (error) {
-    return anonymizePromotionLoans({ loans, userId: calledByUserId });
-  }
 };
 
 export const proPropertyLoansResolver = ({

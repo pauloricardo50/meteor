@@ -18,7 +18,6 @@ import {
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
-const ADMIN_URL = Meteor.settings.public.subdomains.admin;
 const PRO_URL = Meteor.settings.public.subdomains.pro;
 
 const { formatMessage } = intl;
@@ -103,9 +102,7 @@ export const getEmailContent = (emailId, intlValues) => {
 export const getAccountsUrl = path => (user, url) => {
   const userIsUser = Roles.userIsInRole(user, ROLES.USER);
   const userIsPro = Roles.userIsInRole(user, ROLES.PRO);
-  const userIsAdmin =
-    Roles.userIsInRole(user, ROLES.ADMIN) ||
-    Roles.userIsInRole(user, ROLES.DEV);
+  const userIsAdmin = Roles.userIsInRole(user, [ROLES.ADMIN, ROLES.DEV]);
   const token = url.split(`/${path}/`)[1];
 
   if (userIsUser) {
@@ -175,7 +172,10 @@ export const addEmailListener = ({
 }) => {
   let methodNames = ServerEventService.addAfterMethodListener(method, props => {
     props.context.unblock();
-    func(props);
+    Meteor.defer(() => {
+      // Send emails asynchronously after the method returns
+      func(props);
+    });
   });
 
   if (typeof methodNames === 'string') {

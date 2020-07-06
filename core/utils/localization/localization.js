@@ -1,9 +1,5 @@
 // This file is shared between client and server to allow server-side tests to have access to it
 
-import moment from 'moment';
-import { addLocaleData } from 'react-intl';
-import fr from 'react-intl/locale-data/fr';
-
 import intl from '../intl';
 import { setupMoment } from './localizationHelpers';
 import translateSimpleSchema from './simpleSchemaLocalization';
@@ -13,11 +9,7 @@ export const localizationStartup = ({
   setupCountries = true,
   messages,
 } = {}) => {
-  // Add locales used in app here
-  addLocaleData(fr);
-
   setupMoment();
-  moment.locale('fr');
 
   translateSimpleSchema();
 

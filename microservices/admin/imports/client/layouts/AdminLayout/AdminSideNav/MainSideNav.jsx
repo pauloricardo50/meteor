@@ -1,9 +1,7 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
 import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import List from '@material-ui/core/List';
-import PropTypes from 'prop-types';
 
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
@@ -12,7 +10,8 @@ import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import collectionIcons from 'core/arrays/collectionIcons';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import List from 'core/components/Material/List';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { createRoute } from 'core/utils/routerUtils';
 
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
@@ -24,31 +23,28 @@ const getItems = currentUser =>
       label: 'Dashboard',
       icon: 'home',
       to: ADMIN_ROUTES.DASHBOARD_PAGE.path,
-      exact: true,
     },
     {
       label: 'Dossiers',
       icon: 'viewWeek',
       to: '/board',
-      exact: true,
     },
     {
-      detail: true,
       collection: USERS_COLLECTION,
+      to: '/users',
     },
     {
-      detail: true,
       collection: LOANS_COLLECTION,
+      to: '/loans',
     },
     {
       collection: INSURANCE_REQUESTS_COLLECTION,
       to: '/insuranceRequests',
-      exact: true,
       label: 'Assurances',
     },
     {
       collection: PROMOTIONS_COLLECTION,
-      detail: true,
+      to: '/promotions',
     },
     {
       label: 'Organisations',
@@ -80,7 +76,6 @@ const getItems = currentUser =>
       label: 'Dev',
       icon: 'developerMode',
       to: ADMIN_ROUTES.DEV_PAGE.path,
-      exact: true,
       show: !!(currentUser && currentUser.isDev),
     },
   ]
@@ -90,31 +85,15 @@ const getItems = currentUser =>
       icon: obj.icon || collectionIcons[obj.collection],
     }));
 
-const createOnClickHandler = (
-  { detail, collection },
-  { hideDetailNav, showDetailNav, collectionName, toggleDrawer },
-) => {
-  if (detail) {
-    if (collection === collectionName) {
-      return hideDetailNav;
-    }
-    return () => showDetailNav(collection);
-  }
-  return () => {
-    hideDetailNav();
-    toggleDrawer();
-  };
-};
-
 const MainSideNav = props => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const items = useMemo(() => getItems(currentUser), [currentUser]);
 
   return (
     <List className="main-side-nav">
       {items.map((item, index) => (
         <MainSideNavListItem
-          onClick={createOnClickHandler(item, props)}
+          onClick={() => props.toggleDrawer()}
           key={index}
           {...item}
           {...props}
@@ -122,11 +101,6 @@ const MainSideNav = props => {
       ))}
     </List>
   );
-};
-
-MainSideNav.propTypes = {
-  hideDetailNav: PropTypes.func.isRequired,
-  showDetailNav: PropTypes.func.isRequired,
 };
 
 export default MainSideNav;

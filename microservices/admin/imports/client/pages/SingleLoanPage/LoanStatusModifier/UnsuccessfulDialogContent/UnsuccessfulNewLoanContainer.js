@@ -1,8 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
-import { activityInsert } from 'core/api/activities/methodDefinitions';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import {
   adminLoanInsert,
@@ -20,7 +18,7 @@ const insertNewLoan = ({
   const {
     properties = [],
     borrowers = [],
-    user: { _id: userId },
+    userCache: { _id: userId },
   } = loan;
 
   const userProperties = properties.filter(
@@ -65,16 +63,8 @@ const insertNewLoan = ({
     });
 };
 
-const addUnsuccesfulActivity = ({ loanId, reason }) =>
-  activityInsert.run({
-    object: {
-      title: 'Sans suite',
-      description: reason,
-      type: ACTIVITY_TYPES.EVENT,
-      isServerGenerated: true,
-      loanLink: { _id: loanId },
-    },
-  });
+const setUnsuccessfulReason = ({ loanId, unsuccessfulReason }) =>
+  loanUpdate.run({ loanId, object: { unsuccessfulReason } });
 
 export default compose(
   withRouter,
@@ -85,10 +75,10 @@ export default compose(
       confirmNewStatus,
       closeModal,
       history,
-      returnValue: { reason },
+      returnValue: { unsuccessfulReason },
     }) => ({
       setUnsuccessfulOnly: () => {
-        addUnsuccesfulActivity({ loanId: loan._id, reason })
+        setUnsuccessfulReason({ loanId: loan._id, unsuccessfulReason })
           .then(() => {
             confirmNewStatus();
             closeModal();
@@ -96,7 +86,7 @@ export default compose(
           .catch(cancelNewStatus);
       },
       insertLeadLoan: () => {
-        addUnsuccesfulActivity({ loanId: loan._id, reason })
+        setUnsuccessfulReason({ loanId: loan._id, unsuccessfulReason })
           .then(() =>
             insertNewLoan({ loan, cancelNewStatus, confirmNewStatus }),
           )

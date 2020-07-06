@@ -8,7 +8,6 @@ import {
   subtractTimezoneOffset,
 } from '../../utils/dateHelpers';
 import { AutoFormDialog } from '../AutoForm2';
-import Button from '../Button';
 import AdminNoteAdderContainer from './AdminNoteAdderContainer';
 
 const getUpdateSchema = () =>
@@ -56,11 +55,12 @@ export const AdminNoteSetter = ({
   methodParams,
   getInsertSchemaOverride,
   getUpdateSchemaOverride,
+  triggerComponent,
 }) => {
   const [date, setDate] = useState(); // Make sure the date is always up to date, it can get stale if a tab is open for a long time
   const isInsert = !adminNote;
 
-  const { loading, contacts } = getContacts(docId);
+  const { contacts = [] } = getContacts(docId);
   const schema = useMemo(() => {
     const insertSchema = getInsertSchemaOverride || getInsertSchema;
     const updateSchema = getUpdateSchemaOverride || getUpdateSchema;
@@ -76,6 +76,7 @@ export const AdminNoteSetter = ({
     <AutoFormDialog
       title={isInsert ? 'Ajouter une note' : 'Modifier note'}
       buttonProps={buttonProps}
+      triggerComponent={triggerComponent}
       schema={schema}
       openOnMount={!adminNote && searchParams?.addNote}
       onSubmit={({ notifyPros = [], date: noteDate, ...values }) =>
@@ -90,31 +91,11 @@ export const AdminNoteSetter = ({
         })
       }
       model={isInsert ? { date } : adminNote}
-      renderAdditionalActions={({
-        closeDialog,
-        setDisableActions,
-        disabled,
-      }) => {
-        if (isInsert) {
-          return null;
-        }
-
-        return (
-          <Button
-            onClick={() => {
-              setDisableActions(true);
-              removeAdminNote
-                .run({ ...methodParams, adminNoteId: adminNote.id })
-                .then(closeDialog)
-                .finally(() => setDisableActions(false));
-            }}
-            error
-            disabled={disabled}
-          >
-            Supprimer
-          </Button>
-        );
-      }}
+      onDelete={
+        !isInsert &&
+        (() =>
+          removeAdminNote.run({ ...methodParams, adminNoteId: adminNote.id }))
+      }
       onOpen={() => {
         // Make sure we have local time
         const now = new Date();

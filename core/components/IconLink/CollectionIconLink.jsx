@@ -38,9 +38,7 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
 
   switch (_collection) {
     case LOANS_COLLECTION: {
-      let text;
-
-      text = getLoanLinkTitle(data);
+      const text = getLoanLinkTitle(data);
 
       return {
         link: `/loans/${docId}`,
@@ -50,11 +48,8 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
     }
     case USERS_COLLECTION: {
       let text;
-      const { organisations = [], roles = [] } = data;
-      if (
-        (roles.includes(ROLES.ADMIN) || roles.includes(ROLES.DEV)) &&
-        employeesById[docId]
-      ) {
+      const { organisations = [] } = data;
+      if (Roles.userIsInRole(data, ROLES.ADMIN) && employeesById[docId]) {
         text = (
           <img
             src={employeesById[docId].src}
@@ -65,7 +60,9 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
       } else if (organisations.length) {
         text = getUserNameAndOrganisation({ user: data });
       } else {
-        text = data.name;
+        text =
+          data.name ||
+          [data.firstName, data.lastName].filter(name => name).join(' ');
       }
 
       return {
@@ -130,8 +127,9 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
         hasPopup: true,
       };
     case INSURANCES_COLLECTION: {
-      const { insuranceRequest } = data;
-      const { _id: insuranceRequestId } = insuranceRequest;
+      const { insuranceRequest, insuranceRequestCache = [] } = data;
+      const insuranceRequestId =
+        insuranceRequest?._id || insuranceRequestCache[0]?._id;
       return {
         link: `/insuranceRequests/${insuranceRequestId}/${docId}`,
         text: getInsuranceLinkTitle(data),
@@ -151,18 +149,19 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
 };
 
 const CollectionIconLink = ({
+  children,
+  data,
   forceOpen,
   iconClassName,
+  iconStyle,
+  noRoute,
+  onClick,
+  placement,
   relatedDoc = {},
+  replacementPopup,
   showIcon,
   stopPropagation,
-  placement,
-  data,
-  replacementPopup,
-  noRoute,
-  iconStyle,
-  children,
-  onClick,
+  className,
 }) => {
   const { _collection, _id: docId } = relatedDoc;
 
@@ -191,9 +190,11 @@ const CollectionIconLink = ({
           link={link}
           icon={icon}
           text={text}
-          className={cx('collection-icon', {
-            'font-awesome': typeof icon !== 'string',
-          })}
+          className={cx(
+            'collection-icon',
+            { 'font-awesome': typeof icon !== 'string' },
+            className,
+          )}
           stopPropagation={stopPropagation}
           iconClassName={iconClassName}
           iconStyle={iconStyle}

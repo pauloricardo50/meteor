@@ -7,6 +7,7 @@ import {
   TASKS_COLLECTION,
   TASK_PRIORITIES,
   TASK_STATUS,
+  TASK_TYPES,
 } from './taskConstants';
 
 const Tasks = createCollection(TASKS_COLLECTION);
@@ -115,6 +116,16 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     defaultValue: TASK_PRIORITIES.DEFAULT,
     allowedValues: Object.values(TASK_PRIORITIES),
+  },
+  type: {
+    type: String,
+    allowedValues: Object.values(TASK_TYPES),
+    optional: true,
+  },
+  metadata: {
+    type: Object,
+    blackbox: true,
+    optional: true,
   },
 });
 

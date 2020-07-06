@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { changeEmail } from '../api/users/methodDefinitions';
@@ -24,13 +24,17 @@ const getSchema = oldEmail =>
 const handleSubmit = userId => ({ email: newEmail }) =>
   changeEmail.run({ userId, newEmail });
 
-const EmailModifier = ({ userId, email }) => (
-  <AutoFormDialog
-    buttonProps={{ label: "Modifer l'email" }}
-    title="Changer l'adresse email"
-    schema={getSchema(email)}
-    onSubmit={handleSubmit(userId)}
-  />
-);
+const EmailModifier = ({ userId, email, buttonLabel = "Modifier l'email" }) => {
+  const schema = useMemo(() => getSchema(email), []);
+
+  return (
+    <AutoFormDialog
+      buttonProps={{ label: buttonLabel, primary: true }}
+      title="Changer l'adresse email"
+      schema={schema}
+      onSubmit={handleSubmit(userId)}
+    />
+  );
+};
 
 export default EmailModifier;

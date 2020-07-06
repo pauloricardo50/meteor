@@ -35,8 +35,17 @@ export const setRole = new Method({
 export const adminCreateUser = new Method({
   name: 'adminCreateUser',
   params: {
-    options: Object,
-    role: String,
+    user: {
+      assignedEmployeeId: Match.Maybe(String),
+      email: String,
+      firstName: Match.Maybe(String),
+      lastName: Match.Maybe(String),
+      phoneNumbers: Match.Maybe([String]),
+      referredByOrganisationId: Match.Maybe(String),
+      referredByUserId: Match.Maybe(String),
+      role: Match.Maybe(String),
+      sendEnrollmentEmail: Match.Maybe(Boolean),
+    },
   },
 });
 
@@ -120,8 +129,8 @@ export const proInviteUser = new Method({
   },
 });
 
-export const getUserByEmail = new Method({
-  name: 'getUserByEmail',
+export const getProByEmail = new Method({
+  name: 'getProByEmail',
   params: {
     email: String,
   },

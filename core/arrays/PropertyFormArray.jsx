@@ -11,6 +11,7 @@ import {
   VOLUME_NORM,
 } from '../api/properties/propertyConstants';
 import CantonField from '../components/CantonField/CantonField';
+import CityField from '../components/CityField/CityField';
 import {
   COMMON_COUNTRIES,
   getSortedCountriesCodes,
@@ -23,10 +24,7 @@ const mapInput = input => {
   if (input.id && input.id.indexOf('.') > 0) {
     // Perform some additional slicing to make sure ids with multiple dots
     // work by removing only the first part
-    intlSafeObject.intlId = input.id
-      .split('.')
-      .slice(1)
-      .join('.');
+    intlSafeObject.intlId = input.id.split('.').slice(1).join('.');
   }
 
   if (input.inputs) {
@@ -198,8 +196,9 @@ export const getPropertyArray = ({ loan, property }) => {
       type: 'textInput',
     },
     {
+      type: 'custom',
       id: 'city',
-      type: 'textInput',
+      component: <CityField doc={property} />,
     },
     {
       id: 'country',
@@ -274,6 +273,12 @@ export const getPropertyArray = ({ loan, property }) => {
       number: true,
       required: true,
       condition: shouldDisplayTerraceArea(property),
+    },
+    {
+      id: 'balconyArea',
+      type: 'textInput',
+      number: true,
+      required: false,
     },
     {
       id: 'volume',

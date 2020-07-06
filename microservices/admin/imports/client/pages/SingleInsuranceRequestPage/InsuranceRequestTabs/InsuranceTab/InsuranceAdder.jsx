@@ -1,4 +1,5 @@
 import React from 'react';
+import { compose, withProps } from 'recompose';
 
 import { INSURANCE_REQUEST_STATUS } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
@@ -8,7 +9,7 @@ import InsuranceForm from './InsuranceForm';
 
 const InsuranceAdder = ({
   schema,
-  insertInsurance,
+  onSubmit,
   loading,
   layout,
   insuranceRequest,
@@ -29,13 +30,13 @@ const InsuranceAdder = ({
   return (
     <AutoFormDialog
       schema={schema}
-      onSubmit={insertInsurance}
+      onSubmit={onSubmit}
       title="Nouvelle assurance"
       buttonProps={{
         fab: true,
         primary: true,
-        label: '',
-        icon: <Icon type="add" />,
+        label: null,
+        icon: <Icon type="add" fontSize="small" />,
         className: 'ml-8',
         size: 'small',
         disabled: shouldDisable,
@@ -50,4 +51,7 @@ const InsuranceAdder = ({
   );
 };
 
-export default InsuranceForm(InsuranceAdder);
+export default compose(
+  withProps(() => ({ type: 'insert' })),
+  InsuranceForm,
+)(InsuranceAdder);

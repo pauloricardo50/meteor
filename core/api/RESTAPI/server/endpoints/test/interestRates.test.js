@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import moment from 'moment';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import {
   INTEREST_RATES,
@@ -91,6 +91,11 @@ describe('REST: interestRates', function() {
             rateHigh: 0.5,
             trend: TRENDS.FLAT,
           },
+          interest15: {
+            rateLow: 0.1,
+            rateHigh: 0.6,
+            trend: TRENDS.FLAT,
+          },
         },
       ],
     });
@@ -114,12 +119,19 @@ describe('REST: interestRates', function() {
           trend: TRENDS.FLAT,
           type: INTEREST_RATES.YEARS_10,
         },
+        {
+          rateLow: 0.1,
+          rateHigh: 0.6,
+          trend: TRENDS.FLAT,
+          type: INTEREST_RATES.YEARS_15,
+        },
       ],
       date: textDate,
       averageRates: {
         interestLibor: 0.2,
         interest5: 0.25,
         interest10: 0.3,
+        interest15: 0.35,
       },
     };
     return getRates({ expectedResponse });

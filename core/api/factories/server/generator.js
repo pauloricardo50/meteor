@@ -8,6 +8,7 @@ import uniqBy from 'lodash/uniqBy';
 
 import { ACTIVITIES_COLLECTION } from '../../activities/activityConstants';
 import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import { CHECKLISTS_COLLECTION } from '../../checklists/checklistConstants';
 import { COMMISSION_RATES_COLLECTION } from '../../commissionRates/commissionRateConstants';
 import { CONTACTS_COLLECTION } from '../../contacts/contactsConstants';
 import CollectionService from '../../helpers/server/CollectionService';
@@ -70,6 +71,8 @@ const getSingularFactoryName = collection => {
       return 'insuranceProduct';
     case COMMISSION_RATES_COLLECTION:
       return 'commissionRate';
+    case CHECKLISTS_COLLECTION:
+      return 'checklist';
     default:
       throw new Error(
         `No singular factory name found for ${collection}, add it in the generator`,

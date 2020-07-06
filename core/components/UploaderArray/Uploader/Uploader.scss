@@ -64,16 +64,14 @@
 
     padding-bottom: 8px;
 
-    .text {
-      display: flex;
-      align-items: flex-end;
-      flex-grow: 1;
-      flex-wrap: wrap;
-    }
+      h3 {
+        margin: 0;
+        display: inline;
+      }
 
-    h3 {
-      margin: 0;
-    }
+      .file-count {
+        white-space: nowrap;
+      }
   }
 }
 
@@ -102,9 +100,13 @@
     display: flex;
     align-items: center;
 
-    h4,
-    h5 {
+    h3 {
       margin: 0;
+      display: inline;
+    }
+
+    .file-count {
+      white-space: nowrap;
     }
   }
 }
@@ -145,7 +147,7 @@
 }
 
 .file-status-setter {
-  padding: 4px;
+  padding: 1px 4px;
 
   border-radius: 4px;
 

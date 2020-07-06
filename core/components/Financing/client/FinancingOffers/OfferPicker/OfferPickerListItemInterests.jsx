@@ -20,7 +20,7 @@ const OfferPickerListItemInterests = ({
             }}
           />
         }
-        valueProps={{ className: 'error' }}
+        valueProps={{ className: 'error font-size-5' }}
       />
     );
   }
@@ -43,7 +43,7 @@ const OfferPickerListItemInterests = ({
 
   return (
     <OfferPickerListItemValue
-      label={<T id="offer.averagedInterestRate" />}
+      label={<T id="FinancingOffers.averagedInterestRate" />}
       value={<Percent value={offer.averagedRate} />}
     />
   );

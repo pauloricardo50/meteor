@@ -1,5 +1,16 @@
-.home-link {
-  padding: 0 20px;
+.missing-doc {
+  .icon {
+    width: 120px;
+    height: 120px;
+    margin: 32px 0;
 
-  text-decoration: none;
+    color: $primary;
+    opacity: 0.7;
+  }
+
+  .home-link {
+    padding: 0 20px;
+    
+    text-decoration: none;
+  }
 }

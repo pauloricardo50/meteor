@@ -1,17 +1,20 @@
 import React from 'react';
 
+import Calculator from '../../../../../utils/Calculator';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import { RecapSimple } from '../../../../Recap';
 import T, { Money, Percent } from '../../../../Translation';
-import { getProperty } from '../../FinancingCalculator';
 
 const OfferPickerDialogContent = props => {
-  const { offer } = props;
-  const property = getProperty(props);
+  const { offer, loan } = props;
+  const property = Calculator.selectProperty(props);
+  const { organisation } = Calculator.selectLenderForOfferId({
+    loan,
+    offerId: offer._id,
+  });
   const {
     maxAmount,
     conditions,
-    organisation,
     amortization,
     interests,
     monthly,
@@ -42,7 +45,7 @@ const OfferPickerDialogContent = props => {
       {!!fees && (
         <>
           <h3>
-            <T id="offer.fees" />
+            <T id="Forms.fees" />
           </h3>
           <Money value={fees} />
         </>
@@ -51,14 +54,14 @@ const OfferPickerDialogContent = props => {
       {!!epotekFees && (
         <>
           <h3>
-            <T id="offer.epotekFees" />
+            <T id="Forms.epotekFees" />
           </h3>
           <Money value={epotekFees} />
         </>
       )}
 
       <h3>
-        <T id="offer.monthly" />
+        <T id="FinancingOffers.monthly" />
       </h3>
       <div className="validator recap">
         <RecapSimple
@@ -84,12 +87,12 @@ const OfferPickerDialogContent = props => {
       </div>
 
       <h3>
-        <T id="offer.maxAmount" />
+        <T id="Forms.maxAmount" />
       </h3>
       <Money value={maxAmount} />
 
       <h3>
-        <T id="offer.interests" />
+        <T id="FinancingOffers.interests" />
       </h3>
       <div className="rates">
         {Object.keys(rates).map(rate => (

@@ -1,6 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+
+import SimpleSchema from 'simpl-schema';
+
 import SecurityService from '../../security';
 import {
   addProUserToPromotion,
+  addPromotionLotGroup,
+  attachLoanToPromotion,
   editPromotionLoan,
   insertPromotionProperty,
   promotionInsert,
@@ -9,10 +15,13 @@ import {
   promotionUpdate,
   removeLoanFromPromotion,
   removeProFromPromotion,
-  reuseConstructionTimeline,
+  removePromotionLotGroup,
   sendPromotionInvitationEmail,
   setPromotionUserPermissions,
+  submitPromotionInterestForm,
   toggleNotifications,
+  updatePromotionLotGroup,
+  updatePromotionTimeline,
   updatePromotionUserRoles,
 } from '../methodDefinitions';
 import PromotionService from './PromotionService';
@@ -90,11 +99,6 @@ editPromotionLoan.setHandler(({ userId }, params) => {
   return PromotionService.editPromotionLoan(params);
 });
 
-reuseConstructionTimeline.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return PromotionService.reuseConstructionTimeline(params);
-});
-
 toggleNotifications.setHandler(({ userId }, { promotionId }) => {
   SecurityService.checkUserIsPro(userId);
   SecurityService.promotions.isAllowedToView({ userId, promotionId });
@@ -109,4 +113,57 @@ updatePromotionUserRoles.setHandler(({ userId }, params) => {
 promotionSetStatus.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return PromotionService.setStatus(params);
+});
+
+addPromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, ...promotionLotGroup }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.addPromotionLotGroup({
+      promotionId,
+      promotionLotGroup,
+    });
+  },
+);
+
+removePromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, promotionLotGroupId }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.removePromotionLotGroup({
+      promotionId,
+      promotionLotGroupId,
+    });
+  },
+);
+
+updatePromotionLotGroup.setHandler(
+  ({ userId }, { promotionId, promotionLotGroupId, ...object }) => {
+    SecurityService.promotions.isAllowedToModify({ promotionId, userId });
+    return PromotionService.updatePromotionLotGroup({
+      promotionId,
+      promotionLotGroupId,
+      object,
+    });
+  },
+);
+
+updatePromotionTimeline.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.updatePromotionTimeline(params);
+});
+
+// This method needs to exist as its being listened to in EmailListeners
+submitPromotionInterestForm.setHandler((context, { promotionId, email }) => {
+  if (!SimpleSchema.RegEx.Email.test(email)) {
+    throw new Meteor.Error('Veuillez saisir un email valable');
+  }
+
+  const promotion = PromotionService.get(promotionId, { _id: 1 });
+  if (!promotion) {
+    throw new Meteor.Error('Cette promotion est invalide');
+  }
+});
+
+attachLoanToPromotion.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return PromotionService.attachLoanToPromotion(params);
 });

@@ -1,20 +1,20 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { PURCHASE_TYPE } from '../../../../redux/widget1/widget1Constants';
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
+import CHECKLIST_TEMPLATES from '../../../checklists/server/checklistTemplates';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
+import { INTEREST_RATES } from '../../../interestRates/interestRatesConstants';
 import LenderService from '../../../lenders/server/LenderService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import OfferService from '../../../offers/server/OfferService';
@@ -34,8 +34,14 @@ import {
 } from '../../../revenues/revenueConstants';
 import SlackService from '../../../slack/server/SlackService';
 import TaskService from '../../../tasks/server/TaskService';
+import { TASK_STATUS, TASK_TYPES } from '../../../tasks/taskConstants';
 import UserService from '../../../users/server/UserService';
-import { LOAN_CATEGORIES, LOAN_STATUS, STEPS } from '../../loanConstants';
+import {
+  LOAN_CATEGORIES,
+  LOAN_STATUS,
+  PURCHASE_TYPE,
+  STEPS,
+} from '../../loanConstants';
 import {
   loanSetAdminNote,
   loanSetStatus,
@@ -45,7 +51,7 @@ import {
 import LoanService from '../LoanService';
 import { generateDisbursedSoonLoansTasks } from '../methods';
 
-describe('LoanService', function() {
+describe('LoanService', function () {
   this.timeout(10000);
   let loanId;
   let loan;
@@ -374,6 +380,77 @@ describe('LoanService', function() {
           });
         });
     });
+
+    it('updates the loan tranches if the wanted loan changed and there is only one tranche', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'structure',
+            wantedLoan: 1000000,
+            loanTranches: [{ value: 1000000, type: INTEREST_RATES.YEARS_10 }],
+          },
+        ],
+      })._id;
+
+      LoanService.updateStructure({
+        loanId,
+        structureId: 'structure',
+        structure: { wantedLoan: 800000 },
+      });
+
+      const { structures = [] } = LoanService.get(loanId, { structures: 1 });
+      const [structure] = structures;
+      expect(structure.loanTranches[0].value).to.equal(800000);
+    });
+
+    it('does not update the loan tranches if the wanted loan changed and there is more than one tranche', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'structure',
+            wantedLoan: 1000000,
+            loanTranches: [
+              { value: 500000, type: INTEREST_RATES.YEARS_5 },
+              { value: 500000, type: INTEREST_RATES.YEARS_10 },
+            ],
+          },
+        ],
+      })._id;
+
+      LoanService.updateStructure({
+        loanId,
+        structureId: 'structure',
+        structure: { wantedLoan: 800000 },
+      });
+
+      const { structures = [] } = LoanService.get(loanId, { structures: 1 });
+      const [structure] = structures;
+      expect(structure.loanTranches.length).to.equal(2);
+      expect(structure.loanTranches[0].value).to.equal(500000);
+      expect(structure.loanTranches[1].value).to.equal(500000);
+    });
+
+    it('does not update the loan tranches if the wanted loan did not change', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'structure',
+            wantedLoan: 1000000,
+            loanTranches: [{ value: 1000000, type: INTEREST_RATES.YEARS_10 }],
+          },
+        ],
+      })._id;
+
+      LoanService.updateStructure({
+        loanId,
+        structureId: 'structure',
+        structure: { propertyId: 'prop' },
+      });
+
+      const { structures = [] } = LoanService.get(loanId, { structures: 1 });
+      const [structure] = structures;
+      expect(structure.loanTranches[0].value).to.equal(1000000);
+    });
   });
 
   describe('selectStructure', () => {
@@ -695,6 +772,7 @@ describe('LoanService', function() {
             properties: [{ _id: 'propId2' }, { _id: 'propId1' }],
           },
         ],
+        users: { _id: 'dude' },
       });
 
       expect(() =>
@@ -1167,13 +1245,13 @@ describe('LoanService', function() {
 
           expect(spy.calledOnce).to.equal(true);
           expect(spy.args[0][0]).to.equal('LOAN_STATUS_CHANGED');
-          expect(spy.args[0][1]).to.deep.equal({
+          expect(spy.args[0][1]).to.deep.include({
             adminId: 'adminId2',
             adminName: 'Admin 2',
             assigneeId: 'adminId1',
             assigneeName: 'Admin 1',
-            customerId: 'customerId',
-            customerName: 'Customer 1',
+            userId: 'customerId',
+            userName: 'Customer 1',
             loanCategory: LOAN_CATEGORIES.STANDARD,
             loanId: 'myLoan',
             loanName: '20-0001',
@@ -1182,8 +1260,8 @@ describe('LoanService', function() {
             loanStep: STEPS.SOLVENCY,
             nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
             prevStatus: LOAN_STATUS.LEAD,
-            referredByOrganisation: 'Org 1',
-            referredByUser: 'Pro 1',
+            referringOrganisationName: 'Org 1',
+            referringUserName: 'Pro 1',
           });
         })
         .finally(() => {
@@ -1404,8 +1482,9 @@ describe('LoanService', function() {
     });
   });
 
-  describe('setMaxPropertyValueOrBorrowRatio', function() {
+  describe('setMaxPropertyValueOrBorrowRatio', function () {
     this.timeout(10000);
+    this.retries(2);
 
     it('finds the ideal borrowRatio', () => {
       generator({
@@ -1564,9 +1643,7 @@ describe('LoanService', function() {
         promises.push(
           LoanService.rawCollection.insert({
             anonymous: true,
-            updatedAt: moment()
-              .subtract(index, 'days')
-              .toDate(),
+            updatedAt: moment().subtract(index, 'days').toDate(),
             _id: index,
             name: index,
           }),
@@ -1581,9 +1658,7 @@ describe('LoanService', function() {
     it('does not update loans already at UNSUCCESSFUL status', async () => {
       await LoanService.rawCollection.insert({
         anonymous: true,
-        updatedAt: moment()
-          .subtract(10, 'days')
-          .toDate(),
+        updatedAt: moment().subtract(10, 'days').toDate(),
         _id: 'a',
         name: 'b',
         status: LOAN_STATUS.UNSUCCESSFUL,
@@ -1673,9 +1748,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '1',
-          date: moment()
-            .subtract(3, 'd')
-            .toDate(),
+          date: moment().subtract(3, 'd').toDate(),
         },
       });
       LoanService.setAdminNote({
@@ -1683,9 +1756,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '2',
-          date: moment()
-            .subtract(2, 'd')
-            .toDate(),
+          date: moment().subtract(2, 'd').toDate(),
         },
       });
       LoanService.setAdminNote({
@@ -1693,9 +1764,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '3',
-          date: moment()
-            .subtract(1, 'd')
-            .toDate(),
+          date: moment().subtract(1, 'd').toDate(),
         },
       });
 
@@ -1710,9 +1779,7 @@ describe('LoanService', function() {
         userId: 'userId',
         note: {
           note: '1',
-          date: moment()
-            .subtract(1, 'd')
-            .toDate(),
+          date: moment().subtract(1, 'd').toDate(),
           isSharedWithPros: true,
         },
       });
@@ -1739,9 +1806,7 @@ describe('LoanService', function() {
           userId: 'userId',
           note: {
             note: '1',
-            date: moment()
-              .add(1, 'd')
-              .toDate(),
+            date: moment().add(1, 'd').toDate(),
             isSharedWithPros: true,
           },
         }),
@@ -1942,6 +2007,7 @@ describe('LoanService', function() {
         },
         disbursementDate: moment(today)
           .add(offset, 'days')
+          .startOf('day')
           .toDate(),
       }));
 
@@ -1949,8 +2015,8 @@ describe('LoanService', function() {
       SlackService.send.restore();
     });
 
-    let today;
     let spy;
+    let today;
 
     beforeEach(async () => {
       today = new Date();
@@ -1961,27 +2027,88 @@ describe('LoanService', function() {
           { offset: 5 },
           { offset: 9 },
           { offset: 10 },
-          { offset: 11 },
+          { offset: 12 },
           { offset: 10 },
         ]),
       });
       spy = sinon.spy();
       sinon.stub(SlackService, 'send').callsFake(spy);
-      await generateDisbursedSoonLoansTasks.serverRun({});
     });
 
     it('generates the tasks for the loans disbursed in 10 days', async () => {
-      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1 });
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1, type: 1 });
 
       expect(tasks.length).to.equal(2);
-      tasks.forEach(({ title, assigneeLink: { _id: adminId } }) => {
+      tasks.forEach(({ title, assigneeLink: { _id: adminId }, type }) => {
         expect(title).to.include(
-          moment(today)
-            .add(10, 'days')
-            .format('DD.MM.YYYY'),
+          moment(today).add(10, 'days').format('DD.MM.YYYY'),
         );
         expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
       });
+    });
+
+    it('does not generate the tasks again', async () => {
+      await generateDisbursedSoonLoansTasks.serverRun({});
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({
+        title: 1,
+        assigneeLink: 1,
+        type: 1,
+      });
+
+      expect(tasks.length).to.equal(2);
+      tasks.forEach(({ title, assigneeLink: { _id: adminId }, type }) => {
+        expect(title).to.include(
+          moment(today).add(10, 'days').format('DD.MM.YYYY'),
+        );
+        expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
+      });
+    });
+
+    it('regenerates the task if disbursementDate changed and task was completed', async () => {
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const task = TaskService.get({ 'loanLink._id': 'l4' }, { _id: 1 });
+      TaskService.update({
+        taskId: task._id,
+        object: { status: TASK_STATUS.COMPLETED },
+      });
+
+      LoanService.update({
+        loanId: 'l4',
+        object: {
+          disbursementDate: moment(today)
+            .add(11, 'days')
+            .startOf('day')
+            .toDate(),
+        },
+      });
+
+      const clock = sinon.useFakeTimers(Date.now());
+      clock.tick(24 * 60 * 60 * 1000);
+      await generateDisbursedSoonLoansTasks.serverRun({});
+      clock.restore();
+
+      const tasks = TaskService.fetch({
+        loan: { _id: 1 },
+        assigneeLink: 1,
+        type: 1,
+      });
+
+      expect(tasks.length).to.equal(3);
+      tasks.forEach(({ assigneeLink: { _id: adminId }, type }) => {
+        expect(adminId).to.equal('admin');
+        expect(type).to.equal(TASK_TYPES.LOAN_DISBURSED_SOON);
+      });
+      const [task1, task2, task3] = tasks;
+      expect(task1.loan._id).to.equal('l4');
+      expect(task2.loan._id).to.equal('l6');
+      expect(task3.loan._id).to.equal('l4');
     });
   });
 
@@ -2259,6 +2386,96 @@ describe('LoanService', function() {
       });
       expect(status).to.equal(LOAN_STATUS.FINALIZED);
       expect(activities.length).to.equal(1);
+    });
+  });
+
+  describe('addClosingChecklists', () => {
+    it('adds 2 checklists depending on the loan', () => {
+      generator({ loans: { _id: 'loanId' } });
+
+      LoanService.addClosingChecklists({ loanId: 'loanId' });
+
+      const { closingChecklists, additionalDocuments } = LoanService.get(
+        'loanId',
+        {
+          closingChecklists: { title: 1, items: 1 },
+          additionalDocuments: 1,
+        },
+      );
+
+      expect(closingChecklists.length).to.equal(2);
+      expect(closingChecklists[0].items.length).to.equal(
+        CHECKLIST_TEMPLATES.ACQUISITION[0].items.length,
+      );
+      expect(closingChecklists[1].items.length).to.equal(
+        CHECKLIST_TEMPLATES.ACQUISITION[1].items.length,
+      );
+      expect(additionalDocuments.length).to.equal(3);
+      additionalDocuments.forEach(({ checklistItemId }) => {
+        expect(!!checklistItemId).to.equal(true);
+      });
+    });
+
+    it('adds a promotion specific checklist', () => {
+      generator({ loans: { _id: 'loanId', promotions: {} } });
+
+      LoanService.addClosingChecklists({ loanId: 'loanId' });
+
+      const { closingChecklists, additionalDocuments } = LoanService.get(
+        'loanId',
+        {
+          closingChecklists: { title: 1, items: 1 },
+          additionalDocuments: 1,
+        },
+      );
+
+      expect(closingChecklists.length).to.equal(2);
+      expect(closingChecklists[0].items.length).to.equal(
+        CHECKLIST_TEMPLATES.PROMOTION_ACQUISITION[0].items.length,
+      );
+      expect(closingChecklists[1].items.length).to.equal(
+        CHECKLIST_TEMPLATES.PROMOTION_ACQUISITION[1].items.length,
+      );
+      expect(additionalDocuments.length).to.equal(5);
+    });
+
+    it('adds a refinancing specific checklist', () => {
+      generator({
+        loans: { _id: 'loanId', purchaseType: PURCHASE_TYPE.REFINANCING },
+      });
+
+      LoanService.addClosingChecklists({ loanId: 'loanId' });
+
+      const { closingChecklists, additionalDocuments } = LoanService.get(
+        'loanId',
+        {
+          closingChecklists: { title: 1, items: 1 },
+          additionalDocuments: 1,
+        },
+      );
+
+      expect(closingChecklists.length).to.equal(2);
+      expect(closingChecklists[0].items.length).to.equal(
+        CHECKLIST_TEMPLATES.REFINANCING[0].items.length,
+      );
+      expect(closingChecklists[1].items.length).to.equal(
+        CHECKLIST_TEMPLATES.REFINANCING[1].items.length,
+      );
+      expect(additionalDocuments.length).to.equal(4);
+    });
+
+    it('adds a cache on the checklist', () => {
+      generator({ loans: { _id: 'loanId' } });
+
+      LoanService.addClosingChecklists({ loanId: 'loanId' });
+
+      const { closingChecklists } = LoanService.get('loanId', {
+        closingChecklists: { closingLoanCache: 1 },
+      });
+
+      expect(closingChecklists[0].closingLoanCache).to.deep.equal([
+        { _id: 'loanId' },
+      ]);
     });
   });
 });

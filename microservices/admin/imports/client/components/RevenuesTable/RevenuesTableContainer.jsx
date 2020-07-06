@@ -46,6 +46,7 @@ export const makeMapRevenue = ({
   setRevenueToModify,
 }) => revenue => {
   const {
+    _collection,
     _id: revenueId,
     expectedAt,
     paidAt,
@@ -62,12 +63,7 @@ export const makeMapRevenue = ({
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   let title;
-  if (loan) {
-    title = {
-      raw: loan && loan.name,
-      label: loan && <CollectionIconLink relatedDoc={loan} />,
-    };
-  } else if (insurance) {
+  if (insurance) {
     title = {
       raw: insurance && insurance.name,
       label: insurance && <CollectionIconLink relatedDoc={insurance} />,
@@ -79,6 +75,11 @@ export const makeMapRevenue = ({
         <CollectionIconLink relatedDoc={insuranceRequest} />
       ),
     };
+  } else if (loan) {
+    title = {
+      raw: loan && loan.name,
+      label: loan && <CollectionIconLink relatedDoc={loan} />,
+    };
   }
 
   return {
@@ -89,7 +90,7 @@ export const makeMapRevenue = ({
       title,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={REVENUES_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: date && date.getTime(),
@@ -131,7 +132,14 @@ export default compose(
   withSmartQuery({
     query: REVENUES_COLLECTION,
     params: ({ filterRevenues, ...props }) => ({
-      ...(filterRevenues ? { $filters: filterRevenues(props) } : {}),
+      ...(filterRevenues
+        ? {
+            $filters:
+              typeof filterRevenues === 'function'
+                ? filterRevenues(props)
+                : filterRevenues,
+          }
+        : {}),
       amount: 1,
       assigneeLink: 1,
       description: 1,
@@ -157,7 +165,9 @@ export default compose(
       },
       insuranceRequest: { name: 1 },
     }),
+    deps: [],
     dataName: 'revenues',
+    skip: ({ revenues }) => !!revenues,
   }),
   withProps(({ revenues, postFilter }) => {
     if (postFilter) {

@@ -4,8 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
-import { proPropertySummary } from '../../api/fragments';
-import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import { proProperties } from '../../api/properties/queries';
 import { createRoute } from '../../utils/routerUtils';
 import StatusLabel from '../StatusLabel';
@@ -22,6 +20,7 @@ export const columnOptions = [
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 
 export const makeMapProperty = ({ history, currentUser }) => ({
+  _collection,
   _id: propertyId,
   address1,
   city,
@@ -36,7 +35,7 @@ export const makeMapProperty = ({ history, currentUser }) => ({
     [address1, city].filter(x => x).join(', '),
     {
       raw: status,
-      label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
+      label: <StatusLabel status={status} collection={_collection} />,
     },
     {
       raw: createdAt && createdAt.getTime(),
@@ -73,12 +72,26 @@ export default compose(
   withSmartQuery({
     query: proProperties,
     params: ({ fetchOrganisationProperties, propertyValue, search }) => ({
-      $body: proPropertySummary(),
+      $body: {
+        address1: 1,
+        city: 1,
+        createdAt: 1,
+        status: 1,
+        totalValue: 1,
+        loanCount: 1,
+        country: 1,
+        userLinks: 1,
+        users: { name: 1 },
+      },
       fetchOrganisationProperties,
       value: propertyValue,
       search,
     }),
-    queryOptions: { reactive: false },
+    deps: ({ fetchOrganisationProperties, propertyValue, search }) => [
+      fetchOrganisationProperties,
+      propertyValue,
+      search,
+    ],
     renderMissingDoc: false,
     dataName: 'properties',
   }),

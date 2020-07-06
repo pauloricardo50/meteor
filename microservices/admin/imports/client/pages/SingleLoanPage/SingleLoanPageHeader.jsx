@@ -12,15 +12,15 @@ import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 import LoanStatusModifier from './LoanStatusModifier/LoanStatusModifier';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 
-const getUserName = ({ anonymous, user, category }) => {
+const getUserName = ({ anonymous, userCache, category }) => {
   if (anonymous) {
     return <small className="secondary">&nbsp;- Anonyme</small>;
   }
 
-  if (user) {
+  if (userCache?._id) {
     return (
       <CollectionIconLink
-        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+        relatedDoc={{ ...userCache, _collection: USERS_COLLECTION }}
       />
     );
   }
@@ -37,7 +37,7 @@ const SingleLoanPageHeader = ({
   withPdf = true,
   withCustomName = true,
 }) => {
-  const { user, status, name } = loan;
+  const { userCache, status, name } = loan;
   const userName = getUserName(loan);
   const loanValue = Calculator.selectLoanValue({ loan });
 
@@ -45,7 +45,7 @@ const SingleLoanPageHeader = ({
     <div className="single-loan-page-header">
       <div className="left">
         <div className="left-top">
-          <ImpersonateLink user={user} className="impersonate-link" />
+          <ImpersonateLink user={userCache} className="impersonate-link" />
           <h1 className="m-0 mr-8">
             {`${name} - ${
               loanValue > 0

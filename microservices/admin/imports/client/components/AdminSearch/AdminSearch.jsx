@@ -11,7 +11,11 @@ const AdminSearch = ({ setOpenSearch, openSearch }) => {
 
   return (
     <>
-      <IconButton type="search" onClick={() => setOpenSearch(true)} />
+      <IconButton
+        className="mr-4"
+        type="search"
+        onClick={() => setOpenSearch(true)}
+      />
       <Dialog
         open={openSearch}
         onClose={() => setOpenSearch(false)}

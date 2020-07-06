@@ -1,3 +1,5 @@
+import 'cypress-file-upload';
+
 Cypress.Commands.add('routeShouldExist', expectedPageUri => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here
@@ -62,6 +64,7 @@ Cypress.Commands.add(
   (prevSubject, name, value) => {
     if (prevSubject) {
       if (typeof value === 'string') {
+        prevSubject.find(`input[name=${name}]`).should('not.be.disabled');
         prevSubject
           .find(`input[name=${name}]`)
           .parent()
@@ -69,6 +72,7 @@ Cypress.Commands.add(
           .get(`[data-value=${value}]`)
           .click();
       } else {
+        prevSubject.find(`input[name=${name}]`).should('not.be.disabled');
         prevSubject
           .find(`input[name=${name}]`)
           .parent()
@@ -79,6 +83,7 @@ Cypress.Commands.add(
           .click();
       }
     } else if (typeof value === 'string') {
+      cy.get(`input[name=${name}]`).should('not.be.disabled');
       cy.get(`input[name=${name}]`)
         .parent()
         .click()
@@ -86,6 +91,7 @@ Cypress.Commands.add(
         .click();
     } else {
       // Support clicking on nth item
+      cy.get(`input[name=${name}]`).should('not.be.disabled');
       cy.get(`input[name=${name}]`)
         .parent()
         .click()

@@ -13,14 +13,14 @@ import { getSchema, makeInsuranceMethod } from './insuranceFormHelpers';
 
 const layout = [
   {
-    fields: ['status', 'borrowerId'],
+    fields: ['borrowerId'].filter(x => x),
     Component: Box,
     className: 'grid-row mb-32',
-    title: <h4>Général</h4>,
+    title: <h5>Général</h5>,
   },
   {
     Component: Box,
-    title: <h4>Assurance</h4>,
+    title: <h5>Assurance</h5>,
     layout: [
       {
         fields: [
@@ -63,7 +63,7 @@ const layout = [
   },
 ];
 
-export default withProps(({ insuranceRequest, insurance = {} }) => {
+export default withProps(({ insuranceRequest, insurance = {}, type }) => {
   const history = useHistory();
   const { borrowers, _id: insuranceRequestId } = insuranceRequest;
   const { loading, data: organisations } = useStaticMeteorData({
@@ -104,16 +104,10 @@ export default withProps(({ insuranceRequest, insurance = {} }) => {
       category: insurance.insuranceProduct?.category,
       insuranceProductId: insurance.insuranceProduct?._id,
     },
-    insertInsurance: makeInsuranceMethod({
+    onSubmit: makeInsuranceMethod({
       insuranceRequestId,
       insurance,
-      type: 'insert',
-      history,
-    }),
-    modifyInsurance: makeInsuranceMethod({
-      insuranceRequestId,
-      insurance,
-      type: 'update',
+      type,
       history,
     }),
     loading,

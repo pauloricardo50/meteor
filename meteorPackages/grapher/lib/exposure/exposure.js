@@ -1,17 +1,19 @@
-import deepClone from 'lodash.clonedeep';
 import { check } from 'meteor/check';
+
+import deepClone from 'lodash.clonedeep';
+
 import genCountEndpoint from '../query/counts/genEndpoint.server.js';
+import hypernova from '../query/hypernova/hypernova.js';
 import createGraph from '../query/lib/createGraph.js';
 import recursiveCompose from '../query/lib/recursiveCompose.js';
-import hypernova from '../query/hypernova/hypernova.js';
 import {
-  ExposureSchema,
   ExposureDefaults,
+  ExposureSchema,
   validateBody,
 } from './exposure.config.schema.js';
+import cleanBody from './lib/cleanBody.js';
 import enforceMaxDepth from './lib/enforceMaxDepth.js';
 import enforceMaxLimit from './lib/enforceMaxLimit.js';
-import cleanBody from './lib/cleanBody.js';
 import restrictFieldsFn from './lib/restrictFields.js';
 import restrictLinks from './lib/restrictLinks.js';
 
@@ -94,7 +96,7 @@ export default class Exposure {
     const processedBody = this.getBody(userId);
 
     if (processedBody === true) {
-      return;
+      return body;
     }
 
     return cleanBody(processedBody, body);

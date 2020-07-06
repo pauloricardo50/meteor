@@ -1,7 +1,6 @@
 import {
   adminUser,
   appUser as appUserFragment,
-  fullUser,
   proUser as proUserFragment,
 } from '../fragments';
 import { USER_QUERIES } from './userConstants';
@@ -19,15 +18,15 @@ export const appUser = Users.createQuery(
   { scoped: true },
 );
 
-export const currentUser = Users.createQuery(
-  USER_QUERIES.CURRENT_USER,
-  fullUser(),
-  { scoped: true },
-);
-
 export const proReferredByUsers = Users.createQuery(
   USER_QUERIES.PRO_REFERRED_BY,
-  proUserFragment(),
+  {
+    name: 1,
+    email: 1,
+    emails: 1,
+    phoneNumber: 1,
+    createdAt: 1,
+  },
 );
 
 export const proUser = Users.createQuery(

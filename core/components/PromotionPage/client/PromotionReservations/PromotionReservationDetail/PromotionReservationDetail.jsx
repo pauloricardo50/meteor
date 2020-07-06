@@ -3,15 +3,17 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import {
-  PROMOTION_OPTIONS_COLLECTION,
   PROMOTION_OPTION_AGREEMENT_STATUS,
   PROMOTION_OPTION_DOCUMENTS,
 } from '../../../../../api/promotionOptions/promotionOptionConstants';
+import { proPromotionOptions } from '../../../../../api/promotionOptions/queries';
+import { useStaticMeteorData } from '../../../../../hooks/useMeteorData';
 import Calculator from '../../../../../utils/Calculator';
+import Loading from '../../../../Loading';
 import UploaderArray from '../../../../UploaderArray';
+import PromotionReservationProgressEditor from '../../../PromotionReservationProgress/PromotionReservationProgressEditor';
 import PromotionReservationDeadline from '../PromotionReservationDeadline';
 import PromotionReservationDetailActions from './PromotionReservationDetailActions';
-import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
 
 const promotionReservationsArray = [
   {
@@ -20,7 +22,41 @@ const promotionReservationsArray = [
   },
 ];
 
-const PromotionReservationDetail = ({ promotionOption, loan }) => {
+const PromotionReservationDetail = ({
+  promotionOption: { _id: promotionOptionId } = {},
+  loan,
+}) => {
+  const { data: promotionOption } = useStaticMeteorData({
+    query: proPromotionOptions,
+    params: {
+      promotionOptionId,
+      $body: {
+        bank: 1,
+        createdAt: 1,
+        documents: 1,
+        fullVerification: 1,
+        invitedBy: 1,
+        isAnonymized: 1,
+        loan: {
+          proNote: 1,
+          loanProgress: 1,
+          user: { name: 1, phoneNumbers: 1, email: 1 },
+          promotions: { users: { name: 1, organisations: { name: 1 } } },
+        },
+        promotionLots: { name: 1 },
+        reservationAgreement: 1,
+        reservationDeposit: 1,
+        simpleVerification: 1,
+        status: 1,
+      },
+    },
+    type: 'single',
+  });
+
+  if (!promotionOption) {
+    return <Loading />;
+  }
+
   const {
     reservationAgreement: {
       expirationDate,
@@ -41,6 +77,7 @@ const PromotionReservationDetail = ({ promotionOption, loan }) => {
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
+          loan={loan}
         />
       </div>
       <PromotionReservationProgressEditor
@@ -53,7 +90,6 @@ const PromotionReservationDetail = ({ promotionOption, loan }) => {
         !isAnonymized && (
           <UploaderArray
             doc={promotionOption}
-            collection={PROMOTION_OPTIONS_COLLECTION}
             documentArray={promotionReservationsArray}
             allowRequireByAdmin={false}
             disabled={!isAdmin}

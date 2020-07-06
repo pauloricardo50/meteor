@@ -1,9 +1,8 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import {
@@ -15,12 +14,16 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../promotionOptions/promotionOptionConstants';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
+import { PROMOTION_PERMISSIONS_FULL_ACCESS } from '../../../promotions/promotionConstants';
 import PromotionService from '../../../promotions/server/PromotionService';
-import { reservePromotionLot } from '../../methodDefinitions';
+import {
+  cancelPromotionLotReservation,
+  reservePromotionLot,
+} from '../../methodDefinitions';
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 
-describe('PromotionLotService', function() {
+describe('PromotionLotService', function () {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -55,8 +58,8 @@ describe('PromotionLotService', function() {
                 displayCustomerNames: {
                   invitedBy: 'USER',
                   forLotStatus: Object.values(PROMOTION_LOT_STATUS),
-                  roles: ['BROKER'],
                 },
+                roles: ['BROKER'],
               },
             },
             organisations: { _id: 'org1', name: 'Org 1' },
@@ -83,13 +86,25 @@ describe('PromotionLotService', function() {
             firstName: 'Pro',
             lastName: 'User 3',
           },
+          {
+            _id: 'pro4',
+            $metadata: {
+              enableNotifications: true,
+              permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
+              roles: ['PROMOTER'],
+            },
+            organisations: { _id: 'org3', name: 'Org 3' },
+            emails: [{ address: 'pro4@e-potek.ch', verified: true }],
+            firstName: 'Pro',
+            lastName: 'User 1',
+          },
         ],
         loans: {
           _id: 'loanId',
           user: {
             firstName: 'John',
             lastName: 'Doe',
-            emails: [{ address: 'user@e-potek.ch', verified: true }],
+            emails: [{ address: 'user1@e-potek.ch', verified: true }],
           },
           $metadata: { invitedBy: 'pro1' },
         },
@@ -99,7 +114,9 @@ describe('PromotionLotService', function() {
           promotionOptions: [
             {
               _id: 'pOptId',
-              loan: { _id: 'loanId' },
+              loan: {
+                _id: 'loanId',
+              },
               promotion: { _id: 'promoId' },
               reservationAgreement: {
                 status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
@@ -157,12 +174,13 @@ describe('PromotionLotService', function() {
       await ddpWithUserId('pro1', () =>
         reservePromotionLot.run({ promotionOptionId: 'pOptId' }),
       );
-      const emails = await checkEmails(3);
+      const emails = await checkEmails(4);
 
       const [
         email1,
         email2,
         email3,
+        email4,
       ] = emails.sort(({ address: a }, { address: b }) => a.localeCompare(b));
       const {
         address,
@@ -213,7 +231,26 @@ describe('PromotionLotService', function() {
           },
         } = email3;
         expect(status).to.equal('sent');
-        expect(address).to.equal('user@e-potek.ch');
+        expect(address).to.equal('pro4@e-potek.ch');
+        expect(from_email).to.equal('test2@e-potek.ch');
+        expect(from_name).to.equal('e-Potek');
+        expect(subject).to.equal('Test promotion, Réservation du lot Lot 1');
+        expect(
+          global_merge_vars.find(({ name }) => name === 'BODY').content,
+        ).to.include(
+          'Le lot Lot 1 au sein de la promotion Test promotion a été attribué à un client de Pro User 1 (Org 1).',
+        );
+      }
+      {
+        const {
+          address,
+          response: { status },
+          template: {
+            message: { from_email, subject, global_merge_vars, from_name },
+          },
+        } = email4;
+        expect(status).to.equal('sent');
+        expect(address).to.equal('user1@e-potek.ch');
         expect(from_email).to.equal('test2@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('Test promotion, Réservation du lot Lot 1');
@@ -322,6 +359,474 @@ describe('PromotionLotService', function() {
 
       const pL = PromotionLotService.get('promotionLotId', { status: 1 });
       expect(pL.status).to.equal(PROMOTION_LOT_STATUS.RESERVED);
+    });
+
+    it('sends the right emails when reservation is RESERVED', async () => {
+      PromotionLotService.reservePromotionLot({
+        promotionOptionId: 'pOptId',
+      });
+
+      await ddpWithUserId('adminId1', () =>
+        cancelPromotionLotReservation.run({ promotionOptionId: 'pOptId' }),
+      );
+      const emails = await checkEmails(3);
+      emails.forEach(({ emailId }) => {
+        expect(emailId).to.equal(EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION);
+      });
+      const [
+        email1,
+        email2,
+        email3,
+      ] = emails.sort(({ address: address1 }, { address: address2 }) =>
+        address1.localeCompare(address2),
+      );
+
+      expect(email1.address).to.equal('pro1@e-potek.ch');
+      expect(
+        email1.template.message.global_merge_vars.find(
+          ({ name }) => name === 'BODY',
+        ).content,
+      ).to.include(
+        'Admin User 1 a annulé la réservation pour John Doe sur le lot Lot 1',
+      );
+
+      expect(email2.address).to.equal('pro2@e-potek.ch');
+      expect(
+        email2.template.message.global_merge_vars.find(
+          ({ name }) => name === 'BODY',
+        ).content,
+      ).to.include(
+        'Admin User 1 a annulé la réservation pour un acquéreur sur le lot Lot 1',
+      );
+
+      expect(email3.address).to.equal('pro4@e-potek.ch');
+      expect(
+        email3.template.message.global_merge_vars.find(
+          ({ name }) => name === 'BODY',
+        ).content,
+      ).to.include(
+        'Admin User 1 a annulé la réservation pour John Doe sur le lot Lot 1',
+      );
+    });
+
+    it('sends the right emails when reservation is RESERVATION_ACTIVE', async () => {
+      PromotionOptionService.activateReservation({
+        promotionOptionId: 'pOptId',
+      });
+
+      await ddpWithUserId('adminId1', () =>
+        cancelPromotionLotReservation.run({ promotionOptionId: 'pOptId' }),
+      );
+      const emails = await checkEmails(3);
+      emails.forEach(({ emailId }) => {
+        expect(emailId).to.equal(
+          EMAIL_IDS.CANCEL_PROMOTION_LOT_RESERVATION_PROCESS,
+        );
+      });
+      const [
+        email1,
+        email2,
+        email3,
+      ] = emails.sort(({ address: address1 }, { address: address2 }) =>
+        address1.localeCompare(address2),
+      );
+
+      expect(email1.address).to.equal('pro1@e-potek.ch');
+      expect(
+        email1.template.message.global_merge_vars.find(
+          ({ name }) => name === 'BODY',
+        ).content,
+      ).to.include(
+        'Admin User 1 a interompu la réservation en cours pour John Doe sur le lot Lot 1',
+      );
+
+      expect(email2.address).to.equal('pro2@e-potek.ch');
+      expect(
+        email2.template.message.global_merge_vars.find(
+          ({ name }) => name === 'BODY',
+        ).content,
+      ).to.include(
+        'Admin User 1 a interompu la réservation en cours pour un acquéreur sur le lot Lot 1',
+      );
+
+      expect(email3.address).to.equal('pro4@e-potek.ch');
+      expect(
+        email3.template.message.global_merge_vars.find(
+          ({ name }) => name === 'BODY',
+        ).content,
+      ).to.include(
+        'Admin User 1 a interompu la réservation en cours pour John Doe sur le lot Lot 1',
+      );
+    });
+  });
+
+  describe('promotionLotGroupIds', () => {
+    it('adds a promotionLotGroup to the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
+          promotionLots: { _id: 'promotionLot' },
+        },
+      });
+
+      PromotionLotService.addToPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group1',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(1);
+      const [groupId] = promotionLotGroupIds;
+      expect(groupId).to.equal('group1');
+    });
+
+    it('appends a promotionLotGroup to the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            { id: 'group1', label: 'Group 1' },
+            { id: 'group2', label: 'Group 2' },
+          ],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1'],
+          },
+        },
+      });
+
+      PromotionLotService.addToPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group2',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(2);
+      const [groupId1, groupId2] = promotionLotGroupIds;
+      expect(groupId1).to.equal('group1');
+      expect(groupId2).to.equal('group2');
+    });
+
+    it('throws if promotionLotGroupId does not exist in promotion', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
+          promotionLots: { _id: 'promotionLot' },
+        },
+      });
+
+      expect(() =>
+        PromotionLotService.addToPromotionLotGroup({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupId: 'group2',
+        }),
+      ).to.throw('Group "group2" does not exist');
+    });
+
+    it('throws if promotionLotGroupId is already in promotionLotGroupIds', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1'],
+          },
+        },
+      });
+
+      expect(() =>
+        PromotionLotService.addToPromotionLotGroup({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupId: 'group1',
+        }),
+      ).to.throw('Promotion lot is already part of "group1"');
+    });
+
+    it('removes a promotionLotGroupId from the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [{ id: 'group1', label: 'Group 1' }],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1'],
+          },
+        },
+      });
+
+      PromotionLotService.removeFromPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group1',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(0);
+    });
+
+    it('removes only one promotionLotGroup from the promotionLot', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLotGroups: [
+            { id: 'group1', label: 'Group 1' },
+            { id: 'group2', label: 'Group 2' },
+            { id: 'group3', label: 'Group 3' },
+          ],
+          promotionLots: {
+            _id: 'promotionLot',
+            promotionLotGroupIds: ['group1', 'group2', 'group3'],
+          },
+        },
+      });
+
+      PromotionLotService.removeFromPromotionLotGroup({
+        promotionLotId: 'promotionLot',
+        promotionLotGroupId: 'group2',
+      });
+
+      const {
+        promotionLotGroupIds = [],
+      } = PromotionLotService.get('promotionLot', { promotionLotGroupIds: 1 });
+
+      expect(promotionLotGroupIds.length).to.equal(2);
+      const [groupId1, groupId3] = promotionLotGroupIds;
+      expect(groupId1).to.equal('group1');
+      expect(groupId3).to.equal('group3');
+    });
+
+    it('throws if promotionLotGroupId does not exist in promotionLot promotionLotGroupIds', () => {
+      generator({
+        promotions: {
+          _id: 'promotion',
+          promotionLots: {
+            _id: 'promotionLot',
+          },
+        },
+      });
+
+      expect(() =>
+        PromotionLotService.removeFromPromotionLotGroup({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupId: 'group1',
+        }),
+      ).to.throw('Group "group1" not found in PromotionLotGroupIds');
+    });
+
+    describe('updatePromotionLotGroupIds', () => {
+      it('appends a new promtionLotGroupId', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(3);
+        const [groupId1, groupId2, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('adds new promtionLotGroupIds when there were no promotionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(3);
+        const [groupId1, groupId2, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('removes a promtionLotGroupId', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(2);
+        const [groupId1, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('removes all promtionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: [],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(0);
+      });
+
+      it('does not change the promtionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group2', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2', 'group3'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(3);
+        const [groupId1, groupId2, groupId3] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+        expect(groupId3).to.equal('group3');
+      });
+
+      it('adds and removes promtionLotGroupIds', () => {
+        generator({
+          promotions: {
+            _id: 'promotion',
+            promotionLotGroups: [
+              { id: 'group1', label: 'Group 1' },
+              { id: 'group2', label: 'Group 2' },
+              { id: 'group3', label: 'Group 3' },
+            ],
+            promotionLots: {
+              _id: 'promotionLot',
+              promotionLotGroupIds: ['group1', 'group3'],
+            },
+          },
+        });
+
+        PromotionLotService.updatePromotionLotGroups({
+          promotionLotId: 'promotionLot',
+          promotionLotGroupIds: ['group1', 'group2'],
+        });
+
+        const { promotionLotGroupIds = [] } = PromotionLotService.get(
+          'promotionLot',
+          {
+            promotionLotGroupIds: 1,
+          },
+        );
+
+        expect(promotionLotGroupIds.length).to.equal(2);
+        const [groupId1, groupId2] = promotionLotGroupIds;
+        expect(groupId1).to.equal('group1');
+        expect(groupId2).to.equal('group2');
+      });
     });
   });
 });

@@ -1,7 +1,6 @@
 import { Random } from 'meteor/random';
 
 import React, { useEffect, useState } from 'react';
-import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { connectField } from 'uniforms';
 
@@ -55,7 +54,7 @@ export default compose(
         currentValue={currentValue}
         handleUploadFailed={handleUploadFailed}
         deleteFile={deleteFile}
-        fileMeta={{ id: name }}
+        fileMeta={{ id: name, noTooltips: true }}
         uploadDirective={SLINGSHOT_DIRECTIVE_NAME_TEMP}
         displayFull
         showFull
@@ -64,7 +63,6 @@ export default compose(
       />
     );
   },
-  injectIntl,
   displayFullState,
   tempFileState,
   addProps,

@@ -1,19 +1,16 @@
-/* eslint-env mocha */
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 import { expect } from 'chai';
 import moment from 'moment';
 
+/* eslint-env mocha */
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { LOAN_STATUS } from '../../../loans/loanConstants';
-import { loanSetStatus } from '../../../loans/methodDefinitions';
 import LoanService from '../../../loans/server/LoanService';
-import { ddpWithUserId } from '../../../methods/methodHelpers';
 import {
   COMMISSION_STATUS,
   REVENUE_STATUS,
 } from '../../../revenues/revenueConstants';
-import { loanMonitoring, loanStatusChanges } from '../resolvers';
+import { loanMonitoring } from '../resolvers';
 
 describe('monitoring', () => {
   beforeEach(() => {
@@ -266,159 +263,6 @@ describe('monitoring', () => {
           commissionsPaid: 11,
         },
       ]);
-    });
-  });
-
-  describe('loanStatusChanges', function() {
-    this.timeout(5000);
-    it('groups status changes', async () => {
-      generator({
-        loans: [
-          { _id: 'loan1', status: LOAN_STATUS.QUALIFIED_LEAD },
-          { _id: 'loan2', status: LOAN_STATUS.QUALIFIED_LEAD },
-        ],
-        users: { _id: 'admin', _factory: 'admin' },
-      });
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.CLOSING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.PENDING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({ loanId: 'loan2', status: LOAN_STATUS.PENDING }),
-      );
-      await ddpWithUserId('admin', () =>
-        loanSetStatus.run({
-          loanId: 'loan2',
-          status: LOAN_STATUS.FINALIZED,
-        }),
-      );
-
-      const result = loanStatusChanges({
-        fromDate: moment()
-          .subtract(1, 'd')
-          .toDate(),
-        toDate: moment()
-          .add(1, 'd')
-          .toDate(),
-      });
-
-      expect(result.length).to.equal(5);
-
-      const qualifiedLeadToOngoing = result.find(
-        ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.QUALIFIED_LEAD &&
-          nextStatus === LOAN_STATUS.ONGOING,
-      );
-      expect(qualifiedLeadToOngoing).to.deep.include({
-        _id: {
-          prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
-          nextStatus: LOAN_STATUS.ONGOING,
-        },
-        count: 2,
-      });
-
-      const pendingToFinalized = result.find(
-        ({ _id: { prevStatus, nextStatus } }) =>
-          prevStatus === LOAN_STATUS.PENDING &&
-          nextStatus === LOAN_STATUS.FINALIZED,
-      );
-      expect(pendingToFinalized).to.deep.include({
-        _id: {
-          prevStatus: LOAN_STATUS.PENDING,
-          nextStatus: LOAN_STATUS.FINALIZED,
-        },
-        count: 1,
-      });
-    });
-
-    it('groups status changes, and breaks them down by assignee', async () => {
-      generator({
-        users: [
-          { _id: 'admin1', _factory: 'admin' },
-          { _id: 'admin2', _factory: 'admin' },
-        ],
-        loans: [
-          {
-            _id: 'loan1',
-            assignees: [
-              { _id: 'admin2', $metadata: { isMain: false } },
-              { _id: 'admin1', $metadata: { isMain: true } },
-            ],
-          },
-          {
-            _id: 'loan2',
-            assignees: { _id: 'admin2', $metadata: { isMain: true } },
-          },
-        ],
-      });
-      await ddpWithUserId('admin1', () =>
-        loanSetStatus.run({
-          loanId: 'loan1',
-          status: LOAN_STATUS.QUALIFIED_LEAD,
-        }),
-      );
-      await ddpWithUserId('admin1', () =>
-        loanSetStatus.run({ loanId: 'loan1', status: LOAN_STATUS.ONGOING }),
-      );
-      await ddpWithUserId('admin2', () =>
-        loanSetStatus.run({
-          loanId: 'loan2',
-          status: LOAN_STATUS.QUALIFIED_LEAD,
-        }),
-      );
-
-      const result = loanStatusChanges({
-        fromDate: moment()
-          .subtract(1, 'd')
-          .toDate(),
-        toDate: moment()
-          .add(1, 'd')
-          .toDate(),
-        breakdown: 'assignee',
-      }).sort((a, b) => a._id.localeCompare(b._id));
-
-      expect(result.length).to.equal(2);
-      expect(result[0]).to.deep.include({
-        _id: 'admin1',
-        totalStatusChangeCount: 2,
-        statusChanges: [
-          {
-            prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            count: 1,
-          },
-          {
-            prevStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            nextStatus: LOAN_STATUS.ONGOING,
-            count: 1,
-          },
-        ],
-      });
-      expect(result[0].loans.length).to.equal(2);
-      expect(result[0].loans[0]._id).to.equal('loan1');
-      expect(result[0].loans[1]._id).to.equal('loan1');
-
-      expect(result[1]).to.deep.include({
-        _id: 'admin2',
-        totalStatusChangeCount: 1,
-        statusChanges: [
-          {
-            prevStatus: LOAN_STATUS.LEAD,
-            nextStatus: LOAN_STATUS.QUALIFIED_LEAD,
-            count: 1,
-          },
-        ],
-      });
-      expect(result[1].loans.length).to.equal(1);
-      expect(result[1].loans[0]._id).to.equal('loan2');
     });
   });
 });

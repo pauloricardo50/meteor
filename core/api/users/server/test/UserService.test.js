@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
@@ -15,10 +14,10 @@ import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
 import { proInviteUser } from '../../methodDefinitions';
-import { ROLES } from '../../userConstants';
-import UserService, { UserServiceClass } from '../UserService';
+import { ACQUISITION_CHANNELS, ROLES } from '../../userConstants';
+import UserService from '../UserService';
 
-describe('UserService', function() {
+describe('UserService', function () {
   this.timeout(10000);
 
   const firstName = 'TestFirstName';
@@ -27,8 +26,8 @@ describe('UserService', function() {
 
   beforeEach(() => {
     resetDatabase();
-
-    user = Factory.create('user', { firstName, lastName });
+    const { _id: userId } = Factory.create('user', { firstName, lastName });
+    user = UserService.findOne(userId);
     sinon.stub(UserService, 'sendEnrollmentEmail').callsFake(() => {});
   });
 
@@ -40,23 +39,23 @@ describe('UserService', function() {
     it('creates a user with a USER role by default', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
-      expect(user.roles).to.deep.equal([ROLES.USER]);
+      expect(user.roles[0]).to.deep.include({ _id: ROLES.USER });
     });
 
     it('creates a user with a PRO role', () => {
       const options = { email: 'test@test.com' };
       const userId = UserService.createUser({ options, role: ROLES.PRO });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { roles: 1 });
 
-      expect(user.roles).to.deep.equal([ROLES.PRO]);
+      expect(user.roles[0]).to.deep.include({ _id: ROLES.PRO });
     });
 
     it('uses all options to create the user', () => {
       const options = { email: 'test@test.com', username: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { emails: 1, username: 1 });
 
       expect(user.emails[0].address).to.equal(options.email);
       expect(user.username).to.equal(options.username);
@@ -65,16 +64,25 @@ describe('UserService', function() {
     it('does not set additional stuff', () => {
       const options = { email: 'test@test.com', firstName: 'dude' };
       const userId = UserService.createUser({ options, role: ROLES.USER });
-      user = UserService.findOne(userId);
+      user = UserService.get(userId, { firstName: 1 });
 
       expect(user.firstName).to.equal(undefined);
+    });
+
+    it('throws if you try to insert a user without role', () => {
+      const options = { email: 'test@test.com' };
+      expect(() => UserService.createUser({ options, role: null })).to.throw(
+        'must have a role',
+      );
     });
   });
 
   describe('adminCreateUser', () => {
     it('creates a user', () => {
-      const options = { email: 'test@test.com' };
-      const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
+      const userId = UserService.adminCreateUser({
+        email: 'test@test.com',
+        role: ROLES.USER,
+      });
       user = UserService.findOne(userId);
 
       expect(!!user).to.equal(true);
@@ -82,7 +90,10 @@ describe('UserService', function() {
 
     it('adds any additional info on options to the user', () => {
       const options = { email: 'test@test.com', firstName: 'Dude' };
-      const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
+      const userId = UserService.adminCreateUser({
+        ...options,
+        role: ROLES.USER,
+      });
       user = UserService.findOne(userId);
 
       expect(user.firstName).to.equal(options.firstName);
@@ -90,8 +101,8 @@ describe('UserService', function() {
 
     it('does not send enrollment email by default', () => {
       const options = { email: 'test@test.com' };
-      const userId = UserService.adminCreateUser({
-        options,
+      UserService.adminCreateUser({
+        ...options,
         role: ROLES.USER,
       });
 
@@ -101,7 +112,7 @@ describe('UserService', function() {
     it('sends enrollment email when asked to', () => {
       const options = { email: 'test@test.com', sendEnrollmentEmail: true };
       const userId = UserService.adminCreateUser({
-        options,
+        ...options,
         role: ROLES.USER,
       });
 
@@ -111,12 +122,14 @@ describe('UserService', function() {
     });
 
     it('assigns an adminId if the user is a USER', () => {
-      const options = { email: 'test@test.com' };
       const adminId = 'some admin';
+      generator({ users: { _id: adminId, _factory: ROLES.ADVISOR } });
+      const options = { email: 'test@test.com' };
+
       const userId = UserService.adminCreateUser({
-        options,
+        ...options,
         role: ROLES.USER,
-        adminId,
+        assignedEmployeeId: adminId,
       });
       user = UserService.findOne(userId);
 
@@ -127,7 +140,7 @@ describe('UserService', function() {
       const options = { email: 'test@test.com' };
       const adminId = 'some admin';
       const userId = UserService.adminCreateUser({
-        options,
+        ...options,
         role: ROLES.ADMIN,
         adminId,
       });
@@ -140,7 +153,7 @@ describe('UserService', function() {
       const options = { email: 'test@test.com' };
       const adminId = 'some admin';
       const userId = UserService.adminCreateUser({
-        options,
+        ...options,
         role: ROLES.ADMIN,
         adminId,
       });
@@ -151,13 +164,8 @@ describe('UserService', function() {
 
     it('sets a hardcoded assignee per organisation', () => {
       generator({
-        users: {
-          _factory: 'admin',
-          _id: 'testAdminId',
-        },
-        organisations: {
-          _id: 'testOrgId',
-        },
+        users: { _factory: ROLES.ADVISOR, _id: 'testAdminId' },
+        organisations: { _id: 'testOrgId' },
       });
 
       const options = {
@@ -166,11 +174,160 @@ describe('UserService', function() {
       };
 
       const userId = UserService.adminCreateUser({
-        options,
+        ...options,
       });
 
       user = UserService.get(userId, { assignedEmployeeId: 1 });
       expect(user.assignedEmployeeId).to.equal('testAdminId');
+    });
+  });
+
+  describe('anonymousCreateUser', () => {
+    it('sets REFERRAL_ORGANIC acquisitionChannel if the user is referred', () => {
+      generator({
+        organisations: [{ _id: 'org1' }],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        referralId: 'org1',
+      });
+
+      const { acquisitionChannel } = UserService.get(userId, {
+        acquisitionChannel: 1,
+      });
+      expect(acquisitionChannel).to.equal(
+        ACQUISITION_CHANNELS.REFERRAL_ORGANIC,
+      );
+    });
+
+    it('ignores the referralId of the user if the loan already has one', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, referralId: 'org1' },
+        organisations: [{ _id: 'org2' }, { _id: 'org1' }],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+        referralId: 'org2',
+      });
+
+      const { referredByOrganisation } = UserService.get(userId, {
+        referredByOrganisation: { _id: 1 },
+      });
+      expect(referredByOrganisation._id).to.equal('org1');
+    });
+
+    it('sets the referral if specified in the cookies', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true },
+        users: { _id: 'pro1', _factory: ROLES.PRO },
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+        referralId: 'pro1',
+      });
+
+      const { referredByUser } = UserService.get(userId, {
+        referredByUser: { _id: 1 },
+      });
+      expect(referredByUser._id).to.equal('pro1');
+    });
+
+    it('should assign the referrals assignee to the new user and loan if it exists', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, referralId: 'org2' },
+        users: [
+          { _id: 'pro1', _factory: ROLES.PRO },
+          { _id: 'advisor1', _factory: ROLES.ADVISOR },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+        ],
+        organisations: [{ _id: 'org2', assignee: { _id: 'advisor2' } }],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+      });
+
+      const { assignedEmployee, loans } = UserService.get(userId, {
+        assignedEmployee: { _id: 1 },
+        loans: { assignees: { _id: 1 } },
+      });
+
+      expect(assignedEmployee._id).to.equal('advisor2');
+      expect(loans[0].assignees[0]._id).to.equal('advisor2');
+    });
+
+    it('should cascade to the first available advisor', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, referralId: 'pro1' },
+        users: [
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            roundRobinTimeout: 'Not here!',
+          },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+          {
+            _id: 'pro1',
+            _factory: ROLES.PRO,
+            assignedEmployee: { _id: 'advisor1' },
+          },
+        ],
+      });
+
+      const userId = UserService.anonymousCreateUser({
+        user: { email: 'test@e-potek.ch' },
+        loanId: 'loanId',
+      });
+
+      const { assignedEmployee, loans } = UserService.get(userId, {
+        assignedEmployee: { _id: 1 },
+        loans: { assignees: { _id: 1 } },
+      });
+
+      expect(assignedEmployee._id).to.equal('advisor2');
+      expect(loans[0].assignees[0]._id).to.equal('advisor2');
+    });
+
+    it('assigns new users in round robin', () => {
+      generator({
+        users: [
+          { _id: 'advisor1', _factory: ROLES.ADVISOR },
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+          { _id: 'advisor3', _factory: ROLES.ADVISOR },
+        ],
+      });
+
+      const user1 = UserService.anonymousCreateUser({
+        user: { email: 'test1@e-potek.ch' },
+      });
+      const user2 = UserService.anonymousCreateUser({
+        user: { email: 'test2@e-potek.ch' },
+      });
+      const user3 = UserService.anonymousCreateUser({
+        user: { email: 'test3@e-potek.ch' },
+      });
+      const user4 = UserService.anonymousCreateUser({
+        user: { email: 'test4@e-potek.ch' },
+      });
+
+      expect(
+        UserService.get(user1, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor1');
+      expect(
+        UserService.get(user2, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor2');
+      expect(
+        UserService.get(user3, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor3');
+      expect(
+        UserService.get(user4, { assignedEmployeeId: 1 }).assignedEmployeeId,
+      ).to.equal('advisor1');
     });
   });
 
@@ -184,6 +341,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal(newFirstName);
     });
+
     it('updates a user: check the sentence case', () => {
       const newFirstName = 'jon';
       UserService.update({
@@ -192,6 +350,7 @@ describe('UserService', function() {
       });
       expect(UserService.findOne(user._id).firstName).to.equal('Jon');
     });
+
     it('does not do anything if object is not defined', () => {
       UserService.update({ userId: user._id });
       expect(UserService.findOne(user._id)).to.deep.equal(user);
@@ -282,47 +441,6 @@ describe('UserService', function() {
     });
   });
 
-  describe('assignAdminToUser', () => {
-    it('assigns an admin to a user', () => {
-      const adminId = 'my dude';
-      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
-        undefined,
-      );
-      UserService.assignAdminToUser({ userId: user._id, adminId });
-      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
-        adminId,
-      );
-    });
-
-    it('does not fail if adminId is undefined', () => {
-      const adminId = undefined;
-      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
-        undefined,
-      );
-      UserService.assignAdminToUser({ userId: user._id, adminId });
-      expect(UserService.findOne(user._id).assignedEmployeeId).to.equal(
-        adminId,
-      );
-    });
-  });
-
-  describe('setRole', () => {
-    it('changes the role of a user', () => {
-      const newRole = ROLES.DEV;
-      expect(UserService.findOne(user._id).roles).to.deep.equal([ROLES.USER]);
-      UserService.setRole({ userId: user._id, role: newRole });
-      expect(UserService.findOne(user._id).roles).to.deep.equal([newRole]);
-    });
-
-    it('throws if an unauthorized role is set', () => {
-      const newRole = 'some role';
-
-      expect(() =>
-        UserService.setRole({ userId: user._id, role: newRole }),
-      ).to.throw(`${newRole} is not an allowed value`);
-    });
-  });
-
   describe('doesUserExist', () => {
     let email;
 
@@ -405,7 +523,8 @@ describe('UserService', function() {
 
     it('returns undefined if no user is found', () => {
       expect(
-        !!UserService.getUserByPasswordResetToken({token: 'some unknown token',
+        !!UserService.getUserByPasswordResetToken({
+          token: 'some unknown token',
         }),
       ).to.equal(false);
     });
@@ -439,7 +558,7 @@ describe('UserService', function() {
         users: [
           {
             _id: 'adminId',
-            _factory: 'admin',
+            _factory: ROLES.ADVISOR,
             firstName: 'Admin',
             lastName: 'User',
           },
@@ -451,7 +570,7 @@ describe('UserService', function() {
               name: 'bank',
               $metadata: { isMain: true },
             },
-            _factory: 'pro',
+            _factory: ROLES.PRO,
             firstName: 'John',
             lastName: 'Doe',
             emails: [{ address: 'john@doe.com', verified: true }],
@@ -539,7 +658,7 @@ describe('UserService', function() {
       ).to.throw('Ce client existe déjà');
     });
 
-    it('invites user to promotion', async () => {
+    it('invites user to promotion', () => {
       generator({
         properties: { _id: 'prop' },
         promotions: {
@@ -560,7 +679,7 @@ describe('UserService', function() {
         proId,
         admin,
         pro,
-      } = await UserService.proInviteUser({
+      } = UserService.proInviteUser({
         user: {
           ...userToInvite,
           showAllLots: false,
@@ -594,7 +713,43 @@ describe('UserService', function() {
       expect(loan.promotionOptionLinks.length).to.equal(1);
     });
 
-    it('invites user to multiple promotions', async () => {
+    it('does not assign the promotionAssignee if he/she is away', () => {
+      generator({
+        users: [
+          { _id: 'admin1', _factory: ROLES.ADVISOR, roundRobinTimeout: 'Gone' },
+          { _id: 'admin2', _factory: ROLES.ADVISOR },
+        ],
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'admin1',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
+      // Force assignee to go to admin2
+      UserService.update({
+        userId: 'adminId',
+        object: { roundRobinTimeout: 'Gone too' },
+      });
+      const { admin } = UserService.proInviteUser({
+        user: {
+          ...userToInvite,
+          showAllLots: false,
+          promotionLotIds: ['pLotId'],
+        },
+        promotionIds: ['promotionId'],
+        proUserId: 'proId',
+      });
+
+      expect(admin._id).to.equal('admin2');
+    });
+
+    it('invites user to multiple promotions', () => {
       generator({
         promotions: [
           {
@@ -620,7 +775,7 @@ describe('UserService', function() {
         ],
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         promotionIds: ['promotionId1', 'promotionId2'],
         proUserId: 'proId',
@@ -648,7 +803,7 @@ describe('UserService', function() {
       expect(loans[1].promotionLinks[0].showAllLots).to.equal(true);
     });
 
-    it('throws if user is already invited to promotion', async () => {
+    it('throws if user is already invited to promotion', () => {
       generator({
         promotions: {
           _id: 'promotionId',
@@ -662,7 +817,7 @@ describe('UserService', function() {
         },
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         promotionIds: ['promotionId'],
         proUserId: 'proId',
@@ -722,7 +877,7 @@ describe('UserService', function() {
       ).to.equal(true);
     });
 
-    it('invites user to multiple pro properties', async () => {
+    it('invites user to multiple pro properties', () => {
       generator({
         properties: [
           {
@@ -744,7 +899,7 @@ describe('UserService', function() {
         ],
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId1', 'propertyId2'],
         proUserId: 'proId',
@@ -767,7 +922,7 @@ describe('UserService', function() {
       expect(loan.propertyIds[1]).to.equal('propertyId2');
     });
 
-    it('invites user to multiple pro properties and promotions', async () => {
+    it('invites user to multiple pro properties and promotions', () => {
       generator({
         properties: [
           {
@@ -811,7 +966,7 @@ describe('UserService', function() {
         ],
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId1', 'propertyId2'],
         promotionIds: ['promotionId1', 'promotionId2'],
@@ -954,7 +1109,7 @@ describe('UserService', function() {
       expect(ctaUrl).to.include(`enroll-account/${token}`);
     });
 
-    it('throws if user is already invited to pro property', async () => {
+    it('throws if user is already invited to pro property', () => {
       generator({
         properties: {
           _id: 'propertyId',
@@ -966,7 +1121,7 @@ describe('UserService', function() {
         },
       });
 
-      await UserService.proInviteUser({
+      UserService.proInviteUser({
         user: userToInvite,
         propertyIds: ['propertyId'],
         proUserId: 'proId',
@@ -981,7 +1136,7 @@ describe('UserService', function() {
       ).to.throw('Ce client est déjà invité à ce bien immobilier');
     });
 
-    it('invites existing users to a new promotion', async () => {
+    it('invites existing users to a new promotion', () => {
       generator({
         users: {
           _id: 'userId',
@@ -999,7 +1154,7 @@ describe('UserService', function() {
         },
       });
 
-      const { isNewUser, proId } = await UserService.proInviteUser({
+      const { isNewUser, proId } = UserService.proInviteUser({
         user: {
           email: 'Test@e-potek.ch',
           firstName: 'John',
@@ -1010,7 +1165,6 @@ describe('UserService', function() {
           invitedBy: 'proId',
         },
         promotionIds: ['promotionId'],
-        adminId: 'adminId',
       });
       expect(isNewUser).to.equal(false);
       expect(proId).to.equal('proId');
@@ -1024,7 +1178,7 @@ describe('UserService', function() {
           {
             emails: [{ address: userToInvite.email, verified: true }],
             assignedEmployee: {
-              _factory: 'admin',
+              _factory: ROLES.ADVISOR,
               _id: 'adminUser',
               firstName: 'Lydia',
               lastName: 'Abraha',
@@ -1032,7 +1186,7 @@ describe('UserService', function() {
             },
           },
           {
-            _factory: 'pro',
+            _factory: ROLES.PRO,
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
             organisations: { _id: 'organisation', $metadata: { isMain: true } },
@@ -1081,12 +1235,12 @@ describe('UserService', function() {
       generator({
         users: [
           {
-            _factory: 'admin',
+            _factory: ROLES.ADVISOR,
             _id: 'adminUser',
             organisations: { $metadata: { isMain: true } },
           },
           {
-            _factory: 'pro',
+            _factory: ROLES.PRO,
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
             organisations: { _id: 'organisation', $metadata: { isMain: true } },
@@ -1110,7 +1264,7 @@ describe('UserService', function() {
       expect(emails.length).to.equal(1);
     });
 
-    it('sets the right assignee to the user if it is a promotion', async () => {
+    it('sets the right assignee to the user if it is a promotion', () => {
       generator({
         properties: { _id: 'prop' },
         promotions: {
@@ -1126,14 +1280,13 @@ describe('UserService', function() {
         users: { _id: 'adminId2' },
       });
 
-      const { userId } = await UserService.proInviteUser({
+      const { userId } = UserService.proInviteUser({
         user: {
           ...userToInvite,
           showAllLots: false,
           promotionLotIds: ['pLotId'],
         },
         promotionIds: ['promotionId'],
-        adminId: 'adminId2',
       });
 
       const { assignedEmployeeId } = UserService.get(userId, {
@@ -1141,94 +1294,67 @@ describe('UserService', function() {
       });
       expect(assignedEmployeeId).to.equal('adminId');
     });
-  });
 
-  describe('round robin', () => {
-    const employees = ['a@e-potek.ch', 'b@e-potek.ch', 'c@e-potek.ch'];
-    let employeeIds = [];
+    it('invites user to promotion with invitationNote', async () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
 
-    beforeEach(() => {
-      employeeIds = employees.map(email =>
-        UserService.adminCreateUser({ options: { email }, role: ROLES.ADMIN }),
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({
+          user: {
+            ...userToInvite,
+            showAllLots: false,
+            promotionLotIds: ['pLotId'],
+          },
+          promotionIds: ['promotionId'],
+          invitationNote: 'Ma man',
+        }),
       );
+
+      const { tasks = [] } = UserService.getByEmail(userToInvite.email, {
+        tasks: { description: 1, assigneeLink: 1 },
+      });
+
+      expect(tasks.length).to.equal(1);
+      const [
+        {
+          description,
+          assigneeLink: { _id: assigneeId },
+        },
+      ] = tasks;
+
+      expect(description).to.include('Ma man');
+      expect(assigneeId).to.equal('adminId');
+
+      await checkEmails(2);
     });
 
-    it('sets the first user to the first in the array', () => {
-      const service = new UserServiceClass({
-        employees,
-      });
-
-      const newUserId = service.adminCreateUser({
-        options: { email: '1@e-potek.ch' },
-      });
-
-      const { assignedEmployee } = service.get(newUserId, {
-        assignedEmployee: { email: 1 },
-      });
-
-      expect(assignedEmployee.email).to.equal(employees[0]);
-    });
-
-    it('sets the second user to the second in the array', () => {
-      const service = new UserServiceClass({ employees });
-
-      service.adminCreateUser({
-        options: { email: '1@e-potek.ch' },
-      });
-
-      const newUserId2 = service.adminCreateUser({
-        options: { email: '2@e-potek.ch' },
-      });
-
-      const { assignedEmployee } = service.get(newUserId2, {
-        assignedEmployee: { email: 1 },
-      });
-
-      expect(assignedEmployee.email).to.equal(employees[1]);
-    });
-
-    it('loops back to first in array', () => {
-      const service = new UserServiceClass({
-        employees,
-      });
-
+    it('should not create the user if the promotion is not ready', () => {
       generator({
-        users: { assignedEmployeeId: employeeIds[2], _factory: 'user' },
+        promotions: { _id: 'promoId', name: 'Yo', city: '', promotionLots: {} },
       });
 
-      const newUserId = service.adminCreateUser({
-        options: { email: '1@e-potek.ch' },
-      });
+      expect(() =>
+        UserService.proInviteUser({
+          user: { email: 'test@e-potek.ch' },
+          promotionIds: ['promoId'],
+        }),
+      ).to.throw('Il faut ajouter un nom');
 
-      const { assignedEmployee } = service.get(newUserId, {
-        assignedEmployee: { email: 1 },
-      });
-
-      expect(assignedEmployee.email).to.equal(employees[0]);
-    });
-
-    it('ignores users assigned to people outside of employees list, and check latest one', () => {
-      const service = new UserServiceClass({ employees });
-
-      generator({
-        users: [
-          { _id: 'a', assignedEmployeeId: employeeIds[2], _factory: 'user' },
-          { _id: 'b', assignedEmployeeId: employeeIds[2], _factory: 'user' },
-          { _id: 'c', assignedEmployeeId: employeeIds[2], _factory: 'user' },
-          { _id: 'd', assignedEmployeeId: employeeIds[1], _factory: 'user' },
-          { _id: 'e', assignedEmployee: { _id: 'adminId', _factory: 'admin' } },
-        ],
-      });
-
-      const newUserId = service.adminCreateUser({
-        options: { email: '1@e-potek.ch' },
-      });
-
-      const { assignedEmployee } = service.get(newUserId, {
-        assignedEmployee: { email: 1 },
-      });
-
-      expect(assignedEmployee.email).to.equal(employees[2]);
+      expect(
+        UserService.findOne({ 'emails.address': 'test@e-potek.ch' }),
+      ).to.equal(undefined);
     });
   });
 });

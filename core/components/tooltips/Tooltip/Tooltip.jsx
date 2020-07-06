@@ -7,7 +7,6 @@ import Popper from '@material-ui/core/Popper';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 
-import Button from '../../Button';
 import DialogSimple from '../../DialogSimple/loadable';
 import T from '../../Translation';
 import TooltipSynonyms from '../TooltipSynonyms';
@@ -36,16 +35,12 @@ const Tooltip = ({
           // at zindex 1501), but when you trigger a dialog from a tooltip,
           // it should be above the previous tooltip, hence 1502
           style={{ zIndex: 1502 }}
-          buttonStyle={{ marginTop: 16, margin: '0 auto' }}
+          buttonProps={{
+            style: { margin: '0 auto', marginTop: 16 },
+            size: 'small',
+          }}
           label={<T id="general.learnMore" />}
-          autoFocus
-          actions={handleCloseDialog => (
-            <Button
-              primary
-              label={<T id="general.ok" />}
-              onClick={handleCloseDialog}
-            />
-          )}
+          closeOnly
         >
           <TooltipSynonyms tooltipId={id} match={match} />
           <br />

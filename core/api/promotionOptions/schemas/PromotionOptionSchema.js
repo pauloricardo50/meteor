@@ -58,9 +58,6 @@ const PromotionOptionSchema = new SimpleSchema({
     type: Date,
     autoValue: dateAutoValue(),
     optional: true,
-    uniforms: {
-      withUtcOffset: true,
-    },
   },
   'reservationAgreement.startDate': {
     type: Date,
@@ -122,6 +119,9 @@ const PromotionOptionSchema = new SimpleSchema({
   },
   loanCache: { type: Array, optional: true },
   'loanCache.$': cacheField,
+  promotionLotCache: { type: Array, optional: true },
+  'promotionLotCache.$': cacheField,
+  priorityOrder: { type: SimpleSchema.Integer },
 });
 
 export default PromotionOptionSchema;

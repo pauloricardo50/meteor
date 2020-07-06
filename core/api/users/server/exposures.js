@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Match } from 'meteor/check';
 
@@ -11,7 +10,6 @@ import SecurityService from '../../security';
 import {
   adminUsers,
   appUser,
-  currentUser,
   incoherentAssignees,
   proReferredByUsers,
   proUser,
@@ -25,26 +23,30 @@ import UserService from './UserService';
 exposeQuery({
   query: adminUsers,
   overrides: {
+    firewall(userId, params) {
+      SecurityService.checkUserIsAdmin(userId);
+      params.userId = userId;
+    },
     embody: body => {
       body.$filter = ({
         filters,
-        params: { roles, _id, admins, assignedEmployeeId },
+        params: { roles, _id, admins, assignedEmployeeId, userId },
       }) => {
         if (_id) {
           filters._id = _id;
         }
 
         if (roles) {
-          filters.roles = { $in: roles };
+          filters['roles._id'] = { $in: roles };
         }
 
         if (admins) {
-          const userIsDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
+          const userIsDev = Roles.userIsInRole(userId, ROLES.DEV);
 
           if (userIsDev) {
-            filters.roles = { $in: [ROLES.ADMIN, ROLES.DEV] };
+            filters['roles._id'] = { $in: [ROLES.ADMIN, ROLES.DEV] };
           } else {
-            filters.roles = { $in: [ROLES.ADMIN] };
+            filters['roles._id'] = ROLES.ADMIN;
           }
         }
 
@@ -54,9 +56,10 @@ exposeQuery({
       };
     },
     validateParams: {
-      roles: Match.Maybe([String]),
       admins: Match.Maybe(Boolean),
       assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String, null)),
+      roles: Match.Maybe([String]),
+      userId: String,
     },
   },
   options: { allowFilterById: true },
@@ -82,26 +85,6 @@ exposeQuery({
 });
 
 exposeQuery({
-  query: currentUser,
-  overrides: {
-    firewall(userId, params) {
-      if (!userId) {
-        // Don't throw unauthorized error here, it causes race-conditions in E2E tests
-        // to not reload this subscription
-        // So simply set userId to an impossible id
-        params._userId = 'none';
-      }
-    },
-    embody: body => {
-      // This will deepExtend your body
-      body.$filter = ({ filters, params }) => {
-        filters._id = params._userId;
-      };
-    },
-  },
-});
-
-exposeQuery({
   query: proReferredByUsers,
   overrides: {
     firewall(userId, params) {
@@ -111,7 +94,6 @@ exposeQuery({
         ownReferredUsers,
         referredByUserId,
       } = params;
-
       SecurityService.checkUserIsPro(userId);
 
       if (providedUserId) {
@@ -145,10 +127,10 @@ exposeQuery({
       }) => {
         let organisationId;
         if (!providedOrganisationId) {
-          const { organisations = [] } = UserService.get(userId, {
-            organisations: { _id: 1 },
+          const mainOrganisation = UserService.getUserMainOrganisation(userId, {
+            _id: 1,
           });
-          organisationId = !!organisations.length && organisations[0]._id;
+          organisationId = mainOrganisation?._id;
         } else {
           organisationId = providedOrganisationId;
         }
@@ -197,7 +179,7 @@ exposeQuery({
       body.$filter = ({ filters, params: { searchQuery, roles } }) => {
         const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
         if (roles) {
-          filters.roles = { $in: roles };
+          filters['roles._id'] = { $in: roles };
         }
         filters.$or = [
           createRegexQuery('_id', searchQuery),

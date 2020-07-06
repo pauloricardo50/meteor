@@ -129,7 +129,7 @@ describe('SolvencyCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         loanValue,
         canton: 'GE',
-        notaryFees: 31660.1,
+        fees: 31660.1,
       });
       const total = ownFunds.reduce((t, { value }) => t + value, 0);
 
@@ -232,6 +232,70 @@ describe('SolvencyCalculator', () => {
       );
 
       expect(insurance2Suggestion.value).to.equal(MIN_INSURANCE2_WITHDRAW);
+    });
+
+    describe('refinancings', () => {
+      it('suggests an empty structure if there is a net loan increase', () => {
+        const ownFunds = Calculator.suggestStructureForLoan({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            borrowers: [
+              {
+                bankFortune: [{ value: 500000 }],
+                salary: 180000,
+                _id: 'borrower1',
+              },
+            ],
+            structures: [
+              {
+                id: 'struct1',
+                propertyValue: 1000000,
+                wantedLoan: 700000,
+                notaryFees: 0,
+                reimbursementPenalty: 0,
+              },
+            ],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        });
+
+        expect(ownFunds).to.deep.equal([]);
+      });
+
+      it('suggests to cover fees', () => {
+        const ownFunds = Calculator.suggestStructureForLoan({
+          loan: {
+            purchaseType: PURCHASE_TYPE.REFINANCING,
+            borrowers: [
+              {
+                bankFortune: [{ value: 500000 }],
+                salary: 180000,
+                _id: 'borrower1',
+              },
+            ],
+            structures: [
+              {
+                id: 'struct1',
+                propertyValue: 1000000,
+                wantedLoan: 700000,
+                notaryFees: 30000,
+                reimbursementPenalty: 30000,
+              },
+            ],
+            previousLoanTranches: [{ value: 650000 }],
+          },
+          structureId: 'struct1',
+        });
+
+        expect(ownFunds).to.deep.equal([
+          {
+            type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+            value: 10000,
+            borrowerId: 'borrower1',
+          },
+        ]);
+      });
     });
   });
 
@@ -430,7 +494,7 @@ describe('SolvencyCalculator', () => {
           },
         ],
       });
-      expect(result.propertyValue).to.equal(818000);
+      expect(result.propertyValue).to.equal(817000);
     });
   });
 

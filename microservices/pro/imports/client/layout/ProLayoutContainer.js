@@ -1,13 +1,11 @@
-import { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose, withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 
 const getRedirect = pathname => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const baseRedirect = getBaseRedirect(currentUser, pathname);
 
   if (baseRedirect !== undefined) {
@@ -17,9 +15,8 @@ const getRedirect = pathname => {
   return false;
 };
 
-const withRedirect = withProps(({ history }) => {
+export default withProps(() => {
+  const history = useHistory();
   const redirect = getRedirect(history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });
-
-export default compose(withRouter, withRedirect, withContactButtonProvider);

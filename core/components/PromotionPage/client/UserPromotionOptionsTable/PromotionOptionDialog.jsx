@@ -1,43 +1,29 @@
 import React from 'react';
 
-import { promotionOptionRemove } from '../../../../api/promotionOptions/methodDefinitions';
-import Checkbox from '../../../Checkbox';
-import T from '../../../Translation';
+import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import PromotionLotDetail from '../PromotionLotDetail';
 import RequestReservation from './RequestReservation';
 
 const PromotionOptionDialog = ({
-  open,
   promotionOption = { promotionLots: [{}] },
-  handleClose,
-  promotion,
-  loan,
 }) => {
   const { promotionLots } = promotionOption;
   const [promotionLot] = promotionLots;
   const { name } = promotionLot;
   const { status } = promotionOption;
+  const canReserve = status === PROMOTION_OPTION_STATUS.INTERESTED;
 
   return (
     <div className="flex-col">
-      <PromotionLotDetail promotionLot={promotionLot} promotion={promotion}>
-        <section className="flex center-align">
-          <Checkbox
-            label={<T id="PromotionOptionDialog.interested" />}
-            value
-            onChange={() =>
-              promotionOptionRemove
-                .run({ promotionOptionId: promotionOption._id })
-                .then(handleClose)
-            }
-          />
-        </section>
-      </PromotionLotDetail>
-      <RequestReservation
-        promotionOption={promotionOption}
-        promotionLotName={name}
-        status={status}
-      />
+      <PromotionLotDetail promotionLot={promotionLot} />
+      <div className="m-8" />
+      {canReserve && (
+        <RequestReservation
+          promotionOption={promotionOption}
+          promotionLotName={name}
+          status={status}
+        />
+      )}
     </div>
   );
 };

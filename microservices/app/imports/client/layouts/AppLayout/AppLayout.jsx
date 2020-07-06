@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import ImpersonateNotification from 'core/components/ImpersonateNotification';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import useIntercom from 'core/hooks/useIntercom';
 
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
@@ -23,7 +24,7 @@ const renderMobile = props => {
     },
     loan,
   } = props;
-  const isSimple = loan && loan.applicationType === APPLICATION_TYPES.SIMPLE;
+  const isSimple = loan?.applicationType === APPLICATION_TYPES.SIMPLE;
 
   if (isSimple) {
     return true;
@@ -39,9 +40,10 @@ const renderMobile = props => {
 };
 
 const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
+  useIntercom();
 
   if (redirect) {
     return <Redirect to={redirect} />;
@@ -49,11 +51,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
 
   return (
     <div className={rootClasses}>
-      <Navs
-        {...props}
-        shouldShowSideNav={shouldShowSideNav}
-        currentUser={currentUser}
-      />
+      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
       <div className={classes} id="scroll-layout">
         <LayoutErrorBoundary>
           <div className="wrapper">
@@ -62,7 +60,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton currentUser={currentUser} />
+      <ImpersonateNotification />
       {currentUser && <AnonymousLoanClaimer currentUser={currentUser} />}
       <AnonymousLoanRemover />
     </div>

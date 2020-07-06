@@ -1,16 +1,15 @@
-import { useContext } from 'react';
+import merge from 'lodash/merge';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps, withProps } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { userLoan } from 'core/api/fragments';
+import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import withMatchParam from 'core/containers/withMatchParam';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import getBaseRedirect, {
   isLogin,
   isOnAllowedRoute,
@@ -51,25 +50,53 @@ export const getRedirect = (currentUser, pathname) => {
   return false;
 };
 
-const fullFragment = userLoan({ withSort: true, withFilteredPromotions: true });
-const fragment = {
-  ...fullFragment,
-  user: { _id: 1 },
-  properties: {
-    ...fullFragment.properties,
-    loans: undefined,
-    user: undefined,
+const loanFragment = merge({}, calculatorLoan(), {
+  applicationType: 1,
+  borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
+  contacts: 1,
+  customName: 1,
+  displayWelcomeScreen: 1,
+  enableOffers: 1,
+  lenders: {
+    offers: {
+      conditions: 1,
+      enableOffer: 1,
+      withCounterparts: 1,
+    },
+    organisation: { logo: 1 },
+  },
+  maxPropertyValue: 1,
+  maxPropertyValueExists: 1,
+  name: 1,
+  promotionOptions: {
+    name: 1,
+    priorityOrder: 1,
+    promotionLots: { reducedStatus: 1, value: 1 },
   },
   promotions: {
-    ...fullFragment.promotions,
-    users: undefined,
+    documents: 1,
+    lenderOrganisationLink: 1,
+    name: 1,
+    status: 1,
+    users: { name: 1, organisations: { name: 1 } },
   },
-  maxPropertyValueExists: 1,
-};
+  properties: { address: 1, $options: { sort: { createdAt: 1 } } },
+  shareSolvency: 1,
+  showClosingChecklists: 1,
+  step: 1,
+  userCache: 1,
+  userFormsEnabled: 1,
+});
 
 const withUserLoan = withSmartQuery({
   query: userLoans,
-  params: ({ loanId }) => ({ loanId, $body: fragment }),
+  params: ({ loanId }) => ({ loanId, $body: loanFragment }),
+  deps: ({ loanId }) => {
+    // Make sure the currentUser is in the dependencies here, or else
+    // the query can get stuck when it's undefined on initial launch
+    const currentUser = useCurrentUser();
+    return [loanId, currentUser?._id];
+  },
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
   skip: ({ loanId }) => !loanId,
@@ -77,13 +104,12 @@ const withUserLoan = withSmartQuery({
 
 const withInterestRates = withSmartQuery({
   query: currentInterestRates,
-  queryOptions: { shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   refetchOnMethodCall: false,
 });
 
 const withRedirect = withProps(({ history }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
 });
@@ -112,5 +138,4 @@ export default compose(
   })),
   withSideNavContextProvider,
   withSideNavContext,
-  withContactButtonProvider,
 );

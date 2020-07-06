@@ -13,8 +13,8 @@ const LoanSummaryList = ({ loans, userId, withAdder }) => {
   const history = useHistory();
   if (loans && loans.length > 0) {
     return (
-      <>
-        <h3>
+      <div className="mt-40">
+        <h3 className="mt-0">
           <T id="collections.loans" />
           {withAdder && (
             <LoanAdder
@@ -30,12 +30,12 @@ const LoanSummaryList = ({ loans, userId, withAdder }) => {
         {loans.map(loan => (
           <LoanSummary loan={loan} key={loan._id} />
         ))}
-      </>
+      </div>
     );
   }
 
   return (
-    <h3>
+    <h3 className="mt-40">
       <T id="LoanSummaryList.noLoans" />
       {withAdder && (
         <LoanAdder

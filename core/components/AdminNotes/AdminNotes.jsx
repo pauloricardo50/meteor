@@ -8,19 +8,19 @@ import { employeesById } from '../../arrays/epotekEmployees';
 import AdminNoteAdder from '../AdminNote/AdminNoteAdder';
 import Button from '../Button';
 import Icon from '../Icon';
+import IconButton from '../IconButton';
 import AdminNotesContainer from './AdminNotesContainer';
 
 const isAdmin = Meteor.microservice === 'admin';
 
 export const AdminNotes = ({
-  collection,
   docId,
   proNotes,
   adminNotes,
   proNote,
   referredByUser,
   title = 'Notes',
-  CustomNoteAdder,
+  NoteAdder = AdminNoteAdder,
   Filters,
   doc,
 }) => {
@@ -38,33 +38,20 @@ export const AdminNotes = ({
       <div className="flex center-align mb-16">
         <h2 className="mr-8">{title}</h2>
 
-        {isAdmin &&
-          (CustomNoteAdder ? (
-            <CustomNoteAdder
-              docId={docId}
-              buttonProps={{
-                raised: true,
-                primary: true,
-                label: 'Note',
-                icon: <Icon type="add" />,
-              }}
-              referredByUser={referredByUser}
-              collection={collection}
-              doc={doc}
-            />
-          ) : (
-            <AdminNoteAdder
-              docId={docId}
-              buttonProps={{
-                raised: true,
-                primary: true,
-                label: 'Note',
-                icon: <Icon type="add" />,
-              }}
-              referredByUser={referredByUser}
-              collection={collection}
-            />
-          ))}
+        {isAdmin && (
+          <NoteAdder
+            docId={docId}
+            buttonProps={{
+              raised: true,
+              primary: true,
+              label: 'Note',
+              icon: <Icon type="add" />,
+            }}
+            referredByUser={referredByUser}
+            doc={doc}
+            collection={doc._collection}
+          />
+        )}
         {Filters}
       </div>
       {shouldShowProNote && (
@@ -98,31 +85,23 @@ export const AdminNotes = ({
                   <span className="secondary mr-8">
                     {moment(date).format('D/M/YY')}
                   </span>
-                  {isAdmin &&
-                    (CustomNoteAdder ? (
-                      <CustomNoteAdder
-                        docId={docId}
-                        buttonProps={{
-                          label: 'Modifier',
-                          size: 'small',
-                          className: 'mr-8',
-                        }}
-                        adminNote={shownNote}
-                        collection={collection}
-                        doc={doc}
-                      />
-                    ) : (
-                      <AdminNoteAdder
-                        docId={docId}
-                        buttonProps={{
-                          label: 'Modifier',
-                          size: 'small',
-                          className: 'mr-8',
-                        }}
-                        adminNote={shownNote}
-                        collection={collection}
-                      />
-                    ))}
+                  {isAdmin && (
+                    <NoteAdder
+                      docId={docId}
+                      adminNote={shownNote}
+                      collection={doc._collection}
+                      doc={doc}
+                      triggerComponent={handleOpen => (
+                        <IconButton
+                          type="edit"
+                          size="small"
+                          tooltip="Modifier"
+                          onClick={handleOpen}
+                          className="mr-8"
+                        />
+                      )}
+                    />
+                  )}
                   {isAdmin && isSharedWithPros && (
                     <span className="primary">Partagé avec les pros!</span>
                   )}

@@ -27,9 +27,10 @@ export const withSelector = (SuperClass = class {}) =>
         }
 
         if (structure.promotionOption) {
-          return this.formatPromotionOptionIntoProperty(
-            structure.promotionOption,
-          );
+          return this.formatPromotionOptionIntoProperty({
+            loan,
+            promotionOption: structure.promotionOption,
+          });
         }
 
         if (structure.promotionOptionId) {
@@ -37,7 +38,10 @@ export const withSelector = (SuperClass = class {}) =>
             ({ _id }) => _id === structure.promotionOptionId,
           );
 
-          return this.formatPromotionOptionIntoProperty(promotionOption);
+          return this.formatPromotionOptionIntoProperty({
+            loan,
+            promotionOption,
+          });
         }
 
         if (loan.properties?.length === 1) {
@@ -60,14 +64,25 @@ export const withSelector = (SuperClass = class {}) =>
         const promotionOption = loan.promotionOptions.find(
           ({ _id }) => _id === promotionOptionId,
         );
-        return this.formatPromotionOptionIntoProperty(promotionOption);
+        return this.formatPromotionOptionIntoProperty({
+          loan,
+          promotionOption,
+        });
       }
 
       return {};
     }
 
+    selectOffers({ loan }) {
+      const { lenders = [] } = loan;
+      return lenders.reduce(
+        (allOffers, { offers: o = [] }) => [...allOffers, ...o],
+        [],
+      );
+    }
+
     selectOffer({ loan, structureId }) {
-      const { offers = [] } = loan;
+      const { offers = [], lenders = [] } = loan;
       const { offerId, offer } = this.selectStructure({ loan, structureId });
 
       if (offer) {
@@ -78,7 +93,41 @@ export const withSelector = (SuperClass = class {}) =>
         return undefined;
       }
 
-      return offers.find(({ _id }) => _id === offerId);
+      if (offers?.length) {
+        return offers.find(({ _id }) => _id === offerId);
+      }
+
+      if (lenders?.length) {
+        const lenderOffers = this.selectOffers({ loan });
+        return lenderOffers.find(({ _id }) => _id === offerId);
+      }
+    }
+
+    selectLenderRules({ loan, structureId }) {
+      const { lenders = [], selectedLenderOrganisation, hasPromotion } = loan;
+
+      if (!structureId && selectedLenderOrganisation?.lenderRules) {
+        return selectedLenderOrganisation.lenderRules;
+      }
+
+      if (hasPromotion) {
+        const { promotions = [] } = loan;
+        if (promotions[0].lenderOrganisation?.lenderRules) {
+          return promotions[0].lenderOrganisation.lenderRules;
+        }
+      }
+
+      const { offerId } = this.selectStructure({ loan, structureId });
+
+      if (offerId) {
+        const lender = lenders.find(({ offers }) =>
+          offers.some(({ _id }) => _id === offerId),
+        );
+
+        if (lender) {
+          return lender.organisation.lenderRules;
+        }
+      }
     }
 
     selectStructure({ loan, structureId } = {}) {
@@ -142,4 +191,11 @@ export const withSelector = (SuperClass = class {}) =>
     }
 
     getCashUsed = this.makeSelectStructureKey('fortuneUsed');
+
+    selectLenderForOfferId({ loan, offerId }) {
+      const { lenders = [] } = loan;
+      return lenders.find(({ offers }) =>
+        offers.some(({ _id }) => _id === offerId),
+      );
+    }
   };

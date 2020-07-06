@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import AutoForm from 'core/components/AutoForm';
 import MortgageNotesForm from 'core/components/MortgageNotesForm';
@@ -55,7 +54,6 @@ const BorrowerFinancePage = props => {
                   })}
                   borrowers={borrowers}
                   docId={borrowerId}
-                  collection={BORROWERS_COLLECTION}
                   doc={borrower}
                   disabled={!userFormsEnabled}
                 />

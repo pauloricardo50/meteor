@@ -1,7 +1,7 @@
 import React from 'react';
 import CountUp from 'react-countup';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
@@ -18,11 +18,13 @@ const LoansWithoutAssignees = ({ showAll }) => {
           { assigneeLinks: { $exists: false } },
           { assigneeLinks: { $size: 0 } },
         ],
+        status: { $ne: LOAN_STATUS.TEST },
       },
       name: 1,
       borrowers: { name: 1 },
       user: { name: 1 },
     },
+    refetchOnMethodCall: false,
   });
 
   const isOk = loans.length === 0;
@@ -56,7 +58,7 @@ const LoansWithoutAssignees = ({ showAll }) => {
               </p>
 
               <div>
-                {loans.map(loan => (
+                {loans.map((loan) => (
                   <CollectionIconLink key={loan._id} relatedDoc={loan} />
                 ))}
               </div>

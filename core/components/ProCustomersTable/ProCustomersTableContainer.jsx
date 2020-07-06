@@ -3,7 +3,7 @@ import moment from 'moment';
 import { compose, withProps, withState } from 'recompose';
 
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
-import { LOANS_COLLECTION, LOAN_STATUS } from '../../api/loans/loanConstants';
+import { LOAN_STATUS } from '../../api/loans/loanConstants';
 import { proLoans2 } from '../../api/loans/queries';
 import { CollectionIconLink } from '../IconLink';
 import ProCustomer from '../ProCustomer';
@@ -25,15 +25,16 @@ const columnOptions = [
 
 const makeMapLoan = ({ isAdmin }) => loan => {
   const {
+    _collection,
     _id: loanId,
     anonymous,
     createdAt,
     name: loanName,
+    proNote = {},
     referredByText,
     relatedTo: relatedDocs = [],
     status,
     user,
-    proNote = {},
   } = loan;
 
   return {
@@ -45,7 +46,7 @@ const makeMapLoan = ({ isAdmin }) => loan => {
       },
       {
         raw: status,
-        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+        label: <StatusLabel status={status} collection={_collection} />,
       },
       {
         raw: !anonymous && user.name,
@@ -123,11 +124,16 @@ export default compose(
         },
       },
     }),
+    deps: ({ status, withAnonymous, referredByMe }) => [
+      status,
+      withAnonymous,
+      referredByMe,
+    ],
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  withProps(({ loans, proUser, isAdmin = false }) => ({
-    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
+  withProps(({ loans, isAdmin = false }) => ({
+    rows: loans.map(makeMapLoan({ isAdmin })),
     columnOptions,
   })),
 );

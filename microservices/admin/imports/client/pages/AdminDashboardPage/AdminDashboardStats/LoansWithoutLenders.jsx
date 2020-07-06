@@ -1,17 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import groupBy from 'lodash/groupBy';
 import CountUp from 'react-countup';
 
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { PROMOTION_TYPES } from 'core/api/promotions/promotionConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import StatItem from './StatItem';
 
 const LoansWithoutLenders = ({ showAll }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { data: loans = [], loading } = useStaticMeteorData({
     query: LOANS_COLLECTION,
     params: {
@@ -24,13 +25,18 @@ const LoansWithoutLenders = ({ showAll }) => {
       },
       mainAssignee: 1,
       name: 1,
+      promotions: { type: 1 },
     },
+    refetchOnMethodCall: false,
   });
-  const groupedLoans = groupBy(loans, 'mainAssignee.name');
-  const myLoans = loans.filter(
+  const filteredLoans = loans.filter(
+    ({ promotions }) => promotions?.[0]?.type !== PROMOTION_TYPES.SHARE,
+  );
+  const groupedLoans = groupBy(filteredLoans, 'mainAssignee.name');
+  const myLoans = filteredLoans.filter(
     ({ mainAssignee }) => mainAssignee?._id === currentUser._id,
   );
-  const isOk = loans.length === 0;
+  const isOk = filteredLoans.length === 0;
 
   if (!showAll && isOk) {
     return null;
@@ -38,7 +44,7 @@ const LoansWithoutLenders = ({ showAll }) => {
 
   return (
     <StatItem
-      value={<CountUp end={loans.length} preserveValue separator=" " />}
+      value={<CountUp end={filteredLoans.length} preserveValue separator=" " />}
       increment={`Dont ${myLoans.length} à moi`}
       positive={myLoans.length === 0}
       title="Dossiers sans prêteur"

@@ -1,10 +1,9 @@
 /* eslint-env mocha */
 import { Factory } from 'meteor/dburles:factory';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
-import { fullUser } from '../../../fragments';
+import { resetDatabase } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';
 import SlackService from '../SlackService';
@@ -46,7 +45,11 @@ describe('SlackService', function() {
       })._id;
       const loanId1 = Factory.create('loan', { userId, name: '20-0001' })._id;
       const loanId2 = LoanService.fullLoanInsert({ userId });
-      const user = UserService.get(userId, fullUser());
+      const user = UserService.get(userId, {
+        roles: 1,
+        name: 1,
+        assignedEmployee: { name: 1, email: 1 },
+      });
 
       return SlackService.notifyOfUpload({
         currentUser: user,
@@ -69,8 +72,11 @@ describe('SlackService', function() {
         firstName: 'John',
         lastName: 'Doe',
       })._id;
-      const user = UserService.get(userId, fullUser());
-
+      const user = UserService.get(userId, {
+        roles: 1,
+        name: 1,
+        assignedEmployee: { name: 1, email: 1 },
+      });
       return SlackService.notifyOfUpload({
         currentUser: user,
         fileName: 'file.pdf',
@@ -93,8 +99,11 @@ describe('SlackService', function() {
         linkName: 'promotions',
         linkId: promotionId,
       });
-      const user = UserService.get(userId, fullUser());
-
+      const user = UserService.get(userId, {
+        roles: 1,
+        name: 1,
+        assignedEmployee: { name: 1, email: 1 },
+      });
       return SlackService.notifyOfUpload({
         currentUser: user,
         fileName: 'file.pdf',

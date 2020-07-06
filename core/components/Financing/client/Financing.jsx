@@ -50,7 +50,7 @@ const Financing = ({ loan }) => {
 
         <FinancingFinancing purchaseType={loan.purchaseType} />
 
-        <FinancingOwnFunds purchaseType={loan.purchaseType} />
+        <FinancingOwnFunds />
 
         {(Meteor.microservice === 'admin' || loan.enableOffers) && (
           <FinancingOffers loan={loan} />
@@ -63,4 +63,5 @@ const Financing = ({ loan }) => {
     </ScrollSync>
   );
 };
+
 export default FinancingContainer(Financing);

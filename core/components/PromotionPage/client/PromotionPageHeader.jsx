@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { promotionSetStatus } from '../../../api/promotions/methodDefinitions';
-import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
 import CollectionIconLink from '../../IconLink/CollectionIconLink';
 import ImageCarrousel from '../../ImageCarrousel';
 import StatusLabel from '../../StatusLabel';
@@ -14,19 +13,20 @@ import CustomerAdder from './CustomerAdder';
 import PromotionAdministration from './PromotionAdministration';
 import PromotionAssignee from './PromotionAssignee';
 import PromotionLender from './PromotionLender';
-import PromotionMetadataContext from './PromotionMetadata';
+import { usePromotion } from './PromotionPageContext';
 
 const PromotionPageHeader = ({ promotion }) => {
   const {
+    _collection,
     _id: promotionId,
+    address1,
+    city,
     documents: { promotionImage = [{ url: '/img/placeholder.png' }] } = {},
     name,
-    address1,
-    zipCode,
-    city,
-    status,
-    promotionLots = [],
     promotionLoan,
+    promotionLotLinks = [],
+    status,
+    zipCode,
   } = promotion;
   const {
     permissions: {
@@ -35,7 +35,7 @@ const PromotionPageHeader = ({ promotion }) => {
       canLinkAssignee,
       canLinkLender,
     },
-  } = useContext(PromotionMetadataContext);
+  } = usePromotion();
 
   return (
     <ImageCarrousel
@@ -49,7 +49,7 @@ const PromotionPageHeader = ({ promotion }) => {
             <h1 className="font-size-3">{name}</h1>
             <StatusLabel
               status={status}
-              collection={PROMOTIONS_COLLECTION}
+              collection={_collection}
               allowModify={canModifyStatus}
               docId={promotionId}
               method={nextStatus =>
@@ -63,7 +63,7 @@ const PromotionPageHeader = ({ promotion }) => {
           <h2 className="font-size-4">
             <T
               id="PromotionPage.subtitle"
-              values={{ promotionLotCount: promotionLots.length }}
+              values={{ promotionLotCount: promotionLotLinks.length }}
             />
           </h2>
           <div className="promotion-page-header-linkers">

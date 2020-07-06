@@ -80,13 +80,4 @@ $borrowers-item-width: 600px;
       align-items: center;
     }
   }
-
-  .promotion-reservation-progress {
-    align-items: stretch !important;
-    flex-direction: column;
-
-    > * {
-      justify-content: space-between;
-    }
-  }
 }

@@ -60,7 +60,8 @@ const makeMapProPropertyUser = ({
           <ImpersonateLink
             user={user}
             key="impersonate"
-            className="impersonate-link"
+            className="impersonate-link mr-4"
+            size="small"
           />
           <IconButton
             onClick={() => {
@@ -79,6 +80,7 @@ const makeMapProPropertyUser = ({
             }}
             type="close"
             tooltip={<T id="ProPropertyPage.usersTable.removeUser.tooltip" />}
+            size="small"
           />
         </div>
       ) : null,
@@ -93,8 +95,17 @@ export default compose(
   withRouter,
   withSmartQuery({
     query: proPropertyUsers,
-    params: ({ property: { _id: propertyId } }) => ({ propertyId }),
-    queryOptions: { reactive: false },
+    params: ({ property: { _id: propertyId } }) => ({
+      propertyId,
+      $body: {
+        users: {
+          email: 1,
+          name: 1,
+          organisations: { name: 1 },
+          roles: 1,
+        },
+      },
+    }),
     dataName: 'proUsers',
   }),
   withProps(

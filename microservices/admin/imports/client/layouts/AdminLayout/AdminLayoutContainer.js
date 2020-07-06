@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
   compose,
@@ -8,9 +7,10 @@ import {
   withState,
 } from 'recompose';
 
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
 import { withFileViewer } from 'core/containers/FileViewerContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 
+import { AdminsProvider } from '../../components/AdminsContext/AdminsContext';
 import {
   filterReducer as insuranceRequestsFilterReducer,
   getInitialOptions as insuranceRequestsGetInitialOptions,
@@ -38,11 +38,12 @@ const loanBoardContainer = compose(
 
 export default compose(
   withFileViewer,
+  AdminsProvider,
   shouldUpdate(() => false),
   withState('openSearch', 'setOpenSearch', false),
   withProps(() => {
     // It is needed for "getInitialOptions"
-    const currentUser = useContext(CurrentUserContext);
+    const currentUser = useCurrentUser();
     return { currentUser };
   }),
   loanBoardContainer,

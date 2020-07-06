@@ -31,6 +31,7 @@ import { fakeProperty } from '../../api/properties/fakes';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
 import Tasks from '../../api/tasks/tasks';
+import UserService from '../../api/users/server/UserService';
 import { ROLES } from '../../api/users/userConstants';
 import Users from '../../api/users/users';
 import {
@@ -43,6 +44,7 @@ import { createFakeInterestRates } from '../interestRatesFixtures';
 import { addLoanWithData, createFakeLoan } from '../loanFixtures';
 import { createFakeOffer } from '../offerFixtures';
 import { createOrganisations } from '../organisationFixtures';
+import { createTestPromotion } from '../promotionFixtures';
 import {
   createAdmins,
   createDevs,
@@ -55,7 +57,10 @@ const isAuthorizedToRun = () =>
   !Meteor.isProduction || Meteor.isStaging || Meteor.isDevEnvironment;
 
 const getAdmins = () => {
-  const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
+  const admins = UserService.fetch({
+    $filters: { 'roles._id': ROLES.ADVISOR },
+    _id: 1,
+  });
   if (admins.length <= 1) {
     const newAdmins = createAdmins();
     return newAdmins;
@@ -64,14 +69,14 @@ const getAdmins = () => {
 };
 
 const deleteUsersRelatedData = usersToDelete => {
-  Borrowers.remove({ userId: { $in: usersToDelete } });
-  Properties.remove({ userId: { $in: usersToDelete } });
-  Offers.remove({ userId: { $in: usersToDelete } });
-  Loans.remove({ userId: { $in: usersToDelete } });
+  BorrowerService.collection.remove({ userId: { $in: usersToDelete } });
+  PropertyService.collection.remove({ userId: { $in: usersToDelete } });
+  OfferService.collection.remove({ userId: { $in: usersToDelete } });
+  LoanService.collection.remove({ userId: { $in: usersToDelete } });
 };
 
 const deleteUsers = usersToDelete =>
-  Users.remove({ _id: { $in: usersToDelete } });
+  UserService.collection.remove({ _id: { $in: usersToDelete } });
 
 const createFakeLoanFixture = ({
   userId,
@@ -116,7 +121,6 @@ Meteor.methods({
     generateDevs = false,
     generateAdmins = false,
     generateUsers = false,
-    generateLoans = false,
     generateOrganisations = false,
     generateUnownedLoan = false,
     generateTestUser = false,
@@ -326,7 +330,7 @@ Meteor.methods({
       });
     }
 
-    Organisations.update(
+    OrganisationService.baseUpdate(
       { _id: orgId },
       {
         $set: {
@@ -334,5 +338,10 @@ Meteor.methods({
         },
       },
     );
+  },
+
+  createTestPromotion(...params) {
+    SecurityService.checkCurrentUserIsDev();
+    return createTestPromotion(...params);
   },
 });

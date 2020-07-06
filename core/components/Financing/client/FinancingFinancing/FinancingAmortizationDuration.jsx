@@ -31,6 +31,12 @@ const getDescriptionId = ({ loan, duration, offer }) => {
 const FinancingAmortizationDuration = ({ loan, structureId, Calculator }) => {
   const duration = Calculator.getAmortizationYears({ loan, structureId });
   const offer = Calculator.selectOffer({ loan, structureId });
+  const lender =
+    offer &&
+    Calculator.selectLenderForOfferId({
+      loan,
+      offerId: offer._id,
+    });
 
   return (
     <div className="amortizationDuration" style={{ padding: '8px 0' }}>
@@ -47,7 +53,7 @@ const FinancingAmortizationDuration = ({ loan, structureId, Calculator }) => {
             duration,
             offer,
           })}
-          values={{ organisationName: offer?.organisation.name }}
+          values={{ organisationName: lender?.organisation.name }}
         />
       </span>
     </div>

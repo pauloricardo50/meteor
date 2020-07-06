@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CountUp from 'react-countup';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { loansWithoutRevenues } from 'core/api/stats/queries';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import DialogSimple from 'core/components/DialogSimple';
 import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
 import Table from 'core/components/Table';
-import { CurrentUserContext } from 'core/containers/CurrentUserContext';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 
@@ -23,7 +22,7 @@ const LoansTable = ({ loans }) => (
       { id: 'Conseiller' },
     ]}
     rows={loans.map(loan => {
-      const { _id, userCache, name, status } = loan;
+      const { _id, userCache, name, status, _collection } = loan;
       const userName = getUserDisplayName(userCache);
       const assigneeName = getUserDisplayName(
         userCache && userCache.assignedEmployeeCache,
@@ -35,11 +34,7 @@ const LoansTable = ({ loans }) => (
             label: <CollectionIconLink relatedDoc={loan} key="loan" />,
             raw: name,
           },
-          <StatusLabel
-            status={status}
-            collection={LOANS_COLLECTION}
-            key="status"
-          />,
+          <StatusLabel status={status} collection={_collection} key="status" />,
           {
             label: userCache ? (
               <CollectionIconLink
@@ -82,7 +77,7 @@ const LoansWithoutRevenues = ({ showAll }) => {
     refetchOnMethodCall: false,
   });
   const isOk = loans.length === 0;
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
 
   const ownLoans = loans.filter(
     ({ userCache }) =>

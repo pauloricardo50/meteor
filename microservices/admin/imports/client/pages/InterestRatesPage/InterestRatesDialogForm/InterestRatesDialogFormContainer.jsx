@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -114,27 +114,14 @@ const fields = currentInterestRates => [
   ),
 ];
 
-export default compose(
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting, currentInterestRates = [] }) => ({
-    schema: interestRatesSchema,
-    fields: fields(currentInterestRates),
-    insertInterestRates: data =>
-      interestRatesInsert.run({ interestRates: data }),
-    modifyInterestRates: data => {
-      const { _id: interestRatesId, ...object } = data;
-      setSubmitting(true);
-      return interestRatesUpdate
-        .run({ interestRatesId, object })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-    removeInterestRates: interestRatesId => {
-      setSubmitting(true);
-      return interestRatesRemove
-        .run({ interestRatesId })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
-  })),
-);
+export default withProps(({ currentInterestRates = [] }) => ({
+  schema: interestRatesSchema,
+  fields: fields(currentInterestRates),
+  insertInterestRates: data => interestRatesInsert.run({ interestRates: data }),
+  modifyInterestRates: data => {
+    const { _id: interestRatesId, ...object } = data;
+    return interestRatesUpdate.run({ interestRatesId, object });
+  },
+  removeInterestRates: interestRatesId =>
+    interestRatesRemove.run({ interestRatesId }),
+}));

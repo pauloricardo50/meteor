@@ -1,8 +1,6 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { adminCreateUser } from '../../../users/methodDefinitions';
@@ -13,13 +11,15 @@ import {
   ACTIVITY_TYPES,
 } from '../../activityConstants';
 
+/* eslint-env mocha */
+
 describe('adminCreateUserListener', () => {
   beforeEach(() => {
     resetDatabase();
     generator({
       users: {
         _id: 'admin',
-        _factory: 'admin',
+        _factory: ROLES.ADVISOR,
         firstName: 'Admin',
         lastName: 'E-Potek',
       },
@@ -29,12 +29,12 @@ describe('adminCreateUserListener', () => {
   it('adds activity on the user', async () => {
     await ddpWithUserId('admin', () =>
       adminCreateUser.run({
-        options: {
+        user: {
           firstName: 'John',
           lastName: 'Doe',
           email: 'john.doe@test.com',
+          role: ROLES.USER,
         },
-        role: ROLES.USER,
       }),
     );
 

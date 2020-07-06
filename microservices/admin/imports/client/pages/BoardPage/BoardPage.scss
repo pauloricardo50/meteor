@@ -111,8 +111,8 @@ $button-height: 30px;
     }
 
     img {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       margin-right: 4px;
 
       border-radius: 50%;
@@ -171,7 +171,7 @@ $button-height: 30px;
     display: flex;
     align-items: center;
 
-    padding: 8px;
+    padding: 4px 8px;
 
     .premium-badge {
       height: 16px;
@@ -253,15 +253,16 @@ $button-height: 30px;
   }
 
   .task-complete-button {
+    flex-shrink: 0;
     margin-right: 4px;
 
     color: white;
     background-color: $success;
   }
 
-  .task-cancel-button {
+  .task-snooze-button {
     color: white;
-    background-color: $error;
+    background-color: $warning;
   }
 }
 
@@ -280,22 +281,6 @@ $button-height: 30px;
     &.rotate {
       transform: rotate(180deg);
     }
-  }
-}
-
-.checkbox-list {
-  display: flex;
-  overflow: scroll;
-  flex-direction: column;
-
-  max-height: 400px;
-
-  > * {
-    margin-left: 0;
-  }
-
-  .checkbox {
-    padding: 4px;
   }
 }
 

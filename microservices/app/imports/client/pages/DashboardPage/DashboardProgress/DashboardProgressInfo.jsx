@@ -5,6 +5,7 @@ import Icon from 'core/components/Icon';
 import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 
+import AppLoanClosingChecklists from '../../../../core/components/LoanClosingChecklist/AppLoanClosingChecklists';
 import {
   defaultTodoList,
   getDashboardTodosArray,
@@ -32,36 +33,65 @@ const getTodos = loan => {
   return max4Todos;
 };
 
+const TodoItem = ({ label, loan, todo = {}, todos, onClick, className }) => {
+  const { Component, id, link, isDone } = todo;
+  const WrapperComponent = link && !isDone ? Link : 'div';
+
+  return (
+    <WrapperComponent
+      to={link?.(loan)}
+      className={cx('todo', { link, isDone }, className)}
+      key={id}
+      onClick={onClick}
+    >
+      <Icon className="icon" type={isDone ? 'check' : 'radioButtonChecked'} />
+      <p>{label}</p>
+      {link && !Component && !isDone && (
+        <Icon type="right" className="icon-arrow" />
+      )}
+      {Component && (
+        <Component {...todo} todos={todos} isDone={isDone} loan={loan} />
+      )}
+    </WrapperComponent>
+  );
+};
+
 const DashboardProgressInfo = ({ loan }) => {
+  const { showClosingChecklists } = loan;
   const todos = getTodos(loan);
 
   return (
     <div className="dashboard-progress-info">
-      {todos.map(todo => {
-        const { id, link, isDone, Component } = todo;
-        const WrapperComponent = link && !isDone ? Link : 'div';
-        return (
-          <WrapperComponent
-            to={link && link(loan)}
-            className={cx('todo', { link, isDone })}
-            key={id}
-          >
-            <Icon
-              className="icon"
-              type={isDone ? 'check' : 'radioButtonChecked'}
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          label={<T id={`DashboardProgressInfo.${todo.id}`} />}
+          loan={loan}
+          todo={todo}
+          todos={todos}
+        />
+      ))}
+
+      {showClosingChecklists && (
+        <AppLoanClosingChecklists
+          loan={loan}
+          renderTrigger={({ handleOpen, done, total }) => (
+            <TodoItem
+              label={
+                <div className="flex center-align">
+                  <span>
+                    <T id="LoanClosingChecklist.makeProgress" />
+                    &nbsp;({done}/{total})
+                  </span>
+                  <Icon type="right" className="icon-arrow" />
+                </div>
+              }
+              onClick={handleOpen}
+              className="animated fadeInUp pointer"
             />
-            <p>
-              <T id={`DashboardProgressInfo.${id}`} />
-            </p>
-            {link && !Component && !isDone && (
-              <Icon type="right" className="icon-arrow" />
-            )}
-            {Component && (
-              <Component {...todo} todos={todos} isDone={isDone} loan={loan} />
-            )}
-          </WrapperComponent>
-        );
-      })}
+          )}
+        />
+      )}
     </div>
   );
 };

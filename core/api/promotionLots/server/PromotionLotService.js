@@ -123,6 +123,75 @@ class PromotionLotService extends CollectionService {
       promotionOptionId,
     });
   }
+
+  addToPromotionLotGroup({ promotionLotId, promotionLotGroupId }) {
+    const {
+      promotionLotGroupIds = [],
+      promotion: { promotionLotGroups = [] } = {},
+    } = this.get(promotionLotId, {
+      promotionLotGroupIds: 1,
+      promotion: { promotionLotGroups: 1 },
+    });
+
+    if (!promotionLotGroups.some(({ id }) => id === promotionLotGroupId)) {
+      throw new Meteor.Error(`Group "${promotionLotGroupId}" does not exist`);
+    }
+
+    if (promotionLotGroupIds.some(id => id === promotionLotGroupId)) {
+      throw new Meteor.Error(
+        `Promotion lot is already part of "${promotionLotGroupId}"`,
+      );
+    }
+
+    return this.update({
+      promotionLotId,
+      object: {
+        promotionLotGroupIds: [...promotionLotGroupIds, promotionLotGroupId],
+      },
+    });
+  }
+
+  removeFromPromotionLotGroup({ promotionLotId, promotionLotGroupId }) {
+    const { promotionLotGroupIds = [] } = this.get(promotionLotId, {
+      promotionLotGroupIds: 1,
+    });
+
+    if (!promotionLotGroupIds.some(id => id === promotionLotGroupId)) {
+      throw new Meteor.Error(
+        `Group "${promotionLotGroupId}" not found in PromotionLotGroupIds`,
+      );
+    }
+
+    const groupIndex = promotionLotGroupIds.indexOf(promotionLotGroupId);
+
+    const newGroups = promotionLotGroupIds;
+    newGroups.splice(groupIndex, 1);
+
+    return this.update({
+      promotionLotId,
+      object: { promotionLotGroupIds: newGroups },
+    });
+  }
+
+  updatePromotionLotGroups({ promotionLotId, promotionLotGroupIds = [] }) {
+    const {
+      promotionLotGroupIds: currentPromotionLotGroupIds = [],
+    } = this.get(promotionLotId, { promotionLotGroupIds: 1 });
+
+    const toKeep = currentPromotionLotGroupIds.filter(id =>
+      promotionLotGroupIds.some(groupId => groupId === id),
+    );
+    const toAdd = promotionLotGroupIds.filter(
+      id => !currentPromotionLotGroupIds.some(groupId => groupId === id),
+    );
+
+    const newPromotionLotGroupIds = [...toKeep, ...toAdd];
+
+    return this.update({
+      promotionLotId,
+      object: { promotionLotGroupIds: newPromotionLotGroupIds },
+    });
+  }
 }
 
 export default new PromotionLotService();

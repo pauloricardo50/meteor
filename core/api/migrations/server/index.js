@@ -32,6 +32,12 @@ import './31';
 import './32';
 import './33';
 import './34';
+import './35';
+import './36';
+import './37';
+import './38';
+import './39';
+import './40';
 
 import { Migrations } from 'meteor/percolate:migrations';
 

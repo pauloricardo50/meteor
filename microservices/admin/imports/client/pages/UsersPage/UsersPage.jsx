@@ -21,7 +21,7 @@ const UsersPage = () => (
       />
       <T id="collections.users" />
     </h1>
-    <UsersTable showAssignee key="allUsers" />
+    <UsersTable />
   </section>
 );
 

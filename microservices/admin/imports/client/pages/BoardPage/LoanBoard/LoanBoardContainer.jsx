@@ -1,13 +1,16 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import merge from 'lodash/merge';
 import { compose, mapProps, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
-import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
-import { adminOrganisations } from 'core/api/organisations/queries';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/organisations/organisationConstants';
 import { adminPromotions } from 'core/api/promotions/queries';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { addLiveSync, withLiveSync } from '../liveSync';
 import { GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
@@ -54,6 +57,20 @@ const getQueryBody = additionalFields => {
 const noPromotionIsChecked = promotionId =>
   promotionId && promotionId.$in.includes(NO_PROMOTION);
 
+const getStatusFilter = status => {
+  const { $in = [] } = status || {};
+  const toIgnore = [
+    LOAN_STATUS.TEST,
+    LOAN_STATUS.UNSUCCESSFUL,
+    LOAN_STATUS.FINALIZED,
+  ];
+
+  return {
+    $nin: toIgnore.filter(s => !$in.includes(s)),
+    ...status,
+  };
+};
+
 const getQueryFilters = ({
   assignedEmployeeId,
   step,
@@ -81,10 +98,7 @@ const getQueryFilters = ({
     step,
     $or: $or.length ? $or : undefined,
     anonymous: { $ne: true },
-    status: {
-      $nin: [LOAN_STATUS.TEST, LOAN_STATUS.UNSUCCESSFUL],
-      ...status,
-    },
+    status: getStatusFilter(status),
     ...(lenderId
       ? {
           lendersCache: {
@@ -111,22 +125,28 @@ export default compose(
     }),
     dataName: 'loans',
     queryOptions: { pollingMs: 5000 },
+    deps: ({ options }) => Object.values(options),
   }),
   withProps(({ loans, ...props }) => ({
     loans: loans.filter(makeClientSideFilter(props)),
   })),
   withProps(({ refetch }) => ({ refetchLoans: refetch })),
   withSmartQuery({
-    query: adminUsers,
-    params: { $body: { firstName: 1 }, roles: [ROLES.ADMIN, ROLES.DEV] },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      firstName: 1,
+      roles: 1,
+      $options: { sort: { firstName: 1 } },
+    },
     dataName: 'admins',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
   mapProps(({ admins, ...rest }) => ({
     devAndAdmins: admins,
-    admins: admins.filter(({ roles }) => roles.includes(ROLES.ADMIN)),
-    devs: admins.filter(({ roles }) => roles.includes(ROLES.DEV)),
+    admins: admins.filter(user => Roles.userIsInRole(user, ROLES.ADMIN)),
+    devs: admins.filter(user => Roles.userIsInRole(user, ROLES.DEV)),
     ...rest,
   })),
   withSmartQuery({
@@ -137,10 +157,13 @@ export default compose(
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
-    query: adminOrganisations,
-    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.LENDER },
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { features: ORGANISATION_FEATURES.LENDER },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
     dataName: 'lenders',
-    queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
   }),
   mapProps(({ loans, ...rest }) => ({

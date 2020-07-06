@@ -18,7 +18,7 @@ const DashboardInfoInterests = props => {
   return (
     <div className={cx('dashboard-info-team card1', { offers: enableOffers })}>
       <div className="card-top">
-        <h3>
+        <h3 className={enableOffers ? 'mb-0' : ''}>
           <T
             id={
               enableOffers
@@ -28,8 +28,8 @@ const DashboardInfoInterests = props => {
           />
         </h3>
         {enableOffers && (
-          <div className="dashboard-info-interests-offers">
-            <h4 className="secondary">
+          <div className="flex center-align">
+            <h4 className="secondary m-0 mr-8">
               <T
                 id="DashboardInfoInterests.subtitle"
                 values={{ count: offers.length }}

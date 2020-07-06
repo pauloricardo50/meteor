@@ -1,46 +1,50 @@
 import React, { useState } from 'react';
 import omit from 'lodash/omit';
 
-import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
-import MongoSelect from '../../../Select/MongoSelect';
-import TableWithModal from '../../../Table/TableWithModal';
-import T from '../../../Translation';
-import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
-import PromotionOptionsTableContainer from './PromotionOptionsTableContainer';
+import DataTable from 'core/components/DataTable';
 
-const PromotionOptionsTableComponent = PromotionOptionsTableContainer(
-  ({ rows, columnOptions }) => (
-    <TableWithModal
-      rows={rows}
-      columnOptions={columnOptions}
-      modalType="dialog"
-      getModalProps={({ row: { promotionOption } }) => {
-        const { promotionLots, loan } = promotionOption;
-        const [promotionLot] = promotionLots;
-        return {
-          title: (
-            <T
-              id="PromotionReservationsTable.modalTitle"
-              values={{
-                lotName: <b>{promotionLot.name}</b>,
-                customerName: <b>{loan.user.name}</b>,
-              }}
-            />
-          ),
-          children: (
-            <PromotionReservationDetail
-              promotionOption={promotionOption}
-              loan={loan}
-            />
-          ),
-        };
-      }}
-    />
-  ),
-);
+import {
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_OPTION_STATUS,
+} from '../../../../api/promotionOptions/promotionOptionConstants';
+import { proPromotionOptions } from '../../../../api/promotionOptions/queries';
+import Select from '../../../Select';
+import MongoSelect from '../../../Select/MongoSelect';
+import StatusLabel from '../../../StatusLabel';
+import T, { IntlDate } from '../../../Translation';
+import PromotionReservationProgress from '../../PromotionReservationProgress';
+import PromotionCustomer from '../PromotionCustomer';
+import PromotionLotGroupChip from '../PromotionLotsTable/PromotionLotGroupChip';
+import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
+
+const getModalProps = promotionOption => {
+  const { name, loan } = promotionOption;
+  return {
+    title: (
+      <T
+        id="PromotionReservationsTable.modalTitle"
+        values={{
+          lotName: <b>{name}</b>,
+          customerName: <b>{loan.user.name}</b>,
+        }}
+      />
+    ),
+    children: (
+      <PromotionReservationDetail
+        promotionOption={promotionOption}
+        loan={loan}
+      />
+    ),
+  };
+};
 
 const PromotionOptionsTable = ({ promotion }) => {
-  const [status, setStatus] = useState({
+  const {
+    _id: promotionId,
+    users: promotionUsers = [],
+    promotionLotGroups = [],
+  } = promotion;
+  const [statusFilter, setStatusFilter] = useState({
     $in: [
       PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
       PROMOTION_OPTION_STATUS.RESERVATION_WAITLIST,
@@ -48,24 +52,169 @@ const PromotionOptionsTable = ({ promotion }) => {
       PROMOTION_OPTION_STATUS.SOLD,
     ],
   });
+  const [invitedByFilter, setInvitedByFilter] = useState(null);
+
+  const [promotionLotGroupIdFilter, setPromotionLotGroupIdFilter] = useState();
 
   return (
     <div className="card1 card-top">
       <div className="flex center-align">
         <h3 className="text-center mr-8">Réservations</h3>
         <MongoSelect
-          value={status}
-          onChange={setStatus}
+          value={statusFilter}
+          onChange={setStatusFilter}
           options={omit(
             PROMOTION_OPTION_STATUS,
             PROMOTION_OPTION_STATUS.INTERESTED,
           )}
           id="status"
           label="Statut"
+          className="mr-8"
+        />
+        {!!promotionLotGroups.length && (
+          <MongoSelect
+            value={promotionLotGroupIdFilter}
+            onChange={setPromotionLotGroupIdFilter}
+            options={promotionLotGroups}
+            id="promotionLotGroupIds"
+            label="Groupe de lots"
+            className="mr-8"
+          />
+        )}
+        <Select
+          value={invitedByFilter}
+          onChange={setInvitedByFilter}
+          options={[
+            { id: null, label: <T id="general.all" /> },
+            ...promotionUsers.map(({ _id, name, organisations }) => ({
+              id: _id,
+              label: name,
+              organisations,
+            })),
+          ]}
+          label={<T id="Forms.invitedBy" />}
+          displayEmpty
+          notched
+          InputLabelProps={{ shrink: true }}
+          grouping={{ groupBy: 'organisations.0.name' }}
         />
       </div>
 
-      <PromotionOptionsTableComponent status={status} promotion={promotion} />
+      <DataTable
+        queryConfig={{
+          query: proPromotionOptions,
+          params: {
+            status: {
+              ...statusFilter,
+              $ne: PROMOTION_OPTION_STATUS.INTERESTED,
+            },
+            promotionId,
+            invitedBy: invitedByFilter,
+            promotionLotGroupId: promotionLotGroupIdFilter,
+            $body: {
+              bank: 1,
+              createdAt: 1,
+              promotionLots: { promotionLotGroupIds: 1 },
+              fullVerification: 1,
+              loanCache: 1,
+              loan: {
+                user: { name: 1, phoneNumbers: 1, email: 1 },
+                promotions: { _id: 1 },
+                proNote: 1,
+              },
+              name: 1,
+              priorityOrder: 1,
+              reservationAgreement: 1,
+              reservationDeposit: 1,
+              simpleVerification: 1,
+              status: 1,
+            },
+          },
+        }}
+        queryDeps={[statusFilter, invitedByFilter, promotionLotGroupIdFilter]}
+        columns={[
+          {
+            Header: <T id="PromotionOptionsTable.lotName" />,
+            accessor: 'name',
+            disableSortBy: true,
+          },
+          {
+            Header: <T id="PromotionOptionsTable.promotionLotGroups" />,
+            accessor: 'promotionLots.0.promotionLotGroupIds',
+            disableSortBy: true,
+            Cell: ({ value: promotionLotGroupIds = [] }) => (
+              <div>
+                {promotionLotGroupIds.map(promotionLotGroupId => {
+                  const promotionLotGroup = promotionLotGroups.find(
+                    ({ id }) => id === promotionLotGroupId,
+                  );
+
+                  return (
+                    promotionLotGroup && (
+                      <PromotionLotGroupChip
+                        key={promotionLotGroupId}
+                        promotionLotGroup={promotionLotGroup}
+                      />
+                    )
+                  );
+                })}
+              </div>
+            ),
+          },
+          {
+            Header: <T id="PromotionOptionsTable.status" />,
+            accessor: 'status',
+            Cell: ({ value }) => (
+              <StatusLabel
+                status={value}
+                collection={PROMOTION_OPTIONS_COLLECTION}
+              />
+            ),
+          },
+          {
+            Header: <T id="PromotionOptionsTable.buyer" />,
+            accessor: 'loan.user.name',
+            disableSortBy: true,
+            Cell: ({ row: { original } }) => {
+              const {
+                loan: { user, promotions },
+              } = original;
+              const [
+                {
+                  $metadata: { invitedBy },
+                },
+              ] = promotions;
+              return <PromotionCustomer user={user} invitedBy={invitedBy} />;
+            },
+          },
+          {
+            Header: <T id="PromotionOptionsTable.createdAt" />,
+            accessor: 'createdAt',
+            Cell: ({ value }) => (
+              <IntlDate value={value} type="relative" style="long" />
+            ),
+          },
+          {
+            Header: <T id="PromotionOptionsTable.progress" />,
+            accessor: '_id',
+            disableSortBy: true,
+            Cell: ({ row: { original: promotionOption } }) => (
+              <PromotionReservationProgress
+                promotionOption={promotionOption}
+                className="mr-8 flex"
+                StepperProps={{ style: { padding: 0 } }}
+              />
+            ),
+          },
+        ]}
+        modalType="dialog"
+        getModalProps={getModalProps}
+        initialHiddenColumns={
+          promotionLotGroups.length === 0
+            ? ['promotionLots.0.promotionLotGroupIds']
+            : []
+        }
+      />
     </div>
   );
 };

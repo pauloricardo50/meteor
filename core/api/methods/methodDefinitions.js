@@ -31,12 +31,7 @@ export const submitContactForm = new Method({
     phoneNumber: String,
     details: Match.Optional(String),
   },
-  rateLimit: {
-    global: {
-      limit: 1,
-      timeRange: 5000,
-    },
-  },
+  rateLimit: { global: { limit: 1, timeRange: 5000 } },
 });
 
 export const throwDevError = new Method({

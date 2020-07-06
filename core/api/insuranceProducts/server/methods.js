@@ -7,16 +7,18 @@ import {
 import InsuranceProductService from './InsuranceProductService';
 
 insuranceProductInsert.setHandler((context, { insuranceProduct }) => {
-  Security.checkCurrentUserIsAdmin();
+  Security.checkUserIsAdmin(context.userId);
   return InsuranceProductService.insert(insuranceProduct);
 });
 
 insuranceProductRemove.setHandler((context, { insuranceProductId }) => {
-  Security.checkCurrentUserIsAdmin();
+  // This is dangerous because it can break a lot of insuranceRequests
+  // We should only remove products if they aren't linked anywhere
+  Security.checkUserIsDev(context.userId);
   return InsuranceProductService.remove(insuranceProductId);
 });
 
 insuranceProductUpdate.setHandler((context, { insuranceProductId, object }) => {
-  Security.checkCurrentUserIsAdmin();
+  Security.checkUserIsAdmin(context.userId);
   return InsuranceProductService._update({ id: insuranceProductId, object });
 });

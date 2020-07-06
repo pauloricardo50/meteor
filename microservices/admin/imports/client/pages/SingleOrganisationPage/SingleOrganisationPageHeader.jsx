@@ -1,8 +1,9 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import queryString from 'query-string';
-import { injectIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { organisationRemove } from 'core/api/organisations/methodDefinitions';
 import { ROLES } from 'core/api/users/userConstants';
@@ -10,30 +11,38 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import Chip from 'core/components/Material/Chip';
 import T from 'core/components/Translation/Translation';
 
+import Advisor from '../../components/Advisor/Advisor';
 import OrganisationModifier from './OrganisationModifier';
 
-const SingleOrganisationPage = ({
-  organisation,
-  history,
-  intl: { formatMessage },
-  currentUser,
-}) => {
+const SingleOrganisationPage = ({ organisation, currentUser }) => {
+  const { formatMessage } = useIntl();
+  const history = useHistory();
+
   const {
     _id: organisationId,
+    address,
+    assigneeLink,
+    features = [],
     logo,
     name,
-    type,
-    features = [],
-    address,
     tags = [],
+    type,
   } = organisation;
   return (
     <>
       <div className="single-organisation-page-header">
-        <span className="flex flex-row center">
+        <div className="flex flex-row center">
           {logo ? <img src={logo} alt={name} /> : name}
+
           <div className="single-organisation-page-header-type">
-            <h1>{name}</h1>
+            <div className="flex center-align">
+              <h1 className="mr-8">{name}</h1>
+              <Advisor
+                advisorId={assigneeLink?._id}
+                tooltip="Conseiller par défaut des referrals"
+              />
+            </div>
+
             <h2 className="secondary">
               <T id={`Forms.type.${type}`} />
               {features.length > 0 && <>&nbsp;-&nbsp;</>}
@@ -43,6 +52,7 @@ const SingleOrganisationPage = ({
                 )
                 .join(', ')}
             </h2>
+
             <h3 className="flex center space-children">
               {tags.map(tag => (
                 <Chip
@@ -60,9 +70,10 @@ const SingleOrganisationPage = ({
               ))}
             </h3>
           </div>
-        </span>
+        </div>
+
         <div>
-          {currentUser.roles.includes(ROLES.DEV) && (
+          {Roles.userIsInRole(currentUser, ROLES.DEV) && (
             <ConfirmMethod
               keyword={name}
               buttonProps={{
@@ -83,4 +94,4 @@ const SingleOrganisationPage = ({
   );
 };
 
-export default compose(withRouter, injectIntl)(SingleOrganisationPage);
+export default SingleOrganisationPage;

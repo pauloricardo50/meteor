@@ -1,13 +1,12 @@
 import React from 'react';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import Icon from '../../../../Icon';
 import IconButton from '../../../../IconButton';
-import List, {
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-} from '../../../../List';
+import List from '../../../../Material/List';
+import ListItem from '../../../../Material/ListItem';
 import T from '../../../../Translation';
 
 const MortgageNotesPickerList = ({

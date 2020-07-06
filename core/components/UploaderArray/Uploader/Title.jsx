@@ -7,7 +7,6 @@ import FileStatusIcon from './FileStatusIcon';
 
 const Title = ({
   fileMeta: { id, label, noTooltips, tooltipSuffix, required, tooltip },
-  doubleTooltip,
   currentValue,
   displayFull,
   toggleDisplayFull,
@@ -22,12 +21,12 @@ const Title = ({
       <div className="title-top">
         <FileStatusIcon files={currentValue} />
 
-        <div className="text">
-          <h3 className="font-size-5 flex center">
+        <div>
+          <h3 className="font-size-5 text-main">
             {label || <T id={`files.${id}`} />}
             {required === false ? null : <span className="error">&nbsp;*</span>}
           </h3>
-          <span className="secondary">
+          <span className="secondary file-count">
             <span style={{ padding: '0 4px' }}>&bull;</span>
             <T
               id="Uploader.fileCount"
@@ -61,7 +60,6 @@ const Title = ({
 Title.propTypes = {
   currentValue: PropTypes.arrayOf(PropTypes.object),
   displayFull: PropTypes.bool.isRequired,
-  doubleTooltip: PropTypes.bool,
   fileMeta: PropTypes.object.isRequired,
   handleRemove: PropTypes.func.isRequired,
   label: PropTypes.string,
@@ -73,7 +71,6 @@ Title.propTypes = {
 };
 
 Title.defaultProps = {
-  doubleTooltip: false,
   noTooltips: false,
   required: false,
   tooltipSuffix: undefined,

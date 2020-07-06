@@ -1,25 +1,28 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { IntlProvider, intlShape } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
+import { PROPERTY_CATEGORY } from '../../../../../api/properties/propertyConstants';
 import messages from '../../../../../lang/fr.json';
 import Calculator, {
   Calculator as CalculatorClass,
 } from '../../../../../utils/Calculator';
 import { mount } from '../../../../../utils/testHelpers/enzyme';
+import {
+  cleanup,
+  render,
+} from '../../../../../utils/testHelpers/testing-library';
 import MoneyInput from '../../../../MoneyInput';
 import PercentWithStatus from '../../../../PercentWithStatus/PercentWithStatus';
 import { Provider } from '../../containers/loan-context';
 import FinancingResult from '../FinancingResult';
 
 const expectResult = (component, name, value) => {
-  const val = component()
-    .find(name)
-    .last();
+  const val = component().find(name).last();
 
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
@@ -35,22 +38,24 @@ const expectResult = (component, name, value) => {
 describe('FinancingResult', () => {
   let props;
   let loan;
-  const { intl } = new IntlProvider({
-    defaultLocale: 'fr',
-    messages,
-  }).getChildContext();
   const component = ({ calc } = {}) =>
     mount(
-      <ScrollSync>
-        <Provider value={{ loan, Calculator: calc || Calculator }}>
-          <FinancingResult {...props} />
-        </Provider>
-      </ScrollSync>,
-      {
-        context: { intl },
-        childContextTypes: { intl: intlShape },
-      },
+      <IntlProvider defaultLocale="fr" messages={messages}>
+        <ScrollSync>
+          <Provider value={{ loan, Calculator: calc || Calculator }}>
+            <FinancingResult {...props} />
+          </Provider>
+        </ScrollSync>
+      </IntlProvider>,
     );
+
+  const Component = ({ calc }) => (
+    <ScrollSync>
+      <Provider value={{ loan, Calculator: calc || Calculator }}>
+        <FinancingResult {...props} />
+      </Provider>
+    </ScrollSync>
+  );
 
   beforeEach(() => {
     props = {};
@@ -59,13 +64,14 @@ describe('FinancingResult', () => {
       borrowers: [],
       properties: [],
     };
+    return cleanup();
   });
 
   context('renders the correct results for a standard structure', () => {
     beforeEach(() => {
       const structure = {
         id: 'a',
-        loanTranches: [{ type: 'interest10', value: 1 }],
+        loanTranches: [{ type: 'interest10', value: 800000 }],
         propertyId: 'house',
         propertyWork: 0,
         wantedLoan: 800000,
@@ -89,6 +95,7 @@ describe('FinancingResult', () => {
             _id: 'house',
             value: 1000000,
             yearlyExpenses: 1200,
+            category: PROPERTY_CATEGORY.USER,
           },
         ],
         currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
@@ -96,19 +103,15 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      const monthly = component().find(
-        '.financing-structures-result-chart .total',
-      );
-      const string = monthly.text();
-      const hasNonZeroNumber = /[1-9]/.test(string);
-      // Interests rates change constantly, can't pin a precise value
-      expect(hasNonZeroNumber).to.equal(true);
+      const { getByTestId } = render(<Component />);
+      const total = getByTestId('financing-total');
+
+      // Replace any white space character with a proper space
+      expect(total.textContent.replace(/\s/g, ' ')).to.equal('CHF 1 600 /mois');
     });
 
     it('interestsCost', () => {
-      const interestsCost = component()
-        .find('.interestsCost')
-        .last();
+      const interestsCost = component().find('.interestsCost').last();
       const string = interestsCost.text();
       const hasNonZeroNumber = /[1-9]/.test(string);
 
@@ -155,8 +158,8 @@ describe('FinancingResult', () => {
       const structure = {
         id: 'a',
         loanTranches: [
-          { type: 'interest2', value: 0.8 },
-          { type: 'interestLibor', value: 0.2 },
+          { type: 'interest2', value: 0.8 * 1080000 },
+          { type: 'interestLibor', value: 0.2 * 1080000 },
         ],
         propertyId: 'house',
         offerId: 'offer',
@@ -200,6 +203,7 @@ describe('FinancingResult', () => {
             _id: 'house',
             value: 1000000,
             yearlyExpenses: 2400,
+            category: PROPERTY_CATEGORY.USER,
           },
         ],
         offers: [
@@ -225,9 +229,7 @@ describe('FinancingResult', () => {
     });
 
     it('interestsCost', () => {
-      const interestsCost = component()
-        .find('.interestsCost')
-        .last();
+      const interestsCost = component().find('.interestsCost').last();
       const string = interestsCost.text();
       const [value, rate] = string.split('(');
 

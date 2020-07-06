@@ -1,7 +1,7 @@
 import React from 'react';
 import HighchartsExportData from 'highcharts-export-data';
 import HighchartsExporting from 'highcharts-exporting';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import Chart from 'core/components/charts/Chart';
 import colors from 'core/config/colors';
@@ -71,12 +71,8 @@ const getSeries = ({ data, value }) => {
   }
 };
 
-const MonitoringChart = ({
-  data,
-  groupBy,
-  value,
-  intl: { formatMessage: f },
-}) => {
+const MonitoringChart = ({ data, groupBy, value }) => {
+  const { formatMessage: f } = useIntl();
   const categories = getX({ data, groupBy, f });
   const series = getSeries({ data, value });
 
@@ -115,4 +111,4 @@ const MonitoringChart = ({
   );
 };
 
-export default injectIntl(MonitoringChart);
+export default MonitoringChart;

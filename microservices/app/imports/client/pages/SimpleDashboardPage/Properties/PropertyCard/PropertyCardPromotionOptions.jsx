@@ -1,19 +1,16 @@
 import React from 'react';
 
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 
-const PropertyCardPromotionOptions = ({ document, loan }) => {
+const PropertyCardPromotionOptions = ({ loan }) => {
   if (!loan || !loan.promotionOptions) {
     return null;
   }
 
-  return (
-    <UserPromotionOptionsTable
-      promotion={document}
-      loan={loan}
-      isDashboardTable
-    />
-  );
+  return <UserPromotionOptionsTable loan={loan} isDashboardTable />;
 };
 
-export default PropertyCardPromotionOptions;
+export default withPromotionPageContext(({ loan }) => ({
+  promotion: loan.promotions[0],
+}))(PropertyCardPromotionOptions);

@@ -8,6 +8,8 @@ import {
   ORGANISATION_TYPES,
 } from '../api/organisations/organisationConstants';
 import OrganisationService from '../api/organisations/server/OrganisationService';
+import UserService from '../api/users/server/UserService';
+import { ROLES } from '../api/users/userConstants';
 import { createLenderRules } from './lenderRulesFixtures';
 
 const orgs = [
@@ -50,6 +52,7 @@ export const createOrganisations = () =>
     }
 
     const contactCount = random(1, 3, false);
+    const userCount = random(1, 2, false);
 
     for (let index = 0; index < contactCount; index += 1) {
       const contactId = ContactService.insert({
@@ -67,6 +70,23 @@ export const createOrganisations = () =>
         newOrganisations: [
           { _id: orgId, metadata: { title: faker.name.jobTitle() } },
         ],
+      });
+    }
+
+    for (let index = 0; index < userCount; index++) {
+      const userId = UserService.adminCreateUser({
+        email: faker.internet.email(),
+        phoneNumbers: [faker.phone.phoneNumber()],
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        role: ROLES.PRO,
+      });
+
+      UserService.addLink({
+        id: userId,
+        linkId: orgId,
+        linkName: 'organisations',
+        metadata: { isMain: true },
       });
     }
   });

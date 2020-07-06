@@ -1,179 +1,245 @@
-/* eslint-disable prettier */
-/* eslint-disable */
-
-const path = require('path');
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
 
 const config = {
   // Where the lang directory is stored with the complete list of strings
   // for each language
-  pathToLangDir: __dirname + '/../core',
+  pathToLangDir: `${__dirname}/../core`,
   // An array of languages to look for
   languages: ['fr'],
   // The list of directories to scan and create language files for
   directories: [
     {
       id: 'admin',
-      path: __dirname + '/../microservices/admin',
+      path: `${__dirname}/../microservices/admin`,
       exceptions: [
         'AccountPage',
-        'AdminFilesTab',
         'AdminPromotionPage',
         'ArrayInput',
         'AutoForm',
-        'BorrowerRemover',
         'BorrowerAdder',
+        'BorrowerRemover',
+        'BorrowersSummary',
         'collections',
         'CommissionRatesViewer',
         'ConditionsButton',
         'ConfirmMethod',
         'Contacts',
+        'e-Potek',
         'EmailVerification',
+        'errors',
+        'ExternalUrl',
         'Feedback',
+        'File',
         'FileAdder',
         'files',
+        'FileTabs',
         'Financing',
+        'Form',
         'Forms',
+        'general',
+        'GoogleMap',
         'Impersonation',
         'InterestRates',
         'InterestsChart',
         'InterestsTable',
         'Irs10y',
+        'LayoutError',
         'Lenders',
+        'LoanChecklist',
+        'LoanClosingChecklist',
         'LoginPage',
+        'Maps',
         'MaxPropertyValue',
         'methods',
-        'Microlocation',
+        'MissingDoc',
         'MortgageNotesForm',
+        'NotFound',
         'offer',
         'OfferAdder',
         'PasswordChange',
         'PDF',
+        'PercentWithStatus',
         'ProCustomersTable',
         'Promotion',
-        'PromotionLotPage',
         'ProOrganisationUserAdder',
+        'property',
+        'PropertyAdder',
+        'PropertyCustomerAdder',
         'PropertyForm',
+        'ProPropertyPage',
+        'Recap',
         'RevenuesByStatus',
+        'roles',
+        'Search',
+        'SearchResults',
         'StatusIconTooltip',
         'steps',
         'Table',
-        'Uploader',
-        'PropertyAdder',
+        'tooltip',
+        'tooltip2',
+        'TooltipSynonyms',
+        'TopNav',
+        'TopNavDropdown',
         'TranchePicker',
+        'Uploader',
+        'UploaderArray',
       ],
     },
     {
       id: 'app',
-      path: __dirname + '/../microservices/app',
+      path: `${__dirname}/../microservices/app`,
       exceptions: [
         'AccountPage',
-        'AdminFilesTab',
         'AmortizationChart',
         'ArrayInput',
         'AutoForm',
+        'BorrowerAdder',
         'BorrowerAddPartner',
         'BorrowerRemover',
-        'BorrowerAdder',
         'BorrowersPage',
-        'CalendlyModal',
         'collections',
         'ConditionsButton',
         'ConfirmMethod',
         'ContactButton',
+        'e-Potek',
         'EmailVerification',
+        'errors',
+        'ExternalUrl',
+        'File',
         'FileAdder',
         'files',
+        'FileTabs',
         'Financing',
+        'Form',
         'Forms',
-        'Impersonation',
+        'general',
+        'GoogleMap',
         'ImpersonateNotification',
+        'Impersonation',
+        'InterestsTable',
+        'LayoutError',
+        'LoanChecklist',
+        'LoanClosingChecklist',
         'LoginPage',
+        'Maps',
         'MaxPropertyValue',
         'Microlocation',
+        'MissingDoc',
         'MortgageNotesForm',
+        'NotFound',
         'offer',
         'PasswordChange',
         'PasswordResetPage',
+        'PercentWithStatus',
         'Promotion',
+        'property',
+        'PropertyAdder',
+        'PropertyCustomerAdder',
         'PropertyForm',
+        'ProPropertyPage',
+        'Recap',
+        'roles',
+        'Search',
+        'SearchResults',
         'SimpleDashboardPage',
         'StatusIconTooltip',
         'steps',
+        'Table',
+        'tooltip',
+        'tooltip2',
+        'TooltipSynonyms',
+        'TopNav',
+        'TopNavDropdown',
+        'TranchePicker',
         'Uploader',
+        'UploaderArray',
         'UserReservation',
         'Widget1',
-        'PropertyAdder',
-        'TranchePicker',
       ],
     },
     {
       id: 'pro',
-      path: __dirname + '/../microservices/pro',
+      path: `${__dirname}/../microservices/pro`,
       exceptions: [
         'AccountPage',
+        'BorrowersSummary',
         'collections',
         'CommissionRatesViewer',
         'ConfirmMethod',
-        'ContactButton',
         'EmailVerification',
+        'errors',
+        'ExternalUrl',
+        'File',
         'files',
+        'FileTabs',
+        'Form',
         'Forms',
+        'general',
+        'GoogleMap',
         'Impersonation',
+        'InterestsTable',
+        'LayoutError',
+        'LoanChecklist',
         'LoginPage',
+        'Maps',
+        'MissingDoc',
+        'NotFound',
         'PasswordChange',
         'PasswordResetPage',
+        'PercentWithStatus',
         'ProCustomerAdder',
         'ProCustomersTable',
-        'PropertiesTable',
         'Promotion',
+        'PromotionCustomersTable',
+        'PromotionLotGroupsManager',
         'PromotionLotPage',
         'ProOrganisationUserAdder',
+        'PropertiesTable',
+        'property',
+        'PropertyCustomerAdder',
+        'ProPropertyPage',
+        'Recap',
         'RevenuesByStatus',
+        'roles',
+        'Search',
+        'SearchResults',
+        'Table',
+        'tooltip',
+        'tooltip2',
+        'TooltipSynonyms',
+        'TopNav',
+        'TopNavDropdown',
         'Uploader',
+        'UploaderArray',
       ],
     },
     {
       id: 'www',
-      path: __dirname + '/../microservices/www',
-      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1', 'ContactButton', 'CalendlyModal'],
+      path: `${__dirname}/../microservices/www`,
+      exceptions: [
+        'ContactPage',
+        'errors',
+        'general',
+        'InterestsTable',
+        'LayoutError',
+        'Maps',
+        'offer',
+        'Recap.loanIncrease',
+        'Recap.loanReduction',
+        'Recap.maxPossibleLoan',
+        'Recap.project',
+        'Recap.propertyValue',
+        'Recap.purchasePrice',
+        'Recap.totalCost',
+        'Recap.totalFinancing',
+        'Table',
+        'tooltip',
+        'tooltip2',
+        'TooltipSynonyms',
+        'Widget1',
+      ],
     },
-  ],
-  // List of strings that don't have a component file associated to them, so
-  // this algorithm would miss them, provide the first part of those strings
-  // here
-  generalExceptions: [
-    'BorrowersSummary',
-    'e-Potek',
-    'errors',
-    'ExpensesChart',
-    'ExpensesChartInterests',
-    'File',
-    'FileTabs',
-    'Form',
-    'general',
-    'GoogleMap',
-    'InterestsTable',
-    'LayoutError',
-    'LoanChecklist',
-    'Maps',
-    'MissingDoc',
-    'NotFound',
-    'PercentWithStatus',
-    'property',
-    'Recap',
-    'roles',
-    'Search',
-    'SearchResults',
-    'Table',
-    'tooltip',
-    'tooltip2',
-    'TooltipSynonyms',
-    'TopNav',
-    'TopNavDropdown',
-    'UploaderArray',
-    'PropertyCustomerAdder',
-    'ProPropertyPage',
   ],
 };
 
@@ -196,7 +262,7 @@ const findFilesWithExtension = (startPath, extension) => {
     const stat = fs.lstatSync(filename);
 
     if (stat.isDirectory()) {
-      const recursedResult = findFilesWithExtension(filename, extension); //recurse
+      const recursedResult = findFilesWithExtension(filename, extension); // recurse
       results = [...results, ...recursedResult];
     } else if (filename.indexOf(extension) >= 0) {
       const fileWithExtension = filename.replace(/^.*[\\\/]/, '');
@@ -207,9 +273,8 @@ const findFilesWithExtension = (startPath, extension) => {
   return results;
 };
 
-const isKeyAllowed = allowedKeys => key => {
-  return allowedKeys.some(allowedKey => key.startsWith(allowedKey));
-};
+const isKeyAllowed = allowedKeys => key =>
+  allowedKeys.some(allowedKey => key.startsWith(allowedKey));
 
 // Given a lang/ directory and a specific language, get all the strings with
 // keys provided in the allowedKeys array
@@ -222,7 +287,7 @@ const filterLanguageKeys = (pathToLangDir, language, allowedKeys) => {
 
   const optimizedLangObject = Object.keys(langObject)
     .filter(key => remainingKeys.includes(key))
-    .reduce((obj, key) => Object.assign({ [key]: langObject[key] }, obj), {});
+    .reduce((obj, key) => ({ [key]: langObject[key], ...obj }), {});
 
   return optimizedLangObject;
 };
@@ -244,25 +309,18 @@ const ensureDirectoryExistence = filePath => {
   fs.mkdirSync(dirname);
 };
 
-const createPathToLanguage = (dir, language) =>
-  dir + '/lang/' + language + '.json';
+const createPathToLanguage = (dir, language) => `${dir}/lang/${language}.json`;
 
 // Given a config object, create unique language files for each microservice
-const createLanguages = ({
-  directories,
-  languages,
-  generalExceptions,
-  pathToLangDir,
-}) => {
+const createLanguages = ({ directories, languages, pathToLangDir }) => {
   console.log('Starting language building process...');
 
   directories.forEach(({ path: dirPath, exceptions: dirExceptions }) => {
     const componentNames = findFilesWithExtension(dirPath, '.jsx');
 
     languages.forEach(language => {
-      console.log('Creating ' + language + ' file for ' + dirPath);
+      console.log(`Creating ${language} file for ${dirPath}`);
       const languageObject = filterLanguageKeys(pathToLangDir, language, [
-        ...generalExceptions,
         ...dirExceptions,
         ...componentNames,
       ]);
@@ -285,16 +343,18 @@ const getCustomConfig = () => {
 
     if (!possibleArguments.includes(argument)) {
       throw Error(
-        'Invalid argument, it has to be one of these: ' +
-        possibleArguments.join(' '),
+        `Invalid argument, it has to be one of these: ${possibleArguments.join(
+          ' ',
+        )}`,
       );
     }
 
-    const customConfig = Object.assign({}, config, {
+    const customConfig = {
+      ...config,
       directories: config.directories.filter(
         directoryConfig => directoryConfig.id === argument,
       ),
-    });
+    };
 
     return customConfig;
   }

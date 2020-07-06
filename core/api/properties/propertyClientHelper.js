@@ -110,3 +110,9 @@ export const shouldAnonymize = ({
       return true;
   }
 };
+
+export const propertyHasDetailedValue = ({ property } = {}) => {
+  const { value, landValue, constructionValue } = property;
+
+  return !value || !!(landValue && constructionValue);
+};

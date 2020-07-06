@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import { adminBorrowers as query } from 'core/api/borrowers/queries';
+import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { baseBorrower } from 'core/api/fragments';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -43,21 +43,21 @@ const mapBorrower = ({ history }) => ({
 
 export default compose(
   withSmartQuery({
-    query,
+    query: BORROWERS_COLLECTION,
     params: {
-      $body: {
-        ...baseBorrower(),
-        loans: { name: 1 },
-        user: { name: 1 },
-      },
+      ...baseBorrower(),
+      loans: { name: 1 },
+      user: { name: 1 },
     },
-    queryOptions: { reactive: false },
     dataName: 'borrowers',
     renderMissingDoc: false,
   }),
-  withRouter,
-  withProps(({ borrowers, history }) => ({
-    rows: borrowers.map(mapBorrower({ history })),
-    columnOptions,
-  })),
+  withProps(({ borrowers }) => {
+    const history = useHistory();
+
+    return {
+      rows: borrowers.map(mapBorrower({ history })),
+      columnOptions,
+    };
+  }),
 );

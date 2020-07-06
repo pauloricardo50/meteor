@@ -3,6 +3,7 @@ import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 import { connectField } from 'uniforms';
 
+import Calculator from '../../../../utils/Calculator';
 import AutoForm from '../../../AutoForm2';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/autoFormConstants';
 import PercentInput from '../../../PercentInput';
@@ -18,7 +19,7 @@ const LoanPercentField = connectField(
       value={value}
       onChange={onChange}
       onBlur={() => {
-        if (formRef && formRef.current) {
+        if (formRef?.current) {
           formRef.current.submit();
         }
       }}
@@ -59,12 +60,16 @@ export default compose(
   FinancingDataContainer,
   SingleStructureContainer,
   StructureUpdateContainer,
-  withProps(({ updateStructure, ...data }) => ({
-    handleSubmit: borrowValue => {
-      const wantedLoan = FinancingCalculator.getLoanFromBorrowRatio(
-        borrowValue,
-        data,
-      );
+  withProps(({ updateStructure, loan, structureId }) => ({
+    handleSubmit: borrowRatio => {
+      const propAndWork = Calculator.getPropAndWork({
+        loan,
+        structureId,
+      });
+      const wantedLoan = FinancingCalculator.getLoanFromBorrowRatio({
+        borrowRatio,
+        propertyValue: propAndWork,
+      });
       return updateStructure({ wantedLoan: Math.round(wantedLoan) });
     },
   })),

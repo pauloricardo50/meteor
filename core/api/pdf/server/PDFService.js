@@ -3,17 +3,31 @@ import { Match, check } from 'meteor/check';
 import { Random } from 'meteor/random';
 
 import fs from 'fs';
+import merge from 'lodash/merge';
 import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
 
-import { lenderRules } from '../../fragments';
-import { adminLoans } from '../../loans/queries';
+import { calculatorLoan, lenderRules } from '../../fragments';
+import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
+import LoanBankPDF from '../pdfComponents/LoanBankPDF';
 import { PDF_TYPES } from '../pdfConstants';
-import LoanBankPDF from './pdfComponents/LoanBankPDF';
 import { validateLoanPdf } from './pdfValidators';
 
 const PDF_URL = 'https://docraptor.com/docs';
+
+const loanBankFragment = merge({}, calculatorLoan(), {
+  name: 1,
+  borrowers: { address: 1, name: 1, age: 1 },
+  user: {
+    assignedEmployee: {
+      name: 1,
+      email: 1,
+      phoneNumbers: 1,
+    },
+  },
+  promotions: { name: 1 },
+});
 
 class PDFService {
   makePDF = ({ type, params, options, htmlOnly }) => {
@@ -78,7 +92,7 @@ class PDFService {
             logo: 1,
           });
 
-        const loan = adminLoans.clone({ _id: loanId }).fetchOne();
+        const loan = LoanService.get(loanId, loanBankFragment);
 
         return { ...params, loan, organisation };
       }

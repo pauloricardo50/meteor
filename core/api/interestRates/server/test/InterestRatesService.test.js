@@ -1,10 +1,11 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import { interestRates } from '../../../fragments';
 import InterestRatesService from '../InterestRatesService';
+
+/* eslint-env mocha */
+
 
 describe('InterestRatesService', () => {
   beforeEach(() => {

@@ -87,6 +87,14 @@ export class Method extends Mutation {
     return internalMethod(() => this.run(...args));
   }
 
+  setRateLimit(rateLimit, options) {
+    if (Meteor.isServer) {
+      const { RateLimiter } = require('../../utils/server/rate-limit');
+      const { name } = this.config;
+      this.rateLimiter = new RateLimiter({ name, rateLimit, options });
+    }
+  }
+
   setHandler(fn) {
     const { config } = this;
     const { name, params } = config;
@@ -141,6 +149,9 @@ export class Method extends Mutation {
         self.executionAOP.executeAfters(aopData);
 
         if (error) {
+          if (self.rateLimiter) {
+            self.rateLimiter.clearMethodLimiter();
+          }
           throw error;
         }
 

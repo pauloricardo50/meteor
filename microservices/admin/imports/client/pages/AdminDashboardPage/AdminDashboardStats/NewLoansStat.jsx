@@ -30,7 +30,14 @@ const NewLoansStat = ({
     value={<CountUp end={newLoans.count} />}
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
-    title="Nouveaux dossiers"
+    title={
+      <div className="text-center">
+        <div>Nouveaux dossiers</div>
+        <div>
+          <small className="secondary">{period} derniers jours</small>
+        </div>
+      </div>
+    }
     large
     top={
       <>
@@ -48,6 +55,7 @@ const NewLoansStat = ({
             ]}
             onChange={setPeriod}
             value={period}
+            className="mr-8"
           />
           <Select
             label="Anonymes"
@@ -86,12 +94,14 @@ export default compose(
     query: newLoans,
     dataName: 'newLoans',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    deps: ({ period, withAnonymous }) => [period, withAnonymous],
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: loanHistogram,
     dataName: 'loanHistogram',
     params: ({ period, withAnonymous }) => ({ period, withAnonymous }),
+    deps: ({ period, withAnonymous }) => [period, withAnonymous],
     refetchOnMethodCall: false,
   }),
 )(NewLoansStat);

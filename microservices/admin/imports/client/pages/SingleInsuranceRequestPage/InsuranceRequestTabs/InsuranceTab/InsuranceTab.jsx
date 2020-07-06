@@ -3,8 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 
 import { getInsuranceDocuments } from 'core/api/files/documents';
+import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import { insuranceUpdateStatus } from 'core/api/insurances/methodDefinitions';
 import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
 import SingleFileTab from 'core/components/FileTabs/SingleFileTab';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 import RevenuesTable from '../../../../components/RevenuesTable';
 import RevenueAdder from '../../../../components/RevenuesTable/RevenueAdder';
@@ -21,12 +24,15 @@ const InsuranceTab = props => {
     referralIsCommissionned,
   } = props;
   const {
-    revenues = [],
+    _id: insuranceId,
     insuranceProduct: { name: insuranceProductName },
     organisation: { _id: organisationId },
   } = insurance;
-  const { assignees = [] } = insuranceRequest;
+  const { assignees = [], revenues = [] } = insuranceRequest;
   const mainAssignee = assignees.find(({ $metadata: { isMain } }) => isMain);
+  const insuranceRevenues = revenues.filter(
+    ({ insurance: i }) => i?._id === insuranceId,
+  );
 
   const [openRevenueAdder, setOpenRevenueAdder] = useState(false);
 
@@ -56,12 +62,10 @@ const InsuranceTab = props => {
             buttonProps={{ className: 'ml-8' }}
           />
         </h3>
-        {revenues.length ? (
+        {insuranceRevenues.length ? (
           <RevenuesTable
             insurance={insurance}
-            filterRevenues={({ insurance: { _id: insuranceId } }) => ({
-              'insuranceCache._id': insuranceId,
-            })}
+            filterRevenues={{ 'insuranceCache._id': insuranceId }}
           />
         ) : (
           <InsuranceEstimatedRevenue
@@ -74,7 +78,18 @@ const InsuranceTab = props => {
       </div>
 
       <div className="insurance-modifier flex-col card1 p-16">
-        <h3 className="mt-0 mb-32">{insurance.name}</h3>
+        <h3 className="mt-0 mb-32 flex center-align">
+          <span className="mr-8">{insurance.name}</span>
+          <StatusLabel
+            collection={INSURANCES_COLLECTION}
+            status={insurance?.status}
+            allowModify
+            docId={insurance?._id}
+            method={status =>
+              insuranceUpdateStatus.run({ insuranceId: insurance?._id, status })
+            }
+          />
+        </h3>
         <div className="flex-row sa">
           <InsuranceRemover
             insuranceId={insurance._id}
@@ -93,7 +108,6 @@ const InsuranceTab = props => {
                 { id: insurance._id },
                 { doc: insurance },
               )}
-              collection="insurances"
               withAdditionalDocAdder={false}
             />
           </div>

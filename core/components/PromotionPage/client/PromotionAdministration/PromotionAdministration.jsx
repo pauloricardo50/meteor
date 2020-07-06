@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { addProUserToPromotion } from '../../../../api/promotions/methodDefinitions';
-import { PROMOTIONS_COLLECTION } from '../../../../api/promotions/promotionConstants';
 import { userSearch } from '../../../../api/users/queries';
-import { ROLES, USERS_COLLECTION } from '../../../../api/users/userConstants';
-import { CurrentUserContext } from '../../../../containers/CurrentUserContext';
+import { ROLES } from '../../../../api/users/userConstants';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Button from '../../../Button';
 import CollectionSearch from '../../../CollectionSearch';
 import DropdownMenu from '../../../DropdownMenu';
@@ -15,6 +14,7 @@ import T from '../../../Translation';
 import UploaderArray from '../../../UploaderArray';
 import PromotionLoanLinker from '../PromotionLoanLinker';
 import PromotionAdministrationContainer from './PromotionAdministrationContainer';
+import PromotionLotGroupsManager from './PromotionLotGroupsManager';
 
 const PromotionAdministration = ({
   promotion,
@@ -27,8 +27,10 @@ const PromotionAdministration = ({
   openLinkLoanModal,
   setOpenLinkLoanModal,
   permissions = {},
+  openPromotionLotGroupsModal,
+  setOpenPromotionLotGroupsModal,
 }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { canManageDocuments } = permissions;
 
   const { _id: promotionId } = promotion;
@@ -54,7 +56,6 @@ const PromotionAdministration = ({
       >
         <UploaderArray
           doc={promotion}
-          collection={PROMOTIONS_COLLECTION}
           documentArray={promotionDocuments}
           currentUser={currentUser}
           allowRequireByAdmin={false}
@@ -72,7 +73,7 @@ const PromotionAdministration = ({
           <CollectionSearch
             query={userSearch}
             queryParams={{ roles: [ROLES.PRO] }}
-            title="Rechercher un utilisateur PRO"
+            title="Rechercher un compte Pro"
             renderItem={user => (
               <div className="user-search-item">
                 <CollectionIconLink relatedDoc={user} placement="left" />
@@ -119,6 +120,15 @@ const PromotionAdministration = ({
         actions={dialogActions(setOpenLinkLoanModal)}
       >
         <PromotionLoanLinker promotion={promotion} />
+      </Dialog>
+
+      <Dialog
+        title={<T id="PromotionAdministration.managePromotionLotGroups" />}
+        open={openPromotionLotGroupsModal}
+        onClose={() => setOpenPromotionLotGroupsModal(false)}
+        actions={dialogActions(setOpenPromotionLotGroupsModal)}
+      >
+        <PromotionLotGroupsManager promotion={promotion} />
       </Dialog>
     </>
   );

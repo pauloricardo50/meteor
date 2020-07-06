@@ -15,7 +15,7 @@ import APP_ROUTES from '../../../../startup/client/appRoutes';
 import { withAnonymousLoan } from '../../../pages/AppPage/AnonymousAppPage/AnonymousAppPageContainer';
 
 const AnonymousLoanClaimer = ({
-  anonymousLoan: { _id: loanId, name, updatedAt, borrowers = [] } = {},
+  anonymousLoan: { name, updatedAt, borrowers = [] } = {},
   open,
   loading,
   claimLoan,

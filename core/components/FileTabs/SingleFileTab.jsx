@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
 import {
-  allDocuments,
+  getAllDocuments,
   getBorrowerDocuments,
   getLoanDocuments,
   getPropertyDocuments,
@@ -31,7 +31,7 @@ const documentsToDisplay = ({ collection, loan, id }) => {
 };
 
 const documentsToHide = ({ doc, collection, loan, id, documentArray }) => {
-  const allDocs = allDocuments({ doc, collection });
+  const allDocs = getAllDocuments({ doc, collection });
   const docsToDisplay =
     documentArray || documentsToDisplay({ collection, loan, id });
   return allDocs.filter(
@@ -41,7 +41,6 @@ const documentsToHide = ({ doc, collection, loan, id, documentArray }) => {
 
 const SingleFileTab = ({ documentArray, ...props }) => {
   const {
-    collection,
     loan,
     doc,
     className,
@@ -50,9 +49,10 @@ const SingleFileTab = ({ documentArray, ...props }) => {
   } = props;
 
   let displayedDocs =
-    documentArray || documentsToDisplay({ collection, loan, id: doc._id });
+    documentArray ||
+    documentsToDisplay({ collection: doc._collection, loan, id: doc._id });
   let hiddenDocs = documentsToHide({
-    collection,
+    collection: doc._collection,
     loan,
     id: doc._id,
     doc,
@@ -71,7 +71,7 @@ const SingleFileTab = ({ documentArray, ...props }) => {
   return (
     <div className={cx('single-file-tab', className)}>
       {withAdditionalDocAdder && Meteor.microservice === 'admin' && (
-        <AdditionalDocAdder collection={collection} docId={doc._id} />
+        <AdditionalDocAdder collection={doc._collection} docId={doc._id} />
       )}
       <UploaderCategories
         documentsToDisplay={displayedDocs}

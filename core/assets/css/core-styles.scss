@@ -117,10 +117,10 @@ hr {
 }
 
 .error-box {
-  padding: 2px;
+  padding: 1px 4px;
 
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: $error;
 }
 
@@ -129,10 +129,10 @@ hr {
 }
 
 .warning-box {
-  padding: 2px;
+  padding: 1px 4px;
 
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: $warning;
 }
 
@@ -289,6 +289,14 @@ p.description,
   margin: 0;
 }
 
+.m-2 {
+  margin: 2px;
+}
+
+.m-4 {
+  margin: 4px;
+}
+
 .m-8 {
   margin: 8px;
 }
@@ -307,6 +315,11 @@ p.description,
 .p-32 {
   padding: 32px;
 }
+
+.pb-4 {padding-bottom: 4px;}
+.pt-4 {padding-top: 4px;}
+.pb-8 {padding-bottom: 8px;}
+.pt-8 {padding-top: 8px;}
 
 .mb-0 {
   margin-bottom: 0;
@@ -337,6 +350,10 @@ p.description,
   margin-bottom: 16px;
 }
 
+.mr-2 {
+  margin-right: 2px;
+}
+
 .mr-4 {
   margin-right: 4px;
 }
@@ -347,6 +364,10 @@ p.description,
 
 .mr-16 {
   margin-right: 16px;
+}
+
+.ml-2 {
+  margin-left: 2px;
 }
 
 .ml-4 {
@@ -371,6 +392,14 @@ p.description,
 
 .mt-32 {
   margin-top: 32px;
+}
+
+.ml-32 {
+  margin-left: 32px;
+}
+
+.mt-40 {
+  margin-top: 40px;
 }
 
 .pointer:hover {
@@ -465,4 +494,8 @@ p.description,
 
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }

@@ -42,6 +42,22 @@ class PromotionOptionService extends CollectionService {
               .toDate();
           }
         },
+        priorityOrder() {
+          // Automatically sets the priorityOrder based off the loanCache
+          const loanCache = this.field('loanCache');
+          if (loanCache.isSet) {
+            const { promotionLinks } = loanCache.value;
+
+            if (promotionLinks?.length) {
+              const [promotionLink] = promotionLinks;
+              return promotionLink.priorityOrder.findIndex(
+                id => id === this.docId,
+              );
+            }
+          }
+
+          return 0;
+        },
       },
     });
   }
@@ -352,10 +368,12 @@ class PromotionOptionService extends CollectionService {
   };
 
   cancelReservation({ promotionOptionId }) {
-    return this.updateStatus({
+    const { status: oldStatus } = this.get(promotionOptionId, { status: 1 });
+    this.updateStatus({
       promotionOptionId,
       status: PROMOTION_OPTION_STATUS.RESERVATION_CANCELLED,
     });
+    return { oldStatus };
   }
 
   completeReservation({ promotionOptionId }) {
@@ -411,13 +429,14 @@ class PromotionOptionService extends CollectionService {
       return {};
     }
 
-    // Send keys with dot-notation, to make sure simple-schema doesn't
-    // set the other keys in the object to their defaultValues
-    changedKeys.forEach(key => {
-      this._update({
-        id: promotionOptionId,
-        object: { [`${id}.${key}`]: object[key] },
-      });
+    const updateObject = changedKeys.reduce(
+      (obj, key) => ({ ...obj, [`${id}.${key}`]: object[key] }),
+      {},
+    );
+
+    this._update({
+      id: promotionOptionId,
+      object: updateObject,
     });
 
     if (changedKeys.includes('status')) {
@@ -449,6 +468,8 @@ class PromotionOptionService extends CollectionService {
       $filters: {
         'reservationAgreement.expirationDate': { $lte: yesterdayNight },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+        'reservationAgreement.status':
+          PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
       },
     });
   };

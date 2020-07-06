@@ -5,10 +5,11 @@ import {
   INSURANCE_REQUESTS_COLLECTION,
   INSURANCE_REQUEST_STATUS,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
-import { adminOrganisations } from 'core/api/organisations/queries';
-import { adminUsers } from 'core/api/users/queries';
-import { ROLES } from 'core/api/users/userConstants';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/organisations/organisationConstants';
+import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { groupInsuranceRequests } from './insuranceRequestBoardHelpers';
 
@@ -32,15 +33,23 @@ const defaultBody = {
   adminNotes: 1,
 };
 
+const getStatusFilter = status => {
+  const { $in = [] } = status || {};
+  const toIgnore = [
+    INSURANCE_REQUEST_STATUS.TEST,
+    INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
+    INSURANCE_REQUEST_STATUS.FINALIZED,
+  ];
+
+  return {
+    $nin: toIgnore.filter(s => !$in.includes(s)),
+    ...status,
+  };
+};
+
 const getQueryFilters = ({ assignedEmployeeId, status, organisationId }) => ({
   assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
-  status: {
-    $nin: [
-      INSURANCE_REQUEST_STATUS.TEST,
-      INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
-    ],
-    ...status,
-  },
+  status: getStatusFilter(status),
   ...(organisationId
     ? {
         insurancesCache: {
@@ -59,11 +68,17 @@ export default compose(
     }),
     dataName: 'insuranceRequests',
     queryOptions: { pollingMs: 5000 },
+    deps: ({ options }) => Object.values(options),
   }),
   withProps(({ refetch }) => ({ refetchInsuranceRequests: refetch })),
   withSmartQuery({
-    query: adminUsers,
-    params: { $body: { firstName: 1 }, roles: [ROLES.ADMIN, ROLES.DEV] },
+    query: USERS_COLLECTION,
+    params: {
+      $filters: { 'roles._id': ROLES.ADVISOR },
+      firstName: 1,
+      roles: 1,
+      $options: { sort: { firstName: 1 } },
+    },
     dataName: 'admins',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,
@@ -75,8 +90,12 @@ export default compose(
     ...rest,
   })),
   withSmartQuery({
-    query: adminOrganisations,
-    params: { $body: { name: 1 }, features: ORGANISATION_FEATURES.INSURANCE },
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { features: ORGANISATION_FEATURES.INSURANCE },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
     dataName: 'organisations',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,

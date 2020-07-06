@@ -1,11 +1,12 @@
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-/* eslint-env-mocha */
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import { down, up } from '../30';
+
+/* eslint-env-mocha */
+
 
 describe('Migration 30', () => {
   beforeEach(() => {

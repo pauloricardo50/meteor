@@ -1,3 +1,4 @@
+import { Roles } from 'meteor/alanning:roles';
 import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
 
@@ -6,6 +7,7 @@ import moment from 'moment';
 
 import Activities from '../activities';
 import Borrowers from '../borrowers/borrowers';
+import Checklists from '../checklists/checklists';
 import CommissionRates from '../commissionRates';
 import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
 import Contacts from '../contacts';
@@ -17,6 +19,10 @@ import {
 import InsuranceRequests from '../insuranceRequests';
 import Insurances from '../insurances';
 import InterestRates from '../interestRates';
+import {
+  INTEREST_RATES,
+  TRENDS,
+} from '../interestRates/interestRatesConstants';
 import LenderRules from '../lenderRules';
 import {
   DEFAULT_MAIN_RESIDENCE_RULES,
@@ -35,6 +41,13 @@ import Organisations from '../organisations';
 import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
 import PromotionLots from '../promotionLots';
 import PromotionOptions from '../promotionOptions';
+import {
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+} from '../promotionOptions/promotionOptionConstants';
 import Promotions from '../promotions';
 import { PROMOTION_TYPES } from '../promotions/promotionConstants';
 import Properties from '../properties/properties';
@@ -49,8 +62,6 @@ import Tasks from '../tasks/tasks';
 import { ROLES } from '../users/userConstants';
 import Users from '../users/users';
 
-const TEST_LASTNAME = 'TestLastName';
-const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
 const getRandomLoanName = () => `20-0${Math.floor(Math.random() * 899 + 100)}`;
@@ -59,36 +70,16 @@ const getRandomInsuranceRequestName = () =>
 const getRandomInsuranceName = () =>
   `20-0${Math.floor(Math.random() * 899 + 100)}-A01`;
 
-Factory.define('user', Users, {
-  roles: [ROLES.USER],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
-});
-
-Factory.define('dev', Users, {
-  roles: [ROLES.DEV],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
-});
-
-Factory.define('admin', Users, {
-  roles: [ROLES.ADMIN],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
-});
-
-Factory.define('pro', Users, {
-  roles: [ROLES.PRO],
-  emails: () => [{ address: faker.internet.email(), verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phoneNumbers: [TEST_PHONE],
+Object.values(ROLES).forEach(role => {
+  Factory.define(role, Users, {
+    emails: () => [{ address: faker.internet.email(), verified: false }],
+    lastName: () => faker.name.lastName(),
+    firstName: () => faker.name.firstName(),
+    phoneNumbers: [TEST_PHONE],
+    isInRoundRobin: role === ROLES.ADVISOR,
+  }).after(({ _id }) => {
+    Roles.setUserRoles(_id, role);
+  });
 });
 
 Factory.define('borrower', Borrowers);
@@ -142,24 +133,45 @@ Factory.define('promotion', Promotions, {
   city: 'Genève',
   assignedEmployeeId: () => {
     const adminId = Users.insert({
-      roles: [ROLES.ADMIN],
       emails: [{ address: `info${Random.id()}@e-potek.ch`, verified: true }],
-      lastName: TEST_LASTNAME,
-      firstName: TEST_FIRSTNAME,
+      lastName: faker.name.lastName(),
+      firstName: faker.name.firstName(),
       phoneNumbers: [TEST_PHONE],
     });
+    Roles.setUserRoles(adminId, ROLES.ADMIN);
 
     return adminId;
   },
 });
 
 Factory.define('promotionOption', PromotionOptions, {});
+
+Factory.define('completedPromotionOption', PromotionOptions, {
+  bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+  simpleVerification: {
+    status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+    date: new Date(),
+  },
+  fullVerification: {
+    status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+    date: new Date(),
+  },
+  reservationAgreement: {
+    status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+    date: new Date(),
+  },
+  reservationDeposit: {
+    status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+    date: new Date(),
+  },
+});
+
 Factory.define('promotionLot', PromotionLots, {
   propertyLinks: () => {
     const propertyId = Properties.insert({
       address1: 'Rue du parc 1',
       value: 1000000,
-      name: 'Lot A',
+      name: 'A',
     });
     return [{ _id: propertyId }];
   },
@@ -194,7 +206,24 @@ Factory.define('organisation', Organisations, {
 
 Factory.define('lender', Lenders, {});
 
-Factory.define('interestRates', InterestRates, {});
+Factory.define('interestRates', InterestRates, {
+  date: new Date(),
+  [INTEREST_RATES.YEARS_5]: {
+    rateLow: 0.005,
+    rateHigh: 0.006,
+    trend: TRENDS.FLAT,
+  },
+  [INTEREST_RATES.YEARS_10]: {
+    rateLow: 0.01,
+    rateHigh: 0.011,
+    trend: TRENDS.FLAT,
+  },
+  [INTEREST_RATES.YEARS_15]: {
+    rateLow: 0.015,
+    rateHigh: 0.016,
+    trend: TRENDS.FLAT,
+  },
+});
 
 Factory.define('contact', Contacts, {
   firstName: 'John',
@@ -259,10 +288,7 @@ Factory.define('insurance', Insurances, {
     }
   },
   startDate: () => new Date(),
-  endDate: () =>
-    moment()
-      .add(10, 'years')
-      .toDate(),
+  endDate: () => moment().add(10, 'years').toDate(),
 });
 
 Factory.define('commissionRate', CommissionRates, {
@@ -278,4 +304,8 @@ Factory.define('insuranceProduct', InsuranceProducts, {
   category: INSURANCE_PRODUCT_CATEGORIES['3A_INSURANCE'],
   revaluationFactor: 2,
   maxProductionYears: 35,
+});
+
+Factory.define('checklist', Checklists, {
+  title: 'Todo list',
 });

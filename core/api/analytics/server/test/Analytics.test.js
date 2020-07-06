@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { resetDatabase } from '../../../../utils/testHelpers';
 import SessionService from '../../../sessions/server/SessionService';
 import SlackService from '../../../slack/server/SlackService';
 import EVENTS from '../../events';
@@ -38,7 +38,7 @@ describe('Analytics', () => {
 
       const analytics = new Analytics({ connection: { id: connectionId } });
 
-      analytics.track(EVENTS.USER_LOGGED_IN, { type: 'password' });
+      analytics.track(EVENTS.USER_LOGGED_IN, { loginType: 'password' });
 
       expect(analyticsSpy.callCount).to.equal(1);
     });
@@ -54,7 +54,7 @@ describe('Analytics', () => {
 
       const analytics = new Analytics({ connection: { id: connectionId } });
 
-      analytics.track(EVENTS.USER_LOGGED_IN, { type: 'password' });
+      analytics.track(EVENTS.USER_LOGGED_IN, { loginType: 'password' });
 
       expect(analyticsSpy.callCount).to.equal(0);
     });

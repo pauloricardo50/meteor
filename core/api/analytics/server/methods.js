@@ -2,6 +2,7 @@ import SecurityService from '../../security';
 import {
   analyticsCTA,
   analyticsLogin,
+  analyticsOpenedIntercom,
   analyticsPage,
   analyticsVerifyEmail,
 } from '../methodDefinitions';
@@ -16,3 +17,5 @@ analyticsPage.setHandler(() => {});
 analyticsVerifyEmail.setHandler(() => {});
 
 analyticsCTA.setHandler(() => {});
+
+analyticsOpenedIntercom.setHandler(() => {});

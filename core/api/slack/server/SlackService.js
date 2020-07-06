@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
@@ -8,7 +9,7 @@ import colors from '../../../config/colors';
 import Calculator from '../../../utils/Calculator';
 import { percentFormatters } from '../../../utils/formHelpers';
 import { getClientMicroservice } from '../../../utils/server/getClientUrl';
-import { fullLoan } from '../../loans/queries';
+import { calculatorLoan } from '../../fragments';
 import LoanService from '../../loans/server/LoanService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import UserService from '../../users/server/UserService';
@@ -158,9 +159,7 @@ export class SlackServiceClass {
     loanId,
   }) => {
     const isAdmin =
-      currentUser &&
-      (currentUser.roles.includes(ROLES.ADMIN) ||
-        currentUser.roles.includes(ROLES.DEV));
+      currentUser && Roles.userIsInRole(currentUser, ROLES.ADMIN, ROLES.DEV);
 
     if (!notifyAlways && isAdmin) {
       return false;
@@ -202,7 +201,7 @@ export class SlackServiceClass {
   getNotificationOrigin = currentUser => {
     const APIUser = getAPIUser();
     const username = currentUser?.name;
-    const isPro = currentUser?.roles.includes(ROLES.PRO);
+    const isPro = currentUser && Roles.userIsInRole(currentUser, ROLES.PRO);
 
     if (APIUser) {
       const mainOrg =
@@ -239,13 +238,20 @@ export class SlackServiceClass {
   };
 
   notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
-    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+    const isUser = currentUser && Roles.userIsInRole(currentUser, ROLES.USER);
 
     if (!isUser) {
       return false;
     }
 
-    const loan = loanId && fullLoan.clone({ _id: loanId }).fetchOne();
+    const loan =
+      loanId &&
+      LoanService.get(loanId, {
+        ...calculatorLoan(),
+        name: 1,
+        hasPromotion: 1,
+        promotions: { name: 1 },
+      });
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
     const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
     let link = `${Meteor.settings.public.subdomains.admin}/users/${currentUser._id}`;

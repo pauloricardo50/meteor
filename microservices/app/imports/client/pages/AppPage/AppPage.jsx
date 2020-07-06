@@ -1,3 +1,5 @@
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -12,8 +14,8 @@ import ProAppPage from './ProAppPage';
 import SuperDashboard from './SuperDashboard/loadable';
 
 export const AppPage = ({ currentUser, insertLoan, loading }) => {
-  const { emails, loans, roles } = currentUser;
-  const userIsPro = roles.includes(ROLES.PRO);
+  const { emails, loans } = currentUser;
+  const userIsPro = Roles.userIsInRole(currentUser, ROLES.PRO);
 
   if (userIsPro) {
     return <ProAppPage loans={loans} insertLoan={insertLoan} />;
@@ -31,7 +33,7 @@ export const AppPage = ({ currentUser, insertLoan, loading }) => {
         </div>
       )}
 
-      {loans.length > 0 && <SuperDashboard currentUser={currentUser} />}
+      {loans.length > 0 && <SuperDashboard />}
 
       {loans.length === 0 && (
         <WelcomeScreen

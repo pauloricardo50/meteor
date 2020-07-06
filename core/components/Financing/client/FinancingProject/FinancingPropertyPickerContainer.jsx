@@ -16,7 +16,7 @@ const FinancingPropertyPickerContainer = compose(
     ({
       properties = [],
       promotionOptions = [],
-      loan: { _id: loanId, userId },
+      loan: { _id: loanId, userId, promotions },
       structure: {
         id: structureId,
         propertyId,
@@ -64,8 +64,10 @@ const FinancingPropertyPickerContainer = compose(
               <T id={`Forms.propertyType.${propertyType}`} />
             ),
           })),
-          ...promotionOptions.map(
-            ({ _id, name, promotion: { name: promotionName }, value }) => ({
+          ...promotionOptions.map(({ _id, name, value }) => {
+            const [{ name: promotionName }] = promotions;
+
+            return {
               id: _id,
               label: (
                 <T
@@ -79,8 +81,8 @@ const FinancingPropertyPickerContainer = compose(
                   {promotionName}
                 </span>
               ),
-            }),
-          ),
+            };
+          }),
           {
             id: 'add',
             dividerTop: true,
@@ -96,10 +98,7 @@ const FinancingPropertyPickerContainer = compose(
               loanId,
               userId: Meteor.microservice === 'admin' ? userId : undefined,
             })
-            .then(newId => {
-              handleChange(newId);
-              setOpenForm(false);
-            }),
+            .then(newId => handleChange(newId)),
       };
     },
   ),

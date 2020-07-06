@@ -24,7 +24,7 @@ const OrganisationAdder = ({ insertOrganisation }) => (
     layout={[
       {
         Component: Box,
-        title: <h4>Général</h4>,
+        title: <h5>Général</h5>,
         className: 'mb-32',
         layout: [
           { className: 'grid-col', fields: ['name', 'type'] },
@@ -33,7 +33,7 @@ const OrganisationAdder = ({ insertOrganisation }) => (
       },
       {
         Component: Box,
-        title: <h4>Adresse</h4>,
+        title: <h5>Adresse</h5>,
         className: 'mb-32 grid-2',
         fields: ['address1', 'address2', 'zipCode', 'city'],
       },

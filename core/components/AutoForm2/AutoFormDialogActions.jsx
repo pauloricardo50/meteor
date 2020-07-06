@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import { withState } from 'recompose';
@@ -6,6 +6,7 @@ import { withState } from 'recompose';
 import Button from '../Button';
 import T from '../Translation';
 import AutoFormDialogChildren from './AutoFormDialogChildren';
+import AutoFormDialogDelete from './AutoFormDialogDelete';
 import CustomSubmitField from './CustomSubmitField';
 
 const AutoFormDialogActions = (
@@ -15,38 +16,55 @@ const AutoFormDialogActions = (
     renderAdditionalActions,
     disableActions,
     setDisableActions,
+    onDelete,
+    deleteKeyword,
+    noCancel,
   },
   {
     uniforms: {
       state: { submitting },
     },
   },
-) => (
-  <DialogActions>
-    <AutoFormDialogChildren
-      renderFunc={() => (
+) => {
+  const [deleting, setDeleting] = useState(false);
+  return (
+    <DialogActions>
+      {!noCancel && (
         <Button onClick={handleClose} disabled={submitting || disableActions}>
           <T id="general.cancel" />
         </Button>
       )}
-    />
 
-    {renderAdditionalActions && (
-      <AutoFormDialogChildren
-        renderFunc={renderAdditionalActions}
-        closeDialog={handleClose}
-        onSubmit={onSubmit}
+      {onDelete && (
+        <AutoFormDialogDelete
+          disabled={submitting || disableActions}
+          handleClose={handleClose}
+          loading={deleting}
+          onDelete={onDelete}
+          toggleDeleting={v => {
+            setDeleting(v);
+            setDisableActions(v);
+          }}
+          deleteKeyword={deleteKeyword}
+        />
+      )}
+
+      {renderAdditionalActions && (
+        <AutoFormDialogChildren
+          renderFunc={renderAdditionalActions}
+          closeDialog={handleClose}
+          onSubmit={onSubmit}
+          setDisableActions={setDisableActions}
+          disabled={submitting || disableActions}
+        />
+      )}
+      <CustomSubmitField
         setDisableActions={setDisableActions}
-        disabled={submitting || disableActions}
+        disableActions={disableActions}
       />
-    )}
-    <CustomSubmitField
-      setDisableActions={setDisableActions}
-      disableActions={disableActions}
-    />
-  </DialogActions>
-);
-
+    </DialogActions>
+  );
+};
 AutoFormDialogActions.contextTypes = {
   uniforms: PropTypes.shape({
     state: PropTypes.shape({

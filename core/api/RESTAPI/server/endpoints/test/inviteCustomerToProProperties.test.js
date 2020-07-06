@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { checkEmails } from '../../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import {
   PROPERTY_CATEGORY,
@@ -94,7 +93,13 @@ describe('REST: inviteCustomerToProProperties', function() {
     resetDatabase();
     generator({
       users: [
-        { _id: 'admin', _factory: 'admin' },
+        {
+          _id: 'admin',
+          _factory: 'admin',
+
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
+        },
         {
           _factory: 'pro',
           _id: 'pro',
@@ -113,6 +118,8 @@ describe('REST: inviteCustomerToProProperties', function() {
             },
           ],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -130,6 +137,8 @@ describe('REST: inviteCustomerToProProperties', function() {
             },
           ],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -137,6 +146,8 @@ describe('REST: inviteCustomerToProProperties', function() {
           emails: [{ address: 'pro3@org2.com', verified: true }],
           organisations: [{ _id: 'org2', $metadata: { isMain: true } }],
           assignedEmployee: { _id: 'admin' },
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
       ],
     });

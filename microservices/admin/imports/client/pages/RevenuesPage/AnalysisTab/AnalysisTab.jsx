@@ -1,7 +1,7 @@
 import 'react-pivottable/pivottable.css';
 
 import React, { useEffect, useState } from 'react';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import PivotTableUI from 'react-pivottable/PivotTableUI';
 import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
 import TableRenderers from 'react-pivottable/TableRenderers';
@@ -15,7 +15,8 @@ import SavedAnalyses from './SavedAnalyses';
 
 const PlotlyRenderers = createPlotlyRenderers(Plot);
 
-const AnalysisTab = ({ intl: { formatMessage } }) => {
+const AnalysisTab = () => {
+  const { formatMessage } = useIntl();
   const [state, setState] = useState();
   const [queuedState, setQueuedState] = useState();
   const [collection, setCollection] = useState();
@@ -44,15 +45,15 @@ const AnalysisTab = ({ intl: { formatMessage } }) => {
       </div>
 
       <div className="flex sb">
-        {!loading ? (
+        {loading ? (
+          <Loading />
+        ) : (
           <PivotTableUI
             data={data}
             onChange={setState}
             renderers={{ ...TableRenderers, ...PlotlyRenderers }}
             {...state}
           />
-        ) : (
-          <Loading />
         )}
         <SavedAnalyses
           setState={setQueuedState}
@@ -63,4 +64,4 @@ const AnalysisTab = ({ intl: { formatMessage } }) => {
   );
 };
 
-export default injectIntl(AnalysisTab);
+export default AnalysisTab;

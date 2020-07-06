@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { expect } from 'chai';
 
+import { resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import RESTAPI from '../../RESTAPI';
 import {
@@ -67,17 +67,25 @@ describe('REST: getUser', function() {
             { _id: 'org', $metadata: { isMain: true } },
             { _id: 'org2' },
           ],
+          proProperties: [{ _id: 'property' }],
+          promotions: [{ _id: 'promotion' }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
           _id: 'pro2',
           organisations: [{ _id: 'org2' }],
           emails: [{ address: 'pro2@org2.com', verified: true }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
           _id: 'pro3',
           organisations: [{ _id: 'org3' }],
+          firstName: 'TestFirstName',
+          lastName: 'TestLastName',
         },
         {
           _factory: 'pro',
@@ -100,6 +108,8 @@ describe('REST: getUser', function() {
             _id: 'admin',
             _factory: 'admin',
             emails: [{ address: 'admin@e-potek.ch', verified: true }],
+            firstName: 'TestFirstName',
+            lastName: 'TestLastName',
           },
         },
         {
@@ -110,6 +120,26 @@ describe('REST: getUser', function() {
           emails: [{ address: 'user2@test.com', verified: true }],
           referredByUserLink: 'pro2',
           referredByOrganisationLink: 'org',
+        },
+        {
+          _id: 'user3',
+          firstName: 'firstName3',
+          lastName: 'lastName3',
+          phoneNumbers: ['+41 22 566 01 10'],
+          emails: [{ address: 'user3@test.com', verified: true }],
+          referredByUserLink: 'pro3',
+          referredByOrganisationLink: 'org3',
+          loans: [{ propertyIds: ['property'] }],
+        },
+        {
+          _id: 'user4',
+          firstName: 'firstName4',
+          lastName: 'lastName4',
+          phoneNumbers: ['+41 22 566 01 10'],
+          emails: [{ address: 'user4@test.com', verified: true }],
+          referredByUserLink: 'pro3',
+          referredByOrganisationLink: 'org3',
+          loans: [{ promotionLinks: [{ _id: 'promotion' }] }],
         },
       ],
     });
@@ -129,7 +159,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName1',
       name: 'FirstName1 LastName1',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      assignedRoles: ['user'],
       assignedEmployee: {
         _id: 'admin',
         _collection: 'users',
@@ -157,7 +187,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      assignedRoles: ['user'],
     });
   });
 
@@ -175,7 +205,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      assignedRoles: ['user'],
     });
   });
 
@@ -193,7 +223,7 @@ describe('REST: getUser', function() {
       lastName: 'LastName2',
       name: 'FirstName2 LastName2',
       phoneNumbers: ['+41 22 566 01 10'],
-      roles: ['user'],
+      assignedRoles: ['user'],
     });
   });
 
@@ -209,12 +239,12 @@ describe('REST: getUser', function() {
 
   it('returns an error when user does not exist', async () => {
     const response = await getUser({
-      email: 'user3@test.com',
+      email: 'user5@test.com',
       userId: 'pro',
     });
 
     expect(response.status).to.equal(404);
-    expect(response.message).to.include('"user3@test.com"');
+    expect(response.message).to.include('"user5@test.com"');
   });
 
   it('returns user from the same organisation', async () => {
@@ -231,7 +261,41 @@ describe('REST: getUser', function() {
       lastName: '4',
       name: 'Pro 4',
       phoneNumbers: ['+41 12345'],
-      roles: ['pro'],
+      assignedRoles: ['pro'],
+    });
+  });
+
+  it('returns incomplete user when pro has access to one property of the user', async () => {
+    const user = await getUser({
+      email: 'user3@test.com',
+      userId: 'pro',
+    });
+
+    expect(user).to.deep.equal({
+      _id: 'user3',
+      _collection: 'users',
+      email: 'user3@test.com',
+      firstName: 'FirstName3',
+      lastName: 'LastName3',
+      name: 'FirstName3 LastName3',
+      assignedRoles: ['user'],
+    });
+  });
+
+  it('returns incomplete user when pro has access to one promotion of the user', async () => {
+    const user = await getUser({
+      email: 'user4@test.com',
+      userId: 'pro',
+    });
+
+    expect(user).to.deep.equal({
+      _id: 'user4',
+      _collection: 'users',
+      email: 'user4@test.com',
+      firstName: 'FirstName4',
+      lastName: 'LastName4',
+      name: 'FirstName4 LastName4',
+      assignedRoles: ['user'],
     });
   });
 });

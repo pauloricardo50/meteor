@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const analyticsLogin = new Method({
@@ -6,6 +8,7 @@ export const analyticsLogin = new Method({
   params: {
     type: String,
   },
+  hideClientError: true,
 });
 
 export const analyticsPage = new Method({
@@ -19,14 +22,16 @@ export const analyticsPage = new Method({
     queryString: Object,
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsVerifyEmail = new Method({
   name: 'analyticsVerifyEmail',
   params: {
-    trackingId: String,
+    trackingId: Match.Maybe(String), // Can be optional if cookies are blocked
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsCTA = new Method({
@@ -39,6 +44,18 @@ export const analyticsCTA = new Method({
     route: String,
     queryParams: Object,
     queryString: Object,
+  },
+  doNotRefetchQueries: true,
+  hideClientError: true,
+});
+
+export const analyticsOpenedIntercom = new Method({
+  name: 'analyticsOpenedIntercom',
+  params: {
+    trackingId: Match.Maybe(String),
+    lastPageTitle: Match.Maybe(String),
+    lastPagePath: Match.Maybe(String),
+    lastPageMicroservice: Match.Maybe(String),
   },
   doNotRefetchQueries: true,
 });

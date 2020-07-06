@@ -14,14 +14,7 @@ export default compose(
   ),
   withRouter,
   withProps(
-    ({
-      dontShowAgain,
-      rerender,
-      rerenderState,
-      loan: { _id: loanId },
-      page,
-      history,
-    }) => ({
+    ({ dontShowAgain, rerender, loan: { _id: loanId }, page, history }) => ({
       handleClick: () => {
         window.hideWelcomeScreen = true;
 
@@ -32,7 +25,7 @@ export default compose(
           // Else, this is shown instead of the dashboard, so hide it using the
           // `window` object, but react does not re-render when you change window
           // So toggling this boolean state does the trick
-          rerender(!rerenderState);
+          rerender(s => !s);
         }
 
         if (dontShowAgain) {

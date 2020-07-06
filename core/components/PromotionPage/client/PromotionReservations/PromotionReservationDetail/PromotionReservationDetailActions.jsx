@@ -1,7 +1,6 @@
 import React from 'react';
 
 import colors from '../../../../../config/colors';
-import Button from '../../../../Button';
 import ConfirmMethod from '../../../../ConfirmMethod';
 import T from '../../../../Translation';
 import PromotionLotReservationForm from '../../PromotionLotDetail/PromotionLotLoansTable/PromotionLotReservation/PromotionLotReservationForm';
@@ -23,7 +22,13 @@ const PromotionReservationDetailActions = ({
   confirmReservation,
   sellPromotionLot,
 }) => (
-  <div className="flex center mt-16">
+  <div
+    className="flex center mt-16"
+    onClick={e => {
+      e.stopPropagation();
+      e.preventDefault();
+    }}
+  >
     {canUploadReservationAgreement && (
       <PromotionLotReservationForm
         agreementDuration={agreementDuration}

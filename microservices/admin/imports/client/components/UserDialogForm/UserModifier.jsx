@@ -1,15 +1,22 @@
-import React from 'react';
+import { Roles } from 'meteor/alanning:roles';
 
+import React from 'react';
+import { withProps } from 'recompose';
+
+import {
+  updateUser,
+  userUpdateOrganisations,
+} from 'core/api/users/methodDefinitions';
+import { ROLES } from 'core/api/users/userConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 
 import { userFormLayout } from './UserAdder';
-import UserDialogFormContainer from './UserDialogFormContainer';
+import { userFormSchema } from './userDialogFormHelpers';
 
-const UserModifier = ({ schema, user, editUser, labels }) => (
+const UserModifier = ({ user, editUser }) => (
   <AutoFormDialog
-    // Emails should not be modified like this, but with EmailModifier
-    schema={schema.omit('email', 'assignedEmployeeId', 'sendEnrollmentEmail')}
+    schema={userFormSchema}
     model={user}
     onSubmit={editUser}
     buttonProps={{
@@ -17,10 +24,29 @@ const UserModifier = ({ schema, user, editUser, labels }) => (
       raised: true,
       primary: true,
     }}
-    autoFieldProps={{ labels }}
-    layout={userFormLayout[0].layout}
+    layout={userFormLayout}
     title={<T id="UserModifier.dialogTitle" />}
   />
 );
 
-export default UserDialogFormContainer(UserModifier);
+const updateOrganisations = ({ userId, organisations = [] }) =>
+  userUpdateOrganisations.run({
+    userId,
+    newOrganisations: organisations.map(({ _id, $metadata: metadata }) => ({
+      _id,
+      metadata,
+    })),
+  });
+
+export default withProps(({ user }) => ({
+  editUser: data => {
+    const { organisations = [], ...object } = data;
+    return updateUser
+      .run({ userId: user._id, object })
+      .then(
+        () =>
+          !Roles.userIsInRole(user, ROLES.USER) &&
+          updateOrganisations({ userId: user._id, organisations }),
+      );
+  },
+}))(UserModifier);

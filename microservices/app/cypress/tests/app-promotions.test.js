@@ -23,27 +23,23 @@ describe('App Promotions', () => {
 
     cy.get('.promotion-lots-table table tbody tr').should('have.length', 5);
 
-    cy.get('input[type=checkbox]')
-      .first()
-      .click();
+    cy.get('input[type=checkbox]').first().click();
 
     cy.get('.promotion-options-table table tbody tr').should('have.length', 1);
 
-    cy.get('input[type=checkbox]')
-      .first()
-      .click();
+    cy.wait(1000);
+
+    cy.get('input[type=checkbox]').first().click();
 
     cy.contains('Vous devez choisir au moins un lot').should('exist');
 
-    cy.get('input[type=checkbox]')
-      .eq(1)
-      .click();
+    cy.get('input[type=checkbox]').eq(1).click();
 
     cy.get('.promotion-options-table table tbody tr').should('have.length', 2);
 
-    cy.contains('Réserver')
-      .first()
-      .click();
+    cy.wait(1000);
+
+    cy.contains('Mes lots').parents('div').contains('Réserver').first().click();
     cy.contains('Confirmer').click();
     cy.contains('Réservation en cours').should('exist');
   });

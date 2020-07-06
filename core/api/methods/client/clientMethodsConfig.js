@@ -24,6 +24,10 @@ const handleError = ({ config, params, result, error }) => {
         : '',
   });
 
+  if (config.hideClientError) {
+    return;
+  }
+
   import('../../../utils/message').then(({ default: message }) => {
     message.error(error.reason || error.message, 8);
   });

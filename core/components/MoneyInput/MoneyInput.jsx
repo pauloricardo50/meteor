@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import MaskedInput from 'react-text-mask';
 
-import { toDecimalNumber, toNumber } from '../../utils/conversionFunctions';
+import {
+  toDecimalNumber,
+  toNegativeNumber,
+  toNumber,
+} from '../../utils/conversionFunctions';
 import {
   swissFrancDecimalNegativeMask,
   swissFrancMask,
@@ -25,10 +29,22 @@ const MoneyInput = ({
   onChange,
   required,
   className,
+  value,
   ...props
 }) => {
+  const [maskedValue, setMaskedValue] = useState(value);
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
-  const parse = decimal ? toDecimalNumber : toNumber;
+  const parse = decimal
+    ? toDecimalNumber
+    : negative
+    ? toNegativeNumber
+    : toNumber;
+
+  useEffect(() => {
+    if (parse(maskedValue) !== value) {
+      setMaskedValue(value);
+    }
+  }, [value]);
 
   let mask;
   if (decimal) {
@@ -43,21 +59,28 @@ const MoneyInput = ({
     mask = swissFrancMask;
   }
 
+  const handleChange = event => {
+    setMaskedValue(event.target.value);
+    onChange(parse(event.target.value));
+  };
+
   return (
     <FormControl
       className={cx('money-input', className)}
       required={required}
       fullWidth={fullWidth}
       margin={margin}
+      size="small"
     >
       {label && <InputLabel ref={inputLabelRef}>{label}</InputLabel>}
       <Input
         labelWidth={labelWidth}
         startAdornment={<InputAdornment position="start">CHF</InputAdornment>}
-        onChange={event => onChange(parse(event.target.value))}
+        onChange={handleChange}
         type="tel"
         inputComponent={MaskedInput}
         inputProps={{ mask }}
+        value={maskedValue}
         {...props}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}

@@ -31,7 +31,14 @@ const NewUsersStat = ({
     value={<CountUp end={newUsers.count} />}
     increment={<Percent showPlus value={newUsers.change} />}
     positive={newUsers.change > 0}
-    title="Nouveaux clients"
+    title={
+      <div className="text-center">
+        <div>Nouveaux clients</div>
+        <div>
+          <small className="secondary">{period} derniers jours</small>
+        </div>
+      </div>
+    }
     large
     top={
       <>
@@ -49,6 +56,7 @@ const NewUsersStat = ({
             ]}
             onChange={setPeriod}
             value={period}
+            className="mr-8"
           />
           <Select
             label="Email vérifié?"
@@ -87,12 +95,14 @@ export default compose(
     query: newUsers,
     dataName: 'newUsers',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    deps: ({ period, verified }) => [period, verified],
     refetchOnMethodCall: false,
   }),
   withSmartQuery({
     query: userHistogram,
     dataName: 'userHistogram',
     params: ({ period, verified }) => ({ period, roles: ROLES.USER, verified }),
+    deps: ({ period, verified }) => [period, verified],
     refetchOnMethodCall: false,
   }),
 )(NewUsersStat);

@@ -20,13 +20,17 @@ export const ALLOWED_FILE_TYPES_TEMP = [
   'application/pdf',
 ];
 
+export const ALLOWED_FILE_TYPES_DISPLAYABLE = ['image/png', 'image/jpeg'];
+
 export const ONE_KB = 1024;
 
 // 16 MB (use null for unlimited), https://community.exoscale.com/api/sos/
 export const MAX_FILE_SIZE = 16 * ONE_KB * ONE_KB;
+export const MAX_DISPLAYABLE_FILE_SIZE = 500 * ONE_KB;
 
 export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
 export const SLINGSHOT_DIRECTIVE_NAME_TEMP = 'exoscale-temp';
+export const SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE = 'exoscale-displayable';
 
 export const EXOSCALE_PATH = 'sos-ch-dk-2.exo.io';
 
@@ -104,11 +108,6 @@ export const BORROWER_DOCUMENTS = {
   IDENTITY: 'IDENTITY',
   INSURANCE_3A_STATEMENT: 'INSURANCE_3A_STATEMENT',
   INSURANCE_3B_STATEMENT: 'INSURANCE_3B_STATEMENT',
-  // INSURANCE_BILLS: 'INSURANCE_BILLS',
-  // INSURANCE_CORRESPONDENCE: 'INSURANCE_CORRESPONDENCE',
-  // INSURANCE_MANDATE: 'INSURANCE_MANDATE',
-  // INSURANCE_POLICY: 'INSURANCE_POLICY',
-  // INSURANCE_SIGNED_PROPOSAL: 'INSURANCE_SIGNED_PROPOSAL',
   INVESTMENT_PROPERTY_RENT_JUSTIFICATION:
     'INVESTMENT_PROPERTY_RENT_JUSTIFICATION',
   LAST_SALARIES: 'LAST_SALARIES',
@@ -265,6 +264,7 @@ export const DOCUMENTS_CATEGORIES = {
     PROPERTY_DOCUMENTS.SHARE_PLANS,
     PROPERTY_DOCUMENTS.SHARE_WORKS,
   ],
+  CLOSING: [], // Used by the closing checklists
 };
 
 export const S3_ACLS = {
@@ -292,4 +292,8 @@ export const FILE_ROLES = {
   USER: 'user',
   PRO: 'pro',
   ADMIN: 'admin',
+};
+
+export const DISPLAYABLE_FILES = {
+  [PROPERTY_DOCUMENTS.PROPERTY_PICTURES]: { maxSizeOverride: MAX_FILE_SIZE },
 };

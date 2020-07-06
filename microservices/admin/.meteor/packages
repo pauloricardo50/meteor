@@ -26,7 +26,7 @@ tmeasday:acceptance-test-driver
 
 
 # User Accounts
-alanning:roles@1.2.19
+alanning:roles@2.1.0
 accounts-password
 epotek:accounts-ui
 email
@@ -57,5 +57,5 @@ underscore
 matb33:collection-hooks@1.0.1
 littledata:synced-cron
 cultofcoders:grapher-react
-montiapm:agent
+montiapm:agent@2.39.0-beta.5
 zodern:standard-minifier-js@4.0.0-beta.5

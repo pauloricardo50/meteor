@@ -3,11 +3,13 @@ import countries from 'i18n-iso-countries';
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/autoFormConstants';
+import T from '../../components/Translation';
 import {
   COMMON_COUNTRIES,
   getSortedCountriesCodes,
 } from '../../utils/countriesUtils';
 import zipcodes from '../../utils/zipcodes';
+import { getCitiesFromZipCode } from '../gpsStats/methodDefinitions';
 import { CANTONS } from '../loans/loanConstants';
 import { autoValueSentenceCase } from './sharedSchemaValues';
 
@@ -44,6 +46,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
   'additionalDocuments.$.category': { type: String, optional: true },
   'additionalDocuments.$.tooltip': { type: String, optional: true },
+  'additionalDocuments.$.checklistItemId': { type: String, optional: true },
 });
 
 export const address = {
@@ -63,7 +66,26 @@ export const address = {
     min: 1000,
     max: 99999,
   },
-  city: { type: String, optional: true, autoValue: autoValueSentenceCase },
+  city: {
+    type: String,
+    optional: true,
+    autoValue: autoValueSentenceCase,
+    uniforms: {
+      recommendedValues: ({ zipCode = '' }) =>
+        String(zipCode).length === 4
+          ? getCitiesFromZipCode.run({ zipCode })
+          : [null],
+      withCustomOther: true,
+      transform: city => {
+        if (city === 'other') {
+          return <T id="general.other" />;
+        }
+        return city || 'Aucun résultat trouvé';
+      },
+      displayEmtpy: true,
+      allowNull: true,
+    },
+  },
   country: {
     type: String,
     optional: true,

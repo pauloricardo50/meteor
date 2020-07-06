@@ -23,14 +23,8 @@ const getCalculatorFunc = ({ loan, lenderRules = [] }, structureId) => {
   return Calculator;
 };
 
-const getLenderRules = ({ loan, lenderRules }) => {
-  let finalLenderRules = lenderRules;
-  if (loan && loan.structure && loan.structure.offerId) {
-    finalLenderRules = loan.structure.offer.lender.organisation.lenderRules;
-  }
-
-  return finalLenderRules;
-};
+const getLenderRules = ({ loan, lenderRules }) =>
+  lenderRules || (loan && Calculator.selectLenderRules({ loan }));
 
 // Memoize calculator creation, because it takes a lot of effort to recreate it
 // Calculation with lenderRules takes roughly 6ms, taken down to 0.01ms with memoization
@@ -97,9 +91,10 @@ const withLenderRules = Component => {
   const WrappedComponent = withSmartQuery({
     query,
     params: getParams,
-    queryOptions: { shouldRefetch: () => false, loadOnRefetch: false },
     refetchOnMethodCall: false,
     dataName: 'lenderRules',
+    loadOnRefetch: false,
+    deps: ({ loan }) => [loan.hasPromotion, loan?.structure?.offerId],
   })(Component);
 
   return props => {

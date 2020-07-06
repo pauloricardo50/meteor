@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, mapProps, withProps } from 'recompose';
 
 import { withSmartQuery } from '../../api/containerToolkit';
@@ -17,11 +18,12 @@ export default compose(
     simple,
     loan,
   })),
+  Component => props => <Component {...props} key={props.propertyId} />,
   withSmartQuery({
     query: userProperty,
     params: ({ propertyId }) => ({ _id: propertyId }),
     // Don't refetch this since it will get the opengraph data
-    queryOptions: { reactive: false, single: true, shouldRefetch: () => false },
+    queryOptions: { single: true },
     dataName: 'property',
   }),
   withProps(({ property }) => ({

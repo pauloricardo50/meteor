@@ -1,5 +1,6 @@
-import { injectIntl } from 'react-intl';
-import { compose, withProps } from 'recompose';
+import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { withProps } from 'recompose';
 
 import { toMoney } from '../../../../utils/conversionFunctions';
 import {
@@ -88,10 +89,12 @@ const getConfig = (promotionLots = [], formatMessage) => ({
   ],
 });
 
-export default compose(
-  injectIntl,
-  withProps(({ promotionLots = [], intl: { formatMessage } }) => ({
+export default withProps(({ promotionLots = [] }) => {
+  const { formatMessage } = useIntl();
+  const data = useMemo(() => getData(promotionLots), []);
+
+  return {
     config: getConfig(promotionLots, formatMessage),
-    data: getData(promotionLots),
-  })),
-);
+    data,
+  };
+});

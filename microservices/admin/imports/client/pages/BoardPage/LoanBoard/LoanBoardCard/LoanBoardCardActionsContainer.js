@@ -1,4 +1,4 @@
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { ACTIVITY_TYPES } from 'core/api/activities/activityConstants';
 import { activityInsert } from 'core/api/activities/methodDefinitions';
@@ -6,26 +6,20 @@ import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import { taskInsert } from 'core/api/tasks/methodDefinitions';
 
 import { getActivitySchema } from '../../../../components/AdminTimeline/AdminActivityAdder';
-import { schema } from '../../../../components/TasksTable/TaskModifier';
+import { taskFormSchema } from '../../../../components/TaskForm/taskFormHelpers';
 
-const taskSchema = schema.omit('assigneeLink', 'status');
+const taskSchema = taskFormSchema.omit('assigneeLink', 'status');
 
 export default compose(
-  withState('openTask', 'setOpenTask', false),
-  withState('openActivity', 'setOpenActivity', false),
-  withProps(({ loanId, setOpenTask, setOpenActivity }) => ({
+  withProps(({ loanId }) => ({
     insertTask: values =>
-      taskInsert
-        .run({
-          object: { docId: loanId, collection: LOANS_COLLECTION, ...values },
-        })
-        .then(() => setOpenTask(false)),
+      taskInsert.run({
+        object: { docId: loanId, collection: LOANS_COLLECTION, ...values },
+      }),
     insertActivity: values =>
-      activityInsert
-        .run({
-          object: { loanLink: { _id: loanId }, ...values },
-        })
-        .then(() => setOpenActivity(false)),
+      activityInsert.run({
+        object: { loanLink: { _id: loanId }, ...values },
+      }),
     taskSchema,
     activitySchema: getActivitySchema(
       type =>

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import { faPlus } from '@fortawesome/pro-light-svg-icons/faPlus';
@@ -9,23 +11,13 @@ import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promot
 import colors from '../../../../config/colors';
 import ConfirmMethod from '../../../ConfirmMethod';
 import T from '../../../Translation';
+import { usePromotion } from '../PromotionPageContext';
 
-const RequestReservation = ({
-  promotionOption,
-  promotionLotName,
-  status,
-  buttonProps,
-}) => {
-  const {
-    _id: promotionOptionId,
-    loan: { promotions = [] },
-  } = promotionOption;
+const isApp = Meteor.microservice === 'app';
 
-  const [promotion] = promotions;
-  const {
-    $metadata: { invitedBy },
-    users = [],
-  } = promotion;
+const RequestReservation = ({ promotionOption, buttonProps, promotion }) => {
+  const { promotion: { users = [] } = promotion } = usePromotion();
+  const { _id: promotionOptionId, invitedBy, name, status } = promotionOption;
 
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });
@@ -63,7 +55,7 @@ const RequestReservation = ({
           </span>
           <T
             id="PromotionPage.lots.requestReservation.description"
-            values={{ promotionLotName, proName }}
+            values={{ promotionLotName: name, proName, isApp }}
           />
         </div>
       }
