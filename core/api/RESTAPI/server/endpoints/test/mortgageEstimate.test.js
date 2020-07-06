@@ -48,12 +48,7 @@ describe('REST: mortgageEstimate', function() {
   let clock;
 
   before(function() {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      api.start();
-    }
+    api.start();
   });
 
   after(() => {
