@@ -50,7 +50,7 @@ const cleanCollection = async collection => {
 };
 export const cleanAllData = async () => {
   console.log('Data cleaning Start...');
-  const collections = Mongo.Collection.getAll();
+  const collections = Mongo.Collection.find({}).fetch(); // Needs all fields for data cleaning..
   await Promise.all(collections.map(cleanCollection));
   console.log('Data cleaning Complete! :)');
 };

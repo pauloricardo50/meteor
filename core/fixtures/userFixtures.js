@@ -139,9 +139,9 @@ export const createAdmins = () => {
 
 export const getFakeUsersIds = () => {
   const regex = /^(admin|dev|user)-[1-9]|10@e-potek.ch/;
-  const allUsers = UserService.getAll();
+  const allUsers = UserService.fetch({ email: 1 });
   const fakeUserIds = allUsers
-    .filter(user => regex.test(user.emails[0].address))
+    .filter(user => regex.test(user.email))
     .map(fakeUser => fakeUser._id);
   return fakeUserIds;
 };

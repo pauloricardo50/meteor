@@ -1,8 +1,6 @@
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
-import { adminOffers, loanOffers } from '../queries';
-
-exposeQuery({ query: adminOffers, options: { allowFilterById: true } });
+import { loanOffers } from '../queries';
 
 exposeQuery({
   query: loanOffers,

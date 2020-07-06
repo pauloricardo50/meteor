@@ -1,16 +1,9 @@
 import {
-  adminUser,
   appUser as appUserFragment,
   proUser as proUserFragment,
 } from '../fragments';
 import { USER_QUERIES } from './userConstants';
 import Users from '.';
-
-export const adminUsers = Users.createQuery(
-  USER_QUERIES.ADMIN_USERS,
-  { ...adminUser(), $options: { sort: { lastName: 1 } } },
-  { scoped: true },
-);
 
 export const appUser = Users.createQuery(
   USER_QUERIES.APP_USER,
