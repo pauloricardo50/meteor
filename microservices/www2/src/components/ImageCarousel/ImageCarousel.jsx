@@ -36,8 +36,10 @@ const ImageCarousel = ({ primary, fields }) => {
       <div className="current-image">
         {/* TODO: add fade transtion animation wrapper ? */}
         <img
+          className="animated fadeIn"
           src={fields[currIndex].image?.url}
           alt={fields[currIndex].image?.alt}
+          key={fields[currIndex].image?.url}
         />
       </div>
     </section>

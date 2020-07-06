@@ -64,8 +64,23 @@
   }
 
   .current-image {
+    min-height: 300px;
     img {
       max-width: 100%;
+    }
+  }
+
+  @media screen and (max-width: $med) {
+    .content {
+      margin-bottom: 0;
+
+      h1 {
+        margin-bottom: 0;
+      }
+    }
+
+    hr {
+      margin: 0;
     }
   }
 

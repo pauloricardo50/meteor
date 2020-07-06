@@ -28,10 +28,10 @@ body {
 section,
 .section {
   // TODO: get standard section vertical spacing for mobile
-  padding: 50px 0;
+  padding: 16px 0;
 
   @media (min-width: $med) {
-    padding: 128px 0;
+    padding: 96px 0;
   }
 
   &.no-top-pad {

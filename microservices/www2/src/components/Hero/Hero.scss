@@ -1,7 +1,9 @@
 .equal-split {
   &__image {
-    height: 273px;
-    background-size: cover;
+    height: 240px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 
   &__content {
@@ -12,7 +14,7 @@
       font-size: 28px;
       font-weight: normal;
       font-style: normal;
-      line-height: 1.43;
+      line-height: 1.10;
       letter-spacing: normal;
       color: $body-text;
 
@@ -44,7 +46,6 @@
       flex-basis: 50%;
       height: auto;
       min-height: 400px;
-      background-size: cover;
     }
 
     &__content {

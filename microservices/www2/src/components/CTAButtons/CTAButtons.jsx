@@ -1,7 +1,9 @@
-import React from 'react';
-import Button from '../Button';
-import { linkResolver } from '../../utils/linkResolver';
 import './CTAButtons.scss';
+
+import React from 'react';
+
+import { linkResolver } from '../../utils/linkResolver';
+import Button from '../Button';
 
 const CTAButtons = ({ buttons }) => {
   if (!buttons.length) return null;
@@ -36,23 +38,21 @@ const CTAButtons = ({ buttons }) => {
 
         if (linkType === 'Link.web') {
           return (
-            <a
+            <Button
+              component="a"
+              className="cta--button"
+              raised={ctaStyle !== 'flat'}
+              primary={ctaStyle === 'primary'}
+              secondary={ctaStyle === 'secondary'}
               key={idx}
               href={button.cta_link.url || undefined}
               target={`${button.cta_text}-tab`}
             >
-              <Button
-                className="cta--button"
-                raised={ctaStyle !== 'flat'}
-                primary={ctaStyle === 'primary'}
-                secondary={ctaStyle === 'secondary'}
-              >
-                {/* TODO: replace text with icon */}
-                {button.cta_icon && <div>icon: {button.cta_icon}</div>}
+              {/* TODO: replace text with icon */}
+              {button.cta_icon && <div>icon: {button.cta_icon}</div>}
 
-                {button.cta_text}
-              </Button>
-            </a>
+              {button.cta_text}
+            </Button>
           );
         }
 
