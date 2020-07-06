@@ -1,15 +1,17 @@
 import React from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Menu from '@material-ui/core/Menu';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import IconButton from 'core/components/IconButton';
+
+import getMenuLinks from '../../utils/getMenuLinks';
 import LoginMenu from '../LoginMenu';
 import MenuItems from '../MenuItems';
-import getMenuLinks from '../../utils/getMenuLinks';
 
 const MainMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -17,7 +19,7 @@ const MainMenu = () => {
     setAnchorEl(null);
   };
 
-  const matches = useMediaQuery(theme => theme.breakpoints.down('md'));
+  const matches = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const menuLinks = getMenuLinks('main');
 
@@ -27,9 +29,9 @@ const MainMenu = () => {
         aria-controls="main-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        size="small"
         type="menu"
-        tooltip="menu"
+        tooltip="Menu"
+        className="top-nav-menu"
       />
 
       <Menu

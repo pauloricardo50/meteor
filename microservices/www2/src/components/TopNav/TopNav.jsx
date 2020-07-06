@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import AppBar from '@material-ui/core/AppBar';
-import { makeStyles } from '@material-ui/core/styles';
-import TopMenu from '../TopMenu';
-import MainMenu from '../MainMenu';
-import LoginMenu from '../LoginMenu';
-import Button from '../Button';
-import TopNavLogo from './TopNavLogo';
-import LanguageContext from '../../contexts/LanguageContext';
-import { getLanguageData } from '../../utils/languages';
 import './TopNav.scss';
 
-const useStyles = makeStyles(theme => ({
+import React, { useContext } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+import LanguageContext from '../../contexts/LanguageContext';
+import { getLanguageData } from '../../utils/languages';
+import Button from '../Button';
+import LoginMenu from '../LoginMenu';
+import MainMenu from '../MainMenu';
+import TopMenu from '../TopMenu';
+import TopNavLogo from './TopNavLogo';
+
+const useStyles = makeStyles((theme) => ({
   root: {
     flexDirection: 'row',
   },
@@ -19,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 const TopNav = () => {
   const [language] = useContext(LanguageContext);
-  const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
+  const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   return (
     <AppBar
@@ -29,20 +31,22 @@ const TopNav = () => {
       classes={useStyles()}
       className="top-nav"
     >
-      <div className="top-nav-left">
-        <MainMenu />
+      <div className="top-nav-content">
+        <div className="top-nav-left">
+          <MainMenu />
 
-        {matches && <TopMenu menuName="top-nav" />}
-      </div>
+          {matches && <TopMenu menuName="top-nav" />}
+        </div>
 
-      <TopNavLogo />
+        <TopNavLogo />
 
-      <div className="top-nav-right">
-        {matches && <LoginMenu />}
+        <div className="top-nav-right">
+          {matches && <LoginMenu />}
 
-        <Button className="cta--button" raised primary link to="/">
-          {getLanguageData(language).getALoanText}
-        </Button>
+          <Button className="cta--button" raised primary link to="/">
+            {getLanguageData(language).getALoanText}
+          </Button>
+        </div>
       </div>
     </AppBar>
   );
