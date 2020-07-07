@@ -52,6 +52,8 @@ const languageData = {
     rateType: {
       suffix: ' ans',
     },
+    'cityMarker.title': 'Région de {city}',
+    'cityMarker.count': '{count} dossiers en cours ou terminés',
   },
 };
 
