@@ -7,7 +7,6 @@ import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
 
 const ImageCarousel = ({ primary, fields }) => {
-  console.log('fields:', fields);
   const [currIndex, setCurrIndex] = useState(0);
   const { content, image, cta_text, cta_link } = fields[currIndex];
 
@@ -41,14 +40,12 @@ const ImageCarousel = ({ primary, fields }) => {
         )}
       </div>
 
-      <div className="current-image">
-        <img
-          className="animated fadeIn"
-          src={image?.url}
-          alt={image?.alt}
-          key={image?.url}
-        />
-      </div>
+      <div
+        className="current-image animated fadeIn"
+        style={{ backgroundImage: `url("${image?.url}")`, color: 'red' }}
+        aria-label={image?.alt}
+        key={image?.url}
+      />
     </section>
   );
 };
