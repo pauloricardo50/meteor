@@ -34,6 +34,7 @@
     "@fortawesome/react-fontawesome": "^0.1.10",
     "@material-ui/core": "4.9.13",
     "@material-ui/icons": "^4.9.1",
+    "@react-pdf/renderer": "^2.0.0-beta.6",
     "@testing-library/react": "^10.0.4",
     "antd": "^3.26.7",
     "archiver": "^4.0.1",

@@ -17,7 +17,6 @@ import '../../liveSync/server/exposures';
 import '../../loans/server/exposures';
 import '../../lots/server/exposures';
 import '../../monitoring/server/exposures';
-import '../../notifications/server/exposures';
 import '../../offers/server/exposures';
 import '../../organisations/server/exposures';
 import '../../promotionLots/server/exposures';

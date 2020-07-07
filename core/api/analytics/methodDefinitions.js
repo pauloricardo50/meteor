@@ -6,7 +6,7 @@ export const analyticsLogin = new Method({
   name: 'analyticsLogin',
   doNotRefetchQueries: true,
   params: {
-    type: String,
+    loginType: String,
   },
   hideClientError: true,
 });
@@ -28,7 +28,7 @@ export const analyticsPage = new Method({
 export const analyticsVerifyEmail = new Method({
   name: 'analyticsVerifyEmail',
   params: {
-    trackingId: Match.Maybe(String), // Can be optional if cookies are blocked
+    trackingId: Match.Maybe(Match.OneOf(String, null)), // Can be optional if cookies are blocked
   },
   doNotRefetchQueries: true,
   hideClientError: true,

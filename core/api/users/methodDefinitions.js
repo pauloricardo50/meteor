@@ -192,3 +192,8 @@ export const userPasswordReset = new Method({
 export const userVerifyEmail = new Method({
   name: 'userVerifyEmail',
 });
+
+export const getEnrollUrl = new Method({
+  name: 'getEnrollUrl',
+  params: { userId: String },
+});

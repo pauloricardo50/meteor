@@ -9,7 +9,7 @@ const breakpoints = createBreakpoints({});
 // TODO: override MUI breakpoints with e-Potek settings
 // https://material-ui.com/customization/breakpoints/#default-breakpoints
 
-const createTheme = ({ fontSize = 14 }) => {
+const createTheme = ({ fontSize = 14 } = {}) => {
   const theme = createMuiTheme(
     {
       props: {

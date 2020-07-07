@@ -54,13 +54,13 @@ describe('Single Loan Page', () => {
     cy.contains('button', 'Hypothèque').click();
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.tasks-table').should('not.exist');
+    cy.get('.tasks-data-table').should('not.exist');
 
     cy.contains('.single-loan-page-tasks button', 'Tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
-    cy.get('.tasks-table tr').should('have.length', 2);
-    cy.contains('.tasks-table', 'Cypress Task').should('exist');
+    cy.get('.tasks-data-table tr').should('have.length', 2);
+    cy.contains('.tasks-data-table', 'Cypress Task').should('exist');
   });
 
   it('should add lenders', () => {
@@ -154,7 +154,7 @@ describe('Single Loan Page', () => {
     cy.get('.checklist')
       .first()
       .find('.checklist-item')
-      .should('have.length', 7);
+      .should('have.length', 6);
 
     cy.get('[role=dialog] button[aria-label=Supprimer]').first().click();
     cy.contains('Confirmer').click();
@@ -162,7 +162,7 @@ describe('Single Loan Page', () => {
     cy.get('.checklist')
       .first()
       .find('.checklist-item')
-      .should('have.length', 6);
+      .should('have.length', 5);
 
     cy.get('[role=dialog]').contains('button', 'Ajouter').first().click();
     cy.get('input[name=title]').type('Do stuff');
@@ -173,6 +173,6 @@ describe('Single Loan Page', () => {
     cy.get('.checklist')
       .first()
       .find('.checklist-item')
-      .should('have.length', 7);
+      .should('have.length', 6);
   });
 });

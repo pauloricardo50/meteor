@@ -1,16 +1,10 @@
 import {
-  adminProperty,
   proProperty,
   proUser,
   userProperty as userPropertyFragment,
 } from '../fragments';
 import { PROPERTY_QUERIES } from './propertyConstants';
 import Properties from '.';
-
-export const adminProperties = Properties.createQuery(
-  PROPERTY_QUERIES.ADMIN_PROPERTIES,
-  { ...adminProperty(), $options: { sort: { name: 1 } } },
-);
 
 export const anonymousProperty = Properties.createQuery(
   PROPERTY_QUERIES.ANONYMOUS_PROPERTY,

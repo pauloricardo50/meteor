@@ -28,5 +28,6 @@ const formatMessage = (
 };
 
 const intl = { formatMessage };
+export { formatMessage };
 
 export default intl;
