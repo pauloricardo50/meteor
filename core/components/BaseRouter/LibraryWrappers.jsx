@@ -22,6 +22,7 @@ const LibraryWrappers = ({
       messages={messages}
       formats={formats}
       defaultLocale="fr"
+      onError={console.warn}
     >
       {children}
     </IntlProvider>

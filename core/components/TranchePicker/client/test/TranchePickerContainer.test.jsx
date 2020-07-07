@@ -11,7 +11,7 @@ describe('TranchePicker', () => {
   let props;
   const component = () =>
     mount(
-      <IntlProvider defaultLocale="fr">
+      <IntlProvider defaultLocale="fr" onError={console.warn}>
         <DefaultTranchePicker {...props} />
       </IntlProvider>,
     );
