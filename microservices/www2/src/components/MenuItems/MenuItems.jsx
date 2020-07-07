@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 
 const MenuItems = ({ menuLinks, subMenu }) =>
   menuLinks.map((menuLink, idx) => {
-    const classes = subMenu ? useStyles() : null;
+    const classes = useStyles();
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
     const primaryLabel = menuLink.primary?.label || menuLink.sub_label;
 
@@ -22,8 +22,9 @@ const MenuItems = ({ menuLinks, subMenu }) =>
         <MenuItem
           key={idx}
           component={Link}
-          classes={classes}
+          classes={subMenu && classes}
           to={linkResolver(primaryLink._meta)}
+          role="button"
         >
           {primaryLabel}
         </MenuItem>
@@ -32,7 +33,12 @@ const MenuItems = ({ menuLinks, subMenu }) =>
 
     if (primaryLink?._linkType === 'Link.web') {
       return (
-        <MenuItem key={idx} classes={classes} to={primaryLink.url}>
+        <MenuItem
+          key={idx}
+          classes={subMenu && classes}
+          to={primaryLink.url}
+          role="button"
+        >
           {primaryLabel}
         </MenuItem>
       );

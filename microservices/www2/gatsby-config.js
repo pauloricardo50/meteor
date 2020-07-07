@@ -9,6 +9,10 @@ module.exports = {
     siteUrl: `https://www.e-potek.ch`, // Necessary for the sitemap
   },
   plugins: [
+    {
+      resolve: `gatsby-plugin-material-ui`,
+      options: { stylesProvider: { injectFirst: true } },
+    },
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',

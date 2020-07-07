@@ -26,21 +26,6 @@ const createTheme = ({ fontSize = 14 } = {}) => {
         MuiButton: {
           root: {
             borderRadius: 4,
-            padding: '7px 6px 8px',
-            fontSize: '16px',
-            fontWeight: 'normal',
-            fontStyle: 'normal',
-            lineHeight: 1.44,
-            letterSpacing: 'normal',
-            textAlign: 'center',
-            [breakpoints.up('md')]: {
-              padding: '15px 12px 16px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontStyle: 'normal',
-              lineHeight: 1.44,
-              letterSpacing: '0.85px',
-            },
           },
           contained: {
             backgroundColor: 'white',
@@ -76,16 +61,6 @@ const createTheme = ({ fontSize = 14 } = {}) => {
             },
           },
         },
-        MuiExpansionPanel: {
-          root: {
-            border: 'none',
-            marginBottom: 8,
-            boxShadow: 'none',
-            '&:before': {
-              backgroundColor: 'transparent',
-            },
-          },
-        },
         MuiChip: {
           colorSecondary: {
             backgroundColor: 'red',
@@ -96,21 +71,20 @@ const createTheme = ({ fontSize = 14 } = {}) => {
             minWidth: 40,
           },
         },
-
         MuiListItem: {
           root: {
             margin: 4,
             width: 'calc(100% - 8px)',
             borderRadius: 4,
             '&$focusVisible': {
-              backgroundColor: colors.primary,
+              background: colors.primaryGradient,
               color: 'white',
               '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
               },
             },
             '&$selected, &$selected:hover': {
-              backgroundColor: colors.primary,
+              background: colors.primaryGradient,
               color: 'white',
               '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
@@ -119,7 +93,7 @@ const createTheme = ({ fontSize = 14 } = {}) => {
           },
           button: {
             '&:hover': {
-              backgroundColor: colors.primary,
+              background: colors.primaryGradient,
               color: 'white',
               '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
@@ -139,27 +113,27 @@ const createTheme = ({ fontSize = 14 } = {}) => {
         MuiMenuItem: {
           root: {
             '&:hover': {
-              backgroundColor: colors.primary,
+              background: colors.primaryGradient,
               color: 'white',
               '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
               },
             },
             '&:focus': {
-              backgroundColor: colors.primary,
+              background: colors.primaryGradient,
               color: 'white',
               '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
               },
             },
             '&.Mui-selected': {
-              backgroundColor: colors.mui.darkPrimary,
+              background: colors.primaryGradientDark,
               color: 'white',
               '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                 color: 'white',
               },
               '&:hover': {
-                backgroundColor: colors.mui.darkPrimary,
+                background: colors.primaryGradientDark,
                 color: 'white',
                 '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
                   color: 'white',
@@ -168,20 +142,21 @@ const createTheme = ({ fontSize = 14 } = {}) => {
             },
           },
         },
-
         MuiListSubheader: {
           root: {
             lineHeight: '2em',
             color: colors.title,
           },
         },
-        MuiListItemIcon: {
-          root: {},
-        },
         MuiDivider: {
           root: {
             width: 'calc(100% - 8px)',
             margin: '0 auto',
+          },
+        },
+        MuiIconButton: {
+          root: {
+            border: `solid 1px ${'#f2f2f2'}`,
           },
         },
       },
@@ -227,14 +202,14 @@ const createTheme = ({ fontSize = 14 } = {}) => {
   );
 
   // You need the theme object to change transitions
-  theme.overrides.MuiListItem.button.transition = theme.transitions.create(
-    ['background-color', 'color'],
-    { duration: theme.transitions.duration.shortest },
-  );
-  theme.overrides.MuiListItemIcon.root.transition = theme.transitions.create(
-    'color',
-    { duration: theme.transitions.duration.shortest },
-  );
+  // theme.overrides.MuiListItem.button.transition = theme.transitions.create(
+  //   ['background-color', 'color', 'background-image'],
+  //   { duration: theme.transitions.duration.shortest },
+  // );
+  // theme.overrides.MuiListItemIcon.root.transition = theme.transitions.create(
+  //   'color',
+  //   { duration: theme.transitions.duration.shortest },
+  // );
 
   return theme;
 };

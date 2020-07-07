@@ -5,6 +5,7 @@ const colors = {
   primaryArray: [0, 91, 234],
   primaryLight: '#5bb5ff',
   primaryGradient: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
+  primaryGradientDark: 'linear-gradient(to left, #5bb5ff, #0048bb)',
   backgroundLight: '#dbeeff',
   secondary: '#00c6ff',
   tertiary: '#001a8f',

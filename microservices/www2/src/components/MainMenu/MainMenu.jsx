@@ -11,7 +11,7 @@ import MenuItems from '../MenuItems';
 const MainMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -19,7 +19,7 @@ const MainMenu = () => {
     setAnchorEl(null);
   };
 
-  const matches = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const matches = useMediaQuery(theme => theme.breakpoints.down('md'));
 
   const menuLinks = getMenuLinks('main');
 
@@ -37,6 +37,7 @@ const MainMenu = () => {
       <Menu
         id="main-menu"
         anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}

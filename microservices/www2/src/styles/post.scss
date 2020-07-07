@@ -87,30 +87,15 @@
   }
 
   .back-to-blog {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 16px;
     position: absolute;
-    top: 25px;
-    font-size: 16px;
-    font-weight: 300;
-    font-style: normal;
-    line-height: 1.44;
-    letter-spacing: normal;
+    top: 16px;
+    left: calc((100% - 1200px - 16px) / 2);
 
-    @media (min-width: $med) {
-      top: 34px;
-    }
-
-    // TODO: replace with svg
-    &:before {
-      content: '←';
-      display: inline-block;
-      position: relative;
-      margin-right: 13px;
-      font-weight: bold;
-      color: #2e7eff;
-    }
-
-    a {
-      color: #000000;
+    svg {
+      color: $primary
     }
   }
 

@@ -1,5 +1,18 @@
 .blog-post-item {
+  border-bottom: 1px solid $border-grey;
+
   img {
     max-width: 100%;
+  }
+
+  h2 {
+    margin: 16px 0;
+    font-size: 20px;
+    line-height: 1.5em;
+    flex-grow: 1;
+  }
+
+  svg {
+    color: $primary;
   }
 }
