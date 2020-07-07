@@ -41,6 +41,7 @@ const MainMenu = () => {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        getContentAnchorEl={null}
       >
         <MenuItems menuLinks={menuLinks} />
 
