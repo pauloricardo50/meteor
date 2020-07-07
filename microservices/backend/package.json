@@ -107,6 +107,9 @@
     "mainModule": {
       "server": "server/main.js",
       "client": "client/main.js"
+    },
+    "testModule": {
+      "server": "server/server.test.js"
     }
   }
 }
