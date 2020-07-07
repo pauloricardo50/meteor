@@ -1,4 +1,13 @@
 .gps-stats {
+  align-items: center;
+  
+  &-map {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: auto;
+  }
+
   @media screen and (min-width: $med) {
     display: flex;
 
@@ -9,6 +18,8 @@
 
     &-map {
       flex-basis: 50%;
+      width: 500px;
+      height: 500px;
     }
   }
 }
