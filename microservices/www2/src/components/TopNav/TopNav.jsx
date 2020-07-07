@@ -47,7 +47,7 @@ const TopNav = () => {
         <div className="top-nav-right">
           {matches && <LoginMenu />}
 
-          <Button className="cta--button" raised primary link to="/">
+          <Button raised primary link to="/">
             {getLanguageData(language).getALoanText}
           </Button>
         </div>

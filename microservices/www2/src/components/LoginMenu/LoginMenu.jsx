@@ -1,22 +1,18 @@
+import './LoginMenu.scss';
+
 import React, { useContext, useState } from 'react';
+import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import PersonOutline from '@material-ui/icons/PersonOutline';
 import { makeStyles } from '@material-ui/core/styles';
+import PersonOutline from '@material-ui/icons/PersonOutline';
+
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import './LoginMenu.scss';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginRight: '48px',
-    fontSize: '16px',
-    fontWeight: 300,
-    fontStyle: 'normal',
-    lineHeight: 1.44,
-    letterSpacing: 'normal',
-    color: 'black',
+    marginRight: 8,
     '& [class*="MuiSvgIcon-root"]': {
       color: theme.palette.primary.main,
     },
@@ -48,7 +44,6 @@ const LoginMenu = ({ placement }) => {
         onClick={handleClick}
         variant="raised"
         color="primary"
-        size="large"
         startIcon={<PersonOutline />}
       >
         {getLanguageData(language).loginText}
