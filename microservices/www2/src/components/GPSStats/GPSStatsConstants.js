@@ -7,3 +7,8 @@ export const CITIES_COORDINATES = {
   '2000': { x: 370 / 1000, y: 330 / 1000 },
   '2800': { x: 510 / 1000, y: 120 / 1000 },
 };
+
+export const MARKER_SIZE_FACTOR = 0.1;
+export const MARKER_FONT_SIZE_FACTOR = 1.5 / 100;
+export const MARKER_LINE_HEIGHT_FACTOR = 1.4375 / 100;
+export const MARKER_COUNT_THRESHOLD = 10;
