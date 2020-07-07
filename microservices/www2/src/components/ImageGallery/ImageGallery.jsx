@@ -3,25 +3,36 @@ import './ImageGallery.scss';
 import React from 'react';
 import { RichText } from 'prismic-reactjs';
 
+import { linkResolver } from '../../utils/linkResolver';
+import Button from '../Button';
+
 const ImageGallery = ({ primary, fields }) => {
-  const galleryClasses = primary.logos ? 'gallery gallery--logos' : 'gallery';
-  const hasPrimaryContent = !!primary.content?.[0]?.text;
+  const { logos, section_id, content, cta_text, cta_link } = primary;
+  const galleryClasses = logos ? 'gallery gallery--logos' : 'gallery';
+  const hasPrimaryContent = !!content?.[0]?.text;
 
   return (
-    <section id={primary.section_id} className="image-gallery">
+    <section id={section_id} className="image-gallery">
       {hasPrimaryContent && (
-        <div className="content container">
-          {RichText.render(primary.content)}
-        </div>
+        <div className="content container">{RichText.render(content)}</div>
+      )}
+      {cta_text && (
+        <Button primary link to={linkResolver(cta_link?._meta)}>
+          {cta_text}
+        </Button>
       )}
 
       <div className={galleryClasses} aria-hidden="true">
         {fields.length &&
-          fields.map(({ image }, idx) => (
-            <div key={idx}>
-              <img src={image.url} alt={image.alt} />
-            </div>
-          ))}
+          fields.map(({ image, link = {} }, idx) => {
+            const Component = link?.url ? 'a' : 'div';
+
+            return (
+              <Component className="gallery-item" key={idx} href={link?.url}>
+                <img src={image.url} alt={image.alt} />
+              </Component>
+            );
+          })}
       </div>
     </section>
   );

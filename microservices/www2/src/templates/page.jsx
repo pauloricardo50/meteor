@@ -162,9 +162,30 @@ export const query = graphql`
               section_id
               content
               logos
+              cta_link {
+                _linkType
+                ... on PRISMIC__ExternalLink {
+                  url
+                  _linkType
+                }
+                ... on PRISMIC_Page {
+                  ...prismicPageFields
+                }
+              }
+              cta_text
             }
             fields {
               image
+              link {
+                _linkType
+                ... on PRISMIC__ExternalLink {
+                  url
+                  _linkType
+                }
+                ... on PRISMIC_Page {
+                  ...prismicPageFields
+                }
+              }
             }
           }
           ... on PRISMIC_PageBodyNewsletter_signup {
