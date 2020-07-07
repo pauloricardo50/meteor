@@ -479,11 +479,20 @@ class LoanService extends CollectionService {
     } = this.get(loanId, {
       referralId: 1,
       properties: { loans: { _id: 1 }, address1: 1, category: 1 },
-      borrowers: { loans: { _id: 1 }, name: 1 },
+      borrowers: {
+        loans: { _id: 1 },
+        name: 1,
+        $options: { sort: { createdAt: 1 } },
+      },
       anonymous: 1,
       assigneeLinks: 1,
     });
-    const user = UserService.get(userId, { assignedEmployee: { name: 1 } });
+    const user = UserService.get(userId, {
+      assignedEmployee: { name: 1 },
+      firstName: 1,
+      lastName: 1,
+      loans: { _id: 1 },
+    });
 
     let newAssignee;
 
@@ -572,6 +581,17 @@ class LoanService extends CollectionService {
           });
         }
       }
+    }
+
+    if ((user.loans?.length === 0 || !user.loans) && borrowers?.length > 0) {
+      // If this is the user's first loan, set his name on the borrower
+      BorrowerService.update({
+        borrowerId: borrowers[0]._id,
+        object: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+      });
     }
 
     return referralId;
