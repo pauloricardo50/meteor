@@ -25,8 +25,11 @@ const useSnackbarStyles = makeStyles({
 const useSnackbarContentStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: '120px',
     backgroundColor: 'white',
+    padding: 8,
+    [theme.breakpoints.up('md')]: {
+      padding: 16,
+    },
   },
   message: {
     fontSize: '12px',
@@ -42,11 +45,12 @@ const useSnackbarContentStyles = makeStyles(theme => ({
       fontSize: '16px',
       lineHeight: 1.44,
     },
+    '& p': {
+      margin: 0,
+    },
   },
   action: {
-    '& button + button': {
-      marginLeft: '12px',
-    },
+    marginRight: 0,
   },
 }));
 
@@ -60,7 +64,8 @@ const CookiesNotification = () => {
   const [cookies, setCookie] = useCookies(acceptCookie);
   const hasSetCookie = !!cookies[acceptCookie];
   const [visible, setVisible] = useState(
-    process.env.NODE_ENV === 'production' && !hasSetCookie,
+    true,
+    // process.env.NODE_ENV === 'production' && !hasSetCookie,
   );
   const snackbarClasses = useSnackbarStyles();
   const contentClasses = useSnackbarContentStyles();
@@ -90,10 +95,22 @@ const CookiesNotification = () => {
         classes={contentClasses}
         message={message}
         action={[
-          <Button key="decline" contained onClick={handleDecline}>
+          <Button
+            key="decline"
+            contained
+            onClick={handleDecline}
+            className="mr-8"
+            size="small"
+          >
             {getLanguageData(language).cookieDecline}
           </Button>,
-          <Button key="accept" raised primary onClick={handleAccept}>
+          <Button
+            key="accept"
+            raised
+            primary
+            onClick={handleAccept}
+            size="small"
+          >
             {getLanguageData(language).cookieAccept}
           </Button>,
         ]}
