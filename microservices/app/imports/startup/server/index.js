@@ -1,6 +1,5 @@
 import '../shared-startup';
 import 'core/startup/server/monti';
-import 'core/api/server/cors';
 
 import { Accounts } from 'meteor/accounts-base';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
