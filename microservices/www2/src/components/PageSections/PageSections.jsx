@@ -1,4 +1,5 @@
 import React from 'react';
+
 import BlogPostsGrid from '../BlogPostsGrid';
 import CardsGrid from '../CardsGrid';
 import CTAsSection from '../CTAsSection';
@@ -20,36 +21,37 @@ import Testimonials from '../Testimonials';
 import Text from '../Text';
 import VideoEmbed from '../VideoEmbed';
 
+const components = {
+  blog_posts: BlogPostsGrid,
+  cards: CardsGrid,
+  ctas_section: CTAsSection,
+  faq: FAQ,
+  gps_stats_map: GPSStats,
+  hero: Hero,
+  image_carousel: ImageCarousel,
+  image_collage: ImageCollage,
+  image_gallery: ImageGallery,
+  mortgage_rates: MortgageRates,
+  newsletter_signup: NewsletterSignup,
+  page_heading: PageHeading,
+  page_links: PageLinks,
+  page_navigation: PageNavigation,
+  promotions: PromotionsGrid,
+  quote: Quote,
+  team: Team,
+  testimonial: Testimonials,
+  text: Text,
+  video_embed: VideoEmbed,
+};
+
 const PageSections = ({ sections }) =>
-  sections.map((section, idx) => {
+  sections.map(section => {
     const sectionId = section.primary?.section_id;
+    const Component = components[section.type];
 
     return (
-      <div key={idx} id={sectionId} className="page-section">
-        {
-          {
-            blog_posts: <BlogPostsGrid {...section} />,
-            cards: <CardsGrid {...section} />,
-            ctas_section: <CTAsSection {...section} />,
-            faq: <FAQ {...section} />,
-            gps_stats_map: <GPSStats {...section} />,
-            hero: <Hero {...section} />,
-            image_carousel: <ImageCarousel {...section} />,
-            image_collage: <ImageCollage {...section} />,
-            image_gallery: <ImageGallery {...section} />,
-            mortgage_rates: <MortgageRates {...section} />,
-            newsletter_signup: <NewsletterSignup {...section} />,
-            page_heading: <PageHeading {...section} />,
-            page_links: <PageLinks {...section} />,
-            page_navigation: <PageNavigation {...section} />,
-            promotions: <PromotionsGrid {...section} />,
-            quote: <Quote {...section} />,
-            team: <Team {...section} />,
-            testimonial: <Testimonials {...section} />,
-            text: <Text {...section} />,
-            video_embed: <VideoEmbed {...section} />,
-          }[section.type]
-        }
+      <div key={sectionId} id={sectionId} className="page-section">
+        <Component {...section} />
       </div>
     );
   });
