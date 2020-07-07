@@ -14,9 +14,7 @@ const GPSStats = ({ primary, fields }) => (
       <CTAButtons buttons={fields} />
     </div>
 
-    <div className="gps-stats-map">
-      <LoansMap />
-    </div>
+    <LoansMap />
   </section>
 );
 export default GPSStats;

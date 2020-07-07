@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import { CookiesProvider } from 'react-cookie';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { registerLinkResolver } from 'gatsby-source-prismic-graphql';
+import { CookiesProvider } from 'react-cookie';
+import { IntlProvider } from 'react-intl';
 
 import createTheme from './src/core/config/muiCustom';
+import { getLanguageData } from './src/utils/languages';
 import { linkResolver } from './src/utils/linkResolver';
 
 registerLinkResolver(linkResolver);
@@ -13,7 +15,9 @@ const theme = createTheme({ fontSize: 18 });
 
 const wrapRootElement = ({ element }) => (
   <CookiesProvider>
-    <MuiThemeProvider theme={theme}>{element}</MuiThemeProvider>
+    <IntlProvider messages={getLanguageData()}>
+      <MuiThemeProvider theme={theme}>{element}</MuiThemeProvider>
+    </IntlProvider>
   </CookiesProvider>
 );
 
