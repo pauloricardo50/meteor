@@ -1,4 +1,8 @@
 .image-gallery {
+width: 100%;
+  max-width: $site-width;
+  margin: 0 auto;
+
   .content {
     margin-bottom: 56px;
 
@@ -15,44 +19,22 @@
   }
 
   .gallery {
-    // setup overflow container for horizontal scrolling
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    overflow-x: auto;
-    width: 100%;
-    margin: 0px auto;
-    max-width: 1200px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
 
-    // hide horizontal scrollbar
-    &::-webkit-scrollbar {
-      display: none !important;
-      width: 0px !important;
-      height: 0px !important;
-    }
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
+    div {
+     flex-basis: 200px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: 16px;
 
-    img {
-      display: block;
-      max-width: 100%;
-      // width: 194px;
-      height: 40px;
-    }
-
-    img + img {
-      margin-left: 45px;
-    }
-
-    &--logos {
-      align-items: center;
-
-      img {
-        width: 100%;
-        max-width: 200px;
-        max-height: 120px;
-      }
+     img {
+       width: 150px;
+     }
     }
   }
 
@@ -74,17 +56,9 @@
     }
 
     .gallery {
-
-      img + img {
-        margin-left: 116px;
-      }
-
-      &--logos {
-        img {
-          width: 100%;
-          max-width: 300px;
-          max-height: 180px;
-        }
+      div {
+        flex-basis: 300px;
+        margin: 40px;
       }
     }
   }

@@ -18,7 +18,9 @@ const ImageGallery = ({ primary, fields }) => {
       <div className={galleryClasses} aria-hidden="true">
         {fields.length &&
           fields.map(({ image }, idx) => (
-            <img key={idx} src={image.url} alt={image.alt} />
+            <div key={idx}>
+              <img src={image.url} alt={image.alt} />
+            </div>
           ))}
       </div>
     </section>
