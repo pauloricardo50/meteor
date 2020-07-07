@@ -3,10 +3,14 @@ import './ImageCarousel.scss';
 import React, { useState } from 'react';
 import { RichText } from 'prismic-reactjs';
 
-const ImageCarousel = ({ primary, fields }) => {
-  const [currIndex, setCurrIndex] = useState(0);
+import { linkResolver } from '../../utils/linkResolver';
+import Button from '../Button';
 
-  // TODO: add timing function, or find component that does this simply
+const ImageCarousel = ({ primary, fields }) => {
+  console.log('fields:', fields);
+  const [currIndex, setCurrIndex] = useState(0);
+  const { content, image, cta_text, cta_link } = fields[currIndex];
+
   return (
     <section
       id={primary.section_id}
@@ -27,19 +31,22 @@ const ImageCarousel = ({ primary, fields }) => {
           ))}
         </ol>
 
-        {/* TODO: will this be a time lapse or progress line ? */}
         <hr />
 
-        {RichText.render(fields[currIndex].content)}
+        {RichText.render(content)}
+        {cta_text && (
+          <Button primary link to={linkResolver(cta_link._meta)}>
+            {cta_text}
+          </Button>
+        )}
       </div>
 
       <div className="current-image">
-        {/* TODO: add fade transtion animation wrapper ? */}
         <img
           className="animated fadeIn"
-          src={fields[currIndex].image?.url}
-          alt={fields[currIndex].image?.alt}
-          key={fields[currIndex].image?.url}
+          src={image?.url}
+          alt={image?.alt}
+          key={image?.url}
         />
       </div>
     </section>

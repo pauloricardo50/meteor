@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
@@ -119,6 +120,16 @@ export const query = graphql`
               content
               image
               caption
+              cta_text
+              cta_link {
+                ... on PRISMIC__ExternalLink {
+                  url
+                  _linkType
+                }
+                ... on PRISMIC_Page {
+                  ...prismicPageFields
+                }
+              }
             }
           }
           ... on PRISMIC_PageBodyImage_collage {
