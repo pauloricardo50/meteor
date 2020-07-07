@@ -296,6 +296,12 @@ export const query = graphql`
               }
             }
           }
+          ... on PRISMIC_PageBodyCustom_component {
+            type
+            primary {
+              component_name
+            }
+          }
         }
       }
     }

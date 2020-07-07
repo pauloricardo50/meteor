@@ -50,6 +50,11 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "serve": "npx --node-arg '-r esm' gatsby serve",
     "start": "npx --node-arg '-r esm' npm run develop",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "npx --node-arg '-r esm' mocha --watch 'src/**'"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^10.4.4",
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1"
   }
 }
