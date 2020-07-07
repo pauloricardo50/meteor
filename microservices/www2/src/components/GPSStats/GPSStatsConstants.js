@@ -9,5 +9,6 @@ export const CITIES_COORDINATES = {
 };
 
 export const MARKER_SIZE_FACTOR = 0.1;
-export const MARKER_FONT_SIZE_FACTOR = 1.2 / 100;
+export const MARKER_FONT_SIZE_FACTOR = 1.5 / 100;
 export const MARKER_LINE_HEIGHT_FACTOR = 1.4375 / 100;
+export const MARKER_COUNT_THRESHOLD = 10;
