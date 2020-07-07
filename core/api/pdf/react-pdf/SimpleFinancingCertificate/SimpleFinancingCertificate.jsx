@@ -4,7 +4,7 @@ import React from 'react';
 import { Image } from '@react-pdf/renderer';
 
 import { Money } from '../../../../components/Translation';
-import { formatMessage } from '../../../../utils/intl';
+import intl from '../../../../utils/intl';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import PdfDocument from '../PdfDocument';
 import PdfPage from '../PdfPage';
@@ -41,10 +41,10 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
 
   return (
     <PdfDocument
-      title={formatMessage({
-        id: 'SimpleFinancingCertificate.pdfTitle',
-        values: { name },
-      })}
+      title={intl.formatMessage(
+        { id: 'SimpleFinancingCertificate.pdfTitle' },
+        { name },
+      )}
     >
       <PdfPage>
         <SimpleFinancingCertificateHeader name={name} />
@@ -115,4 +115,5 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
     </PdfDocument>
   );
 };
+
 export default SimpleFinancingCertificate;

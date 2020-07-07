@@ -1,6 +1,11 @@
+import { Meteor } from 'meteor/meteor';
+
 import { Font } from '@react-pdf/renderer';
 
-export const assetUrl = 'https://app.e-potek.ch';
+const isBackend = Meteor.microservice === 'backend';
+export const assetUrl = isBackend
+  ? Meteor.settings.public.subdomains.admin
+  : Meteor.settings.public.subdomains[Meteor.microservice];
 
 Font.register({
   family: 'Manrope-extralight',
