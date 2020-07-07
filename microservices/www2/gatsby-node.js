@@ -20,7 +20,7 @@ exports.sourceNodes = async ({
 
   try {
     gpsStats = await meteorClient.call('getGpsStats', {
-      cantons: ['GE', 'VD', 'FR', 'NE', 'VS'],
+      cantons: ['GE', 'VD', 'FR', 'NE', 'VS', 'JU'],
     });
   } catch (error) {
     reporter.error('Failed to get gps stats data:', error);
