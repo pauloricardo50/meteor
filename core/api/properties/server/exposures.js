@@ -5,7 +5,6 @@ import { exposeQuery } from '../../queries/queryHelpers';
 import Security from '../../security';
 import UserService from '../../users/server/UserService';
 import {
-  adminProperties,
   anonymousProperty,
   proProperties,
   proPropertyUsers,
@@ -13,7 +12,6 @@ import {
   userProperty,
 } from '../queries';
 
-exposeQuery({ query: adminProperties, options: { allowFilterById: true } });
 exposeQuery({
   query: anonymousProperty,
   overrides: {

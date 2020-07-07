@@ -1,8 +1,12 @@
+import './BlogPostsGridItem.scss';
+
 import React from 'react';
 import { Link } from 'gatsby';
-import { RichText, Date } from 'prismic-reactjs';
+import { Date, RichText } from 'prismic-reactjs';
+
+import IconButton from 'core/components/IconButton';
+
 import { linkResolver } from '../../utils/linkResolver';
-import './BlogPostsGridItem.scss';
 
 const BlogPostsGridItem = ({ post }) => {
   // TODO: if need to format dates differently by lang
@@ -21,21 +25,24 @@ const BlogPostsGridItem = ({ post }) => {
   const postFirstImage = postFirstHero?.primary?.images;
 
   return (
-    <div className="blog-post-item">
+    <Link to={linkResolver(post._meta)} className="blog-post-item">
       {postFirstImage && (
         <img src={postFirstImage.url} alt={postFirstImage.alt} />
       )}
-      <h2>
-        <Link to={linkResolver(post._meta)}>
-          {RichText.asText(post.title).length !== 0
-            ? RichText.asText(post.title)
-            : defaultTitle}
-        </Link>
-      </h2>
-      <p className="blog-post-meta">
-        <time>{post.date}</time>
-      </p>
-    </div>
+      <div className="flex center-align nowrap">
+        <h2>
+          <span>
+            {RichText.asText(post.title).length !== 0
+              ? RichText.asText(post.title)
+              : defaultTitle}
+          </span>
+
+          <span className="secondary"> &bull; {post.date}</span>
+        </h2>
+
+        <IconButton type="right" />
+      </div>
+    </Link>
   );
 };
 

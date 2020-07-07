@@ -9,7 +9,7 @@ import LanguageContext from '../../contexts/LanguageContext';
 import useAllNewsletter from '../../hooks/useAllNewsletter';
 import { getLanguageData } from '../../utils/languages';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'inline-flex',
     border: 'none',
@@ -26,8 +26,9 @@ const RecentNewsletters = () => {
   const [language] = useContext(LanguageContext);
   const allNewsletters = useAllNewsletter();
   const [expanded, setExpanded] = useState(false);
+  const classes = useStyles();
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -43,7 +44,7 @@ const RecentNewsletters = () => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel-content"
           id="panel-header"
-          classes={useStyles()}
+          classes={classes}
         >
           {getLanguageData(language).recentNewslettersToggle}
         </ExpansionPanelSummary>

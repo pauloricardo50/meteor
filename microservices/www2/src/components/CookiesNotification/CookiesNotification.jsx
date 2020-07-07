@@ -1,14 +1,15 @@
-import React, { useState, useContext } from 'react';
-import { RichText } from 'prismic-reactjs';
-import { useCookies } from 'react-cookie';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useContext, useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Button from '../Button';
+import { makeStyles } from '@material-ui/core/styles';
+import { RichText } from 'prismic-reactjs';
+import { useCookies } from 'react-cookie';
+
 import LanguageContext from '../../contexts/LanguageContext';
 import useContentBlock from '../../hooks/useContentBlock';
 import { getLanguageData } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
+import Button from '../Button';
 
 const acceptCookie = 'epotek_acceptCookie';
 
@@ -24,8 +25,11 @@ const useSnackbarStyles = makeStyles({
 const useSnackbarContentStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: '120px',
     backgroundColor: 'white',
+    padding: 8,
+    [theme.breakpoints.up('md')]: {
+      padding: 16,
+    },
   },
   message: {
     fontSize: '12px',
@@ -41,18 +45,29 @@ const useSnackbarContentStyles = makeStyles(theme => ({
       fontSize: '16px',
       lineHeight: 1.44,
     },
-  },
-  action: {
-    '& button + button': {
-      marginLeft: '12px',
+    '& p': {
+      margin: 0,
     },
   },
+  action: {
+    marginRight: 0,
+  },
 }));
+
+const cookieOptions = {
+  maxAge: '31536000', // one year
+  domain: '.e-potek.ch',
+};
 
 const CookiesNotification = () => {
   const [language] = useContext(LanguageContext);
   const [cookies, setCookie] = useCookies(acceptCookie);
-  const [visible, setVisible] = useState(true);
+  const hasSetCookie = !!cookies[acceptCookie];
+  const [visible, setVisible] = useState(
+    process.env.NODE_ENV === 'production' && !hasSetCookie,
+  );
+  const snackbarClasses = useSnackbarStyles();
+  const contentClasses = useSnackbarContentStyles();
 
   const cookieNotification = useContentBlock({
     uid: 'cookies-notification',
@@ -64,36 +79,37 @@ const CookiesNotification = () => {
   const message = RichText.render(cookieNotification, linkResolver);
 
   const handleAccept = () => {
-    setCookie(acceptCookie, true, {
-      maxAge: '31536000', // one year
-      domain: 'e-potek.ch',
-    });
-
+    setCookie(acceptCookie, 'all', cookieOptions);
     setVisible(false);
   };
 
   const handleDecline = () => {
-    setCookie(acceptCookie, false, {
-      maxAge: '31536000', // one year
-      domain: 'e-potek.ch',
-    });
-
+    setCookie(acceptCookie, 'limited', cookieOptions);
     setVisible(false);
   };
 
   return (
-    <Snackbar
-      open={!cookies[acceptCookie] && visible}
-      classes={useSnackbarStyles()}
-    >
+    <Snackbar open={visible} classes={snackbarClasses}>
       <SnackbarContent
-        classes={useSnackbarContentStyles()}
+        classes={contentClasses}
         message={message}
         action={[
-          <Button key="decline" contained onClick={() => handleDecline()}>
+          <Button
+            key="decline"
+            contained
+            onClick={handleDecline}
+            className="mr-8"
+            size="small"
+          >
             {getLanguageData(language).cookieDecline}
           </Button>,
-          <Button key="accept" raised primary onClick={() => handleAccept()}>
+          <Button
+            key="accept"
+            raised
+            primary
+            onClick={handleAccept}
+            size="small"
+          >
             {getLanguageData(language).cookieAccept}
           </Button>,
         ]}

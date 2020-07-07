@@ -1,16 +1,20 @@
+import '../styles/post.scss';
+
 import React from 'react';
-import { graphql, Link } from 'gatsby';
+import { Link, graphql } from 'gatsby';
 import { RichText } from 'prismic-reactjs';
 import Helmet from 'react-helmet';
+
+import Icon from 'core/components/Icon';
+
+import Button from '../components/Button';
+import CTAsSection from '../components/CTAsSection';
 import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 import PageShare from '../components/PageShare';
-import CTAsSection from '../components/CTAsSection';
-import NewsletterSignup from '../components/NewsletterSignup';
 import RecommendedBlogPosts from '../components/RecommendedBlogPosts';
 import { getLanguageData, getShortLang } from '../utils/languages.js';
-import '../styles/post.scss';
 
 export const query = graphql`
   query PRISMIC_POST($uid: String!, $lang: String!) {
@@ -170,10 +174,6 @@ const Post = ({
     section => section.type === 'ctas_section',
   );
 
-  const articleNewsletterSignup = sharedSections[0]?.node.body.find(
-    section => section.type === 'newsletter_signup',
-  );
-
   return (
     <Layout
       location={location}
@@ -204,7 +204,13 @@ const Post = ({
       >
         <div className="post-header">
           <div className="back-to-blog">
-            <Link to={languageData.blogLink}>{languageData.blogLinkText}</Link>
+            <Button
+              Component={Link}
+              to={languageData.blogLink}
+              icon={<Icon type="left" />}
+            >
+              {languageData.blogLinkText}
+            </Button>
           </div>
 
           <h1 className="post-title" itemProp="headline">
@@ -253,10 +259,6 @@ const Post = ({
           title={RichText.asText(blogPost.title)}
           location={location}
         />
-
-        {articleNewsletterSignup && (
-          <NewsletterSignup {...articleNewsletterSignup} placement="article" />
-        )}
 
         <RecommendedBlogPosts
           currentPost={blogPost}

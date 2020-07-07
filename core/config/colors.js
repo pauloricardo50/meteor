@@ -5,6 +5,7 @@ const colors = {
   primaryArray: [0, 91, 234],
   primaryLight: '#5bb5ff',
   primaryGradient: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
+  primaryGradientDark: 'linear-gradient(to left, #5bb5ff, #0048bb)',
   backgroundLight: '#dbeeff',
   secondary: '#00c6ff',
   tertiary: '#001a8f',
@@ -13,6 +14,7 @@ const colors = {
   error: '#e01076',
   mix: '#95299D', // Mix between error and primary
   borderGrey: '#cccccc',
+  borderGreyLight: '#f2f2f2',
   charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#005bea'],
   iconColor: '#444',
   iconHoverColor: '#888',

@@ -1,5 +1,5 @@
 .top-nav {
-  height: 55px;
+  height: 64px;
   display: flex;
   justify-content: center;
 
@@ -28,9 +28,12 @@
     padding: 0 8px;
   }
 
-  &-menu svg {
+  &-menu {
+    margin-right: 4px;
+    
+    svg {
     color: $primary;
-  }
+  }}
 
   ul:focus {
     outline: none;

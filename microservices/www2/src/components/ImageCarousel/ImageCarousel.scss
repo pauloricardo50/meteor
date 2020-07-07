@@ -42,6 +42,10 @@
         font-size: 12px;
       }
 
+      &:hover {
+        opacity: 0.5 !important;
+      }
+
       &.active {
         opacity: 1;
         color: $primary;
@@ -64,7 +68,7 @@
   }
 
   .current-image {
-    min-height: 300px;
+    min-height: 500px;
     img {
       max-width: 100%;
     }
@@ -106,14 +110,12 @@
 
       .captions {
         li {
-          opacity: 1;
           // Manrope-Regular
           font-size: 28px;
           font-weight: normal;
           font-style: normal;
           line-height: 1.43;
           letter-spacing: normal;
-          color: $body-text-light;
 
           &::before {
             margin-right: 15px;
@@ -123,11 +125,6 @@
             line-height: normal;
             letter-spacing: normal;
             vertical-align: top;
-          }
-
-          &.active {
-            opacity: 1;
-            color: $primary;
           }
         }
       }

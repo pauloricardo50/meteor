@@ -44,7 +44,7 @@ const languageData = {
     getALoanText: `Obtenir un prêt`,
     signupErrorText: `Un problème est survenu lors de l'inscription. Veuillez réessayer.`,
     signupSuccessText: `Merci de vous être abonné!`,
-    recentNewslettersToggle: `Voir les newsletter précédentes`,
+    recentNewslettersToggle: `Voir les newsletters précédentes`,
     recommendedArticleHeader: `Ceci pourrait vous intéresser`,
     rateTable: {
       header: ['Durée', 'Tendance', 'Taux'],

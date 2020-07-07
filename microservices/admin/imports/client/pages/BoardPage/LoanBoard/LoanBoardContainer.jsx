@@ -9,7 +9,7 @@ import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
 } from 'core/api/organisations/organisationConstants';
-import { adminPromotions } from 'core/api/promotions/queries';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 
 import { addLiveSync, withLiveSync } from '../liveSync';
@@ -150,8 +150,8 @@ export default compose(
     ...rest,
   })),
   withSmartQuery({
-    query: adminPromotions,
-    params: { $body: { name: 1 } },
+    query: PROMOTIONS_COLLECTION,
+    params: { name: 1 },
     dataName: 'promotions',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,

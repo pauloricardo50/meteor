@@ -7,13 +7,16 @@
 
   @media screen and (min-width: $med) {
     grid-template-columns: 339px 339px;
-    grid-gap: 30px;
+    grid-gap: 80px;
   }
 
   @media screen and (min-width: $wide) {
-    grid-template-columns: 370px 370px 370px;
-    grid-auto-flow: dense;
-    grid-gap: 30px;
-    margin: 0 auto;
+  //   grid-template-columns: 370px 370px 370px;
+  //   grid-auto-flow: dense;
+  //   grid-gap: 80px;
+  //   margin: 0 auto;
+  grid-template-columns: 450px 450px;
+  grid-gap: 200px;
+
   }
 }
