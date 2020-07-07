@@ -56,8 +56,20 @@ const LoginMenu = ({ placement }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem to="https://app.e-potek.ch">Login Clients</MenuItem>
-        <MenuItem to="https://pro.e-potek.ch">Login Pro</MenuItem>
+        <MenuItem
+          role="button"
+          component="a"
+          href="https://app.e-potek.ch/login"
+        >
+          Login Clients
+        </MenuItem>
+        <MenuItem
+          role="button"
+          component="a"
+          href="https://pro.e-potek.ch/login"
+        >
+          Login Pro
+        </MenuItem>
       </Menu>
     </div>
   );
