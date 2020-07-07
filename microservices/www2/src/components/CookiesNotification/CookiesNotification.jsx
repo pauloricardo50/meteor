@@ -64,8 +64,7 @@ const CookiesNotification = () => {
   const [cookies, setCookie] = useCookies(acceptCookie);
   const hasSetCookie = !!cookies[acceptCookie];
   const [visible, setVisible] = useState(
-    true,
-    // process.env.NODE_ENV === 'production' && !hasSetCookie,
+    process.env.NODE_ENV === 'production' && !hasSetCookie,
   );
   const snackbarClasses = useSnackbarStyles();
   const contentClasses = useSnackbarContentStyles();

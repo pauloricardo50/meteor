@@ -156,7 +156,7 @@ const createTheme = ({ fontSize = 14 } = {}) => {
         },
         MuiIconButton: {
           root: {
-            border: `solid 1px ${'#f2f2f2'}`,
+            border: `solid 1px ${colors.borderGreyLight}`,
           },
         },
       },
