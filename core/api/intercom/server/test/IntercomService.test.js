@@ -48,18 +48,11 @@ const resetConversation = () =>
     assigneeId: '0',
   });
 
-describe('IntercomService', function () {
+describe('IntercomService', function() {
   this.timeout(15000);
   let logErrorSpy;
 
-  before(() => {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    }
-  });
-
-  beforeEach(async function () {
+  beforeEach(async function() {
     resetDatabase();
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
   });
@@ -232,7 +225,7 @@ describe('IntercomService', function () {
     });
 
     // We don't use conversation un-assignments
-    it.skip('unassigns a conversation', async function () {
+    it.skip('unassigns a conversation', async function() {
       this.timeout(15000);
       await IntercomService.assignConversation({
         conversationId: CONVERSATION_INTERCOM_ID,
