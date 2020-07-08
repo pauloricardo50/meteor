@@ -1,0 +1,71 @@
+.www-calculator {
+  width: 100%;
+  max-width: $site-width;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+
+  &-top, &-bottom {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+      flex-basis: 50%;
+      flex-grow: 1;
+    }
+  }
+
+  &-purchase-type {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      padding: 40px;
+      margin: 4px;
+      border-radius: 12px;
+      box-shadow: 0 0 0 1px $border-grey-light;
+      flex-basis: 100px;
+      flex-grow: 1;
+      max-width: 250px;
+      
+      h2 {
+        margin: 0;
+      }
+
+      &.active {
+        box-shadow: 0 0 0 4px $primary;
+        
+        h2 {
+          color: $primary
+        }
+      }
+    }
+  }
+
+  &-form {
+    display: flex;
+    flex-direction: column;
+
+    .card-top {
+      flex-grow: 1;
+
+      @media screen and (min-width: $med) {
+        padding: 32px;
+      }
+    }
+  
+    .card-bottom {
+      flex-grow: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    input {
+      text-align: right;
+    }
+  }
+
+  &-status {
+    padding: 40px;
+  }
+}

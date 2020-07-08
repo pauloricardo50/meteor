@@ -54,6 +54,14 @@ const languageData = {
     },
     'cityMarker.title': 'Région de {city}',
     'cityMarker.count': '{count} dossiers en cours ou terminés',
+    'WwwCalculatorPurchaseType.ACQUISITION': 'Acquisition',
+    'WwwCalculatorPurchaseType.REFINANCING': 'Renouvellement',
+    'WwwCalculatorFormField.salary': 'Revenus annuels bruts',
+    'WwwCalculatorFormField.fortune': 'Fonds propres',
+    'WwwCalculatorFormField.property':
+      "{purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
+    'WwwCalculatorFormField.currentLoan': 'Prêt existant',
+    'WwwCalculatorFormField.wantedLoan': 'Nouveau prêt',
   },
 };
 

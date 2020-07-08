@@ -3,6 +3,8 @@ export const FORTUNE = 'fortune';
 export const PROPERTY = 'property';
 export const CURRENT_LOAN = 'currentLoan';
 export const WANTED_LOAN = 'wantedLoan';
+export const ACQUISITION_FIELDS = [PROPERTY, SALARY, FORTUNE];
+export const REFINANCING_FIELDS = [PROPERTY, SALARY, CURRENT_LOAN, WANTED_LOAN];
 
 export const ACTIONS = {
   SET_VALUE: 'SET_VALUE',
@@ -10,4 +12,9 @@ export const ACTIONS = {
   SET_AUTO: 'SET_AUTO',
   INCREASE_SLIDER_MAX: 'INCREASE_SLIDER_MAX',
   SET_ALLOW_EXTREME_LOAN: 'SET_ALLOW_EXTREME_LOAN',
+};
+
+export const PURCHASE_TYPE = {
+  ACQUISITION: 'ACQUISITION',
+  REFINANCING: 'REFINANCING',
 };

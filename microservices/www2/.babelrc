@@ -1,0 +1,6 @@
+{
+  "presets": ["babel-preset-gatsby"],
+  "plugins": [
+    [ "babel-plugin-webpack-alias-7", { "config": "./webpack.config.js" } ] 
+  ]
+}

@@ -102,14 +102,8 @@ exports.sourceNodes = async ({
 
 const onCreateWebpackConfig = ({ actions: { setWebpackConfig } }) => {
   // This should stay in this file for the alias to work
-  setWebpackConfig({
-    resolve: {
-      symlinks: false,
-      alias: {
-        core: path.resolve(__dirname, 'src/core/'),
-      },
-    },
-  });
+  const config = require('./webpack.config.js');
+  setWebpackConfig(config);
 };
 
 export { onCreateWebpackConfig };
