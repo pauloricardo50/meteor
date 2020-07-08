@@ -11,9 +11,10 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuItems = ({ menuLinks, subMenu }) =>
-  menuLinks.map((menuLink, idx) => {
-    const classes = useStyles();
+const MenuItems = ({ menuLinks, subMenu }) => {
+  const classes = useStyles();
+
+  return menuLinks.map((menuLink, idx) => {
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
     const primaryLabel = menuLink.primary?.label || menuLink.sub_label;
 
@@ -56,5 +57,6 @@ const MenuItems = ({ menuLinks, subMenu }) =>
 
     return null;
   });
+};
 
 export default MenuItems;
