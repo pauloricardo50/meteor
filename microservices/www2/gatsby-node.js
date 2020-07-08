@@ -2,8 +2,12 @@ const path = require('path');
 const SimpleDDP = require('simpleddp');
 const ws = require('isomorphic-ws');
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const opts = {
-  endpoint: 'wss://backend.e-potek.ch/websocket',
+  endpoint: isDevelopment
+    ? 'ws://localhost:5500/websocket' // wss protocol doesn't seem to work in local
+    : 'wss://backend.e-potek.ch/websocket',
   SocketConstructor: ws,
 };
 
@@ -56,11 +60,19 @@ exports.sourceNodes = async ({
     reporter.success('e-Potek: retrieve promotions data');
 
     promotions.forEach(promotion => {
-      const { _id: id, documents, ...rest } = promotion;
+      const {
+        _id: id,
+        documents,
+        description = '',
+        externalUrl = '',
+        ...rest
+      } = promotion;
 
       const node = {
         id,
         images: documents.promotionImage,
+        description,
+        externalUrl,
         ...rest,
         internal: {
           type: 'promotion',
