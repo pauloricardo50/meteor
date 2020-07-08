@@ -75,6 +75,8 @@ const languageData = {
     'WwwCalculatorChartForm.interest15': 'Taux 15 ans',
     'WwwCalculatorChartForm.interest20': 'Taux 20 ans',
     'WwwCalculatorChartForm.interest25': 'Taux 25 ans',
+    'WwwCalculatorChartForm.includeMaintenance':
+      "Inclure frais d'entretien (estimation)",
   },
 };
 

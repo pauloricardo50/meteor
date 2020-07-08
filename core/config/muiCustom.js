@@ -35,6 +35,10 @@ const createTheme = ({ fontSize = 14 } = {}) => {
             backgroundImage: colors.primaryGradient,
             color: 'white',
           },
+          containedSecondary: {
+            backgroundImage: colors.secondaryGradient,
+            color: 'white',
+          },
         },
         MuiFormLabel: {
           root: {
@@ -157,6 +161,20 @@ const createTheme = ({ fontSize = 14 } = {}) => {
         MuiIconButton: {
           root: {
             border: `solid 1px ${colors.borderGreyLight}`,
+          },
+        },
+        MuiSwitch: {
+          switchBase: {
+            border: 'none',
+          },
+          colorPrimary: {
+            color: 'white',
+            '&$checked': {
+              color: 'white',
+            },
+            '&$checked + $track': {
+              backgroundImage: colors.primaryGradient,
+            },
           },
         },
       },

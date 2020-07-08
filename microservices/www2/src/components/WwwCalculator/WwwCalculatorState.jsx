@@ -17,6 +17,7 @@ const initialState = {
   [CURRENT_LOAN]: { sliderMax: 2000000 },
   [WANTED_LOAN]: { sliderMax: 2000000 },
   purchaseType: PURCHASE_TYPE.ACQUISITION,
+  includeMaintenance: true,
 };
 
 export const wwwCalculatorReducer = (state, { type, payload }) => {

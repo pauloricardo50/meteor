@@ -17,19 +17,27 @@ import { useWwwCalculator } from './WwwCalculatorState';
 const WwwCalculatorChart = () => {
   const { formatMessage } = useIntl();
   const [
-    { fortune, property, wantedLoan, purchaseType, interestRate },
+    {
+      fortune,
+      property,
+      wantedLoan,
+      purchaseType,
+      interestRate,
+      includeMaintenance,
+    },
   ] = useWwwCalculator();
   const loanValue =
     purchaseType === PURCHASE_TYPE.ACQUISITION
       ? getLoanValue(property.value, fortune.value)
-      : wantedLoan;
+      : wantedLoan.value;
   const yearlyValues = {
     interests: getSimpleYearlyInterests(loanValue, interestRate),
     amortization: getYearlyAmortization({
       propertyValue: property.value,
       loanValue,
     }),
-    maintenance: getSimpleYearlyMaintenance(property.value),
+    maintenance:
+      includeMaintenance && getSimpleYearlyMaintenance(property.value),
   };
   const data = Object.keys(yearlyValues).map(valueName => ({
     y: Math.round(yearlyValues[valueName] / 12) || 0,
