@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useMemo } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import fileSaver from 'file-saver';
+import { useIntl } from 'react-intl';
 import SimpleSchema from 'simpl-schema';
 
 import { borrowerUpdate } from '../../api/borrowers/methodDefinitions';
@@ -13,7 +14,6 @@ import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import createTheme from '../../config/muiCustom';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import { base64ToBlob } from '../../utils/base64-to-blob';
-import { formatMessage } from '../../utils/intl';
 import { AutoFormDialog } from '../AutoForm2';
 import Box from '../Box';
 import Icon from '../Icon';
@@ -51,7 +51,10 @@ const getSchema = has2Borrowers =>
     },
   });
 
-const makeHandleSubmit = ({ _id: loanId, name, borrowers }) => async ({
+const makeHandleSubmit = (
+  { _id: loanId, name, borrowers },
+  formatMessage,
+) => async ({
   firstName1,
   lastName1,
   firstName2,
@@ -74,16 +77,17 @@ const makeHandleSubmit = ({ _id: loanId, name, borrowers }) => async ({
   const string = await getSimpleFinancingCertificate.run({ loanId });
   fileSaver.saveAs(
     base64ToBlob(string),
-    `${formatMessage({
-      id: 'SimpleFinancingCertificate.pdfTitle',
-      values: { name },
-    })}.pdf`,
+    `${formatMessage(
+      { id: 'SimpleFinancingCertificate.pdfTitle' },
+      { name },
+    )}.pdf`,
   );
 
   return result;
 };
 
 const MaxPropertyValueCertificate = ({ loan }) => {
+  const { formatMessage } = useIntl();
   const currentUser = useCurrentUser();
   const { residenceType, borrowers, purchaseType } = loan;
   const has2Borrowers = borrowers?.length > 1;
@@ -115,7 +119,7 @@ const MaxPropertyValueCertificate = ({ loan }) => {
           ) : null,
           fullWidth: true,
         }}
-        onSubmit={makeHandleSubmit(loan)}
+        onSubmit={makeHandleSubmit(loan, formatMessage)}
         title={<T id="MaxPropertyValueCertificate.download" />}
         description={<T id="MaxPropertyValueCertificate.description" />}
         layout={[

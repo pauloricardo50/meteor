@@ -20,6 +20,7 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
       messages={messages}
       formats={getFormats()}
       defaultLocale="fr-CH"
+      onError={console.warn}
     >
       <Component {...props} />
     </IntlProvider>

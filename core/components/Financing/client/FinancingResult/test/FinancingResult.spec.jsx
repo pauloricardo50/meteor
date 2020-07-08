@@ -40,7 +40,11 @@ describe('FinancingResult', () => {
   let loan;
   const component = ({ calc } = {}) =>
     mount(
-      <IntlProvider defaultLocale="fr" messages={messages}>
+      <IntlProvider
+        defaultLocale="fr"
+        messages={messages}
+        onError={console.warn}
+      >
         <ScrollSync>
           <Provider value={{ loan, Calculator: calc || Calculator }}>
             <FinancingResult {...props} />

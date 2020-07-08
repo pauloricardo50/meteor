@@ -329,6 +329,28 @@ describe('UserService', function () {
         UserService.get(user4, { assignedEmployeeId: 1 }).assignedEmployeeId,
       ).to.equal('advisor1');
     });
+
+    it('sets the firstName and lastName of the first existing borrower', () => {
+      generator({
+        loans: { _id: 'loanId', anonymous: true, borrowers: [{}, {}] },
+      });
+
+      UserService.anonymousCreateUser({
+        user: {
+          email: 'test@e-potek.ch',
+          firstName: 'Joe',
+          lastName: 'Jackson',
+        },
+        loanId: 'loanId',
+      });
+
+      const borrowers = BorrowerService.fetch({ firstName: 1, lastName: 1 });
+
+      expect(borrowers[0].firstName).to.equal('Joe');
+      expect(borrowers[0].lastName).to.equal('Jackson');
+      expect(borrowers[1].firstName).to.equal(undefined);
+      expect(borrowers[1].lastName).to.equal(undefined);
+    });
   });
 
   describe('update', () => {

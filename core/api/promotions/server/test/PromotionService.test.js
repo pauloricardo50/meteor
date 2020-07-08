@@ -40,7 +40,7 @@ import {
 import PromotionService from '../PromotionService';
 
 describe('PromotionService', function () {
-  this.timeout(10000);
+  this.timeout(5000);
 
   beforeEach(() => {
     resetDatabase();
