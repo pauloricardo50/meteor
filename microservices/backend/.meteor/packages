@@ -41,9 +41,9 @@ matb33:collection-hooks
 percolate:migrations
 littledata:synced-cron
 qualia:prod-shell
-jquery
 montiapm:profiler
 epotek:google-maps
+dburles:mongo-collection-instances
 
 # Backend doesn't need a client architecture
 # Minifier to remove client js to reduce deployment time
