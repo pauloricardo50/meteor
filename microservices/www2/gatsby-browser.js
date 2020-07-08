@@ -8,6 +8,7 @@ import { IntlProvider } from 'react-intl';
 import createTheme from 'core/config/muiCustom';
 import { getFormats } from 'core/utils/localization/localizationFormats';
 
+import Layout from './src/components/Layout';
 import { WwwCalculatorProvider } from './src/components/WwwCalculator/WwwCalculatorState';
 import { getLanguageData } from './src/utils/languages';
 import { linkResolver } from './src/utils/linkResolver';
@@ -15,6 +16,10 @@ import { linkResolver } from './src/utils/linkResolver';
 registerLinkResolver(linkResolver);
 
 const theme = createTheme({ fontSize: 18 });
+
+const wrapPageElement = ({ element, props }) => (
+  <Layout {...props}>{element}</Layout>
+);
 
 const wrapRootElement = ({ element }) => (
   <CookiesProvider>
@@ -31,7 +36,7 @@ const wrapRootElement = ({ element }) => (
   </CookiesProvider>
 );
 
-export { wrapRootElement };
+export { wrapRootElement, wrapPageElement };
 
 // Use this variable in core if needed
 window.GATSBY = true;
