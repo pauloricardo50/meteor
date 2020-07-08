@@ -165,6 +165,7 @@ module.exports = {
     // the original module during tests.
     // So for testing, importing the same module as named is helpful
     'import/no-named-as-default': 0,
+    'import/no-cycle': 1,
 
     // eslint-plugin-jsx-a11y rules
 
@@ -204,6 +205,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 0,
     'react/prop-types': 0,
+    'react/jsx-filename-extension': 1,
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 0,

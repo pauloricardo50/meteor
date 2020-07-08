@@ -125,10 +125,6 @@ class CollectionService {
     return this.find({}).count();
   }
 
-  getAll() {
-    return this.find({}).fetch();
-  }
-
   get rawCollection() {
     return this.collection.rawCollection();
   }

@@ -116,6 +116,7 @@ export default class DialogSimple extends Component {
           open={open}
           onClose={this.handleClose}
           style={style}
+          contentStyle={contentStyle}
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })

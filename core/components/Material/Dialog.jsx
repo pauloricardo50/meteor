@@ -7,7 +7,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 
 const Dialog = props => {
-  const { title, actions, children, important, text, ...otherProps } = props;
+  const {
+    title,
+    actions,
+    children,
+    important,
+    text,
+    contentStyle,
+    ...otherProps
+  } = props;
   return (
     <MuiDialog
       disableBackdropClick={important}
@@ -15,7 +23,7 @@ const Dialog = props => {
       {...otherProps}
     >
       {title && <DialogTitle>{title}</DialogTitle>}
-      <DialogContent>
+      <DialogContent style={contentStyle}>
         {text && <DialogContentText>{text}</DialogContentText>}
         {children}
       </DialogContent>

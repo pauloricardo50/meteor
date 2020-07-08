@@ -152,9 +152,7 @@ class PDFService {
 
     return fetch(PDF_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
       .then(res => {

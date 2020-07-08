@@ -17,9 +17,7 @@ const SingleInsuranceRequestPage = props => {
       <SingleInsuranceRequestPageHeader insuranceRequest={insuranceRequest} />
       <div className="single-insurance-request-page-sub-header">
         <InsuranceRequestTasksTable
-          doc={insuranceRequest}
-          withTaskInsert
-          withQueryTaskInsert
+          insuranceRequest={insuranceRequest}
           className="single-insurance-request-page-tasks card1 card-top"
         />
         <SingleInsuranceRequestPageContacts

@@ -13,7 +13,10 @@ import {
   INSURANCE_REQUEST_STATUS_ORDER,
   UNSUCCESSFUL_INSURANCE_REQUESTS_REASONS,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
+import {
+  INSURANCES_COLLECTION,
+  INSURANCE_STATUS_ORDER,
+} from 'core/api/insurances/insuranceConstants';
 import {
   LOANS_COLLECTION,
   LOAN_STATUS,
@@ -43,7 +46,7 @@ const thirtyDaysAgo = moment().day(-30).hour(0).minute(0);
 
 const analysisConfig = {
   [LOANS_COLLECTION]: {
-    category: { id: 'Forms.category' },
+    category: { id: 'Forms.category', formsFormat: true },
     status: {
       id: 'Forms.status',
       format: ({ status }) =>
@@ -51,7 +54,7 @@ const analysisConfig = {
           id: `Forms.status.${status}`,
         })}`,
     },
-    residenceType: { id: 'Forms.residenceType' },
+    residenceType: { id: 'Forms.residenceType', formsFormat: true },
     purchaseType: {
       id: 'Forms.purchaseType',
       format: ({ purchaseType, promotions }) => {
@@ -77,11 +80,11 @@ const analysisConfig = {
           ),
       },
       {
-        id: 'Référé par',
+        label: 'Référé par',
         format: ({ user }) => user?.referredByOrganisation?.name,
       },
       {
-        id: 'Compte vérifié',
+        label: 'Compte vérifié',
         format: ({ user }) =>
           user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
       },
@@ -91,7 +94,11 @@ const analysisConfig = {
       },
       {
         label: "Canal d'acquisition",
-        format: ({ user }) => user?.acquisitionChannel,
+        format: ({ user }) =>
+          user?.acquisitionChannel &&
+          formatMessage({
+            id: `Forms.acquisitionChannel.${user?.acquisitionChannel}`,
+          }),
       },
     ],
     createdAt: [
@@ -119,7 +126,10 @@ const analysisConfig = {
           moment(createdAt).isAfter(thirtyDaysAgo) ? 'Oui' : 'Non',
       },
     ],
-    anonymous: { id: 'Forms.anonymous' },
+    anonymous: {
+      id: 'Forms.anonymous',
+      format: ({ anonymous }) => (anonymous ? 'Oui' : 'Non'),
+    },
     assignees: [
       {
         fragment: { name: 1 },
@@ -144,7 +154,7 @@ const analysisConfig = {
     },
     revenues: [
       {
-        id: 'Revenus totaux',
+        label: 'Revenus totaux',
         fragment: { amount: 1, status: 1, organisationLinks: 1 },
         format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
@@ -339,8 +349,8 @@ const analysisConfig = {
         },
       },
     ],
-    type: { id: 'Forms.type' },
-    status: { id: 'Forms.status' },
+    type: { id: 'Forms.type', formsFormat: true },
+    status: { id: 'Forms.status', formsFormat: true },
     'sourceOrganisation.name': { id: 'Forms.sourceOrganisationLink' },
     paidAt: {
       label: 'Payé Mois-Année',
@@ -389,7 +399,9 @@ const analysisConfig = {
           },
           purchaseType: 1,
         },
-        format: ({ loan }) => loan && loan.category,
+        format: ({ loan }) =>
+          loan?.category &&
+          formatMessage({ id: `Forms.category.${loan.category}` }),
       },
       {
         label: 'Statut du dossier',
@@ -410,16 +422,22 @@ const analysisConfig = {
         },
       },
       {
-        id: 'Référé par',
+        label: 'Référé par',
         format: ({ loan }) => loan?.user?.referredByOrganisation?.name,
       },
       {
-        id: 'Type du dossier',
-        format: ({ loan }) => loan?.purchaseType,
+        label: 'Type du dossier',
+        format: ({ loan }) =>
+          loan?.purchaseType &&
+          formatMessage({ id: `Forms.purchaseType.${loan.purchaseType}` }),
       },
       {
-        id: "Canal d'acquisition",
-        format: ({ loan }) => loan?.user?.acquisitionChannel,
+        label: "Canal d'acquisition",
+        format: ({ loan }) =>
+          loan?.user?.acquisitionChannel &&
+          formatMessage({
+            id: `Forms.acquisitionChannel.${loan.user.acquisitionChannel}`,
+          }),
       },
     ],
   },
@@ -444,7 +462,7 @@ const analysisConfig = {
       format: makeFormatDate('createdAt'),
     },
     'assignedEmployee.name': { label: 'Conseiller' },
-    acquisitionChannel: { id: 'Forms.acquisitionChannel' },
+    acquisitionChannel: { id: 'Forms.acquisitionChannel', formsFormat: true },
     loans: {
       fragment: { _id: 1 },
       label: 'Nb. de dossiers',
@@ -453,9 +471,12 @@ const analysisConfig = {
   },
   [BORROWERS_COLLECTION]: {
     age: { id: 'Forms.age' },
-    gender: { id: 'Forms.gender' },
-    isSwiss: { id: 'Forms.isSwiss' },
-    civilStatus: { id: 'Forms.civilStatus' },
+    gender: { id: 'Forms.gender', formsFormat: true },
+    isSwiss: {
+      id: 'Forms.isSwiss',
+      format: ({ isSwiss }) => (isSwiss ? 'Oui' : 'Non'),
+    },
+    civilStatus: { id: 'Forms.civilStatus', formsFormat: true },
     createdAt: {
       label: 'Création Mois-Année',
       format: makeFormatDate('createdAt'),
@@ -464,12 +485,17 @@ const analysisConfig = {
     salary: { id: 'Forms.salary' },
   },
   [ACTIVITIES_COLLECTION]: {
+    fragment: {
+      loan: { status: 1 },
+      insuranceRequest: { status: 1 },
+      insurance: { status: 1 },
+    },
     createdByUser: {
       fragment: { name: 1 },
       label: 'Créé par',
       format: ({ createdByUser }) => createdByUser?.name,
     },
-    type: { id: 'Forms.type' },
+    type: { id: 'Forms.type', formsFormat: true },
     date: { id: 'Forms.date', format: makeFormatDate('date') },
     metadata: [
       {
@@ -479,7 +505,23 @@ const analysisConfig = {
       },
       {
         label: 'Changement de statut',
-        format: ({ metadata }) => metadata?.details?.nextStatus,
+        format: ({ metadata }) => {
+          const nextStatus = metadata?.details?.nextStatus;
+
+          if (!nextStatus) {
+            return;
+          }
+
+          if (INSURANCE_STATUS_ORDER.includes(nextStatus)) {
+            return `${
+              INSURANCE_STATUS_ORDER.indexOf(nextStatus) + 1
+            }) ${formatMessage({ id: `Forms.status.${nextStatus}` })}`;
+          }
+
+          return `${
+            LOAN_STATUS_ORDER.indexOf(nextStatus) + 1
+          }) ${formatMessage({ id: `Forms.status.${nextStatus}` })}`;
+        },
       },
     ],
     loan: [
@@ -498,17 +540,45 @@ const analysisConfig = {
       },
       {
         label: 'Catégorie du dossier',
-        format: ({ loan }) => loan?.category,
+        format: ({ loan }) =>
+          loan?.category &&
+          formatMessage({ id: `Forms.category.${loan.category}` }),
       },
       {
         label: 'Type du dossier',
-        format: ({ loan }) => loan?.purchaseType,
+        format: ({ loan }) =>
+          loan?.purchaseType &&
+          formatMessage({ id: `Forms.purchaseType.${loan.purchaseType}` }),
       },
       {
         id: 'Forms.wantedLoan',
         format: ({ loan }) => loan?.structureCache?.wantedLoan,
       },
     ],
+    relatedTo: {
+      label: 'Lié à',
+      format: ({ loan, insuranceRequest, insurance }) => {
+        if (loan?._id) {
+          return 'Hypothèque';
+        }
+        if (insuranceRequest?._id) {
+          return 'Dossier assurance';
+        }
+        if (insurance) {
+          return 'Assurance';
+        }
+      },
+    },
+    createdAt: {
+      label: 'Création Mois-Année',
+      format: makeFormatDate('createdAt'),
+    },
+    isTest: {
+      label: 'Test?',
+      format: ({ loan, insuranceRequest }) =>
+        loan?.status === LOAN_STATUS.TEST ||
+        insuranceRequest?.status === INSURANCE_REQUEST_STATUS.TEST,
+    },
   },
   [TASKS_COLLECTION]: {
     createdAt: {
@@ -523,14 +593,14 @@ const analysisConfig = {
       label: 'Échéance Mois-Année',
       format: makeFormatDate('dueAt'),
     },
-    status: { id: 'Forms.status' },
+    status: { id: 'Forms.status', formsFormat: true },
     assignee: {
       fragment: { name: 1 },
       id: 'Forms.assignedTo',
       format: ({ assignee }) => assignee?.name,
     },
     createdBy: {
-      id: 'Créé par',
+      label: 'Créé par',
       format: ({ createdBy }) => {
         const employee = employeesById[createdBy];
         return employee?.name;
@@ -576,35 +646,21 @@ const analysisConfig = {
     ],
   },
   [ORGANISATIONS_COLLECTION]: {
-    name: {
-      id: 'Forms.name',
-    },
-    type: {
-      id: 'Forms.type',
-    },
-    features: {
-      id: 'Forms.features',
-    },
+    name: { id: 'Forms.name' },
+    type: { id: 'Forms.type', formsFormat: true },
+    features: { id: 'Forms.features', formsFormat: true },
     userLinks: {
       label: 'Nb. de comptes',
       format: ({ userLinks = [] }) => userLinks.length,
     },
-    referredUsersCount: {
-      label: 'Nb. de clients référés',
-    },
-    commissionRate: {
-      label: 'Taux de commissionnement actuel',
-    },
-    generatedRevenues: {
-      label: 'Revenus générés',
-    },
+    referredUsersCount: { label: 'Nb. de clients référés' },
+    commissionRate: { label: 'Taux de commissionnement actuel' },
+    generatedRevenues: { label: 'Revenus générés' },
     lenders: [
       {
         fragment: {
           offers: { maxAmount: 1 },
-          loan: {
-            structureCache: { offerId: 1 },
-          },
+          loan: { structureCache: { offerId: 1 } },
         },
         label: 'Offres faites',
         format: ({ lenders = [] }) =>
@@ -655,11 +711,11 @@ const analysisConfig = {
           ),
       },
       {
-        id: 'Référé par',
+        label: 'Référé par',
         format: ({ user }) => user?.referredByOrganisation?.name,
       },
       {
-        id: 'Compte vérifié',
+        label: 'Compte vérifié',
         format: ({ user }) =>
           user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
       },
@@ -781,7 +837,7 @@ const analysisConfig = {
     ],
     revenues: [
       {
-        id: 'Revenus totaux',
+        label: 'Revenus totaux',
         fragment: { amount: 1, status: 1 },
         format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
@@ -837,12 +893,12 @@ const analysisConfig = {
           ),
       },
       {
-        id: 'Référé par',
+        label: 'Référé par',
         format: ({ insuranceRequest: { user } = {} }) =>
           user?.referredByOrganisation?.name,
       },
       {
-        id: 'Compte vérifié',
+        label: 'Compte vérifié',
         format: ({ insuranceRequest: { user } = {} }) =>
           user?.emails?.some(({ verified }) => verified) ? 'Oui' : 'Non',
       },
@@ -888,7 +944,7 @@ const analysisConfig = {
     ],
     revenues: [
       {
-        id: 'Revenus totaux',
+        label: 'Revenus totaux',
         fragment: { amount: 1, status: 1 },
         format: ({ revenues = [] }) =>
           revenues.reduce((t, { amount }) => t + amount, 0),
@@ -1007,9 +1063,7 @@ const analysisConfig = {
             : 'Non',
       },
     ],
-    premium: {
-      id: 'Forms.premium',
-    },
+    premium: { id: 'Forms.premium' },
     premiumFrequency: {
       id: 'Forms.premiumFrequency',
       format: ({ premiumFrequency }) =>

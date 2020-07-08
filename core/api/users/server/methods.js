@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import PropertyService from '../../properties/server/PropertyService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
@@ -10,6 +11,7 @@ import {
   changeEmail,
   doesUserExist,
   generateApiKeyPair,
+  getEnrollUrl,
   getProByEmail,
   getUserByPasswordResetToken,
   proInviteUser,
@@ -241,3 +243,14 @@ toggleAccount.setHandler((context, { userId }) => {
 
 userPasswordReset.setHandler(() => null);
 userVerifyEmail.setHandler(() => null);
+
+getEnrollUrl.setHandler((context, { userId }) => {
+  if (Meteor.isDevelopment) {
+    const token = UserService.getLoginToken({ userId });
+    const userIsPro = Roles.userIsInRole(userId, ROLES.PRO);
+    if (userIsPro) {
+      return `${Meteor.settings.public.subdomains.pro}/enroll-account/${token}`;
+    }
+    return `${Meteor.settings.public.subdomains.app}/enroll-account/${token}`;
+  }
+});

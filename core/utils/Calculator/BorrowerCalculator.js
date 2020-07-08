@@ -1,7 +1,13 @@
 import moment from 'moment';
 
-import { OWN_FUNDS_TYPES } from '../../api/borrowers/borrowerConstants';
+import { ACTIVITY_TYPES } from '../../api/activities/activityConstants';
+import {
+  BORROWER_ACTIVITY_TYPES,
+  CIVIL_STATUS,
+  OWN_FUNDS_TYPES,
+} from '../../api/borrowers/borrowerConstants';
 import { getBorrowerDocuments } from '../../api/files/documents';
+import { DOCUMENTS } from '../../api/files/fileConstants';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -11,6 +17,7 @@ import {
   EXPENSE_TYPES,
   INCOME_CONSIDERATION_TYPES,
 } from '../../api/lenderRules/lenderRulesConstants';
+import { CANTONS } from '../../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
 import {
   getBorrowerFinanceArray,
@@ -823,5 +830,59 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           ...otherIncomeOfType.map(({ comment }) => comment),
         ].filter(x => x);
       }, []);
+    }
+
+    hasInsurancePotential({ borrowers }) {
+      return borrowers.reduce((potential, borrower) => {
+        const {
+          _id: borrowerId,
+          documents,
+          canton,
+          activityType,
+          hasOwnCompany,
+          civilStatus,
+          age,
+        } = borrower;
+        const hasUploadedLppCertificate = !!documents?.[
+          DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT
+        ];
+        const doesNotHave3A =
+          !this.getBank3A({ borrowers: [borrower] }) &&
+          !this.getInsurance3A({ borrowers: [borrower] });
+        const isFromGenevaOrFribourg = [CANTONS.GE, CANTONS.FR].includes(
+          canton,
+        );
+        const doesNotHave3B = !this.getInsurance3B({ borrowers: [borrower] });
+        const doesNotHave3BInGenevaOrFribourg =
+          isFromGenevaOrFribourg && doesNotHave3B;
+        const hasBank3A = !!this.getBank3A({ borrowers: [borrower] });
+        const isSelfEmployed =
+          activityType === BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED ||
+          !!hasOwnCompany;
+        const isDivorced = civilStatus === CIVIL_STATUS.DIVORCED;
+        const isNearRetirement = age >= 50;
+        const hasPotential =
+          hasUploadedLppCertificate &&
+          (doesNotHave3A ||
+            doesNotHave3BInGenevaOrFribourg ||
+            hasBank3A ||
+            isSelfEmployed ||
+            isDivorced ||
+            isNearRetirement);
+
+        return {
+          ...potential,
+          [borrowerId]: {
+            hasUploadedLppCertificate,
+            doesNotHave3A,
+            doesNotHave3BInGenevaOrFribourg,
+            hasBank3A,
+            isSelfEmployed,
+            isDivorced,
+            isNearRetirement,
+            hasPotential,
+          },
+        };
+      }, {});
     }
   };

@@ -5,7 +5,7 @@ import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
 import Security from '../../security/Security';
 import UserService from '../../users/server/UserService';
-import { LOAN_STATUS, STEPS } from '../loanConstants';
+import { INSURANCE_POTENTIAL, LOAN_STATUS, STEPS } from '../loanConstants';
 import {
   addClosingChecklists,
   addNewMaxStructure,
@@ -31,6 +31,7 @@ import {
   loanUnlinkPromotion,
   loanUpdate,
   loanUpdatePromotionInvitedBy,
+  notifyInsuranceTeamForPotential,
   popLoanValue,
   pushLoanValue,
   removeStructure,
@@ -41,6 +42,7 @@ import {
   setLoanStep,
   setMaxPropertyValueOrBorrowRatio,
   switchBorrower,
+  updateInsurancePotential,
   updateStructure,
   userLoanInsert,
 } from '../methodDefinitions';
@@ -349,4 +351,17 @@ loanLinkProperty.setHandler(({ userId }, params) => {
 addClosingChecklists.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.addClosingChecklists(params);
+});
+
+notifyInsuranceTeamForPotential.setHandler(({ userId }, { loanId }) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return LoanService.updateInsurancePotential({
+    loanId,
+    insurancePotential: INSURANCE_POTENTIAL.NOTIFIED,
+  });
+});
+
+updateInsurancePotential.setHandler(({ userId }, params) => {
+  SecurityService.checkCurrentUserIsAdmin(userId);
+  return LoanService.updateInsurancePotential(params);
 });

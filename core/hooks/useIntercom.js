@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import { useEffect } from 'react';
-import useImpersonatedSession from 'imports/core/hooks/useImpersonatedSession';
 import { useHistory } from 'react-router-dom';
 
 import { TRACKING_COOKIE } from '../api/analytics/analyticsConstants';
@@ -30,7 +29,7 @@ export const IntercomAPI = (method, ...args) => {
 };
 
 const getTrackingIds = () => {
-  const visitorId = window.Intercom('getVisitorId');
+  const visitorId = window?.Intercom?.('getVisitorId');
   const cookies = parseCookies();
   const trackingId = cookies?.[TRACKING_COOKIE];
   const intercomId = Object.keys(cookies).reduce(
@@ -77,13 +76,13 @@ const initializeIntercom = async history => {
 
       s.addEventListener('load', function () {
         updateIntercomVisitorTrackingId.run(getTrackingIds());
-        window.Intercom('trackEvent', 'last-page', {
+        window?.Intercom?.('trackEvent', 'last-page', {
           title: document?.title,
           pathname: history?.location?.pathname,
           microservice: Meteor.microservice,
         });
 
-        window.Intercom('onShow', function () {
+        window?.Intercom?.('onShow', function () {
           updateIntercomVisitorTrackingId.run(getTrackingIds());
           analyticsOpenedIntercom.run({
             trackingId: getTrackingIds().trackingId,

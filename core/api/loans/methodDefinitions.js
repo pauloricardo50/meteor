@@ -260,3 +260,13 @@ export const addClosingChecklists = new Method({
   name: 'addClosingChecklists',
   params: { loanId: String },
 });
+
+export const notifyInsuranceTeamForPotential = new Method({
+  name: 'notifyInsuranceTeamForPotential',
+  params: { loanId: String },
+});
+
+export const updateInsurancePotential = new Method({
+  name: 'updateInsurancePotential',
+  params: { loanId: String, insurancePotential: String },
+});

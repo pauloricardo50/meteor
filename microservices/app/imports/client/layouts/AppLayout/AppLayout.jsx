@@ -24,7 +24,7 @@ const renderMobile = props => {
     },
     loan,
   } = props;
-  const isSimple = loan && loan.applicationType === APPLICATION_TYPES.SIMPLE;
+  const isSimple = loan?.applicationType === APPLICATION_TYPES.SIMPLE;
 
   if (isSimple) {
     return true;

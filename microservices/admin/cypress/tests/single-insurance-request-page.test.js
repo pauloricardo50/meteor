@@ -123,8 +123,8 @@ describe('Single Insurance Request Page', () => {
     cy.contains('.single-insurance-request-page-tasks button', 'Tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
-    cy.get('.tasks-table tr').should('have.length', 2);
-    cy.contains('.tasks-table', 'Cypress Task').should('exist');
+    cy.get('.tasks-data-table tr').should('have.length', 2);
+    cy.contains('.tasks-data-table', 'Cypress Task').should('exist');
 
     // Add activity
     cy.get('.timeline').children().should('have.length', 1);

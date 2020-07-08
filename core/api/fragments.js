@@ -181,20 +181,6 @@ export const lender = () => ({
   },
 });
 
-export const adminLender = () => {
-  const lenderFragment = lender();
-  return {
-    ...lenderFragment,
-    adminNote: 1,
-    offers: adminOffer(),
-    organisation: {
-      ...lenderFragment.organisation,
-      commissionRates: { type: 1, rates: 1 },
-    },
-    status: 1,
-  };
-};
-
 // //
 // // LenderRules fragments
 // //
@@ -302,17 +288,9 @@ export const loan = () => ({
 });
 
 const userPropertyValue = { borrowRatio: 1, propertyValue: 1 };
-const adminPropertyValue = { ...userPropertyValue, organisationName: 1 };
 const userMaxPropertyValue = {
   main: { min: userPropertyValue, max: userPropertyValue },
   second: { min: userPropertyValue, max: userPropertyValue },
-  canton: 1,
-  date: 1,
-  borrowerHash: 1,
-};
-const adminMaxPropertyValue = {
-  main: { min: adminPropertyValue, max: adminPropertyValue },
-  second: { min: adminPropertyValue, max: adminPropertyValue },
   canton: 1,
   date: 1,
   borrowerHash: 1,
@@ -367,43 +345,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         },
       }
     : {}),
-});
-
-export const adminLoan = ({ withSort } = {}) => ({
-  assigneeLinks: 1, // Keep this first, to make sure it arrives along with the assignees
-  ...userLoan({ withSort }),
-  adminNotes: 1,
-  category: 1,
-  financedPromotion: { name: 1, status: 1 },
-  financedPromotionLink: 1,
-  frontTagId: 1,
-  lenders: adminLender(),
-  maxPropertyValue: adminMaxPropertyValue,
-  nextDueTask: 1,
-  proNote: 1,
-  properties: adminProperty({ withSort }),
-  revenues: adminRevenue(),
-  status: 1,
-  tasksCache: {
-    createdAt: 1,
-    dueAt: 1,
-    status: 1,
-    title: 1,
-    isPrivate: 1,
-    assigneeLink: 1,
-  },
-  userCache: 1,
-  user: adminUser(),
-  selectedLenderOrganisation: { name: 1 },
-  insuranceRequests: {
-    status: 1,
-    name: 1,
-    borrowers: { name: 1 },
-    createdAt: 1,
-    updatedAt: 1,
-  },
-  unsuccessfulReason: 1,
-  mainAssignee: 1,
 });
 
 export const proLoans = () => ({
@@ -505,21 +446,6 @@ export const mortgageNote = () => ({
 });
 
 // //
-// // Notification fragments
-// //
-export const notification = () => ({
-  activity: activity(),
-  createdAt: 1,
-  readAt: 1,
-  recipients: { firstName: 1, lastName: 1, name: 1 },
-  relatedDoc: 1,
-  task: task(),
-  title: 1,
-  revenue: adminRevenue(),
-  updatedAt: 1,
-});
-
-// //
 // // Offer fragments
 // //
 export const formOffer = () => ({
@@ -558,11 +484,6 @@ export const fullOffer = () => ({
   createdAt: 1,
   withCounterparts: 1,
   enableOffer: 1,
-});
-
-export const adminOffer = () => ({
-  ...fullOffer(),
-  documents: 1,
 });
 
 // //
@@ -830,8 +751,6 @@ export const proPromotions = () => ({
   promotionLots: { attributedTo: { user: { name: 1 } }, promotion: { _id: 1 } },
 });
 
-export const adminPromotions = proPromotion;
-
 export const searchPromotions = () => ({
   createdAt: 1,
   name: 1,
@@ -908,13 +827,6 @@ export const fullProperty = ({ withSort } = {}) => ({
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
-export const adminProperty = ({ withSort } = {}) => ({
-  ...fullProperty({ withSort }),
-  loanCount: 1,
-  useOpenGraph: 1,
-  users: { name: 1, organisations: { name: 1 } },
-});
-
 export const promotionProperty = () => ({
   additionalMargin: 1,
   address: 1,
@@ -965,17 +877,6 @@ export const baseTask = () => ({
   updatedAt: 1,
 });
 
-export const task = () => ({
-  ...baseTask(),
-  assigneeLink: 1,
-  assignee: simpleUser(),
-  lender: { name: 1 },
-  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
-  organisation: { name: 1 },
-  promotion: { name: 1 },
-  user: { name: 1 },
-});
-
 // //
 // // User fragments
 // //
@@ -1007,32 +908,6 @@ export const fullUser = () => ({
   newsletterStatus: 1,
   organisations: { name: 1 },
   updatedAt: 1,
-});
-
-export const adminUser = () => ({
-  ...fullUser(),
-  assignedEmployee: simpleUser(),
-  assignedEmployeeCache: 1,
-  office: 1,
-  promotions: { name: 1, status: 1 },
-  proProperties: { address1: 1, status: 1, loanCount: 1, totalValue: 1 },
-  referredByUser: {
-    name: 1,
-    organisations: { name: 1 },
-    email: 1,
-    phoneNumber: 1,
-  },
-  referredByOrganisation: { name: 1, emails: 1 },
-  referredByOrganisationLink: 1,
-  acquisitionChannel: 1,
-  borrowers: { name: 1 },
-  insuranceRequests: {
-    name: 1,
-    borrowers: { name: 1 },
-    createdAt: 1,
-    updatedAt: 1,
-    status: 1,
-  },
 });
 
 export const appUser = () => ({
@@ -1087,41 +962,6 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-const adminRevenue = () => ({
-  amount: 1,
-  // Keep these in the right order
-  assigneeLink: 1,
-  assignee: { name: 1 },
-  createdAt: 1,
-  description: 1,
-  expectedAt: 1,
-  loan: {
-    name: 1,
-    borrowers: { name: 1 },
-    user: {
-      name: 1,
-      referredByOrganisation: {
-        name: 1,
-        commissionRates: { type: 1, rates: 1 },
-      },
-    },
-    userCache: 1,
-    assigneeLinks: 1,
-    hasPromotion: 1,
-  },
-  insurance: { name: 1, insuranceRequest: { _id: 1 }, borrower: { name: 1 } },
-  insuranceRequest: { name: 1 },
-  // Keep these in the right order
-  organisationLinks: 1,
-  organisations: { name: 1 },
-  paidAt: 1,
-  // Keep these in the right order
-  sourceOrganisationLink: 1,
-  sourceOrganisation: { name: 1 },
-  status: 1,
-  type: 1,
-});
-
 export const proRevenue = () => ({
   amount: 1,
   expectedAt: 1,

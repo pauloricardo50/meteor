@@ -13,3 +13,8 @@ export const generatePDF = new Method({
     htmlOnly: Match.Maybe(Boolean),
   },
 });
+
+export const getSimpleFinancingCertificate = new Method({
+  name: 'getSimpleFinancingCertificate',
+  params: { loanId: String },
+});
