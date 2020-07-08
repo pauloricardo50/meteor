@@ -19,18 +19,16 @@ const WwwCalculatorForm = () => {
       : REFINANCING_FIELDS;
 
   return (
-    <div className="www-calculator-form card1">
-      <div className="card-top">
+    <div className="www-calculator-form">
+      <div className="www-calculator-form-fields">
         {fields.map(field => (
           <WwwCalculatorFormField key={field} field={field} />
         ))}
       </div>
 
-      <div className="card-bottom">
-        <Button fullWidth icon={<Icon type="backupRestore" />}>
-          Remettre à zero
-        </Button>
-      </div>
+      <Button fullWidth icon={<Icon type="backupRestore" />}>
+        Remettre à zero
+      </Button>
     </div>
   );
 };

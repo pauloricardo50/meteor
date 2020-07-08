@@ -62,6 +62,12 @@ const languageData = {
       "{purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
     'WwwCalculatorFormField.currentLoan': 'Prêt existant',
     'WwwCalculatorFormField.wantedLoan': 'Nouveau prêt',
+    'WwwCalculatorFormField.increaseSliderMax': 'Agrandir le slider',
+    'WwwCalculatorRecap.title': 'Plan financier',
+    'WwwCalculatorChart.amortization': 'Amortissement',
+    'WwwCalculatorChart.interests': 'Intérêts',
+    'WwwCalculatorChart.maintenance': 'Entretien',
+    'WwwCalculatorChart.title': 'CHF {total} /mois',
   },
 };
 

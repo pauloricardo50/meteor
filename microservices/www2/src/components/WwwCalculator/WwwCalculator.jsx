@@ -7,22 +7,17 @@ import WwwCalculatorForm from './WwwCalculatorForm';
 import WwwCalculatorPurchaseType from './WwwCalculatorPurchaseType';
 import WwwCalculatorRecap from './WwwCalculatorRecap';
 import { WwwCalculatorProvider } from './WwwCalculatorState';
-import WwwCalculatorStatus from './WwwCalculatorStatus';
 
 const WwwCalculator = () => (
   <WwwCalculatorProvider>
     <div className="www-calculator">
+      <WwwCalculatorPurchaseType />
       <div className="www-calculator-top">
-        <div className="flex-col">
-          <WwwCalculatorPurchaseType />
-          <WwwCalculatorStatus />
-        </div>
-
         <WwwCalculatorForm />
+        <WwwCalculatorRecap />
       </div>
 
       <div className="www-calculator-bottom">
-        <WwwCalculatorRecap />
         <WwwCalculatorChart />
       </div>
     </div>

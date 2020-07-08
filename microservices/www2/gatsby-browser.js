@@ -15,7 +15,7 @@ const theme = createTheme({ fontSize: 18 });
 
 const wrapRootElement = ({ element }) => (
   <CookiesProvider>
-    <IntlProvider messages={getLanguageData()}>
+    <IntlProvider messages={getLanguageData()} onError={console.warn}>
       <MuiThemeProvider theme={theme}>{element}</MuiThemeProvider>
     </IntlProvider>
   </CookiesProvider>

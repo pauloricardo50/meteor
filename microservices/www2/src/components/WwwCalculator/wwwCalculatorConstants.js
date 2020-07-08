@@ -5,6 +5,7 @@ export const CURRENT_LOAN = 'currentLoan';
 export const WANTED_LOAN = 'wantedLoan';
 export const ACQUISITION_FIELDS = [PROPERTY, SALARY, FORTUNE];
 export const REFINANCING_FIELDS = [PROPERTY, SALARY, CURRENT_LOAN, WANTED_LOAN];
+export const NOTARY_FEES = 0.05;
 
 export const ACTIONS = {
   SET_VALUE: 'SET_VALUE',
