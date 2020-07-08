@@ -1,15 +1,42 @@
 import './WwwCalculator.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import meteorClient from '../../utils/meteorClient';
 import WwwCalculatorChart from './WwwCalculatorChart';
+import { ACTIONS } from './wwwCalculatorConstants';
 import WwwCalculatorForm from './WwwCalculatorForm';
 import WwwCalculatorPurchaseType from './WwwCalculatorPurchaseType';
 import WwwCalculatorRecap from './WwwCalculatorRecap';
-import { WwwCalculatorProvider } from './WwwCalculatorState';
+import { useWwwCalculator } from './WwwCalculatorState';
 
-const WwwCalculator = () => (
-  <WwwCalculatorProvider>
+const WwwCalculator = () => {
+  const [_, dispatch] = useWwwCalculator();
+
+  useEffect(() => {
+    const getCurrentRates = async () => {
+      const response = await meteorClient.call(
+        'named_query_CURRENT_INTEREST_RATES',
+      );
+      if (response?.rates) {
+        dispatch({
+          type: ACTIONS.SET_VALUE,
+          payload: { interestRates: response.rates },
+        });
+        dispatch({
+          type: ACTIONS.SET_VALUE,
+          payload: {
+            interestRate: response.rates.find(
+              ({ type }) => type === 'interest10',
+            ).rateLow,
+          },
+        });
+      }
+    };
+    getCurrentRates();
+  }, []);
+
+  return (
     <div className="www-calculator">
       <WwwCalculatorPurchaseType />
       <div className="www-calculator-top">
@@ -21,7 +48,7 @@ const WwwCalculator = () => (
         <WwwCalculatorChart />
       </div>
     </div>
-  </WwwCalculatorProvider>
-);
+  );
+};
 
 export default WwwCalculator;

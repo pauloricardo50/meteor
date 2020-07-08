@@ -73,7 +73,11 @@
 }
 
 .highcharts-title {
-  font-size: 18px;
+  font-size: 20px;
   fill: $body-text;
   stroke: transparent;
+}
+
+.highcharts-strong {
+  font-weight: $bold;
 }

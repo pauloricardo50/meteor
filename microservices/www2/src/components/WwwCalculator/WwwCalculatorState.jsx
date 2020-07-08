@@ -19,8 +19,6 @@ const initialState = {
   purchaseType: PURCHASE_TYPE.ACQUISITION,
 };
 
-const roundedValue = value => value && Math.round(value);
-
 export const wwwCalculatorReducer = (state, { type, payload }) => {
   switch (type) {
     case ACTIONS.SET_VALUE: {

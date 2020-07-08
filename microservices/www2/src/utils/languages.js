@@ -68,6 +68,13 @@ const languageData = {
     'WwwCalculatorChart.interests': 'Intérêts',
     'WwwCalculatorChart.maintenance': 'Entretien',
     'WwwCalculatorChart.title': 'CHF {total} /mois',
+    'WwwCalculatorChartForm.interests': "Taux d'intérêt indicatif",
+    'WwwCalculatorChartForm.interestLibor': 'Taux Libor',
+    'WwwCalculatorChartForm.interest5': 'Taux 5 ans',
+    'WwwCalculatorChartForm.interest10': 'Taux 10 ans',
+    'WwwCalculatorChartForm.interest15': 'Taux 15 ans',
+    'WwwCalculatorChartForm.interest20': 'Taux 20 ans',
+    'WwwCalculatorChartForm.interest25': 'Taux 25 ans',
   },
 };
 

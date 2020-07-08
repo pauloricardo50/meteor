@@ -1,11 +1,10 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-// import BaseChart from 'core/components/charts/BaseChart';
 import Chart from 'core/components/charts2/Chart';
-import colors from 'core/config/colors';
 import { toMoney } from 'core/utils/conversionFunctions';
 
+import WwwCalculatorChartForm from './WwwCalculatorChartForm';
 import { PURCHASE_TYPE } from './wwwCalculatorConstants';
 import {
   getLoanValue,
@@ -17,8 +16,9 @@ import { useWwwCalculator } from './WwwCalculatorState';
 
 const WwwCalculatorChart = () => {
   const { formatMessage } = useIntl();
-  const [{ fortune, property, wantedLoan, purchaseType }] = useWwwCalculator();
-  const interestRate = 0.015;
+  const [
+    { fortune, property, wantedLoan, purchaseType, interestRate },
+  ] = useWwwCalculator();
   const loanValue =
     purchaseType === PURCHASE_TYPE.ACQUISITION
       ? getLoanValue(property.value, fortune.value)
@@ -45,7 +45,7 @@ const WwwCalculatorChart = () => {
     <div className="www-calculator-chart">
       <Chart
         options={{
-          chart: { type: 'pie', styledMode: true },
+          chart: { type: 'pie', styledMode: true, height: 500 },
           title: {
             text: formatMessage(
               { id: 'WwwCalculatorChart.title' },
@@ -61,7 +61,14 @@ const WwwCalculatorChart = () => {
                 headerFormat: '<b>{point.key}</b><br />',
                 pointFormat: 'CHF {point.y:,.0f}',
               },
-              dataLabels: { enabled: true },
+              dataLabels: {
+                enabled: true,
+                formatter() {
+                  return `<div><b>${this.key}</b><br>CHF ${toMoney(
+                    this.y,
+                  )}</div>`;
+                },
+              },
             },
           },
           series: [{ innerSize: '75%', data }],
@@ -75,6 +82,8 @@ const WwwCalculatorChart = () => {
           },
         }}
       />
+
+      <WwwCalculatorChartForm />
     </div>
   );
 };
