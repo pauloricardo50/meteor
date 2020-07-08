@@ -60,7 +60,7 @@
     "esm": "^3.2.25",
     "global": "^4.4.0",
     "import-sort-cli": "^6.0.0",
-    "mup": "^1.5.1",
+    "mup": "^1.5.2-beta.1",
     "mup-netdata": "^0.3.1",
     "node-cmd": "^3.0.0",
     "plop": "^2.5.3",
