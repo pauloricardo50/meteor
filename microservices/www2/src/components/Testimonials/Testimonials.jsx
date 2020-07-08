@@ -1,43 +1,70 @@
 import './Testimonials.scss';
 
-import React from 'react';
+import React, { useReducer } from 'react';
+import Fab from '@material-ui/core/Fab';
 import { RichText } from 'prismic-reactjs';
 
-const Testimonials = ({ primary, fields }) => (
-  <div className="testimonials">
-    <div className="testimonials__heading container">
-      {RichText.render(primary.testimonials_heading)}
-      {/* TODO: add left/right navigation */}
+import Icon from 'core/components/Icon';
+
+import Testimonial from './Testimonial';
+
+const makeReducer = ({ testimonials }) => (state, action) => {
+  const { id } = state;
+  const next = id === testimonials.length - 1 ? 0 : id + 1;
+  const prev = id === 0 ? testimonials.length - 1 : id - 1;
+
+  switch (action.type) {
+    case 'next':
+      return { id: next };
+    case 'prev':
+      return { id: prev };
+    default:
+      return state;
+  }
+};
+
+const Testimonials = ({ primary, fields: testimonials = [] }) => {
+  const reducer = makeReducer({ testimonials });
+
+  const [{ id }, dispatch] = useReducer(reducer, { id: 0 });
+
+  const {
+    customer_name: customerName,
+    customer_title: customerTitle,
+    customer_quote: quote,
+  } = testimonials[id];
+
+  return (
+    <div className="testimonials">
+      <div className="testimonials-heading">
+        {RichText.render(primary.testimonials_heading)}
+      </div>
+      <div className="testimonials-content">
+        <Fab
+          onClick={() => dispatch({ type: 'prev' })}
+          color="primary"
+          size="small"
+          className="mr-8"
+        >
+          <Icon type="left" />
+        </Fab>
+        <Testimonial
+          key={id}
+          customerName={customerName}
+          customerTitle={customerTitle}
+          quote={quote}
+        />
+        <Fab
+          onClick={() => dispatch({ type: 'next' })}
+          color="primary"
+          size="small"
+          className="ml-8"
+        >
+          <Icon type="right" />
+        </Fab>
+      </div>
     </div>
-
-    <div className="testimonials__content">
-      {fields &&
-        fields.map((field, idx) => (
-          <div key={idx} className="testimonial">
-            <div className="testimonial__image center">
-              <div className="outer-circle center">
-                <div className="inner-circle center">
-                  <img
-                    className="profile-image"
-                    src={field.profile_image?.url}
-                    alt={field.customer_name}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="testimonial__customer">
-              {RichText.render(field.customer_name)}
-              {RichText.render(field.customer_title)}
-            </div>
-
-            <blockquote className="testimonial__quote">
-              {RichText.asText(field.customer_quote)}
-            </blockquote>
-          </div>
-        ))}
-    </div>
-  </div>
-);
+  );
+};
 
 export default Testimonials;
