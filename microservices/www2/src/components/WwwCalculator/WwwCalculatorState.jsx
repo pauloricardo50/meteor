@@ -22,6 +22,9 @@ const initialState = {
 
 export const wwwCalculatorReducer = (state, { type, payload }) => {
   switch (type) {
+    case ACTIONS.SET: {
+      return { ...state, ...payload };
+    }
     case ACTIONS.SET_VALUE: {
       const { at, ...rest } = payload;
       if (at) {
@@ -38,10 +41,7 @@ export const wwwCalculatorReducer = (state, { type, payload }) => {
   }
 };
 
-export const useCalculatorState = () =>
-  useReducer(wwwCalculatorReducer, initialState);
-
-export const WwwCalculatorContext = React.createContext();
+const WwwCalculatorContext = React.createContext();
 
 export const WwwCalculatorProvider = ({ children }) => {
   const reducerData = useReducer(wwwCalculatorReducer, initialState);

@@ -23,7 +23,7 @@ const WwwCalculatorChartForm = () => {
         value={interestRate}
         onChange={e =>
           dispatch({
-            type: ACTIONS.SET_VALUE,
+            type: ACTIONS.SET,
             payload: { interestRate: e.target.value },
           })
         }
@@ -47,7 +47,7 @@ const WwwCalculatorChartForm = () => {
         toggled={includeMaintenance}
         onToggle={checked =>
           dispatch({
-            type: ACTIONS.SET_VALUE,
+            type: ACTIONS.SET,
             payload: { includeMaintenance: checked },
           })
         }

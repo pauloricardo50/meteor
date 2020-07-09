@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.4",
+    "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-webpack-alias-7": "^0.1.1",
     "chai": "^4.2.0",
     "ignore-styles": "^5.0.1",

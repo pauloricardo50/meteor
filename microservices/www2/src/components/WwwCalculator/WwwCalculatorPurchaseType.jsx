@@ -19,7 +19,7 @@ const WwwCalculatorPurchaseType = () => {
           className={cx({ active: type === purchaseType })}
           onClick={() =>
             dispatch({
-              type: ACTIONS.SET_VALUE,
+              type: ACTIONS.SET,
               payload: { purchaseType: type },
             })
           }

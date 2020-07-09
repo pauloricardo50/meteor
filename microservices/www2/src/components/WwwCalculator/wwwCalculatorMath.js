@@ -3,14 +3,13 @@ import {
   AMORTIZATION_YEARS,
   INTERESTS_FINMA,
   MAINTENANCE_FINMA,
+  MAINTENANCE_REAL,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_PLEDGE,
   MAX_INCOME_RATIO,
   NOTARY_FEES,
 } from 'core/config/financeConstants';
 import { roundTo } from 'core/utils/conversionFunctions';
-
-import { MAINTENANCE_REAL } from '../../core/config/financeConstants';
 
 export const getLoanValue = (propertyValue, fortune) =>
   propertyValue * (1 + NOTARY_FEES) - fortune;
