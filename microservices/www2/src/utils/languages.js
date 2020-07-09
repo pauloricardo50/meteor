@@ -122,7 +122,8 @@ const languageData = {
   },
 };
 
-export const getShortLang = language => language?.split('-')[0].toLowerCase();
+export const getShortLang = language =>
+  language?.split('-')[0].toLowerCase() || 'fr';
 
 export const getLongLang = language => languageData[language].longLang;
 
