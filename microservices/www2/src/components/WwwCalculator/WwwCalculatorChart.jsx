@@ -72,9 +72,9 @@ const WwwCalculatorChart = () => {
               dataLabels: {
                 enabled: true,
                 formatter() {
-                  return `<div><b>${this.key}</b><br>CHF ${toMoney(
-                    this.y,
-                  )}</div>`;
+                  return this.y
+                    ? `<div><b>${this.key}</b><br>CHF ${toMoney(this.y)}</div>`
+                    : null;
                 },
               },
             },

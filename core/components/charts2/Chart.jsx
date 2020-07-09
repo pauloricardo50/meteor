@@ -32,13 +32,13 @@ const defaultOptions = {
           result: 'copy',
           in: 'SourceGraphic',
           dx: '0',
-          dy: '10',
+          dy: '15',
           opacity: 0.3,
         },
         {
           tagName: 'feGaussianBlur',
           result: 'blur',
-          stdDeviation: '10',
+          stdDeviation: '15',
           in: 'copy',
         },
         {
@@ -46,7 +46,7 @@ const defaultOptions = {
           in: 'blur',
           result: 'opacity-blur',
           type: 'matrix',
-          values: '1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.5 0',
+          values: '1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.6 0',
         },
         {
           tagName: 'feBlend',
