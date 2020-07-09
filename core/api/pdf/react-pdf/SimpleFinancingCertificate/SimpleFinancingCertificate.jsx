@@ -9,14 +9,12 @@ import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import PdfDocument from '../PdfDocument';
 import PdfPage from '../PdfPage';
 import T from '../PdfTranslation';
-import { assetUrl } from '../reactPdfHelpers';
 import Text from '../Text';
 import SimpleFinancingCertificateDetails from './SimpleFinancingCertificateDetails';
 import SimpleFinancingCertificateFooter from './SimpleFinancingCertificateFooter';
 import SimpleFinancingCertificateHeader from './SimpleFinancingCertificateHeader';
 
-const logoUrl = `${assetUrl}/img/epotek-logo.png`;
-console.log('logoUrl:', logoUrl);
+const logoUrl = `https://e-potek-public.s3.eu-central-1.amazonaws.com/e-Potek_logo.png`;
 
 // Create Document Component
 const SimpleFinancingCertificate = ({ loan = {} }) => {
