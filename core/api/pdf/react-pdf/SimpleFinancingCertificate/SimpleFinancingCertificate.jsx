@@ -15,6 +15,9 @@ import SimpleFinancingCertificateDetails from './SimpleFinancingCertificateDetai
 import SimpleFinancingCertificateFooter from './SimpleFinancingCertificateFooter';
 import SimpleFinancingCertificateHeader from './SimpleFinancingCertificateHeader';
 
+const logoUrl = `${assetUrl}/img/epotek-logo.png`;
+console.log('logoUrl:', logoUrl);
+
 // Create Document Component
 const SimpleFinancingCertificate = ({ loan = {} }) => {
   const {
@@ -50,7 +53,7 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
         <SimpleFinancingCertificateHeader name={name} />
 
         <Image
-          src={`${assetUrl}/img/epotek-logo.png`}
+          src={logoUrl}
           style={{
             width: 120,
             height: 120,
