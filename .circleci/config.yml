@@ -129,6 +129,7 @@ jobs:
                     fi
 
                     node run-all -e $ENVIRONMENT --apps www validate
+                    node run-all -e $ENVIRONMENT --apps www deploy
                   
 workflows:
   version: 2

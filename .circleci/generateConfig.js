@@ -252,6 +252,7 @@ const makeDeployJob = ({ name, job }) => ({
         fi
 
         node run-all -e $ENVIRONMENT --apps ${name} validate
+        node run-all -e $ENVIRONMENT --apps ${name} deploy
       `
     )
   ]
