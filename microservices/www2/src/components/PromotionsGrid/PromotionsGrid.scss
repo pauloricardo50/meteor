@@ -1,11 +1,6 @@
 .promotions {
   &-filters {
     margin-bottom: 50px;
-    ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-    }
   }
 
   &-grid {
@@ -31,8 +26,9 @@
 .promotion-item {
   border-bottom: solid 0.5px $body-text-light;
   padding-bottom: 20px;
-
-  &__images {
+  
+  &-images {
+    position: relative;
     height: 205px;
 
     img {
@@ -45,12 +41,34 @@
       }
     }
 
+    &-next {
+      position: absolute;
+      bottom: 8px;
+      right: 8px
+    }
+
+    &-previous {
+      position: absolute;
+      bottom: 8px;
+      left: 8px
+    }
+
+    &-finished {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background-color: $error;
+      color: white;
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+
     @media screen and (min-width: $med) {
       height: 300px;
     }
   }
 
-  &__name {
+  &-name, &-lots-count {
     // Mobile/Plain/L/Light
     font-size: 16px;
     font-weight: 300;
@@ -58,6 +76,7 @@
     line-height: 1.44;
     letter-spacing: normal;
     color: $body-text;
+    margin-bottom: 0;
 
     @media screen and (min-width: $med) {
       // Desktop/Plain/L/Light
@@ -70,7 +89,11 @@
     }
   }
 
-  &__summary {
+  &-lots-count {
+    opacity: 0.5;
+  }
+
+  &-description {
     // Desktop/Plain/S
     font-size: 12px;
     font-weight: 300;
@@ -90,7 +113,7 @@
     }
   }
 
-  &__footer {
+  &-footer {
     display: flex;
 
     .interest-button {
