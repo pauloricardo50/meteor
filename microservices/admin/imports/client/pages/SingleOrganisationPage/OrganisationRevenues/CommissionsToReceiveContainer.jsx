@@ -24,6 +24,7 @@ const makeAddCommissionStatus = organisationId => ({
 
   return {
     ...rest,
+    amount: commissionAmount,
     columns: [
       {
         raw: commissionStatus,
