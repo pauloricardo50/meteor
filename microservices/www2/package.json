@@ -38,7 +38,11 @@
     "react-scroll": "^1.7.16",
     "react-share": "^4.2.0",
     "recompose": "^0.30.0",
-    "simpleddp": "^2.2.4"
+    "simpl-schema": "^1.8.0",
+    "simpleddp": "^2.2.4",
+    "uniforms": "^2.6.9",
+    "uniforms-bridge-simple-schema-2": "^2.6.9",
+    "uniforms-material": "^2.6.9"
   },
   "scripts": {
     "build": "npx --node-arg '-r esm' gatsby build",

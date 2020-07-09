@@ -39,7 +39,14 @@ const languageData = {
     contactLocationText: [`Trouver nous à`, `Et à`],
     followUs: `Suivez-nous`,
     loginText: `Se connecter`,
-    promoInterest: `Je suis intéressé`,
+    promoInterest: `{sent, select, true {Intéressé} other {Je suis intéressé}}`,
+    'promoInterest.title': 'Intérêt pour la promotion {promotionName}',
+    'promoInterest.description':
+      'Dites-en nous un peu plus sur votre projet et un de nos conseillers prendra contact avec vous pour en discuter.',
+    'promoInterest.form.name': 'Nom',
+    'promoInterest.form.email': 'Email',
+    'promoInterest.form.phoneNumber': 'Téléphone',
+    'promoInterest.form.details': 'Commentaire',
     signupButtonText: `S'inscrire`,
     getALoanText: `Obtenir un prêt`,
     signupErrorText: `Un problème est survenu lors de l'inscription. Veuillez réessayer.`,
@@ -85,6 +92,8 @@ const languageData = {
     noResult: 'Aucun résultat',
     promotionLotsCount: '{lotsCount} lots',
     promotionFinished: 'Terminée',
+    cancel: 'Annuler',
+    submit: 'Envoyer',
   },
 };
 

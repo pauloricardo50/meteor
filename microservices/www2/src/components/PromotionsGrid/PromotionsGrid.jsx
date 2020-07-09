@@ -40,13 +40,17 @@ const PromotionsGrid = () => {
 
   return (
     <div className="promotions container">
-      <div className="promotions-filters">
-        <CantonFilter canton={canton} setCanton={setCanton} cantons={cantons} />
-      </div>
       {loading ? (
         <Loading />
       ) : promotions?.length ? (
         <div className="promotions-grid">
+          <div className="promotions-filters">
+            <CantonFilter
+              canton={canton}
+              setCanton={setCanton}
+              cantons={cantons}
+            />
+          </div>
           {promotions.map(promotion => (
             <PromotionsGridItem key={promotion.id} promotion={promotion} />
           ))}

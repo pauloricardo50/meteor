@@ -4,7 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import Icon from 'core/components/Icon';
 import FormattedMessage from 'core/components/Translation/FormattedMessage';
 
-import Button from '../Button';
+import PromotionInterestForm from './PromotionInterestForm';
 
 const makeReducer = ({ images }) => (state, action) => {
   const { id } = state;
@@ -27,10 +27,9 @@ const PromotionsGridItem = ({ promotion }) => {
     documents: { promotionImage: images } = {},
     description,
     city,
-    canton,
     lotsCount,
-    address,
     status,
+    canton,
   } = promotion;
 
   const reducer = makeReducer({ images });
@@ -38,17 +37,11 @@ const PromotionsGridItem = ({ promotion }) => {
 
   return (
     <div className="promotion-item">
-      {/* TODO: add slider for multiple images */}
-
-      <div className="promotion-item-images">
-        {images.map((image, i) => (
-          <img
-            key={image.name}
-            src={image.url}
-            alt={`${name}_${image.name}`}
-            style={{ display: i === id ? 'block' : 'none' }}
-          />
-        ))}
+      <div
+        key="promo-img"
+        className="promotion-item-images"
+        style={{ backgroundImage: `url("${images[id]?.url}")` }}
+      >
         {images?.length > 1 && (
           <>
             <Fab
@@ -76,23 +69,20 @@ const PromotionsGridItem = ({ promotion }) => {
         )}
       </div>
 
-      <h3 className="promotion-item-name">
-        {name} - {city}
-      </h3>
+      <div className="promotion-item-title">
+        <h3 className="promotion-item-name">
+          {name} - {city} ({canton})
+        </h3>
+        {status !== 'FINISHED' && (
+          <PromotionInterestForm promotion={promotion} />
+        )}
+      </div>
 
       <span className="promotion-item-lots-count">
         <FormattedMessage id="promotionLotsCount" values={{ lotsCount }} />
       </span>
 
       {description && <p className="promotion-item-summary">{description}</p>}
-
-      <div>
-        <div className="interest-button">
-          <Button raised className="button" type="submit">
-            <FormattedMessage id="promoInterest" />
-          </Button>
-        </div>
-      </div>
     </div>
   );
 };
