@@ -45,7 +45,11 @@
     "react-text-mask": "^5.4.3",
     "recompose": "^0.30.0",
     "simpleddp": "^2.2.4",
-    "text-mask-addons": "^3.8.0"
+    "text-mask-addons": "^3.8.0",
+    "simpl-schema": "^1.8.0",
+    "uniforms": "^2.6.9",
+    "uniforms-bridge-simple-schema-2": "^2.6.9",
+    "uniforms-material": "^2.6.9"
   },
   "scripts": {
     "build": "npx --node-arg '-r esm' gatsby build",

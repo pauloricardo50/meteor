@@ -1,56 +1,110 @@
 .promotions {
   &-filters {
-    margin-bottom: 50px;
-    ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
+    justify-self: left;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin-bottom: -80px;
+
+    @media screen and (max-width: $med){
+      justify-self: center;
+      grid-column-start: unset;
+      grid-column-end: unset;
+      margin-bottom: 0;
     }
+ 
   }
 
   &-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    row-gap: 24px;
+    grid-template-columns: 500px 500px;
     justify-items: center;
     justify-content: center;
-
-    @media screen and (min-width: $med) {
-      grid-template-columns: 339px 339px;
+    column-gap: calc(100% - 1000px);
+    row-gap: 100px;
+    
+    @media screen and (max-width: $wide){
+      grid-template-columns: 305px 305px;
       column-gap: 30px;
-      row-gap: 100px;
     }
 
-    @media screen and (min-width: $wide) {
-      grid-template-columns: 484px 484px;
-      column-gap: calc(100% - 968px);
+    @media screen and (max-width: $med){
+      grid-template-columns: 1fr;
+      row-gap: 24px;
     }
   }
 }
 
 .promotion-item {
+  position: relative;
   border-bottom: solid 0.5px $body-text-light;
   padding-bottom: 20px;
+  
+  &-images {
+    position: relative;
+    height: 300px;
+    // height: 205px;
+    width: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
-  &__images {
-    height: 205px;
+    transition: background-image 500ms ease-in-out;
 
-    img {
-      width: 100%;
-      height: inherit;
-      object-fit: cover;
-
-      &:not(:first-child) {
-        display: none;
-      }
+    &-next {
+      position: absolute;
+      bottom: 8px;
+      right: 8px
     }
 
-    @media screen and (min-width: $med) {
-      height: 300px;
+    &-previous {
+      position: absolute;
+      bottom: 8px;
+      left: 8px
+    }
+
+    &-finished {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background-color: $error;
+      color: white;
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+
+    @media screen and (max-width: $wide){
+      width: 305px;
+    }
+
+    @media screen and (max-width: $med){
+      width: 305px;
+      height: 205px;
     }
   }
 
-  &__name {
+  &-title {
+    width: 500px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
+    @media screen and (max-width: $wide){
+      width: 305px;
+    }
+
+    @media screen and (max-width: $med){
+      width: 305px;
+    }
+  }
+
+  &-interest-button {
+    flex-shrink: 0;
+  }
+
+  &-name, &-lots-count {
     // Mobile/Plain/L/Light
     font-size: 16px;
     font-weight: 300;
@@ -58,6 +112,8 @@
     line-height: 1.44;
     letter-spacing: normal;
     color: $body-text;
+    margin-bottom: 0;
+    margin-top: 0;
 
     @media screen and (min-width: $med) {
       // Desktop/Plain/L/Light
@@ -70,27 +126,50 @@
     }
   }
 
-  &__summary {
-    // Desktop/Plain/S
-    font-size: 12px;
-    font-weight: 300;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    color: black;
+  &-lots-count {
+    opacity: 0.5;
+  }
 
-    @media screen and (min-width: $med) {
-      // Desktop/Plain/M/Light
-      font-size: 16px;
+  &-description {
+    font-size: 16px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    white-space: pre-line;
+    margin-bottom: 16px;
+
+    @media screen and (max-width: $wide){
+     max-width: 305px;
+    }
+
+
+    
+    @media screen and (max-width: $med) {
+      max-width: 305px;
+      font-size: 12px;
       font-weight: 300;
-      font-stretch: normal;
+      font-stretch: unset;
       font-style: normal;
-      line-height: 1.44;
+      line-height: normal;
       letter-spacing: normal;
     }
   }
 
-  &__footer {
+  .show-more {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    margin: 0;
+    padding: 0;
+
+    @media screen and (max-width: $med) {
+      font-size: 12px;
+    }
+  }
+
+  &-footer {
     display: flex;
 
     .interest-button {

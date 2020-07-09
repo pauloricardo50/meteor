@@ -1,63 +1,72 @@
 import './PromotionsGrid.scss';
 
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
+import { faInbox } from '@fortawesome/pro-light-svg-icons/faInbox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import LanguageContext from '../../contexts/LanguageContext';
-import useAllPromotion from '../../hooks/useAllPromotion';
-import { getLanguageData } from '../../utils/languages';
-import Button from '../Button';
+import Loading from 'core/components/Loading';
+import FormattedMessage from 'core/components/Translation/FormattedMessage';
 
-const PromotionsGridItem = ({ language, promotion }) => {
-  const { name, images, summary, address } = promotion;
-  return (
-    <div className="promotion-item">
-      {/* TODO: add slider for multiple images */}
-      {images && (
-        <div className="promotion-item__images">
-          {images.map((promoImage) => (
-            <img
-              key={promoImage.name}
-              src={promoImage.url}
-              alt={`${promotion.name}_${promoImage.name}`}
-            />
-          ))}
-        </div>
-      )}
+import meteorClient from '../../utils/meteorClient';
+import CantonFilter from './CantonFilter';
+import PromotionsGridItem from './PromotionGridItem';
 
-      <h3 className="promotion-item__name">
-        {name}
-        {/* <span>{promotion.address}</span> */}
-      </h3>
-
-      {summary && <p className="promotion-item__summary">{summary}</p>}
-
-      <div className="promotion-item__footer">
-        <div className="interest-button">
-          <Button raised className="button" type="submit">
-            {getLanguageData(language).promoInterest}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};
 const PromotionsGrid = () => {
-  const promotions = useAllPromotion();
-  const [language] = useContext(LanguageContext);
+  const [promotions, setPromotions] = useState();
+  const [cantons, setCantons] = useState();
+  const [canton, setCanton] = useState([null]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    meteorClient
+      .call('named_query_PROMOTIONS_LIST', {
+        canton: canton.filter(x => x).length > 0 ? canton : undefined,
+      })
+      .then(res => {
+        setPromotions([
+          ...res.filter(({ status }) => status === 'OPEN'),
+          ...res.filter(({ status }) => status === 'FINISHED'),
+        ]);
+
+        if (!cantons) {
+          setCantons(new Set([...res.map(({ canton: c }) => c)]));
+        }
+
+        return res;
+      })
+      .finally(() => setLoading(false));
+  }, [canton]);
 
   return (
     <div className="promotions container">
-      {/* TODO: add filtering in next phase */}
-      <div className="promotions-grid">
-        {promotions &&
-          promotions.map((promotion) => (
-            <PromotionsGridItem
-              key={promotion.id}
-              language={language}
-              promotion={promotion}
+      {loading ? (
+        <Loading />
+      ) : promotions?.length ? (
+        <div className="promotions-grid">
+          <div className="promotions-filters">
+            <CantonFilter
+              canton={canton}
+              setCanton={setCanton}
+              cantons={cantons}
             />
+          </div>
+          {promotions.map(promotion => (
+            <PromotionsGridItem key={promotion.id} promotion={promotion} />
           ))}
-      </div>
+        </div>
+      ) : (
+        <div className="secondary flex-col center">
+          <FontAwesomeIcon
+            icon={faInbox}
+            size="4x"
+            style={{ padding: 16, paddingBottom: 4 }}
+          />
+          <span className="font-size-3">
+            <FormattedMessage id="noResult" />
+          </span>
+        </div>
+      )}
     </div>
   );
 };

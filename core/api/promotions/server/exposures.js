@@ -154,12 +154,17 @@ exposeQuery({
   overrides: {
     firewall() {},
     embody: body => {
-      body.$filter = ({ filters }) => {
+      body.$filter = ({ filters, params }) => {
         filters.isTest = { $ne: true };
         filters.status = {
           $in: [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.FINISHED],
         };
+        if (params.canton) {
+          filters.canton = { $in: params.canton };
+        }
       };
+      body.$options = { sort: { name: 1 } };
     },
+    validateParams: { canton: Match.Maybe(Array) },
   },
 });
