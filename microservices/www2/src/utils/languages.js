@@ -94,6 +94,8 @@ const languageData = {
     promotionFinished: 'Terminée',
     cancel: 'Annuler',
     submit: 'Envoyer',
+    more: 'Afficher plus',
+    less: 'Afficher moins',
   },
 };
 

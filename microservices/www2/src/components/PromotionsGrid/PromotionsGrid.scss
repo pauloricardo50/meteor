@@ -35,6 +35,7 @@
 }
 
 .promotion-item {
+  position: relative;
   border-bottom: solid 0.5px $body-text-light;
   padding-bottom: 20px;
   
@@ -130,22 +131,41 @@
   }
 
   &-description {
-    // Desktop/Plain/S
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 300;
+    font-stretch: normal;
     font-style: normal;
-    line-height: normal;
+    line-height: 1.44;
     letter-spacing: normal;
-    color: black;
+    white-space: pre-line;
+    margin-bottom: 16px;
 
-    @media screen and (min-width: $med) {
-      // Desktop/Plain/M/Light
-      font-size: 16px;
+    @media screen and (max-width: $wide){
+     max-width: 305px;
+    }
+
+
+    
+    @media screen and (max-width: $med) {
+      max-width: 305px;
+      font-size: 12px;
       font-weight: 300;
-      font-stretch: normal;
+      font-stretch: unset;
       font-style: normal;
-      line-height: 1.44;
+      line-height: normal;
       letter-spacing: normal;
+    }
+  }
+
+  .show-more {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    margin: 0;
+    padding: 0;
+
+    @media screen and (max-width: $med) {
+      font-size: 12px;
     }
   }
 
