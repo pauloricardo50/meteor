@@ -163,7 +163,7 @@ exposeQuery({
           filters.canton = { $in: params.canton };
         }
       };
-      body.$options = { sort: { name: 1, status: -1 } };
+      body.$options = { sort: { name: 1 } };
     },
     validateParams: { canton: Match.Maybe(Array) },
   },
