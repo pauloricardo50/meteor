@@ -29,7 +29,7 @@ const Layout = ({ children, location, pageContext, data }) => {
   `);
 
   const { title, description } = siteData.site.siteMetadata;
-  const pageTitle = data.prismic.page?.name?.[0]?.text;
+  const pageTitle = data?.prismic?.page?.name?.[0]?.text;
   const pageLang = getShortLang(pageContext.lang);
   const pageType = pageContext.type;
 
