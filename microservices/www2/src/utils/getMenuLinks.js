@@ -1,14 +1,16 @@
 import { useContext } from 'react';
-import useAllMenus from '../hooks/useAllMenus';
+
 import LanguageContext from '../contexts/LanguageContext';
+import useAllMenus from '../hooks/useAllMenus';
 
 const getMenuLinks = menuName => {
   const [language] = useContext(LanguageContext);
   const allMenus = useAllMenus();
 
-  const menu = allMenus.find(({ node }) => {
-    return node._meta.uid === menuName && node._meta.lang.includes(language);
-  });
+  const menu = allMenus.find(
+    ({ node }) =>
+      node._meta.uid === menuName && node._meta.lang.includes(language),
+  );
 
   if (!menu) return null;
 
