@@ -175,11 +175,12 @@ const Post = ({
   );
 
   return (
-    <Layout
-      location={location}
-      pageContext={pageContext}
-      pageName={blogPost.title}
-    >
+    <>
+      {/* <Layout
+        location={location}
+        pageContext={pageContext}
+        pageName={blogPost.title}
+      > */}
       <Helmet>
         <meta property="og:type" content="article" />
         {blogPost.date && (
@@ -267,7 +268,8 @@ const Post = ({
 
         {articleCTAsSection && <CTAsSection {...articleCTAsSection} />}
       </div>
-    </Layout>
+      {/* </Layout> */}
+    </>
   );
 };
 

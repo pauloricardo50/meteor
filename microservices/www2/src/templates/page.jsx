@@ -214,6 +214,7 @@ export const query = graphql`
             primary {
               section_id
               page_heading
+              page_description
             }
           }
           ... on PRISMIC_PageBodyPage_links {

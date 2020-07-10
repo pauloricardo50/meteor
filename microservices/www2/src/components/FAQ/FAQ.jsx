@@ -5,7 +5,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { makeStyles } from '@material-ui/core/styles';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddCircleOutlineIcon from '@material-ui/icons/Add';
 import { Helmet } from 'react-helmet';
 
 import { linkResolver } from '../../utils/linkResolver';
@@ -75,6 +75,7 @@ const FAQ = ({ primary, fields }) => {
           >
             <ExpansionPanelSummary
               expandIcon={<AddCircleOutlineIcon />}
+              IconButtonProps={{ size: 'small', className: 'primary' }}
               aria-controls={`panel-${idx}-content`}
               id={`panel-${idx}-header`}
               itemProp="name"
