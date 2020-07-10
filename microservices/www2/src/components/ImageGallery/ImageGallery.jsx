@@ -1,10 +1,10 @@
 import './ImageGallery.scss';
 
 import React from 'react';
-import { RichText } from 'prismic-reactjs';
 
 import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
+import { RichText } from '../prismic';
 
 const ImageGallery = ({ primary, fields }) => {
   const { logos, section_id, content, cta_text, cta_link } = primary;
@@ -14,7 +14,9 @@ const ImageGallery = ({ primary, fields }) => {
   return (
     <section id={section_id} className="image-gallery">
       {hasPrimaryContent && (
-        <div className="content container">{RichText.render(content)}</div>
+        <div className="content container">
+          <RichText render={content} />
+        </div>
       )}
       {cta_text && (
         <Button primary link to={linkResolver(cta_link?._meta)}>

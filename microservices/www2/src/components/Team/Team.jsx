@@ -1,13 +1,14 @@
 import './Team.scss';
 
 import React from 'react';
-import { RichText } from 'prismic-reactjs';
 
 import IconButton from 'core/components/IconButton';
 
+import { RichText } from '../prismic';
+
 const EMAIL = 'team@e-potek.ch';
 
-const getMailTo = (name) =>
+const getMailTo = name =>
   `mailto:${EMAIL}?subject=${encodeURI(`Contacter ${name}`)}`;
 
 const Team = ({ primary, fields }) => (
@@ -33,11 +34,11 @@ const Team = ({ primary, fields }) => (
             </div>
 
             <div className="team-member__content">
-              <div className="team-member__name">
+              <div className="team-member__name text-l">
                 {RichText.asText(field.member_name)}
               </div>
 
-              <div className="team-member__position">
+              <div className="team-member__position text-l">
                 {RichText.asText(field.position)}
               </div>
 

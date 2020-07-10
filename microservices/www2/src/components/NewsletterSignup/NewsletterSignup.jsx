@@ -1,89 +1,75 @@
 import './NewsletterSignup.scss';
 
 import React, { useContext, useState } from 'react';
-import { RichText } from 'prismic-reactjs';
 
-import Loading from 'core/components/Loading';
 import TextInput from 'core/components/TextInput/TextInput';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 import meteorClient from '../../utils/meteorClient';
 import Button from '../Button';
+import { RichText } from '../prismic';
 import RecentNewsletters from './RecentNewsletters';
 
-const simulateSignup = () =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve({ status: 200 }), 1000);
-  });
-
-const NewsletterSignup = ({ primary, placement }) => {
+const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState();
   const [language] = useContext(LanguageContext);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (!email) return;
 
     try {
+      setError(null);
       setLoading(true);
-      const result = await simulateSignup();
-      // const result = await meteorClient.call('subscribeToNewsletter', {
-      //   email,
-      // });
-
-      if (result.status === 200) {
-        setLoading(false);
-        setSuccess(true);
+      await meteorClient.call('subscribeToNewsletter', {
+        email,
+      });
+      setLoading(false);
+      setSuccess(true);
+    } catch (err) {
+      if (err.error === 500) {
+        setError(getLanguageData(language).signupErrorText);
       } else {
-        console.log({ result });
-        setLoading(false);
-        setSuccess(false);
+        setError(err.message);
       }
-    } catch (error) {
-      console.log({ error });
       setLoading(false);
       setSuccess(false);
     }
   };
 
-  const SignupForm = () => {
-    if (loading) return <Loading small />;
-
-    if (success) {
-      return (
-        <div className="success-message">
-          {getLanguageData(language).signupSuccessText}
-        </div>
-      );
-    }
-
+  if (success) {
     return (
-      <form onSubmit={handleSubmit} className="signup-form">
-        <TextInput
-          label="Email"
-          className="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-
-        <Button primary raised className="button" type="submit">
-          {getLanguageData(language).signupButtonText}
-        </Button>
-
-        {success === false && (
-          <div className="error-message">
-            {getLanguageData(language).signupErrorText}
-          </div>
-        )}
-      </form>
+      <div className="success-message primary animated fadeIn">
+        {getLanguageData(language).signupSuccessText}
+      </div>
     );
-  };
+  }
 
+  return (
+    <form onSubmit={handleSubmit} className="signup-form">
+      <TextInput
+        label="Email"
+        className="email"
+        value={email}
+        onChange={e => {
+          setEmail(e.target.value);
+        }}
+        error={!!error}
+        helperText={error}
+      />
+
+      <Button primary raised className="button" type="submit" loading={loading}>
+        {getLanguageData(language).signupButtonText}
+      </Button>
+    </form>
+  );
+};
+
+const NewsletterSignup = ({ primary, placement }) => {
   switch (placement) {
     case 'footer':
       return (
@@ -100,9 +86,9 @@ const NewsletterSignup = ({ primary, placement }) => {
           className="newsletter-signup--article container"
         >
           <div className="newsletter-signup__content">
-            {RichText.render(primary.section_heading)}
+            <RichText render={primary.section_heading} />
 
-            {RichText.render(primary.content)}
+            <RichText render={primary.content} />
 
             <SignupForm />
           </div>
@@ -122,9 +108,9 @@ const NewsletterSignup = ({ primary, placement }) => {
           className="newsletter-signup container"
         >
           <div className="newsletter-signup__content">
-            {RichText.render(primary.section_heading)}
+            <RichText render={primary.section_heading} />
 
-            {RichText.render(primary.content)}
+            <RichText render={primary.content} />
 
             <SignupForm />
           </div>

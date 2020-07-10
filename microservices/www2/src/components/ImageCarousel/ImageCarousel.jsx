@@ -1,10 +1,10 @@
 import './ImageCarousel.scss';
 
 import React, { useState } from 'react';
-import { RichText } from 'prismic-reactjs';
 
 import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
+import { RichText } from '../prismic';
 
 const ImageCarousel = ({ primary, fields }) => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -16,7 +16,7 @@ const ImageCarousel = ({ primary, fields }) => {
       className="image-carousel container--desktop"
     >
       <div className="content container--mobile">
-        {RichText.render(primary.section_heading)}
+        <RichText render={primary.section_heading} />
 
         <ol className="captions">
           {fields.map((field, idx) => (
@@ -32,7 +32,8 @@ const ImageCarousel = ({ primary, fields }) => {
 
         <hr />
 
-        {RichText.render(content)}
+        <RichText render={content} />
+
         {cta_text && (
           <Button primary link to={linkResolver(cta_link._meta)}>
             {cta_text}

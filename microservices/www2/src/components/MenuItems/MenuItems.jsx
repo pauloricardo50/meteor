@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuItems = ({ menuLinks = [], subMenu }) => {
+const MenuItems = ({ menuLinks = [], subMenu, onClick }) => {
   const classes = useStyles();
 
   return menuLinks?.map((menuLink, idx) => {
@@ -26,6 +26,7 @@ const MenuItems = ({ menuLinks = [], subMenu }) => {
           classes={subMenu && classes}
           to={linkResolver(primaryLink._meta)}
           role="button"
+          onClick={onClick}
         >
           {primaryLabel}
         </MenuItem>
@@ -39,6 +40,7 @@ const MenuItems = ({ menuLinks = [], subMenu }) => {
           classes={subMenu && classes}
           to={primaryLink.url}
           role="button"
+          onClick={onClick}
         >
           {primaryLabel}
         </MenuItem>
@@ -50,7 +52,7 @@ const MenuItems = ({ menuLinks = [], subMenu }) => {
         <React.Fragment key={idx}>
           <MenuItem disabled>{primaryLabel}</MenuItem>
 
-          <MenuItems menuLinks={menuLink.fields} subMenu />
+          <MenuItems menuLinks={menuLink.fields} subMenu onClick={onClick} />
         </React.Fragment>
       );
     }

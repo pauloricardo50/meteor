@@ -1,14 +1,16 @@
+import './Footer.scss';
+
 import React, { useContext } from 'react';
 import { faMap } from '@fortawesome/pro-light-svg-icons/faMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FooterMenu from './FooterMenu';
-import FooterNotices from './FooterNotices';
+
+import LanguageContext from '../../contexts/LanguageContext';
+import { getLanguageData } from '../../utils/languages';
 import LanguagePicker from '../LanguagePicker';
 import NewsletterSignup from '../NewsletterSignup';
 import SocialLinks from '../SocialLinks';
-import LanguageContext from '../../contexts/LanguageContext';
-import { getLanguageData } from '../../utils/languages';
-import './Footer.scss';
+import FooterMenu from './FooterMenu';
+import FooterNotices from './FooterNotices';
 
 const contactEmail = 'team@e-potek.ch';
 const contactPhone = '+41 22 566 01 10';
@@ -70,7 +72,7 @@ const Footer = () => {
 
         <div className="contact-email">
           <a href={`mailto:${contactEmail}`} itemProp="email">
-            {contactEmail}
+            <h4>{contactEmail}</h4>
           </a>
         </div>
 
@@ -79,13 +81,13 @@ const Footer = () => {
             href={`tel:${contactPhone.split(' ').join('')}`}
             itemProp="telephone"
           >
-            {contactPhone}
+            <h4>{contactPhone}</h4>
           </a>
         </div>
 
         <hr />
 
-        <div className="contact-locations">
+        <div className="contact-locations text-m">
           <div className="contact-location">
             <p>{getLanguageData(language).contactLocationText[0]}</p>
             <LinkedLocation location="lausanne" />

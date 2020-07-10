@@ -23,17 +23,6 @@
   .contact {
     margin-top: 56px;
 
-    &-email,
-    &-phone {
-      // Mobile/Title/H4
-      font-size: 20px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.4;
-      letter-spacing: normal;
-      color: $body-text;
-    }
-
     hr {
       margin: 20px 0;
       height: 1px;
@@ -44,13 +33,6 @@
       display: inline-flex;
       flex-direction: column;
       margin-bottom: 76px;
-      // Mobile/Plain/M/Light
-      font-size: 14px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.5;
-      letter-spacing: normal;
-      color: #000000;
     }
 
     .location {
@@ -75,12 +57,6 @@
 
     .footer-notices {
       margin: 56px 0 24px;
-      // Desktop/Plain/S
-      font-size: 12px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: normal;
-      letter-spacing: normal;
       color: rgba(0, 0, 0, 0.5);
 
       a {
@@ -129,31 +105,11 @@
       flex-basis: 384px;
       margin-top: 0;
 
-      &-email,
-      &-phone {
-        // Desktop/Title/H4
-        font-size: 24px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.42;
-        letter-spacing: normal;
-        color: $body-text;
-      }
-
       hr {
         height: 1px;
         color: $body-text-light;
       }
 
-      &-locations {
-        // Desktop/Plain/M/Light
-        font-size: 16px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.44;
-        letter-spacing: normal;
-        color: #000000;
-      }
 
       .footer-notices {
         h5,

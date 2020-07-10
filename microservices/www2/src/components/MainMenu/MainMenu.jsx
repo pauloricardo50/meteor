@@ -43,7 +43,7 @@ const MainMenu = () => {
         onClose={handleClose}
         getContentAnchorEl={null}
       >
-        <MenuItems menuLinks={menuLinks} />
+        <MenuItems menuLinks={menuLinks} onClick={handleClose} />
 
         {matches && <LoginMenu placement="mobile-nav" />}
       </Menu>

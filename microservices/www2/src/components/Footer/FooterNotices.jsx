@@ -1,7 +1,8 @@
 import React from 'react';
-import { RichText } from 'prismic-reactjs';
-import { linkResolver } from '../../utils/linkResolver';
+
 import useContentBlock from '../../hooks/useContentBlock';
+import { linkResolver } from '../../utils/linkResolver';
+import { RichText } from '../prismic';
 
 const FooterNotices = ({ language }) => {
   const footerNotices = useContentBlock({
@@ -10,8 +11,8 @@ const FooterNotices = ({ language }) => {
   });
 
   return (
-    <div className="footer-notices">
-      {RichText.render(footerNotices, linkResolver)}
+    <div className="footer-notices text-s">
+      <RichText render={footerNotices} linkResolver={linkResolver} />
     </div>
   );
 };

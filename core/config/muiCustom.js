@@ -176,6 +176,10 @@ const createTheme = ({ fontSize = 14 } = {}) => {
               backgroundImage: colors.primaryGradient,
             },
           },
+        MuiRadio: {
+          root: {
+            border: 'none',
+          },
         },
       },
       palette: {
