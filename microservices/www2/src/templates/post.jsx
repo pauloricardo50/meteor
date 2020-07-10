@@ -2,7 +2,6 @@ import '../styles/post.scss';
 
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import { RichText } from 'prismic-reactjs';
 import Helmet from 'react-helmet';
 
 import Icon from 'core/components/Icon';
@@ -13,6 +12,7 @@ import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 import PageShare from '../components/PageShare';
+import { RichText } from '../components/prismic';
 import RecommendedBlogPosts from '../components/RecommendedBlogPosts';
 import { getLanguageData, getShortLang } from '../utils/languages.js';
 

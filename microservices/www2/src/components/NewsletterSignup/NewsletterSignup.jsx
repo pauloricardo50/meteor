@@ -1,7 +1,6 @@
 import './NewsletterSignup.scss';
 
 import React, { useContext, useState } from 'react';
-import { RichText } from 'prismic-reactjs';
 
 import Loading from 'core/components/Loading';
 import TextInput from 'core/components/TextInput/TextInput';
@@ -10,10 +9,11 @@ import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 import meteorClient from '../../utils/meteorClient';
 import Button from '../Button';
+import { RichText } from '../prismic';
 import RecentNewsletters from './RecentNewsletters';
 
 const simulateSignup = () =>
-  new Promise((resolve) => {
+  new Promise(resolve => {
     setTimeout(() => resolve({ status: 200 }), 1000);
   });
 
@@ -23,7 +23,7 @@ const NewsletterSignup = ({ primary, placement }) => {
   const [success, setSuccess] = useState('');
   const [language] = useContext(LanguageContext);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (!email) return;
 
@@ -66,7 +66,7 @@ const NewsletterSignup = ({ primary, placement }) => {
           label="Email"
           className="email"
           value={email}
-          onChange={(e) => {
+          onChange={e => {
             setEmail(e.target.value);
           }}
         />
@@ -100,9 +100,9 @@ const NewsletterSignup = ({ primary, placement }) => {
           className="newsletter-signup--article container"
         >
           <div className="newsletter-signup__content">
-            {RichText.render(primary.section_heading)}
+            <RichText render={primary.section_heading} />
 
-            {RichText.render(primary.content)}
+            <RichText render={primary.content} />
 
             <SignupForm />
           </div>
@@ -122,9 +122,9 @@ const NewsletterSignup = ({ primary, placement }) => {
           className="newsletter-signup container"
         >
           <div className="newsletter-signup__content">
-            {RichText.render(primary.section_heading)}
+            <RichText render={primary.section_heading} />
 
-            {RichText.render(primary.content)}
+            <RichText render={primary.content} />
 
             <SignupForm />
           </div>

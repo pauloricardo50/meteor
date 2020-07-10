@@ -6,13 +6,6 @@
     opacity: 0.5;
     border-bottom: 5px solid transparent;
     padding: 16px 0;
-    // Mobile/Plain/M/Light
-    font-size: 14px;
-    font-weight: 500;
-    font-style: normal;
-    line-height: 1.5;
-    letter-spacing: 0.74px;
-    color: $body-text;
     transition: all 0.3s;
 
     &.active-page,
@@ -30,12 +23,6 @@
 
   @media screen and (min-width: $med) {
     a {
-      // Desktop/Plain/M/Light
-      font-size: 16px;
-      font-weight: 500;
-      font-style: normal;
-      line-height: 1.44;
-      letter-spacing: 0.85px;
 
       + a {
         margin-left: 50px;

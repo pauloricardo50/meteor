@@ -38,3 +38,31 @@ section,
     padding-top: 0px;
   }
 }
+
+.text-l {
+  font-size: 20px;
+  line-height: 1.4;
+
+  @media screen and (max-width: $med) {
+    font-size: 16px;
+    line-height: 1.44;
+  }
+}
+
+.text-m {
+  font-size: 16px;
+  line-height: 1.44;
+  letter-spacing: 0.85px;
+
+  @media screen and (max-width: $med) {
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.74px;
+  }
+}
+
+.text-s {
+  font-size: 12px;
+  color: black;
+  line-height: normal;
+}

@@ -1,14 +1,15 @@
+import './FAQ.scss';
+
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import { Link } from 'gatsby';
-import { RichText } from 'prismic-reactjs';
-import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import { makeStyles } from '@material-ui/core/styles';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Helmet } from 'react-helmet';
+
 import { linkResolver } from '../../utils/linkResolver';
-import './FAQ.scss';
+import { RichText } from '../prismic';
 
 const useSummaryStyles = makeStyles(theme => ({
   root: {
@@ -88,7 +89,7 @@ const FAQ = ({ primary, fields }) => {
               classes={useDetailStyles()}
             >
               <span itemProp="text">
-                {RichText.render(field.answer, linkResolver)}
+                <RichText render={field.answer} linkResolver={linkResolver} />
               </span>
             </ExpansionPanelDetails>
           </ExpansionPanel>

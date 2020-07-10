@@ -1,12 +1,13 @@
 import React from 'react';
-import { RichText } from 'prismic-reactjs';
+
+import { RichText } from '../prismic';
 
 const Testimonial = ({ customerName, customerTitle, quote }) => (
   <div className="testimonial animated fadeIn">
     <div className="testimonial-header">
       <div className="testimonial-header-customer">
-        {RichText.render(customerName)}
-        {RichText.render(customerTitle)}
+        <RichText render={customerName} />
+        <RichText render={customerTitle} />
       </div>
     </div>
     <blockquote className="testimonial-quote">

@@ -1,8 +1,10 @@
+import './LanguagePicker.scss';
+
 import React, { useContext } from 'react';
 import { useCookies } from 'react-cookie';
+
 import LanguageContext from '../../contexts/LanguageContext';
-import { getLanguages, getLanguageData } from '../../utils/languages.js';
-import './LanguagePicker.scss';
+import { getLanguageData, getLanguages } from '../../utils/languages.js';
 
 const LanguagePicker = () => {
   const [cookies, setCookie] = useCookies(['epLang']);
@@ -15,7 +17,7 @@ const LanguagePicker = () => {
       {languageData.map(({ display, shortLang }) => (
         <div
           key={shortLang}
-          className="language-option"
+          className="language-option text-m"
           onClick={() => {
             setCookie('epLang', shortLang, {
               maxAge: '31536000', // one year

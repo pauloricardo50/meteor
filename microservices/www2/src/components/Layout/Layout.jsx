@@ -1,19 +1,21 @@
+import '../../styles/main.scss';
+
 import React, { useEffect, useState } from 'react';
-import { navigate, useStaticQuery, graphql } from 'gatsby';
-import { RichText } from 'prismic-reactjs';
+import { graphql, navigate, useStaticQuery } from 'gatsby';
 import { Helmet } from 'react-helmet';
-import TopNav from '../TopNav';
-import Footer from '../Footer';
-import CookiesNotification from '../CookiesNotification';
+
 import LanguageContext from '../../contexts/LanguageContext';
+import epotekLogo from '../../images/epotek_logo.png';
 import {
   getLanguageData,
-  getShortLang,
   getLongLang,
+  getShortLang,
 } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
-import epotekLogo from '../../images/epotek_logo.png';
-import '../../styles/main.scss';
+import CookiesNotification from '../CookiesNotification';
+import Footer from '../Footer';
+import { RichText } from '../prismic';
+import TopNav from '../TopNav';
 
 const Layout = ({ children, location, pageContext, pageName }) => {
   const data = useStaticQuery(graphql`

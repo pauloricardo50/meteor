@@ -1,8 +1,10 @@
+import './RecommendedBlogPosts.scss';
+
 import React, { useContext } from 'react';
-import RecommendedBlogPost from './RecommendedBlogPost';
+
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import './RecommendedBlogPosts.scss';
+import RecommendedBlogPost from './RecommendedBlogPost';
 
 const RecommendedBlogPosts = ({ currentPost, recentPosts }) => {
   const [language] = useContext(LanguageContext);

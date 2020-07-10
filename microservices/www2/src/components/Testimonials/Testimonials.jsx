@@ -2,10 +2,10 @@ import './Testimonials.scss';
 
 import React, { useReducer } from 'react';
 import Fab from '@material-ui/core/Fab';
-import { RichText } from 'prismic-reactjs';
 
 import Icon from 'core/components/Icon';
 
+import { RichText } from '../prismic';
 import Testimonial from './Testimonial';
 
 const makeReducer = ({ testimonials }) => (state, action) => {
@@ -37,7 +37,7 @@ const Testimonials = ({ primary, fields: testimonials = [] }) => {
   return (
     <div className="testimonials">
       <div className="testimonials-heading">
-        {RichText.render(primary.testimonials_heading)}
+        <RichText render={primary.testimonials_heading} />
       </div>
       <div className="testimonials-content">
         <Fab

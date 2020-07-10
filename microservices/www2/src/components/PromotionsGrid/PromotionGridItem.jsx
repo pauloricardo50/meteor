@@ -90,13 +90,13 @@ const PromotionsGridItem = ({ promotion }) => {
       </div>
 
       <div className="promotion-item-title">
-        <h3 className="promotion-item-name">
+        <h3 className="promotion-item-name text-l">
           {name} - {city} ({canton})
         </h3>
         {!isFinished && <PromotionInterestForm promotion={promotion} />}
       </div>
 
-      <span className="promotion-item-lots-count">
+      <span className="promotion-item-lots-count text-l">
         <FormattedMessage id="promotionLotsCount" values={{ lotsCount }} />
       </span>
 

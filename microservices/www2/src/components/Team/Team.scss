@@ -61,26 +61,9 @@
       padding-top: 12px;
     }
 
-    &__name {
-      // Mobile/Plain/L/Light
-      font-size: 16px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.44;
-      letter-spacing: normal;
-      color: $body-text;
-    }
 
     &__position {
       opacity: 0.5;
-      // Mobile/Plain/L/Light
-      font-size: 16px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.44;
-      letter-spacing: normal;
-      color: $body-text;
-      margin-bottom: 8px;
     }
   }
 
@@ -151,26 +134,6 @@
         flex: 1;
         margin-left: 16px;
         padding-top: 44px;
-      }
-
-      &__name {
-        // Desktop/Plain/L/Light
-        font-size: 20px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.4;
-        letter-spacing: normal;
-        color: $body-text;
-      }
-
-      &__position {
-        opacity: 0.5;
-        // Desktop/Plain/L/Light
-        font-size: 20px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.4;
-        letter-spacing: normal;
       }
     }
   }
