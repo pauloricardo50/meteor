@@ -3,7 +3,6 @@ import { faEnvelope } from '@fortawesome/pro-light-svg-icons/faEnvelope';
 import { faMap } from '@fortawesome/pro-light-svg-icons/faMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { getLanguageData } from '../../utils/languages';
 import LanguagePicker from '../LanguagePicker';
 import NewsletterSignup from '../NewsletterSignup';
 import SocialLinks from '../SocialLinks';
@@ -41,19 +40,15 @@ const LinkedLocation = ({ location }) => (
         </span>
       </div>
 
-      <div itemProp="address">
-        {locations[location].addressLine1}
-        {', '}
-        {locations[location].addressLine2}
-      </div>
-      <div itemProp="phone">
-        <a
-          href={`tel:${locations[location].phone.split(' ').join('')}`}
-          itemProp="telephone"
-        >
-          {locations[location].phone}
-        </a>
-      </div>
+      <div itemProp="address">{locations[location].addressLine1}</div>
+      <div itemProp="address">{locations[location].addressLine2}</div>
+      <a
+        href={`tel:${locations[location].phone.split(' ').join('')}`}
+        itemProp="telephone"
+        className="footer-contact-location-phone"
+      >
+        {locations[location].phone}
+      </a>
     </a>
   </div>
 );
@@ -74,8 +69,8 @@ const FooterContact = ({ language }) => (
     </b>
 
     <div className="footer-contact-locations">
-      <LinkedLocation location="geneve" />
       <LinkedLocation location="lausanne" />
+      <LinkedLocation location="geneve" />
     </div>
 
     <div className="footer-contact-links">
@@ -91,12 +86,6 @@ const FooterContact = ({ language }) => (
       <SocialLinks />
     </div>
     <LanguagePicker />
-
-    {/* <div className="footer-contact-phone">
-      <a href={`tel:${contactPhone.split(' ').join('')}`} itemProp="telephone">
-        {contactPhone}
-      </a>
-    </div> */}
   </div>
 );
 

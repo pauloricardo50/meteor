@@ -33,8 +33,10 @@
       }
     }
 
-    &-item {
-      
+    &-item { 
+      color: black !important;
+      text-decoration: none !important;
+
       &:hover {
         text-decoration: underline !important;
         color: $primary !important;
@@ -69,17 +71,36 @@
     h6 {
       color: rgba(0, 0, 0, 0.5);
       font-size: 14px;
+
+      @media screen and (max-width: $small){
+        font-size: 10px;
+      }
     }
   }
 
     &-contact {
+      flex-basis: 50%;
+      margin-left: 16px;
       display: flex;
       flex-direction: column;
 
+      @media screen and (max-width: $med){
+        margin-left: 0;
+      }
+
       &-links {
+        margin-top: 8px;
         display:flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+
+        .social-links {
+          svg {
+            margin: 0;
+            margin-right: 8px;
+          }
+        }
       }
 
       &-email {
@@ -104,8 +125,8 @@
       }
 
       &-locations {
-        display: inline-flex;
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
         margin-top: 8px;
         font-size: 14px;
         font-weight: 300;
@@ -113,13 +134,57 @@
         line-height: 1.5;
         letter-spacing: normal;
         color: #000000;
+
+        @media screen and (max-width: $large){
+          flex-direction: column;
+        }
+
+        @media screen and (max-width: $med){
+          flex-direction: row;
+        }
+
+        @media screen and (max-width: $small){
+          flex-direction: column;
+        }
       }
 
       &-location {
-        border: 0.5px solid $body-text-light;
-        border-radius: 4px;
-        padding: 10px;
+        &:hover {
+          .footer-contact-location-city {
+            text-decoration: underline;
+            color: $primary;
+          }
+        }
+
+        &:first-child{
+          margin-right: 8px;
+
+          @media screen and (max-width:$large){
+            margin-right: 0;
+          }
+
+          @media screen and (max-width: $med){
+            margin-right: 8px;
+          }
+  
+          @media screen and (max-width: $small){
+            margin-right: 0;
+          }
+        }
+
         margin-bottom: 4px;
+        flex-grow: 0;
+        flex-basis: 50%;
+
+        a {
+          text-decoration: none !important;
+          color: black !important;
+        }
+
+        &-phone:hover{
+          text-decoration: underline !important;
+          color: $primary !important;
+        }
 
 
         &-city {
