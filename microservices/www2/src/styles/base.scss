@@ -1,5 +1,16 @@
 body {
   background-color: #fff;
+
+  // Same as .text-m
+  font-size: 16px;
+  line-height: 1.44;
+  letter-spacing: 0.85px;
+
+  @media screen and (max-width: $med) {
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.74px;
+  }
 }
 
 .container {
