@@ -40,7 +40,6 @@ const MenuCategory = ({ category }) => {
 
 const FooterMenu = () => {
   const menuLinks = getMenuLinks('footer-menu');
-  console.log('menuLinks:', menuLinks);
 
   return (
     <div className="footer-menu">
@@ -49,12 +48,6 @@ const FooterMenu = () => {
       ))}
     </div>
   );
-
-  // return (
-  //   <MenuList>
-  //     <MenuItems menuLinks={menuLinks} />
-  //   </MenuList>
-  // );
 };
 
 export default FooterMenu;
