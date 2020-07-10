@@ -159,6 +159,11 @@ const createTheme = ({ fontSize = 14 } = {}) => {
             border: `solid 1px ${colors.borderGreyLight}`,
           },
         },
+        MuiRadio: {
+          root: {
+            border: 'none',
+          },
+        },
       },
       palette: {
         primary: {
