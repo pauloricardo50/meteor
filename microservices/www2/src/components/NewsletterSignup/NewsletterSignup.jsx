@@ -1,6 +1,10 @@
 import './NewsletterSignup.scss';
 
 import React, { useContext, useState } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import TextInput from 'core/components/TextInput/TextInput';
 
@@ -11,10 +15,17 @@ import Button from '../Button';
 import { RichText } from '../prismic';
 import RecentNewsletters from './RecentNewsletters';
 
-const SignupForm = () => {
+const SignupSuccessMessage = ({ language }) => (
+  <div className="success-message primary animated fadeIn">
+    {getLanguageData(language).signupSuccessText}
+  </div>
+);
+
+const SignupForm = ({ modal = false }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [openModal, setOpenModal] = useState(false);
   const [error, setError] = useState();
   const [language] = useContext(LanguageContext);
 
@@ -41,12 +52,60 @@ const SignupForm = () => {
     }
   };
 
-  if (success) {
+  if (modal) {
     return (
-      <div className="success-message primary animated fadeIn">
-        {getLanguageData(language).signupSuccessText}
+      <div>
+        <a
+          onClick={() => setOpenModal(true)}
+          className="signup-form-modal-button"
+        >
+          <b>{getLanguageData(language).signupModal}</b>
+        </a>
+        <Dialog open={openModal} onBackdropClick={() => setOpenModal(false)}>
+          <DialogTitle>
+            {getLanguageData(language)['signupModal.title']}
+          </DialogTitle>
+          <form onSubmit={handleSubmit} className="signup-form modal">
+            <DialogContent>
+              {success ? (
+                <SignupSuccessMessage language={language} />
+              ) : (
+                <TextInput
+                  label="Email"
+                  className="email"
+                  value={email}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
+                  error={!!error}
+                  helperText={error}
+                />
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button outlined primary onClick={() => setOpenModal(false)}>
+                {getLanguageData(language).close}
+              </Button>
+              {!success && (
+                <Button
+                  primary
+                  raised
+                  className="button"
+                  type="submit"
+                  loading={loading}
+                >
+                  {getLanguageData(language).signupButtonText}
+                </Button>
+              )}
+            </DialogActions>
+          </form>
+        </Dialog>
       </div>
     );
+  }
+
+  if (success) {
+    return <SignupSuccessMessage language={language} />;
   }
 
   return (
@@ -72,12 +131,7 @@ const SignupForm = () => {
 const NewsletterSignup = ({ primary, placement }) => {
   switch (placement) {
     case 'footer':
-      return (
-        <>
-          <p>Newsletter</p>
-          <SignupForm />
-        </>
-      );
+      return <SignupForm modal />;
 
     case 'article':
       return (

@@ -1,15 +1,52 @@
 import React from 'react';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItems from '../MenuItems';
-import getMenuLinks from '../../utils/getMenuLinks';
 
-const FooterMenu = () => {
-  const menuLinks = getMenuLinks('main');
+import getMenuLinks from '../../utils/getMenuLinks';
+import { linkResolver } from '../../utils/linkResolver';
+
+const MenuItem = ({ item }) => {
+  const { sub_label: label, sub_link: link } = item;
+  const linkType = link?._linkType;
+
+  if (linkType === 'Link.document') {
+    return (
+      <a className="footer-menu-item" href={linkResolver(link._meta)}>
+        {label}
+      </a>
+    );
+  }
+
+  if (linkType === 'Link.web') {
+    return (
+      <a className="footer-menu-item" href={link.url}>
+        {label}
+      </a>
+    );
+  }
+
+  return null;
+};
+
+const MenuCategory = ({ category }) => {
+  const { primary, fields = [] } = category;
 
   return (
-    <MenuList>
-      <MenuItems menuLinks={menuLinks} />
-    </MenuList>
+    <div className="footer-menu-category">
+      <b className="footer-menu-category-title">{primary.label}</b>
+      {fields?.length &&
+        fields.map(item => <MenuItem item={item} key={item.sub_label} />)}
+    </div>
+  );
+};
+
+const FooterMenu = () => {
+  const menuLinks = getMenuLinks('footer-menu');
+
+  return (
+    <div className="footer-menu">
+      {menuLinks.map(category => (
+        <MenuCategory category={category} key={category.primary?.label} />
+      ))}
+    </div>
   );
 };
 
