@@ -34,6 +34,7 @@
       letter-spacing: normal;
       color: $body-text;
       cursor: pointer;
+      transition: opacity 200ms $bezier, transform 200ms $bezier;
 
       &::before {
         content: counter(curr-index);
@@ -44,6 +45,7 @@
 
       &:hover {
         opacity: 0.5 !important;
+        transform: scale(1.02);
       }
 
       &.active {
