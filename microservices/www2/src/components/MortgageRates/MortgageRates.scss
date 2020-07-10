@@ -2,12 +2,6 @@
   margin-bottom: 50px;
 
   .rates-table {
-    // Desktop/Plain/M/Light
-    font-size: 16px;
-    font-weight: 300;
-    font-style: normal;
-    line-height: 1.44;
-    letter-spacing: normal;
 
     &-header {
       display: flex;
@@ -23,9 +17,6 @@
       flex: 1;
     }
 
-    .heading-2 {
-      // margin-right: 36px;
-    }
 
     .heading-2,
     .rate-range {
@@ -45,13 +36,6 @@
 
   @media screen and (min-width: $med) {
     .rates-table {
-      // Manrope-Regular
-      font-size: 20px;
-      font-weight: normal;
-      font-style: normal;
-      line-height: 1.4;
-      letter-spacing: normal;
-
       &-header {
         padding-bottom: 24px;
       }
@@ -59,14 +43,6 @@
   }
 
   .trend-icon {
-    // Desktop/Plain/L/Light
-    font-size: 20px;
-    font-weight: 300;
-    font-style: normal;
-    line-height: 1.4;
-    letter-spacing: normal;
-    color: #2c2c2c;
-
     &--down {
       transform: rotate(45deg);
       color: #10b000;

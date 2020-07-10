@@ -7,7 +7,7 @@ import { getLanguageData } from '../../utils/languages';
 import meteorClient from '../../utils/meteorClient';
 import TrendIcon from './TrendIcon';
 
-const makePercent = (num) =>
+const makePercent = num =>
   Number(num).toLocaleString(undefined, {
     style: 'percent',
     minimumFractionDigits: 2,
@@ -40,7 +40,7 @@ const MortgageRates = () => {
 
   return (
     <section className="mortgage-rates container">
-      <div className="rates-table">
+      <div className="rates-table text-l">
         <div className="rates-table-header">
           {getLanguageData(language).rateTable.header.map((heading, idx) => (
             <div key={idx} className={`heading-${idx}`}>

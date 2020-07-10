@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { makeStyles } from '@material-ui/core/styles';
-import { RichText } from 'prismic-reactjs';
 import { useCookies } from 'react-cookie';
 
 import LanguageContext from '../../contexts/LanguageContext';
@@ -10,6 +9,7 @@ import useContentBlock from '../../hooks/useContentBlock';
 import { getLanguageData } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
+import { RichText } from '../prismic';
 
 const acceptCookie = 'epotek_acceptCookie';
 
@@ -34,9 +34,6 @@ const useSnackbarContentStyles = makeStyles(theme => ({
   message: {
     fontSize: '12px',
     fontWeight: 300,
-    fontStyle: 'normal',
-    lineHeight: 'normal',
-    letterSpacing: 'normal',
     color: 'black',
     '& a': {
       color: theme.palette.primary.main,
@@ -76,7 +73,9 @@ const CookiesNotification = () => {
 
   if (!cookieNotification) return null;
 
-  const message = RichText.render(cookieNotification, linkResolver);
+  const message = (
+    <RichText render={cookieNotification} linkResolver={linkResolver} />
+  );
 
   const handleAccept = () => {
     setCookie(acceptCookie, 'all', cookieOptions);

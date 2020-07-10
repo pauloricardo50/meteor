@@ -1,7 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import { RichText } from 'prismic-reactjs';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { RichText } from '../prismic';
 
 const useStyles = makeStyles({
   root: {
@@ -17,9 +18,13 @@ const CardsGridItem = ({ icon, title, content }) => (
       </div>
     )}
 
-    <div className="card-title">{RichText.render(title)}</div>
+    <div className="card-title">
+      <RichText render={title} />
+    </div>
 
-    <div className="card-content">{RichText.render(content)}</div>
+    <div className="text-m">
+      <RichText render={content} />
+    </div>
   </Card>
 );
 

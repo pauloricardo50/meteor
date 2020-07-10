@@ -77,7 +77,7 @@ const TextInput = props => {
       }}
       InputProps={{
         className: classes ? Object.values(classes).join(' ') : '',
-        style: { fontSize: 'inherit' },
+        // style: { fontSize: 'inherit' },
         startAdornment: getStartAdornment({ dataType, startAdornment }),
         endAdornment: getEndAdornment({ endAdornment }),
         notched: shouldShrinkLabel(value, notched),

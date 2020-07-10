@@ -51,7 +51,7 @@ const languageData = {
     signupModal: `Newsletter`,
     'signupModal.title': `S'inscrire à la newsletter`,
     getALoanText: `Obtenir un prêt`,
-    signupErrorText: `Un problème est survenu lors de l'inscription. Veuillez réessayer.`,
+    signupErrorText: `Un problème est survenu! Réessayez ultérieurement`,
     signupSuccessText: `Merci de vous être abonné!`,
     recentNewslettersToggle: `Voir les newsletters précédentes`,
     recommendedArticleHeader: `Ceci pourrait vous intéresser`,

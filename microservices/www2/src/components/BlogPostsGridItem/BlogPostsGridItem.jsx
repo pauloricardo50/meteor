@@ -2,11 +2,11 @@ import './BlogPostsGridItem.scss';
 
 import React from 'react';
 import { Link } from 'gatsby';
-import { Date, RichText } from 'prismic-reactjs';
 
 import IconButton from 'core/components/IconButton';
 
 import { linkResolver } from '../../utils/linkResolver';
+import { RichText } from '../prismic';
 
 const BlogPostsGridItem = ({ post }) => {
   // TODO: if need to format dates differently by lang

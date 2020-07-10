@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'gatsby';
-import { RichText } from 'prismic-reactjs';
-import { linkResolver } from '../../utils/linkResolver';
 import { faArrowRight } from '@fortawesome/pro-light-svg-icons/faArrowRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'gatsby';
+
+import { linkResolver } from '../../utils/linkResolver';
+import { RichText } from '../prismic';
 
 const RecommendedBlogPost = ({ post }) => {
   const defaultTitle = 'Untitled';
@@ -18,7 +19,7 @@ const RecommendedBlogPost = ({ post }) => {
         </div>
       )}
 
-      <div className="blog-post__content">
+      <div className="blog-post__content text-m">
         <Link to={linkResolver(post._meta)}>
           {RichText.asText(post.title).length !== 0
             ? RichText.asText(post.title)

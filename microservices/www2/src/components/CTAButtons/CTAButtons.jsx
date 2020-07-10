@@ -1,8 +1,10 @@
 import './CTAButtons.scss';
 
 import React from 'react';
+import { faCalendarPlus } from '@fortawesome/pro-light-svg-icons/faCalendarPlus';
 
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
+import FaIcon from 'core/components/Icon/FaIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 
 import { linkResolver } from '../../utils/linkResolver';
@@ -11,6 +13,7 @@ import Button from '../Button';
 const icons = {
   acquisition: <AcquisitionIcon />,
   refinancing: <RefinancingIcon />,
+  calendar: <FaIcon icon={faCalendarPlus} />,
 };
 
 const CTAButtons = ({ buttons }) => {

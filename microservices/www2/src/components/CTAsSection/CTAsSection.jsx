@@ -1,7 +1,9 @@
-import React from 'react';
-import { RichText } from 'prismic-reactjs';
-import CTAButtons from '../CTAButtons';
 import './CTAsSection.scss';
+
+import React from 'react';
+
+import CTAButtons from '../CTAButtons';
+import { RichText } from '../prismic';
 
 const CTAsSection = ({ primary, fields }) => (
   <section id={primary.section_id} className="ctas-section container">
@@ -34,8 +36,7 @@ const CTAsSection = ({ primary, fields }) => (
             )}
 
             <div className="cta-block__content">
-              {RichText.render(cta.content)}
-
+              <RichText render={cta.content} />
               <CTAButtons buttons={buttons} />
             </div>
           </div>

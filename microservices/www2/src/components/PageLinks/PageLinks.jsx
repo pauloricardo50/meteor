@@ -21,6 +21,7 @@ const PageLinks = ({ fields }) => {
             component={Link}
             label={field.label}
             to={linkResolver(field.link._meta)}
+            className="text-m"
           />
         ))}
       </Tabs>

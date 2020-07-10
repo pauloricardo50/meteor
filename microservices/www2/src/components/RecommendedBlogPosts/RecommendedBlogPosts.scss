@@ -21,12 +21,6 @@
       position: relative;
       margin: 16px 0;
       padding-right: 50px;
-      // Mobile/Plain/M/Light
-      font-size: 14px;
-      font-weight: 300;
-      font-style: normal;
-      line-height: 1.5;
-      letter-spacing: normal;
       color: black;
     }
 
@@ -74,13 +68,6 @@
 
       &__content {
         margin: 16px auto 20px;
-        // Desktop/Plain/M/Light
-        font-size: 16px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.44;
-        letter-spacing: normal;
-        color: black;
       }
 
       &__meta {

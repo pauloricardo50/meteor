@@ -1,7 +1,9 @@
-import React from 'react';
-import { RichText } from 'prismic-reactjs';
-import CTAButtons from '../CTAButtons';
 import './Hero.scss';
+
+import React from 'react';
+
+import CTAButtons from '../CTAButtons';
+import { RichText } from '../prismic';
 
 const EqualSplit = ({ primary, fields }) => (
   <section className="equal-split container">
@@ -13,7 +15,7 @@ const EqualSplit = ({ primary, fields }) => (
     <div className="equal-split__content">
       {primary.content && RichText.asText(primary.content) !== '' ? (
         <>
-          {RichText.render(primary.content)}
+          <RichText render={primary.content} />
 
           <CTAButtons buttons={fields} />
         </>
