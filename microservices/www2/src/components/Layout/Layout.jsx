@@ -5,6 +5,7 @@ import { graphql, navigate, useStaticQuery } from 'gatsby';
 import { Helmet } from 'react-helmet';
 
 import LanguageContext from '../../contexts/LanguageContext';
+import useIntercom from '../../hooks/useIntercom';
 import epotekLogo from '../../images/epotek_logo.png';
 import {
   getLanguageData,
@@ -28,6 +29,8 @@ const Layout = ({ children, location, pageContext, pageName }) => {
       }
     }
   `);
+
+  useIntercom();
 
   const { title, description } = data.site.siteMetadata;
   const pageTitle =
