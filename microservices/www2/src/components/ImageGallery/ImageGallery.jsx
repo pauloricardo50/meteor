@@ -14,12 +14,17 @@ const ImageGallery = ({ primary, fields }) => {
   return (
     <section id={section_id} className="image-gallery">
       {hasPrimaryContent && (
-        <div className="content container">
+        <div className="content">
           <RichText render={content} />
         </div>
       )}
       {cta_text && (
-        <Button primary link to={linkResolver(cta_link?._meta)}>
+        <Button
+          primary
+          link
+          to={linkResolver(cta_link?._meta)}
+          style={{ marginLeft: -8 }}
+        >
           {cta_text}
         </Button>
       )}

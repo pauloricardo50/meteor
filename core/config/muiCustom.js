@@ -34,6 +34,10 @@ const defaultTheme = fontSize => ({
         backgroundImage: colors.primaryGradient,
         color: 'white',
       },
+      containedSecondary: {
+        backgroundImage: colors.secondaryGradient,
+        color: 'white',
+      },
     },
     MuiFormLabel: {
       root: {

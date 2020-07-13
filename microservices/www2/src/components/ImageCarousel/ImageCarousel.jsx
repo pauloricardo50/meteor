@@ -35,7 +35,12 @@ const ImageCarousel = ({ primary, fields }) => {
         <RichText render={content} />
 
         {cta_text && (
-          <Button primary link to={linkResolver(cta_link._meta)}>
+          <Button
+            primary
+            link
+            to={linkResolver(cta_link._meta)}
+            style={{ marginLeft: -8 }}
+          >
             {cta_text}
           </Button>
         )}

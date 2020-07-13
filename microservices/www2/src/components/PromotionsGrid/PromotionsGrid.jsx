@@ -29,6 +29,7 @@ const PromotionsGrid = () => {
         canton: canton.filter(x => x).length > 0 ? canton : undefined,
       })
       .then(res => {
+        setLoading(false);
         setPromotions([
           ...res.filter(({ status }) => status === 'OPEN'),
           ...res.filter(({ status }) => status === 'FINISHED'),
@@ -40,7 +41,10 @@ const PromotionsGrid = () => {
 
         return res;
       })
-      .finally(() => setLoading(false));
+      .catch(error => {
+        setLoading(false);
+        throw error;
+      });
   }, [canton]);
 
   return (

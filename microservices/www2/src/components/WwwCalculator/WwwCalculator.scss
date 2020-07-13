@@ -1,12 +1,9 @@
-
-
 .www-calculator {
   width: 100%;
   max-width: $site-width;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  margin-bottom: 120px;
 
   &-top{
     display: flex;
