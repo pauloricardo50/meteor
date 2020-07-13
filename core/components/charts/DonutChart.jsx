@@ -46,7 +46,7 @@ const DonutChart = ({ config, title, ...rest }) => (
           },
         },
         title: { text: '' },
-        series: [{ innerSize: '60%' }],
+        series: [{ innerSize: '70%' }],
       },
       config,
     )}

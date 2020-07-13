@@ -3,6 +3,7 @@ import React from 'react';
 import BlogPostsGrid from '../BlogPostsGrid';
 import CardsGrid from '../CardsGrid';
 import CTAsSection from '../CTAsSection';
+import CustomComponent from '../CustomComponent';
 import FAQ from '../FAQ';
 import GPSStats from '../GPSStats';
 import Hero from '../Hero';
@@ -42,6 +43,7 @@ const components = {
   testimonial: Testimonials,
   text: Text,
   video_embed: VideoEmbed,
+  custom_component: CustomComponent,
 };
 
 const PageSections = ({ sections }) =>

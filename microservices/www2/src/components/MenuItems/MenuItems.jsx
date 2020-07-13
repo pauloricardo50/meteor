@@ -11,10 +11,10 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuItems = ({ menuLinks, subMenu, onClick }) => {
+const MenuItems = ({ menuLinks = [], subMenu, onClick }) => {
   const classes = useStyles();
 
-  return menuLinks.map((menuLink, idx) => {
+  return menuLinks?.map((menuLink, idx) => {
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
     const primaryLabel = menuLink.primary?.label || menuLink.sub_label;
 

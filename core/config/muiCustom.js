@@ -81,6 +81,10 @@ const defaultTheme = fontSize => ({
           '& .MuiListItemText-primary, & .MuiListItemText-secondary, & .MuiListItemIcon-root': {
             color: 'white',
           },
+          containedSecondary: {
+            backgroundImage: colors.secondaryGradient,
+            color: 'white',
+          },
         },
         '&$selected, &$selected:hover': {
           background: colors.primaryGradient,
@@ -156,6 +160,20 @@ const defaultTheme = fontSize => ({
     MuiIconButton: {
       root: {
         border: `solid 1px ${colors.borderGreyLight}`,
+      },
+    },
+    MuiSwitch: {
+      switchBase: {
+        border: 'none',
+      },
+      colorPrimary: {
+        color: 'white',
+        '&$checked': {
+          color: 'white',
+        },
+        '&$checked + $track': {
+          backgroundImage: colors.primaryGradient,
+        },
       },
     },
     MuiRadio: {

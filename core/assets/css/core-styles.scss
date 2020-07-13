@@ -49,7 +49,7 @@ hr {
   height: 1px;
 
   border: none;
-  background-color: $border-grey;
+  background-color: $border-grey-light;
 }
 
 // White backgrounds with shadows to put things on
@@ -320,8 +320,10 @@ p.description,
 
 .pb-4 {padding-bottom: 4px;}
 .pt-4 {padding-top: 4px;}
+.pl-4 {padding-left: 4px;}
 .pb-8 {padding-bottom: 8px;}
 .pt-8 {padding-top: 8px;}
+.pl-8 {padding-left: 8px;}
 
 .mb-0 {
   margin-bottom: 0;

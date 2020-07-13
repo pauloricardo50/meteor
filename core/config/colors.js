@@ -8,6 +8,7 @@ const colors = {
   primaryGradientDark: 'linear-gradient(to left, #5bb5ff, #0048bb)',
   backgroundLight: '#dbeeff',
   secondary: '#00c6ff',
+  secondaryGradient: 'linear-gradient(to left, #77E4D2, #21d3b5)',
   tertiary: '#001a8f',
   success: '#21d3b5',
   warning: '#F3AF50',
