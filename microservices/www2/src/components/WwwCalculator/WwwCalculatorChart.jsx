@@ -6,19 +6,18 @@ import useWindowSize from 'core/hooks/useWindowSize';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 import WwwCalculatorChartForm from './WwwCalculatorChartForm';
-import { getYearlyCost } from './wwwCalculatorMath';
 import { useWwwCalculator } from './WwwCalculatorState';
 
 const WwwCalculatorChart = () => {
   const { width: windowWidth } = useWindowSize();
   const { formatMessage } = useIntl();
   const [state] = useWwwCalculator();
-  const yearlyValues = getYearlyCost(state);
+  const { interests, amortization, maintenance, total } = state;
+  const yearlyValues = { interests, amortization, maintenance };
   const data = Object.keys(yearlyValues).map(valueName => ({
     y: Math.round(yearlyValues[valueName] / 12) || 0,
     name: formatMessage({ id: `WwwCalculatorChart.${valueName}` }),
   }));
-  const total = data.reduce((acc, val) => acc + val.y, 0) || 0;
 
   if (total === 0) {
     return null;
@@ -37,7 +36,7 @@ const WwwCalculatorChart = () => {
           title: {
             text: formatMessage(
               { id: 'WwwCalculatorChart.title' },
-              { total: toMoney(total) },
+              { total: toMoney(total / 12) },
             ),
             align: 'center',
             verticalAlign: 'middle',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { animated, useSpring } from 'react-spring';
 import MaskedInput from 'react-text-mask';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
@@ -44,13 +44,27 @@ const WwwCalculatorFormFieldContainer = ({ field }) => {
       sliderMax={sliderMax}
       purchaseType={purchaseType}
       field={field}
+      increaseSliderMax={() =>
+        dispatch({
+          type: ACTIONS.SET_AT,
+          payload: { at: field, sliderMax: Math.min(sliderMax * 2, 1e8) },
+        })
+      }
     />
   );
 };
 
 const WwwCalculatorFormField = animated(
-  ({ value, handleChange, field, purchaseType, sliderMax }) => {
+  ({
+    value,
+    handleChange,
+    field,
+    purchaseType,
+    sliderMax,
+    increaseSliderMax,
+  }) => {
     const rounded = Math.round(value);
+    const ref = useRef(null);
 
     return (
       <div className="mb-32 animated fadeIn">
@@ -62,9 +76,23 @@ const WwwCalculatorFormField = animated(
           size="med"
           InputProps={{
             inputComponent: MaskedInput,
-            inputProps: { mask: textMask },
+            inputProps: {
+              mask: textMask,
+              render: (r, props) => (
+                <input
+                  ref={node => {
+                    r(node);
+                    ref.current = node;
+                  }}
+                  {...props}
+                />
+              ),
+            },
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment
+                position="start"
+                onClick={() => ref.current?.focus()}
+              >
                 <T
                   id={`WwwCalculatorFormField.${field}`}
                   values={{ purchaseType }}
@@ -89,7 +117,7 @@ const WwwCalculatorFormField = animated(
             className="mr-16"
             min={0}
             max={sliderMax}
-            step={1000}
+            step={5000}
           />
           {rounded >= sliderMax * 0.9 ? (
             <IconButton
@@ -97,6 +125,7 @@ const WwwCalculatorFormField = animated(
               size="small"
               tooltip={<T id="WwwCalculatorFormField.increaseSliderMax" />}
               className="animated fadeIn"
+              onClick={increaseSliderMax}
             />
           ) : (
             <div style={{ width: 28.25, height: 28.25, flexShrink: 0 }} />

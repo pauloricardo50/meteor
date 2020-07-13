@@ -152,6 +152,9 @@ export const getYearlyAmortization = ({
   loanValue,
   yearsToRetirement = 15,
 }) => {
+  if (propertyValue === 0) {
+    return 0;
+  }
   const borrowValue = loanValue / propertyValue;
   const percentToAmortize = borrowValue - AMORTIZATION_STOP;
 
@@ -223,15 +226,22 @@ export const getYearlyCost = state => {
       ? getLoanValue(property.value, fortune.value)
       : wantedLoan.value;
 
+  const interests = interestRate
+    ? getSimpleYearlyInterests(loanValue, interestRate)
+    : 0;
+  const amortization = getYearlyAmortization({
+    propertyValue: property.value,
+    loanValue,
+  });
+  const maintenance = includeMaintenance
+    ? getSimpleYearlyMaintenance(property.value)
+    : 0;
+
   return {
-    interests: getSimpleYearlyInterests(loanValue, interestRate),
-    amortization: getYearlyAmortization({
-      propertyValue: property.value,
-      loanValue,
-    }),
-    maintenance: includeMaintenance
-      ? getSimpleYearlyMaintenance(property.value)
-      : 0,
+    maintenance,
+    interests,
+    amortization,
+    total: maintenance + interests + amortization,
   };
 };
 

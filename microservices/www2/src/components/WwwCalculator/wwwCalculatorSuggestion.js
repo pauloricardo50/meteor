@@ -112,6 +112,5 @@ export const setAutoValues = state => {
     return setFieldAt(s, field, { value: autoValue });
   }, state);
 
-  console.log('nextState:', nextState);
   return nextState;
 };

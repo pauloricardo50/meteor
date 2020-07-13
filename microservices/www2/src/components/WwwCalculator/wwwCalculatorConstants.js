@@ -10,6 +10,7 @@ export const NOTARY_FEES = 0.05;
 export const ACTIONS = {
   SET: 'SET',
   SET_VALUE: 'SET_VALUE',
+  SET_AT: 'SET_AT',
 };
 
 export const PURCHASE_TYPE = {

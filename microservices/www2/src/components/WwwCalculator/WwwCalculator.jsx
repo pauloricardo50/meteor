@@ -12,7 +12,7 @@ import { useWwwCalculator } from './WwwCalculatorState';
 import WwwCalculatorStatus from './WwwCalculatorStatus';
 
 const WwwCalculator = () => {
-  const [_, dispatch] = useWwwCalculator();
+  const [{ purchaseType }, dispatch] = useWwwCalculator();
 
   useEffect(() => {
     const getCurrentRates = async () => {
@@ -40,7 +40,7 @@ const WwwCalculator = () => {
   return (
     <div className="www-calculator">
       <WwwCalculatorPurchaseType />
-      <div className="www-calculator-top">
+      <div className="www-calculator-top animated fadeIn" key={purchaseType}>
         <WwwCalculatorForm />
         <WwwCalculatorRecap />
       </div>

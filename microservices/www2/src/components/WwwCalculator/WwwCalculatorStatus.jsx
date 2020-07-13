@@ -4,15 +4,6 @@ import { ERROR, SUCCESS, WARNING } from 'core/api/constants';
 import StatusIcon from 'core/components/StatusIcon';
 import T from 'core/components/Translation/FormattedMessage';
 
-import { PURCHASE_TYPE } from './wwwCalculatorConstants';
-import {
-  getBorrowRatio,
-  getFinmaYearlyCost,
-  getIncomeRatio,
-  getRefinancingBorrowRatio,
-  validateBorrowRatio,
-  validateIncomeRatio,
-} from './wwwCalculatorMath';
 import { useWwwCalculator } from './WwwCalculatorState';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];
@@ -53,19 +44,13 @@ const hideFinmaValues = (borrowRatio, incomeRatio) =>
 
 const WwwCalculatorStatus = () => {
   const [
-    { purchaseType, property, fortune, wantedLoan, salary },
+    {
+      borrowRatio,
+      borrowRatioStatus: { status: incomeStatus },
+      incomeRatio,
+      incomeRatioStatus: { status: borrowStatus },
+    },
   ] = useWwwCalculator();
-
-  const borrowRatio =
-    purchaseType === PURCHASE_TYPE.ACQUISITION
-      ? getBorrowRatio(property.value, fortune.value)
-      : getRefinancingBorrowRatio(property.value, wantedLoan.value);
-  const incomeRatio = getIncomeRatio(
-    salary.value,
-    getFinmaYearlyCost(property.value, fortune.value, wantedLoan.value).total,
-  );
-  const { status: borrowStatus } = validateBorrowRatio(borrowRatio);
-  const { status: incomeStatus } = validateIncomeRatio(incomeRatio);
 
   if (hideFinmaValues(borrowRatio, incomeRatio)) {
     return null;

@@ -41,8 +41,8 @@ const getRefinancingArray = ({ property, salary, currentLoan, wantedLoan }) => {
   const maxPossibleLoan = getMaxPossibleLoan(property.value, salary.value);
 
   return [
-    { label: 'WwwCalculatorRecap.maxPossibleLoan', value: maxPossibleLoan },
     { label: 'WwwCalculatorRecap.project', title: true },
+    { label: 'WwwCalculatorRecap.maxPossibleLoan', value: maxPossibleLoan },
     { label: 'WwwCalculatorFormField.property', value: property.value },
     { label: 'WwwCalculatorFormField.currentLoan', value: currentLoan.value },
     { space: true },
@@ -83,10 +83,6 @@ const WwwCalculatorRecap = () => {
 
   return (
     <div className="www-calculator-recap">
-      <h3>
-        <T id="WwwCalculatorRecap.title" />
-      </h3>
-
       <div className="flex-col center-align">
         <Recap2 array={array} />
       </div>

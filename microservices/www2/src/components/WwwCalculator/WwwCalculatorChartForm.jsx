@@ -31,7 +31,7 @@ const WwwCalculatorChartForm = () => {
         fullWidth
         className="mb-16"
       >
-        {interestRates.map(({ rateLow, type }) => (
+        {interestRates?.map(({ rateLow, type }) => (
           <MenuItem key={type} value={rateLow} dense={false}>
             <T id={`WwwCalculatorChartForm.${type}`} />
             :&nbsp;
