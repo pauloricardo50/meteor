@@ -2,6 +2,8 @@
   width: 100%;
   max-width: $site-width;
   margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
 
   .content {
     h3,

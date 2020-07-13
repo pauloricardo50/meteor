@@ -6,6 +6,7 @@ import { faCalendarPlus } from '@fortawesome/pro-light-svg-icons/faCalendarPlus'
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import FaIcon from 'core/components/Icon/FaIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
+import useMedia from 'core/hooks/useMedia';
 
 import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
@@ -17,6 +18,7 @@ const icons = {
 };
 
 const CTAButtons = ({ buttons }) => {
+  const isMobile = useMedia({ maxWidth: 768 });
   if (!buttons.length) return null;
 
   return (
@@ -30,7 +32,7 @@ const CTAButtons = ({ buttons }) => {
           raised: ctaStyle !== 'flat',
           primary: ctaStyle === 'primary',
           secondary: ctaStyle === 'secondary',
-          size: 'large',
+          size: isMobile ? 'small' : 'large',
         };
 
         if (linkType === 'Link.document') {
