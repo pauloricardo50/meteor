@@ -34,23 +34,37 @@
     flex-wrap: wrap;
 
     button {
-      padding: 40px;
+      padding: 16px;
       margin: 16px 8px;
       border-radius: 12px;
       box-shadow: 0 0 0 1px $border-grey-light;
       flex-basis: 100px;
       flex-grow: 1;
-      max-width: 250px;
+      max-width: 180px;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 200ms $bezier, transform 200ms $bezier, color 200ms $bezier;
+      color: $primary;
+
+      .fa-fw {
+        font-size: 30px;
+        opacity: 0.5;
+        color: $body-text;
+      }
       
-      h2 {
-        margin: 0;
+      .button-text {
+        margin-top: 16px;
+        font-size: 20px;
+        color: $body-text;
+        font-weight: 300;
       }
 
       &.active {
-        box-shadow: 0 0 0 4px $primary;
-        
-        h2 {
-          color: $primary
+        box-shadow: 0 0 0 3px $primary;
+        transform: scale(1.05);
+
+        .button-text {
+          color: black;
         }
       }
     }
