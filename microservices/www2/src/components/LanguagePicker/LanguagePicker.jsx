@@ -12,6 +12,10 @@ const LanguagePicker = () => {
   const languages = getLanguages();
   const languageData = languages.map(lang => getLanguageData(lang));
 
+  if (languages?.length < 2) {
+    return null;
+  }
+
   return (
     <div className="language-picker">
       {languageData.map(({ display, shortLang }) => (
