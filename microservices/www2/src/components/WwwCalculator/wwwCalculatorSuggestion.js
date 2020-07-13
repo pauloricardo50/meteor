@@ -64,10 +64,53 @@ const refinancingSuggesters = {
   },
 };
 
+export const setFieldAt = (state, at, payload) => ({
+  ...state,
+  [at]: { ...state[at], ...payload },
+});
+
+const getSuggesterForField = (suggestersForField, nonAutoFields) => {
+  let suggester;
+  if (nonAutoFields.length >= 2) {
+    suggester = suggestersForField.all;
+  } else if (nonAutoFields.length === 0) {
+    suggester = () => 0;
+  } else {
+    suggester = suggestersForField[nonAutoFields[0]];
+  }
+
+  return suggester || suggestersForField.default;
+};
+
 export const setAutoValues = state => {
-  const { purchaseType } = state;
   const fields =
-    purchaseType === PURCHASE_TYPE.ACQUISITION
+    state.purchaseType === PURCHASE_TYPE.ACQUISITION
       ? ACQUISITION_FIELDS
       : REFINANCING_FIELDS;
+
+  const autoFields = fields.filter(field => state[field]?.auto);
+
+  if (autoFields.length === 0) {
+    return state;
+  }
+
+  const suggesters =
+    state.purchaseType === PURCHASE_TYPE.ACQUISITION
+      ? acquisitionSuggesters
+      : refinancingSuggesters;
+  const nonAutoFields = fields.filter(field => !state[field]?.auto);
+  const values = fields.reduce(
+    (obj, field) => ({ ...obj, [field]: state[field].value }),
+    {},
+  );
+
+  const nextState = autoFields.reduce((s, field) => {
+    const suggestersForField = suggesters[field];
+    const suggester = getSuggesterForField(suggestersForField, nonAutoFields);
+    const autoValue = Math.round(suggester(values));
+
+    return setFieldAt(s, field, { value: autoValue });
+  }, state);
+
+  return nextState;
 };

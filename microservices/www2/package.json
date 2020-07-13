@@ -62,14 +62,14 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "serve": "npx --node-arg '-r esm' gatsby serve",
     "start": "npx --node-arg '-r esm' npm run develop",
-    "test": "mocha 'src/components/WwwCalculator/**/*.test.js*'"
+    "test": "jest --watch"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.4",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "babel-plugin-webpack-alias-7": "^0.1.1",
-    "chai": "^4.2.0",
+    "babel-jest": "^26.1.0",
+    "babel-preset-gatsby": "^0.5.2",
+    "identity-obj-proxy": "^3.0.0",
     "ignore-styles": "^5.0.1",
-    "mocha": "^8.0.1"
+    "jest": "^26.1.0"
   }
 }

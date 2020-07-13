@@ -9,13 +9,14 @@ import {
   SALARY,
   WANTED_LOAN,
 } from './wwwCalculatorConstants';
+import { setAutoValues, setFieldAt } from './wwwCalculatorSuggestion';
 
-const initialState = {
-  [SALARY]: { sliderMax: 500000 },
-  [FORTUNE]: { sliderMax: 500000 },
-  [PROPERTY]: { sliderMax: 2000000 },
-  [CURRENT_LOAN]: { sliderMax: 2000000 },
-  [WANTED_LOAN]: { sliderMax: 2000000 },
+export const initialState = {
+  [SALARY]: { sliderMax: 500000, auto: true },
+  [FORTUNE]: { sliderMax: 500000, auto: true },
+  [PROPERTY]: { sliderMax: 2000000, auto: true },
+  [CURRENT_LOAN]: { sliderMax: 2000000, auto: true },
+  [WANTED_LOAN]: { sliderMax: 2000000, auto: true },
   purchaseType: PURCHASE_TYPE.ACQUISITION,
   includeMaintenance: true,
 };
@@ -27,15 +28,10 @@ export const wwwCalculatorReducer = (state, { type, payload }) => {
     }
     case ACTIONS.SET_VALUE: {
       const { at, ...rest } = payload;
-      if (at) {
-        return { ...state, [at]: { ...state[at], ...rest } };
-      }
-      return { ...state, ...rest };
-    }
-    case ACTIONS.SUGGEST_VALUE: {
-      return state;
-    }
+      const nextState = setFieldAt(state, at, { auto: false, ...rest });
 
+      return setAutoValues(nextState);
+    }
     default:
       return state;
   }
