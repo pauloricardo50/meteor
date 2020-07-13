@@ -35,7 +35,8 @@ const Layout = ({ children, location, pageContext, pageName }) => {
   const { title, description } = data.site.siteMetadata;
   const pageTitle =
     typeof pageName === 'object' ? RichText.asText(pageName) : pageName;
-  const pageLang = getShortLang(pageContext.lang);
+  // const pageLang = getShortLang(pageContext.lang);
+  const pageLang = getShortLang('fr-ch');
   const pageType = pageContext.type;
 
   const [language, setLanguage] = useState(pageLang);
