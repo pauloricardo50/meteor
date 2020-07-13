@@ -5,6 +5,7 @@ import T from 'core/components/Translation/FormattedMessage';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 import { NOTARY_FEES, PURCHASE_TYPE } from './wwwCalculatorConstants';
+import WwwCalculatorFinma from './WwwCalculatorFinma';
 import { getLoanValue, getMaxPossibleLoan } from './wwwCalculatorMath';
 import { useWwwCalculator } from './WwwCalculatorState';
 
@@ -89,6 +90,8 @@ const WwwCalculatorRecap = () => {
       <div className="flex-col center-align">
         <Recap2 array={array} />
       </div>
+
+      <WwwCalculatorFinma />
     </div>
   );
 };

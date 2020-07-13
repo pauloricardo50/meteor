@@ -133,6 +133,21 @@ const languageData = {
     'WwwCalculatorRecap.maxPossibleLoan': 'Hypothèque max. possible',
     'WwwCalculatorRecap.loanIncrease': 'Augmentation du prêt',
     'WwwCalculatorRecap.loanReduction': 'Réduction du prêt',
+    'WwwCalculatorFinma.title': 'Règles FINMA',
+    'WwwCalculatorRecap.borrowRule':
+      "Prêt / {purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
+    'WwwCalculatorRecap.incomeRule': 'Charges / Revenus',
+    'WwwCalculatorStatus.borrowError':
+      'Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en',
+    'WwwCalculatorStatus.borrowWarning':
+      'Les fonds propres ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
+    'WwwCalculatorStatus.empty':
+      'Entrez des valeurs dans les champs au dessus !',
+    'WwwCalculatorStatus.incomeError':
+      'Les revenus ne suffisent pas pour votre projet. Continuez et parlons-en.',
+    'WwwCalculatorStatus.incomeWarning':
+      'Les revenus ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
+    'WwwCalculatorStatus.success': 'Tout est bon !',
   },
 };
 

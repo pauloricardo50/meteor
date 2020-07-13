@@ -11,6 +11,17 @@ import {
 } from 'core/config/financeConstants';
 import { roundTo } from 'core/utils/conversionFunctions';
 
+import { ERROR, SUCCESS, WARNING } from '../../core/api/constants';
+import {
+  FORTUNE_ERROR,
+  FORTUNE_WARNING_TIGHT,
+  INCOME_ERROR,
+  INCOME_WARNING_TIGHT,
+  MAX_BORROW_RATIO_OTHER,
+  MAX_INCOME_RATIO_TIGHT,
+} from '../../core/config/financeConstants';
+import { PURCHASE_TYPE } from './wwwCalculatorConstants';
+
 export const getLoanValue = (propertyValue, fortune) =>
   propertyValue * (1 + NOTARY_FEES) - fortune;
 
@@ -165,3 +176,84 @@ export const getSimpleYearlyMaintenance = (
   propertyValue,
   maintenanceRate = MAINTENANCE_REAL,
 ) => maintenanceRate * propertyValue;
+
+export const getIncomeRatio = (yearlySalary, yearlyCost) =>
+  yearlyCost / yearlySalary;
+
+export const validateBorrowRatio = borrowRatio => {
+  const maxRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY;
+
+  if (borrowRatio <= maxRatio) {
+    return { status: SUCCESS, error: undefined };
+  }
+  if (borrowRatio <= MAX_BORROW_RATIO_WITH_PLEDGE) {
+    return { status: WARNING, error: FORTUNE_WARNING_TIGHT };
+  }
+
+  return { status: ERROR, error: FORTUNE_ERROR };
+};
+
+export const validateIncomeRatio = incomeRatio => {
+  // add 0.01% to avoid rounding issues
+  const safeIncomeRatio = incomeRatio - 0.0001;
+  if (safeIncomeRatio <= MAX_INCOME_RATIO) {
+    return { status: SUCCESS, error: undefined };
+  }
+  if (safeIncomeRatio <= MAX_INCOME_RATIO_TIGHT) {
+    return { status: WARNING, error: INCOME_WARNING_TIGHT };
+  }
+
+  return { status: ERROR, error: INCOME_ERROR };
+};
+
+export const getRefinancingBorrowRatio = (propertyValue, loan) =>
+  loan / propertyValue;
+
+export const getYearlyCost = state => {
+  const {
+    fortune,
+    property,
+    wantedLoan,
+    purchaseType,
+    interestRate,
+    includeMaintenance,
+  } = state;
+  const loanValue =
+    purchaseType === PURCHASE_TYPE.ACQUISITION
+      ? getLoanValue(property.value, fortune.value)
+      : wantedLoan.value;
+
+  return {
+    interests: getSimpleYearlyInterests(loanValue, interestRate),
+    amortization: getYearlyAmortization({
+      propertyValue: property.value,
+      loanValue,
+    }),
+    maintenance: includeMaintenance
+      ? getSimpleYearlyMaintenance(property.value)
+      : 0,
+  };
+};
+
+export const getFinmaYearlyCost = (propertyValue, fortune, wantedLoan) => {
+  const maintenance = getSimpleYearlyMaintenance(
+    propertyValue,
+    MAINTENANCE_FINMA,
+  );
+  const loanValue = wantedLoan || getLoanValue(propertyValue, fortune);
+  const interests = getSimpleYearlyInterests(loanValue, INTERESTS_FINMA);
+  const amortization = getYearlyAmortization({ propertyValue, loanValue });
+
+  return {
+    maintenance,
+    interests,
+    amortization,
+    total: maintenance + interests + amortization,
+  };
+};
+
+export const getBorrowRatio = (propertyValue, fortune) =>
+  getRefinancingBorrowRatio(
+    propertyValue,
+    getLoanValue(propertyValue, fortune),
+  );

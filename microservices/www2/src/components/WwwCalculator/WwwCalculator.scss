@@ -11,7 +11,7 @@
   &-top{
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 64px;
+    margin-bottom: 32px;
 
     > * {
       flex-basis: 40%;
@@ -92,6 +92,12 @@
       max-width: 400px;
       margin: 0 auto;
     }
+
+    p {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
   }
 
   &-chart {
@@ -109,6 +115,23 @@
       flex-direction: column;
       align-items: center;
       box-sizing: border-box;
+    }
+  }
+
+  hr {
+    width: 60%;
+  }
+
+  &-status {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 16px;
+    }
+
+    .message {
+      max-width: 400px;
     }
   }
 }

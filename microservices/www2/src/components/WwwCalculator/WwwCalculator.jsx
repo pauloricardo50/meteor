@@ -9,6 +9,7 @@ import WwwCalculatorForm from './WwwCalculatorForm';
 import WwwCalculatorPurchaseType from './WwwCalculatorPurchaseType';
 import WwwCalculatorRecap from './WwwCalculatorRecap';
 import { useWwwCalculator } from './WwwCalculatorState';
+import WwwCalculatorStatus from './WwwCalculatorStatus';
 
 const WwwCalculator = () => {
   const [_, dispatch] = useWwwCalculator();
@@ -45,6 +46,7 @@ const WwwCalculator = () => {
       </div>
 
       <div className="www-calculator-bottom">
+        <WwwCalculatorStatus />
         <WwwCalculatorChart />
       </div>
     </div>
