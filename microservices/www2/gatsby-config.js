@@ -50,7 +50,7 @@ module.exports = {
       options: {
         repositoryName: process.env.PRISMIC_REPO,
         accessToken: process.env.PRISMIC_API_KEY,
-        langs: ['fr-ch', 'en-us'],
+        langs: ['fr-ch'],
         defaultLang: 'fr-ch',
         shortenUrlLangs: true,
         path: '/preview',
