@@ -4,6 +4,7 @@ import React, { useContext, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import TextInput from 'core/components/TextInput/TextInput';
@@ -67,6 +68,9 @@ const SignupForm = ({ modal = false }) => {
           </DialogTitle>
           <form onSubmit={handleSubmit} className="signup-form modal">
             <DialogContent>
+              <DialogContentText>
+                {getLanguageData(language)['signupModal.description']}
+              </DialogContentText>
               {success ? (
                 <SignupSuccessMessage language={language} />
               ) : (

@@ -133,6 +133,10 @@
 .signup-form.modal{
   display: block;
   margin: 0;
+
+  .email {
+    width: auto;
+  }
 }
 
 .recent-newsletters {

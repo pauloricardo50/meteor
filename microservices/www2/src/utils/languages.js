@@ -50,6 +50,7 @@ const languageData = {
     signupButtonText: `S'inscrire`,
     signupModal: `Newsletter`,
     'signupModal.title': `S'inscrire à la newsletter`,
+    'signupModal.description': `Chaque mois, e-Potek fait le point sur l'actualité et les sujets liés au financement hypothécaire.`,
     getALoanText: `Obtenir un prêt`,
     signupErrorText: `Un problème est survenu! Réessayez ultérieurement`,
     signupSuccessText: `Merci de vous être abonné!`,
