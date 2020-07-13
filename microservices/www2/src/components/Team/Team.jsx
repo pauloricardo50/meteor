@@ -12,7 +12,7 @@ const getMailTo = name =>
   `mailto:${EMAIL}?subject=${encodeURI(`Contacter ${name}`)}`;
 
 const Team = ({ primary, fields }) => (
-  <div className="team container">
+  <section className="team container">
     <div className="team__heading">
       {RichText.asText(primary.section_heading)}
     </div>
@@ -55,7 +55,7 @@ const Team = ({ primary, fields }) => (
           </div>
         ))}
     </div>
-  </div>
+  </section>
 );
 
 export default Team;
