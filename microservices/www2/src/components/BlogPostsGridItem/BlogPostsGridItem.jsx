@@ -27,7 +27,10 @@ const BlogPostsGridItem = ({ post }) => {
   return (
     <Link to={linkResolver(post._meta)} className="blog-post-item">
       {postFirstImage && (
-        <img src={postFirstImage.url} alt={postFirstImage.alt} />
+        <div
+          className="blog-post-item-image"
+          style={{ backgroundImage: `url("${postFirstImage.url}")` }}
+        />
       )}
       <div className="flex center-align nowrap">
         <h2>
