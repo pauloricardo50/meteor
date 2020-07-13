@@ -5,9 +5,9 @@ import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 
 export const query = graphql`
-  query PRISMIC_PAGE($uid: String!, $lang: String!) {
+  query PRISMIC_PAGE($uid: String!) {
     prismic {
-      page(uid: $uid, lang: $lang) {
+      page(uid: $uid, lang: "fr-ch") {
         ...prismicPageFields
         body {
           ... on PRISMIC_PageBodyBlog_posts {

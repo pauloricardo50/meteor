@@ -1,32 +1,6 @@
-const languages = ['en', 'fr'];
+const languages = ['fr'];
 
 const languageData = {
-  en: {
-    display: 'EN',
-    shortLang: 'en',
-    longLang: 'en-us',
-    homeLink: '/en/home',
-    blogLink: '/en/blog',
-    blogLinkText: `Return to index`,
-    cookieAccept: `I accept`,
-    cookieDecline: `Decline`,
-    contactLocationText: [`Find us in`, `And in`],
-    followUs: `Follow us`,
-    loginText: `Login`,
-    promoInterest: `I am interested`,
-    recentNewslettersToggle: `See previous newsletters`,
-    signupButtonText: `Sign up`,
-    getALoanText: `Get a loan`,
-    signupErrorText: `There was a problem subscribing. Please try again`,
-    signupSuccessText: `Thank you for subscribing!`,
-    recommendedArticleHeader: `This might interest you`,
-    rateTable: {
-      header: ['Duration', 'Trend', 'Rate'],
-    },
-    rateType: {
-      suffix: '-Year',
-    },
-  },
   fr: {
     display: 'FR',
     shortLang: 'fr',

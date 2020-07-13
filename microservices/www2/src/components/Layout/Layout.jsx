@@ -34,7 +34,8 @@ const Layout = ({ children, location, pageContext, data }) => {
   const { title, description } = siteData.site.siteMetadata;
   const pageTitle = data?.prismic?.page?.name?.[0]?.text;
 
-  const pageLang = getShortLang(pageContext.lang);
+  // const pageLang = getShortLang(pageContext.lang);
+  const pageLang = getShortLang('fr-ch');
   const pageType = pageContext.type;
 
   const [language, setLanguage] = useState(pageLang);

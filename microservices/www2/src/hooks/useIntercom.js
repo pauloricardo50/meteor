@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from '@reach/router';
 
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
@@ -38,7 +38,7 @@ const getIntercomUserSettings = async () => {
   return { ...defaultSettings, ...intercomSettings };
 };
 
-const initializeIntercom = async history => {
+const initializeIntercom = async location => {
   const intercomSettings = await getIntercomUserSettings();
 
   window.intercomSettings = intercomSettings;
@@ -71,7 +71,7 @@ const initializeIntercom = async history => {
         meteorClient.call('updateIntercomVisitorTrackingId', getTrackingIds());
         window?.Intercom?.('trackEvent', 'last-page', {
           title: document?.title,
-          pathname: history?.location?.pathname,
+          pathname: location?.pathname,
           microservice: 'www',
         });
 
@@ -83,7 +83,7 @@ const initializeIntercom = async history => {
           meteorClient.call('analyticsOpenedIntercom', {
             trackingId: getTrackingIds().trackingId,
             lastPageTitle: document?.title,
-            lastPagePath: history?.location?.pathname,
+            lastPagePath: location?.pathname,
             lastPageMicroservice: 'www',
           });
         });
@@ -100,10 +100,10 @@ const initializeIntercom = async history => {
 };
 
 const useIntercom = () => {
-  const history = useHistory();
+  const location = useLocation();
   // Initialization
   useEffect(() => {
-    initializeIntercom(history);
+    initializeIntercom(location);
 
     return () => {
       IntercomAPI('shutdown');
