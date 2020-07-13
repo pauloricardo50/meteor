@@ -42,6 +42,7 @@ const RecentNewsletters = () => {
       >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
+          IconButtonProps={{ size: 'small', style: { marginLeft: 8 } }}
           aria-controls="panel-content"
           id="panel-header"
           classes={classes}

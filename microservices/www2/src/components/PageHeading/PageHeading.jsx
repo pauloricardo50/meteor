@@ -6,9 +6,8 @@ import { RichText } from '../prismic';
 
 const PageHeading = ({ primary }) => (
   <div className="page-heading container">
-    <div>
-      <RichText render={primary.page_heading} />
-    </div>
+    <RichText render={primary.page_heading} />
+    {primary.page_description && <RichText render={primary.page_description} />}
   </div>
 );
 

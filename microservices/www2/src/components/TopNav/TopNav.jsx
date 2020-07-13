@@ -47,7 +47,7 @@ const TopNav = () => {
         <div className="top-nav-right">
           {matches && <LoginMenu />}
 
-          <Button raised primary link to="/">
+          <Button raised primary Component="a" href={process.env.EPOTEK_APP}>
             {getLanguageData(language).getALoanText}
           </Button>
         </div>
