@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Loading from 'core/components/Loading';
 import FormattedMessage from 'core/components/Translation/FormattedMessage';
+import useMedia from 'core/hooks/useMedia';
+import useWindowSize from 'core/hooks/useWindowSize';
 
 import meteorClient from '../../utils/meteorClient';
 import CantonFilter from './CantonFilter';
@@ -16,6 +18,9 @@ const PromotionsGrid = () => {
   const [cantons, setCantons] = useState();
   const [canton, setCanton] = useState([null]);
   const [loading, setLoading] = useState(false);
+  const isWide = useMedia({ maxWidth: 1200 });
+  const isMed = useMedia({ maxWidth: 768 });
+  const { width: windowWidth } = useWindowSize();
 
   useEffect(() => {
     setLoading(true);
@@ -40,33 +45,38 @@ const PromotionsGrid = () => {
 
   return (
     <div className="promotions container">
-      {loading ? (
-        <Loading />
-      ) : promotions?.length ? (
-        <div className="promotions-grid">
-          <div className="promotions-filters">
-            <CantonFilter
-              canton={canton}
-              setCanton={setCanton}
-              cantons={cantons}
-            />
-          </div>
-          {promotions.map(promotion => (
-            <PromotionsGridItem key={promotion.id} promotion={promotion} />
-          ))}
-        </div>
-      ) : (
-        <div className="secondary flex-col center">
-          <FontAwesomeIcon
-            icon={faInbox}
-            size="4x"
-            style={{ padding: 16, paddingBottom: 4 }}
+      <div className="promotions-grid">
+        <div className="promotions-filters">
+          <CantonFilter
+            canton={canton}
+            setCanton={setCanton}
+            cantons={cantons}
           />
-          <span className="font-size-3">
-            <FormattedMessage id="noResult" />
-          </span>
         </div>
-      )}
+        {loading && !promotions?.length && (
+          <Loading className="promotions-loading" />
+        )}
+        {promotions?.map(promotion => (
+          <PromotionsGridItem
+            key={promotion.id}
+            promotion={promotion}
+            loading={loading}
+            w={{ isWide, isMed, windowWidth }}
+          />
+        ))}
+        {!loading && !promotions?.length && (
+          <div className="secondary flex-col center promotions-no-result">
+            <FontAwesomeIcon
+              icon={faInbox}
+              size="4x"
+              style={{ padding: 16, paddingBottom: 4 }}
+            />
+            <span className="font-size-3">
+              <FormattedMessage id="noResult" />
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

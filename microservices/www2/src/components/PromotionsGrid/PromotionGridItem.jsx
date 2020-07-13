@@ -6,6 +6,7 @@ import FormattedMessage from 'core/components/Translation/FormattedMessage';
 
 import Button from '../Button';
 import PromotionInterestForm from './PromotionInterestForm';
+import PromotionItemSkeleton from './PromotionItemSkeleton';
 
 const makeReducer = ({ images }) => (state, action) => {
   const { id } = state;
@@ -22,7 +23,7 @@ const makeReducer = ({ images }) => (state, action) => {
   }
 };
 
-const PromotionsGridItem = ({ promotion }) => {
+const PromotionsGridItem = ({ promotion, loading, w }) => {
   const {
     name,
     documents: { promotionImage: images } = {},
@@ -55,8 +56,12 @@ const PromotionsGridItem = ({ promotion }) => {
   const reducer = makeReducer({ images });
   const [{ id }, dispatch] = useReducer(reducer, { id: 0 });
 
+  if (loading) {
+    return <PromotionItemSkeleton key={promotion.id} w={w} />;
+  }
+
   return (
-    <div className="promotion-item">
+    <div className="promotion-item animated fadeIn">
       <div
         key="promo-img"
         className="promotion-item-images"
