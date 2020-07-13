@@ -13,34 +13,17 @@ import { RichText } from '../prismic';
 
 const acceptCookie = 'epotek_acceptCookie';
 
-const useSnackbarStyles = makeStyles({
-  root: {
-    transform: 'unset',
-    bottom: 0,
-    right: 0,
-    left: 0,
-  },
-});
-
 const useSnackbarContentStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
     backgroundColor: 'white',
     padding: 8,
-    [theme.breakpoints.up('md')]: {
-      padding: 16,
-    },
   },
   message: {
-    fontSize: '12px',
+    fontSize: 12,
     fontWeight: 300,
     color: 'black',
     '& a': {
       color: theme.palette.primary.main,
-    },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '16px',
-      lineHeight: 1.44,
     },
     '& p': {
       margin: 0,
@@ -63,7 +46,6 @@ const CookiesNotification = () => {
   const [visible, setVisible] = useState(
     process.env.NODE_ENV === 'production' && !hasSetCookie,
   );
-  const snackbarClasses = useSnackbarStyles();
   const contentClasses = useSnackbarContentStyles();
 
   const cookieNotification = useContentBlock({
@@ -88,10 +70,11 @@ const CookiesNotification = () => {
   };
 
   return (
-    <Snackbar open={visible} classes={snackbarClasses}>
+    <Snackbar open={visible}>
       <SnackbarContent
         classes={contentClasses}
         message={message}
+        elevation={1}
         action={[
           <Button
             key="decline"
