@@ -1,4 +1,6 @@
 .post {
+  padding: 16px;
+
   &-header {
     position: relative;
     padding: 96px 23px 32px;
@@ -92,7 +94,7 @@
     padding: 0 16px;
     position: absolute;
     top: 16px;
-    left: calc((100% - 1200px - 16px) / 2);
+    left: 8px;
 
     svg {
       color: $primary
