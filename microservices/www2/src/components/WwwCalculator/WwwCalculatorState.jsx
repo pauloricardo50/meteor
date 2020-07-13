@@ -12,11 +12,11 @@ import {
 import { setAutoValues, setFieldAt } from './wwwCalculatorSuggestion';
 
 export const initialState = {
-  [SALARY]: { sliderMax: 500000, auto: true },
-  [FORTUNE]: { sliderMax: 500000, auto: true },
-  [PROPERTY]: { sliderMax: 2000000, auto: true },
-  [CURRENT_LOAN]: { sliderMax: 2000000, auto: true },
-  [WANTED_LOAN]: { sliderMax: 2000000, auto: true },
+  [SALARY]: { sliderMax: 500000, isAuto: true },
+  [FORTUNE]: { sliderMax: 500000, isAuto: true },
+  [PROPERTY]: { sliderMax: 2000000, isAuto: true },
+  [CURRENT_LOAN]: { sliderMax: 2000000, isAuto: true },
+  [WANTED_LOAN]: { sliderMax: 2000000, isAuto: true },
   purchaseType: PURCHASE_TYPE.ACQUISITION,
   includeMaintenance: true,
 };
@@ -28,7 +28,7 @@ export const wwwCalculatorReducer = (state, { type, payload }) => {
     }
     case ACTIONS.SET_VALUE: {
       const { at, ...rest } = payload;
-      const nextState = setFieldAt(state, at, { auto: false, ...rest });
+      const nextState = setFieldAt(state, at, { isAuto: false, ...rest });
 
       return setAutoValues(nextState);
     }

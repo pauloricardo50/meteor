@@ -143,42 +143,6 @@ const defaultTheme = fontSize => ({
             },
           },
         },
-        MuiListSubheader: {
-          root: {
-            lineHeight: '2em',
-            color: colors.title,
-          },
-        },
-        MuiDivider: {
-          root: {
-            width: 'calc(100% - 8px)',
-            margin: '0 auto',
-          },
-        },
-        MuiIconButton: {
-          root: {
-            border: `solid 1px ${colors.borderGreyLight}`,
-          },
-        },
-        MuiSwitch: {
-          switchBase: {
-            border: 'none',
-          },
-          colorPrimary: {
-            color: 'white',
-            '&$checked': {
-              color: 'white',
-            },
-            '&$checked + $track': {
-              backgroundImage: colors.primaryGradient,
-            },
-          },
-        },
-        MuiRadio: {
-          root: {
-            border: 'none',
-          },
-        },
       },
     },
     MuiListSubheader: {
@@ -196,6 +160,20 @@ const defaultTheme = fontSize => ({
     MuiIconButton: {
       root: {
         border: `solid 1px ${colors.borderGreyLight}`,
+      },
+    },
+    MuiSwitch: {
+      switchBase: {
+        border: 'none',
+      },
+      colorPrimary: {
+        color: 'white',
+        '&$checked': {
+          color: 'white',
+        },
+        '&$checked + $track': {
+          backgroundImage: colors.primaryGradient,
+        },
       },
     },
     MuiRadio: {

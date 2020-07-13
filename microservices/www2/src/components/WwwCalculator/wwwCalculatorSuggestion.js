@@ -88,7 +88,7 @@ export const setAutoValues = state => {
       ? ACQUISITION_FIELDS
       : REFINANCING_FIELDS;
 
-  const autoFields = fields.filter(field => state[field]?.auto);
+  const autoFields = fields.filter(field => state[field]?.isAuto);
 
   if (autoFields.length === 0) {
     return state;
@@ -98,7 +98,7 @@ export const setAutoValues = state => {
     state.purchaseType === PURCHASE_TYPE.ACQUISITION
       ? acquisitionSuggesters
       : refinancingSuggesters;
-  const nonAutoFields = fields.filter(field => !state[field]?.auto);
+  const nonAutoFields = fields.filter(field => !state[field]?.isAuto);
   const values = fields.reduce(
     (obj, field) => ({ ...obj, [field]: state[field].value }),
     {},
@@ -112,5 +112,6 @@ export const setAutoValues = state => {
     return setFieldAt(s, field, { value: autoValue });
   }, state);
 
+  console.log('nextState:', nextState);
   return nextState;
 };

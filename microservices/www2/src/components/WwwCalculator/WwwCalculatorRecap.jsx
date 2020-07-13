@@ -12,20 +12,23 @@ const getAcquisitionArray = ({ fortune, property }) => {
   const loanValue = getLoanValue(property.value, fortune.value);
 
   return [
-    { label: 'Recap.project', title: true },
-    { label: 'Recap.purchasePrice', value: property.value },
-    { label: 'general.notaryFees', value: property.value * NOTARY_FEES },
+    { label: 'WwwCalculatorRecap.project', title: true },
+    { label: 'WwwCalculatorFormField.property', value: property.value },
     {
-      label: 'Recap.totalCost',
+      label: 'WwwCalculatorRecap.notaryFees',
+      value: property.value * NOTARY_FEES,
+    },
+    {
+      label: 'WwwCalculatorRecap.totalCost',
       value: property.value * (1 + NOTARY_FEES),
       spacing: true,
       bold: true,
     },
-    { label: 'Recap.financing', title: true },
-    { label: 'general.ownFunds', value: fortune.value },
-    { label: 'general.mortgageLoan', value: loanValue },
+    { label: 'WwwCalculatorRecap.financing', title: true },
+    { label: 'WwwCalculatorRecap.ownFunds', value: fortune.value },
+    { label: 'WwwCalculatorRecap.mortgageLoan', value: loanValue },
     {
-      label: 'Recap.totalFinancing',
+      label: 'WwwCalculatorRecap.totalFinancing',
       value: loanValue + fortune.value,
       bold: true,
     },
@@ -37,23 +40,26 @@ const getRefinancingArray = ({ property, salary, currentLoan, wantedLoan }) => {
   const maxPossibleLoan = getMaxPossibleLoan(property.value, salary.value);
 
   return [
-    { label: 'Recap.maxPossibleLoan', value: maxPossibleLoan },
-    { label: 'Recap.project', title: true },
-    { label: 'Recap.propertyValue', value: property.value },
-    { label: 'Widget1SingleInput.currentLoan', value: currentLoan.value },
+    { label: 'WwwCalculatorRecap.maxPossibleLoan', value: maxPossibleLoan },
+    { label: 'WwwCalculatorRecap.project', title: true },
+    { label: 'WwwCalculatorFormField.property', value: property.value },
+    { label: 'WwwCalculatorFormField.currentLoan', value: currentLoan.value },
     { space: true },
     {
-      label: loanChange > 0 ? 'Recap.loanIncrease' : 'Recap.loanReduction',
+      label:
+        loanChange > 0
+          ? 'WwwCalculatorRecap.loanIncrease'
+          : 'WwwCalculatorRecap.loanReduction',
       value: loanChange,
     },
   ];
 };
 
-const cleanUpArray = (array, showValues) =>
+const cleanUpArray = (array, showValues, intlValues) =>
   array.map(item => ({
     ...item,
     value: showValues ? toMoney(item.value) : '-',
-    label: <T id={item.label} />,
+    label: <T id={item.label} values={intlValues} />,
   }));
 
 const getArray = state => {
@@ -67,7 +73,7 @@ const getArray = state => {
     ? getAcquisitionArray
     : getRefinancingArray)(state);
 
-  return cleanUpArray(array, showValues);
+  return cleanUpArray(array, showValues, { purchaseType });
 };
 
 const WwwCalculatorRecap = () => {

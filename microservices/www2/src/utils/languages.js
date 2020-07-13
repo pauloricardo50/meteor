@@ -123,6 +123,16 @@ const languageData = {
     submit: 'Envoyer',
     more: 'Afficher plus',
     less: 'Afficher moins',
+    'WwwCalculatorRecap.project': 'Projet',
+    'WwwCalculatorRecap.notaryFees': 'Frais de notaire',
+    'WwwCalculatorRecap.financing': 'Financement',
+    'WwwCalculatorRecap.ownFunds': 'Fonds propres',
+    'WwwCalculatorRecap.mortgageLoan': 'Prêt hypothécaire',
+    'WwwCalculatorRecap.totalFinancing': 'Financement total',
+    'WwwCalculatorRecap.totalCost': 'Coût total du projet',
+    'WwwCalculatorRecap.maxPossibleLoan': 'Hypothèque max. possible',
+    'WwwCalculatorRecap.loanIncrease': 'Augmentation du prêt',
+    'WwwCalculatorRecap.loanReduction': 'Réduction du prêt',
   },
 };
 

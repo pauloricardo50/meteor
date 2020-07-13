@@ -20,11 +20,11 @@ const WwwCalculator = () => {
       );
       if (response?.rates) {
         dispatch({
-          type: ACTIONS.SET_VALUE,
+          type: ACTIONS.SET,
           payload: { interestRates: response.rates },
         });
         dispatch({
-          type: ACTIONS.SET_VALUE,
+          type: ACTIONS.SET,
           payload: {
             interestRate: response.rates.find(
               ({ type }) => type === 'interest10',

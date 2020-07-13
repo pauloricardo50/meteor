@@ -39,8 +39,7 @@ const WwwCalculatorFormFieldContainer = ({ field }) => {
 
   return (
     <WwwCalculatorFormField
-      value={isAuto ? animatedValue : value}
-      animatedValue={animatedValue.value}
+      value={isAuto ? animatedValue.value : value}
       handleChange={handleChange}
       sliderMax={sliderMax}
       purchaseType={purchaseType}
@@ -50,7 +49,7 @@ const WwwCalculatorFormFieldContainer = ({ field }) => {
 };
 
 const WwwCalculatorFormField = animated(
-  ({ value, animatedValue, handleChange, field, purchaseType, sliderMax }) => {
+  ({ value, handleChange, field, purchaseType, sliderMax }) => {
     const rounded = Math.round(value);
 
     return (
@@ -103,8 +102,6 @@ const WwwCalculatorFormField = animated(
             <div style={{ width: 28.25, height: 28.25, flexShrink: 0 }} />
           )}
         </div>
-
-        <div>{animatedValue}</div>
       </div>
     );
   },
