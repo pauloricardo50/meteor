@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
 
-    @media screen and (max-width: $med){
+    @media screen and (max-width: $med) {
       flex-direction: column;
     }
   }
@@ -15,7 +15,6 @@
   &-bottom {
     margin-bottom: 16px;
   }
-
 
   &-menu {
     display: grid;
@@ -34,7 +33,7 @@
       }
     }
 
-    &-item { 
+    &-item {
       color: black !important;
       text-decoration: none !important;
 
@@ -43,7 +42,6 @@
         color: $primary !important;
       }
     }
-    
   }
 
   &-notices {
@@ -64,7 +62,9 @@
       text-decoration: underline !important;
     }
 
-    p, h5, h6 {
+    p,
+    h5,
+    h6 {
       margin: 0;
     }
 
@@ -73,142 +73,141 @@
       color: rgba(0, 0, 0, 0.5);
       font-size: 14px;
 
-      @media screen and (max-width: $small){
+      @media screen and (max-width: $small) {
         font-size: 10px;
       }
     }
   }
 
-    &-contact {
-      flex-basis: 50%;
-      margin-left: 16px;
+  &-contact {
+    flex-basis: 50%;
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: $med) {
+      margin-left: 0;
+    }
+
+    &-links {
+      margin-top: 8px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
 
-      @media screen and (max-width: $med){
-        margin-left: 0;
-      }
-
-      &-links {
-        margin-top: 8px;
-        display:flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-
-        .social-links {
-          svg {
-            margin: 0;
-            margin-right: 8px;
-          }
-        }
-      }
-
-      &-email {
-        // Mobile/Title/H4
-        display:flex;
-        align-items:center;
-        font-size: 16px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.4;
-        letter-spacing: normal;
-        color: $body-text;
-
-        &-icon {
-          color: $primary;
-          margin-right: 4px;
-          svg {
-            width: 16px;
-            height: 16px;
-          }
-        }
-      }
-
-      &-locations {
-        display: flex;
-        flex-direction: row;
-        margin-top: 8px;
-        font-size: 14px;
-        font-weight: 300;
-        font-style: normal;
-        line-height: 1.5;
-        letter-spacing: normal;
-        color: #000000;
-
-        @media screen and (max-width: $large){
-          flex-direction: column;
-        }
-
-        @media screen and (max-width: $med){
-          flex-direction: row;
-        }
-
-        @media screen and (max-width: $small){
-          flex-direction: column;
-        }
-      }
-
-      &-location {
-        &:hover {
-          .footer-contact-location-city {
-            text-decoration: underline;
-            color: $primary;
-          }
-        }
-
-        &:first-child{
+      .social-links {
+        svg {
+          margin: 0;
           margin-right: 8px;
-
-          @media screen and (max-width:$large){
-            margin-right: 0;
-          }
-
-          @media screen and (max-width: $med){
-            margin-right: 8px;
-          }
-  
-          @media screen and (max-width: $small){
-            margin-right: 0;
-          }
         }
+      }
+    }
 
-        margin-bottom: 4px;
-        flex-grow: 0;
-        flex-basis: 50%;
+    &-email {
+      // Mobile/Title/H4
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: $body-text;
 
-        a {
-          text-decoration: none !important;
-          color: black !important;
+      &-icon {
+        color: $primary;
+        margin-right: 4px;
+        svg {
+          width: 16px;
+          height: 16px;
         }
+      }
+    }
 
-        &-phone:hover{
-          text-decoration: underline !important;
-          color: $primary !important;
-        }
+    &-locations {
+      display: flex;
+      flex-direction: row;
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #000000;
 
+      @media screen and (max-width: $large) {
+        flex-direction: column;
+      }
 
-        &-city {
-          display: flex;
-          justify-content: space-between;
-        }
-  
-        &-map-icon {
+      @media screen and (max-width: $med) {
+        flex-direction: row;
+      }
+
+      @media screen and (max-width: $small) {
+        flex-direction: column;
+      }
+    }
+
+    &-location {
+      &:hover {
+        .footer-contact-location-city {
+          text-decoration: underline;
           color: $primary;
-          svg {
-            width: 20px;
-            height: 20px;
-          }
         }
       }
 
+      &:first-child {
+        margin-right: 8px;
+
+        @media screen and (max-width: $large) {
+          margin-right: 0;
+        }
+
+        @media screen and (max-width: $med) {
+          margin-right: 8px;
+        }
+
+        @media screen and (max-width: $small) {
+          margin-right: 0;
+        }
+      }
+
+      margin-bottom: 4px;
+      flex-grow: 0;
+      flex-basis: 50%;
+
+      a {
+        text-decoration: none !important;
+        color: black !important;
+      }
+
+      &-phone:hover {
+        text-decoration: underline !important;
+        color: $primary !important;
+      }
+
+      &-city {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &-map-icon {
+        color: $primary;
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
   }
 
   .language-picker {
     align-self: flex-end;
     margin-top: 8px;
   }
-      
 }
 
-
+.footer-fill {
+  flex-grow: 1;
+}

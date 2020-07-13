@@ -13,17 +13,20 @@ const Footer = () => {
   const [language] = useContext(LanguageContext);
 
   return (
-    <footer className="footer container">
-      <div className="footer-top">
-        <FooterMenu />
-        <FooterContact language={language} />
-      </div>
+    <>
+      <div className="footer-fill" />
+      <footer className="footer container">
+        <div className="footer-top">
+          <FooterMenu />
+          <FooterContact language={language} />
+        </div>
 
-      <div className="footer-bottom">
-        <FooterNotices language={language} />
-        {/* <LanguagePicker /> */}
-      </div>
-    </footer>
+        <div className="footer-bottom">
+          <FooterNotices language={language} />
+          {/* <LanguagePicker /> */}
+        </div>
+      </footer>
+    </>
   );
 };
 
