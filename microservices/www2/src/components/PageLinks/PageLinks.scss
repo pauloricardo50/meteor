@@ -12,21 +12,9 @@
     &[aria-current='page'],
     &:hover {
       opacity: 1;
-      border-color: $primary;
       transition: all 0.3s;
     }
 
-    + a {
-      margin-left: 16px;
-    }
   }
 
-  @media screen and (min-width: $med) {
-    a {
-
-      + a {
-        margin-left: 50px;
-      }
-    }
-  }
 }

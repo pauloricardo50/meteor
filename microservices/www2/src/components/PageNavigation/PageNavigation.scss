@@ -14,18 +14,14 @@
     letter-spacing: 0.74px;
     color: $body-text;
     transition: all 0.3s;
-    text-align: right;
+    text-align: left;
 
     &.active,
     &:hover {
       opacity: 1;
-      border-color: $primary;
       transition: all 0.3s;
     }
 
-    + a {
-      margin-left: 16px;
-    }
   }
 
   @media screen and (min-width: $med) {
@@ -36,10 +32,6 @@
       font-style: normal;
       line-height: 1.44;
       letter-spacing: 0.85px;
-
-      + a {
-        margin-left: 50px;
-      }
     }
   }
 }

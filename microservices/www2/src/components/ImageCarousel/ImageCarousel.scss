@@ -24,6 +24,7 @@
     counter-reset: curr-index;
 
     li {
+      position: relative;
       counter-increment: curr-index;
       // Mobile/Plain/L/Light
       opacity: 0.3;
@@ -36,13 +37,6 @@
       cursor: pointer;
       transition: opacity 200ms $bezier, transform 200ms $bezier;
 
-      &::before {
-        content: counter(curr-index);
-        margin-right: 8px;
-        // Desktop/Plain/S
-        font-size: 12px;
-      }
-
       &:hover {
         opacity: 0.5 !important;
         transform: scale(1.02);
@@ -51,6 +45,16 @@
       &.active {
         opacity: 1;
         color: $primary;
+      }
+
+      &::before {
+        font-size: unset !important;
+        margin-right: 8px;
+        content: '';
+      }
+
+      &.active::before {
+        border-left: 2px solid $primary;
       }
     }
   }
