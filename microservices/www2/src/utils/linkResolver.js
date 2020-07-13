@@ -4,7 +4,7 @@
 export const linkResolver = doc => {
   const { lang, type, uid } = doc;
 
-  const shortLang = { 'fr-ch': 'fr', 'en-us': 'en' }[lang];
+  const shortLang = { 'fr-ch': 'fr' }[lang];
   const resolvedLink = {
     post: `/${shortLang}/blog/${uid}`,
     page: `/${shortLang}/${uid}`,
