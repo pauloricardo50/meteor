@@ -181,7 +181,7 @@ export const getSimpleYearlyMaintenance = (
 ) => maintenanceRate * propertyValue;
 
 export const getIncomeRatio = (yearlySalary, yearlyCost) =>
-  yearlyCost / yearlySalary;
+  yearlySalary ? yearlyCost / yearlySalary : 0;
 
 export const validateBorrowRatio = borrowRatio => {
   const maxRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY;
@@ -210,7 +210,7 @@ export const validateIncomeRatio = incomeRatio => {
 };
 
 export const getRefinancingBorrowRatio = (propertyValue, loan) =>
-  loan / propertyValue;
+  propertyValue ? loan / propertyValue : 0;
 
 export const getYearlyCost = state => {
   const {

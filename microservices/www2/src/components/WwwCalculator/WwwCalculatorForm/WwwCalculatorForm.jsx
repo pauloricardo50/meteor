@@ -17,8 +17,35 @@ import {
 import { useWwwCalculator } from '../WwwCalculatorState';
 import WwwCalculatorFormField from './WwwCalculatorFormField';
 
+const hasError = (purchaseType, field, statusMessageId) => {
+  if (!statusMessageId) {
+    return false;
+  }
+
+  if (statusMessageId?.includes('income') && field === SALARY) {
+    return true;
+  }
+  if (
+    purchaseType === PURCHASE_TYPE.ACQUISITION &&
+    statusMessageId.includes('borrow') &&
+    field === FORTUNE
+  ) {
+    return true;
+  }
+  if (
+    purchaseType === PURCHASE_TYPE.REFINANCING &&
+    statusMessageId.includes('borrow') &&
+    field === WANTED_LOAN
+  ) {
+    return true;
+  }
+};
+
 const WwwCalculatorForm = () => {
-  const [{ purchaseType, ...state }, dispatch] = useWwwCalculator();
+  const [
+    { purchaseType, statusMessageId, ...state },
+    dispatch,
+  ] = useWwwCalculator();
   const fields =
     purchaseType === PURCHASE_TYPE.ACQUISITION
       ? ACQUISITION_FIELDS
@@ -28,7 +55,11 @@ const WwwCalculatorForm = () => {
     <div className="www-calculator-form">
       <div className="www-calculator-form-fields">
         {fields.map(field => (
-          <WwwCalculatorFormField key={field} field={field} />
+          <WwwCalculatorFormField
+            key={field}
+            field={field}
+            error={hasError(purchaseType, field, statusMessageId)}
+          />
         ))}
       </div>
 

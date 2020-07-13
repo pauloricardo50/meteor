@@ -11,10 +11,15 @@ const WwwCalculatorFinma = () => {
   const {
     purchaseType,
     borrowRatio,
-    borrowRatioStatus: { status: incomeStatus },
+    borrowRatioStatus: { status: borrowStatus },
     incomeRatio,
-    incomeRatioStatus: { status: borrowStatus },
+    incomeRatioStatus: { status: incomeStatus },
+    hideFinma,
   } = state;
+
+  if (hideFinma) {
+    return null;
+  }
 
   const finmaArray = [
     { label: <T id="WwwCalculatorFinma.title" />, title: true },
@@ -30,7 +35,7 @@ const WwwCalculatorFinma = () => {
 
   return (
     <>
-      <div className="flex-col center-align">
+      <div className="flex-col center-align animated fadeIn">
         <Recap2 array={finmaArray} />
       </div>
     </>

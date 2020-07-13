@@ -1,75 +1,47 @@
 import React from 'react';
 
-import { ERROR, SUCCESS, WARNING } from 'core/api/constants';
+import { SUCCESS } from 'core/api/constants';
 import StatusIcon from 'core/components/StatusIcon';
 import T from 'core/components/Translation/FormattedMessage';
 
+import Button from '../Button';
 import { useWwwCalculator } from './WwwCalculatorState';
-
-const STATUSES = [SUCCESS, WARNING, ERROR];
-
-const getBorrowError = status =>
-  status === ERROR
-    ? 'WwwCalculatorStatus.borrowError'
-    : 'WwwCalculatorStatus.borrowWarning';
-const getIncomeError = status =>
-  status === ERROR
-    ? 'WwwCalculatorStatus.incomeError'
-    : 'WwwCalculatorStatus.incomeWarning';
-
-const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
-  if (worstStatus === SUCCESS) {
-    return 'WwwCalculatorStatus.success';
-  }
-  if (index === 0) {
-    return getBorrowError(borrowStatus);
-  }
-  return getIncomeError(incomeStatus);
-};
-
-// Get the worst of the 2 statuses, if one is error and the other warning
-// It should return error.
-// Spread the array because reverse() changes the array in place
-const getWorstStatus = (values, orderedValues) => {
-  const match = [...orderedValues]
-    .reverse()
-    .find(value => values.indexOf(value) >= 0);
-  return { match, index: values.indexOf(match) };
-};
-
-const hideFinmaValues = (borrowRatio, incomeRatio) =>
-  !(borrowRatio && incomeRatio) ||
-  Math.abs(borrowRatio) === Infinity ||
-  Math.abs(incomeRatio) === Infinity;
 
 const WwwCalculatorStatus = () => {
   const [
-    {
-      borrowRatio,
-      borrowRatioStatus: { status: incomeStatus },
-      incomeRatio,
-      incomeRatioStatus: { status: borrowStatus },
-    },
+    { statusMessageId, worstStatus, hideFinma, purchaseType },
   ] = useWwwCalculator();
 
-  if (hideFinmaValues(borrowRatio, incomeRatio)) {
+  if (hideFinma) {
     return null;
   }
 
-  const statuses = [borrowStatus, incomeStatus];
-  const { match: worstStatus, index } = getWorstStatus(statuses, STATUSES);
-  const messageId = getMessage(worstStatus, index, borrowStatus, incomeStatus);
-
   return (
     <>
-      <hr />
-      <div className="www-calculator-status animated fadeIn" key={messageId}>
-        <StatusIcon status={worstStatus} className="icon" />
-        <p className="message">
-          <T id={messageId} />
-        </p>
+      <hr className="mb-16" />
+      <div
+        className="www-calculator-status animated fadeIn"
+        key={statusMessageId}
+      >
+        <div className="flex center-align mb-16">
+          <StatusIcon status={worstStatus} className="icon mr-8" />
+          <p className="message">
+            <T id={statusMessageId} />
+          </p>
+        </div>
+
+        <Button
+          raised
+          primary={worstStatus !== SUCCESS}
+          secondary={worstStatus === SUCCESS}
+          size="large"
+          Component="a"
+          href={`${process.env.EPOTEK_APP}?purchaseType=${purchaseType}`}
+        >
+          <T id="getALoanText" />
+        </Button>
       </div>
-      <hr />
+      <hr className="mt-16" />
     </>
   );
 };

@@ -21,7 +21,7 @@ const textMask = createNumberMask({
 
 const normalizeValue = value => value || 0;
 
-const WwwCalculatorFormFieldContainer = ({ field }) => {
+const WwwCalculatorFormFieldContainer = ({ field, error }) => {
   const [{ purchaseType, ...state }, dispatch] = useWwwCalculator();
   const { value = 0, sliderMax, isAuto } = state[field];
   const normalizedValue = normalizeValue(value);
@@ -50,6 +50,7 @@ const WwwCalculatorFormFieldContainer = ({ field }) => {
           payload: { at: field, sliderMax: Math.min(sliderMax * 2, 1e8) },
         })
       }
+      error={error}
     />
   );
 };
@@ -62,6 +63,7 @@ const WwwCalculatorFormField = animated(
     purchaseType,
     sliderMax,
     increaseSliderMax,
+    error,
   }) => {
     const rounded = Math.round(value);
     const ref = useRef(null);
@@ -108,6 +110,7 @@ const WwwCalculatorFormField = animated(
               values={{ purchaseType }}
             />
           }
+          error={error}
         />
 
         <div className="flex nowrap pl-8 ">

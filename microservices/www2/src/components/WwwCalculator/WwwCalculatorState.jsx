@@ -1,5 +1,7 @@
 import React, { useContext, useReducer } from 'react';
 
+import { ERROR, SUCCESS, WARNING } from 'core/api/constants';
+
 import {
   ACTIONS,
   CURRENT_LOAN,
@@ -52,6 +54,42 @@ export const wwwCalculatorReducer = (state, { type, payload }) => {
 
 const WwwCalculatorContext = React.createContext();
 
+const STATUSES = [SUCCESS, WARNING, ERROR];
+
+const getBorrowError = status =>
+  status === ERROR
+    ? 'WwwCalculatorStatus.borrowError'
+    : 'WwwCalculatorStatus.borrowWarning';
+const getIncomeError = status =>
+  status === ERROR
+    ? 'WwwCalculatorStatus.incomeError'
+    : 'WwwCalculatorStatus.incomeWarning';
+
+const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
+  if (worstStatus === SUCCESS) {
+    return 'WwwCalculatorStatus.success';
+  }
+  if (index === 0) {
+    return getBorrowError(borrowStatus);
+  }
+  return getIncomeError(incomeStatus);
+};
+
+// Get the worst of the 2 statuses, if one is error and the other warning
+// It should return error.
+// Spread the array because reverse() changes the array in place
+const getWorstStatus = (values, orderedValues) => {
+  const match = [...orderedValues]
+    .reverse()
+    .find(value => values.indexOf(value) >= 0);
+  return { match, index: values.indexOf(match) };
+};
+
+const hideFinmaValues = (borrowRatio, incomeRatio) =>
+  !(borrowRatio && incomeRatio) ||
+  Math.abs(borrowRatio) === Infinity ||
+  Math.abs(incomeRatio) === Infinity;
+
 export const WwwCalculatorProvider = ({ children }) => {
   const [state, dispatch] = useReducer(wwwCalculatorReducer, initialState);
   const { purchaseType, property, fortune, wantedLoan, salary } = state;
@@ -66,6 +104,16 @@ export const WwwCalculatorProvider = ({ children }) => {
   );
   const borrowRatioStatus = validateBorrowRatio(borrowRatio);
   const incomeRatioStatus = validateIncomeRatio(incomeRatio);
+  const statuses = [borrowRatioStatus.status, incomeRatioStatus.status];
+  const { match: worstStatus, index } = getWorstStatus(statuses, STATUSES);
+  const statusMessageId = getMessage(
+    worstStatus,
+    index,
+    borrowRatioStatus.status,
+    incomeRatioStatus.status,
+  );
+  const hideFinma = hideFinmaValues(borrowRatio, incomeRatio);
+
   return (
     <WwwCalculatorContext.Provider
       value={[
@@ -76,6 +124,9 @@ export const WwwCalculatorProvider = ({ children }) => {
           incomeRatio,
           borrowRatioStatus,
           incomeRatioStatus,
+          statusMessageId: !hideFinma && statusMessageId,
+          worstStatus,
+          hideFinma,
         },
         dispatch,
       ]}
