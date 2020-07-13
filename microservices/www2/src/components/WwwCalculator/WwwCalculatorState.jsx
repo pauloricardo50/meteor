@@ -56,21 +56,27 @@ const WwwCalculatorContext = React.createContext();
 
 const STATUSES = [SUCCESS, WARNING, ERROR];
 
-const getBorrowError = status =>
+const getBorrowError = (status, purchaseType) =>
   status === ERROR
-    ? 'WwwCalculatorStatus.borrowError'
-    : 'WwwCalculatorStatus.borrowWarning';
+    ? `WwwCalculatorStatus.borrowError.${purchaseType}`
+    : `WwwCalculatorStatus.borrowWarning.${purchaseType}`;
 const getIncomeError = status =>
   status === ERROR
     ? 'WwwCalculatorStatus.incomeError'
     : 'WwwCalculatorStatus.incomeWarning';
 
-const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
+const getMessage = ({
+  worstStatus,
+  index,
+  borrowStatus,
+  incomeStatus,
+  purchaseType,
+}) => {
   if (worstStatus === SUCCESS) {
     return 'WwwCalculatorStatus.success';
   }
   if (index === 0) {
-    return getBorrowError(borrowStatus);
+    return getBorrowError(borrowStatus, purchaseType);
   }
   return getIncomeError(incomeStatus);
 };
@@ -90,7 +96,7 @@ const hideFinmaValues = (borrowRatio, incomeRatio) =>
   Math.abs(borrowRatio) === Infinity ||
   Math.abs(incomeRatio) === Infinity;
 
-export const WwwCalculatorProvider = ({ children }) => {
+const useCalculatorState = () => {
   const [state, dispatch] = useReducer(wwwCalculatorReducer, initialState);
   const { purchaseType, property, fortune, wantedLoan, salary } = state;
   const yearlyCost = getYearlyCost(state);
@@ -106,34 +112,35 @@ export const WwwCalculatorProvider = ({ children }) => {
   const incomeRatioStatus = validateIncomeRatio(incomeRatio);
   const statuses = [borrowRatioStatus.status, incomeRatioStatus.status];
   const { match: worstStatus, index } = getWorstStatus(statuses, STATUSES);
-  const statusMessageId = getMessage(
+  const statusMessageId = getMessage({
     worstStatus,
     index,
-    borrowRatioStatus.status,
-    incomeRatioStatus.status,
-  );
+    borrowStatus: borrowRatioStatus.status,
+    incomeStatus: incomeRatioStatus.status,
+    purchaseType,
+  });
   const hideFinma = hideFinmaValues(borrowRatio, incomeRatio);
 
-  return (
-    <WwwCalculatorContext.Provider
-      value={[
-        {
-          ...state,
-          ...yearlyCost,
-          borrowRatio,
-          incomeRatio,
-          borrowRatioStatus,
-          incomeRatioStatus,
-          statusMessageId: !hideFinma && statusMessageId,
-          worstStatus,
-          hideFinma,
-        },
-        dispatch,
-      ]}
-    >
-      {children}
-    </WwwCalculatorContext.Provider>
-  );
+  return [
+    {
+      ...state,
+      ...yearlyCost,
+      borrowRatio,
+      incomeRatio,
+      borrowRatioStatus,
+      incomeRatioStatus,
+      statusMessageId: !hideFinma && statusMessageId,
+      worstStatus,
+      hideFinma,
+    },
+    dispatch,
+  ];
 };
+
+export const WwwCalculatorProvider = ({ children }) => (
+  <WwwCalculatorContext.Provider value={useCalculatorState()}>
+    {children}
+  </WwwCalculatorContext.Provider>
+);
 
 export const useWwwCalculator = () => useContext(WwwCalculatorContext);
