@@ -22,10 +22,11 @@
     margin-left: 0;
     padding-left: 0;
     counter-reset: curr-index;
+    display: table;
 
     li {
-      position: relative;
       counter-increment: curr-index;
+      display: table-row;
       // Mobile/Plain/L/Light
       opacity: 0.3;
       font-size: 16px;
@@ -48,14 +49,19 @@
       }
 
       &::before {
-        font-size: unset !important;
-        margin-right: 8px;
-        content: '';
+        padding-right: 8px;
+        display: table-cell;
+        content: counter(curr-index);
+
+        @media screen and (max-width: $med){
+          font-size: 12px;
+          vertical-align: top;
+        } 
       }
 
-      &.active::before {
-        border-left: 2px solid $primary;
-      }
+      // &.active::before {
+      //   border-left: 2px solid $primary;
+      // }
     }
   }
 
