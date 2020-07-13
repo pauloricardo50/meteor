@@ -1,7 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 
-import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 
@@ -297,29 +296,28 @@ export const query = graphql`
               }
             }
           }
+          ... on PRISMIC_PageBodyCustom_component {
+            type
+            primary {
+              component_name
+            }
+          }
         }
       }
     }
   }
 `;
 
-const Page = ({
-  data,
-  lang,
-  location,
-  pageContext: { rootQuery, ...pageContext },
-}) => {
+const Page = ({ data, lang }) => {
   const { page } = data.prismic;
 
   // handle unknown pages that don't get redirected to 404
   if (!page) return <NotFound pageType="page" pageLang={lang} />;
 
   return (
-    <Layout location={location} pageContext={pageContext} pageName={page.name}>
-      <div className="page" data-wio-id={page._meta.id}>
-        {page.body && <PageSections sections={page.body} />}
-      </div>
-    </Layout>
+    <div className="page" data-wio-id={page._meta.id}>
+      {page.body && <PageSections sections={page.body} />}
+    </div>
   );
 };
 

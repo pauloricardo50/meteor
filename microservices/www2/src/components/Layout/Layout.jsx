@@ -15,11 +15,10 @@ import {
 import { linkResolver } from '../../utils/linkResolver';
 import CookiesNotification from '../CookiesNotification';
 import Footer from '../Footer';
-import { RichText } from '../prismic';
 import TopNav from '../TopNav';
 
-const Layout = ({ children, location, pageContext, pageName }) => {
-  const data = useStaticQuery(graphql`
+const Layout = ({ children, location, pageContext, data }) => {
+  const siteData = useStaticQuery(graphql`
     query SiteQuery {
       site {
         siteMetadata {
@@ -32,9 +31,9 @@ const Layout = ({ children, location, pageContext, pageName }) => {
 
   useIntercom();
 
-  const { title, description } = data.site.siteMetadata;
-  const pageTitle =
-    typeof pageName === 'object' ? RichText.asText(pageName) : pageName;
+  const { title, description } = siteData.site.siteMetadata;
+  const pageTitle = data?.prismic?.page?.name?.[0]?.text;
+
   // const pageLang = getShortLang(pageContext.lang);
   const pageLang = getShortLang('fr-ch');
   const pageType = pageContext.type;
@@ -59,7 +58,11 @@ const Layout = ({ children, location, pageContext, pageName }) => {
   }, [language]);
 
   // Load the Prismic edit button
-  if (typeof window !== 'undefined' && window.prismic) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    typeof window !== 'undefined' &&
+    window.prismic
+  ) {
     window.prismic.setupEditButton();
   }
 
@@ -68,7 +71,7 @@ const Layout = ({ children, location, pageContext, pageName }) => {
       <LanguageContext.Provider value={[language, setLanguage]}>
         <Helmet>
           <html lang={pageLang} />
-          <title>{`${title} | ${pageTitle}`}</title>
+          <title>{`${title}${pageTitle ? ` | ${pageTitle}` : ''}`}</title>
           <meta name="description" content={description} />
           <meta name="og:title" content={pageTitle} />
           <meta name="og:description" content={description} />

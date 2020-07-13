@@ -1,0 +1,23 @@
+.recap2 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 400px;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 200ms $bezier;
+
+    p {
+      margin: 0;
+    }
+
+    &:hover {
+      transform: scale(1.03);
+      color: black;
+    }
+  }
+}

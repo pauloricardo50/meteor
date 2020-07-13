@@ -38,6 +38,29 @@ const languageData = {
     },
     'cityMarker.title': 'Région de {city}',
     'cityMarker.count': '{count} dossiers en cours ou terminés',
+    'WwwCalculatorPurchaseType.ACQUISITION': 'Acquisition',
+    'WwwCalculatorPurchaseType.REFINANCING': 'Renouvellement',
+    'WwwCalculatorFormField.salary': 'Revenus annuels bruts',
+    'WwwCalculatorFormField.fortune': 'Fonds propres',
+    'WwwCalculatorFormField.property':
+      "{purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
+    'WwwCalculatorFormField.currentLoan': 'Prêt existant',
+    'WwwCalculatorFormField.wantedLoan': 'Nouveau prêt',
+    'WwwCalculatorFormField.increaseSliderMax': 'Agrandir le slider',
+    'WwwCalculatorRecap.title': 'Plan financier',
+    'WwwCalculatorChart.amortization': 'Amortissement',
+    'WwwCalculatorChart.interests': 'Intérêts',
+    'WwwCalculatorChart.maintenance': 'Entretien',
+    'WwwCalculatorChart.title': 'CHF {total} /mois',
+    'WwwCalculatorChartForm.interests': "Taux d'intérêt indicatif",
+    'WwwCalculatorChartForm.interestLibor': 'Taux Libor',
+    'WwwCalculatorChartForm.interest5': 'Taux 5 ans',
+    'WwwCalculatorChartForm.interest10': 'Taux 10 ans',
+    'WwwCalculatorChartForm.interest15': 'Taux 15 ans',
+    'WwwCalculatorChartForm.interest20': 'Taux 20 ans',
+    'WwwCalculatorChartForm.interest25': 'Taux 25 ans',
+    'WwwCalculatorChartForm.includeMaintenance':
+      "Inclure frais d'entretien (estimation)",
     'canton.AG': 'Aargau',
     'canton.AR': 'Appenzell Ausserrhoden',
     'canton.AI': 'Appenzell Innerrhoden',
@@ -74,10 +97,36 @@ const languageData = {
     submit: 'Envoyer',
     more: 'Afficher plus',
     less: 'Afficher moins',
+    'WwwCalculatorRecap.project': 'Projet',
+    'WwwCalculatorRecap.notaryFees': 'Frais de notaire',
+    'WwwCalculatorRecap.financing': 'Financement',
+    'WwwCalculatorRecap.ownFunds': 'Fonds propres',
+    'WwwCalculatorRecap.mortgageLoan': 'Prêt hypothécaire',
+    'WwwCalculatorRecap.totalFinancing': 'Financement total',
+    'WwwCalculatorRecap.totalCost': 'Coût total du projet',
+    'WwwCalculatorRecap.maxPossibleLoan': 'Hypothèque max. possible',
+    'WwwCalculatorRecap.loanIncrease': 'Augmentation du prêt',
+    'WwwCalculatorRecap.loanReduction': 'Réduction du prêt',
+    'WwwCalculatorFinma.title': 'Règles FINMA',
+    'WwwCalculatorRecap.borrowRule':
+      "Prêt / {purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
+    'WwwCalculatorRecap.incomeRule': 'Charges / Revenus',
+    'WwwCalculatorStatus.borrowError':
+      'Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en',
+    'WwwCalculatorStatus.borrowWarning':
+      'Les fonds propres ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
+    'WwwCalculatorStatus.empty':
+      'Entrez des valeurs dans les champs au dessus !',
+    'WwwCalculatorStatus.incomeError':
+      'Les revenus ne suffisent pas pour votre projet. Continuez et parlons-en.',
+    'WwwCalculatorStatus.incomeWarning':
+      'Les revenus ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
+    'WwwCalculatorStatus.success': 'Tout est bon !',
   },
 };
 
-export const getShortLang = language => language.split('-')[0].toLowerCase();
+export const getShortLang = language =>
+  language?.split('-')[0].toLowerCase() || 'fr';
 
 export const getLongLang = language => languageData[language].longLang;
 
