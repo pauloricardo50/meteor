@@ -29,7 +29,7 @@ const languageData = {
     signupErrorText: `Un problème est survenu! Réessayez ultérieurement`,
     signupSuccessText: `Merci de vous être abonné!`,
     recentNewslettersToggle: `Voir les newsletters précédentes`,
-    recommendedArticleHeader: `Ceci pourrait vous intéresser`,
+    recommendedArticleHeader: `Nos articles récents`,
     rateTable: {
       header: ['Durée', 'Tendance', 'Taux'],
     },

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { registerLinkResolver } from 'gatsby-source-prismic-graphql';
+import { registerLinkResolver } from '@prismicio/gatsby-source-prismic-graphql';
 import { IntlProvider } from 'react-intl';
 
 import { getFormats } from 'core/utils/localization/localizationFormats';
