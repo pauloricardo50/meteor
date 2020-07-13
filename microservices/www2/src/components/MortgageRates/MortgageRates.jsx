@@ -24,10 +24,8 @@ const parseRateType = (language, rateType) => {
   return rateTypeDisplay;
 };
 
-const MortgageRates = () => {
-  const [currentRates, setCurrentRates] = useState('');
-  const [language] = useContext(LanguageContext);
-
+export const useMortgageRates = () => {
+  const [currentRates, setCurrentRates] = useState({});
   useEffect(() => {
     const getCurrentRates = async () => {
       const response = await meteorClient.call(
@@ -37,6 +35,12 @@ const MortgageRates = () => {
     };
     getCurrentRates();
   }, []);
+  return currentRates;
+};
+
+const MortgageRates = () => {
+  const currentRates = useMortgageRates();
+  const [language] = useContext(LanguageContext);
 
   return (
     <section className="mortgage-rates container">
@@ -49,18 +53,17 @@ const MortgageRates = () => {
           ))}
         </div>
 
-        {currentRates &&
-          currentRates.rates.map((rate, idx) => (
-            <div className="rates-table-line" key={idx}>
-              <div className="rate-type">
-                {parseRateType(language, rate.type)}
-              </div>
-              <TrendIcon trend={rate.trend} />
-              <div className="rate-range">
-                {makePercent(rate.rateLow)} - {makePercent(rate.rateHigh)}
-              </div>
+        {currentRates?.rates?.map((rate, idx) => (
+          <div className="rates-table-line" key={idx}>
+            <div className="rate-type">
+              {parseRateType(language, rate.type)}
             </div>
-          ))}
+            <TrendIcon trend={rate.trend} />
+            <div className="rate-range">
+              {makePercent(rate.rateLow)} - {makePercent(rate.rateHigh)}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

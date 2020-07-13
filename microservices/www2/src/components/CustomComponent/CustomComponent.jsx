@@ -1,9 +1,11 @@
 import React from 'react';
 
+import MortgageRateCarousel from '../MortgageRateCarousel';
 import WwwCalculator from '../WwwCalculator';
 
 const customComponents = {
   calculator: WwwCalculator,
+  mortgageRateCarousel: MortgageRateCarousel,
 };
 
 const CustomComponent = ({ primary: { component_name } }) => {

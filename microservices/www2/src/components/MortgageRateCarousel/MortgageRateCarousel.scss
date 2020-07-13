@@ -1,0 +1,27 @@
+.mortgage-rate-carousel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: $site-width;
+  margin: 0 auto;
+  text-decoration: none !important;
+  transition: transform 200ms $bezier !important;
+
+  hr {
+    width: 60%;
+  }
+
+  
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  .content {
+    align-self: center;
+    color: black;
+
+    .percent {
+      font-size: 3em;
+    }
+  }
+}
