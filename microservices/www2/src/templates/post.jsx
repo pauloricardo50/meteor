@@ -209,6 +209,7 @@ const Post = ({
               Component={Link}
               to={languageData.blogLink}
               icon={<Icon type="left" />}
+              link
             >
               {languageData.blogLinkText}
             </Button>
