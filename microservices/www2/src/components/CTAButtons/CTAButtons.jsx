@@ -8,7 +8,6 @@ import FaIcon from 'core/components/Icon/FaIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 import useMedia from 'core/hooks/useMedia';
 
-import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
 
 const icons = {
