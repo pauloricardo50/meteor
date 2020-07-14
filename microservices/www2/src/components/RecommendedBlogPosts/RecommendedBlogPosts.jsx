@@ -18,11 +18,11 @@ const RecommendedBlogPosts = ({ currentPost, recentPosts }) => {
 
   return (
     <div className="recommended-blog-posts container">
-      <h2 className="recommended-blog-posts__heading">
+      <h2 className="recommended-blog-posts-heading">
         {getLanguageData(language).recommendedArticleHeader}
       </h2>
 
-      <div className="recommended-blog-posts__list">
+      <div className="recommended-blog-posts-list">
         {recentPostsExcludeCurrent.map(({ node: post }) => (
           <RecommendedBlogPost key={post._meta.id} post={post} />
         ))}

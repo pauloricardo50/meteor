@@ -1,30 +1,54 @@
 .recommended-blog-posts {
-  &__heading {
-    margin: 32px auto;
-    // Mobile/Title/H4
-    font-size: 20px;
-    font-weight: 300;
+  &-heading {
+    margin: 80px auto;
+    font-size: 32px;
+    font-weight: normal;
     font-style: normal;
-    line-height: 1.4;
+    line-height: 1.5;
     letter-spacing: normal;
     color: $body-text;
+
+    @media screen and (max-width: $med){
+      margin: 32px auto;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.4;
+    }
   }
 
   .blog-post {
-    &__image {
-      img {
-        max-width: 100%;
+    max-width: 484px;
+    flex-basis: 50%;
+
+    &-image {
+      width: 100%;
+      height: 300px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      @media screen and (max-width: $med){
+        display: none
+      }
+      
+    }
+
+    &-content {
+      margin: 16px auto 20px;
+      padding-right: 50px;
+      position: relative;
+
+      a {
+        color: black !important;
+      }
+
+      
+      @media screen and (max-width: $med){
+        margin: 16px 0;
       }
     }
 
-    &__content {
-      position: relative;
-      margin: 16px 0;
-      padding-right: 50px;
-      color: black;
-    }
-
-    &__more {
+    &-more {
       position: absolute;
       right: 0;
       top: 50%;
@@ -43,36 +67,31 @@
         color: $primary;
       }
     }
+
+    &-meta {
+      opacity: 0.5;
+    }
+
+    @media screen and (max-width: $wide){
+      max-width: 450px;
+    }
+
+    @media screen and (max-width: $large){
+      max-width: 350px;
+    }
+
+    @media screen and (max-width: $med){
+      max-width: 100%;
+    }
+
   }
+  
+  &-list {
+    display: flex;
+    justify-content: space-between;
 
-  @media screen and (min-width: $med) {
-    &__heading {
-      margin: 80px auto;
-      //Desktop/Title/H2
-      font-size: 32px;
-      font-weight: normal;
-      font-style: normal;
-      line-height: 1.5;
-      letter-spacing: normal;
-      color: $body-text;
-    }
-
-    &__list {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .blog-post {
-      max-width: 484px;
-      flex-basis: 50%;
-
-      &__content {
-        margin: 16px auto 20px;
-      }
-
-      &__meta {
-        opacity: 0.5;
-      }
+    @media screen and (max-width: $med){
+      flex-direction: column;
     }
   }
 }
