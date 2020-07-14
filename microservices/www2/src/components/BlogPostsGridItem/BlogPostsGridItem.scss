@@ -1,5 +1,20 @@
 .blog-post-item {
   border-bottom: 1px solid $border-grey;
+  width: 450px;
+
+
+  @media screen and (max-width: $wide){
+    width: 339px;
+   }
+
+   @media screen and (max-width: $med){
+     width: 320px;
+   }
+
+   @media screen and (max-width: $small){
+    width: 288px;
+  }
+
 
   &-image {
     width: 450px;
@@ -8,15 +23,21 @@
     background-repeat: no-repeat;
     background-size: cover;
 
-   @media screen and (max-width: $med){
-    width: 339px;
-    height: 200px;
-   }
+    @media screen and (max-width: $wide){
+      width: 339px;
+      height: 200px;
+    }
+
+    @media screen and (max-width: $med){
+      width: 320px;
+    }
+
+    @media screen and (max-width: $small){
+      width: 288px;
+    }
   }
 
-  img {
-    max-width: 100%;
-  }
+
 
   h2 {
     margin: 16px 0;
