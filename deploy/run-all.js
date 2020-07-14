@@ -25,6 +25,7 @@ function getMupCommand() {
   removeOption('-e', true);
   removeOption('--apps', true);
   removeOption('--parallel', false);
+  removeOption('--deploy-ci', false);
 
   return commands;
 }
@@ -168,7 +169,7 @@ function runInSerial() {
   });
 }
 
-if (argv.parallel || isDeploying) {
+if (argv.parallel || (isDeploying && !argv.deployCi)) {
   runInParallel();
 } else {
   runInSerial();
