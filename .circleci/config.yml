@@ -65,6 +65,7 @@ jobs:
         only:
           - chore/deploy-staging-ci
     steps:
+      - setup_remote_docker
       - restore_cache:
           name: Restore source
           keys:

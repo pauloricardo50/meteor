@@ -211,6 +211,7 @@ const makeDeployJob = ({ name, job }) => ({
     }
   },
   steps: [
+    'setup_remote_docker',
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
