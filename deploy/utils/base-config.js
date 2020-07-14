@@ -80,7 +80,7 @@ module.exports = function createConfig({
         image: 'zodern/meteor',
         prepareBundle: true,
         prepareBundleLocally: true,
-        useBuildKit: true,
+        useBuildKit: false,
         stopAppDuringPrepareBundle: false,
 
         // Needed for core dumps
