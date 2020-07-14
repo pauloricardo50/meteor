@@ -212,6 +212,7 @@ const makeDeployJob = ({ name, job }) => ({
   },
   steps: [
     'setup_remote_docker',
+    'add_ssh_keys',
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
@@ -253,6 +254,7 @@ const makeDeployJob = ({ name, job }) => ({
           exit 1
         fi
 
+        mv ~/.ssh/deploy ~/.ssh/epotek
         node run-all -e $ENVIRONMENT --apps ${name} validate
         node run-all --deploy-ci -e $ENVIRONMENT --apps ${name} deploy
       `

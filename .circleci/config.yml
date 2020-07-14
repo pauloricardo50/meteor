@@ -66,6 +66,7 @@ jobs:
           - chore/deploy-staging-ci
     steps:
       - setup_remote_docker
+      - add_ssh_keys
       - restore_cache:
           name: Restore source
           keys:
@@ -132,6 +133,7 @@ jobs:
                       exit 1
                     fi
 
+                    mv ~/.ssh/deploy ~/.ssh/epotek
                     node run-all -e $ENVIRONMENT --apps www validate
                     node run-all --deploy-ci -e $ENVIRONMENT --apps www deploy
                   
