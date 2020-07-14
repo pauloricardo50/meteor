@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
-import LanguageContext from '../../contexts/LanguageContext';
 import './VideoEmbed.scss';
+
+import React, { useContext } from 'react';
+
+import LanguageContext from '../../contexts/LanguageContext';
 
 const VideoEmbed = ({ primary }) => {
   const [language] = useContext(LanguageContext);
-  const video = primary.video;
+  const { video } = primary;
   const videoId = video.embed_url.split('?v=')[1];
   const parameters = `&modestbranding=1&rel=0&hl=${language}`;
   const newSrc = `${video.provider_url}/embed/${videoId}?${parameters}`;
   const aspectRatio = `${(100 * video.height) / video.width}%`;
 
   return (
-    <div className="video-embed container--desktop">
+    <div className="video-embed container">
       <div
         className="video-embed__wrapper"
         style={{ paddingBottom: aspectRatio }}

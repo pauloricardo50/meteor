@@ -10,11 +10,8 @@ const ImageCarousel = ({ primary, fields }) => {
   const { content, image, cta_text, cta_link } = fields[currIndex];
 
   return (
-    <section
-      id={primary.section_id}
-      className="image-carousel container--desktop"
-    >
-      <div className="content container--mobile">
+    <section id={primary.section_id} className="image-carousel container">
+      <div className="content container">
         <RichText render={primary.section_heading} />
 
         <ol className="captions">
