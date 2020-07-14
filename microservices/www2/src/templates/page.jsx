@@ -186,6 +186,9 @@ export const query = graphql`
                 ... on PRISMIC_Page {
                   ...prismicPageFields
                 }
+                ... on PRISMIC_Post {
+                  ...prismicPostFields
+                }
               }
             }
           }

@@ -128,6 +128,10 @@ const languageData = {
     'WwwCalculatorStatus.incomeWarning':
       'Les revenus ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
     'WwwCalculatorStatus.success': 'Tout est bon !',
+    '404.title': 'Erreur quatre-cent-quatre',
+    '404.description':
+      'Il semblerait que nous vous ayions perdu sur notre site.',
+    '404.backToHome': 'Retourner au début',
   },
 };
 

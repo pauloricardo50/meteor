@@ -109,14 +109,11 @@ const PromotionsGridItem = ({ promotion, loading, w }) => {
         <>
           <p className="promotion-item-description">{description}</p>
           {descriptionIsTooLong && (
-            <Button
-              primary
-              onClick={() => setShowMore(s => !s)}
-              size="small"
-              className="show-more"
-            >
-              <FormattedMessage id={showMore ? 'less' : 'more'} />
-            </Button>
+            <div className="show-more">
+              <Button primary onClick={() => setShowMore(s => !s)} size="small">
+                <FormattedMessage id={showMore ? 'less' : 'more'} />
+              </Button>
+            </div>
           )}
         </>
       )}

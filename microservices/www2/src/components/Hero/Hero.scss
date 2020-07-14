@@ -4,6 +4,15 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
+    margin-bottom: 16px;
+    
+    @media screen and (max-width: $xsmall) {
+      height: 140px;
+    }
+
+    @media screen and (max-width: $small) {
+      height: 200px;
+    }
   }
 
   &__content {
@@ -21,6 +30,10 @@
       + p {
         margin-top: 18px;
       }
+
+      @media screen and (max-width: $xsmall) {
+        font-size: 24px
+      }
     }
 
     p {
@@ -34,6 +47,16 @@
 
       + .cta-buttons {
         margin-top: 2px;
+
+        @media screen and (max-width: $med) {
+          display: table;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      @media screen and (max-width: $xsmall) {
+        font-size: 14px;
       }
     }
   }
@@ -46,7 +69,8 @@
       flex-basis: 50%;
       height: auto;
       min-height: 400px;
-    }
+    margin-bottom: 0;
+  }
 
     &__content {
       display: flex;
@@ -102,7 +126,7 @@
 
   @media (min-width: $med) {
     height: 600px;
-    padding: 20px;
+    padding: 16px;
   }
 
   .wrapper {

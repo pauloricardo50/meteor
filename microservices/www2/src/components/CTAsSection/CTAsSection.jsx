@@ -23,7 +23,7 @@ const CTAsSection = ({ primary, fields }) => (
             cta_link: cta.cta_link_2,
             cta_style: cta.cta_style_2,
           },
-        ];
+        ].filter(({ cta_text }) => !!cta_text);
 
         return (
           <div key={idx} className="cta-block">

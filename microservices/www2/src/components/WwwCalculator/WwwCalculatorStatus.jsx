@@ -23,7 +23,7 @@ const WwwCalculatorStatus = () => {
         className="www-calculator-status animated fadeIn"
         key={statusMessageId}
       >
-        <div className="flex center-align mb-16">
+        <div className="flex center-align mb-16 p-16">
           <StatusIcon status={worstStatus} className="icon mr-8" />
           <p className="message">
             <T id={statusMessageId} />

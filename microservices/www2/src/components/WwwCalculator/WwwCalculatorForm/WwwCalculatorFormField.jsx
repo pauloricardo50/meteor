@@ -8,6 +8,7 @@ import InputAdornment from 'core/components/Material/InputAdornment';
 import Slider from 'core/components/Material/Slider';
 import TextField from 'core/components/Material/TextField';
 import T from 'core/components/Translation/FormattedMessage';
+import useMedia from 'core/hooks/useMedia';
 import { toNumber } from 'core/utils/conversionFunctions';
 import { numberMask } from 'core/utils/textMasks';
 
@@ -67,15 +68,16 @@ const WwwCalculatorFormField = animated(
   }) => {
     const rounded = Math.round(value);
     const ref = useRef(null);
+    const isMobile = useMedia({ maxWidth: 768 });
 
     return (
-      <div className="mb-32 animated fadeIn">
+      <div className="www-calculator-form-field animated fadeIn">
         <TextField
           id={field}
           value={rounded}
           onChange={e => handleChange(e.target.value)}
           type="tel"
-          size="med"
+          size={isMobile ? 'small' : 'med'}
           InputProps={{
             inputComponent: MaskedInput,
             inputProps: {
@@ -94,6 +96,7 @@ const WwwCalculatorFormField = animated(
               <InputAdornment
                 position="start"
                 onClick={() => ref.current?.focus()}
+                className="www-calculator-field-adornment"
               >
                 <T
                   id={`WwwCalculatorFormField.${field}`}
@@ -103,7 +106,6 @@ const WwwCalculatorFormField = animated(
             ),
           }}
           fullWidth
-          className="mb-8"
           aria-label={
             <T
               id={`WwwCalculatorFormField.${field}`}
@@ -113,7 +115,7 @@ const WwwCalculatorFormField = animated(
           error={error}
         />
 
-        <div className="flex nowrap pl-8 ">
+        <div className="flex nowrap center-align pl-8 ">
           <Slider
             value={rounded}
             onChange={(e, v) => handleChange(v)}
@@ -129,6 +131,7 @@ const WwwCalculatorFormField = animated(
               tooltip={<T id="WwwCalculatorFormField.increaseSliderMax" />}
               className="animated fadeIn"
               onClick={increaseSliderMax}
+              style={{ flexShrink: 0 }}
             />
           ) : (
             <div style={{ width: 28.25, height: 28.25, flexShrink: 0 }} />

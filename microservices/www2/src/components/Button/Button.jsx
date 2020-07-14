@@ -1,16 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
 import MuiButton from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
-import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
+import { Link } from 'gatsby';
+import omit from 'lodash/omit';
+import PropTypes from 'prop-types';
+import { compose, mapProps } from 'recompose';
 
 import Icon from 'core/components/Icon';
-import { Link } from 'gatsby';
+
+import { linkResolver } from '../../utils/linkResolver';
 
 const styles = theme => ({
   root: {
@@ -91,7 +93,26 @@ const getButtonContent = props => {
   return props.label || props.children;
 };
 
-const Button = props => {
+const getLinkProps = prismicLink => {
+  if (!prismicLink) {
+    return {};
+  }
+
+  if (prismicLink._linkType === 'Link.document') {
+    return {
+      to: linkResolver(prismicLink._meta),
+      component: Link,
+    };
+  }
+  if (prismicLink._linkType === 'Link.web') {
+    return {
+      href: prismicLink.url,
+      component: 'a',
+    };
+  }
+};
+
+const Button = ({ prismicLink, ...props }) => {
   const childProps = omit(props, [
     'iconAfter',
     'primary',
@@ -108,16 +129,16 @@ const Button = props => {
   const variant = props.variant || getVariant(props);
   const color = props.color || getColor(props);
   const startIcon = props.icon && getStartIcon(props);
-
   const Comp = props.fab ? Fab : MuiButton;
+
+  const linkProps = getLinkProps(prismicLink);
 
   const button = (
     <Comp
       {...childProps}
+      {...linkProps}
       color={color}
       variant={variant}
-      component={props.component || (props.link ? Link : 'button')}
-      to={props.to || undefined}
       className={cx(
         {
           [props.classes.root]: color === 'error',

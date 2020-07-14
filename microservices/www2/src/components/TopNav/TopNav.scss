@@ -38,6 +38,12 @@
   ul:focus {
     outline: none;
   }
+
+  @media screen and (max-width: $xsmall) {
+    .top-nav-right [role="button"]  {
+      font-size: 12px;
+    }
+  }
 }
 
 .menu--top-nav {

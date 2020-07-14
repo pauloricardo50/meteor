@@ -2,7 +2,6 @@ import './ImageCarousel.scss';
 
 import React, { useState } from 'react';
 
-import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
 import { RichText } from '../prismic';
 
@@ -11,11 +10,8 @@ const ImageCarousel = ({ primary, fields }) => {
   const { content, image, cta_text, cta_link } = fields[currIndex];
 
   return (
-    <section
-      id={primary.section_id}
-      className="image-carousel container--desktop"
-    >
-      <div className="content container--mobile">
+    <section id={primary.section_id} className="image-carousel container">
+      <div className="content container">
         <RichText render={primary.section_heading} />
 
         <ol className="captions">
@@ -35,12 +31,7 @@ const ImageCarousel = ({ primary, fields }) => {
         <RichText render={content} />
 
         {cta_text && (
-          <Button
-            primary
-            link
-            to={linkResolver(cta_link._meta)}
-            style={{ marginLeft: -8 }}
-          >
+          <Button primary prismicLink={cta_link} style={{ marginLeft: -8 }}>
             {cta_text}
           </Button>
         )}

@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-filename-extension */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { navigate } from 'gatsby';
 import { useCookies } from 'react-cookie';
+
 import {
-  getLanguages,
   getLanguageData,
+  getLanguages,
   getShortLang,
 } from '../utils/languages.js';
 
