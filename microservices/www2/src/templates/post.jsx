@@ -48,6 +48,7 @@ export const query = graphql`
               section_id
               image_layout
               images
+              content
             }
           }
           ... on PRISMIC_PostBodyQuote {
@@ -84,6 +85,7 @@ export const query = graphql`
                 type
                 primary {
                   images
+                  content
                 }
               }
             }
@@ -165,7 +167,6 @@ const Post = ({
     allPosts: { edges: recentPosts },
     allGlobals: { edges: sharedSections },
   } = data.prismic;
-  console.log('sharedSections:', sharedSections);
 
   // handle unknown posts that don't get redirected to a 404
   if (!blogPost) return <NotFound pageType="post" pageLang={lang} />;
@@ -175,7 +176,6 @@ const Post = ({
   const articleCTAsSection = sharedSections[0]?.node.body.find(
     section => section.type === 'ctas_section',
   );
-  console.log('articleCTAsSection:', articleCTAsSection);
 
   return (
     <>

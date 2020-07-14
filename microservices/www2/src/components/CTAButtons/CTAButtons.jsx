@@ -18,7 +18,7 @@ const icons = {
 
 const CTAButtons = ({ buttons }) => {
   const isMobile = useMedia({ maxWidth: 768 });
-  if (!buttons.length) return null;
+  if (!buttons?.length) return null;
 
   return (
     <div className="cta-buttons">
