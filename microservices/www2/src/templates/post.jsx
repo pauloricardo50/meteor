@@ -111,6 +111,7 @@ export const query = graphql`
                 fields {
                   content
                   illustration
+                  cta_icon_1
                   cta_text_1
                   cta_style_1
                   cta_link_1 {
@@ -122,6 +123,7 @@ export const query = graphql`
                       ...prismicPageFields
                     }
                   }
+                  cta_icon_2
                   cta_text_2
                   cta_style_2
                   cta_link_2 {
@@ -163,6 +165,7 @@ const Post = ({
     allPosts: { edges: recentPosts },
     allGlobals: { edges: sharedSections },
   } = data.prismic;
+  console.log('sharedSections:', sharedSections);
 
   // handle unknown posts that don't get redirected to a 404
   if (!blogPost) return <NotFound pageType="post" pageLang={lang} />;
@@ -172,6 +175,7 @@ const Post = ({
   const articleCTAsSection = sharedSections[0]?.node.body.find(
     section => section.type === 'ctas_section',
   );
+  console.log('articleCTAsSection:', articleCTAsSection);
 
   return (
     <>
