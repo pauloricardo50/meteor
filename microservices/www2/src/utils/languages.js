@@ -8,6 +8,8 @@ const languageData = {
     homeLink: '/fr/accueil',
     blogLink: '/fr/blog',
     blogLinkText: `Revenir à l'index`,
+    blogLoadMore: 'Afficher plus',
+    blogEnd: 'Vous êtes au bout !',
     cookieAccept: `J'accepte`,
     cookieDecline: `Refuser`,
     contactLocationText: [`Trouver nous à`, `Et à`],
