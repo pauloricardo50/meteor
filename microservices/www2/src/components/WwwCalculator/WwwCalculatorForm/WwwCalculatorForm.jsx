@@ -64,6 +64,7 @@ const WwwCalculatorForm = () => {
       </div>
 
       <Button
+        primary
         fullWidth
         icon={<Icon type="backupRestore" />}
         onClick={() =>

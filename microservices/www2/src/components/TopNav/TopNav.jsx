@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import colors from 'core/config/colors';
+import useMedia from 'core/hooks/useMedia';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
@@ -26,6 +27,7 @@ const useStyles = makeStyles(() => ({
 const TopNav = () => {
   const [language] = useContext(LanguageContext);
   const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
+  const isMobile = useMedia({ maxWidth: 768 });
 
   return (
     <AppBar
@@ -47,7 +49,13 @@ const TopNav = () => {
         <div className="top-nav-right">
           {matches && <LoginMenu />}
 
-          <Button raised primary Component="a" href={process.env.EPOTEK_APP}>
+          <Button
+            size={isMobile ? 'small' : 'med'}
+            raised
+            primary
+            Component="a"
+            href={process.env.EPOTEK_APP}
+          >
             {getLanguageData(language).getALoanText}
           </Button>
         </div>

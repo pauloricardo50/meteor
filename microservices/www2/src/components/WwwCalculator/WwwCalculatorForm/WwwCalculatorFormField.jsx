@@ -71,7 +71,7 @@ const WwwCalculatorFormField = animated(
     const isMobile = useMedia({ maxWidth: 768 });
 
     return (
-      <div className="mb-16 animated fadeIn">
+      <div className="www-calculator-form-field animated fadeIn">
         <TextField
           id={field}
           value={rounded}
@@ -96,6 +96,7 @@ const WwwCalculatorFormField = animated(
               <InputAdornment
                 position="start"
                 onClick={() => ref.current?.focus()}
+                className="www-calculator-field-adornment"
               >
                 <T
                   id={`WwwCalculatorFormField.${field}`}
