@@ -14,23 +14,24 @@ const RecommendedBlogPost = ({ post }) => {
   return (
     <div className="blog-post">
       {postFirstImage && (
-        <div className="blog-post__image">
-          <img src={postFirstImage.url} alt={postFirstImage.alt} />
-        </div>
+        <div
+          className="blog-post-image"
+          style={{ backgroundImage: `url("${postFirstImage.url}")` }}
+        />
       )}
 
-      <div className="blog-post__content text-m">
+      <div className="blog-post-content text-m">
         <Link to={linkResolver(post._meta)}>
           {RichText.asText(post.title).length !== 0
             ? RichText.asText(post.title)
             : defaultTitle}
 
-          <span className="blog-post__meta">
+          <span className="blog-post-meta">
             <span>{` • `}</span>
             <time>{post.date}</time>
           </span>
 
-          <span className="blog-post__more">
+          <span className="blog-post-more">
             <FontAwesomeIcon icon={faArrowRight} />
           </span>
         </Link>

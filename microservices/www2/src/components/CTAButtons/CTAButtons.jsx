@@ -19,7 +19,7 @@ const icons = {
 
 const CTAButtons = ({ buttons }) => {
   const isMobile = useMedia({ maxWidth: 768 });
-  if (!buttons.length) return null;
+  if (!buttons?.length) return null;
 
   console.log('isIE:', isIE());
 

@@ -14,6 +14,12 @@
     grid-template-columns: 450px 450px;
     grid-gap: 200px;
   }
+
+  &-more {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .blog-post-item {
@@ -47,9 +53,4 @@
     color: $primary;
   }
 
-  &-more {
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-  }
 }
