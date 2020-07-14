@@ -16,8 +16,7 @@ body {
 }
 
 // Nicer styling for a tags, removes horrible blue color
-// And avoid it if this is a button
-a:not([role='button']) {
+a {
   cursor: pointer;
   color: $primary;
   transition: opacity 200ms $bezier;
@@ -36,6 +35,10 @@ a:not([role='button']) {
     opacity: 0.8;
     text-decoration: underline;
   }
+}
+
+a[role='button'] {
+  // color: unset;
 }
 
 // Don't mix these 2 together, or they cancel each other on firefox
