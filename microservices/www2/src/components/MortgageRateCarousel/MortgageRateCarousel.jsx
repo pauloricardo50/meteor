@@ -66,6 +66,8 @@ const MortgageRateCarousel = props => {
             preserveValue
           />
         </div>
+        {/* Add this invisible div above ReactCountUp, as it breaks the link in Safari */}
+        <div className="link-wrapper" />
         <hr />
       </div>
     </Link>

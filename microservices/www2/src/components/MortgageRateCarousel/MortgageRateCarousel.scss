@@ -9,7 +9,8 @@
   height: 180px;
   overflow-x: hidden;
 
-  &-wrapper {
+  &-wrapper,
+  .link-wrapper {
     // Do this to prevent the transform effect from overflowing in the
     // horizontal direction
     position: absolute;
@@ -20,6 +21,7 @@
     display: flex;
     flex-direction: column;
     transition: transform 200ms $bezier !important;
+    z-index: -1;
 
     &:hover {
       transform: scale(1.2);
@@ -37,5 +39,9 @@
     .percent {
       font-size: 4em;
     }
+  }
+
+  .link-wrapper {
+    z-index: 1;
   }
 }

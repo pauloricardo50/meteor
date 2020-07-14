@@ -50,7 +50,7 @@ const TopNav = () => {
           {matches && <LoginMenu />}
 
           <Button
-            size={isMobile ? 'small' : 'med'}
+            size={isMobile ? 'small' : 'medium'}
             raised
             primary
             Component="a"

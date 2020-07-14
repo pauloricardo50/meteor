@@ -27,7 +27,7 @@ const WwwCalculatorChartForm = () => {
             payload: { interestRate: e.target.value },
           })
         }
-        size="med"
+        size="medium"
         fullWidth
         className="mb-16"
       >
@@ -51,7 +51,7 @@ const WwwCalculatorChartForm = () => {
             payload: { includeMaintenance: checked },
           })
         }
-        size="med"
+        size="medium"
       />
     </div>
   );
