@@ -63,7 +63,7 @@ const TestComponent = ({
   );
 };
 
-describe('usePaginatedMeteorData', function () {
+describe.skip('usePaginatedMeteorData', function () {
   this.retries(2);
 
   beforeEach(async () => {
@@ -185,7 +185,7 @@ describe('usePaginatedMeteorData', function () {
     });
   });
 
-  describe('global queries', () => {
+  describe.skip('global queries', () => {
     beforeEach(async () => {
       await new Promise((res) => Meteor.logout(res));
       await userLogin({ role: ROLES.ADMIN });

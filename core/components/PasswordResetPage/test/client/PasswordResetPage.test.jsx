@@ -15,7 +15,7 @@ import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
 } from '../../PasswordResetPage';
 
-describe('PasswordResetPage', () => {
+describe.skip('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
