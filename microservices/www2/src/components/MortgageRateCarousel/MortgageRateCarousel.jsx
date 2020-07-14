@@ -32,8 +32,11 @@ const MortgageRateCarousel = props => {
   `);
   const [index, setIndex] = useState(2);
   const { rates } = useMortgageRates();
+  const hasRates = rates?.length > 0;
 
   useInterval(() => {
+    if (!hasRates) return;
+
     if (index === rates.length - 1) {
       setIndex(0);
     } else {
@@ -41,7 +44,7 @@ const MortgageRateCarousel = props => {
     }
   }, 3000);
 
-  if (!rates || rates.length === 0) {
+  if (!hasRates) {
     return null;
   }
 

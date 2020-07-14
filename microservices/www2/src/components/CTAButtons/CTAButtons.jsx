@@ -9,6 +9,7 @@ import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 import useMedia from 'core/hooks/useMedia';
 
 import Button from '../Button';
+import { isIE } from '../../utils/internetExplorer';
 
 const icons = {
   acquisition: <AcquisitionIcon />,
@@ -19,6 +20,8 @@ const icons = {
 const CTAButtons = ({ buttons }) => {
   const isMobile = useMedia({ maxWidth: 768 });
   if (!buttons.length) return null;
+
+  console.log('isIE:', isIE());
 
   return (
     <div className="cta-buttons">
