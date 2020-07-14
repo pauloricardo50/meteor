@@ -282,7 +282,11 @@ const makeConfig = () => ({
     //   testsType: 'e2e',
     // }),
     // 'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
-    'Www - deploy': makeDeployJob({ name: 'www' })
+    'Www - deploy': makeDeployJob({ name: 'www' }),
+    'App - deploy': makeDeployJob({ name: 'app' }),
+    'Admin - deploy': makeDeployJob({ name: 'admin' }),
+    'Pro - deploy': makeDeployJob({ name: 'pro' }),
+    'Backend - deploy': makeDeployJob({ name: 'backend' }),
   },
   workflows: {
     version: 2,
@@ -299,6 +303,10 @@ const makeConfig = () => ({
         // { 'Pro - e2e tests': { requires: ['Prepare'] } },
         // { 'Www - deploy': { requires: ['Www - e2e tests', 'Www - unit tests'] } },
         { 'Www - deploy': { requires: ['Prepare'] } },
+        { 'App - deploy': { requires: ['Prepare'] } },
+        { 'Admin - deploy': { requires: ['Prepare'] } },
+        { 'Pro - deploy': { requires: ['Prepare'] } },
+        { 'Backend - deploy': { requires: ['Prepare'] } },
       ],
     },
   },
