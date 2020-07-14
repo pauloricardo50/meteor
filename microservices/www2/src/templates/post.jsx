@@ -175,11 +175,6 @@ const Post = ({
 
   return (
     <>
-      {/* <Layout
-        location={location}
-        pageContext={pageContext}
-        pageName={blogPost.title}
-      > */}
       <Helmet>
         <meta property="og:type" content="article" />
         {blogPost.date && (
@@ -204,7 +199,14 @@ const Post = ({
       >
         <div className="post-header">
           <div className="back-to-blog">
-            <Button to={languageData.blogLink} icon={<Icon type="left" />} link>
+            <Button
+              Component={Link}
+              icon={<Icon type="left" />}
+              prismicLink={{
+                _linkType: 'Link.document',
+                _meta: { lang: 'fr-ch', type: 'page', uid: 'blog' },
+              }}
+            >
               {languageData.blogLinkText}
             </Button>
           </div>
@@ -263,7 +265,6 @@ const Post = ({
 
         {articleCTAsSection && <CTAsSection {...articleCTAsSection} />}
       </div>
-      {/* </Layout> */}
     </>
   );
 };
