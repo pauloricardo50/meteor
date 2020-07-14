@@ -47,12 +47,11 @@ const components = {
 };
 
 const PageSections = ({ sections }) =>
-  sections.map(section => {
-    const sectionId = section.primary?.section_id;
+  sections.map((section, index) => {
     const Component = components[section.type];
 
     return (
-      <div key={sectionId} id={sectionId} className="page-section">
+      <div key={index} className="page-section">
         <Component {...section} />
       </div>
     );

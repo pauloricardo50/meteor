@@ -30,7 +30,11 @@ Method.addAfterExecution(
 
     if (maybePromiseResult && typeof maybePromiseResult.then === 'function') {
       const awaitResult = createMeteorAsyncFunction(() => maybePromiseResult);
-      result = awaitResult();
+      try {
+        result = awaitResult();
+      } catch (asyncErr) {
+        error = asyncErr;
+      }
     }
 
     logMethod({ context, config, params, result, error });

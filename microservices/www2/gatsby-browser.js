@@ -10,6 +10,7 @@ import { getFormats } from 'core/utils/localization/localizationFormats';
 
 import Layout from './src/components/Layout';
 import { WwwCalculatorProvider } from './src/components/WwwCalculator/WwwCalculatorState';
+import listenToErrors from './src/utils/errorListeners';
 import { getLanguageData } from './src/utils/languages';
 import { linkResolver } from './src/utils/linkResolver';
 
@@ -45,7 +46,11 @@ const wrapRootElement = ({ element }) => (
   </CookiesProvider>
 );
 
-export { wrapRootElement, wrapPageElement };
+const onClientEntry = () => {
+  listenToErrors();
+};
+
+export { wrapRootElement, wrapPageElement, onClientEntry };
 
 // Use this variable in core if needed
 window.GATSBY = true;

@@ -1,4 +1,3 @@
-const path = require('path');
 const SimpleDDP = require('simpleddp');
 const ws = require('isomorphic-ws');
 

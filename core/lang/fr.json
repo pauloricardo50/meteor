@@ -2019,6 +2019,7 @@
   "Forms.areaNorm.NLS": "Brutte",
   "Forms.areaNorm": "Type de surface",
   "Forms.assignedTo": "Assigné à",
+  "Forms.balconyArea": "Surface des balcons",
   "Forms.balconyArea.placeholder": "20",
   "Forms.bank3A": "Banque 3A",
   "Forms.bank3A.value": "Capital disponible",
