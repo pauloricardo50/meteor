@@ -19,5 +19,6 @@ export const ServerIntlProvider = props =>
     messages: messagesFR,
     formats: getFormats(),
     defaultLocale: 'fr',
+    onError: console.warn,
     ...props,
   });

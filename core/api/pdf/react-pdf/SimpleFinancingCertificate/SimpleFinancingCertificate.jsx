@@ -4,16 +4,17 @@ import React from 'react';
 import { Image } from '@react-pdf/renderer';
 
 import { Money } from '../../../../components/Translation';
-import { formatMessage } from '../../../../utils/intl';
+import intl from '../../../../utils/intl';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 import PdfDocument from '../PdfDocument';
 import PdfPage from '../PdfPage';
 import T from '../PdfTranslation';
-import { assetUrl } from '../reactPdfHelpers';
 import Text from '../Text';
 import SimpleFinancingCertificateDetails from './SimpleFinancingCertificateDetails';
 import SimpleFinancingCertificateFooter from './SimpleFinancingCertificateFooter';
 import SimpleFinancingCertificateHeader from './SimpleFinancingCertificateHeader';
+
+const logoUrl = `https://e-potek-public.s3.eu-central-1.amazonaws.com/e-Potek_logo.png`;
 
 // Create Document Component
 const SimpleFinancingCertificate = ({ loan = {} }) => {
@@ -41,16 +42,16 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
 
   return (
     <PdfDocument
-      title={formatMessage({
-        id: 'SimpleFinancingCertificate.pdfTitle',
-        values: { name },
-      })}
+      title={intl.formatMessage(
+        { id: 'SimpleFinancingCertificate.pdfTitle' },
+        { name },
+      )}
     >
       <PdfPage>
         <SimpleFinancingCertificateHeader name={name} />
 
         <Image
-          src={`${assetUrl}/img/epotek-logo.png`}
+          src={logoUrl}
           style={{
             width: 120,
             height: 120,
@@ -115,4 +116,5 @@ const SimpleFinancingCertificate = ({ loan = {} }) => {
     </PdfDocument>
   );
 };
+
 export default SimpleFinancingCertificate;

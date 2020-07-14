@@ -17,6 +17,7 @@ const TestProviders = ({ children, getRouterProps = x => x }) => {
       messages={messages}
       formats={formats}
       defaultLocale="fr"
+      onError={console.warn}
     >
       <MemoryRouter {...routerProps} />
     </IntlProvider>
