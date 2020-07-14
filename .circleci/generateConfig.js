@@ -239,6 +239,7 @@ const makeDeployJob = ({ name, job }) => ({
       gcloud auth activate-service-account  --key-file=./gcloud-key.json
       rm ./gcloud-key.json
     `),
+    runCommand('Install Docker', 'wget -qO- https://get.docker.com/ | sh'),
     runCommand(
       'Deploy',
       `

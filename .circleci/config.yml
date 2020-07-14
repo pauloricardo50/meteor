@@ -116,6 +116,9 @@ jobs:
                   rm ./gcloud-key.json
                 
       - run:
+          name: Install Docker
+          command: 'wget -qO- https://get.docker.com/ | sh'
+      - run:
           name: Deploy
           command: |2-
 
