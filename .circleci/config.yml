@@ -513,6 +513,9 @@ jobs:
             - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
             - meteor_microservice_master_16_backend-
       - run:
+          name: Install netcat
+          command: apt-get update && apt-get install -y netcat
+      - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
       - run:
@@ -615,6 +618,9 @@ jobs:
               }}
             - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
             - meteor_microservice_master_16_backend-
+      - run:
+          name: Install netcat
+          command: apt-get update && apt-get install -y netcat
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -719,6 +725,9 @@ jobs:
             - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
             - meteor_microservice_master_16_backend-
       - run:
+          name: Install netcat
+          command: apt-get update && apt-get install -y netcat
+      - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
       - run:
@@ -821,6 +830,9 @@ jobs:
               }}
             - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
             - meteor_microservice_master_16_backend-
+      - run:
+          name: Install netcat
+          command: apt-get update && apt-get install -y netcat
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh

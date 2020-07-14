@@ -162,6 +162,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
       `, null, true
     ),
+    testsType === 'e2e' && runCommand(
+      'Install netcat',
+      'apt-get update && apt-get install -y netcat'
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
