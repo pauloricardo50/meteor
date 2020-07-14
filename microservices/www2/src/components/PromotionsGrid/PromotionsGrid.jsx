@@ -15,8 +15,8 @@ import PromotionsGridItem from './PromotionGridItem';
 
 const PromotionsGrid = () => {
   const [promotions, setPromotions] = useState();
-  const [cantons, setCantons] = useState();
-  const [canton, setCanton] = useState([null]);
+  const [availableCantons, setAvailableCantons] = useState();
+  const [canton, setCanton] = useState(null);
   const [loading, setLoading] = useState(false);
   const isWide = useMedia({ maxWidth: 1200 });
   const isMed = useMedia({ maxWidth: 768 });
@@ -26,7 +26,7 @@ const PromotionsGrid = () => {
     setLoading(true);
     meteorClient
       .call('named_query_PROMOTIONS_LIST', {
-        canton: canton.filter(x => x).length > 0 ? canton : undefined,
+        canton: canton ? [canton] : undefined,
       })
       .then(res => {
         setLoading(false);
@@ -35,8 +35,8 @@ const PromotionsGrid = () => {
           ...res.filter(({ status }) => status === 'FINISHED'),
         ]);
 
-        if (!cantons) {
-          setCantons(new Set([...res.map(({ canton: c }) => c)]));
+        if (!availableCantons) {
+          setAvailableCantons(new Set([...res.map(({ canton: c }) => c)]));
         }
 
         return res;
@@ -54,7 +54,7 @@ const PromotionsGrid = () => {
           <CantonFilter
             canton={canton}
             setCanton={setCanton}
-            cantons={cantons}
+            availableCantons={availableCantons}
           />
         </div>
         {loading && !promotions?.length && (
