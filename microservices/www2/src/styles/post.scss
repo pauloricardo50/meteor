@@ -38,6 +38,7 @@
       flex-direction: column;
       justify-content: center;
       margin-right: 13px;
+      flex-shrink: 0;
 
       img {
         width: 34px;
@@ -95,6 +96,7 @@
     position: absolute;
     top: 16px;
     left: 8px;
+    box-sizing: border-box;
 
     svg {
       color: $primary

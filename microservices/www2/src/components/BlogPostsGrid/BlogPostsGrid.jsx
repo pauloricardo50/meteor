@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import useAllBlogPosts from '../../hooks/useAllBlogPosts';
-import BlogPostsGridItem from '../BlogPostsGridItem';
+import BlogPostsGridItem from './BlogPostsGridItem';
 
 const BlogPostsGrid = () => {
   const [language] = useContext(LanguageContext);

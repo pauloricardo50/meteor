@@ -19,9 +19,8 @@ const useSummaryStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: '23px 0 20px',
+    margin: '16px 0',
     [theme.breakpoints.up('md')]: {
-      margin: '40px 0',
       fontSize: '24px',
       fontWeight: 300,
       fontStyle: 'normal',
@@ -31,7 +30,7 @@ const useSummaryStyles = makeStyles(theme => ({
   },
 }));
 
-const useDetailStyles = makeStyles(theme => ({
+const useDetailStyles = makeStyles(() => ({
   root: {
     paddingLeft: 0,
     paddingRight: 0,

@@ -8,7 +8,6 @@ import Icon from 'core/components/Icon';
 
 import Button from '../components/Button';
 import CTAsSection from '../components/CTAsSection';
-import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 import PageShare from '../components/PageShare';
@@ -205,12 +204,7 @@ const Post = ({
       >
         <div className="post-header">
           <div className="back-to-blog">
-            <Button
-              Component={Link}
-              to={languageData.blogLink}
-              icon={<Icon type="left" />}
-              link
-            >
+            <Button to={languageData.blogLink} icon={<Icon type="left" />} link>
               {languageData.blogLinkText}
             </Button>
           </div>
