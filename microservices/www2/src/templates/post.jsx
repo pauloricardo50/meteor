@@ -207,9 +207,11 @@ const Post = ({
           <div className="back-to-blog">
             <Button
               Component={Link}
-              to={languageData.blogLink}
               icon={<Icon type="left" />}
-              link
+              prismicLink={{
+                _linkType: 'Link.document',
+                _meta: { lang: 'fr-ch', type: 'page', uid: 'blog' },
+              }}
             >
               {languageData.blogLinkText}
             </Button>
