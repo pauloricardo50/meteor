@@ -50,22 +50,24 @@ const MortgageRateCarousel = props => {
       className="mortgage-rate-carousel"
       to={linkResolver(data?.prismic?.allPages?.edges?.[0]?.node?._meta)}
     >
-      <hr />
-      <div className="content">
-        <div className="secondary animated fadeIn" key={index}>
-          <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
+      <div className="mortgage-rate-carousel-wrapper">
+        <hr />
+        <div className="content">
+          <div className="secondary animated fadeIn" key={index}>
+            <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
+          </div>
+          <ReactCountUp
+            start={0}
+            end={rates[index].rateLow * 100}
+            suffix="%"
+            decimals={2}
+            className="percent"
+            delay={0.2}
+            preserveValue
+          />
         </div>
-        <ReactCountUp
-          start={0}
-          end={rates[index].rateLow * 100}
-          suffix="%"
-          decimals={2}
-          className="percent"
-          delay={0.2}
-          preserveValue
-        />
+        <hr />
       </div>
-      <hr />
     </Link>
   );
 };

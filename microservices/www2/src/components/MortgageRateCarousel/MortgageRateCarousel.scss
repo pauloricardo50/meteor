@@ -1,20 +1,33 @@
 .mortgage-rate-carousel {
-  display: flex;
-  flex-direction: column;
+  display: block;
   width: 100%;
   max-width: $site-width;
   margin: 0 auto;
   text-decoration: none !important;
-  transition: transform 200ms $bezier !important;
   overflow: hidden;
+  position: relative;
+  height: 180px;
+  overflow-x: hidden;
+
+  &-wrapper {
+    // Do this to prevent the transform effect from overflowing in the
+    // horizontal direction
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 10px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 200ms $bezier !important;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 
   hr {
     width: 60%;
-  }
-
-  
-  &:hover {
-    transform: scale(1.2);
   }
 
   .content {
