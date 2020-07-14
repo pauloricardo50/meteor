@@ -49,6 +49,8 @@ const LinkedLocation = ({ location }) => (
       >
         {locations[location].phone}
       </a>
+
+      <img src="" itemProps="image" alt="e-Potek" style={{ display: 'none' }} />
     </a>
   </div>
 );
