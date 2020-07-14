@@ -6,6 +6,7 @@
   margin: 0 auto;
   text-decoration: none !important;
   transition: transform 200ms $bezier !important;
+  overflow: hidden;
 
   hr {
     width: 60%;

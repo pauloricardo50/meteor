@@ -24,7 +24,6 @@ const CTAButtons = ({ buttons }) => {
   return (
     <div className="cta-buttons">
       {buttons.map(({ cta_link, cta_style, cta_icon, cta_text }, idx) => {
-        const linkType = cta_link?._linkType;
         const ctaStyle = cta_style;
 
         const buttonProps = {
@@ -35,43 +34,17 @@ const CTAButtons = ({ buttons }) => {
           size: isMobile ? 'small' : 'large',
         };
 
-        if (linkType === 'Link.document') {
-          const meta = cta_link._meta;
-          if (!meta) return null;
-
-          return (
-            <Button
-              key={idx}
-              link
-              to={linkResolver(meta)}
-              icon={
-                cta_icon && (icons[cta_icon] || <div>icon: {cta_icon}</div>)
-              }
-              {...buttonProps}
-            >
-              {cta_text}
-            </Button>
-          );
-        }
-
-        if (linkType === 'Link.web') {
-          return (
-            <Button
-              component="a"
-              key={idx}
-              href={cta_link.url || undefined}
-              target={`${cta_text}-tab`}
-              icon={
-                cta_icon && (icons[cta_icon] || <div>icon: {cta_icon}</div>)
-              }
-              {...buttonProps}
-            >
-              {cta_text}
-            </Button>
-          );
-        }
-
-        return null;
+        return (
+          <Button
+            key={idx}
+            link
+            icon={cta_icon && (icons[cta_icon] || <div>icon: {cta_icon}</div>)}
+            prismicLink={cta_link}
+            {...buttonProps}
+          >
+            {cta_text}
+          </Button>
+        );
       })}
     </div>
   );

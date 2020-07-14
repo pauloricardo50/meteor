@@ -2,7 +2,6 @@ import './ImageCarousel.scss';
 
 import React, { useState } from 'react';
 
-import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
 import { RichText } from '../prismic';
 
@@ -35,12 +34,7 @@ const ImageCarousel = ({ primary, fields }) => {
         <RichText render={content} />
 
         {cta_text && (
-          <Button
-            primary
-            link
-            to={linkResolver(cta_link._meta)}
-            style={{ marginLeft: -8 }}
-          >
+          <Button primary prismicLink={cta_link} style={{ marginLeft: -8 }}>
             {cta_text}
           </Button>
         )}
