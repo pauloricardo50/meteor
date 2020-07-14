@@ -46,9 +46,10 @@
 }
 
 .promotion-item {
-  position: relative;
   border-bottom: solid 0.5px $body-text-light;
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   
   &-images {
     position: relative;
@@ -126,7 +127,7 @@
     line-height: 1.44;
     letter-spacing: normal;
     white-space: pre-line;
-    margin-bottom: 16px;
+    margin-bottom: 0;
 
     @media screen and (max-width: $wide){
      max-width: 100%;
@@ -143,11 +144,16 @@
   }
 
   .show-more {
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-    margin: 0;
-    padding: 0;
+    align-self: flex-end;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 4px;
+    
+    button {
+      padding: 2px 4px;
+    }
 
     @media screen and (max-width: $med) {
       font-size: 12px;
