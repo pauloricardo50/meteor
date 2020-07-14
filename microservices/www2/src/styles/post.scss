@@ -91,10 +91,12 @@
   .back-to-blog {
     width: 100%;
     max-width: 1200px;
-    padding: 0 16px;
-    position: absolute;
-    top: 16px;
-    left: 8px;
+    margin: auto;
+    margin-top: -167px;
+
+    @media screen and (max-width: $med - 1){
+      margin-top: -96px;
+    }
 
     svg {
       color: $primary
