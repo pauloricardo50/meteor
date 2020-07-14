@@ -38,6 +38,7 @@
       flex-direction: column;
       justify-content: center;
       margin-right: 13px;
+      flex-shrink: 0;
 
       img {
         width: 34px;
@@ -91,12 +92,11 @@
   .back-to-blog {
     width: 100%;
     max-width: 1200px;
-    margin: auto;
-    margin-top: -167px;
-
-    @media screen and (max-width: $med - 1){
-      margin-top: -96px;
-    }
+    padding: 0 16px;
+    position: absolute;
+    top: 16px;
+    left: 8px;
+    box-sizing: border-box;
 
     svg {
       color: $primary

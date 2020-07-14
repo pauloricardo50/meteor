@@ -6,8 +6,8 @@ import FormattedMessage from 'core/components/Translation/FormattedMessage';
 
 import useBlogPostsContext from '../../contexts/BlogPostsContext';
 import LanguageContext from '../../contexts/LanguageContext';
-import BlogPostsGridItem from '../BlogPostsGridItem';
 import Button from '../Button';
+import BlogPostsGridItem from './BlogPostsGridItem';
 
 const BlogPostsGrid = () => {
   const [language] = useContext(LanguageContext);

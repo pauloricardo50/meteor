@@ -1,5 +1,3 @@
-import './BlogPostsGridItem.scss';
-
 import React from 'react';
 import { Link } from 'gatsby';
 
@@ -9,16 +7,6 @@ import { linkResolver } from '../../utils/linkResolver';
 import { RichText } from '../prismic';
 
 const BlogPostsGridItem = ({ post }) => {
-  // TODO: if need to format dates differently by lang
-  // let postDate = Date(post.date);
-  // postDate = postDate
-  //   ? new Intl.DateTimeFormat('en-US', {
-  //       month: 'short',
-  //       day: '2-digit',
-  //       year: 'numeric',
-  //     }).format(postDate)
-  //   : '';
-
   const defaultTitle = 'Untitled';
 
   const postFirstHero = post.body.find(section => section.type === 'hero');

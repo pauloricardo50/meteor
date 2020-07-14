@@ -8,7 +8,6 @@ import Icon from 'core/components/Icon';
 
 import Button from '../components/Button';
 import CTAsSection from '../components/CTAsSection';
-import Layout from '../components/Layout';
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
 import PageShare from '../components/PageShare';
@@ -176,11 +175,6 @@ const Post = ({
 
   return (
     <>
-      {/* <Layout
-        location={location}
-        pageContext={pageContext}
-        pageName={blogPost.title}
-      > */}
       <Helmet>
         <meta property="og:type" content="article" />
         {blogPost.date && (
@@ -271,7 +265,6 @@ const Post = ({
 
         {articleCTAsSection && <CTAsSection {...articleCTAsSection} />}
       </div>
-      {/* </Layout> */}
     </>
   );
 };
