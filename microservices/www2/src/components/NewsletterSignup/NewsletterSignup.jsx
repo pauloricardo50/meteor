@@ -115,6 +115,7 @@ const SignupForm = ({ modal = false }) => {
   return (
     <form onSubmit={handleSubmit} className="signup-form">
       <TextInput
+        id="Email"
         label="Email"
         className="email"
         value={email}
