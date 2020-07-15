@@ -1,6 +1,4 @@
 .image-carousel {
-  // display: flex;
-
   .content {
     margin-bottom: 24px;
 
@@ -82,7 +80,7 @@
   .current-image {
     min-height: 500px;
     max-width: 100%;
-    background-repeat: no-repeat;
+    background-size:cover;
     background-position: center center;
   }
 
@@ -103,10 +101,11 @@
   @media screen and (min-width: $med) {
     display: flex;
     flex-direction: row-reverse;
+    align-items: flex-start;
 
     .content {
       flex-basis: 50%;
-      margin-bottom: 0;
+      margin: 0;
 
       h1,
       h2 {
