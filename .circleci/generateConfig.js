@@ -203,7 +203,7 @@ const makeDeployJob = ({ name, job }) => ({
   ...job,
   ...defaultJobValues,
   resource_class: 'medium+',
-  build: {
+  filters: {
     branches: {
       only: [
         STAGING_BRANCH

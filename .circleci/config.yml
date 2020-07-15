@@ -820,7 +820,7 @@ jobs:
     working_directory: /home/circleci/app
     docker: *ref_0
     resource_class: medium+
-    build:
+    filters:
       branches:
         only:
           - chore/deploy-staging-ci
@@ -893,7 +893,7 @@ jobs:
     working_directory: /home/circleci/app
     docker: *ref_0
     resource_class: medium+
-    build:
+    filters:
       branches:
         only:
           - chore/deploy-staging-ci
@@ -966,7 +966,7 @@ jobs:
     working_directory: /home/circleci/app
     docker: *ref_0
     resource_class: medium+
-    build:
+    filters:
       branches:
         only:
           - chore/deploy-staging-ci
@@ -1039,7 +1039,7 @@ jobs:
     working_directory: /home/circleci/app
     docker: *ref_0
     resource_class: medium+
-    build:
+    filters:
       branches:
         only:
           - chore/deploy-staging-ci
@@ -1112,7 +1112,7 @@ jobs:
     working_directory: /home/circleci/app
     docker: *ref_0
     resource_class: medium+
-    build:
+    filters:
       branches:
         only:
           - chore/deploy-staging-ci
