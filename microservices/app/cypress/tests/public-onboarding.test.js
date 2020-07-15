@@ -7,7 +7,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe.only('Public onboarding', () => {
+describe('Public onboarding', () => {
   before(() => {
     cy.initiateTest();
   });
