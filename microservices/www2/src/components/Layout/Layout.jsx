@@ -57,15 +57,6 @@ const Layout = ({ children, location, pageContext, data }) => {
     }
   }, [language]);
 
-  // Load the Prismic edit button
-  if (
-    process.env.NODE_ENV === 'development' &&
-    typeof window !== 'undefined' &&
-    window.prismic
-  ) {
-    window.prismic.setupEditButton();
-  }
-
   return (
     <>
       <LanguageContext.Provider value={[language, setLanguage]}>
