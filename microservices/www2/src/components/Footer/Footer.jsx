@@ -3,8 +3,6 @@ import './Footer.scss';
 import React, { useContext } from 'react';
 
 import LanguageContext from '../../contexts/LanguageContext';
-import LanguagePicker from '../LanguagePicker';
-import NewsletterSignup from '../NewsletterSignup';
 import FooterContact from './FooterContact';
 import FooterMenu from './FooterMenu';
 import FooterNotices from './FooterNotices';
@@ -16,6 +14,7 @@ const Footer = () => {
     <>
       <div className="footer-fill" />
       <footer className="footer container">
+        <hr />
         <div className="footer-top">
           <FooterMenu />
           <FooterContact language={language} />
@@ -23,7 +22,6 @@ const Footer = () => {
 
         <div className="footer-bottom">
           <FooterNotices language={language} />
-          {/* <LanguagePicker /> */}
         </div>
       </footer>
     </>

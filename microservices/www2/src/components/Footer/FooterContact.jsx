@@ -71,13 +71,13 @@ const FooterContact = ({ language }) => (
       e-Potek SA
     </h1>
 
-    <b>
-      <u>Contactez nos équipes</u>
-    </b>
+    <div>
+      <b>Contactez nos équipes</b>
 
-    <div className="footer-contact-locations">
-      <LinkedLocation location="lausanne" />
-      <LinkedLocation location="geneve" />
+      <div className="footer-contact-locations">
+        <LinkedLocation location="lausanne" />
+        <LinkedLocation location="geneve" />
+      </div>
     </div>
 
     <div className="footer-contact-links">

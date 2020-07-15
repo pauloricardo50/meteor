@@ -1,17 +1,26 @@
 .footer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 120px;
+  color: #2c2c2ce0;
+
+  hr {
+    width: 100%;
+    background-color: #2c2c2c66;
+  }
 
   &-top {
     display: flex;
     justify-content: space-between;
-
+    padding: 80px 0;
+    
     @media screen and (max-width: $med) {
       flex-direction: column;
+      padding: 50px 0;
     }
   }
-
+  
   &-bottom {
     margin-bottom: 16px;
   }
@@ -19,7 +28,7 @@
   &-menu {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 100px;
+    grid-template-rows: 130px;
     grid-row-gap: 8px;
     margin-bottom: 8px;
 
@@ -28,18 +37,16 @@
       flex-direction: column;
 
       &-title {
-        text-decoration: underline;
-        margin-bottom: 4px;
+        margin-bottom: 8px;
       }
     }
 
     &-item {
-      color: black !important;
+      color: #2c2c2ca0 !important;
       text-decoration: none !important;
 
       &:hover {
-        text-decoration: underline !important;
-        color: $primary !important;
+        color: black !important;
       }
     }
   }
@@ -55,7 +62,7 @@
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    color: rgba(0, 0, 0, 0.5);
+    color:#888;
 
     a {
       color: $primary !important;
@@ -70,7 +77,7 @@
 
     h5,
     h6 {
-      color: rgba(0, 0, 0, 0.5);
+      color:#888;
       font-size: 14px;
 
       @media screen and (max-width: $small) {
@@ -82,11 +89,14 @@
   &-contact {
     flex-basis: 50%;
     margin-left: 16px;
+    margin-bottom: 8px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
     @media screen and (max-width: $med) {
       margin-left: 0;
+      margin-top: 20px;
     }
 
     &-links {
@@ -123,6 +133,10 @@
           height: 16px;
         }
       }
+
+      a:hover {
+        text-decoration: underline !important;
+      }
     }
 
     &-locations {
@@ -134,7 +148,7 @@
       font-style: normal;
       line-height: 1.5;
       letter-spacing: normal;
-      color: #000000;
+      color: #2c2c2ce0;
 
       @media screen and (max-width: $large) {
         flex-direction: column;
@@ -152,47 +166,51 @@
     &-location {
       &:hover {
         .footer-contact-location-city {
-          text-decoration: underline;
-          color: $primary;
+          color: black;
         }
       }
-
+      
       &:first-child {
         margin-right: 8px;
-
+        
         @media screen and (max-width: $large) {
           margin-right: 0;
         }
-
+        
         @media screen and (max-width: $med) {
           margin-right: 8px;
         }
-
+        
         @media screen and (max-width: $small) {
           margin-right: 0;
         }
       }
-
-      margin-bottom: 4px;
+      
+      margin-bottom: 16px;
       flex-grow: 0;
       flex-basis: 50%;
-
+      
       a {
         text-decoration: none !important;
-        color: black !important;
+        color: #2c2c2ca0;
       }
 
+      a:hover {
+        color: black;
+      }
+      
       &-phone:hover {
-        text-decoration: underline !important;
+        text-decoration: underline;
         color: $primary !important;
       }
-
+      
       &-city {
         display: flex;
-        justify-content: space-between;
+        color: #2c2c2ce0;
       }
 
       &-map-icon {
+        margin-left: 8px;
         color: $primary;
         svg {
           width: 20px;
