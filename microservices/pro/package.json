@@ -114,6 +114,9 @@
       "client": "client/main.js",
       "server": "server/main.js"
     },
+    "testModule": {
+      "server": "/imports/core/lib/server/serverTestSetup.test.js"
+    },
     "nodeModules": {
       "recompile": {
         "uniforms": true,

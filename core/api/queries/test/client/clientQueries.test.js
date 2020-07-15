@@ -65,7 +65,7 @@ const insertAndFetchTestData = (
   });
 };
 
-describe('exposeQuery', function() {
+describe.skip('exposeQuery', function () {
   this.retries(2);
 
   beforeEach(() => resetDatabase());

@@ -69,15 +69,6 @@ const makePromotionLotWithReservation = ({
 describe('PromotionOptionService', function () {
   this.timeout(10000);
 
-  before(function () {
-    // This test causes conflicts between microservices when ran in parallel
-    // since it will remove all files
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    }
-  });
-
   beforeEach(() => {
     resetDatabase();
   });

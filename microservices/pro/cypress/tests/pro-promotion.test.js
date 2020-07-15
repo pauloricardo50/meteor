@@ -31,7 +31,7 @@ describe('Pro promotion', () => {
       cy.visit('/');
     });
 
-    it('can access the promotion users tab', () => {
+    it(`can access the promotion users tab`, () => {
       cy.callMethod('removeAllPromotions');
       cy.callMethod('insertFullPromotion');
       cy.callMethod('addProUsersToPromotion');
@@ -52,6 +52,7 @@ describe('Pro promotion', () => {
       cy.refetch();
 
       cy.get('tbody tr').should('have.length', 4);
+      cy.get('tbody tr').first().contains('XXX').should('exist');
 
       cy.get('tbody tr')
         .first()
@@ -66,6 +67,8 @@ describe('Pro promotion', () => {
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL });
       cy.refetch();
       cy.wait(500);
+      cy.get('tbody tr').first().contains('XXX').should('not.exist');
+
       cy.get('tbody tr')
         .first()
         .then(tr => {
@@ -89,6 +92,8 @@ describe('Pro promotion', () => {
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
       cy.refetch();
       cy.wait(500);
+      cy.get('tbody tr').first().contains('XXX').should('not.exist');
+
       cy.get('tbody tr')
         .first()
         .then(tr => {

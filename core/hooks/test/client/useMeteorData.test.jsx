@@ -41,7 +41,7 @@ const TestComponent = (props) => {
   );
 };
 
-describe('useMeteorData', function () {
+describe.skip('useMeteorData', function () {
   this.retries(2);
 
   beforeEach(async () => {
