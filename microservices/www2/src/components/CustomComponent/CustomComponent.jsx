@@ -1,10 +1,17 @@
 import React from 'react';
+// import WwwCalculator from '../WwwCalculator';
+import Loadable from 'react-loadable';
+
+import Loading from 'core/components/Loading';
 
 import MortgageRateCarousel from '../MortgageRateCarousel';
-import WwwCalculator from '../WwwCalculator';
 
 const customComponents = {
-  calculator: WwwCalculator,
+  calculator: Loadable({
+    loader: () => import('../WwwCalculator'),
+    loading: () => <Loading />,
+    delay: 200,
+  }),
   mortgageRateCarousel: MortgageRateCarousel,
 };
 
