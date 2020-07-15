@@ -256,8 +256,7 @@ const makeDeployJob = ({ name, job }) => ({
   ]
 })
 
-const deployDependencies = [
-  'Prepare',
+const testJobs = [
   'Www - unit tests',
   'App - unit tests',
   'Admin - unit tests',
@@ -306,11 +305,11 @@ const makeConfig = () => ({
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        { 'Www - deploy': { requires: deployDependencies } },
-        { 'App - deploy': { requires: deployDependencies } },
-        { 'Admin - deploy': { requires: deployDependencies } },
-        { 'Pro - deploy': { requires: deployDependencies } },
-        { 'Backend - deploy': { requires: deployDependencies } },
+        { 'Www - deploy': { requires: testJobs } },
+        { 'App - deploy': { requires: testJobs } },
+        { 'Admin - deploy': { requires: testJobs } },
+        { 'Pro - deploy': { requires: testJobs } },
+        { 'Backend - deploy': { requires: testJobs } },
       ],
     },
   },

@@ -1214,7 +1214,6 @@ workflows:
             - Prepare
       - Www - deploy:
           requires: &ref_1
-            - Prepare
             - Www - unit tests
             - App - unit tests
             - Admin - unit tests
