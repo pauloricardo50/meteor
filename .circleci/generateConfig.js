@@ -256,25 +256,37 @@ const makeDeployJob = ({ name, job }) => ({
   ]
 })
 
+const deployDependencies = [
+  'Prepare',
+  'Www - unit tests',
+  'App - unit tests',
+  'Admin - unit tests',
+  'Pro - unit tests',
+  'Www - e2e tests',
+  'App - e2e tests',
+  'Admin - e2e tests',
+  'Pro - e2e tests'
+]
+
 // Final config
 const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
-    // 'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
-    // 'Admin - unit tests': testMicroserviceJob({
-    //   name: 'admin',
-    //   testsType: 'unit',
-    // }),
-    // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    // 'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
-    // 'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
-    // 'Admin - e2e tests': testMicroserviceJob({
-    //   name: 'admin',
-    //   testsType: 'e2e',
-    // }),
-    // 'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
+    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    'Admin - unit tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'unit',
+    }),
+    'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
+    'Admin - e2e tests': testMicroserviceJob({
+      name: 'admin',
+      testsType: 'e2e',
+    }),
+    'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
     'Www - deploy': makeDeployJob({ name: 'www' }),
     'App - deploy': makeDeployJob({ name: 'app' }),
     'Admin - deploy': makeDeployJob({ name: 'admin' }),
@@ -286,20 +298,19 @@ const makeConfig = () => ({
     'Build and test': {
       jobs: [
         'Prepare',
-        // { 'Www - unit tests': { requires: ['Prepare'] } },
-        // { 'App - unit tests': { requires: ['Prepare'] } },
-        // { 'Admin - unit tests': { requires: ['Prepare'] } },
-        // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        // { 'Www - e2e tests': { requires: ['Prepare'] } },
-        // { 'App - e2e tests': { requires: ['Prepare'] } },
-        // { 'Admin - e2e tests': { requires: ['Prepare'] } },
-        // { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        // { 'Www - deploy': { requires: ['Www - e2e tests', 'Www - unit tests'] } },
-        { 'Www - deploy': { requires: ['Prepare'] } },
-        { 'App - deploy': { requires: ['Prepare'] } },
-        { 'Admin - deploy': { requires: ['Prepare'] } },
-        { 'Pro - deploy': { requires: ['Prepare'] } },
-        { 'Backend - deploy': { requires: ['Prepare'] } },
+        { 'Www - unit tests': { requires: ['Prepare'] } },
+        { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Admin - unit tests': { requires: ['Prepare'] } },
+        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        { 'Www - e2e tests': { requires: ['Prepare'] } },
+        { 'App - e2e tests': { requires: ['Prepare'] } },
+        { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        { 'Pro - e2e tests': { requires: ['Prepare'] } },
+        { 'Www - deploy': { requires: deployDependencies } },
+        { 'App - deploy': { requires: deployDependencies } },
+        { 'Admin - deploy': { requires: deployDependencies } },
+        { 'Pro - deploy': { requires: deployDependencies } },
+        { 'Backend - deploy': { requires: deployDependencies } },
       ],
     },
   },
