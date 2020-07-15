@@ -53,8 +53,9 @@ module.exports = {
         langs: ['fr-ch'],
         defaultLang: 'fr-ch',
         shortenUrlLangs: true,
-        path: '/preview',
-        previews: true,
+        // path: '/preview',
+        // previews: true,
+        omitPrismicScript: true,
         pages: [
           {
             type: 'Page',
@@ -83,7 +84,7 @@ module.exports = {
         // should be an object or a function that is executed in the browser
         //
         // Defaults to null
-        defaultDataLayer: { platform: 'gatsby' },
+        // defaultDataLayer: { platform: 'gatsby' },
 
         // Specify optional GTM environment details.
         // gtmAuth: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_AUTH_STRING",
