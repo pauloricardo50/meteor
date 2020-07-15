@@ -7,6 +7,6 @@ if (Meteor.isTest) {
 }
 
 if (Meteor.isAppTest) {
-  require('core/lib/serverTestSetup.app-test.js');
-  require('cypress/server/cypressMethods.app-tests.js');
+  require('core/lib/server/serverTestSetup.app-test.js');
+  require('core/cypress/server/cypressMethods.app-tests.js');
 }
