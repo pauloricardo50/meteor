@@ -53,32 +53,41 @@ describe('Pro promotion', () => {
 
       cy.get('tbody tr').should('have.length', 4);
       cy.get('tbody tr').first().contains('XXX').should('exist');
+      cy.get('tbody tr')
+        .first()
+        .should('contain', 'XXX')
+        .find('.icon-link')
+        .last()
+        .trigger('mouseover');
 
       cy.get('tbody tr')
         .first()
-        .then(tr => {
-          cy.wrap(tr).should('contain', 'XXX');
-          cy.wrap(tr).find('.icon-link').last().trigger('mouseover');
-          cy.get('.popover-content').should('contain', 'XXX');
-          cy.wrap(tr).get('.button').should('not.exist');
-        });
+        .should('contain', 'XXX')
+        .get('.popover-content')
+        .should('contain', 'XXX');
+      cy.get('tbody tr').first().get('.button').should('not.exist');
 
       // customers are invited by user
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL });
       cy.refetch();
       cy.wait(500);
-      cy.get('tbody tr').first().contains('XXX').should('not.exist');
+      cy.get('tbody tr').first().should('not.contain', 'XXX');
 
+      cy.get('tbody tr').first().find('.icon-link').last().trigger('mouseover');
       cy.get('tbody tr')
         .first()
-        .then(tr => {
-          cy.wrap(tr).should('not.contain', 'XXX');
-          cy.wrap(tr).find('.icon-link').last().trigger('mouseover');
-          cy.get('.popover-content').should('not.contain', 'Personne');
-          cy.get('.popover-content').should('not.contain', 'XXX');
-          cy.wrap(tr).get('.button').should('not.exist');
-          cy.wrap(tr).find('.icon-link').last().trigger('mouseleave');
-        });
+        .get('.popover-content')
+        .should('not.contain', 'Personne');
+      cy.get('tbody tr')
+        .first()
+        .get('.popover-content')
+        .should('not.contain', 'XXX');
+      cy.get('tbody tr').first().get('.button').should('not.exist');
+      cy.get('tbody tr')
+        .first()
+        .find('.icon-link')
+        .last()
+        .trigger('mouseleave');
 
       // customers are invited by user's organisation member
       cy.callMethod('setUserPermissions', {
@@ -92,17 +101,13 @@ describe('Pro promotion', () => {
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
       cy.refetch();
       cy.wait(500);
-      cy.get('tbody tr').first().contains('XXX').should('not.exist');
-
+      cy.get('tbody tr').first().should('not.contain', 'XXX');
+      cy.get('tbody tr').find('.icon-link').last().trigger('mouseover');
       cy.get('tbody tr')
-        .first()
-        .then(tr => {
-          cy.wrap(tr).should('not.contain', 'XXX');
-          cy.wrap(tr).find('.icon-link').last().trigger('mouseover');
-          cy.get('.popover-content').should('not.contain', 'Personne');
-          cy.get('.popover-content').should('not.contain', 'XXX');
-          cy.wrap(tr).get('.button').should('not.exist');
-        });
+        .get('.popover-content')
+        .should('not.contain', 'Personne');
+      cy.get('tbody tr').get('.popover-content').should('not.contain', 'XXX');
+      cy.get('tbody tr').get('.button').should('not.exist');
 
       // Can now delete customers
       cy.callMethod('setUserPermissions', {
