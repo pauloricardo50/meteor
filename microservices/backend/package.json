@@ -5,10 +5,8 @@
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
     "start-test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5505 --exclude-archs web.browser",
     "start": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" FORCE_COLOR=3 meteor run --settings settings-dev.json --port 5500 --exclude-archs web.browser,web.browser.legacy",
-    "start2": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor run --settings settings-dev.json --port 5500 --exclude-archs web.browser",
-    "test": "METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" QUALIA_ONE_BUNDLE_TYPE=modern TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5505 --exclude-archs web.browser",
+    "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
     "update-meteor-packages": "node -r esm ../../scripts/npm-scripts/run-script.js update-meteor-packages",
-    "test-core": "node -r esm ../../scripts/npm-scripts/run-script.js test",
     "test-ci": "../../scripts/circleci/run-script-ci.sh test-ci"
   },
   "dependencies": {
