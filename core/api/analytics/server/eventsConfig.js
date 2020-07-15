@@ -135,7 +135,7 @@ export const EVENTS_CONFIG = {
       'loanId',
       'loanName',
       'loanPurchaseType',
-      'loanResidenceType',
+      { name: 'loanResidenceType', optional: true },
       'loanStep',
       'nextStatus',
       'prevStatus',
