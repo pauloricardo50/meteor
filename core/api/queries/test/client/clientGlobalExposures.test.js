@@ -10,7 +10,7 @@ import {
 } from '../../../../utils/testHelpers';
 import { ROLES } from '../../../users/userConstants';
 
-describe('Global Exposures', function () {
+describe.skip('Global Exposures', function () {
   this.retries(2);
 
   beforeEach(() => resetDatabase());

@@ -46,16 +46,11 @@ const addNote = ({
   });
 };
 
-describe('REST: addLoanNote', function () {
+describe('REST: addLoanNote', function() {
   this.timeout(10000);
 
-  before(function () {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      api.start();
-    }
+  before(function() {
+    api.start();
   });
 
   after(() => {

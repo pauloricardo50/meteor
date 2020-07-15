@@ -75,16 +75,11 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function () {
+describe('REST: inviteUserToPromotion', function() {
   this.timeout(10000);
 
-  before(function () {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      api.start();
-    }
+  before(function() {
+    api.start();
   });
 
   after(() => {

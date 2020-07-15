@@ -1,6 +1,3 @@
-cypress/*/*/**
-!/cypress/server/adminCypressMethods.app-tests.js
-
 imports/core/**/*.spec.js
 imports/core/**/*.spec.jsx
 imports/core/**/*.test.js

@@ -124,7 +124,11 @@ describe('Single Loan Page', () => {
     cy.get('label[for="IDENTITY"]').contains('terrible file').should('exist');
 
     // Remove error file
-    cy.get(`label[for="IDENTITY"] button[name=delete]`).first().click();
+    cy.get(`label[for="IDENTITY"]`)
+      .contains('Non valide')
+      .parents('.actions')
+      .find('button[name=delete]')
+      .click();
     cy.get('button').contains('Supprimer').click();
 
     cy.get('label[for="IDENTITY"] .title-top svg.error').should('not.exist');

@@ -38,7 +38,7 @@ const defaultJobValues = {
 const cacheKeys = {
   global: () => `global_${CACHE_VERSION}_2-{{ checksum "./package-lock.json" }}`,
   meteorSystem: name =>
-    `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_system_${CACHE_VERSION}_${name}_2_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
@@ -50,7 +50,7 @@ const cachePaths = {
   global: () => '/home/circleci/.cache',
   meteorSystem: () => '/home/circleci/.meteor',
   meteorMicroservice: name => [
-    `./microservices/${name}/.meteor/local/bundler-cache`,
+    `./microservices/${name}/.meteor/local/bundler-cache/scanner`,
     `./microservices/${name}/.meteor/local/isopacks`,
     `./microservices/${name}/.meteor/local/plugin-cache`,
     `./microservices/${name}/.meteor/local/resolver-result-cache.json`,
@@ -143,7 +143,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
   resource_class: 'medium+',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    restoreCache('Restore global cache', cacheKeys.global()),
+    testsType === 'e2e' && restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
@@ -162,6 +162,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
       `, null, true
     ),
+    testsType === 'e2e' && runCommand(
+      'Install netcat',
+      'apt-get update && apt-get install -y netcat'
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -171,11 +175,22 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     runCommand(
       'Install node_modules',
       `
-      meteor npm --prefix microservices/${name} ci
-      meteor npm --prefix microservices/backend ci
+      function installBackend {
+        meteor npm --prefix microservices/${name} ci
+        touch $HOME/.npm-backend-done
+      }
+
+      installBackend &
+
+      ${name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''}
+
+      until [ -f $HOME/.npm-backend-done ]; do
+        echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+        sleep 1
+      done
       `,
     ),
-    runCommand('Generate language files', `npm run lang ${name}`),
+    name !== 'backend' && runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
@@ -205,11 +220,12 @@ const makeConfig = () => ({
     Prepare: makePrepareJob(),
     'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
     'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    'Core - unit tests': testMicroserviceJob({ name: 'backend', testsType: 'unit' }),
     'Admin - unit tests': testMicroserviceJob({
       name: 'admin',
       testsType: 'unit',
     }),
-    'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
     'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
     'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
     'Admin - e2e tests': testMicroserviceJob({
@@ -225,8 +241,9 @@ const makeConfig = () => ({
         'Prepare',
         { 'Www - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Core - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
-        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        // { 'Pro - unit tests': { requires: ['Prepare'] } },
         { 'Www - e2e tests': { requires: ['Prepare'] } },
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
