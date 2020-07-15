@@ -6,7 +6,7 @@
     margin: auto;
   }
 
-  @media screen and (min-width: $med) {
+  @media screen and (min-width: $med + 1) {
     display: flex;
 
     &-content {

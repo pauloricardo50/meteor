@@ -113,9 +113,12 @@
 }
 
 .signup-form {
-  margin: 0 auto;
   display: flex;
   align-items: flex-start;
+
+  @media screen and (min-width: $xsmall+1){
+    margin: 0 auto;
+  }
 
   .MuiFormControl-root + button {
     margin-left: 12px;
