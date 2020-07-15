@@ -41,8 +41,8 @@ export default compose(
           ctaId,
         })
         .then(userId => {
-          localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-          localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
+          // localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+          // localStorage.removeItem(LOCAL_STORAGE_REFERRAL);
           history.push(
             createRoute(APP_ROUTES.SIGNUP_SUCCESS_PAGE.path, {
               email: values.email,
@@ -50,9 +50,9 @@ export default compose(
           );
 
           // Useful in dev mode, check the console to get the enrollment URL
-          if (process.env.NODE_ENV === 'development') {
-            getEnrollUrl.run({ userId }).then(console.log);
-          }
+          // if (process.env.NODE_ENV === 'development') {
+          //   getEnrollUrl.run({ userId }).then(console.log);
+          // }
         });
     },
   })),

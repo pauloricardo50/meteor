@@ -17,14 +17,14 @@ const UserCreatorForm = ({ schema, onSubmit, submitFieldProps }) => (
       ...submitFieldProps,
     }}
     style={{ width: '100%' }}
-    onSubmitSuccess={() => {
-      if (dataLayer()) {
-        dataLayer().push({
-          event: 'formSubmission',
-          formType: 'Purchasing capacity',
-        });
-      }
-    }}
+    // onSubmitSuccess={() => {
+    //   if (dataLayer()) {
+    //     dataLayer().push({
+    //       event: 'formSubmission',
+    //       formType: 'Purchasing capacity',
+    //     });
+    //   }
+    // }}
   />
 );
 
