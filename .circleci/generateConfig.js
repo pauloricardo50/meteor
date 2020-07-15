@@ -221,13 +221,6 @@ const makeDeployJob = ({ name, job }) => ({
       cacheKeys.meteorMicroservice(name),
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    runCommand(
-      'Install node_modules',
-      `
-      meteor npm --prefix microservices/${name} ci
-      `,
-    ),
-    runCommand('Generate language files', `npm run lang ${name}`),
     runCommand('Install GCloud', 
     `
       cd ~

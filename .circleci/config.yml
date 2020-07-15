@@ -94,15 +94,6 @@ jobs:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
       - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/www ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang www
-      - run:
           name: Install GCloud
           command: |2-
 
@@ -175,15 +166,6 @@ jobs:
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/app ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang app
       - run:
           name: Install GCloud
           command: |2-
@@ -258,15 +240,6 @@ jobs:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
       - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/admin ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang admin
-      - run:
           name: Install GCloud
           command: |2-
 
@@ -339,15 +312,6 @@ jobs:
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/pro ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang pro
       - run:
           name: Install GCloud
           command: |2-
@@ -423,15 +387,6 @@ jobs:
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Install node_modules
-          command: |2-
-
-                  meteor npm --prefix microservices/backend ci
-                  
-      - run:
-          name: Generate language files
-          command: npm run lang backend
       - run:
           name: Install GCloud
           command: |2-
