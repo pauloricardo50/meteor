@@ -90,6 +90,12 @@ jobs:
             - 'meteor_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
             - 'meteor_microservice_master_16_www-{{ .Branch }}-'
             - meteor_microservice_master_16_www-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - 'minifier_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
+            - 'minifier_microservice_master_16_www-{{ .Branch }}-'
+            - minifier_microservice_master_16_www-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -130,6 +136,12 @@ jobs:
                     node run-all --deploy-ci -e $ENVIRONMENT --apps www deploy
                   
           no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/www/.meteor/local/plugin-cache/zodern_standard-minifier-js
   App - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -164,6 +176,12 @@ jobs:
             - 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
             - 'meteor_microservice_master_16_app-{{ .Branch }}-'
             - meteor_microservice_master_16_app-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - 'minifier_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
+            - 'minifier_microservice_master_16_app-{{ .Branch }}-'
+            - minifier_microservice_master_16_app-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -204,6 +222,12 @@ jobs:
                     node run-all --deploy-ci -e $ENVIRONMENT --apps app deploy
                   
           no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/app/.meteor/local/plugin-cache/zodern_standard-minifier-js
   Admin - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -238,6 +262,14 @@ jobs:
             - 'meteor_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
             - 'meteor_microservice_master_16_admin-{{ .Branch }}-'
             - meteor_microservice_master_16_admin-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - >-
+              minifier_microservice_master_16_admin-{{ .Branch }}-{{ .Revision
+              }}
+            - 'minifier_microservice_master_16_admin-{{ .Branch }}-'
+            - minifier_microservice_master_16_admin-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -278,6 +310,12 @@ jobs:
                     node run-all --deploy-ci -e $ENVIRONMENT --apps admin deploy
                   
           no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/admin/.meteor/local/plugin-cache/zodern_standard-minifier-js
   Pro - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -312,6 +350,12 @@ jobs:
             - 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
             - 'meteor_microservice_master_16_pro-{{ .Branch }}-'
             - meteor_microservice_master_16_pro-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - 'minifier_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'minifier_microservice_master_16_pro-{{ .Branch }}-'
+            - minifier_microservice_master_16_pro-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -352,6 +396,12 @@ jobs:
                     node run-all --deploy-ci -e $ENVIRONMENT --apps pro deploy
                   
           no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/pro/.meteor/local/plugin-cache/zodern_standard-minifier-js
   Backend - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -388,6 +438,14 @@ jobs:
               }}
             - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
             - meteor_microservice_master_16_backend-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - >-
+              minifier_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'minifier_microservice_master_16_backend-{{ .Branch }}-'
+            - minifier_microservice_master_16_backend-
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
@@ -428,9 +486,17 @@ jobs:
                     node run-all --deploy-ci -e $ENVIRONMENT --apps backend deploy
                   
           no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: >-
+            minifier_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
+            }}
+          paths:
+            - >-
+              ./microservices/backend/.meteor/local/plugin-cache/zodern_standard-minifier-js
 workflows:
   version: 2
-  Build and test:
+  Test and deploy:
     jobs:
       - Prepare
       - Www - deploy:

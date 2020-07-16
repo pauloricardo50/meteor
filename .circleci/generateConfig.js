@@ -42,6 +42,8 @@ const cacheKeys = {
     `meteor_system_${CACHE_VERSION}_${name}_2_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
+  minifierCache: name =>
+    `minifier_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
@@ -56,6 +58,9 @@ const cachePaths = {
     `./microservices/${name}/.meteor/local/plugin-cache`,
     `./microservices/${name}/.meteor/local/resolver-result-cache.json`,
   ],
+  minifierCache: name =>
+    `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`
+  ,
   nodeModules: () => './node_modules',
   source: () => '.',
 };
@@ -235,6 +240,12 @@ const makeDeployJob = ({ name, job }) => ({
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
     ),
+    // The microservice cache only has files from building for development,
+    // which doesn't minify
+    restoreCache(
+      'Restore minifier cache',
+      cacheKeys.minifierCache(name),
+    ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Install GCloud', 
     `
@@ -268,6 +279,11 @@ const makeDeployJob = ({ name, job }) => ({
         node run-all --deploy-ci -e $ENVIRONMENT --apps ${name} deploy
       `,
       '30m'
+    ),
+    saveCache(
+      'Save minifier cache',
+      cacheKeys.minifierCache(name),
+      cachePaths.minifierCache(name)
     )
   ]
 })
@@ -312,7 +328,7 @@ const makeConfig = () => ({
   },
   workflows: {
     version: 2,
-    'Build and test': {
+    'Test and deploy': {
       jobs: [
         'Prepare',
         // { 'Www - unit tests': { requires: ['Prepare'] } },
