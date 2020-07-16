@@ -275,7 +275,7 @@ const testJobs = [
   'Www - unit tests',
   'App - unit tests',
   'Admin - unit tests',
-  'Pro - unit tests',
+  'Core - unit tests',
   'Www - e2e tests',
   'App - e2e tests',
   'Admin - e2e tests',
