@@ -129,6 +129,7 @@ jobs:
                     node run-all -e $ENVIRONMENT --apps www validate
                     node run-all --deploy-ci -e $ENVIRONMENT --apps www deploy
                   
+          no_output_timeout: 30m
   App - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -202,6 +203,7 @@ jobs:
                     node run-all -e $ENVIRONMENT --apps app validate
                     node run-all --deploy-ci -e $ENVIRONMENT --apps app deploy
                   
+          no_output_timeout: 30m
   Admin - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -275,6 +277,7 @@ jobs:
                     node run-all -e $ENVIRONMENT --apps admin validate
                     node run-all --deploy-ci -e $ENVIRONMENT --apps admin deploy
                   
+          no_output_timeout: 30m
   Pro - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -348,6 +351,7 @@ jobs:
                     node run-all -e $ENVIRONMENT --apps pro validate
                     node run-all --deploy-ci -e $ENVIRONMENT --apps pro deploy
                   
+          no_output_timeout: 30m
   Backend - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -423,6 +427,7 @@ jobs:
                     node run-all -e $ENVIRONMENT --apps backend validate
                     node run-all --deploy-ci -e $ENVIRONMENT --apps backend deploy
                   
+          no_output_timeout: 30m
 workflows:
   version: 2
   Build and test:
