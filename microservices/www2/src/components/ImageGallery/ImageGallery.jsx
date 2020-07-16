@@ -3,6 +3,7 @@ import './ImageGallery.scss';
 import React from 'react';
 
 import Button from '../Button';
+import Image from '../Image';
 import Link from '../Link';
 import { RichText } from '../prismic';
 
@@ -26,12 +27,12 @@ const ImageGallery = ({ primary, fields }) => {
 
       <div className={galleryClasses}>
         {fields.length &&
-          fields.map(({ image, link = {} }, idx) => {
+          fields.map(({ link = {}, ...data }, idx) => {
             const Component = link ? Link : 'div';
 
             return (
               <Component className="gallery-item" key={idx} prismicLink={link}>
-                <img src={image.url} alt={image.alt} />
+                <Image data={data} at="image" fadeIn />
               </Component>
             );
           })}

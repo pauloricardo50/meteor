@@ -89,7 +89,14 @@ export const query = graphql`
             primary {
               section_id
               image_layout
-              images
+              image
+              imageSharp {
+                childImageSharp {
+                  fluid(maxWidth: 400) {
+                    ...GatsbyImageSharpFluid_noBase64
+                  }
+                }
+              }
               content
             }
             fields {
@@ -120,6 +127,13 @@ export const query = graphql`
             fields {
               content
               image
+              imageSharp {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_noBase64
+                  }
+                }
+              }
               caption
               cta_text
               cta_link {
@@ -177,6 +191,13 @@ export const query = graphql`
             }
             fields {
               image
+              imageSharp {
+                childImageSharp {
+                  fixed(width: 150) {
+                    ...GatsbyImageSharpFixed_noBase64
+                  }
+                }
+              }
               link {
                 _linkType
                 ... on PRISMIC__ExternalLink {

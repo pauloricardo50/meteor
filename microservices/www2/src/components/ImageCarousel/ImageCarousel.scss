@@ -103,8 +103,17 @@
     flex-direction: row-reverse;
     align-items: flex-start;
 
+    .current-image {
+      flex-basis: 60%;
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .content{
+      flex-basis: 40%;
+      flex-shrink: 0;
+    }
+
     .content {
-      flex-basis: 50%;
       margin: 0;
 
       h1,
@@ -153,11 +162,6 @@
         letter-spacing: normal;
         color: $body-text;
       }
-    }
-
-    .current-image {
-      flex-basis: 50%;
-      margin-right: 42px;
     }
   }
 }
