@@ -45,6 +45,7 @@ const Testimonials = ({ primary, fields: testimonials = [] }) => {
           color="primary"
           size="small"
           className="mr-8"
+          aria-label="Previous"
         >
           <Icon type="left" />
         </Fab>
@@ -59,6 +60,7 @@ const Testimonials = ({ primary, fields: testimonials = [] }) => {
           color="primary"
           size="small"
           className="ml-8"
+          aria-label="Next"
         >
           <Icon type="right" />
         </Fab>
