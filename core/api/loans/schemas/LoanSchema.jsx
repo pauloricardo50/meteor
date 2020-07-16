@@ -16,6 +16,7 @@ import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import {
   APPLICATION_TYPES,
   CANTONS,
+  INSURANCE_POTENTIAL,
   LOAN_CATEGORIES,
   LOAN_STATUS,
   OWNER,
@@ -45,7 +46,6 @@ const LoanSchema = new SimpleSchema({
     defaultValue: LOAN_STATUS.LEAD,
     allowedValues: Object.values(LOAN_STATUS),
   },
-  general: { type: Object, optional: true, blackbox: true, defaultValue: {} }, // To be removed once migrations are done
   name: { type: String, unique: true, regEx: /^\d{2}-\d{4}$/ },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
@@ -168,6 +168,11 @@ const LoanSchema = new SimpleSchema({
   insuranceRequestLinks: { type: Array, optional: true, defaultValue: [] },
   'insuranceRequestLinks.$': Object,
   'insuranceRequestLinks.$._id': String,
+  insurancePotential: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(INSURANCE_POTENTIAL),
+  },
 
   // Cache fields
   lendersCache: { type: Array, optional: true },
@@ -197,6 +202,10 @@ const LoanSchema = new SimpleSchema({
       placeholder: '',
     },
   },
+  closingChecklistLinks: { type: Array, optional: true },
+  'closingChecklistLinks.$': Object,
+  'closingChecklistLinks.$._id': String,
+  showClosingChecklists: { type: Boolean, defaultValue: false },
 });
 
 export default LoanSchema;

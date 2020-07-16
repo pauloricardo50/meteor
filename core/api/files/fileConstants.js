@@ -264,6 +264,7 @@ export const DOCUMENTS_CATEGORIES = {
     PROPERTY_DOCUMENTS.SHARE_PLANS,
     PROPERTY_DOCUMENTS.SHARE_WORKS,
   ],
+  CLOSING: [], // Used by the closing checklists
 };
 
 export const S3_ACLS = {

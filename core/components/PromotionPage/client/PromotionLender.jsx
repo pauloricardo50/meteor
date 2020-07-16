@@ -12,7 +12,11 @@ const schema = new SimpleSchema({
     optional: true,
     customAllowedValues: {
       query: ORGANISATIONS_COLLECTION,
-      params: { $filters: { lenderRulesCount: { $gte: 1 } }, name: 1 },
+      params: {
+        $filters: { lenderRulesCount: { $gte: 1 } },
+        name: 1,
+        $options: { sort: { name: 1 } },
+      },
       allowNull: true,
     },
     uniforms: {
@@ -28,11 +32,12 @@ const PromotionLender = ({ promotion }) => (
   <AutoForm
     autosave
     schema={schema}
-    model={{ lenderOrganisationLink: promotion.lenderOrganisation }}
+    model={{ lenderOrganisationLink: promotion.lenderOrganisationLink }}
     onSubmit={values => {
       const shouldSubmit =
         values.lenderOrganisationLink?._id &&
-        values.lenderOrganisationLink._id !== promotion.lenderOrganisation?._id;
+        values.lenderOrganisationLink._id !==
+          promotion.lenderOrganisationLink?._id;
 
       if (shouldSubmit) {
         return promotionUpdate.run({

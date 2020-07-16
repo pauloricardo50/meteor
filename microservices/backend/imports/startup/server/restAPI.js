@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import FrontService from 'core/api/front/server/FrontService';
+import IntercomService from 'core/api/intercom/server/IntercomService';
 import {
   addLoanNoteAPI,
   addProUserToPropertyAPI,
@@ -11,6 +12,7 @@ import {
   getPropertyLoansAPI,
   getUserAPI,
   insertPropertyAPI,
+  intercomWebhookAPI,
   interestRatesAPI,
   inviteCustomerToProPropertiesAPI,
   inviteUserToPromotionAPI,
@@ -171,6 +173,15 @@ api.addEndpoint('/front-webhooks/:webhookName', 'POST', frontWebhookAPI, {
     const { url } = req;
     const [webhookName] = url.split('/').slice(-1);
     return { webhookName };
+  },
+});
+api.addEndpoint('/intercom-webhook', 'POST', intercomWebhookAPI, {
+  customAuth: IntercomService.checkWebhookAuthentication.bind(IntercomService),
+  endpointName: 'Intercom webhooks',
+  analyticsParams: req => {
+    const { body } = req;
+    const { type, topic } = body;
+    return { type, topic };
   },
 });
 

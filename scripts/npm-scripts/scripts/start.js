@@ -55,7 +55,7 @@ const runMicroservice = () => {
       '--port',
       port,
       '--exclude-archs',
-      'web.browser.legacy,web.cordova',
+      'web.browser.legacy',
       ...additionalArgs,
     ],
     options: {

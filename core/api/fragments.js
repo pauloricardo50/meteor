@@ -53,7 +53,7 @@ export const formBorrower = () => ({
   bonusExists: 1,
   canton: 1,
   childrenCount: 1,
-  citizenShip: 1,
+  citizenship: 1,
   city: 1,
   civilStatus: 1,
   company: 1,
@@ -99,14 +99,6 @@ export const loanBorrower = ({ withSort } = {}) => ({
   loans: { name: 1 },
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
-
-export const adminBorrower = () => ({
-  ...loanBorrower(),
-  loans: loan(),
-  user: appUser(),
-});
-
-export const fullBorrower = adminBorrower;
 
 // //
 // // Contact fragments
@@ -188,20 +180,6 @@ export const lender = () => ({
     country: 1,
   },
 });
-
-export const adminLender = () => {
-  const lenderFragment = lender();
-  return {
-    ...lenderFragment,
-    adminNote: 1,
-    offers: adminOffer(),
-    organisation: {
-      ...lenderFragment.organisation,
-      commissionRates: { type: 1, rates: 1 },
-    },
-    status: 1,
-  };
-};
 
 // //
 // // LenderRules fragments
@@ -295,9 +273,10 @@ export const loan = () => ({
     contacts: 1,
     lenderOrganisationLink: 1,
     name: 1,
+    promotionLotLinks: 1,
     status: 1,
     type: 1,
-    users: { name: 1, email: 1, phoneNumber: 1 },
+    users: { name: 1, email: 1, phoneNumber: 1, organisations: { name: 1 } },
   },
   properties: { totalValue: 1, address1: 1, category: 1 },
   propertyIds: 1,
@@ -309,17 +288,9 @@ export const loan = () => ({
 });
 
 const userPropertyValue = { borrowRatio: 1, propertyValue: 1 };
-const adminPropertyValue = { ...userPropertyValue, organisationName: 1 };
 const userMaxPropertyValue = {
   main: { min: userPropertyValue, max: userPropertyValue },
   second: { min: userPropertyValue, max: userPropertyValue },
-  canton: 1,
-  date: 1,
-  borrowerHash: 1,
-};
-const adminMaxPropertyValue = {
-  main: { min: adminPropertyValue, max: adminPropertyValue },
-  second: { min: adminPropertyValue, max: adminPropertyValue },
   canton: 1,
   date: 1,
   borrowerHash: 1,
@@ -331,7 +302,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
   displayWelcomeScreen: 1,
-  // offers: 1,
   lenders: {
     organisation: { name: 1, logo: 1 },
     offers: {
@@ -342,6 +312,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
     },
   },
   properties: userProperty({ withSort }),
+  showClosingChecklists: 1,
   user: appUser(),
   userFormsEnabled: 1,
   maxPropertyValue: userMaxPropertyValue,
@@ -349,19 +320,20 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
     ? {
         promotions: {
           address: 1,
+          canton: 1,
           contacts: 1,
           documents: { promotionImage: 1 },
           lenderOrganisationLink: 1,
           name: 1,
+          promotionLotLinks: 1,
           status: 1,
           type: 1,
-          canton: 1,
           users: {
             _id: 1,
             name: 1,
             email: 1,
             phoneNumber: 1,
-            organisations: { users: { title: 1 } },
+            organisations: { name: 1, users: { title: 1 } },
           },
           loans: {
             _id: 1,
@@ -373,43 +345,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         },
       }
     : {}),
-});
-
-export const adminLoan = ({ withSort } = {}) => ({
-  assigneeLinks: 1, // Keep this first, to make sure it arrives along with the assignees
-  ...userLoan({ withSort }),
-  adminNotes: 1,
-  category: 1,
-  financedPromotion: { name: 1, status: 1 },
-  financedPromotionLink: 1,
-  frontTagId: 1,
-  lenders: adminLender(),
-  maxPropertyValue: adminMaxPropertyValue,
-  nextDueTask: 1,
-  proNote: 1,
-  properties: adminProperty({ withSort }),
-  revenues: adminRevenue(),
-  status: 1,
-  tasksCache: {
-    createdAt: 1,
-    dueAt: 1,
-    status: 1,
-    title: 1,
-    isPrivate: 1,
-    assigneeLink: 1,
-  },
-  userCache: 1,
-  user: adminUser(),
-  selectedLenderOrganisation: { name: 1 },
-  insuranceRequests: {
-    status: 1,
-    name: 1,
-    borrowers: { name: 1 },
-    createdAt: 1,
-    updatedAt: 1,
-  },
-  unsuccessfulReason: 1,
-  mainAssignee: 1,
 });
 
 export const proLoans = () => ({
@@ -426,11 +361,14 @@ export const proLoans = () => ({
     status: 1,
     lenderOrganisationLink: 1,
   },
+  promotionInvitedBy: 1,
   promotionLinks: 1,
   promotionOptions: {
+    priorityOrder: 1,
     name: 1,
     status: 1,
     promotionLots: {
+      attributedToLink: 1,
       attributedTo: { user: { _id: 1 } },
       properties: { totalValue: 1, value: 1 },
     },
@@ -508,21 +446,6 @@ export const mortgageNote = () => ({
 });
 
 // //
-// // Notification fragments
-// //
-export const notification = () => ({
-  activity: activity(),
-  createdAt: 1,
-  readAt: 1,
-  recipients: { firstName: 1, lastName: 1, name: 1 },
-  relatedDoc: 1,
-  task: task(),
-  title: 1,
-  revenue: adminRevenue(),
-  updatedAt: 1,
-});
-
-// //
 // // Offer fragments
 // //
 export const formOffer = () => ({
@@ -563,11 +486,6 @@ export const fullOffer = () => ({
   enableOffer: 1,
 });
 
-export const adminOffer = () => ({
-  ...fullOffer(),
-  documents: 1,
-});
-
 // //
 // // Organisation fragments
 // //
@@ -600,7 +518,6 @@ export const proOrganisation = () => ({
   generatedProductions: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
-  offers: 1,
   offerCount: 1,
   users: organisationUser(),
   enabledCommissionTypes: 1,
@@ -614,6 +531,7 @@ export const proPromotionLot = () => ({
     user: { name: 1, phoneNumbers: 1, email: 1 },
     promotions: { _id: 1 },
   },
+  attributedToPromotionOption: 1,
   createdAt: 1,
   documents: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
@@ -632,6 +550,7 @@ export const proPromotionLot = () => ({
     },
     constructionTimeline: 1,
     signingDate: 1,
+    promotionLotGroups: 1,
   },
   promotionOptions: { _id: 1 },
   properties: promotionProperty(),
@@ -648,7 +567,7 @@ export const appPromotionLot = () => ({
   documents: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
   name: 1,
-  promotion: { name: 1, status: 1 },
+  promotion: { name: 1, status: 1, promotionLotGroups: 1 },
   properties: promotionProperty(),
   reducedStatus: 1,
   status: 1,
@@ -664,9 +583,12 @@ export const formPromotionOption = () => ({
   bank: 1,
   canton: 1,
   fullVerification: 1,
+  invitedBy: 1,
   loanCache: 1, // Useful for invitedBy
   priorityOrder: 1,
-  promotionLots: { properties: { totalValue: 1 } },
+  promotionLots: {
+    properties: formProperty(),
+  },
   reservationAgreement: 1,
   reservationDeposit: 1,
   simpleVerification: 1,
@@ -690,7 +612,11 @@ export const proPromotionOption = () => ({
     },
     promotionOptions: {
       name: 1,
-      promotionLots: { attributedTo: { user: { _id: 1 } }, status: 1 },
+      promotionLots: {
+        attributedToLink: 1,
+        attributedTo: { user: { _id: 1 } },
+        status: 1,
+      },
       loan: { loanProgress: 1 },
     },
     proNote: 1,
@@ -698,6 +624,7 @@ export const proPromotionOption = () => ({
     status: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
   },
+  name: 1,
   promotion: { users: { _id: 1 }, agreementDuration: 1 },
 });
 
@@ -711,6 +638,7 @@ export const appPromotionOption = () => ({
     promotions: { _id: 1, users: { name: 1, organisations: { name: 1 } } },
   },
   lots: { description: 1, name: 1, type: 1, value: 1 },
+  name: 1,
   promotionLots: appPromotionLot(),
   updatedAt: 1,
 });
@@ -732,6 +660,7 @@ export const loanPromotionOption = () => ({
 // //
 // // Promotion fragments
 // //
+
 export const basePromotion = () => ({
   address: 1,
   address1: 1,
@@ -744,6 +673,7 @@ export const basePromotion = () => ({
   contacts: 1,
   createdAt: 1,
   documents: 1,
+  lenderOrganisationLink: 1,
   lenderOrganisation: { name: 1, logo: 1 },
   loans: { _id: 1, createdAt: 1 },
   lots: {
@@ -755,6 +685,7 @@ export const basePromotion = () => ({
     status: 1,
   },
   name: 1,
+  promotionLotLinks: 1,
   promotionLots: {
     status: 1,
     reducedStatus: 1,
@@ -785,8 +716,10 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion(),
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
+  authorizationStatus: 1,
   description: 1,
   externalUrl: 1,
+  loanCount: 1,
   promotionLots: {
     attributedTo: { user: { name: 1 } },
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
@@ -800,7 +733,6 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     promotionLotGroupIds: 1,
   },
   promotionLoan: { _id: 1, name: 1, proNotes: 1, adminNotes: 1 },
-  authorizationStatus: 1,
   projectStatus: 1,
   isTest: 1,
   ...(withFilteredLoan
@@ -819,8 +751,6 @@ export const proPromotions = () => ({
   promotionLots: { attributedTo: { user: { name: 1 } }, promotion: { _id: 1 } },
 });
 
-export const adminPromotions = proPromotion;
-
 export const searchPromotions = () => ({
   createdAt: 1,
   name: 1,
@@ -838,6 +768,8 @@ export const formProperty = () => ({
   address1: 1,
   address2: 1,
   areaNorm: 1,
+  balconyArea: 1,
+  bankValue: 1,
   bathroomCount: 1,
   canton: 1,
   category: 1,
@@ -895,16 +827,11 @@ export const fullProperty = ({ withSort } = {}) => ({
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
-export const adminProperty = ({ withSort } = {}) => ({
-  ...fullProperty({ withSort }),
-  loanCount: 1,
-  useOpenGraph: 1,
-  users: { name: 1, organisations: { name: 1 } },
-});
-
 export const promotionProperty = () => ({
   additionalMargin: 1,
   address: 1,
+  balconyArea: 1,
+  bankValue: 1,
   bathroomCount: 1,
   canton: 1,
   constructionValue: 1,
@@ -931,6 +858,7 @@ export const userProperty = ({ withSort } = {}) => {
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
   loanCount: 1,
+  status: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
@@ -947,17 +875,6 @@ export const baseTask = () => ({
   status: 1,
   title: 1,
   updatedAt: 1,
-});
-
-export const task = () => ({
-  ...baseTask(),
-  assigneeLink: 1,
-  assignee: simpleUser(),
-  lender: { name: 1 },
-  loan: { name: 1, borrowers: { name: 1 }, user: { name: 1 } },
-  organisation: { name: 1 },
-  promotion: { name: 1 },
-  user: { name: 1 },
 });
 
 // //
@@ -991,32 +908,6 @@ export const fullUser = () => ({
   newsletterStatus: 1,
   organisations: { name: 1 },
   updatedAt: 1,
-});
-
-export const adminUser = () => ({
-  ...fullUser(),
-  assignedEmployee: simpleUser(),
-  assignedEmployeeCache: 1,
-  office: 1,
-  promotions: { name: 1, status: 1 },
-  proProperties: { address1: 1, status: 1, loanCount: 1, totalValue: 1 },
-  referredByUser: {
-    name: 1,
-    organisations: { name: 1 },
-    email: 1,
-    phoneNumber: 1,
-  },
-  referredByOrganisation: { name: 1, emails: 1 },
-  referredByOrganisationLink: 1,
-  acquisitionChannel: 1,
-  borrowers: { name: 1 },
-  insuranceRequests: {
-    name: 1,
-    borrowers: { name: 1 },
-    createdAt: 1,
-    updatedAt: 1,
-    status: 1,
-  },
 });
 
 export const appUser = () => ({
@@ -1071,41 +962,6 @@ export const proUser = () => ({
 // //
 // // Revenues fragments
 // //
-export const adminRevenue = () => ({
-  amount: 1,
-  // Keep these in the right order
-  assigneeLink: 1,
-  assignee: { name: 1 },
-  createdAt: 1,
-  description: 1,
-  expectedAt: 1,
-  loan: {
-    name: 1,
-    borrowers: { name: 1 },
-    user: {
-      name: 1,
-      referredByOrganisation: {
-        name: 1,
-        commissionRates: { type: 1, rates: 1 },
-      },
-    },
-    userCache: 1,
-    assigneeLinks: 1,
-    hasPromotion: 1,
-  },
-  insurance: { name: 1, insuranceRequest: { _id: 1 }, borrower: { name: 1 } },
-  insuranceRequest: { name: 1 },
-  // Keep these in the right order
-  organisationLinks: 1,
-  organisations: { name: 1 },
-  paidAt: 1,
-  // Keep these in the right order
-  sourceOrganisationLink: 1,
-  sourceOrganisation: { name: 1 },
-  status: 1,
-  type: 1,
-});
-
 export const proRevenue = () => ({
   amount: 1,
   expectedAt: 1,

@@ -31,7 +31,7 @@ describe('Pro promotion', () => {
       cy.visit('/');
     });
 
-    it('can access the promotion users tab', () => {
+    it(`can access the promotion users tab`, () => {
       cy.callMethod('removeAllPromotions');
       cy.callMethod('insertFullPromotion');
       cy.callMethod('addProUsersToPromotion');
@@ -52,42 +52,42 @@ describe('Pro promotion', () => {
       cy.refetch();
 
       cy.get('tbody tr').should('have.length', 4);
+      cy.get('tbody tr').first().contains('XXX').should('exist');
+      cy.get('tbody tr')
+        .first()
+        .should('contain', 'XXX')
+        .find('.icon-link')
+        .last()
+        .trigger('mouseover');
 
       cy.get('tbody tr')
         .first()
-        .then(tr => {
-          cy.wrap(tr).should('contain', 'XXX');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseover');
-          cy.get('.popover-content').should('contain', 'XXX');
-          cy.wrap(tr)
-            .get('.button')
-            .should('not.exist');
-        });
+        .should('contain', 'XXX')
+        .get('.popover-content')
+        .should('contain', 'XXX');
+      cy.get('tbody tr').first().get('.button').should('not.exist');
 
       // customers are invited by user
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL });
       cy.refetch();
+      cy.wait(500);
+      cy.get('tbody tr').first().should('not.contain', 'XXX');
+
+      cy.get('tbody tr').first().find('.icon-link').last().trigger('mouseover');
       cy.get('tbody tr')
         .first()
-        .then(tr => {
-          cy.wrap(tr).should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseover');
-          cy.get('.popover-content').should('not.contain', 'Personne');
-          cy.get('.popover-content').should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .get('.button')
-            .should('not.exist');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseleave');
-        });
+        .get('.popover-content')
+        .should('not.contain', 'Personne');
+      cy.get('tbody tr')
+        .first()
+        .get('.popover-content')
+        .should('not.contain', 'XXX');
+      cy.get('tbody tr').first().get('.button').should('not.exist');
+      cy.get('tbody tr')
+        .first()
+        .find('.icon-link')
+        .last()
+        .trigger('mouseleave');
 
       // customers are invited by user's organisation member
       cy.callMethod('setUserPermissions', {
@@ -100,20 +100,14 @@ describe('Pro promotion', () => {
       });
       cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
       cy.refetch();
+      cy.wait(500);
+      cy.get('tbody tr').first().should('not.contain', 'XXX');
+      cy.get('tbody tr').find('.icon-link').last().trigger('mouseover');
       cy.get('tbody tr')
-        .first()
-        .then(tr => {
-          cy.wrap(tr).should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .find('.icon-link')
-            .last()
-            .trigger('mouseover');
-          cy.get('.popover-content').should('not.contain', 'Personne');
-          cy.get('.popover-content').should('not.contain', 'XXX');
-          cy.wrap(tr)
-            .get('.button')
-            .should('not.exist');
-        });
+        .get('.popover-content')
+        .should('not.contain', 'Personne');
+      cy.get('tbody tr').get('.popover-content').should('not.contain', 'XXX');
+      cy.get('tbody tr').get('.button').should('not.exist');
 
       // Can now delete customers
       cy.callMethod('setUserPermissions', {
@@ -126,14 +120,11 @@ describe('Pro promotion', () => {
         },
       });
       cy.refetch();
+      cy.wait(500);
 
-      cy.get('.actions')
-        .first()
-        .click();
+      cy.get('.actions').first().click();
 
-      cy.contains('Supprimer')
-        .first()
-        .click();
+      cy.contains('Supprimer').first().click();
 
       cy.refetch();
 
@@ -173,27 +164,29 @@ describe('Pro promotion', () => {
         });
 
       cy.get('@lotIndex').then(lotIndex => {
-        cy.get('.promotion-lots-table tbody tr')
-          .eq(lotIndex)
-          .click();
+        cy.get('.promotion-lots-table tbody tr').eq(lotIndex).click();
       });
 
       cy.get('@loanCount').then(count => {
-        cy.get('.promotion-lot-loans-table tbody tr').should(
-          'have.length',
-          count,
-        );
+        cy.contains('Acquéreurs intéressés')
+          .parents('section')
+          .find('tbody tr')
+          .should('have.length', count);
       });
 
       cy.contains('Réserver').click();
       cy.contains('Confirmer').click();
 
-      cy.get('.promotion-lot-loans-table')
+      cy.contains('Acquéreurs intéressés')
+        .parents('section')
+        .find('table')
         .contains('Réservation en cours')
         .should('exist');
-      cy.get('.promotion-lot-loans-table')
-        .contains('Détail')
-        .should('exist')
+
+      cy.contains('Acquéreurs intéressés')
+        .parents('section')
+        .find('table')
+        .contains('button', 'Détail')
         .click();
 
       cy.contains('Uploader convention').click();
@@ -326,6 +319,8 @@ describe('Pro promotion', () => {
       });
 
       it('should modify lots', () => {
+        cy.callMethod('insertPromotion');
+
         cy.callMethod('setUserPermissions', {
           permissions: {
             canModifyPromotion: true,
@@ -341,9 +336,7 @@ describe('Pro promotion', () => {
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('not.exist');
-        cy.get('.promotion-lots-table')
-          .contains('Lot 2')
-          .should('not.exist');
+        cy.get('.promotion-lots-table').contains('Lot 2').should('not.exist');
 
         cy.contains('Lot 1').click();
         cy.wait(2000); // Try to wait for focus to settle
@@ -353,7 +346,7 @@ describe('Pro promotion', () => {
         cy.setSelect('type', 'BASEMENT');
         cy.get('input[name=value]').clear();
         cy.get('input[name=value]').type('{backspace}2500'); // Remove initial 0
-        cy.setSelect('promotionLot', 1);
+        cy.setSelect('promotionLotId', 1);
         cy.contains('Ok').click();
 
         cy.contains('Lot 2').should('exist');
@@ -362,9 +355,7 @@ describe('Pro promotion', () => {
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('exist');
-        cy.get('.promotion-lots-table')
-          .contains('Lot 2')
-          .should('exist');
+        cy.get('.promotion-lots-table').contains('Lot 2').should('exist');
       });
 
       it('should remove lots', () => {
@@ -380,9 +371,7 @@ describe('Pro promotion', () => {
         cy.contains('Test promotion').click();
         cy.contains('Afficher lots annexes').click();
 
-        cy.get('.additional-lots-table')
-          .contains('Lot 2')
-          .click();
+        cy.get('.additional-lots-table').contains('Lot 2').click();
 
         cy.contains('Supprimer').click();
         cy.contains('Confirmer').click();

@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { REAL_ESTATE_INCOME_ALGORITHMS } from 'imports/core/config/financeConstants';
 
 import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
+import { REAL_ESTATE_INCOME_ALGORITHMS } from 'core/config/financeConstants';
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';
@@ -118,9 +118,8 @@ describe('IncomeAndExpenses', () => {
     ).to.equal('10 000');
 
     expect(
-      getAllByText('Total')[0]
-        .closest('tr')
-        .querySelector('.left-value').textContent,
+      getAllByText('Total')[0].closest('tr').querySelector('.left-value')
+        .textContent,
     ).to.equal('60 000');
   });
 
@@ -154,9 +153,8 @@ describe('IncomeAndExpenses', () => {
     ).to.equal('180 000');
 
     expect(
-      getAllByText('Total')[1]
-        .closest('tr')
-        .querySelector('.right-value').textContent,
+      getAllByText('Total')[1].closest('tr').querySelector('.right-value')
+        .textContent,
     ).to.equal('180 000');
   });
 
@@ -221,16 +219,14 @@ describe('IncomeAndExpenses', () => {
     ).to.equal('-10 000');
 
     expect(
-      getAllByText('Total')[1]
-        .closest('tr')
-        .querySelector('.right-value').textContent,
+      getAllByText('Total')[1].closest('tr').querySelector('.right-value')
+        .textContent,
     ).to.equal('180 000');
 
     // Only to verify that no extra expenses are added
     expect(
-      getAllByText('Total')[0]
-        .closest('tr')
-        .querySelector('.left-value').textContent,
+      getAllByText('Total')[0].closest('tr').querySelector('.left-value')
+        .textContent,
     ).to.equal('60 000');
   });
 
@@ -293,9 +289,8 @@ describe('IncomeAndExpenses', () => {
     ).to.equal('1 000');
 
     expect(
-      getAllByText('Total')[1]
-        .closest('tr')
-        .querySelector('.right-value').textContent,
+      getAllByText('Total')[1].closest('tr').querySelector('.right-value')
+        .textContent,
     ).to.equal('181 000');
   });
 
@@ -376,9 +371,8 @@ describe('IncomeAndExpenses', () => {
     ).to.equal('1 000');
 
     expect(
-      getAllByText('Total')[0]
-        .closest('tr')
-        .querySelector('.left-value').textContent,
+      getAllByText('Total')[0].closest('tr').querySelector('.left-value')
+        .textContent,
     ).to.equal('61 000');
   });
 });

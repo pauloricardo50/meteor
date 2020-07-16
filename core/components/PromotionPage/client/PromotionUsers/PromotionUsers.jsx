@@ -1,15 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import Table from '../../../Table';
+import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { removeProFromPromotion } from '../../../../api/promotions/methodDefinitions';
+import ConfirmMethod from '../../../ConfirmMethod';
+import Table from '../../../DataTable/Table';
+import IconButton from '../../../IconButton';
+import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
+import ProCustomer from '../../../ProCustomer';
 import T from '../../../Translation';
-import PromotionMetadataContext from '../PromotionMetadata';
-import PromotionProUserAdder from './PromotionProUserAdder';
-import PromotionUsersContainer from './PromotionUsersContainer';
+import { usePromotion } from '../PromotionPageContext';
+import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
+import PromotionUserRoles from './PromotionUserRoles';
 
-const PromotionUsers = ({ promotion, rows, columnOptions }) => {
+const PromotionUsers = () => {
   const {
+    promotion: { _id: promotionId, name: promotionName, users },
     permissions: { canManageProUsers },
-  } = useContext(PromotionMetadataContext);
+  } = usePromotion();
+
   return (
     <div className="animated fadeIn mt-16">
       <div className="card1 card-top promotion-users-table">
@@ -20,12 +28,76 @@ const PromotionUsers = ({ promotion, rows, columnOptions }) => {
           <h2>
             <T id="PromotionPage.PromotionUsers" />
           </h2>
-          {canManageProUsers && <PromotionProUserAdder promotion={promotion} />}
         </div>
-        <Table rows={rows} columnOptions={columnOptions} />
+
+        <Table
+          columns={[
+            {
+              accessor: 'name',
+              Header: <T id="PromotionPage.PromotionUsers.name" />,
+              Cell: ({ row: { original: user } }) => (
+                <ProCustomer
+                  user={{ ...user, name: getUserNameAndOrganisation({ user }) }}
+                  iconStyle={{ maxWidth: 'unset' }}
+                />
+              ),
+            },
+            {
+              accessor: 'roles.$metadata.roles.0',
+              Header: <T id="PromotionPage.PromotionUsers.roles" />,
+              Cell: ({ row: { original: user } }) => (
+                <PromotionUserRoles user={user} />
+              ),
+            },
+            {
+              accessor: 'permissions',
+              Header: <T id="PromotionPage.PromotionUsers.permissions" />,
+              disableSortBy: true,
+              Cell: ({ row: { original: user } }) => (
+                <PromotionUserPermissionsModifier
+                  user={user}
+                  promotionId={promotionId}
+                  canModify={canManageProUsers}
+                />
+              ),
+            },
+            canManageProUsers && {
+              accessor: 'actions',
+              Header: <T id="PromotionPage.PromotionUsers.actions" />,
+              disableSortBy: true,
+              Cell: ({ row: { original: user } }) => (
+                <div onClick={event => event.stopPropagation()} key={user._id}>
+                  <ImpersonateLink
+                    user={user}
+                    key="impersonate"
+                    className="impersonate-link mr-4"
+                    size="small"
+                  />
+
+                  <ConfirmMethod
+                    TriggerComponent={IconButton}
+                    buttonProps={{
+                      type: 'close',
+                      size: 'small',
+                      tooltip: 'Enlever de la promotion',
+                    }}
+                    method={() =>
+                      removeProFromPromotion.run({
+                        promotionId,
+                        userId: user._id,
+                      })
+                    }
+                    description={`Enlever ${user.name} de la promotion ${promotionName}?`}
+                  />
+                </div>
+              ),
+            },
+          ].filter(x => x)}
+          data={users}
+        />
       </div>
     </div>
   );
 };
 
-export default PromotionUsersContainer(PromotionUsers);
+export default PromotionUsers;

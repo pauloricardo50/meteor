@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import Activities from '../activities';
 import Borrowers from '../borrowers/borrowers';
+import Checklists from '../checklists/checklists';
 import CommissionRates from '../commissionRates';
 import { COMMISSION_RATES_TYPE } from '../commissionRates/commissionRateConstants';
 import Contacts from '../contacts';
@@ -40,6 +41,13 @@ import Organisations from '../organisations';
 import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
 import PromotionLots from '../promotionLots';
 import PromotionOptions from '../promotionOptions';
+import {
+  PROMOTION_OPTION_AGREEMENT_STATUS,
+  PROMOTION_OPTION_BANK_STATUS,
+  PROMOTION_OPTION_DEPOSIT_STATUS,
+  PROMOTION_OPTION_FULL_VERIFICATION_STATUS,
+  PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS,
+} from '../promotionOptions/promotionOptionConstants';
 import Promotions from '../promotions';
 import { PROMOTION_TYPES } from '../promotions/promotionConstants';
 import Properties from '../properties/properties';
@@ -68,6 +76,7 @@ Object.values(ROLES).forEach(role => {
     lastName: () => faker.name.lastName(),
     firstName: () => faker.name.firstName(),
     phoneNumbers: [TEST_PHONE],
+    isInRoundRobin: role === ROLES.ADVISOR,
   }).after(({ _id }) => {
     Roles.setUserRoles(_id, role);
   });
@@ -136,12 +145,33 @@ Factory.define('promotion', Promotions, {
 });
 
 Factory.define('promotionOption', PromotionOptions, {});
+
+Factory.define('completedPromotionOption', PromotionOptions, {
+  bank: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+  simpleVerification: {
+    status: PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.VALIDATED,
+    date: new Date(),
+  },
+  fullVerification: {
+    status: PROMOTION_OPTION_FULL_VERIFICATION_STATUS.VALIDATED,
+    date: new Date(),
+  },
+  reservationAgreement: {
+    status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
+    date: new Date(),
+  },
+  reservationDeposit: {
+    status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,
+    date: new Date(),
+  },
+});
+
 Factory.define('promotionLot', PromotionLots, {
   propertyLinks: () => {
     const propertyId = Properties.insert({
       address1: 'Rue du parc 1',
       value: 1000000,
-      name: 'Lot A',
+      name: 'A',
     });
     return [{ _id: propertyId }];
   },
@@ -258,10 +288,7 @@ Factory.define('insurance', Insurances, {
     }
   },
   startDate: () => new Date(),
-  endDate: () =>
-    moment()
-      .add(10, 'years')
-      .toDate(),
+  endDate: () => moment().add(10, 'years').toDate(),
 });
 
 Factory.define('commissionRate', CommissionRates, {
@@ -277,4 +304,8 @@ Factory.define('insuranceProduct', InsuranceProducts, {
   category: INSURANCE_PRODUCT_CATEGORIES['3A_INSURANCE'],
   revaluationFactor: 2,
   maxProductionYears: 35,
+});
+
+Factory.define('checklist', Checklists, {
+  title: 'Todo list',
 });

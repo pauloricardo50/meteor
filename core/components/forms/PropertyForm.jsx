@@ -32,6 +32,7 @@ const detailFields = [
   'insideArea',
   'landArea',
   'terraceArea',
+  'balconyArea',
   'gardenArea',
   'numberOfFloors',
   'floorNumber',
@@ -178,7 +179,7 @@ const PropertyForm = ({ property }) => {
               'insideArea',
               'landArea',
               'terraceArea',
-
+              'balconyArea',
               'gardenArea',
             ],
             Component: Box,

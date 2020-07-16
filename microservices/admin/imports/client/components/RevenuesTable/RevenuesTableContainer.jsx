@@ -63,12 +63,7 @@ export const makeMapRevenue = ({
   const date = status === REVENUE_STATUS.CLOSED ? paidAt : expectedAt;
 
   let title;
-  if (loan) {
-    title = {
-      raw: loan && loan.name,
-      label: loan && <CollectionIconLink relatedDoc={loan} />,
-    };
-  } else if (insurance) {
+  if (insurance) {
     title = {
       raw: insurance && insurance.name,
       label: insurance && <CollectionIconLink relatedDoc={insurance} />,
@@ -79,6 +74,11 @@ export const makeMapRevenue = ({
       label: insuranceRequest && (
         <CollectionIconLink relatedDoc={insuranceRequest} />
       ),
+    };
+  } else if (loan) {
+    title = {
+      raw: loan && loan.name,
+      label: loan && <CollectionIconLink relatedDoc={loan} />,
     };
   }
 
@@ -131,35 +131,42 @@ export default compose(
   withState('revenueToModify', 'setRevenueToModify', null),
   withSmartQuery({
     query: REVENUES_COLLECTION,
-    params: ({ filterRevenues, ...props }) => ({
-      ...(filterRevenues ? { $filters: filterRevenues(props) } : {}),
-      amount: 1,
-      assigneeLink: 1,
-      description: 1,
-      expectedAt: 1,
-      loan: {
-        name: 1,
-        borrowers: { name: 1 },
-        user: { name: 1 },
-        userCache: 1,
-        assigneeLinks: 1,
-      },
-      paidAt: 1,
-      sourceOrganisationLink: 1,
-      sourceOrganisation: { name: 1 },
-      status: 1,
-      type: 1,
-      organisationLinks: 1,
-      organisations: { name: 1 },
-      insurance: {
-        name: 1,
-        insuranceRequest: { _id: 1 },
-        borrower: { name: 1 },
-      },
-      insuranceRequest: { name: 1 },
-    }),
-    deps: [],
+    params: ({ filterRevenues, ...props }) => {
+      const filters =
+        typeof filterRevenues === 'function'
+          ? filterRevenues(props)
+          : filterRevenues;
+      return {
+        ...(filterRevenues ? { $filters: filters } : {}),
+        amount: 1,
+        assigneeLink: 1,
+        description: 1,
+        expectedAt: 1,
+        loan: {
+          name: 1,
+          borrowers: { name: 1 },
+          user: { name: 1 },
+          userCache: 1,
+          assigneeLinks: 1,
+        },
+        paidAt: 1,
+        sourceOrganisationLink: 1,
+        sourceOrganisation: { name: 1 },
+        status: 1,
+        type: 1,
+        organisationLinks: 1,
+        organisations: { name: 1 },
+        insurance: {
+          name: 1,
+          insuranceRequest: { _id: 1 },
+          borrower: { name: 1 },
+        },
+        insuranceRequest: { name: 1 },
+      };
+    },
+    deps: ({ deps = [] }) => deps,
     dataName: 'revenues',
+    skip: ({ revenues }) => !!revenues,
   }),
   withProps(({ revenues, postFilter }) => {
     if (postFilter) {

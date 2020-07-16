@@ -37,21 +37,7 @@ const RevenuesTab = ({ loan }) => {
       <RevenueSuggestions loanId={loan._id} suggestRevenue={suggestRevenue} />
       <RevenuesTable
         loan={loan}
-        filterRevenues={({ loan: { _id: loanId, insuranceRequests = [] } }) => {
-          if (insuranceRequests.length) {
-            return {
-              $or: [
-                { 'loanCache._id': loanId },
-                {
-                  'insuranceRequestCache._id': {
-                    $in: insuranceRequests.map(({ _id }) => _id),
-                  },
-                },
-              ],
-            };
-          }
-          return { 'loanCache._id': loanId };
-        }}
+        filterRevenues={() => ({ 'loanCache._id': loan._id })}
       />
     </div>
   );

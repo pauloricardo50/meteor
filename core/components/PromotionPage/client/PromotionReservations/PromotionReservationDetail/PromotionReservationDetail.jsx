@@ -11,9 +11,9 @@ import { useStaticMeteorData } from '../../../../../hooks/useMeteorData';
 import Calculator from '../../../../../utils/Calculator';
 import Loading from '../../../../Loading';
 import UploaderArray from '../../../../UploaderArray';
+import PromotionReservationProgressEditor from '../../../PromotionReservationProgress/PromotionReservationProgressEditor';
 import PromotionReservationDeadline from '../PromotionReservationDeadline';
 import PromotionReservationDetailActions from './PromotionReservationDetailActions';
-import PromotionReservationProgressEditor from './PromotionReservationProgressEditor';
 
 const promotionReservationsArray = [
   {
@@ -30,24 +30,25 @@ const PromotionReservationDetail = ({
     query: proPromotionOptions,
     params: {
       promotionOptionId,
-    },
-    $body: {
-      status: 1,
-      createdAt: 1,
-      promotionLots: { name: 1 },
-      loan: {
-        proNote: 1,
-        loanProgress: 1,
-        user: { name: 1, phoneNumbers: 1, email: 1 },
-        promotions: { users: { name: 1, organisations: { name: 1 } } },
+      $body: {
+        bank: 1,
+        createdAt: 1,
+        documents: 1,
+        fullVerification: 1,
+        invitedBy: 1,
+        isAnonymized: 1,
+        loan: {
+          proNote: 1,
+          loanProgress: 1,
+          user: { name: 1, phoneNumbers: 1, email: 1 },
+          promotions: { users: { name: 1, organisations: { name: 1 } } },
+        },
+        promotionLots: { name: 1 },
+        reservationAgreement: 1,
+        reservationDeposit: 1,
+        simpleVerification: 1,
+        status: 1,
       },
-      reservationDeposit: 1,
-      simpleVerification: 1,
-      fullVerification: 1,
-      reservationAgreement: 1,
-      bank: 1,
-      isAnonymized: 1,
-      documents: 1,
     },
     type: 'single',
   });
@@ -76,6 +77,7 @@ const PromotionReservationDetail = ({
           startDate={startDate}
           expirationDate={expirationDate}
           status={status}
+          loan={loan}
         />
       </div>
       <PromotionReservationProgressEditor

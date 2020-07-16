@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { withProps } from 'recompose';
 
+import { proPromotionLots } from '../../../../api/promotionLots/queries';
 import {
   addPromotionLotGroup,
   removePromotionLotGroup,
   updatePromotionLotGroup,
 } from '../../../../api/promotions/methodDefinitions';
+import useMeteorData from '../../../../hooks/useMeteorData';
 import AutoFormDialog from '../../../AutoForm2/AutoFormDialog';
 import ConfirmMethod from '../../../ConfirmMethod';
 import Table from '../../../DataTable/Table';
@@ -46,6 +48,8 @@ const makeMapPromotionLotGroup = promotionId => ({ id, label }) => ({
             raised
             type="edit"
             tooltip={<T id="general.modify" />}
+            size="small"
+            className="mr-4"
           />
         )}
         model={{ label }}
@@ -65,6 +69,7 @@ const makeMapPromotionLotGroup = promotionId => ({ id, label }) => ({
           type: 'delete',
           tooltip: <T id="general.delete" />,
           className: 'error',
+          size: 'small',
         }}
         description={<T id="PromotionLotGroupsManager.delete" />}
         method={() =>
@@ -81,19 +86,17 @@ const PromotionLotGroupsManager = ({
   promotion: { _id: promotionId },
 }) => (
   <div className="flex-col">
-    <Table columns={columns} data={data} />
+    {data.length > 0 && <Table columns={columns} data={data} />}
     <PromotionLotGroupAdder promotionId={promotionId} />
   </div>
 );
 
 export default withProps(
-  ({
-    promotion: {
-      _id: promotionId,
-      promotionLotGroups = [],
-      promotionLots = [],
-    },
-  }) => {
+  ({ promotion: { _id: promotionId, promotionLotGroups = [] } }) => {
+    const { data: promotionLots = [] } = useMeteorData({
+      query: proPromotionLots,
+      params: { promotionId, $body: { promotionLotGroupIds: 1 } },
+    });
     const columns = useMemo(() => [
       { Header: <T id="Forms.promotionLotGroup" />, accessor: 'label' },
       {

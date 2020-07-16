@@ -1,5 +1,6 @@
-import Activities from '../activities/activities';
+import Activities from '../activities';
 import Borrowers from '../borrowers';
+import Checklists from '../checklists';
 import InsuranceRequests from '../insuranceRequests';
 import Lenders from '../lenders';
 import LinkInitializer from '../links/LinkInitializer';
@@ -78,6 +79,13 @@ LinkInitializer.directInit(() => {
     insuranceRequests: {
       field: 'insuranceRequestLinks',
       collection: InsuranceRequests,
+      type: 'many',
+      metadata: true,
+      unique: true,
+    },
+    closingChecklists: {
+      field: 'closingChecklistLinks',
+      collection: Checklists,
       type: 'many',
       metadata: true,
       unique: true,

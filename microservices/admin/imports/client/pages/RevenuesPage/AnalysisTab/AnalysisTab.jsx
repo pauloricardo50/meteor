@@ -45,15 +45,15 @@ const AnalysisTab = () => {
       </div>
 
       <div className="flex sb">
-        {!loading ? (
+        {loading ? (
+          <Loading />
+        ) : (
           <PivotTableUI
             data={data}
             onChange={setState}
             renderers={{ ...TableRenderers, ...PlotlyRenderers }}
             {...state}
           />
-        ) : (
-          <Loading />
         )}
         <SavedAnalyses
           setState={setQueuedState}

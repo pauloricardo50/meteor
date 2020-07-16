@@ -12,19 +12,13 @@ import LoansWithoutRevenues from './LoansWithoutRevenues';
 import NewLoansStat from './NewLoansStat';
 import NewUsersStat from './NewUsersStat';
 import OutdatedRevenues from './OutdatedRevenues';
+import RecentClosings from './RecentClosings';
 import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
 import RevenuesWithUnnecessaryCommissions from './RevenuesWithUnnecessaryCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
 
-const AdminDashboardStats = ({
-  newLoans,
-  setPeriod,
-  period,
-  showChart,
-  setShowChart,
-  loanHistogram,
-}) => {
+const AdminDashboardStats = () => {
   const [showAll, setShowAll] = useState(false);
   return (
     <div className="admin-stats">
@@ -33,6 +27,7 @@ const AdminDashboardStats = ({
         <div className="flex wrap sa">
           <NewUsersStat />
           <NewLoansStat />
+          <RecentClosings />
           <LastSeenUsers />
         </div>
       </div>

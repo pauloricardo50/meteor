@@ -55,6 +55,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
   const emailVerified = !!emails.length && emails[0].verified;
   const toggleUserAccount = () => toggleAccount.run({ userId });
   const isAdvisor = Roles.userIsInRole(user, ROLES.ADVISOR);
+  const currentUserIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
 
   return (
     <div className="single-user-page-header">
@@ -221,6 +222,35 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             label={<h4 className="m-0">Inscrit</h4>}
           />
         </SingleUserPageInformationItem>
+
+        {isAdvisor && (
+          <SingleUserPageInformationItem label="Round robin">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['isInRoundRobin']}
+              disabled={!currentUserIsDev}
+              className="round-robin-checkbox"
+            />
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['roundRobinTimeout']}
+              autosaveDelay={500}
+            />
+          </SingleUserPageInformationItem>
+        )}
+        {/* This will be used to manually set Advisors intercomId */}
+        {currentUserIsDev && (
+          <SingleUserPageInformationItem label="Intercom">
+            <UpdateField
+              collection={Users}
+              doc={user}
+              fields={['intercomId']}
+              autoSaveDelay={500}
+            />
+          </SingleUserPageInformationItem>
+        )}
       </SingleUserPageInformation>
     </div>
   );

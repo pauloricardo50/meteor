@@ -1,9 +1,7 @@
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
-
 import React, { PureComponent } from 'react';
 import { injectIntl } from 'react-intl';
 
-import Loading from '../../Loading';
+import { createQuery } from '../../../api/queries';
 import Chip from '../../Material/Chip';
 import T from '../../Translation';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
@@ -23,14 +21,20 @@ export default Component => {
     constructor(props) {
       super(props);
       this.state = {
-        data: null,
+        data: props.data || null,
         error: null,
         loading: false,
       };
 
-      const allowedValues = this.getAllowedValues(props);
+      const { allowedValues, recommendedValues } = props;
       if (allowedValues) {
         this.state.values = allowedValues;
+      } else if (recommendedValues) {
+        if (typeof recommendedValues === 'function') {
+          this.getRecommendedValues(this.props);
+        } else {
+          this.state.values = recommendedValues;
+        }
       } else {
         this.getCustomAllowedValues(this.props);
       }
@@ -38,12 +42,19 @@ export default Component => {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
       const { model: nextModel } = nextProps;
-      const { model, handleClick, name } = this.props;
+      const {
+        model,
+        handleClick,
+        name,
+        recommendedValues,
+        allowedValues,
+      } = this.props;
 
       if (model !== nextModel) {
-        const allowedValues = this.getAllowedValues(nextProps);
         if (allowedValues) {
           this.setState({ values: allowedValues });
+        } else if (recommendedValues) {
+          this.getRecommendedValues(nextProps);
         } else {
           this.getCustomAllowedValues(nextProps);
         }
@@ -58,28 +69,41 @@ export default Component => {
       }
     }
 
-    getAllowedValues(props) {
-      const {
-        allowedValues,
-        recommendedValues,
-        withCustomOther,
-        value,
-      } = props;
-      if (allowedValues) {
-        return allowedValues;
+    filterRecommendedValues(recommendedValues) {
+      const { withCustomOther, value } = this.props;
+
+      const filteredRecommendValues = [
+        ...recommendedValues,
+        !withCustomOther && value,
+      ]
+        .filter((val, index, array) => array.indexOf(val) === index)
+        .filter(x => x);
+
+      return withCustomOther
+        ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
+        : filteredRecommendValues;
+    }
+
+    getRecommendedValues(props) {
+      const { recommendedValues, model } = props;
+
+      if (!recommendedValues) {
+        return;
       }
 
-      if (recommendedValues) {
-        const filteredRecommendValues = [
-          ...recommendedValues,
-          !withCustomOther && value,
-        ]
-          .filter((val, index, array) => array.indexOf(val) === index)
-          .filter(x => x);
-
-        return withCustomOther
-          ? [...filteredRecommendValues, OTHER_ALLOWED_VALUE]
-          : filteredRecommendValues;
+      if (typeof recommendedValues === 'function') {
+        Promise.resolve()
+          .then(() => recommendedValues(model))
+          .then(result =>
+            this.setState({ values: this.filterRecommendedValues(result) }),
+          )
+          .finally(() => this.setState({ loading: false }));
+      } else {
+        this.setState({
+          values: this.filterRecommendedValues(recommendedValues),
+          loading: false,
+          error: null,
+        });
       }
     }
 
@@ -101,18 +125,25 @@ export default Component => {
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (typeof customAllowedValues === 'object') {
-        const { query, params, allowNull } = customAllowedValues;
+        const {
+          query,
+          params,
+          allowNull,
+          postProcess = x => x,
+        } = customAllowedValues;
 
         getQuery({ query, params, model }).fetch((error, data) => {
           if (error) {
             return this.setState({ error, loading: false });
           }
 
-          const ids = data.map(({ _id }) => _id);
+          const processedData = postProcess(data);
+
+          const ids = processedData.map(({ _id }) => _id);
 
           this.setState({
             values: allowNull ? [null, ...ids] : ids,
-            data: allowNull ? [null, ...data] : data,
+            data: allowNull ? [null, ...processedData] : processedData,
             error: null,
             loading: false,
           });
@@ -172,7 +203,7 @@ export default Component => {
             // If the value is falsy, just transform it
             return transform(value);
           }
-          return transform(data.find(item => (item && item._id) === value));
+          return transform(data.find(item => item?._id === value));
         };
       }
       return transform;
@@ -196,13 +227,7 @@ export default Component => {
         return <span className="error">{error.message || error.reason}</span>;
       }
 
-      if (loading) {
-        return <Loading small />;
-      }
-
-      if (!values || !values.length) {
-        return null;
-      }
+      const isUsable = !loading && values?.length > 0;
 
       return (
         <Component
@@ -214,6 +239,7 @@ export default Component => {
           renderValue={this.renderValue}
           transform={this.makeTransform() || this.formatOption}
           data={data}
+          disabled={rest.disabled || !isUsable}
         />
       );
     }

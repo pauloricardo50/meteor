@@ -3,6 +3,7 @@ import countries from 'i18n-iso-countries';
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/autoFormConstants';
+import T from '../../components/Translation';
 import {
   COMMON_COUNTRIES,
   getSortedCountriesCodes,
@@ -45,6 +46,7 @@ export const additionalDocuments = initialDocuments => ({
   'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
   'additionalDocuments.$.category': { type: String, optional: true },
   'additionalDocuments.$.tooltip': { type: String, optional: true },
+  'additionalDocuments.$.checklistItemId': { type: String, optional: true },
 });
 
 export const address = {
@@ -68,12 +70,18 @@ export const address = {
     type: String,
     optional: true,
     autoValue: autoValueSentenceCase,
-    customAllowedValues: ({ zipCode = '' }) =>
-      String(zipCode).length === 4
-        ? getCitiesFromZipCode.run({ zipCode })
-        : [null],
     uniforms: {
-      transform: city => city || 'Aucun résultat trouvé',
+      recommendedValues: ({ zipCode = '' }) =>
+        String(zipCode).length === 4
+          ? getCitiesFromZipCode.run({ zipCode })
+          : [null],
+      withCustomOther: true,
+      transform: city => {
+        if (city === 'other') {
+          return <T id="general.other" />;
+        }
+        return city || 'Aucun résultat trouvé';
+      },
       displayEmtpy: true,
       allowNull: true,
     },

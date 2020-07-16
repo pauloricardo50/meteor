@@ -23,7 +23,7 @@ import {
 import { PROMOTION_LOT_STATUS } from '../../promotionLotConstants';
 import PromotionLotService from '../PromotionLotService';
 
-describe('PromotionLotService', function() {
+describe('PromotionLotService', function () {
   this.timeout(20000);
 
   beforeEach(() => {
@@ -104,7 +104,7 @@ describe('PromotionLotService', function() {
           user: {
             firstName: 'John',
             lastName: 'Doe',
-            emails: [{ address: 'user@e-potek.ch', verified: true }],
+            emails: [{ address: 'user1@e-potek.ch', verified: true }],
           },
           $metadata: { invitedBy: 'pro1' },
         },
@@ -250,7 +250,7 @@ describe('PromotionLotService', function() {
           },
         } = email4;
         expect(status).to.equal('sent');
-        expect(address).to.equal('user@e-potek.ch');
+        expect(address).to.equal('user1@e-potek.ch');
         expect(from_email).to.equal('test2@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal('Test promotion, Réservation du lot Lot 1');

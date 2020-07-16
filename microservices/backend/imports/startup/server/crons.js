@@ -10,6 +10,7 @@ import {
 } from 'core/api/promotionOptions/server/methods';
 import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOptionService';
 import SessionService from 'core/api/sessions/server/SessionService';
+import TaskService from 'core/api/tasks/server/TaskService';
 import UpdateWatcherService from 'core/api/updateWatchers/server/UpdateWatcherService';
 
 CronService.init();
@@ -120,4 +121,13 @@ CronService.addCron(
         .then(gettingDisbursed => gettingDisbursed.length),
   },
   { cronitorId: 'wYNCRc' },
+);
+
+CronService.addCron(
+  {
+    name: 'Generate tasks for promotion steps getting disbursed soon',
+    frequency: 'every 1 day',
+    func: () => TaskService.generatePromotionStepReminders(),
+  },
+  { cronitorId: '1qi00X' },
 );

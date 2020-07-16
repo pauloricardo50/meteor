@@ -21,7 +21,14 @@ const Offer = ({ offer, offerValues, loan }) => {
       {Meteor.microservice === 'admin' && !enableOffer && (
         <div className="offer-list-item-overlay">
           <h1>Cette offre est désactivée</h1>
-          <OfferModifier offer={offer} title="Modifier offre" />
+          <OfferModifier
+            offer={offer}
+            title={
+              <div>
+                Modifier offre de <b>{lender.organisation.name}</b>
+              </div>
+            }
+          />
         </div>
       )}
 
@@ -36,7 +43,7 @@ const Offer = ({ offer, offerValues, loan }) => {
         </div>
 
         <div className="offer-list-item-detail">
-          {offerValues.map(offerValue => (
+          {offerValues.map((offerValue) => (
             <OfferField
               key={offerValue.key}
               offerValue={offerValue}
@@ -47,7 +54,14 @@ const Offer = ({ offer, offerValues, loan }) => {
           {Meteor.microservice === 'admin' && (
             <div className="offer-list-item-actions">
               <OfferFeedback offer={offer} loan={loan} />
-              <OfferModifier offer={offer} title="Modifier offre" />
+              <OfferModifier
+                offer={offer}
+                title={
+                  <div>
+                    Modifier offre de <b>{lender.organisation.name}</b>
+                  </div>
+                }
+              />
               <OfferDocuments offer={offer} />
             </div>
           )}

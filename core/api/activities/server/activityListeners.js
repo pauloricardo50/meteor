@@ -8,15 +8,21 @@ import {
   insuranceRequestSetAssignees,
   insuranceRequestUpdateStatus,
 } from '../../insuranceRequests/methodDefinitions';
+import { INSURANCE_POTENTIAL } from '../../loans/loanConstants';
 import {
   loanSetAssignees,
   loanSetDisbursementDate,
   loanSetStatus,
+  notifyInsuranceTeamForPotential,
   sendLoanChecklist,
+  updateInsurancePotential,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import { removeLoanFromPromotion } from '../../promotions/methodDefinitions';
+import {
+  attachLoanToPromotion,
+  removeLoanFromPromotion,
+} from '../../promotions/methodDefinitions';
 import PromotionService from '../../promotions/server/PromotionService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import {
@@ -51,6 +57,26 @@ ServerEventService.addAfterMethodListener(
       isServerGenerated: true,
       loanLink: { _id: loanId },
       title: `Enlevé de la promotion "${name}"`,
+      description: userName ? `Par ${userName}` : '',
+      createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  attachLoanToPromotion,
+  ({ params: { loanId, promotionId }, context }) => {
+    context.unblock();
+    const { userId } = context;
+
+    const { name } = PromotionService.get(promotionId, { name: 1 });
+    const { name: userName } = UserService.get(userId, { name: 1 }) || {};
+
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.ATTACHED_LOAN_TO_PROMOTION,
+      isServerGenerated: true,
+      loanLink: { _id: loanId },
+      title: `Ajouté à la promotion "${name}"`,
       description: userName ? `Par ${userName}` : '',
       createdBy: userId,
     });
@@ -173,8 +199,9 @@ ServerEventService.addAfterMethodListener(
     if (APIUser) {
       referredByAPIOrg = UserService.getUserMainOrganisation(APIUser._id);
       const proOrg = UserService.getUserMainOrganisation(proId);
-      referredByAPIOrgLabel = `${proOrg &&
-        proOrg.name}, API ${referredByAPIOrg && referredByAPIOrg.name}`;
+      referredByAPIOrgLabel = `${proOrg && proOrg.name}, API ${
+        referredByAPIOrg && referredByAPIOrg.name
+      }`;
     }
 
     if (!referredBy && (referredByOrg || referredByAPIOrgLabel)) {
@@ -186,8 +213,9 @@ ServerEventService.addAfterMethodListener(
     }
 
     if (referredBy && (referredByOrg || referredByAPIOrgLabel)) {
-      description = `Référé par ${referredBy.name} (${referredByAPIOrgLabel ||
-        referredByOrg.name})`;
+      description = `Référé par ${referredBy.name} (${
+        referredByAPIOrgLabel || referredByOrg.name
+      })`;
     }
 
     ActivityService.addCreatedAtActivity({
@@ -480,6 +508,51 @@ ServerEventService.addAfterMethodListener(
       title: 'Statut modifié',
       description: `${formattedPrevStatus} -> ${formattedNexStatus}, par ${adminName}`,
       createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  notifyInsuranceTeamForPotential,
+  ({ context, params: { loanId } }) => {
+    context.unblock();
+    const { userId } = context;
+
+    ActivityService.addEventActivity({
+      event: ACTIVITY_EVENT_METADATA.LOAN_NOTIFIED_INSURANCE_TEAM_FOR_POTENTIAL,
+      isServerGenerated: true,
+      loanLink: { _id: loanId },
+      title: 'Potentiel prévoyance identifié',
+      createdBy: userId,
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  updateInsurancePotential,
+  ({ context, params: { loanId, insurancePotential } }) => {
+    context.unblock();
+    const { userId } = context;
+
+    let data;
+    if (insurancePotential === INSURANCE_POTENTIAL.NONE) {
+      data = {
+        event: ACTIVITY_EVENT_METADATA.LOAN_NO_INSURANCE_POTENTIAL,
+        title: 'Potentiel prévoyance insuffisant',
+      };
+    } else if (insurancePotential === INSURANCE_POTENTIAL.VALIDATED) {
+      data = {
+        event: ACTIVITY_EVENT_METADATA.LOAN_VALIDATED_INSURANCE_POTENTIAL,
+        title: 'Potentiel prévoyance validé',
+        description: 'Dossier assurance créé',
+      };
+    }
+
+    ActivityService.addEventActivity({
+      isServerGenerated: true,
+      loanLink: { _id: loanId },
+      createdBy: userId,
+      ...data,
     });
   },
 );

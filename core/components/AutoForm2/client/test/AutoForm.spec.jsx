@@ -5,10 +5,8 @@ import { expect } from 'chai';
 import SimpleSchema from 'simpl-schema';
 import { TextField } from 'uniforms-material';
 
-import pollUntilReady from '../../../../utils/pollUntilReady';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 import DateField from '../../../DateField';
-import Loading from '../../../Loading';
 import PercentInput from '../../../PercentInput';
 import AutoForm from '../../AutoForm';
 import { CustomAutoField } from '../../AutoFormComponents';
@@ -32,21 +30,9 @@ describe('AutoForm', () => {
   });
 
   it('renders a form with a field and submit button', () => {
-    expect(
-      component()
-        .find('form')
-        .exists(),
-    ).to.equal(true);
-    expect(
-      component()
-        .find(TextField)
-        .exists(),
-    ).to.equal(true);
-    expect(
-      component()
-        .find(Button)
-        .exists(),
-    ).to.equal(true);
+    expect(component().find('form').exists()).to.equal(true);
+    expect(component().find(TextField).exists()).to.equal(true);
+    expect(component().find(Button).exists()).to.equal(true);
   });
 
   it('does not render fields with a false condition', () => {
@@ -55,21 +41,9 @@ describe('AutoForm', () => {
         text: { type: String, condition: () => false },
       }),
     };
-    expect(
-      component()
-        .find('form')
-        .exists(),
-    ).to.equal(true);
-    expect(
-      component()
-        .find(TextField)
-        .exists(),
-    ).to.equal(false);
-    expect(
-      component()
-        .find(Button)
-        .exists(),
-    ).to.equal(true);
+    expect(component().find('form').exists()).to.equal(true);
+    expect(component().find(TextField).exists()).to.equal(false);
+    expect(component().find(Button).exists()).to.equal(true);
   });
 
   it('does not render fields based on changes to the model', () => {
@@ -118,9 +92,7 @@ describe('AutoForm', () => {
       },
     };
 
-    component()
-      .find('form')
-      .simulate('submit');
+    component().find('form').simulate('submit');
   });
 
   describe('Custom components', () => {
@@ -188,11 +160,7 @@ describe('AutoForm', () => {
         autoFieldProps: { labels: { myText: 'Yo' } },
       };
 
-      expect(
-        component()
-          .find('label')
-          .text(),
-      ).to.include('Yo');
+      expect(component().find('label').text()).to.include('Yo');
     });
 
     it('overrides the label if provided on the children', () => {
@@ -204,11 +172,7 @@ describe('AutoForm', () => {
         children: <CustomAutoField name="myText" overrideLabel="Dude" />,
       };
 
-      expect(
-        component()
-          .find('label')
-          .text(),
-      ).to.include('Dude');
+      expect(component().find('label').text()).to.include('Dude');
     });
 
     it('uses the label on the schema', () => {
@@ -218,11 +182,7 @@ describe('AutoForm', () => {
         }),
       };
 
-      expect(
-        component()
-          .find('label')
-          .text(),
-      ).to.include('mah dude');
+      expect(component().find('label').text()).to.include('mah dude');
     });
 
     it('sets a default label with Translation', () => {
@@ -230,11 +190,7 @@ describe('AutoForm', () => {
         schema: new SimpleSchema({ myText: { type: String } }),
       };
 
-      expect(
-        component()
-          .find('label')
-          .text(),
-      ).to.include('Forms.myText');
+      expect(component().find('label').text()).to.include('Forms.myText');
     });
 
     it('does not set the label if one of them is null', () => {
@@ -257,16 +213,11 @@ describe('AutoForm', () => {
           }),
         };
 
-        component()
-          .find('button')
-          .at(0)
-          .simulate('click');
+        component().find('button').at(0).simulate('click');
 
-        expect(
-          component()
-            .find('label')
-            .text(),
-        ).to.include('Forms.myText.stuff');
+        expect(component().find('label').text()).to.include(
+          'Forms.myText.stuff',
+        );
       });
     });
   });
@@ -278,17 +229,9 @@ describe('AutoForm', () => {
         placeholder: false,
       };
 
-      expect(
-        component()
-          .find(AutoForm)
-          .prop('placeholder'),
-      ).to.equal(false);
+      expect(component().find(AutoForm).prop('placeholder')).to.equal(false);
 
-      expect(
-        component()
-          .find('input')
-          .prop('placeholder'),
-      ).to.equal('');
+      expect(component().find('input').prop('placeholder')).to.equal('');
     });
 
     it('sets the placeholder', () => {
@@ -299,11 +242,9 @@ describe('AutoForm', () => {
         placeholder: true,
       };
 
-      expect(
-        component()
-          .find('input')
-          .prop('placeholder'),
-      ).to.equal('p.ex: Howdy');
+      expect(component().find('input').prop('placeholder')).to.equal(
+        'p.ex: Howdy',
+      );
     });
 
     it('does not set the placeholder if null is used', () => {
@@ -314,11 +255,7 @@ describe('AutoForm', () => {
         placeholder: true,
       };
 
-      expect(
-        component()
-          .find('input')
-          .prop('placeholder'),
-      ).to.equal(null);
+      expect(component().find('input').prop('placeholder')).to.equal(null);
     });
 
     it('sets a default placeholder', () => {
@@ -327,11 +264,9 @@ describe('AutoForm', () => {
         placeholder: true,
       };
 
-      expect(
-        component()
-          .find('input')
-          .prop('placeholder'),
-      ).to.include('Forms.myText.placeholder');
+      expect(component().find('input').prop('placeholder')).to.include(
+        'Forms.myText.placeholder',
+      );
     });
 
     context('in nested fields', () => {
@@ -343,17 +278,12 @@ describe('AutoForm', () => {
           placeholder: true,
         };
 
-        component()
-          .find(CustomSelectField)
-          .at(0)
-          .simulate('click');
+        component().find(CustomSelectField).at(0).simulate('click');
 
         component().update();
 
         expect(
-          component()
-            .find(CustomSelectField)
-            .prop('placeholder'),
+          component().find(CustomSelectField).prop('placeholder'),
         ).to.equal('Choisissez...');
       });
 
@@ -363,16 +293,9 @@ describe('AutoForm', () => {
           placeholder: false,
         };
 
-        component()
-          .find('button')
-          .at(0)
-          .simulate('click');
+        component().find('button').at(0).simulate('click');
 
-        expect(
-          component()
-            .find('input')
-            .prop('placeholder'),
-        ).to.equal('');
+        expect(component().find('input').prop('placeholder')).to.equal('');
       });
 
       context('sets the right placeholder on nested objects', () => {
@@ -386,16 +309,11 @@ describe('AutoForm', () => {
             placeholder: true,
           };
 
-          component()
-            .find('button')
-            .at(0)
-            .simulate('click');
+          component().find('button').at(0).simulate('click');
 
-          expect(
-            component()
-              .find('input')
-              .prop('placeholder'),
-          ).to.include('Forms.myText.stuff.placeholder');
+          expect(component().find('input').prop('placeholder')).to.include(
+            'Forms.myText.stuff.placeholder',
+          );
         });
 
         it('when parent label is null', () => {
@@ -411,16 +329,11 @@ describe('AutoForm', () => {
             placeholder: true,
           };
 
-          component()
-            .find('button')
-            .at(0)
-            .simulate('click');
+          component().find('button').at(0).simulate('click');
 
-          expect(
-            component()
-              .find('input')
-              .prop('placeholder'),
-          ).to.include('myPlaceholder');
+          expect(component().find('input').prop('placeholder')).to.include(
+            'myPlaceholder',
+          );
         });
       });
 
@@ -434,16 +347,9 @@ describe('AutoForm', () => {
           placeholder: false,
         };
 
-        component()
-          .find('button')
-          .at(0)
-          .simulate('click');
+        component().find('button').at(0).simulate('click');
 
-        expect(
-          component()
-            .find('input')
-            .prop('placeholder'),
-        ).to.equal('');
+        expect(component().find('input').prop('placeholder')).to.equal('');
       });
     });
   });
@@ -491,19 +397,13 @@ describe('AutoForm', () => {
       };
 
       expect(
-        component()
-          .find('[name="myText2"]')
-          .find('input')
-          .prop('value'),
+        component().find('[name="myText2"]').find('input').prop('value'),
       ).to.equal('yo dude');
 
       setInput('myText1', 'hello');
 
       expect(
-        component()
-          .find('[name="myText2"]')
-          .find('input')
-          .prop('value'),
+        component().find('[name="myText2"]').find('input').prop('value'),
       ).to.equal('hello dude');
     });
 
@@ -529,37 +429,6 @@ describe('AutoForm', () => {
       expect(component().find(PercentInput).length).to.equal(1);
       expect(component().find(DateField).length).to.equal(1);
       expect(component().find(CustomSelectField).length).to.equal(1);
-    });
-  });
-
-  it('does not unmount components when updating the model, and loading only displays once', () => {
-    // Checking that the loading component only renders once is like
-    // checking that the component only mounted once, since loading only
-    // renders after mounting
-    props = {
-      schema: new SimpleSchema({
-        text: { type: String, uniforms: { label: 'Text' } },
-        select: {
-          type: String,
-          customAllowedValues: () => ['yo'],
-          uniforms: { label: 'Select' },
-        },
-      }),
-      placeholder: false,
-    };
-
-    expect(component().find(Loading).length).to.equal(1);
-
-    return pollUntilReady(() => {
-      component().update();
-      return component().find(Loading).length === 0;
-    }).then(() => {
-      // Loading only reappears when the component remounts
-      expect(component().find(Loading).length).to.equal(0);
-
-      setInput('text', 'some text');
-
-      expect(component().find(Loading).length).to.equal(0);
     });
   });
 });

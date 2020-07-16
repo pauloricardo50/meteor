@@ -1,4 +1,3 @@
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 import { useTracker } from 'meteor/react-meteor-data';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import {
   addQueryToRefetch,
   removeQueryToRefetch,
 } from '../api/methods/clientQueryManager';
+import { createQuery } from '../api/queries';
 import useAsyncStateMachine from './useAsyncStateMachine';
 
 const getQuery = (query, params) => {
@@ -81,7 +81,7 @@ export const useStaticMeteorData = (
       const finalQuery = getQuery(refetchQuery, refetchParams);
 
       if (!finalQuery) {
-        setData(null, undefined);
+        setData(undefined, undefined);
         return;
       }
 

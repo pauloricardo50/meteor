@@ -12,10 +12,7 @@ import TaskModifierDateSetter from './TaskModifierDateSetter';
 
 const toNearest15Minutes = momentObj => {
   const roundedMinutes = Math.round(momentObj.clone().minute() / 15) * 15;
-  return momentObj
-    .clone()
-    .minute(roundedMinutes)
-    .second(0);
+  return momentObj.clone().minute(roundedMinutes).second(0);
 };
 
 export const dueAtTimeFuncs = [
@@ -42,10 +39,7 @@ export const dueAtTimeFuncs = [
   {
     label: 'Demain, 8h',
     func: () => {
-      const nextDate = moment()
-        .add(1, 'd')
-        .hours(8)
-        .minutes(0);
+      const nextDate = moment().add(1, 'd').hours(8).minutes(0);
 
       return [
         ['dueAtTime', nextDate.format('HH:mm')],
@@ -65,33 +59,17 @@ const getNextMonday = () => {
     return moment().isoWeekday(dayINeed);
   }
   // otherwise, give me *next week's* instance of that same day
-  return moment()
-    .add(1, 'weeks')
-    .isoWeekday(dayINeed);
+  return moment().add(1, 'weeks').isoWeekday(dayINeed);
 };
 
 export const dueAtFuncs = [
   {
     label: 'Demain',
-    func: () => [
-      [
-        'dueAt',
-        moment()
-          .add(1, 'd')
-          .toDate(),
-      ],
-    ],
+    func: () => [['dueAt', moment().add(1, 'd').toDate()]],
   },
   {
     label: 'Dans 3 jours',
-    func: () => [
-      [
-        'dueAt',
-        moment()
-          .add(3, 'd')
-          .toDate(),
-      ],
-    ],
+    func: () => [['dueAt', moment().add(3, 'd').toDate()]],
   },
   {
     label: 'Lundi pro',
@@ -99,14 +77,7 @@ export const dueAtFuncs = [
   },
   {
     label: 'Semaine pro',
-    func: () => [
-      [
-        'dueAt',
-        moment()
-          .add(7, 'd')
-          .toDate(),
-      ],
-    ],
+    func: () => [['dueAt', moment().add(7, 'd').toDate()]],
   },
 ];
 
@@ -217,13 +188,13 @@ export const taskFormLayout = [
   {
     Component: Box,
     className: 'mb-32',
-    title: <h4>Général</h4>,
+    title: <h5>Général</h5>,
     fields: ['title', 'description'],
     layout: { className: 'grid-2', fields: ['assigneeLink._id', 'isPrivate'] },
   },
   {
     Component: Box,
-    title: <h4>Échéance</h4>,
+    title: <h5>Échéance</h5>,
     layout: [
       'dueAtTimeHelpers',
       'dueAtDateHelpers',

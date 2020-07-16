@@ -26,6 +26,7 @@ const InsuranceRequestsPage = () => (
     </h1>
 
     <DataTable
+      initialPageSize={25}
       queryConfig={{
         query: INSURANCE_REQUESTS_COLLECTION,
         params: {

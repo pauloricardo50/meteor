@@ -33,6 +33,7 @@ const CommissionsToReceive = props => {
           organisationLinks: { $elemMatch: { _id: organisationId } },
           status,
         })}
+        deps={[status]}
       />
     </>
   );

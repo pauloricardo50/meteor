@@ -1,12 +1,22 @@
+import moment from 'moment';
+
 import { anonymizeLoan } from '../../loans/helpers';
 import LoanService from '../../loans/server/LoanService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import { PROMOTION_OPTION_STATUS } from '../../promotionOptions/promotionOptionConstants';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import { TASK_STATUS, TASK_TYPES } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
   clientGetBestPromotionLotStatus,
   shouldAnonymize as clientShouldAnonymize,
   getPromotionCustomerOwnerType as getCustomerOwnerType,
 } from '../promotionClientHelpers';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_STEP_REMINDER_DELAY,
+} from '../promotionConstants';
+import PromotionService from './PromotionService';
 
 const getUserPromotionPermissions = ({ userId, promotionId }) => {
   const { promotions = [] } = UserService.get(userId, {
@@ -38,7 +48,7 @@ const getCustomerInvitedBy = ({ customerId, promotionId }) => {
       }, [])
       .find(({ _id }) => _id === promotionId) || {};
 
-  return $metadata && $metadata.invitedBy;
+  return $metadata?.invitedBy;
 };
 
 const getPromotionLotStatus = ({ promotionLotId }) => {
@@ -145,14 +155,11 @@ export const makeLoanAnonymizer = ({
       );
 
       if (currentUserPromotion) {
-        permissions =
-          currentUserPromotion.$metadata &&
-          currentUserPromotion.$metadata.permissions;
+        permissions = currentUserPromotion.$metadata?.permissions;
       }
 
       promotionLotStatus = promotionLot.status;
-      attributedTo =
-        promotionLot.attributedToLink && promotionLot.attributedToLink._id;
+      attributedTo = promotionLot.attributedToLink?._id;
     }
 
     let isAttributed = loanId === attributedTo;
@@ -189,15 +196,34 @@ export const makePromotionLotAnonymizer = ({ currentUser }) => promotionLot => {
   return { attributedTo: loan, ...rest };
 };
 
-export const makePromotionOptionAnonymizer = ({ currentUser }) => {
+export const makePromotionOptionAnonymizer = ({
+  userId,
+  promotionId,
+  promotionLotId,
+  promotionOptionId,
+}) => {
+  const currentUser = UserService.get(userId, {
+    promotions: { _id: 1 },
+    organisations: { userLinks: 1 },
+  });
   const { promotions: currentUserPromotions = [] } = currentUser;
 
+  if (!promotionId && promotionLotId) {
+    const { promotion } = PromotionLotService.get(promotionLotId, {
+      promotion: { _id: 1 },
+    });
+    promotionId = promotion._id;
+  } else if (!promotionId && promotionOptionId) {
+    const { promotion } = PromotionOptionService.get(promotionOptionId, {
+      promotion: { _id: 1 },
+    });
+    promotionId = promotion._id;
+  }
+
   return promotionOption => {
-    const { loan, promotionLots = [] } = promotionOption;
+    const { loan, promotionLots = [], invitedBy } = promotionOption;
     const [promotionLot] = promotionLots;
     const { status: promotionLotStatus, attributedTo } = promotionLot;
-    const { promotions, _id: loanId } = loan;
-    const [{ _id: promotionId, $metadata: { invitedBy } = {} }] = promotions;
 
     const customerOwnerType = getCustomerOwnerType({
       invitedBy,
@@ -210,16 +236,14 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
     );
 
     if (currentUserPromotion) {
-      permissions =
-        currentUserPromotion.$metadata &&
-        currentUserPromotion.$metadata.permissions;
+      permissions = currentUserPromotion.$metadata?.permissions;
     }
 
     const anonymize = clientShouldAnonymize({
       customerOwnerType,
       permissions,
       promotionLotStatus,
-      isAttributed: attributedTo === loanId,
+      isAttributed: attributedTo === loan?._id,
     });
 
     return {
@@ -228,4 +252,187 @@ export const makePromotionOptionAnonymizer = ({ currentUser }) => {
       isAnonymized: !!anonymize,
     };
   };
+};
+
+export const getStepGettingDisbursedSoon = ({
+  constructionTimeline,
+  promotionId,
+  signingDate,
+}) => {
+  const today = moment().startOf('day').toDate();
+  const delay = moment()
+    .add(PROMOTION_STEP_REMINDER_DELAY, 'days')
+    .startOf('day')
+    .toDate();
+
+  const {
+    startPercent,
+    steps = [],
+    endDate,
+    endPercent,
+  } = constructionTimeline;
+
+  // Find which step is getting disbursed soon
+  let step;
+  if (
+    startPercent > 0 &&
+    signingDate.getTime() >= today.getTime() &&
+    signingDate.getTime() <= delay.getTime()
+  ) {
+    step = {
+      type: TASK_TYPES.PROMOTION_SIGNING_DATE_STEP_REMINDER,
+      id: promotionId,
+      date: signingDate,
+      description: 'Signature',
+    };
+  } else if (
+    endPercent > 0 &&
+    endDate.getTime() >= today.getTime() &&
+    endDate.getTime() <= delay.getTime()
+  ) {
+    step = {
+      type: TASK_TYPES.PROMOTION_END_DATE_STEP_REMINDER,
+      id: promotionId,
+      date: endDate,
+      description: 'Remise des clés',
+    };
+  } else {
+    steps.some(({ startDate, id, description }) => {
+      if (
+        startDate.getTime() >= today.getTime() &&
+        startDate.getTime() <= delay.getTime()
+      ) {
+        step = {
+          type: TASK_TYPES.PROMOTION_STEP_REMINDER,
+          id,
+          date: startDate,
+          description,
+        };
+        return true;
+      }
+      return false;
+    });
+  }
+
+  return step;
+};
+
+export const getPromotionsGettingDisbursedSoon = () => {
+  const today = moment().startOf('day').toDate();
+  const delay = moment()
+    .add(PROMOTION_STEP_REMINDER_DELAY, 'days')
+    .startOf('day')
+    .toDate();
+
+  const promotionFilters = {
+    status: { $in: [PROMOTION_STATUS.FINISHED, PROMOTION_STATUS.OPEN] },
+    isTest: { $ne: true },
+    $or: [
+      // Signing date step
+      {
+        signingDate: { $lte: delay, $gte: today },
+        'constructionTimeline.startPercent': { $ne: 0, $exists: true },
+      },
+      // Handover of the keys step
+      {
+        'constructionTimeline.endDate': { $lte: delay, $gte: today },
+        'constructionTimeline.endPercent': { $ne: 0, $exists: true },
+      },
+      // Inbetween step
+      {
+        'constructionTimeline.steps.startDate': { $lte: delay, $gte: today },
+      },
+    ],
+  };
+
+  // Fetch all promotions that have a step disbursed soon
+  // We don't match steps that are exactly in 10 days only, in case the cron failed
+  const promotions = PromotionService.fetch({
+    $filters: promotionFilters,
+    constructionTimeline: 1,
+    promotionOptions: {
+      status: 1,
+      loanCache: { _id: 1 },
+      $filter({ filters }) {
+        filters.status = PROMOTION_OPTION_STATUS.SOLD;
+      },
+    },
+    signingDate: 1,
+  });
+
+  return promotions;
+};
+
+export const getLoansWithoutStepReminderTask = ({
+  promotionOptions = [],
+  step,
+}) => {
+  // Filter SOLD promotion options
+  const loanIds = promotionOptions
+    .map(({ loanCache }) => loanCache?._id?.[0])
+    .filter(x => x);
+
+  if (!loanIds?.length) {
+    return null;
+  }
+
+  // Get loans that don't already have this task
+  const loanFilters = {
+    _id: { $in: loanIds },
+    tasksCache: {
+      $not: {
+        $elemMatch: {
+          type: step.type,
+          'metadata.stepId': step.id,
+          'metadata.stepDate': step.date,
+        },
+      },
+    },
+  };
+
+  const loans = LoanService.fetch({ $filters: loanFilters, _id: 1 });
+
+  return loans;
+};
+
+export const getPromotionStepReminders = () => {
+  const promotions = getPromotionsGettingDisbursedSoon();
+
+  if (!promotions?.length) {
+    return [];
+  }
+
+  const tasks = promotions
+    .map(
+      ({
+        _id: promotionId,
+        promotionOptions = [],
+        constructionTimeline,
+        signingDate,
+      }) => {
+        const step = getStepGettingDisbursedSoon({
+          constructionTimeline,
+          promotionId,
+          signingDate,
+        });
+
+        if (!step) {
+          return null;
+        }
+
+        const loans = getLoansWithoutStepReminderTask({
+          promotionOptions,
+          step,
+        });
+
+        if (!loans?.length) {
+          return null;
+        }
+
+        return { step, loanIds: loans.map(({ _id }) => _id) };
+      },
+    )
+    .filter(x => x);
+
+  return tasks;
 };

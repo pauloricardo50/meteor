@@ -24,5 +24,6 @@ export default compose(
     model: { rules: filter.and.map(parseFilter), name },
     buttonProps: { label: 'Modifier' },
     onDelete: () => lenderRulesRemove.run({ lenderRulesId }),
+    title: 'Modifier le filtre',
   })),
 )(LenderRulesForm);

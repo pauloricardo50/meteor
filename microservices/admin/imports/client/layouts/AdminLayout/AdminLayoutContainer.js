@@ -10,6 +10,7 @@ import {
 import { withFileViewer } from 'core/containers/FileViewerContext';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 
+import { AdminsProvider } from '../../components/AdminsContext/AdminsContext';
 import {
   filterReducer as insuranceRequestsFilterReducer,
   getInitialOptions as insuranceRequestsGetInitialOptions,
@@ -37,6 +38,7 @@ const loanBoardContainer = compose(
 
 export default compose(
   withFileViewer,
+  AdminsProvider,
   shouldUpdate(() => false),
   withState('openSearch', 'setOpenSearch', false),
   withProps(() => {

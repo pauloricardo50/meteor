@@ -134,14 +134,9 @@ describe('RESTAPI', function() {
   });
 
   before(function() {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      makeFileUploadDir();
-      flushFileUploadDir();
-      api.start();
-    }
+    makeFileUploadDir();
+    flushFileUploadDir();
+    api.start();
   });
 
   after(() => {
@@ -684,6 +679,7 @@ describe('RESTAPI', function() {
         'roles',
         'isDisabled',
         'defaultBoardId',
+        'isInRoundRobin',
       ]);
       return fetchAndCheckResponse({
         url: '/fiberAPIUser',

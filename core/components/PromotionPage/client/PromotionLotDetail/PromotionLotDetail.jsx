@@ -1,52 +1,61 @@
-import React, { useContext } from 'react';
+import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
+import { compose, mapProps } from 'recompose';
+
+import withSmartQuery from '../../../../api/containerToolkit/withSmartQuery';
+import { formProperty } from '../../../../api/fragments';
+import {
+  appPromotionLots,
+  proPromotionLots,
+} from '../../../../api/promotionLots/queries';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Box from '../../../Box';
 import DocumentDownloadList from '../../../DocumentDownloadList';
 import T from '../../../Translation';
-import PromotionMetadataContext from '../PromotionMetadata';
+import LotDocumentsManager from '../PromotionLotsTable/LotDocumentsManager';
+import PromotionLotModifier from '../PromotionLotsTable/PromotionLotModifier';
+import { usePromotion } from '../PromotionPageContext';
 import PromotionLotDetailRecaps from './PromotionLotDetailRecaps';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotTimeline from './PromotionLotTimeline';
 
-const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
+const PromotionLotDetail = ({ promotionLot, children }) => {
+  const { lots = [], _id: promotionLotId, status, documents } = promotionLot;
   const {
-    lots = [],
-    _id: promotionLotId,
-    status,
-    documents,
-    promotionOptions,
-  } = promotionLot;
-  const { lots: allLots, constructionTimeline = [], signingDate } = promotion;
-  const {
-    permissions: { canModifyLots, canSeeCustomers },
-  } = useContext(PromotionMetadataContext);
+    permissions: { canModifyLots, canSeeCustomers, canManageDocuments },
+    promotion: { _id: promotionId, constructionTimeline = [], signingDate },
+  } = usePromotion();
   const currentUser = useCurrentUser();
   const files = (documents && documents.promotionPropertyDocuments) || [];
 
   return (
     <div className="promotion-lot-detail">
+      <div className="flex mb-8">
+        {canModifyLots && (
+          <PromotionLotModifier className="mr-8" promotionLot={promotionLot} />
+        )}
+        {canManageDocuments && (
+          <LotDocumentsManager
+            documents={promotionLot?.documents}
+            property={promotionLot?.properties[0]}
+            currentUser={currentUser}
+          />
+        )}
+      </div>
       {children}
       <section className="top">
         <PromotionLotDetailRecaps promotionLot={promotionLot} />
-        {lots.length > 0 && (
-          <Box>
-            <h4>
-              <T id="PromotionLotPage.manageLot" />
-            </h4>
-            <PromotionLotsManager
-              promotionLotId={promotionLotId}
-              lots={lots}
-              allLots={allLots}
-              status={status}
-              canModifyLots={canModifyLots}
-            />
-          </Box>
-        )}
+        <PromotionLotsManager
+          promotionId={promotionId}
+          promotionLotId={promotionLotId}
+          lots={lots}
+          status={status}
+        />
         {files.length > 0 && (
           <Box>
-            <h4>
+            <h4 className="mt-0">
               <T id="PromotionLotPage.downloads" />
             </h4>
             <DocumentDownloadList files={files} />
@@ -54,7 +63,7 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
         )}
       </section>
 
-      {constructionTimeline.length > 0 && (
+      {constructionTimeline?.steps?.length > 0 && (
         <section>
           <h4>
             <T id="PromotionPage.timeline" />
@@ -71,15 +80,33 @@ const PromotionLotDetail = ({ promotionLot, promotion, children }) => {
           <h4>
             <T id="PromotionLotPage.loans" />
           </h4>
-          <PromotionLotLoansTable
-            promotionOptions={promotionOptions}
-            promotionLot={promotionLot}
-            currentUser={currentUser}
-          />
+          <PromotionLotLoansTable promotionLotId={promotionLot._id} />
         </section>
       )}
     </div>
   );
 };
 
-export default PromotionLotDetail;
+const isApp = Meteor.microservice === 'app';
+
+export default compose(
+  mapProps(({ promotionLot: { _id: promotionLotId } }) => ({
+    promotionLotId,
+  })),
+  withSmartQuery({
+    query: isApp ? appPromotionLots : proPromotionLots,
+    params: ({ promotionLotId }) => ({
+      _id: promotionLotId,
+      $body: {
+        documents: 1,
+        lots: { type: 1, name: 1, value: 1 },
+        properties: { ...formProperty(), name: 1 },
+        status: 1,
+        promotionLotGroupIds: 1,
+        promotion: { promotionLotGroups: 1 },
+      },
+    }),
+    dataName: 'promotionLot',
+    queryOptions: { single: true },
+  }),
+)(PromotionLotDetail);

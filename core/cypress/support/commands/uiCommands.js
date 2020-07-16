@@ -64,6 +64,7 @@ Cypress.Commands.add(
   (prevSubject, name, value) => {
     if (prevSubject) {
       if (typeof value === 'string') {
+        prevSubject.find(`input[name=${name}]`).should('not.be.disabled');
         prevSubject
           .find(`input[name=${name}]`)
           .parent()
@@ -71,6 +72,7 @@ Cypress.Commands.add(
           .get(`[data-value=${value}]`)
           .click();
       } else {
+        prevSubject.find(`input[name=${name}]`).should('not.be.disabled');
         prevSubject
           .find(`input[name=${name}]`)
           .parent()
@@ -81,6 +83,7 @@ Cypress.Commands.add(
           .click();
       }
     } else if (typeof value === 'string') {
+      cy.get(`input[name=${name}]`).should('not.be.disabled');
       cy.get(`input[name=${name}]`)
         .parent()
         .click()
@@ -88,6 +91,7 @@ Cypress.Commands.add(
         .click();
     } else {
       // Support clicking on nth item
+      cy.get(`input[name=${name}]`).should('not.be.disabled');
       cy.get(`input[name=${name}]`)
         .parent()
         .click()

@@ -86,6 +86,7 @@ exposeQuery({
       promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
+  options: { allowFilterById: true },
 });
 
 exposeQuery({
@@ -99,7 +100,7 @@ exposeQuery({
     embody: body => {
       body.$filter = ({
         filters,
-        params: { _id, promotionId, status, promotionLotGroupId },
+        params: { promotionId, status, promotionLotGroupId },
       }) => {
         promotionLotFilters({
           filters,
@@ -115,7 +116,7 @@ exposeQuery({
         } catch (error) {
           const currentUser = UserService.get(_userId, {
             promotions: { _id: 1 },
-            organisations: { users: { _id: 1 } },
+            organisations: { userLinks: 1 },
           });
           return results.map(makePromotionLotAnonymizer({ currentUser }));
         }
@@ -127,4 +128,5 @@ exposeQuery({
       promotionLotGroupId: Match.Maybe(Match.OneOf(String, Object)),
     },
   },
+  options: { allowFilterById: true },
 });

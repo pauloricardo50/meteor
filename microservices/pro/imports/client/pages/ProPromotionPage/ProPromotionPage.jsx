@@ -1,9 +1,7 @@
 import React from 'react';
-import pick from 'lodash/pick';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
-import { proPromotion } from 'core/api/fragments';
 import { proPromotions } from 'core/api/promotions/queries';
 import {
   isAllowedToAddLotsToPromotion,
@@ -16,52 +14,44 @@ import {
   isAllowedToSeePromotionCustomers,
 } from 'core/api/security/clientSecurityHelpers';
 import PromotionPage from 'core/components/PromotionPage/client';
-import { injectPromotionMetadata } from 'core/components/PromotionPage/client/PromotionMetadata';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import withMatchParam from 'core/containers/withMatchParam';
 
 import PRO_ROUTES from '../../../startup/client/proRoutes';
 
 const promotionFragment = {
-  ...pick(proPromotion(), [
-    'address',
-    'address1',
-    'agreementDuration',
-    'canton',
-    'city',
-    'constructionTimeline',
-    'contacts',
-    'documents',
-    'lenderOrganisation',
-    'name',
-    'status',
-    'type',
-    'users',
-    'zipCode',
-    'signingDate',
-    'country',
-    'promotionLotGroups',
-    'assignedEmployee',
-    'description',
-    'externalUrl',
-    'promotionLoan',
-    'authorizationStatus',
-    'projectStatus',
-    'isTest',
-    'loans',
-  ]),
-  promotionLots: {
-    status: 1,
+  address: 1,
+  address1: 1,
+  agreementDuration: 1,
+  assignedEmployee: { name: 1 },
+  authorizationStatus: 1,
+  canton: 1,
+  city: 1,
+  constructionTimeline: 1,
+  contacts: 1,
+  country: 1,
+  description: 1,
+  documents: 1,
+  externalUrl: 1,
+  isTest: 1,
+  loanCount: 1,
+  name: 1,
+  projectStatus: 1,
+  promotionLoan: { name: 1, proNotes: 1 },
+  promotionLotGroups: 1,
+  promotionLotLinks: 1,
+  signingDate: 1,
+  status: 1,
+  type: 1,
+  users: {
+    email: 1,
     name: 1,
-    value: 1,
-    properties: {
-      landValue: 1,
-      constructionValue: 1,
-      additionalMargin: 1,
-      value: 1,
-    },
-    lots: { value: 1 },
-    promotionLotGroupIds: 1,
+    organisations: { name: 1 },
+    phoneNumbers: 1,
+    roles: 1,
   },
+  loans: { _id: 1 },
+  zipCode: 1,
 };
 
 const makePermissions = props => ({
@@ -77,16 +67,12 @@ const makePermissions = props => ({
   canSeeUsers: true,
 });
 
-const getEnableNotifications = ({
-  promotion,
-  currentUser: { _id: userId },
-}) => {
+const getProUser = ({ promotion, currentUser: { _id: userId } }) => {
   const { userLinks = [], users = [] } = promotion;
-  const user =
+  return (
     userLinks.find(({ _id }) => _id === userId) ||
-    users.find(({ _id }) => _id === userId);
-
-  return user.enableNotifications || user.$metadata.enableNotifications;
+    users.find(({ _id }) => _id === userId)
+  );
 };
 
 const ProPromotionPageContainer = compose(
@@ -101,12 +87,16 @@ const ProPromotionPageContainer = compose(
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
-  withProps(makePermissions),
+  withPromotionPageContext(props => {
+    const proUser = getProUser(props);
+    const enableNotifications = proUser?.$metadata?.enableNotifications;
+    return {
+      enableNotifications,
+      permissions: makePermissions(props),
+      proUser: getProUser(props),
+    };
+  }),
   withProps({ route: PRO_ROUTES.PRO_PROMOTION_PAGE.path }),
-  injectPromotionMetadata(props => ({
-    enableNotifications: getEnableNotifications(props),
-    permissions: makePermissions(props),
-  })),
 );
 
 export default ProPromotionPageContainer(PromotionPage);

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
+import { proPromotionLots } from '../../../api/promotionLots/queries';
 import { PROMOTION_STATUS } from '../../../api/promotions/promotionConstants';
 import { proInviteUser } from '../../../api/users/methodDefinitions';
 import useSearchParams from '../../../hooks/useSearchParams';
@@ -18,7 +19,7 @@ SimpleSchema.setDefaultMessages({
 });
 
 export const CustomerAdderUserSchema = ({
-  promotion: { users = [], promotionLots = [] },
+  promotion: { _id: promotionId, users = [] },
 }) =>
   new SimpleSchema({
     email: String,
@@ -47,8 +48,13 @@ export const CustomerAdderUserSchema = ({
     promotionLotIds: {
       type: Array,
       defaultValue: [],
+      customAllowedValues: {
+        query: proPromotionLots,
+        params: { promotionId, $body: { name: 1 } },
+      },
       uniforms: {
         placeholder: null,
+        transform: ({ name }) => name,
       },
       optional: false,
       // We don't use minCount: 1 because it inserts an undefined promotionLotId to the array by default
@@ -58,23 +64,14 @@ export const CustomerAdderUserSchema = ({
         }
       },
     },
-    'promotionLotIds.$': {
-      type: String,
-      allowedValues: promotionLots.map(({ _id }) => _id),
-      uniforms: {
-        transform: promotionLotId => {
-          const { name } =
-            promotionLots.find(({ _id }) => _id === promotionLotId) || {};
-          return name;
-        },
-      },
-    },
+    'promotionLotIds.$': String,
     showAllLots: {
       type: Boolean,
       defaultValue: true,
       condition: ({ promotionLotIds = [] }) => promotionLotIds.length > 0,
       optional: true,
     },
+    invitationNote: { type: String, optional: true },
   });
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;
@@ -88,6 +85,7 @@ const CustomerAdder = ({
   const { _id: promotionId, status } = promotion;
   const disabled = status !== PROMOTION_STATUS.OPEN;
   const history = useHistory();
+  const schema = useMemo(() => CustomerAdderUserSchema({ promotion }), []);
 
   return (
     <AutoFormDialog
@@ -101,16 +99,18 @@ const CustomerAdder = ({
           ? 'Vous ne pouvez ajouter des clients que lorsque la promotion est en cours, contactez e-Potek pour changer le statut de la promotion'
           : undefined,
       }}
-      schema={CustomerAdderUserSchema({ promotion })}
-      onSubmit={user =>
-        proInviteUser.run({ user, promotionIds: [promotionId] }).then(() => {
-          resetForm();
-          history.push(
-            createRoute('/promotions/:promotionId/customers', {
-              promotionId,
-            }),
-          );
-        })
+      schema={schema}
+      onSubmit={({ invitationNote, ...user }) =>
+        proInviteUser
+          .run({ user, promotionIds: [promotionId], invitationNote })
+          .then(() => {
+            resetForm();
+            history.push(
+              createRoute('/promotions/:promotionId/customers', {
+                promotionId,
+              }),
+            );
+          })
       }
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek. Vous recevrez un mail de confirmation."

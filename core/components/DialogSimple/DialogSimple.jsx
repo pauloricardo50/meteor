@@ -8,7 +8,7 @@ import T from '../Translation';
 export default class DialogSimple extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, disabled: false, isCancel: true };
+    this.state = { open: !!props.openOnMount, disabled: false, isCancel: true };
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -37,23 +37,22 @@ export default class DialogSimple extends Component {
       autoScroll,
       bodyStyle,
       buttonProps,
-      buttonStyle,
-      closeOnly,
       children,
+      closeOnly,
       contentStyle,
       important,
       label,
+      onClose = () => null,
       onOpen,
       passProps,
       primary,
       raised = true,
       renderProps,
+      renderTrigger,
       rootStyle,
       secondary,
       style,
       title,
-      renderTrigger,
-      onClose = () => null,
       ...otherProps
     } = this.props;
 
@@ -106,7 +105,6 @@ export default class DialogSimple extends Component {
             onClick={this.handleOpen}
             primary={primary}
             secondary={secondary}
-            style={buttonStyle}
             {...buttonProps}
           />
         )}
@@ -118,6 +116,7 @@ export default class DialogSimple extends Component {
           open={open}
           onClose={this.handleClose}
           style={style}
+          contentStyle={contentStyle}
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
@@ -134,7 +133,6 @@ DialogSimple.propTypes = {
   actions: PropTypes.func,
   autoFocus: PropTypes.bool,
   autoScroll: PropTypes.bool,
-  buttonStyle: PropTypes.objectOf(PropTypes.any),
   close: PropTypes.bool,
   closeOnly: PropTypes.bool,
   important: PropTypes.bool,
@@ -151,7 +149,6 @@ DialogSimple.defaultProps = {
   actions: undefined,
   autoFocus: false,
   autoScroll: false,
-  buttonStyle: {},
   closeOnly: false,
   close: undefined,
   important: false,

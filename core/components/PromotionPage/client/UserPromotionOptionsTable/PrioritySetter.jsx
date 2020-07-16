@@ -8,28 +8,28 @@ import {
 import IconButton from '../../../IconButton';
 
 const PrioritySetter = ({
-  index,
+  priorityOrder,
   length,
   onIncrease,
   onReduce,
   isLoading,
   allowChange,
 }) => (
-  <div className="priority-setter">
-    {index + 1}
+  <div className="priority-setter" onClick={e => e.stopPropagation()}>
+    {priorityOrder + 1}
     {allowChange && (
       <>
         <IconButton
           type="up"
           onClick={onIncrease}
-          disabled={isLoading || index === 0}
+          disabled={isLoading || priorityOrder === 0}
           tooltip="Augmenter priorité"
         />
 
         <IconButton
           type="down"
           onClick={onReduce}
-          disabled={isLoading || index === length - 1}
+          disabled={isLoading || priorityOrder === length - 1}
           tooltip="Réduire priorité"
         />
       </>

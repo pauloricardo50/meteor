@@ -11,7 +11,10 @@ import { PROMOTION_LOT_STATUS } from '../../../../api/promotionLots/promotionLot
 import { propertyUpdate } from '../../../../api/properties/methodDefinitions';
 import { AutoFormDialog } from '../../../AutoForm2';
 import T from '../../../Translation';
-import { getPromotionLotSchema } from '../PromotionAdministration/PromotionAdministrationContainer';
+import {
+  getPromotionLotSchema,
+  promotionLotFormLayout,
+} from '../PromotionAdministration/PromotionAdministrationContainer';
 
 const disableModification = promotionLotStatus => {
   const isAdmin = Meteor.microservice === 'admin';
@@ -25,12 +28,11 @@ const ProPromotionLotModifier = ({
   updateProperty,
   deletePromotionLot,
   className,
-  promotion,
 }) => {
   const { promotionLotGroupIds } = promotionLot;
   const schema = useMemo(
-    () => getPromotionLotSchema(promotion?.promotionLotGroups),
-    [promotionLot, promotion],
+    () => getPromotionLotSchema(promotionLot.promotion?.promotionLotGroups),
+    [promotionLot],
   );
 
   const property =
@@ -48,11 +50,11 @@ const ProPromotionLotModifier = ({
         className,
       }}
       title={<T id="PromotionLotPage.modifyPromotionLot" />}
-      description={<T id="PromotionPage.promotionLotValueDescription" />}
       schema={schema}
       onSubmit={updateProperty}
       model={model}
       onDelete={() => deletePromotionLot()}
+      layout={promotionLotFormLayout}
     />
   );
 };

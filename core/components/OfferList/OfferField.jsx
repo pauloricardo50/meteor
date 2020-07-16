@@ -13,7 +13,7 @@ const OfferField = ({
   return (
     <div className="value offer-list-item-value">
       <label className="secondary" htmlFor={id || key}>
-        <T id={`offer.${id || key}`} />
+        <T id={`Forms.${id || key}`} />
       </label>
       <h4 className="bold" id={id || key}>
         {/* if it has an id, it has a value */}

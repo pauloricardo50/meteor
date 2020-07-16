@@ -3,13 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { toMoney } from '../../../utils/conversionFunctions';
 import IconButton from '../../IconButton';
-import Input from '../../Material/Input';
 import InputAdornment from '../../Material/InputAdornment';
+import MoneyInput from '../../MoneyInput';
 import T from '../../Translation';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {},
   input: {
     paddingBottom: 8,
@@ -34,10 +33,10 @@ const Widget1SingleInputInput = ({
   return (
     <div className={classnames('widget1-input', { auto })}>
       {/* Use type tel to display right keyboard without type number issues */}
-      <Input
+      <MoneyInput
         id={name}
         type="tel"
-        value={toMoney(value)}
+        value={value}
         onChange={setInputValue}
         startAdornment={
           <InputAdornment position="start">

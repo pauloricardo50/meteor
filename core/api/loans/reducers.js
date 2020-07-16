@@ -1,6 +1,3 @@
-import omit from 'lodash/omit';
-
-import { fullOffer } from '../fragments';
 import { PROMOTIONS_COLLECTION } from '../promotions/promotionConstants';
 import {
   PROPERTIES_COLLECTION,
@@ -16,14 +13,6 @@ Loans.addReducers({
   structure: {
     body: { structureCache: 1 },
     reduce: ({ structureCache }) => structureCache,
-  },
-  offers: {
-    body: { lenders: { offers: omit(fullOffer(), ['user']) } },
-    reduce: ({ lenders = [] }) =>
-      lenders.reduce(
-        (allOffers, { offers = [] }) => [...allOffers, ...offers],
-        [],
-      ),
   },
   hasPromotion: {
     body: { promotions: { _id: 1 } },
@@ -66,5 +55,9 @@ Loans.addReducers({
     body: { assigneeLinks: 1 },
     reduce: ({ assigneeLinks = [] }) =>
       assigneeLinks.find(({ isMain }) => isMain),
+  },
+  promotionInvitedBy: {
+    body: { promotionLinks: 1 },
+    reduce: ({ promotionLinks }) => promotionLinks?.[0]?.invitedBy,
   },
 });

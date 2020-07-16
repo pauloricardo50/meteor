@@ -19,6 +19,7 @@ export const proPropertyFormFields = {
   landArea: 1,
   terraceArea: 1,
   gardenArea: 1,
+  balconyArea: 1,
   constructionYear: 1,
   externalUrl: 1,
   useOpenGraph: 1,

@@ -20,7 +20,7 @@ export const AdminNotes = ({
   proNote,
   referredByUser,
   title = 'Notes',
-  CustomNoteAdder,
+  NoteAdder = AdminNoteAdder,
   Filters,
   doc,
 }) => {
@@ -38,33 +38,20 @@ export const AdminNotes = ({
       <div className="flex center-align mb-16">
         <h2 className="mr-8">{title}</h2>
 
-        {isAdmin &&
-          (CustomNoteAdder ? (
-            <CustomNoteAdder
-              docId={docId}
-              buttonProps={{
-                raised: true,
-                primary: true,
-                label: 'Note',
-                icon: <Icon type="add" />,
-              }}
-              referredByUser={referredByUser}
-              doc={doc}
-              collection={doc._collection}
-            />
-          ) : (
-            <AdminNoteAdder
-              docId={docId}
-              buttonProps={{
-                raised: true,
-                primary: true,
-                label: 'Note',
-                icon: <Icon type="add" />,
-              }}
-              referredByUser={referredByUser}
-              collection={doc._collection}
-            />
-          ))}
+        {isAdmin && (
+          <NoteAdder
+            docId={docId}
+            buttonProps={{
+              raised: true,
+              primary: true,
+              label: 'Note',
+              icon: <Icon type="add" />,
+            }}
+            referredByUser={referredByUser}
+            doc={doc}
+            collection={doc._collection}
+          />
+        )}
         {Filters}
       </div>
       {shouldShowProNote && (
@@ -98,39 +85,23 @@ export const AdminNotes = ({
                   <span className="secondary mr-8">
                     {moment(date).format('D/M/YY')}
                   </span>
-                  {isAdmin &&
-                    (CustomNoteAdder ? (
-                      <CustomNoteAdder
-                        docId={docId}
-                        adminNote={shownNote}
-                        collection={doc._collection}
-                        doc={doc}
-                        triggerComponent={handleOpen => (
-                          <IconButton
-                            type="edit"
-                            size="small"
-                            tooltip="Modifier"
-                            onClick={handleOpen}
-                            className="mr-8"
-                          />
-                        )}
-                      />
-                    ) : (
-                      <AdminNoteAdder
-                        docId={docId}
-                        adminNote={shownNote}
-                        collection={doc._collection}
-                        triggerComponent={handleOpen => (
-                          <IconButton
-                            type="edit"
-                            size="small"
-                            tooltip="Modifier"
-                            onClick={handleOpen}
-                            className="mr-8"
-                          />
-                        )}
-                      />
-                    ))}
+                  {isAdmin && (
+                    <NoteAdder
+                      docId={docId}
+                      adminNote={shownNote}
+                      collection={doc._collection}
+                      doc={doc}
+                      triggerComponent={handleOpen => (
+                        <IconButton
+                          type="edit"
+                          size="small"
+                          tooltip="Modifier"
+                          onClick={handleOpen}
+                          className="mr-8"
+                        />
+                      )}
+                    />
+                  )}
                   {isAdmin && isSharedWithPros && (
                     <span className="primary">Partagé avec les pros!</span>
                   )}

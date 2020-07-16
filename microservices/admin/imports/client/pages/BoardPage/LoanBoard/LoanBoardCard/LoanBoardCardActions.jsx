@@ -4,7 +4,7 @@ import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import DropdownMenu from 'core/components/DropdownMenu';
 
 import { activityFormLayout } from '../../../../components/AdminTimeline/AdminActivityAdder';
-import { taskFormLayout } from '../../../../components/TasksTable/TaskModifier';
+import { taskFormLayout } from '../../../../components/TaskForm/taskFormHelpers';
 import LoanBoardCardActionsContainer from './LoanBoardCardActionsContainer';
 
 const handleKeyDown = e => {

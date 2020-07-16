@@ -8,8 +8,6 @@ import {
   PROMOTION_OPTION_STATUS,
 } from '../../../../api/promotionOptions/promotionOptionConstants';
 import { proPromotionOptions } from '../../../../api/promotionOptions/queries';
-import { PROMOTION_USERS_ROLES } from '../../../../api/promotions/promotionConstants';
-import useCurrentUser from '../../../../hooks/useCurrentUser';
 import Select from '../../../Select';
 import MongoSelect from '../../../Select/MongoSelect';
 import StatusLabel from '../../../StatusLabel';
@@ -20,14 +18,13 @@ import PromotionLotGroupChip from '../PromotionLotsTable/PromotionLotGroupChip';
 import PromotionReservationDetail from '../PromotionReservations/PromotionReservationDetail/PromotionReservationDetail';
 
 const getModalProps = promotionOption => {
-  const { promotionLots, loan } = promotionOption;
-  const [promotionLot] = promotionLots;
+  const { name, loan } = promotionOption;
   return {
     title: (
       <T
         id="PromotionReservationsTable.modalTitle"
         values={{
-          lotName: <b>{promotionLot.name}</b>,
+          lotName: <b>{name}</b>,
           customerName: <b>{loan.user.name}</b>,
         }}
       />
@@ -42,10 +39,9 @@ const getModalProps = promotionOption => {
 };
 
 const PromotionOptionsTable = ({ promotion }) => {
-  const currentUser = useCurrentUser();
   const {
     _id: promotionId,
-    users: promotionUsers,
+    users: promotionUsers = [],
     promotionLotGroups = [],
   } = promotion;
   const [statusFilter, setStatusFilter] = useState({
@@ -56,15 +52,7 @@ const PromotionOptionsTable = ({ promotion }) => {
       PROMOTION_OPTION_STATUS.SOLD,
     ],
   });
-  const [invitedByFilter, setInvitedByFilter] = useState(() => {
-    // Only initialise this filter for brokers
-    const userIsInPromotion = promotionUsers.find(
-      ({ _id, $metadata }) =>
-        _id === currentUser._id &&
-        $metadata.roles.includes(PROMOTION_USERS_ROLES.BROKER),
-    );
-    return userIsInPromotion ? currentUser._id : null;
-  });
+  const [invitedByFilter, setInvitedByFilter] = useState(null);
 
   const [promotionLotGroupIdFilter, setPromotionLotGroupIdFilter] = useState();
 
@@ -126,7 +114,7 @@ const PromotionOptionsTable = ({ promotion }) => {
             $body: {
               bank: 1,
               createdAt: 1,
-              promotionLots: { name: 1, promotionLotGroupIds: 1 },
+              promotionLots: { promotionLotGroupIds: 1 },
               fullVerification: 1,
               loanCache: 1,
               loan: {
@@ -134,6 +122,7 @@ const PromotionOptionsTable = ({ promotion }) => {
                 promotions: { _id: 1 },
                 proNote: 1,
               },
+              name: 1,
               priorityOrder: 1,
               reservationAgreement: 1,
               reservationDeposit: 1,
@@ -146,7 +135,7 @@ const PromotionOptionsTable = ({ promotion }) => {
         columns={[
           {
             Header: <T id="PromotionOptionsTable.lotName" />,
-            accessor: 'promotionLots.0.name',
+            accessor: 'name',
             disableSortBy: true,
           },
           {
@@ -195,30 +184,29 @@ const PromotionOptionsTable = ({ promotion }) => {
                   $metadata: { invitedBy },
                 },
               ] = promotions;
-              return (
-                <PromotionCustomer
-                  user={user}
-                  invitedBy={invitedBy}
-                  promotionUsers={promotionUsers}
-                />
-              );
+              return <PromotionCustomer user={user} invitedBy={invitedBy} />;
             },
           },
           {
             Header: <T id="PromotionOptionsTable.createdAt" />,
             accessor: 'createdAt',
-            Cell: ({ value }) => <IntlDate value={value} type="relative" />,
+            Cell: ({ value }) => (
+              <IntlDate value={value} type="relative" style="long" />
+            ),
           },
           {
             Header: <T id="PromotionOptionsTable.progress" />,
             accessor: '_id',
             disableSortBy: true,
             Cell: ({ row: { original: promotionOption } }) => (
-              <PromotionReservationProgress promotionOption={promotionOption} />
+              <PromotionReservationProgress
+                promotionOption={promotionOption}
+                className="mr-8 flex"
+                StepperProps={{ style: { padding: 0 } }}
+              />
             ),
           },
         ]}
-        initialPageSize={10}
         modalType="dialog"
         getModalProps={getModalProps}
         initialHiddenColumns={

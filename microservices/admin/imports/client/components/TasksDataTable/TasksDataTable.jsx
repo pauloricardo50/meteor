@@ -56,7 +56,7 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
         columns={[
           {
             accessor: 'relatedTo',
-            Header: <T id="TasksTable.relatedTo" />,
+            Header: <T id="TasksDataTable.relatedTo" />,
             style: { width: 200 },
             disableSortBy: true,
             Cell: ({ row: { original: task } }) => (
@@ -68,13 +68,13 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
           },
           {
             accessor: 'title',
-            Header: <T id="TasksTable.title" />,
+            Header: <T id="TasksDataTable.title" />,
             style: { width: '100%' },
             Cell: ({ value }) => <b>{value}</b>,
           },
           {
             accessor: 'description',
-            Header: <T id="TasksTable.description" />,
+            Header: <T id="TasksDataTable.description" />,
             style: { width: '200%' },
             Cell: ({ value = '-' }) => (
               <Linkify style={{ whiteSpace: 'pre-wrap' }}>{value}</Linkify>
@@ -82,19 +82,19 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
           },
           {
             accessor: 'createdAt',
-            Header: <T id="TasksTable.createdAt" />,
+            Header: <T id="TasksDataTable.createdAt" />,
             style: { width: 100 },
             Cell: ({ value }) => <IntlDate value={value} type="relative" />,
           },
           {
             accessor: 'dueAt',
-            Header: <T id="TasksTable.dueAt" />,
+            Header: <T id="TasksDataTable.dueAt" />,
             style: { width: 100 },
             Cell: ({ value }) => formatDateTime(value),
           },
           {
             accessor: 'assigneeLink._id',
-            Header: <T id="TasksTable.assignedTo" />,
+            Header: <T id="TasksDataTable.assignedTo" />,
             style: { width: 60 },
             disableSortBy: true,
             Cell: ({
@@ -117,9 +117,11 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
         initialSort={{ id: 'dueAt', desc: true }}
         modalType="form"
         getModalProps={getModalProps}
+        initialPageSize={25}
         {...rest}
       />
     </>
   );
 };
+
 export default TasksDataTable;

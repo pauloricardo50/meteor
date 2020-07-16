@@ -18,8 +18,6 @@ export const skipEmails =
   (Meteor.isDevelopment || Meteor.isDevEnvironment || Meteor.isStaging) &&
   !isEmailTestEnv;
 
-// export const skipEmails = false;
-
 class EmailService {
   sendEmail = async ({ emailId, address, name, params }) => {
     const templateOptions = await this.createTemplateOptions({
@@ -29,7 +27,7 @@ class EmailService {
       params,
     });
     const template = getMandrillTemplate(templateOptions);
-    return sendMandrillTemplate(template).then(response => {
+    return sendMandrillTemplate(template, address).then(response => {
       this.emailLogger({ emailId, address, template, response });
       this.addEmailActivity({ address, template, emailId, response });
     });
@@ -118,9 +116,9 @@ class EmailService {
     } catch (error) {
       throw new Meteor.Error(
         'MANDRILL_ERROR',
-        `Error while rendering mandrill template for ${emailId}: ${error.reason ||
-          error.message ||
-          error}`,
+        `Error while rendering mandrill template for ${emailId}: ${
+          error.reason || error.message || error
+        }`,
       );
     }
 

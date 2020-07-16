@@ -38,9 +38,7 @@ const getIconConfig = ({ _collection, _id: docId, ...data } = {}) => {
 
   switch (_collection) {
     case LOANS_COLLECTION: {
-      let text;
-
-      text = getLoanLinkTitle(data);
+      const text = getLoanLinkTitle(data);
 
       return {
         link: `/loans/${docId}`,

@@ -1,9 +1,8 @@
 import React from 'react';
 import ListItemText from '@material-ui/core/ListItemText';
-import { INSURANCE_PRODUCT_FEATURES } from 'imports/core/api/insuranceProducts/insuranceProductConstants';
 import SimpleSchema from 'simpl-schema';
 
-import { INSURANCE_STATUS } from 'core/api/insurances/insuranceConstants';
+import { INSURANCE_PRODUCT_FEATURES } from 'core/api/insuranceProducts/insuranceProductConstants';
 import {
   insuranceInsert,
   insuranceModify,
@@ -21,11 +20,6 @@ const { formatMessage } = intl;
 
 export const getSchema = ({ borrowers, organisations }) =>
   new SimpleSchema({
-    status: {
-      type: String,
-      allowedValues: Object.values(INSURANCE_STATUS),
-      defaultValue: INSURANCE_STATUS.SUGGESTED,
-    },
     borrowerId: {
       type: String,
       allowedValues: borrowers.map(({ _id }) => _id),
@@ -222,7 +216,6 @@ export const makeInsuranceMethod = ({
       organisationId,
       insuranceProductId,
       insurance: {
-        status,
         premium,
         startDate,
         endDate,

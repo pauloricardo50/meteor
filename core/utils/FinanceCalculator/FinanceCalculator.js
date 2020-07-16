@@ -251,10 +251,10 @@ export class FinanceCalculator {
     if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
       return Math.min(
         (propertyValue + propertyWork) * maxBorrowRatio + pledgedAmount,
-
         (propertyValue + propertyWork) * this.maxBorrowRatioWithPledge,
       );
     }
+
     return (propertyValue + propertyWork) * maxBorrowRatio;
   }
 

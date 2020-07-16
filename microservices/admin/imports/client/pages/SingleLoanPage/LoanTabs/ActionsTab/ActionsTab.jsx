@@ -5,14 +5,10 @@ import { assignLoanToUser, loanDelete } from 'core/api/loans/methodDefinitions';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import UserAssigner from 'core/components/UserAssigner';
 
-import LoanCreatedAtModifier from './LoanCreatedAtModifier';
-import LoanRenamer from './LoanRenamer';
+import PromotionAttacher from './PromotionAttacher';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">
-    <LoanCreatedAtModifier loan={loan} />
-    <LoanRenamer loan={loan} />
-
     <ConfirmMethod
       label="Supprimer la demande"
       keyword="SUPPRIMER"
@@ -20,6 +16,7 @@ const ActionsTab = ({ loan }) => (
       buttonProps={{ error: true, raised: true, className: 'delete-button' }}
       type="modal"
     />
+
     <UserAssigner
       title="Choisir compte utilisateur"
       buttonLabel="Choisir compte utilisateur"
@@ -31,6 +28,8 @@ const ActionsTab = ({ loan }) => (
       }
       userId={loan.userId}
     />
+
+    <PromotionAttacher loan={loan} />
   </div>
 );
 

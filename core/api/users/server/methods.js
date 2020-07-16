@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import PropertyService from '../../properties/server/PropertyService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
@@ -10,6 +11,7 @@ import {
   changeEmail,
   doesUserExist,
   generateApiKeyPair,
+  getEnrollUrl,
   getProByEmail,
   getUserByPasswordResetToken,
   proInviteUser,
@@ -30,6 +32,7 @@ import {
   userVerifyEmail,
 } from '../methodDefinitions';
 import { ROLES } from '../userConstants';
+import AssigneeService from './AssigneeService';
 import UserService from './UserService';
 
 doesUserExist.setHandler((context, { email }) =>
@@ -57,7 +60,7 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
 assignAdminToUser.setHandler((context, { userId, adminId }) => {
   SecurityService.checkCurrentUserIsAdmin();
 
-  return UserService.assignAdminToUser({ userId, adminId });
+  return AssigneeService.assignAdminToUser({ userId, adminId });
 });
 
 setRole.setHandler((context, params) => {
@@ -65,13 +68,9 @@ setRole.setHandler((context, params) => {
   return UserService.setRole(params);
 });
 
-adminCreateUser.setHandler((context, { options, role }) => {
-  SecurityService.users.isAllowedToInsertByRole({ role });
-  return UserService.adminCreateUser({
-    options,
-    role,
-    adminId: context.userId,
-  });
+adminCreateUser.setHandler((context, { user }) => {
+  SecurityService.users.isAllowedToInsertByRole({ role: user.role });
+  return UserService.adminCreateUser(user);
 });
 
 updateUser.setHandler((context, { userId, object }) => {
@@ -176,7 +175,6 @@ proInviteUser.setHandler((context, params) => {
   return UserService.proInviteUser({
     ...params,
     proUserId: isProUser ? userId : undefined,
-    adminId: !isProUser ? userId : undefined,
   });
 });
 
@@ -245,3 +243,14 @@ toggleAccount.setHandler((context, { userId }) => {
 
 userPasswordReset.setHandler(() => null);
 userVerifyEmail.setHandler(() => null);
+
+getEnrollUrl.setHandler((context, { userId }) => {
+  if (Meteor.isDevelopment) {
+    const token = UserService.getLoginToken({ userId });
+    const userIsPro = Roles.userIsInRole(userId, ROLES.PRO);
+    if (userIsPro) {
+      return `${Meteor.settings.public.subdomains.pro}/enroll-account/${token}`;
+    }
+    return `${Meteor.settings.public.subdomains.app}/enroll-account/${token}`;
+  }
+});

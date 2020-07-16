@@ -7,7 +7,7 @@ import {
 describe('App onboarding', () => {
   [
     { name: 'desktop', forceNewLineInThisFile: 'yo' },
-    // { width: 320, height: 568, name: 'iPhone 5' },
+    { width: 320, height: 568, name: 'iPhone 5' },
   ].forEach(({ width, height, name }) => {
     context(name, () => {
       before(() => {

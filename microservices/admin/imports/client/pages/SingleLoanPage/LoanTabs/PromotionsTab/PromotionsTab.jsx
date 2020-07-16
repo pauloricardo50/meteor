@@ -5,6 +5,7 @@ import { formPromotionOption } from 'core/api/fragments';
 import { PROMOTION_OPTIONS_COLLECTION } from 'core/api/promotionOptions/promotionOptionConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
+import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
 import useMeteorData from 'core/hooks/useMeteorData';
 
@@ -15,6 +16,7 @@ const PromotionsTab = ({ loan }) => {
     params: {
       $filters: { 'loanCache._id': loan._id },
       ...merge({}, formPromotionOption(), {
+        name: 1,
         promotionLots: { name: 1, value: 1 },
         loanCache: 1,
       }),
@@ -36,11 +38,12 @@ const PromotionsTab = ({ loan }) => {
       <UserPromotionOptionsTable
         loan={loan}
         promotionOptions={promotionOptions}
-        promotion={promotion}
         isAdmin
       />
     </>
   );
 };
 
-export default PromotionsTab;
+export default withPromotionPageContext(({ loan }) => ({
+  promotion: loan.promotions[0],
+}))(PromotionsTab);

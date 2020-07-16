@@ -35,8 +35,11 @@ export default withProps(
                     PROMOTION_OPTION_BANK_STATUS,
                   ).filter(s => s !== PROMOTION_OPTION_BANK_STATUS.WAITLIST),
                 },
+                date: { type: Date, optional: false },
               })
-          : PromotionOptionSchema.getObjectSchema(id).pick('status', 'date'),
+          : PromotionOptionSchema.getObjectSchema(id)
+              .pick('date', 'status')
+              .extend({ date: { type: Date, optional: false } }),
       [id],
     );
 

@@ -30,7 +30,14 @@ const NewLoansStat = ({
     value={<CountUp end={newLoans.count} />}
     increment={<Percent showPlus value={newLoans.change} />}
     positive={newLoans.change > 0}
-    title="Nouveaux dossiers"
+    title={
+      <div className="text-center">
+        <div>Nouveaux dossiers</div>
+        <div>
+          <small className="secondary">{period} derniers jours</small>
+        </div>
+      </div>
+    }
     large
     top={
       <>

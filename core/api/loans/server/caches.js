@@ -32,9 +32,11 @@ LoanService.cache(
       referredByOrganisationLink: 1,
       referredByUserLink: 1,
       assignedEmployeeCache: 1,
+      acquisitionChannel: 1,
     },
     referenceField: 'userId',
   },
+  // { 'userCache.acquisitionChannel': { $exists: false } },
   // {},
 );
 
@@ -50,9 +52,12 @@ LoanService.cache(
       title: 1,
       isPrivate: 1,
       assigneeLink: 1,
+      type: 1,
+      metadata: 1,
     },
     referenceField: 'loanLink._id',
   },
+  // { 'tasksCache.metadata': { $exists: false } },
   // { tasksCache: { $exists: false } },
 );
 

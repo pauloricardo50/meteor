@@ -52,9 +52,6 @@
       @include screen(wide) {
         max-width: unset;
       }
-      @include screen(xsmall) {
-        padding: 16px;
-      }
     }
 
     &-left {

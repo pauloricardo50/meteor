@@ -11,24 +11,13 @@ import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promot
 import colors from '../../../../config/colors';
 import ConfirmMethod from '../../../ConfirmMethod';
 import T from '../../../Translation';
+import { usePromotion } from '../PromotionPageContext';
 
 const isApp = Meteor.microservice === 'app';
 
-const RequestReservation = ({
-  promotionOption,
-  promotionLotName,
-  status,
-  buttonProps,
-}) => {
-  const {
-    _id: promotionOptionId,
-    loanCache,
-    loan: { promotions },
-  } = promotionOption;
-  const [promotionLink] = loanCache[0].promotionLinks;
-
-  const { invitedBy } = promotionLink;
-  const [{ users = [] }] = promotions;
+const RequestReservation = ({ promotionOption, buttonProps, promotion }) => {
+  const { promotion: { users = [] } = promotion } = usePromotion();
+  const { _id: promotionOptionId, invitedBy, name, status } = promotionOption;
 
   const pro = users.find(({ _id }) => _id === invitedBy);
   const proName = getUserNameAndOrganisation({ user: pro });
@@ -66,7 +55,7 @@ const RequestReservation = ({
           </span>
           <T
             id="PromotionPage.lots.requestReservation.description"
-            values={{ promotionLotName, proName, isApp }}
+            values={{ promotionLotName: name, proName, isApp }}
           />
         </div>
       }

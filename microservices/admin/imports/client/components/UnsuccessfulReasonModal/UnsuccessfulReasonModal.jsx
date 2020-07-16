@@ -1,16 +1,16 @@
 import React from 'react';
+
 import {
   ACTIVITIES_COLLECTION,
   ACTIVITY_TYPES,
-} from 'imports/core/api/activities/activityConstants';
-import { useStaticMeteorData } from 'imports/core/hooks/useMeteorData';
-
+} from 'core/api/activities/activityConstants';
 import { LOAN_STATUS } from 'core/api/loans/loanConstants';
 import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { employeesByEmail } from 'core/arrays/epotekEmployees';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import useCurrentUser from 'core/hooks/useCurrentUser';
+import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 const NoReasonDescription = ({ unsuccessfulActivity }) => (
   <div className="flex-col">

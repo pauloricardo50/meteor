@@ -22,8 +22,9 @@ const Table = ({
   hooks = [],
   initialHiddenColumns,
   initialPageIndex = 0,
-  initialPageSize = paginationOptions[1],
+  initialPageSize = paginationOptions[0],
   initialSort, // { id: columnAccessor, desc: true }
+  loading,
   onStateChange,
   padding = 'default',
   selectable,
@@ -78,7 +79,7 @@ const Table = ({
         size={size}
         stickyHeader={stickyHeader}
       >
-        <TableHead headerGroups={headerGroups} />
+        <TableHead headerGroups={headerGroups} loading={loading} />
         <TableBody
           getTableBodyProps={getTableBodyProps}
           prepareRow={prepareRow}

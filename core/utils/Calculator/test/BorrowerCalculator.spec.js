@@ -1,6 +1,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { CIVIL_STATUS } from 'core/api/borrowers/borrowerConstants';
+import { CANTONS } from 'core/api/loans/loanConstants';
+
 import {
   BORROWER_ACTIVITY_TYPES,
   EXPENSES,
@@ -1127,6 +1130,312 @@ describe('BorrowerCalculator', () => {
 
       const salary = calc.getSalary({ loan });
       expect(salary).to.equal(10000);
+    });
+  });
+
+  describe('hasInsurancePotential', () => {
+    it('returns false if borrower has not uploaded his LPP certificate', () => {
+      const borrowers = [{ _id: 'b' }];
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: false,
+        },
+      );
+    });
+
+    it('returns true if borrower does not have 3A', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 0 }],
+        },
+      ];
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          doesNotHave3A: true,
+        },
+      );
+    });
+
+    it('returns false if borrower has insurance 3A', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+        },
+      ];
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          doesNotHave3A: false,
+        },
+      );
+    });
+
+    it('returns true if borrower does not have 3B in Geneva', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          canton: CANTONS.GE,
+          insurance3B: [{ value: 0 }],
+        },
+      ];
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          doesNotHave3BInGenevaOrFribourg: true,
+        },
+      );
+    });
+
+    it('returns false if borrower has 3B in Geneva', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          canton: CANTONS.GE,
+          insurance3B: [{ value: 1 }],
+          insurance3A: [{ value: 1 }],
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          doesNotHave3BInGenevaOrFribourg: false,
+        },
+      );
+    });
+
+    it('returns true if borrower has bank 3A', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          bank3A: [{ value: 1 }],
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          hasBank3A: true,
+        },
+      );
+    });
+
+    it('returns false if borrower does not have bank 3A', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          bank3A: [{ value: 0 }],
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          hasBank3A: false,
+        },
+      );
+    });
+
+    it('returns true if borrower is self employed', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          activityType: BORROWER_ACTIVITY_TYPES.SELF_EMPLOYED,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          isSelfEmployed: true,
+        },
+      );
+    });
+
+    it('returns false if borrower is not self employed', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          activityType: BORROWER_ACTIVITY_TYPES.SALARIED,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          isSelfEmployed: false,
+        },
+      );
+    });
+
+    it('returns true if borrower has own company', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          hasOwnCompany: true,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          isSelfEmployed: true,
+        },
+      );
+    });
+
+    it('returns false if borrower has no own company', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          hasOwnCompany: false,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          isSelfEmployed: false,
+        },
+      );
+    });
+
+    it('returns true if borrower is divorced', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          civilStatus: CIVIL_STATUS.DIVORCED,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          isDivorced: true,
+        },
+      );
+    });
+
+    it('returns false if borrower is not divorced', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          civilStatus: CIVIL_STATUS.MARRIED,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          isDivorced: false,
+        },
+      );
+    });
+
+    it('returns true if borrower is 50 years old', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          age: 50,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: true,
+          hasUploadedLppCertificate: true,
+          isNearRetirement: true,
+        },
+      );
+    });
+
+    it('returns false if borrower is 49 years old', () => {
+      const borrowers = [
+        {
+          _id: 'b',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+          insurance3A: [{ value: 1 }],
+          age: 49,
+        },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers }).b).to.deep.include(
+        {
+          hasPotential: false,
+          hasUploadedLppCertificate: true,
+          isNearRetirement: false,
+        },
+      );
+    });
+
+    it('works with 2 borrowers', () => {
+      const borrowers = [
+        {
+          _id: 'b1',
+          documents: { [DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT]: {} },
+        },
+        { _id: 'b2' },
+      ];
+
+      expect(Calculator.hasInsurancePotential({ borrowers })).to.deep.include({
+        b1: {
+          hasUploadedLppCertificate: true,
+          doesNotHave3A: true,
+          doesNotHave3BInGenevaOrFribourg: false,
+          hasBank3A: false,
+          isSelfEmployed: false,
+          isDivorced: false,
+          isNearRetirement: false,
+          hasPotential: true,
+        },
+        b2: {
+          hasUploadedLppCertificate: false,
+          doesNotHave3A: true,
+          doesNotHave3BInGenevaOrFribourg: false,
+          hasBank3A: false,
+          isSelfEmployed: false,
+          isDivorced: false,
+          isNearRetirement: false,
+          hasPotential: false,
+        },
+      });
     });
   });
 });

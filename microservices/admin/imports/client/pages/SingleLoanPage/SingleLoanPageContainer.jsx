@@ -48,27 +48,35 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   },
   lenders: {
     adminNote: 1,
-    contact: { name: 1, email: 1 },
+    contact: { firstName: 1, name: 1, email: 1 },
     offers: {
       enableOffer: 1,
       conditions: 1,
       withCounterparts: 1,
       documents: 1,
     },
-    organisation: { logo: 1, contacts: { name: 1, email: 1 } },
+    organisation: { logo: 1 },
     status: 1,
   },
   maxPropertyValue: 1,
   name: 1,
-  promotions: { name: 1, lenderOrganisationLink: 1 },
+  promotionOptions: { name: 1 },
+  promotions: {
+    agreementDuration: 1,
+    lenderOrganisationLink: 1,
+    name: 1,
+    users: { name: 1 },
+  },
   proNote: 1,
   properties: { address: 1, $options: { sort: { createdAt: 1 } } },
   shareSolvency: 1,
+  showClosingChecklists: 1,
   status: 1,
   step: 1,
   unsuccessfulReason: 1,
   userCache: 1,
   userFormsEnabled: 1,
+  insurancePotential: 1,
 });
 
 export default compose(

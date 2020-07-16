@@ -1,8 +1,6 @@
 import React from 'react';
 import { faBan } from '@fortawesome/pro-light-svg-icons/faBan';
-import { faHourglassHalf } from '@fortawesome/pro-light-svg-icons/faHourglassHalf';
 import { faSearch } from '@fortawesome/pro-light-svg-icons/faSearch';
-import { faSearchDollar } from '@fortawesome/pro-light-svg-icons/faSearchDollar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from 'core/components/Button';

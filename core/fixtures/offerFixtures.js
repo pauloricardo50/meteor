@@ -1,6 +1,5 @@
 import shuffle from 'lodash/shuffle';
 
-import { adminProperty } from '../api/fragments';
 import LenderService from '../api/lenders/server/LenderService';
 import LoanService from '../api/loans/server/LoanService';
 import { getRandomOffer } from '../api/offers/fakes';
@@ -13,19 +12,12 @@ const getOrgIds = () => OrganisationService.fetch({}).map(({ _id }) => _id);
 
 export const createFakeOffer = loanId => {
   const loan = LoanService.get(loanId, { propertyIds: 1, structures: 1 });
-  const property =
-    loan.propertyIds &&
-    loan.propertyIds.length &&
-    PropertyService.get(loan.propertyIds[0], adminProperty());
 
-  if (!property) {
+  if (!loan.propertyIds?.length) {
     return;
   }
 
-  const offer = getRandomOffer(
-    { loan: { ...loan, _id: loanId }, property },
-    true,
-  );
+  const offer = getRandomOffer({ loan: { ...loan, _id: loanId } });
   let allOrganisationIds = getOrgIds();
 
   if (allOrganisationIds.length === 0) {

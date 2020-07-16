@@ -8,6 +8,7 @@ import {
   completeFakeBorrower,
   emptyFakeBorrower,
 } from '../../api/borrowers/fakes';
+import BorrowerService from '../../api/borrowers/server/BorrowerService';
 import Contacts from '../../api/contacts';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 import {
@@ -20,6 +21,7 @@ import Loans from '../../api/loans/loans';
 import LoanService from '../../api/loans/server/LoanService';
 import Lots from '../../api/lots/lots';
 import Offers from '../../api/offers';
+import OfferService from '../../api/offers/server/OfferService';
 import Organisations from '../../api/organisations';
 import { ORGANISATION_TYPES } from '../../api/organisations/organisationConstants';
 import OrganisationService from '../../api/organisations/server/OrganisationService';
@@ -28,6 +30,7 @@ import PromotionOptions from '../../api/promotionOptions';
 import Promotions from '../../api/promotions';
 import Properties from '../../api/properties';
 import { fakeProperty } from '../../api/properties/fakes';
+import PropertyService from '../../api/properties/server/PropertyService';
 import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
 import Tasks from '../../api/tasks/tasks';
@@ -121,14 +124,12 @@ Meteor.methods({
     generateDevs = false,
     generateAdmins = false,
     generateUsers = false,
-    generateLoans = false,
     generateOrganisations = false,
     generateUnownedLoan = false,
     generateTestUser = false,
   } = {}) {
     try {
       if (isAuthorizedToRun()) {
-        let devs;
         let admins;
         let newUsers;
         if (generateDevs) {

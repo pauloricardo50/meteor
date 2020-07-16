@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
 import { expect } from 'chai';
 
@@ -9,8 +8,11 @@ import {
   userLogin,
 } from '../../../../utils/testHelpers';
 import { ROLES } from '../../../users/userConstants';
+import { createQuery } from '../..';
 
-describe('Global Exposures', () => {
+describe.skip('Global Exposures', function () {
+  this.retries(2);
+
   beforeEach(() => resetDatabase());
 
   afterEach(done =>

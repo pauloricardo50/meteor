@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,8 +7,8 @@ import { S3_ACLS } from '../../../../api/files/fileConstants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
 import { LOT_TYPES } from '../../../../api/lots/lotConstants';
 import { lotInsert } from '../../../../api/lots/methodDefinitions';
+import { proPromotionLots } from '../../../../api/promotionLots/queries';
 import {
-  addPromotionLotGroup,
   insertPromotionProperty,
   promotionRemove,
   promotionUpdate,
@@ -19,11 +20,12 @@ import {
 } from '../../../../api/promotions/schemas/PromotionSchema';
 import { PROPERTY_TYPE } from '../../../../api/properties/propertyConstants';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
+import Box from '../../../Box';
 import { ModalManagerContext } from '../../../ModalManager';
 import ConfirmModal from '../../../ModalManager/ConfirmModal';
 import DialogForm from '../../../ModalManager/DialogForm';
 import T from '../../../Translation';
-import PromotionMetadataContext from '../PromotionMetadata';
+import { usePromotion } from '../PromotionPageContext';
 
 const promotionDocuments = [
   {
@@ -70,6 +72,13 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
     landValue: { ...moneyField, defaultValue: 0 },
     constructionValue: { ...moneyField, defaultValue: 0 },
     additionalMargin: { ...moneyField, defaultValue: 0 },
+    bankValue: {
+      ...moneyField,
+      uniforms: {
+        ...moneyField.uniforms,
+        helperText: 'À renseigner uniquement si différent du prix de vente',
+      },
+    },
     propertyType: {
       type: String,
       allowedValues: Object.values(PROPERTY_TYPE),
@@ -77,6 +86,7 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
     },
     insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
     terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+    balconyArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
     gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
     roomCount: { type: Number, optional: true, min: 0, max: 100 },
     bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
@@ -88,20 +98,72 @@ export const getPromotionLotSchema = (promotionLotGroups = []) =>
     },
   });
 
-export const lotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
-  type: {
-    type: String,
-    allowedValues: Object.values(LOT_TYPES),
-    uniforms: { displayEmpty: false },
+export const promotionLotFormLayout = [
+  {
+    title: <h5>Général</h5>,
+    Component: Box,
+    className: 'mb-32',
+    layout: [
+      { className: 'grid-2', fields: ['name', 'propertyType'] },
+      'description',
+      'promotionLotGroupIds',
+    ],
   },
-  description: {
-    type: String,
-    optional: true,
-    uniforms: { placeholder: 'Parking en enfilade' },
+  {
+    title: <h5>Valeur</h5>,
+    Component: Box,
+    description: (
+      <div className="mt-8 mb-8">
+        <T id="PromotionPage.promotionLotValueDescription" />
+      </div>
+    ),
+    className: 'mb-32',
+    layout: [
+      'value',
+      {
+        className: 'grid-3',
+        fields: ['landValue', 'additionalMargin', 'constructionValue'],
+      },
+      'bankValue',
+    ],
   },
-  value: { ...moneyField, min: 0 },
-});
+  {
+    title: <h5>Détails</h5>,
+    Component: Box,
+    className: 'grid-2',
+    fields: ['__REST'],
+  },
+];
+
+export const getLotSchema = ({ promotionId, formatMessage }) =>
+  new SimpleSchema({
+    name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
+    type: {
+      type: String,
+      allowedValues: Object.values(LOT_TYPES),
+      uniforms: { displayEmpty: false },
+    },
+    description: {
+      type: String,
+      optional: true,
+      uniforms: { placeholder: 'Parking en enfilade' },
+    },
+    value: { ...moneyField, min: 0 },
+    promotionLotId: {
+      type: String,
+      customAllowedValues: {
+        query: proPromotionLots,
+        params: { promotionId, $body: { name: 1 } },
+      },
+      optional: true,
+      uniforms: {
+        transform: ({ name }) => name,
+        placeholder: formatMessage({
+          id: 'PromotionPage.AdditionalLotsTable.nonAllocated',
+        }),
+      },
+    },
+  });
 
 export const promotionLotGroupSchema = new SimpleSchema({
   label: {
@@ -114,7 +176,8 @@ export const promotionLotGroupSchema = new SimpleSchema({
 });
 
 const getOptions = ({
-  metadata: { permissions, enableNotifications },
+  permissions,
+  enableNotifications,
   openModal,
   promotion,
   openDocumentsModal,
@@ -135,6 +198,11 @@ const getOptions = ({
   const promotionLotSchema = useMemo(
     () => getPromotionLotSchema(promotionLotGroups),
     [promotionLotGroups],
+  );
+  const { formatMessage } = useIntl();
+  const lotSchema = useMemo(
+    () => getLotSchema({ promotionId, formatMessage }),
+    [],
   );
 
   return [
@@ -193,10 +261,10 @@ const getOptions = ({
           <DialogForm
             schema={promotionLotSchema}
             title={<T id="PromotionAdministration.addPromotionLot" />}
-            description={<T id="PromotionPage.promotionLotValueDescription" />}
             onSubmit={property =>
               insertPromotionProperty.run({ promotionId, property })
             }
+            layout={promotionLotFormLayout}
           />,
         ),
     },
@@ -241,7 +309,7 @@ const getOptions = ({
 };
 
 export default withProps(({ promotion }) => {
-  const metadata = useContext(PromotionMetadataContext);
+  const { permissions, enableNotifications } = usePromotion();
   const { openModal } = useContext(ModalManagerContext);
   const [openDocumentsModal, setOpenDocumentsModal] = useState(false);
   const [openProInvitationModal, setOpenProInvitationModal] = useState(false);
@@ -253,7 +321,8 @@ export default withProps(({ promotion }) => {
 
   return {
     options: getOptions({
-      metadata,
+      permissions,
+      enableNotifications,
       openModal,
       promotion,
       openDocumentsModal: () => setOpenDocumentsModal(true),
@@ -268,7 +337,7 @@ export default withProps(({ promotion }) => {
     setOpenProInvitationModal,
     openLinkLoanModal,
     setOpenLinkLoanModal,
-    permissions: metadata.permissions,
+    permissions,
     openPromotionLotGroupsModal,
     setOpenPromotionLotGroupsModal,
   };

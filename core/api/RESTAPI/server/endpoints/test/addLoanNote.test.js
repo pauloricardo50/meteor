@@ -50,12 +50,7 @@ describe('REST: addLoanNote', function() {
   this.timeout(10000);
 
   before(function() {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      api.start();
-    }
+    api.start();
   });
 
   after(() => {
@@ -66,7 +61,8 @@ describe('REST: addLoanNote', function() {
     resetDatabase();
     generator({
       users: [
-        { _id: 'admin', _factory: 'admin' },
+        { _id: 'admin1', _factory: 'admin' },
+        { _id: 'admin2', _factory: 'admin' },
         {
           _id: 'pro1',
           _factory: 'pro',
@@ -98,15 +94,15 @@ describe('REST: addLoanNote', function() {
           _id: 'user1',
           _factory: 'user',
           referredByUserLink: 'pro1',
-          loans: [{ _id: 'loan1' }],
-          assignedEmployeeId: 'admin',
+          loans: [{ _id: 'loan1', assigneeLinks: [{ _id: 'admin2' }] }],
+          assignedEmployee: { _id: 'admin1' },
         },
         {
           _id: 'user2',
           _factory: 'user',
           referredByOrganisationLink: 'org1',
-          loans: [{ _id: 'loan2' }],
-          assignedEmployeeId: 'admin',
+          loans: [{ _id: 'loan2', assigneeLinks: [{ _id: 'admin2' }] }],
+          assignedEmployee: { _id: 'admin1' },
         },
       ],
     });
@@ -135,7 +131,7 @@ describe('REST: addLoanNote', function() {
     expect(title).to.include('Pro One');
     expect(title).to.include('org1');
     expect(description).to.equal(note);
-    expect(assigneeId).to.equal('admin');
+    expect(assigneeId).to.equal('admin2');
   });
 
   it('adds a note to a loan when impersonating', async () => {
@@ -162,7 +158,7 @@ describe('REST: addLoanNote', function() {
     expect(title).to.include('Pro Two');
     expect(title).to.include('org1');
     expect(description).to.equal(note);
-    expect(assigneeId).to.equal('admin');
+    expect(assigneeId).to.equal('admin2');
   });
 
   it('throws if loan does not exist', async () => {

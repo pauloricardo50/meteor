@@ -34,20 +34,20 @@ const getPromotionOptionMailParams = (
     promotionLots = [],
     promotion: { _id: promotionId, name: promotionName, assignedEmployee },
     loan: {
-      promotionLinks,
       user: { name: customerName },
     },
+    invitedBy,
   } = PromotionOptionService.get(promotionOptionId, {
+    invitedBy: 1,
     promotionLots: { name: 1 },
     promotion: {
       userLinks: 1,
       name: 1,
       assignedEmployee: { email: 1, name: 1 },
     },
-    loan: { promotionLinks: 1, user: { name: 1 } },
+    loan: { user: { name: 1 } },
   });
   const [{ name: promotionLotName }] = promotionLots;
-  const [{ invitedBy }] = promotionLinks;
 
   const invitedByUser = UserService.get(invitedBy, {
     name: 1,
@@ -79,6 +79,7 @@ const getPromotionOptionMailParams = (
       : 'Le conseiller',
     invitedBy: getUserNameAndOrganisation({ user: invitedByUser }),
     showProgress,
+    anonymize,
   };
 };
 

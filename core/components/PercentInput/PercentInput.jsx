@@ -41,6 +41,7 @@ const PercentInput = ({
       required={required}
       fullWidth={fullWidth}
       margin={margin}
+      size="small"
     >
       <InputLabel
         ref={inputLabelRef}

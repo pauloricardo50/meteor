@@ -18,10 +18,7 @@ const LotSchema = new SimpleSchema({
     uniforms: { displayEmpty: false },
   },
   description: { type: String, optional: true },
-  value: {
-    ...moneyField,
-    optional: false,
-  },
+  value: { ...moneyField, optional: false },
   promotionCache: { type: Array, optional: true },
   'promotionCache.$': cacheField,
 });

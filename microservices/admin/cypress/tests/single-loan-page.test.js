@@ -39,9 +39,7 @@ describe('Single Loan Page', () => {
     cy.get('.status-label').should('contain', 'Qualifié');
     cy.contains('Qualifié').click();
     cy.contains('En cours').click({ force: true });
-    cy.get('input[name=disbursementDate]')
-      .last()
-      .type('2020-01-01');
+    cy.get('input[name=disbursementDate]').last().type('2020-01-01');
 
     cy.get('.status-label').should('contain', 'En cours');
     cy.contains('En cours').click();
@@ -56,13 +54,13 @@ describe('Single Loan Page', () => {
     cy.contains('button', 'Hypothèque').click();
     cy.contains('button', 'Acquisition').click();
 
-    cy.get('.tasks-table').should('not.exist');
+    cy.get('.tasks-data-table').should('not.exist');
 
     cy.contains('.single-loan-page-tasks button', 'Tâche').click();
     cy.get('input[name=title]').type('Cypress Task');
     cy.contains('Ok').click();
-    cy.get('.tasks-table tr').should('have.length', 2);
-    cy.contains('.tasks-table', 'Cypress Task').should('exist');
+    cy.get('.tasks-data-table tr').should('have.length', 2);
+    cy.contains('.tasks-data-table', 'Cypress Task').should('exist');
   });
 
   it('should add lenders', () => {
@@ -75,23 +73,15 @@ describe('Single Loan Page', () => {
     cy.get('.status-label').should('contain', 'Qualifié');
     cy.contains('Qualifié').click();
     cy.contains('En cours').click({ force: true });
-    cy.get('input[name=disbursementDate]')
-      .last()
-      .type('2020-01-01');
+    cy.get('input[name=disbursementDate]').last().type('2020-01-01');
     cy.get('.status-label').should('contain', 'En cours');
 
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
 
-    cy.get('.lender-picker-dialog')
-      .find('.add')
-      .first()
-      .click();
+    cy.get('.lender-picker-dialog').find('.add').first().click();
     cy.get('.lender-picker-dialog .remove').should('exist');
-    cy.get('.lender-picker-dialog')
-      .find('.add')
-      .first()
-      .click();
+    cy.get('.lender-picker-dialog').find('.add').first().click();
     cy.contains('Fermer').click();
 
     cy.get('.lender.card1').should('have.length', 2);
@@ -111,25 +101,17 @@ describe('Single Loan Page', () => {
       .attachFile('files/logo.png')
       .attachFile('files/logo2.png');
 
-    cy.get('label[for="IDENTITY"]')
-      .contains('logo.png')
-      .should('exist');
-    cy.get('label[for="IDENTITY"]')
-      .contains('logo2.png')
-      .should('exist');
+    cy.get('label[for="IDENTITY"]').contains('logo.png').should('exist');
+    cy.get('label[for="IDENTITY"]').contains('logo2.png').should('exist');
 
     // Change status to error
-    cy.get('label[for="IDENTITY"]')
-      .contains('Validé')
-      .click();
+    cy.get('label[for="IDENTITY"]').contains('Validé').click();
 
     cy.contains('Non valide').click();
 
     cy.get('input[name=error]').type('bad file');
     cy.contains('button', 'Ok').click();
-    cy.get('label[for="IDENTITY"]')
-      .contains('bad file')
-      .should('exist');
+    cy.get('label[for="IDENTITY"]').contains('bad file').should('exist');
 
     cy.get('label[for="IDENTITY"] .title-top svg.error').should('exist');
 
@@ -137,22 +119,64 @@ describe('Single Loan Page', () => {
     cy.get(
       `label[for="IDENTITY"] button[aria-label="Modifier le message d'erreur"]`,
     ).click();
-    cy.get('input[name=error]')
-      .clear()
-      .type('terrible file');
+    cy.get('input[name=error]').clear().type('terrible file');
     cy.contains('button', 'Ok').click();
-    cy.get('label[for="IDENTITY"]')
-      .contains('terrible file')
-      .should('exist');
+    cy.get('label[for="IDENTITY"]').contains('terrible file').should('exist');
 
     // Remove error file
-    cy.get(`label[for="IDENTITY"] button[name=delete]`)
-      .first()
+    cy.get(`label[for="IDENTITY"]`)
+      .contains('Non valide')
+      .parents('.actions')
+      .find('button[name=delete]')
       .click();
-    cy.get('button')
-      .contains('Supprimer')
-      .click();
+    cy.get('button').contains('Supprimer').click();
 
     cy.get('label[for="IDENTITY"] .title-top svg.error').should('not.exist');
+  });
+
+  it('adds closing checklists and manipulates them', () => {
+    cy.contains('button', 'Hypothèque').click();
+    cy.contains('button', 'Acquisition').click();
+
+    cy.contains('Préparer le closing').should('be.disabled');
+
+    cy.contains('Prospect').click();
+    cy.contains('Qualifié').click({ force: true });
+
+    cy.get('.status-label').should('contain', 'Qualifié');
+    cy.contains('Qualifié').click();
+    cy.contains('En cours').click({ force: true });
+    cy.get('input[name=disbursementDate]').last().type('2020-01-01');
+
+    cy.get('.status-label').should('contain', 'En cours');
+
+    cy.contains('Préparer le closing').should('not.be.disabled');
+    cy.contains('Préparer le closing').click();
+    cy.contains('Confirmer').click();
+    cy.get('[role=dialog]').contains('Les dernières étapes').should('exist');
+
+    cy.get('.checklist')
+      .first()
+      .find('.checklist-item')
+      .should('have.length', 6);
+
+    cy.get('[role=dialog] button[aria-label=Supprimer]').first().click();
+    cy.contains('Confirmer').click();
+
+    cy.get('.checklist')
+      .first()
+      .find('.checklist-item')
+      .should('have.length', 5);
+
+    cy.get('[role=dialog]').contains('button', 'Ajouter').first().click();
+    cy.get('input[name=title]').type('Do stuff');
+    cy.get('input[name=description]').type('Here is a description');
+    cy.get('input[name=requiresDocument]').check();
+    cy.get('[role=dialog] form').submit();
+
+    cy.get('.checklist')
+      .first()
+      .find('.checklist-item')
+      .should('have.length', 6);
   });
 });

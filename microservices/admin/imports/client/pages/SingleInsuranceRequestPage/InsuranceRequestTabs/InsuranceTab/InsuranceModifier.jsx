@@ -1,16 +1,11 @@
 import React from 'react';
+import { compose, withProps } from 'recompose';
 
 import AutoForm from 'core/components/AutoForm2/AutoForm';
 
 import InsuranceForm from './InsuranceForm';
 
-const InsuranceModifier = ({
-  schema,
-  modifyInsurance,
-  loading,
-  model,
-  ...props
-}) => {
+const InsuranceModifier = ({ schema, onSubmit, loading, model, ...props }) => {
   if (loading) {
     return null;
   }
@@ -19,11 +14,14 @@ const InsuranceModifier = ({
     <AutoForm
       schema={schema}
       model={model}
-      onSubmit={modifyInsurance}
+      onSubmit={onSubmit}
       title="Modifier assurance"
       {...props}
     />
   );
 };
 
-export default InsuranceForm(InsuranceModifier);
+export default compose(
+  withProps(() => ({ type: 'update' })),
+  InsuranceForm,
+)(InsuranceModifier);

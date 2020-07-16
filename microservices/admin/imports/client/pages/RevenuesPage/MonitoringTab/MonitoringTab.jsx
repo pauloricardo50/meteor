@@ -7,16 +7,11 @@ import DateRangePicker from 'core/components/DateInput/DateRangePicker';
 import { useStaticMeteorData } from 'core/hooks/useMeteorData';
 
 import LoanMonitoringChart from './LoanMonitoringChart';
-import { MonitoringActivities } from './MonitoringActivity';
 
 const MonitoringTab = () => {
   const [revenueDateRange, setRevenueDateRange] = useState({
-    startDate: moment()
-      .subtract(3, 'M')
-      .toDate(),
-    endDate: moment()
-      .add(3, 'M')
-      .toDate(),
+    startDate: moment().subtract(3, 'M').toDate(),
+    endDate: moment().add(3, 'M').toDate(),
   });
 
   const { data: admins, loading: userLoading } = useStaticMeteorData({
@@ -81,8 +76,6 @@ const MonitoringTab = () => {
           });
         }}
       />
-
-      <MonitoringActivities />
     </div>
   );
 };

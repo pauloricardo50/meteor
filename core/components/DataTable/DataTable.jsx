@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import Backdrop from '@material-ui/core/Backdrop';
 
 import usePaginatedMeteorData from '../../hooks/usePaginatedMeteorData';
-import Loading from '../Loading';
 import { paginationOptions } from './Table/TableFooter';
 import TableWithModal from './Table/TableWithModal';
 
@@ -35,7 +33,7 @@ import TableWithModal from './Table/TableWithModal';
 const DataTable = ({
   queryConfig,
   queryDeps,
-  initialPageSize = paginationOptions[1],
+  initialPageSize = paginationOptions[0],
   columns,
   initialSort,
   ...rest
@@ -80,16 +78,9 @@ const DataTable = ({
           onStateChange={onStateChange}
           allRowsCount={totalCount}
           initialSort={initialSort}
+          loading={loading}
           {...rest}
         />
-        <Backdrop
-          open={loading}
-          className="data-table-backdrop"
-          transitionDuration={1000}
-          style={{ zIndex: 0 }}
-        >
-          <Loading />
-        </Backdrop>
       </div>
     </div>
   );

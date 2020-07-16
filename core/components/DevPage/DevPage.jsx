@@ -1,15 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
 
 import {
   cleanDatabase,
-  migrateRoles,
+  getMigrationControl,
+  migrateTo,
   migrateToLatest,
+  revertLastMigration,
+  unlockMigrationControl,
 } from '../../api/methods/methodDefinitions';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
@@ -18,26 +21,102 @@ import Icon from '../Icon';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
 
+const migrationVersionSchema = new SimpleSchema({
+  version: {
+    type: SimpleSchema.Integer,
+    uniforms: { label: 'Version', placeholder: '' },
+  },
+});
+
+const Migrations = () => {
+  const [control, setControl] = useState();
+
+  const getControl = async () => {
+    const { version, locked } = await getMigrationControl.run({});
+    setControl({ version, locked });
+  };
+
+  useEffect(() => {
+    getControl();
+  }, [control?.version, control?.locked]);
+
+  return (
+    <>
+      <h4 className="flex center-align">
+        Current migration version: <b>{control?.version}</b>
+        {control?.locked && (
+          <div className="ml-16 flex center-align">
+            <b className="error ml-16">Control is locked!</b>
+            <ConfirmMethod
+              method={cb =>
+                unlockMigrationControl
+                  .run()
+                  .then(cb)
+                  .finally(() => {
+                    getControl();
+                  })
+              }
+              keyword="UNLOCK"
+              label="Unlock control"
+              buttonProps={{ error: true, raised: true, className: 'ml-16' }}
+            />
+          </div>
+        )}
+      </h4>
+      <ConfirmMethod
+        method={cb =>
+          migrateToLatest
+            .run()
+            .then(cb)
+            .finally(() => {
+              getControl();
+            })
+        }
+        keyword="MIGRATE"
+        label="Migrate to latest"
+        buttonProps={{ error: true, raised: true, disabled: control?.locked }}
+      />
+      <ConfirmMethod
+        method={cb =>
+          revertLastMigration
+            .run()
+            .then(cb)
+            .finally(() => {
+              getControl();
+            })
+        }
+        keyword="REVERT"
+        label="Revert last migration"
+        buttonProps={{ error: true, raised: true, disabled: control?.locked }}
+      />
+      <AutoFormDialog
+        buttonProps={{
+          label: 'Migrate to specific version',
+          raised: true,
+          error: true,
+          disabled: control?.locked,
+        }}
+        title="Migrate to version"
+        schema={migrationVersionSchema}
+        onSubmit={params =>
+          migrateTo.run(params).finally(() => {
+            getControl();
+          })
+        }
+      />
+      <ConfirmMethod
+        method={cb => cleanDatabase.run().then(cb)}
+        keyword="CLEAN_DATABASE"
+        label="Clean database"
+        buttonProps={{ error: true, raised: true }}
+      />
+    </>
+  );
+};
+
 const SharedStuff = () => (
   <>
-    <ConfirmMethod
-      method={cb => migrateToLatest.run().then(cb)}
-      keyword="MIGRATE"
-      label="Migrate to latest"
-      buttonProps={{ error: true, raised: true }}
-    />
-    <ConfirmMethod
-      method={cb => cleanDatabase.run().then(cb)}
-      keyword="CLEAN_DATABASE"
-      label="Clean database"
-      buttonProps={{ error: true, raised: true }}
-    />
-    <ConfirmMethod
-      method={cb => migrateRoles.run().then(cb)}
-      keyword="ROLES_V2"
-      label="Migrate to roles v2"
-      buttonProps={{ error: true, raised: true }}
-    />
+    <Migrations />
     <ErrorThrower />
   </>
 );
@@ -165,7 +244,6 @@ class DevPage extends Component {
                   generateDevs: true,
                   generateAdmins: true,
                   generateUsers: true,
-                  generateLoans: true,
                   generateOrganisations: true,
                   generateUnownedLoan: true,
                   generateTestUser: true,

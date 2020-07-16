@@ -290,7 +290,7 @@ describe('Table', () => {
       );
 
       const rows = queryAllByRole('row');
-      expect(rows.length).to.equal(27);
+      expect(rows.length).to.equal(12);
     });
 
     it('allows different page sizes', () => {
@@ -350,15 +350,15 @@ describe('Table', () => {
 
       let [header, row1] = getAllByRole('row');
       expect(!!within(row1).queryByText('0')).to.equal(true);
-      expect(!!queryByText('1-25 of 100')).to.equal(true);
+      expect(!!queryByText('1-10 of 100')).to.equal(true);
 
       const next = getByTitle('Next page');
       fireEvent.click(next);
 
-      expect(!!queryByText('26-50 of 100')).to.equal(true);
+      expect(!!queryByText('11-20 of 100')).to.equal(true);
       [header, row1] = getAllByRole('row');
-      await within(row1).findByText('25');
-      expect(!!within(row1).queryByText('25')).to.equal(true);
+      await within(row1).findByText('10');
+      expect(!!within(row1).queryByText('10')).to.equal(true);
     });
 
     it('can change pagination size', () => {
@@ -376,16 +376,16 @@ describe('Table', () => {
       );
 
       let rows = queryAllByRole('row');
-      expect(rows.length).to.equal(27);
+      expect(rows.length).to.equal(12);
 
       const select = getByLabelText('Rows per page', { exact: false });
 
       fireEvent.mouseDown(select);
       const options = getAllByRole('option');
-      fireEvent.click(options[0]);
+      fireEvent.click(options[1]);
 
       rows = queryAllByRole('row');
-      expect(rows.length).to.equal(12);
+      expect(rows.length).to.equal(27);
     });
 
     it('does server-side pagination', () => {

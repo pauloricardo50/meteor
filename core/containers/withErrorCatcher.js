@@ -11,9 +11,11 @@ const defaultHandleError = (error, additionalData) => {
     }
   }
 
-  const { Kadira } = window;
-  if (Kadira && Kadira.trackError) {
-    Kadira.trackError('react', error.stack.toString());
+  const { Monti } = window;
+  if (Monti && Monti.trackError) {
+    Monti.trackError('react', error.message, {
+      stacks: error.stack.toString(),
+    });
   }
 
   logError.run({

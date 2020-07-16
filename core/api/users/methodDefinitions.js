@@ -35,8 +35,17 @@ export const setRole = new Method({
 export const adminCreateUser = new Method({
   name: 'adminCreateUser',
   params: {
-    options: Object,
-    role: String,
+    user: {
+      assignedEmployeeId: Match.Maybe(String),
+      email: String,
+      firstName: Match.Maybe(String),
+      lastName: Match.Maybe(String),
+      phoneNumbers: Match.Maybe([String]),
+      referredByOrganisationId: Match.Maybe(String),
+      referredByUserId: Match.Maybe(String),
+      role: Match.Maybe(String),
+      sendEnrollmentEmail: Match.Maybe(Boolean),
+    },
   },
 });
 
@@ -160,7 +169,7 @@ export const anonymousCreateUser = new Method({
       lastName: Match.Maybe(String),
       phoneNumber: Match.Maybe(String),
     },
-    trackingId: String,
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
     referralId: Match.Maybe(String),
     ctaId: Match.Maybe(String),
   },
@@ -182,4 +191,9 @@ export const userPasswordReset = new Method({
 // Used only to trigger activity listener
 export const userVerifyEmail = new Method({
   name: 'userVerifyEmail',
+});
+
+export const getEnrollUrl = new Method({
+  name: 'getEnrollUrl',
+  params: { userId: String },
 });

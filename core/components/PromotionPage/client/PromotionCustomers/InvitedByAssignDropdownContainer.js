@@ -2,6 +2,7 @@ import { withProps } from 'recompose';
 
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { loanUpdatePromotionInvitedBy } from '../../../../api/loans/methodDefinitions';
+import { usePromotion } from '../PromotionPageContext';
 
 const getMenuItems = ({
   promotionUsers = [],
@@ -31,9 +32,13 @@ const getInvitedByName = ({ invitedBy, promotionUsers = [] }) => {
   return user && getUserNameAndOrganisation({ user });
 };
 
-export default withProps(
-  ({ promotionUsers, invitedBy, loanId, promotionId }) => ({
+export default withProps(({ invitedBy, loanId }) => {
+  const {
+    promotion: { _id: promotionId, users: promotionUsers },
+  } = usePromotion();
+
+  return {
     options: getMenuItems({ promotionUsers, invitedBy, loanId, promotionId }),
     invitedByName: getInvitedByName({ invitedBy, promotionUsers }),
-  }),
-);
+  };
+});

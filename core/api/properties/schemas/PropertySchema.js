@@ -179,6 +179,11 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
   },
+  balconyArea: {
+    type: SimpleSchema.Integer,
+    optional: true,
+    min: 0,
+  },
   gardenArea: {
     type: SimpleSchema.Integer,
     optional: true,
@@ -310,6 +315,7 @@ export const PropertySchema = new SimpleSchema({
   },
   documents: documentsField,
   loanCount: { type: Number, optional: true },
+  bankValue: moneyField,
 });
 
 const protectedKeys = [

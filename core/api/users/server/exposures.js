@@ -1,4 +1,3 @@
-import { Roles } from 'meteor/alanning:roles';
 import { Match } from 'meteor/check';
 
 import {
@@ -8,7 +7,6 @@ import {
 import { exposeQuery } from '../../queries/queryHelpers';
 import SecurityService from '../../security';
 import {
-  adminUsers,
   appUser,
   incoherentAssignees,
   proReferredByUsers,
@@ -16,54 +14,8 @@ import {
   userEmails,
   userSearch,
 } from '../queries';
-import { ROLES } from '../userConstants';
 import { incoherentAssigneesResolver } from './resolvers';
 import UserService from './UserService';
-
-exposeQuery({
-  query: adminUsers,
-  overrides: {
-    firewall(userId, params) {
-      SecurityService.checkUserIsAdmin(userId);
-      params.userId = userId;
-    },
-    embody: body => {
-      body.$filter = ({
-        filters,
-        params: { roles, _id, admins, assignedEmployeeId, userId },
-      }) => {
-        if (_id) {
-          filters._id = _id;
-        }
-
-        if (roles) {
-          filters['roles._id'] = { $in: roles };
-        }
-
-        if (admins) {
-          const userIsDev = Roles.userIsInRole(userId, ROLES.DEV);
-
-          if (userIsDev) {
-            filters['roles._id'] = { $in: [ROLES.ADMIN, ROLES.DEV] };
-          } else {
-            filters['roles._id'] = ROLES.ADMIN;
-          }
-        }
-
-        if (assignedEmployeeId) {
-          filters.assignedEmployeeId = assignedEmployeeId;
-        }
-      };
-    },
-    validateParams: {
-      admins: Match.Maybe(Boolean),
-      assignedEmployeeId: Match.Maybe(Match.OneOf(Object, String, null)),
-      roles: Match.Maybe([String]),
-      userId: String,
-    },
-  },
-  options: { allowFilterById: true },
-});
 
 exposeQuery({
   query: appUser,
@@ -94,7 +46,6 @@ exposeQuery({
         ownReferredUsers,
         referredByUserId,
       } = params;
-
       SecurityService.checkUserIsPro(userId);
 
       if (providedUserId) {
@@ -128,10 +79,10 @@ exposeQuery({
       }) => {
         let organisationId;
         if (!providedOrganisationId) {
-          const { organisations = [] } = UserService.get(userId, {
-            organisations: { _id: 1 },
+          const mainOrganisation = UserService.getUserMainOrganisation(userId, {
+            _id: 1,
           });
-          organisationId = !!organisations.length && organisations[0]._id;
+          organisationId = mainOrganisation?._id;
         } else {
           organisationId = providedOrganisationId;
         }

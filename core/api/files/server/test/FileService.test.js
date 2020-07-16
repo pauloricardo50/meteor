@@ -30,14 +30,6 @@ const setupBucket = () =>
 describe('FileService', function() {
   this.timeout(10000);
 
-  before(function() {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      // When running these tests in parallel, it breaks tests
-      this.parent.pending = true;
-      this.skip();
-    }
-  });
-
   beforeEach(() => clearBucket(docId).then(setupBucket));
 
   describe('getFilesForDoc', () => {
@@ -167,7 +159,10 @@ describe('FileService', function() {
     });
   });
 
-  describe('autoRenameFile', () => {
+  describe('autoRenameFile', function() {
+    this.timeout(15000);
+    this.retries(3);
+
     const documentId = 'autoRenameFile-test';
     const generateAndRenameFiles = async (count, date = '') => {
       await asyncForEach([...Array(count)], async (_, i) => {
