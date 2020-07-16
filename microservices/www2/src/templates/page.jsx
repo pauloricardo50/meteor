@@ -90,6 +90,13 @@ export const query = graphql`
               section_id
               image_layout
               images
+              imagesSharp {
+                childImageSharp {
+                  fluid(maxWidth: 400) {
+                    ...GatsbyImageSharpFluid_noBase64
+                  }
+                }
+              }
               content
             }
             fields {

@@ -3,16 +3,21 @@ import './Hero.scss';
 import React from 'react';
 
 import CTAButtons from '../CTAButtons';
+import Image from '../Image';
 import { RichText } from '../prismic';
 
 const EqualSplit = ({ primary, fields }) => (
   <section className="equal-split container">
-    <div
-      className="equal-split__image"
-      style={{ backgroundImage: `url(${primary.images.url})` }}
-    />
+    <div className="equal-split-image">
+      <Image
+        className="equal-split-image-gatsby"
+        prismicImage={primary.imagesSharp}
+        imgStyle={{ objectFit: 'contain' }}
+        loading="eager"
+      />
+    </div>
 
-    <div className="equal-split__content">
+    <div className="equal-split-content">
       {primary.content && RichText.asText(primary.content) !== '' ? (
         <>
           <RichText render={primary.content} />
@@ -23,17 +28,16 @@ const EqualSplit = ({ primary, fields }) => (
     </div>
   </section>
 );
-
 const FullWidthImage = ({ primary, fields }) => (
-  <div
-    className="full-width-image"
-    style={{ backgroundImage: `url(${primary.images.url})` }}
-    itemProp="image"
-    itemScope
-    itemType="https://schema.org/ImageObject"
-  >
-    <meta itemProp="url" content={primary.images.url} />
-    <div className="wrapper">
+  <div className="full-width">
+    <Image
+      className="full-width-image"
+      prismicImage={primary.imagesSharp}
+      loading="eager"
+      imgStyle={{ objectFit: 'contain' }}
+    />
+
+    <div className="full-width-content">
       {primary.content && RichText.asText(primary.content) !== '' ? (
         <>
           <span className="image-label">

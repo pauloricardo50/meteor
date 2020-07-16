@@ -54,7 +54,7 @@ module.exports = {
         defaultLang: 'fr-ch',
         shortenUrlLangs: true,
         // path: '/preview',
-        // previews: true,
+        previews: false,
         omitPrismicScript: true,
         pages: [
           {
