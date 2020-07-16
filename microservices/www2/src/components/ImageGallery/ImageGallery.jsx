@@ -32,7 +32,7 @@ const ImageGallery = ({ primary, fields }) => {
 
             return (
               <Component className="gallery-item" key={idx} prismicLink={link}>
-                <Image data={data} at="image" fadeIn={false} />
+                <Image data={data} at="image" fadeIn />
               </Component>
             );
           })}

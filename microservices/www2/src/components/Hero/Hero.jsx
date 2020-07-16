@@ -14,7 +14,7 @@ const EqualSplit = ({ primary, fields }) => (
         data={primary}
         at="image"
         imgStyle={{ objectFit: 'contain' }}
-        loading="eager"
+        fadeIn
       />
     </div>
 
