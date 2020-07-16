@@ -78,7 +78,7 @@ export const promotionPermissionsSchema = {
   canSeeManagement: SCHEMA_BOOLEAN,
 };
 
-const constructionTimelineSchema = {
+export const constructionTimelineSchema = {
   startPercent: percentageField,
   steps: { type: Array, defaultValue: [] },
   'steps.$': Object,
