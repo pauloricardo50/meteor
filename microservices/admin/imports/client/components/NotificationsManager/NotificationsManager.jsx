@@ -1,8 +1,7 @@
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
-
 import React, { useState } from 'react';
 
 import { NOTIFICATIONS_COLLECTION } from 'core/api/notifications/notificationConstants';
+import { createQuery } from 'core/api/queries';
 import Icon from 'core/components/Icon';
 import StickyPopover from 'core/components/StickyPopover';
 import useCurrentUser from 'core/hooks/useCurrentUser';

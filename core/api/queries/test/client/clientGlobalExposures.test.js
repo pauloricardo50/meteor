@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
 
 import { expect } from 'chai';
 
@@ -9,14 +8,15 @@ import {
   userLogin,
 } from '../../../../utils/testHelpers';
 import { ROLES } from '../../../users/userConstants';
+import { createQuery } from '../..';
 
 describe.skip('Global Exposures', function () {
   this.retries(2);
 
   beforeEach(() => resetDatabase());
 
-  afterEach((done) =>
-    Meteor.logout((err) => {
+  afterEach(done =>
+    Meteor.logout(err => {
       done(err);
     }),
   );

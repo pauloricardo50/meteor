@@ -1,5 +1,3 @@
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
-
 import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
 import { CONTACTS_COLLECTION } from '../../../api/contacts/contactsConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from '../../../api/insuranceRequests/insuranceRequestConstants';
@@ -10,6 +8,7 @@ import { ORGANISATIONS_COLLECTION } from '../../../api/organisations/organisatio
 import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
 import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
 import { USERS_COLLECTION } from '../../../api/users/userConstants';
+import { createQuery } from '../../api/queries';
 
 const makeQuery = (collection, params, cb) =>
   createQuery({ [collection]: params }).fetchOne(cb);
