@@ -11,7 +11,8 @@ const EqualSplit = ({ primary, fields }) => (
     <div className="equal-split-image">
       <Image
         className="equal-split-image-gatsby"
-        prismicImage={primary.imagesSharp}
+        data={primary}
+        at="image"
         imgStyle={{ objectFit: 'contain' }}
         loading="eager"
       />
@@ -28,11 +29,13 @@ const EqualSplit = ({ primary, fields }) => (
     </div>
   </section>
 );
+
 const FullWidthImage = ({ primary, fields }) => (
   <div className="full-width">
     <Image
       className="full-width-image"
-      prismicImage={primary.imagesSharp}
+      data={primary}
+      at="image"
       loading="eager"
       imgStyle={{ objectFit: 'contain' }}
     />
@@ -52,14 +55,15 @@ const FullWidthImage = ({ primary, fields }) => (
 );
 
 const Hero = ({ primary, fields }) => {
-  if (!primary.images?.url) return null;
-
-  switch (primary.image_layout) {
-    case 'Equal Split':
-      return <EqualSplit primary={primary} fields={fields} />;
-    default:
-      return <FullWidthImage primary={primary} fields={fields} />;
+  if (!primary.image?.url) {
+    return null;
   }
+
+  if (primary.image_layout === 'Equal Split') {
+    return <EqualSplit primary={primary} fields={fields} />;
+  }
+
+  return <FullWidthImage primary={primary} fields={fields} />;
 };
 
 export default Hero;
