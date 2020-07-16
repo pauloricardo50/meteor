@@ -21,7 +21,3 @@ Slingshot.fileRestrictions(SLINGSHOT_DIRECTIVE_NAME_DISPLAYABLE, {
   allowedFileTypes: ALLOWED_FILE_TYPES_DISPLAYABLE,
   maxSize: MAX_DISPLAYABLE_FILE_SIZE,
 });
-
-if (module.hot) {
-  module.hot.decline();
-}
