@@ -1,14 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import SimpleSchema from 'simpl-schema';
 
 import {
   cleanDatabase,
+  getMigrationControl,
+  migrateTo,
   migrateToLatest,
+  revertLastMigration,
+  unlockMigrationControl,
 } from '../../api/methods/methodDefinitions';
 import { AutoFormDialog } from '../AutoForm2';
 import Button from '../Button';
@@ -17,20 +21,103 @@ import Icon from '../Icon';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
 
+const migrationVersionSchema = new SimpleSchema({
+  version: {
+    type: SimpleSchema.Integer,
+    uniforms: { label: 'Version', placeholder: '' },
+  },
+});
+
+const Migrations = () => {
+  const [control, setControl] = useState();
+
+  const getControl = async () => {
+    const { version, locked } = await getMigrationControl.run({});
+    setControl({ version, locked });
+  };
+
+  useEffect(() => {
+    getControl();
+  }, [control?.version, control?.locked]);
+
+  return (
+    <>
+      <h4 className="flex center-align">
+        Current migration version: <b>{control?.version}</b>
+        {control?.locked && (
+          <div className="ml-16 flex center-align">
+            <b className="error ml-16">Control is locked!</b>
+            <ConfirmMethod
+              method={cb =>
+                unlockMigrationControl
+                  .run()
+                  .then(() => {
+                    getControl();
+                  })
+                  .then(cb)
+              }
+              keyword="UNLOCK"
+              label="Unlock control"
+              buttonProps={{ error: true, raised: true, className: 'ml-16' }}
+            />
+          </div>
+        )}
+      </h4>
+      <ConfirmMethod
+        method={cb =>
+          migrateToLatest
+            .run()
+            .then(() => {
+              getControl();
+            })
+            .then(cb)
+        }
+        keyword="MIGRATE"
+        label="Migrate to latest"
+        buttonProps={{ error: true, raised: true, disabled: control?.locked }}
+      />
+      <ConfirmMethod
+        method={cb =>
+          revertLastMigration
+            .run()
+            .then(() => {
+              getControl();
+            })
+            .then(cb)
+        }
+        keyword="REVERT"
+        label="Revert last migration"
+        buttonProps={{ error: true, raised: true, disabled: control?.locked }}
+      />
+      <AutoFormDialog
+        buttonProps={{
+          label: 'Migrate to specific version',
+          raised: true,
+          error: true,
+          disabled: control?.locked,
+        }}
+        title="Migrate to version"
+        schema={migrationVersionSchema}
+        onSubmit={params =>
+          migrateTo.run(params).then(() => {
+            getControl();
+            return Promise.resolve();
+          })
+        }
+      />
+      <ConfirmMethod
+        method={cb => cleanDatabase.run().then(cb)}
+        keyword="CLEAN_DATABASE"
+        label="Clean database"
+        buttonProps={{ error: true, raised: true }}
+      />
+    </>
+  );
+};
+
 const SharedStuff = () => (
   <>
-    <ConfirmMethod
-      method={cb => migrateToLatest.run().then(cb)}
-      keyword="MIGRATE"
-      label="Migrate to latest"
-      buttonProps={{ error: true, raised: true }}
-    />
-    <ConfirmMethod
-      method={cb => cleanDatabase.run().then(cb)}
-      keyword="CLEAN_DATABASE"
-      label="Clean database"
-      buttonProps={{ error: true, raised: true }}
-    />
+    <Migrations />
     <ErrorThrower />
   </>
 );

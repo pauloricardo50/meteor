@@ -39,6 +39,7 @@ import './38';
 import './39';
 import './40';
 
+import { Meteor } from 'meteor/meteor';
 import { Migrations } from 'meteor/percolate:migrations';
 
 // To migrate to a specific version
@@ -48,3 +49,21 @@ import { Migrations } from 'meteor/percolate:migrations';
 export const migrate = () => {
   Migrations.migrateTo('latest');
 };
+
+export const getControl = () => Migrations._getControl();
+
+export const migrateBack = () => {
+  const { version } = getControl();
+
+  if (version === 0) {
+    throw new Meteor.Error('Cannot migrate back before migration 0');
+  }
+
+  Migrations.migrateTo(version - 1);
+};
+
+export const migrateToVersion = version => {
+  Migrations.migrateTo(version);
+};
+
+export const unlocControl = () => Migrations.unlock();

@@ -104,3 +104,20 @@ export const cleanDatabase = new Method({
   name: 'cleanDatabase',
   params: {},
 });
+
+export const revertLastMigration = new Method({
+  name: 'revertLastMigration',
+});
+
+export const getMigrationControl = new Method({
+  name: 'getMigrationControl',
+});
+
+export const migrateTo = new Method({
+  name: 'migrateTo',
+  params: { version: Number },
+});
+
+export const unlockMigrationControl = new Method({
+  name: 'unlockMigrationControl',
+});
