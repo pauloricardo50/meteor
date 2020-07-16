@@ -121,11 +121,11 @@ module.exports = {
         // This speeds up those early connections, it was suggested by google's
         // Lighthouse. If this issue gets resolved, we might be able to remove prismic.io: https://github.com/prismicio/gatsby-source-prismic-graphql/issues/16
         domains: [
-          'https://e-potek.prismic.io',
-          'https://api-iam.intercom.io',
-          'https://stats.g.doubleclick.net',
-          'https://www.google-analytics.com',
-          'https://www.googletagmanager.com',
+          { domain: 'https://e-potek.prismic.io', crossOrigin: false },
+          { domain: 'https://api-iam.intercom.io', crossOrigin: false },
+          { domain: 'https://stats.g.doubleclick.net', crossOrigin: false },
+          { domain: 'https://www.google-analytics.com', crossOrigin: false },
+          { domain: 'https://www.googletagmanager.com', crossOrigin: false },
         ],
       },
     },
