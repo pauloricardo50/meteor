@@ -51,10 +51,10 @@ const Migrations = () => {
               method={cb =>
                 unlockMigrationControl
                   .run()
-                  .then(() => {
+                  .then(cb)
+                  .finally(() => {
                     getControl();
                   })
-                  .then(cb)
               }
               keyword="UNLOCK"
               label="Unlock control"
@@ -67,10 +67,10 @@ const Migrations = () => {
         method={cb =>
           migrateToLatest
             .run()
-            .then(() => {
+            .then(cb)
+            .finally(() => {
               getControl();
             })
-            .then(cb)
         }
         keyword="MIGRATE"
         label="Migrate to latest"
@@ -80,10 +80,10 @@ const Migrations = () => {
         method={cb =>
           revertLastMigration
             .run()
-            .then(() => {
+            .then(cb)
+            .finally(() => {
               getControl();
             })
-            .then(cb)
         }
         keyword="REVERT"
         label="Revert last migration"
@@ -99,9 +99,8 @@ const Migrations = () => {
         title="Migrate to version"
         schema={migrationVersionSchema}
         onSubmit={params =>
-          migrateTo.run(params).then(() => {
+          migrateTo.run(params).finally(() => {
             getControl();
-            return Promise.resolve();
           })
         }
       />
