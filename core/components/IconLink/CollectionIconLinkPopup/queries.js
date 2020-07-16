@@ -7,8 +7,8 @@ import { OFFERS_COLLECTION } from '../../../api/offers/offerConstants';
 import { ORGANISATIONS_COLLECTION } from '../../../api/organisations/organisationConstants';
 import { PROMOTIONS_COLLECTION } from '../../../api/promotions/promotionConstants';
 import { PROPERTIES_COLLECTION } from '../../../api/properties/propertyConstants';
+import { createQuery } from '../../../api/queries';
 import { USERS_COLLECTION } from '../../../api/users/userConstants';
-import { createQuery } from '../../api/queries';
 
 const makeQuery = (collection, params, cb) =>
   createQuery({ [collection]: params }).fetchOne(cb);
