@@ -36,7 +36,14 @@ export const query = graphql`
               section_id
             }
             fields {
-              illustration
+              image
+              imageSharp {
+                childImageSharp {
+                  fluid(maxHeight: 300) {
+                    ...GatsbyImageSharpFluid_noBase64
+                  }
+                }
+              }
               content
               cta_icon_1
               cta_text_1

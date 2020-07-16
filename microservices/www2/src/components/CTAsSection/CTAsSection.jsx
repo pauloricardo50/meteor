@@ -3,6 +3,7 @@ import './CTAsSection.scss';
 import React from 'react';
 
 import CTAButtons from '../CTAButtons';
+import Image from '../Image';
 import { RichText } from '../prismic';
 
 const CTAsSection = ({ primary, fields }) => (
@@ -27,11 +28,13 @@ const CTAsSection = ({ primary, fields }) => (
 
         return (
           <div key={idx} className="cta-block">
-            {cta.illustration?.url && (
-              <img
+            {cta.image?.url && (
+              <Image
+                data={cta}
+                at="image"
+                fadeIn
                 className="cta-block__image"
-                src={cta.illustration.url}
-                alt=""
+                imgStyle={{ objectFit: 'contain' }}
               />
             )}
 
