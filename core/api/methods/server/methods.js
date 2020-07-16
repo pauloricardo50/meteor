@@ -4,7 +4,13 @@ import BorrowerService from '../../borrowers/server/BorrowerService';
 import generator from '../../factories/server';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
-import { migrate } from '../../migrations/server';
+import {
+  getControl,
+  migrate,
+  migrateBack,
+  migrateToVersion,
+  unlockControl,
+} from '../../migrations/server';
 import { cleanAllData } from '../../migrations/server/dataCleaning';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import SecurityService from '../../security';
@@ -15,16 +21,19 @@ import {
   addBorrower,
   cleanDatabase,
   generateScenario,
+  getMigrationControl,
   getMixpanelAuthorization,
+  migrateTo,
   migrateToLatest,
   referralExists,
   removeAdditionalDoc,
   removeBorrower,
+  revertLastMigration,
   setAdditionalDoc,
   submitContactForm,
   throwDevError,
+  unlockMigrationControl,
   updateDocument,
-  updateDocumentUnset,
 } from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -120,13 +129,6 @@ updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   return service._update({ id: docId, object });
 });
 
-updateDocumentUnset.setHandler(({ userId }, { collection, docId, object }) => {
-  const service = Services[collection];
-  SecurityService.checkUserIsDev(userId);
-
-  return service._update({ id: docId, object, operator: '$unset' });
-});
-
 generateScenario.setHandler(({ userId }, { scenario }) => {
   if (!Meteor.isTest) {
     SecurityService.checkUserIsAdmin(userId);
@@ -149,4 +151,24 @@ referralExists.setHandler((context, params) => {
 cleanDatabase.setHandler(({ userId }) => {
   SecurityService.checkUserIsDev(userId);
   return cleanAllData();
+});
+
+revertLastMigration.setHandler(() => {
+  SecurityService.checkCurrentUserIsDev();
+  migrateBack();
+});
+
+getMigrationControl.setHandler(() => {
+  SecurityService.checkCurrentUserIsDev();
+  return getControl();
+});
+
+migrateTo.setHandler((context, { version }) => {
+  SecurityService.checkCurrentUserIsDev();
+  migrateToVersion(version);
+});
+
+unlockMigrationControl.setHandler(() => {
+  SecurityService.checkCurrentUserIsDev();
+  unlockControl();
 });

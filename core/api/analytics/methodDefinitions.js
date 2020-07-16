@@ -52,7 +52,7 @@ export const analyticsCTA = new Method({
 export const analyticsOpenedIntercom = new Method({
   name: 'analyticsOpenedIntercom',
   params: {
-    trackingId: Match.Maybe(String),
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
     lastPageTitle: Match.Maybe(String),
     lastPagePath: Match.Maybe(String),
     lastPageMicroservice: Match.Maybe(String),

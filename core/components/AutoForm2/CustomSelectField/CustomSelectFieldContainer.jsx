@@ -1,8 +1,7 @@
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
-
 import React, { PureComponent } from 'react';
 import { injectIntl } from 'react-intl';
 
+import { createQuery } from '../../../api/queries';
 import Chip from '../../Material/Chip';
 import T from '../../Translation';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
