@@ -1,138 +1,51 @@
+import 'highlight.js/styles/github.css';
+
 import React from 'react';
-import omit from 'lodash/omit';
+import hljs from 'highlight.js';
+import ReactMarkdown from 'react-markdown';
 
-import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
-import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
-import BorrowerSchema from 'core/api/borrowers/schemas/BorrowerSchema';
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
-import { loanUpdate } from 'core/api/loans/methodDefinitions';
-import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import { offerUpdate } from 'core/api/offers/methodDefinitions';
-import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
-import { OfferSchema } from 'core/api/offers/offers';
-import { propertyUpdate } from 'core/api/properties/methodDefinitions';
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
-import PropertySchema from 'core/api/properties/schemas/PropertySchema';
-import Tabs from 'core/components/Tabs';
+class JSONBlock extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.setRef = this.setRef.bind(this);
+  }
 
-import SingleDevTab from './SingleDevTab';
+  setRef(el) {
+    this.codeEl = el;
+  }
 
-const DevTab = ({ loan }) => {
-  const { properties = [], borrowers = [], offers = [] } = loan;
+  componentDidMount() {
+    this.highlightCode();
+  }
 
-  return (
-    <Tabs
-      tabs={[
-        {
-          id: 'loan',
-          label: 'Hypothèque',
-          content: (
-            <SingleDevTab
-              schema={LoanSchema}
-              doc={loan}
-              onSubmit={doc =>
-                loanUpdate
-                  .run({
-                    loanId: loan._id,
-                    object: omit(doc, [
-                      'borrowers',
-                      'properties',
-                      'structure',
-                      'offers',
-                      'user',
-                      'documents',
-                    ]),
-                  })
-                  .then(() => {
-                    import('../../../../../core/utils/message').then(
-                      ({ default: message }) => {
-                        message('Done', 2);
-                      },
-                    );
-                  })
-              }
-              collection={LOANS_COLLECTION}
-            />
-          ),
-        },
-        ...properties.map((property, index) => ({
-          id: property._id,
-          label: property.address1 || `Bien immo ${index + 1}`,
-          content: (
-            <SingleDevTab
-              schema={PropertySchema}
-              doc={property}
-              onSubmit={doc =>
-                propertyUpdate
-                  .run({
-                    propertyId: property._id,
-                    object: omit(doc, ['loans', 'user', 'documents']),
-                  })
-                  .then(() => {
-                    import('../../../../../core/utils/message').then(
-                      ({ default: message }) => {
-                        message('Done', 2);
-                      },
-                    );
-                  })
-              }
-              collection={PROPERTIES_COLLECTION}
-            />
-          ),
-        })),
-        ...borrowers.map((borrower, index) => ({
-          id: borrower._id,
-          label: borrower.name || `Emprunteur ${index + 1}`,
-          content: (
-            <SingleDevTab
-              schema={BorrowerSchema}
-              doc={borrower}
-              onSubmit={doc =>
-                borrowerUpdate
-                  .run({
-                    borrowerId: borrower._id,
-                    object: omit(doc, ['loans', 'user', 'documents']),
-                  })
-                  .then(() => {
-                    import('../../../../../core/utils/message').then(
-                      ({ default: message }) => {
-                        message('Done', 2);
-                      },
-                    );
-                  })
-              }
-              collection={BORROWERS_COLLECTION}
-            />
-          ),
-        })),
-        ...offers.map((offer, index) => ({
-          id: offer._id,
-          label: `Offre: ${offer.organisation.name}` || `Offre ${index + 1}`,
-          content: (
-            <SingleDevTab
-              schema={OfferSchema}
-              doc={offer}
-              onSubmit={doc =>
-                offerUpdate
-                  .run({
-                    offerId: offer._id,
-                    object: omit(doc, ['loan', 'user', 'documents']),
-                  })
-                  .then(() => {
-                    import('../../../../../core/utils/message').then(
-                      ({ default: message }) => {
-                        message('Done', 2);
-                      },
-                    );
-                  })
-              }
-              collection={OFFERS_COLLECTION}
-            />
-          ),
-        })),
-      ]}
-    />
-  );
+  componentDidUpdate() {
+    this.highlightCode();
+  }
+
+  highlightCode() {
+    hljs.highlightBlock(this.codeEl);
+  }
+
+  render() {
+    return (
+      <pre>
+        <code ref={this.setRef} className="language-json">
+          {this.props.value}
+        </code>
+      </pre>
+    );
+  }
+}
+
+const formatLoan = loan => {
+  const stringified = JSON.stringify(loan, null, 2);
+  return [`\`\`\`json`, stringified, `\`\`\``].join('\n');
 };
+
+const DevTab = ({ loan }) => (
+  <div className="p-16">
+    <ReactMarkdown source={formatLoan(loan)} renderers={{ code: JSONBlock }} />
+  </div>
+);
 
 export default DevTab;
