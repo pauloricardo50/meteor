@@ -9,7 +9,7 @@ import {
   migrate,
   migrateBack,
   migrateToVersion,
-  unlocControl,
+  unlockControl,
 } from '../../migrations/server';
 import { cleanAllData } from '../../migrations/server/dataCleaning';
 import OrganisationService from '../../organisations/server/OrganisationService';
@@ -178,5 +178,5 @@ migrateTo.setHandler((context, { version }) => {
 
 unlockMigrationControl.setHandler(() => {
   SecurityService.checkCurrentUserIsDev();
-  unlocControl();
+  unlockControl();
 });

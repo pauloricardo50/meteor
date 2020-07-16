@@ -66,4 +66,4 @@ export const migrateToVersion = version => {
   Migrations.migrateTo(version);
 };
 
-export const unlocControl = () => Migrations.unlock();
+export const unlockControl = () => Migrations.unlock();
