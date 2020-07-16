@@ -104,6 +104,8 @@ module.exports = {
         host: 'https://www.e-potek.ch',
         sitemap: 'https://www.e-potek.ch/sitemap.xml',
         env: {
+          // If we enable site previews with prismic, or a staging environment
+          // we should also make sure that robots.txt disabled everything
           development: {
             policy: [{ userAgent: '*', disallow: ['/'] }],
           },
@@ -111,6 +113,20 @@ module.exports = {
             policy: [{ userAgent: '*', allow: '/' }],
           },
         },
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-preconnect',
+      options: {
+        // This speeds up those early connections, it was suggested by google's
+        // Lighthouse. If this issue gets resolved, we might be able to remove prismic.io: https://github.com/prismicio/gatsby-source-prismic-graphql/issues/16
+        domains: [
+          'https://e-potek.prismic.io',
+          'https://api-iam.intercom.io',
+          'https://stats.g.doubleclick.net',
+          'https://www.google-analytics.com',
+          'https://www.googletagmanager.com',
+        ],
       },
     },
   ],
