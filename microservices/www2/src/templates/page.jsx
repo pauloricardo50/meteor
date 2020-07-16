@@ -127,6 +127,13 @@ export const query = graphql`
             fields {
               content
               image
+              imageSharp {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_noBase64
+                  }
+                }
+              }
               caption
               cta_text
               cta_link {

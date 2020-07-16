@@ -3,6 +3,7 @@ import './ImageCarousel.scss';
 import React, { useState } from 'react';
 
 import Button from '../Button';
+import Image from '../Image';
 import { RichText } from '../prismic';
 
 const ImageCarousel = ({ primary, fields }) => {
@@ -37,11 +38,12 @@ const ImageCarousel = ({ primary, fields }) => {
         )}
       </div>
 
-      <div
-        className="current-image animated fadeIn"
-        style={{ backgroundImage: `url("${image?.url}")`, color: 'red' }}
-        aria-label={image?.alt}
-        key={image?.url}
+      <Image
+        data={fields[currIndex]}
+        at="image"
+        className="current-image"
+        fadeIn
+        imgStyle={{ objectFit: 'contain' }}
       />
     </section>
   );
