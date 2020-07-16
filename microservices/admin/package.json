@@ -18,6 +18,7 @@
     "bcrypt": "^3.0.7",
     "btoa": "^1.2.1",
     "googleapis": "^51.0.0",
+    "highlight.js": "^10.1.1",
     "meteor-node-stubs": "^0.4.1",
     "node-rsa": "^1.0.8",
     "object-hash": "^2.0.3",
