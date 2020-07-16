@@ -2049,6 +2049,24 @@ describe('LoanService', function () {
       });
     });
 
+    it('generates the tasks for UNSUCCESSFUL or TEST loans', async () => {
+      LoanService._update({
+        id: 'l4',
+        object: { status: LOAN_STATUS.UNSUCCESSFUL },
+      });
+
+      LoanService._update({
+        id: 'l6',
+        object: { status: LOAN_STATUS.TEST },
+      });
+
+      await generateDisbursedSoonLoansTasks.serverRun({});
+
+      const tasks = TaskService.fetch({ title: 1, assigneeLink: 1, type: 1 });
+
+      expect(tasks.length).to.equal(0);
+    });
+
     it('does not generate the tasks again', async () => {
       await generateDisbursedSoonLoansTasks.serverRun({});
       await generateDisbursedSoonLoansTasks.serverRun({});

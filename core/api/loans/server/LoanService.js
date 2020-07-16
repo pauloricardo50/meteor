@@ -1135,6 +1135,7 @@ class LoanService extends CollectionService {
 
     const disbursedIn10Days = this.fetch({
       $filters: {
+        status: { $nin: [LOAN_STATUS.UNSUCCESSFUL, LOAN_STATUS.TEST] },
         disbursementDate: {
           $exists: true,
           $lt: in11Days.startOf('day').toDate(),
