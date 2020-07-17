@@ -24,12 +24,12 @@ import { addUser } from '../userFixtures';
 import { properties } from './data';
 
 const DEMO_PROMOTION = {
-  name: 'Pré Polly',
+  name: 'Test promotion',
   type: PROMOTION_TYPES.SHARE,
   status: PROMOTION_STATUS.OPEN,
-  address1: 'Chemin de Pré-Polly 1',
-  zipCode: 1233,
-  city: 'Bernex',
+  address1: 'Chemin du e2e',
+  zipCode: 1201,
+  city: 'Genève',
   contacts: [
     {
       name: 'Marc Steiner',

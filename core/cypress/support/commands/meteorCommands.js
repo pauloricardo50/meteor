@@ -92,21 +92,28 @@ Cypress.Commands.add(
     });
 
     cy.getMeteor().then(Meteor => {
+      let promise;
+
       if (Meteor.userId()) {
-        return cy.meteorLogout();
+        // Logout first if the user is already logged in
+        promise = cy.meteorLogout();
+      } else {
+        promise = Promise.resolve();
       }
 
-      return new Cypress.Promise((resolve, reject) => {
-        Meteor.loginWithPassword(email, password, err => {
-          if (err) {
-            return reject(err);
-          }
+      return promise.then(() => {
+        new Cypress.Promise((resolve, reject) => {
+          Meteor.loginWithPassword(email, password, err => {
+            if (err) {
+              return reject(err);
+            }
 
-          // We need to make sure we're properly logged in on the server, not only the
-          // the client, as they can by out of sync with cypress
-          tryUntilSucceed(callback => Meteor.call('isLoggedIn', callback))
-            .then(resolve)
-            .catch(reject);
+            // We need to make sure we're properly logged in on the server, not only the
+            // the client, as they can by out of sync with cypress
+            tryUntilSucceed(callback => Meteor.call('isLoggedIn', callback))
+              .then(resolve)
+              .catch(reject);
+          });
         });
       });
     });

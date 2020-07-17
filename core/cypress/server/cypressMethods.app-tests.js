@@ -145,7 +145,7 @@ Meteor.methods({
       });
       Roles.addUsersToRoles(adminId, ROLES.ADVISOR);
     }
-    await createPromotionDemo(this.userId, false, false, 4);
+    await createPromotionDemo(this.userId, false, false, 2);
   },
   removeAllPromotions() {
     PromotionService.remove({ promotionId: {} });
@@ -154,10 +154,10 @@ Meteor.methods({
     const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const { _id: userId2 } = UserService.getByEmail(PRO_EMAIL_2);
     const { _id: userId3 } = UserService.getByEmail(PRO_EMAIL_3);
-    const promotions =
-      PromotionService.find({
-        'userLinks._id': userId,
-      }) || [];
+    const promotions = PromotionService.find(
+      { 'userLinks._id': userId },
+      { fields: { _id: 1 } },
+    );
 
     promotions.forEach(({ _id: promotionId }) => {
       PromotionService.addProUser({ promotionId, userId: userId2 });
@@ -167,11 +167,10 @@ Meteor.methods({
   setInvitedBy({ email }) {
     const { _id: userId } = UserService.getByEmail(PRO_EMAIL);
     const { _id: invitedBy } = UserService.getByEmail(email);
-    const promotions =
-      PromotionService.find(
-        { 'userLinks._id': userId },
-        { fields: { _id: 1 } },
-      ).fetch() || [];
+    const promotions = PromotionService.find(
+      { 'userLinks._id': userId },
+      { fields: { _id: 1 } },
+    );
 
     promotions.forEach(({ _id: promotionId }) => {
       const loans = LoanService.find({}).fetch() || [];
