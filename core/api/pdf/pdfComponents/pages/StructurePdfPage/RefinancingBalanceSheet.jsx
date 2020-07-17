@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { Money } from '../../../../../components/Translation';
+import T, { Money } from '../../../../../components/Translation';
 import BalanceSheetTable from '../../BalanceSheetTable';
 import { getOwnFundsLines } from './CostsBalanceSheet';
 
 const getLeftRows = ({ loan, structureId, calculator }) => [
   {
-    label: 'Nouveau prêt hypothécaire',
+    label: (
+      <T id="Financing.wantedLoan" values={{ purchaseType: 'REFINANCING' }} />
+    ),
     value: (
       <Money
         value={calculator.selectLoanValue({ loan, structureId })}
@@ -16,7 +18,7 @@ const getLeftRows = ({ loan, structureId, calculator }) => [
     money: false,
   },
   {
-    label: 'Prêt actuel',
+    label: <T id="PDF.StructurePage.previousLoan" />,
     value: (
       <Money
         value={calculator.getPreviousLoanValue({ loan, structureId })}
@@ -26,7 +28,11 @@ const getLeftRows = ({ loan, structureId, calculator }) => [
     money: false,
   },
   {
-    label: <b>Coût de l'opération</b>,
+    label: (
+      <b>
+        <T id="PDF.StructurePage.totalCost" />
+      </b>
+    ),
     value: (
       <b>
         <Money
@@ -38,7 +44,7 @@ const getLeftRows = ({ loan, structureId, calculator }) => [
     money: false,
   },
   {
-    label: 'Pénalités de remboursement',
+    label: <T id="Forms.reimbursementPenalty" />,
     value: (
       <Money
         value={calculator.selectReimbursementPenalty({ loan, structureId })}
@@ -48,7 +54,7 @@ const getLeftRows = ({ loan, structureId, calculator }) => [
     money: false,
   },
   {
-    label: 'Frais de notaire',
+    label: <T id="Financing.notaryFees" />,
     value: (
       <Money
         value={calculator.getNotaryFees({ loan, structureId }).total}
@@ -74,8 +80,8 @@ const getTitles = ({ loan, structureId, calculator }) => {
     calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) > 0;
 
   return [
-    'Refinancement',
-    isMissingOwnFunds && 'Répartition des fonds propres',
+    <T id="Recap.refinancing" key="refinancing" />,
+    isMissingOwnFunds && <T id="PDF.StructurePage.ownFunds" key="ownFunds" />,
   ].filter(x => x);
 };
 
@@ -83,10 +89,12 @@ const getBottomTitles = ({ loan, structureId, calculator }) => {
   const isMissingOwnFunds =
     calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) > 0;
   return [
-    isMissingOwnFunds
-      ? 'Amortissement extraordinaire'
-      : 'Dégagement de liquidité',
-    isMissingOwnFunds && 'Total',
+    isMissingOwnFunds ? (
+      <T id="Recap.ownFundsDecrease" />
+    ) : (
+      <T id="Recap.ownFundsIncrease" />
+    ),
+    isMissingOwnFunds && <T id="Recap.total" />,
   ].filter(x => x);
 };
 const getBottomValues = ({ loan, structureId, calculator }) => {
@@ -126,7 +134,9 @@ const RefinancingBalanceSheet = ({ loan, structureId, calculator }) => {
       />
       {!isMissingOwnFunds && (
         <div className="own-funds-use-description">
-          <span className="title">Description de l'usage des liquidités</span>
+          <span className="title">
+            <T id="PDF.StructurePage.ownFundsUseDescription" />
+          </span>
           <p>
             {calculator.selectStructureKey({
               loan,
