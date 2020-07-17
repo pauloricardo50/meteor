@@ -222,7 +222,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 const makeDeployJob = ({ name, job }) => ({
   ...job,
   ...defaultJobValues,
-  resource_class: 'medium+',
+  machine: true,
   filters: {
     branches: {
       only: [
@@ -231,7 +231,6 @@ const makeDeployJob = ({ name, job }) => ({
     }
   },
   steps: [
-    'setup_remote_docker',
     'add_ssh_keys',
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),

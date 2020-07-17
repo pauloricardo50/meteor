@@ -59,13 +59,12 @@ jobs:
   Www - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    resource_class: medium+
+    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
-      - setup_remote_docker
       - add_ssh_keys
       - restore_cache:
           name: Restore source
@@ -145,13 +144,12 @@ jobs:
   App - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    resource_class: medium+
+    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
-      - setup_remote_docker
       - add_ssh_keys
       - restore_cache:
           name: Restore source
@@ -231,13 +229,12 @@ jobs:
   Admin - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    resource_class: medium+
+    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
-      - setup_remote_docker
       - add_ssh_keys
       - restore_cache:
           name: Restore source
@@ -319,13 +316,12 @@ jobs:
   Pro - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    resource_class: medium+
+    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
-      - setup_remote_docker
       - add_ssh_keys
       - restore_cache:
           name: Restore source
@@ -405,13 +401,12 @@ jobs:
   Backend - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    resource_class: medium+
+    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
-      - setup_remote_docker
       - add_ssh_keys
       - restore_cache:
           name: Restore source
