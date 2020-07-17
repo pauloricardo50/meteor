@@ -21,7 +21,7 @@ const renderExpenses = (expenses, addTableMoneyLine) =>
   Object.values(EXPENSE_TYPES).map(expense => {
     const value = expenses[expense];
     return addTableMoneyLine({
-      label: <T id={`PDF.borrowersInfos.expenses.${expense}`} />,
+      label: <T id={`Forms.expenses.${expense}`} />,
       field: value,
       negative: true,
     });
@@ -53,7 +53,7 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       colspan: multipleBorrowers ? 1 : 2,
     },
     {
-      label: <T id="PDF.borrowersInfos.income" />,
+      label: <T id="Forms.income" />,
       type: ROW_TYPES.SUBSECTION,
     },
     addTableMoneyLine({
@@ -70,12 +70,12 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       condition: true,
     }),
     addTableMoneyLine({
-      label: <T id="PDF.borrowersInfos.bonus" />,
+      label: <T id="Recap.consideredBonus" />,
       field: bonus,
     }),
     ...Object.values(OTHER_INCOME).map(income =>
       addTableMoneyLine({
-        label: <T id={`PDF.borrowersInfos.otherIncome.${income}`} />,
+        label: <T id={`Forms.otherIncome.${income}`} />,
         field: otherIncome[income],
       }),
     ),
@@ -103,7 +103,7 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
     },
     ...Object.values(OWN_FUNDS_TYPES).map(ownFund =>
       addTableMoneyLine({
-        label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
+        label: <T id={`Forms.${ownFund}`} />,
         field: borrowersInfos[ownFund],
       }),
     ),
@@ -118,11 +118,11 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       negative: true,
     }),
     addTableMoneyLine({
-      label: <T id="PDF.borrowersInfos.otherFortune" />,
+      label: <T id="Forms.otherFortune" />,
       field: otherFortune,
     }),
     {
-      label: <T id="PDF.borrowersInfos.totalFortune" />,
+      label: <T id="Recap.availableFunds" />,
       data: getFormattedMoneyArray({
         array: borrowers.map(borrower =>
           calculator.getTotalFunds({ borrowers: borrower }),

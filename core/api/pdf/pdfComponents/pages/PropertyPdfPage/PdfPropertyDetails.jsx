@@ -39,16 +39,16 @@ const getPropertyRows = loan => {
 
   return [
     {
-      label: 'Bien immobilier',
+      label: <T id="Forms.property" />,
       colspan: 2,
       type: ROW_TYPES.TITLE,
     },
     {
-      label: <T id="PDF.projectInfos.property.totalValue" />,
+      label: <T id="Forms.undetailedValue" />,
       data: <Money value={totalValue} />,
     },
     {
-      label: <T id="PDF.projectInfos.property.promotionName" />,
+      label: <T id="Forms.category.PROMOTION" />,
       data: (
         <T
           id="PDF.projectInfos.property.promotionNameData"
@@ -58,7 +58,7 @@ const getPropertyRows = loan => {
       condition: !!promotion,
     },
     {
-      label: <T id="PDF.projectInfos.property.address" />,
+      label: <T id="Forms.address" />,
       data: (
         <span>
           {address1},<br />
@@ -67,21 +67,21 @@ const getPropertyRows = loan => {
       ),
     },
     {
-      label: <T id="PDF.projectInfos.property.residenceType" />,
-      data: <T id={`PDF.residenceType.${residenceType}`} />,
+      label: <T id="Forms.residenceType" />,
+      data: <T id={`Forms.residenceType.${residenceType}`} />,
     },
     {
-      label: <T id="PDF.projectInfos.property.propertyType" />,
-      data: <T id={`PDF.projectInfos.property.propertyType.${propertyType}`} />,
+      label: <T id="Forms.propertyType" />,
+      data: <T id={`Forms.propertyType.${propertyType}`} />,
     },
     {
-      label: <T id="PDF.projectInfos.property.houseType" />,
-      data: <T id={`PDF.projectInfos.property.houseType.${houseType}`} />,
-      condition: !!houseType && propertyType === PROPERTY_TYPE.HOUSE,
+      label: <T id="Forms.houseType" />,
+      data: <T id={`Forms.houseType.${houseType}`} />,
+      condition: !!houseType && propertyTyrpe === PROPERTY_TYPE.HOUSE,
     },
     {
-      label: <T id="PDF.projectInfos.property.flatType" />,
-      data: <T id={`PDF.projectInfos.property.flatType.${flatType}`} />,
+      label: <T id="Forms.flatType" />,
+      data: <T id={`Forms.flatType.${flatType}`} />,
       condition: !!flatType && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
@@ -94,7 +94,7 @@ const getPropertyRows = loan => {
       condition: !!roomCount,
     },
     {
-      label: <T id="PDF.projectInfos.property.insideArea" />,
+      label: <T id="Forms.variable.insideArea" />,
       data: `${insideArea} m2`,
       condition: !!insideArea && propertyType === PROPERTY_TYPE.FLAT,
     },
@@ -108,7 +108,7 @@ const getPropertyRows = loan => {
       data: (
         <span>
           {volume} m3 (
-          <T id={`PDF.projectInfos.property.volumeNorm.${volumeNorm}`} />)
+          <T id={`Forms.volumeNorm.${volumeNorm}`} />)
         </span>
       ),
       condition:
@@ -123,7 +123,7 @@ const getPropertyRows = loan => {
         flatType === FLAT_TYPE.TERRACE_APARTMENT,
     },
     {
-      label: <T id="PDF.projectInfos.property.balconyArea" />,
+      label: <T id="Forms.balconyArea" />,
       data: `${balconyArea} m2`,
       condition: !!balconyArea,
     },
@@ -141,12 +141,12 @@ const getPropertyRows = loan => {
           flatType === FLAT_TYPE.DUPLEX_APARTMENT),
     },
     {
-      label: <T id="PDF.projectInfos.property.constructionYear" />,
+      label: <T id="Forms.constructionYear" />,
       data: constructionYear,
       condition: !!constructionYear,
     },
     {
-      label: <T id="PDF.projectInfos.property.renovationYear" />,
+      label: <T id="Forms.renovationYear" />,
       data: renovationYear,
       condition: !!renovationYear,
     },
@@ -157,7 +157,7 @@ const getPropertyRows = loan => {
     },
     {
       label: <T id="PDF.projectInfos.property.minergie" />,
-      data: <T id={`PDF.projectInfos.property.minergie.${minergie}`} />,
+      data: <T id={`Forms.minergie.${minergie}`} />,
       condition: !!minergie,
     },
     {

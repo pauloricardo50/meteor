@@ -80,8 +80,8 @@ const coverContent = ({
       {!anonymous && borrowersNames(borrowers)}
       <hr />
       <h2 className="loan-type">
-        <T id={`PDF.purchaseType.${purchaseType}`} />{' '}
-        <T id={`PDF.residenceType.${residenceType}`} />
+        <T id={`Forms.purchaseType.${purchaseType}`} />{' '}
+        <T id={`Forms.residenceType.${residenceType}`} />
         {' – '}
         {getPropertyType({ propertyType, flatType, houseType })}
       </h2>

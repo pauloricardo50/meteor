@@ -121,7 +121,7 @@ const ownFundLabel = ({ type, usageType, borrower, borrowerIndex }) => {
     </span>
   ) : (
     <span>
-      <T id={`PDF.ownFund.${type}`} />
+      <T id={`Forms.${type}`} />
       {borrowerSuffix}
     </span>
   );
