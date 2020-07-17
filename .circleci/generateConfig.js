@@ -218,7 +218,7 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
     'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
     'Core - unit tests': testMicroserviceJob({ name: 'backend', testsType: 'unit' }),
     'Admin - unit tests': testMicroserviceJob({
@@ -226,7 +226,7 @@ const makeConfig = () => ({
       testsType: 'unit',
     }),
     // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    // 'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
     'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
     'Admin - e2e tests': testMicroserviceJob({
       name: 'admin',
@@ -239,12 +239,12 @@ const makeConfig = () => ({
     'Build and test': {
       jobs: [
         'Prepare',
-        { 'Www - unit tests': { requires: ['Prepare'] } },
+        // { 'Www - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Core - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
         // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        { 'Www - e2e tests': { requires: ['Prepare'] } },
+        // { 'Www - e2e tests': { requires: ['Prepare'] } },
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
