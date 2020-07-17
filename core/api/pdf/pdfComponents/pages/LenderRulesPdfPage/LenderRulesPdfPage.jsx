@@ -21,15 +21,21 @@ const LenderRulesPdfPage = ({ pageNb, pageCount, organisation, loan }) => {
       pageNb={pageNb}
       pageCount={pageCount}
     >
-      <h3>Revenus & Charges</h3>
+      <h3>
+        <T id="Forms.incomeAndExpenses" />
+      </h3>
       <LenderRulesPdfTable rows={getExpenseRules({ loan, calculator })} />
 
-      <h3>Charges théoriques</h3>
+      <h3>
+        <T id="Forms.theoreticalCharges" />
+      </h3>
       <LenderRulesPdfTable
         rows={getTheoreticalExpenseRules({ loan, calculator })}
       />
 
-      <h3>Critères d'octroi</h3>
+      <h3>
+        <T id="PDF.lenderRules" />
+      </h3>
       <LenderRulesPdfTable
         rows={getCutOffCriteriaRules({ loan, calculator })}
       />

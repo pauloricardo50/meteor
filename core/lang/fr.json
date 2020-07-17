@@ -1,4 +1,9 @@
 {
+  "PDF.lenderRules": "Critères d'octroi",
+  "PDF.lenderRules.type": "Type",
+  "PDF.lenderRules.value": "Pris en compte",
+  "PDF.lenderRules.details": "Détails",
+  "Forms.theoreticalCharges": "Charges théoriques",
   "PDF.StructureRecapTable.wantedLoan": "Prêt hypothécaire demandé",
   "Forms.incomeRatio": "Taux d'effort",
   "PDF.LoanBankCover.loanName": "Référence dossier",
@@ -1366,7 +1371,6 @@
   "Forms.solvency.INSOLVENT": "Non solvable",
   "Forms.solvency.UNDETERMINED": "À déterminer",
   "PDF.projectInfos.structure.totalIncome": "Revenus considérés",
-  "PDF.projectInfos.structure.theoreticalCharges": "Charges théoriques",
   "PDF.projectInfos.structure.totalTheoreticalCharges": "Charges théoriques totales",
   "PDF.borrowersInfos.category.general": "Informations générales",
   "PDF.borrowersInfos.category.financialSituation": "Situation financière",
