@@ -7,13 +7,13 @@ const LenderRulesPdfTable = ({ rows }) => (
   <table className="pdf-table lender-rules-table">
     <tr className={classes[ROW_TYPES.TITLE]}>
       <td>
-        <T id="PDF.lenderRules.type" />
+        <T id="Forms.type" />
       </td>
       <td>
         <T id="PDF.lenderRules.value" />
       </td>
       <td>
-        <T id="PDF.lenderRules.details" />
+        <T id="Recap.details" />
       </td>
     </tr>
     {rows}

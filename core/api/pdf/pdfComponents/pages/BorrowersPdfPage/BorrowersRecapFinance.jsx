@@ -80,7 +80,7 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
       }),
     ),
     addTableMoneyLine({
-      label: <T id="PDF.borrowersInfos.realEstateIncome" />,
+      label: <T id="Forms.realEstateIncome" />,
       field: realEstateIncome,
       condition: shouldRenderArray(realEstateIncome),
     }),
