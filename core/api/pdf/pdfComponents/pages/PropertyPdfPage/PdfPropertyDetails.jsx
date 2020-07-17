@@ -77,7 +77,7 @@ const getPropertyRows = loan => {
     {
       label: <T id="Forms.houseType" />,
       data: <T id={`Forms.houseType.${houseType}`} />,
-      condition: !!houseType && propertyTyrpe === PROPERTY_TYPE.HOUSE,
+      condition: !!houseType && propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       label: <T id="Forms.flatType" />,

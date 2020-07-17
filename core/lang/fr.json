@@ -7,7 +7,7 @@
   "PDF.StructurePage.pledges": "Nantissements",
   "PDF.StructurePage.fees": "Frais de transaction",
   "PDF.StructurePage.mortgageFees": "Frais de cédule",
-  "PDF.StructurePage.buyersContactFees": "Frais d'acte",
+  "PDF.StructurePage.buyersContractFees": "Frais d'acte",
   "PDF.StructurePage.totalCost": "Coût de l'opération",
   "PDF.StructurePage.ownFunds": "Répartition des fonds propres",
   "PDF.StructureAppendixPage.incomeRatioTooltip": "Le taux d'effort se calcule en divisant les charges par les revenus",

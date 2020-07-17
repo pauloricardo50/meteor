@@ -41,7 +41,7 @@ const getRemainingOwnFundsRows = ({ loan, structureId, calculator }) => [
     type: ROW_TYPES.TITLE,
   },
   {
-    label: <T id="PDF.bankFortune" />,
+    label: <T id="Forms.bankFortune" />,
     data: toMoney(
       calculator.getRemainingFundsOfType({
         loan,
