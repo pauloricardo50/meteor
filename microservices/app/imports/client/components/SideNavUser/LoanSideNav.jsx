@@ -2,7 +2,6 @@ import React from 'react';
 import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
 import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
-// import { faCalculator } from '@fortawesome/pro-light-svg-icons/faCalculator';
 import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
 import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
 import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
@@ -48,7 +47,6 @@ const sideNavLinks = [
     icon: faTachometer,
   },
   { id: 'FinancingPage', to: APP_ROUTES.FINANCING_PAGE.path, icon: faChartBar },
-  // { id: 'AppWidget1Page', to: APP_ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
   { id: 'SolvencyPage', to: APP_ROUTES.SOLVENCY_PAGE.path, icon: faScroll },
   { id: 'divider', Component: () => <Divider className="divider" /> },
   {
