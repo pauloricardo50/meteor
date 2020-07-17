@@ -12,7 +12,9 @@ const OtherRealEstateTable = ({ loan: { borrowers } }) => {
   return (
     <table className="pdf-table other-real-estate">
       <tr className={classes[ROW_TYPES.TITLE]}>
-        <td colSpan={2}>Patrimoine immobilier</td>
+        <td colSpan={2}>
+          <T id="PDF.PropertyPage.realEstate" />
+        </td>
       </tr>
       {realEstateArray.map(
         ({ value, loan, name, description, income }, index) => (
@@ -25,15 +27,24 @@ const OtherRealEstateTable = ({ loan: { borrowers } }) => {
             </td>
             <td style={{ textAlign: 'right' }}>
               <div>
-                <span className="secondary">Valeur:</span>&nbsp;{toMoney(value)}
+                <span className="secondary">
+                  <T id="PDF.PropertyPage.realEstateValue" />:
+                </span>
+                &nbsp;{toMoney(value)}
               </div>
 
               <div>
-                <span className="secondary">Dette:</span>&nbsp;{toMoney(loan)}
+                <span className="secondary">
+                  <T id="PDF.PropertyPage.realEstateLoan" />:
+                </span>
+                &nbsp;{toMoney(loan)}
               </div>
 
               <div>
-                <span className="secondary">Revenus annuels:</span>&nbsp;
+                <span className="secondary">
+                  <T id="PDF.PropertyPage.realEstateRevenues" />:
+                </span>
+                &nbsp;
                 {toMoney(income)}
               </div>
             </td>

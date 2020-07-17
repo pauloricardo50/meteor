@@ -1,4 +1,8 @@
 {
+  "PDF.PropertyPage.realEstate": "Patrimoine immobilier",
+  "PDF.PropertyPage.realEstateValue": "Dette",
+  "PDF.PropertyPage.realEstateLoan": "Dette",
+  "PDF.PropertyPage.realEstateRevenues": "Revenus annuels",
   "PDF.lenderRules": "Critères d'octroi",
   "PDF.lenderRules.type": "Type",
   "PDF.lenderRules.value": "Pris en compte",
