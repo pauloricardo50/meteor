@@ -4,6 +4,7 @@
   "scripts": {
     "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
     "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
+    "start-hmr": "HMR_ENABLED=true node -r esm ../../scripts/npm-scripts/run-script.js start",
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
     "test": "TEST_SERVER=0 node -r esm ../../scripts/npm-scripts/run-script.js test",
     "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",

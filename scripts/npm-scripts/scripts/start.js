@@ -1,6 +1,9 @@
 import { MICROSERVICE_PORTS } from '../constants';
 import Process from './Process';
 import runBackend from './run-backend';
+import fs from 'fs';
+import { resolve } from 'path';
+import sh from 'shelljs';
 
 const path = require('path');
 
@@ -18,8 +21,34 @@ runBackend({ process: backend });
 const runMicroservice = () => {
   process.env.DDP_DEFAULT_CONNECTION_URL = `http://localhost:${backendPort}`;
 
+  let command = 'meteor';
+  let additionalArgs = [];
+
+  if (process.env.HMR_ENABLED) {
+    console.log('')
+    console.log('=> Setting up HMR')
+    const checkoutPath = resolve(__dirname, 'meteor-checkout')
+
+    try {
+      fs.mkdirSync(checkoutPath)
+      sh.exec(`git clone https://github.com/meteor/meteor.git ${checkoutPath}`)
+    } catch (e) {
+      if (e.code !== 'EEXIST') {
+        console.log(e)
+        return
+      }
+    }
+    sh.pushd(checkoutPath)
+    sh.exec(`git checkout hot-module-reload`)
+    sh.exec(`git fetch`)
+    sh.popd()
+
+    command = `${checkoutPath}/meteor`;
+    additionalArgs = ['--extra-packages', 'hot-module-reload'];
+  }
+
   start.spawn({
-    command: 'meteor',
+    command,
     args: [
       '--settings',
       'settings-dev.json',
@@ -27,6 +56,7 @@ const runMicroservice = () => {
       port,
       '--exclude-archs',
       'web.browser.legacy',
+      ...additionalArgs,
     ],
     options: {
       cwd: path.resolve(__dirname, `../../../microservices/${microservice}`),
