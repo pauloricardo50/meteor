@@ -165,13 +165,6 @@ export const loanInsertBorrowers = new Method({
   },
 });
 
-export const adminLoanReset = new Method({
-  name: 'adminLoanReset',
-  params: {
-    loanId: String,
-  },
-});
-
 export const loanLinkPromotion = new Method({
   name: 'loanLinkPromotion',
   params: {
