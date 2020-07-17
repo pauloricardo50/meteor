@@ -1,4 +1,9 @@
 {
+  "PDF.StructureRecapTable.wantedLoan": "Prêt hypothécaire demandé",
+  "Forms.incomeRatio": "Taux d'effort",
+  "PDF.LoanBankCover.loanName": "Référence dossier",
+  "PDF.LoanBankCover.title": "Demande de financement hypothécaire",
+  "PDF.LoanBankCover.backgroundInfo": "Notes sur le dossier",
   "Forms.address": "Adresse",
   "SimpleFinancingCertificate.pdfTitle": "e-Potek, Accord de principe – {name}",
   "MaxPropertyValueCertificate.disabledTooltip": "Accessible dès que vous aurez saisi vos coordonnées",

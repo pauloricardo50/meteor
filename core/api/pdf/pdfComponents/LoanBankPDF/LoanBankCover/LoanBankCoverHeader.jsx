@@ -1,5 +1,7 @@
 import React from 'react';
 
+import T from '../../../../../components/Translation';
+
 const LoanBankCoverHeader = ({ loanName }) => (
   <div className="cover-header">
     <h1>
@@ -10,7 +12,9 @@ const LoanBankCoverHeader = ({ loanName }) => (
       e-Potek SA
     </h1>
     <h3>
-      <span>Référence dossier</span>
+      <span>
+        <T id="PDF.LoanBankCover.loanName" />
+      </span>
       <span>{loanName}</span>
     </h3>
     <div className="e-potek-address">
