@@ -10,9 +10,10 @@ import {
 
 describe('Pro promotion', () => {
   before(() => {
-    cy.startTest();
-    cy.callMethod('resetDatabase');
+    cy.startTest({ url: '/logout' });
     cy.meteorLogout();
+    cy.contains('Accédez à votre compte');
+    cy.callMethod('resetDatabase');
     cy.callMethod('generateScenario', {
       scenario: {
         users: [

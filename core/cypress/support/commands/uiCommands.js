@@ -127,8 +127,8 @@ Cypress.Commands.add('initiateTest', () => {
   cy.get('.logo');
 });
 
-Cypress.Commands.add('startTest', () => {
-  cy.visit('/');
+Cypress.Commands.add('startTest', ({ url = '/' } = {}) => {
+  cy.visit(url);
   cy.window().should('have.property', 'appReady', true);
 });
 

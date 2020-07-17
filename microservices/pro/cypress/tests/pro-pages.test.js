@@ -18,9 +18,10 @@ const inviteUser = ({ firstName, lastName, email, phoneNumber }) => {
 
 describe('Pro pages', () => {
   before(() => {
-    cy.startTest();
-    cy.callMethod('resetDatabase');
+    cy.startTest({ url: '/login' });
     cy.meteorLogout();
+    cy.contains('Accédez à votre compte');
+    cy.callMethod('resetDatabase');
     cy.callMethod('generateScenario', {
       scenario: {
         users: [
