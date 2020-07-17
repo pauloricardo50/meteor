@@ -126,3 +126,19 @@ Cypress.Commands.add('initiateTest', () => {
 
   cy.get('.logo');
 });
+
+Cypress.Commands.add('startTest', () => {
+  cy.visit('/');
+  cy.window().should('have.property', 'appReady', true);
+});
+
+const clearLocalStorage = () => {
+  localStorage.clear();
+};
+const doNotClearLocalStorage = () => {};
+
+// By default Cypress clears local storage between every spec. We disable Cypress local storage clearing function, so that we can test local storage usage
+// TODO after Cypress adds support for lifecycle events use them instead to do it: https://github.com/cypress-io/cypress/issues/686
+Cypress.LocalStorage.clear = doNotClearLocalStorage;
+// We need own version to manually clear local storage in tests, because above one disables also cy.clearLocalStorage
+Cypress.Commands.add('clearLocalStorage', clearLocalStorage);

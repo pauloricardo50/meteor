@@ -45,6 +45,9 @@ Meteor.methods({
   createAdmins() {
     createAdmins();
   },
+  setPassword({ userId, password }) {
+    return Accounts.setPassword(userId, password);
+  },
   generateProFixtures() {
     const userId = Accounts.createUser({
       email: PRO_EMAIL,
@@ -232,7 +235,6 @@ Meteor.methods({
   updateAllLoans(loan) {
     LoanService.baseUpdate({}, { $set: loan });
   },
-
   getAppEndToEndTestData() {
     const { _id: userId } = UserService.getByEmail(E2E_USER_EMAIL);
 
