@@ -6,7 +6,6 @@ import { dataLayer } from 'core/utils/googleTagManager';
 import { getFormats, getUserLocale } from 'core/utils/localization';
 
 import messagesFR from '../../../lang/fr.json';
-import AppStore from '../../client/components/AppStore';
 import AppLayout from '../../client/layouts/AppLayout';
 import APP_ROUTES from './appRoutes';
 
@@ -50,15 +49,13 @@ const AppRouter = () => (
       },
     }}
   >
-    <AppStore>
-      <AppLayout>
-        <Switch>
-          {Object.keys(APP_ROUTES).map(route => (
-            <Route {...APP_ROUTES[route]} key={route} />
-          ))}
-        </Switch>
-      </AppLayout>
-    </AppStore>
+    <AppLayout>
+      <Switch>
+        {Object.keys(APP_ROUTES).map(route => (
+          <Route {...APP_ROUTES[route]} key={route} />
+        ))}
+      </Switch>
+    </AppLayout>
   </BaseRouter>
 );
 
