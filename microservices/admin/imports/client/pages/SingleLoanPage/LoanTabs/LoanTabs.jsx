@@ -98,7 +98,6 @@ const getTabs = props => {
       icon: <FontAwesomeIcon icon={faUniversity} />,
     },
     // { id: 'communication', Component: CommunicationTab },
-    // { id: 'analytics', Component: MixpanelAnalytics },
     {
       id: 'files',
       Component: FileTabs,
