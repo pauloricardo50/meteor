@@ -25,7 +25,6 @@ import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 
 import ADMIN_ROUTES from '../../../../startup/client/adminRoutes';
-// import CommunicationTab from './CommunicationTab';
 import ActionsTab from './ActionsTab/loadable';
 import BorrowersTab from './BorrowersTab/loadable';
 import DevTab from './DevTab/loadable';
@@ -97,7 +96,6 @@ const getTabs = props => {
       Component: LendersTab,
       icon: <FontAwesomeIcon icon={faUniversity} />,
     },
-    // { id: 'communication', Component: CommunicationTab },
     {
       id: 'files',
       Component: FileTabs,
