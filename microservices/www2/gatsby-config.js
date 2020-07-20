@@ -6,11 +6,11 @@ module.exports = {
   siteMetadata: {
     title: 'e-Potek',
     description: "La révolution de l'hypothèque",
-    siteUrl: `https://www.e-potek.ch`, // Necessary for the sitemap
+    siteUrl: 'https://www.e-potek.ch', // Necessary for the sitemap
   },
   plugins: [
     {
-      resolve: `gatsby-plugin-material-ui`,
+      resolve: 'gatsby-plugin-material-ui',
       options: { stylesProvider: { injectFirst: true } },
     },
     'gatsby-plugin-react-helmet',
@@ -127,6 +127,13 @@ module.exports = {
           { domain: 'https://www.google-analytics.com' },
           { domain: 'https://www.googletagmanager.com' },
         ],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-hotjar',
+      options: {
+        id: '1310643',
+        sv: 6,
       },
     },
   ],
