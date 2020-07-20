@@ -138,33 +138,6 @@ Cypress.Commands.add('routeShouldExist', expectedPageUri => {
   cy.url().should('eq', baseUrl + expectedPageUri);
 });
 
-Cypress.Commands.add(
-  'routeShouldRenderSuccessfully',
-  (routeConfig, testData, options = {}) => {
-    const pageRoute =
-      typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
-
-    const {
-      uri,
-      options: { shouldRender: expectedDomElement, dropdownShouldRender },
-    } = pageRoute;
-
-    if (options.reloadWindowOnNavigation) {
-      // this is used for navigating on a static router/website
-      cy.visit(uri);
-    } else {
-      cy.window().then(({ reactRouterDomHistory }) => {
-        // this is used for navigating on a dynamic router
-        reactRouterDomHistory.push(uri);
-      });
-    }
-
-    cy.routeShouldExist(uri);
-    cy.get(expectedDomElement).should('exist');
-    cy.dropdownShouldRender(dropdownShouldRender);
-  },
-);
-
 // select dropdown items and check if what we want gets rendered
 Cypress.Commands.add('dropdownShouldRender', dropdownAssertionConfig => {
   if (!dropdownAssertionConfig) {

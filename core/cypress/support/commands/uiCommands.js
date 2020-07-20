@@ -15,7 +15,11 @@ Cypress.Commands.add(
 
     const {
       uri,
-      options: { shouldRender: expectedDomElement, dropdownShouldRender },
+      options: {
+        shouldRender: expectedDomElement,
+        shouldContain,
+        dropdownShouldRender,
+      },
     } = pageRoute;
 
     if (options.reloadWindowOnNavigation) {
@@ -26,17 +30,20 @@ Cypress.Commands.add(
     }
 
     cy.routeShouldExist(uri);
-    cy.get(expectedDomElement).should('exist');
-    cy.dropdownShouldRender(dropdownShouldRender);
+    if (expectedDomElement) {
+      cy.get(expectedDomElement).should('exist');
+    }
+    if (shouldContain) {
+      cy.contains(shouldContain).should('exist');
+    }
+    if (dropdownShouldRender) {
+      cy.dropdownShouldRender(dropdownShouldRender);
+    }
   },
 );
 
 // select dropdown items and check if what we want gets rendered
 Cypress.Commands.add('dropdownShouldRender', dropdownAssertionConfig => {
-  if (!dropdownAssertionConfig) {
-    return;
-  }
-
   Object.keys(dropdownAssertionConfig).forEach(dropdownSelector => {
     const items = dropdownAssertionConfig[dropdownSelector];
     items.forEach(({ item: itemSelector, shouldRender }) => {

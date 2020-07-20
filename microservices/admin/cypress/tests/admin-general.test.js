@@ -4,7 +4,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe.only('Admin general', () => {
+describe('Admin general', () => {
   before(() => {
     cy.startTest({ url: '/login' });
     cy.meteorLogout();
@@ -30,9 +30,6 @@ describe.only('Admin general', () => {
       password: USER_PASSWORD,
     });
     cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
-    cy.getMeteor().then(Meteor => {
-      cy.log(`userId: ${Meteor.userId()}`);
-    });
   });
 
   beforeEach(() => {

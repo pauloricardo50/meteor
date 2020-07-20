@@ -1,6 +1,11 @@
+import { ROLES } from '../../imports/core/api/users/userConstants';
+import {
+  ADMIN_EMAIL,
+  DEV_EMAIL,
+  USER_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 /* eslint-env mocha */
 import { generateTestsForPages, route } from '../../imports/core/cypress/utils';
-
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
 
@@ -18,45 +23,57 @@ const pages = {
       shouldRender: '.admin-dashboard-page table',
     }),
 
+    Board: route('/board', { shouldRender: '.board-column' }),
+
     Profile: route('/account', { shouldRender: '.admin-account-page' }),
 
     Users: route('/users', { shouldRender: '.users-page table' }),
 
-    User: ({ user: { _id } }) =>
-      route(`/users/${_id}`, { shouldRender: '.single-user-page' }),
+    User: route(`/users/userId`, { shouldRender: '.single-user-page' }),
 
     Loans: route('/loans', { shouldRender: '.loans-page table' }),
 
-    Loan: ({ loan: { _id } }) =>
-      route(`/loans/${_id}`, { shouldRender: '.overview-tab' }),
+    Loan: route(`/loans/loanId`, { shouldRender: '.overview-tab' }),
 
-    'Loan Overview Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/overview`, { shouldRender: '.overview-tab' }),
+    'Loan Overview Tab': route(`/loans/loanId/overview`, {
+      shouldRender: '.overview-tab',
+    }),
 
-    'Loan Borrowers Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/borrowers`, {
-        shouldRender: '.borrower-forms',
-      }),
+    'Loan Structures Tab': route(`/loans/loanId/structures`, {
+      shouldRender: '.financing-select-residence-type',
+    }),
 
-    'Loan Properties Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/properties`, {
-        shouldRender: '.single-property-page .google-map',
-      }),
+    'Loan Borrowers Tab': route(`/loans/loanId/borrowers`, {
+      shouldRender: '.borrower-forms',
+    }),
 
-    'Loan Lenders Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/lenders`, {
-        shouldRender: '.lenders-tab',
-      }),
+    'Loan Properties Tab': route(`/loans/loanId/properties`, {
+      shouldRender: '.single-property-page .google-map',
+    }),
 
-    'Loan Documents Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/files`, {
-        shouldRender: '.files-tab, .new-document-form',
-      }),
+    'Loan Lenders Tab': route(`/loans/loanId/lenders`, {
+      shouldRender: '.lenders-tab',
+    }),
 
-    'Loan Actions Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/actions`, {
-        shouldRender: '.actions-tab',
-      }),
+    'Loan Documents Tab': route(`/loans/loanId/files`, {
+      shouldRender: '.files-tab, .new-document-form',
+    }),
+
+    'Loan Revenues Tab': route(`/loans/loanId/revenues`, {
+      shouldRender: '.revenues-table',
+    }),
+
+    'Loan Actions Tab': route(`/loans/loanId/actions`, {
+      shouldRender: '.actions-tab',
+    }),
+
+    Organisations: route('/organisations', {
+      shouldRender: '.organisations-page',
+    }),
+
+    'Organisations Overview Tab': route('/organisations', {
+      shouldRender: '.organisations-page',
+    }),
 
     Other: route('/other', { shouldRender: '.other-page' }),
 
@@ -68,19 +85,17 @@ const pages = {
       shouldRender: '.borrowers-page',
     }),
 
-    Borrower: ({ borrower: { _id } }) =>
-      route(`/borrowers/${_id}`, {
-        shouldRender: '.single-borrower-page',
-      }),
+    Borrower: route(`/borrowers/borrowerId`, {
+      shouldRender: '.single-borrower-page',
+    }),
 
     'Other Properties Tab': route('/other/properties', {
       shouldRender: '.properties-page',
     }),
 
-    Property: ({ property: { _id } }) =>
-      route(`/properties/${_id}`, {
-        shouldRender: '.single-property-page .google-map',
-      }),
+    Property: route(`/properties/propertyId`, {
+      shouldRender: '.single-property-page .google-map',
+    }),
 
     'Other Contacts Tab': route('/other/contacts', {
       shouldRender: '.contacts-page',
@@ -96,21 +111,48 @@ const pages = {
   },
 };
 
-describe('Admin Pages', () => {
-  let testData;
-
+describe.only('Admin Pages', () => {
   before(() => {
-    cy.initiateTest();
+    cy.startTest({ url: '/login' });
+    cy.meteorLogout();
+    cy.contains('Accédez à votre compte');
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData', {
-      generateDevs: true,
-      generateAdmins: true,
-      generateTestUser: true,
+    cy.callMethod('generateScenario', {
+      scenario: {
+        users: [
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            emails: [{ address: ADMIN_EMAIL, verified: true }],
+          },
+          {
+            _id: 'dev1',
+            _factory: ROLES.DEV,
+            emails: [{ address: DEV_EMAIL, verified: true }],
+          },
+        ],
+        loans: {
+          _id: 'loanId',
+          user: { _id: 'userId' },
+          borrowers: { _id: 'borrowerId' },
+          properties: {
+            _id: 'propertyId',
+            address1: 'Place de neuve 2',
+            city: 'Genève',
+            zipCode: 1201,
+          },
+        },
+      },
     });
-    cy.callMethod('getAdminEndToEndTestData').then(data => {
-      testData = data;
+    cy.callMethod('setPassword', {
+      userId: 'advisor1',
+      password: USER_PASSWORD,
+    });
+    cy.callMethod('setPassword', {
+      userId: 'dev1',
+      password: USER_PASSWORD,
     });
   });
 
-  generateTestsForPages(pages, () => testData);
+  generateTestsForPages(pages);
 });
