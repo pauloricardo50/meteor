@@ -56,10 +56,6 @@
           vertical-align: top;
         } 
       }
-
-      // &.active::before {
-      //   border-left: 2px solid $primary;
-      // }
     }
   }
 
@@ -94,6 +90,10 @@
 
     hr {
       margin: 0;
+    }
+
+    .current-image {
+      min-height: unset;
     }
   }
 
