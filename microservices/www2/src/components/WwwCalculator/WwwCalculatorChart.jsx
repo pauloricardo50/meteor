@@ -19,7 +19,8 @@ const WwwCalculatorChart = () => {
     name: formatMessage({ id: `WwwCalculatorChart.${valueName}` }),
   }));
 
-  if (total === 0) {
+  // Avoid rendering chart if title is less than 1
+  if (!total || total < 12) {
     return null;
   }
 
