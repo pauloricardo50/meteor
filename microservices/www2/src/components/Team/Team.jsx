@@ -12,7 +12,7 @@ const getMailTo = name =>
   `mailto:${EMAIL}?subject=${encodeURI(`Contacter ${name}`)}`;
 
 const Team = ({ primary, fields }) => (
-  <section className="team container">
+  <section id={primary.section_id} className="team container">
     <div className="team__heading">
       {RichText.asText(primary.section_heading)}
     </div>
