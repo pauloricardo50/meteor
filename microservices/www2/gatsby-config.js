@@ -95,7 +95,7 @@ module.exports = {
         // on every Gatsby route change.
         //
         // Defaults to gatsby-route-change
-        // routeChangeEventName: "YOUR_ROUTE_CHANGE_EVENT_NAME",
+        routeChangeEventName: 'route-change',
       },
     },
     {
