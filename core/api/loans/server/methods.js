@@ -11,7 +11,6 @@ import {
   addNewMaxStructure,
   addNewStructure,
   adminLoanInsert,
-  adminLoanReset,
   anonymousLoanInsert,
   assignLoanToUser,
   duplicateStructure,
@@ -255,11 +254,6 @@ loanInsertBorrowers.setHandler((context, params) => {
   LoanService.insertBorrowers(params);
 });
 loanInsertBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
-
-adminLoanReset.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.resetLoan(params);
-});
 
 loanLinkPromotion.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);

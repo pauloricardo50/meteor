@@ -8,7 +8,6 @@ import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
 import AppAccountPage from '../../client/pages/AppAccountPage/loadable';
 import AppPage from '../../client/pages/AppPage';
 import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
-import AppWidget1Page from '../../client/pages/AppWidget1Page/loadable';
 import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
 import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import FilesPage from '../../client/pages/FilesPage/loadable';
@@ -26,10 +25,6 @@ export default {
     component: RefinancingPage,
   },
   ACCOUNT_PAGE: { path: '/account', component: AppAccountPage },
-  APP_WIDGET1_PAGE: {
-    path: '/loans/:loanId/widget1',
-    component: AppWidget1Page,
-  },
   BORROWERS_PAGE: {
     path: '/loans/:loanId/borrowers/:tabId',
     component: BorrowersPage,
