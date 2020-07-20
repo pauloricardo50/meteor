@@ -13,14 +13,14 @@ const locations = {
     label: 'Vaud',
     addressLine1: `Route des Monts-de-Lavaux 1`,
     addressLine2: `1092 Belmont-sur-Lausanne`,
-    mapLink: 'https://goo.gl/maps/pRwk15fbYRNHBfdc8',
+    mapLink: 'https://g.page/e-potek-lausanne?gm',
     phone: '+41 21 566 19 99',
   },
   geneve: {
     label: 'Genève',
     addressLine1: `Place de Neuve 2`,
     addressLine2: `1204 Genève`,
-    mapLink: 'https://goo.gl/maps/ufsN5wd5hv2dxsHj6',
+    mapLink: 'https://g.page/e-potek-geneve?gm',
     phone: '+41 22 566 01 10',
   },
 };
