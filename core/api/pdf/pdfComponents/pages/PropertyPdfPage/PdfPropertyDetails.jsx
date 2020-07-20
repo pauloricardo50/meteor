@@ -85,7 +85,7 @@ const getPropertyRows = loan => {
       condition: !!flatType && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
-      label: <T id="PDF.projectInfos.property.roomCount" />,
+      label: <T id="Forms.roomCount" />,
       data: roomCount,
       tooltip: {
         text: <T id="PDF.projectInfos.property.roomCount.tooltip" />,
@@ -94,20 +94,20 @@ const getPropertyRows = loan => {
       condition: !!roomCount,
     },
     {
-      label: <T id="Forms.variable.insideArea" />,
-      data: `${insideArea} m2`,
+      label: <T id="Forms.insideArea" />,
+      data: `${insideArea}`,
       condition: !!insideArea && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
-      label: <T id="PDF.projectInfos.property.landArea" />,
-      data: `${landArea} m2`,
+      label: <T id="Forms.landArea" />,
+      data: `${landArea}`,
       condition: !!landArea && propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
-      label: <T id="PDF.projectInfos.property.volume" />,
+      label: <T id="Forms.volume" />,
       data: (
         <span>
-          {volume} m3 (
+          {volume} (
           <T id={`Forms.volumeNorm.${volumeNorm}`} />)
         </span>
       ),
@@ -115,8 +115,8 @@ const getPropertyRows = loan => {
         !!volume && !!volumeNorm && propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
-      label: <T id="PDF.projectInfos.property.terraceArea" />,
-      data: `${terraceArea} m2`,
+      label: <T id="Forms.terraceArea" />,
+      data: `${terraceArea}`,
       condition:
         !!terraceArea &&
         propertyType === PROPERTY_TYPE.FLAT &&
@@ -124,16 +124,16 @@ const getPropertyRows = loan => {
     },
     {
       label: <T id="Forms.balconyArea" />,
-      data: `${balconyArea} m2`,
+      data: `${balconyArea}`,
       condition: !!balconyArea,
     },
     {
-      label: <T id="PDF.projectInfos.property.numberOfFloors" />,
+      label: <T id="Forms.numberOfFloors" />,
       data: numberOfFloors,
       condition: !!numberOfFloors && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
-      label: <T id="PDF.projectInfos.property.floorNumber" />,
+      label: <T id="Forms.floorNumber" />,
       data: floorNumber,
       condition:
         propertyType === PROPERTY_TYPE.FLAT &&
@@ -151,12 +151,12 @@ const getPropertyRows = loan => {
       condition: !!renovationYear,
     },
     {
-      label: <T id="PDF.projectInfos.property.parking" />,
+      label: <T id="Forms.parking" />,
       data: `${parkingInside} int., ${parkingOutside} ext.`,
       condition: !!parkingInside || !!parkingOutside,
     },
     {
-      label: <T id="PDF.projectInfos.property.minergie" />,
+      label: <T id="Forms.minergie" />,
       data: <T id={`Forms.minergie.${minergie}`} />,
       condition: !!minergie,
     },
