@@ -12,7 +12,7 @@ const RecommendedBlogPost = ({ post }) => {
   const postFirstImage = postFirstHero?.primary?.images;
 
   return (
-    <div className="blog-post">
+    <Link className="blog-post" to={linkResolver(post._meta)}>
       {postFirstImage && (
         <div
           className="blog-post-image"
@@ -21,22 +21,20 @@ const RecommendedBlogPost = ({ post }) => {
       )}
 
       <div className="blog-post-content text-m">
-        <Link to={linkResolver(post._meta)}>
-          {RichText.asText(post.title).length !== 0
-            ? RichText.asText(post.title)
-            : defaultTitle}
+        {RichText.asText(post.title).length !== 0
+          ? RichText.asText(post.title)
+          : defaultTitle}
 
-          <span className="blog-post-meta">
-            <span>{` • `}</span>
-            <time>{post.date}</time>
-          </span>
+        <span className="blog-post-meta">
+          <span>{` • `}</span>
+          <time>{post.date}</time>
+        </span>
 
-          <span className="blog-post-more">
-            <FontAwesomeIcon icon={faArrowRight} />
-          </span>
-        </Link>
+        <span className="blog-post-more">
+          <FontAwesomeIcon icon={faArrowRight} />
+        </span>
       </div>
-    </div>
+    </Link>
   );
 };
 

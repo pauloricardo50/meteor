@@ -72,6 +72,27 @@
   }
 }
 
+.full-width {
+  margin-bottom: 100px;
+
+  &-image {
+    margin: 0 -16px;
+    height: 600px;
+
+    @media screen and (max-width: $med) {
+      height: 300px;
+    }
+  }
+
+  &-content {
+    width: 100%;
+    max-width: $site-width;
+    padding: 16px;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+}
+
 // .equal-split {
 //   &__image-container {
 //     height: 240px;

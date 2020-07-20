@@ -12,21 +12,19 @@ const EqualSplit = ({ primary, fields }) => (
       <Image
         className="equal-split-image-gatsby"
         data={primary}
-        at="image"
+        at={primary.images ? 'images' : 'image'}
         imgStyle={{ objectFit: 'contain' }}
         fadeIn
       />
     </div>
 
-    <div className="equal-split-content">
-      {primary.content && RichText.asText(primary.content) !== '' ? (
-        <>
-          <RichText render={primary.content} />
+    {primary.content && RichText.asText(primary.content) !== '' ? (
+      <div className="equal-split-content">
+        <RichText render={primary.content} />
 
-          <CTAButtons buttons={fields} />
-        </>
-      ) : null}
-    </div>
+        <CTAButtons buttons={fields} />
+      </div>
+    ) : null}
   </section>
 );
 
@@ -35,27 +33,21 @@ const FullWidthImage = ({ primary, fields }) => (
     <Image
       className="full-width-image"
       data={primary}
-      at="image"
-      loading="eager"
-      imgStyle={{ objectFit: 'contain' }}
+      at={primary.images ? 'images' : 'image'}
     />
 
-    <div className="full-width-content">
-      {primary.content && RichText.asText(primary.content) !== '' ? (
-        <>
-          <span className="image-label">
-            {RichText.asText(primary.content)}
-          </span>
+    {primary.content && RichText.asText(primary.content) !== '' ? (
+      <div className="full-width-content">
+        <span className="image-label">{RichText.asText(primary.content)}</span>
 
-          <CTAButtons buttons={fields} />
-        </>
-      ) : null}
-    </div>
+        <CTAButtons buttons={fields} />
+      </div>
+    ) : null}
   </div>
 );
 
 const Hero = ({ primary, fields }) => {
-  if (!primary.image?.url) {
+  if (!primary.image?.url && !primary.images?.url) {
     return null;
   }
 

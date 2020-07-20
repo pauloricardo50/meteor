@@ -37,10 +37,7 @@
       margin: 16px auto 20px;
       padding-right: 50px;
       position: relative;
-
-      a {
-        color: black !important;
-      }
+      color: $body-text;
 
       
       @media screen and (max-width: $med){

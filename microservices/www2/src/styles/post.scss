@@ -50,8 +50,7 @@
     }
 
     @media (min-width: $med) {
-      // max-width: ?
-      padding-top: 167px;
+      padding-top: 120px;
       padding-bottom: 129px;
 
       h1 {
@@ -92,14 +91,11 @@
   .back-to-blog {
     width: 100%;
     max-width: 1200px;
-    padding: 0 16px;
-    position: absolute;
-    top: 16px;
-    left: 8px;
     box-sizing: border-box;
+    margin: 0 auto;
 
     svg {
-      color: $primary
+      color: $primary;
     }
   }
 
@@ -110,5 +106,62 @@
     box-shadow: 0 0 1px;
     height: 300px;
     background-color: #fefefe;
+  }
+
+  .text {
+    max-width: 684px;
+    margin: 0 auto;
+    padding-left: 23px;
+    padding-right: 23px;
+
+    // TODO: decide how to handle header variations in mobile/desktop, when Prismic outputs RichText
+    h4 {
+      width: 329px;
+      height: 112px;
+      font-family: Manrope_;
+      font-size: 20px;
+      font-weight: 300;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: var(--2c2c2c);
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: 300;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.8;
+      letter-spacing: normal;
+      color: #000000;
+    }
+  }
+
+  .equal-split {
+    max-width: 684px;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 32px;
+    padding-bottom: 32px;
+
+    &-image {
+      display: block;
+      width: 100%;
+
+      &-gatsby {
+        max-width: unset;
+      }
+    }
+
+    &-content {
+      padding: 0;
+
+      p {
+        font-size: 1rem;
+        text-align: center;
+      }
+    }
   }
 }

@@ -48,6 +48,13 @@ export const query = graphql`
               section_id
               image_layout
               images
+              imagesSharp {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid
+                  }
+                }
+              }
               content
             }
           }
@@ -85,6 +92,13 @@ export const query = graphql`
                 type
                 primary {
                   images
+                  imagesSharp {
+                    childImageSharp {
+                      fluid(maxWidth: 400) {
+                        ...GatsbyImageSharpFluid_noBase64
+                      }
+                    }
+                  }
                   content
                 }
               }
@@ -201,20 +215,19 @@ const Post = ({
         itemScope
         itemType="http://schema.org/BlogPosting"
       >
+        <div className="back-to-blog">
+          <Button
+            Component={Link}
+            icon={<Icon type="left" />}
+            prismicLink={{
+              _linkType: 'Link.document',
+              _meta: { lang: 'fr-ch', type: 'page', uid: 'blog' },
+            }}
+          >
+            {languageData.blogLinkText}
+          </Button>
+        </div>
         <div className="post-header">
-          <div className="back-to-blog">
-            <Button
-              Component={Link}
-              icon={<Icon type="left" />}
-              prismicLink={{
-                _linkType: 'Link.document',
-                _meta: { lang: 'fr-ch', type: 'page', uid: 'blog' },
-              }}
-            >
-              {languageData.blogLinkText}
-            </Button>
-          </div>
-
           <h1 className="post-title" itemProp="headline">
             {RichText.asText(blogPost.title)}
           </h1>

@@ -13,7 +13,9 @@ const Quote = ({ primary }) => (
     <figure>
       <FaIcon icon={faQuoteRight} color={colors.primary} size="3x" />
       <blockquote>{RichText.asText(primary.quote)}</blockquote>
-      <figcaption>&ndash;&nbsp;{primary.quote_source}</figcaption>
+      {primary.quote_source && (
+        <figcaption>&ndash;&nbsp;{primary.quote_source}</figcaption>
+      )}
     </figure>
   </div>
 );
