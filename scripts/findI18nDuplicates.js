@@ -14,8 +14,8 @@ const fr = require('../core/lang/fr.json');
 // will output only duplicated strings which key contains "PDF." and save the result to "./duplicates.json"
 //
 // Sample output:
-//  {
-//   "count": 3,
+// {
+//   "totalCount": 4,
 //   "filter": "PDF.",
 //   "data": [
 //     {
@@ -23,6 +23,7 @@ const fr = require('../core/lang/fr.json');
 //         "key": "PDF.PropertyPage.realEstateValue",
 //         "value": "Valeur"
 //       },
+//       "count": 2,
 //       "duplicates": [
 //         {
 //           "key": "Forms.rules.value",
@@ -39,6 +40,7 @@ const fr = require('../core/lang/fr.json');
 //         "key": "PDF.lenderRules",
 //         "value": "Critères d'octroi"
 //       },
+//       "count": 1,
 //       "duplicates": [
 //         {
 //           "key": "OrganisationTabs.lenderRules",
@@ -46,6 +48,19 @@ const fr = require('../core/lang/fr.json');
 //         }
 //       ]
 //     },
+//     {
+//       "original": {
+//         "key": "OfferAdder.buttonLabel",
+//         "value": "Offre"
+//       },
+//       "count": 1,
+//       "duplicates": [
+//         {
+//           "key": "PDF.title.offer",
+//           "value": "Offre"
+//         }
+//       ]
+//     }
 //   ]
 // }
 
@@ -89,7 +104,12 @@ const duplicatesWithoutPlacehohlder = duplicates
     duplicates: dupl.filter(({ key }) => !key.includes('.placeholder')),
   }))
   .filter(({ original }) => !original.key.includes('.placeholder'))
-  .filter(({ duplicates: dupl = [] }) => dupl.length);
+  .filter(({ duplicates: dupl = [] }) => dupl.length)
+  .map(({ duplicates: dupl = [], original }) => ({
+    original,
+    count: dupl.length,
+    duplicates: dupl,
+  }));
 
 let result = duplicatesWithoutPlacehohlder;
 
@@ -107,9 +127,9 @@ const count = result.reduce(
 );
 
 result = {
-  count,
+  totalCount: count,
   filter,
-  data: result,
+  data: result.sort(({ count: a }, { count: b }) => b - a),
 };
 
 console.log('result:', JSON.stringify(result, null, 2));
