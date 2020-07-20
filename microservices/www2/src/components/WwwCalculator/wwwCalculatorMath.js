@@ -17,13 +17,12 @@ import {
   FORTUNE_WARNING_TIGHT,
   INCOME_ERROR,
   INCOME_WARNING_TIGHT,
-  MAX_BORROW_RATIO_OTHER,
   MAX_INCOME_RATIO_TIGHT,
 } from '../../core/config/financeConstants';
 import { PURCHASE_TYPE } from './wwwCalculatorConstants';
 
 export const getLoanValue = (propertyValue, fortune) =>
-  propertyValue * (1 + NOTARY_FEES) - fortune;
+  fortune ? propertyValue * (1 + NOTARY_FEES) - fortune : 0;
 
 export const suggestSalary = ({ property, fortune }) => {
   const loan = property * (1 + NOTARY_FEES) - fortune;

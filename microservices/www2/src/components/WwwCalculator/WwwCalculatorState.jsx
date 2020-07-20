@@ -71,7 +71,12 @@ const getMessage = ({
   borrowStatus,
   incomeStatus,
   purchaseType,
+  hideFinma,
 }) => {
+  if (hideFinma) {
+    return 'WwwCalculatorStatus.tutorial';
+  }
+
   if (worstStatus === SUCCESS) {
     return 'WwwCalculatorStatus.success';
   }
@@ -112,14 +117,15 @@ const useCalculatorState = () => {
   const incomeRatioStatus = validateIncomeRatio(incomeRatio);
   const statuses = [borrowRatioStatus.status, incomeRatioStatus.status];
   const { match: worstStatus, index } = getWorstStatus(statuses, STATUSES);
+  const hideFinma = hideFinmaValues(borrowRatio, incomeRatio);
   const statusMessageId = getMessage({
     worstStatus,
     index,
     borrowStatus: borrowRatioStatus.status,
     incomeStatus: incomeRatioStatus.status,
     purchaseType,
+    hideFinma,
   });
-  const hideFinma = hideFinmaValues(borrowRatio, incomeRatio);
 
   return [
     {
@@ -129,7 +135,7 @@ const useCalculatorState = () => {
       incomeRatio,
       borrowRatioStatus,
       incomeRatioStatus,
-      statusMessageId: !hideFinma && statusMessageId,
+      statusMessageId,
       worstStatus,
       hideFinma,
     },

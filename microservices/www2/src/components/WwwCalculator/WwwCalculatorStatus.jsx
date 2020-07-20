@@ -8,12 +8,18 @@ import Button from '../Button';
 import { useWwwCalculator } from './WwwCalculatorState';
 
 const WwwCalculatorStatus = () => {
-  const [
-    { statusMessageId, worstStatus, hideFinma, purchaseType },
-  ] = useWwwCalculator();
+  const [{ statusMessageId, worstStatus, purchaseType }] = useWwwCalculator();
 
-  if (hideFinma) {
-    return null;
+  if (statusMessageId.includes('tutorial')) {
+    return (
+      <>
+        <hr className="mb-16" />
+        <p className="message secondary text-center">
+          <T id={statusMessageId} />
+        </p>
+        <hr className="mt-16" />
+      </>
+    );
   }
 
   return (
