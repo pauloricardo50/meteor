@@ -132,6 +132,7 @@ const languageData = {
     '404.description':
       'Il semblerait que nous vous ayions perdu sur notre site.',
     '404.backToHome': 'Retourner au début',
+    'MortgageRates.lastUpdate': 'Dernière mise à jour ',
   },
 };
 

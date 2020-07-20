@@ -2,6 +2,9 @@ import './MortgageRates.scss';
 
 import React, { useContext, useEffect, useState } from 'react';
 
+import T from 'core/components/Translation/FormattedMessage';
+import IntlDate from 'core/components/Translation/formattingComponents/IntlDate';
+
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 import meteorClient from '../../utils/meteorClient';
@@ -40,10 +43,18 @@ export const useMortgageRates = () => {
 
 const MortgageRates = () => {
   const currentRates = useMortgageRates();
+  console.log('currentRates:', currentRates);
   const [language] = useContext(LanguageContext);
 
   return (
     <section className="mortgage-rates container">
+      {currentRates?.date && (
+        <p className="last-update secondary text-center">
+          <T id="MortgageRates.lastUpdate" />
+          <IntlDate value={currentRates.date} type="relative" style="long" />
+        </p>
+      )}
+
       <div className="rates-table text-l">
         <div className="rates-table-header">
           {getLanguageData(language).rateTable.header.map((heading, idx) => (
