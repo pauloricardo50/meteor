@@ -275,10 +275,16 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
 
 const IncomeAndExpenses = ({ loan, structureId, calculator }) => (
   <BalanceSheetTable
-    titles={['Charges', 'Revenus']}
+    titles={[
+      <T id="Recap.expenses" key="expenses" />,
+      <T id="Forms.income" key="income" />,
+    ]}
     leftRows={getExpenseRows({ loan, structureId, calculator })}
     rightRows={getIncomeRows({ loan, structureId, calculator })}
-    bottomTitles={['Total', 'Total']}
+    bottomTitles={[
+      <T id="Recap.total" key="total1" />,
+      <T id="Recap.total" key="total2" />,
+    ]}
     bottomValues={[
       <Money
         currency={false}

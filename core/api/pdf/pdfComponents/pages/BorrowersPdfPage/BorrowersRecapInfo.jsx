@@ -18,25 +18,25 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
       className: 'borrower-table-title-row',
     },
     {
-      label: <T id="PDF.borrowersInfos.address" />,
+      label: <T id="Forms.address" />,
       data: borrowersInfos.address,
     },
     {
-      label: <T id="PDF.borrowersInfos.email" />,
+      label: <T id="Forms.email" />,
       data: borrowersInfos.email,
       condition: shouldRenderArray(borrowersInfos.email),
     },
     {
-      label: <T id="PDF.borrowersInfos.phoneNumber" />,
+      label: <T id="Forms.phoneNumber" />,
       data: borrowersInfos.phoneNumber,
       condition: shouldRenderArray(borrowersInfos.phoneNumber),
     },
     {
-      label: <T id="PDF.borrowersInfos.citizenship" />,
+      label: <T id="Forms.citizenship" />,
       data: borrowersInfos.citizenship,
     },
     {
-      label: <T id="PDF.borrowersInfos.age" />,
+      label: <T id="Forms.age" />,
       data: borrowersInfos.birthDate.map((date, index) => {
         if (!date) {
           return '-';
@@ -51,26 +51,26 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
       }),
     },
     {
-      label: <T id="PDF.borrowersInfos.children" />,
+      label: <T id="Forms.childrenCount" />,
       data: borrowersInfos.childrenCount.map(children => children || '-'),
       condition: shouldRenderArray(borrowersInfos.childrenCount),
     },
     {
-      label: <T id="PDF.borrowersInfos.activityType" />,
+      label: <T id="Forms.activityType" />,
       data: borrowersInfos.activityType,
     },
     {
-      label: <T id="PDF.borrowersInfos.job" />,
+      label: <T id="Forms.job" />,
       data: borrowersInfos.job,
       condition: shouldRenderArray(borrowersInfos.job),
     },
     {
-      label: <T id="PDF.borrowersInfos.company" />,
+      label: <T id="Forms.company" />,
       data: borrowersInfos.company.map(company => company || '-'),
       condition: shouldRenderArray(borrowersInfos.company),
     },
     {
-      label: <T id="PDF.borrowersInfos.civilStatus" />,
+      label: <T id="Forms.civilStatus" />,
       data: borrowersInfos.civilStatus,
       condition: shouldRenderArray(borrowersInfos.civilStatus),
     },
