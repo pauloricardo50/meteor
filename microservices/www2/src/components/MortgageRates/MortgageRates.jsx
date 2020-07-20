@@ -43,7 +43,6 @@ export const useMortgageRates = () => {
 
 const MortgageRates = () => {
   const currentRates = useMortgageRates();
-  console.log('currentRates:', currentRates);
   const [language] = useContext(LanguageContext);
 
   return (

@@ -42,7 +42,7 @@ const MortgageRateCarousel = props => {
     } else {
       setIndex(i => i + 1);
     }
-  }, 3000);
+  }, 5000);
 
   if (!hasRates) {
     return null;
@@ -55,18 +55,17 @@ const MortgageRateCarousel = props => {
     >
       <div className="mortgage-rate-carousel-wrapper">
         <hr />
-        <div className="content">
-          <div className="secondary animated fadeIn" key={index}>
+        <div className="content animated fadeIn" key={index}>
+          <div className="secondary animated fadeIn">
             <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
           </div>
           <ReactCountUp
-            start={0}
+            start={rates[index].rateHigh * 100}
             end={rates[index].rateLow * 100}
             suffix="%"
             decimals={2}
-            className="percent"
-            delay={0.2}
-            preserveValue
+            className="percent animated fadeIn"
+            delay={1}
           />
         </div>
         {/* Add this invisible div above ReactCountUp, as it breaks the link in Safari */}
