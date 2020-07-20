@@ -41,7 +41,7 @@ const WwwCalculatorStatus = () => {
           primary={worstStatus !== SUCCESS}
           secondary={worstStatus === SUCCESS}
           size="large"
-          Component="a"
+          component="a"
           href={`${process.env.EPOTEK_APP}?purchaseType=${purchaseType}`}
         >
           <T id="getALoanText" />

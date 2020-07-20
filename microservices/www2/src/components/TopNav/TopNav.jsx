@@ -53,7 +53,7 @@ const TopNav = () => {
             size={isMobile ? 'small' : 'medium'}
             raised
             primary
-            Component="a"
+            component="a"
             href={process.env.EPOTEK_APP}
           >
             {getLanguageData(language).getALoanText}
