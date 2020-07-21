@@ -157,17 +157,31 @@ class EmailService {
       return;
     }
 
-    const { message: { subject, from_email: from } = {} } = template;
+    const { message = {} } = template;
+    const { subject, from_email: from, global_merge_vars: content } = message;
+    const { status, reject_reason } = response;
+
+    let title = `Email envoyé`;
+    let description = `${subject}, de ${from}`;
+    let failed = false;
+
+    if (['rejected', 'invalid'].includes(status)) {
+      failed = true;
+      title = "Echec de l'envoi d'email";
+      description = `${description} - Raison de l'échec "${reject_reason}"`;
+    }
 
     ActivityService.addEmailActivity({
       emailId,
       to: address,
       from,
       response,
+      content,
+      failed,
       isServerGenerated: true,
       userLink: { _id: user._id },
-      title: 'Email envoyé',
-      description: `${subject}, de ${from}`,
+      title,
+      description,
     });
   };
 }
