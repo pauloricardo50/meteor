@@ -29,9 +29,10 @@ const ImageGallery = ({ primary, fields }) => {
         {fields.length &&
           fields.map(({ link = {}, ...data }, idx) => {
             const Component = link ? Link : 'div';
+            const props = link ? { prismicLink: link } : {};
 
             return (
-              <Component className="gallery-item" key={idx} prismicLink={link}>
+              <Component className="gallery-item" key={idx} {...props}>
                 <Image data={data} at="image" fadeIn />
               </Component>
             );
