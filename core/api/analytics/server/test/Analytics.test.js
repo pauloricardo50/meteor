@@ -93,7 +93,12 @@ describe('Analytics', () => {
         expect(slackSpy.firstCall.args[0].additionalData[0]).to.deep.include({
           event: EVENTS.CTA_CLICKED,
           data,
-          pickedProperties: { name: undefined, ...data, referrer: undefined },
+          pickedProperties: {
+            name: undefined,
+            ...data,
+            toPath: undefined,
+            referrer: undefined,
+          },
         });
         expect(analyticsSpy.callCount).to.equal(1);
         SlackService.sendError.restore();
