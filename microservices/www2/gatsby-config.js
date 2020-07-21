@@ -133,9 +133,5 @@ module.exports = {
       resolve: 'gatsby-plugin-hotjar',
       options: { id: '1310643', sv: 6 },
     },
-    {
-      resolve: `gatsby-plugin-env-variables`,
-      options: { allowList: ['EPOTEK_APP', 'EPOTEK_BACKEND', 'EPOTEK_PRO'] },
-    },
   ],
 };
