@@ -266,3 +266,5 @@ export class DripService {
     return res;
   }
 }
+
+export default new DripService();

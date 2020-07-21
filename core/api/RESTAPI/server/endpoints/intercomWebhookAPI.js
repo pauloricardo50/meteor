@@ -8,7 +8,7 @@ const intercomWebhookAPI = ({ body }) => {
     return {
       status: error.error,
       message: error.message,
-      errorNAme: error.reason,
+      errorName: error.reason,
     };
   }
 };

@@ -18,3 +18,4 @@ export { default as addLoanNoteAPI } from './addLoanNote';
 export { default as frontPluginAPI } from './frontPluginAPI';
 export { default as frontWebhookAPI } from './frontWebhookAPI';
 export { default as intercomWebhookAPI } from './intercomWebhookAPI';
+export { default as dripWebhookAPI } from './dripWebhookAPI';

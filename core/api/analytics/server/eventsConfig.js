@@ -104,6 +104,10 @@ export const EVENTS_CONFIG = {
         name: 'topic',
         optional: ({ endpointName }) => endpointName !== 'Intercom webhooks',
       },
+      {
+        name: 'event',
+        optional: ({ endpointName }) => endpointName !== 'Drip webhooks',
+      },
     ],
   },
   [EVENTS.LOAN_CREATED]: {

@@ -1,11 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
+import DripService from 'core/api/drip/server/DripService';
 import FrontService from 'core/api/front/server/FrontService';
 import IntercomService from 'core/api/intercom/server/IntercomService';
 import {
   addLoanNoteAPI,
   addProUserToPropertyAPI,
   deleteFileAPI,
+  dripWebhookAPI,
   frontPluginAPI,
   frontWebhookAPI,
   getPropertyAPI,
@@ -182,6 +184,15 @@ api.addEndpoint('/intercom-webhook', 'POST', intercomWebhookAPI, {
     const { body } = req;
     const { type, topic } = body;
     return { type, topic };
+  },
+});
+api.addEndpoint('/drip-webhook', 'POST', dripWebhookAPI, {
+  customAuth: DripService.checkWebhookAuthentication.bind(DripService),
+  endpointName: 'Drip webhooks',
+  analyticsParams: req => {
+    const { body } = req;
+    const { event, custom } = body;
+    return { event: event || custom?.event };
   },
 });
 
