@@ -120,7 +120,7 @@ const storeArtifacts = path => ({ store_artifacts: { path } });
 // Create preparation job with shared work
 const makePrepareJob = () => ({
   ...defaultJobValues,
-  resource_class: 'large',
+  resource_class: 'medium',
   steps: [
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),

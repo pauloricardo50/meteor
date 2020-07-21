@@ -21,7 +21,7 @@ jobs:
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
           RTL_SKIP_AUTO_CLEANUP: 1
           HOME: /home/circleci
-    resource_class: large
+    resource_class: medium
     steps:
       - restore_cache:
           name: Restore source
