@@ -13,10 +13,7 @@ export const setCookie = (cookieName, value) => {
 export const parseCookies = () => {
   const cookies = document.cookie.split(';');
   return cookies.reduce((res, c) => {
-    const [key, val] = c
-      .trim()
-      .split('=')
-      .map(decodeURIComponent);
+    const [key, val] = c.trim().split('=').map(decodeURIComponent);
     try {
       return Object.assign(res, { [key]: JSON.parse(val) });
     } catch (e) {

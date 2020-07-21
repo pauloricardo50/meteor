@@ -1,0 +1,25 @@
+.page-share {
+  display: flex;
+
+  &__wrapper {
+    background-color: #f4f4f4;
+
+    & + & {
+      border-left: 1px solid $body-text-light;
+    }
+  }
+  .share-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+  }
+
+  .post & {
+    max-width: 684px;
+    margin: 40px auto;
+    padding-left: 23px;
+    padding-right: 23px;
+  }
+}

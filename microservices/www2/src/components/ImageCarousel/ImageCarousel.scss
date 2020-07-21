@@ -1,0 +1,166 @@
+.image-carousel {
+  .content {
+    margin-bottom: 24px;
+
+    h1,
+    h2 {
+      margin-bottom: 23px;
+      // Mobile/Title/H4
+      font-size: 20px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: $title-text;
+    }
+  }
+
+  .captions {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    counter-reset: curr-index;
+    display: table;
+
+    li {
+      counter-increment: curr-index;
+      display: table-row;
+      // Mobile/Plain/L/Light
+      opacity: 0.3;
+      font-size: 16px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.44;
+      letter-spacing: normal;
+      color: $body-text;
+      cursor: pointer;
+      transition: opacity 200ms $bezier, transform 200ms $bezier;
+
+      &:hover {
+        opacity: 0.5 !important;
+        transform: scale(1.02);
+      }
+
+      &.active {
+        opacity: 1;
+        color: $primary;
+      }
+
+      &::before {
+        padding-right: 8px;
+        display: table-cell;
+        content: counter(curr-index);
+
+        @media screen and (max-width: $med){
+          font-size: 12px;
+          vertical-align: top;
+        } 
+      }
+    }
+  }
+
+  hr {
+    margin: 24px 0;
+  }
+
+  p {
+    // Desktop/Plain/S
+    font-weight: 300;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+  }
+
+  .current-image {
+    min-height: 500px;
+    max-width: 100%;
+    background-size:cover;
+    background-position: center center;
+  }
+
+  @media screen and (max-width: $med) {
+    .content {
+      margin-bottom: 0;
+
+      h1 {
+        margin-bottom: 0;
+      }
+    }
+
+    hr {
+      margin: 0;
+    }
+
+    .current-image {
+      min-height: unset;
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+
+    .current-image {
+      flex-basis: 60%;
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .content{
+      flex-basis: 40%;
+      flex-shrink: 0;
+    }
+
+    .content {
+      margin: 0;
+
+      h1,
+      h2 {
+        margin-bottom: 48px;
+        // Desktop/Title/H1
+        font-size: 40px;
+        font-weight: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: $title-text;
+      }
+
+      .captions {
+        li {
+          // Manrope-Regular
+          font-size: 28px;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 1.43;
+          letter-spacing: normal;
+
+          &::before {
+            margin-right: 15px;
+            font-size: 16px;
+            font-weight: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            vertical-align: top;
+          }
+        }
+      }
+
+      hr {
+        margin: 32px 0;
+      }
+
+      p {
+        // Desktop/Plain/L/Light
+        font-size: 20px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: 1.6;
+        letter-spacing: normal;
+        color: $body-text;
+      }
+    }
+  }
+}

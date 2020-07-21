@@ -1,0 +1,7 @@
+.login-menu {
+  &.mobile-nav {
+    position: sticky;
+    border-top: solid 0.5px $body-text-light;
+    padding: 25px 16px;
+  }
+}

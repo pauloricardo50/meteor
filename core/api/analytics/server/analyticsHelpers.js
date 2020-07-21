@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import ServerEventService from '../../events/server/ServerEventService';
 import SessionService from '../../sessions/server/SessionService';
 import Analytics from './Analytics';
@@ -24,10 +22,7 @@ export const addAnalyticsListener = ({
 }) => {
   ServerEventService.addAfterMethodListener(method, props => {
     props.context.unblock();
-    Meteor.defer(() => {
-      // Don't wait or fail if analytics does not work
-      const analytics = new Analytics(analyticsProps(props) || props.context);
-      func({ ...props, analytics });
-    });
+    const analytics = new Analytics(analyticsProps(props) || props.context);
+    func({ ...props, analytics });
   });
 };

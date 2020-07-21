@@ -21,10 +21,7 @@ const defaultHandleError = (error, additionalData) => {
   logError.run({
     error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
     additionalData,
-    url:
-      window && window.location && window.location.href
-        ? window.location.href
-        : '',
+    url: window?.location?.href ? window.location.href : '',
   });
 
   return true;

@@ -1,0 +1,25 @@
+.language-picker {
+  display: inline-flex;
+}
+
+.language-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  background-image: transparent;
+  color: #000000;
+  cursor: pointer;
+
+  & + & {
+    margin-left: 10px;
+  }
+
+  &[data-active='true'] {
+    background-image: $primary-gradient;
+    font-weight: bold;
+    color: white;
+  }
+}

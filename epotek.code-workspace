@@ -1,29 +1,36 @@
 {
   "folders": [
     {
-      "path": ".",
-      "name": "root"
+      "name": "root",
+      "path": "."
     },
     {
-      "path": "./core"
+      "name": "core",
+      "path": "core"
     },
     {
+      "name": "www2",
       "path": "microservices/www2"
     },
     {
+      "name": "backend",
       "path": "microservices/backend"
     },
     {
+      "name": "admin",
       "path": "microservices/admin"
     },
     {
+      "name": "app",
       "path": "microservices/app"
     },
     {
-      "path": "microservices/www"
+      "name": "pro",
+      "path": "microservices/pro"
     },
     {
-      "path": "microservices/pro"
+      "name": "www",
+      "path": "microservices/www"
     }
   ],
   "settings": {

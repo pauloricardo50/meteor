@@ -154,10 +154,11 @@ export const EVENTS_CONFIG = {
     name: 'CTA clicked',
     properties: [
       'name',
-      'url',
-      'route',
       'path',
+      'route',
+      'url',
       { name: 'referrer', optional: true },
+      { name: 'toPath', optional: true },
     ],
   },
   [EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED]: {
@@ -346,6 +347,14 @@ export const EVENTS_CONFIG = {
       { name: 'lastPagePath', optional: true },
       { name: 'lastPageMicroservice', optional: true },
     ],
+  },
+  [EVENTS.SUBSCRIBE_TO_NEWSLETTER]: {
+    name: 'User subscribed to newsletter',
+    properties: ['userEmail'],
+  },
+  [EVENTS.SUBMIT_PROMOTION_INTEREST_FORM]: {
+    name: 'User submitted promotion interest form',
+    properties: ['userEmail', 'promotionName'],
   },
 };
 

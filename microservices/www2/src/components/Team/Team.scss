@@ -1,0 +1,140 @@
+.team {
+  &__heading {
+    margin-bottom: 32px;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.4;
+    letter-spacing: normal;
+    color: $body-text;
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .team-member {
+    display: flex;
+
+    + .team-member {
+      margin-top: 20px;
+    }
+
+    &__image {
+      width: 115px;
+      height: 115px;
+
+      .outer-circle {
+        width: 97px;
+        height: 97px;
+        border-radius: 50%;
+        box-shadow: 0 9px 12px 0 rgba(91, 181, 255, 0.3);
+        background-color: #ffffff;
+      }
+
+      .inner-circle {
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        box-shadow: 0 9px 12px 0 rgba(91, 181, 255, 0.3);
+        background-color: #ffffff;
+      }
+
+      .profile-image {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        box-shadow: 0 9px 12px -4px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &__contact {
+      svg {
+        color: $primary;
+      }
+    }
+
+    &__content {
+      flex: 1;
+      padding-top: 12px;
+    }
+
+
+    &__position {
+      opacity: 0.5;
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    &__heading {
+      margin: 0 auto 116px;
+      max-width: 392px;
+      font-size: 40px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: $body-text;
+    }
+
+    &__members {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .team-member {
+      display: flex;
+      flex-basis: 50%;
+
+      &:nth-child(2) {
+        margin-top: 100px;
+      }
+
+      &:nth-child(2n + 3) {
+        margin-top: -40px;
+      }
+
+      &:nth-child(2n + 4) {
+        margin-top: 60px;
+      }
+
+      &__image {
+        width: 184px;
+        height: 184px;
+
+        .outer-circle {
+          width: 156px;
+          height: 156px;
+          border-radius: 50%;
+          box-shadow: 0 14px 19px 0 rgba(91, 181, 255, 0.3);
+          background-color: #ffffff;
+        }
+
+        .inner-circle {
+          width: 132px;
+          height: 132px;
+          border-radius: 50%;
+          box-shadow: 0 14px 19px 0 rgba(91, 181, 255, 0.3);
+          background-color: #ffffff;
+        }
+
+        .profile-image {
+          width: 112px;
+          height: 112px;
+          border-radius: 98.4px;
+          border-radius: 50%;
+          box-shadow: 0 14px 19px -6px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      &__content {
+        flex: 1;
+        margin-left: 16px;
+        padding-top: 44px;
+      }
+    }
+  }
+}
