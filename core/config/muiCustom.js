@@ -185,6 +185,11 @@ const defaultTheme = fontSize => ({
         border: 'none',
       },
     },
+    MuiCheckbox: {
+      root: {
+        border: 'none',
+      },
+    },
   },
   palette: {
     primary: {
