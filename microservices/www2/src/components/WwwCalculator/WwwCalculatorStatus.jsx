@@ -9,6 +9,9 @@ import Button from '../Button';
 import { useLayoutContext } from '../Layout/LayoutContext';
 import { useWwwCalculator } from './WwwCalculatorState';
 
+const toSentenceCase = str =>
+  str.slice(0, 1).toUpperCase() + str.slice(1, str.length);
+
 const WwwCalculatorStatus = () => {
   const { tracking_id: pageTrackingId } = useLayoutContext();
   const [{ statusMessageId, worstStatus, purchaseType }] = useWwwCalculator();
@@ -48,7 +51,7 @@ const WwwCalculatorStatus = () => {
           href={`${process.env.GATSBY_EPOTEK_APP}?purchaseType=${purchaseType}`}
           onTrack={() =>
             trackCTA({
-              buttonTrackingId: `Calculator ${purchaseType}`,
+              buttonTrackingId: `${toSentenceCase(purchaseType)} calculator`,
               toPath: `${process.env.GATSBY_EPOTEK_APP}?purchaseType=${purchaseType}`,
               pageTrackingId,
             })

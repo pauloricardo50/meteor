@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -36,11 +36,11 @@ const RecentNewsletters = () => {
 
   return (
     <div className="recent-newsletters">
-      <ExpansionPanel
+      <Accordion
         expanded={expanded === `panel`}
         onChange={handleChange(`panel`)}
       >
-        <ExpansionPanelSummary
+        <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           IconButtonProps={{ size: 'small', style: { marginLeft: 8 } }}
           aria-controls="panel-content"
@@ -48,9 +48,9 @@ const RecentNewsletters = () => {
           classes={classes}
         >
           {getLanguageData(language).recentNewslettersToggle}
-        </ExpansionPanelSummary>
+        </AccordionSummary>
 
-        <ExpansionPanelDetails>
+        <AccordionDetails>
           <ul className="recent-newsletters">
             {allNewsletters.map(({ id, sendDate, title, url }) => {
               // TODO: temporary until data provided by API is cleaned up
@@ -69,8 +69,8 @@ const RecentNewsletters = () => {
               );
             })}
           </ul>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 };

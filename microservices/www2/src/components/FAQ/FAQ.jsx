@@ -1,9 +1,9 @@
 import './FAQ.scss';
 
 import React from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import { makeStyles } from '@material-ui/core/styles';
 import AddCircleOutlineIcon from '@material-ui/icons/Add';
 import { Helmet } from 'react-helmet';
@@ -64,7 +64,7 @@ const FAQ = ({ primary, fields }) => {
 
       <div className="container">
         {fields.map((field, idx) => (
-          <ExpansionPanel
+          <Accordion
             key={idx}
             expanded={expanded === `panel-${idx}`}
             onChange={handleChange(`panel-${idx}`)}
@@ -72,7 +72,7 @@ const FAQ = ({ primary, fields }) => {
             itemProp="mainEntity"
             itemType="https://schema.org/Question"
           >
-            <ExpansionPanelSummary
+            <AccordionSummary
               expandIcon={<AddCircleOutlineIcon />}
               IconButtonProps={{ size: 'small', className: 'primary' }}
               aria-controls={`panel-${idx}-content`}
@@ -81,8 +81,8 @@ const FAQ = ({ primary, fields }) => {
               classes={useSummaryStyles()}
             >
               {field.question}
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails
+            </AccordionSummary>
+            <AccordionDetails
               itemScope
               itemProp="acceptedAnswer"
               itemType="https://schema.org/Answer"
@@ -91,8 +91,8 @@ const FAQ = ({ primary, fields }) => {
               <span itemProp="text">
                 <RichText render={field.answer} linkResolver={linkResolver} />
               </span>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </div>
     </>

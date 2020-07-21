@@ -47,7 +47,7 @@ const defaultTheme = fontSize => ({
         color: colors.error,
       },
     },
-    MuiExpansionPanel: {
+    MuiAccordion: {
       root: {
         border: 'none',
         marginBottom: 8,

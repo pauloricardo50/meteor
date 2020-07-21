@@ -20,7 +20,7 @@ const theme = createTheme({
   fontSize: 18,
   overrideTheme: {
     overrides: {
-      MuiExpansionPanel: {
+      MuiAccordion: {
         root: { backgroundColor: 'transparent', boxShadow: 'none' },
       },
     },
