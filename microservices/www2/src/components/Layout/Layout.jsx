@@ -36,7 +36,7 @@ const Layout = ({ children, location, pageContext, data }) => {
   useIntercom();
 
   const { title, description } = siteData.site.siteMetadata;
-  const pageTitle = pageObject.name?.[0]?.text || pageObject.title?.[0]?.text;
+  const pageTitle = pageObject?.name?.[0]?.text || pageObject?.title?.[0]?.text;
 
   // const pageLang = getShortLang(pageContext.lang);
   const pageLang = getShortLang('fr-ch');
@@ -62,7 +62,7 @@ const Layout = ({ children, location, pageContext, data }) => {
   }, [language]);
 
   return (
-    <LayoutContext.Provider value={pageObject}>
+    <LayoutContext.Provider value={pageObject || {}}>
       <LanguageContext.Provider value={[language, setLanguage]}>
         <Helmet>
           <html lang={pageLang} />

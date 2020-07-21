@@ -13,7 +13,7 @@ import { AutoField, AutoForm } from 'uniforms-material';
 import FormattedMessage from 'core/components/Translation/FormattedMessage';
 import useMedia from 'core/hooks/useMedia';
 
-import meteorClient from '../../utils/meteorClient';
+import { callMethod } from '../../utils/meteorClient';
 import Button from '../Button';
 
 const SubmitField = (
@@ -72,7 +72,6 @@ const schema = new SimpleSchema2Bridge(
 
 const PromotionInterestForm = ({ promotion }) => {
   const isMobile = useMedia({ maxWidth: 768 });
-
   const [openModal, setOpenModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [interestSent, setInterestSent] = useState(false);
@@ -112,14 +111,13 @@ const PromotionInterestForm = ({ promotion }) => {
             schema={schema}
             onSubmit={({ name, email, phoneNumber, details }) => {
               setSubmitting(true);
-              meteorClient
-                .call('submitPromotionInterestForm', {
-                  name,
-                  email,
-                  phoneNumber,
-                  details,
-                  promotionId: promotion._id,
-                })
+              callMethod('submitPromotionInterestForm', {
+                name,
+                email,
+                phoneNumber,
+                details,
+                promotionId: promotion._id,
+              })
                 .then(() => {
                   setInterestSent(true);
                   setOpenModal(false);

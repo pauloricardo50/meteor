@@ -348,6 +348,14 @@ export const EVENTS_CONFIG = {
       { name: 'lastPageMicroservice', optional: true },
     ],
   },
+  [EVENTS.SUBSCRIBE_TO_NEWSLETTER]: {
+    name: 'User subscribed to newsletter',
+    properties: ['userEmail'],
+  },
+  [EVENTS.SUBMIT_PROMOTION_INTEREST_FORM]: {
+    name: 'User submitted promotion interest form',
+    properties: ['userEmail', 'promotionName'],
+  },
 };
 
 export const TRACKING_ORIGIN = {

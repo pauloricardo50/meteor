@@ -11,7 +11,7 @@ import TextInput from 'core/components/TextInput/TextInput';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import meteorClient from '../../utils/meteorClient';
+import { callMethod } from '../../utils/meteorClient';
 import Button from '../Button';
 import { RichText } from '../prismic';
 import RecentNewsletters from './RecentNewsletters';
@@ -37,9 +37,7 @@ const SignupForm = ({ modal = false }) => {
     try {
       setError(null);
       setLoading(true);
-      await meteorClient.call('subscribeToNewsletter', {
-        email,
-      });
+      await callMethod('subscribeToNewsletter', { email });
       setLoading(false);
       setSuccess(true);
     } catch (err) {

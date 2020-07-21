@@ -1,13 +1,12 @@
-import meteorClient from './meteorClient';
+import { callMethod } from './meteorClient';
 
 const handleError = (error, additionalData) => {
-  console.error('errorListener error:');
-  console.error(error);
-  meteorClient.call('logError', {
+  const payload = {
     error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
     additionalData,
     url: window?.location?.href ? window.location.href : '',
-  });
+  };
+  callMethod('logError', payload);
 };
 
 const listenToErrors = () => {

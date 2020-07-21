@@ -2,7 +2,7 @@ import './WwwCalculator.scss';
 
 import React, { useEffect } from 'react';
 
-import meteorClient from '../../utils/meteorClient';
+import { callMethod } from '../../utils/meteorClient';
 import WwwCalculatorChart from './WwwCalculatorChart';
 import { ACTIONS } from './wwwCalculatorConstants';
 import WwwCalculatorForm from './WwwCalculatorForm';
@@ -16,9 +16,7 @@ const WwwCalculator = () => {
 
   useEffect(() => {
     const getCurrentRates = async () => {
-      const response = await meteorClient.call(
-        'named_query_CURRENT_INTEREST_RATES',
-      );
+      const response = await callMethod('named_query_CURRENT_INTEREST_RATES');
       if (response?.rates) {
         dispatch({
           type: ACTIONS.SET,

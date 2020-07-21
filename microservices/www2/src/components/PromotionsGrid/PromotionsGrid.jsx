@@ -9,7 +9,7 @@ import FormattedMessage from 'core/components/Translation/FormattedMessage';
 import useMedia from 'core/hooks/useMedia';
 import useWindowSize from 'core/hooks/useWindowSize';
 
-import meteorClient from '../../utils/meteorClient';
+import { callMethod } from '../../utils/meteorClient';
 import CantonFilter from './CantonFilter';
 import PromotionsGridItem from './PromotionGridItem';
 
@@ -24,10 +24,9 @@ const PromotionsGrid = () => {
 
   useEffect(() => {
     setLoading(true);
-    meteorClient
-      .call('named_query_PROMOTIONS_LIST', {
-        canton: canton ? [canton] : undefined,
-      })
+    callMethod('named_query_PROMOTIONS_LIST', {
+      canton: canton ? [canton] : undefined,
+    })
       .then(res => {
         setLoading(false);
         setPromotions([

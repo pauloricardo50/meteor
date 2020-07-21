@@ -1,6 +1,8 @@
 import ws from 'isomorphic-ws';
 import SimpleDDP from 'simpleddp';
 
+import { getTrackingId } from './tracking';
+
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const opts = {
@@ -25,5 +27,17 @@ if (process.env.NODE_ENV === 'development') {
     console.log('Meteor client error', e);
   });
 }
+
+export const callMethod = (method, params) =>
+  meteorClient.call(method, params, {
+    trackingId: getTrackingId(),
+    location: window
+      ? {
+          href: window.location.href,
+          host: window.location.host,
+          pathname: window.location.pathname,
+        }
+      : undefined,
+  });
 
 export default meteorClient;

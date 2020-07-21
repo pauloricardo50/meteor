@@ -7,7 +7,7 @@ import IntlDate from 'core/components/Translation/formattingComponents/IntlDate'
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import meteorClient from '../../utils/meteorClient';
+import { callMethod } from '../../utils/meteorClient';
 import TrendIcon from './TrendIcon';
 
 const makePercent = num =>
@@ -31,9 +31,7 @@ export const useMortgageRates = () => {
   const [currentRates, setCurrentRates] = useState({});
   useEffect(() => {
     const getCurrentRates = async () => {
-      const response = await meteorClient.call(
-        'named_query_CURRENT_INTEREST_RATES',
-      );
+      const response = await callMethod('named_query_CURRENT_INTEREST_RATES');
       setCurrentRates(response);
     };
     getCurrentRates();

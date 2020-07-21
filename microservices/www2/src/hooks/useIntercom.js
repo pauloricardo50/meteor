@@ -4,7 +4,7 @@ import { useLocation } from '@reach/router';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 
-import meteorClient from '../utils/meteorClient';
+import { callMethod } from '../utils/meteorClient';
 
 const defaultSettings = {
   alignment: 'right',
@@ -34,7 +34,7 @@ const getTrackingIds = () => {
 };
 
 const getIntercomUserSettings = async () => {
-  const intercomSettings = await meteorClient.call('getIntercomSettings', {});
+  const intercomSettings = await callMethod('getIntercomSettings', {});
   return { ...defaultSettings, ...intercomSettings };
 };
 
@@ -68,7 +68,7 @@ const initializeIntercom = async location => {
       x.parentNode && x.parentNode.insertBefore(s, x);
 
       s.addEventListener('load', function () {
-        meteorClient.call('updateIntercomVisitorTrackingId', getTrackingIds());
+        callMethod('updateIntercomVisitorTrackingId', getTrackingIds());
         window?.Intercom?.('trackEvent', 'last-page', {
           title: document?.title,
           pathname: location?.pathname,
@@ -76,12 +76,8 @@ const initializeIntercom = async location => {
         });
 
         window?.Intercom?.('onShow', function () {
-          meteorClient.call(
-            'updateIntercomVisitorTrackingId',
-            getTrackingIds(),
-          );
-          meteorClient.call('analyticsOpenedIntercom', {
-            trackingId: getTrackingIds().trackingId,
+          callMethod('updateIntercomVisitorTrackingId', getTrackingIds());
+          callMethod('analyticsOpenedIntercom', {
             lastPageTitle: document?.title,
             lastPagePath: location?.pathname,
             lastPageMicroservice: 'www',

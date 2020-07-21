@@ -5,7 +5,11 @@ import NodeAnalytics from 'analytics-node';
 import curryRight from 'lodash/curryRight';
 
 import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
-import { getClientHost } from '../../../utils/server/getClientUrl';
+import {
+  getClientHost,
+  getClientMicroservice,
+  getClientUrl,
+} from '../../../utils/server/getClientUrl';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import { isAPI } from '../../RESTAPI/server/helpers';
 import SessionService from '../../sessions/server/SessionService';
@@ -215,12 +219,18 @@ class Analytics {
     }
 
     const { name, properties } = this.getEventProperties(event, data);
+    const finalProperties = {
+      clientHost: getClientHost(),
+      clientMicroservice: getClientMicroservice(),
+      clientUrl: getClientUrl(),
+      ...properties,
+    };
 
     this.analytics.track({
       ...(trackingId ? { anonymousId: trackingId } : {}),
       userId: this.userId,
       event: name,
-      properties,
+      properties: finalProperties,
       context: {
         ip: this.clientAddress,
         userAgent: this.userAgent,
