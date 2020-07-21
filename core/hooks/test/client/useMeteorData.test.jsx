@@ -18,7 +18,7 @@ import {
 } from '../../../utils/testHelpers/testing-library';
 import { useStaticMeteorData } from '../../useMeteorData';
 
-const TestComponent = (props) => {
+const TestComponent = props => {
   const { loading, data, refetch } = useStaticMeteorData({
     query: INTEREST_RATES_COLLECTION,
     params: { _id: 1 },
@@ -41,18 +41,18 @@ const TestComponent = (props) => {
   );
 };
 
-describe.skip('useMeteorData', function () {
-  this.retries(2);
+describe('useMeteorData', function () {
+  this.timeout(1000 * 5);
 
   beforeEach(async () => {
     await cleanup();
     await resetDatabase();
-    await new Promise((res) => Meteor.logout(res));
+    await new Promise(res => Meteor.logout(res));
     await userLogin({ role: ROLES.ADMIN });
   });
 
   afterEach(async () => {
-    await new Promise((res) => Meteor.logout(res));
+    await new Promise(res => Meteor.logout(res));
   });
 
   describe('useStaticMeteorData', () => {
@@ -84,7 +84,7 @@ describe.skip('useMeteorData', function () {
       await findByText('results: 25');
 
       await interestRatesRemove.run({ interestRatesId: interestRates[0] });
-      await new Promise((r) => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 200));
 
       await findByText('loading: false');
       expect(!!getByText('results: 25')).to.equal(true);
@@ -118,7 +118,7 @@ describe.skip('useMeteorData', function () {
       await findByText('results: 10');
 
       await interestRatesRemove.run({ interestRatesId: interestRates[0] });
-      await new Promise((r) => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 200));
 
       await findByText('results: 10');
     });
