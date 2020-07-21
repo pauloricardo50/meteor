@@ -45,11 +45,11 @@ const WwwCalculatorStatus = () => {
           secondary={worstStatus === SUCCESS}
           size="large"
           component="a"
-          href={`${process.env.EPOTEK_APP}?purchaseType=${purchaseType}`}
+          href={`${process.env.GATSBY_EPOTEK_APP}?purchaseType=${purchaseType}`}
           onTrack={() =>
             trackCTA({
               buttonTrackingId: `Calculator ${purchaseType}`,
-              toPath: `${process.env.EPOTEK_APP}?purchaseType=${purchaseType}`,
+              toPath: `${process.env.GATSBY_EPOTEK_APP}?purchaseType=${purchaseType}`,
               pageTrackingId,
             })
           }

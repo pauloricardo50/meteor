@@ -62,11 +62,11 @@ const LoginMenu = ({ placement }) => {
         <MenuItem
           role="button"
           component="a"
-          href={`${process.env.EPOTEK_APP}/login`}
+          href={`${process.env.GATSBY_EPOTEK_APP}/login`}
           onClick={() =>
             trackCTA({
               buttonTrackingId: 'Login app',
-              toPath: `${process.env.EPOTEK_APP}/login`,
+              toPath: `${process.env.GATSBY_EPOTEK_APP}/login`,
               pageTrackingId,
             })
           }
@@ -76,11 +76,11 @@ const LoginMenu = ({ placement }) => {
         <MenuItem
           role="button"
           component="a"
-          href={`${process.env.EPOTEK_PRO}/login`}
+          href={`${process.env.GATSBY_EPOTEK_PRO}/login`}
           onClick={() =>
             trackCTA({
               buttonTrackingId: 'Login pro',
-              toPath: `${process.env.EPOTEK_PRO}/login`,
+              toPath: `${process.env.GATSBY_EPOTEK_PRO}/login`,
               pageTrackingId,
             })
           }

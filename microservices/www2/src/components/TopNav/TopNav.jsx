@@ -57,11 +57,11 @@ const TopNav = () => {
             raised
             primary
             component="a"
-            href={process.env.EPOTEK_APP}
+            href={process.env.GATSBY_EPOTEK_APP}
             onTrack={() =>
               trackCTA({
                 buttonTrackingId: 'Topnav start',
-                toPath: process.env.EPOTEK_APP,
+                toPath: process.env.GATSBY_EPOTEK_APP,
                 pageTrackingId,
               })
             }

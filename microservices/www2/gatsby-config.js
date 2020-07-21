@@ -73,7 +73,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-google-tagmanager',
       options: {
-        id: 'GTM-PRT9HHN',
+        id: 'GTM-W8KXQ9V',
 
         // Include GTM in development.
         //
@@ -131,10 +131,11 @@ module.exports = {
     },
     {
       resolve: 'gatsby-plugin-hotjar',
-      options: {
-        id: '1310643',
-        sv: 6,
-      },
+      options: { id: '1310643', sv: 6 },
+    },
+    {
+      resolve: `gatsby-plugin-env-variables`,
+      options: { allowList: ['EPOTEK_APP', 'EPOTEK_BACKEND', 'EPOTEK_PRO'] },
     },
   ],
 };

@@ -17,7 +17,7 @@ const icons = {
 };
 
 const WwwCalculatorPurchaseType = () => {
-  const [{ purchaseType }, dispatch] = useWwwCalculator();
+  const [{ purchaseType, salary }, dispatch] = useWwwCalculator();
   return (
     <div className="www-calculator-purchase-type">
       {purchaseTypes.map(type => (
@@ -30,7 +30,7 @@ const WwwCalculatorPurchaseType = () => {
               payload: { purchaseType: type },
             });
 
-            if (type === PURCHASE_TYPE.REFINANCING) {
+            if (type === PURCHASE_TYPE.REFINANCING && salary.value > 0) {
               dispatch({
                 type: ACTIONS.SET_AT,
                 payload: { isAuto: false, at: SALARY },
