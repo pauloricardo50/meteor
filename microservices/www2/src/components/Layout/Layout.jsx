@@ -13,9 +13,11 @@ import {
   getShortLang,
 } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
+import { useTracking } from '../../utils/tracking';
 import CookiesNotification from '../CookiesNotification';
 import Footer from '../Footer';
 import TopNav from '../TopNav';
+import { LayoutContext } from './LayoutContext';
 
 const Layout = ({ children, location, pageContext, data }) => {
   const siteData = useStaticQuery(graphql`
@@ -28,11 +30,13 @@ const Layout = ({ children, location, pageContext, data }) => {
       }
     }
   `);
+  const pageObject = data?.prismic?.page || data?.prismic?.post;
 
+  useTracking(pageObject?.tracking_id);
   useIntercom();
 
   const { title, description } = siteData.site.siteMetadata;
-  const pageTitle = data?.prismic?.page?.name?.[0]?.text;
+  const pageTitle = pageObject.name?.[0]?.text || pageObject.title?.[0]?.text;
 
   // const pageLang = getShortLang(pageContext.lang);
   const pageLang = getShortLang('fr-ch');
@@ -58,7 +62,7 @@ const Layout = ({ children, location, pageContext, data }) => {
   }, [language]);
 
   return (
-    <>
+    <LayoutContext.Provider value={pageObject}>
       <LanguageContext.Provider value={[language, setLanguage]}>
         <Helmet>
           <html lang={pageLang} />
@@ -81,7 +85,7 @@ const Layout = ({ children, location, pageContext, data }) => {
 
         <CookiesNotification />
       </LanguageContext.Provider>
-    </>
+    </LayoutContext.Provider>
   );
 };
 

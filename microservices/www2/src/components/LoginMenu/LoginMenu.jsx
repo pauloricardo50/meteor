@@ -9,6 +9,8 @@ import PersonOutline from '@material-ui/icons/PersonOutline';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
+import { trackCTA } from '../../utils/tracking';
+import { useLayoutContext } from '../Layout/LayoutContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const LoginMenu = ({ placement }) => {
+  const { tracking_id: pageTrackingId } = useLayoutContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [language] = useContext(LanguageContext);
 
@@ -59,14 +62,28 @@ const LoginMenu = ({ placement }) => {
         <MenuItem
           role="button"
           component="a"
-          href="https://app.e-potek.ch/login"
+          href={`${process.env.EPOTEK_APP}/login`}
+          onClick={() =>
+            trackCTA({
+              buttonTrackingId: 'Login app',
+              toPath: `${process.env.EPOTEK_APP}/login`,
+              pageTrackingId,
+            })
+          }
         >
           Login Clients
         </MenuItem>
         <MenuItem
           role="button"
           component="a"
-          href="https://pro.e-potek.ch/login"
+          href={`${process.env.EPOTEK_PRO}/login`}
+          onClick={() =>
+            trackCTA({
+              buttonTrackingId: 'Login pro',
+              toPath: `${process.env.EPOTEK_PRO}/login`,
+              pageTrackingId,
+            })
+          }
         >
           Login Pro
         </MenuItem>

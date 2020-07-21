@@ -112,7 +112,7 @@ const getLinkProps = prismicLink => {
   }
 };
 
-const Button = ({ prismicLink, ...props }) => {
+const Button = ({ prismicLink, onTrack, onClick, ...props }) => {
   const childProps = omit(props, [
     'iconAfter',
     'primary',
@@ -133,6 +133,19 @@ const Button = ({ prismicLink, ...props }) => {
 
   const linkProps = getLinkProps(prismicLink);
 
+  const handleClick = event => {
+    let result;
+
+    if (onClick) {
+      result = onClick(event);
+    }
+    if (onTrack) {
+      onTrack({ toPath: linkProps?.to || linkProps?.href });
+    }
+
+    return result;
+  };
+
   const button = (
     <Comp
       {...childProps}
@@ -149,6 +162,7 @@ const Button = ({ prismicLink, ...props }) => {
       role="button"
       startIcon={startIcon}
       endIcon={props.iconAfter && props.icon}
+      onClick={handleClick}
     >
       {getButtonContent(props)}
     </Comp>

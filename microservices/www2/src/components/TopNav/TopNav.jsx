@@ -10,7 +10,9 @@ import useMedia from 'core/hooks/useMedia';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
+import { trackCTA } from '../../utils/tracking';
 import Button from '../Button';
+import { useLayoutContext } from '../Layout/LayoutContext';
 import LoginMenu from '../LoginMenu';
 import MainMenu from '../MainMenu';
 import TopMenu from '../TopMenu';
@@ -25,6 +27,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const TopNav = () => {
+  const { tracking_id: pageTrackingId } = useLayoutContext();
   const [language] = useContext(LanguageContext);
   const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
   const isMobile = useMedia({ maxWidth: 768 });
@@ -55,6 +58,13 @@ const TopNav = () => {
             primary
             component="a"
             href={process.env.EPOTEK_APP}
+            onTrack={() =>
+              trackCTA({
+                buttonTrackingId: 'Topnav start',
+                toPath: process.env.EPOTEK_APP,
+                pageTrackingId,
+              })
+            }
           >
             {getLanguageData(language).getALoanText}
           </Button>

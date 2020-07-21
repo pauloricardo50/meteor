@@ -34,6 +34,7 @@ const WwwFooterTop = ({ children, history }) => {
             name: CTAS.START_BOTTOM,
             history,
             routes: WWW_ROUTES,
+            toPath: Meteor.settings.public.subdomains.app,
           });
         }}
       >

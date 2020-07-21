@@ -4,10 +4,13 @@ import { SUCCESS } from 'core/api/constants';
 import StatusIcon from 'core/components/StatusIcon';
 import T from 'core/components/Translation/FormattedMessage';
 
+import { trackCTA } from '../../utils/tracking';
 import Button from '../Button';
+import { useLayoutContext } from '../Layout/LayoutContext';
 import { useWwwCalculator } from './WwwCalculatorState';
 
 const WwwCalculatorStatus = () => {
+  const { tracking_id: pageTrackingId } = useLayoutContext();
   const [{ statusMessageId, worstStatus, purchaseType }] = useWwwCalculator();
 
   if (statusMessageId.includes('tutorial')) {
@@ -43,6 +46,13 @@ const WwwCalculatorStatus = () => {
           size="large"
           component="a"
           href={`${process.env.EPOTEK_APP}?purchaseType=${purchaseType}`}
+          onTrack={() =>
+            trackCTA({
+              buttonTrackingId: `Calculator ${purchaseType}`,
+              toPath: `${process.env.EPOTEK_APP}?purchaseType=${purchaseType}`,
+              pageTrackingId,
+            })
+          }
         >
           <T id="getALoanText" />
         </Button>

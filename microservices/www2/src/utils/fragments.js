@@ -10,6 +10,7 @@ export const prismicPageFields = graphql`
       lang
     }
     name
+    tracking_id
   }
 `;
 
@@ -23,5 +24,6 @@ export const prismicPostFields = graphql`
       lang
     }
     title
+    tracking_id
   }
 `;

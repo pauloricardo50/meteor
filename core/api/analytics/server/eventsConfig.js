@@ -154,10 +154,11 @@ export const EVENTS_CONFIG = {
     name: 'CTA clicked',
     properties: [
       'name',
-      'url',
-      'route',
       'path',
+      'route',
+      'url',
       { name: 'referrer', optional: true },
+      { name: 'toPath', optional: true },
     ],
   },
   [EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED]: {
