@@ -222,7 +222,6 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 const makeDeployJob = ({ name, job }) => ({
   ...job,
   ...defaultJobValues,
-  machine: true,
   filters: {
     branches: {
       only: [
@@ -232,6 +231,11 @@ const makeDeployJob = ({ name, job }) => ({
   },
   steps: [
     'add_ssh_keys',
+    {
+      setup_remote_docker: {
+        version: '19.03.12'
+      }
+    },
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),

@@ -59,13 +59,14 @@ jobs:
   Www - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
       - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
       - restore_cache:
           name: Restore source
           keys:
@@ -144,13 +145,14 @@ jobs:
   App - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
       - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
       - restore_cache:
           name: Restore source
           keys:
@@ -229,13 +231,14 @@ jobs:
   Admin - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
       - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
       - restore_cache:
           name: Restore source
           keys:
@@ -316,13 +319,14 @@ jobs:
   Pro - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
       - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
       - restore_cache:
           name: Restore source
           keys:
@@ -401,13 +405,14 @@ jobs:
   Backend - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    machine: true
     filters:
       branches:
         only:
           - chore/deploy-staging-ci
     steps:
       - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
       - restore_cache:
           name: Restore source
           keys:
