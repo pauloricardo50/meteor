@@ -38,11 +38,15 @@ module.exports = {
       options: {
         name: 'e-Potek',
         short_name: 'e-Potek',
-        start_url: '/',
-        background_color: '#005bea',
-        theme_color: '#005bea',
+        description: "La révolution de l'hypothèque",
+        start_url: '/fr/accueil',
+        background_color: '#2e7eff',
+        theme_color: '#2e7eff',
         display: 'minimal-ui',
-        icon: 'src/images/epotek_logo.png', // This path is relative to the root of the site.
+        icon: 'src/images/epotek_logo.png',
+        lang: 'fr',
+        // TODO: When we have multiple languages
+        localize: [],
       },
     },
     {
@@ -115,6 +119,8 @@ module.exports = {
         },
       },
     },
+
+    // This is good for performance, according to lighthouse
     {
       resolve: 'gatsby-plugin-preconnect',
       options: {
@@ -132,6 +138,15 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-hotjar',
       options: { id: '1310643', sv: 6 },
+    },
+
+    // This is good for SEO, according to lighthouse
+    {
+      resolve: `gatsby-plugin-canonical-urls`,
+      options: {
+        siteUrl: 'https://www.e-potek.ch',
+        stripQueryString: true,
+      },
     },
   ],
 };

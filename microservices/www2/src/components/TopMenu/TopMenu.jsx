@@ -1,23 +1,24 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItems from '../MenuItems';
-import getMenuLinks from '../../utils/getMenuLinks';
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-  },
-});
+import getMenuLinks from '../../utils/getMenuLinks';
+import Button from '../Button';
 
 const TopNavMenu = () => {
   const menuLinks = getMenuLinks('top-nav');
-  const classes = useStyles();
 
   return (
-    <MenuList classes={classes}>
-      <MenuItems menuLinks={menuLinks} />
-    </MenuList>
+    <div className="top-menu">
+      {menuLinks.map(({ primary }, index) => {
+        const primaryLink = primary?.link;
+        const primaryLabel = primary?.label;
+
+        return (
+          <Button className="ml-8" prismicLink={primaryLink} key={index}>
+            {primaryLabel}
+          </Button>
+        );
+      })}
+    </div>
   );
 };
 

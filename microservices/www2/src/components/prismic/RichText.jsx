@@ -11,6 +11,7 @@ const GatsbyLink = (type, element, content, children, index) => {
         key={element.data.url}
         href={element.data.url}
         target={element.data.target}
+        rel={element.data.target === '_blank' ? 'noopener' : undefined}
       >
         {content}
       </a>

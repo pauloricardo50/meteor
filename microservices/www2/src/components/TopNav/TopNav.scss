@@ -29,18 +29,17 @@
   }
 
   &-menu {
-    margin-right: 4px;
-    
     svg {
-    color: $primary;
-  }}
+      color: $primary;
+    }
+  }
 
   ul:focus {
     outline: none;
   }
 
   @media screen and (max-width: $xsmall) {
-    .top-nav-right [role="button"]  {
+    .top-nav-right [role='button'] {
       font-size: 12px;
     }
   }
