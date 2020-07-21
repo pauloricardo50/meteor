@@ -27,7 +27,7 @@ const setupBucket = () =>
     .then(() => S3Service.putObject(binaryData, key2))
     .then(() => S3Service.putObject(binaryData, key3));
 
-describe('FileService', function() {
+describe('FileService', function () {
   this.timeout(10000);
 
   beforeEach(() => clearBucket(docId).then(setupBucket));
@@ -159,9 +159,8 @@ describe('FileService', function() {
     });
   });
 
-  describe('autoRenameFile', function() {
-    this.timeout(15000);
-    this.retries(3);
+  describe('autoRenameFile', function () {
+    this.timeout(25000);
 
     const documentId = 'autoRenameFile-test';
     const generateAndRenameFiles = async (count, date = '') => {
@@ -216,9 +215,7 @@ describe('FileService', function() {
       generator({ borrowers: { _id: 'borrower' } });
 
       const today = moment().format('YYYY-MM-DD');
-      const yesterday = moment()
-        .subtract(1, 'days')
-        .format('YYYY-MM-DD');
+      const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
       await generateAndRenameFiles(1, yesterday);
 
