@@ -1378,5 +1378,73 @@ describe('UserService', function () {
         UserService.findOne({ 'emails.address': 'test@e-potek.ch' }),
       ).to.equal(undefined);
     });
+
+    it('should assign the same assignee to the loan with a property', async () => {
+      generator({
+        properties: {
+          _id: 'propertyId',
+          category: PROPERTY_CATEGORY.PRO,
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId'] }),
+      );
+
+      const { loans = [] } = UserService.getByEmail(userToInvite.email, {
+        loans: { assigneeLinks: 1 },
+      });
+
+      expect(loans?.[0]?.assigneeLinks?.[0]).to.deep.equal({
+        _id: 'adminId',
+        isMain: true,
+        percent: 100,
+      });
+
+      await checkEmails(2);
+    });
+
+    it('should assign the same assignee to the loan with a promotion', async () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({
+          user: {
+            ...userToInvite,
+            showAllLots: false,
+            promotionLotIds: ['pLotId'],
+          },
+          promotionIds: ['promotionId'],
+        }),
+      );
+
+      const { loans = [] } = UserService.getByEmail(userToInvite.email, {
+        loans: { assigneeLinks: 1 },
+      });
+
+      expect(loans?.[0]?.assigneeLinks?.[0]).to.deep.equal({
+        _id: 'adminId',
+        isMain: true,
+        percent: 100,
+      });
+
+      await checkEmails(2);
+    });
   });
 });
