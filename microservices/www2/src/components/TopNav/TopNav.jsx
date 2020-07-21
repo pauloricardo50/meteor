@@ -8,6 +8,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import colors from 'core/config/colors';
 import useMedia from 'core/hooks/useMedia';
 
+import { EPOTEK_APP } from '../../constants';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 import { trackCTA } from '../../utils/tracking';
@@ -57,11 +58,11 @@ const TopNav = () => {
             raised
             primary
             component="a"
-            href={process.env.GATSBY_EPOTEK_APP}
+            href={EPOTEK_APP}
             onTrack={() =>
               trackCTA({
                 buttonTrackingId: 'Topnav start',
-                toPath: process.env.GATSBY_EPOTEK_APP,
+                toPath: EPOTEK_APP,
                 pageTrackingId,
               })
             }

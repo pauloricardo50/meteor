@@ -4,6 +4,7 @@ import { SUCCESS } from 'core/api/constants';
 import StatusIcon from 'core/components/StatusIcon';
 import T from 'core/components/Translation/FormattedMessage';
 
+import { EPOTEK_APP } from '../../constants';
 import { trackCTA } from '../../utils/tracking';
 import Button from '../Button';
 import { useLayoutContext } from '../Layout/LayoutContext';
@@ -48,11 +49,11 @@ const WwwCalculatorStatus = () => {
           secondary={worstStatus === SUCCESS}
           size="large"
           component="a"
-          href={`${process.env.GATSBY_EPOTEK_APP}?purchaseType=${purchaseType}`}
+          href={`${EPOTEK_APP}?purchaseType=${purchaseType}`}
           onTrack={() =>
             trackCTA({
               buttonTrackingId: `${toSentenceCase(purchaseType)} calculator`,
-              toPath: `${process.env.GATSBY_EPOTEK_APP}?purchaseType=${purchaseType}`,
+              toPath: `${EPOTEK_APP}?purchaseType=${purchaseType}`,
               pageTrackingId,
             })
           }

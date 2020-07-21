@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import PersonOutline from '@material-ui/icons/PersonOutline';
 
+import { EPOTEK_APP, EPOTEK_PRO } from '../../constants';
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
 import { trackCTA } from '../../utils/tracking';
@@ -36,9 +37,7 @@ const LoginMenu = ({ placement }) => {
 
   return (
     <div
-      className={`login-menu${
-        placement === 'mobile-nav' ? ' mobile-nav' : null
-      }`}
+      className={`login-menu${placement === 'mobile-nav' ? ' mobile-nav' : ''}`}
     >
       <Button
         classes={useStyles()}
@@ -62,11 +61,11 @@ const LoginMenu = ({ placement }) => {
         <MenuItem
           role="button"
           component="a"
-          href={`${process.env.GATSBY_EPOTEK_APP}/login`}
+          href={`${EPOTEK_APP}/login`}
           onClick={() =>
             trackCTA({
               buttonTrackingId: 'Login app',
-              toPath: `${process.env.GATSBY_EPOTEK_APP}/login`,
+              toPath: `${EPOTEK_APP}/login`,
               pageTrackingId,
             })
           }
@@ -76,11 +75,11 @@ const LoginMenu = ({ placement }) => {
         <MenuItem
           role="button"
           component="a"
-          href={`${process.env.GATSBY_EPOTEK_PRO}/login`}
+          href={`${EPOTEK_PRO}/login`}
           onClick={() =>
             trackCTA({
               buttonTrackingId: 'Login pro',
-              toPath: `${process.env.GATSBY_EPOTEK_PRO}/login`,
+              toPath: `${EPOTEK_PRO}/login`,
               pageTrackingId,
             })
           }
