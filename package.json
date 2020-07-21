@@ -61,6 +61,7 @@
     "global": "^4.4.0",
     "import-sort-cli": "^6.0.0",
     "mup": "^1.5.2-beta.2",
+    "mup-deploy-notifications": "^0.1.0",
     "mup-netdata": "^0.3.1",
     "node-cmd": "^3.0.0",
     "plop": "^2.7.1",

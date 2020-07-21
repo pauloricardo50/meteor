@@ -113,7 +113,7 @@ module.exports = function createConfig({
       },
     },
 
-    plugins: ['mup-netdata'],
+    plugins: ['mup-netdata', 'mup-deploy-notifications'],
 
     netdata: {
       servers: {
@@ -128,6 +128,11 @@ module.exports = function createConfig({
         },
       },
       apiKey: '3e8f196e-38ad-4879-89e3-e5243bb07cb1',
+    },
+
+    deployNotifications: {
+      slackWebhookUrl: 'https://hooks.slack.com/services/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',
+      slackChannel: '#team-engineering'
     },
 
     hooks: {
