@@ -4,3 +4,35 @@
 [Build]
   Publish = ""
   Functions = ""
+
+[[redirects]]
+  from = "/about"
+  to = "/fr/a-propos"
+
+[[redirects]]
+  from = "/contact"
+  to = "/fr/accueil"
+
+[[redirects]]
+  from = "/interests"
+  to = "/fr/taux-hypothecaires"
+
+[[redirects]]
+  from = "/careers"
+  to = "/fr/accueil"
+
+[[redirects]]
+  from = "/faq"
+  to = "/fr/faq"
+
+[[redirects]]
+  from = "/blog"
+  to = "/fr/blog"
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/fr/blog"
+
+[[redirects]]
+  from = "/"
+  to = "/fr/accueil"
