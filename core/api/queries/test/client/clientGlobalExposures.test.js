@@ -10,9 +10,7 @@ import {
 import { ROLES } from '../../../users/userConstants';
 import { createQuery } from '../..';
 
-describe.skip('Global Exposures', function () {
-  this.retries(2);
-
+describe('Global Exposures', function () {
   beforeEach(() => resetDatabase());
 
   afterEach(done =>
