@@ -116,6 +116,7 @@ const SignupForm = ({ modal = false }) => {
         id="Email"
         label="Email"
         className="email"
+        type="email"
         value={email}
         onChange={e => {
           setEmail(e.target.value);

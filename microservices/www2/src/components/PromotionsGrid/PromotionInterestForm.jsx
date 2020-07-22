@@ -49,12 +49,14 @@ const schema = new SimpleSchema2Bridge(
       type: String,
       regEx: SimpleSchema.RegEx.email,
       label: <FormattedMessage id="promoInterest.form.email" />,
+      uniforms: { type: 'email' },
     },
     phoneNumber: {
       type: String,
       optional: true,
       uniforms: {
         label: <FormattedMessage id="promoInterest.form.phoneNumber" />,
+        type: 'tel',
       },
     },
     details: {
