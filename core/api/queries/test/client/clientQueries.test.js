@@ -65,10 +65,12 @@ const insertAndFetchTestData = (
   });
 };
 
-describe.skip('exposeQuery', function () {
-  this.retries(2);
+describe('exposeQuery', function () {
+  this.timeout(1000 * 4);
 
-  beforeEach(() => resetDatabase());
+  beforeEach(() => {
+    resetDatabase();
+  });
 
   it('returns expected data without using overrides', async () => {
     const items = await insertAndFetchTestData(100);
