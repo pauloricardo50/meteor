@@ -164,16 +164,17 @@ describe('FileService', function () {
 
     const documentId = 'autoRenameFile-test';
     const generateAndRenameFiles = async (count, date = '') => {
+      let fileKey;
       await asyncForEach([...Array(count)], async (_, i) => {
-        const fileKey = FileService.getS3FileKey(
+        fileKey = FileService.getS3FileKey(
           { name: `${date ? `${date} ` : ''}file${i}.pdf` },
           { docId: documentId, id: BORROWER_DOCUMENTS.IDENTITY },
         );
 
         await S3Service.putObject(Buffer.from(`hello${i}`, 'utf-8'), fileKey);
-
-        await FileService.autoRenameFile(fileKey, BORROWERS_COLLECTION);
       });
+
+      await FileService.autoRenameFile(fileKey, BORROWERS_COLLECTION);
     };
 
     beforeEach(() => clearBucket(documentId));
