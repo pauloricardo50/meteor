@@ -43,7 +43,6 @@ Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
   checkConnection() {
-    console.log('checkConnection!!');
     return 'stable';
   },
   createAdmins() {

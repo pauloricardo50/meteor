@@ -48,21 +48,9 @@ describe('Admin promotion', () => {
             { _id: 'pLot1', propertyLinks: [{ _id: 'prop1' }] },
             { propertyLinks: [{ _id: 'prop2' }] },
           ],
-          loans: [
-            {
-              user: {},
-              promotionOptions: {
-                status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
-                promotionLots: { _id: 'pLot1' },
-                promotion: { _id: 'promotionId' },
-              },
-            },
-            { user: {} },
-            { user: {} },
-            { user: {} },
-          ],
           users: [
             {
+              _id: 'pro1',
               _factory: ROLES.PRO,
               emails: [{ address: 'visitor1@e-potek.ch', verified: true }],
               firstName: '',
@@ -71,6 +59,7 @@ describe('Admin promotion', () => {
               organisations: { _id: 'org1', $metadata: { isMain: true } },
             },
             {
+              _id: 'pro2',
               _factory: ROLES.PRO,
               emails: [{ address: 'broker1@e-potek.ch', verified: true }],
               firstName: '',
@@ -78,6 +67,20 @@ describe('Admin promotion', () => {
               $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
               organisations: { _id: 'org1', $metadata: { isMain: true } },
             },
+          ],
+          loans: [
+            {
+              user: {},
+              promotionOptions: {
+                status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+                promotionLots: { _id: 'pLot1' },
+                promotion: { _id: 'promotionId' },
+              },
+              $metadata: { invitedBy: 'pro2' },
+            },
+            { $metadata: { invitedBy: 'pro2' }, user: {} },
+            { $metadata: { invitedBy: 'pro2' }, user: {} },
+            { $metadata: { invitedBy: 'pro2' }, user: {} },
           ],
         },
       },
