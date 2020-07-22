@@ -39,7 +39,7 @@ const languageData = {
       suffix: ' ans',
     },
     'cityMarker.title': 'Région de {city}',
-    'cityMarker.count': '{count} dossiers en cours ou terminés',
+    'cityMarker.count': '{count} clients accompagnés',
     'WwwCalculatorPurchaseType.ACQUISITION': 'Acquisition',
     'WwwCalculatorPurchaseType.REFINANCING': 'Renouvellement',
     'WwwCalculatorFormField.salary': 'Revenus annuels bruts',

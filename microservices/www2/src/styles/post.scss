@@ -1,9 +1,11 @@
 .post {
-  padding: 16px;
+  // padding: 16px;
 
   &-header {
     position: relative;
-    padding: 96px 23px 32px;
+    // padding: 96px 23px 32px;
+    padding-top: 96px;
+    padding-bottom: 96px;
 
     h1 {
       // TODO: use @include h3 ? for mobile

@@ -11,11 +11,14 @@ import { getLanguageData } from '../../utils/languages';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'inline-flex',
+    display: 'flex',
     border: 'none',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   content: {
     margin: '23px 0',
+    flexGrow: 0,
     [theme.breakpoints.up('md')]: {
       margin: '31px 0',
     },

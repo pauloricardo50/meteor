@@ -1,6 +1,7 @@
 .recommended-blog-posts {
   &-heading {
-    margin: 80px auto;
+    margin: 96px auto;
+    margin-bottom: 40px;
     font-size: 32px;
     font-weight: normal;
     font-style: normal;
@@ -9,8 +10,6 @@
     color: $body-text;
 
     @media screen and (max-width: $med){
-      margin: 32px auto;
-      font-size: 20px;
       font-weight: 300;
       line-height: 1.4;
     }

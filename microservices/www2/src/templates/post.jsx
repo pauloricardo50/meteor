@@ -234,7 +234,7 @@ const Post = ({
             {languageData.blogLinkText}
           </Button>
         </div>
-        <div className="post-header">
+        <div className="post-header container">
           <h1 className="post-title" itemProp="headline">
             {RichText.asText(blogPost.title)}
           </h1>

@@ -32,12 +32,23 @@ body {
   margin: auto;
   padding-right: 16px;
   padding-left: 16px;
+
+  @media screen and (min-width: $med) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+
+  @media screen and (min-width: 1264px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 section,
 .section {
   // TODO: get standard section vertical spacing for mobile
-  padding: 16px 0;
+  padding: 32px 0;
 
   @media (min-width: $med) {
     padding: 96px 0;

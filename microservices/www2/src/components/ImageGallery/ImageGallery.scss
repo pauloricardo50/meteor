@@ -2,8 +2,6 @@
   width: 100%;
   max-width: $site-width;
   margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
   box-sizing: border-box;
 
   .content {
@@ -39,13 +37,20 @@
     }
   }
 
-  @media screen and (max-width: $small){
+  @media screen and (max-width: $med) {
     .gallery {
       &-item {
-        flex-basis: unset;
+        flex-basis: 40%;
+        flex-grow: 0;
+        margin: 8px;
+
+        .gatsby-image-wrapper {
+          width: 100% !important;
+        }
 
         img {
-          width: 110px;
+          width: 100% !important;
+          object-fit: contain !important;
         }
       }
     }
