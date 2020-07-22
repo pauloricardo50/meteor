@@ -991,66 +991,6 @@ class LoanService extends CollectionService {
     }
   }
 
-  // Useful for demos
-  resetLoan({ loanId }) {
-    const loan = this.get(loanId, { structures: 1, borrowerIds: 1, status: 1 });
-    const { structures = [], borrowerIds = [], status } = loan;
-
-    if (status !== LOAN_STATUS.TEST) {
-      throw new Meteor.Error(
-        'Seuls les dossiers avec le statut TEST peuvent être réinitialisés !',
-      );
-    }
-
-    // Set step to solvency
-    this.setStep({ loanId, nextStep: STEPS.SOLVENCY });
-
-    // Set application type to simple
-    this.update({
-      loanId,
-      object: { applicationType: APPLICATION_TYPES.SIMPLE },
-    });
-
-    // Remove structures and an empty one
-    // structures.forEach(({ _id: structureId }) => {
-    //   this.removeStructure({ loanId, structureId });
-    // });
-    // this.addNewStructure({ loanId });
-
-    // Remove MaxPropertyValue
-    this.update({
-      loanId,
-      object: { maxPropertyValue: true },
-      operator: '$unset',
-    });
-
-    // Reset borrowers financing info
-    // borrowerIds.forEach((borrowerId) => {
-    //   BorrowerService.update({
-    //     borrowerId,
-    //     object: {
-    //       netSalary: null,
-    //       salary: null,
-    //       bankFortune: null,
-    //       insurance2: [],
-    //       insurance3A: [],
-    //       bank3A: [],
-    //       insurance3B: [],
-    //       otherIncome: [],
-    //       otherFortune: [],
-    //       expenses: [],
-    //       realEstate: [],
-    //       bonusExists: false,
-    //       bonus2015: null,
-    //       bonus2016: null,
-    //       bonus2017: null,
-    //       bonus2018: null,
-    //       bonus2019: null,
-    //     },
-    //   });
-    // });
-  }
-
   linkPromotion({ promotionId, loanId }) {
     const { name: promotionName, promotionLoan } = PromotionService.get(
       promotionId,

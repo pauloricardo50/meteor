@@ -17,7 +17,7 @@ const getColumnsConfig = ({ calculator, structureId, loan }) => {
   return [
     {
       style: { width: '30%' },
-      title: 'Prêt hypothécaire demandé',
+      title: <T id="PDF.StructureRecapTable.wantedLoan" />,
       value: () => toMoney(calculator.selectLoanValue({ loan, structureId })),
     },
     {
@@ -30,9 +30,12 @@ const getColumnsConfig = ({ calculator, structureId, loan }) => {
       ? {
           style: { width: '20%', textAlign: 'right' },
           title:
-            calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) > 0
-              ? 'Amortissement extraordinaire'
-              : 'Liquidités dégagées',
+            calculator.getRefinancingRequiredOwnFunds({ loan, structureId }) >
+            0 ? (
+              <T id="Recap.ownFundsDecrease" />
+            ) : (
+              <T id="Recap.ownFundsIncrease" />
+            ),
           value: () =>
             toMoney(
               Math.abs(
@@ -45,7 +48,7 @@ const getColumnsConfig = ({ calculator, structureId, loan }) => {
         }
       : {
           style: { width: '20%', textAlign: 'right' },
-          title: 'Fonds propres',
+          title: <T id="Forms.ownFunds" />,
           value: () =>
             toMoney(
               calculator.getCashUsed({ loan, structureId }) +
@@ -60,7 +63,7 @@ const getColumnsConfig = ({ calculator, structureId, loan }) => {
         },
     {
       style: { width: '15%', textAlign: 'right' },
-      title: "Taux d'avance",
+      title: <T id="Forms.borrowRatio" />,
       value: () => {
         const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
         return (
@@ -81,7 +84,7 @@ const getColumnsConfig = ({ calculator, structureId, loan }) => {
     },
     {
       style: { width: '15%', textAlign: 'right' },
-      title: "Taux d'effort",
+      title: <T id="Forms.incomeRatio" />,
       value: () => {
         const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
         return (

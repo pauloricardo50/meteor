@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 
 import FinancingLabels from '../FinancingLabels';
 import { makeRenderSummary } from './financingSectionHelpers';
@@ -32,7 +32,7 @@ export default class FinancingSectionSummary extends PureComponent {
     const { structures } = sectionProps;
 
     return (
-      <ExpansionPanelSummary
+      <AccordionSummary
         className="section-summary"
         classes={{ content, expanded: expandedClass, root: summaryRoot }}
         {...rest}
@@ -43,9 +43,9 @@ export default class FinancingSectionSummary extends PureComponent {
           sectionProps={sectionProps}
           renderSummary={this.renderSummary}
         />
-      </ExpansionPanelSummary>
+      </AccordionSummary>
     );
   }
 }
 
-FinancingSectionSummary.muiName = ExpansionPanelSummary.muiName;
+FinancingSectionSummary.muiName = AccordionSummary.muiName;

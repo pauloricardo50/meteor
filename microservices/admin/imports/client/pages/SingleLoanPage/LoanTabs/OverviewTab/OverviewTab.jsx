@@ -20,7 +20,6 @@ import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggl
 import InsurancePotential from '../../../../components/InsurancePotential/InsurancePotential';
 import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
-import LoanObject from './LoanObject';
 import LoanStepSetter from './LoanStepSetter';
 
 const allowClosingChecklists = status =>
@@ -137,8 +136,6 @@ const OverviewTab = props => {
           ))}
         </div>
       </div>
-
-      {roles.includes('dev') ? <LoanObject loan={loan} /> : null}
     </div>
   );
 };

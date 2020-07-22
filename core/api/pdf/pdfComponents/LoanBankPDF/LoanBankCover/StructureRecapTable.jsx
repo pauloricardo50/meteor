@@ -10,7 +10,7 @@ import { ROW_TYPES, classes } from '../../PdfTable/PdfTable';
 const columnsConfig = [
   {
     style: { width: '20%' },
-    title: 'Plan financier',
+    title: <T id="Forms.structure" />,
     value: (calculator, { name }, loan, index) => `${name || index + 1}`,
   },
   {
@@ -21,13 +21,13 @@ const columnsConfig = [
   },
   {
     style: { width: '30%', textAlign: 'right' },
-    title: 'Prêt hypothécaire demandé',
+    title: <T id="PDF.StructureRecapTable.wantedLoan" />,
     value: (calculator, { id: structureId }, loan) =>
       toMoney(calculator.selectLoanValue({ loan, structureId })),
   },
   {
     style: { width: '15%', textAlign: 'right' },
-    title: "Taux d'avance",
+    title: <T id="Forms.borrowRatio" />,
     value: (calculator, { id: structureId }, loan) => {
       const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
       return (
@@ -48,7 +48,7 @@ const columnsConfig = [
   },
   {
     style: { width: '15%', textAlign: 'right' },
-    title: "Taux d'effort",
+    title: <T id="Forms.incomeRatio" />,
     value: (calculator, { id: structureId }, loan) => {
       const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
       return (

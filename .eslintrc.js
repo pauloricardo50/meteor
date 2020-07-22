@@ -50,6 +50,7 @@ module.exports = {
     es6: true,
     node: true,
     browser: true,
+    jest: true
     // 'cypress/globals': true,
   },
   globals: {},
@@ -207,6 +208,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/prop-types': 0,
     'react/jsx-filename-extension': 1,
+    'react/no-array-index-key': 1,
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 0,

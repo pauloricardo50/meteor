@@ -13,7 +13,7 @@ const BorrowersPdfPage = ({
 }) => (
   <PdfPage
     className="borrowers-page"
-    title={<T id="PDF.title.borrowers" />}
+    title={<T id="Forms.borrowers" />}
     withFooter
     pageNb={pageNb}
     pageCount={pageCount}

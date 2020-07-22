@@ -1,0 +1,49 @@
+.mortgage-rate-carousel {
+  display: block;
+  width: 100%;
+  max-width: $site-width;
+  margin: 0 auto;
+  text-decoration: none !important;
+  overflow: hidden;
+  position: relative;
+  height: 180px;
+  overflow-x: hidden;
+
+  &-wrapper,
+  .link-wrapper {
+    // Do this to prevent the transform effect from overflowing in the
+    // horizontal direction
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 10px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 200ms $bezier !important;
+    z-index: -1;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  hr {
+    width: 60%;
+    margin: 8px auto;
+  }
+
+  .content {
+    align-self: center;
+    color: black;
+    height: 110px;
+
+    .percent {
+      font-size: 4em;
+    }
+  }
+
+  .link-wrapper {
+    z-index: 1;
+  }
+}

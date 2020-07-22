@@ -11,6 +11,7 @@ const Toggle = ({
   labelLeft,
   labelRight,
   className,
+  ...rest
 }) => {
   const [disabled, setDisabled] = useState(false);
 
@@ -42,6 +43,7 @@ const Toggle = ({
             }
           }}
           disabled={disabled}
+          {...rest}
         />
 
         {labelRight && (

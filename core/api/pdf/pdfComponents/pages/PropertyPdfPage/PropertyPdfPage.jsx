@@ -13,7 +13,7 @@ const PropertyPdfPage = ({ loan, pageNb, pageCount }) => {
   return (
     <PdfPage
       className="property-page"
-      title={<T id="PDF.title.property" />}
+      title={<T id="Forms.property" />}
       withFooter
       pageNb={pageNb}
       pageCount={pageCount}

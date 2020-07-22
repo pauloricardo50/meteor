@@ -34,7 +34,11 @@ const getCostLines = ({ loan, structureId, calculator }) => {
 
   return [
     {
-      label: <b>Fonds propres</b>,
+      label: (
+        <b>
+          <T id="Forms.ownFunds" />
+        </b>
+      ),
       value: (
         <b>
           <Money value={cashUsed + insurance2Used} currency={false} />
@@ -43,12 +47,12 @@ const getCostLines = ({ loan, structureId, calculator }) => {
       money: false,
     },
     {
-      label: 'Épargne',
+      label: <T id="general.savings" />,
       value: <Money value={cashUsed} currency={false} />,
       money: false,
     },
     {
-      label: 'Retrait prévoyance professionnelle',
+      label: <T id="PDF.StructurePage.LPPWithdraw" />,
       value: <Money value={insurance2Used} currency={false} />,
       money: false,
       condition: !!insurance2Used,
@@ -56,7 +60,10 @@ const getCostLines = ({ loan, structureId, calculator }) => {
     {
       label: (
         <>
-          <b>Frais de transaction&nbsp;</b>
+          <b>
+            <T id="PDF.StructurePage.fees" />
+            &nbsp;
+          </b>
           <span className="secondary">
             (<Percent value={totalFees / propAndWork} />)
           </span>
@@ -72,7 +79,8 @@ const getCostLines = ({ loan, structureId, calculator }) => {
     {
       label: (
         <>
-          Frais d'acte&nbsp;
+          <T id="PDF.StructurePage.buyersContractFees" />
+          &nbsp;
           <span className="secondary">
             (<Percent value={finalBuyersContractFees / propAndWork} />)
           </span>
@@ -85,7 +93,8 @@ const getCostLines = ({ loan, structureId, calculator }) => {
     {
       label: (
         <>
-          Frais de cédule&nbsp;
+          <T id="PDF.StructurePage.mortgageFees" />
+          &nbsp;
           <span className="secondary">
             (<Percent value={finalMortgageNoteFees / propAndWork} />)
           </span>
@@ -121,7 +130,7 @@ const ownFundLabel = ({ type, usageType, borrower, borrowerIndex }) => {
     </span>
   ) : (
     <span>
-      <T id={`PDF.ownFund.${type}`} />
+      <T id={`Forms.${type}`} />
       {borrowerSuffix}
     </span>
   );
@@ -152,7 +161,10 @@ export const getOwnFundsLines = ({ loan, structureId, calculator }) => {
 
 const CostsBalanceSheet = ({ loan, structureId, calculator }) => (
   <BalanceSheetTable
-    titles={["Coût de l'opération", 'Répartition des fonds propres']}
+    titles={[
+      <T id="PDF.StructurePage.totalCost" key="totalCost" />,
+      <T id="PDF.StructurePage.ownFunds" key="ownFunds" />,
+    ]}
     leftRows={getCostLines({ loan, structureId, calculator })}
     rightRows={getOwnFundsLines({ loan, structureId, calculator })}
     bottomTitles={['Total', 'Total']}

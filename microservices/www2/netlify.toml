@@ -2,5 +2,43 @@
   ID = "27af9c2d-46dc-42c1-bed4-6d0feca2dd34"
 
 [build]
-  command = "npm run build"
-  publish = "public"
+
+[[redirects]]
+  from = "/about"
+  to = "/fr/a-propos"
+  force = true
+
+[[redirects]]
+  from = "/contact"
+  to = "/fr/accueil"
+  force = true
+
+[[redirects]]
+  from = "/interests"
+  to = "/fr/taux-hypothecaires"
+  force = true
+
+[[redirects]]
+  from = "/careers"
+  to = "/fr/accueil"
+  force = true
+
+[[redirects]]
+  from = "/faq"
+  to = "/fr/faq"
+  force = true
+
+[[redirects]]
+  from = "/blog"
+  to = "/fr/blog"
+  force = true
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/fr/blog"
+  force = true
+
+[[redirects]]
+  from = "/"
+  to = "/fr/accueil"
+  force = true

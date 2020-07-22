@@ -1,0 +1,166 @@
+.newsletter-signup {
+  &__content {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: $site-width;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1,
+  h2 {
+    // Mobile/Title/H3
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.42;
+    letter-spacing: normal;
+    color: $body-text;
+  }
+
+  p {
+    // Mobile/Plain/M/Light
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: black;
+  }
+
+  .success-message {
+    // Manrope_Light
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.42;
+    letter-spacing: normal;
+    color: $success;
+  }
+
+  .error-message {
+    margin-top: 20px;
+    // not in mocks
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: normal;
+    color: $error-dark;
+  }
+
+  &--article {
+    .newsletter-signup__image {
+      img {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    text-align: center;
+
+    h1,
+    h2 {
+      // Desktop/Title/H1
+      font-size: 40px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: $body-text;
+    }
+
+    p {
+      // Desktop/Plain/M/Light
+      font-size: 16px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.44;
+      letter-spacing: normal;
+      color: black;
+    }
+
+    &--article {
+      display: flex;
+      background-color: $background-light;
+      padding: 87px 0;
+      text-align: left;
+
+      .newsletter-signup__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1 0 50%;
+        padding-right: 50px;
+        padding-left: 50px;
+      }
+
+      .newsletter-signup__image {
+        display: flex;
+        justify-content: flex-end;
+        width: 444px;
+        height: 319px;
+
+        img {
+          display: block;
+          max-width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.signup-form {
+  display: flex;
+  align-items: flex-start;
+
+  @media screen and (min-width: $xsmall+1){
+    margin: 0 auto;
+  }
+
+  .MuiFormControl-root + button {
+    margin-left: 12px;
+  }
+
+  .email {
+    width: 200px;
+
+    @media screen and (min-width: $med) {
+      width: 300px;
+    }
+  }
+}
+
+.signup-form.modal{
+  display: block;
+  margin: 0;
+
+  .email {
+    width: auto;
+  }
+}
+
+.recent-newsletters {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+
+  .newsletter {
+    a {
+      display: flex;
+      flex-direction: column;
+      border-radius: 5px;
+      border: solid 1px #cccccc;
+      padding: 8px;
+      &:hover {
+        border-color: $primary;
+      }
+    }
+
+    + .newsletter {
+      margin-top: 16px;
+    }
+  }
+}
