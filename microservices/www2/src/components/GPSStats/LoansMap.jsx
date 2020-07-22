@@ -17,7 +17,7 @@ const LoansMap = () => {
   return (
     <div className="gps-stats-map" style={{ height: mapSize, width: mapSize }}>
       <img
-        style={{ position: 'absolute', top: 0, left: 0 }}
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
         src={map}
         width={mapSize}
         height={mapSize}
