@@ -7,8 +7,12 @@ import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
+import { ACQUISITION_CHANNELS } from '../../users/userConstants';
 
-// const ENABLE_API = Meteor.isProduction || Meteor.isTest
+const IS_TEST = Meteor.isTest;
+const IS_PRODUCTION = Meteor.isProduction;
+
+// const ENABLE_API = IS_PRODUCTION || IS_TEST
 const ENABLE_API = true;
 
 const { ACCOUNT_ID, TOKEN } = Meteor?.settings?.drip;
@@ -18,11 +22,15 @@ const config = function () {
   const endpoints = {
     upsertSubscriber: ({ subscriber }) => ({
       method: 'createUpdateSubscriber',
-      params: { subscribers: [subscriber] },
+      params: { ...subscriber },
     }),
     deleteSubscriber: ({ subscriber }) => ({
       method: 'deleteSubscriber',
-      params: subscriber?.id || subscriber?.email,
+      params: subscriber?.email,
+    }),
+    fetchSubscriber: ({ subscriber }) => ({
+      method: 'fetchSubscriber',
+      params: subscriber?.email,
     }),
     tagSubscriber: ({ subscriber, tag }) => ({
       method: 'tagSubscriber',
@@ -34,7 +42,7 @@ const config = function () {
     }),
     unsubscribeFromAllMailings: ({ subscriber }) => ({
       method: 'unsubscribeFromAllMailings',
-      params: subscriber?.id || subscriber?.email,
+      params: subscriber?.email,
     }),
     recordEvent: ({ subscriber, action, properties }) => ({
       method: 'recordEvent',
@@ -42,7 +50,6 @@ const config = function () {
         events: [
           {
             email: subscriber?.email,
-            id: subscriber?.id,
             action,
             properties,
           },
@@ -81,10 +88,20 @@ const config = function () {
     'subscriber.updated_alias': undefined,
   };
 
+  const tags = {
+    TEST: 'test',
+    PROMO: 'promo',
+    ORGANIC: 'organic',
+    [ACQUISITION_CHANNELS.REFERRAL_API]: 'referral_API',
+    [ACQUISITION_CHANNELS.REFERRAL_ORGANIC]: 'referral_organic',
+    [ACQUISITION_CHANNELS.REFERRAL_PRO]: 'referral_pro',
+  };
+
   const instance = this;
   instance.endpoints = endpoints;
   instance.webhookEvents = webhookEvents;
   instance.dripClient = dripNodeJs({ token: TOKEN, accountId: ACCOUNT_ID });
+  instance.tags = tags;
 
   Object.keys(endpoints).forEach(endpoint => {
     instance[endpoint] = function (...args) {
@@ -97,13 +114,13 @@ const config = function () {
       return this.dripClient[method](
         ...(Array.isArray(params) ? params : [params]),
       )
-        .then(response => response.json())
-        .then(console.log)
+        .then(response => response.body)
         .catch(error => {
           ErrorLogger.logError({
             error,
             additionalData: ['Drip Client Error'],
           });
+          throw error;
         });
     };
   });
@@ -137,22 +154,15 @@ export class DripService {
   }
 
   trackAnalyticsEvent({ event, subscriber, additionalProperties = {} }) {
-    const { email, id } = subscriber;
+    const { email } = subscriber;
 
-    const canFetchUser = subscriber?.email || subscriber?.id;
-
-    const user =
-      canFetchUser &&
-      UserService.get(
-        { $or: [{ _id: id }, { 'emails.address': email }] },
-        {
-          name: 1,
-          email: 1,
-          referredByUser: { name: 1 },
-          referredByOrganisation: { name: 1 },
-          assignedEmployee: { name: 1 },
-        },
-      );
+    const user = UserService.getByEmail(email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
 
     if (!user) {
       return;
@@ -173,43 +183,62 @@ export class DripService {
     });
   }
 
-  async createSubscriber({ userId }) {
-    const {
-      firstName,
-      lastName,
-      email,
-      phoneNumbers = [],
-      assignedEmployee,
-      loans = [],
-      referredByOrganisation,
-    } = UserService.get(userId, {
+  async createSubscriber({ email }) {
+    const user = UserService.getByEmail(email, {
       firstName: 1,
       lastName: 1,
       email: 1,
       assignedEmployee: { name: 1, email: 1 },
       referredByOrganisation: { name: 1 },
       loans: { promotions: { name: 1 } },
+      acquisitionChannel: 1,
+      phoneNumbers: 1,
     });
 
-    const hasOnePromotion =
-      loans.filter(({ promotions = [] }) => promotions.length).lenght === 1;
+    if (!user) {
+      throw new Meteor.Error('User not found in database');
+    }
 
+    const hasAPromotion =
+      user?.loans?.length &&
+      user.loans.some(({ promotions = [] }) => promotions.length);
+    const hasOnePromotion =
+      user?.loans?.length &&
+      user.loans.filter(({ promotions = [] }) => promotions.length).length ===
+        1;
+
+    // Set tags
+    let tags =
+      user?.acquisitionChannel === ACQUISITION_CHANNELS.REFERRAL_ADMIN
+        ? []
+        : [this.tags[user?.acquisitionChannel] || this.tags.ORGANIC];
+    if (IS_TEST) {
+      tags = [...tags, this.tags.TEST];
+    }
+    if (hasAPromotion) {
+      tags = [...tags, this.tags.PROMO];
+    }
+
+    // Set custom fields
     const custom_fields = {
-      assigneeEmaildAdress: assignedEmployee?.email,
-      assigneeName: assignedEmployee?.name,
-      assigneeCalendlyLink: employeesByEmail[assignedEmployee?.email]?.calendly,
-      referringOrganisationName: referredByOrganisation?.name,
+      assigneeEmailAddress: user?.assignedEmployee?.email,
+      assigneeName: user?.assignedEmployee?.name,
+      assigneeCalendlyLink:
+        employeesByEmail[user?.assignedEmployee?.email]?.calendly,
+      referringOrganisationName: user?.referredByOrganisation?.name,
       promotionName: hasOnePromotion
-        ? loans.find(({ promotions = [] }) => promotions.length)?.name
+        ? user?.loans?.find(({ promotions = [] }) => promotions.length)
+            ?.promotions?.[0]?.name
         : undefined,
     };
 
     const subscriber = {
       email,
-      id: userId,
-      first_name: firstName,
-      last_name: lastName,
-      phone: phoneNumbers?.[0],
+      user_id: user?._id,
+      first_name: user?.firstName,
+      last_name: user?.lastName,
+      phone: user?.phoneNumbers?.[0],
+      tags,
       custom_fields,
     };
 
@@ -223,40 +252,40 @@ export class DripService {
     return res;
   }
 
-  async updateSubscriber({ userId, object }) {
+  async updateSubscriber({ email, object }) {
     const res = await this.upsertSubscriber({
-      subscriber: { id: userId, ...object },
+      subscriber: { email, ...object },
     });
 
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_UPDATED,
-      subscriber: { id: userId },
+      subscriber: { email },
     });
 
     return res;
   }
 
-  async removeSubscriber({ userId }) {
-    const res = await this.deleteSubscriber({ subscriber: { id: userId } });
+  async removeSubscriber({ email }) {
+    const res = await this.deleteSubscriber({ subscriber: { email } });
 
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_REMOVED,
-      subscriber: { id: userId },
+      subscriber: { email },
     });
 
     return res;
   }
 
-  async trackEvent({ event: { action, properties }, userId }) {
+  async trackEvent({ event: { action, properties }, email }) {
     const res = await this.recordEvent({
       action,
       properties,
-      subscriber: { id: userId },
+      subscriber: { email },
     });
 
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_EVENT_RECORDED,
-      subscriber: { id: userId },
+      subscriber: { email },
       additionalProperties: {
         dripEventAction: action,
         dripEventProperties: properties,
