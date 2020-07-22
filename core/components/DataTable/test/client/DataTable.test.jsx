@@ -12,7 +12,7 @@ import {
 } from '../../../../utils/testHelpers/testing-library';
 import DataTable from '../..';
 
-describe.skip('DataTable', () => {
+describe('DataTable', () => {
   beforeEach(async () => {
     await cleanup();
     await callMethod('resetDatabase');
