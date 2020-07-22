@@ -34,15 +34,17 @@ const tryUntilSucceed = func =>
 
 // You have to have visited the app before this can work
 // Like: cy.visit('/')
-Cypress.Commands.add('getMeteor', () =>
-  cy.window().then(window => {
-    if (!window.Meteor) {
-      // https://github.com/cypress-io/cypress/issues/4249
-      return null;
-    }
+Cypress.Commands.add('getMeteor', () => {
+  cy.window().should('have.property', 'Meteor');
+  return cy.window().then(window => window.Meteor);
+});
 
-    return window.Meteor;
-  }),
+Cypress.Commands.add('checkConnection', () =>
+  cy
+    .getMeteor()
+    .then(Meteor =>
+      tryUntilSucceed(callback => Meteor.call('checkConnection', callback)),
+    ),
 );
 
 Cypress.Commands.add('callMethod', (method, ...params) => {

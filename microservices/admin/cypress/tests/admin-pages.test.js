@@ -40,7 +40,7 @@ const pages = {
     }),
 
     'Loan Structures Tab': route(`/loans/loanId/structures`, {
-      shouldRender: '.financing-select-residence-type',
+      shouldRender: '.financing-structures',
     }),
 
     'Loan Borrowers Tab': route(`/loans/loanId/borrowers`, {
@@ -111,7 +111,7 @@ const pages = {
   },
 };
 
-describe.only('Admin Pages', () => {
+describe('Admin Pages', () => {
   before(() => {
     cy.startTest({ url: '/login' });
     cy.meteorLogout();

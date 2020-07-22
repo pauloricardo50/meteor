@@ -16,7 +16,9 @@ const generateTestsForPages = (pages, testData) => {
           cy.routeTo('/');
 
           if (pageAuthentication !== 'public') {
+            cy.meteorLogout(); // Avoid login page redirect
             cy.routeTo('/login');
+            cy.checkConnection();
             cy.meteorLogin(getTestUserByRole(pageAuthentication));
           }
         });

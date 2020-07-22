@@ -1,3 +1,9 @@
+import { PROMOTION_OPTION_STATUS } from '../../imports/core/api/promotionOptions/promotionOptionConstants';
+import {
+  PROMOTION_STATUS,
+  PROMOTION_USERS_ROLES,
+} from '../../imports/core/api/promotions/promotionConstants';
+import { ROLES } from '../../imports/core/api/users/userConstants';
 import {
   ADMIN_EMAIL,
   USER_PASSWORD,
@@ -9,70 +15,120 @@ const constructionTimeline = [
   { startDate: '2020-09-01', percent: 20 },
 ];
 
-describe('Admin promotion', () => {
+describe.only('Admin promotion', () => {
   before(() => {
-    cy.initiateTest();
-
+    cy.startTest({ url: '/login' });
+    cy.meteorLogout();
+    cy.contains('Accédez à votre compte');
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData', { generateAdmins: true });
-    cy.callMethod('insertFullPromotion');
+    cy.callMethod('generateScenario', {
+      scenario: {
+        users: [
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            emails: [{ address: ADMIN_EMAIL, verified: true }],
+            organisations: { $metadata: { isMain: true } },
+          },
+        ],
+        organisations: { _id: 'org1', name: 'Pro org' },
+        promotions: {
+          _id: 'promotionId',
+          name: 'Test promotion',
+          status: PROMOTION_STATUS.OPEN,
+          address1: 'Place de neuve 2',
+          city: 'Genève',
+          zipCode: 1201,
+          contacts: [{ name: 'Joe', title: 'Architecte' }],
+          properties: [
+            { _id: 'prop1', name: 'A1', value: 1000000 },
+            { _id: 'prop2', name: 'A2', value: 1000000 },
+          ],
+          promotionLots: [
+            { _id: 'pLot1', propertyLinks: [{ _id: 'prop1' }] },
+            { propertyLinks: [{ _id: 'prop2' }] },
+          ],
+          loans: [
+            {
+              user: {},
+              promotionOptions: {
+                status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
+                promotionLots: { _id: 'pLot1' },
+                promotion: { _id: 'promotionId' },
+              },
+            },
+            { user: {} },
+            { user: {} },
+            { user: {} },
+          ],
+          users: [
+            {
+              _factory: ROLES.PRO,
+              emails: [{ address: 'visitor1@e-potek.ch', verified: true }],
+              firstName: '',
+              lastName: '',
+              $metadata: { roles: [PROMOTION_USERS_ROLES.VISITOR] },
+              organisations: { _id: 'org1', $metadata: { isMain: true } },
+            },
+            {
+              _factory: ROLES.PRO,
+              emails: [{ address: 'broker1@e-potek.ch', verified: true }],
+              firstName: '',
+              lastName: '',
+              $metadata: { roles: [PROMOTION_USERS_ROLES.BROKER] },
+              organisations: { _id: 'org1', $metadata: { isMain: true } },
+            },
+          ],
+        },
+      },
+    });
+    cy.callMethod('setPassword', {
+      userId: 'advisor1',
+      password: USER_PASSWORD,
+    });
+    cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
   });
 
   beforeEach(() => {
-    cy.routeTo('/login');
-    cy.get('.login-page');
-    cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
   });
 
   describe('promotionReservations', () => {
     it('can visit all working tabs', () => {
-      cy.visit('/promotions');
-      cy.contains('Pré Polly').click();
-
+      cy.routeTo('/promotions/promotionId');
       cy.get('.promotion-management').should('exist');
 
       cy.contains("Vue d'ensemble").click();
-      cy.get('.promotion-lots-table table tbody tr').should('have.length', 5);
+      cy.get('.promotion-lots-table table tbody tr').should('have.length', 2);
 
       cy.contains('Description').click();
       cy.get('.google-map').should('exist');
 
       cy.contains('Partenaires').click();
-      cy.get('.promotion-partners')
-        .contains('Architecte')
-        .should('exist');
+      cy.get('.promotion-partners').contains('Architecte').should('exist');
 
       cy.contains('Acquéreurs').click();
       cy.get('table tbody tr').should('have.length', 4);
 
       cy.contains('Pros').click();
-      cy.get('table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 2);
     });
 
     it('can change roles, remove a promotion Pro, and add one', () => {
-      cy.visit('/promotions');
-      cy.contains('Pré Polly').click();
-      cy.contains('Pros').click();
+      cy.routeTo('/promotions/promotionId/users');
 
       cy.contains('visitor1@e-potek.ch')
         .parents('tr')
         .find(`[aria-label="Modifier rôles"]`)
         .click();
 
-      cy.get(`input[name=roles]`)
-        .parent()
-        .click();
+      cy.get(`input[name=roles]`).parent().click();
 
       // Remove role
-      cy.get('#menu-roles')
-        .contains('Visiteur')
-        .click();
+      cy.get('#menu-roles').contains('Visiteur').click();
 
       // Add role
-      cy.get('#menu-roles')
-        .contains('Promoteur')
-        .click();
+      cy.get('#menu-roles').contains('Promoteur').click();
       cy.get('[role=dialog] form').submit();
 
       cy.contains('visitor1@e-potek.ch')
@@ -84,7 +140,7 @@ describe('Admin promotion', () => {
         .contains('Visiteur')
         .should('not.exist');
 
-      cy.get('table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 2);
 
       cy.contains('visitor1@e-potek.ch')
         .parents('tr')
@@ -92,7 +148,7 @@ describe('Admin promotion', () => {
         .click();
       cy.contains('Confirmer').click();
 
-      cy.get('table tbody tr').should('have.length', 4);
+      cy.get('table tbody tr').should('have.length', 1);
 
       cy.contains('button', 'Administration').click();
       cy.contains('Ajouter un Pro').click();
@@ -101,28 +157,21 @@ describe('Admin promotion', () => {
         .last()
         .type('visi');
 
-      cy.get('[role=tooltip]')
-        .contains('Ajouter')
-        .click();
+      cy.get('[role=tooltip]').contains('Ajouter').click();
 
-      cy.get('table tbody tr').should('have.length', 5);
+      cy.get('table tbody tr').should('have.length', 2);
     });
 
     it('can add and remove a customer', () => {
-      cy.visit('/promotions');
-      cy.contains('Pré Polly').click();
+      cy.routeTo('/promotions/promotionId');
 
       cy.contains('Ajouter un acquéreur').click();
 
       cy.get('[role=dialog]')
         .find('input[name=email]')
         .type('customer@e-potek.ch');
-      cy.get('[role=dialog]')
-        .find('input[name=firstName]')
-        .type('Customer');
-      cy.get('[role=dialog]')
-        .find('input[name=lastName]')
-        .type('Test');
+      cy.get('[role=dialog]').find('input[name=firstName]').type('Customer');
+      cy.get('[role=dialog]').find('input[name=lastName]').type('Test');
       cy.get('[role=dialog]')
         .find('input[name=phoneNumber]')
         .type('0790000000');
@@ -130,14 +179,10 @@ describe('Admin promotion', () => {
       cy.setSelect('promotionLotIds', 1);
       cy.get('[role=dialog] form').submit();
 
-      cy.get('.core-tabs-tab')
-        .contains('Acquéreurs')
-        .click();
+      cy.get('.core-tabs-tab').contains('Acquéreurs').click();
       cy.get('table tbody tr').should('have.length', 5);
 
-      cy.get('.actions')
-        .first()
-        .click();
+      cy.get('.actions').first().click();
       cy.contains('Supprimer').click();
 
       cy.get('table tbody tr').should('have.length', 4);
@@ -145,9 +190,7 @@ describe('Admin promotion', () => {
 
     it('can update a promotion reservation', () => {
       cy.callMethod('startPromotionReservation');
-      cy.visit('/promotions');
-      cy.contains('Pré Polly').click();
-      cy.contains("Vue d'ensemble").click();
+      cy.routeTo('/promotions/promotionId/overview');
 
       cy.contains('Réservations')
         .closest('.card1')
@@ -181,9 +224,7 @@ describe('Admin promotion', () => {
 
   describe('Construction timelines', () => {
     it('adds construction timeline to promotion', () => {
-      cy.visit('/promotions');
-      cy.contains('Pré Polly').click();
-      cy.contains("Vue d'ensemble").click();
+      cy.routeTo('/promotions/promotionId/overview');
 
       cy.contains('Répartition du financement').click();
 
@@ -224,13 +265,9 @@ describe('Admin promotion', () => {
     });
 
     it('displays the promotion timeline on a promotion lot', () => {
-      cy.visit('/promotions');
-      cy.contains('Pré Polly').click();
-      cy.contains("Vue d'ensemble").click();
+      cy.routeTo('/promotions/promotionId/overview');
 
-      cy.get('.promotion-lots-table')
-        .contains('2.01')
-        .click();
+      cy.get('.promotion-lots-table').contains('A1').click();
 
       cy.contains('Modifier').click();
       cy.get('input[name=value]').type('{selectall}{backspace}');
