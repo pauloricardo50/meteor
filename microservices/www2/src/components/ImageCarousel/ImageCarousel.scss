@@ -105,7 +105,8 @@
     .current-image {
       flex-basis: 60%;
       flex-shrink: 0;
-      margin-right: 16px;
+      padding-right: 16px;
+      box-sizing: border-box;
     }
     .content{
       flex-basis: 40%;
