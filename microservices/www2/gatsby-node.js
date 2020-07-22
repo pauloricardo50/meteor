@@ -1,5 +1,6 @@
 const SimpleDDP = require('simpleddp');
 const ws = require('isomorphic-ws');
+const { redirects } = require('./src/utils/redirects');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -115,4 +116,11 @@ exports.onCreateWebpackConfig = ({ actions: { setWebpackConfig } }) => {
   // This should stay in this file for the alias to work
   const config = require('./webpack.config.js');
   setWebpackConfig(config);
+};
+
+// Generally you create redirects while creating pages.
+exports.createPages = ({ graphql, actions }) => {
+  const { createRedirect } = actions;
+
+  redirects.map(createRedirect);
 };

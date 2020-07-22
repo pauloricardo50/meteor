@@ -148,5 +148,8 @@ module.exports = {
         stripQueryString: true,
       },
     },
+
+    // Makes redirects work
+    'gatsby-plugin-netlify',
   ],
 };
