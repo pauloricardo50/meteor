@@ -24,6 +24,7 @@ const insertTestData = n => {
 };
 
 const fetchQueries = ({ queries = [], params, promise }) => {
+  console.time('fetchQueries');
   queries.forEach(query => {
     promise = promise.then(
       (items = {}) =>
@@ -39,7 +40,10 @@ const fetchQueries = ({ queries = [], params, promise }) => {
     );
   });
 
-  return promise;
+  return promise.then(result => {
+    console.timeEnd('fetchQueries');
+    return result;
+  });
 };
 
 const insertAndFetchTestData = (
@@ -52,7 +56,10 @@ const insertAndFetchTestData = (
     fetchQuery4 = false,
   } = {},
 ) => {
+  console.time('insertTestData');
   const promise = insertTestData(n);
+  console.timeEnd('insertTestData');
+
   return fetchQueries({
     queries: [
       fetchQuery1 && query1,
