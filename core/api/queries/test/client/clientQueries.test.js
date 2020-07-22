@@ -13,18 +13,15 @@ import {
 } from '../collection-app-test';
 
 const insertTestData = n => {
-  const promises = [...Array(n)].map((_, index) =>
-    testCollectionInsert.run({
-      _id: `test${index}`,
-      name: `test${index % 4}`,
-      value: index,
-    }),
-  );
-  return Promise.all(promises).then(() => ({}));
+  const documents = [...Array(n)].map((_, index) => ({
+    _id: `test${index}`,
+    name: `test${index % 4}`,
+    value: index,
+  }));
+  return testCollectionInsert.run(documents).then(() => ({}));
 };
 
 const fetchQueries = ({ queries = [], params, promise }) => {
-  console.time('fetchQueries');
   queries.forEach(query => {
     promise = promise.then(
       (items = {}) =>
@@ -40,10 +37,7 @@ const fetchQueries = ({ queries = [], params, promise }) => {
     );
   });
 
-  return promise.then(result => {
-    console.timeEnd('fetchQueries');
-    return result;
-  });
+  return promise;
 };
 
 const insertAndFetchTestData = (
@@ -56,9 +50,7 @@ const insertAndFetchTestData = (
     fetchQuery4 = false,
   } = {},
 ) => {
-  console.time('insertTestData');
   const promise = insertTestData(n);
-  console.timeEnd('insertTestData');
 
   return fetchQueries({
     queries: [
@@ -73,8 +65,6 @@ const insertAndFetchTestData = (
 };
 
 describe('exposeQuery', function () {
-  this.timeout(1000 * 4);
-
   beforeEach(() => {
     resetDatabase();
   });

@@ -50,6 +50,6 @@ module.exports = {
   }),
   testCollectionInsert: new Method({
     name: 'testCollectionInsert',
-    params: { value: Number, name: String, _id: String },
+    params: [{ value: Number, name: String, _id: String }],
   }),
 };
