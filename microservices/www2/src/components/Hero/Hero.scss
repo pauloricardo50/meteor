@@ -6,7 +6,8 @@
 
   &-image,
   &-content {
-    flex-basis: 50%;
+    flex-basis: 40%;
+    flex-grow: 1;
     box-sizing: border-box;
 
     h1,

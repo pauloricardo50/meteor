@@ -30,13 +30,14 @@ const Layout = ({ children, location, pageContext, data }) => {
       }
     }
   `);
-  const pageObject = data?.prismic?.page || data?.prismic?.post;
+  const pageObject = data?.prismic?.page || data?.prismic?.post || {};
 
-  useTracking(pageObject?.tracking_id);
+  useTracking(pageObject.tracking_id);
   useIntercom();
 
   const { title, description } = siteData.site.siteMetadata;
-  const pageTitle = pageObject?.name?.[0]?.text || pageObject?.title?.[0]?.text;
+  const pageTitle = pageObject.name?.[0]?.text || pageObject.title?.[0]?.text;
+  const { seo_title: seoTitle, seo_description: seoDescription } = pageObject;
 
   // const pageLang = getShortLang(pageContext.lang);
   const pageLang = getShortLang('fr-ch');
@@ -62,14 +63,16 @@ const Layout = ({ children, location, pageContext, data }) => {
   }, [language]);
 
   return (
-    <LayoutContext.Provider value={pageObject || {}}>
+    <LayoutContext.Provider value={pageObject}>
       <LanguageContext.Provider value={[language, setLanguage]}>
         <Helmet>
           <html lang={pageLang} />
-          <title>{`${title}${pageTitle ? ` | ${pageTitle}` : ''}`}</title>
-          <meta name="description" content={description} />
-          <meta name="og:title" content={pageTitle} />
-          <meta name="og:description" content={description} />
+          <title>
+            {seoTitle || `${title}${pageTitle ? ` | ${pageTitle}` : ''}`}
+          </title>
+          <meta name="description" content={seoDescription || description} />
+          <meta name="og:title" content={seoTitle || pageTitle} />
+          <meta name="og:description" content={seoDescription || description} />
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content={title} />
           <meta property="og:locale" content={pageContext.lang} />
