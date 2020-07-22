@@ -15,7 +15,7 @@ const constructionTimeline = [
   { startDate: '2020-09-01', percent: 20 },
 ];
 
-describe.only('Admin promotion', () => {
+describe('Admin promotion', () => {
   before(() => {
     cy.startTest({ url: '/login' });
     cy.meteorLogout();

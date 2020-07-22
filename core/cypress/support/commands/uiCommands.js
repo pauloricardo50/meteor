@@ -137,6 +137,7 @@ Cypress.Commands.add('initiateTest', () => {
 Cypress.Commands.add('startTest', ({ url = '/' } = {}) => {
   cy.visit(url);
   cy.window().should('have.property', 'appReady', true);
+  cy.checkConnection();
 });
 
 const clearLocalStorage = () => {

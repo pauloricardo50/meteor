@@ -2,6 +2,7 @@ import { GENDER } from '../../imports/core/api/borrowers/borrowerConstants';
 import { COMMISSION_RATES_TYPE } from '../../imports/core/api/commissionRates/commissionRateConstants';
 import { INSURANCE_PRODUCT_FEATURES } from '../../imports/core/api/insuranceProducts/insuranceProductConstants';
 import { ORGANISATION_FEATURES } from '../../imports/core/api/organisations/organisationConstants';
+import { ROLES } from '../../imports/core/api/users/userConstants';
 import {
   ADMIN_EMAIL,
   USER_PASSWORD,
@@ -9,6 +10,7 @@ import {
 
 const scenario = {
   insuranceRequests: {
+    _id: 'iRId',
     borrowers: {
       firstName: 'John',
       lastName: 'Insured',
@@ -50,19 +52,30 @@ const scenario = {
 
 describe('Single Insurance Request Page', () => {
   before(() => {
-    cy.initiateTest();
-
+    cy.startTest({ url: '/login' });
+    cy.meteorLogout();
+    cy.contains('Accédez à votre compte');
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData', {
-      generateAdmins: true,
-      generateOrganisations: true,
+    cy.callMethod('generateScenario', {
+      scenario: {
+        users: [
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            emails: [{ address: ADMIN_EMAIL, verified: true }],
+          },
+          { _factory: ROLES.ADVISOR },
+        ],
+      },
     });
+    cy.callMethod('setPassword', {
+      userId: 'advisor1',
+      password: USER_PASSWORD,
+    });
+    cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
   });
 
   beforeEach(() => {
-    cy.routeTo('/login');
-    cy.get('.login-page');
-    cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
   });
 
@@ -112,11 +125,9 @@ describe('Single Insurance Request Page', () => {
   it('allows adding tasks and activities', () => {
     // Create insuranceRequest
     cy.callMethod('generateScenario', {
-      scenario: { insuranceRequests: {} },
-    }).then(({ ids: { insuranceRequests } }) => {
-      const [id] = insuranceRequests;
-      cy.routeTo(`/insuranceRequests/${id}`);
+      scenario: { insuranceRequests: { _id: 'insuranceRequestId' } },
     });
+    cy.routeTo(`/insuranceRequests/insuranceRequestId`);
     cy.url().should('include', '/insuranceRequests/');
 
     // Add a task
@@ -139,12 +150,8 @@ describe('Single Insurance Request Page', () => {
 
   it('can add insurances and revenues', () => {
     // Create insuranceRequest
-    cy.callMethod('generateScenario', { scenario }).then(
-      ({ ids: { insuranceRequests } }) => {
-        const [id] = insuranceRequests;
-        cy.routeTo(`/insuranceRequests/${id}`);
-      },
-    );
+    cy.callMethod('generateScenario', { scenario });
+    cy.routeTo(`/insuranceRequests/iRId`);
     cy.url().should('include', '/insuranceRequests/');
 
     // Add an insurance
@@ -176,13 +183,7 @@ describe('Single Insurance Request Page', () => {
   });
 
   it('Can link insuranceRequests and loans', () => {
-    // Create insuranceRequest
-    cy.callMethod('generateScenario', { scenario }).then(
-      ({ ids: { insuranceRequests } }) => {
-        const [id] = insuranceRequests;
-        cy.routeTo(`/insuranceRequests/${id}`);
-      },
-    );
+    cy.routeTo(`/insuranceRequests/iRId`);
     cy.url().should('include', '/insuranceRequests/');
 
     // Link existing loan
