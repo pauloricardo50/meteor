@@ -3,6 +3,8 @@
 
 [build]
 
+# All these redirects need to be forced, because it appears that gatsby
+# puts content on each route
 [[redirects]]
   from = "/about"
   to = "/fr/a-propos"
@@ -38,6 +40,8 @@
   to = "/fr/blog"
   force = true
 
+# Use conditional language redirect here once we have the site in multiple
+# languages
 [[redirects]]
   from = "/"
   to = "/fr/accueil"
