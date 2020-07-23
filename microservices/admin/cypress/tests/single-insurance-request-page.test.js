@@ -184,7 +184,7 @@ describe('Single Insurance Request Page', () => {
     cy.contains('.revenues-table tr', '8 160').should('exist');
   });
 
-  it('Can link insuranceRequests and loans', () => {
+  it.skip('Can link insuranceRequests and loans', () => {
     cy.routeTo(`/insuranceRequests/iRId`);
     cy.url().should('include', '/insuranceRequests/');
 

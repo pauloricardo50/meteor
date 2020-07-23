@@ -73,7 +73,7 @@ describe('Public onboarding', () => {
     });
   });
 
-  it('should create a new account before revealing maxPropertyValue', () => {
+  it.skip('should create a new account before revealing maxPropertyValue', () => {
     cy.callMethod('generateScenario', {
       scenario: {
         organisations: {
