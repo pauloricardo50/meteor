@@ -10,8 +10,7 @@ import ActivityService from '../ActivityService';
 
 /* eslint-env mocha */
 
-
-describe('sendEmailListener', function() {
+describe('sendEmailListener', function () {
   this.timeout(10000);
 
   beforeEach(() => {
