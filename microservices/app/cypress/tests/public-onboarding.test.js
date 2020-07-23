@@ -10,7 +10,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe('Public onboarding', () => {
+describe.skip('Public onboarding', () => {
   before(() => {
     cy.startTest();
     cy.meteorLogout();
@@ -23,6 +23,7 @@ describe('Public onboarding', () => {
     cy.clearLocalStorage();
     cy.meteorLogout();
     cy.routeTo('/');
+    cy.checkConnection();
   });
 
   it('should create a new loan when clicking on a cta', () => {
@@ -73,7 +74,7 @@ describe('Public onboarding', () => {
     });
   });
 
-  it.skip('should create a new account before revealing maxPropertyValue', () => {
+  it(`should create a new account before revealing maxPropertyValue`, () => {
     cy.callMethod('generateScenario', {
       scenario: {
         organisations: {
@@ -117,7 +118,7 @@ describe('Public onboarding', () => {
     cy.contains('.max-property-value-results', 'CHF 798 000').should('exist');
   });
 
-  it('Should attach an anonymous loan to a new user account', () => {
+  it(`Should attach an anonymous loan to a new user account`, () => {
     cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder').find('button').first().click();

@@ -50,7 +50,7 @@ describe('App Promotions', () => {
     cy.routeTo('/');
   });
 
-  it.only('should add promotionOptions and start a reservation', () => {
+  it('should add promotionOptions and start a reservation', () => {
     cy.contains('Démarrer').click();
     cy.contains('Test promotion').click();
     cy.setSelect('residenceType', 1);
