@@ -38,7 +38,7 @@ export const createAccountsEmailConfig = emailId => ({
 
     ActivityService.addEmailActivity({
       emailId,
-      to: address,
+      to: [{ email: address }],
       from: Accounts.emailTemplates.from,
       isServerGenerated: true,
       userLink: { _id: user._id },
