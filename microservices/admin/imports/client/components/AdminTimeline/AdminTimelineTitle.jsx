@@ -43,28 +43,19 @@ const AdminTimelineTitle = ({ activity }) => {
     type,
     isServerGenerated,
     isImportant,
-    metadata,
   } = activity;
-
-  const isFailedEmail = type === ACTIVITY_TYPES.EMAIL && metadata?.failed;
 
   return (
     <TimelineTitle
       title={title}
       icon={getIcon(type, isServerGenerated, isImportant)}
       date={date}
-      iconStyle={
-        isImportant
-          ? { color: colors.warning }
-          : isFailedEmail
-          ? { color: colors.error }
-          : {}
-      }
+      iconStyle={isImportant ? { color: colors.warning } : {}}
     >
       {allowModify(type, isServerGenerated) && (
         <AdminActivityModifier className="activity-modifier" model={activity} />
       )}
-      {isDev && !!metadata && <ActivityMetadata activityId={activityId} />}
+      {isDev && <ActivityMetadata activityId={activityId} />}
     </TimelineTitle>
   );
 };

@@ -42,7 +42,6 @@ const getActivities = ({ activityFilters, queryFilters, type }) =>
           type: formatType(type),
         },
         ...activityFragment(),
-        metadata: { failed: 1 },
       },
     },
     [activityFilters],
