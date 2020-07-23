@@ -77,9 +77,12 @@ const ActivityEmailSchema = ActivitySchema.extend({
     allowedValues: Object.values(EMAIL_IDS),
     optional: true,
   },
-  'metadata.to': { type: String, optional: true },
+  'metadata.to': { type: SimpleSchema.oneOf(String, Array), optional: true },
+  'metadata.to.$': { type: Object, blackbox: true, optional: true },
   'metadata.from': { type: String, optional: true },
   'metadata.response': { type: Object, blackbox: true, optional: true },
+  'metadata.content': { type: Array, optional: true },
+  'metadata.content.$': { type: Object, blackbox: true, optional: true },
 });
 
 const ActivityPhoneSchema = ActivitySchema;

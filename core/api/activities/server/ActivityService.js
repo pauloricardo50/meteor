@@ -28,10 +28,10 @@ class ActivityService extends CollectionService {
     });
   }
 
-  addEmailActivity({ emailId, to, from, response, ...rest }) {
+  addEmailActivity({ emailId, to, from, response, content, ...rest }) {
     return this.insert({
       type: ACTIVITY_TYPES.EMAIL,
-      metadata: { emailId, to, from, response },
+      metadata: { emailId, to, from, response, content },
       ...rest,
     });
   }
