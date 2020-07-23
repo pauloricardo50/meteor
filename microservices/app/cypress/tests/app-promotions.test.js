@@ -50,26 +50,42 @@ describe('App Promotions', () => {
     cy.routeTo('/');
   });
 
-  it('should add promotionOptions and start a reservation', () => {
+  it.only('should add promotionOptions and start a reservation', () => {
     cy.contains('Démarrer').click();
     cy.contains('Test promotion').click();
     cy.setSelect('residenceType', 1);
 
-    cy.get('.promotion-lots-table table tbody tr').should('have.length', 2);
+    cy.get('.promotion-lots-table tbody tr').should('have.length', 2);
 
-    cy.get('input[type=checkbox]').first().click();
+    cy.get('.promotion-lots-table input[type=checkbox]').first().click();
 
-    cy.get('.promotion-options-table table tbody tr').should('have.length', 1);
+    cy.get('.promotion-options-table tbody tr').should('have.length', 1);
 
-    cy.get('input[type=checkbox]').first().click();
+    cy.get('.promotion-lots-table input[type=checkbox]:checked')
+      .first()
+      .click();
 
     cy.contains('Vous devez choisir au moins un lot').should('exist');
 
-    cy.get('input[type=checkbox]').eq(1).click();
+    cy.get('.promotion-lots-table input[type=checkbox]:not(:checked)').click();
 
-    cy.get('.promotion-options-table table tbody tr').should('have.length', 2);
+    cy.get('.promotion-options-table tbody tr').should('have.length', 2);
 
-    cy.contains('Mes lots').parents('div').contains('Réserver').first().click();
+    cy.contains('Mes lots')
+      .parents('div')
+      .contains('button', 'Réserver')
+      .should('exist')
+      .first();
+    cy.contains('Mes lots')
+      .parents('div')
+      .contains('button', 'Réserver')
+      .first()
+      .should('not.be.disabled');
+    cy.contains('Mes lots')
+      .parents('div')
+      .contains('button', 'Réserver')
+      .first()
+      .click();
     cy.contains('Confirmer').click();
     cy.contains('Réservation en cours').should('exist');
   });
