@@ -31,7 +31,7 @@ const generateTestsForPages = (pages, getTestData) => {
 
               cy.routeShouldRenderSuccessfully(
                 pages[pageAuthentication][pageName],
-                getTestData(),
+                getTestData?.(),
               );
             });
         });
