@@ -222,11 +222,7 @@ export class UserServiceClass extends CollectionService {
   getLoginToken = ({ userId }) => {
     const user = this.get(userId, { services: 1 });
 
-    return (
-      user.services.password &&
-      user.services.password.reset &&
-      user.services.password.reset.token
-    );
+    return user?.services?.password?.reset?.token;
   };
 
   testCreateUser = ({ user }) => Users.insert(user);

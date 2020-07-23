@@ -3,7 +3,7 @@ import capitalize from 'lodash/capitalize';
 
 import { getTestUserByRole } from './e2eHelpers';
 
-const generateTestsForPages = (pages, testData) => {
+const generateTestsForPages = (pages, getTestData) => {
   before(() => {
     cy.routeTo('/');
   });
@@ -31,7 +31,7 @@ const generateTestsForPages = (pages, testData) => {
 
               cy.routeShouldRenderSuccessfully(
                 pages[pageAuthentication][pageName],
-                testData,
+                getTestData(),
               );
             });
         });
