@@ -755,6 +755,10 @@ export class UserServiceClass extends CollectionService {
       });
     }
   }
+
+  setStatus({ userId, status }) {
+    return this._update({ id: userId, object: { status } });
+  }
 }
 
 export default new UserServiceClass();

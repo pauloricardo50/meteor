@@ -46,3 +46,9 @@ export const ASSIGNEE = {
   NONE: 'NONE',
   ROUND_ROBIN: 'ROUND_ROBIN',
 };
+
+export const USER_STATUS = {
+  PROSPECT: 'PROSPECT',
+  QUALIFIED: 'QUALIFIED',
+  LOST: 'LOST',
+};

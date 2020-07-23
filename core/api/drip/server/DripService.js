@@ -7,7 +7,7 @@ import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
-import { ACQUISITION_CHANNELS } from '../../users/userConstants';
+import { ACQUISITION_CHANNELS, USER_STATUS } from '../../users/userConstants';
 import { DRIP_ACTIONS, DRIP_TAGS } from '../dripConstants';
 
 const IS_TEST = Meteor.isTest;
@@ -57,25 +57,25 @@ const config = function () {
 
   const webhookEvents = {
     'subscriber.created': undefined,
-    'subscriber.deleted': undefined,
+    'subscriber.deleted': 'handleDeleted',
     'subscriber.marked_as_deliverable': undefined,
     'subscriber.subscribed_to_campaign': undefined,
     'subscriber.removed_from_campaign': undefined,
-    'subscriber.unsubscribed_from_campaign': undefined,
-    'subscriber.unsubscribed_all': undefined,
+    'subscriber.unsubscribed_from_campaign': 'handleUnsubscribe',
+    'subscriber.unsubscribed_all': 'handleUnsubscribe',
     'subscriber.reactivated': undefined,
     'subscriber.completed_campaign': undefined,
-    'subscriber.applied_tag': undefined,
+    'subscriber.applied_tag': 'handleAppliedTag',
     'subscriber.removed_tag': undefined,
     'subscriber.updated_custom_field': undefined,
     'subscriber.updated_email_address': undefined,
     'subscriber.updated_lifetime_value': undefined,
     'subscriber.updated_time_zone': undefined,
-    'subscriber.received_email': undefined,
-    'subscriber.opened_email': undefined,
-    'subscriber.clicked_email': undefined,
-    'subscriber.bounced': undefined,
-    'subscriber.complained': undefined,
+    'subscriber.received_email': 'handleReceivedEmail',
+    'subscriber.opened_email': 'handleOpenedEmail',
+    'subscriber.clicked_email': 'handleClickedEmail',
+    'subscriber.bounced': 'handleBounced',
+    'subscriber.complained': 'handleComplained',
     'subscriber.clicked_trigger_link': undefined,
     'subscriber.visited_page': undefined,
     'subscriber.became_lead': undefined,
@@ -290,6 +290,202 @@ export class DripService {
     });
 
     return res;
+  }
+
+  async handleAppliedTag(data) {
+    const { subscriber, properties } = data;
+
+    const tag = properties?.tag;
+
+    // This tag is not handled by our backend
+    if (!this.tags.includes(tag)) {
+      return Promise.resolve();
+    }
+
+    let event;
+    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+
+    switch (tag) {
+      case this.tags.LOST: {
+        event = EVENTS.DRIP_SUBSCRIBER_LOST;
+
+        if (user?._id) {
+          UserService.setStatus({
+            userId: user?._id,
+            status: USER_STATUS.LOST,
+          });
+        }
+        break;
+      }
+      case this.tags.QUALIFIED: {
+        event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
+
+        if (user?._id) {
+          UserService.setStatus({
+            userId: user?._id,
+            status: USER_STATUS.QUALIFIED,
+          });
+        }
+        break;
+      }
+
+      case this.tags.CALENDLY: {
+        event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
+
+        if (user?._id) {
+          UserService.setStatus({
+            userId: user?._id,
+            status: USER_STATUS.QUALIFIED,
+          });
+        }
+
+        await this.trackAnalyticsEvent({
+          event: EVENTS.DRIP_SUBSCRIBER_BOOKED_AN_EVENT,
+          subscriber,
+        });
+        break;
+      }
+      default:
+        break;
+    }
+
+    if (event) {
+      await this.trackAnalyticsEvent({
+        event,
+        subscriber,
+      });
+    }
+
+    return Promise.resolve();
+  }
+
+  async handleDeleted(data) {
+    const { subscriber } = data;
+
+    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+
+    if (user?._id) {
+      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+    }
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_REMOVED,
+      subscriber,
+    });
+
+    return Promise.resolve();
+  }
+
+  async handleUnsubscribe(data) {
+    const { subscriber } = data;
+
+    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+
+    if (user?._id) {
+      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+    }
+
+    await this.tagSubscriber({ subscriber, tag: this.tags.LOST });
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_UNSUBSCRIBED,
+      subscriber,
+    });
+
+    return Promise.resolve();
+  }
+
+  async handleReceivedEmail(data) {
+    // TODO: add email activity
+    const { subscriber, properties } = data;
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_RECEIVED_EMAIL,
+      subscriber,
+      additionalProperties: {
+        dripEmailId: properties?.email_id,
+        dripEmailSubject: properties?.email_subject,
+      },
+    });
+
+    return Promise.resolve();
+  }
+
+  async handleOpenedEmail(data) {
+    const { subscriber, properties } = data;
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_OPENED_EMAIL,
+      subscriber,
+      additionalProperties: {
+        dripEmailId: properties?.email_id,
+        dripEmailSubject: properties?.email_subject,
+      },
+    });
+
+    return Promise.resolve();
+  }
+
+  async handleClickedEmail(data) {
+    const { subscriber, properties } = data;
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_CLICKED_EMAIL,
+      subscriber,
+      additionalProperties: {
+        dripEmailId: properties?.email_id,
+        dripEmailSubject: properties?.email_subject,
+        dripEmailUrl: properties?.url,
+      },
+    });
+
+    return Promise.resolve();
+  }
+
+  async handleBounced(data) {
+    const { subscriber, properties } = data;
+
+    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+
+    if (user?._id) {
+      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+    }
+
+    await this.tagSubscriber({ subscriber, tag: this.tags.LOST });
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_BOUNCED,
+      subscriber,
+      additionalProperties: {
+        dripEmailId: properties?.email_id,
+        dripEmailSubject: properties?.email_subject,
+      },
+    });
+
+    return Promise.resolve();
+  }
+
+  async handleComplained(data) {
+    const { subscriber, properties } = data;
+
+    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+
+    if (user?._id) {
+      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+    }
+
+    await this.tagSubscriber({ subscriber, tag: this.tags.LOST });
+
+    await this.trackAnalyticsEvent({
+      event: EVENTS.DRIP_SUBSCRIBER_COMPLAINED,
+      subscriber,
+      additionalProperties: {
+        dripEmailId: properties?.email_id,
+        dripEmailSubject: properties?.email_subject,
+      },
+    });
+
+    return Promise.resolve();
   }
 }
 

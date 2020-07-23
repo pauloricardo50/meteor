@@ -1,6 +1,7 @@
 import { employeesByEmail } from '../../../arrays/epotekEmployees';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
+  adminCreateUser,
   anonymousCreateUser,
   assignAdminToUser,
   changeEmail,
@@ -10,7 +11,7 @@ import {
   userVerifyEmail,
 } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
+import { ROLES, USER_STATUS } from '../../users/userConstants';
 import { DRIP_ACTIONS } from '../dripConstants';
 import DripService from './DripService';
 
@@ -18,6 +19,20 @@ ServerEventService.addAfterMethodListener(
   [proInviteUser, anonymousCreateUser],
   ({ params: { user: email } }) => {
     DripService.createSubscriber({ email });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  adminCreateUser,
+  ({ params: { user: email } }) => {
+    const user = UserService.getByEmail(email, { _id: 1 });
+
+    if (user?._id) {
+      UserService.setStatus({
+        userId: user?._id,
+        status: USER_STATUS.QUALIFIED,
+      });
+    }
   },
 );
 
