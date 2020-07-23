@@ -1,5 +1,16 @@
+import {
+  APPLICATION_TYPES,
+  STEPS,
+} from '../../imports/core/api/loans/loanConstants';
 /* eslint-env mocha */
+import { ROLES } from '../../imports/core/api/users/userConstants';
+import {
+  ADMIN_EMAIL,
+  DEV_EMAIL,
+  USER_PASSWORD,
+} from '../../imports/core/cypress/server/e2eConstants';
 import { generateTestsForPages, route } from '../../imports/core/cypress/utils';
+import { E2E_USER_EMAIL } from '../../imports/core/fixtures/fixtureConstants';
 
 const pages = {
   public: {
@@ -9,14 +20,6 @@ const pages = {
       route(`/reset-password/${passwordResetToken}`, {
         shouldRender: '#password-reset-page',
       }),
-
-    'Impersonate (Valid Token)': ({ userId, adminLoginToken, adminId }) =>
-      route(
-        `/impersonate?userId=${userId}&authToken=${adminLoginToken}&adminId=${adminId}`,
-        {
-          shouldRender: '#impersonation-success-message',
-        },
-      ),
 
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
       route(`/verify-email/${emailVerificationToken}`, {
@@ -29,26 +32,23 @@ const pages = {
 
     Account: route('/account', { shouldRender: '#AccountPage' }),
 
-    Dashboard: ({ loan: { _id } }) =>
-      route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
+    Dashboard: route(`/loans/loanId`, { shouldRender: '#DashboardPage' }),
 
-    'Loan Files': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
+    'Loan Files': route(`/loans/loanId/files`, {
+      shouldRender: '#FilesPage .files-tab',
+    }),
 
-    'Loan Single Property': ({ loan: { _id, properties } }) =>
-      route(`/loans/${_id}/properties/${properties[0]._id}`, {
-        shouldRender: '#SinglePropertyPage',
-      }),
+    'Loan Single Property': route(`/loans/loanId/properties/propertyId`, {
+      shouldRender: '#SinglePropertyPage',
+    }),
 
-    'Borrower Personal': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/borrowers/personal`, {
-        shouldRender: '.borrower-page-info',
-      }),
+    'Borrower Personal': route(`/loans/loanId/borrowers/personal`, {
+      shouldRender: '.borrower-page-info',
+    }),
 
-    'Borrower Finance': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/borrowers/finance`, {
-        shouldRender: '.borrower-finance-page',
-      }),
+    'Borrower Finance': route(`/loans/loanId/borrowers/finance`, {
+      shouldRender: '.borrower-finance-page',
+    }),
 
     'Not Found': route('/a-page-that-does-not-exist', {
       shouldRender: '#not-found-page',
@@ -64,16 +64,43 @@ describe('App Pages', () => {
   let testData;
 
   before(() => {
-    cy.initiateTest();
+    cy.startTest();
+    cy.meteorLogout();
+    cy.routeTo('/');
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData', {
-      generateDevs: true,
-      generateAdmins: true,
-      generateUsers: true,
-      generateOrganisations: true,
-      generateUnownedLoan: true,
-      generateTestUser: true,
+    cy.callMethod('generateScenario', {
+      scenario: {
+        users: [
+          {
+            _id: 'user1',
+            emails: [{ address: E2E_USER_EMAIL, verified: true }],
+            loans: [
+              {
+                _id: 'loanId',
+                properties: { _id: 'propertyId' },
+                borrowers: {},
+                displayWelcomeScreen: false,
+                step: STEPS.REQUEST,
+                applicationType: APPLICATION_TYPES.FULL,
+              },
+              {},
+            ],
+          },
+          {
+            _id: 'dev1',
+            _factory: ROLES.DEV,
+            emails: [{ address: DEV_EMAIL, verified: true }],
+          },
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            emails: [{ address: ADMIN_EMAIL, verified: true }],
+          },
+        ],
+      },
     });
+    cy.callMethod('setPassword', { userId: 'user1', password: USER_PASSWORD });
+    cy.callMethod('setPassword', { userId: 'dev1', password: USER_PASSWORD });
     cy.callMethod('getAppEndToEndTestData').then(data => {
       testData = data;
     });
